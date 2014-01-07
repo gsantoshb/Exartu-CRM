@@ -3,11 +3,17 @@
 </head>
 
 <body>
-	<div class="pull-right">
-		{{loginButtons}}
-	</div>
-    <h1> Hello World! </h1>
-    {{> items}}
+    <div class="header row-fluid">
+        <div class="span6">
+             <h1> Hello World! </h1>
+                {{> items}}
+        </div>
+        <div class="span5">
+            <div class="pull-right">
+                 {{loginButtons align="right"}}
+            </div>
+        </div>
+    </div> 
 </body>
 
 <template name="items">

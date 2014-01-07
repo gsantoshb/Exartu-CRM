@@ -6,3 +6,5 @@
 standard-app-packages
 accounts-ui
 bootstrap
+accounts-password
+accounts-google
