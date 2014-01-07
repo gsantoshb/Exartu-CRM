@@ -1,0 +1,24 @@
+<head>
+    <title>Test</title>
+</head>
+
+<body>
+	<div class="pull-right">
+		{{loginButtons}}
+	</div>
+    <h1> Hello World! </h1>
+    {{> items}}
+</body>
+
+<template name="items">
+    <h3>Items</h3>
+    <div id="items">
+      {{#each items}}
+        <div>
+          <a class="{{name_class}}" href="/{{_id}}">
+            {{name}}
+          </a>
+        </div>
+      {{/each}}
+    </div>  
+</template>
