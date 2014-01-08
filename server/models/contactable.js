@@ -1,11 +1,5 @@
 Contactables = new Meteor.Collection("contactables");
 
-Contactables.allow({
-	insert: function() {
-		return true;
-	},
-});
-
 Meteor.methods({
 	addContactable: function (contactable) {
 	  	var user = Meteor.user();

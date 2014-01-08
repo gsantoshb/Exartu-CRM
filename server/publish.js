@@ -1,3 +1,8 @@
 Meteor.publish('contactables', function() {
-	return Contactables.find();
+	var user = Meteor.users.findOne({_id: this.userId});
+	
+	if (!user)
+		return false;
+	
+	return Contactables.find({ hierId: user.hierId });
 })
