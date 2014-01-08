@@ -3,24 +3,7 @@
 </head>
 
 <body>
-	{{> header}} 
+	{{> header}}
+	
+	<!-- Here is where layouts are rendered	-->
 </body>
-
-<template name="header">
-	<div class="ats-navContainer">
-		<a href="/" class="logo">
-			<img src="img/exartu-logo.png" alt="logo" style="margin-top: 2px; width: 90px" />
-		</a>
-		<ul class="ats-nav">
-			<li class="ats-navItem">
-				<a style="text-decoration: none">
-					<div class="ats-navItem"> Contactables
-					</div>
-				</a>
-			</li>
-		</ul>
-		<ul class="nav pull-right" style="margin-right: 20px; margin-top: 10px">
-			{{loginButtons align="right"}}
-		</ul>
-	</div>
-</template>
