@@ -4,7 +4,7 @@ DashboardController = RouteController.extend({
 	layoutTemplate: 'mainLayout',
 	
 	before: function() {
-		alert("Dashboard view");
+
 	}
 });
 
