@@ -1,4 +1,6 @@
 Accounts.onCreateUser(function(options, user) {
+    console.dir(options);
+    console.dir(user);
 	if (options.hierId == null) {
 		options.hierId = createHier(options.email.split('@')[0]);
 	}
