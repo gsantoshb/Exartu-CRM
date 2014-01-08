@@ -2,7 +2,7 @@
 	<section>
 		<div class="row" style="margin-top: 10px">
 			<!-- Filter panel -->
-			<div class="col-md-3 ats-filter-panel">
+			<div class="col-md-2 ats-filter-panel">
 		
 				<h5 class="panel-section-title">Actions</h5>
 	
@@ -27,7 +27,7 @@
 				<filteradd funcattribute="searchPacket.includeDeals" entityname="Deals" ></filteradd>
 -->
 			</div>
-			<div class="col-md-12 col-md-offset-3" style="margin-top: -10px">
+			<div class="col-md-9 col-md-offset-2" style="margin-top: -10px">
 				<div>
 					<!--<h5 class="panel-section-title">Results-->
 					<h5>
@@ -42,17 +42,11 @@
 	
 				<!-- Entities list -->
 				<div class="ats-entities">
-					<!-- Empty list message -->
-					<h4>No matching results</h4>
-					<!-- Loading image -->
-<!--
-					<div style="text-align: center; margin-top: 50px;">
-						<img src="img/ats-loading.gif" style="width: 40px; height: 12px;" alt="Searching.." />
-					</div>
--->
-		
-					<!-- List -->
-					<div>    
+					{{#if loading}}
+                        <div id="lists">Loading...</div>
+                    {{else}}
+                    {{#each entity}}
+					   <div>    
 						<div style="padding-left: 5px">
 		
 							<div class="row ats-entity">
@@ -60,7 +54,7 @@
 								<div class="col-md-1">
 									<!-- Profile picture -->
 										<a ng-href="/">
-										<img class="media-object" data-src="holder.js/64x64" alt="100x100" style="width: 64px; height: 64px;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqBCuvGla2BtuOgbL1Me_BoK2QBvqleO45lRj_lMlS-QwHp6tow" />
+										<img class="media-object" data-src="holder.js/64x64" alt="100x100" style="width: 64px; height: 64px;" src="img/avatar.jpg" />
 									</a>
 								</div>
 		
@@ -73,11 +67,11 @@
 													<span class="name"/>
 													<span class="name"/>
 												</h4>
-												<h5 class="name" style="color: grey">  </h5>
+												<h5 class="name" style="color: grey">  {{displayName}} </h5>
 											</a>
 		
 											<!-- Status Note -->
-											<div style="color: #3693cf"></div>
+											<div style="color: #3693cf"> {{statusNote}} </div>
 										</div>
 		
 										<div class="col-md-6">
@@ -93,8 +87,11 @@
 									<br/>
 									<!-- Interests -->
 									<div class="icons-nav" style="word-wrap: break-word;" >
-										<small class="tag" >                                         
-										</small>
+                                        {{#each interest}}
+                                            <small class="tag" >    
+                                                {{tag}}
+                                            </small>
+                                        {{/each}}
 									</div>
 								</div>
 		
@@ -112,10 +109,11 @@
 		
 									<!-- User who created the entity -->
 									<i class="glyphicons user" style="background-image: none"/>
-									<small>{{contactable.user.name}}</small>
+									<small>{{user.name}}</small>
 		
 									<i class="icon icon-search"/>
 									<small/>
+                                        {{searchKey}}
 									<small/>
 		
 								</div>
@@ -123,7 +121,7 @@
 						</div>
 						<div class="list-fade"></div>
 					</div>
-		
+                    {{/each}}
 					<!-- Infinity scroll -->
 <!--
 					<center data-bind="scroll: routingHelper.getRouteByName('contactableList').isActive(), scrollOptions: { loadFunc: addSome, offset: 10 }, visible: gettingMore() " data-ng-hide="true">
