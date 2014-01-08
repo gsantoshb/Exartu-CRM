@@ -1,5 +1,4 @@
 DashboardController = RouteController.extend({
-	path: '/',
 	template: 'dashboard',
 	layoutTemplate: 'mainLayout',
 	

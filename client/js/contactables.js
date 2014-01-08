@@ -1,9 +1,14 @@
 ContactablesController = RouteController.extend({
-	path: '/contactables',
 	template: 'contactables',
 	layoutTemplate: 'mainLayout',
-	
-	before: function() {
-
-	}
 });
+
+var contactablesHandle = Meteor.subscribe('contactables');
+
+Template.contactables.entities = function(){
+	return Contactables.find();
+};
+
+Template.contactables.loading = function() {
+	return !contactablesHandle.ready();
+};

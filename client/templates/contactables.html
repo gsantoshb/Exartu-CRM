@@ -46,7 +46,7 @@
 					{{#if loading}}
                         <div id="lists">Loading...</div>
                     {{else}}
-                    {{#each entity}}
+                    {{#each entities}}
 					   <div>    
 						<div style="padding-left: 5px">
 		
@@ -68,7 +68,7 @@
 													<span class="name"/>
 													<span class="name"/>
 												</h4>
-												<h5 class="name" style="color: grey">  {{displayName}} </h5>
+												<h5 class="name" style="color: grey">  {{lastName}}, {{firstName}} </h5>
 											</a>
 		
 											<!-- Status Note -->
@@ -129,6 +129,7 @@
 						<img src="img/ats-loading.gif" style="width: 40px; height: 12px;" alt="Searching.." />
 					</center>
 -->
+					{{/if}}
 				</div>
 			</div>
 		</div>
