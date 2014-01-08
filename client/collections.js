@@ -1,0 +1,1 @@
+Contactables = new Meteor.Collection("contactables");
