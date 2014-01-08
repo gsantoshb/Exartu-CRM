@@ -8,8 +8,13 @@ Contactables.allow({
 
 Meteor.methods({
 	addContactable: function (contactable) {
-	  console.log("Stub function works");
-	  contactable.test = "test stub";
-	  Contactables.insert(contactable);
-	}
+	  	var user = Meteor.user();
+	  	if (user == null)
+			throw new Meteor.Error(401, "Unauthorized. Login before execute this method.");
+		
+		contactable.userId = user._id;
+	  	contactable.hierId = user.hierId;
+		
+	  	Contactables.insert(contactable);
+	},
 });
