@@ -1,38 +1,31 @@
 ContactableController = RouteController.extend({
-	template: 'activities',
 	layoutTemplate: 'contactableLayout',
-	yieldTemplates: {
-		'contactableNavegation': {
+	action: function () {
+		// define which template to render in function of the url's hash
+		switch (this.params.hash) {
+		case 'messages':
+			this.render('test');
+			break;
+		case 'activities':
+			this.render('activities');
+			break;
+		case undefined:
+			this.render('activities');
+			break;
+		};
+
+		// render contactableNavegation template on navegation regin defined on contactableLayout (client/layouts.html)
+		this.render('contactableNavegation', {
 			to: 'navegation'
-		},
-		//		'activities': {
-		//			to: 'main'
-		//		},
-	},
-	data: function () {
-		return Contactables.findOne({
-			_id: this.params._id
 		});
 	},
-	//	after: function () {
-	//		this.render('test', {
-	//			to: 'main'
-	//		});
-	//	}
+	data: function () {
+		Session.set('contactableId', this.params._id); // save current contactable to later use on templates
+	},
 });
 
-
-ContactableMessageController = RouteController.extend({
-	template: 'test',
-	layoutTemplate: 'contactableLayout',
-	yieldTemplates: {
-		'contactableNavegation': {
-			to: 'navegation'
-		},
-	}
-	//	yieldTemplates: {
-	//		'contactableNavegation': {
-	//			to: 'navegation'
-	//		},
-	//	},
-});
+Template.contactableNavegation.contactable = function () { // load contactable information
+	return Contactables.findOne({
+		_id: Session.get('contactableId')
+	});
+};

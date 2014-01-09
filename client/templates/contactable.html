@@ -7,26 +7,27 @@
 	<div class="pull-right entity-details">
 
 		<!-- Header -->
+		{{#with contactable}}
 		<a class="btn-link" style="cursor: pointer">
 			<h4 style="color: black">{{lastName}}, {{firstName}}</h4>
 			<!--
-					<span class="no-margin" data-bind="click: function () { $root.switchActiveValue($data.entity()) }">
-						<span data-icon="&#xe0fb;" style="color: forestgreen; cursor: pointer;" data-bind="visible: entity().isActive()"></span>
-						<span data-icon="&#xe0fa;" style="color: red; cursor: pointer;" data-bind="visible: !entity().isActive()"></span>
-					</span>
--->
+						<span class="no-margin" data-bind="click: function () { $root.switchActiveValue($data.entity()) }">
+							<span data-icon="&#xe0fb;" style="color: forestgreen; cursor: pointer;" data-bind="visible: entity().isActive()"></span>
+							<span data-icon="&#xe0fa;" style="color: red; cursor: pointer;" data-bind="visible: !entity().isActive()"></span>
+						</span>
+	-->
 			<img class="media-object" data-src="holder.js/64x64" alt="100x100" style="width: 100px; height: 100px;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqBCuvGla2BtuOgbL1Me_BoK2QBvqleO45lRj_lMlS-QwHp6tow" />
 		</a>
-
+		{{/with}}
 		<!-- Actions -->
 		<div class="panel-section">
 			<p>
 				<i class="glyphicon glyphicon-home ats-icon"></i>
-				<a class="btn-link">Activities</a>
+				<a class="btn-link" href="#activities">Activities</a>
 			</p>
 			<p>
 				<i class="glyphicon glyphicon-comment ats-icon"></i>
-				<a class="btn-link">Messages</a>
+				<a class="btn-link" href="#messages">Messages</a>
 			</p>
 			<p data-bind="css: { entityNavActive: isActiveView('employee/:id/jobs') }">
 				<i class="icon icon-briefcase" style="background-image: none" />
