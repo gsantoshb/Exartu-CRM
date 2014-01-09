@@ -1,137 +1,154 @@
 <template name="contactables">
-	<section> 
+    <section>
         <div class="row" style="margin-top: 10px, width: 100%;">
-			<!-- Filter panel -->
-			<div class="col-md-2 ats-filter-panel">
-		
-				<h5 class="panel-section-title">Actions</h5>
-				<a data-toggle="modal" href="#addContactableModal"> Add contactable </a>
-				
-				<h5 class="panel-section-title">Filters</h5>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox"/>Include inactives</label>
-				</div>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox"/>
-						Only recent week
-						
-					</label>
-				</div>
-				<h5 class="panel-section-title">Entities</h5>
-<!--
+            <!-- Filter panel -->
+            <div class="col-md-2 ats-filter-panel">
+
+                <h5 class="panel-section-title">Actions</h5>
+                <a data-toggle="modal" href="#addContactableModal">Add contactable</a>
+
+                <h5 class="panel-section-title">Filters</h5>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="1" {{asd}}/>Include inactives</label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" />Only recent week
+
+                    </label>
+
+                    <span>{{text}}</span>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="filter-employee" checked/>Employees
+
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="filter-contact" checked/>Contact
+
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="filter-customer" checked/>Customer
+
+                    </label>
+                </div>
+                <h5 class="panel-section-title">Entities</h5>
+                <!--
 				<filteradd funcattribute="searchPacket.includeEmployees" entityname="Employees" ></filteradd>
 				<filteradd funcattribute="searchPacket.includeCustomers" entityname="Customers" ></filteradd>
 				<filteradd funcattribute="searchPacket.includeCustomerContacts" entityname="Customer Contacts" ></filteradd>
 				<filteradd funcattribute="searchPacket.includeJobs" entityname="Jobs" ></filteradd>
 				<filteradd funcattribute="searchPacket.includeDeals" entityname="Deals" ></filteradd>
 -->
-			</div>
-			<div class="col-md-9 col-md-offset-2" style="margin-top: -10px">
-				<div>
-					<!--<h5 class="panel-section-title">Results-->
-					<h5>
-		
-						<!-- Search string -->
-						<span class="input-prepend" style="width: 100%; max-width: 606px;">
-							<input type="text" ng-model="searchText" style="width: 100%;" placeholder="Search" >
-						 </span>
-					</h5>
-				</div>
-	
-	
-				<!-- Entities list -->
-				<div class="ats-entities">
-					{{#if loading}}
-                        <div id="lists">Loading...</div>
-                    {{else}}
-                    {{#each entities}}
-					   <div>    
-						<div style="padding-left: 5px">
-		
-							<div class="row ats-entity">
-								<!-- Left -->
-								<div class="col-md-1">
-									<!-- Profile picture -->
-										<a ng-href="/">
-										<img class="media-object" data-src="holder.js/64x64" alt="100x100" style="width: 64px; height: 64px;" src="img/avatar.jpg" />
-									</a>
-								</div>
-		
-								<!-- Middle -->
-								<div class="col-md-8">
-									<div class="row">
-										<div class="col-md-6">
-											<a href="{{pathFor 'contactable'}}">
-												<h4 class="no-margin">
-													<span class="name"/>
-													<span class="name"/>
-												</h4>
-												<h5 class="name" style="color: grey">  {{lastName}}, {{firstName}} </h5>
-											</a>
-		
-											<!-- Status Note -->
-											<div style="color: #3693cf"> {{statusNote}} </div>
-										</div>
-		
-										<div class="col-md-6">
-											<!-- Contact information -->
-											<div class="col-md-4">
-												<em></em>
-												<br/>
-												<em></em>
-											</div>
-										</div>
-									</div>
-		
-									<br/>
-									<!-- Interests -->
-									<div class="icons-nav" style="word-wrap: break-word;" >
+            </div>
+            <div class="col-md-9 col-md-offset-2" style="margin-top: -10px">
+                <div>
+                    <!--<h5 class="panel-section-title">Results-->
+                    <h5>
+
+                        <!-- Search string -->
+                        <span class="input-prepend" style="width: 100%; max-width: 606px;">
+                            <input type="text" ng-model="searchText" style="width: 100%;" placeholder="Search">
+                        </span>
+                    </h5>
+                </div>
+
+
+                <!-- Entities list -->
+                <div class="ats-entities">
+                    {{#if loading}}
+                    <div id="lists">Loading...</div>
+                    {{else}} {{#each entities}}
+                    <div>
+                        <div style="padding-left: 5px">
+
+                            <div class="row ats-entity">
+                                <!-- Left -->
+                                <div class="col-md-1">
+                                    <!-- Profile picture -->
+                                    <a ng-href="/">
+                                        <img class="media-object" data-src="holder.js/64x64" alt="100x100" style="width: 64px; height: 64px;" src="img/avatar.jpg" />
+                                    </a>
+                                </div>
+
+                                <!-- Middle -->
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a href="{{pathFor 'contactable'}}">
+                                                <h4 class="no-margin">
+                                                    <span class="name" />
+                                                    <span class="name" />
+                                                </h4>
+                                                <h5 class="name" style="color: grey">{{lastName}}, {{firstName}}</h5>
+                                            </a>
+
+                                            <!-- Status Note -->
+                                            <div style="color: #3693cf">{{statusNote}}</div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <!-- Contact information -->
+                                            <div class="col-md-4">
+                                                <em></em>
+                                                <br/>
+                                                <em></em>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <br/>
+                                    <!-- Interests -->
+                                    <div class="icons-nav" style="word-wrap: break-word;">
                                         {{#each interest}}
-                                            <small class="tag" >    
-                                                {{tag}}
-                                            </small>
+                                        <small class="tag">
+                                            {{tag}}
+                                        </small>
                                         {{/each}}
-									</div>
-								</div>
-		
-								<!-- Right -->
-								<div class="col-md-3">
-		
-									<!--  Contactable statuses -->
-									 
-									<p>
-									
-									</p>
-									<div class="progress progress-statistics" style="width: 90%; height: 4px;">
-										<div class="bar"/>
-									</div>
-		
-									<!-- User who created the entity -->
-									<i class="glyphicons user" style="background-image: none"/>
-									<small>{{user.name}}</small>
-		
-									<i class="icon icon-search"/>
-									<small/>
-                                        {{searchKey}}
-									<small/>
-		
-								</div>
-							</div>               
-						</div>
-<!--						<div class="list-fade"></div>-->
-					</div>
+                                    </div>
+                                </div>
+
+                                <!-- Right -->
+                                <div class="col-md-3">
+
+                                    <!--  Contactable statuses -->
+
+                                    <p>
+
+                                    </p>
+                                    <div class="progress progress-statistics" style="width: 90%; height: 4px;">
+                                        <div class="bar" />
+                                    </div>
+
+                                    <!-- User who created the entity -->
+                                    <i class="glyphicons user" style="background-image: none" />
+                                    <small>{{user.name}}</small>
+
+                                    <i class="icon icon-search" />
+                                    <small/>{{searchKey}}
+                                    <small/>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!--						<div class="list-fade"></div>-->
+                    </div>
                     {{/each}}
-					<!-- Infinity scroll -->
-<!--
+                    <!-- Infinity scroll -->
+                    <!--
 					<center data-bind="scroll: routingHelper.getRouteByName('contactableList').isActive(), scrollOptions: { loadFunc: addSome, offset: 10 }, visible: gettingMore() " data-ng-hide="true">
 						<img src="img/ats-loading.gif" style="width: 40px; height: 12px;" alt="Searching.." />
 					</center>
 -->
-					{{/if}}
-				</div>
-			</div>
-		</div>
-	</section>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
