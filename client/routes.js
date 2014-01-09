@@ -25,9 +25,4 @@ Router.map(function () {
 		path: '/contactable/:_id',
 		controller: 'ContactableController'
 	});
-
-	this.route('contactableMessages', {
-		path: '/contactable/:_id/messages',
-		controller: 'ContactableMessageController'
-	});
 });

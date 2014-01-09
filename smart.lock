@@ -3,8 +3,7 @@
   "dependencies": {
     "basePackages": {
       "bootstrap-3": {},
-      "iron-router": {},
-      "handlebar-bind": {}
+      "iron-router": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -16,11 +15,6 @@
         "git": "https://github.com/EventedMind/iron-router.git",
         "tag": "v0.6.2",
         "commit": "ce56e58b45624dce992490f3a1c10f10d3948bae"
-      },
-      "handlebar-bind": {
-        "git": "https://github.com/raix/Meteor-handlebar-bind.git",
-        "tag": "v0.0.1",
-        "commit": "5dad52f10c53c3c322406432ab18531904a17213"
       }
     }
   }
