@@ -1,7 +1,17 @@
 <!-- Dashboard and lists layout -->
 <template name="mainLayout">
-		<div class="main-yield-container">
-			{{yield}}
-		</div>
+	<div class="main-yield-container">
+		{{yield}}
+	</div>
 </template>
 
+<template name="contactableLayout">
+	<div class="row main-yield-container">
+		<div class="col-md-2">
+			{{yield 'navegation'}}
+		</div>
+		<div class="col-md-8">
+			{{yield}}
+		</div>
+	</div>
+</template>
