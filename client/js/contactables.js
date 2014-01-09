@@ -62,10 +62,12 @@ Template.contactables.events({
         Session.set('filter', f);
     },
 });
-Session.set('isChecked', false);
-Template.contactables.asd = function () {
-    return Session.get('isChecked') ? 'checked' : '';
+Template.contactables.checkEmployee = function () {
+    return getFilter('filter').isEmployee ? 'checked' : '';
 };
-Template.contactables.text = function () {
-    return Session.get('isChecked');
+Template.contactables.checkContact = function () {
+    return getFilter('filter').isContact ? 'checked' : '';
+};
+Template.contactables.checkCustomer = function () {
+    return getFilter('filter').isCustomer ? 'checked' : '';
 };

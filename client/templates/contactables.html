@@ -22,19 +22,19 @@
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" id="filter-employee" checked/>Employees
+                        <input type="checkbox" id="filter-employee" {{checkEmployee}}/>Employees
 
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" id="filter-contact" checked/>Contact
+                        <input type="checkbox" id="filter-contact" {{checkContact}}/>Contact
 
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" id="filter-customer" checked/>Customer
+                        <input type="checkbox" id="filter-customer" {{checkCustomer}}/>Customer
 
                     </label>
                 </div>
@@ -86,7 +86,7 @@
                                                     <span class="name" />
                                                     <span class="name" />
                                                 </h4>
-                                                <h5 class="name" style="color: grey">{{lastName}}, {{firstName}}</h5>
+                                                <h5 class="name" style="color: grey">{{#if isCustomer}} {{organizationName}}, {{department}} {{else}}{{lastName}}, {{firstName}}{{/if}}</h5>
                                             </a>
 
                                             <!-- Status Note -->
