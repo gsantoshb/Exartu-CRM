@@ -62,6 +62,17 @@ var getTagVM = function () {
 			_id: Session.get('contactableId')
 		});
 		self.tags = self.contactable().tags;
+        self.newTag = ko.observable('');
+        self.isAdding = ko.observable(false);
+        self.addTag = function () {
+            Contactables.update({
+                _id: Session.get('contactableId')
+            }, {
+                $addToSet: {
+                    tags: self.newTag()
+                }
+            })
+        }
 		return self;
 	};
 	return new viewModel();
