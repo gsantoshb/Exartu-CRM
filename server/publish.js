@@ -11,14 +11,12 @@ Meteor.publish('contactables', function () {
     });
 })
 
-Todos = new Meteor.Collection("todos");
 
-Meteor.publish('todos', function () {
-    return Todos.find();
-})
-
-Todos.allow({
+Contactables.allow({
     insert: function () {
         return true;
-    }
+    },
+    update: function () {
+        return true;
+    },
 });

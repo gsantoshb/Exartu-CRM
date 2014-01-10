@@ -47,8 +47,8 @@
         <form class="chat-form">
             <div class="no-margin input-append">
                 <!--<select class="pull-left" data-bind="options: interestsCodes, optionsText: 'displayName', optionsValue: 'id', value: selectedInterests" style="width: 198px;" />-->
-                <input style="height: 25px;" placeholder="Enter new tag..." />
-                <button class="btn btn-info">
+                <input data-bind="value: newTag " style="height: 25px;" placeholder="Enter new tag..." />
+                <button class="btn btn-info" data-bind="click: addTag, enable: !isAdding()">
                     <strong>+</strong>
                 </button>
             </div>
