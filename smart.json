@@ -2,6 +2,6 @@
   "packages": {
     "bootstrap-3": {},
     "iron-router": {},
-    "ngMeteor": {}
+    "knockout-client": {}
   }
 }

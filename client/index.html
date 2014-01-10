@@ -1,33 +1,10 @@
 <head>
-    <title>Exartu</title>
+	<title>Exartu</title>
 </head>
 
 <body>
-    {{> header}}
-    <!-- This is not the best place to add modals -->
-    {{>addContactableModal}}
-
-    <!-- Here is where layouts are rendered	-->
+	{{> header}}
+	<!-- This is not the best place to add modals -->
+	{{>addContactableModal}}
+	<!-- Here is where layouts are rendered	-->
 </body>
-
-
-<template name="dashboard">
-    {{#constant}}
-    <div class="row main-yield-container" style="margin-left: 20px;">
-        <h2>Todo</h2>
-        div ng-controller="TodoCtrl">
-        <span>[[remaining()]] of [[Todos.length]] remaining</span>
-        <ul class="unstyled">
-            <li ng-repeat="todo in todos">
-                <input type="checkbox" ng-model="todo.done">
-                <span class="done-[[todo.done]]">[[todo.text]]</span>
-            </li>
-        </ul>
-        <form ng-submit="addTodo()">
-            <input type="search" ng-model="todoText" size="30" placeholder="search/add new todo here">
-            <input class="btn btn-primary" type="submit" value="add">
-        </form>
-    </div>
-
-    {{/constant}}
-</template>
