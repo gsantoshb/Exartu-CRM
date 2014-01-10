@@ -13,9 +13,8 @@ ContactableController = RouteController.extend({
 			this.render('activities');
 			break;
 		};
-
 		// render contactableNavegation template on navegation regin defined on contactableLayout (client/layouts.html)
-		this.render('contactableNavegation', {
+		this.render('contactableNavigation', {
 			to: 'navegation'
 		});
 	},
@@ -24,8 +23,20 @@ ContactableController = RouteController.extend({
 	},
 });
 
-Template.contactableNavegation.contactable = function () { // load contactable information
-	return Contactables.findOne({
-		_id: Session.get('contactableId')
-	});
+Template.contactableNavigation.rendered = function () {
+	// load contactable information
+	var contactableVM = function () {
+		var self = this;
+		self.contactable = ko.meteor.findOne(Contactables, {
+			_id: Session.get('contactableId')
+		});
+		self.contactable().displayName = ko.computed(
+			function () {
+				return self.contactable().firstName() + ', ' + self.contactable().lastName();
+			}, self);
+
+		return self;
+	};
+
+	ko.applyBindings(new contactableVM());
 };
