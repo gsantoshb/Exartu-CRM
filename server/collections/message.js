@@ -21,6 +21,6 @@ Meteor.methods({
 
 		addSystemMetadata(message, user);
 
-		Messages.insert(message);
+		return Messages.insert(message);
 	}
 });
