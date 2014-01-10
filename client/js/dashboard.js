@@ -3,4 +3,12 @@ DashboardController = RouteController.extend({
 	layoutTemplate: 'mainLayout',
 });
 
-Template.dashboard.greetings = "Welcome to Exartu!"
+Template.dashboard.rendered = function () {
+	var ViewModel = function () {
+		this.greeting = ko.observable("Welcome to Exartu");
+
+		return this;
+	};
+
+	ko.applyBindings(new ViewModel());
+};
