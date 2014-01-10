@@ -1,7 +1,8 @@
-acceptMongoAction = function (condition) {
-	return condition || true;
-};
+/*
+ * Model helpers
+ */
 
-denyMongoAction = function (condition) {
-	return condition || false;
-};
+addSystemMetadata = function (item, user) {
+	item.userId = user._id;
+	item.hierId = user.hierId;
+}
