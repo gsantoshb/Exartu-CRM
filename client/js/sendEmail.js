@@ -1,4 +1,4 @@
-  Template.sendmail.events({
+  Template.sendEmail.events({
     'click #sendEmail' : function (e,tmplate) {
         var email={
         to: $('#email-to').val(),

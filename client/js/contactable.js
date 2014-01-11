@@ -13,9 +13,9 @@ ContactableController = RouteController.extend({
             this.render('activities');
             break;
         };
-        // render contactableNavegation template on navegation regin defined on contactableLayout (client/layouts.html)
+        // render contactableNavigation template on navigation region defined on contactableLayout (client/layouts.html)
         this.render('contactableNavigation', {
-            to: 'navegation'
+            to: 'navigation'
         });
         this.render('tags', {
             to: 'information'
