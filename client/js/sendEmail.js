@@ -1,4 +1,4 @@
-  Template.sendEmail.events({
+  Template.sendEmailModal.events({
     'click #sendEmail' : function (e,tmplate) {
         var email={
         to: $('#email-to').val(),
@@ -10,6 +10,6 @@
             {
               if (err) console.log(err);
             });
-        $('#sendEmail').modal('hide');
+        $('#sendEmailModal').modal('hide');
     }
 });
