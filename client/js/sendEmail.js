@@ -1,5 +1,5 @@
   Template.sendEmailModal.events({
-    'click #sendEmail' : function (e,tmplate) {
+    'click #sendEmail' : function (e,template) {
         var email={
         to: $('#email-to').val(),
         from: $('#email-from').val(),
