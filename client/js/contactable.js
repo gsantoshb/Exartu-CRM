@@ -9,6 +9,9 @@ ContactableController = RouteController.extend({
         case 'activities':
             this.render('activities');
             break;
+        case 'asendEmail':
+            this.render('sendEmail');
+            break;                
         case undefined:
             this.render('activities');
             break;
