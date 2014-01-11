@@ -1,0 +1,16 @@
+Meteor.startup(function() {
+  process.env.MAIL_URL="smpt://postmaster%40sandbox93318.mailgun.org:2ufkeszxb@smtp.mailgun.org:587 meteor";
+});
+Meteor.methods({
+  sendEmail: function(email) 
+  { 
+    Email.send({
+      from: email.from,
+      to: email.to,
+      subject: email.subject,
+      text: email.text,
+      html: email.html  //"<b>hello world</b>"
+    });
+  }
+});
+
