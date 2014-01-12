@@ -1,0 +1,9 @@
+[submodule "packages/meteor-bootstrap-3"]
+	path = packages/meteor-bootstrap-3
+	url = https://github.com/mangasocial/meteor-bootstrap-3.git
+[submodule "packages/-f"]
+	path = packages/-f
+	url = https://github.com/EventedMind/iron-router.git
+[submodule "packages/-g"]
+	path = packages/-g
+	url = https://github.com/zhouzhuojie/knockout-client.git
