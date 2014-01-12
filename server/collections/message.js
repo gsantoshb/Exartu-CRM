@@ -12,15 +12,16 @@ Meteor.publish('messages', function () {
 		hierId: user.hierId
 	});
 })
+Meteor.startup(function() {
+    Meteor.methods({
+        addMessage: function (message) {
+            var user = Meteor.user();
+            if (user == null)
+                throw new Meteor.Error(401, "Please login");
 
-Meteor.methods({
-	addMessage: function (message) {
-		var user = Meteor.user();
-		if (user == null)
-			throw new Meteor.Error(401, "Please login");
+            addSystemMetadata(message, user);
 
-		addSystemMetadata(message, user);
-
-		return Messages.insert(message);
-	}
+            return Messages.insert(message);
+        }
+    });
 });

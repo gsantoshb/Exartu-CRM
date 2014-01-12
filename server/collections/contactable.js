@@ -12,15 +12,16 @@ Meteor.publish('contactables', function () {
 		hierId: user.hierId
 	});
 })
+Meteor.startup(function() {
+    Meteor.methods({
+        addContactable: function (contactable) {
+            var user = Meteor.user();
+            if (user == null)
+                throw new Meteor.Error(401, "Please login");
 
-Meteor.methods({
-	addContactable: function (contactable) {
-		var user = Meteor.user();
-		if (user == null)
-			throw new Meteor.Error(401, "Please login");
+            addSystemMetadata(contactable, user);
 
-		addSystemMetadata(contactable, user);
-
-		Contactables.insert(contactable);
-	}
+            Contactables.insert(contactable);
+        }
+    });
 });
