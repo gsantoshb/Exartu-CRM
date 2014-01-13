@@ -1,0 +1,29 @@
+<template name="contactMethods">
+    <div name="contactMethodVM">
+        <div class="widget">
+            <h2 class="no-margin ats-subsection-title">Contact Methods</h2>
+            <div class="widget-body">
+                <div data-bind="foreach: contactMethods">
+                    <h5>
+                        <small data-bind="text: type" />
+                        <span style="margin: 10px,0,0,0px">
+                            <b style="cursor: pointer" data-bind="text: value">&nbsp;</b>
+                        </span>
+                    </h5>
+                </div>
+                <form class="no-margin chat-form">
+                    <input data-bind="value: newContactMethod.type"></input>
+                    <div class="input-append">
+                        <input type="text" data-bind="value: newContactMethod.value" />
+                        <span class="btn btn-info" data-bind="click: add">
+                            <strong>+
+                            </strong>
+                        </span>
+                        <!--                        <span class="text text-error" data-bind="value: errorMessage"></span>-->
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</template>
