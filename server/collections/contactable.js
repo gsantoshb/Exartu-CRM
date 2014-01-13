@@ -12,7 +12,7 @@ Meteor.publish('contactables', function () {
         hierId: user.hierId
     });
 })
-Meteor.startup(function() {
+Meteor.startup(function () {
     Meteor.methods({
         addContactable: function (contactable) {
             var user = Meteor.user();
@@ -23,7 +23,6 @@ Meteor.startup(function() {
 
             Contactables.insert(contactable);
         }
-    });
     });
 });
 Contactables.allow({
