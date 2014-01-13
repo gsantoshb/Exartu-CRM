@@ -1,24 +1,35 @@
-getEntityMessageVM = function (entityId, collection) {
+Template.entityMessages.rendered = function () {
 	var vm = function () {
-		var self = this;
+		var self = this,
+			entityId = Session.get('contactableId'),
+			entityCollection = Session.get('entityCollection');
 
-		var newMessage = {
-			text: "message test"
-		};
+		self.messages = Messages.find({
+			entityId: entityId
+		});
 
-		self.messages = ko.observableArray(Meteor.call('getEntityMessages', entityId));
 		self.addMessage = function () {
-			var messageId = Meteor.call('createMessage', newMessage);
-			windows[collection].update({
+			var messageId = Meteor.call('createMessage', {
+				message: "msg test",
+				entityId: entityId
+			});
+			window[entityCollection].update({
 				_id: entityId
 			}, {
 				$addToSet: {
 					messages: [messageId]
 				}
 			});
-		}
+		};
+
+		self.editMessage = function (data, index) {
+
+		};
+
+		return self;
 	};
-	return new vm();
+
+	ko.applyBindings(new vm(), document.getElementsByName('entityMessagesVM')[0]);
 }
 
 Meteor.methods({

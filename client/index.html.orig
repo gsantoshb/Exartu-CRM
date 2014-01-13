@@ -1,0 +1,18 @@
+<head>
+    <title>Exartu</title>
+</head>
+
+<body>
+<<<<<<< HEAD
+	{{> header}}
+	<!-- This is not the best place to add modals -->
+	{{>sendEmailModal}}
+=======
+    {{> header}}
+    <!-- This is not the best place to add modals -->
+    {{>sendEmailModal}}
+>>>>>>> 20a09365121434940cecd9206fda1bd896119ab9
+
+
+    <!-- Here is where layouts are rendered	-->
+</body>

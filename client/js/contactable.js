@@ -4,7 +4,7 @@ ContactableController = RouteController.extend({
 		// define which template to render in function of the url's hash
 		switch (this.params.hash) {
 		case 'messages':
-			this.render('test');
+			this.render('entityMessages');
 			break;
 		case 'activities':
 			this.render('activities');
@@ -25,7 +25,8 @@ ContactableController = RouteController.extend({
 		});
 	},
 	data: function () {
-		Session.set('contactableId', this.params._id); // save current contactable to later use on templates
+		Session.set('entityId', this.params._id); // save current contactable to later use on templates
+		Session.set('entityCollection', 'Contactables');
 	},
 });
 
@@ -46,27 +47,3 @@ Template.contactableNavigation.rendered = function () {
 
 	ko.applyBindings(new vm(), document.getElementsByName('contactableNavigationVM')[0])
 };
-
-Template.tags.rendered = function () {
-	var vm = function () {
-		var self = this;
-		self.contactable = ko.meteor.findOne(Contactables, {
-			_id: Session.get('contactableId')
-		});
-		self.tags = self.contactable().tags;
-		self.newTag = ko.observable('');
-		self.isAdding = ko.observable(false);
-		self.addTag = function () {
-			Contactables.update({
-				_id: Session.get('contactableId')
-			}, {
-				$addToSet: {
-					tags: self.newTag()
-				}
-			})
-		}
-		return self;
-	};
-
-	ko.applyBindings(new vm(), document.getElementsByName('tagVM')[0])
-}
