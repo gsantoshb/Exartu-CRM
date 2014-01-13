@@ -10,16 +10,16 @@ data
 
 
 Meteor.publish('activities', function () {
-    var user = Meteor.users.findOne({
-        _id: this.userId
-    });
+	var user = Meteor.users.findOne({
+		_id: this.userId
+	});
 
-    if (!user)
-        return false;
+	if (!user)
+		return false;
 
-    return Activities.find({
-        hierId: user.hierId
-    });
+	return Activities.find({
+		hierId: user.hierId
+	});
 })
 
 //Contactables.allow({
@@ -29,23 +29,25 @@ Meteor.publish('activities', function () {
 //});
 
 Contactables.after.insert(function (userId, doc) {
-    Activities.insert({
-        userId: userId,
-        hierId: Meteor.user().hierId,
-        type: Enums.activitiesType.contactableAdd,
-        entityId: doc._id,
-        data: {}
-    })
+	Activities.insert({
+		userId: userId,
+		hierId: Meteor.user().hierId,
+		type: Enums.activitiesType.contactableAdd,
+		entityId: doc._id,
+		data: {}
+	})
 })
 
 Messages.after.insert(function (userId, doc) {
-    Activities.insert({
-        userId: userId,
-        hierId: Meteor.user().hierId,
-        type: Enums.activitiesType.messageAdd,
-        entityId: doc._id,
-        data: {
-            message: doc.message,
-        }
-    })
+	_.forEach(doc.entityIds, function (entity) {
+		Activities.insert({
+			userId: userId,
+			hierId: Meteor.user().hierId,
+			type: Enums.activitiesType.messageAdd,
+			entityId: entity,
+			data: {
+				message: doc.message,
+			}
+		})
+	})
 })

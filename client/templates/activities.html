@@ -18,8 +18,12 @@
 			<span>No activities yet</span>
 		</div>
 		<!--	data-bind="visible: activities().length > 0,foreach: activities"-->
-		<div class="activity-container scroll-container">
-			<!--		<div data-bind="compose: $parent.getActiviyVM($data)"></div>-->
+		<div class="activity-container scroll-container" data-bind="foreach: activities">
+			Type:
+			<span data-bind="text: type" />
+			<br/>UserId:
+			<span data-bind="text: userId" />
 		</div>
+	</div>
 	</div>
 </template>
