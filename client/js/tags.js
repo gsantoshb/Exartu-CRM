@@ -1,15 +1,17 @@
 Template.tags.rendered = function () {
 	var vm = function () {
-		var self = this;
+		var self = this,
+			entityID = Session.get('entityId');
+
 		self.contactable = ko.meteor.findOne(Contactables, {
-			_id: Session.get('contactableId')
+			_id: entityID
 		});
 		self.tags = self.contactable().tags;
 		self.newTag = ko.observable('');
 		self.isAdding = ko.observable(false);
 		self.addTag = function () {
 			Contactables.update({
-				_id: Session.get('contactableId')
+				_id: entityID
 			}, {
 				$addToSet: {
 					tags: self.newTag()

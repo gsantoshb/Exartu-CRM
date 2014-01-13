@@ -1,0 +1,18 @@
+<template name="entityMessages">
+	<div name="entityMessagesVM">
+		<input type="button" data-bind="click: addMessage" value="Add message" />
+		<ul class="chats" data-bind="foreach: messages">
+			<li class="in well well-message">
+				<div class="message">
+					<div class="row-fluid">
+						<span class="body span11" data-bind="html: message"></span>
+					</div>
+					<a class="pull-right" title="Edit message" style="padding-left:10px" data-bind="click: function () { $root.editMessage($data, $index) }">
+						<i class="icon icon-pencil edit-message"></i>
+					</a>
+					<i class="icon icon-user pull-right"></i>
+				</div>
+			</li>
+		</ul>
+	</div>
+</template>
