@@ -10,34 +10,34 @@
                     <h4>Type:</h4>
                     <div class="row">
                         <label>
-                            <input type="checkbox" id="is-employee" checked/>isEmployee</label>
+                            <input type="checkbox" data-bind="checked: isEmployee" />isEmployee</label>
                         <label>
-                            <input type="checkbox" id="is-contact" />isContact</label>
+                            <input type="checkbox" data-bind="checked: isContact" />isContact</label>
                         <label>
-                            <input type="checkbox" id="is-customer" />isCustomer</label>
+                            <input type="checkbox" data-bind="checked: isCustomer" />isCustomer</label>
                     </div>
-                    <div id="customer-info" style="display:none">
+                    <div data-bind="visible: organization">
                         <h4>Organization name:</h4>
-                        <input id="org-name" class="col-md-5" placeholder="Organization name" />
+                        <input data-bind="value: organizationName" class="col-md-5" placeholder="Organization name" />
                         <br>
                         <h4>Department:</h4>
-                        <input id="dep-name" class="col-md-5" placeholder="Department name" />
+                        <input data-bind="value: department" class="col-md-5" placeholder="Department name" />
                         <br>
                     </div>
-                    <div id="person-info">
+                    <div data-bind="visible: person">
                         <h4>First name:</h4>
-                        <input id="first-name" class="col-md-5" placeholder="First name" />
+                        <input data-bind="value: firstName" class="col-md-5" placeholder="First name" />
                         <br>
                         <h4>Last name:</h4>
-                        <input id="last-name" class="col-md-5" placeholder="Last name" />
+                        <input data-bind="value: lastName" class="col-md-5" placeholder="Last name" />
                     </div>
                     <br>
                     <h4>Status note:</h4>
-                    <input id="status-note" class="col-md-5" placeholder="Status note" />
+                    <input data-bind="value: statusNote" class="col-md-5" placeholder="Status note" />
 
                 </div>
                 <div class="modal-footer">
-                    <a id="addContactable" href="#" class="btn btn-success">Add</a>
+                    <a data-bind="click:addContactable" class="btn btn-success">Add</a>
                     <a href="#" class="btn" data-dismiss="modal">Close</a>
                 </div>
             </div>
