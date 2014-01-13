@@ -1,25 +1,25 @@
 <template name="activities">
+	<div name="activitiesVM">
 
-	<!-- Message -->
-	<div style="margin-top: 10px; margin-bottom: 35px">
-		<textarea placeholder="Enter a message" style="width: 99%; height: 50px; margin-top: 5px" />
-		<button class="btn btn-success pull-right" style="border-radius: 0px">Save</button>
-		<!--		data-bind="visible: !isSendingMessage(), click: function () { return postUserMessage(); }"-->
-		<!--
-		<div style="text-align: center; height: 0px" data-bind="visible: isSendingMessage()">
-<img src="Content/images/ats-loading.gif" style="width: 40px; height: 12px;" alt="Processing.." />
+		<!-- Message -->
+		<div style="margin-top: 10px; margin-bottom: 35px">
+			<textarea placeholder="Enter a message" style="width: 99%; height: 50px; margin-top: 5px" data-bind="value: newMessage" />
+			<button class="btn btn-success pull-right" style="border-radius: 0px" data-bind="click: addMessage">Save</button>
+			<!--
+<div style="text-align: center; height: 0px" data-bind="visible: isSendingMessage()">
+	<img src="Content/images/ats-loading.gif" style="width: 40px; height: 12px;" alt="Processing.." />
 </div>
 -->
-	</div>
+		</div>
 
-	<!-- Activities -->
-	<!--	data-bind="visible: activities().length == 0"-->
-	<div class="empty-message">
-		<span>No activities yet</span>
+		<!-- Activities -->
+		<!--	data-bind="visible: activities().length == 0"-->
+		<div class="empty-message">
+			<span>No activities yet</span>
+		</div>
+		<!--	data-bind="visible: activities().length > 0,foreach: activities"-->
+		<div class="activity-container scroll-container">
+			<!--		<div data-bind="compose: $parent.getActiviyVM($data)"></div>-->
+		</div>
 	</div>
-	<!--	data-bind="visible: activities().length > 0,foreach: activities"-->
-	<div class="activity-container scroll-container">
-		<!--		<div data-bind="compose: $parent.getActiviyVM($data)"></div>-->
-	</div>
-
 </template>
