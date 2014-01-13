@@ -1,16 +1,16 @@
 Contactables = new Meteor.Collection("contactables");
 
 Meteor.publish('contactables', function () {
-	var user = Meteor.users.findOne({
-		_id: this.userId
-	});
+    var user = Meteor.users.findOne({
+        _id: this.userId
+    });
 
-	if (!user)
-		return false;
+    if (!user)
+        return false;
 
-	return Contactables.find({
-		hierId: user.hierId
-	});
+    return Contactables.find({
+        hierId: user.hierId
+    });
 })
 Meteor.startup(function() {
     Meteor.methods({
@@ -24,4 +24,10 @@ Meteor.startup(function() {
             Contactables.insert(contactable);
         }
     });
+    });
 });
+Contactables.allow({
+    update: function () {
+        return true;
+    }
+})
