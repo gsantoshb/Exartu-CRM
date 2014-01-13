@@ -37,3 +37,15 @@ Contactables.after.insert(function (userId, doc) {
         data: {}
     })
 })
+
+Messages.after.insert(function (userId, doc) {
+    Activities.insert({
+        userId: userId,
+        hierId: Meteor.user().hierId,
+        type: Enums.activitiesType.messageAdd,
+        entityId: doc._id,
+        data: {
+            message: doc.message,
+        }
+    })
+})
