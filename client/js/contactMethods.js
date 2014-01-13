@@ -2,7 +2,7 @@ Template.contactMethods.rendered = function () {
     var vm = function () {
         var self = this;
         self.contactable = ko.meteor.findOne(Contactables, {
-            _id: Session.get('contactableId')
+            _id: Session.get('entityId')
         });
         self.contactMethods = self.contactable().contactMethods || ko.observableArray([]);
         self.newContactMethod = {
@@ -11,7 +11,7 @@ Template.contactMethods.rendered = function () {
         }
         self.add = function () {
             Contactables.update({
-                _id: Session.get('contactableId')
+                _id: Session.get('entityId')
             }, {
                 $addToSet: {
                     contactMethods: ko.toJS(self.newContactMethod)
