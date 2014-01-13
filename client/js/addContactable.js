@@ -1,50 +1,45 @@
-//Template.addContactableModal.events({
-//    'click #addContactable': function (event, template) {
-//        var newContactable = {
-//            isEmployee: $('#is-employee').is(':checked'),
-//            isContact: $('#is-contact').is(':checked'),
-//            isCustomer: $('#is-customer').is(':checked'),
-//            statusNote: $('#status-note').val(),
-//        }
-//        if (!newContactable.isContact && !newContactable.isCustomer && !newContactable.isEmployee) reuturn;
-//
-//        if (newContactable.isContact || newContactable.isEmployee) {
-//            newContactable.firstName = $('#first-name').val();
-//            newContactable.lastName = $('#last-name').val();
-//        }
-//        if (newContactable.isCustomer) {
-//            newContactable.organizationName = $('#org-name').val();
-//            newContactable.department = $('#dep-name').val();
-//        }
-//        Meteor.call('addContactable', newContactable);
-//        $('#addContactableModal').modal('hide');
-//    },
-//    'click #is-customer': function (event, template) {
-//        if ($('#is-customer').is(':checked')) {
-//            $('#customer-info').show();
-//        } else {
-//            $('#customer-info').hide();
-//        }
-//    },
-//    'click #is-contact': function (event, template) {
-//        if ($('#is-contact').is(':checked')) {
-//            $('#person-info').show();
-//        } else {
-//            if (!$('#is-employee').is(':checked')) {
-//                $('#person-info').hide();
-//            }
-//        }
-//    },
-//    'click #is-employee': function (event, template) {
-//        if ($('#is-employee').is(':checked')) {
-//            $('#person-info').show();
-//        } else {
-//            if (!$('#is-contact').is(':checked')) {
-//                $('#person-info').hide();
-//            }
-//        }
-//    },
-//});
+Template.addContactableModal.rendered = function () {
+    var viewModel = function () {
+        var self = this;
+        self.firstName = ko.observable('');
+        self.lastName = ko.observable('');
+        self.organizationName = ko.observable('');
+        self.department = ko.observable('');
+        self.statusNote = ko.observable('');
+        self.isEmployee = ko.observable(true);
+        self.isContact = ko.observable(false);
+        self.isCustomer = ko.observable(false);
+        self.person = ko.computed(function () {
+            return self.isEmployee() || self.isContact();
+        });
+        self.organization = ko.computed(function () {
+            return self.isCustomer();
+        });
+        self.addContactable = function () {
+            var newContactable = {
+                isEmployee: self.isEmployee(),
+                isContact: self.isContact(),
+                isCustomer: self.isCustomer(),
+                statusNote: self.statusNote(),
+            }
+            if (!newContactable.isContact && !newContactable.isCustomer && !newContactable.isEmployee) reuturn;
+
+            if (newContactable.isContact || newContactable.isEmployee) {
+                newContactable.firstName = self.firstName();
+                newContactable.lastName = self.lastName();
+            }
+            if (newContactable.isCustomer) {
+                newContactable.organizationName = self.organizationName();
+                newContactable.department = self.department();
+            }
+            Meteor.call('addContactable', newContactable);
+            $('#addContactableModal').modal('hide');
+        }
+        return this;
+    }
+    ko.applyBindings(new viewModel(), document.getElementsByName('addVontactableVM')[0]);
+};
+
 Meteor.methods({
     addContactable: function (contactable) {
         Contactables.insert(contactable);
