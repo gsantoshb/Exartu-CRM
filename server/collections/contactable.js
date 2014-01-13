@@ -29,4 +29,4 @@ Contactables.allow({
     update: function () {
         return true;
     }
-})
+});
