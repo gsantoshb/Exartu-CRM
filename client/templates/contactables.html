@@ -1,4 +1,7 @@
 <template name="contactables">
+    <div data-bind="with: addVM">
+        {{>addContactableModal}}
+    </div>
     <section>
         <div class="row" style="margin-top: 10px, width: 100%;">
             <!-- Filter panel -->
