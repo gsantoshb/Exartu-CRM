@@ -2,6 +2,7 @@
   "packages": {
     "bootstrap-3": {},
     "iron-router": {},
-    "knockout-client": {}
+    "knockout-client": {},
+    "accounts-ui-bootstrap-3": {}
   }
 }
