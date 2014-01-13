@@ -2,35 +2,35 @@
 </template>
 
 <template name="contactableNavigation">
-	<div name="contactableNavigationVM">
-		<!-- Employee details -->
-		<div class="pull-right entity-details">
+    <div name="contactableNavigationVM">
+        <!-- Employee details -->
+        <div class="pull-right entity-details">
 
-			<!-- Header -->
-			<div data-bind="with: contactable">
-				<a class="btn-link" style="cursor: pointer">
-					<h4 style="color: black" data-bind="text: displayName"></h4>
-					<img class="media-object" data-src="holder.js/64x64" alt="100x100" style="width: 100px; height: 100px;" src="../img/avatar.jpg" />
-				</a>
-			</div>
+            <!-- Header -->
+            <div data-bind="with: contactable">
+                <a class="btn-link" style="cursor: pointer">
+                    <h4 style="color: black" data-bind="text: displayName"></h4>
+                    <img class="media-object" data-src="holder.js/64x64" alt="100x100" style="width: 100px; height: 100px;" src="../img/avatar.jpg" />
+                </a>
+            </div>
 
-			<!-- Actions -->
-			<div class="panel-section">
-				<p>
-					<i class="glyphicon glyphicon-home ats-icon"></i>
-					<a class="btn-link" href="#activities">Activities</a>
-				</p>
-				<p>
-					<i class="glyphicon glyphicon-comment ats-icon"></i>
-					<a class="btn-link" href="#messages">Messages</a>
-				</p>
-				<p>
-					<i class="glyphicon glyphicon-comment ats-icon"></i>
-					<a data-toggle="modal" href="#sendEmailModal">Send email</a>
-					<a data-toggle="modal" href="#addContactable2">addcontactable2</a>
-				</p>
-			</div>
-		</div>
-	</div>
+            <!-- Actions -->
+            <div class="panel-section">
+                <p>
+                    <i class="glyphicon glyphicon-home ats-icon"></i>
+                    <a class="btn-link" href="#activities">Activities</a>
+                </p>
+                <p>
+                    <i class="glyphicon glyphicon-comment ats-icon"></i>
+                    <a class="btn-link" href="#messages">Messages</a>
+                </p>
+                <p>
+                    <i class="glyphicon glyphicon-comment ats-icon"></i>
+                    <a data-toggle="modal" href="#sendEmailModal">Send email</a>
+
+                </p>
+            </div>
+        </div>
+    </div>
 </template>
 
