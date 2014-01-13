@@ -3,6 +3,10 @@ Template.activities.rendered = function () {
 		var self = this,
 			entityId = Session.get('entityId');
 
+		self.activities = ko.meteor.find(Activities, {
+			entityId: entityId
+		});
+
 		self.newMessage = ko.observable();
 		self.addMessage = function () {
 			var messageId = Meteor.call('createMessage', {
@@ -15,6 +19,7 @@ Template.activities.rendered = function () {
 
 	ko.applyBindings(new vm(), document.getElementsByName('activitiesVM')[0]);
 };
+
 
 Meteor.methods({
 	createMessage: function (message, entityList) {

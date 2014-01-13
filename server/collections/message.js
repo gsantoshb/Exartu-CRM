@@ -28,7 +28,6 @@ Meteor.startup(function () {
 			var collections = [Contactables]; // Collections where to search entity
 			_.forEach(entityList, function (entity) {
 				_.forEach(collections, function (collection) {
-					console.log("id: " + entity + " " + message.message);
 					collection.update({
 						_id: entity
 					}, {
