@@ -4,10 +4,10 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-accounts-ui
 accounts-password
 accounts-google
 bootstrap-3
 iron-router
 knockout-client
 email
+accounts-ui-bootstrap-3
