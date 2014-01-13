@@ -12,16 +12,32 @@ Meteor.publish('messages', function () {
 		hierId: user.hierId
 	});
 })
-Meteor.startup(function() {
-    Meteor.methods({
-        addMessage: function (message) {
-            var user = Meteor.user();
-            if (user == null)
-                throw new Meteor.Error(401, "Please login");
 
-            addSystemMetadata(message, user);
+Meteor.startup(function () {
+	Meteor.methods({
+		createMessage: function (message, entityList) {
+			var user = Meteor.user();
+			if (user == null)
+				throw new Meteor.Error(401, "Please login");
 
-            return Messages.insert(message);
-        }
-    });
+			message.entityIds = entityList;
+			addSystemMetadata(message, user);
+			var messageId = Messages.insert(message);
+
+			// Create a reference of message to the entity
+			var collections = [Contactables]; // Collections where to search entity
+			_.forEach(entityList, function (entity) {
+				_.forEach(collections, function (collection) {
+					console.log("id: " + entity + " " + message.message);
+					collection.update({
+						_id: entity
+					}, {
+						$addToSet: {
+							messages: messageId
+						}
+					});
+				});
+			});
+		},
+	});
 });

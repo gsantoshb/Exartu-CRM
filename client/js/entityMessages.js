@@ -1,25 +1,17 @@
 Template.entityMessages.rendered = function () {
 	var vm = function () {
 		var self = this,
-			entityId = Session.get('contactableId'),
+			entityId = Session.get('entityId'),
 			entityCollection = Session.get('entityCollection');
 
-		self.messages = Messages.find({
-			entityId: entityId
+		self.messages = ko.meteor.find(Messages, {
+			entityIds: entityId
 		});
 
 		self.addMessage = function () {
 			var messageId = Meteor.call('createMessage', {
-				message: "msg test",
-				entityId: entityId
-			});
-			window[entityCollection].update({
-				_id: entityId
-			}, {
-				$addToSet: {
-					messages: [messageId]
-				}
-			});
+				message: "msg test2",
+			}, [entityId]);
 		};
 
 		self.editMessage = function (data, index) {
@@ -30,10 +22,10 @@ Template.entityMessages.rendered = function () {
 	};
 
 	ko.applyBindings(new vm(), document.getElementsByName('entityMessagesVM')[0]);
-}
+};
 
 Meteor.methods({
-	createMessage: function (newMessage) {
-		Messages.insert(newMessage);
+	createMessage: function (message, entityList) {
+		Messages.insert(message);
 	}
 });
