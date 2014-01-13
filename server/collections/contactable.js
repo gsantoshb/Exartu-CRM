@@ -14,15 +14,16 @@ Meteor.publish('contactables', function () {
 })
 Meteor.startup(function() {
     Meteor.methods({
-	addContactable: function (contactable) {
-		var user = Meteor.user();
-		if (user == null)
-			throw new Meteor.Error(401, "Please login");
+        addContactable: function (contactable) {
+            var user = Meteor.user();
+            if (user == null)
+                throw new Meteor.Error(401, "Please login");
 
-		addSystemMetadata(contactable, user);
+            addSystemMetadata(contactable, user);
 
-		Contactables.insert(contactable);
-	}
+            Contactables.insert(contactable);
+        }
+    });
     });
 });
 Contactables.allow({
