@@ -3,7 +3,7 @@
         <div class="widget">
             <h2 class="no-margin ats-subsection-title">Contact Methods</h2>
             <div class="widget-body">
-                <div data-bind="foreach: contactMethods">
+                <div data-bind="foreach: contactable().contactMethods">
                     <h5>
                         <small data-bind="text: type" />
                         <span style="margin: 10px,0,0,0px">
@@ -12,9 +12,9 @@
                     </h5>
                 </div>
                 <form class="no-margin chat-form">
-                    <input data-bind="value: newContactMethod.type"></input>
+                    <input data-bind="value: newContactMethod.type" placeholder="Type..."></input>
                     <div class="input-append">
-                        <input type="text" data-bind="value: newContactMethod.value" />
+                        <input type="text" data-bind="value: newContactMethod.value" placeholder="Value..." />
                         <span class="btn btn-info" data-bind="click: add">
                             <strong>+
                             </strong>
