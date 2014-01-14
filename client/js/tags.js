@@ -1,25 +1,30 @@
 Template.tags.rendered = function () {
-	var vm = function () {
-		var self = this,
-			entityID = Session.get('entityId');
+    var vm = function () {
+        var self = this,
+            entityID = Session.get('entityId');
 
-		self.contactable = ko.meteor.findOne(Contactables, {
-			_id: entityID
-		});
-		self.tags = self.contactable().tags;
-		self.newTag = ko.observable('');
-		self.isAdding = ko.observable(false);
-		self.addTag = function () {
-			Contactables.update({
-				_id: entityID
-			}, {
-				$addToSet: {
-					tags: self.newTag()
-				}
-			})
-		}
-		return self;
-	};
-
-	ko.applyBindings(new vm(), document.getElementsByName('tagsVM')[0]);
+        self.contactable = ko.meteor.findOne(Contactables, {
+            _id: entityID
+        });
+        if (!self.contactable())
+            console.log('contactable is undefined');
+        if (!self.contactable().tags)
+            self.contactable().tags = ko.observableArray([]);
+        self.newTag = ko.observable('');
+        self.isAdding = ko.observable(false);
+        self.addTag = function () {
+            Contactables.update({
+                _id: entityID
+            }, {
+                $addToSet: {
+                    tags: self.newTag()
+                }
+            })
+            self.newTag('');
+        }
+        return self;
+    };
+    ContactableHandler.wait(function () {
+        ko.applyBindings(new vm(), document.getElementsByName('tagsVM')[0]);
+    });
 }

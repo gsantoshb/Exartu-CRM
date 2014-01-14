@@ -1,15 +1,15 @@
 <template name="activities">
-	<div name="activitiesVM">
-		<!-- Message -->
-		<div style="margin-top: 10px; margin-bottom: 35px">
+    <div name="activitiesVM">
+        <!-- Message -->
+        <div style="margin-top: 10px; margin-bottom: 35px">
 			<textarea placeholder="Enter a message" style="width: 100%; height: 50px; margin-top: 5px" data-bind="value: newMessage" />
 			<button class="btn btn-success pull-right" style="border-radius: 0px; margin-top: 8px" data-bind="click: addMessage">Save</button>
-		</div>
+        </div>
 
-		<!-- Activities -->
+        <!-- Activities -->
 		<div class="empty-message" data-bind="visible: activities().length == 0">
-			<span>No activities yet</span>
-		</div>
+            <span>No activities yet</span>
+        </div>
 		<div class="activity-container scroll-container" data-bind="visible: activities().length > 0, foreach: activities">
 			<div data-bind="template: { name: $root.activityVM($data), data: $data}"></div>
 		</div>
