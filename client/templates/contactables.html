@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <h5 class="panel-section-title">Entities</h5>
+            <!--            <h5 class="panel-section-title">Entities</h5>-->
             <!--
 				<filteradd funcattribute="searchPacket.includeEmployees" entityname="Employees" ></filteradd>
 				<filteradd funcattribute="searchPacket.includeCustomers" entityname="Customers" ></filteradd>
@@ -44,22 +44,23 @@
                 <h5>
 
                     <!-- Search string -->
-                    <span class="input-prepend" style="width: 100%; max-width: 606px;">
-                        <input type="text" ng-model="searchText" style="width: 100%;" placeholder="Search">
+                    <span class="input-group" style="width: 100%; max-width: 606px;">
+                        <span class="input-group-addon glyphicon glyphicon-search" style="position: initial;"></span>
+                        <input type="text" class="form-control expandable-field" placeholder="Search..." data-bind="value: searchString, valueUpdate:'afterkeydown'">
                     </span>
                 </h5>
             </div>
 
 
             <!-- Entities list -->
-            <div class="ats-entities">
+            <div>
                 {{#if loading}}
                 <div id="lists">Loading...</div>
                 {{else}}
-                <div data-bind="foreach: entities">
-                    <div style="padding-left: 5px">
+                <div data-bind="foreach: entities ">
+                    <div class="ats-entities">
 
-                        <div class="row ats-entity">
+                        <div class="row ">
                             <!-- Left -->
                             <div class="col-md-1">
                                 <!-- Profile picture -->
@@ -89,7 +90,7 @@
                                         </a>
 
                                         <!-- Status Note -->
-                                        <div style="color: #3693cf">{{statusNote}}</div>
+                                        <div style="color: #3693cf" data-bind="text: statusNote"></div>
                                     </div>
 
                                     <div class="col-md-6">
@@ -104,13 +105,12 @@
 
                                 <br/>
                                 <!-- Interests -->
-                                <div class="icons-nav" style="word-wrap: break-word;">
-                                    {{#each interest}}
-                                    <small class="tag">
-                                        {{tag}}
+                                <!-- ko if: $data.tags -->
+                                <div class="icons-nav" style="word-wrap: break-word;" data-bind="foreach: tags">
+                                    <small class="tag" data-bind="text: $data">
                                     </small>
-                                    {{/each}}
                                 </div>
+                                <!-- /ko -->
                             </div>
 
                             <!-- Right -->
