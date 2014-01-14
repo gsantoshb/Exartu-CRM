@@ -1,10 +1,17 @@
 Template.contactMethods.rendered = function () {
     var vm = function () {
         var self = this;
+
         self.contactable = ko.meteor.findOne(Contactables, {
             _id: Session.get('entityId')
         });
-        self.contactMethods = self.contactable().contactMethods || ko.observableArray([]);
+        if (!self.contactable()) {
+            console.log('contactable is undefined');
+        }
+        if (!self.contactable().contactMethods) {
+            self.contactable().contactMethods = ko.observable([]);
+        }
+
         self.newContactMethod = {
             type: ko.observable(''),
             value: ko.observable('')
@@ -21,5 +28,7 @@ Template.contactMethods.rendered = function () {
             self.newContactMethod.value('');
         }
     }
-    ko.applyBindings(new vm(), document.getElementsByName('contactMethodVM')[0]);
+    ContactableHandler.wait(function () {
+        ko.applyBindings(new vm(), document.getElementsByName('contactMethodVM')[0]);
+    });
 }
