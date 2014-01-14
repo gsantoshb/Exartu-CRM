@@ -115,6 +115,7 @@
 }*/
 
 .empty-message {
+	margin-top: 50px;
 	min-height: 85px;
 	border-style: dotted;
 	border-color: #F1F1F1;
@@ -327,6 +328,7 @@
 }
 .activity-container {
 	height: 480px;
+	margin-top: 50px;
 }
 @media (min-height: 900px) {
 	.activity-container {

@@ -32,3 +32,8 @@ Contactables.allow({
 		return true;
 	}
 });
+
+
+Contactables.before.insert(function (userId, doc) {
+	doc.createdAt = Date.now();
+});
