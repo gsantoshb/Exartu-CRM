@@ -8,7 +8,6 @@ entityId
 data
 ***/
 
-
 Meteor.publish('activities', function () {
 	var user = Meteor.users.findOne({
 		_id: this.userId
@@ -22,19 +21,15 @@ Meteor.publish('activities', function () {
 	});
 })
 
-//Contactables.allow({
-//    insert: function () {
-//        return Meteor.userId;
-//    }
-//});
-
 Contactables.after.insert(function (userId, doc) {
 	Activities.insert({
 		userId: userId,
 		hierId: Meteor.user().hierId,
 		type: Enums.activitiesType.contactableAdd,
 		entityId: doc._id,
-		data: {}
+		data: {
+			createdAt: doc.createdAt,
+		}
 	})
 })
 
@@ -47,6 +42,7 @@ Messages.after.insert(function (userId, doc) {
 			entityId: entity,
 			data: {
 				message: doc.message,
+				createdAt: doc.createdAt,
 			}
 		})
 	})

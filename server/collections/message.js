@@ -40,3 +40,7 @@ Meteor.startup(function () {
 		},
 	});
 });
+
+Messages.before.insert(function (userId, doc) {
+	doc.createdAt = Date.now();
+});

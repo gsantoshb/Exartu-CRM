@@ -6,12 +6,22 @@ Template.activities.rendered = function () {
 		self.activities = ko.meteor.find(Activities, {
 			entityId: entityId
 		});
+		self.activityVM = function (activity) {
+			switch (activity.type()) {
+			case 0:
+				return 'activityContactable';
+			case 1:
+				return 'activityMessage';
+			}
+		}
 
+		// Quick add message
 		self.newMessage = ko.observable();
 		self.addMessage = function () {
 			var messageId = Meteor.call('createMessage', {
 				message: self.newMessage(),
 			}, [entityId]);
+			self.newMessage("");
 		};
 
 		return self;
