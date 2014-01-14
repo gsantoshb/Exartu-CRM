@@ -44,8 +44,9 @@
                 <h5>
 
                     <!-- Search string -->
-                    <span class="input-prepend" style="width: 100%; max-width: 606px;">
-                        <input type="text" ng-model="searchText" style="width: 100%;" placeholder="Search">
+                    <span class="input-group" style="width: 100%; max-width: 606px;">
+                        <span class="input-group-addon glyphicon glyphicon-search" style="position: initial;"></span>
+                        <input type="text" class="form-control expandable-field" placeholder="Search..." data-bind="value: searchString, valueUpdate:'afterkeydown'">
                     </span>
                 </h5>
             </div>

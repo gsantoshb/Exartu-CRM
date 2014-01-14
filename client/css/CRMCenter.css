@@ -1,3 +1,13 @@
+.expandable-field {
+    width: 20% !important;
+    -webkit-transition: width 1s ease-in-out;
+    -moz-transition: width 1s ease-in-out;
+    -o-transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out;
+}
+.expandable-field:focus {
+    width: 50% !important;
+}
 .ats-icon {
     font-size: 13px;
 }
@@ -115,7 +125,7 @@
 }*/
 
 .empty-message {
-	margin-top: 50px;
+    margin-top: 50px;
     min-height: 85px;
     border-style: dotted;
     border-color: #F1F1F1;
@@ -330,7 +340,7 @@
 }
 .activity-container {
     height: 480px;
-	margin-top: 50px;
+    margin-top: 50px;
 }
 @media (min-height: 900px) {
     .activity-container {
