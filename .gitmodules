@@ -7,3 +7,6 @@
 [submodule "packages/-g"]
 	path = packages/-g
 	url = https://github.com/zhouzhuojie/knockout-client.git
+[submodule "collection-hooks"]
+	path = collection-hooks
+	url = https://github.com/matb33/meteor-collection-hooks.git
