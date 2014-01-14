@@ -1,3 +1,16 @@
+.ats-header-icon {
+	color: #fff;
+	font-size: 20px;
+}
+.ats-header-link {
+	font-size: 12px;
+	color: #fff;
+	text-decoration: none;
+}
+.ats-header-link:hover {
+	color: #fff;
+	text-decoration: none;
+}
 .ats-icon {
 	font-size: 13px;
 }
@@ -560,11 +573,11 @@ header {
 	text-align: center;
 	/*    background-color: rgb(29, 78, 111);*/
 }
-.ats-navItem.active {
+div.ats-navItem.active {
 	background-color: #3693cf;
 }
 div.ats-navItem {
-	height: 60px;
+	height: 70px;
 	padding-left: 7px;
 	padding-right: 7px;
 	/*margin-top: -28px;*/
@@ -580,7 +593,7 @@ div.ats-navItem.first {
 div.ats-navItem:hover {
 	background-color: #2E75A5;
 }
-.ats-navItem + .active {
+div.ats-navItem + .active {
 	background-color: #3693cf;
 	text-align: center;
 }
@@ -608,6 +621,7 @@ div.ats-navItem:hover {
 	display: -ms-flexbox;
 	list-style-type: none;
 	margin: 0px 0px 1 0;
+	margin-bottom: 0px;
 }
 /* Let's get this party started */
 

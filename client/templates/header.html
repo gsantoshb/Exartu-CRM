@@ -1,5 +1,5 @@
 <template name="header">
-	<div class="ats-navContainer">
+	<div class="ats-navContainer" name="headerVM">
 
 		<a href="/" class="logo">
 			<img src="../../img/exartu-logo.png" alt="logo" style="margin-top: 2px; width: 90px" />
@@ -7,23 +7,27 @@
 		{{#if currentUser}}
 		<ul class="ats-nav">
 			<li class="ats-navItem">
-				<a style="text-decoration: none">
-					<div class="ats-navItem">
-						<a href="{{pathFor 'dashboard'}}">Dashboard</a>
+				<a id="dashboardLink" class="ats-header-link" href="{{pathFor 'dashboard'}}">
+					<div class=" ats-navItem">
+						<i class="ats-header-icon glyphicon glyphicon-dashboard "></i>
+						<br/>
+						<span>Dashboard</span>
 					</div>
 				</a>
 			</li>
-			<li class="ats-navItem">
-				<a style="text-decoration: none">
+			<li class="ats-navItem ">
+				<a id="contactablesLink" class="ats-header-link " href=" {{pathFor 'contactables'}} ">
 					<div class="ats-navItem">
-						<a href="{{pathFor 'contactables'}}">Contactables</a>
+						<i class="ats-header-icon glyphicon glyphicon-book "></i>
+						<br/>
+						<span>Contactables</span>
 					</div>
 				</a>
 			</li>
 		</ul>
 		{{/if}}
-		<ul class="nav pull-right" style="margin-right: 20px; margin-top: 10px">
-			{{loginButtons align="right"}}
+		<ul class="nav pull-right " style="margin-right: 20px; margin-top: 10px ">
+			{{loginButtons align="right "}}
 		</ul>
 	</div>
 </template>
