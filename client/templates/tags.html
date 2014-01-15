@@ -15,45 +15,18 @@
 				</div>
 			</div>
 			<form class="chat-form">
-				<div class="no-margin input-append">
+				<div class="no-margin input-append" style="width: 200px; margin-top: 5px">
 					<span class="ats-attached add" data-bind="visible: addStep() == 0, click: nextStep">
 						add new
 					</span>
-					<span class=" no-margin input-append " data-bind="visible: addStep()==1 ">
-						<input class="from-control " data-bind="value: newTag " style="height: 25px; " placeholder="Enter new tag... " />
-						<button class="btn btn-info " data-bind="click: addTag">
-							<strong>+</strong>
-						</button>
+					<span class="no-margin input-group" style="" data-bind="visible: addStep()==1 ">
+						<input class="form-control" data-bind="value: newTag " placeholder="Enter new tag... " />
+						<span class="input-group-btn">
+							<button class="btn btn-info" type="button" data-bind="click: addTag">Add</button>
+						</span>
 					</span>
 				</div>
 			</form>
 		</div>
-
-
-		<!--
-		<h5 class="no-margin panel-section-title ">Tags</h5>
-		<div class="empty-message " data-bind="visible: contactable().tags().length==0 ">
-			<span>There are no tags yet</span>
-		</div>
-		<span class=" " style="margin-bottom: 10px " data-bind="visible: contactable().tags().length>0, foreach: contactable().tags">
-
-						<span class="ats-attached">
-							<span style="font-size: 14px; font-weight: 900; cursor: default;" data-bind="text: interestCodeDisplayName"></span>
-							<a style="margin-left: 4px; min-width: 7px;" data-bind="click: function () { $root.remove($data) }">
-								<i class="icon icon-close removeTag" data-bind="visible: !isRemoving()"></i>
-							</a>
-						</span>
-					</span>
-					<span>
-						<span class="ats-attached add" data-bind="visible: addStep() == 0, click: startAdd, text: loadingCodes() ? 'loading codes...':'add new...' ">
-						</span>
-						<span class="no-margin input-append" data-bind="visible: addStep() == 1">
-							<input data-bind="value: selectedInterests, disable: loadingCodes, placeholder:loadingCodes() ? 'loading codes': 'Enter new tag...'" style="height: 25px; width: 134px;" id="attachInput" />
-							<button class="btn btn-info" data-bind="click: postInterest, disable: isSending() || loadingCodes()">
-								<strong>+</strong>
-							</button>
-						</span>
-					</span>
-					-->
 	</div>
 </template>
