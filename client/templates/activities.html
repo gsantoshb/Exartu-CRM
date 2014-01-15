@@ -1,45 +1,53 @@
 <template name="activities">
-    <div name="activitiesVM">
+	<div name="activitiesVM">
 
-        <!-- Message -->
-        <div style="margin-top: 10px; margin-bottom: 35px">
-            <textarea placeholder="Enter a message" style="width: 100%; height: 50px; margin-top: 5px" data-bind="value: newMessage" />
+		<!-- Message -->
+		<div style="margin-top: 10px; margin-bottom: 35px">
+			<textarea class="form-control" placeholder="Enter a message" style="width: 100%; height: 50px; margin-top: 5px" data-bind="value: newMessage" />
             <button class="btn btn-success pull-right" style="border-radius: 0px; margin-top: 8px" data-bind="click: addMessage">Save</button>
-        </div>
+		</div>
 
-        <!-- Activities -->
+		<!-- Activities -->
         <div class="empty-message" data-bind="visible: activities().length == 0">
-            <span>No activities yet</span>
-        </div>
+			<span>No activities yet</span>
+		</div>
         <div class="activity-container scroll-container" data-bind="visible: activities().length > 0, foreach: activities">
             <div data-bind="template: { name: $root.activityVM($data), data: $data}"></div>
         </div>
     </div>
 
     <div id="activityMessage" style="display: none">
-        <div class="well well-small row" data-bind="with: data">
-            <div class="col-lg-2" style="width: 5%;">
-                <i class="glyphicon glyphicon-comment" style="margin-right: 15px; background-image: none; background-image: none; font-size: 30px; color: rgba(255, 151, 0, 0.6);" />
-            </div>
+		<div class="well well-small" data-bind="with: data">
+			<div class="row">
+				<div class="col-lg-2" style="width: 5%;">
+					<i class="glyphicon glyphicon-comment" style="margin-right: 15px; background-image: none; background-image: none; font-size: 30px; color: rgba(255, 151, 0, 0.6);" />
+				</div>
 
-            <div class="col-lg-2">
-                <small class="pull-left" data-bind="text: new Date(createdAt()).toDateString() " />
-                <br/>
-                <em data-bind="text: message" />
-            </div>
-        </div>
-    </div>
+				<div class="col-lg-2">
+					<!-- ko if: $data.createdAt -->
+					<small class="pull-left" data-bind="text: new Date(createdAt()).toDateString()" />
+					<!-- /ko  -->
+					<br/>
+					<em data-bind="text: message" />
+				</div>
+			</div>
+		</div>
+	</div>
     <div id="activityContactable" style="display: none">
-        <div class="well well-small row" data-bind="with: data">
-            <div class="col-lg-2" style="width: 5%;">
-                <i class="glyphicon glyphicon-plus" style="margin-right: 15px; background-image: none; background-image: none; font-size: 30px; color: #47a447" />
-            </div>
-            <div class="col-lg-8">
-                <small class="pull-left" data-bind="text: new Date(createdAt()).toDateString() " />
-                <br/>
-                <em>
-                    This contactable has been created
-                </em>
+		<div class="well well-small" data-bind="with: data">
+			<div class="row">
+				<div class="col-lg-2" style="width: 5%;">
+					<i class="glyphicon glyphicon-plus" style="margin-right: 15px; background-image: none; background-image: none; font-size: 30px; color: #47a447" />
+				</div>
+				<div class="col-lg-8">
+					<!-- ko if: $data.createdAt -->
+					<small class="pull-left" data-bind="text: new Date(createdAt()).toDateString() " />
+					<!-- /ko  -->
+					<br/>
+					<em>
+						This contactable has been created
+					</em>
+				</div>
             </div>
         </div>
     </div>

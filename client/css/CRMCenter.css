@@ -699,7 +699,7 @@
 .panel-section-title {
 
 	border-bottom: 1px solid rgb(150, 150, 150);
-
+	font-weight:bold;
 }
 
 .central-view {

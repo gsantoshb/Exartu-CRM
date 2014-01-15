@@ -1,32 +1,6 @@
 <template name="contactMethods">
     <div name="contactMethodVM" style="float: inherit; margin-left: 20%;">
-
-        <!--
-<div class="widget ">
-	<h2 class="no-margin ats-subsection-title ">Contact Methods</h2>
-	<div class="widget-body ">
-		<div data-bind="foreach: contactable().contactMethods ">
-			<h5>
-				<small data-bind="text: type " />
-				<span style="margin: 10px,0,0,0px ">
-					<b style="cursor: pointer " data-bind="text: value ">&nbsp;</b>
-				</span>
-			</h5>
-		</div>
-		<form class="no-margin chat-form ">
-			<input data-bind="value: newContactMethod.type " placeholder="Type... "></input>
-			<div class="input-append ">
-				<input type="text " data-bind="value: newContactMethod.value " placeholder="Value... " />
-				<span class="btn btn-info " data-bind="click: add ">
-					<strong>+
-					</strong>
-				</span>
-				<span class="text text-error " data-bind="value: errorMessage "></span>
-			</div>
-		</form>
-	</div>
-</div>
--->
+		<h5 class="panel-section-title">Contact methods</h5>
         <div data-bind="foreach: contactable().contactMethods " style="overflow-y: auto; overflow-x: hidden ">
             <div style="height: 30px;border-bottom: solid 1px #E2E2E2; ">
                 <div class="contactMethod ">
