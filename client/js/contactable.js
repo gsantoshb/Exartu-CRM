@@ -45,7 +45,5 @@ Template.contactableNavigation.rendered = function () {
 
         return self;
     };
-    ContactableHandler.wait(function () {
-        ko.applyBindings(new vm(), document.getElementsByName('contactableNavigationVM')[0]);
-    });
+    helper.applyBindings(vm, 'contactableNavigationVM', ContactableHandler);
 };

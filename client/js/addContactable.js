@@ -37,7 +37,7 @@ Template.addContactableModal.rendered = function () {
         }
         return this;
     }
-    ko.applyBindings(new viewModel(), document.getElementsByName('addVontactableVM')[0]);
+    helper.applyBindings(viewModel, 'addVontactableVM');
 };
 
 Meteor.methods({
