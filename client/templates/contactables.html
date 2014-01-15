@@ -58,22 +58,23 @@
                 <div id="lists">Loading...</div>
                 {{else}}
                 <div data-bind="foreach: entities ">
+
                     <div class="ats-entities">
+                        <a data-bind="attr:{href: 'contactable/'+_id()}">
+                            <div class="row ">
+                                <!-- Left -->
+                                <div class="col-md-1">
+                                    <!-- Profile picture -->
 
-                        <div class="row ">
-                            <!-- Left -->
-                            <div class="col-md-1">
-                                <!-- Profile picture -->
-                                <a ng-href="/">
                                     <img class="media-object" data-src="holder.js/64x64" alt="100x100" style="width: 64px; height: 64px;" src="img/avatar.jpg" />
-                                </a>
-                            </div>
 
-                            <!-- Middle -->
-                            <div class="col-md-8">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <a data-bind="attr:{href: 'contactable/'+_id()}">
+                                </div>
+
+                                <!-- Middle -->
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-6">
+
                                             <h4 class="no-margin">
                                                 <span class="name" />
                                                 <span class="name" />
@@ -87,55 +88,53 @@
                                                 </span>
 
                                             </h5>
-                                        </a>
 
-                                        <!-- Status Note -->
-                                        <div style="color: #3693cf" data-bind="text: statusNote"></div>
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <!-- Contact information -->
-                                        <div class="col-md-4">
-                                            <em></em>
-                                            <br/>
-                                            <em></em>
+                                            <!-- Status Note -->
+                                            <div class="statusNote" data-bind="text: statusNote"></div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <!-- Contact information -->
+                                            <div class="col-md-4">
+                                                <em></em>
+                                                <br/>
+                                                <em></em>
+                                            </div>
                                         </div>
                                     </div>
+                                    <!-- Interests -->
+                                    <!-- ko if: $data.tags -->
+                                    <div class="icons-nav" style="word-wrap: break-word;" data-bind="foreach: tags">
+                                        <small class="tag" data-bind="text: $data + ($index() != $parent.tags().length-1 ? ', ': '') ">
+                                        </small>
+                                    </div>
+                                    <!-- /ko -->
                                 </div>
 
-                                <br/>
-                                <!-- Interests -->
-                                <!-- ko if: $data.tags -->
-                                <div class="icons-nav" style="word-wrap: break-word;" data-bind="foreach: tags">
-                                    <small class="tag" data-bind="text: $data">
-                                    </small>
+                                <!-- Right -->
+                                <div class="col-md-3">
+
+                                    <!--  Contactable statuses -->
+
+                                    <p></p>
+                                    <div class="progress progress-statistics" style="width: 90%; height: 4px;">
+                                        <div class="bar" />
+                                    </div>
+
+                                    <!-- User who created the entity -->
+                                    <span class="pull-right" style="color:grey; font-size: 12px;">
+                                        <i class="glyphicon glyphicon-user" style="background-image: none" />
+                                        <small data-bind="text: userId"></small>
+                                        <br/>
+                                        <i class="glyphicon glyphicon-search" />
+                                        <small data-bind="text: 'searchKey'" />
+                                    </span>
                                 </div>
-                                <!-- /ko -->
                             </div>
-
-                            <!-- Right -->
-                            <div class="col-md-3">
-
-                                <!--  Contactable statuses -->
-
-                                <p>
-
-                                </p>
-                                <div class="progress progress-statistics" style="width: 90%; height: 4px;">
-                                    <div class="bar" />
-                                </div>
-
-                                <!-- User who created the entity -->
-                                <i class="glyphicons user" style="background-image: none" />
-                                <small>{{user.name}}</small>
-
-                                <i class="icon icon-search" />
-                                <small/>{{searchKey}}
-                                <small/>
-
-                            </div>
-                        </div>
+                        </a>
                     </div>
+
                     <!--						<div class="list-fade"></div>-->
                 </div>
                 <!-- Infinity scroll -->
