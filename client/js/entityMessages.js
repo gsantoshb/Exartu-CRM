@@ -1,18 +1,18 @@
 Template.entityMessages.rendered = function () {
-	var vm = function () {
-		var self = this,
-			entityId = Session.get('entityId');
+    var vm = function () {
+        var self = this,
+            entityId = Session.get('entityId');
 
-		self.messages = ko.meteor.find(Messages, {
-			entityIds: entityId
-		});
+        self.messages = ko.meteor.find(Messages, {
+            entityIds: entityId
+        });
 
-		self.editMessage = function (data, index) {
+        self.editMessage = function (data, index) {
 
-		};
+        };
 
-		return self;
-	};
+        return self;
+    };
 
-	ko.applyBindings(new vm(), document.getElementsByName('entityMessagesVM')[0]);
+    helper.applyBindings(vm, 'entityMessagesVM');
 };

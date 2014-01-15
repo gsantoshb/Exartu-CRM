@@ -58,6 +58,5 @@ Template.contactables.rendered = function () {
             }).fetch())());
         });
     };
-
-    ko.applyBindings(new viewModel(), document.getElementsByName('contactablesVM')[0]);
+    helper.applyBindings(viewModel, 'contactablesVM');
 };

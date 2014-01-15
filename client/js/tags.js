@@ -24,7 +24,5 @@ Template.tags.rendered = function () {
         }
         return self;
     };
-    ContactableHandler.wait(function () {
-        ko.applyBindings(new vm(), document.getElementsByName('tagsVM')[0]);
-    });
+    helper.applyBindings(vm, 'tagsVM', ContactableHandler);
 }
