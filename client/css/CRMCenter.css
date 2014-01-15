@@ -1,13 +1,16 @@
 .ats-header-icon {
-	color: #fff;
-	font-size: 20px;
+    color: #fff;
+    font-size: 20px;
 }
 .ats-header-link {
-	font-size: 12px;
-	color: #fff;
-	text-decoration: none;
+    font-size: 12px;
+    color: #fff;
+    text-decoration: none;
 }
 .ats-header-link:hover {
+    color: #fff;
+    text-decoration: none;
+}
 .expandable-field {
     width: 20% !important;
     -webkit-transition: width 1s ease-in-out;
@@ -17,9 +20,6 @@
 }
 .expandable-field:focus {
     width: 50% !important;
-}
-	color: #fff;
-	text-decoration: none;
 }
 .ats-icon {
     font-size: 13px;
@@ -589,7 +589,7 @@ div.ats-navItem.active {
     background-color: #3693cf;
 }
 div.ats-navItem {
-	height: 70px;
+    height: 70px;
     padding-left: 7px;
     padding-right: 7px;
     /*margin-top: -28px;*/
@@ -633,7 +633,7 @@ div.ats-navItem + .active {
     display: -ms-flexbox;
     list-style-type: none;
     margin: 0px 0px 1 0;
-	margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 /* Let's get this party started */
 
