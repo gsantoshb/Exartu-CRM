@@ -5,37 +5,42 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close" data-dismiss="modal">×</a>
-                    <h3>Contactable add</h3>
+                    <h4>Contactable add</h3>
                 </div>
                 <div class="modal-body">
-                    <h4>Type:</h4>
-                    <div class="row">
-                        <label>
-                            <input type="checkbox" data-bind="checked: isEmployee" />isEmployee</label>
-                        <label>
-                            <input type="checkbox" data-bind="checked: isContact" />isContact</label>
-                        <label>
-                            <input type="checkbox" data-bind="checked: isCustomer" />isCustomer</label>
-                    </div>
-                    <div data-bind="visible: organization">
-                        <h4>Organization name:</h4>
-                        <input data-bind="value: organizationName" class="col-md-5" placeholder="Organization name" />
-                        <br>
-                        <h4>Department:</h4>
-                        <input data-bind="value: department" class="col-md-5" placeholder="Department name" />
-                        <br>
-                    </div>
-                    <div data-bind="visible: person">
-                        <h4>First name:</h4>
-                        <input data-bind="value: firstName" class="col-md-5" placeholder="First name" />
-                        <br>
-                        <h4>Last name:</h4>
-                        <input data-bind="value: lastName" class="col-md-5" placeholder="Last name" />
-                    </div>
-                    <br>
-                    <h4>Status note:</h4>
-                    <input data-bind="value: statusNote" class="col-md-5" placeholder="Status note" />
+                    <div class="container" style="margin: 0px;padding: 0px;width: 100%;">
+                        <h4>Type:</h4>
+                        <div class="row">
+                            <label>
+                                <input type="checkbox" data-bind="checked: isEmployee" />isEmployee</label>
+                            <label>
+                                <input type="checkbox" data-bind="checked: isContact" />isContact</label>
+                            <label>
+                                <input type="checkbox" data-bind="checked: isCustomer" />isCustomer</label>
+                        </div>
+                        <hr/>
+                        <div data-bind="visible: organization" style="height: 100%;overflow: hidden;margin-bottom: 30px;">
+                            <!--                        <h4>Organization name:</h4>-->
+                            <input data-bind="value: organizationName" class="col-md-5 form-control" placeholder="Organization name" style="margin-bottom: 1px;" />
 
+                            <!--                        <h4>Department:</h4>-->
+                            <input data-bind="value: department" class="col-md-5 form-control" placeholder="Department name" style="margin-bottom: 1px;" />
+                            <hr/>
+                        </div>
+
+                        <div data-bind="visible: person" style="height: 100%;overflow: hidden;">
+                            <!--                        <h4>First name:</h4>-->
+                            <input data-bind="value: firstName" class="col-md-5 form-control" placeholder="First name" style="margin-bottom: 1px;" />
+
+                            <!--                        <h4>Last name:</h4>-->
+                            <input data-bind="value: lastName" class="col-md-5 form-control" placeholder="Last name" style="margin-bottom: 1px;" />
+                            <hr/>
+                        </div>
+
+                        <!--                    <h4>Status note:</h4>-->
+                        <input data-bind="value: statusNote" class="col-md-5 form-control" placeholder="Status note" style="margin-bottom: 1px;" />
+
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <a data-bind="click:addContactable" class="btn btn-success">Add</a>
