@@ -1,12 +1,15 @@
 <template name="contactables">
-    {{>addContactableModal}}
+    {{>addEmployee}}
     <section name="contactablesVM">
         <div class="row" style="margin-top: 10px, width: 100%;">
             <!-- Filter panel -->
             <div class="col-md-2 ats-filter-panel">
 
                 <h5 class="panel-section-title">Actions</h5>
-                <a data-toggle="modal" href="#addContactableModal">Add contactable</a>
+
+                <a data-toggle="modal" href="#addEmployeeModal">Add Employee</a>
+                <br/>
+                <!--                <a data-toggle="modal" href="#addOrganization">Add Organization</a>-->
 
                 <h5 class="panel-section-title">Filters</h5>
                 <div class="checkbox">

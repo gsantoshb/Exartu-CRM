@@ -15,6 +15,10 @@ helper = {
                 ko.applyBindings(new vm(), document.getElementsByName(viewName)[0]);
             } catch (err) {
                 var element = document.getElementsByName(viewName)[0];
+                if (!element) {
+                    console.log(viewName + ' does not exists');
+                    return;
+                }
                 element.innerHTML = errorElement(element, err.message);
                 console.log('binding error');
                 console.dir(err)
@@ -25,6 +29,10 @@ helper = {
                     ko.applyBindings(new vm(), document.getElementsByName(viewName)[0]);
                 } catch (err) {
                     var element = document.getElementsByName(viewName)[0];
+                    if (!element) {
+                        console.log(viewName + ' does not exists');
+                        return;
+                    }
                     element.innerHTML = errorElement(element, err.message);
                     console.log('binding error');
                     console.dir(err)
