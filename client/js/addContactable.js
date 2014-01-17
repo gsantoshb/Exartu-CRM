@@ -33,6 +33,7 @@ Template.addContactable.viewmodel = function (typeId) {
 		_.extend(self.contactable, {
 			employee: employee
 		});
+            var newContactable = {
 
 		Meteor.call('addContactable', self.contactable);
 		$('#addContactableModal').modal('hide');
