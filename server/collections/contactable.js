@@ -27,7 +27,7 @@ Meteor.startup(function () {
             if (extendAndValidate(contactable)) {
                 console.log('valid!!!!!! :D')
                 console.dir(contactable);
-                //                Contactables.insert(contactable);
+                Contactables.insert(contactable);
             } else {
                 console.log('NOT valid :(')
                 console.dir(contactable);
@@ -59,7 +59,7 @@ var extendAndValidate = function (contactable) {
     var v = true;
     //add the services defined in the types
     _.forEach(contactable.type, function (type) {
-        var ObjType = _.findWhere(ObjectType, {
+        var ObjType = _.findWhere(ObjectTypes, {
             _id: type
         });
         console.log('adding services');
