@@ -1,27 +1,70 @@
 <template name="addContactable">
-	<div class="modal fade" id="addContactableModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addContactableModal">
-		<div class="modal-dialog" style="width: 50%;">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a class="close" data-dismiss="modal">×</a>
-					<h4>Employee add</h4>
-				</div>
-				<div class="modal-body">
+    <div class="modal fade" id="addContactableModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addContactableModal">
+        <div class="modal-dialog" style="width: 50%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">×</a>
+                    <h4>Employee add</h4>
+                </div>
+                <div class="modal-body">
+                    <div data-bind="with: contactable">
+                        {{>addPerson}}
+                    </div>
+                    <div id="list" data-bind="visible: fields().length > 0, foreach: fields">
+                        <fieldset>
+                            <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
+                        </fieldset>
+                    </div>
 
-					<div id="list" data-bind="visible: fields().length > 0, foreach: fields">
-						<fieldset>
-							<div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
-						</fieldset>
-					</div>
+                </div>
+                <div class="modal-footer">
+                    <a data-bind="click:addContactable" class="btn btn-success">Add</a>
+                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
 
-				</div>
-				<div class="modal-footer">
-					<a data-bind="click:addContactable" class="btn btn-success">Add</a>
-					<a href="#" class="btn" data-dismiss="modal">Close</a>
-				</div>
-			</div>
-		</div>
-	</div>
+
+<template name="addPerson">
+    <div data-bind="if: person">
+        <div data-bind="with: person">
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">First name</label>
+                    <div class="col-lg-10">
+                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: firstName" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">Middle name</label>
+                    <div class="col-lg-10">
+                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: middleName" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">Last name</label>
+                    <div class="col-lg-10">
+                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: lastName" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">Salutation</label>
+                    <div class="col-lg-10">
+                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: salutation" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">Job Title</label>
+                    <div class="col-lg-10">
+                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: jobTitle" />
+                    </div>
+                </div>
+        </div>
+
+        </fieldset>
+    </div>
 </template>
 
 
