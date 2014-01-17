@@ -36,7 +36,7 @@ Template.addContactable.viewmodel = function (typeId) {
 
         Meteor.call('addContactable', self.contactable);
         $('#addContactableModal').modal('hide');
-        debugger;
+        //        debugger;
     }
     return this;
 }
