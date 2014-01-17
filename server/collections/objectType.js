@@ -1,78 +1,78 @@
-basicType = {
-    string: 0,
-}
-ObjectType = {
-    0: {
-        name: 'Employee',
-        sysRes: ['Message'],
-
-        validate: function (obj) {
-            if (obj.type.indexOf(this._id) < 0)
-                return false;
-            if (!obj.messages)
-                return false;
-            if (obj.person & (!validatePerson(obj.person)))
-                return false;
-            if (obj.organization & (!validateOrganization(obj.person)))
-                return false;
-
-        },
-        getFields: function () {
-            return [{
-                name: 'test',
-                regex: /.+/,
-                type: basicType.string,
-                defaultValue: '',
-            }];
-        },
-    }
-
-};
+ObjectTypes = [
+	{
+		_id: 0,
+		name: 'Employee',
+		sysRes: ['Message'],
+		validate: function (obj) {
+			if (obj.type.indexOf(this._id) < 0)
+				return false;
+			if (!obj.messages)
+				return false;
+			if (obj.person & (!validatePerson(obj.person)))
+				return false;
+			if (obj.organization & (!validateOrganization(obj.person)))
+				return false;
+		},
+		getFields: function () {
+			return [{
+				name: 'string',
+				regex: /.+/,
+				type: Enums.fieldType.string,
+				defaultValue: '',
+			}, {
+				name: 'date',
+				regex: /.+/,
+				type: Enums.fieldType.date,
+				defaultValue: '',
+			}]
+		}
+	},
+	{
+		_id: 1,
+		name: 'Customer',
+		sysRes: ['Message'],
+		validate: function (obj) {
+			if (obj.type.indexOf(this._id) < 0)
+				return false;
+			if (!obj.messages)
+				return false;
+			if (obj.person & (!validatePerson(obj.person)))
+				return false;
+			if (obj.organization & (!validateOrganization(obj.person)))
+				return false;
+		},
+		getFields: function () {
+			return [{
+				name: 'string_customer',
+				regex: /.+/,
+				type: Enums.fieldType.string,
+				defaultValue: '',
+			}, {
+				name: 'date_customer',
+				regex: /.+/,
+				type: Enums.fieldType.date,
+				defaultValue: '',
+			}]
+		},
+	},
+];
 
 Meteor.startup(function () {
-    Meteor.methods({
-        getFields: function (id) {
-            return ObjectType[id].getFields();
-        }
-    });
+	Meteor.methods({
+		getFields: function (id) {
+			type = _.findWhere(ObjectTypes, {
+				_id: id
+			});
+			if (type)
+				return type.getFields();
+		},
+		getContactableTypes: function () {
+			return _.map(ObjectTypes, function (type) {
+				return {
+					name: type.name,
+					_id: type._id
+				}
+			});
+		}
+	});
 });
-
-//    new Meteor.Collection("contactables");
-//
-//Meteor.publish('contactables', function () {
-//	var user = Meteor.users.findOne({
-//		_id: this.userId
-//	});
-//
-//	if (!user)
-//		return false;
-//
-//	return Contactables.find({
-//		hierId: user.hierId
-//	});
-//})
-
-//Meteor.startup(function () {
-//	Meteor.methods({
-//		addContactable: function (contactable) {
-//			var user = Meteor.user();
-//			if (user == null)
-//				throw new Meteor.Error(401, "Please login");
-//
-//			addSystemMetadata(contactable, user);
-//
-//			Contactables.insert(contactable);
-//		}
-//	});
-//});
-
-//Contactables.allow({
-//	update: function () {
-//		return true;
-//	}
-//});
-
-
-//Contactables.before.insert(function (userId, doc) {
-//	doc.createdAt = Date.now();
-//});
