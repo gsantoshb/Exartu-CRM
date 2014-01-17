@@ -9,15 +9,15 @@ fieldType = {
 EmployeeType = {
 	_id: 0,
 	name: 'Employee',
-	services: ['messages'],
+	services: ['messages', 'tasks'],
 	fields: [{
 		name: 'test',
-		regex: /.+/,
+		regex: /./,
 		type: fieldType.string,
 		defaultValue: '',
 	}, {
 		name: 'test2',
-		regex: /.+/,
+		regex: /./,
 		type: fieldType.string,
 		defaultValue: '',
 	}]
