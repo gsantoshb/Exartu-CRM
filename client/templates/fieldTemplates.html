@@ -1,0 +1,29 @@
+<!-- fieldTemplatesDefinition is a dummy template used to expose fields templates -->
+<template name="fieldTemplatesDefinition">
+	<!-- String -->
+	<div id="inStringField" style="display: none;">
+		<div class="form-group">
+			<label class="col-lg-2 control-label" data-bind="text: name"></label>
+			<div class="col-lg-10">
+				<input class="form-control" type="text" placeholder="Enter a string" data-bind="value: value" />
+			</div>
+		</div>
+	</div>
+
+	<div id="outStringField" style="display: none;">
+		<span data-bind="value: value" />
+	</div>
+
+	<!-- Date -->
+	<div id="inDateField" style="display: none;">
+		<label class="col-lg-2 control-label" data-bind="text: name"></label>
+		<div class="col-lg-10">
+			<input class="form-control" type="date" data-bind="value: value" />
+		</div>
+	</div>
+
+	<div id="outDatefield" style="display: none;">
+		<span data-bind="value: value" />
+	</div>
+</template>
+

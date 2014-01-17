@@ -1,28 +1,27 @@
-<template name="addEmployee">
-    <div class="modal fade" id="addEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addEmployeeVM">
-        <div class="modal-dialog" style="width: 50%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">×</a>
-                    <h4>Employee add</h3>
-                </div>
-                <div class="modal-body">
-                    <div data-bind="visible: fields().length > 0, foreach: fields">
-                        <div data-bind="template: { name: $root.fieldVM($data), data: $data}"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a data-bind="click:addContactable" class="btn btn-success">Add</a>
-                    <a href="#" class="btn" data-dismiss="modal">Close</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<template name="addContactable">
+	<div class="modal fade" id="addContactableModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addContactableModal">
+		<div class="modal-dialog" style="width: 50%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a class="close" data-dismiss="modal">×</a>
+					<h4>Employee add</h4>
+				</div>
+				<div class="modal-body">
 
-    <div id="inStringField" style="display: none;">
-        <input placeholder="ingresame un string" />
-    </div>
+					<div id="list" data-bind="visible: fields().length > 0, foreach: fields">
+						<fieldset>
+							<div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
+						</fieldset>
+					</div>
 
+				</div>
+				<div class="modal-footer">
+					<a data-bind="click:addContactable" class="btn btn-success">Add</a>
+					<a href="#" class="btn" data-dismiss="modal">Close</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 
