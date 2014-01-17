@@ -27,7 +27,7 @@ ContactableController = RouteController.extend({
     data: function () {
         Session.set('entityId', this.params._id); // save current contactable to later use on templates
         Session.set('entityCollection', 'Contactables');
-    },
+    }
 });
 
 Template.contactableNavigation.rendered = function () {
