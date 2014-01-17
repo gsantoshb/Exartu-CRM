@@ -58,20 +58,7 @@ Template.addEmployee.rendered = function () {
         self.isCustomer = ko.observable(true);
 
         self.addContactable = function () {
-            var newContactable = {
-                isEmployee: self.isEmployee(),
-                isContact: self.isContact(),
-                isCustomer: self.isCustomer(),
-
-                statusNote: self.statusNote(),
-            }
-            if (!newContactable.isContact && !newContactable.isCustomer && !newContactable.isEmployee) reuturn;
-
-
-            newContactable.organizationName = self.organizationName();
-            newContactable.department = self.department();
-
-            Meteor.call('addContactable', newContactable);
+            Meteor.call('addContactable', ko.toJS(self.contactable));
             $('#addContactableModal').modal('hide');
         }
         return this;
