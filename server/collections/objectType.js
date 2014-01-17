@@ -4,7 +4,7 @@ ObjectTypes = [
 
 validateContactable = function (obj, typeId) {
     console.log('validating..');
-    var objType = _.findWhere(ObjectTypes, {
+	var objType = _.findWhere(ObjectTypes, {
         _id: typeId
     });
     if (!objType) {

@@ -2,12 +2,15 @@ Template.addContactable.viewmodel = function (typeId) {
     var self = this;
 
     self.contactable = {
-        type: [typeId]
+		type: [typeId]
     };
 
     _.extend(self.contactable, {
         person: Global.person
     });
+
+	self.contactable.person.firstName = "pablo";
+	self.contactable.person.lastName = "soto";
 
     self.fields = ko.observableArray();
     Meteor.call('getFields', typeId, function (err, result) {
@@ -31,12 +34,12 @@ Template.addContactable.viewmodel = function (typeId) {
         })
         var employee = _.object(names, values);
         _.extend(self.contactable, {
-            Employee: employee
+			Employee: employee
         });
 
         Meteor.call('addContactable', self.contactable);
         $('#addContactableModal').modal('hide');
-        //        debugger;
+		//debugger;
     }
     return this;
 }
