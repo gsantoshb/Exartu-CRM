@@ -13,13 +13,17 @@
                 </div>
 
                 <h5 class="panel-section-title">Filters</h5>
+
                 <div class="checkbox">
+
                     <label>
-                        <input type="checkbox" />Include inactives</label>
-                </div>
-                <div class="checkbox">
+                        <input type="checkbox" />Only recent day
+                    </label>
                     <label>
                         <input type="checkbox" />Only recent week
+                    </label>
+                    <label>
+                        <input type="checkbox" />Only recent month
                     </label>
 
                     <span>{{text}}</span>
@@ -83,7 +87,7 @@
                                                 </span>
                                                 <span class="name" style="color: grey" data-bind="if: $data.person">
                                                     <div data-bind="with: person">
-                                                        <span data-bind="text: lastName() + ', ' + firstName()"></span>
+                                                        <span data-bind="text: lastName() + ', ' + firstName()+ middleName()"></span>
                                                     </div>
                                                 </span>
 
