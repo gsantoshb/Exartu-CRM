@@ -3,7 +3,7 @@ fieldType = {
 	int: 1,
 	date: 2,
 	select: 3,
-	checkbox: 4,
+	checkbox: 4
 };
 
 EmployeeType = {
@@ -14,11 +14,11 @@ EmployeeType = {
 		name: 'test',
 		regex: /./,
 		type: fieldType.string,
-		defaultValue: '',
+		defaultValue: ''
 	}, {
 		name: 'test2',
 		regex: /./,
 		type: fieldType.string,
-		defaultValue: '',
+		defaultValue: ''
 	}]
 }

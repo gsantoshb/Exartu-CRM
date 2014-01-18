@@ -11,13 +11,13 @@ Template.header.rendered = function () {
 
 Template.header.events = {
 	'click #dashboardLink': function () {
-		// Remove class from previus navegation link
+		// Remove class from previous navigation link
 		$('.ats-navItem .active').removeClass('active');
 		// Add class
 		$('#dashboardLink').addClass('active');
 	},
 	'click #contactablesLink': function () {
-		// Remove class from previus navegation link
+		// Remove class from previous navigation link
 		$('.ats-navItem .active').removeClass('active');
 		// Add class
 		$('#contactablesLink').addClass('active');
