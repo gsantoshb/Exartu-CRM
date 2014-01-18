@@ -1,6 +1,6 @@
 ContactablesController = RouteController.extend({
 	template: 'contactables',
-	layoutTemplate: 'mainLayout',
+	layoutTemplate: 'mainLayout'
 });
 
 Template.contactables.rendered = function () {
