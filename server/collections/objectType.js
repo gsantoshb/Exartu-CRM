@@ -53,9 +53,12 @@ validateContactable = function (obj, typeId) {
     var typeInfo = obj[objType.name];
     v = true;
     _.forEach(objType.fields, function (field) {
-        if (!typeInfo[field.name].match(field.regex))
-            console.log(field.name + '-->  value: ' + typeInfo[field.name]);
-        v = v && (typeInfo[field.name].match(field.regex));
+        if (typeInfo[field.name])
+        {
+            if (!typeInfo[field.name].match(field.regex))
+                console.log(field.name + '-->  value: ' + typeInfo[field.name]);
+            v = v && (typeInfo[field.name].match(field.regex));
+        }
     });
     if (!v) {
         return false;

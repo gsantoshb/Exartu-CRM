@@ -25,13 +25,13 @@ Template.contactables.rendered = function () {
 
 		self.filter = ko.observableArray([{
 			check: ko.observable(true),
-			label: 'isEmployee'
+			label: 'Employees'
         }, {
 			check: ko.observable(true),
-			label: 'isContact'
+			label: 'Customer Contacts'
         }, {
 			check: ko.observable(true),
-			label: 'isCustomer'
+			label: 'Customers'
         }]);
 
 		var search = function () {
