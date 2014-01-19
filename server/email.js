@@ -1,5 +1,5 @@
 Meteor.startup(function() {
-    process.env.MAIL_URL=ExartuConfig.MAIL_URL;
+    //process.env.MAIL_URL=ExartuConfig.MAIL_URL;
     Meteor.methods({
         sendEmail: function(email)
         {

@@ -10,3 +10,18 @@
 [submodule "collection-hooks"]
 	path = collection-hooks
 	url = https://github.com/matb33/meteor-collection-hooks.git
+[submodule "packages/bootstrap-3"]
+	path = packages/bootstrap-3
+	url = https://github.com/mangasocial/meteor-bootstrap-3.git
+[submodule "packages/iron-router"]
+	path = packages/iron-router
+	url = https://github.com/EventedMind/iron-router.git
+[submodule "packages/knockout-client"]
+	path = packages/knockout-client
+	url = https://github.com/zhouzhuojie/knockout-client.git
+[submodule "packages/accounts-ui-bootstrap-3"]
+	path = packages/accounts-ui-bootstrap-3
+	url = https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git
+[submodule "packages/collection-hooks"]
+	path = packages/collection-hooks
+	url = https://github.com/matb33/meteor-collection-hooks.git
