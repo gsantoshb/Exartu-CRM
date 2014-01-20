@@ -37,12 +37,11 @@ Template.contactableNavigation.rendered = function () {
 		self.contactable = ko.meteor.findOne(Contactables, {
 			_id: Session.get('entityId')
 		});
-		self.contactable().displayName = ko.computed(
-			function () {
-				var c = self.contactable();
-				return c.isCustomer != undefined && c.isCustomer() ? c.organizationName() : c.person.firstName() + ', ' + c.person.lastName();
-			}, self);
-
+//		self.contactable().displayName = ko.computed(
+	//			function () {
+	//				var c = self.contactable();
+	//				return c.isCustomer != undefined && c.isCustomer() ? c.organizationName() : c.person.firstName() + ', ' + c.person.lastName();
+	//			}, self);
 		return self;
 	};
 	helper.applyBindings(vm, 'contactableNavigationVM', ContactableHandler);
