@@ -6,17 +6,17 @@
                     <a class="close" data-dismiss="modal">×</a>
                     <h4>Employee add</h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" data-bind="if: $data.ready">
                     <select data-bind="options: types, value: selectedType"></select>
                     <div data-bind="with: contactable">
                         {{>addPerson}} {{>addOrganization}}
-                    </div>
-                    <div id="list" data-bind="visible: fields().length > 0, foreach: fields">
-                        <fieldset>
-                            <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
-                        </fieldset>
-                    </div>
 
+                        <div id="list" data-bind="visible: EmployeeFields().length > 0, foreach: EmployeeFields">
+                            <fieldset>
+                                <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
+                            </fieldset>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <a data-bind="click:addContactable" class="btn btn-success">Add</a>
@@ -32,50 +32,25 @@
     <div data-bind="if: $parent.selectedType()=='person'">
         <div data-bind="with: person">
             <fieldset>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">First name</label>
-                    <div class="col-lg-10">
-                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: firstName" />
-                    </div>
+                <div data-bind="template: { name: 'inStringField', data: {name: 'firstName', value:$data.firstName} }">
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">Middle name</label>
-                    <div class="col-lg-10">
-                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: middleName" />
-                    </div>
+                <div data-bind="template: { name: 'inStringField', data: {name: 'middleName', value:$data.middleName} }">
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">Last name</label>
-                    <div class="col-lg-10">
-                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: lastName" />
-                    </div>
+                <div data-bind="template: { name: 'inStringField', data: {name: 'lastName', value:$data.lastName} }">
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">Salutation</label>
-                    <div class="col-lg-10">
-                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: salutation" />
-                    </div>
+                <div data-bind="template: { name: 'inStringField', data: {name: 'salutation', value:$data.salutation} }">
                 </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">Job Title</label>
-                    <div class="col-lg-10">
-                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: jobTitle" />
-                    </div>
+                <div data-bind="template: { name: 'inStringField', data: {name: 'jobTitle', value:$data.jobTitle} }">
                 </div>
             </fieldset>
         </div>
-
     </div>
 </template>
 <template name="addOrganization">
     <div data-bind="if: $parent.selectedType()=='org'">
         <div data-bind="with: organization">
             <fieldset>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">organization name</label>
-                    <div class="col-lg-10">
-                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: organizationName" />
-                    </div>
+                <div data-bind="template: { name: 'inStringField', data: {name: 'organizationName', value:$data.organizationName} }">
                 </div>
             </fieldset>
         </div>

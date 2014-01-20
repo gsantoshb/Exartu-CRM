@@ -14,15 +14,76 @@ _.extend(Enums, {
 });
 
 Global = {};
+fieldType = Enums.fieldType;
+var person = {
+    fields: [{
+            name: 'firstName',
+            regex: /.*/,
+            type: fieldType.string,
+            defaultValue: '',
+            required: true
+ }, {
+            name: 'lastName',
+            regex: /.*/,
+            type: fieldType.string,
+            defaultValue: '',
+            required: true
+ }, {
+            name: 'middleName',
+            regex: /.+/,
+            type: fieldType.string,
+            defaultValue: ''
+ }, {
+            name: 'salutation',
+            regex: /.+/,
+            type: fieldType.string,
+            defaultValue: ''
+ }, {
+            name: 'jobTitle',
+            regex: /.+/,
+            type: fieldType.string,
+            defaultValue: ''
+ }, {
+            name: 'salutation',
+            regex: /.+/,
+            type: fieldType.string,
+            defaultValue: ''
+ },
+            ],
+};
+var organization = {
+    fields: [{
+        name: 'organizationName',
+        regex: /.*/,
+        type: fieldType.string,
+        defaultValue: '',
+        required: true
+ }],
+}
 _.extend(Global, {
-    person: {
-        firstName: '',
-        lastName: '',
-        middleName: '',
-        salutation: '',
-        jobTitle: '',
-        salutation: '',
+    person: function () {
+        var p = {};
+        var names = _.map(person.fields, function (item) {
+            return item.name;
+        });
+        var values = _.map(person.fields, function (item) {
+            return item.defaultValue;
+        })
+        return _.object(names, values);
     },
+    personField: person.fields,
+
+    organization: function () {
+        var p = {};
+        var names = _.map(person.fields, function (item) {
+            return item.name;
+        });
+        var values = _.map(person.fields, function (item) {
+            return item.defaultValue;
+        })
+        return _.object(names, values);
+    },
+    organizationField: organization.fields,
     organization: {
         organizationName: '',
     }
