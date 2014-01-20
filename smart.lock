@@ -37,12 +37,5 @@
     }
   }
 }
-/*
-meteor submodule add https://github.com/mangasocial/meteor-bootstrap-3.git packages/bootstrap-3
-meteor submodule add https://github.com/EventedMind/iron-router.git packages/iron-router
-meteor submodule add https://github.com/zhouzhuojie/knockout-client.git packages/knockout-client
-meteor submodule add https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git packages/accounts-ui-bootstrap-3
-meteor submodule add https://github.com/matb33/meteor-collection-hooks.git packages/collection-hooks
-/*
 
 
