@@ -10,8 +10,8 @@
                     <select data-bind="options: types, value: selectedType"></select>
                     <div data-bind="with: contactable">
                         {{>addPerson}} {{>addOrganization}}
-
-                        <div id="list" data-bind="visible: EmployeeFields().length > 0, foreach: EmployeeFields">
+                        <h5 data-bind="text: $root.objTypeName"></h5>
+                        <div id="list" data-bind="visible: $data[$root.objTypeName()]().length > 0, foreach: $data[$root.objTypeName()]">
                             <fieldset>
                                 <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
                             </fieldset>

@@ -1,10 +1,11 @@
 ObjectTypes = [
  EmployeeType,
+    CustomerType
 ];
 
 validateContactable = function (obj, typeId) {
     console.log('validating..');
-	var objType = _.findWhere(ObjectTypes, {
+    var objType = _.findWhere(ObjectTypes, {
         _id: typeId
     });
     if (!objType) {
@@ -27,7 +28,7 @@ validateContactable = function (obj, typeId) {
         console.log('invalid person');
         return false;
     }
-    if (obj.organization && (!validateOrganization(obj.person))) {
+    if (obj.organization && (!validateOrganization(obj.organization))) {
         console.log('invalid Organization');
         return false;
     }
@@ -53,8 +54,7 @@ validateContactable = function (obj, typeId) {
     var typeInfo = obj[objType.name];
     v = true;
     _.forEach(objType.fields, function (field) {
-        if (typeInfo[field.name])
-        {
+        if (typeInfo[field.name]) {
             if (!typeInfo[field.name].match(field.regex))
                 console.log(field.name + '-->  value: ' + typeInfo[field.name]);
             v = v && (typeInfo[field.name].match(field.regex));
@@ -87,12 +87,10 @@ Services = ['messages', 'documents', 'pastJobs', 'tags', 'education', 'task'];
 
 Meteor.startup(function () {
     Meteor.methods({
-        getFields: function (id) {
-            type = _.findWhere(ObjectTypes, {
+        getObjType: function (id) {
+            return _.findWhere(ObjectTypes, {
                 _id: id
             });
-            if (type)
-                return type.fields;
         },
         getContactableTypes: function () {
             return _.map(ObjectTypes, function (type) {

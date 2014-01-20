@@ -3,14 +3,11 @@ Template.addContactable.viewmodel = function (typeId) {
     var myPerson = new koPerson();
     var myOrg = new koOrganization();
 
+    self.objTypeName = ko.observable('');
     self.ready = ko.observable(false);
-
-    self.hasError = function (data) {
-        return data.isModified() && !data.isValid();
-    }
-
     self.types = ko.observableArray(['person', 'org']);
     self.selectedType = ko.observable('person');
+
     self.selectedType.subscribe(function (newVal) {
         switch (newVal) {
         case 'person':
@@ -33,10 +30,11 @@ Template.addContactable.viewmodel = function (typeId) {
         }
     });
 
-    Meteor.call('getFields', typeId, function (err, result) {
+
+    Meteor.call('getObjType', typeId, function (err, result) {
         if (!err) {
-            _.forEach(result, function (item) {
-                return _.extend(item, {
+            _.forEach(result.fields, function (item) {
+                _.extend(item, {
                     value: ko.observable().extend({
                         pattern: {
                             message: 'error',
@@ -45,35 +43,28 @@ Template.addContactable.viewmodel = function (typeId) {
                     })
                 })
             });
-            self.contactable = ko.validatedObservable({
+            self.objTypeName(result.name);
+            var aux = {
                 type: ko.observableArray([typeId]),
                 person: myPerson,
                 organization: null,
-                EmployeeFields: ko.observableArray(result)
-            });
+            }
+            aux[result.name] = ko.observableArray(result.fields)
+            self.contactable = ko.validatedObservable(aux);
 
             self.ready(true);
         }
     });
 
     self.addContactable = function () {
-        //        debugger;
+        debugger;
         if (!self.contactable.isValid()) {
             self.contactable.errors.showAllMessages();
             return;
-        }
-        //        var names = _.map(self.contactable.EmployeeFields, function (item) {
-        //            return item.name;
-        //        });
-        //        var values = _.map(self.fields(), function (item) {
-        //            return item.value();
-        //        })
-        //        var employee = _.object(names, values);
-        //        _.extend(self.contactable, {
-        //            Employee: employee
-        //        });
-        //
-        //        Meteor.call('addContactable', self.contactable);
+        };
+
+
+        Meteor.call('addContactable', ko.toJS(self.contactable));
         $('#addContactableModal').modal('hide');
         //debugger;
     }
@@ -84,7 +75,7 @@ Meteor.methods({
     addContactable: function (contactable) {
         Contactables.insert(contactable);
     },
-    getFields: function (id) {
+    getObjType: function (id) {
 
     },
     getContactablesType: function () {
