@@ -7,8 +7,9 @@
                     <h4>Employee add</h4>
                 </div>
                 <div class="modal-body">
+                    <select data-bind="options: types, value: selectedType"></select>
                     <div data-bind="with: contactable">
-                        {{>addPerson}}
+                        {{>addPerson}} {{>addOrganization}}
                     </div>
                     <div id="list" data-bind="visible: fields().length > 0, foreach: fields">
                         <fieldset>
@@ -28,7 +29,7 @@
 
 
 <template name="addPerson">
-    <div data-bind="if: person">
+    <div data-bind="if: $parent.selectedType()=='person'">
         <div data-bind="with: person">
             <fieldset>
                 <div class="form-group">
@@ -61,9 +62,23 @@
                         <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: jobTitle" />
                     </div>
                 </div>
+            </fieldset>
         </div>
 
-        </fieldset>
+    </div>
+</template>
+<template name="addOrganization">
+    <div data-bind="if: $parent.selectedType()=='org'">
+        <div data-bind="with: organization">
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">organization name</label>
+                    <div class="col-lg-10">
+                        <input class="form-control" type="text" placeholder="Enter a string" data-bind="value: organizationName" />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
     </div>
 </template>
 
