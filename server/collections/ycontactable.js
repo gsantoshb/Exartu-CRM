@@ -47,6 +47,7 @@ Contactables.before.insert(function (userId, doc) {
 	doc.createdAt = Date.now();
 });
 
+
 var extendAndValidate = function (contactable) {
 	//contactable's things
 	if (!contactable.contactMethods)
@@ -63,7 +64,6 @@ var extendAndValidate = function (contactable) {
 			_id: type
 		});
 		console.log('adding services');
-		contactable['contactMethods'] = []; // Register contact methods's service for every contactable
 		_.forEach(ObjType.services, function (service) {
 			contactable[service] = [];
 		});
