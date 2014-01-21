@@ -1,149 +1,155 @@
 <template name="contactables">
-	{{>addContactable}}
-	<section name="contactablesVM">
+    {{>addContactable}}
+    <section name="contactablesVM">
 		<!-- ko if: ready -->
-		<div class="row" style="margin-top: 10px, width: 100%;">
-			<!-- Filter panel -->
-			<div class="col-md-2 ats-filter-panel">
+        <div class="row" style="margin-top: 10px, width: 100%;">
+            <!-- Filter panel -->
+            <div class="col-md-2 ats-filter-panel">
 
-				<h5 class="panel-section-title">Actions</h5>
+                <h5 class="panel-section-title">Actions</h5>
 
-				<div data-bind="foreach: contactableTypes">
-					<a data-toggle="modal" data-bind="click: function () { helper.showModal('addContactable', 'addContactableModal', $data._id); }, text: 'Add ' + name"></a>
-					<br/>
-				</div>
+                <div data-bind="foreach: contactableTypes">
+                    <a data-toggle="modal" data-bind="click: function () { helper.showModal('addContactable', 'addContactableModal', $data._id); }, text: 'Add ' + name"></a>
+                    <br/>
+                </div>
 
-				<h5 class="panel-section-title">Filters</h5>
+                <h5 class="panel-section-title">Filters</h5>
 
-				<div class="checkbox">
+                <div class="checkbox">
 
-					<label>
-						<input type="checkbox" />Only recent day
-					</label>
-				</div>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" />Only recent week
-					</label>
-				</div>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" />Only recent month
-					</label>
+                    <label>
+                        <input type="checkbox" />Only recent day
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" />Only recent week
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" />Only recent month
+                    </label>
 
-					<span>{{text}}</span>
-				</div>
-				<div data-bind="foreach: filter">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="filter-employee" data-bind="checked: check" />
-							<span data-bind="text:label" />
-						</label>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-9 col-md-offset-2" style="margin-top: -10px">
-			<div>
-				<!--<h5 class="panel-section-title">Results-->
-				<h5>
+                    <span>{{text}}</span>
+                </div>
+                <div data-bind="foreach: filter">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="filter-employee" data-bind="checked: check" />
+                            <span data-bind="text:label" />
+                            <i data-bind="attr:{class:$root.getIconForObjType(typeId)}" style="color:gray;"></i>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 col-md-offset-2" style="margin-top: -10px">
+            <div>
+                <!--<h5 class="panel-section-title">Results-->
+                <h5>
 
-					<!-- Search string -->
-					<span class="input-group" style="width: 100%; max-width: 606px;">
-						<span class="input-group-addon glyphicon glyphicon-search" style="position: initial;"></span>
-						<input type="text" class="form-control expandable-field" placeholder="Search..." data-bind="value: searchString, valueUpdate:'afterkeydown'">
-					</span>
-				</h5>
-			</div>
+                    <!-- Search string -->
+                    <span class="input-group" style="width: 100%; max-width: 606px;">
+                        <span class="input-group-addon glyphicon glyphicon-search" style="position: initial;"></span>
+                        <input type="text" class="form-control expandable-field" placeholder="Search..." data-bind="value: searchString, valueUpdate:'afterkeydown'">
+                    </span>
+                </h5>
+            </div>
 
 
-			<!-- Entities list -->
-			<div>
-				{{#if loading}}
-				<div id="lists">Loading...</div>
-				{{else}}
-				<div data-bind="foreach: entities ">
+            <!-- Entities list -->
+            <div>
+                {{#if loading}}
+                <div id="lists">Loading...</div>
+                {{else}}
+                <div data-bind="foreach: entities ">
 
-					<div class="ats-entities">
-						<a data-bind="attr:{href: 'contactable/'+_id()}">
-							<div class="row ">
-								<!-- Left -->
-								<div class="col-md-1">
-									<!-- Profile picture -->
+                    <div class="ats-entities">
+                        <a data-bind="attr:{href: 'contactable/'+_id()}">
+                            <div class="row " style="width: 100%;margin: 0;">
+                                <!-- Left -->
+                                <div class="col-md-1">
+                                    <div class="row">
+                                        <!-- Profile picture -->
 
-									<img class="media-object" data-src="holder.js/64x64" alt="100x100" style="width: 64px; height: 64px;" src="img/avatar.jpg" />
+                                        <img class="media-object col-md-11" data-src="holder.js/64x64" alt="100x100" style="width: 64px; height: 64px; padding:0" src="img/avatar.jpg" />
+                                        <div class="col-md-1" data-bind="foreach: type">
+                                            <i data-bind="attr:{class:$root.getIconForObjType($data)}" style="color:gray;"></i>
+                                        </div>
+                                    </div>
 
-								</div>
+                                </div>
 
-								<!-- Middle -->
-								<div class="col-md-8">
-									<div class="row">
-										<div class="col-md-6">
+                                <!-- Middle -->
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-6">
 
-											<h4 class="no-margin">
-												<span class="name" />
-												<span class="name" />
-											</h4>
-											<h5>
-												<span data-bind="text: displayName"></span>
-											</h5>
+                                            <h4 class="no-margin">
+                                                <span class="name" />
+                                                <span class="name" />
+                                            </h4>
+                                            <h5>
+                                                <span data-bind="text: displayName"></span>
+                                            </h5>
 
-											<!-- Status Note -->
-											<div class="statusNote" data-bind="text: $data.statusNote"></div>
-										</div>
+                                            <!-- Status Note -->
+                                            <div class="statusNote" data-bind="text: $data.statusNote"></div>
+                                        </div>
 
-										<div class="col-md-6">
-											<!-- Contact information -->
-											<div class="col-md-4">
-												<em></em>
-												<br/>
-												<em></em>
-											</div>
-										</div>
-									</div>
-									<!-- Interests -->
-									<!-- ko if: $data.tags -->
-									<div class="icons-nav" style="word-wrap: break-word;" data-bind="foreach: tags">
-										<small class="tag" data-bind="text: $data + ($index() != $parent.tags().length-1 ? ', ': '') ">
-										</small>
-									</div>
-									<!-- /ko -->
-								</div>
+                                        <div class="col-md-6">
+                                            <!-- Contact information -->
+                                            <div class="col-md-4">
+                                                <em></em>
+                                                <br/>
+                                                <em></em>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Interests -->
+                                    <!-- ko if: $data.tags -->
+                                    <div class="icons-nav" style="word-wrap: break-word;" data-bind="foreach: tags">
+                                        <small class="tag" data-bind="text: $data + ($index() != $parent.tags().length-1 ? ', ': '') ">
+                                        </small>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
 
-								<!-- Right -->
-								<div class="col-md-3">
+                                <!-- Right -->
+                                <div class="col-md-3">
 
-									<!--  Contactable statuses -->
+                                    <!--  Contactable statuses -->
 
-									<p></p>
-									<div class="progress progress-statistics" style="width: 90%; height: 4px;">
-										<div class="bar" />
-									</div>
+                                    <p></p>
+                                    <div class="progress progress-statistics" style="width: 90%; height: 4px;">
+                                        <div class="bar" />
+                                    </div>
 
-									<!-- User who created the entity -->
-									<span class="pull-right" style="color:grey; font-size: 12px;">
-										<i class="glyphicon glyphicon-user" style="background-image: none" />
-										<small data-bind="text: $data.userId"></small>
-										<br/>
-										<i class="glyphicon glyphicon-search" />
-										<small data-bind="text: 'searchKey'" />
-									</span>
-								</div>
-							</div>
-						</a>
-					</div>
+                                    <!-- User who created the entity -->
+                                    <span class="pull-right" style="color:grey; font-size: 12px;">
+                                        <i class="glyphicon glyphicon-user" style="background-image: none" />
+                                        <small data-bind="text: $data.userId"></small>
+                                        <br/>
+                                        <i class="glyphicon glyphicon-search" />
+                                        <small data-bind="text: 'searchKey'" />
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
 
-					<!--						<div class="list-fade"></div>-->
-				</div>
-				<!-- Infinity scroll -->
-				<!--
+                    <!--						<div class="list-fade"></div>-->
+                </div>
+                <!-- Infinity scroll -->
+                <!--
 					<center data-bind="scroll: routingHelper.getRouteByName('contactableList').isActive(), scrollOptions: { loadFunc: addSome, offset: 10 }, visible: gettingMore() " data-ng-hide="true">
 						<img src="img/ats-loading.gif" style="width: 40px; height: 12px;" alt="Searching.." />
 					</center>
 -->
-				{{/if}}
-			</div>
-		</div>
+                {{/if}}
+            </div>
+        </div>
 		<!--/ko-->
-	</section>
+    </section>
 </template>
