@@ -1,105 +1,101 @@
+// TODO: Make ObjectTypes a Meteor collection 
 ObjectTypes = [
- EmployeeType,
-    CustomerType,
-    CustomerContactType
+ 	EmployeeType,
+	CustomerType,
+    CustomerContactType,
+	JobType,
 ];
 
-validateContactable = function (obj, typeId) {
-    console.log('validating..');
-    var objType = _.findWhere(ObjectTypes, {
-        _id: typeId
-    });
-    if (!objType) {
-        console.log('object Type not found');
-    }
+/*
+ * Validate if an object has the structure required by the objectType.
+ * Return true if:
+ *  - objTypeId is valid
+ *  - obj has an object with name equal to objType.name
+ *  - obj[objType.name] has every field defined in objType.fields
+ *  - obj has an object for every service defined in objType.services
+ * Params:
+ *	- obj: entity that is validated (e.g.: contactable).
+ *  - objTypeId: Id of type used to validated the object (obj)
+ */
 
-    // validate contactable
+validateObjType = function (obj, objTypeId) {
+	var objType = _.findWhere(ObjectTypes, {
+		_id: objTypeId
+	});
 
-    if (obj.type.indexOf(typeId) < 0) {
-        console.log('obj.type incorrect');
-        console.dir(obj.type);
-        return false;
-    }
+	if (!objType) {
+		console.error('Object type does not exists');
+		return false;
+	}
 
-    if (!obj.person & !obj.organization) {
-        console.log('the contactable must be a person or an organization');
-        return false
-    }
-    if (obj.person && (!validatePerson(obj.person))) {
-        console.log('invalid person');
-        return false;
-    }
-    if (obj.organization && (!validateOrganization(obj.organization))) {
-        console.log('invalid Organization');
-        return false;
-    }
+	if (obj.type.indexOf(objTypeId) < 0) {
+		console.error('Objtype incorrect');
+		return false;
+	}
 
-    //check for services
-    var v = true;
-    console.log('checking services...')
-    _.forEach(Services, function (service) {
-        var needed = objType.services.indexOf(service) >= 0;
-        var used = obj[service] ? true : false;
+	// Validating services
+	var v = true;
+	_.every(Services, function (service) {
+		var needed = objType.services.indexOf(service) >= 0;
+		var used = obj[service] ? true : false;
 
-        if (!((needed && used) || (!needed && !used)))
-            console.log(service + '-->  needed: ' + needed + '  used: ' + used);
+		//		if (!((needed && used) || (!needed && !used)))
+		//			console.log(service + '-->  needed: ' + needed + '  used: ' + used);
+		v = ((needed && used) || (!needed && !used));
+		return v;
+	});
+	if (!v) return false;
 
-        v = v && ((needed && used) || (!needed && !used));
-    });
-    console.log('-------------------------');
-    if (!v) {
-        return false;
-    }
-    //check fields
-    console.log('checking fields...')
-    var typeInfo = obj[objType.name];
-    v = true;
-    _.forEach(objType.fields, function (field) {
-        if (typeInfo[field.name]) {
-            if (!typeInfo[field.name].match(field.regex))
-                console.log(field.name + '-->  value: ' + typeInfo[field.name]);
-            v = v && (typeInfo[field.name].match(field.regex));
-        }
-    });
-    if (!v) {
-        return false;
-    }
+	// Validating fields
+	var typeInfo = obj[objType.name];
+	v = true;
+	_.every(objType.fields, function (field) {
+		if (typeInfo[field.name]) {
+			//			if (!typeInfo[field.name].match(field.regex))
+			//				console.log(field.name + '-->  value: ' + typeInfo[field.name]);
+			v = v && (typeInfo[field.name].match(field.regex));
+			return v;
+		} else
+			return false;
+	});
+	if (!v) return false;
 
-    return true;
-};
-
-validatePerson = function (person) {
-    if (!person.firstName)
-        return false;
-    if (!person.lastName)
-        return false;
-
-    return true;
-};
-
-validateOrganization = function (org) {
-    if (!org.organizationName)
-        return false;
-
-    return true;
+	return true;
 }
 
+/*
+ * Services avialable in the system
+ */
 Services = ['messages', 'documents', 'pastJobs', 'tags', 'education', 'task'];
 
 Meteor.startup(function () {
-    Meteor.methods({
-        getObjType: function (id) {
-            return _.findWhere(ObjectTypes, {
-                _id: id
-            });
-        },
-        getContactableTypes: function () {
-            return _.map(ObjectTypes, function (type) {
-                return {
-                    name: type.name,
-                    _id: type._id
-                }
-            });
-        }
-    });
+	Meteor.methods({
+		getObjType: function (id) {
+			return _.findWhere(ObjectTypes, {
+				_id: id
+			});
+		},
+		getContactableTypes: function () {
+			var types = [];
+			_.forEach(ObjectTypes, function (type) {
+				if (type.contactableType)
+					types.push({
+						name: type.name,
+						_id: type._id
+					});
+			})
+			return types;
+		},
+		getJobTypes: function () {
+			var types = [];
+			_.forEach(ObjectTypes, function (type) {
+				if (type.jobType)
+					types.push({
+						name: type.name,
+						_id: type._id
+					});
+			})
+			return types;
+		}
+	});
 });
