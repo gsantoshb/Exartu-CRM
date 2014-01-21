@@ -48,7 +48,7 @@ Template.addContactable.viewmodel = function (typeId) {
             var aux = {
                 type: ko.observableArray([typeId]),
                 person: myPerson,
-                organization: null,
+                organization: null
             }
             aux[result.name] = ko.observableArray(result.fields)
             self.contactable = ko.validatedObservable(aux);
@@ -78,7 +78,7 @@ Template.addContactable.viewmodel = function (typeId) {
             return r.relation.name;
         });
         var relValues = _.map(self.relations(), function (r) {
-            return r.value()._id();
+            if (r.value()) return r.value()._id();
         });
         _.extend(self.contactable(), _.object(relNames, relValues));
 

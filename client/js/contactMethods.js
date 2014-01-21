@@ -13,7 +13,8 @@ Template.contactMethods.rendered = function () {
         });
 
         if (!self.contactable()) {
-            console.log('contactable is undefined');
+
+            console.log('contactable is undefined',Session.get('entityId'));
         }
         if (!self.contactable().contactMethods) {
             self.contactable().contactMethods = ko.observable([]);

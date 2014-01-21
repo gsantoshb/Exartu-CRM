@@ -3,7 +3,7 @@ ObjectTypes = [
  	EmployeeType,
 	CustomerType,
     CustomerContactType,
-	JobType,
+	JobType
 ];
 
 /*
