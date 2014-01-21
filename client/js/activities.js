@@ -19,7 +19,7 @@ Template.activities.rendered = function () {
         self.newMessage = ko.observable();
         self.addMessage = function () {
             var messageId = Meteor.call('createMessage', {
-                message: self.newMessage(),
+                message: self.newMessage()
             }, [entityId]);
             self.newMessage("");
         };
