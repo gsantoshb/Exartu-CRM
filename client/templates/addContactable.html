@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close" data-dismiss="modal">×</a>
-                    <h4>Employee add</h4>
+                    <h4 data-bind="text: objTypeName() + ' add'"></h4>
                 </div>
                 <div class="modal-body" data-bind="if: $data.ready">
                     <select data-bind="options: types, value: selectedType"></select>
