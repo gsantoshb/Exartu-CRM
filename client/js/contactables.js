@@ -11,8 +11,20 @@ Template.contactables.rendered = function () {
         self.searchString = ko.observable('').extend({
             throttle: 300
         });
+        self.getIconForObjType = function (type) {
+            switch (type) {
+            case (0):
+                return 'glyphicon glyphicon-user';
+            case (1):
+                return 'glyphicon glyphicon-credit-card';
+            case (3):
+                return 'glyphicon glyphicon-book';
+            default:
+                return 'glyphicon glyphicon-question-sign';
+            };
 
-        var propsWhereSearch = ['person.firstName', 'person.lastName', 'organization.organizationName'];
+        };
+        var propsWhereSearch = ['person.firstName ', 'person.lastName ', 'organization.organizationName '];
 
         var search = function () {
             var q = {};
@@ -32,7 +44,7 @@ Template.contactables.rendered = function () {
 
                 _.each(propsWhereSearch, function (prop) {
                     var aux = {};
-                    aux[prop + ''] = {
+                    aux[prop] = {
                         $regex: self.searchString()
                     };
                     search.push(aux);
