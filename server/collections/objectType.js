@@ -1,6 +1,7 @@
 ObjectTypes = [
  EmployeeType,
-    CustomerType
+    CustomerType,
+    CustomerContactType
 ];
 
 validateContactable = function (obj, typeId) {

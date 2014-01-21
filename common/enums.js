@@ -53,7 +53,7 @@ var organization = {
         type: fieldType.string,
         defaultValue: '',
         required: true
- }],
+ }]
 }
 _.extend(Global, {
     person: function () {

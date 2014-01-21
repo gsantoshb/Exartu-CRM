@@ -1,6 +1,6 @@
 DashboardController = RouteController.extend({
 	template: 'dashboard',
-	layoutTemplate: 'mainLayout',
+	layoutTemplate: 'mainLayout'
 });
 
 Template.dashboard.rendered = function () {

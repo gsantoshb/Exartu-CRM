@@ -60,6 +60,7 @@ Template.contactables.rendered = function () {
         self.filter = ko.observableArray();
         self.contactableTypes = ko.observableArray();
         Meteor.call('getContactableTypes', function (err, result) {
+            console.log(result);
             if (!err) {
                 self.contactableTypes(result);
                 self.filter(
