@@ -1,5 +1,3 @@
-Messages = new Meteor.Collection("messages");
-
 Meteor.publish('messages', function () {
 	var user = Meteor.users.findOne({
 		_id: this.userId
