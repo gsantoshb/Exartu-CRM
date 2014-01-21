@@ -15,7 +15,6 @@ Template.contactables.rendered = function () {
         var propsWhereSearch = ['person.firstName', 'person.lastName', 'organization.organizationName'];
 
         var search = function () {
-            //            debugger;
             var q = {};
             var search;
             var filter;
