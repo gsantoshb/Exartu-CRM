@@ -7,6 +7,7 @@ Template.contactables.rendered = function () {
 	var viewModel = function () {
 		var self = this;
 		self.entities = ko.meteor.find(Contactables, {});
+
 		self.contactableTypes = ko.observableArray();
 		self.ready = ko.observable(false);
 

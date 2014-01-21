@@ -12,9 +12,15 @@
                         {{>addPerson}} {{>addOrganization}}
                         <h5 data-bind="text: $root.objTypeName"></h5>
                         <div id="list" data-bind="visible: $data[$root.objTypeName()]().length > 0, foreach: $data[$root.objTypeName()]">
-                            <fieldset>
+                            <fieldset data-bind="visible: $data.showInAdd">
                                 <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
                             </fieldset>
+                        </div>
+                    </div>
+                    <div data-bind="foreach: relations">
+                        <div>
+                            <h5 data-bind="text: relation.name"></h5>
+                            <select data-bind="options: data,optionsText:'displayName', value: value, optionsCaption: 'select...'"></select>
                         </div>
                     </div>
                 </div>
