@@ -50,6 +50,81 @@ _.extend(helper, {
 			return 'inDateField';
 		}
 	},
+	/*
+	 * Generate the functions and elements necesary for perform full text search and filter
+	 * over a list with entities wich have dynamic object types.
+	 * Parms:
+	 *  - fieldsToSearch: names of the entity fields where the search will be performed.
+	 *  - objTypes: list of types that are used by entities in collection.
+	 *  - callback: function called after each search
+	 * Return:
+	 *  - searchString: observable item used to search
+	 *  - filter: ..
+	 */
+	createObjTypefilter: function (fieldsToSearch, objTypes, callback) {
+		var self = {};
+
+		var search = function () {
+			var q = {};
+			var search;
+			var filter;
+			if (self.searchString()) {
+				q.$and = [];
+				q.$and.push({
+					$or: []
+				});
+				search = q.$and[0].$or;
+
+				q.$and.push({
+					$or: []
+				});
+				filter = q.$and[1].$or;
+
+				_.each(fieldsToSearch, function (prop) {
+					var aux = {};
+					aux[prop + ''] = {
+						$regex: self.searchString()
+					};
+					search.push(aux);
+				});
+			} else {
+				q = {
+					$or: []
+				};
+				filter = q.$or;
+			}
+
+			_.each(self.filter(), function (elem) {
+				if (elem.check()) {
+					var aux = {}
+					aux[elem.label] = {
+						$exists: true
+					};
+					filter.push(aux);
+				}
+			})
+			callback.call({
+				query: q
+			});
+		};
+
+		self.filter = ko.observableArray(
+			_.map(objTypes, function (type) {
+				var filter = {
+					check: ko.observable(true),
+					label: type.name,
+					typeId: type._id
+				};
+				filter.check.subscribe(search);
+				return filter;
+			})
+		);
+
+		self.searchString = ko.observable('');
+		self.searchString.subscribe(search);
+
+		return self;
+	}
 });
 
 _.extend(helper, {
