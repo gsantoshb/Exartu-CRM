@@ -8,8 +8,7 @@ Template.contactables.rendered = function () {
         var self = this;
         self.filter = ko.observable({});
         self.entities = ko.meteor.find(Contactables, {});
-        self.searchString = ko.observable('');
-        self.searchString.extend({
+        self.searchString = ko.observable('').extend({
             throttle: 300
         });
 
@@ -56,7 +55,7 @@ Template.contactables.rendered = function () {
                 }
             })
             if (filter.length == 0) {
-                debugger;
+                //                debugger;
                 if (search)
                     q = {
                         $or: search
