@@ -1,5 +1,3 @@
-Contactables = new Meteor.Collection("contactables");
-
 Meteor.publish('contactables', function () {
 	var user = Meteor.users.findOne({
 		_id: this.userId
@@ -42,11 +40,9 @@ Contactables.allow({
 	}
 });
 
-
 Contactables.before.insert(function (userId, doc) {
 	doc.createdAt = Date.now();
 });
-
 
 var extendAndValidate = function (contactable) {
 	//contactable's things
@@ -67,7 +63,38 @@ var extendAndValidate = function (contactable) {
 		_.forEach(ObjType.services, function (service) {
 			contactable[service] = [];
 		});
-		v = v && validateContactable(contactable, type);
+		v = v && validateObjType(contactable, type);
 	});
-	return v;
+	return v && validateContactable(contactable);
 };
+
+var validateContactable = function (obj) {
+	if (!obj.person & !obj.organization) {
+		console.log('the contactable must be a person or an organization');
+		return false
+	}
+	if (obj.person && (!validatePerson(obj.person))) {
+		console.log('invalid person');
+		return false;
+	}
+	if (obj.organization && (!validateOrganization(obj.organization))) {
+		console.log('invalid Organization');
+		return false;
+	}
+};
+
+var validatePerson = function (person) {
+	if (!person.firstName)
+		return false;
+	if (!person.lastName)
+		return false;
+
+	return true;
+};
+
+var validateOrganization = function (org) {
+	if (!org.organizationName)
+		return false;
+
+	return true;
+}

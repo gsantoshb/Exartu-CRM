@@ -1,12 +1,11 @@
-Activities = new Meteor.Collection("activities");
-
-/***
-userId
-hierId
-type
-entityId
-data
-***/
+/* 
+ * Activities:
+ *  - userId
+ *  - hierId
+ *  - type
+ *  - entityId
+ *  - data
+ */
 
 Meteor.publish('activities', function () {
 	var user = Meteor.users.findOne({
