@@ -43,6 +43,7 @@ Template.addContactable.viewmodel = function (typeId) {
                     })
                 })
             });
+            asd = result;
             self.objTypeName(result.name);
             var aux = {
                 type: ko.observableArray([typeId]),
@@ -51,6 +52,17 @@ Template.addContactable.viewmodel = function (typeId) {
             }
             aux[result.name] = ko.observableArray(result.fields)
             self.contactable = ko.validatedObservable(aux);
+
+            //relations
+            self.relations = ko.observableArray([]);
+            _.each(result.relations, function (r) {
+                if (r.showInAdd)
+                    self.relations.push({
+                        relation: r,
+                        data: ko.meteor.find(window[r.target.collection], r.target.query),
+                        value: ko.observable(null)
+                    });
+            })
 
             self.ready(true);
         }
@@ -62,7 +74,13 @@ Template.addContactable.viewmodel = function (typeId) {
             self.contactable.errors.showAllMessages();
             return;
         };
-
+        var relNames = _.map(self.relations(), function (r) {
+            return r.relation.name;
+        });
+        var relValues = _.map(self.relations(), function (r) {
+            return r.value()._id();
+        });
+        _.extend(self.contactable(), _.object(relNames, relValues));
 
         Meteor.call('addContactable', ko.toJS(self.contactable));
         $('#addContactableModal').modal('hide');
