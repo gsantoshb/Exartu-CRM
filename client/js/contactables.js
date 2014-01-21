@@ -9,6 +9,9 @@ Template.contactables.rendered = function () {
         self.filter = ko.observable({});
         self.entities = ko.meteor.find(Contactables, {});
         self.searchString = ko.observable('');
+        self.searchString.extend({
+            throttle: 300
+        });
 
         var propsWhereSearch = ['person.firstName', 'person.lastName', 'organization.organizationName'];
 
@@ -52,7 +55,16 @@ Template.contactables.rendered = function () {
                     filter.push(aux);
                 }
             })
-            //            console.dir(q);
+            if (filter.length == 0) {
+                debugger;
+                if (search)
+                    q = {
+                        $or: search
+                    };
+                else
+                    q = {};
+            }
+            console.dir(q);
 
             self.entities(ko.mapping.fromJS(Contactables.find(q).fetch())());
         };
