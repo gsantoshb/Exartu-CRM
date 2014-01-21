@@ -51,9 +51,9 @@ _.extend(helper, {
 		}
 	},
 	/*
-	 * Generate the functions and elements necesary for perform full text search and filter
-	 * over a list with entities wich have dynamic object types.
-	 * Parms:
+	 * Generate the functions and elements necessary for perform full text search and filter
+	 * over a list with entities which have dynamic object types.
+	 * Params:
 	 *  - fieldsToSearch: names of the entity fields where the search will be performed.
 	 *  - objTypes: list of types that are used by entities in collection.
 	 *  - callback: function called after each search

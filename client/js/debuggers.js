@@ -1,5 +1,5 @@
 
-function logRenders () {
+logRenders=function () {
     _.each(Template, function (template, name) {
         var oldRender = template.rendered;
         var counter = 0;
@@ -15,10 +15,10 @@ var wrappedFind = Meteor.Collection.prototype.find;
 
 Meteor.Collection.prototype.find = function () {
     var cursor = wrappedFind.apply(this, arguments);
-    if (Global.debugger)
+//    if (Global.debugger)
     {
         var collectionName = this._name;
-
+        console.log(cursor);
         cursor.observeChanges({
             added: function (id, fields) {
                 console.log(collectionName, 'added', id, fields);

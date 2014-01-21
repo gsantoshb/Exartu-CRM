@@ -27,7 +27,7 @@ Contactables.after.insert(function (userId, doc) {
 		type: Enums.activitiesType.contactableAdd,
 		entityId: doc._id,
 		data: {
-			createdAt: doc.createdAt,
+			createdAt: doc.createdAt
 		}
 	})
 })
@@ -41,7 +41,7 @@ Messages.after.insert(function (userId, doc) {
 			entityId: entity,
 			data: {
 				message: doc.message,
-				createdAt: doc.createdAt,
+				createdAt: doc.createdAt
 			}
 		})
 	})
