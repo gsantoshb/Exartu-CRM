@@ -103,6 +103,16 @@ _.extend(helper, {
 					filter.push(aux);
 				}
 			})
+
+			if (filter.length == 0) {
+				if (search)
+					q = {
+						$or: search
+					};
+				else
+					q = {};
+			}
+
 			callback.call({
 				query: q
 			});
