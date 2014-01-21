@@ -25,4 +25,9 @@ Router.map(function () {
 		path: '/contactable/:_id',
 		controller: 'ContactableController'
 	});
+
+	this.route('jobs', {
+		path: '/jobs',
+		controller: 'JobsController'
+	});
 });
