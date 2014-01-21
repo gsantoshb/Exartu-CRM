@@ -3,7 +3,7 @@ Router.configure({
 		if (!Meteor.userId() && Router.current().route.name != 'login') {
 			this.redirect('login');
 		}
-	},
+	}
 });
 Router.map(function () {
 	this.route('dashboard', {

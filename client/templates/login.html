@@ -1,5 +1,8 @@
 <template name="login">
     <div class="main-yield-container">
-        Please login
+        {{#if currentUser}}
+        {{else}}
+            Please login
+        {{/if}}
     </div>    
 </template>

@@ -1,7 +1,7 @@
 /*** wraper for ko.applyBindings
 *    vm -> viewModel(object) to bind
-*    viewName -> string that identify the DOM that holds view (must extist an element with name="viewName")
-*    collecionHandler(optional) -> Meteor collection handler extended with our wait function. The binding will apply when the collection is ready
+*    viewName -> string that identifies the DOM that holds view (must exist an element with name="viewName")
+*    collectionHandler(optional) -> Meteor collection handler extended with our wait function. The binding will apply when the collection is ready
         todo: support multiple collections
 ***/
 var errorElement = function (oldElement, msg) {
