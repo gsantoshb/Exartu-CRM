@@ -1,0 +1,76 @@
+<template name="jobs">
+	<section name="jobsVM">
+		<!-- ko if: ready -->
+		<div class="row" style="margin-top: 10px, width: 100%;">
+			<!-- Filter panel -->
+			<div class="col-md-2 ats-filter-panel">
+
+				<h5 class="panel-section-title">Actions</h5>
+
+<!--
+				<div data-bind="foreach: jobTypes">
+	<a data-toggle="modal" data-bind="click: function () { helper.showModal('addContactable', 'addContactableModal', $data._id); }, text: 'Add ' + name"></a>
+	<br/>
+</div>
+-->
+
+				<h5 class="panel-section-title">Filters</h5>
+
+				<div data-bind="foreach: filter">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" id="filter-employee" data-bind="checked: check" />
+							<span data-bind="text:label" />
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9 col-md-offset-2" style="margin-top: -10px">
+			<div>
+				<!--<h5 class="panel-section-title">Results-->
+				<h5>
+
+					<!-- Search string -->
+					<span class="input-group" style="width: 100%; max-width: 606px;">
+						<span class="input-group-addon glyphicon glyphicon-search" style="position: initial;"></span>
+						<input type="text" class="form-control expandable-field" placeholder="Search..." data-bind="value: searchString, valueUpdate:'afterkeydown'">
+					</span>
+				</h5>
+			</div>
+
+
+			<!-- Entities list -->
+			<div>
+				{{#if loading}}
+				<div id="lists">Loading...</div>
+				{{else}}
+				<div data-bind="foreach: entities ">
+					<div class="ats-entities">
+						<a data-bind="attr:{href: 'job/'+_id()}">
+							<div class="row ">
+								a
+								<!-- Left -->
+								<div class="col-md-1">
+								</div>
+
+
+								<!-- Middle -->
+								<div class="col-md-8">
+
+								</div>
+
+								<!-- Right -->
+								<div class="col-md-3">
+								</div>
+							</div>
+						</a>
+					</div>
+
+				</div>
+				{{/if}}
+			</div>
+		</div>
+		<!--/ko-->
+	</section>
+</template>

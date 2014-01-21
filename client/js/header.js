@@ -6,6 +6,9 @@ Template.header.rendered = function () {
 	case 'contactables':
 		$('#contactablesLink').addClass("active");
 		break;
+	case 'jobs':
+		$('#jobsLink').addClass("active");
+		break;
 	};
 }
 
