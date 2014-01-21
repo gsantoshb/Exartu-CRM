@@ -1,6 +1,7 @@
 <template name="contactables">
 	{{>addContactable}}
 	<section name="contactablesVM">
+		<!-- ko if: ready -->
 		<div class="row" style="margin-top: 10px, width: 100%;">
 			<!-- Filter panel -->
 			<div class="col-md-2 ats-filter-panel">
@@ -143,6 +144,6 @@
 				{{/if}}
 			</div>
 		</div>
-		</div>
+		<!--/ko-->
 	</section>
 </template>
