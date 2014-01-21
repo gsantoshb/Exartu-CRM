@@ -1,6 +1,6 @@
 koPerson = function () {
     var p = {};
-    _.forEach(Global.personField, function (field) {
+    _.forEach(Global.personFields, function (field) {
         p[field.name] = ko.observable(field.defaultValue);
         if (field.required)
             p[field.name].extend({
@@ -10,7 +10,7 @@ koPerson = function () {
             p[field.name].extend({
                 pattern: {
                     message: 'invalid',
-                    params: field.regex,
+                    params: field.regex
                 }
             });
 
@@ -21,7 +21,7 @@ koPerson = function () {
 
 koOrganization = function () {
     var o = {};
-    _.forEach(Global.organizationField, function (field) {
+    _.forEach(Global.organizationFields, function (field) {
         o[field.name] = ko.observable(field.defaultValue);
         if (field.required)
             o[field.name].extend({
@@ -31,7 +31,7 @@ koOrganization = function () {
             o[field.name].extend({
                 pattern: {
                     message: 'invalid',
-                    params: field.regex,
+                    params: field.regex
                 }
             });
 
@@ -49,5 +49,5 @@ ko.validation.configure({
     //decorateElement: true,      //default is false. Applies the .validationElement CSS class
     grouping: {
         deep: true
-    }, //default is deep: false, observable: true
+    } //default is deep: false, observable: true
 });

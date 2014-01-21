@@ -12,7 +12,7 @@ Template.addContactable.viewmodel = function (typeId) {
         switch (newVal) {
         case 'person':
             _.extend(self.contactable(), {
-                person: myPerson,
+                person: myPerson
             });
             if (self.contactable().organization) {
                 self.contactable().organization = null;
@@ -38,7 +38,7 @@ Template.addContactable.viewmodel = function (typeId) {
                     value: ko.observable().extend({
                         pattern: {
                             message: 'error',
-                            params: item.regex,
+                            params: item.regex
                         }
                     })
                 })

@@ -5,7 +5,7 @@ _.extend(Enums, {
         int: 1,
         date: 2,
         select: 3,
-        checkbox: 4,
+        checkbox: 4
     },
     activitiesType: {
         contactableAdd: 0,
@@ -30,11 +30,6 @@ var person = {
             required: true
  }, {
             name: 'middleName',
-            regex: /.+/,
-            type: fieldType.string,
-            defaultValue: ''
- }, {
-            name: 'salutation',
             regex: /.+/,
             type: fieldType.string,
             defaultValue: ''
@@ -71,7 +66,7 @@ _.extend(Global, {
         })
         return _.object(names, values);
     },
-    personField: person.fields,
+    personFields: person.fields,
 
     organization: function () {
         var p = {};
@@ -83,8 +78,8 @@ _.extend(Global, {
         })
         return _.object(names, values);
     },
-    organizationField: organization.fields,
+    organizationFields: organization.fields,
     organization: {
-        organizationName: '',
+        organizationName: ''
     }
 });
