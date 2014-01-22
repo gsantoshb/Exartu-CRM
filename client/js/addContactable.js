@@ -37,7 +37,7 @@ Template.addContactable.viewmodel = function (typeId) {
                 _.extend(item, {
                     value: ko.observable().extend({
                         pattern: {
-                            message: 'error',
+                            message: 'invalid value',
                             params: item.regex
                         }
                     })
@@ -65,7 +65,7 @@ Template.addContactable.viewmodel = function (typeId) {
             })
 
             self.ready(true);
-        }
+        };
     });
 
     self.addContactable = function () {
