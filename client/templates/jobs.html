@@ -1,4 +1,5 @@
 <template name="jobs">
+	{{> addJob}}
 	<section name="jobsVM">
 		<!-- ko if: ready -->
 		<div class="row" style="margin-top: 10px, width: 100%;">
@@ -7,12 +8,10 @@
 
 				<h5 class="panel-section-title">Actions</h5>
 
-<!--
 				<div data-bind="foreach: jobTypes">
-	<a data-toggle="modal" data-bind="click: function () { helper.showModal('addContactable', 'addContactableModal', $data._id); }, text: 'Add ' + name"></a>
-	<br/>
-</div>
--->
+					<a data-toggle="modal" data-bind="click: function () { helper.showModal('addJob', 'addJobModal', $data._id); }, text: 'Add ' + name"></a>
+					<br/>
+				</div>
 
 				<h5 class="panel-section-title">Filters</h5>
 
@@ -47,9 +46,10 @@
 				{{else}}
 				<div data-bind="foreach: entities ">
 					<div class="ats-entities">
-						<a data-bind="attr:{href: 'job/'+_id()}">
+						<!--						data-bind="attr:{href: 'job/'+_id()}"-->
+						<a>
 							<div class="row ">
-								a
+								<span data-bind="text: _id()"></span>
 								<!-- Left -->
 								<div class="col-md-1">
 								</div>

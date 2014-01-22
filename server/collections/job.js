@@ -21,7 +21,8 @@ Meteor.startup(function () {
 			if (extendAndValidate(job)) {
 				Jobs.insert(job);
 			} else {
-				console.error('Jobs is not valid.')
+				console.error('Job is not valid')
+				console.dir(job);
 			}
 		}
 	});
@@ -34,6 +35,10 @@ Jobs.allow({
 });
 
 Jobs.before.insert(function (userId, doc) {
+	var user = Meteor.user();
+	doc.hierId = user.hierId;
+	doc.userId = user._id;
+
 	doc.createdAt = Date.now();
 });
 
@@ -55,7 +60,6 @@ var extendAndValidate = function (job) {
 		var ObjType = _.findWhere(ObjectTypes, {
 			_id: type
 		});
-		console.log('adding services');
 		_.forEach(ObjType.services, function (service) {
 			job[service] = [];
 		});

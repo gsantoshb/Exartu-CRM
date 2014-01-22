@@ -39,26 +39,32 @@ validateObjType = function (obj, objTypeId) {
 		var needed = objType.services.indexOf(service) >= 0;
 		var used = obj[service] ? true : false;
 
-		//		if (!((needed && used) || (!needed && !used)))
-		//			console.log(service + '-->  needed: ' + needed + '  used: ' + used);
 		v = ((needed && used) || (!needed && !used));
 		return v;
 	});
-	if (!v) return false;
+	if (!v) {
+		console.error('invalid service');
+		return false;
+	}
 
 	// Validating fields
 	var typeInfo = obj[objType.name];
 	v = true;
 	_.every(objType.fields, function (field) {
-		if (typeInfo[field.name]) {
-			//			if (!typeInfo[field.name].match(field.regex))
-			//				console.log(field.name + '-->  value: ' + typeInfo[field.name]);
-			v = v && (typeInfo[field.name].match(field.regex));
+		if (typeInfo[field.name] != undefined) {
+			v = v && (typeInfo[field.name].match(field.regex) != null);
+			if (!v) console.error(field.name + ' is invalid: ' + v);
 			return v;
-		} else
+		} else {
+			v = false;
+			console.error(field.name + ' does not exists');
 			return false;
+		}
 	});
-	if (!v) return false;
+	if (!v) {
+		console.error('invalid fields');
+		return false;
+	}
 
 	return true;
 }
@@ -66,7 +72,7 @@ validateObjType = function (obj, objTypeId) {
 /*
  * Services avialable in the system
  */
-Services = ['messages', 'documents', 'pastJobs', 'tags', 'education', 'task'];
+Services = ['messages ', 'documents ', 'pastJobs ', 'tags ', 'education ', 'task '];
 
 Meteor.startup(function () {
 	Meteor.methods({
