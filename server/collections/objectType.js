@@ -1,11 +1,3 @@
-// TODO: Make ObjectTypes a Meteor collection 
-ObjectTypes = [
- 	EmployeeType,
-	CustomerType,
-    CustomerContactType,
-	JobType
-];
-
 /*
  * Validate if an object has the structure required by the objectType.
  * Return true if:
@@ -89,6 +81,13 @@ Meteor.startup(function () {
 				return null;
 			}
 
+			if (ObjectTypes.findOne({
+				name: name
+			}) != null) {
+				console.error('create objectType: objectType name is already used');
+				return null;
+			}
+
 			// validate services
 			var v = true;
 			if (Object.prototype.toString.call(services) === '[object Array]')
@@ -126,7 +125,7 @@ Meteor.startup(function () {
 			}
 
 			return ObjectTypes.insert({
-				hierId: ExartuConfig.SystemHierarchyId,
+				hierId: Meteor.user().hierId,
 				type: type,
 				name: name,
 				services: services,
