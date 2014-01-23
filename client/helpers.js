@@ -5,149 +5,156 @@
         todo: support multiple collections
 ***/
 var errorElement = function (oldElement, msg) {
-	return '<div style="border: solid 1px red;color: red; width:' + $(oldElement).width() + 'px;height:' + $(oldElement).height() + 'px;"> ' + msg + ' </div';
+    return '<div style="border: solid 1px red;color: red; width:' + $(oldElement).width() + 'px;height:' + $(oldElement).height() + 'px;"> ' + msg + ' </div';
 }
 helper = {};
 _.extend(helper, {
-	applyBindings: function (vm, viewName, collectionHandler) {
-		var vm = typeof (vm) == "function" ? new vm() : vm;
+    applyBindings: function (vm, viewName, collectionHandler) {
+        var vm = typeof (vm) == "function" ? new vm() : vm;
 
-		if (!collectionHandler || !collectionHandler.wait) {
-			try {
-				ko.applyBindings(vm, document.getElementsByName(viewName)[0]);
-			} catch (err) {
-				var element = document.getElementsByName(viewName)[0];
-				if (!element) {
-					console.log(viewName + ' does not exists');
-					return;
-				}
-				element.innerHTML = errorElement(element, err.message);
-				console.log('binding error');
-				console.dir(err)
-			}
-		} else {
-			collectionHandler.wait(function () {
-				try {
-					ko.applyBindings(vm, document.getElementsByName(viewName)[0]);
-				} catch (err) {
-					var element = document.getElementsByName(viewName)[0];
-					if (!element) {
-						console.log(viewName + ' does not exists');
-						return;
-					}
-					element.innerHTML = errorElement(element, err.message);
-					console.log('binding error');
-					console.dir(err)
-				}
-			});
-		}
-	},
-	fieldVM: function (field) {
-		switch (field.type) {
-		case 0:
-			return 'inStringField';
-		case 2:
-			return 'inDateField';
-		}
-	},
-	/*
-	 * Generate the functions and elements necessary for perform full text search and filter
-	 * over a list with entities which have dynamic object types.
-	 * Params:
-	 *  - fieldsToSearch: names of the entity fields where the search will be performed.
-	 *  - objTypes: list of types that are used by entities in collection.
-	 *  - callback: function called after each search
-	 * Return:
-	 *  - searchString: observable item used to search
-	 *  - filter: ..
-	 */
-	createObjTypefilter: function (fieldsToSearch, objTypes, callback) {
-		var self = {};
+        if (!collectionHandler || !collectionHandler.wait) {
+            try {
+                ko.applyBindings(vm, document.getElementsByName(viewName)[0]);
+            } catch (err) {
+                var element = document.getElementsByName(viewName)[0];
+                if (!element) {
+                    console.log(viewName + ' does not exists');
+                    return;
+                }
+                element.innerHTML = errorElement(element, err.message);
+                console.log('binding error');
+                console.dir(err)
+            }
+        } else {
+            collectionHandler.wait(function () {
+                try {
+                    ko.applyBindings(vm, document.getElementsByName(viewName)[0]);
+                } catch (err) {
+                    var element = document.getElementsByName(viewName)[0];
+                    if (!element) {
+                        console.log(viewName + ' does not exists');
+                        return;
+                    }
+                    element.innerHTML = errorElement(element, err.message);
+                    console.log('binding error');
+                    console.dir(err)
+                }
+            });
+        }
+    },
+    fieldVM: function (field) {
+        switch (field.type) {
+        case 0:
+            return 'inStringField';
+        case 2:
+            return 'inDateField';
+        }
+    },
+    relationVM: function (rel) {
+        if (rel.cardinality.max == 1)
+            return 'inSingle';
 
-		var search = function () {
-			var q = {};
-			var search;
-			var filter;
-			if (self.searchString()) {
-				q.$and = [];
-				q.$and.push({
-					$or: []
-				});
-				search = q.$and[0].$or;
+        if (rel.cardinality.max == Infinity)
+            return 'inMultiple'
+    },
+    /*
+     * Generate the functions and elements necessary for perform full text search and filter
+     * over a list with entities which have dynamic object types.
+     * Params:
+     *  - fieldsToSearch: names of the entity fields where the search will be performed.
+     *  - objTypes: list of types that are used by entities in collection.
+     *  - callback: function called after each search
+     * Return:
+     *  - searchString: observable item used to search
+     *  - filter: ..
+     */
+    createObjTypefilter: function (fieldsToSearch, objTypes, callback) {
+        var self = {};
 
-				q.$and.push({
-					$or: []
-				});
-				filter = q.$and[1].$or;
+        var search = function () {
+            var q = {};
+            var search;
+            var filter;
+            if (self.searchString()) {
+                q.$and = [];
+                q.$and.push({
+                    $or: []
+                });
+                search = q.$and[0].$or;
 
-				_.each(fieldsToSearch, function (prop) {
-					var aux = {};
-					aux[prop + ''] = {
-						$regex: self.searchString()
-					};
-					search.push(aux);
-				});
-			} else {
-				q = {
-					$or: []
-				};
-				filter = q.$or;
-			}
+                q.$and.push({
+                    $or: []
+                });
+                filter = q.$and[1].$or;
 
-			_.each(self.filter(), function (elem) {
-				if (elem.check()) {
-					var aux = {}
-					aux[elem.label] = {
-						$exists: true
-					};
-					filter.push(aux);
-				}
-			})
+                _.each(fieldsToSearch, function (prop) {
+                    var aux = {};
+                    aux[prop + ''] = {
+                        $regex: self.searchString()
+                    };
+                    search.push(aux);
+                });
+            } else {
+                q = {
+                    $or: []
+                };
+                filter = q.$or;
+            }
 
-			if (filter.length == 0) {
-				if (search)
-					q = {
-						$or: search
-					};
-				else
-					q = {};
-			}
+            _.each(self.filter(), function (elem) {
+                if (elem.check()) {
+                    var aux = {}
+                    aux[elem.label] = {
+                        $exists: true
+                    };
+                    filter.push(aux);
+                }
+            })
 
-			callback.call({
-				query: q
-			});
-		};
+            if (filter.length == 0) {
+                if (search)
+                    q = {
+                        $or: search
+                    };
+                else
+                    q = {};
+            }
 
-		self.filter = ko.observableArray(
-			_.map(objTypes, function (type) {
-				var filter = {
-					check: ko.observable(true),
-					label: type.name,
-					typeId: type._id
-				};
-				filter.check.subscribe(search);
-				return filter;
-			})
-		);
+            callback.call({
+                query: q
+            });
+        };
 
-		self.searchString = ko.observable('');
-		self.searchString.subscribe(search);
+        self.filter = ko.observableArray(
+            _.map(objTypes, function (type) {
+                var filter = {
+                    check: ko.observable(true),
+                    label: type.name,
+                    typeId: type._id
+                };
+                filter.check.subscribe(search);
+                return filter;
+            })
+        );
 
-		return self;
-	}
+        self.searchString = ko.observable('');
+        self.searchString.subscribe(search);
+
+        return self;
+    }
 });
 
 _.extend(helper, {
-	showModal: function (templateName, view, parameter) {
-		var modal = $('#' + view),
-			originalHTML = modal[0].innerHTML;
+    showModal: function (templateName, view, parameter) {
+        var modal = $('#' + view),
+            originalHTML = modal[0].innerHTML;
 
-		modal.modal('show');
-		helper.applyBindings(new Template[templateName].viewmodel(parameter), view);
+        modal.modal('show');
+        helper.applyBindings(new Template[templateName].viewmodel(parameter), view);
 
-		modal.on('hidden.bs.modal', function (e) {
-			ko.cleanNode(this);
-			$(this)[0].innerHTML = originalHTML;
-		});
-	}
+        modal.on('hidden.bs.modal', function (e) {
+            ko.cleanNode(this);
+            $(this)[0].innerHTML = originalHTML;
+        });
+    }
 })

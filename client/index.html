@@ -1,12 +1,13 @@
 <head>
-	<title>Exartu</title>
+    <title>Exartu</title>
 </head>
 
 <body>
-	{{> header}} {{> fieldTemplatesDefinition}}
-	<div class="entity-background"></div>
+    {{> header}} {{> fieldTemplatesDefinition}} {{> relationTemplatesDefinition}}
+    <div class="entity-background">
+    </div>
 
-	<!-- This is not the best place to add modals -->
-	{{>sendEmailModal}}
-	<!-- Here is where layouts are rendered	-->
+    <!-- This is not the best place to add modals -->
+    {{>sendEmailModal}}
+    <!-- Here is where layouts are rendered	-->
 </body>

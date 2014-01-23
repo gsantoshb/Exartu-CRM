@@ -1,0 +1,25 @@
+<!-- fieldTemplatesDefinition is a dummy template used to expose fields templates -->
+<template name="relationTemplatesDefinition">
+
+    <div id="inSingle" style="display: none;">
+        <h5 data-bind="text: relation.name"></h5>
+        <select data-bind="options: data,optionsText:'displayName', value: value, optionsCaption: 'select...'"></select>
+    </div>
+
+    <div id="outSingle" style="display: none;">
+        <span>out single relation</span>
+    </div>
+
+    <div id="inMultiple" style="display: none;">
+        <h5 data-bind="text: relation.name"></h5>
+        <select data-bind="options: data,optionsText:'displayName', value: value" multiple></select>
+    </div>
+
+    <div id="outMultiple" style="display: none;">
+        <select data-bind="options: data,optionsText:'displayName', value: value"></select>
+        <button>+</button>
+        <ul data-bind="foreach: value">
+            <div data-bind="text: displayName"></div>
+        </ul>
+    </div>
+</template>
