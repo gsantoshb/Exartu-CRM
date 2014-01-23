@@ -14,8 +14,6 @@ Meteor.publish('contactables', function () {
 Meteor.startup(function () {
 	Meteor.methods({
 		addContactable: function (contactable) {
-
-			console.log('hellou');
 			var user = Meteor.user();
 			if (user == null)
 				throw new Meteor.Error(401, "Please login");
@@ -23,11 +21,9 @@ Meteor.startup(function () {
 			addSystemMetadata(contactable, user);
 
 			if (extendAndValidate(contactable)) {
-				console.log('valid!!!!!! :D')
-				console.dir(contactable);
 				Contactables.insert(contactable);
 			} else {
-				console.log('NOT valid :(')
+				console.error('Contactable not valid')
 				console.dir(contactable);
 			}
 		}
@@ -59,28 +55,30 @@ var extendAndValidate = function (contactable) {
 		var ObjType = _.findWhere(ObjectTypes, {
 			_id: type
 		});
-		console.log('adding services');
 		_.forEach(ObjType.services, function (service) {
 			contactable[service] = [];
 		});
 		v = v && validateObjType(contactable, type);
 	});
+
 	return v && validateContactable(contactable);
 };
 
 var validateContactable = function (obj) {
 	if (!obj.person & !obj.organization) {
-		console.log('the contactable must be a person or an organization');
+		console.error('the contactable must be a person or an organization');
 		return false
 	}
 	if (obj.person && (!validatePerson(obj.person))) {
-		console.log('invalid person');
+		console.error('invalid person');
 		return false;
 	}
 	if (obj.organization && (!validateOrganization(obj.organization))) {
-		console.log('invalid Organization');
+		console.error('invalid Organization');
 		return false;
 	}
+
+	return true;
 };
 
 var validatePerson = function (person) {

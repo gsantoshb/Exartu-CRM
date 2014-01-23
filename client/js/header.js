@@ -24,5 +24,11 @@ Template.header.events = {
 		$('.ats-navItem .active').removeClass('active');
 		// Add class
 		$('#contactablesLink').addClass('active');
+	},
+	'click #jobsLink': function () {
+		// Remove class from previous navigation link
+		$('.ats-navItem .active').removeClass('active');
+		// Add class
+		$('#jobsLink').addClass('active');
 	}
 }
