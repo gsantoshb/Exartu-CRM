@@ -72,36 +72,81 @@ validateObjType = function (obj, objTypeId) {
 /*
  * Services avialable in the system
  */
-Services = ['messages ', 'documents ', 'pastJobs ', 'tags ', 'education ', 'task '];
+SystemServices = ['messages ', 'documents ', 'pastJobs ', 'tags ', 'education ', 'task '];
 
 Meteor.startup(function () {
 	Meteor.methods({
+		createObjectType: function (type, name, services, fields) {
+			// validate type
+			if (!_.contains(Enums.objectTypeTypes, type)) {
+				console.error('create objectType: objType type does not exists')
+				return null;
+			}
+
+			// validate name
+			if (!(typeof name == 'string' || name instanceof String)) {
+				console.error('create objectType: objType name is not a string')
+				return null;
+			}
+
+			// validate services
+			var v = true;
+			if (Object.prototype.toString.call(services) === '[object Array]')
+				_.every(services, function (service) {
+					if (!_.contains(SystemServices, service)) {
+						v = false;
+						console.error('create objectType: service does not exists');
+						return false;
+					}
+					return true;
+				});
+			else {
+				console.error('create objectType: objType services is not an array')
+				return null;
+			}
+
+			// validate fields
+			if (Object.prototype.toString.call(fields) === '[object Array]')
+				_.every(fields, function (field) {
+					if (!(typeof field.name == 'string' || field.name instanceof String)) {
+						console.log('create objectType: field name invalid --> ' + field.name);
+						v = false;
+						return false;
+					}
+					if (!(typeof field.showInAdd == 'boolean')) {
+						console.log('create objectType: field showInAdd invalid --> ' + field.name);
+						v = false;
+						return false;
+					}
+					// TODO: validate regex, type and default value
+				});
+			else {
+				console.error('create objectType: objType fields is not an array')
+				return null;
+			}
+
+			return ObjectTypes.insert({
+				hierId: ExartuConfig.SystemHierarchyId,
+				type: type,
+				name: name,
+				services: services,
+				fields: fields,
+			})
+		},
 		getObjType: function (id) {
-			return _.findWhere(ObjectTypes, {
+			return ObjectTypes.findOne({
 				_id: id
 			});
 		},
 		getContactableTypes: function () {
-			var types = [];
-			_.forEach(ObjectTypes, function (type) {
-				if (type.contactableType)
-					types.push({
-						name: type.name,
-						_id: type._id
-					});
-			})
-			return types;
+			return ObjectTypes.find({
+				type: Enums.objectTypeTypes.contactable
+			}).fetch();
 		},
 		getJobTypes: function () {
-			var types = [];
-			_.forEach(ObjectTypes, function (type) {
-				if (type.jobType)
-					types.push({
-						name: type.name,
-						_id: type._id
-					});
-			})
-			return types;
+			return ObjectTypes.find({
+				type: Enums.objectTypeTypes.job
+			}).fetch();
 		}
 	});
 });
