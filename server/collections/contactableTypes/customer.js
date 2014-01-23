@@ -43,6 +43,6 @@ CustomerType = {
                 return (v.type.indexOf[CustomerContactType._id] >= 0);
             }
         },
-        showInAdd: false,
+        showInAdd: true,
     }]
 }
