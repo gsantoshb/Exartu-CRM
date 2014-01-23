@@ -7,3 +7,5 @@ Activities = new Meteor.Collection("activities");
 Contactables = new Meteor.Collection("contactables");
 
 Messages = new Meteor.Collection("messages");
+
+ObjectTypes = new Meteor.Collection("objectTypes");

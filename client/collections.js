@@ -21,7 +21,7 @@ ContactableHandler.wait = function (cb) {
 		this.observers.push(cb);
 }
 
-Jobs = new Meteor.Collection("job", {
+Jobs = new Meteor.Collection("jobs", {
 	transform: function (contactable) {
 		if (contactable.person)
 			contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
@@ -31,7 +31,7 @@ Jobs = new Meteor.Collection("job", {
 		return contactable;
 	},
 });
-JobHandler = Meteor.subscribe('job', function () {
+JobHandler = Meteor.subscribe('jobs', function () {
 	_.forEach(Jobs.observers, function (cb) {
 		cb();
 	});
