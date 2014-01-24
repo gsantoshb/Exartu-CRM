@@ -77,7 +77,7 @@ validateObjType = function (obj, objTypeId) {
 }
 
 /*
- * Services avialable in the system
+ * Services available in the system
  */
 SystemServices = ['messages ', 'documents ', 'pastJobs ', 'tags ', 'education ', 'task '];
 
