@@ -18,7 +18,7 @@ _.extend(helper, {
             } catch (err) {
                 var element = document.getElementsByName(viewName)[0];
                 if (!element) {
-                    console.log(viewName + ' does not exists');
+                    console.log(viewName + ' does not exist');
                     return;
                 }
                 element.innerHTML = errorElement(element, err.message);
@@ -32,7 +32,7 @@ _.extend(helper, {
                 } catch (err) {
                     var element = document.getElementsByName(viewName)[0];
                     if (!element) {
-                        console.log(viewName + ' does not exists');
+                        console.log(viewName + ' does not exist');
                         return;
                     }
                     element.innerHTML = errorElement(element, err.message);

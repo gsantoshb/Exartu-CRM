@@ -12,7 +12,7 @@
 
 validateObjType = function (obj, objType) {
     if (!objType) {
-        console.error('Object type does not exists');
+        console.error('Object type does not exist');
         return false;
     }
 
@@ -45,7 +45,7 @@ validateObjType = function (obj, objType) {
             return v;
         } else {
             v = false;
-            console.error(field.name + ' does not exists');
+            console.error(field.name + ' does not exist');
             return false;
         }
     });
@@ -94,8 +94,8 @@ Meteor.startup(function () {
     Meteor.methods({
         createObjectType: function (type, name, services, fields) {
             // validate type
-            if (!_.contains(Enums.objectTypeTypes, type)) {
-                console.error('create objectType: objType type does not exists')
+            if (!_.contains(Enums.objectGroups, type)) {
+                console.error('create objectType: objGroup does not exist')
                 return null;
             }
 
@@ -118,7 +118,7 @@ Meteor.startup(function () {
                 _.every(services, function (service) {
                     if (!_.contains(SystemServices, service)) {
                         v = false;
-                        console.error('create objectType: service does not exists');
+                        console.error('create objectType: service does not exist');
                         return false;
                     }
                     return true;
@@ -163,12 +163,12 @@ Meteor.startup(function () {
         },
         getContactableTypes: function () {
             return ObjectTypes.find({
-                type: Enums.objectTypeTypes.contactable
+                type: Enums.objectGroups.contactable
             }).fetch();
         },
         getJobTypes: function () {
             return ObjectTypes.find({
-                type: Enums.objectTypeTypes.job
+                type: Enums.objectGroups.job
             }).fetch();
         }
     });
