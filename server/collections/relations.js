@@ -1,175 +1,138 @@
-/*
- * creates a function that will be called before updating a doc of type rel.obj1
- * the function will validate the new value depending on the cardinality of the rel
- * and maintining the consistency in a two-way visibility relation
- */
 function setIfNotSet(doc, rel) {
-	//checking if the doc has the rel
-	if (!doc[rel.name]) {
-		doc[rel.name] = rel.defaultValue;
-	}
+    //checking if the doc has the rel
+    if (!doc[rel.name]) {
+        doc[rel.name] = rel.defaultValue;
+    }
 };
 
 var checkCardinality = function (value, card) {
-	if (!value) {
-		//the cardinality allows no value?
-		return rel.cardinality.min <= 0;
-	}
-	if (typeof value == typeof[]) {
-		if (card.max == 1) {
-			return false;
-		} else {
-			return value.length <= card.max && value.length >= card.min;
-		}
-	} else {
-		if (card.max > 1) {
-			return false;
-		}
-	}
-	return true;
+    if (!value) {
+        //the cardinality allows no value?
+        return card.min <= 0;
+    }
+    if (typeof value == typeof[]) {
+        if (card.max == 1) {
+            return false;
+        } else {
+            return value.length <= card.max && value.length >= card.min;
+        }
+    } else {
+        if (card.max > 1) {
+            return false;
+        }
+    }
+    return true;
 }
 
 beforeUpdate = {};
 beforeUpdate.oneWay = function (value, rel) {
-	if (rel.cardinality.max == 1) {
+    if (rel.cardinality.max == 1) {
 
-		//checking cardinality
-		if (!checkCardinality(value, rel.cardinality))
-			return false;
+        //checking cardinality
+        if (!checkCardinality(value, rel.cardinality))
+            return false;
 
-		//check if the value's type is the same as this relation's target (rel.obj2)
-		return value.types.indexOf(rel.obj2) >= 0;
+        //check if the value's type is the same as this relation's target (rel.obj2)
+        return value.types.indexOf(rel.obj2) >= 0;
 
 
-	}
-	if (rel.cardinality.max == Infinity) {
+    }
+    if (rel.cardinality.max == Infinity) {
 
-		if (!value) {
-			//the cardinality allows no value?
-			return rel.cardinality.min <= 0;
-		}
+        if (!value) {
+            //the cardinality allows no value?
+            return rel.cardinality.min <= 0;
+        }
 
-		if (typeof value != typeof[]) {
-			//the value must allways be an array
-			return false;
-		} else {
-			//checking if all the values are correct
-			var valid = true;
-			_.every(value, function (val) {
-				if (val.types.indexOf(rel.obj2) < 0) {
-					valid = false;
-				}
-				return valid;
-			})
-			return valid;
-		}
-	}
+        if (typeof value != typeof[]) {
+            //the value must allways be an array
+            return false;
+        } else {
+            //checking if all the values are correct
+            var valid = true;
+            _.every(value, function (val) {
+                if (val.types.indexOf(rel.obj2) < 0) {
+                    valid = false;
+                }
+                return valid;
+            })
+            return valid;
+        }
+    }
 }
 
-beforeUpdate.twoWay = function (value, rel1, rel2) {
+beforeUpdate.twoWay = function (id, objTypeField, oldObjTypeField, rel1, rel2, obj2TypeField) {
+    var value = objTypeField[rel1.name];
+    if (rel1.cardinality.max == 1) {
+        console.log('cardinality ==1')
+        if (!checkCardinality(value, rel1.cardinality))
+            return false;
 
-	if (rel1.cardinality.max == 1) {
-		return false
-		/*
-        function (doc, fieldNames, modifier, options) {
+        //check if the value's type is the same as this relation's target (rel.obj2)
+        //        if (!value.type.indexOf(rel1.obj2) >= 0)
+        //            return false;
 
-            setIfNotSet(doc, rel1);
 
-            //checking if the value of this rel is being changed
-            if (!fieldNames.indexOf[rel1.name]) {
+        collection2 = Collections[rel1.collection];
+        var obj2 = collection2.findOne({
+            _id: value
+        });
+
+        if (rel2.cardinality.max == 1) {
+            console.log('cardinality ==1')
+            if (obj2[rel2.name] && obj2[rel2.name] != id) {
+                console.log('cannot update the ' + rel1.name + 'has value: ' + obj2[rel2.name]);
+                return false;
+            } else {
+                var aux = {};
+
+                aux[obj2TypeField + '.' + rel2.name] = id;
+
+                console.log('updating obj2 with ' + obj2TypeField);
+                console.dir(aux);
+                collection2.update({
+                    _id: obj2._id
+                }, {
+
+                    $set: aux
+                });
+                return true;
+            }
+        } else {
+            if (!value) {
+                var aux = {};
+                aux[rel2.name] = id;
+                collection2.update({
+                    _id: oldObjTypeField[rel1.name]
+                }, {
+                    $pull: aux
+                })
+                return false;
+            } else {
+                collection2.update({
+                    _id: obj2._id
+                }, {
+                    $addToSet: aux
+                })
                 return true;
             }
 
-            var value = doc[rel1.name];
+        }
 
-            //checking cardinality
-            if (!checkCardinality(value, rel1.cardinality))
-                return false;
-
-            //check if the value's type is the same as this relation's target (rel.obj2)
-            if (!value.types.indexOf(rel1.obj2) >= 0)
-                return false;
-            col1 = Collections[rel1.collection];
-            doc2 = col1.findOne({
-                _id: value
-            });
-            if (!doc2) {
-                return false;
-            }
-            var value2 = doc2[rel2.name];
-
-            if (rel2.cardinality.max == 1) {
-                if (value2) {
-                    return false;
-                } else {
-                    col1.update({
-                        _id: doc2._id
-                    }, {
-                        $set: {}[rel2.name] = doc._id
-                    });
-                }
-            } else {
-                //i asume card.max==Infinite       todo: contemplate other cases
-                value2.push(doc._id);
-                col1.update({
-                    _id: doc2._id
-                }, {
-                    $set: {}[rel2.name] = value2
-                });
-            }
-
-        }*/
-	}
-	if (rel1.cardinality.max == Infinity) {
-		return false;
-		//function (doc, fieldNames, modifier, options) {
-		//todo
-		//checking if the doc has the rel
-		//            if (!modifier[rel.name]) {
-		//                modifier[rel.name] = rel.defaultValue;
-		//            }
-		//            //checking if the value of this rel is being changed
-		//            if (!fieldNames.indexOf[rel.name]) {
-		//                return true;
-		//            }
-		//
-		//
-		//            var value = modifier[rel.name];
-		//
-		//            //checking cardinality
-		//
-		//            if (!val) {
-		//                //the cardinality allows no value?
-		//                return rel.cardinality.min <= 0;
-		//            }
-		//
-		//            if (typeof value != typeof[]) {
-		//                //the must allways be an array
-		//                return false;
-		//            } else {
-		//                //checking if all the values are correct
-		//                var valid = true;
-		//                _.every(value, function (val) {
-		//                    if (val.types.indexOf(rel.obj2) < 0) {
-		//                        valid = false;
-		//                    }
-		//                    return valid;
-		//                })
-		//                return valid;
-		//            }
-		// }
-	}
+    }
+    if (rel1.cardinality.max == Infinity) {
+        return false;
+    }
 }
 
-beforeUpdateRelation = function (val, rel) {
-	var relDefinition = Relations.findOne({
-		name: rel.name
-	});
-	if (relDefinition.visibilityOn1) {
-		if (!rel.visibilityOn2) {
-			beforeUpdate.oneWay(val, rel);
-		} else {
-			beforeUpdate.twoWay(val, rel, relDefinition.visibilityOn2);
-		}
-	}
+beforeUpdateRelation = function (obj, rel, fieldModified, objTypeField, oldObjTypeField) {
+
+    if (rel.visibilityOn1) {
+        if (!rel.visibilityOn2) {
+            return beforeUpdate.oneWay(obj[fieldModified], rel.visibilityOn1);
+        } else {
+            console.log('2 way')
+            return beforeUpdate.twoWay(obj._id, objTypeField, oldObjTypeField, rel.visibilityOn1, rel.visibilityOn2, rel.obj2);
+        }
+    }
 }
