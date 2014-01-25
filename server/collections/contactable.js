@@ -54,24 +54,24 @@ var extendAndValidate = function (contactable) {
 	if (!contactable.contactMethods)
 		contactable.contactMethods = [];
 
-	if (!contactable.type || !contactable.type.length) {
-		console.log('the contactable must have a type');
+	if (!contactable.objNameArray || !contactable.objNameArray.length) {
+ 		console.log('the contactable must have at least one objName');
 		return false;
 	}
 	var v = true;
 	//add the services defined in the types
-	_.every(contactable.type, function (type) {
-		var ObjType = ObjTypes.findOne({
-			name: type
+	_.every(contactable.objName, function (objname) {
+		var objtype = ObjTypes.findOne({
+			objName: objname
 		});
-		if (ObjType != null) {
-			_.forEach(ObjType.services, function (service) {
+		if (objtype != null) {
+			_.forEach(objtype.services, function (service) {
 				contactable[service] = [];
 			});
 
-			v = v && validateObjType(contactable, ObjType);
+			v = v && validateObjType(contactable, objtype);
 		} else {
-			console.error('invalid obj type: ' + type);
+			console.error('invalid obj type: ' + objname);
 			v = false;
 		}
 
