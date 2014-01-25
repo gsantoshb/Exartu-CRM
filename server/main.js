@@ -12,7 +12,7 @@ var dbSeed = {
     seedSystemObjTypes: function () {
         var systemObjTypes = [
             {
-                type: Enums.objectGroups.contactable,
+                objectGroupType: Enums.objectGroups.contactable,
                 name: 'Customer',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -30,7 +30,7 @@ var dbSeed = {
                 }],
             },
             {
-                type: Enums.objectGroups.contactable,
+                objectGroupType: Enums.objectGroups.contactable,
                 name: 'CustomerContact',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -48,7 +48,7 @@ var dbSeed = {
                 }],
             },
             {
-                type: Enums.objectGroups.contactable,
+                objectGroupType: Enums.objectGroups.contactable,
                 name: 'Employee',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -66,7 +66,7 @@ var dbSeed = {
                 }]
             },
             {
-                type: Enums.objectGroups.job,
+                objectGroupType: Enums.objectGroups.job,
                 name: 'Permanent',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -84,7 +84,7 @@ var dbSeed = {
                 }]
             },
             {
-                type: Enums.objectGroups.job,
+                objectGroupType: Enums.objectGroups.job,
                 name: 'Temporal',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -110,7 +110,7 @@ var dbSeed = {
             if (type == null) {
                 ObjectTypes.insert({
                     hierId: ExartuConfig.SystemHierarchyId,
-                    type: objType.type,
+                    objectGroupType: objType.objectGroupType,
                     name: objType.name,
                     services: objType.services,
                     fields: objType.fields,
