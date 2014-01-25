@@ -49,7 +49,7 @@ Template.addJob.viewmodel = function (typeId) {
 		var relValues = _.map(self.relations(), function (r) {
 			if (r.value()) return r.value()._id();
 		});
-		_.extend(self.job(), _.object(relNames, relValues));
+		_.extend(self.job(), _.obj(relNames, relValues));
 
 		var fields = self.job()[self.objTypeName()]();
 		delete self.job()[self.objTypeName()];

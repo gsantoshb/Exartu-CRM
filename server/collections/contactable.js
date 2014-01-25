@@ -61,7 +61,7 @@ var extendAndValidate = function (contactable) {
 	var v = true;
 	//add the services defined in the types
 	_.every(contactable.type, function (type) {
-		var ObjType = ObjectTypes.findOne({
+		var ObjType = ObjTypes.findOne({
 			name: type
 		});
 		if (ObjType != null) {
@@ -71,7 +71,7 @@ var extendAndValidate = function (contactable) {
 
 			v = v && validateObjType(contactable, ObjType);
 		} else {
-			console.error('invalid object type: ' + type);
+			console.error('invalid obj type: ' + type);
 			v = false;
 		}
 
