@@ -15,7 +15,9 @@ validateObjType = function (obj, objType) {
         console.error('Obj type does not exist');
         return false;
     }
-
+    console.log('obj1',obj);
+    console.log('objtype1',objType);
+    console.log('objindexof',obj.type.indexOf(objType.name));
     if (obj.type.indexOf(objType.name) < 0) {
         console.error('Objtype incorrect');
         return false;
