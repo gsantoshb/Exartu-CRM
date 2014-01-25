@@ -9,7 +9,7 @@
                 <h5 class="panel-section-title">Actions</h5>
 
                 <div data-bind="foreach: contactableTypes">
-                    <a data-toggle="modal" data-bind="click: function () { helper.showModal('addContactable', 'addContactableModal', $data._id); }, text: 'Add ' + name"></a>
+                    <a data-toggle="modal" data-bind="click: function () { helper.showModal('addContactable', 'addContactableModal', $data._id); }, text: 'Add ' + objName"></a>
                     <br/>
                 </div>
 
@@ -74,7 +74,7 @@
                                         <!-- Profile picture -->
 
                                         <img class="media-obj col-md-11" data-src="holder.js/64x64" alt="100x100" style="width: 64px; height: 64px; padding:0" src="img/avatar.jpg" />
-                                        <div class="col-md-1" data-bind="foreach: type">
+                                        <div class="col-md-1" data-bind="foreach: objNameArray">
                                             <i data-bind="attr:{class:$root.getIconForObjType($data)}" style="color:gray;"></i>
                                         </div>
                                     </div>

@@ -1,19 +1,19 @@
 var dbSeed = {
     /*
      * Add to system hierarchy the basic obj types
-     * 	Contactable:
-     *    - Customer
-     *    - Employee
-     *    - Contact
+     * 	objGroup Contactable contains:
+     *    - objType Customer
+     *    - objType Employee
+     *    - objType Contact
      *  Job:
-     *    - Permanent
-     *    - Temporal
+     *    - objType Permanent
+     *    - objType Temporal
      */
     seedSystemObjTypes: function () {
         var systemObjTypes = [
             {
-                objGroupType: Enums.objGroups.contactable,
-                name: 'Customer',
+                objGroup: Enums.objGroups.contactable,
+                objName: 'Customer',
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'department',
@@ -30,8 +30,8 @@ var dbSeed = {
                 }],
             },
             {
-                objGroupType: Enums.objGroups.contactable,
-                name: 'CustomerContact',
+                objGroup: Enums.objGroups.contactable,
+                objName: 'CustomerContact',
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'test',
@@ -48,8 +48,8 @@ var dbSeed = {
                 }],
             },
             {
-                objGroupType: Enums.objGroups.contactable,
-                name: 'Employee',
+                objGroup: Enums.objGroups.contactable,
+                objName: 'Employee',
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'test',
@@ -66,8 +66,8 @@ var dbSeed = {
                 }]
             },
             {
-                objGroupType: Enums.objGroups.job,
-                name: 'Permanent',
+                objGroup: Enums.objGroups.job,
+                objName: 'Permanent',
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'test',
@@ -84,8 +84,8 @@ var dbSeed = {
                 }]
             },
             {
-                objGroupType: Enums.objGroups.job,
-                name: 'Temporal',
+                objGroup: Enums.objGroups.job,
+                objName: 'Temporary',
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'Type',
@@ -103,25 +103,25 @@ var dbSeed = {
             }
         ];
 
-        _.forEach(systemObjTypes, function (objType) {
-            var type = ObjTypes.findOne({
-                name: objType.name
+        _.forEach(systemObjTypes, function (objtype) {
+            var objName = ObjTypes.findOne({
+                objName: objtype.objName
             });
-            if (type == null) {
+            if (objName == null) {
                 ObjTypes.insert({
                     hierId: ExartuConfig.SystemHierarchyId,
-                    objGroupType: objType.objGroupType,
-                    name: objType.name,
-                    services: objType.services,
-                    fields: objType.fields,
+                    objGroup: objtype.objGroup,
+                    objName: objtype.objName,
+                    services: objtype.services,
+                    fields: objtype.fields,
                 })
             } else {
                 ObjTypes.update({
-                    _id: type._id
+                    _id: objtype._id
                 }, {
                     $set: {
-                        services: objType.services,
-                        fields: objType.fields,
+                        services: objtype.services,
+                        fields: objtype.fields,
                     }
                 })
             }

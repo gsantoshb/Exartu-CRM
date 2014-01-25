@@ -15,10 +15,9 @@ validateObjType = function (obj, objType) {
         console.error('Obj type does not exist');
         return false;
     }
-    console.log('obj1',obj);
-    console.log('objtype1',objType);
-    console.log('objindexof',obj.type.indexOf(objType.name));
-    if (obj.type.indexOf(objType.name) < 0) {
+
+
+    if (obj.objNameArray.indexOf(objType.objName) < 0) {
         console.error('Objtype incorrect');
         return false;
     }
@@ -38,7 +37,7 @@ validateObjType = function (obj, objType) {
     }
 
     // Validating fields
-    var objTypeFields = obj[objType.name];
+    var objTypeFields = obj[objType.objName];
     v = true;
     _.every(objType.fields, function (field) {
         if (objTypeFields[field.name] != undefined) {
@@ -165,12 +164,12 @@ Meteor.startup(function () {
         },
         getContactableTypes: function () {
             return ObjTypes.find({
-                objGroupType: Enums.objGroups.contactable
+                objGroup: Enums.objGroups.contactable
             }).fetch();
         },
         getJobTypes: function () {
             return ObjTypes.find({
-                objGroupType: Enums.objGroups.job
+                objGroup: Enums.objGroups.job
             }).fetch();
         }
     });

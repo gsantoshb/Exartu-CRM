@@ -42,13 +42,13 @@ Template.addContactable.viewmodel = function (typeId) {
 				})
 			});
 			asd = result;
-			self.objTypeName(result.name);
+			self.objTypeName(result.objName);
 			var aux = {
-				type: ko.observableArray([result.name]),
+                objNameArray: ko.observableArray([result.objName]),
 				person: myPerson,
 				organization: null
 			}
-			aux[result.name] = ko.observableArray(result.fields)
+			aux[result.objName] = ko.observableArray(result.fields)
 			self.contactable = ko.validatedObservable(aux);
 
 			//relations
@@ -85,7 +85,7 @@ Template.addContactable.viewmodel = function (typeId) {
 		_.forEach(fields, function (field) {
 			self.contactable()[self.objTypeName()][field.name] = field.value() || field.defaultValue;
 		})
-
+        console.log('contactable1',ko.toJS(self.contactable));
 		Meteor.call('addContactable', ko.toJS(self.contactable), function (err, result) {
 			console.log(err);
 		});
