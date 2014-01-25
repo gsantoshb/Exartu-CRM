@@ -92,70 +92,70 @@ SystemServices = ['messages ', 'documents ', 'pastJobs ', 'tags ', 'education ',
 
 Meteor.startup(function () {
     Meteor.methods({
-        createObjectType: function (type, name, services, fields) {
-            // validate type
-            if (!_.contains(Enums.objectGroups, type)) {
-                console.error('create objectType: objGroup does not exist')
-                return null;
-            }
-
-            // validate name
-            if (!(typeof name == 'string' || name instanceof String)) {
-                console.error('create objectType: objType name is not a string')
-                return null;
-            }
-
-            if (ObjectTypes.findOne({
-                name: name
-            }) != null) {
-                console.error('create objectType: objectType name is already used');
-                return null;
-            }
-
-            // validate services
-            var v = true;
-            if (Object.prototype.toString.call(services) === '[object Array]')
-                _.every(services, function (service) {
-                    if (!_.contains(SystemServices, service)) {
-                        v = false;
-                        console.error('create objectType: service does not exist');
-                        return false;
-                    }
-                    return true;
-                });
-            else {
-                console.error('create objectType: objType services is not an array')
-                return null;
-            }
-
-            // validate fields
-            if (Object.prototype.toString.call(fields) === '[object Array]')
-                _.every(fields, function (field) {
-                    if (!(typeof field.name == 'string' || field.name instanceof String)) {
-                        console.log('create objectType: field name invalid --> ' + field.name);
-                        v = false;
-                        return false;
-                    }
-                    if (!(typeof field.showInAdd == 'boolean')) {
-                        console.log('create objectType: field showInAdd invalid --> ' + field.name);
-                        v = false;
-                        return false;
-                    }
-                    // TODO: validate regex, type and default value
-                });
-            else {
-                console.error('create objectType: objType fields is not an array')
-                return null;
-            }
-
-            return ObjectTypes.insert({
-                hierId: Meteor.user().hierId,
-                type: type,
-                name: name,
-                services: services,
-                fields: fields,
-            })
-        },
+//        createObjectType: function (type, name, services, fields) {
+//            // validate type
+//            if (!_.contains(Enums.objectGroups, type)) {
+//                console.error('create objectType: objGroup does not exist')
+//                return null;
+//            }
+//
+//            // validate name
+//            if (!(typeof name == 'string' || name instanceof String)) {
+//                console.error('create objectType: objType name is not a string')
+//                return null;
+//            }
+//
+//            if (ObjectTypes.findOne({
+//                name: name
+//            }) != null) {
+//                console.error('create objectType: objectType name is already used');
+//                return null;
+//            }
+//
+//            // validate services
+//            var v = true;
+//            if (Object.prototype.toString.call(services) === '[object Array]')
+//                _.every(services, function (service) {
+//                    if (!_.contains(SystemServices, service)) {
+//                        v = false;
+//                        console.error('create objectType: service does not exist');
+//                        return false;
+//                    }
+//                    return true;
+//                });
+//            else {
+//                console.error('create objectType: objType services is not an array')
+//                return null;
+//            }
+//
+//            // validate fields
+//            if (Object.prototype.toString.call(fields) === '[object Array]')
+//                _.every(fields, function (field) {
+//                    if (!(typeof field.name == 'string' || field.name instanceof String)) {
+//                        console.log('create objectType: field name invalid --> ' + field.name);
+//                        v = false;
+//                        return false;
+//                    }
+//                    if (!(typeof field.showInAdd == 'boolean')) {
+//                        console.log('create objectType: field showInAdd invalid --> ' + field.name);
+//                        v = false;
+//                        return false;
+//                    }
+//                    // TODO: validate regex, type and default value
+//                });
+//            else {
+//                console.error('create objectType: objType fields is not an array')
+//                return null;
+//            }
+//
+//            return ObjectTypes.insert({
+//                hierId: Meteor.user().hierId,
+//                type: type,
+//                name: name,
+//                services: services,
+//                fields: fields,
+//            })
+//        },
         getObjType: function (id) {
             return ObjectTypes.findOne({
                 _id: id
@@ -163,12 +163,12 @@ Meteor.startup(function () {
         },
         getContactableTypes: function () {
             return ObjectTypes.find({
-                type: Enums.objectGroups.contactable
+                objectGroupType: Enums.objectGroups.contactable
             }).fetch();
         },
         getJobTypes: function () {
             return ObjectTypes.find({
-                type: Enums.objectGroups.job
+                objectGroupType: Enums.objectGroups.job
             }).fetch();
         }
     });
