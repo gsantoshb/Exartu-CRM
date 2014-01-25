@@ -18,13 +18,13 @@ var dbSeed = {
                 fields: [{
                     name: 'department',
                     regex: '.',
-                    type: Enums.fieldType.string,
+                    fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true,
                     }, {
                     name: 'test2',
                     regex: '.*',
-                    type: Enums.fieldType.string,
+                    fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: false,
                 }],
@@ -36,13 +36,13 @@ var dbSeed = {
                 fields: [{
                     name: 'test',
                     regex: '^(([1-9][0-9]*|[0-9])(.[0-9]*|))$',
-                    type: Enums.fieldType.string,
+                    fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
                     }, {
                     name: 'test2',
                     regex: '^[a-z0-9].$',
-                    type: Enums.fieldType.string,
+                    fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
                 }],
@@ -54,13 +54,13 @@ var dbSeed = {
                 fields: [{
                     name: 'test',
                     regex: '.*',
-                    type: Enums.fieldType.string,
+                    fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
                     }, {
                     name: 'test2',
                     regex: '.*',
-                    type: Enums.fieldType.string,
+                    fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
                 }]
@@ -72,13 +72,13 @@ var dbSeed = {
                 fields: [{
                     name: 'test',
                     regex: '.*',
-                    type: Enums.fieldType.string,
+                    fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
                     }, {
                     name: 'test2',
                     regex: '.*',
-                    type: Enums.fieldType.string,
+                    fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
                 }]
@@ -90,13 +90,13 @@ var dbSeed = {
                 fields: [{
                     name: 'Type',
                     regex: '.*',
-                    type: Enums.fieldType.string,
+                    fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
                     }, {
                     name: 'test2',
                     regex: '.*',
-                    type: Enums.fieldType.string,
+                    fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
                 }]

@@ -43,7 +43,7 @@ _.extend(helper, {
         }
     },
     fieldVM: function (field) {
-        switch (field.type) {
+        switch (field.fieldType) {
         case 0:
             return 'inStringField';
         case 2:
