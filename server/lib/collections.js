@@ -8,7 +8,7 @@ Contactables = new Meteor.Collection("contactables");
 
 Messages = new Meteor.Collection("messages");
 
-ObjectTypes = new Meteor.Collection("objectTypes");
+ObjTypes = new Meteor.Collection("objTypes");
 
 Relations = new Meteor.Collection("relations");
 
@@ -23,7 +23,7 @@ Collections = {
 
     Messages: Messages,
 
-    ObjectTypes: ObjectTypes,
+    ObjTypes: ObjTypes,
 
     Relations: Relations
 }

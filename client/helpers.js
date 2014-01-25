@@ -1,5 +1,5 @@
 /*** wraper for ko.applyBindings
-*    vm -> viewModel(object) to bind
+*    vm -> viewModel(obj) to bind
 *    viewName -> string that identifies the DOM that holds view (must exist an element with name="viewName")
 *    collectionHandler(optional) -> Meteor collection handler extended with our wait function. The binding will apply when the collection is ready
         todo: support multiple collections
@@ -59,7 +59,7 @@ _.extend(helper, {
     },
     /*
      * Generate the functions and elements necessary for perform full text search and filter
-     * over a list with entities which have dynamic object types.
+     * over a list with entities which have dynamic obj types.
      * Params:
      *  - fieldsToSearch: names of the entity fields where the search will be performed.
      *  - objTypes: list of types that are used by entities in collection.

@@ -1,6 +1,6 @@
 var dbSeed = {
     /*
-     * Add to system hierarchy the basic object types
+     * Add to system hierarchy the basic obj types
      * 	Contactable:
      *    - Customer
      *    - Employee
@@ -12,7 +12,7 @@ var dbSeed = {
     seedSystemObjTypes: function () {
         var systemObjTypes = [
             {
-                objectGroupType: Enums.objectGroups.contactable,
+                objGroupType: Enums.objGroups.contactable,
                 name: 'Customer',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -30,7 +30,7 @@ var dbSeed = {
                 }],
             },
             {
-                objectGroupType: Enums.objectGroups.contactable,
+                objGroupType: Enums.objGroups.contactable,
                 name: 'CustomerContact',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -48,7 +48,7 @@ var dbSeed = {
                 }],
             },
             {
-                objectGroupType: Enums.objectGroups.contactable,
+                objGroupType: Enums.objGroups.contactable,
                 name: 'Employee',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -66,7 +66,7 @@ var dbSeed = {
                 }]
             },
             {
-                objectGroupType: Enums.objectGroups.job,
+                objGroupType: Enums.objGroups.job,
                 name: 'Permanent',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -84,7 +84,7 @@ var dbSeed = {
                 }]
             },
             {
-                objectGroupType: Enums.objectGroups.job,
+                objGroupType: Enums.objGroups.job,
                 name: 'Temporal',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -104,19 +104,19 @@ var dbSeed = {
         ];
 
         _.forEach(systemObjTypes, function (objType) {
-            var type = ObjectTypes.findOne({
+            var type = ObjTypes.findOne({
                 name: objType.name
             });
             if (type == null) {
-                ObjectTypes.insert({
+                ObjTypes.insert({
                     hierId: ExartuConfig.SystemHierarchyId,
-                    objectGroupType: objType.objectGroupType,
+                    objGroupType: objType.objGroupType,
                     name: objType.name,
                     services: objType.services,
                     fields: objType.fields,
                 })
             } else {
-                ObjectTypes.update({
+                ObjTypes.update({
                     _id: type._id
                 }, {
                     $set: {
