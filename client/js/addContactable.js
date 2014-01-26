@@ -1,70 +1,67 @@
-Template.addContactable.viewmodel = function (typeId) {
+Template.addContactable.viewmodel = function (objname) {
 	var self = this;
 	var myPerson = new koPerson();
 	var myOrg = new koOrganization();
-
-	self.objTypeName = ko.observable('');
+    var objType=ObjTypes.findOne({objName: objname});
+    self.objTypeName = ko.observable('');
 	self.ready = ko.observable(false);
-	self.types = ko.observableArray(['person', 'org']);
-	self.selectedType = ko.observable('person');
-
-	self.selectedType.subscribe(function (newVal) {
-		switch (newVal) {
-		case 'person':
-			_.extend(self.contactable(), {
-				person: myPerson
-			});
-			if (self.contactable().organization) {
-				self.contactable().organization = null;
-			}
-			break;
-		case 'org':
-			_.extend(self.contactable(), {
-				organization: myOrg
-			});
-			if (self.contactable().person) {
-				self.contactable().person = null;
-			}
-			break;
-		}
+    self.selectedType = ko.observable();
+    self.setSelectedType=function(val)
+    {
+        switch (val) {
+            case Enums.personType.human:
+                _.extend(self.contactable(), {
+                    person: myPerson
+                });
+                if (self.contactable().organization) {
+                    self.contactable().organization = null;
+                }
+                break;
+            case Enums.personType.organization:
+                _.extend(self.contactable(), {
+                    organization: myOrg
+                });
+                if (self.contactable().person) {
+                    self.contactable().person = null;
+                }
+                break;
+        }
+    };
+    _.forEach(objType.fields, function (item) {
+        _.extend(item, {
+            value: ko.observable().extend({
+                pattern: {
+                    message: 'invalid value',
+                    params: item.regex
+                }
+            })
+        })
+    });
+	self.selectedType.subscribe(function (newval) {
+        self.setSelectedType(newval);
 	});
 
-	Meteor.call('getObjType', typeId, function (err, result) {
-		if (!err) {
-			_.forEach(result.fields, function (item) {
-				_.extend(item, {
-					value: ko.observable().extend({
-						pattern: {
-							message: 'invalid value',
-							params: item.regex
-						}
-					})
-				})
-			});
-			asd = result;
-			self.objTypeName(result.objName);
-			var aux = {
-                objNameArray: ko.observableArray([result.objName]),
-				person: myPerson,
-				organization: null
-			}
-			aux[result.objName] = ko.observableArray(result.fields)
-			self.contactable = ko.validatedObservable(aux);
 
-			//relations
-			self.relations = ko.observableArray([]);
-			_.each(result.relations, function (r) {
-				if (r.showInAdd)
-					self.relations.push({
-						relation: r,
-						data: ko.meteor.find(window[r.target.collection], r.target.query),
-						value: ko.observable(null)
-					});
-			})
+    self.objTypeName(objType.objName);
+    var aux = {
+        objNameArray: ko.observableArray([objType.objName])
+    };
+    aux[objType.objName] = ko.observableArray(objType.fields)
+    self.contactable = ko.validatedObservable(aux);
+    self.selectedType = ko.observable(objType.personType);
+    self.setSelectedType(self.selectedType());
+    //relations
+    self.relations = ko.observableArray([]);
+    _.each(objType.relations, function (r) {
+        if (r.showInAdd)
+            self.relations.push({
+                relation: r,
+                data: ko.meteor.find(window[r.target.collection], r.target.query),
+                value: ko.observable(null)
+            });
+    })
 
-			self.ready(true);
-		}
-	});
+    self.ready(true);
 
 	self.addContactable = function () {
 		if (!self.contactable.isValid()) {
@@ -96,11 +93,5 @@ Template.addContactable.viewmodel = function (typeId) {
 Meteor.methods({
 	addContactable: function (contactable) {
 		Contactables.insert(contactable);
-	},
-	getObjType: function (id) {
-
-	},
-	getContactablesType: function () {
-
 	}
 });

@@ -141,6 +141,30 @@ _.extend(helper, {
         self.searchString.subscribe(search);
 
         return self;
+    },
+    getObjType: function (id) {
+        return ObjTypes.findOne({
+            _id: id
+        });
+    },
+    getContactableTypes: function () {
+        return ObjTypes.find({
+            objGroup: Enums.objGroupType.contactable
+        }).fetch();
+    },
+    getPersonTypes: function () {
+        var persontypes=[];
+        _.each(Enums.personType,function(err,v)
+            {
+                persontypes.push(v);
+            }
+        );
+        return persontypes;
+    },
+    getJobTypes: function () {
+        return ObjTypes.find({
+            objGroup: Enums.objGroupType.job
+        }).fetch();
     }
 });
 

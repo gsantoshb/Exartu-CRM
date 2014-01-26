@@ -9,7 +9,7 @@
                 <h5 class="panel-section-title">Actions</h5>
 
                 <div data-bind="foreach: contactableTypes">
-                    <a data-toggle="modal" data-bind="click: function () { helper.showModal('addContactable', 'addContactableModal', $data._id); }, text: 'Add ' + objName"></a>
+                    <a data-toggle="modal" data-bind="click: function () { helper.showModal('addContactable', 'addContactableModal', $data.objName); }, text: 'Add ' + objName"></a>
                     <br/>
                 </div>
 
