@@ -135,9 +135,8 @@ _.extend(helper, {
                 filter.check.subscribe(search);
                 return filter;
             })
-        );
-        console.log('selffilter',self.filter());
 
+        );
         self.searchString = ko.observable('');
         self.searchString.subscribe(search);
 
@@ -147,12 +146,6 @@ _.extend(helper, {
         return ObjTypes.findOne({
             _id: id
         });
-    },
-    getContactableTypes: function () {
-        console.log('objt',ObjTypes,Enums.objGroupType.contactable)
-        return ObjTypes.find({
-            objGroupType: Enums.objGroupType.contactable
-        }).fetch();
     },
     getPersonTypes: function () {
         var persontypes=[];
