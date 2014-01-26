@@ -18,7 +18,7 @@ Meteor.Collection.prototype.find = function () {
 //    if (Global.debugger)
     {
         var collectionName = this._name;
-        console.log(cursor);
+
         cursor.observeChanges({
             added: function (id, fields) {
                 console.log(collectionName, 'added', id, fields);
