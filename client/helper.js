@@ -130,7 +130,8 @@ _.extend(helper, {
                 var filter = {
                     check: ko.observable(true),
                     label: type.objName,
-                    typeId: type._id
+                    typeId: type._id,
+                    glyphicon: type.glyphicon
                 };
                 filter.check.subscribe(search);
                 return filter;
