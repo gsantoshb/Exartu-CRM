@@ -103,12 +103,12 @@ Meteor.startup(function () {
         },
         getContactableTypes: function () {
             return ObjTypes.find({
-                objGroup: Enums.objGroupType.contactable
+                objGroupType: Enums.objGroupType.contactable
             }).fetch();
         },
         getJobTypes: function () {
             return ObjTypes.find({
-                objGroup: Enums.objGroupType.job
+                objGroupType: Enums.objGroupType.job
             }).fetch();
         }
     });
