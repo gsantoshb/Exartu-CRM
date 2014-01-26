@@ -57,8 +57,6 @@ var extendAndValidate = function (job) {
 	var v = true;
 	//add the services defined in the types
 	_.forEach(job.type, function (type) {
-        console.log('job2',job);
-        console.log('objtypes2',ObjTypes);
 		var ObjType = _.findWhere(ObjTypes, {
 			_id: type
 		});

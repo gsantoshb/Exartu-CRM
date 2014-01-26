@@ -85,7 +85,6 @@ Template.addContactable.viewmodel = function (typeId) {
 		_.forEach(fields, function (field) {
 			self.contactable()[self.objTypeName()][field.name] = field.value() || field.defaultValue;
 		})
-        console.log('contactable1',ko.toJS(self.contactable));
 		Meteor.call('addContactable', ko.toJS(self.contactable), function (err, result) {
 			console.log(err);
 		});

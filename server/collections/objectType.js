@@ -9,6 +9,9 @@
  *	- obj: entity that is validated (e.g.: contactable).
  *  - objTypeId: Id of type used to validated the obj (obj)
  */
+Meteor.publish('objTypes', function () {
+    return ObjTypes.find();
+})
 
 validateObjType = function (obj, objType) {
     if (!objType) {
