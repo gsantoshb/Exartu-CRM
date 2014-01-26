@@ -6,8 +6,8 @@ var dbSeed = {
      *    - objType Employee
      *    - objType Contact
      *  Job:
-     *    - objType Permanent
-     *    - objType Temporal
+     *    - objType Direct Hire
+     *    - objType Temporary
      */
     seedSystemObjTypes: function () {
         var systemObjTypes = [
@@ -67,7 +67,7 @@ var dbSeed = {
             },
             {
                 objGroup: Enums.objGroups.job,
-                objName: 'Permanent',
+                objName: 'Direct Hire',
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'test',

@@ -9,11 +9,11 @@ Template.contactables.rendered = function () {
 		self.entities = ko.meteor.find(Contactables, {});
         self.getIconForObjType = function (type) {
             switch (type) {
-            case (0):
+            case ('Employee'):
                 return 'glyphicon glyphicon-user';
-            case (1):
+            case ('Customer'):
                 return 'glyphicon glyphicon-credit-card';
-            case (3):
+            case ('Job'):
                 return 'glyphicon glyphicon-book';
             default:
                 return 'glyphicon glyphicon-question-sign';

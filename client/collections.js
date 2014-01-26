@@ -49,3 +49,6 @@ Meteor.subscribe('messages');
 
 Activities = new Meteor.Collection("activities");
 Meteor.subscribe('activities');
+
+ObjTypes = new Meteor.Collection("objTypes");
+Meteor.subscribe('objTypes');
