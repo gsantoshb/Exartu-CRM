@@ -12,26 +12,28 @@ var dbSeed = {
     seedSystemObjTypes: function () {
         var systemObjTypes = [
             {
-                objGroup: Enums.objGroups.contactable,
+                objGroup: Enums.objGroupType.contactable,
                 objName: 'Customer',
+                defaultPersonType: Enums.personType.organization,
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'department',
                     regex: '.',
                     fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true,
+                    defaultValue: 'Primary',
+                    showInAdd: true
                     }, {
                     name: 'test2',
                     regex: '.*',
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
-                    showInAdd: false,
-                }],
+                    showInAdd: false
+                }]
             },
             {
-                objGroup: Enums.objGroups.contactable,
+                objGroup: Enums.objGroupType.contactable,
                 objName: 'CustomerContact',
+                defaultPersonType: Enums.personType.human,
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'test',
@@ -45,11 +47,12 @@ var dbSeed = {
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
-                }],
+                }]
             },
             {
-                objGroup: Enums.objGroups.contactable,
+                objGroup: Enums.objGroupType.contactable,
                 objName: 'Employee',
+                defaultPersonType: Enums.personType.human,
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'test',
@@ -66,7 +69,7 @@ var dbSeed = {
                 }]
             },
             {
-                objGroup: Enums.objGroups.job,
+                objGroup: Enums.objGroupType.job,
                 objName: 'Direct Hire',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -84,7 +87,7 @@ var dbSeed = {
                 }]
             },
             {
-                objGroup: Enums.objGroups.job,
+                objGroup: Enums.objGroupType.job,
                 objName: 'Temporary',
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -114,6 +117,7 @@ var dbSeed = {
                     objName: objtype.objName,
                     services: objtype.services,
                     fields: objtype.fields,
+                    personType: objtype.defaultPersonType
                 })
             } else {
                 ObjTypes.update({

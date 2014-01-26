@@ -4,13 +4,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close" data-dismiss="modal">×</a>
+                    <select class="pull-right"  data-bind="options: helper.getPersonTypes(), value: selectedType"></select>
                     <h4 data-bind="text: objTypeName() + ' add'"></h4>
                 </div>
-                <div class="modal-body" data-bind="if: $data.ready">
-                    <select data-bind="options: types, value: selectedType"></select>
+                <div class="modal-body " data-bind="if: $data.ready">
+
                     <div data-bind="with: contactable">
                         {{>addPerson}} {{>addOrganization}}
-                        <h5 data-bind="text: $root.objTypeName"></h5>
                         <div id="list" data-bind="visible: $data[$root.objTypeName()]().length > 0, foreach: $data[$root.objTypeName()]">
                             <fieldset data-bind="visible: $data.showInAdd">
                                 <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
@@ -31,9 +31,18 @@
     </div>
 </template>
 
+<template name="addOrganization">
+    <div data-bind="if: $parent.selectedType()==Enums.personType.organization">
 
+        <div data-bind="with: organization">
+            <fieldset>
+                <div data-bind="template: { name: 'inStringField', data: {name: 'organizationName', value:$data.organizationName} }" />
+            </fieldset>
+        </div>
+    </div>
+</template>
 <template name="addPerson">
-    <div data-bind="if: $parent.selectedType()=='person'">
+    <div data-bind="if: $parent.selectedType()==Enums.personType.human">
         <div data-bind="with: person">
             <fieldset>
                 <div data-bind="template: { name: 'inStringField', data: {name: 'firstName', value:$data.firstName} }">
@@ -50,15 +59,6 @@
         </div>
     </div>
 </template>
-<template name="addOrganization">
-    <div data-bind="if: $parent.selectedType()=='org'">
-        <div data-bind="with: organization">
-            <fieldset>
-                <div data-bind="template: { name: 'inStringField', data: {name: 'organizationName', value:$data.organizationName} }">
-                </div>
-            </fieldset>
-        </div>
-    </div>
-</template>
+
 
 
