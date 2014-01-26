@@ -98,7 +98,7 @@ Meteor.startup(function () {
     Meteor.methods({
 //        createObjType: function (type, name, services, fields) {
 //            // validate type
-//            if (!_.contains(Enums.objGroups, type)) {
+//            if (!_.contains(Enums.objGroupType, type)) {
 //                console.error('create objType: objGroup does not exist')
 //                return null;
 //            }
@@ -167,12 +167,12 @@ Meteor.startup(function () {
         },
         getContactableTypes: function () {
             return ObjTypes.find({
-                objGroup: Enums.objGroups.contactable
+                objGroup: Enums.objGroupType.contactable
             }).fetch();
         },
         getJobTypes: function () {
             return ObjTypes.find({
-                objGroup: Enums.objGroups.job
+                objGroup: Enums.objGroupType.job
             }).fetch();
         }
     });
