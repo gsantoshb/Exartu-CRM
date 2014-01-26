@@ -1,7 +1,7 @@
 var dbSeed = {
     /*
      * Add to system hierarchy the basic obj types
-     * 	objGroup Contactable contains:
+     * 	objGroupType Contactable contains:
      *    - objType Customer
      *    - objType Employee
      *    - objType Contact
@@ -12,8 +12,9 @@ var dbSeed = {
     seedSystemObjTypes: function () {
         var systemObjTypes = [
             {
-                objGroup: Enums.objGroupType.contactable,
+                objGroupType: Enums.objGroupType.contactable,
                 objName: 'Customer',
+                glyphicon: 'glyphicon-credit-card',
                 defaultPersonType: Enums.personType.organization,
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -31,8 +32,9 @@ var dbSeed = {
                 }]
             },
             {
-                objGroup: Enums.objGroupType.contactable,
+                objGroupType: Enums.objGroupType.contactable,
                 objName: 'CustomerContact',
+                glyphicon: 'glyphicon-user',
                 defaultPersonType: Enums.personType.human,
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -50,8 +52,9 @@ var dbSeed = {
                 }]
             },
             {
-                objGroup: Enums.objGroupType.contactable,
+                objGroupType: Enums.objGroupType.contactable,
                 objName: 'Employee',
+                glyphicon: 'glyphicon-user',
                 defaultPersonType: Enums.personType.human,
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -69,8 +72,9 @@ var dbSeed = {
                 }]
             },
             {
-                objGroup: Enums.objGroupType.job,
+                objGroupType: Enums.objGroupType.job,
                 objName: 'Direct Hire',
+                glyphicon: 'glyphicon-book',
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'test',
@@ -87,8 +91,9 @@ var dbSeed = {
                 }]
             },
             {
-                objGroup: Enums.objGroupType.job,
+                objGroupType: Enums.objGroupType.job,
                 objName: 'Temporary',
+                glyphicon: 'glyphicon-book',
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'Type',
@@ -113,11 +118,12 @@ var dbSeed = {
             if (objName == null) {
                 ObjTypes.insert({
                     hierId: ExartuConfig.SystemHierarchyId,
-                    objGroup: objtype.objGroup,
+                    objGroupType: objtype.objGroupType,
                     objName: objtype.objName,
                     services: objtype.services,
                     fields: objtype.fields,
-                    personType: objtype.defaultPersonType
+                    personType: objtype.defaultPersonType,
+                    glyphicon: objtype.glyphicon
                 })
             } else {
                 ObjTypes.update({

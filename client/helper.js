@@ -129,13 +129,14 @@ _.extend(helper, {
             _.map(objTypes, function (type) {
                 var filter = {
                     check: ko.observable(true),
-                    label: type.name,
+                    label: type.objName,
                     typeId: type._id
                 };
                 filter.check.subscribe(search);
                 return filter;
             })
         );
+        console.log('selffilter',self.filter());
 
         self.searchString = ko.observable('');
         self.searchString.subscribe(search);
@@ -148,8 +149,9 @@ _.extend(helper, {
         });
     },
     getContactableTypes: function () {
+        console.log('objt',ObjTypes,Enums.objGroupType.contactable)
         return ObjTypes.find({
-            objGroup: Enums.objGroupType.contactable
+            objGroupType: Enums.objGroupType.contactable
         }).fetch();
     },
     getPersonTypes: function () {
@@ -163,8 +165,17 @@ _.extend(helper, {
     },
     getJobTypes: function () {
         return ObjTypes.find({
-            objGroup: Enums.objGroupType.job
+            objGroupType: Enums.objGroupType.job
         }).fetch();
+    },
+    getIconForObjName : function (objname) {
+        var objtype=ObjTypes.findOne({objName: objname});
+        if (objtype || objtype.glyphicon !='') return objtype.glyphicon;
+        return 'glyphicon-question-sign';
+    },
+        getIconForObjType : function (objtype) {
+            if (objtype.glyphicon=='') return 'glyphicon-question-sign';
+            return objtype.glyphicon;
     }
 });
 
