@@ -1,76 +1,85 @@
 <template name="jobs">
 	{{> addJob}}
 	<section name="jobsVM">
-		<!-- ko if: ready -->
-		<div class="row" style="margin-top: 10px, width: 100%;">
-			<!-- Filter panel -->
-			<div class="col-md-2 ats-filter-panel">
+		<div id="content">
+			<div id="content-header">
+				<h1>Jobs</h1>
+			</div>
+			<div id="breadcrumb">
+				<a href="#" class="current">Jobs</a>
+			</div>
 
-				<h5 class="panel-section-title">Actions</h5>
+			<div class="container-fluid row">
+				<!-- ko if: ready -->
+				<!-- Filter panel -->
+				<div class="col-md-2 ats-filter-panel">
 
-				<div data-bind="foreach: jobTypes">
-					<a data-toggle="modal" data-bind="click: function () { helper.showModal('addJob', 'addJobModal', $data._id); }, text: 'Add ' + objName"></a>
-					<br/>
-				</div>
+					<h5 class="panel-section-title">Actions</h5>
 
-				<h5 class="panel-section-title">Filters</h5>
+					<div data-bind="foreach: jobTypes">
+						<a data-toggle="modal" data-bind="click: function () { helper.showModal('addJob', 'addJobModal', $data._id); }, text: 'Add ' + objName"></a>
+						<br/>
+					</div>
 
-				<div data-bind="foreach: filter">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" id="filter-employee" data-bind="checked: check" />
-							<span data-bind="text:label" />
-						</label>
+					<h5 class="panel-section-title">Filters</h5>
+
+					<div data-bind="foreach: filter">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" id="filter-employee" data-bind="checked: check" />
+								<span data-bind="text:label" />
+							</label>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<div class="col-md-9 col-md-offset-2" style="margin-top: -10px">
-			<div>
-				<!--<h5 class="panel-section-title">Results-->
-				<h5>
+				<div class="col-md-9" style="margin-top: -10px">
+					<div>
+						<!--<h5 class="panel-section-title">Results-->
+						<h5>
 
-					<!-- Search string -->
-					<span class="input-group" style="width: 100%; max-width: 606px;">
-						<span class="input-group-addon glyphicon glyphicon-search" style="position: initial;"></span>
-						<input type="text" class="form-control expandable-field" placeholder="Search..." data-bind="value: searchString, valueUpdate:'afterkeydown'">
-					</span>
-				</h5>
-			</div>
+							<!-- Search string -->
+							<span class="input-group" style="width: 100%; max-width: 606px;">
+								<span class="input-group-addon glyphicon glyphicon-search" style="position: initial;"></span>
+								<input type="text" class="form-control expandable-field" placeholder="Search..." data-bind="value: searchString, valueUpdate:'afterkeydown'">
+							</span>
+						</h5>
+					</div>
 
 
-			<!-- Entities list -->
-			<div>
-				{{#if loading}}
-				<div id="lists">Loading...</div>
-				{{else}}
-				<div data-bind="foreach: entities ">
-					<div class="ats-entities">
-						<!--						data-bind="attr:{href: 'job/'+_id()}"-->
-						<a>
-							<div class="row ">
-								<span data-bind="text: _id()"></span>
-								<!-- Left -->
-								<div class="col-md-1">
-								</div>
+					<!-- Entities list -->
+					<div>
+						{{#if loading}}
+						<div id="lists">Loading...</div>
+						{{else}}
+						<div data-bind="foreach: entities ">
+							<div class="ats-entities">
+								<!--						data-bind="attr:{href: 'job/'+_id()}"-->
+								<a>
+									<div class="row ">
+										<span data-bind="text: _id()"></span>
+										<!-- Left -->
+										<div class="col-md-1">
+										</div>
 
 
-								<!-- Middle -->
-								<div class="col-md-8">
+										<!-- Middle -->
+										<div class="col-md-8">
 
-								</div>
+										</div>
 
-								<!-- Right -->
-								<div class="col-md-3">
-								</div>
+										<!-- Right -->
+										<div class="col-md-3">
+										</div>
+									</div>
+								</a>
 							</div>
-						</a>
-					</div>
 
+						</div>
+						{{/if}}
+					</div>
 				</div>
-				{{/if}}
+				<!--/ko-->
 			</div>
 		</div>
-		<!--/ko-->
 	</section>
 </template>

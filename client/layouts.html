@@ -1,20 +1,28 @@
 <!-- Dashboard and lists layout -->
 <template name="mainLayout">
-	<div class="main-yield-container">
-		{{yield}}
-	</div>
+	{{yield}}
 </template>
 
 <template name="contactableLayout">
-	<div class="row main-yield-container">
-		<div class="col-md-2" style="padding-right: 0px !important">
-			{{yield 'navigation'}}
+	<div id="content">
+		<div id="content-header">
+			<h1>Contactable</h1>
 		</div>
-		<div class="col-md-8" style="padding-left: 0px">
-			{{yield}}
+		<div id="breadcrumb">
+			<a href="/contactables" title="Go to Home" class="tip-bottom">Contactables</a>
+			<a href="#" class="current">Contactable</a>
 		</div>
-		<div class="col-md-2">
-			{{yield 'information'}}
+
+		<div class="container-fluid row">
+			<div class="col-md-2" style="padding-right: 0px !important">
+				{{yield 'navigation'}}
+			</div>
+			<div class="col-md-8" style="padding-left: 0px">
+				{{yield}}
+			</div>
+			<div class="col-md-2">
+				{{yield 'information'}}
+			</div>
 		</div>
 	</div>
 </template>
