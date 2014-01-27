@@ -37,19 +37,7 @@ var dbSeed = {
                 glyphicon: 'glyphicon-user',
                 defaultPersonType: Enums.personType.human,
                 services: ['messages', 'tasks'],
-                fields: [{
-                    name: 'test',
-                    regex: '^(([1-9][0-9]*|[0-9])(.[0-9]*|))$',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true
-                    }, {
-                    name: 'test2',
-                    regex: '^[a-z0-9].$',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true
-                }]
+                fields: []
             },
             {
                 objGroupType: Enums.objGroupType.contactable,
@@ -140,8 +128,8 @@ var dbSeed = {
     seedSystemRelations: function () {
         var systemRelations = [
             {
-                name: 'Contacts',
-                obj1: 'Contacts',
+                name: 'CustomerContacts',
+                obj1: 'Contact',
                 obj2: 'Customer',
                 visibilityOn1: {
                     name: 'customer',

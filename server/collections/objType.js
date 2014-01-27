@@ -57,22 +57,24 @@ validateObjType = function (obj, objType) {
     // Validating relations
     var relations = Relations.find({
         $or: [{
-            obj1: objType.name
+            obj1: objType.objName
   }, {
-            obj2: objType.name
+            obj2: objType.objName
   }]
     }).fetch();
+    console.log('relations...');
+    console.dir(relations);
     _.forEach(relations, function (rel) {
-        var objRel = objType.name == rel.obj1 ? rel.visibilityOn1 : rel.visibilityOn2;
-        console.log('checking :' + rel.name);
+        var objRel = objType.objName == rel.obj1 ? rel.visibilityOn1 : rel.visibilityOn2;
+        console.log('checking :' + rel.name + ' in ' + objType.objName);
         if (objTypeFields[objRel.name] != undefined) {
             //hack
             var oldObjTypeFields = Contactables.findOne({
                 _id: obj._id
-            })[objType.name];
+            })[objType.objName];
 
             v = v && beforeUpdateRelation(obj, rel, objRel.name, objTypeFields, oldObjTypeFields);
-            if (!v) console.error(rel.name + ' is invalid: ' + v);
+            if (!v) console.error(rel.name + ' is invalid: ');
         } else {
             objTypeFields[objRel.name] = objRel.defaultValue;
         }
