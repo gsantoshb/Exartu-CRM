@@ -176,15 +176,20 @@ _.extend(helper, {
       // an object can have multiple names (objName), for example the same person can be both an employee and a contact
       // return an array of the objNames for the supplied object
         var objNameArray=[];
-
-
         _.map(ObjTypes.find().fetch(), function (type) {
-
-            console.log('type',type);
             if (obj[type.objName]) objNameArray.push(type.objName);
-            console.log('objnamearrary',objNameArray);
-        return objNameArray;
         });
+        return objNameArray;
+    },
+    getObjTypesFromObject: function(obj)
+    {
+        // an object can have multiple purposes (objTypes, for example the same person can be both an employee and a contact
+        // return an array of the objTypes for the supplied object
+        var objTypeArray=[];
+        _.map(ObjTypes.find().fetch(), function (type) {
+            if (obj[type.objName]) objTypeArray.push(type);
+        });
+        return objTypeArray;
     }
 });
 

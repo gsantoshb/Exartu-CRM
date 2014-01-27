@@ -33,7 +33,7 @@ var dbSeed = {
             },
             {
                 objGroupType: Enums.objGroupType.contactable,
-                objName: 'CustomerContact',
+                objName: 'Contact',
                 glyphicon: 'glyphicon-user',
                 defaultPersonType: Enums.personType.human,
                 services: ['messages', 'tasks'],
@@ -140,8 +140,8 @@ var dbSeed = {
     seedSystemRelations: function () {
         var systemRelations = [
             {
-                name: 'CustomerContacts',
-                obj1: 'CustomerContacts',
+                name: 'Contacts',
+                obj1: 'Contacts',
                 obj2: 'Customer',
                 visibilityOn1: {
                     name: 'customer',
