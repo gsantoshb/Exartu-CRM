@@ -37,6 +37,8 @@ validateObjType = function (obj, objType) {
 
     // Validating fields
     var objTypeFields = obj[objType.objName];
+    console.dir(obj);
+    console.log(objType.objName);
     v = true;
     _.every(objType.fields, function (field) {
         if (objTypeFields[field.name] != undefined) {
