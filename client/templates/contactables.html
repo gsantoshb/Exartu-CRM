@@ -74,13 +74,14 @@
                                         <!-- Profile picture -->
 
                                         <img class="media-obj col-md-11" data-src="holder.js/64x64" alt="100x100" style="width: 64px; height: 64px; padding:0" src="img/avatar.jpg" />
-                                        <div class="col-md-1" data-bind="foreach: objNameArray">
+                                        <div class="col-md-1" data-bind="foreach: helper.getObjNameArrayFromObject($data)">
                                             <i data-bind="attr:{class:$root.getIconForObjName($data)}" ></i>
                                         </div>
                                     </div>
 
                                 </div>
 
+                                
                                 <!-- Middle -->
                                 <div class="col-md-8">
                                     <div class="row">

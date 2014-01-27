@@ -8,22 +8,13 @@ Template.contactables.rendered = function () {
 		var self = this;
         self.ready = ko.observable(false);
         self.entities = ko.meteor.find(Contactables, {});
+
         Meteor.subscribe( 'objTypes', function()
         {
             self.contactableTypes = ko.observableArray();
-            self.getIconForObjName = function (objName) {
-                switch (objName) {
-                    case ('Employee'):
-                        return 'glyphicon glyphicon-user';
-                    case ('CustomerContact'):
-                        return 'glyphicon glyphicon-user';
-                    case ('Customer'):
-                        return 'glyphicon glyphicon-credit-card';
-                    case ('Job'):
-                        return 'glyphicon glyphicon-book';
-                    default:
-                        return 'glyphicon glyphicon-question-sign';
-                };
+            self.getIconForObjName = function (objname) {
+                var type=ObjTypes.findOne({objName: objname});
+                return 'glyphicon ' + type.glyphicon;
             };
             var result=ObjTypes.find({objGroupType: Enums.objGroupType.contactable}).fetch();
             {

@@ -68,7 +68,7 @@ _.extend(helper, {
      *  - searchString: observable item used to search
      *  - filter: ..
      */
-    createObjTypefilter: function (fieldsToSearch, objTypes, callback) {
+    createObjTypefilter: function (fieldsToSearch, objtypes, callback) {
         var self = {};
 
         var search = function () {
@@ -126,7 +126,7 @@ _.extend(helper, {
         };
 
         self.filter = ko.observableArray(
-            _.map(objTypes, function (type) {
+            _.map(objtypes, function (type) {
                 var filter = {
                     check: ko.observable(true),
                     label: type.objName,
@@ -167,9 +167,24 @@ _.extend(helper, {
         if (objtype || objtype.glyphicon !='') return objtype.glyphicon;
         return 'glyphicon-question-sign';
     },
-        getIconForObjType : function (objtype) {
-            if (objtype.glyphicon=='') return 'glyphicon-question-sign';
-            return objtype.glyphicon;
+    getIconForObjType : function (objtype) {
+        if (objtype.glyphicon=='') return 'glyphicon-question-sign';
+        return objtype.glyphicon;
+    },
+    getObjNameArrayFromObject: function(obj)
+    {
+      // an object can have multiple names (objName), for example the same person can be both an employee and a contact
+      // return an array of the objNames for the supplied object
+        var objNameArray=[];
+
+
+        _.map(ObjTypes.find().fetch(), function (type) {
+
+            console.log('type',type);
+            if (obj[type.objName]) objNameArray.push(type.objName);
+            console.log('objnamearrary',objNameArray);
+        return objNameArray;
+        });
     }
 });
 
