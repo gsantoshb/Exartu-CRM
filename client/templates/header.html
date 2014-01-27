@@ -1,42 +1,179 @@
 <template name="header">
-	<div class="ats-navContainer" name="headerVM">
+	<div name="headerVM">
+		<div id="header">
+			<h1>
+				<a href="./dashboard.html">EXARTU</a>
+			</h1>
+			<a id="menu-trigger" href="#">
+				<i class="fa fa-align-justify"></i>
+			</a>
+		</div>
+		<!-- /#header -->
 
-		<a href="/" class="logo">
-			<img src="../../img/exartu-logo.png" alt="logo" style="margin-top: 2px; width: 90px" />
-		</a>
-		{{#if currentUser}}
-		<ul class="ats-nav">
-			<li class="ats-navItem">
-				<a class="ats-header-link" href="{{pathFor 'dashboard'}}">
-					<div id="dashboardLink" class=" ats-navItem">
-						<i class="ats-header-icon glyphicon glyphicon-dashboard "></i>
-						<br/>
+		<div id="search">
+			<input type="text" placeholder="Search ..." />
+			<button type="submit" class="tip-right" title="Search">
+				<i class="fa fa-search"></i>
+			</button>
+		</div>
+		<div id="user-nav">
+			<ul class="btn-group">
+				<li class="btn dropdown">
+					<a href="#">
+						<span class="user-menu-thumb">
+							<img src="assets/pic-26x26.jpg">
+						</span>
+						{{loginButtons}}
+					</a>
+				</li>
+				<!--
+				<li class="btn dropdown" id="menu-messages">
+					<a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
+						<i class="fa fa-envelope-o"></i>
+						<span class="text">Messages</span>
+						<span class="notifications">5</span>
+					</a>
+					<ul class="dropdown-menu dropdown-msgs">
+						<li class="clearfix">
+							<span class="pull-left">
+								<a href="messages.html">
+									<i class="fa fa-inbox"></i>Inbox</a>
+							</span>
+							<span class="pull-right">
+								<a href="messages.html">
+									<i class="fa fa-pencil"></i>Write new message</a>
+							</span>
+						</li>
+						<li class="unread">
+							<a class="msg" href="messages.html">
+								<span class="msg-pic">
+									<img src="assets/pic-50x50-1.jpg" alt="">
+								</span>
+								<span class="msg-author">Mihai Constantinescu</span>
+								<span class="msg-content">
+									Cool! Everything is ok now, talk to you later! Thanks again!
+								</span>
+								<span class="msg-date">Feb 18</span>
+							</a>
+						</li>
+						<li class="unread">
+							<a class="msg" href="messages.html">
+								<span class="msg-pic">
+									<img src="assets/pic-50x50-2.jpg" alt="">
+								</span>
+								<span class="msg-author">Pablo Soto</span>
+								<span class="msg-content">
+									Yes, ofcourse...
+								</span>
+								<span class="msg-date">Feb 18</span>
+							</a>
+						</li>
+						<li>
+							<a class="msg" href="messages.html">
+								<span class="msg-pic">
+									<img src="assets/pic-50x50-3.jpg" alt="">
+								</span>
+								<span class="msg-author">Aram Gugusian</span>
+								<span class="msg-content">
+									Cool! Everything is ok now, talk to you later! Thanks again!
+								</span>
+								<span class="msg-date">Feb 18</span>
+							</a>
+						</li>
+						<li>
+							<a class="msg" href="messages.html">
+								<span class="msg-pic">
+									<img src="assets/pic-50x50-4.jpg" alt="">
+								</span>
+								<span class="msg-author">Jessyca Noel</span>
+								<span class="msg-content">
+									Cool! Everything is ok now, talk to you later! Thanks again!
+								</span>
+								<span class="msg-date">Feb 18</span>
+							</a>
+						</li>
+						<li class="more">
+							<a href="#">View all messages</a>
+						</li>
+					</ul>
+				</li>
+
+				<li class="btn dropdown" id="menu-settings">
+					<a href="#" data-toggle="dropdown" data-target="#menu-settings" class="dropdown-toggle">
+						<i class="fa fa-cog"></i>
+						<span class="text">Settings</span>
+					</a>
+					
+					<ul class="dropdown-menu">
+					<li>
+	<a href="#">User Management</a>
+</li>
+<li>
+	<a href="#">Employee Management</a>
+</li>
+<li>
+	<a href="#">Providers Management</a>
+</li>
+<li>
+	<a href="#">Tenant Management</a>
+</li>
+<li class="divider"></li>
+<li>
+	<a href="#">Support</a>
+</li>
+<li>
+	<a href="#">Settings</a>
+</li>
+<li class="divider"></li>
+<li>
+	<a href="#">Logout</a>
+</li>
+</ul>
+
+				</li>
+-->
+			</ul>
+		</div>
+		<!-- /#user-nav -->
+
+		<div id="sidebar">
+			<ul>
+				<li class="active">
+					<a href="/">
+						<i class="icon-house-2"></i>
 						<span>Dashboard</span>
-					</div>
-				</a>
-			</li>
-			<li class="ats-navItem ">
-				<a class="ats-header-link " href=" {{pathFor 'contactables'}} ">
-					<div id="contactablesLink" class="ats-navItem">
-						<i class="ats-header-icon glyphicon glyphicon-book "></i>
-						<br/>
-						<span>Network</span>
-					</div>
-				</a>
-			</li>
-			<li class="ats-navItem ">
-				<a class="ats-header-link " href=" {{pathFor 'jobs'}} ">
-					<div id="jobsLink" class="ats-navItem">
-						<i class="ats-header-icon glyphicon glyphicon-briefcase "></i>
-						<br/>
+					</a>
+				</li>
+				<li class="contactables">
+					<a href="contactables">
+						<i class="icon-connection-1"></i>
+						<span>Contactables</span>
+					</a>
+				</li>
+				<!--
+				<li class="tasks">
+	<a href="tasks.html">
+		<i class="icon-check-list"></i>
+		<span>Tasks</span>
+	</a>
+</li>
+-->
+				<li class="jobs">
+					<a href="jobs">
+						<i class="icon-briefcase"></i>
 						<span>Jobs</span>
-					</div>
-				</a>
-			</li>
-		</ul>
-		{{/if}}
-		<ul class="nav pull-right " style="margin-right: 20px; margin-top: 10px ">
-			{{loginButtons align="right "}}
-		</ul>
+					</a>
+				</li>
+				<!--
+	<li class="assignments">
+	<a href="assignments.html">
+		<i class="icon-check-bubble"></i>
+		<span>Assignments</span>
+	</a>
+</li>
+-->
+			</ul>
+		</div>
+		<!-- /#sidebar -->
 	</div>
 </template>

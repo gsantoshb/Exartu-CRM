@@ -1,156 +1,165 @@
 <template name="contactables">
-    {{>addContactable}}
-    <section name="contactablesVM">
-		<!-- ko if: ready -->
-        <div class="row" style="margin-top: 10px, width: 100%;">
-            <!-- Filter panel -->
-            <div class="col-md-2 ats-filter-panel">
+	{{>addContactable}}
+	<section name="contactablesVM">
+		<div id="content">
+			<div id="content-header">
+				<h1>Contactables</h1>
+			</div>
+			<div id="breadcrumb">
+				<a href="#" class="current">Contactables</a>
+			</div>
 
-                <h5 class="panel-section-title">Actions</h5>
+			<div class="container-fluid row">
+				<!-- ko if: ready -->
+				<!-- Filter panel -->
+				<div class="col-md-2 ats-filter-panel">
 
-                <div data-bind="foreach: contactableTypes">
-                    <a data-toggle="modal" data-bind="click: function () { helper.showModal('addContactable', 'addContactableModal', $data.objName); }, text: 'Add ' + objName"></a>
-                    <br/>
-                </div>
+					<h5 class="panel-section-title">Actions</h5>
 
-                <h5 class="panel-section-title">Filters</h5>
+					<div data-bind="foreach: contactableTypes">
+						<a data-toggle="modal" data-bind="click: function () { helper.showModal('addContactable', 'addContactableModal', $data.objName); }, text: 'Add ' + objName"></a>
+						<br/>
+					</div>
 
-                <div class="checkbox">
+					<h5 class="panel-section-title">Filters</h5>
 
-                    <label>
-                        <input type="checkbox" />Only recent day
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" />Only recent week
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" />Only recent month
-                    </label>
+					<div class="checkbox">
 
-                    <span>{{text}}</span>
-                </div>
-                <div data-bind="foreach: filter">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" id="filter-employee" data-bind="checked: check" />
-                            <span data-bind="text:label" />
-                            <i data-bind="attr:{class: 'glyphicon ' + glyphicon}" style="color:gray;"></i>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-9 col-md-offset-2" style="margin-top: -10px">
-            <div>
-                <!--<h5 class="panel-section-title">Results-->
-                <h5>
+						<label>
+							<input type="checkbox" />Only recent day
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" />Only recent week
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" />Only recent month
+						</label>
 
-                    <!-- Search string -->
-                    <span class="input-group" style="width: 100%; max-width: 606px;">
-                        <span class="input-group-addon glyphicon glyphicon-search" style="position: initial;"></span>
-                        <input type="text" class="form-control expandable-field" placeholder="Search..." data-bind="value: searchString, valueUpdate:'afterkeydown'">
-                    </span>
-                </h5>
-            </div>
+						<span>{{text}}</span>
+					</div>
+					<div data-bind="foreach: filter">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" id="filter-employee" data-bind="checked: check" />
+								<span data-bind="text:label" />
+								<i data-bind="attr:{class: 'glyphicon ' + glyphicon}" style="color:gray;"></i>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-9" style="margin-top: -10px">
+					<div>
+						<!--<h5 class="panel-section-title">Results-->
+						<h5>
 
-
-            <!-- Entities list -->
-            <div>
-                {{#if loading}}
-                <div id="lists">Loading...</div>
-                {{else}}
-                <div data-bind="foreach: entities ">
-
-                    <div class="ats-entities">
-                        <a data-bind="attr:{href: 'contactable/'+_id()}">
-                            <div class="row " style="width: 100%;margin: 0;">
-                                <!-- Left -->
-                                <div class="col-md-1">
-                                    <div class="row">
-                                        <!-- Profile picture -->
-
-                                        <img class="media-obj col-md-11" data-src="holder.js/64x64" alt="100x100" style="width: 64px; height: 64px; padding:0" src="img/avatar.jpg" />
-                                        <div class="col-md-1" data-bind="foreach: helper.getObjTypesFromObject($data)">
-                                            <i data-bind="attr:{class: 'glyphicon ' + $data.glyphicon }"></i>
-                                        </div>
-                                    </div>
-
-                                </div>
+							<!-- Search string -->
+							<span class="input-group" style="width: 100%; max-width: 606px;">
+								<span class="input-group-addon glyphicon glyphicon-search" style="position: initial;"></span>
+								<input type="text" class="form-control expandable-field" placeholder="Search..." data-bind="value: searchString, valueUpdate:'afterkeydown'">
+							</span>
+						</h5>
+					</div>
 
 
-                                <!-- Middle -->
-                                <div class="col-md-8">
-                                    <div class="row">
-                                        <div class="col-md-6">
+					<!-- Entities list -->
+					<div>
+						{{#if loading}}
+						<div id="lists">Loading...</div>
+						{{else}}
+						<div data-bind="foreach: entities ">
 
-                                            <h4 class="no-margin">
-                                                <span class="name" />
-                                                <span class="name" />
-                                            </h4>
-                                            <h5>
-                                                <span data-bind="text: displayName"></span>
-                                            </h5>
+							<div class="ats-entities">
+								<a data-bind="attr:{href: 'contactable/'+_id()}">
+									<div class="row " style="width: 100%;margin: 0;">
+										<!-- Left -->
+										<div class="col-md-1">
+											<div class="row">
+												<!-- Profile picture -->
 
-                                            <!-- Status Note -->
-                                            <div class="statusNote" data-bind="text: $data.statusNote"></div>
-                                        </div>
+												<img class="media-obj col-md-11" data-src="holder.js/64x64" alt="100x100" style="width: 64px; height: 64px; padding:0" src="img/avatar.jpg" />
+												<div class="col-md-1" data-bind="foreach: helper.getObjTypesFromObject($data)">
+													<i data-bind="attr:{class: 'glyphicon ' + $data.glyphicon }"></i>
+												</div>
+											</div>
 
-                                        <div class="col-md-6">
-                                            <!-- Contact information -->
-                                            <div class="col-md-4">
-                                                <em></em>
-                                                <br/>
-                                                <em></em>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Interests -->
-                                    <!-- ko if: $data.tags -->
-                                    <div class="icons-nav" style="word-wrap: break-word;" data-bind="foreach: tags">
-                                        <small class="tag" data-bind="text: $data + ($index() != $parent.tags().length-1 ? ', ': '') ">
-                                        </small>
-                                    </div>
-                                    <!-- /ko -->
-                                </div>
+										</div>
 
-                                <!-- Right -->
-                                <div class="col-md-3">
 
-                                    <!--  Contactable statuses -->
+										<!-- Middle -->
+										<div class="col-md-8">
+											<div class="row">
+												<div class="col-md-6">
 
-                                    <p></p>
-                                    <div class="progress progress-statistics" style="width: 90%; height: 4px;">
-                                        <div class="bar" />
-                                    </div>
+													<h4 class="no-margin">
+														<span class="name" />
+														<span class="name" />
+													</h4>
+													<h5>
+														<span data-bind="text: displayName"></span>
+													</h5>
 
-                                    <!-- User who created the entity -->
-                                    <span class="pull-right" style="color:grey; font-size: 12px;">
-                                        <i class="glyphicon glyphicon-user" style="background-image: none" />
-                                        <small data-bind="text: $data.userId"></small>
-                                        <br/>
-                                        <i class="glyphicon glyphicon-search" />
-                                        <small data-bind="text: 'searchKey'" />
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+													<!-- Status Note -->
+													<div class="statusNote" data-bind="text: $data.statusNote"></div>
+												</div>
 
-                    <!--						<div class="list-fade"></div>-->
-                </div>
-                <!-- Infinity scroll -->
-                <!--
+												<div class="col-md-6">
+													<!-- Contact information -->
+													<div class="col-md-4">
+														<em></em>
+														<br/>
+														<em></em>
+													</div>
+												</div>
+											</div>
+											<!-- Interests -->
+											<!-- ko if: $data.tags -->
+											<div class="icons-nav" style="word-wrap: break-word;" data-bind="foreach: tags">
+												<small class="tag" data-bind="text: $data + ($index() != $parent.tags().length-1 ? ', ': '') ">
+												</small>
+											</div>
+											<!-- /ko -->
+										</div>
+
+										<!-- Right -->
+										<div class="col-md-3">
+
+											<!--  Contactable statuses -->
+
+											<p></p>
+											<div class="progress progress-statistics" style="width: 90%; height: 4px;">
+												<div class="bar" />
+											</div>
+
+											<!-- User who created the entity -->
+											<span class="pull-right" style="color:grey; font-size: 12px;">
+												<i class="glyphicon glyphicon-user" style="background-image: none" />
+												<small data-bind="text: $data.userId"></small>
+												<br/>
+												<i class="glyphicon glyphicon-search" />
+												<small data-bind="text: 'searchKey'" />
+											</span>
+										</div>
+									</div>
+								</a>
+							</div>
+
+							<!--						<div class="list-fade"></div>-->
+						</div>
+						<!-- Infinity scroll -->
+						<!--
 					<center data-bind="scroll: routingHelper.getRouteByName('contactableList').isActive(), scrollOptions: { loadFunc: addSome, offset: 10 }, visible: gettingMore() " data-ng-hide="true">
 						<img src="img/ats-loading.gif" style="width: 40px; height: 12px;" alt="Searching.." />
 					</center>
 -->
-                {{/if}}
-            </div>
-        </div>
-		<!--/ko-->
-    </section>
+						{{/if}}
+					</div>
+				</div>
+				<!--/ko-->
+			</div>
+		</div>
+	</section>
 </template>

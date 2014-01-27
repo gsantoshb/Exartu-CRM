@@ -1,0 +1,258 @@
+* {
+  outline: none !important;
+  -moz-outline: none !important;
+}
+/* Main */
+html {
+  overflow-x: hidden;
+}
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-top: -20px;
+}
+@media (nax-width: 480px) {
+  body {
+    margin-top: -2px;
+  }
+}
+@media (max-width: 768px) {
+  body {
+    padding: 18px 0 0 !important;
+  }
+}
+
+a:hover { text-decoration: none; }
+
+.container-fluid { padding: 0 20px;}
+
+//
+// Content
+// --------------------------------------------------
+#content {
+  background: #ecf1f4;
+  .box-shadow(0 0px 10px rgba(0,0,0,.75)); 
+  margin-left: 220px;
+  margin-right: 0;
+  margin-top: -39px;
+  position: relative;
+  min-height: 500px;
+  width: auto;
+  -webkit-background-clip: padding-box;
+  .border-radius (5px 0 0 5px);
+}
+@media (max-width: 480px) {
+  #content {
+    margin-left: 0 !important;
+    margin-top: 0;
+    border-radius: 0;
+  }
+  .fixed #content {
+    padding-top: 67px;
+  }
+}
+@media (min-width: 481px) and (max-width: 768px) {
+  #content {
+    margin-left: 43px;
+  }
+}
+#content-header {
+  background-color: #fff;
+  .border-radius (5px 0 0 0);
+  height: 60px;
+  padding-top: 5px;
+  width: 100%;
+  margin-top: -38px;
+  z-index: 20;
+}
+#content-header h1 {
+  color: #555555;
+  font-size: 28px;
+  font-weight: normal;
+  text-shadow: 0 1px 0 #ffffff;
+  margin-left: 20px;
+}
+#content-header h1,
+#content-header > .btn-group {
+  margin-top: 10px;
+}
+#content-header > .btn-group {
+  float: right;
+  right: 20px;
+  position: absolute;
+  margin-top: -50px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1) inset;
+  background-color: rgba(0, 0, 0, 0.035);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 5px;
+}
+#content-header > .btn-group .btn {
+  line-height: 18px;
+  font-size: 18px;
+  padding: 12px 16px;
+  color: rgba(0, 0, 0, 0.5);
+  border-width: 0 1px 0 0;
+  border-style: solid;
+  border-color: #dddddd;
+}
+#content-header > .btn-group .btn:hover {
+  color: rgba(0, 0, 0, 0.7);
+}
+#content-header > .btn-group .btn:last-child {
+  border-width: 0;
+}
+#content-header > .btn-group .btn .label {
+  font-size: 11px;
+  line-height: 12px;
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  padding: 2px 5px;
+}
+#content-header > .btn-group.colored {
+  box-shadow: none;
+  border: 0;
+}
+#content-header > .btn-group.colored .btn {
+  border: 0;
+  color: #ffffff;
+}
+#content-header > .btn-group.colored .btn:hover {
+  color: #eeeeee;
+}
+#content-header .mini-stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  position: absolute;
+  right: 0;
+  border-left: 1px solid #ddd;
+}
+#content-header .mini-stats li {
+  float: left;
+  border-left: 1px solid #fff;
+  border-right: 1px solid #ddd;
+  padding-bottom: 6px;
+}
+#content-header .mini-stats li:last-child {
+  border-right: 0;
+}
+#content-header .mini-stats .left {
+  float: left;
+  padding-top: 8px;
+  padding-left: 15px;
+}
+#content-header .mini-stats .left span {
+  display: block;
+  margin-bottom: 4px;
+}
+#content-header .mini-stats .right {
+  float: right;
+  padding: 8px 15px 0 10px;
+  font-size: 12px;
+}
+#content-header .mini-stats .right strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+#content-header .mini-stats .sparkline_bar_good,
+#content-header .mini-stats .sparkline_bar_neutral,
+#content-header .mini-stats .sparkline_bar_bad {
+  font-size: 12px;
+  text-align: center;
+  font-weight: bold;
+}
+#content-header .mini-stats .sparkline_bar_good {
+  color: #459d30;
+}
+#content-header .mini-stats .sparkline_bar_neutral {
+  color: #757575;
+}
+#content-header .mini-stats .sparkline_bar_bad {
+  color: #ba1e20;
+}
+@media (max-width: 480px) {
+  #content-header {
+    margin-top: 0;
+    /*height: 140px; FIX iPhone: Makes header take up too much space/not enough, let it dictate (by h1 text length) */
+  
+    height: auto;
+    /* FIX iPhone: allow h1, btn-group to set height*/
+  
+    text-align: center;
+  }
+  #content-header h1,
+  #content-header .btn-group,
+  #content-header .mini-stats {
+    float: none;
+    position: relative;
+    /*FIX iPhone: let btn group go in document flow, not absolute. Prevents button/header from running into each other*/
+  
+  }
+  #content-header h1 {
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-top: 0;
+    padding-top: 15px;
+    width: 100%;
+  }
+  #content-header .btn-group {
+    /*margin-top: 70px; FIX iPhone: Makes button group go needlessly far below the header. */
+  
+    margin: 10px 0;
+    /* FIX iPhone: give equal margins (as below h1), still able to target with finger */
+  
+    left: 0;
+    right: auto;
+  }
+  #content-header .mini-stats {
+    margin-top: 18px;
+    height: 60px;
+    border-left: 0;
+    border-top: 1px solid #e5e5e5;
+  }
+  #content-header .mini-stats.box-3 li {
+    width: 33% !important;
+  }
+  #content-header .mini-stats li:first-child {
+    border-left: 0;
+  }
+}
+/* Breadcrumb */
+#breadcrumb {
+  background-color: #f6f8fa;
+  border-top: 1px solid #d7dee3;
+  border-bottom: 1px solid #d7dee3;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+#breadcrumb a {
+  padding: 8px 20px 8px 10px;
+  display: inline-block;
+  background-image: url('../img/breadcrumb.png');
+  background-position: center right;
+  background-repeat: no-repeat;
+  font-size: 11px;
+  color: #666666;
+}
+#breadcrumb a i {
+  margin-right: 5px;
+  opacity: .6;
+  vertical-align: middle;
+}
+#breadcrumb a:hover {
+  color: #333333;
+}
+#breadcrumb a:hover i {
+  opacity: .8;
+}
+#breadcrumb a:last-child {
+  background-image: none;
+}
+#breadcrumb a.current {
+  font-weight: bold;
+  color: #444444;
+}
