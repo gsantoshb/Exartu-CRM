@@ -20,10 +20,6 @@ validateObjType = function (obj, objType) {
     }
 
 
-    if (obj.objNameArray.indexOf(objType.objName) < 0) {
-        console.error('Objtype incorrect');
-        return false;
-    }
 
     // Validating services
     var v = true;
