@@ -14,7 +14,10 @@ var dbSeed = {
             {
                 objGroupType: Enums.objGroupType.contactable,
                 objName: 'Customer',
-                glyphicon: 'glyphicon-credit-card',
+                style: {
+					icon: 'build',
+					color: 'red'
+				},
                 defaultPersonType: Enums.personType.organization,
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -34,7 +37,10 @@ var dbSeed = {
             {
                 objGroupType: Enums.objGroupType.contactable,
                 objName: 'Contact',
-                glyphicon: 'glyphicon-user',
+                style: {
+					icon: 'build',
+					color: 'red'
+				},
                 defaultPersonType: Enums.personType.human,
                 services: ['messages', 'tasks'],
                 fields: []
@@ -42,7 +48,10 @@ var dbSeed = {
             {
                 objGroupType: Enums.objGroupType.contactable,
                 objName: 'Employee',
-                glyphicon: 'glyphicon-user',
+                style: {
+					icon: 'connection',
+					color: 'pink'
+				},
                 defaultPersonType: Enums.personType.human,
                 services: ['messages', 'tasks'],
                 fields: [{
@@ -62,7 +71,10 @@ var dbSeed = {
             {
                 objGroupType: Enums.objGroupType.job,
                 objName: 'Direct Hire',
-                glyphicon: 'glyphicon-book',
+                style: {
+					icon: 'briefcase',
+					color: 'yellow'
+				},
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'test',
@@ -81,7 +93,10 @@ var dbSeed = {
             {
                 objGroupType: Enums.objGroupType.job,
                 objName: 'Temporary',
-                glyphicon: 'glyphicon-book',
+                style: {
+					icon: 'briefcase',
+					color: 'yellow'
+				},
                 services: ['messages', 'tasks'],
                 fields: [{
                     name: 'Type',
@@ -111,7 +126,7 @@ var dbSeed = {
                     services: objtype.services,
                     fields: objtype.fields,
                     personType: objtype.defaultPersonType,
-                    glyphicon: objtype.glyphicon
+                    style: objtype.style
                 })
             } else {
                 ObjTypes.update({
@@ -120,6 +135,7 @@ var dbSeed = {
                     $set: {
                         services: objtype.services,
                         fields: objtype.fields,
+						style: objtype.style
                     }
                 })
             }

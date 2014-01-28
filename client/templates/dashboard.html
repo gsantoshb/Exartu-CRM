@@ -64,518 +64,9 @@
 								<h4 class="box-title">Recent activity</h4>
 							</header>
 
-							<!-- Item ------------------------------------ -->
-							<div class="item item-job">
-								<div class="item-info">
-									<div class="time">
-										<i class="icon-clock-3"></i>3 HR</div>
-									<div class="type">
-										<i class="icon-briefcase"></i>
-									</div>
-								</div>
-								<!-- /.item-info -->
-								<div class="item-content">
-									<div class="box">
-										<div class="box-content">
-											<div class="thumb-container">
-												<div class="client-logo">
-													<a href="#">
-														<img src="assets/logo-exartu.png" alt="exartu">
-													</a>
-												</div>
-											</div>
-											<div class="item-blurb">
-												<strong>
-													<a href="#">Exartu</strong>
-												</a>added a new Job</div>
-											<h4 class="item-title">
-												<a href="#">Software Developer</h4>
-											</a>
-											<div class="item-actions">
-												<a class="btn btn-xs btn-default" href="#">
-													<i class="fa fa-share-square-o"></i>Share</a>
-												<a class="btn btn-xs btn-default" href="#">Recommend someone</a>
-												<a class="btn btn-xs btn-default" href="#">Details</a>
-											</div>
-										</div>
-										<!-- /.box-content -->
-									</div>
-									<!-- /.box -->
-								</div>
-								<!-- /.item-content -->
+							<div class="activity-container scroll-container" data-bind="visible: activities().length > 0, foreach: activities">
+								<div data-bind="template: { name: $root.activityVM($data), data: $data}"></div>
 							</div>
-							<!-- /.item -->
-
-							<!-- Item ------------------------------------ -->
-							<div class="item item-job">
-								<div class="item-info">
-									<div class="time">
-										<i class="icon-clock-3"></i>3 HR</div>
-									<div class="type">
-										<i class="icon-briefcase"></i>
-									</div>
-								</div>
-								<!-- /.item-info -->
-								<div class="item-content">
-									<div class="box">
-										<div class="box-content">
-											<div class="thumb-container">
-												<div class="client-logo">
-													<a href="#">
-														<img src="assets/logo-exartu.png" alt="exartu">
-													</a>
-												</div>
-											</div>
-											<div class="item-blurb">
-												<strong>
-													<a href="#">Exartu</strong>
-												</a>added a new Job</div>
-											<h4 class="item-title">
-												<a href="#">Web Designer</a>
-											</h4>
-											<div class="item-actions">
-												<a class="btn btn-xs btn-default" href="#">
-													<i class="fa fa-share-square-o"></i>Share</a>
-												<a class="btn btn-xs btn-default" href="#">Recommend someone</a>
-												<a class="btn btn-xs btn-default" href="#">Details</a>
-											</div>
-										</div>
-										<!-- /.box-content -->
-									</div>
-									<!-- /.box -->
-								</div>
-								<!-- /.item-content -->
-							</div>
-							<!-- /.item -->
-
-							<!-- Item ------------------------------------ -->
-							<div class="item item-job">
-								<div class="item-info">
-									<div class="time">
-										<i class="icon-clock-3"></i>3 HR</div>
-									<div class="type">
-										<i class="icon-briefcase"></i>
-									</div>
-								</div>
-								<!-- /.item-info -->
-								<div class="item-content">
-									<div class="box">
-										<div class="box-content">
-											<div class="thumb-container">
-												<div class="client-logo">
-													<a href="#">
-														<img src="assets/logo-exartu.png" alt="exartu">
-													</a>
-												</div>
-											</div>
-											<div class="item-blurb">
-												<strong>
-													<a href="#">Exartu</strong>
-												</a>added a new Job</div>
-											<h4 class="item-title">
-												<a href="#">Javascript Developer</a>
-											</h4>
-											<div class="item-actions">
-												<a class="btn btn-xs btn-default" href="#">
-													<i class="fa fa-share-square-o"></i>Share</a>
-												<a class="btn btn-xs btn-default" href="#">Recommend someone</a>
-												<a class="btn btn-xs btn-default" href="#">Details</a>
-											</div>
-										</div>
-										<!-- /.box-content -->
-									</div>
-									<!-- /.box -->
-								</div>
-								<!-- /.item-content -->
-							</div>
-							<!-- /.item -->
-
-							<!-- Item ------------------------------------ -->
-							<div class="item item-customer">
-								<div class="item-info">
-									<div class="time">
-										<i class="icon-clock-3"></i>3 HR</div>
-									<div class="type">
-										<i class="icon-buildings-1"></i>
-									</div>
-								</div>
-								<!-- /.item-info -->
-								<div class="item-content">
-									<div class="box">
-										<div class="box-content">
-											<div class="thumb-container">
-												<div class="client-logo">
-													<a href="#">
-														<img src="assets/logo-cnn.png" alt="CNN">
-													</a>
-												</div>
-											</div>
-											<div class="item-blurb">
-												<strong>
-													<a href="#">CNN</strong>
-												</a>is now our customer</div>
-											<h4 class="item-title">
-												<a href="#">Marta Lewinsky</a>- sales manager</h4>
-											<div class="item-actions">
-												<a class="btn btn-xs btn-default" href="#">
-													<i class="fa fa-envelope"></i>Send Message</a>
-												<a class="btn btn-xs btn-default" href="#">Details</a>
-											</div>
-										</div>
-										<!-- /.box-content -->
-									</div>
-									<!-- /.box -->
-								</div>
-								<!-- /.item-content -->
-							</div>
-							<!-- /.item -->
-
-							<!-- Item ------------------------------------ -->
-							<div class="item item-employee">
-								<div class="item-info">
-									<div class="time">
-										<i class="icon-clock-3"></i>3 HR</div>
-									<div class="type">
-										<i class="icon-connection-1"></i>
-									</div>
-								</div>
-								<!-- /.item-info -->
-								<div class="item-content">
-									<div class="box">
-										<div class="box-content">
-											<div class="thumb-container">
-												<div class="user-avatar-container">
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75.jpg" alt="Mihai Constantinescu">
-													</a>
-												</div>
-											</div>
-											<div class="item-blurb">
-												<strong>
-													<a href="#">Mihai Constantinescu</strong>
-												</a>is now part of our team</div>
-											<h4 class="item-title">
-												<a href="#">Web Designer</a>
-											</h4>
-											<div class="item-actions">
-												<a class="btn btn-xs btn-default" href="#">
-													<i class="fa fa-envelope"></i>Send Message</a>
-												<a class="btn btn-xs btn-default" href="#">Details</a>
-											</div>
-										</div>
-										<!-- /.box-content -->
-									</div>
-									<!-- /.box -->
-								</div>
-								<!-- /.item-content -->
-							</div>
-							<!-- /.item -->
-
-							<!-- Item ------------------------------------ -->
-							<div class="item item-assignment">
-								<div class="item-info">
-									<div class="time">
-										<i class="icon-clock-3"></i>3 HR</div>
-									<div class="type">
-										<i class="icon-check-bubble"></i>
-									</div>
-								</div>
-								<!-- /.item-info -->
-								<div class="item-content">
-									<div class="box">
-										<div class="box-content">
-											<div class="thumb-container">
-												<div class="user-avatar-container">
-													<span class="assign-ico">
-														<i class="icon-arrow-circle-28"></i>
-													</span>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75-1.jpg" alt="Mihai Constantinescu">
-													</a>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75.jpg" alt="Mihai Constantinescu">
-													</a>
-												</div>
-											</div>
-											<div class="item-blurb">
-												<strong>
-													<a href="#">Gregg Dourgarian</strong>
-												</a>asigned a new task to
-												<a href="#">
-													<strong>Mihai Constantinescu</strong>
-												</a>
-											</div>
-											<h4 class="item-title">
-												<a href="#">Exartu dashboard redesign</a>
-											</h4>
-											<div class="item-actions">
-												<a class="btn btn-xs btn-default" href="#">
-													<i class="fa fa-envelope"></i>Send Message</a>
-												<a class="btn btn-xs btn-default" href="#">Details</a>
-											</div>
-										</div>
-										<!-- /.box-content -->
-									</div>
-									<!-- /.box -->
-								</div>
-								<!-- /.item-content -->
-							</div>
-							<!-- /.item -->
-
-							<!-- Item ------------------------------------ -->
-							<div class="item item-assignment">
-								<div class="item-info">
-									<div class="time">
-										<i class="icon-clock-3"></i>3 HR</div>
-									<div class="type">
-										<i class="icon-check-bubble"></i>
-									</div>
-								</div>
-								<!-- /.item-info -->
-								<div class="item-content">
-									<div class="box">
-										<div class="box-content">
-											<div class="thumb-container">
-												<div class="user-avatar-container">
-													<span class="assign-ico">
-														<i class="icon-arrow-circle-28"></i>
-													</span>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75-1.jpg" alt="Mihai Constantinescu">
-													</a>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75.jpg" alt="Mihai Constantinescu">
-													</a>
-												</div>
-											</div>
-											<div class="item-blurb">
-												<strong>
-													<a href="#">Gregg Dourgarian</strong>
-												</a>asigned a new task to
-												<a href="#">
-													<strong>Mihai Constantinescu</strong>
-												</a>
-											</div>
-											<h4 class="item-title">
-												<a href="#">Exartu dashboard redesign</a>
-											</h4>
-											<div class="item-actions">
-												<a class="btn btn-xs btn-default" href="#">
-													<i class="fa fa-envelope"></i>Send Message</a>
-												<a class="btn btn-xs btn-default" href="#">Details</a>
-											</div>
-										</div>
-										<!-- /.box-content -->
-									</div>
-									<!-- /.box -->
-								</div>
-								<!-- /.item-content -->
-							</div>
-							<!-- /.item -->
-
-							<!-- Item ------------------------------------ -->
-							<div class="item item-assignment">
-								<div class="item-info">
-									<div class="time">
-										<i class="icon-clock-3"></i>3 HR</div>
-									<div class="type">
-										<i class="icon-check-bubble"></i>
-									</div>
-								</div>
-								<!-- /.item-info -->
-								<div class="item-content">
-									<div class="box">
-										<div class="box-content">
-											<div class="thumb-container">
-												<div class="user-avatar-container">
-													<span class="assign-ico">
-														<i class="icon-arrow-circle-28"></i>
-													</span>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75-1.jpg" alt="Mihai Constantinescu">
-													</a>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75.jpg" alt="Mihai Constantinescu">
-													</a>
-												</div>
-											</div>
-											<div class="item-blurb">
-												<strong>
-													<a href="#">Gregg Dourgarian</strong>
-												</a>asigned a new task to
-												<a href="#">
-													<strong>Mihai Constantinescu</strong>
-												</a>
-											</div>
-											<h4 class="item-title">
-												<a href="#">Exartu dashboard redesign</a>
-											</h4>
-											<div class="item-actions">
-												<a class="btn btn-xs btn-default" href="#">
-													<i class="fa fa-envelope"></i>Send Message</a>
-												<a class="btn btn-xs btn-default" href="#">Details</a>
-											</div>
-										</div>
-										<!-- /.box-content -->
-									</div>
-									<!-- /.box -->
-								</div>
-								<!-- /.item-content -->
-							</div>
-							<!-- /.item -->
-
-							<!-- Item ------------------------------------ -->
-							<div class="item item-assignment">
-								<div class="item-info">
-									<div class="time">
-										<i class="icon-clock-3"></i>3 HR</div>
-									<div class="type">
-										<i class="icon-check-bubble"></i>
-									</div>
-								</div>
-								<!-- /.item-info -->
-								<div class="item-content">
-									<div class="box">
-										<div class="box-content">
-											<div class="thumb-container">
-												<div class="user-avatar-container">
-													<span class="assign-ico">
-														<i class="icon-arrow-circle-28"></i>
-													</span>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75-1.jpg" alt="Mihai Constantinescu">
-													</a>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75.jpg" alt="Mihai Constantinescu">
-													</a>
-												</div>
-											</div>
-											<div class="item-blurb">
-												<strong>
-													<a href="#">Gregg Dourgarian</strong>
-												</a>asigned a new task to
-												<a href="#">
-													<strong>Mihai Constantinescu</strong>
-												</a>
-											</div>
-											<h4 class="item-title">
-												<a href="#">Exartu dashboard redesign</a>
-											</h4>
-											<div class="item-actions">
-												<a class="btn btn-xs btn-default" href="#">
-													<i class="fa fa-envelope"></i>Send Message</a>
-												<a class="btn btn-xs btn-default" href="#">Details</a>
-											</div>
-										</div>
-										<!-- /.box-content -->
-									</div>
-									<!-- /.box -->
-								</div>
-								<!-- /.item-content -->
-							</div>
-							<!-- /.item -->
-
-							<!-- Item ------------------------------------ -->
-							<div class="item item-assignment">
-								<div class="item-info">
-									<div class="time">
-										<i class="icon-clock-3"></i>3 HR</div>
-									<div class="type">
-										<i class="icon-check-bubble"></i>
-									</div>
-								</div>
-								<!-- /.item-info -->
-								<div class="item-content">
-									<div class="box">
-										<div class="box-content">
-											<div class="thumb-container">
-												<div class="user-avatar-container">
-													<span class="assign-ico">
-														<i class="icon-arrow-circle-28"></i>
-													</span>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75-1.jpg" alt="Mihai Constantinescu">
-													</a>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75.jpg" alt="Mihai Constantinescu">
-													</a>
-												</div>
-											</div>
-											<div class="item-blurb">
-												<strong>
-													<a href="#">Gregg Dourgarian</strong>
-												</a>asigned a new task to
-												<a href="#">
-													<strong>Mihai Constantinescu</strong>
-												</a>
-											</div>
-											<h4 class="item-title">
-												<a href="#">Exartu dashboard redesign</a>
-											</h4>
-											<div class="item-actions">
-												<a class="btn btn-xs btn-default" href="#">
-													<i class="fa fa-envelope"></i>Send Message</a>
-												<a class="btn btn-xs btn-default" href="#">Details</a>
-											</div>
-										</div>
-										<!-- /.box-content -->
-									</div>
-									<!-- /.box -->
-								</div>
-								<!-- /.item-content -->
-							</div>
-							<!-- /.item -->
-
-							<!-- Item ------------------------------------ -->
-							<div class="item item-assignment">
-								<div class="item-info">
-									<div class="time">
-										<i class="icon-clock-3"></i>3 HR</div>
-									<div class="type">
-										<i class="icon-check-bubble"></i>
-									</div>
-								</div>
-								<!-- /.item-info -->
-								<div class="item-content">
-									<div class="box">
-										<div class="box-content">
-											<div class="thumb-container">
-												<div class="user-avatar-container">
-													<span class="assign-ico">
-														<i class="icon-arrow-circle-28"></i>
-													</span>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75-1.jpg" alt="Mihai Constantinescu">
-													</a>
-													<a class="user-avatar" href="#">
-														<img src="assets/pic-75x75.jpg" alt="Mihai Constantinescu">
-													</a>
-												</div>
-											</div>
-											<div class="item-blurb">
-												<strong>
-													<a href="#">Gregg Dourgarian</strong>
-												</a>asigned a new task to
-												<a href="#">
-													<strong>Mihai Constantinescu</strong>
-												</a>
-											</div>
-											<h4 class="item-title">
-												<a href="#">Exartu dashboard redesign</a>
-											</h4>
-											<div class="item-actions">
-												<a class="btn btn-xs btn-default" href="#">
-													<i class="fa fa-envelope"></i>Send Message</a>
-												<a class="btn btn-xs btn-default" href="#">Details</a>
-											</div>
-										</div>
-										<!-- /.box-content -->
-									</div>
-									<!-- /.box -->
-								</div>
-								<!-- /.item-content -->
-							</div>
-							<!-- /.item -->
 
 						</section>
 						<!-- /.timeline -->
@@ -665,9 +156,166 @@
 				<!-- /.row -->
 			</div>
 			<!-- /.container-fluid -->
-
-
 		</div>
 		<!-- /.content -->
+	</div>
+
+
+	<!-- Activity templates ------------------------------------------------------------------------ -->
+
+	<!-- Hack: template for activities that doesn't have html yet -->
+	<div id="dashboardEmptyActivity" style="display: none">
+	</div>
+
+	<!-- New job activity ------------------------------------ -->
+	<div id="dashboardJobActivity" style="display: none">
+		<div class="item item-job">
+			<div class="item-info">
+				<div class="time">
+					<i class="icon-clock-3"></i>3 HR</div>
+				<div class="type">
+					<i class="icon-briefcase"></i>
+				</div>
+			</div>
+			<!-- /.item-info -->
+			<div class="item-content">
+				<div class="box">
+					<div class="box-content">
+						<div class="thumb-container">
+							<div class="client-logo">
+								<a href="#">
+									<img src="assets/logo-exartu.png" alt="exartu">
+								</a>
+							</div>
+						</div>
+						<div class="item-blurb">
+							<strong>
+								<a href="#">Exartu>
+								</a>added a new Job for
+								<h5 data-bind="text: customerName"></h5>
+							</strong>
+							<h4 class="item-title">
+								<a href="#" data-bind="text: jobTitle">
+								</a>
+							</h4>
+							<div class="item-actions">
+								<a class="btn btn-xs btn-default" href="#">
+									<i class="fa fa-share-square-o"></i>Share</a>
+								<a class="btn btn-xs btn-default" href="#">Recommend someone</a>
+								<a class="btn btn-xs btn-default" href="#">Details</a>
+							</div>
+						</div>
+						<!-- /.box-content -->
+					</div>
+					<!-- /.box -->
+				</div>
+				<!-- /.item-content -->
+			</div>
+		</div>
+	</div>
+
+	<!-- New contactable activity ------------------------------------ -->
+	<div id="dashboardContactableActivity" style="display: none">
+		<div class="item item-customer">
+			<div class="item-info">
+				<div class="time">
+					<i class="icon-clock-3"></i>
+					<span data-bind="text: moment(data.createdAt()).fromNow()"></span>
+				</div>
+				<div class="type" data-bind="style: {background: helper.getActivityColor($data)}">
+					<i data-bind="css: helper.getActivityIcon($data)"></i>
+				</div>
+			</div>
+			<!-- /.item-info -->
+			<div class="item-content">
+				<div class="box">
+					<div class="box-content" data-bind="with: data">
+						<div class="thumb-container">
+							<div class="user-avatar-container">
+								<a class="user-avatar" href="#">
+									<img style="width: 64px; height: 64px; padding:0" src="img/avatar.jpg" alt="CNN">
+								</a>
+							</div>
+						</div>
+						<div class="item-blurb">
+							<strong>
+								<a href="#" data-bind="text: displayName">
+								</a>
+							</strong>
+							is now our
+							<span data-bind="text: objTypeName"></span>
+						</div>
+
+						<!-- ko if: $data.person -->
+						<h4 class="item-title" data-bind="text: person.jobTitle" />
+						<!-- /ko -->
+						<div class="item-actions">
+							<a class="btn btn-xs btn-default" href="#">
+								<i class="fa fa-envelope"></i>Send Message</a>
+							<a class="btn btn-xs btn-default" href="#">Details</a>
+						</div>
+					</div>
+					<!-- /.box-content -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.item-content -->
+		</div>
+		<!-- /.item -->
+	</div>
+
+	<!-- TODO: New task activity ------------------------------------ -->
+	<div id="dashboardTaskActivity" style="display: none">
+		<div class="item item-assignment">
+			<div class="item-info">
+				<div class="time">
+					<i class="icon-clock-3"></i>3 HR</div>
+				<div class="type">
+					<i class="icon-check-bubble"></i>
+				</div>
+			</div>
+			<!-- /.item-info -->
+			<div class="item-content">
+				<div class="box">
+					<div class="box-content">
+						<div class="thumb-container">
+							<div class="user-avatar-container">
+								<span class="assign-ico">
+									<i class="icon-arrow-circle-28"></i>
+								</span>
+								<a class="user-avatar" href="#">
+									<img src="assets/pic-75x75-1.jpg" alt="Mihai Constantinescu">
+								</a>
+								<a class="user-avatar" href="#">
+									<img src="assets/pic-75x75.jpg" alt="Mihai Constantinescu">
+								</a>
+							</div>
+						</div>
+						<div class="item-blurb">
+							<strong>
+								<a href="#">Gregg Dourgarian
+								</a>
+							</strong>
+							asigned a new task to
+							<a href="#">
+								<strong>Mihai Constantinescu</strong>
+							</a>
+						</div>
+						<h4 class="item-title">
+							<a href="#">Exartu dashboard redesign</a>
+						</h4>
+						<div class="item-actions">
+							<a class="btn btn-xs btn-default" href="#">
+								<i class="fa fa-envelope"></i>Send Message</a>
+							<a class="btn btn-xs btn-default" href="#">Details</a>
+						</div>
+					</div>
+					<!-- /.box-content -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<!-- /.item-content -->
+		</div>
+		<!-- /.item -->
 	</div>
 </template>

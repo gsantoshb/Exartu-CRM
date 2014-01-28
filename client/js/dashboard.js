@@ -8,8 +8,47 @@ Template.dashboard.rendered = function () {
 	// Model
 	var vm = function () {
 		var self = this;
-		self.greeting = ko.observable("Welcome to Exartu");
-		//self.activities = ko.meteor.find(Activities, {});
+
+		self.activities = ko.meteor.find(Activities, {}, {
+			sort: {
+				'data.createdAt': -1
+			}
+		});
+		self.activityVM = function (activity) {
+			switch (activity.type()) {
+			case 0:
+				console.log('contactable activity');
+				return 'dashboardContactableActivity';
+			default:
+				console.log('empty activity');
+				return 'dashboardEmptyActivity';
+			}
+		};
+
+		self.getActivityTime = function (activity) {
+			var now = new Date();
+			var diffMs = now - new Date(activity.data.createdAt());
+			var diffDays = Math.floor(diffMs / 86400000);
+			var diffHours = Math.floor((diffMs % 86400000) / 3600000);
+			var diffMins = Math.floor(((diffMs % 86400000) % 3600000) / 60000);
+
+			if (diffDays >= 1) {
+				return {
+					unity: 'D',
+					diff: diffDays
+				}
+			} else if (diffHours >= 1) {
+				return {
+					unity: 'H',
+					diff: diffHours
+				}
+			} else {
+				return {
+					unity: 'M',
+					diff: diffMins
+				}
+			}
+		}
 
 		return self;
 	};
@@ -73,4 +112,5 @@ Template.dashboard.rendered = function () {
 	}
 
 	exartu.sparkline();
-};
+
+}

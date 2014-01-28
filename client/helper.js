@@ -1,3 +1,16 @@
+var colors = [
+	{ name: 'red', value: '#ff2d55'},
+	{ name: 'yellow', value: '#fc0'},
+	{ name: 'pink', value:'#cb53fc'}
+]
+
+var icons = [
+	{ name: 'build', value: 'icon-buildings-1'},
+	{ name: 'briefcase', value: 'icon-briefcase'},
+	{ name: 'connection', value: 'icon-connection-1'}
+]
+
+
 /*** wraper for ko.applyBindings
 *    vm -> viewModel(obj) to bind
 *    viewName -> string that identifies the DOM that holds view (must exist an element with name="viewName")
@@ -190,7 +203,23 @@ _.extend(helper, {
             if (obj[type.objName]) objTypeArray.push(type);
         });
         return objTypeArray;
-    }
+    },
+	getEntityColor: function(entity) {
+		var style = ObjTypes.findOne({objName: entity.objNameArray[0]}).style;
+		return _.findWhere(colors, {name: style.color}).value;
+	},
+	getEntityIcon: function(entity) {
+		var style = ObjTypes.findOne({objName: entity.objNameArray[0]}).style;
+		return _.findWhere(icons, {name: style.icon}).value;
+	},
+	getActivityColor: function(activity) {
+		var style = ObjTypes.findOne({objName: activity.data.objTypeName()}).style;
+		return _.findWhere(colors, {name: style.color}).value;
+	},
+	getActivityIcon: function(activity) {
+		var style = ObjTypes.findOne({objName: activity.data.objTypeName()}).style;
+		return _.findWhere(icons, {name: style.icon}).value;
+	}
 });
 
 _.extend(helper, {

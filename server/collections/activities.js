@@ -21,14 +21,25 @@ Meteor.publish('activities', function () {
 })
 
 Contactables.after.insert(function (userId, doc) {
+	var data = {};
+	data.createdAt = doc.createdAt;
+	data.objTypeName = doc.objNameArray[0];
+
+	if (doc.person) {
+		data.displayName = doc.person.lastName + ', ' + doc.person.firstName + ' ' + doc.person.middleName;
+		data.person = {
+			jobTitle: doc.person.jobTitle
+		}
+	} else {
+		data.displayName = doc.displayName = doc.organization.organizationName;
+	}
+
 	Activities.insert({
 		userId: userId,
 		hierId: Meteor.user().hierId,
 		type: Enums.activitiesType.contactableAdd,
 		entityId: doc._id,
-		data: {
-			createdAt: doc.createdAt
-		}
+		data: data,
 	})
 })
 
