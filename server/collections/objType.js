@@ -42,7 +42,7 @@ validateObjType = function (obj, objType) {
     v = true;
     _.every(objType.fields, function (field) {
         if (objTypeFields[field.name] != undefined) {
-            v = v && (objTypeFields[field.name].match(field.regex) != null);
+            v = validateField(objTypeFields[field.name], field);
             if (!v) console.error(field.name + ' is invalid: ' + v);
             return v;
         } else {
@@ -88,7 +88,15 @@ validateObjType = function (obj, objType) {
 
     return true;
 }
-
+var validateField = function (value, field) {
+    switch (field.fieldType) {
+    case Enums.fieldType.string:
+        return value.match ? value.match(field.regex) != null : false;
+    case Enums.fieldType.lookUp:
+        //ToDo
+        return true;
+    }
+}
 /*
  * Services available in the system
  */
