@@ -10,6 +10,11 @@
             </div>
         </div>
     </div>
+    <!-- LookUp -->
+    <div id="inLookUpField" style="display: none;">
+        <h5 data-bind="text: name"></h5>
+        <select data-bind="options: options, optionsText:'displayName', optionsValue:'code', value: value, attr:{multiple:multiple}, optionsCaption: 'Choose...'"></select>
+    </div>
 
     <div id="outStringField" style="display: none;">
         <span data-bind="value: value" />

@@ -35,7 +35,13 @@ Template.addContactable.viewmodel = function (objname) {
                     params: item.regex
                 }
             })
-        })
+        });
+        if(item.fieldType==Enum.fieldType.lookUp){
+            _.extend(item, {
+                value: ko.observable(item.defaultValue),
+                options: LookUps.findOne({name: item.LookUpName}).items,            
+            })
+        }
     });
 	self.selectedType.subscribe(function (newval) {
         self.setSelectedType(newval);

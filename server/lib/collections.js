@@ -12,6 +12,8 @@ ObjTypes = new Meteor.Collection("objTypes");
 
 Relations = new Meteor.Collection("relations");
 
+LookUps = new Meteor.Collection("lookUps");
+
 Collections = {
     Hierarchies: Hierarchies,
 
@@ -25,5 +27,7 @@ Collections = {
 
     ObjTypes: ObjTypes,
 
-    Relations: Relations
+    Relations: Relations,
+
+    LookUps: LookUps
 }

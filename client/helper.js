@@ -48,6 +48,8 @@ _.extend(helper, {
             return 'inStringField';
         case 2:
             return 'inDateField';
+        case 5:
+            return 'inLookUpField';
         }
     },
     relationVM: function (rel) {

@@ -52,3 +52,6 @@ Meteor.subscribe('activities');
 
 ObjTypes = new Meteor.Collection("objTypes");
 Meteor.subscribe('objTypes');
+
+LookUps = new Meteor.Collection("lookUps");
+Meteor.subscribe('lookUps');

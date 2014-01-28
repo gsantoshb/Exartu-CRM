@@ -14,11 +14,19 @@ Template.addJob.viewmodel = function (typeId) {
                             params: item.regex
                         }
                     })
-                })
+                });
+                if (item.fieldType == Enums.fieldType.lookUp) {
+                    _.extend(item, {
+                        value: ko.observable(item.defaultValue),
+                        options: LookUps.findOne({
+                            name: item.lookUpName
+                        }).items,
+                    })
+                }
             });
             self.objTypeName(result.objName);
             var aux = {
-                type: ko.observableArray([typeId]),
+                type: ko.observableArray([result.objName]),
             }
             aux[result.objName] = ko.observableArray(result.fields)
             self.job = ko.validatedObservable(aux);
@@ -57,7 +65,7 @@ Template.addJob.viewmodel = function (typeId) {
         _.forEach(fields, function (field) {
             self.job()[self.objTypeName()][field.name] = field.value() || field.defaultValue;
         })
-
+        debugger;
         Meteor.call('addJob', ko.toJS(self.job));
         $('#addJobModal').modal('hide');
     }

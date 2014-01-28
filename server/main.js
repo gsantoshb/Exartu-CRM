@@ -65,16 +65,12 @@ var dbSeed = {
                 glyphicon: 'glyphicon-book',
                 services: ['messages', 'tasks'],
                 fields: [{
-                    name: 'test',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true
-                    }, {
-                    name: 'test2',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
+                    name: 'jobTitle',
+                    regex: '',
+                    fieldType: Enums.fieldType.lookUp,
+                    lookUpName: 'jobTitle',
+                    multiple: false,
+                    defaultValue: null,
                     showInAdd: true
                 }]
             },
@@ -104,6 +100,7 @@ var dbSeed = {
                 objName: objtype.objName
             });
             if (objName == null) {
+                console.log('inserting objType '+objtype.objName);
                 ObjTypes.insert({
                     hierId: ExartuConfig.SystemHierarchyId,
                     objGroupType: objtype.objGroupType,
@@ -114,6 +111,7 @@ var dbSeed = {
                     glyphicon: objtype.glyphicon
                 })
             } else {
+                console.log('updating objType '+objtype.objName);
                 ObjTypes.update({
                     _id: objtype._id
                 }, {
@@ -182,10 +180,12 @@ var dbSeed = {
                 name: rel.name
             });
             if (oldRel == null) {
+                console.log('inserting relation '+rel.name);
                 rel.hierId = ExartuConfig.SystemHierarchyId;
                 console.dir(rel);
                 Relations.insert(rel);
             } else {
+                console.log('updating relation '+rel.name);
                 Relations.update({
                     _id: oldRel._id
                 }, {
@@ -193,6 +193,45 @@ var dbSeed = {
                         visibilityOn1: rel.visibilityOn1,
                         visibilityOn2: rel.visibilityOn2,
                         cascadeDelete: rel.cascadeDelete
+                    }
+                })
+            }
+        });
+    },
+
+    seedSystemLookUps: function () {            
+        systemLookUps = [{
+            name: 'jobTitle',
+            objGroupType : Enums.objGroupType.job,
+            items:[{
+                    displayName:'Developer',
+                    code: 0
+                },{
+                    displayName: 'Designer',
+                    code: 1
+            }],
+        }];
+    
+
+        _.forEach(systemLookUps, function (lu) {
+//        console.log(lu.name);
+//        console.log(lu.objGroupType);
+    
+            var oldLU = LookUps.findOne({
+                'name': lu.name, 
+                'objGroupType': lu.objGroupType
+            });
+            if (oldLU == null) {
+                lu.hierId = ExartuConfig.SystemHierarchyId;
+                console.log('inserting lookup '+lu.name);
+                LookUps.insert(lu);
+            } else {
+                console.log('updating '+lu.name);
+                Relations.update({
+                    _id: oldLU._id
+                }, {
+                    $set: {
+                        items: lu.items,
                     }
                 })
             }
