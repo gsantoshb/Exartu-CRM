@@ -129,7 +129,7 @@ Template.header.rendered = function () {
 
 
     $(document).on('click', '.dropdown > a', function (e) {
-//        debugger;
+        //        debugger;
         e.preventDefault();
         var submenu = $(this).siblings('ul');
         var li = $(this).parents('li');
@@ -184,11 +184,11 @@ Template.header.rendered = function () {
     });
 }
 Template.header.hasPicture = function () {
-    var user = Meteor.user()
-    return user && user.services && user.services.google && user.services.google.picture
+    var user = Meteor.user();
+    return user && user.services && user.services.google && user.services.google.picture;
 }
 Template.header.picture = function () {
-    return Meteor.user().services.google.picture
+    return Meteor.user().services.google.picture + '?sz=26';
 }
 Template.header.events = {
     'click #dashboardLink': function () {
