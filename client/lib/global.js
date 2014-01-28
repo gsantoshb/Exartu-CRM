@@ -51,3 +51,10 @@ ko.validation.configure({
         deep: true
     } //default is deep: false, observable: true
 });
+
+/*
+ * subscribe to user data
+ */
+Deps.autorun(function () {
+    Meteor.subscribe('userData');
+});

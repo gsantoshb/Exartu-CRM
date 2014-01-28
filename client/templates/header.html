@@ -1,32 +1,34 @@
 <template name="header">
-	<div name="headerVM">
-		<div id="header">
-			<h1>
-				<a href="./dashboard.html">EXARTU</a>
-			</h1>
-			<a id="menu-trigger" href="#">
-				<i class="fa fa-align-justify"></i>
-			</a>
-		</div>
-		<!-- /#header -->
+    <div name="headerVM">
+        <div id="header">
+            <h1>
+                <a href="./dashboard.html">EXARTU</a>
+            </h1>
+            <a id="menu-trigger" href="#">
+                <i class="fa fa-align-justify"></i>
+            </a>
+        </div>
+        <!-- /#header -->
 
-		<div id="search">
-			<input type="text" placeholder="Search ..." />
-			<button type="submit" class="tip-right" title="Search">
-				<i class="fa fa-search"></i>
-			</button>
-		</div>
-		<div id="user-nav">
-			<ul class="btn-group">
-				<li class="btn dropdown">
-					<a href="#">
-						<span class="user-menu-thumb">
-							<img src="assets/pic-26x26.jpg">
-						</span>
-						{{loginButtons}}
-					</a>
-				</li>
-				<!--
+        <div id="search">
+            <input type="text" placeholder="Search ..." />
+            <button type="submit" class="tip-right" title="Search">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+        <div id="user-nav">
+            <ul class="btn-group">
+                <li class="btn dropdown">
+                    <a href="#">
+                        <span class="user-menu-thumb">
+                            {{#if hasPicture}}
+                            <img src={{picture}} style="heigth: 26px;width: 26px;">{{else}}
+                            <img src="assets/pic-26x26.jpg" />{{/if}}
+                        </span>
+                        {{loginButtons}}
+                    </a>
+                </li>
+                <!--
 				<li class="btn dropdown" id="menu-messages">
 					<a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
 						<i class="fa fa-envelope-o"></i>
@@ -132,25 +134,25 @@
 
 				</li>
 -->
-			</ul>
-		</div>
-		<!-- /#user-nav -->
+            </ul>
+        </div>
+        <!-- /#user-nav -->
 
-		<div id="sidebar">
-			<ul>
-				<li class="active">
-					<a href="/">
-						<i class="icon-house-2"></i>
-						<span>Dashboard</span>
-					</a>
-				</li>
-				<li class="contactables">
-					<a href="contactables">
-						<i class="icon-connection-1"></i>
-						<span>Contactables</span>
-					</a>
-				</li>
-				<!--
+        <div id="sidebar">
+            <ul>
+                <li class="active">
+                    <a href="/">
+                        <i class="icon-house-2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="contactables">
+                    <a href="contactables">
+                        <i class="icon-connection-1"></i>
+                        <span>Contactables</span>
+                    </a>
+                </li>
+                <!--
 				<li class="tasks">
 	<a href="tasks.html">
 		<i class="icon-check-list"></i>
@@ -158,13 +160,13 @@
 	</a>
 </li>
 -->
-				<li class="jobs">
-					<a href="jobs">
-						<i class="icon-briefcase"></i>
-						<span>Jobs</span>
-					</a>
-				</li>
-				<!--
+                <li class="jobs">
+                    <a href="jobs">
+                        <i class="icon-briefcase"></i>
+                        <span>Jobs</span>
+                    </a>
+                </li>
+                <!--
 	<li class="assignments">
 	<a href="assignments.html">
 		<i class="icon-check-bubble"></i>
@@ -172,8 +174,8 @@
 	</a>
 </li>
 -->
-			</ul>
-		</div>
-		<!-- /#sidebar -->
-	</div>
+            </ul>
+        </div>
+        <!-- /#sidebar -->
+    </div>
 </template>
