@@ -13,7 +13,13 @@ Router.map(function () {
 
 	this.route('login', {
 		path: '/login',
-		template: 'login'
+		template: 'login',
+		before: function() {
+			if (Meteor.user())
+			{
+				this.redirect('dashboard');
+			}
+		}
 	});
 
 	this.route('contactables', {
