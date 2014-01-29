@@ -1,13 +1,31 @@
 var colors = [
-	{ name: 'red', value: '#ff2d55'},
-	{ name: 'yellow', value: '#fc0'},
-	{ name: 'pink', value:'#cb53fc'}
+    {
+        name: 'red',
+        value: '#ff2d55'
+    },
+    {
+        name: 'yellow',
+        value: '#fc0'
+    },
+    {
+        name: 'pink',
+        value: '#cb53fc'
+    }
 ]
 
 var icons = [
-	{ name: 'build', value: 'icon-buildings-1'},
-	{ name: 'briefcase', value: 'icon-briefcase'},
-	{ name: 'connection', value: 'icon-connection-1'}
+    {
+        name: 'build',
+        value: 'icon-buildings-1'
+    },
+    {
+        name: 'briefcase',
+        value: 'icon-briefcase'
+    },
+    {
+        name: 'connection',
+        value: 'icon-connection-1'
+    }
 ]
 
 
@@ -17,10 +35,22 @@ var icons = [
 *    collectionHandler(optional) -> Meteor collection handler extended with our wait function. The binding will apply when the collection is ready
         todo: support multiple collections
 ***/
-var errorElement = function (oldElement, msg) {
-    return '<div style="border: solid 1px red;color: red; width:' + $(oldElement).width() + 'px;height:' + $(oldElement).height() + 'px;"> ' + msg + ' </div';
+var errorElement = function (msg) {
+    return '<div class="alert-danger">' + msg +  '</div>';
 }
 helper = {};
+var handleError = function (err, viewName) {
+    if (err.originElement) {
+        $(err.originElement).replaceWith(errorElement(err.message));
+        return true;
+    }
+    if (! document.getElementsByName(viewName)[0]) {
+        console.log(viewName + ' does not exist');
+        return;
+    }
+    console.log('binding error');
+    console.dir(err)
+}
 _.extend(helper, {
     applyBindings: function (vm, viewName, collectionHandler) {
         var vm = typeof (vm) == "function" ? new vm() : vm;
@@ -29,28 +59,15 @@ _.extend(helper, {
             try {
                 ko.applyBindings(vm, document.getElementsByName(viewName)[0]);
             } catch (err) {
-                var element = document.getElementsByName(viewName)[0];
-                if (!element) {
-                    console.log(viewName + ' does not exist');
-                    return;
-                }
-                element.innerHTML = errorElement(element, err.message);
-                console.log('binding error');
-                console.dir(err)
+                if (handleError(err, viewName))
+                    helper.applyBindings(vm, viewName, collectionHandler);
             }
         } else {
             collectionHandler.wait(function () {
                 try {
                     ko.applyBindings(vm, document.getElementsByName(viewName)[0]);
                 } catch (err) {
-                    var element = document.getElementsByName(viewName)[0];
-                    if (!element) {
-                        console.log(viewName + ' does not exist');
-                        return;
-                    }
-                    element.innerHTML = errorElement(element, err.message);
-                    console.log('binding error');
-                    console.dir(err)
+                    handleError(err, viewName);
                 }
             });
         }
@@ -72,17 +89,9 @@ _.extend(helper, {
         if (rel.cardinality.max == Infinity)
             return 'inMultiple'
     },
-    /*
-     * Generate the functions and elements necessary for perform full text search and filter
-     * over a list with entities which have dynamic obj types.
-     * Params:
-     *  - fieldsToSearch: names of the entity fields where the search will be performed.
-     *  - objTypes: list of types that are used by entities in collection.
-     *  - callback: function called after each search
-     * Return:
-     *  - searchString: observable item used to search
-     *  - filter: ..
-     */
+    /*  Generate the functions and elements necessary
+        for perform full text search and filter * over a list with entities which have dynamic obj types.*Params: * -fieldsToSearch: names of the entity fields where the search will be performed.*-objTypes: list         of types that are used by entities in collection.*-callback: function called after each search * Return: * -searchString: observable item used to search * -filter: ..
+    */
     createObjTypefilter: function (fieldsToSearch, objtypes, callback) {
         var self = {};
 
@@ -164,12 +173,10 @@ _.extend(helper, {
         });
     },
     getPersonTypes: function () {
-        var persontypes=[];
-        _.each(Enums.personType,function(err,v)
-            {
-                persontypes.push(v);
-            }
-        );
+        var persontypes = [];
+        _.each(Enums.personType, function (err, v) {
+            persontypes.push(v);
+        });
         return persontypes;
     },
     getJobTypes: function () {
@@ -177,51 +184,67 @@ _.extend(helper, {
             objGroupType: Enums.objGroupType.job
         }).fetch();
     },
-    getIconForObjName : function (objname) {
-        var objtype=ObjTypes.findOne({objName: objname});
-        if (objtype || objtype.glyphicon !='') return objtype.glyphicon;
+    getIconForObjName: function (objname) {
+        var objtype = ObjTypes.findOne({
+            objName: objname
+        });
+        if (objtype || objtype.glyphicon != '') return objtype.glyphicon;
         return 'glyphicon-question-sign';
     },
-    getIconForObjType : function (objtype) {
-        if (objtype.glyphicon=='') return 'glyphicon-question-sign';
+    getIconForObjType: function (objtype) {
+        if (objtype.glyphicon == '') return 'glyphicon-question-sign';
         return objtype.glyphicon;
     },
-    getObjNameArrayFromObject: function(obj)
-    {
-      // an object can have multiple names (objName), for example the same person can be both an employee and a contact
-      // return an array of the objNames for the supplied object
-        var objNameArray=[];
+    getObjNameArrayFromObject: function (obj) {
+        //an object can have multiple names(objName), for example the same person can be both an employee and a contact
+        // return an array of the objNames for the supplied object
+        var objNameArray = [];
         _.map(ObjTypes.find().fetch(), function (type) {
             if (obj[type.objName]) objNameArray.push(type.objName);
         });
         return objNameArray;
     },
-    getObjTypesFromObject: function(obj)
-    {
+    getObjTypesFromObject: function (obj) {
         // an object can have multiple purposes (objTypes, for example the same person can be both an employee and a contact
         // return an array of the objTypes for the supplied object
-        var objTypeArray=[];
+        var objTypeArray = [];
         _.map(ObjTypes.find().fetch(), function (type) {
             if (obj[type.objName]) objTypeArray.push(type);
         });
         return objTypeArray;
     },
-	getEntityColor: function(entity) {
-		var style = ObjTypes.findOne({objName: entity.objNameArray[0]}).style;
-		return _.findWhere(colors, {name: style.color}).value;
-	},
-	getEntityIcon: function(entity) {
-		var style = ObjTypes.findOne({objName: entity.objNameArray[0]}).style;
-		return _.findWhere(icons, {name: style.icon}).value;
-	},
-	getActivityColor: function(activity) {
-		var style = ObjTypes.findOne({objName: activity.data.objTypeName()}).style;
-		return _.findWhere(colors, {name: style.color}).value;
-	},
-	getActivityIcon: function(activity) {
-		var style = ObjTypes.findOne({objName: activity.data.objTypeName()}).style;
-		return _.findWhere(icons, {name: style.icon}).value;
-	}
+    getEntityColor: function (entity) {
+        var style = ObjTypes.findOne({
+            objName: entity.objNameArray[0]
+        }).style;
+        return _.findWhere(colors, {
+            name: style.color
+        }).value;
+    },
+    getEntityIcon: function (entity) {
+        var style = ObjTypes.findOne({
+            objName: entity.objNameArray[0]
+        }).style;
+        return _.findWhere(icons, {
+            name: style.icon
+        }).value;
+    },
+    getActivityColor: function (activity) {
+        var style = ObjTypes.findOne({
+            objName: activity.data.objTypeName()
+        }).style;
+        return _.findWhere(colors, {
+            name: style.color
+        }).value;
+    },
+    getActivityIcon: function (activity) {
+        var style = ObjTypes.findOne({
+            objName: activity.data.objTypeName()
+        }).style;
+        return _.findWhere(icons, {
+            name: style.icon
+        }).value;
+    }
 });
 
 _.extend(helper, {

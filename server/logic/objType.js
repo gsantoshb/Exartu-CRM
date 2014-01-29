@@ -18,7 +18,7 @@ validateObjType = function (obj, objType) {
         console.error('Obj type does not exist');
         return false;
     }
-	
+
     // Validating services
     var v = true;
     _.every(SystemServices, function (service) {
@@ -39,14 +39,14 @@ validateObjType = function (obj, objType) {
     console.log(objType.objName);
     v = true;
     _.every(objType.fields, function (field) {
+
         if (objTypeFields[field.name] != undefined) {
-            v = v && (objTypeFields[field.name].match(field.regex) != null);
+            v = validateField(objTypeFields[field.name], field);
             if (!v) console.error(field.name + ' is invalid: ' + v);
             return v;
         } else {
-            v = false;
-            console.error(field.name + ' does not exist');
-            return false;
+            objTypeFields[field.name] = field.defailtValue;
+            return true;
         }
     });
     if (!v) {
@@ -57,22 +57,24 @@ validateObjType = function (obj, objType) {
     // Validating relations
     var relations = Relations.find({
         $or: [{
-			obj1: objType.objName
-		},{
-			$and: [{ 
-				obj2: objType.objName 
-			}, {
-				$exists: {visibilityOn2: true}
-			}]
-  		}]
+            obj1: objType.objName
+        }, {
+            $and: [{
+                obj2: objType.objName
+            }, {
+                $exists: {
+                    visibilityOn2: true
+                }
+            }]
+        }]
     }).fetch();
-	
-    console.log('relations...');
-    console.dir(relations);
+
+    //    console.log('relations...');
+    //    console.dir(relations);
     _.forEach(relations, function (rel) {
         var objRel = objType.objName == rel.obj1 ? rel.visibilityOn1 : rel.visibilityOn2;
         console.log('checking :' + rel.name + ' in ' + objType.objName);
-		
+
         if (objTypeFields[objRel.name] != undefined) {
             v = v && beforeUpdateRelation(obj, rel, objType.objName);
             if (!v) console.error(rel.name + ' is invalid: ');
@@ -87,7 +89,19 @@ validateObjType = function (obj, objType) {
 
     return true;
 }
-
+/*
+ * validate a field depending on the type
+ * not complited
+ */
+var validateField = function (value, field) {
+    switch (field.fieldType) {
+    case Enums.fieldType.string:
+        return value.match ? value.match(field.regex) != null : false;
+    case Enums.fieldType.lookUp:
+        //ToDo
+        return true;
+    }
+}
 /*
  * Services available in the system
  */
