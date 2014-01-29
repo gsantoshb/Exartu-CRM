@@ -65,7 +65,6 @@ Template.addJob.viewmodel = function (typeId) {
         _.forEach(fields, function (field) {
             self.job()[self.objTypeName()][field.name] = field.value() || field.defaultValue;
         })
-        debugger;
         Meteor.call('addJob', ko.toJS(self.job));
         $('#addJobModal').modal('hide');
     }
