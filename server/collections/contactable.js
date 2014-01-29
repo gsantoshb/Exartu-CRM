@@ -21,7 +21,7 @@ Contactables.before.insert(function (userId, doc) {
 Meteor.startup(function () {
     Meteor.methods({
         addContactable: function (contactable) {
-            if (beforeInsertOrUpdateContactable(contactable, objTypes)) {
+            if (beforeInsertOrUpdateContactable(contactable)) {
                 Contactables.insert(contactable);
             } else {
                 console.error('Contactable not valid')
@@ -66,7 +66,7 @@ var beforeInsertOrUpdateContactable = function (contactable) {
         console.dir(contactable.objNameArray);
         throw new Meteor.Error(401, "invalid objNameArray");
     }
-    extendContactable(obj, objTypes)
+    extendContactable(contactable, objTypes)
 
     return Validate(contactable, objTypes)
 }
