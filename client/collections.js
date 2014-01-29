@@ -5,6 +5,8 @@ Contactables = new Meteor.Collection("contactables", {
 		if (contactable.organization)
 			contactable.displayName = contactable.organization.organizationName;
 
+		extendObject(contactable);
+
 		return contactable;
 	},
 });
