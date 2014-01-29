@@ -1,35 +1,27 @@
 /*
- * before update the value of a dinamyc relation this function is called
+ * before update the value of a dynamic relation this function is called
  * in progress
  */
 
-beforeUpdateRelation = function (obj, rel, fieldModified, objTypeField, oldObjTypeField) {
-    //    console.info('old')
-    //    console.dir(oldObjTypeField);
+beforeUpdateRelation = function (obj, rel, objTypeName) {
     if (rel.visibilityOn1) {
         if (!rel.visibilityOn2) {
-            return beforeUpdate.oneWay(obj[fieldModified], rel.visibilityOn1);
+            return beforeUpdate.oneWay(obj[objTypeName][rel.visibilityOn1.name], rel.visibilityOn1);
         } else {
-
-
-            return beforeUpdate.twoWay(obj, objTypeField, oldObjTypeField, rel, rel.obj2);
+            return beforeUpdate.twoWay(obj, obj[objTypeName], rel);
         }
     }
 }
 
-
 beforeUpdate = {};
 beforeUpdate.oneWay = function (value, rel) {
     if (rel.cardinality.max == 1) {
-
         //checking cardinality
         if (!checkCardinality(value, rel.cardinality))
             return false;
 
         //check if the value's type is the same as this relation's target (rel.obj2)
         return checkType(value, rel.obj2);
-
-
     }
     if (rel.cardinality.max == Infinity) {
 
@@ -42,13 +34,13 @@ beforeUpdate.oneWay = function (value, rel) {
             valid = checkType(val, rel.obj2);
 
             return valid;
-        })
+        });
+		
         return valid;
     }
 }
 
-
-beforeUpdate.twoWay = function (obj, objTypeField, oldObjTypeField, rel, obj2TypeField) {
+beforeUpdate.twoWay = function (obj, objTypeField, rel) {
     var rel1;
     var rel2;
     var targetName;
@@ -62,6 +54,11 @@ beforeUpdate.twoWay = function (obj, objTypeField, oldObjTypeField, rel, obj2Typ
         rel2 = rel.visibilityOn1;
         targetName = rel.obj1;
     }
+	
+	var oldObjTypeField = Contactables.findOne({
+		_id: obj._id
+	})[targetName];
+	
     var value = objTypeField[rel1.name];
     if (rel1.cardinality.max == 1) {
 
@@ -69,27 +66,23 @@ beforeUpdate.twoWay = function (obj, objTypeField, oldObjTypeField, rel, obj2Typ
             return false;
         var collection2 = Collections[rel1.collection];
         //check if the value's type is the same as this relation's target (rel.obj2)
-        if (!checkType(value, rel.obj2, collection2))
+        if (!checkType(value, targetName, collection2))
             return false;
-
-
 
         var obj2 = collection2.findOne({
             _id: value
-        });
+        })[targetName];
+		
         /*********  1 - 1  ******************************/
         if (rel2.cardinality.max == 1) {
             console.log('cardinality == 1')
             if (obj2[rel2.name] && obj2[rel2.name] != id) {
-                //                console.log('cannot update the ' + rel1.name + 'has value: ' + obj2[rel2.name]);
+                // TODO: Fix inconsistency
                 return false;
             } else {
                 var aux = {};
 
-                aux[obj2TypeField + '.' + rel2.name] = id;
-
-                //                console.log('updating obj2 with ' + obj2TypeField);
-                //                console.dir(aux);
+                aux[targetName + '.' + rel2.name] = id;
                 collection2.update({
                     _id: obj2._id
                 }, {
@@ -99,6 +92,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, oldObjTypeField, rel, obj2Typ
                 return true;
             }
         }
+		
         /*********  1 - N  ******************************/
         else {
             if (!value) {
@@ -110,10 +104,10 @@ beforeUpdate.twoWay = function (obj, objTypeField, oldObjTypeField, rel, obj2Typ
                 }, {
                     $pull: aux
                 })
-                return false;
+                return true;
             } else {
                 var aux = {};
-                aux[obj2TypeField + '.' + rel2.name] = id;
+                aux[targetName + '.' + rel2.name] = id;
                 console.log('updating ' + obj2._id);
                 //                console.dir(aux);
                 collection2.update({
@@ -137,7 +131,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, oldObjTypeField, rel, obj2Typ
         var collection2 = Collections[rel1.collection];
 
         //check if the value's type is the same as this relation's target (rel.obj2)
-        //        console.log(obj2TypeField);
+        //        console.log(targetName);
         var valid = true;
         _.every(value, function (val) {
             valid = checkType(val, targetName, collection2);
