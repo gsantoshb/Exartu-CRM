@@ -5,11 +5,11 @@ Template.addContactable.viewmodel = function (objname) {
 	var objType = ObjTypes.findOne({
 		objName: objname
 	});
-    var aux = {
-    self.objTypeName = ko.observable('');
-    };
-    self.contactable = ko.validatedObservable(aux);
-    self.objTypeName = ko.observable(objType.objName);
+	var aux = {
+		objTypeName: ko.observable('')
+	};
+	self.contactable = ko.validatedObservable(aux);
+	self.objTypeName = ko.observable(objType.objName);
 	self.ready = ko.observable(false);
 
 	self.selectedType = ko.observable();
@@ -34,10 +34,10 @@ Template.addContactable.viewmodel = function (objname) {
 		}
 	};
 
-    self.selectedType.subscribe(function (newval) {
-        self.setSelectedType(newval);
-    });
-    self.selectedType(objType.personType);
+	self.selectedType.subscribe(function (newval) {
+		self.setSelectedType(newval);
+	});
+	self.selectedType(objType.personType);
 
 	_.forEach(objType.fields, function (item) {
 		_.extend(item, {
@@ -66,7 +66,7 @@ Template.addContactable.viewmodel = function (objname) {
 	aux[objType.objName] = ko.observableArray(objType.fields)
 
 
-    //    self.setSelectedType(self.selectedType());
+	//    self.setSelectedType(self.selectedType());
 
 	//relations
 	self.relations = ko.observableArray([]);
