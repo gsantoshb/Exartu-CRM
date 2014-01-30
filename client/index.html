@@ -1,15 +1,13 @@
 <head>
-	<title>Exartu</title>
+    <title>Exartu</title>
 </head>
 
 <body>
-	{{#if currentUser }}
-		{{> header}} 
-		{{> fieldTemplatesDefinition}} 
-		{{> relationTemplatesDefinition}}
-		<!-- This is not the best place to add modals -->
-		{{>sendEmailModal}}
-	{{/if}}
-	
-	<!-- Here is where layouts are rendered	-->
+    {{#if currentUser }} 
+        {{> header}} 
+        {{> fieldTemplatesDefinition}}
+        {{> relationTemplatesDefinition}}
+    {{/if}}
+
+    <!-- Here is where layouts are rendered	-->
 </body>

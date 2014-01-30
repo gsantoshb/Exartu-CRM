@@ -36,7 +36,7 @@ var icons = [
         todo: support multiple collections
 ***/
 var errorElement = function (msg) {
-    return '<div class="alert-danger">' + msg +  '</div>';
+    return '<div class="alert-danger">' + msg + '</div>';
 }
 helper = {};
 var handleError = function (err, viewName) {
@@ -44,7 +44,7 @@ var handleError = function (err, viewName) {
         $(err.originElement).replaceWith(errorElement(err.message));
         return true;
     }
-    if (! document.getElementsByName(viewName)[0]) {
+    if (!document.getElementsByName(viewName)[0]) {
         console.log(viewName + ' does not exist');
         return;
     }
@@ -249,15 +249,20 @@ _.extend(helper, {
 
 _.extend(helper, {
     showModal: function (templateName, view, parameter) {
-        var modal = $('#' + view),
-            originalHTML = modal[0].innerHTML;
+        var body = $('body');
+
+        var host = $('<div class="modal-host"></div>').appendTo(body);
+        var template = Template[templateName];
+        var modal = $(template()).appendTo(host);
+
 
         modal.modal('show');
-        helper.applyBindings(new Template[templateName].viewmodel(parameter), view);
+        if (Template[templateName].viewmodel)
+            helper.applyBindings(new Template[templateName].viewmodel(parameter), view);
 
         modal.on('hidden.bs.modal', function (e) {
             ko.cleanNode(this);
-            $(this)[0].innerHTML = originalHTML;
+            modal.remove();
         });
     }
 })

@@ -34,7 +34,7 @@
                 <!-- /ko -->
                 <p>
                     <i class="glyphicon glyphicon-envelope ats-icon"></i>
-                    <a data-toggle="modal" href="#sendEmailModal">Send email</a>
+                    <a data-toggle="modal" data-bind="click: function () { helper.showModal('sendEmailModal', 'addContactableModal'); }">Send email</a>
                 </p>
             </div>
         </div>
