@@ -53,23 +53,20 @@ var handleError = function (err, viewName) {
 }
 _.extend(helper, {
     applyBindings: function (vm, viewName, collectionHandler) {
-        var vm = typeof (vm) == "function" ? new vm() : vm;
+
+        var executeBinding = function () {
+            var vmAux = typeof (vm) == "function" ? new vm() : vm;
+            try {
+                ko.applyBindings(vmAux, document.getElementsByName(viewName)[0]);
+            } catch (err) {
+                handleError(err, viewName);
+            }
+        }
 
         if (!collectionHandler || !collectionHandler.wait) {
-            try {
-                ko.applyBindings(vm, document.getElementsByName(viewName)[0]);
-            } catch (err) {
-                if (handleError(err, viewName))
-                    helper.applyBindings(vm, viewName, collectionHandler);
-            }
+            executeBinding();
         } else {
-            collectionHandler.wait(function () {
-                try {
-                    ko.applyBindings(vm, document.getElementsByName(viewName)[0]);
-                } catch (err) {
-                    handleError(err, viewName);
-                }
-            });
+            collectionHandler.wait(executeBinding);
         }
     },
     fieldVM: function (field) {
