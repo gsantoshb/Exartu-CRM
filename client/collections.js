@@ -59,5 +59,5 @@ LookUps = new Meteor.Collection("lookUps");
 Meteor.subscribe('lookUps');
 
 
-Test = new Meteor.Collection("test");
-Meteor.subscribe('test');
+//Test = new Meteor.Collection("test");
+//Meteor.subscribe('test');
