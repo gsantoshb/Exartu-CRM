@@ -50,6 +50,7 @@ Meteor.publish("userData", function () {
 			'services.google.picture': 1,
 			"hierId": 1,
 			"createdAt": 1,
+			"roles": 1
 		}
 	});
 });
@@ -69,6 +70,12 @@ Meteor.methods({
 			hierId: hierId,
 			// more information from user
 		}
-		return Accounts.createUser(options);
+		var userId = Accounts.createUser(options);
+
+		_.forEach(user.roles, function (rol) {
+			Roles.addUsersToRoles(userId, rol);
+		})
+
+		return userId;
 	}
 });

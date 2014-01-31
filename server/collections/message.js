@@ -11,6 +11,15 @@ Meteor.publish('messages', function () {
 	});
 })
 
+/*
+ * A way to comunicate with other system's users. It's private.
+ *
+ * Message:
+ *  - to: [userId]
+ *  - subject: string
+ *  - content: string
+ */
+
 Meteor.startup(function () {
 	Meteor.methods({
 		createMessage: function (message, entityList) {

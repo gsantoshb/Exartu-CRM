@@ -1,0 +1,57 @@
+<template name="addUser">
+	<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addUserModal">
+		<div class="modal-dialog" style="width: 50%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a class="close" data-dismiss="modal">×</a>
+					<h4>Add user</h4>
+				</div>
+
+				<div class="modal-body">
+					<fieldset>
+						<!-- Username -->
+						<div class="form-group" data-bind="css:{'has-error': newUserValidate().username.isModified() && ! newUserValidate().username.isValid()}">
+							<label class="col-lg-2 control-label">Username</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="Enter the user's name" data-bind="value: newUserValidate().username" />
+								<span class="text-danger" data-bind="validationMessage: newUserValidate().username"></span>
+							</div>
+						</div>
+
+						<!-- Email-->
+						<div class="form-group" data-bind="css:{'has-error': newUserValidate().email.isModified() && ! newUserValidate().email.isValid()}">
+							<label class="col-lg-2 control-label">Email</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="Enter an email" data-bind="value: newUserValidate().email" />
+								<span class="text-danger" data-bind="validationMessage: newUserValidate().email"></span>
+							</div>
+						</div>
+
+						<!-- Password -->
+						<div class="form-group" data-bind="css:{'has-error': newUserValidate().password.isModified() && ! newUserValidate().password.isValid()}">
+							<label class="col-lg-2 control-label">Password</label>
+							<div class="col-lg-10">
+								<input class="form-control" type="text" placeholder="Enter the account password" data-bind="value: newUserValidate().password" />
+								<span class="text-danger" data-bind="validationMessage: newUserValidate().password"></span>
+							</div>
+						</div>
+
+						<!-- Password -->
+						<div class="form-group" data-bind="css:{'has-error': newUserValidate().roles.isModified() && ! newUserValidate().roles.isValid()}">
+							<label class="col-lg-2 control-label">Roles</label>
+							<div class="col-lg-10">
+								<select class="form-control" data-bind="options: roles, selectedOptions: newUserValidate().roles, attr:{multiple: true}"></select>
+								<span class="text-danger" data-bind="validationMessage: newUserValidate().roles"></span>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+
+				<div class="modal-footer">
+					<a class="btn btn-success" data-bind="click: addUser">Add</a>
+					<a href="#" class="btn" data-dismiss="modal">Close</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>

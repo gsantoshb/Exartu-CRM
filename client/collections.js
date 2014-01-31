@@ -58,6 +58,8 @@ Meteor.subscribe('objTypes');
 LookUps = new Meteor.Collection("lookUps");
 Meteor.subscribe('lookUps');
 
+Meteor.subscribe('userData');
+
 
 //Test = new Meteor.Collection("test");
 //Meteor.subscribe('test');
