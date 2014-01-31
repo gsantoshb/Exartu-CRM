@@ -14,9 +14,8 @@ Router.map(function () {
 	this.route('login', {
 		path: '/login',
 		template: 'login',
-		before: function() {
-			if (Meteor.user())
-			{
+		before: function () {
+			if (Meteor.user()) {
 				this.redirect('dashboard');
 			}
 		}
@@ -35,5 +34,10 @@ Router.map(function () {
 	this.route('jobs', {
 		path: '/jobs',
 		controller: 'JobsController'
+	});
+
+	this.route('userManagement', {
+		path: '/users',
+		controller: 'UserManagementController'
 	});
 });

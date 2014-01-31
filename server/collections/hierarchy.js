@@ -22,6 +22,14 @@ Meteor.startup(function () {
 
 			return hier._id;
 		},
+		getHierUsers: function () {
+			return Meteor.users.find({
+				hierId: Meteor.user().hierId
+			}).fetch();
+		},
+		/*
+		 *  ---- Testing
+		 */
 		testHierSystem: function () {
 			// Test: Create a child hier
 			var parentId = Meteor.call('createHier', {
@@ -34,11 +42,7 @@ Meteor.startup(function () {
 			});
 			console.log(childId);
 
-			//			var asd = Meteor.call('addHierUser', childId, {
-			//				name: 'child_user',
-			//				email: 'child_user@asd.com',
-			//				password: 'asdasd'
-			//			});
+
 			console.log('Relation test')
 
 			if (getHierarchiesRelation(parentId, childId) == 1)
@@ -55,6 +59,13 @@ Meteor.startup(function () {
 				console.log('Relation 3: OK');
 			else
 				console.log('Relation 3: FAIL');
+		},
+		testAddUserToHier: function (name, email, pass, hierId) {
+			var asd = Meteor.call('addHierUser', hierId, {
+				name: name,
+				email: email,
+				password: pass
+			});
 		}
 	});
 });

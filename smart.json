@@ -1,9 +1,10 @@
 {
-    "packages": {
-        "bootstrap-3": {},
-        "iron-router": {},
-        "knockout-client": {},
-        "accounts-ui-bootstrap-3": {},
-        "collection-hooks": {}
-    }
+  "packages": {
+    "bootstrap-3": {},
+    "iron-router": {},
+    "knockout-client": {},
+    "accounts-ui-bootstrap-3": {},
+    "collection-hooks": {},
+    "roles": {}
+  }
 }

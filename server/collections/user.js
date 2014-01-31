@@ -37,28 +37,45 @@ Accounts.onCreateUser(function (options, user) {
  * extending the user data that is sended to the client
  */
 Meteor.publish("userData", function () {
-	return Meteor.users.find({
+	var currentHierId = Meteor.users.findOne({
 		_id: this.userId
+	}).hierId;
+
+	return Meteor.users.find({
+		hierId: currentHierId
 	}, {
 		fields: {
-			'emails': 1,
+			'username': 1,
 			'emails': 1,
 			'services.google.picture': 1,
-			"hierId": 1
+			"hierId": 1,
+			"createdAt": 1,
+			"roles": 1
 		}
 	});
 });
 
+Meteor.publish("users", function () {
+	return Meteor.users.find();
+});
+
 Meteor.methods({
-	addHierUser: function (hierId, user) {
+	addHierUser: function (user, hierId) {
+		hierId = hierId || Meteor.user().hierId;
 		var options = {};
-		options.username = user.name;
+		options.username = user.username;
 		options.email = user.email;
 		options.password = user.password;
 		options.profile = {
 			hierId: hierId,
 			// more information from user
 		}
-		return Accounts.createUser(options);
+		var userId = Accounts.createUser(options);
+
+		_.forEach(user.roles, function (rol) {
+			Roles.addUsersToRoles(userId, rol);
+		})
+
+		return userId;
 	}
 });
