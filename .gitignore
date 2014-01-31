@@ -1,4 +1,4 @@
-server/config.js
+server/zconfig.js
 /.idea/dictionaries/psoto.xml
 /.idea/dictionaries/psoto.xml
 /.idea/encodings.xml
@@ -10,4 +10,4 @@ server/config.js
 /.idea/vcs.xml
 /.idea/workspace.xml
 /.idea/dictionaries/psoto.xml
-
+WindowsInstall.bat
