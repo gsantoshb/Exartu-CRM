@@ -13,7 +13,12 @@
     <!-- LookUp -->
     <div id="inLookUpField" style="display: none;">
         <h5 data-bind="text: name"></h5>
-        <select data-bind="options: options, optionsText:'displayName', optionsValue:'code', value: value, attr:{multiple:multiple}, optionsCaption: 'Choose...'"></select>
+        <div data-bind="if: ($data.multiple)">
+            <select data-bind="options: options, optionsText:'displayName', optionsValue:'code', selectedOptions: value, attr:{multiple:multiple}, optionsCaption: 'None...'"></select>
+        </div>
+        <div data-bind="if: (!$data.multiple)">
+            <select data-bind="options: options, optionsText:'displayName', optionsValue:'code', value: value, attr:{multiple:multiple}, optionsCaption: 'Choose...'"></select>
+        </div>
     </div>
 
     <div id="outStringField" style="display: none;">

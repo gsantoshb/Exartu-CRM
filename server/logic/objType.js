@@ -98,7 +98,38 @@ var validateField = function (value, field) {
     case Enums.fieldType.string:
         return value.match ? value.match(field.regex) != null : false;
     case Enums.fieldType.lookUp:
-        //ToDo
+        var lookUp = LookUps.findOne({
+            name: field.lookUpName
+        });
+        if (field.multiple) {
+
+            if (typeof value != typeof[])
+                return false;
+            else {
+                var v = true;
+                _.every(value, function (val) {
+                    var item = _.findWhere(lookUp.items, {
+                        code: val
+                    });
+                    if (item.dependencies) {
+                        if (_.difference(item.dependencies, value)) {
+                            console.error(item.name + ' dependencies fails');
+                            v = false;
+                        }
+                    }
+                    return v;
+                })
+                return v;
+            }
+        } else {
+            var item = _.findWhere(lookUp.items, {
+                code: value
+            });
+            if (!item) {
+                return false;
+            }
+        }
+
         return true;
     }
 }

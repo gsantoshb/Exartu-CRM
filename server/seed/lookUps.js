@@ -9,12 +9,23 @@ seedSystemLookUps = function () {
             displayName: 'Designer',
             code: 1
             }],
-        }];
+        }, {
+        name: 'employeeStatuses',
+        objGroupType: Enums.objGroupType.contactables,
+        items: [{
+            displayName: 'Invited',
+            weigth: 2,
+            code: 0
+                }, {
+            displayName: 'Recruited',
+            weigth: 3,
+            code: 1,
+            dependencies: [0],
+        }],
+    }];
 
 
     _.forEach(systemLookUps, function (lu) {
-        //        console.log(lu.name);
-        //        console.log(lu.objGroupType);
 
         var oldLU = LookUps.findOne({
             'name': lu.name,

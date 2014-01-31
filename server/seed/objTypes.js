@@ -55,6 +55,14 @@ seedSystemObjTypes = function () {
                 fieldType: Enums.fieldType.string,
                 defaultValue: '',
                 showInAdd: true
+                }, {
+                name: 'statuses',
+                regex: '',
+                fieldType: Enums.fieldType.lookUp,
+                lookUpName: 'employeeStatuses',
+                multiple: true,
+                defaultValue: [],
+                showInAdd: true
                 }]
             },
         {
@@ -100,10 +108,10 @@ seedSystemObjTypes = function () {
         ];
 
     _.forEach(systemObjTypes, function (objtype) {
-        var objName = ObjTypes.findOne({
+        var oldObjType = ObjTypes.findOne({
             objName: objtype.objName
         });
-        if (objName == null) {
+        if (oldObjType == null) {
             console.log('inserting objType ' + objtype.objName);
             ObjTypes.insert({
                 hierId: ExartuConfig.SystemHierarchyId,
@@ -117,7 +125,7 @@ seedSystemObjTypes = function () {
         } else {
             console.log('updating objType ' + objtype.objName);
             ObjTypes.update({
-                _id: objtype._id
+                _id: oldObjType._id
             }, {
                 $set: {
                     services: objtype.services,
