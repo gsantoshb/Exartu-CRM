@@ -5,11 +5,11 @@ Template.addContactable.viewmodel = function (objname) {
 	var objType = ObjTypes.findOne({
 		objName: objname
 	});
-	var aux = {
+    var aux = {
 		objNameArray: ko.observableArray([objType.objName])
-	};
-	self.contactable = ko.validatedObservable(aux);
-	self.objTypeName = ko.observable(objType.objName);
+    };
+    self.contactable = ko.validatedObservable(aux);
+    self.objTypeName = ko.observable(objType.objName);
 	self.ready = ko.observable(false);
 
 	self.selectedType = ko.observable();
@@ -34,10 +34,10 @@ Template.addContactable.viewmodel = function (objname) {
 		}
 	};
 
-	self.selectedType.subscribe(function (newval) {
-		self.setSelectedType(newval);
-	});
-	self.selectedType(objType.personType);
+    self.selectedType.subscribe(function (newval) {
+        self.setSelectedType(newval);
+    });
+    self.selectedType(objType.personType);
 
 	_.forEach(objType.fields, function (item) {
 		_.extend(item, {
@@ -50,7 +50,7 @@ Template.addContactable.viewmodel = function (objname) {
 		});
 		if (item.fieldType == Enums.fieldType.lookUp) {
 			_.extend(item, {
-				value: ko.observable(item.defaultValue),
+                value: item.multiple ? ko.observableArray(item.defaultValue) : ko.observable(item.defaultValue),
 				options: LookUps.findOne({
 					name: item.lookUpName
 				}).items,
@@ -66,7 +66,7 @@ Template.addContactable.viewmodel = function (objname) {
 	aux[objType.objName] = ko.observableArray(objType.fields)
 
 
-	//    self.setSelectedType(self.selectedType());
+    //    self.setSelectedType(self.selectedType());
 
 	//relations
 	self.relations = ko.observableArray([]);
@@ -99,8 +99,8 @@ Template.addContactable.viewmodel = function (objname) {
 		delete self.contactable()[self.objTypeName()];
 		self.contactable()[self.objTypeName()] = {};
 		_.forEach(fields, function (field) {
-			self.contactable()[self.objTypeName()][field.name] = field.value() || field.defaultValue;
-		})
+            self.contactable()[self.objTypeName()][field.name] = field.value() == null ? field.defaultValue : field.value();
+        });
 		Meteor.call('addContactable', ko.toJS(self.contactable), function (err, result) {
 			console.log(err);
 		});
