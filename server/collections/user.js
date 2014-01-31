@@ -1,8 +1,7 @@
 Accounts.onCreateUser(function (options, user) {
-	//console.dir(options);
-	//console.dir(user);
+	var hierId = '';
+	var userEmail = options.email;
 
-	var userEmail = user.email;
 	if (user.services) {
 		if (user.services.google) {
 			//todo: check if the account is already in the database
@@ -14,14 +13,17 @@ Accounts.onCreateUser(function (options, user) {
 
 		}
 	}
-	if (options.profile.hierId == null) {
-		options.profile.hierId = Meteor.call('createHier', {
+
+	if (!options.profile || !options.profile.hierId) {
+		hierId = Meteor.call('createHier', {
 			name: userEmail.split('@')[0]
 		});
-	}
+	} else
+		hierId = options.profile.hierId;
 
-	user.hierId = options.profile.hierId;
+	user.hierId = hierId;
 	user._id = Random.id();
+
 	Hierarchies.update({
 		_id: user.hierId
 	}, {
