@@ -46,8 +46,28 @@ JobHandler.wait = function (cb) {
 		this.observers.push(cb);
 }
 
+/*
+ * Messages
+ */
 Messages = new Meteor.Collection("messages");
-Meteor.subscribe('messages');
+Meteor.subscribe('messages', function () {
+	_.forEach(MessagesHandler.observers, function (cb) {
+		cb();
+	});
+});
+MessagesHandler = Meteor.subscribe('contactables', function () {
+	_.forEach(ContactableHandler.observers, function (cb) {
+		cb();
+	});
+});
+MessagesHandler.observers = [];
+MessagesHandler.wait = function (cb) {
+	if (this.ready())
+		cb();
+	else
+		this.observers.push(cb);
+}
+
 
 Activities = new Meteor.Collection("activities");
 Meteor.subscribe('activities');

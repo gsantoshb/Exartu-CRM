@@ -29,79 +29,61 @@
 					</a>
 				</li>
 
-				<!--
 				<li class="btn dropdown" id="menu-messages">
-	<a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
-		<i class="fa fa-envelope-o"></i>
-		<span class="text">Messages</span>
-		<span class="notifications">5</span>
-	</a>
-	<ul class="dropdown-menu dropdown-msgs">
-		<li class="clearfix">
-			<span class="pull-left">
-				<a href="messages.html">
-					<i class="fa fa-inbox"></i>Inbox</a>
-			</span>
-			<span class="pull-right">
-				<a href="messages.html">
-					<i class="fa fa-pencil"></i>Write new message</a>
-			</span>
-		</li>
-		<li class="unread">
-			<a class="msg" href="messages.html">
-				<span class="msg-pic">
-					<img src="assets/pic-50x50-1.jpg" alt="">
-				</span>
-				<span class="msg-author">Mihai Constantinescu</span>
-				<span class="msg-content">
-					Cool! Everything is ok now, talk to you later! Thanks again!
-				</span>
-				<span class="msg-date">Feb 18</span>
-			</a>
-		</li>
-		<li class="unread">
-			<a class="msg" href="messages.html">
-				<span class="msg-pic">
-					<img src="assets/pic-50x50-2.jpg" alt="">
-				</span>
-				<span class="msg-author">Pablo Soto</span>
-				<span class="msg-content">
-					Yes, ofcourse...
-				</span>
-				<span class="msg-date">Feb 18</span>
-			</a>
-		</li>
-		<li>
-			<a class="msg" href="messages.html">
-				<span class="msg-pic">
-					<img src="assets/pic-50x50-3.jpg" alt="">
-				</span>
-				<span class="msg-author">Aram Gugusian</span>
-				<span class="msg-content">
-					Cool! Everything is ok now, talk to you later! Thanks again!
-				</span>
-				<span class="msg-date">Feb 18</span>
-			</a>
-		</li>
-		<li>
-			<a class="msg" href="messages.html">
-				<span class="msg-pic">
-					<img src="assets/pic-50x50-4.jpg" alt="">
-				</span>
-				<span class="msg-author">Jessyca Noel</span>
-				<span class="msg-content">
-					Cool! Everything is ok now, talk to you later! Thanks again!
-				</span>
-				<span class="msg-date">Feb 18</span>
-			</a>
-		</li>
-		<li class="more">
-			<a href="#">View all messages</a>
-		</li>
-	</ul>
-</li>
+					<a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
+						<i class="fa fa-envelope-o"></i>
+						<span class="text">Messages</span>
+						<!-- ko if: $data.latestMessages().length > 0 -->
+						<span class="notifications" data-bind="text: latestMessages().length"></span>
+						<!-- /ko -->
+					</a>
+					<ul class="dropdown-menu dropdown-msgs">
+						<li class="clearfix">
+							<span class="pull-left">
+								<a href="messages.html">
+									<i class="fa fa-inbox"></i>Inbox</a>
+							</span>
+							<span class="pull-right">
+								<a href="messages.html">
+									<i class="fa fa-pencil"></i>Write new message</a>
+							</span>
+						</li>
 
--->
+						<!-- ko if: $data.latestMessages().length == 0 -->
+						<span>No messages</span>
+						<!-- /ko -->
+
+						<!-- ko foreach: latestMessages -->
+						<li data-bind="css: {unread: function() { return readed; } }">
+							<a class="msg">
+								<div data-bind="with: helper.getUserInformation($data.from())">
+									<!-- ko if: $data.ready -->
+									<!-- ko if: $data.picture -->
+									<span class="msg-pic">
+										<img src="assets/pic-50x50-2.jpg" alt="" data-bind="attr: {src: picture}">
+									</span>
+									<!-- /ko -->
+									<!-- ko if: $data.username -->
+									<span class="msg-author" data-bind="text: username"></span>
+									<!-- /ko -->
+									<!-- ko if: !$data.username && $data.email -->
+									<span class="msg-author" data-bind="text: email"></span>
+									<!-- /ko -->
+									<!-- /ko -->
+								</div>
+								<span class="msg-content" data-bind="text: content">
+								</span>
+								<span class="msg-date" data-bind="text: moment($data.createdAt).fromNow()"></span>
+							</a>
+						</li>
+						<!-- /ko -->
+
+						<li class="more">
+							<a href="#">View all messages</a>
+						</li>
+					</ul>
+				</li>
+
 				<li class="btn dropdown" id="menu-settings">
 					<a href="#" data-toggle="dropdown" data-target="#menu-settings" class="dropdown-toggle">
 						<i class="fa fa-cog"></i>

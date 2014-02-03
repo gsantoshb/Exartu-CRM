@@ -1,13 +1,6 @@
 Meteor.publish('messages', function () {
-	var user = Meteor.users.findOne({
-		_id: this.userId
-	});
-
-	if (!user)
-		return false;
-
 	return Messages.find({
-		hierId: user.hierId
+		destination: this.userId
 	});
 })
 
@@ -15,35 +8,28 @@ Meteor.publish('messages', function () {
  * A way to comunicate with other system's users. It's private.
  *
  * Message:
- *  - to: [userId]
+ *  - from: current user id
+ *  - destination: [userId]
  *  - subject: string
  *  - content: string
  */
 
 Meteor.startup(function () {
 	Meteor.methods({
-		createMessage: function (message, entityList) {
+		createMessage: function (message) {
+
+			// validations
 			var user = Meteor.user();
 			if (user == null)
 				throw new Meteor.Error(401, "Please login");
 
-			message.entityIds = entityList;
-			addSystemMetadata(message, user);
-			var messageId = Messages.insert(message);
+			if (typeof message.content != typeof '' || message.content == '')
+				throw new Meteor.Error(400, "Invalid message content");
 
-			// Create a reference of message to the entity
-			var collections = [Contactables]; // Collections where to search entity
-			_.forEach(entityList, function (entity) {
-				_.forEach(collections, function (collection) {
-					collection.update({
-						_id: entity
-					}, {
-						$addToSet: {
-							messages: messageId
-						}
-					});
-				});
-			});
+			message.from = user._id;
+			message.readed = false;
+
+			Messages.insert(message);
 		},
 	});
 });

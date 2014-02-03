@@ -43,19 +43,19 @@ LookUps = new Meteor.Collection("lookUps");
 
 
 Collections = {
-    Hierarchies: Hierarchies,
+	Hierarchies: Hierarchies,
 
-    Jobs: Jobs,
+	Jobs: Jobs,
 
-    Activities: Activities,
+	Activities: Activities,
 
-    Contactables: Contactables,
+	Contactables: Contactables,
 
-    Messages: Messages,
+	Messages: Messages,
 
-    ObjTypes: ObjTypes,
+	ObjTypes: ObjTypes,
 
-    Relations: Relations,
+	Relations: Relations,
 
-    LookUps: LookUps
+	LookUps: LookUps
 }
