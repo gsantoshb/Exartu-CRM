@@ -79,5 +79,22 @@ Meteor.methods({
 		})
 
 		return userId;
+	},
+	getUserInformation: function (userId) {
+		var user = Meteor.users.findOne({
+			_id: userId
+		});
+		var info = {};
+
+		info.username = user.username || undefined;
+		if (user.emails)
+			info.email = user.emails[0].address;
+		if (user.services) {
+			if (user.services.google) {
+				info.picture = user.services.google.picture;
+			}
+		}
+
+		return user;
 	}
 });
