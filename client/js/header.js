@@ -197,22 +197,22 @@ Template.header.picture = function () {
 	return Meteor.user().services.google.picture + '?sz=26';
 }
 Template.header.events = {
-	'click #dashboardLink': function () {
+	'click #dashboardNav': function () {
 		// Remove class from previous navigation link
-		$('.ats-navItem .active').removeClass('active');
+		$('#sidebar > ul > li.active').removeClass('active');
 		// Add class
-		$('#dashboardLink').addClass('active');
+		$('#dashboardNav').addClass('active');
 	},
-	'click #contactablesLink': function () {
+	'click #contactablesNav': function () {
 		// Remove class from previous navigation link
-		$('.ats-navItem .active').removeClass('active');
+		$('#sidebar > ul > li.active').removeClass('active');
 		// Add class
-		$('#contactablesLink').addClass('active');
+		$('#contactablesNav').addClass('active');
 	},
-	'click #jobsLink': function () {
+	'click #jobsNav': function () {
 		// Remove class from previous navigation link
-		$('.ats-navItem .active').removeClass('active');
+		$('#sidebar > ul > li.active').removeClass('active');
 		// Add class
-		$('#jobsLink').addClass('active');
+		$('#jobsNav').addClass('active');
 	}
 }
