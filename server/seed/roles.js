@@ -6,7 +6,7 @@ seedSystemRoles = function () {
 		if (_.findWhere(existingRoles, {
 			name: rol
 		}) == null) {
-			console.log('New system rol: ' + rol);
+			console.log('New system role: ' + rol);
 			Roles.createRole(rol);
 		}
 	});

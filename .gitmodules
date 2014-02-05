@@ -25,3 +25,6 @@
 [submodule "packages/collection-hooks"]
 	path = packages/collection-hooks
 	url = https://github.com/matb33/meteor-collection-hooks.git
+[submodule "packages/temproles"]
+	path = packages/temproles
+	url = https://github.com/alanning/meteor-roles.git
