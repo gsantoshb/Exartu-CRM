@@ -2,54 +2,385 @@
 	<div name="activitiesVM">
 
 		<!-- Message -->
+		<!--
 		<div style="margin-top: 10px; margin-bottom: 35px">
-			<textarea class="form-control" placeholder="Enter a message" style="width: 100%; height: 50px; margin-top: 5px" data-bind="value: newMessage" />
-            <button class="btn btn-success pull-right" style="border-radius: 0px; margin-top: 8px" data-bind="click: addMessage">Save</button>
-		</div>
+	<textarea class="form-control" placeholder="Enter a message" style="width: 100%; height: 50px; margin-top: 5px" data-bind="value: newMessage" />
+	<button class="btn btn-success pull-right" style="border-radius: 0px; margin-top: 8px" data-bind="click: addMessage">Save</button>
+</div>
+-->
 
 		<!-- Activities -->
-        <div class="empty-message" data-bind="visible: activities().length == 0">
-			<span>No activities yet</span>
-		</div>
-        <div class="activity-container scroll-container" data-bind="visible: activities().length > 0, foreach: activities">
-            <div data-bind="template: { name: $root.activityVM($data), data: $data}"></div>
-        </div>
-    </div>
+		<!--
+		<div class="empty-message" data-bind="visible: activities().length == 0">
+	<span>No activities yet</span>
+</div>
+<div class="activity-container scroll-container" data-bind="visible: activities().length > 0, foreach: activities">
+	<div data-bind="template: { name: $root.activityVM($data), data: $data}"></div>
+</div>
+</div>
+-->
 
-    <div id="activityMessage" style="display: none">
-		<div class="well well-small" data-bind="with: data">
-			<div class="row">
-				<div class="col-lg-2" style="width: 5%;">
-					<i class="glyphicon glyphicon-comment" style="margin-right: 15px; background-image: none; background-image: none; font-size: 30px; color: rgba(255, 151, 0, 0.6);" />
+		<section class="timeline">
+			<header class="box-header">
+				<div class="btn-group pull-right">
+					<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+						Sort by: Most Recent
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li>
+							<a href="#">Most Recent</a>
+						</li>
+						<li>
+							<a href="#">Another action</a>
+						</li>
+						<li>
+							<a href="#">Something else here</a>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<a href="#">Separated link</a>
+						</li>
+					</ul>
 				</div>
+				<h4 class="box-title">Mihai's Workstream</h4>
+			</header>
 
-				<div class="col-lg-2">
-					<!-- ko if: $data.createdAt -->
-					<small class="pull-left" data-bind="text: new Date(createdAt()).toDateString()" />
-					<!-- /ko  -->
-					<br/>
-					<em data-bind="text: message" />
+			<!-- Item ------------------------------------ -->
+			<div class="item item-task">
+				<div class="item-info">
+					<div class="time">
+						<i class="icon-clock-3"></i>3 HR</div>
+					<div class="type">
+						<i class="icon-check-list"></i>
+					</div>
 				</div>
+				<!-- /.item-info -->
+				<div class="item-content">
+					<div class="box">
+						<div class="box-content">
+							<div>
+								<strong>Mihai Constantinescu</strong>is working on</div>
+							<div>
+								<a href="#">Exartu Dashboard Redesign</a>
+								<span class="text-muted">- assigned by</span>
+								<a href="#">
+									<img class="img-circle" src="/assets/pic-26x26.jpg" alt="">
+								</a>
+								<a href="#">Gregg Dourgarian</a>
+							</div>
+						</div>
+						<!-- /.box-content -->
+					</div>
+					<!-- /.box -->
+				</div>
+				<!-- /.item-content -->
+			</div>
+			<!-- /.item -->
+
+			<!-- Item ------------------------------------ -->
+			<div class="item item-task">
+				<div class="item-info">
+					<div class="time">
+						<i class="icon-clock-3"></i>3 HR</div>
+					<div class="type">
+						<i class="icon-check-list"></i>
+					</div>
+				</div>
+				<!-- /.item-info -->
+				<div class="item-content">
+					<div class="box">
+						<div class="box-content">
+							<div>
+								<strong>Mihai Constantinescu</strong>is working on</div>
+							<div>
+								<a href="#">Exartu Dashboard Redesign</a>
+								<span class="text-muted">- assigned by</span>
+								<a href="#">
+									<img class="img-circle" src="/assets/pic-26x26.jpg" alt="">
+								</a>
+								<a href="#">Gregg Dourgarian</a>
+							</div>
+						</div>
+						<!-- /.box-content -->
+					</div>
+					<!-- /.box -->
+				</div>
+				<!-- /.item-content -->
+			</div>
+			<!-- /.item -->
+
+			<!-- Item ------------------------------------ -->
+			<div class="item item-task">
+				<div class="item-info">
+					<div class="time">
+						<i class="icon-clock-3"></i>3 HR</div>
+					<div class="type">
+						<i class="icon-pencil-1"></i>
+					</div>
+				</div>
+				<!-- /.item-info -->
+				<div class="item-content">
+					<div class="box">
+						<div class="box-content">
+							<div>
+								<strong>Mihai Constantinescu</strong>
+							</div>
+							<div class="item-quote">It has been a hell of week guys. Thank you all for the support, and help. Let’s make Exartu the best!</div>
+						</div>
+						<!-- /.box-content -->
+					</div>
+					<!-- /.box -->
+				</div>
+				<!-- /.item-content -->
+			</div>
+			<!-- /.item -->
+
+			<!-- Item ------------------------------------ -->
+			<div class="item item-task">
+				<div class="item-info">
+					<div class="time">
+						<i class="icon-clock-3"></i>3 HR</div>
+					<div class="type">
+						<i class="icon-file"></i>
+					</div>
+				</div>
+				<!-- /.item-info -->
+				<div class="item-content">
+					<div class="box">
+						<div class="box-content">
+							<div>
+								<strong>Mihai Constantinescu</strong>added
+								<a href="#">3 documents</a>
+							</div>
+							<br>
+							<ul class="list-1">
+								<li>
+									<i class="fa fa-download"></i>Exartu
+									<a href="#">Dashboard.png</a>
+								</li>
+								<li>
+									<i class="fa fa-download"></i>Exartu
+									<a href="#">Dashboard.png</a>
+								</li>
+								<li>
+									<i class="fa fa-download"></i>Exartu
+									<a href="#">Dashboard.png</a>
+								</li>
+							</ul>
+							<br>
+							<div class="row">
+								<div class="col-xs-4">
+									<a class="thumbnail" href="#">
+										<img src="/assets/pic-300.jpg">
+									</a>
+								</div>
+								<div class="col-xs-4">
+									<a class="thumbnail" href="#">
+										<img src="/assets/pic-300.jpg">
+									</a>
+								</div>
+								<div class="col-xs-4">
+									<a class="thumbnail" href="#">
+										<img src="/assets/pic-300.jpg">
+									</a>
+								</div>
+							</div>
+							<!-- /.row -->
+						</div>
+						<!-- /.box-content -->
+					</div>
+					<!-- /.box -->
+				</div>
+				<!-- /.item-content -->
+			</div>
+			<!-- /.item -->
+			<!-- Item ------------------------------------ -->
+			<div class="item item-task">
+				<div class="item-info">
+					<div class="time">
+						<i class="icon-clock-3"></i>3 HR</div>
+					<div class="type">
+						<i class="icon-check-list"></i>
+					</div>
+				</div>
+				<!-- /.item-info -->
+				<div class="item-content">
+					<div class="box">
+						<div class="box-content">
+							<div>
+								<strong>Mihai Constantinescu</strong>is working on</div>
+							<div>
+								<a href="#">Exartu Dashboard Redesign</a>
+								<span class="text-muted">- assigned by</span>
+								<a href="#">
+									<img class="img-circle" src="/assets/pic-26x26.jpg" alt="">
+								</a>
+								<a href="#">Gregg Dourgarian</a>
+							</div>
+						</div>
+						<!-- /.box-content -->
+					</div>
+					<!-- /.box -->
+				</div>
+				<!-- /.item-content -->
+			</div>
+			<!-- /.item -->
+
+			<!-- Item ------------------------------------ -->
+			<div class="item item-task">
+				<div class="item-info">
+					<div class="time">
+						<i class="icon-clock-3"></i>3 HR</div>
+					<div class="type">
+						<i class="icon-check-list"></i>
+					</div>
+				</div>
+				<!-- /.item-info -->
+				<div class="item-content">
+					<div class="box">
+						<div class="box-content">
+							<div>
+								<strong>Mihai Constantinescu</strong>is working on</div>
+							<div>
+								<a href="#">Exartu Dashboard Redesign</a>
+								<span class="text-muted">- assigned by</span>
+								<a href="#">
+									<img class="img-circle" src="/assets/pic-26x26.jpg" alt="">
+								</a>
+								<a href="#">Gregg Dourgarian</a>
+							</div>
+						</div>
+						<!-- /.box-content -->
+					</div>
+					<!-- /.box -->
+				</div>
+				<!-- /.item-content -->
+			</div>
+			<!-- /.item -->
+
+			<!-- Item ------------------------------------ -->
+			<div class="item item-task">
+				<div class="item-info">
+					<div class="time">
+						<i class="icon-clock-3"></i>3 HR</div>
+					<div class="type">
+						<i class="icon-pencil-1"></i>
+					</div>
+				</div>
+				<!-- /.item-info -->
+				<div class="item-content">
+					<div class="box">
+						<div class="box-content">
+							<div>
+								<strong>Mihai Constantinescu</strong>
+							</div>
+							<div class="item-quote">It has been a hell of week guys. Thank you all for the support, and help. Let’s make Exartu the best!</div>
+						</div>
+						<!-- /.box-content -->
+					</div>
+					<!-- /.box -->
+				</div>
+				<!-- /.item-content -->
+			</div>
+			<!-- /.item -->
+
+			<!-- Item ------------------------------------ -->
+			<div class="item item-task">
+				<div class="item-info">
+					<div class="time">
+						<i class="icon-clock-3"></i>3 HR</div>
+					<div class="type">
+						<i class="icon-file"></i>
+					</div>
+				</div>
+				<!-- /.item-info -->
+				<div class="item-content">
+					<div class="box">
+						<div class="box-content">
+							<div>
+								<strong>Mihai Constantinescu</strong>added
+								<a href="#">3 documents</a>
+							</div>
+							<br>
+							<ul class="list-1">
+								<li>
+									<i class="fa fa-download"></i>Exartu
+									<a href="#">Dashboard.png</a>
+								</li>
+								<li>
+									<i class="fa fa-download"></i>Exartu
+									<a href="#">Dashboard.png</a>
+								</li>
+								<li>
+									<i class="fa fa-download"></i>Exartu
+									<a href="#">Dashboard.png</a>
+								</li>
+							</ul>
+							<br>
+							<div class="row">
+								<div class="col-xs-4">
+									<a class="thumbnail" href="#">
+										<img src="/assets/pic-300.jpg">
+									</a>
+								</div>
+								<div class="col-xs-4">
+									<a class="thumbnail" href="#">
+										<img src="/assets/pic-300.jpg">
+									</a>
+								</div>
+								<div class="col-xs-4">
+									<a class="thumbnail" href="#">
+										<img src="/assets/pic-300.jpg">
+									</a>
+								</div>
+							</div>
+							<!-- /.row -->
+						</div>
+						<!-- /.box-content -->
+					</div>
+					<!-- /.box -->
+				</div>
+				<!-- /.item-content -->
+			</div>
+			<!-- /.item -->
+
+
+			<a class="btn btn-lg btn-default btn-block btn-more-timeline" href="#">More</a>
+		</section>
+		<!-- /.timeline -->
+		<!--
+	<div id="activityMessage" style="display: none">
+	<div class="well well-small" data-bind="with: data">
+		<div class="row">
+			<div class="col-lg-2" style="width: 5%;">
+				<i class="glyphicon glyphicon-comment" style="margin-right: 15px; background-image: none; background-image: none; font-size: 30px; color: rgba(255, 151, 0, 0.6);" />
+			</div>
+
+			<div class="col-lg-2">
+				<small class="pull-left" data-bind="text: new Date(createdAt()).toDateString()" />
+				<br/>
+				<em data-bind="text: message" />
 			</div>
 		</div>
 	</div>
-    <div id="activityContactable" style="display: none">
-		<div class="well well-small" data-bind="with: data">
-			<div class="row">
-				<div class="col-lg-2" style="width: 5%;">
-					<i class="glyphicon glyphicon-plus" style="margin-right: 15px; background-image: none; background-image: none; font-size: 30px; color: #47a447" />
-				</div>
-				<div class="col-lg-8">
-					<!-- ko if: $data.createdAt -->
-					<small class="pull-left" data-bind="text: new Date(createdAt()).toDateString() " />
-					<!-- /ko  -->
-					<br/>
-					<em>
-						Record created
-					</em>
-				</div>
-            </div>
-        </div>
-    </div>
+</div>
+<div id="activityContactable" style="display: none">
+	<div class="well well-small" data-bind="with: data">
+		<div class="row">
+			<div class="col-lg-2" style="width: 5%;">
+				<i class="glyphicon glyphicon-plus" style="margin-right: 15px; background-image: none; background-image: none; font-size: 30px; color: #47a447" />
+			</div>
+			<div class="col-lg-8">
+				<small class="pull-left" data-bind="text: new Date(createdAt()).toDateString() " />
+				<br/>
+				<em>
+					Record created
+				</em>
+			</div>
+		</div>
+	</div>
+</div>
+-->
 </template>
 

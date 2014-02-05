@@ -6,28 +6,30 @@ ContactablesController = RouteController.extend({
 Template.contactables.rendered = function () {
 	var viewModel = function () {
 		var self = this;
-        self.ready = ko.observable(false);
-        self.entities = ko.meteor.find(Contactables, {});
+		self.ready = ko.observable(false);
+		self.entities = ko.meteor.find(Contactables, {});
+		self.contactableTypes = ko.observableArray();
 
-        Meteor.subscribe( 'objTypes', function()
-        {
-            self.contactableTypes = ko.observableArray();
-            self.getIconForObjName = function (objname) {
-                var type=ObjTypes.findOne({objName: objname});
-                return 'glyphicon ' + type.glyphicon;
-            };
-            var result=ObjTypes.find({objGroupType: Enums.objGroupType.contactable}).fetch();
-            {
-                self.contactableTypes(result);
-                _.extend(self, helper.createObjTypefilter(['person.firstName', 'person.lastName', 'organization.organizationName'], result,
-                    function () {
-                        self.entities(ko.mapping.fromJS(Contactables.find(this.query).fetch())());
-                    })
+		Meteor.subscribe('objTypes', function () {
+			self.getIconForObjName = function (objname) {
+				var type = ObjTypes.findOne({
+					objName: objname
+				});
+				return 'glyphicon ' + type.glyphicon;
+			};
+			var result = ObjTypes.find({
+				objGroupType: Enums.objGroupType.contactable
+			}).fetch(); {
+				self.contactableTypes(result);
+				_.extend(self, helper.createObjTypefilter(['person.firstName', 'person.lastName', 'organization.organizationName'], result,
+						function () {
+							self.entities(ko.mapping.fromJS(Contactables.find(this.query).fetch())());
+						})
 
-                );
-                self.ready(true);
-            }
-        });
+				);
+				self.ready(true);
+			}
+		});
 
 
 		self.showAddContactableModal = function (typeId) {

@@ -25,6 +25,10 @@ var icons = [
 	{
 		name: 'connection',
 		value: 'icon-connection-1'
+    },
+	{
+		name: 'contact',
+		value: 'icon-address-1'
     }
 ]
 
@@ -207,23 +211,25 @@ _.extend(helper, {
 		var objTypeArray = [];
 		_.map(ObjTypes.find().fetch(), function (type) {
 			if (obj[type.objName]) objTypeArray.push(type);
+
+			console.dir(type);
 		});
 		return objTypeArray;
 	},
 	getEntityColor: function (entity) {
-		var style = ObjTypes.findOne({
+		var type = ObjTypes.findOne({
 			objName: entity.objNameArray[0]
-		}).style;
+		});
 		return _.findWhere(colors, {
-			name: style.color
+			name: type.style.color
 		}).value;
 	},
 	getEntityIcon: function (entity) {
-		var style = ObjTypes.findOne({
+		var type = ObjTypes.findOne({
 			objName: entity.objNameArray[0]
-		}).style;
+		});
 		return _.findWhere(icons, {
-			name: style.icon
+			name: type.style.icon
 		}).value;
 	},
 	getActivityColor: function (activity) {

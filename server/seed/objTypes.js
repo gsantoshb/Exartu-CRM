@@ -37,7 +37,7 @@ seedSystemObjTypes = function () {
 			objGroupType: Enums.objGroupType.contactable,
 			objName: 'Contact',
 			style: {
-				icon: 'build',
+				icon: 'contact',
 				color: 'red'
 			},
 			defaultPersonType: Enums.personType.human,
@@ -66,13 +66,13 @@ seedSystemObjTypes = function () {
 				defaultValue: '',
 				showInAdd: true
                 }, {
-                name: 'statuses',
-                regex: '',
-                fieldType: Enums.fieldType.lookUp,
-                lookUpName: 'employeeStatuses',
-                multiple: true,
-                defaultValue: [],
-                showInAdd: true
+				name: 'statuses',
+				regex: '',
+				fieldType: Enums.fieldType.lookUp,
+				lookUpName: 'employeeStatuses',
+				multiple: true,
+				defaultValue: [],
+				showInAdd: true
                 }]
             },
 		{
@@ -118,10 +118,10 @@ seedSystemObjTypes = function () {
         ];
 
 	_.forEach(systemObjTypes, function (objtype) {
-        var oldObjType = ObjTypes.findOne({
+		var oldObjType = ObjTypes.findOne({
 			objName: objtype.objName
 		});
-        if (oldObjType == null) {
+		if (oldObjType == null) {
 			console.log('inserting objType ' + objtype.objName);
 			ObjTypes.insert({
 				hierId: ExartuConfig.SystemHierarchyId,
@@ -135,7 +135,7 @@ seedSystemObjTypes = function () {
 		} else {
 			console.log('updating objType ' + objtype.objName);
 			ObjTypes.update({
-                _id: oldObjType._id
+				_id: oldObjType._id
 			}, {
 				$set: {
 					services: objtype.services,

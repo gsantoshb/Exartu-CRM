@@ -1,164 +1,325 @@
 <template name="dashboard">
-	<div name="dashboardVM">
-		<div id="content">
-			<div id="content-header">
-				<h1>Dashboard</h1>
-				<ul class="mini-stats box-3">
-					<li>
-						<div class="left sparkline_bar_good">
-							<span>2,4,9,7,12,10,12</span>+10%</div>
-						<div class="right">
-							<strong>378</strong>
-							Jobs
-						</div>
-					</li>
-					<li>
-						<div class="left sparkline_bar_good">
-							<span>20,15,18,14,10,9,9,25</span>+5%</div>
-						<div class="right">
-							<strong>96</strong>
-							Customers
-						</div>
-					</li>
-					<li>
-						<div class="left sparkline_bar_bad">
-							<span>3,5,9,7,12,2,5</span>-20%</div>
-						<div class="right">
-							<strong>84</strong>
-							Employees
-						</div>
-					</li>
-				</ul>
-			</div>
-			<div id="breadcrumb">
-				<a href="#" title="Go to Home" class="tip-bottom">Home</a>
-				<a href="#" class="current">Dashboard</a>
-			</div>
-
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-lg-8">
-						<section class="timeline">
-							<header class="box-header">
-								<div class="btn-group pull-right">
-									<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-										Sort by: Most Recent
-										<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li>
-											<a href="#">Most Recent</a>
-										</li>
-										<li>
-											<a href="#">Another action</a>
-										</li>
-										<li>
-											<a href="#">Something else here</a>
-										</li>
-										<li class="divider"></li>
-										<li>
-											<a href="#">Separated link</a>
-										</li>
-									</ul>
-								</div>
-								<h4 class="box-title">Recent activity</h4>
-							</header>
-
-							<div class="activity-container scroll-container" data-bind="visible: activities().length > 0, foreach: activities">
-								<div data-bind="template: { name: $root.activityVM($data), data: $data}"></div>
-							</div>
-
-						</section>
-						<!-- /.timeline -->
+	<div id="content" name="dashboardVM">
+		<div id="content-header">
+			<h1>Dashboard</h1>
+			<ul class="mini-stats box-3">
+				<li>
+					<div class="left sparkline_bar_good">
+						<span>2,4,9,7,12,10,12</span>+10%</div>
+					<div class="right">
+						<strong>378</strong>
+						Jobs
 					</div>
-					<!-- /.col-lg-8 -->
-					<div class="col-lg-4">
-						<a class="btn btn-success btn-md btn-block btn-new-item" href="#">
-							<i class="fa fa-plus-circle fa-2x"></i>
-						</a>
-						<section>
-							<div class="box">
-								<div class="box-content-sm">
-									<div class="box-header box-header-sm">
-										<div class="box-title">STATS</div>
-									</div>
-									<div class="">
-										<img class="img-responsive" src="assets/chart.png">
-									</div>
-								</div>
-								<!-- /.box-content-sm -->
-							</div>
-							<!-- /.box -->
-						</section>
-
-						<section>
-							<div class="box">
-								<div class="box-content-sm">
-									<div class="box-header box-header-sm">
-										<div class="box-title">Recent users</div>
-									</div>
-								</div>
-								<!-- /.box-content-sm -->
-								<div class="faces">
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-1.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-2.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-3.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-1.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-2.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-3.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-1.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-2.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-3.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-1.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-2.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-3.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-1.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-2.jpg" alt="">
-									</a>
-									<a title="Mike" class="tip-bottom" href="#">
-										<img src="assets/pic-50x50-3.jpg" alt="">
-									</a>
-								</div>
-							</div>
-							<!-- /.box -->
-						</section>
-
+				</li>
+				<li>
+					<div class="left sparkline_bar_good">
+						<span>20,15,18,14,10,9,9,25</span>+5%</div>
+					<div class="right">
+						<strong>96</strong>
+						Customers
 					</div>
-					<!-- /.col-lg-4 -->
-				</div>
-				<!-- /.row -->
-			</div>
-			<!-- /.container-fluid -->
+				</li>
+				<li>
+					<div class="left sparkline_bar_bad">
+						<span>3,5,9,7,12,2,5</span>-20%</div>
+					<div class="right">
+						<strong>84</strong>
+						Employees
+					</div>
+				</li>
+			</ul>
 		</div>
-		<!-- /.content -->
+		<div id="breadcrumb">
+			<a href="#" title="Go to Home" class="tip-bottom">Home</a>
+			<a href="#" class="current">Dashboard</a>
+		</div>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-9">
+					<section class="timeline">
+						<header class="box-header">
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+									Sort by: Most Recent
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="#">Most Recent</a>
+									</li>
+									<li>
+										<a href="#">Another action</a>
+									</li>
+									<li>
+										<a href="#">Something else here</a>
+									</li>
+									<li class="divider"></li>
+									<li>
+										<a href="#">Separated link</a>
+									</li>
+								</ul>
+							</div>
+							<h4 class="box-title">Recent activity</h4>
+						</header>
+
+						<div class="activity-container scroll-container" data-bind="visible: activities().length > 0, foreach: activities">
+							<div data-bind="template: { name: $root.activityVM($data), data: $data}"></div>
+						</div>
+
+					</section>
+					<!-- /.timeline -->
+				</div>
+				<!-- /.col-lg-8 -->
+				<div class="col-md-4 col-lg-3">
+					<a class="btn btn-success btn-md btn-block btn-new-item" href="#">
+						<i class="fa fa-plus-circle fa-2x"></i>
+					</a>
+					<section>
+						<div class="box">
+							<div class="box-header-2">
+								<div class="box-title">
+									<i class="icon-business-chart-2"></i>Stats</div>
+							</div>
+							<div class="box-content-2">
+								<div class="">
+									<img class="img-responsive" src="assets/chart.png">
+								</div>
+							</div>
+							<!-- /.box-content-sm -->
+						</div>
+						<!-- /.box -->
+					</section>
+					<section>
+						<div class="box">
+							<div class="box-header-2">
+								<div class="box-title">
+									<i class="icon-chat-4"></i>Active Users</div>
+							</div>
+							<div class="box-content-2">
+								<div class="faces">
+									<div class="row">
+										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+											<span></span>
+											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+										</a>
+										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+											<span></span>
+											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+										</a>
+										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+											<span></span>
+											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+										</a>
+										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+											<span></span>
+											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+										</a>
+										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+											<span></span>
+											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+										</a>
+										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+											<span></span>
+											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+										</a>
+										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+											<span></span>
+											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+										</a>
+										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+											<span></span>
+											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+										</a>
+										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+											<span></span>
+											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+										</a>
+										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+											<span></span>
+											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+										</a>
+									</div>
+									<!-- /.row -->
+								</div>
+							</div>
+						</div>
+						<!-- /.box -->
+					</section>
+
+					<section>
+						<div class="box">
+							<div class="box-header-2">
+								<div class="box-title">
+									<i class="icon-buildings-1"></i>Top Customers</div>
+							</div>
+							<ul class="list-type-1">
+								<li>
+									<div class="thumb-sm item-pos">
+										<span class="thumb-sm-content">#1</span>
+									</div>
+									<div class="thumb-sm item-logo">
+										<a class="thumb-sm-content" href="#">
+											<img src="assets/logo-exartu.png" alt="exartu">
+										</a>
+									</div>
+									<div class="list-item-content">
+										<p class="activity-author">
+											<a href="#">CNN</a>
+										</p>
+										<p class="activity-label">Financial activity</p>
+										<div class="activity-rating">
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar empty"></div>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="thumb-sm item-pos">
+										<span class="thumb-sm-content">#2</span>
+									</div>
+									<div class="thumb-sm item-logo">
+										<a class="thumb-sm-content" href="#">
+											<img src="assets/logo-exartu.png" alt="exartu">
+										</a>
+									</div>
+									<div class="list-item-content">
+										<p class="activity-author">
+											<a href="#">CNN</a>
+										</p>
+										<p class="activity-label">Financial activity</p>
+										<div class="activity-rating">
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar empty"></div>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="thumb-sm item-pos">
+										<span class="thumb-sm-content">#3</span>
+									</div>
+									<div class="thumb-sm item-logo">
+										<a class="thumb-sm-content" href="#">
+											<img src="assets/logo-exartu.png" alt="exartu">
+										</a>
+									</div>
+									<div class="list-item-content">
+										<p class="activity-author">
+											<a href="#">CNN</a>
+										</p>
+										<p class="activity-label">Financial activity</p>
+										<div class="activity-rating">
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar empty"></div>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<!-- /. -->
+						</div>
+						<!-- /.box -->
+					</section>
+
+					<section>
+						<div class="box">
+							<div class="box-header-2">
+								<div class="box-title">
+									<i class="icon-profile-bussiness-man"></i>Top Users</div>
+							</div>
+							<ul class="list-type-1">
+								<li>
+									<div class="thumb-sm item-pos">
+										<span class="thumb-sm-content">#1</span>
+									</div>
+									<div class="thumb-sm item-logo">
+										<a class="thumb-sm-content" href="#">
+											<img src="assets/logo-exartu.png" alt="exartu">
+										</a>
+									</div>
+									<div class="list-item-content">
+										<p class="activity-author">
+											<a href="#">CNN</a>
+										</p>
+										<p class="activity-label">Work activity</p>
+										<div class="activity-rating">
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar empty"></div>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="thumb-sm item-pos">
+										<span class="thumb-sm-content">#2</span>
+									</div>
+									<div class="thumb-sm item-logo">
+										<a class="thumb-sm-content" href="#">
+											<img src="assets/logo-exartu.png" alt="exartu">
+										</a>
+									</div>
+									<div class="list-item-content">
+										<p class="activity-author">
+											<a href="#">CNN</a>
+										</p>
+										<p class="activity-label">Work activity</p>
+										<div class="activity-rating">
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar empty"></div>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="thumb-sm item-pos">
+										<span class="thumb-sm-content">#3</span>
+									</div>
+									<div class="thumb-sm item-logo">
+										<a class="thumb-sm-content" href="#">
+											<img src="assets/logo-exartu.png" alt="exartu">
+										</a>
+									</div>
+									<div class="list-item-content">
+										<p class="activity-author">
+											<a href="#">CNN</a>
+										</p>
+										<p class="activity-label">Work activity</p>
+										<div class="activity-rating">
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar"></div>
+											<div class="rating-bar empty"></div>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<!-- /. -->
+						</div>
+						<!-- /.box -->
+					</section>
+
+				</div>
+				<!-- /.col-lg-4 -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.container-fluid -->
 	</div>
+	<!-- /.content -->
+
 
 
 	<!-- Activity templates ------------------------------------------------------------------------ -->
@@ -230,14 +391,14 @@
 			<div class="item-content">
 				<div class="box">
 					<div class="box-content" data-bind="with: data">
-						<div class="thumb-container">
+						<div class="thumb">
 							<div class="user-avatar-container">
 								<a class="user-avatar" href="#">
 									<img style="width: 64px; height: 64px; padding:0" src="img/avatar.jpg" alt="CNN">
 								</a>
 							</div>
 						</div>
-						<div class="item-blurb">
+						<div class="item-title">
 							<strong>
 								<a href="#" data-bind="text: displayName">
 								</a>
