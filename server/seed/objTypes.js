@@ -114,7 +114,57 @@ seedSystemObjTypes = function () {
 				defaultValue: '',
 				showInAdd: true
                 }]
-            }
+            },
+            {
+            objGroupType: Enums.objGroupType.deal,
+            objName: 'Direct Hire',
+            style: {
+                icon: 'briefcase',
+                color: 'yellow'
+            },
+            services: ['messages', 'tasks'],
+            fields: [{
+                name: 'JobTitle',
+                regex: '',
+                fieldType: Enums.fieldType.lookUp,
+                lookUpName: 'dealTitle',
+                multiple: false,
+                defaultValue: null,
+                showInAdd: true
+            }]
+        },
+        {
+            objGroupType: Enums.objGroupType.deal,
+            objName: 'Funding Deal',
+            style: {
+                icon: 'briefcase',
+                color: 'yellow'
+            },
+            services: ['messages', 'tasks'],
+            fields: [{
+                name: 'Type',
+                regex: '.*',
+                fieldType: Enums.fieldType.string,
+                defaultValue: '',
+                showInAdd: true
+            }]
+        },
+        {
+            objGroupType: Enums.objGroupType.deal,
+            objName: 'Software Deal',
+            style: {
+                icon: 'briefcase',
+                color: 'yellow'
+            },
+            services: ['messages', 'tasks'],
+            fields: [{
+                name: 'Type',
+                regex: '.*',
+                fieldType: Enums.fieldType.string,
+                defaultValue: '',
+                showInAdd: true
+            }]
+        }
         ];
 
 	_.forEach(systemObjTypes, function (objtype) {

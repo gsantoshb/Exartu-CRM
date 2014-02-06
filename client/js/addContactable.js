@@ -106,6 +106,7 @@ Template.addContactable.viewmodel = function (objname) {
 		});
 		$('#addContactableModal').modal('hide');
 	}
+    console.log('contactable this',this);
 	return this;
 }
 

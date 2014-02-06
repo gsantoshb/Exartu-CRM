@@ -36,6 +36,17 @@ Router.map(function () {
 		controller: 'JobsController'
 	});
 
+    this.route('deals', {
+        path: '/deals',
+        controller: 'DealsController',
+        templateLayout: 'mainDealLayout'
+    });
+
+    this.route('deal', {
+        path: '/deal/:_id',
+        controller: 'DealController'
+    });
+
 	this.route('userManagement', {
 		path: '/users',
 		controller: 'UserManagementController'

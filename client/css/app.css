@@ -990,6 +990,11 @@ a:hover {
 .jobs i {
 	color: #ffcc00;
 }
+
+.deals i {
+    color: #216c2a;
+}
+
 .assignments i {
 	color: #4cd964;
 }
@@ -2755,6 +2760,13 @@ body {
 .timeline .item-job .type i {
 	color: #333;
 }
+.timeline .item-deal .type {
+    background: #ffcc00;
+}
+.timeline .item-deal .type i {
+    color: #333;
+}
+
 .timeline .item-employee .type {
 	background: #ff2d55;
 }

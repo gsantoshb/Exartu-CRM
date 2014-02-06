@@ -46,6 +46,31 @@ JobHandler.wait = function (cb) {
 		this.observers.push(cb);
 }
 
+
+Deals = new Meteor.Collection("deals", {
+    transform: function (contactable) {
+        if (contactable.person)
+            contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
+        if (contactable.organization)
+            contactable.displayName = contactable.organization.organizationName;
+
+        return contactable;
+    },
+});
+DealHandler = Meteor.subscribe('deals', function () {
+    _.forEach(Deals.observers, function (cb) {
+        cb();
+    });
+});
+DealHandler.observers = [];
+DealHandler.wait = function (cb) {
+    if (this.ready())
+        cb();
+    else
+        this.observers.push(cb);
+}
+
+
 /*
  * Messages
  */
