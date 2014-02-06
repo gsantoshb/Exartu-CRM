@@ -147,7 +147,15 @@ seedSystemObjTypes = function () {
                 fieldType: Enums.fieldType.string,
                 defaultValue: '',
                 showInAdd: true
-            }]
+            },
+            {
+                name: 'dealName',
+                regex: '.*',
+                fieldType: Enums.fieldType.string,
+                defaultValue: '',
+                showInAdd: true
+            },
+            ]
         },
         {
             objGroupType: Enums.objGroupType.deal,
@@ -158,12 +166,19 @@ seedSystemObjTypes = function () {
             },
             services: ['messages', 'tasks'],
             fields: [{
-                name: 'Type',
+                name: 'Customer',
                 regex: '.*',
                 fieldType: Enums.fieldType.string,
                 defaultValue: '',
                 showInAdd: true
-            }]
+            },
+            {
+                name: 'dealName',
+                regex: '.*',
+                fieldType: Enums.fieldType.string,
+                defaultValue: '',
+                showInAdd: true
+            },   ]
         }
         ];
 

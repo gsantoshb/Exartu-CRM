@@ -49,10 +49,7 @@ JobHandler.wait = function (cb) {
 
 Deals = new Meteor.Collection("deals", {
     transform: function (contactable) {
-        if (contactable.person)
-            contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
-        if (contactable.organization)
-            contactable.displayName = contactable.organization.organizationName;
+            contactable.displayName = contactable.dealName;
 
         return contactable;
     },

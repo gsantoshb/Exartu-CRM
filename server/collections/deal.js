@@ -48,10 +48,7 @@ var beforeInsertOrUpdateDeal = function (deal) {
     if (user == null)
         throw new Meteor.Error(401, "Please login");
 
-    if (!deal.type || !deal.type.length) {
-        console.error('the deal must have a type');
-        return false;
-    }
+
     var objTypes = ObjTypes.find({
         objName: {
             $in: deal.type
