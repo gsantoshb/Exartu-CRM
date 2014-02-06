@@ -116,7 +116,7 @@ seedSystemObjTypes = function () {
                 }]
             },
             {
-            objGroupType: Enums.objGroupType.deal,
+            objGroupType: Enums.objGroupType.job,
             objName: 'Direct Hire',
             style: {
                 icon: 'briefcase',
@@ -142,7 +142,7 @@ seedSystemObjTypes = function () {
             },
             services: ['messages', 'tasks'],
             fields: [{
-                name: 'Type',
+                name: 'Customer',
                 regex: '.*',
                 fieldType: Enums.fieldType.string,
                 defaultValue: '',
