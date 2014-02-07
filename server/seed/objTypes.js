@@ -9,6 +9,40 @@
  *    - objType Temporary
  */
 seedSystemObjTypes = function () {
+    var systemObjGroupTypes = [
+        {
+            objGroupType: Enums.objGroupType.contactable,
+            fields: [
+             {
+                name: 'AllContactablesUseThisField',
+                regex: '.*',
+                fieldType: Enums.fieldType.string,
+                defaultValue: '',
+                showInAdd: false
+             }]
+        },
+        {
+            objGroupType: Enums.objGroupType.job
+        },
+        {
+            objGroupType: Enums.objGroupType.deal,
+            fields: [
+                {
+                    name: 'Customer',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.string,
+                    defaultValue: '',
+                    showInAdd: false
+                },
+                {
+                    name: 'Statuses',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.string,
+                    defaultValue: '',
+                    showInAdd: false
+                }]
+        }
+    ]
 	var systemObjTypes = [
 		{
 			objGroupType: Enums.objGroupType.contactable,
@@ -142,14 +176,14 @@ seedSystemObjTypes = function () {
             },
             services: ['messages', 'tasks'],
             fields: [{
-                name: 'Customer',
+                name: 'Estimated_Revenue',
                 regex: '.*',
                 fieldType: Enums.fieldType.string,
                 defaultValue: '',
                 showInAdd: true
             },
             {
-                name: 'dealName',
+                name: 'Credential_Check',
                 regex: '.*',
                 fieldType: Enums.fieldType.string,
                 defaultValue: '',
@@ -166,14 +200,14 @@ seedSystemObjTypes = function () {
             },
             services: ['messages', 'tasks'],
             fields: [{
-                name: 'Customer',
+                name: 'User_Count',
                 regex: '.*',
                 fieldType: Enums.fieldType.string,
                 defaultValue: '',
                 showInAdd: true
             },
             {
-                name: 'dealName',
+                name: 'Modules_Note',
                 regex: '.*',
                 fieldType: Enums.fieldType.string,
                 defaultValue: '',
@@ -181,11 +215,16 @@ seedSystemObjTypes = function () {
             },   ]
         }
         ];
-
 	_.forEach(systemObjTypes, function (objtype) {
 		var oldObjType = ObjTypes.findOne({
 			objName: objtype.objName
 		});
+        var fields = objtype.fields;
+        var objGroupType = _.find(systemObjGroupTypes, function(objgroup) { return objgroup.objGroupType==objtype.objGroupType});
+
+        if (objGroupType)  fields=fields.concat(objGroupType.fields);
+        console.log('fields',objtype.objName,fields);
+
 		if (oldObjType == null) {
 			console.log('inserting objType ' + objtype.objName);
 			ObjTypes.insert({
