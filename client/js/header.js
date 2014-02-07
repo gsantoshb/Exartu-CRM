@@ -4,7 +4,10 @@ Template.header.rendered = function () {
 		var self = this;
 
 		self.latestMessages = ko.meteor.find(Messages, {
-			readed: false
+			readed: false,
+			from: {
+				$not: Meteor.userId()
+			}
 		}, {
 			sort: {
 				createdAt: 1
@@ -12,10 +15,14 @@ Template.header.rendered = function () {
 			limit: 4
 		});
 
+		self.objTypes = ko.meteor.find(ObjTypes, {
+			objGroupType: 'contactable'
+		});
+
 		return self;
 	};
 
-	helper.applyBindings(viewmodel, 'headerVM', MessagesHandler);
+	helper.applyBindings(viewmodel, 'headerVM', [MessagesHandler, ]);
 
 	var ul = $('#sidebar > ul');
 	var ul2 = $('#sidebar li.open ul');
@@ -168,7 +175,7 @@ Template.header.rendered = function () {
 		$('html').getNiceScroll().resize();
 	});
 
-	$(document).on('click', '.dropdowns > a', function (e) {
+	$(document).on('click', '.dropdown > a', function (e) {
 		//        debugger;
 		e.preventDefault();
 		var submenu = $(this).siblings('ul');

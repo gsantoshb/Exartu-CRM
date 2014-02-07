@@ -67,6 +67,23 @@ _.extend(helper, {
 			}
 		}
 
+		//		var observablesCount = ko.observable(0).subscribe(function (value) {
+		//			if (value == 0)
+		//				executeBinding();
+		//		});
+
+		//		if (typeof collectionHandlers == typeof {})
+		//			collectionHandlers = [collectionHandlers];
+		//
+		//		_.forEach(collectionHandlers, function (collectionHandler) {
+		//			if (collectionHandler && collectionHandler.wait) {
+		//				observablesCount(observablesCount() + 1);
+		//				collectionHandler.wait(function () {
+		//					observablesCount(observablesCount() - 1);
+		//				});
+		//			}
+		//		})
+
 		if (!collectionHandler || !collectionHandler.wait) {
 			executeBinding();
 		} else {

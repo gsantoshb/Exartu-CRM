@@ -3,6 +3,9 @@ Router.configure({
 		if (!Meteor.userId() && Router.current().route.name != 'login') {
 			this.redirect('login');
 		}
+	},
+	waitOn: function () {
+		return [Meteor.subscribe('messages'), Meteor.subscribe('objTypes')];
 	}
 });
 Router.map(function () {
@@ -40,4 +43,9 @@ Router.map(function () {
 		path: '/users',
 		controller: 'UserManagementController'
 	});
+
+	this.route('messages', {
+		path: '/messages',
+		controller: 'MessagesController'
+	})
 });

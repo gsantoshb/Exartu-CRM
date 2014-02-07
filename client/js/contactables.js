@@ -1,13 +1,40 @@
 ContactablesController = RouteController.extend({
 	template: 'contactables',
-	layoutTemplate: 'mainLayout'
+	layoutTemplate: 'mainLayout',
+	action: function () {
+		if (this.params.hash == undefined || this.params.hash != 'all') {
+			var re = new RegExp("^" + this.params.hash + "$", "i");
+			var objType = ObjTypes.findOne({
+				objName: re
+			})
+			if (objType != null)
+				Session.set('objTypeList', objType);
+			else
+				this.redirect('/contactables#all');
+		} else {
+			Session.set('objTypeList', undefined);
+		}
+
+		this.render();
+	},
 });
 
 Template.contactables.rendered = function () {
 	var viewModel = function () {
 		var self = this;
 		self.ready = ko.observable(false);
-		self.entities = ko.meteor.find(Contactables, {});
+		self.objTypeSelected = Session.get('objTypeList');
+
+		var entitiesQuery = {};
+		if (self.objTypeSelected != undefined)
+			entitiesQuery = {
+				objNameArray: {
+					$in: [self.objTypeSelected.objName]
+				}
+			}
+
+		self.entities = ko.meteor.find(Contactables, entitiesQuery);
+
 		self.contactableTypes = ko.observableArray();
 
 		Meteor.subscribe('objTypes', function () {
@@ -17,20 +44,22 @@ Template.contactables.rendered = function () {
 				});
 				return 'glyphicon ' + type.glyphicon;
 			};
-			var result = ObjTypes.find({
+
+			var filter = {
 				objGroupType: Enums.objGroupType.contactable
-			}).fetch(); {
-				self.contactableTypes(result);
-				_.extend(self, helper.createObjTypefilter(['person.firstName', 'person.lastName', 'organization.organizationName'], result,
-						function () {
-							self.entities(ko.mapping.fromJS(Contactables.find(this.query).fetch())());
-						})
+			};
+			if (self.objTypeSelected != undefined)
+				filter.objName = self.objTypeSelected.objName;
 
-				);
-				self.ready(true);
-			}
+			var result = ObjTypes.find(filter).fetch();
+
+			self.contactableTypes(result);
+			_.extend(self, helper.createObjTypefilter(['person.firstName', 'person.lastName', 'organization.organizationName'], result,
+				function () {
+					self.entities(ko.mapping.fromJS(Contactables.find(this.query).fetch())());
+				}));
+			self.ready(true);
 		});
-
 
 		self.showAddContactableModal = function (typeId) {
 			Session.set('newContactableTypeId', typeId);

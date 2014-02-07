@@ -1,4 +1,5 @@
 <template name="contactMethods">
+	<!--
     <div name="contactMethodVM" style="float: inherit; margin-left: 20%;">
 		<h5 class="panel-section-title">Contact methods</h5>
         <div data-bind="foreach: contactable().contactMethods " style="overflow-y: auto; overflow-x: hidden ">
@@ -16,7 +17,7 @@
                 <b>New contact method</b>
             </div>
 
-            <!-- New contact method information -->
+             New contact method information 
             <div data-bind="visible: addStep()==1 ">
                 <input class="form-control " type="text " data-bind="value: newContactMethod.type " placeholder="Type... " />
                 <input class="form-control " type="text " style="margin-bottom: 20px; margin-top: 5px " data-bind="value: newContactMethod.value " placeholder="Value... " />
@@ -25,4 +26,21 @@
             </div>
         </div>
     </div>
+-->
+	<div name="contactMethodVM" class="box">
+		<div class="box-header-2">
+			<div class="box-title">Contact</div>
+		</div>
+		<div class="box-content-md">
+			<ul class="list-1" data-bind="foreach: contactable().contactMethods">
+				<li>
+					<strong data-bind="text: type "></strong>
+					<br>
+					<span data-bind="text: value"></span>
+				</li>
+			</ul>
+		</div>
+		<!-- /.box-content-md -->
+	</div>
+	<!-- /.box -->
 </template>

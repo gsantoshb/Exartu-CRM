@@ -18,7 +18,7 @@ seedSystemObjTypes = function () {
 				color: 'red'
 			},
 			defaultPersonType: Enums.personType.organization,
-			services: ['messages', 'tasks'],
+			services: ['messages', 'tasks', 'posts', 'tags'],
 			fields: [{
 				name: 'department',
 				regex: '.',
@@ -41,7 +41,7 @@ seedSystemObjTypes = function () {
 				color: 'red'
 			},
 			defaultPersonType: Enums.personType.human,
-			services: ['messages', 'tasks'],
+			services: ['messages', 'tasks', 'posts', 'tags'],
 			fields: []
             },
 		{
@@ -52,7 +52,7 @@ seedSystemObjTypes = function () {
 				color: 'pink'
 			},
 			defaultPersonType: Enums.personType.human,
-			services: ['messages', 'tasks'],
+			services: ['messages', 'tasks', 'posts', 'tags'],
 			fields: [{
 				name: 'test',
 				regex: '.*',

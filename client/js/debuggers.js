@@ -15,7 +15,7 @@ var wrappedFind = Meteor.Collection.prototype.find;
 
 Meteor.Collection.prototype.find = function () {
     var cursor = wrappedFind.apply(this, arguments);
-//    if (Global.debugger)
+    if (false)
     {
         var collectionName = this._name;
 

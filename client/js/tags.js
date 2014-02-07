@@ -7,11 +7,6 @@ Template.tags.rendered = function () {
 			_id: entityID
 		});
 
-		self.addStep = ko.observable(0);
-		self.nextStep = function () {
-			self.addStep(self.addStep() + 1);
-		}
-
 		if (!self.contactable())
 			console.log('contactable is undefined');
 		if (!self.contactable().tags)
@@ -19,17 +14,15 @@ Template.tags.rendered = function () {
 		self.newTag = ko.observable('');
 		self.isAdding = ko.observable(false);
 		self.addTag = function () {
-			Contactables.update({
-				_id: entityID
-			}, {
-				$addToSet: {
-					tags: self.newTag()
+			self.isAdding(true);
+			Meteor.call('addContactableTag', entityID, self.newTag(), function (err, result) {
+				if (!err) {
+					self.isAdding(false);
+					self.newTag('');
 				}
 			})
-			self.newTag('');
-			self.addStep(0);
 		}
 		return self;
 	};
-    helper.applyBindings(vm, 'tagsVM', ContactableHandler);
+	helper.applyBindings(vm, 'tagsVM', ContactableHandler);
 }

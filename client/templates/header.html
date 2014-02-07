@@ -23,7 +23,7 @@
 						<span class="user-menu-thumb">
 							{{#if hasPicture}}
 							<img src={{picture}} style="heigth: 26px;width: 26px;">{{else}}
-							<img src="assets/pic-26x26.jpg" />{{/if}}
+							<img src="assets/user-photo-placeholder.jpg" style="heigth: 26px;width: 26px;"/>{{/if}}
 						</span>
 						{{loginButtons}}
 					</a>
@@ -79,7 +79,7 @@
 						<!-- /ko -->
 
 						<li class="more">
-							<a href="#">View all messages</a>
+							<a href="/messages">View all messages</a>
 						</li>
 					</ul>
 				</li>
@@ -118,17 +118,17 @@
 					</a>
 					<ul>
 						<li>
-							<a href="/contactables">All</a>
+							<a href="/contactables#all">
+								<span>All</span>
+							</a>
 						</li>
+						<!-- ko foreach: objTypes -->
 						<li>
-							<a href="#">Employees</a>
+							<a data-bind="attr: {href: '/contactables#' + objName().toLowerCase()}">
+								<span data-bind="text: objName"></span>
+							</a>
 						</li>
-						<li>
-							<a href="#">Customers</a>
-						</li>
-						<li>
-							<a href="#">Contacts</a>
-						</li>
+						<!-- /ko -->
 					</ul>
 				</li>
 				<!--

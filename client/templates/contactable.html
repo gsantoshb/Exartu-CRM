@@ -1,164 +1,218 @@
 <template name="contactable">
+	<div name="contactableVM">
+		<div class="contactables-page" data-bind="with: contactable">
+			<div id="content">
+
+				<div id="breadcrumb" class="breadcrumb-top ">
+					<a href="# " title="Go to Home " class="tip-bottom ">Home</a>
+					<a href="# " class="current ">Contactables</a>
+				</div>
+				<div id="content-header" class="content-header-bottom ">
+					<div class="profile-content-header ">
+						<div class="profile-pic ">
+							<a href="# ">
+								<img class="img-responsive " src="/assets/pic-284x284.jpg ">
+							</a>
+						</div>
+						<h1 class="profile-name ">
+							<strong data-bind="text: displayName"></strong>
+						</h1>
+						<div class="profile-btns ">
+							<a class="btn btn-default btn-sm " data-toggle="modal " data-target="#messagesModal ">
+								<i class="fa fa-envelope-o "></i>
+								Send Message</a>
+							<a class="btn btn-default btn-sm " data-toggle="modal " data-bind="click: function () { helper.showModal( 'addPost', 'addPostModal', $data._id()); } ">
+								<i class=" fa fa-pencil "></i>
+								Write Post
+							</a>
+						</div>
+						<!-- /.profile-btns -->
+					</div>
+					<!-- /.profile-content-header -->
+				</div>
+				<!-- /.content-header -->
+
+				<div class="container-fluid row ">
+					<!-- Nav tabs -->
+					<ul class="nav nav-pills bottom-20 ">
+						<li class="active ">
+							<a href="#profile-home " data-toggle="tab ">All</a>
+						</li>
+						<li>
+							<a href="#profile-details " data-toggle="tab ">Details</a>
+						</li>
+						<li>
+							<a href="#profile-posts " data-toggle="tab ">Posts
+								<span class="custom-badge-2 " data-bind="text: posts().length"></span>
+							</a>
+						</li>
+						<!--
+						<li>
+	<a href="#profile-tasks " data-toggle="tab ">Tasks
+		<span class="custom-badge-2 ">25</span>
+	</a>
+</li>
+-->
+					</ul>
+					<div class="col-md-12 col-lg-12 ">
+						<div class="tab-content ">
+							{{yield 'content'}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
-<template name="contactableNavigation">
-	<div name="contactableNavigationVM">
-		<div class="contactables-page" data-bind="with: contactable">
-			<!--
-		<div class="pull-right entity-details" data-bind="with: contactable">
-	<div>
-		<a class="btn-link" style="cursor: pointer">
-			<h4 style="color: black; font-weight: bold" data-bind="text: displayName"></h4>
-			<img class="media-obj" data-src="holder.js/64x64" alt="100x100" style="width: 100px; height: 100px;" src="../img/avatar.jpg" />
-		</a>
-	</div>
-	<div class="panel-section">
-		<p>
-			<i class="glyphicon glyphicon-home ats-icon"></i>
-			<a class="btn-link" href="#activities">Activities</a>
-		</p>
-		<p>
-			<i class="glyphicon glyphicon-comment ats-icon"></i>
-			<a class="btn-link" href="#messages">Messages</a>
-		</p>
-		<p>
-			<i class="glyphicon glyphicon-comment ats-icon"></i>
-			<a class="btn-link" href="#messages">Tasks</a>
-		</p>
-		<p>
-			<i class="glyphicon glyphicon-envelope ats-icon"></i>
-			<a data-toggle="modal" data-bind="click: function () { helper.showModal('sendEmailModal', 'addContactableModal'); }">Send email</a>
-		</p>
-	</div>
-</div>
--->
-			<div class="box-3">
-				<div class="profile-pic text-center">
-					<a href="#">
-						<img class="img-responsive " src="/assets/pic-284x284.jpg">
-					</a>
-				</div>
-				<div class="box-content-md">
-					<h1 class="top-0">
-						<a href="#">
-							<span></span>
-						</a>
-					</h1>
-					<p>
-						<!--Bucharest, Romania-->
-						<br>
-						<span class="text-muted">Member since
-							<span data-bind="text: moment(createdAt()).format('LL')"></span>
-						</span>
-					</p>
-				</div>
-			</div>
-			<!-- /.box-3 -->
-			<a class="btn btn-success btn-block bottom-20" href="#" data-bind="click: function () { helper.showModal('sendEmailModal', 'addContactableModal'); }">
-				<i class="fa fa-envelope-o"></i>Send email</a>
-			<ul class="list-group">
-				<a class="list-group-item active" href="#">Recent Activities</a>
-				<a class="list-group-item" href="#">Details</a>
-				<a class="list-group-item" href="#">Posts</a>
-				<a class="list-group-item" href="#">Tasks</a>
-				<a class="list-group-item" href="#">Address</a>
-				<a class="list-group-item" href="#">Documents</a>
-			</ul>
-
-			<div class="box">
-				<div class="box-header-2">
-					<div class="box-title">Contact</div>
-				</div>
-				<div class="box-content-md">
-					<ul class="list-1">
-						<li>
-							<strong>Email Adress</strong>
-							<br>mihai.constantinescu@east-wolf.com
-						</li>
-						<li>
-							<strong>Skype</strong>
-							<br>mihai_con
-						</li>
-						<li>
-							<strong>Telephone</strong>
-							<br>+40.752.313.301
-						</li>
-					</ul>
-				</div>
-				<!-- /.box-content-md -->
-			</div>
-			<!-- /.box -->
-
-			<div class="box">
-				<div class="box-header-2">
-					<div class="box-title">
-						<i class="icon-flag-1"></i>Employee Statuses</div>
-				</div>
-				<div class="box-content-md">
-					<a class="btn btn-xs btn-primary" href="#">Spoke with</a>
-					<a class="btn btn-xs btn-primary" href="#">Interviewed</a>
-					<a class="btn btn-xs btn-primary" href="#">Job Offered</a>
-				</div>
-				<!-- /.box-content-md -->
-			</div>
-			<!-- /.box -->
-
-			<div class="box">
-				<div class="box-header-2">
-					<div class="box-title">
-						<i class="icon-tag-1"></i>Tags</div>
-				</div>
-				<div class="box-content-md">
-					<a class="btn btn-xs btn-primary" href="#">Spoke with</a>
-					<a class="btn btn-xs btn-primary" href="#">Interviewed</a>
-					<a class="btn btn-xs btn-primary" href="#">Job Offered</a>
-					<hr>
-					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Enter tags here...">
-						<span class="input-group-btn">
-							<button class="btn btn-success" type="button">Add</button>
-						</span>
+<template name="contactableHome ">
+	<!-- Profile Home Section ------------------------------------ -->
+	<div class="tab-pane active " id="profile-home">
+		<div class="row ">
+			<div class="col-md-4 col-lg-4 ">
+				<div class="box ">
+					<div class="box-header-2 ">
+						<div class="box-title ">
+							<i class="icon-contact "></i>Details</div>
 					</div>
-					<!-- /input-group -->
+					<div class="box-content-md ">
+						<p>
+							<strong>Summary</strong>
+						</p>
+						<p>Nimble. Bespoke. Describe me as you please. When digital experiences surprise, delight and simplify life for the end user, it's a beautiful thing.</p>
+						<p>Let's build your digitally-driven business. What I bring to the table is a multidisciplinary mix of competencies: Product Design, Experience Design, Visual Design, Front-End Development.</p>
+						<a class="btn btn-default btn-block btn-md " href="# ">Read more</a>
+					</div>
+					<!-- /.box-content-md -->
 				</div>
-				<!-- /.box-content-md -->
-			</div>
-			<!-- /.box -->
+				<!-- /.box -->
 
-			<div class="box">
-				<div class="box-header-2">
-					<div class="box-title">
-						<i class="icon-file"></i>Documents</div>
+				<!-- ko if: $data.contactMethodscontactMethods -->
+				<div class="box ">
+					<div class="box-header-2 ">
+						<div class="box-title ">
+							<i class="icon-contact "></i>Contact</div>
+					</div>
+					<div class="box-content-md ">
+						<ul class="list-1 " data-bind="foreach: contactable().contactMethods ">
+							<li>
+								<strong data-bind="text: type "></strong>
+								<br>
+								<span data-bind="text: value "></span>
+							</li>
+						</ul>
+					</div>
+					<!-- /.box-content-md -->
 				</div>
-				<div class="box-content-md">
-					<ul class="list-1">
-						<li>
-							<i class="fa fa-download"></i>Exartu
-							<a href="#">Dashboard.png</a>
-						</li>
-						<li>
-							<i class="fa fa-download"></i>Exartu
-							<a href="#">Dashboard.png</a>
-						</li>
-						<li>
-							<i class="fa fa-download"></i>Exartu
-							<a href="#">Dashboard.png</a>
-						</li>
-						<li>
-							<i class="fa fa-download"></i>Exartu
-							<a href="#">Dashboard.png</a>
-						</li>
-						<li>
-							<i class="fa fa-download"></i>Exartu
-							<a href="#">Dashboard.png</a>
-						</li>
-					</ul>
+				<!-- /.box -->
+				<!-- /ko-->
+
+				<!-- ko if: $data.tags -->
+				<div class="box ">
+					<div class="box-header-2 ">
+						<div class="box-title ">
+							<i class="icon-tag-1 "></i>Tags</div>
+					</div>
+					<div class="box-content-md ">
+						<div data-bind="foreach: tags ">
+							<a class="btn btn-xs btn-primary " href="# " data-bind="text: $data "></a>
+							<a style="margin-left: 4px; min-width: 7px; ">
+								<i class="icon icon-close removeTag "></i>
+							</a>
+						</div>
+						<hr>
+						<div class="input-group ">
+							<input type="text " class="form-control " placeholder="Enter tags here... " data-bind="value: $root.newTag ">
+							<span class="input-group-btn ">
+								<button class="btn btn-success " type="button " data-bind="click: $root.addTag ">Add</button>
+							</span>
+						</div>
+						<!-- /input-group -->
+					</div>
+					<!-- /.box-content-md -->
 				</div>
-				<!-- /.box-content-md -->
+				<!-- /.box -->
+				<!-- /ko-->
+
 			</div>
-			<!-- /.box -->
+			<!-- /.col-lg-4 -->
+			<div class="col-md-8 col-lg-8 ">
+				<div class="row ">
+					<div class="col-lg-12">
+						<div class="box ">
+							<div class="box-header-2 ">
+								<div class="box-title ">
+									<i class="icon-list-4 "></i>
+									Posts
+								</div>
+							</div>
+							<div class="box-content-md " data-bind="foreach: posts">
+								<div class="comment " data-bind="with: helper.getUserInformation($data.userId())">
+									<!-- ko if: $data.ready -->
+									<!-- ko if: $data.picture -->
+									<div class="comment-thumb">
+										<img height="70px" width="70px" data-bind="attr: {src: picture}" alt="gigi">
+									</div>
+									<!-- /ko -->
+									<div class="comment-content ">
+										<div class="comment-text ">
+											<div class="comment-info ">
+												<a href="# ">
+													<!-- ko if: $data.username -->
+													<strong data-bind="text: username">
+													</strong>
+													<!-- /ko -->
+													<!-- ko if: !$data.username && $data.email -->
+													<strong data-bind="text: email"></strong>
+													<!-- /ko -->
+												</a>
+												<span class="pipe">|</span>
+												<span data-bind="text: moment($parent.createdAt()).format('LL')"></span>
+											</div>
+											<p data-bind="text: $parent.content">
+											</p>
+										</div>
+									</div>
+									<!-- /.comment-content -->
+									<!-- /ko -->
+								</div>
+								<!-- /.comment -->
+								<!--
+								<a class="btn btn-default btn-block btn-md " href="# ">View All Posts
+								<span class="custom-badge-1 ">20</span>
+								</a>
+								-->
+							</div>
+							<!-- /.box-content-md -->
+						</div>
+						<!-- /.box -->
+					</div>
+					<!-- /.col-lg-6 -->
+					<!--
+					<div class="col-lg-6 ">
+					<div class="box ">
+	-->
+					<!--
+											<div class="box-header-2 ">
+					<div class="box-title ">
+						<i class="icon-check-list "></i>Tasks</div>
+				</div>
+				<div class="box-content-md ">
+				
+				</div>
+				-->
+					<!-- /.box-content-md -->
+					<!--						</div>-->
+					<!-- /.box -->
+					<!--					</div>-->
+					<!-- /.col-lg-6 -->
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.col-lg-8 -->
 		</div>
-		<!-- /.col-lg-3 -->
+		<!-- /.row -->
 	</div>
+	<!-- /#profile-home -->
 </template>
 

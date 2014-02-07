@@ -1,25 +1,19 @@
 ContactableController = RouteController.extend({
-	layoutTemplate: 'contactableLayout',
+	layoutTemplate: 'contactable',
 	action: function () {
 		// define which template to render in function of the url's hash
 		switch (this.params.hash) {
-		case 'messages':
-			this.render('entityMessages');
-			break;
-		case 'activities':
-			this.render('activities');
-			break;
-		case 'asendEmail':
-			this.render('sendEmail');
+		case 'home':
+			this.render('contactableHome', {
+				to: 'content'
+			});
 			break;
 		case undefined:
-			this.render('activities');
+			this.render('contactableHome', {
+				to: 'content'
+			});
 			break;
 		};
-		// render contactableNavigation template on navigation region defined on contactableLayout (client/layouts.html)
-		this.render('contactableNavigation', {
-			to: 'navigation'
-		});
 	},
 	data: function () {
 		Session.set('entityId', this.params._id); // save current contactable to later use on templates
@@ -27,25 +21,39 @@ ContactableController = RouteController.extend({
 	}
 });
 
-Template.contactableNavigation.rendered = function () {
+Template.contactable.rendered = function () {
 	// load contactable information
 	var vm = function () {
-		var self = this;
+		var self = this,
+			contactableId = Session.get('entityId');
+
 		self.contactable = ko.meteor.findOne(Contactables, {
-			_id: Session.get('entityId')
+			_id: contactableId
 		});
+
 		Session.set('entityDisplayName', self.contactable().displayName());
 
-		//		self.contactable().displayName = ko.computed(
-		//			function () {
-		//				var c = self.contactable();
-		//				return c.isCustomer != undefined && c.isCustomer() ? c.organizationName() : c.person.firstName() + ', ' + c.person.lastName();
-		//			}, self);
+		// TAGS
+		self.newTag = ko.observable('');
+		self.isAdding = ko.observable(false);
+		self.addTag = function () {
+			self.isAdding(true);
+			Meteor.call('addContactableTag', contactableId, self.newTag(), function (err, result) {
+				if (!err) {
+					self.isAdding(false);
+					self.newTag('');
+				}
+			})
+		}
+
+		// CONTACT METHODS
+
+
 		return self;
 	};
-	helper.applyBindings(vm, 'contactableNavigationVM', ContactableHandler);
+	helper.applyBindings(vm, 'contactableVM', ContactableHandler);
 };
 
-Template.contactableLayout.displayName = function () {
+Template.contactable.displayName = function () {
 	return Session.get('entityDisplayName');
 };

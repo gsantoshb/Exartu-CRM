@@ -1,32 +1,59 @@
 <template name="tags">
 	<div name="tagsVM">
-		<div class="widget">
-			<h5 class="no-margin panel-section-title">Tags</h5>
-			<div class="widget">
-				<div>
-					<div data-bind="foreach: contactable().tags">
-						<span class="ats-attached">
-							<span style="font-size: 14px; font-weight: 900; cursor: default;" data-bind="text: $data"></span>
-							<a style="margin-left: 4px; min-width: 7px;">
-								<i class="icon icon-close removeTag"></i>
-							</a>
-						</span>
-					</div>
-				</div>
+		<!--
+	<div class="widget">
+	<h5 class="no-margin panel-section-title">Tags</h5>
+	<div class="widget">
+		<div>
+			<div data-bind="foreach: contactable().tags">
+				<span class="ats-attached">
+					<span style="font-size: 14px; font-weight: 900; cursor: default;" data-bind="text: $data"></span>
+					<a style="margin-left: 4px; min-width: 7px;">
+						<i class="icon icon-close removeTag"></i>
+					</a>
+				</span>
 			</div>
-			<form class="chat-form">
-				<div class="no-margin input-append" style="width: 200px; margin-top: 5px">
-					<span class="ats-attached add" data-bind="visible: addStep() == 0, click: nextStep">
-						add new
-					</span>
-					<span class="no-margin input-group" style="" data-bind="visible: addStep()==1 ">
-						<input class="form-control" data-bind="value: newTag " placeholder="Enter new tag... " />
-						<span class="input-group-btn">
-							<button class="btn btn-info" type="button" data-bind="click: addTag">Add</button>
-						</span>
+		</div>
+	</div>
+	<form class="chat-form">
+		<div class="no-margin input-append" style="width: 200px; margin-top: 5px">
+			<span class="ats-attached add" data-bind="visible: addStep() == 0, click: nextStep">
+				add new
+			</span>
+			<span class="no-margin input-group" style="" data-bind="visible: addStep()==1 ">
+				<input class="form-control" data-bind="value: newTag " placeholder="Enter new tag... " />
+				<span class="input-group-btn">
+					<button class="btn btn-info" type="button" data-bind="click: addTag">Add</button>
+				</span>
+			</span>
+		</div>
+	</form>
+</div>
+-->
+
+		<div class="box">
+			<div class="box-header-2">
+				<div class="box-title">
+					<i class="icon-tag-1"></i>Tags</div>
+			</div>
+			<div class="box-content-md">
+				<div data-bind="foreach: contactable().tags">
+					<a class="btn btn-xs btn-primary" href="#" data-bind="text: $data"></a>
+					<a style="margin-left: 4px; min-width: 7px;">
+						<i class="icon icon-close removeTag"></i>
+					</a>
+				</div>
+				<hr>
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Enter tags here...">
+					<span class="input-group-btn">
+						<button class="btn btn-success" type="button" data-bind="click: addTag">Add</button>
 					</span>
 				</div>
-			</form>
+				<!-- /input-group -->
+			</div>
+			<!-- /.box-content-md -->
 		</div>
+
 	</div>
 </template>

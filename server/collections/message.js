@@ -1,6 +1,13 @@
 Meteor.publish('messages', function () {
 	return Messages.find({
-		destination: this.userId
+		$or: [
+			{
+				destination: this.userId,
+			},
+			{
+				from: this.userId
+			}
+		]
 	});
 })
 
