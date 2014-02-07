@@ -2,6 +2,8 @@ Hierarchies = new Meteor.Collection("hierarchies");
 
 Jobs = new Meteor.Collection("jobs");
 
+Deals = new Meteor.Collection("deals");
+
 Activities = new Meteor.Collection("activities");
 
 Contactables = new Meteor.Collection("contactables");
@@ -46,6 +48,7 @@ Collections = {
 	Hierarchies: Hierarchies,
 
 	Jobs: Jobs,
+    Deals: Deals,
 
 	Activities: Activities,
 

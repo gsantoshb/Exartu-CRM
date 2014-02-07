@@ -1,0 +1,28 @@
+<!-- Dashboard and lists layout -->
+<template name="mainDealLayout">
+	{{yield}}
+</template>
+
+<template name="dealLayout">
+	<div class="deals-page">
+		<div id="content">
+			<div id="content-header">
+				<h1>{{ displayName }}</h1>
+			</div>
+			<div id="breadcrumb">
+				<a href="#" title="Go to Home" class="tip-bottom">Home</a>
+				<a href="#" class="current">Deals</a>
+			</div>
+
+			<div class="container-fluid row">
+				<div class="col-md-3 col-lg-3">
+					{{yield 'navigation'}}
+				</div>
+				<div class="col-md-9 col-lg-9">
+					{{yield}}
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+

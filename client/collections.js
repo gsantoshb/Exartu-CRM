@@ -46,6 +46,28 @@ JobHandler.wait = function (cb) {
 		this.observers.push(cb);
 }
 
+
+Deals = new Meteor.Collection("deals", {
+    transform: function (contactable) {
+            contactable.displayName = contactable.dealName;
+
+        return contactable;
+    },
+});
+DealHandler = Meteor.subscribe('deals', function () {
+    _.forEach(Deals.observers, function (cb) {
+        cb();
+    });
+});
+DealHandler.observers = [];
+DealHandler.wait = function (cb) {
+    if (this.ready())
+        cb();
+    else
+        this.observers.push(cb);
+}
+
+
 /*
  * Messages
  */

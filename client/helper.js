@@ -287,10 +287,17 @@ _.extend(helper, {
 		var template = Template[templateName];
 		var modal = $(template()).appendTo(host);
 
-
-		modal.modal('show');
+//        console.log('showmodal:template',template());
+//        console.log('showmodal:templateName',templateName);
+//        console.log('showmodal:Template[templateName].viewmodel',Template[templateName].viewmodel);
+//        console.log('showmodal:parameter',parameter);
+//        console.log('showmodal:view',view);
+        modal.modal('show');
 		if (Template[templateName].viewmodel)
+        {
+            console.log('applybindings: templatename,parameter,view',templateName,parameter,view);
 			helper.applyBindings(new Template[templateName].viewmodel(parameter), view);
+        };
 
 		modal.on('hidden.bs.modal', function (e) {
 			ko.cleanNode(this);

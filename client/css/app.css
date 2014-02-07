@@ -1015,6 +1015,11 @@ a:hover {
 .jobs i {
 	color: #4cd964;
 }
+
+.deals i {
+    color: #A4BD99;
+}
+
 .assignments i {
 	color: #ff2d55;
 }
@@ -2788,6 +2793,13 @@ body {
 }
 .timeline .item-employee .type,
 .timeline .item-contact .type,
+.timeline .item-deal .type {
+    background: #ffcc00;
+}
+.timeline .item-deal .type i {
+    color: #333;
+}
+
 .timeline .item-customer .type {
 	background: #3496d7;
 }

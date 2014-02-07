@@ -154,6 +154,11 @@ Meteor.startup(function () {
 			return ObjTypes.find({
 				objGroupType: Enums.objGroupType.job
 			}).fetch();
+        },
+        getDealTypes: function () {
+            return ObjTypes.find({
+                objGroupType: Enums.objGroupType.deal
+            }).fetch();
 		}
 	});
 });
