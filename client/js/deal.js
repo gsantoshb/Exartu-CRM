@@ -46,6 +46,6 @@ Template.dealNavigation.rendered = function () {
 	helper.applyBindings(vm, 'dealNavigationVM', DealHandler);
 };
 
-Template.dealLayout.displayName = function () {
+Template.dealsLayout.displayName = function () {
 	return Session.get('entityDisplayName');
 };

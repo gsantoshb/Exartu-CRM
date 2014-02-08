@@ -41,8 +41,7 @@ Router.map(function () {
 
     this.route('deals', {
         path: '/deals',
-        controller: 'DealsController',
-        templateLayout: 'mainDealLayout'
+        controller: 'DealsController'
     });
 
     this.route('deal', {
@@ -50,9 +49,9 @@ Router.map(function () {
         controller: 'DealController'
     });
 
-	this.route('userManagement', {
+	this.route('users', {
 		path: '/users',
-		controller: 'UserManagementController'
+		controller: 'UsersController'
 	});
 
 	this.route('messages', {
