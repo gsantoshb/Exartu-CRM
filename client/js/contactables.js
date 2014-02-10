@@ -54,6 +54,7 @@ ContactablesVM = function () {
         self.contactableTypes(result);
         _.extend(self, helper.createObjTypefilter(['person.firstName', 'person.lastName', 'organization.organizationName'], result,
             function () {
+                console.log('query',this.query);
                 self.entities(ko.mapping.fromJS(Contactables.find(this.query).fetch())());
             }));
         self.ready(true);
@@ -65,7 +66,5 @@ ContactablesVM = function () {
     };
 };
 Template.contactables.rendered = function () {
-    var mycontactables=new ContactablesVM();
-    console.log('mycontactables',mycontactables);
-	helper.applyBindings(ContactablesVM, 'contactablesVM');
+	helper.applyBindings(new ContactablesVM(), 'contactablesVM');
 };
