@@ -295,7 +295,7 @@ _.extend(helper, {
         modal.modal('show');
 		if (Template[templateName].viewmodel)
         {
-            console.log('applybindings: templatename,parameter,view',templateName,parameter,view);
+            //console.log('applybindings: templatename,parameter,view',templateName,parameter,view);
 			helper.applyBindings(new Template[templateName].viewmodel(parameter), view);
         };
 
