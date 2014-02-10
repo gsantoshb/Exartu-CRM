@@ -4,7 +4,7 @@ Meteor.startup(function () {
 			//TODO: Check options values
 
 			if (hier.parent != null) {
-				console.log('New hier with parent');
+				//console.log('New hier with parent');
 				var parentHier = Hierarchies.findOne({
 					_id: hier.parent
 				});
@@ -14,7 +14,7 @@ Meteor.startup(function () {
 				hier._id = generateUniqueHierId(hier.parent);
 
 			} else {
-				console.log('New hier without parent');
+				//console.log('New hier without parent');
 				hier._id = generateUniqueHierId(ExartuConfig.SystemHierarchyId);
 			}
 
@@ -35,15 +35,15 @@ Meteor.startup(function () {
 			var parentId = Meteor.call('createHier', {
 				name: 'parent',
 			});
-			console.log(parentId);
+			//console.log(parentId);
 			var childId = Meteor.call('createHier', {
 				name: 'child',
 				parent: parentId
 			});
-			console.log(childId);
+			//console.log(childId);
 
 
-			console.log('Relation test')
+			//console.log('Relation test')
 
 			if (getHierarchiesRelation(parentId, childId) == 1)
 				console.log('Relation 1: OK');

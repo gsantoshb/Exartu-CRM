@@ -223,10 +223,10 @@ seedSystemObjTypes = function () {
         var objGroupType = _.find(systemObjGroupTypes, function(objgroup) { return objgroup.objGroupType==objtype.objGroupType});
 
         if (objGroupType)  fields=fields.concat(objGroupType.fields);
-        console.log('fields',objtype.objName,fields);
+        //console.log('fields',objtype.objName,fields);
 
 		if (oldObjType == null) {
-			console.log('inserting objType ' + objtype.objName);
+			//console.log('inserting objType ' + objtype.objName);
 			ObjTypes.insert({
 				hierId: ExartuConfig.SystemHierarchyId,
 				objGroupType: objtype.objGroupType,
@@ -237,7 +237,7 @@ seedSystemObjTypes = function () {
 				style: objtype.style
 			})
 		} else {
-			console.log('updating objType ' + objtype.objName);
+			//console.log('updating objType ' + objtype.objName);
 			ObjTypes.update({
 				_id: oldObjType._id
 			}, {

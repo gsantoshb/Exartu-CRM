@@ -57,12 +57,12 @@
                name: rel.name
            });
            if (oldRel == null) {
-               console.log('inserting relation ' + rel.name);
+               //console.log('inserting relation ' + rel.name);
                rel.hierId = ExartuConfig.SystemHierarchyId;
-               console.dir(rel);
+               //console.dir(rel);
                Relations.insert(rel);
            } else {
-               console.log('updating relation ' + rel.name);
+               //console.log('updating relation ' + rel.name);
                Relations.update({
                    _id: oldRel._id
                }, {

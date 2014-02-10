@@ -8,6 +8,7 @@ Router.configure({
 		return [Meteor.subscribe('messages'), Meteor.subscribe('objTypes')];
 	}
 });
+
 Router.map(function () {
 	this.route('dashboard', {
 		path: '/',
