@@ -13,21 +13,16 @@ Accounts.onCreateUser(function (options, user) {
 
 		}
 	}
-    user._id = Random.id();
 	if (!options.profile || !options.profile.hierId) {
         // if there are no hierarchies yet in the db, then this is give this user all roles including systemadministrator
-        console.log(Hierarchies.findOne(),'hierarchies');
-        console.log('user',Meteor.user());
-
         if (!Hierarchies.findOne())
         {
+            userRoles=[];
             _.forEach(Roles.getAllRoles().fetch(),function(role)
             {
-
-                Roles.addUsersToRoles([user._id],[role.name]);
-                console.log('role added',role.name,user._id)
+                userRoles.push(role.name);
             });
-            console.log(Roles.getAllRoles().fetch());
+            user.roles=userRoles;
         }
 		hierId = Meteor.call('createHier', {
 			name: userEmail.split('@')[0]
