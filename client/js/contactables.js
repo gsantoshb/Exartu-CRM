@@ -1,36 +1,66 @@
+var objType = ko.observable();
 ContactablesController = RouteController.extend({
-	template: 'contactables',
-	layoutTemplate: 'mainLayout',
-	action: function () {
-		if (this.params.hash == undefined || this.params.hash != 'all') {
-			var re = new RegExp("^" + this.params.hash + "$", "i");
-			var objType = ObjTypes.findOne({
-				objName: re
-			})
-			if (objType != null)
-				Session.set('objTypeList', objType);
-			else
-				this.redirect('/contactables#all');
-		} else {
-			Session.set('objTypeList', undefined);
-		}
-
-		this.render();
-	},
+    template: 'contactables',
+    layoutTemplate: 'mainLayout',
+    action: function () {
+        //        debugger;
+        if (this.isFirstRun == false) {
+            this.render();
+            return;
+        }
+        //        console.log(this.isFirstRun)
+        var type = this.params.hash || this.params.type;
+        if (type != undefined && type != 'all') {
+            var re = new RegExp("^" + type + "$", "i");
+            objType(ObjTypes.findOne({
+                objName: re
+            }));
+        } else {
+            objType(undefined);
+        }
+        this.render('contactables');
+    },
+    waitOn: function () {
+        return [Meteor.subscribe('contactables'), Meteor.subscribe('objTypes')];
+    },
 });
-ContactablesVM = function () {
-    var self = this;
+Template.contactables.waitOn = 'ContactableHandler';
+Template.contactables.viewModel = function () {
+    //    debugger;
+    var self = {};
     self.ready = ko.observable(false);
-    self.objTypeSelected = Session.get('objTypeList');
+    self.objTypeSelected = ko.observable(objType());
 
     var entitiesQuery = {};
-    if (self.objTypeSelected != undefined)
+    if (self.objTypeSelected())
         entitiesQuery = {
             objNameArray: {
-                $in: [self.objTypeSelected.objName]
+                $in: [self.objTypeSelected().objName]
             }
         }
+    objType.subscribe(function (newValue) {
+        //        debugger;
+        self.objTypeSelected(objType());
 
+        entitiesQuery = {};
+        if (self.objTypeSelected())
+            entitiesQuery = {
+                objNameArray: {
+                    $in: [self.objTypeSelected().objName]
+                }
+            }
+        self.entities(ko.mapping.fromJS(Contactables.find(entitiesQuery).fetch())());
+
+        var filter = {
+            objGroupType: Enums.objGroupType.contactable
+        };
+        if (self.objTypeSelected() != undefined)
+            filter.objName = self.objTypeSelected().objName;
+
+        var result = ObjTypes.find(filter).fetch();
+
+        self.contactableTypes(result);
+    });
     self.entities = ko.meteor.find(Contactables, entitiesQuery);
 
     self.contactableTypes = ko.observableArray();
@@ -63,9 +93,5 @@ ContactablesVM = function () {
         Session.set('newContactableTypeId', typeId);
         $('#addContactableModal').modal('show');
     };
-};
-Template.contactables.rendered = function () {
-    var mycontactables=new ContactablesVM();
-    console.log('mycontactables',mycontactables);
-	helper.applyBindings(ContactablesVM, 'contactablesVM');
+    return self;
 };

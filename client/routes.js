@@ -1,44 +1,44 @@
 Router.configure({
-	before: function () {
-		if (!Meteor.userId() && Router.current().route.name != 'login') {
-			this.redirect('login');
-		}
-	},
-	waitOn: function () {
-		return [Meteor.subscribe('messages'), Meteor.subscribe('objTypes')];
-	}
+    before: function () {
+        if (!Meteor.userId() && Router.current().route.name != 'login') {
+            this.redirect('login');
+        }
+    },
+    waitOn: function () {
+        return [Meteor.subscribe('messages'), Meteor.subscribe('objTypes')];
+    }
 });
 
 Router.map(function () {
-	this.route('dashboard', {
-		path: '/',
-		controller: 'DashboardController'
-	});
+    this.route('dashboard', {
+        path: '/',
+        controller: 'DashboardController'
+    });
 
-	this.route('login', {
-		path: '/login',
-		template: 'login',
-		before: function () {
-			if (Meteor.user()) {
-				this.redirect('dashboard');
-			}
-		}
-	});
+    this.route('login', {
+        path: '/login',
+        template: 'login',
+        before: function () {
+            if (Meteor.user()) {
+                this.redirect('dashboard');
+            }
+        }
+    });
 
-	this.route('contactables', {
-		path: '/contactables',
-		controller: 'ContactablesController'
-	});
+    this.route('contactables', {
+        path: '/contactables/:type?',
+        controller: 'ContactablesController'
+    });
 
-	this.route('contactable', {
-		path: '/contactable/:_id',
-		controller: 'ContactableController'
-	});
+    this.route('contactable', {
+        path: '/contactable/:_id',
+        controller: 'ContactableController'
+    });
 
-	this.route('jobs', {
-		path: '/jobs',
-		controller: 'JobsController'
-	});
+    this.route('jobs', {
+        path: '/jobs',
+        controller: 'JobsController'
+    });
 
     this.route('deals', {
         path: '/deals',
@@ -50,13 +50,13 @@ Router.map(function () {
         controller: 'DealController'
     });
 
-	this.route('users', {
-		path: '/users',
-		controller: 'UsersController'
-	});
+    this.route('users', {
+        path: '/users',
+        controller: 'UsersController'
+    });
 
-	this.route('messages', {
-		path: '/messages',
-		controller: 'MessagesController'
-	})
+    this.route('messages', {
+        path: '/messages',
+        controller: 'MessagesController'
+    })
 });
