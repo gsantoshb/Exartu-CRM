@@ -24,6 +24,8 @@ Accounts.onCreateUser(function (options, user) {
             });
             user.roles=userRoles;
             user.permissions=adminMethods.getPermissions(user);
+            console.log(user,user.permissions);
+
         }
 		hierId = Meteor.call('createHier', {
 			name: userEmail.split('@')[0]
@@ -65,7 +67,8 @@ Meteor.publish("userData", function () {
 			'services.google.picture': 1,
 			"hierId": 1,
 			"createdAt": 1,
-			"roles": 1
+			"roles": 1,
+            "permissions":1
 		}
 	});
 });

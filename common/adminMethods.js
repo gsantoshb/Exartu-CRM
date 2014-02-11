@@ -31,13 +31,7 @@ extendObject = function (doc) {
 adminMethods.getPermissions= function(user)
 {
     if (!user) user=Meteor.user();
-    if (adminMethods.permissions) return adminMethods.permissions;
-    var permissions=[];
-    _.each(user.roles, function(rolename) {
-        var role=Roles.findOne({name: rolename});
-        permissions=permissions.concat(role.rolePermissions);
-    });
-    return _.uniq(permissions);
+    return user.permissions;
 };
 
 adminMethods.userHasPermission= function(user,permission)

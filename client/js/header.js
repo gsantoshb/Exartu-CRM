@@ -13,7 +13,7 @@ Template.header.rendered = function () {
             },
             limit: 4
         });
-
+        self.showSales=ko.observable(adminMethods.userHasPermission(null,Enums.permissionFunction.Sales));
         self.objTypes = ko.meteor.find(ObjTypes, {
             objGroupType: 'contactable'
         });
