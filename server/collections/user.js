@@ -17,15 +17,15 @@ Accounts.onCreateUser(function (options, user) {
         // if there are no hierarchies yet in the db, then this is give this user all roles including systemadministrator
         if (!Hierarchies.findOne())
         {
-            userRoles=[];
+            var userRoles=[];
+            var userPermissions=[];
             _.forEach(Roles.find().fetch(),function(role)
             {
                 userRoles.push(role.name);
+                userPermissions=userPermissions.concat(role.rolePermissions);
             });
             user.roles=userRoles;
-            user.permissions=adminMethods.getPermissions(user);
-            console.log(user,user.permissions);
-
+            user.permissions= _.uniq(userPermissions);
         }
 		hierId = Meteor.call('createHier', {
 			name: userEmail.split('@')[0]
