@@ -13,15 +13,17 @@ Template.header.rendered = function () {
             },
             limit: 4
         });
-        self.showSales=ko.observable(adminMethods.userHasPermission(null,Enums.permissionFunction.Sales));
+        self.showSales = true; //ko.observable(adminMethods.userHasPermission(null, Enums.permissionFunction.Sales));
         self.objTypes = ko.meteor.find(ObjTypes, {
             objGroupType: 'contactable'
         });
-
+        self.picture = function (size) {
+            return Meteor.user().services.google.picture.split('?')[0] + '?sz=' + size;
+        }
         return self;
     };
-
-    helper.applyBindings(viewmodel, 'headerVM', [MessagesHandler, ]);
+    //    debugger;
+    helper.applyBindings(viewmodel, 'headerVM', MessagesHandler);
 
     var ul = $('#sidebar > ul');
     var ul2 = $('#sidebar li.open ul');
@@ -230,9 +232,7 @@ Template.header.hasPicture = function () {
     var user = Meteor.user();
     return user && user.services && user.services.google && user.services.google.picture;
 }
-Template.header.picture = function () {
-    return Meteor.user().services.google.picture;
-}
+
 Template.header.events = {
     'click #dashboardNav': function () {
         // Remove class from previous navigation link
