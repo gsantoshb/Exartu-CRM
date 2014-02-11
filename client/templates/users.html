@@ -44,6 +44,7 @@
 							<ul data-bind="foreach: roles">
 								<li>
 									<span data-bind="text: $data "></span>
+                                    <button class="btn btn-link" data-bind="click: $root.removeGroup">Remove</button>
 								</li>
 							</ul>
 							<!-- /ko -->

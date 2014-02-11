@@ -18,14 +18,14 @@ Template.addUser.viewmodel = function () {
 	self.newUserValidate = ko.validatedObservable(newUser);
 
 	self.roles = [];
-	_.forEach(Enums.systemRoles, function (rol) {
-		self.roles.push(rol);
+	_.forEach(Roles.find().fetch(), function (rol) {
+		self.roles.push(rol.name);
 	});
 
 	self.addUser = function () {
 		if (!self.newUserValidate.isValid())
 			self.newUserValidate.errors.showAllMessages();
-
+        console.log(ko.toJS(self.newUserValidate));
 		Meteor.call('addHierUser', ko.toJS(self.newUserValidate), function () {
 			$('#addUserModal').modal('hide');
 		});

@@ -36,7 +36,7 @@ seedSystemLookUps = function () {
             //console.log('inserting lookup ' + lu.name);
             LookUps.insert(lu);
         } else {
-            console.log('updating ' + lu.name);
+            //console.log('updating ' + lu.name);
             Relations.update({
                 _id: oldLU._id
             }, {

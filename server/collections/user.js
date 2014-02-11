@@ -84,16 +84,19 @@ Meteor.methods({
 		options.username = user.username;
 		options.email = user.email;
 		options.password = user.password;
+        options.roles = user.roles;
+
 		options.profile = {
-			hierId: hierId,
+			hierId: hierId
 			// more information from user
 		}
 		var userId = Accounts.createUser(options);
-
-		_.forEach(user.roles, function (rol) {
-			Roles.addUsersToRoles(userId, rol);
-		})
-
+        Meteor.users.update({_id: userId},
+            {
+                $set: {
+                    roles: user.roles
+                }
+            });
 		return userId;
 	},
 	getUserInformation: function (userId) {
