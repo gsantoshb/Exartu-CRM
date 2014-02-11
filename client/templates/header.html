@@ -22,7 +22,7 @@
                     <a href="#">
                         <span class="user-menu-thumb">
                             {{#if hasPicture}}
-                            <img src={{picture}} style="heigth: 26px;width: 26px;">{{else}}
+                            <img data-bind="attr:{src:picture(26)}" style="heigth: 26px;width: 26px;">{{else}}
                             <img src="assets/user-photo-placeholder.jpg" style="heigth: 26px;width: 26px;" />{{/if}}
                         </span>
                         {{loginButtons}}
