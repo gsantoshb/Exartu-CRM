@@ -8,6 +8,8 @@ Activities = new Meteor.Collection("activities");
 
 Contactables = new Meteor.Collection("contactables");
 
+Conversations = new Meteor.Collection("conversations");
+
 Messages = new Meteor.Collection("messages");
 
 ObjTypes = new Meteor.Collection("objTypes");
@@ -54,6 +56,8 @@ Collections = {
 
 	Contactables: Contactables,
 
+    Conversations: Conversations, 
+    
 	Messages: Messages,
 
 	ObjTypes: ObjTypes,

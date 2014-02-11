@@ -1,0 +1,63 @@
+<template name="conversations">
+	<div id="content" name="conversationsVM">
+		<br>
+		<div class="container-fluid">
+			<div class="row messages">
+				<div class="col-sm-6 col-md-4 col-lg-4">
+					<div class="messages-top-head">
+						<h3>Inbox</h3>
+					</div>
+					<ul class="msgs sidebar-msgs">
+                        <!-- ko foreach: $data.conversations -->
+                        <li data-bind="css: { active: ko.observable($root.isSelected($data))}, click: function() { return $root.selectedConversation($data)}">
+							<a class="clearfix" href="#">
+								<div data-bind="with: helper.getUserInformation($root.getUserDestination($data))">
+									<!-- ko if: $data.ready -->									
+                                    <span class="msg-pic">
+										<img height="50px" width="50px" data-bind="attr: {src: $data.picture? $data.picture : 'assets/user-photo-placeholder.jpg'}" alt="gigi">
+									</span>
+									<!-- ko if: $data.username -->
+									<span class="msg-author" data-bind="text: username"></span>
+									<!-- /ko -->
+									<!-- ko if: !$data.username && $data.email -->
+									<span class="msg-author" data-bind="text: email"></span>
+									<!-- /ko -->
+									<!-- /ko -->
+								</div>
+                                <!-- ko if: $data.lastMessage -->
+								<span class="msg-content">
+									<span data-bind="text: lastMessage.content"></span>
+								</span>
+                                
+								<span class="msg-date" data-bind="text: moment(lastMessage.createdAt()).format('ll')"></span>
+                                <!-- /ko -->
+							</a>
+						</li>
+                        <!-- /ko -->
+                        <li>
+                            <!-- ko if: $data.newConversationStep() == 1 -->
+                            <center><span class="btn btn-link" data-bind="click: function(){ return nextNewConversationStep()}"> Start a conversation </span></center>
+                            <!-- /ko -->
+                            <!-- ko if: $data.newConversationStep() == 2 -->
+                            <br>
+                            <center>
+                                <select class="col-md-10" data-bind="options: systemUsers, optionsText: 'username', optionsValue:'_id', selectedOptions: newConversationUser, optionsCaption: 'Choose an user'"></select>
+                            </center>
+                            <!-- /ko -->
+                        </li>
+					</ul>
+				</div>
+				<!-- /.col-lg-3 -->
+                <div id="conversationMessagesNode"> 
+                    {{>conversationMessages}}
+                </div>
+                
+			</div>
+			<!-- /.row -->
+
+		</div>
+		<!-- /.container-fluid -->
+
+	</div>
+	<!-- /.content -->
+</template>
