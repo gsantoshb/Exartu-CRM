@@ -31,6 +31,7 @@ extendObject = function (doc) {
 adminMethods.getPermissions= function(user)
 {
     if (!user) user=Meteor.user();
+    if (!user.permissions) return [];
     return user.permissions;
 };
 
