@@ -33,7 +33,7 @@ seedSystemLookUps = function () {
         });
         if (oldLU == null) {
             lu.hierId = ExartuConfig.SystemHierarchyId;
-            console.log('inserting lookup ' + lu.name);
+            //console.log('inserting lookup ' + lu.name);
             LookUps.insert(lu);
         } else {
             console.log('updating ' + lu.name);

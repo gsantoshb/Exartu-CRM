@@ -45,17 +45,17 @@ Meteor.startup(function () {
 
 			//console.log('Relation test')
 
-			if (getHierarchiesRelation(parentId, childId) == 1)
+			if (adminMethods.getHierarchiesRelation(parentId, childId) == 1)
 				console.log('Relation 1: OK');
 			else
 				console.log('Relation 1: FAIL');
 
-			if (getHierarchiesRelation(childId, parentId) == -1)
+			if (adminMethods.getHierarchiesRelation(childId, parentId) == -1)
 				console.log('Relation 2: OK');
 			else
 				console.log('Relation 2: FAIL');
 
-			if (getHierarchiesRelation(parentId, parentId) == -1)
+			if (adminMethods.getHierarchiesRelation(parentId, parentId) == -1)
 				console.log('Relation 3: OK');
 			else
 				console.log('Relation 3: FAIL');

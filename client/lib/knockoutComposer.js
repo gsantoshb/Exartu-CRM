@@ -52,9 +52,7 @@ Composer.showModal = function (templateName, parameter) {
 
 
 Composer.composeTemplate = function (templateName, context) {
-
     var templateInstance = context.firstNode;
-
 
     if (Template[templateName].waitOn) {
         var waitOn = Template[templateName].waitOn;
@@ -79,14 +77,15 @@ Composer.applyBindings = function (vm, view, collectionHandler) {
     //            handleError(err, viewName);
     //        }
     //    }
+    var viewInstance = typeof view == typeof 'string' ? document.getElementsByName(view)[0] : view;
 
     if (!collectionHandler || !collectionHandler.wait) {
         var vmAux = typeof (vm) == "function" ? new vm() : vm;
-        executeBinding(vmAux, document.getElementsByName(viewName)[0]);
+        executeBinding(vmAux, viewInstance);
     } else {
         collectionHandler.wait(function () {
             var vmAux = typeof (vm) == "function" ? new vm() : vm;
-            executeBinding(vmAux, document.getElementsByName(viewName)[0]);
+            executeBinding(vmAux, viewInstance);
         });
     }
 };

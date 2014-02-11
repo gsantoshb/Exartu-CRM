@@ -1,71 +1,83 @@
+var objType = ko.observable();
 ContactablesController = RouteController.extend({
-	template: 'contactables',
-	layoutTemplate: 'mainLayout',
-	action: function () {
-		if (this.params.hash == undefined || this.params.hash != 'all') {
-			var re = new RegExp("^" + this.params.hash + "$", "i");
-			var objType = ObjTypes.findOne({
-				objName: re
-			})
-			if (objType != null)
-				Session.set('objTypeList', objType);
-			else
-				this.redirect('/contactables#all');
-		} else {
-			Session.set('objTypeList', undefined);
-		}
-
-		this.render();
-	},
-});
-ContactablesVM = function () {
-    var self = this;
-    self.ready = ko.observable(false);
-    self.objTypeSelected = Session.get('objTypeList');
-
-    var entitiesQuery = {};
-    if (self.objTypeSelected != undefined)
-        entitiesQuery = {
-            objNameArray: {
-                $in: [self.objTypeSelected.objName]
-            }
+    template: 'contactables',
+    layoutTemplate: 'mainLayout',
+    action: function () {
+        //        debugger;
+        if (this.isFirstRun == false) {
+            this.render();
+            return;
         }
+        //        console.log(this.isFirstRun)
+        var type = this.params.hash || this.params.type;
+        if (type != undefined && type != 'all') {
+            var re = new RegExp("^" + type + "$", "i");
+            objType(ObjTypes.findOne({
+                objName: re
+            }));
+        } else {
+            objType(undefined);
+        }
+        this.render('contactables');
+    },
+    waitOn: function () {
+        return [Meteor.subscribe('contactables'), Meteor.subscribe('objTypes')];
+    },
+});
+Template.contactables.waitOn = 'ContactableHandler';
 
-    self.entities = ko.meteor.find(Contactables, entitiesQuery);
-
+Template.contactables.viewModel = function () {
+    //    debugger;
+    var self = {};
+    self.ready = ko.observable(false);
+    self.entities = ko.observableArray();
     self.contactableTypes = ko.observableArray();
-
-    Meteor.subscribe('objTypes', function () {
-        self.getIconForObjName = function (objname) {
-            var type = ObjTypes.findOne({
-                objName: objname
-            });
-            return 'glyphicon ' + type.glyphicon;
-        };
-
+    self.objName = ko.observable('Contactables');
+    var selectObjType = function (newValue) {
+        var entitiesQuery = {};
         var filter = {
             objGroupType: Enums.objGroupType.contactable
         };
-        if (self.objTypeSelected != undefined)
-            filter.objName = self.objTypeSelected.objName;
+        if (newValue) {
+            entitiesQuery = {
+                objNameArray: {
+                    $in: [newValue.objName]
+                }
+            }
+            self.entities(ko.mapping.fromJS(Contactables.find(entitiesQuery).fetch())());
+            filter.objName = newValue.objName;
+            self.objName(newValue.objName)
+        } else {
+            self.objName('Contactables')
+        }
+
 
         var result = ObjTypes.find(filter).fetch();
 
         self.contactableTypes(result);
-        _.extend(self, helper.createObjTypefilter(['person.firstName', 'person.lastName', 'organization.organizationName'], result,
-            function () {
-                self.entities(ko.mapping.fromJS(Contactables.find(this.query).fetch())());
-            }));
-        self.ready(true);
-    });
+
+    }
+    selectObjType(objType());
+
+    objType.subscribe(selectObjType);
+
+    self.getIconForObjName = function (objname) {
+        var type = ObjTypes.findOne({
+            objName: objname
+        });
+        return 'glyphicon ' + type.glyphicon;
+    };
+    //    _.extend(self, helper.createObjTypefilter(['person.firstName', 'person.lastName', 'organization.organizationName'], result,
+    //        function () {
+    //            console.log('query', this.query);
+    //            self.entities(ko.mapping.fromJS(Contactables.find(this.query).fetch())());
+    //        }));
+
+    self.ready(true);
 
     self.showAddContactableModal = function (typeId) {
         Session.set('newContactableTypeId', typeId);
         $('#addContactableModal').modal('show');
     };
-};
-Template.contactables.rendered = function () {
-    var mycontactables=new ContactablesVM();
-    console.log('mycontactables',mycontactables);
-	helper.applyBindings(ContactablesVM, 'contactablesVM');
+    return self;
 };

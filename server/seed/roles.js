@@ -6,41 +6,40 @@ seedSystemRoles = function ()
             {
                 name: 'SysAdmin',
                 roleDescription: 'Administer system-wide tenants',
-                rolePermissions: ['SysAdmin','TenantAdmin','CRM','Recruiting']
+                rolePermissions: [Enums.permissionFunction.SystemAdmin,Enums.permissionFunction.TenantAdmin,
+                    Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting,Enums.permissionFunction.Sales_Manager,
+                    Enums.permissionFunction.Sales]
             },
             {
                 name: 'Administrator',
                 roleDescription: 'Administer tenancy users and hierarchies',
-                rolePermissions: ['TenantAdmin','CRM','Recruiting']
+                rolePermissions: [Enums.permissionFunction.TenantAdmin,
+                    Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting,Enums.permissionFunction.Sales_Manager,
+                    Enums.permissionFunction.Sales]
             },
             {
                 name: 'Hiring_Manager',
                 roleDescription: 'Administer tenancy users and hierarchies',
-                rolePermissions: ['CRM','Recruiting']
+                rolePermissions: [  Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting]
             },
             {
                 name: 'Sales Rep',
                 roleDescription: 'Manages contactables, deals, quotes',
-                rolePermissions: ['CRM','Sales']
+                rolePermissions: [Enums.permissionFunction.CRM,Enums.permissionFunction.Sales]
             },
             {
                 name: 'Sales_Manager',
                 roleDescription: 'Managers sales reps',
-                rolePermissions: ['CRM','Sales','Sales_Manager']
+                rolePermissions: [Enums.permissionFunction.CRM,Enums.permissionFunction.Sales,Enums.permissionFunction.Sales_Manager]
             }
         ];
+
+    var existingRoles = Roles.find().fetch();
+    _.forEach(systemRoles, function (role) {
+        var oldRole = Roles.findOne({name: role.name});
+        if (oldRole == null)
+        {
+            Roles.insert(role);
+        }
+    });
 }
-seedSystemRoles = function () {
-	var existingRoles = Roles.getAllRoles().fetch();
-	//console.dir(existingRoles);
-
-	_.forEach(Enums.systemRoles, function (rol) {
-		if (_.findWhere(existingRoles, {
-			name: rol
-		}) == null) {
-			console.log('New system role: ' + rol);
-			Roles.createRole(rol);
-		}
-	});
-
-};

@@ -13,21 +13,19 @@ Accounts.onCreateUser(function (options, user) {
 
 		}
 	}
-    user._id = Random.id();
 	if (!options.profile || !options.profile.hierId) {
         // if there are no hierarchies yet in the db, then this is give this user all roles including systemadministrator
-        console.log(Hierarchies.findOne(),'hierarchies');
-        console.log('user',Meteor.user());
-
         if (!Hierarchies.findOne())
         {
-            _.forEach(Roles.getAllRoles().fetch(),function(role)
+            var userRoles=[];
+            var userPermissions=[];
+            _.forEach(Roles.find().fetch(),function(role)
             {
-
-                Roles.addUsersToRoles([user._id],[role.name]);
-                console.log('role added',role.name,user._id)
+                userRoles.push(role.name);
+                userPermissions=userPermissions.concat(role.rolePermissions);
             });
-            console.log(Roles.getAllRoles().fetch());
+            user.roles=userRoles;
+            user.permissions= _.uniq(userPermissions);
         }
 		hierId = Meteor.call('createHier', {
 			name: userEmail.split('@')[0]
@@ -69,7 +67,8 @@ Meteor.publish("userData", function () {
 			'services.google.picture': 1,
 			"hierId": 1,
 			"createdAt": 1,
-			"roles": 1
+			"roles": 1,
+            "permissions":1
 		}
 	});
 });

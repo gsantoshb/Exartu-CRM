@@ -34,8 +34,8 @@ filterByHiers = function (hier) {
 			$regex: '^' + hier + '.*'
 		}
 	});
-    console.log('ors',ors);
-    console.log('accumulated', accumulated);
+    //console.log('ors',ors);
+    //console.log('accumulated', accumulated);
 
 	return ors;
 }

@@ -2,7 +2,7 @@ var dbSeed = {
 	seedSystemLookUps: seedSystemLookUps,
 	seedSystemObjTypes: seedSystemObjTypes,
 	seedSystemRelations: seedSystemRelations,
-	seedSystemRoles: seedSystemRoles,
+	seedSystemRoles: seedSystemRoles
 }
 
 Meteor.startup(function () {

@@ -4,7 +4,8 @@
  *   -1 if hier1 is child of hier2
  *   and 0 if they don't are related
  */
-getHierarchiesRelation = function (hier1, hier2) {
+adminMethods={};
+adminMethods.getHierarchiesRelation = function (hier1, hier2) {
 	var block = 0,
 		minLength,
 		result;
@@ -24,5 +25,6 @@ getHierarchiesRelation = function (hier1, hier2) {
 };
 
 extendObject = function (doc) {
-	doc.editable = getHierarchiesRelation(doc.hierId, Meteor.user().hierId) == 1 ? false : true;
+	doc.editable = adminMethods.getHierarchiesRelation(doc.hierId, Meteor.user().hierId) == 1 ? false : true;
 }
+
