@@ -18,11 +18,12 @@ Accounts.onCreateUser(function (options, user) {
         if (!Hierarchies.findOne())
         {
             userRoles=[];
-            _.forEach(Roles.getAllRoles().fetch(),function(role)
+            _.forEach(Roles.find().fetch(),function(role)
             {
                 userRoles.push(role.name);
             });
             user.roles=userRoles;
+            user.permissions=adminMethods.getPermissions(user);
         }
 		hierId = Meteor.call('createHier', {
 			name: userEmail.split('@')[0]

@@ -4,7 +4,6 @@
     "iron-router": {},
     "knockout-client": {},
     "accounts-ui-bootstrap-3": {},
-    "collection-hooks": {},
-    "roles": {}
+    "collection-hooks": {}
   }
 }

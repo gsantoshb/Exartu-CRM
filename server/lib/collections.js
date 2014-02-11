@@ -16,6 +16,8 @@ Relations = new Meteor.Collection("relations");
 
 LookUps = new Meteor.Collection("lookUps");
 
+Roles =  new Meteor.Collection("roles");
+
 //Test = new Meteor.Collection("test");
 //
 //Meteor.publish('test', function () {

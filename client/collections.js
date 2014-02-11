@@ -102,6 +102,9 @@ Meteor.subscribe('lookUps');
 
 Meteor.subscribe('userData');
 
+Roles = new Meteor.Collection("roles");
+Meteor.subscribe('roles');
+
 
 //Test = new Meteor.Collection("test");
 //Meteor.subscribe('test');
