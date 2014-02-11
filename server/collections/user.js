@@ -100,6 +100,10 @@ Meteor.methods({
 		var user = Meteor.users.findOne({
 			_id: userId
 		});
+        
+        if (user == undefined)
+            return null;
+        
 		var info = {};
 
 		info.username = user.username || undefined;

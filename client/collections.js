@@ -90,6 +90,29 @@ MessagesHandler.wait = function (cb) {
 		this.observers.push(cb);
 }
 
+Conversations = new Meteor.Collection("conversations", {
+	transform: function (conversation) {
+        conversation.lastMessage = Messages.findOne({
+            $or: [
+                {
+                    from: conversation.user1,
+                    destination: conversation.user2
+                },
+                {
+                    from: conversation.user2,
+                    destination: conversation.user1
+                }
+            ]
+        }, {
+            sort: { 
+                createdAt: -1 
+            }
+        });
+        
+		return conversation;
+	},
+});
+Meteor.subscribe('conversations');
 
 Activities = new Meteor.Collection("activities");
 Meteor.subscribe('activities');
