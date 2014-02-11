@@ -28,14 +28,3 @@ extendObject = function (doc) {
 	doc.editable = adminMethods.getHierarchiesRelation(doc.hierId, Meteor.user().hierId) == 1 ? false : true;
 }
 
-adminMethods.getPermissions= function(user)
-{
-    if (!user) user=Meteor.user();
-    return user.permissions;
-};
-
-adminMethods.userHasPermission= function(user,permission)
-{
-    if (!user) user=Meteor.user();
-    return (adminMethods.getPermissions().indexOf(permission)>=0)
-}
