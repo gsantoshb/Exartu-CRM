@@ -40,7 +40,68 @@ seedSystemObjTypes = function () {
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: false
-                }]
+                },
+                {
+                    name: 'Revenue_Potential',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.int,
+                    defaultValue: 0,
+                    showInAdd: true
+                },
+                {
+                    name: 'Estimated_Close_Date',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.date,
+                    defaultValue: '',
+                    showInAdd: true
+                },
+                {
+                    name: 'Deal_Description',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.string,
+                    defaultValue: '',
+                    showInAdd: false
+                }
+            ]},
+            {
+            objGroupType: Enums.objGroupType.deal,
+            fields: [
+                {
+                    name: 'Customer',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.string,
+                    defaultValue: '',
+                    showInAdd: false
+                },
+                {
+                    name: 'Statuses',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.string,
+                    defaultValue: '',
+                    showInAdd: false
+                },
+                {
+                    name: 'Revenue_Potential',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.int,
+                    defaultValue: 0,
+                    showInAdd: true
+                },
+                {
+                    name: 'Estimated_Close_Date',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.date,
+                    defaultValue: '',
+                    showInAdd: true
+                },
+                {
+                    name: 'Deal_Description',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.string,
+                    defaultValue: '',
+                    showInAdd: false
+                }
+            ]
         }
     ]
 	var systemObjTypes = [

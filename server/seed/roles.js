@@ -4,33 +4,33 @@ seedSystemRoles = function ()
     var systemRoles =
         [
             {
-                name: 'System_Administrator',
+                name: Enums.roleFunction.System_Administrator,
                 roleDescription: 'Administer system-wide tenants',
-                rolePermissions: [Enums.permissionFunction.SystemAdmin,Enums.permissionFunction.TenantAdmin,
+                rolePermissions: [Enums.permissionFunction.SysAdmin,Enums.permissionFunction.TenantAdmin,
                     Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting,Enums.permissionFunction.Sales_Manager,
                     Enums.permissionFunction.Sales]
             },
             {
-                name: 'Tenant_Administrator',
+                name: Enums.roleFunction.Tenant_Administrator ,
                 roleDescription: 'Administer tenancy users and hierarchies',
                 rolePermissions: [Enums.permissionFunction.TenantAdmin,
-                    Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting,Enums.permissionFunction.Sales_Manager,
-                    Enums.permissionFunction.Sales]
+                    Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting,Enums.permissionFunction.Sales,
+                Enums.permissionFunction.Sales]
             },
             {
-                name: 'Hiring_Manager',
+                name: Enums.roleFunction.Recruiter_Consultant,
                 roleDescription: 'Administer tenancy users and hierarchies',
                 rolePermissions: [  Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting]
             },
             {
-                name: 'Sales_Rep',
+                name: Enums.roleFunction.Sales_Executive,
                 roleDescription: 'Manages contactables, deals, quotes',
                 rolePermissions: [Enums.permissionFunction.CRM,Enums.permissionFunction.Sales]
             },
             {
-                name: 'Sales_Manager',
+                name: Enums.roleFunction.Sales_Manager,
                 roleDescription: 'Managers sales reps',
-                rolePermissions: [Enums.permissionFunction.CRM,Enums.permissionFunction.Sales,Enums.permissionFunction.Sales_Manager]
+                rolePermissions: [Enums.permissionFunction.CRM,Enums.permissionFunction.Sales]
             }
         ];
 
