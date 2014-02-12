@@ -15,7 +15,6 @@ ContactablesController = RouteController.extend({
             this.render();
             return;
         }
-        //        console.log(this.isFirstRun)
         var type = this.params.hash || this.params.type;
         if (type != undefined && type != 'all') {
             var re = new RegExp("^" + type + "$", "i");
@@ -67,7 +66,12 @@ Template.contactables.viewModel = function () {
         //                console.dir(q);
         return ObjTypes.find(q).fetch();
     });
-    self.objName = ko.observable('Contactables');
+    self.objName = ko.computed(function () {
+        if (filters().objType()) {
+            return filters().objType().objName + 's';
+        }
+        return 'Contactables';
+    });
     self.tags = filters().tags;
     self.tag = ko.observable();
     self.addTag = function () {
