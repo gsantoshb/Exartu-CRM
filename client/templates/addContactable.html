@@ -8,19 +8,21 @@
                     <h4 data-bind="text: objTypeName() + ' add'"></h4>
                 </div>
                 <div class="modal-body " data-bind="if: $data.ready">
-                    <select data-bind="options: helper.getPersonTypes(), value: selectedType"></select>
+                    <!--                    <select data-bind="options: helper.getPersonTypes(), value: selectedType"></select>-->
                     <div data-bind="with: contactable">
-                        {{>addPerson}} {{>addOrganization}}
+                        <!--                        {{>addPerson}} {{>addOrganization}}-->
                         <div id="list" data-bind="visible: $data[$root.objTypeName()]().length > 0, foreach: $data[$root.objTypeName()]">
                             <fieldset data-bind="visible: $data.showInAdd">
                                 <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
                             </fieldset>
                         </div>
                     </div>
+                    <!--
                     <div data-bind="foreach: relations">
-                        <div data-bind="template:{name: helper.relationVM($data.relation), data: $data}">
-                        </div>
-                    </div>
+    <div data-bind="template:{name: helper.relationVM($data.relation), data: $data}">
+    </div>
+</div>
+-->
                 </div>
                 <div class="modal-footer">
                     <a data-bind="click:addContactable" class="btn btn-success">Add</a>
