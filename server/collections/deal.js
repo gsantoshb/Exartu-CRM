@@ -46,23 +46,10 @@ Meteor.startup(function () {
 var beforeInsertOrUpdateDeal = function (deal) {
     var user = Meteor.user();
     if (user == null)
+    {
         throw new Meteor.Error(401, "Please login");
-
-
-    var objTypes = ObjTypes.find({
-        objName: {
-            $in: deal.type
-        }
-    }).fetch();
-
-    if (objTypes.length != deal.type.length) {
-        console.error('the deal objNameArray is suspicious');
-        console.dir(deal.type);
-        throw new Meteor.Error(401, "invalid objNameArray");
     }
-
-    extendDeal(deal, objTypes);
-    return validate(deal, objTypes);
+    return true;
 };
 
 /*

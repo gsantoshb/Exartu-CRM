@@ -98,7 +98,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
 			if (!value) {
 				var aux = {};
 				aux[rel2.name] = null;
-				console.log('updating ' + oldObjTypeField[rel1.name]);
+				//console.log('updating ' + oldObjTypeField[rel1.name]);
 				collection2.update({
 					_id: oldObjTypeField[rel1.name]
 				}, {
@@ -108,7 +108,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
 			} else {
 				var aux = {};
 				aux[targetName + '.' + rel2.name] = id;
-				console.log('updating ' + obj2._id);
+				//console.log('updating ' + obj2._id);
 				//                console.dir(aux);
 				collection2.update({
 					_id: obj2._id
