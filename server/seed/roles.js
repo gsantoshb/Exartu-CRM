@@ -4,14 +4,14 @@ seedSystemRoles = function ()
     var systemRoles =
         [
             {
-                name: 'SysAdmin',
+                name: 'System_Administrator',
                 roleDescription: 'Administer system-wide tenants',
                 rolePermissions: [Enums.permissionFunction.SystemAdmin,Enums.permissionFunction.TenantAdmin,
                     Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting,Enums.permissionFunction.Sales_Manager,
                     Enums.permissionFunction.Sales]
             },
             {
-                name: 'Administrator',
+                name: 'Tenant_Administrator',
                 roleDescription: 'Administer tenancy users and hierarchies',
                 rolePermissions: [Enums.permissionFunction.TenantAdmin,
                     Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting,Enums.permissionFunction.Sales_Manager,
@@ -23,7 +23,7 @@ seedSystemRoles = function ()
                 rolePermissions: [  Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting]
             },
             {
-                name: 'Sales Rep',
+                name: 'Sales_Rep',
                 roleDescription: 'Manages contactables, deals, quotes',
                 rolePermissions: [Enums.permissionFunction.CRM,Enums.permissionFunction.Sales]
             },

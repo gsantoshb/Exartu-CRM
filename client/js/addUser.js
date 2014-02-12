@@ -18,8 +18,8 @@ Template.addUser.viewmodel = function () {
 	self.newUserValidate = ko.validatedObservable(newUser);
 
 	self.roles = [];
-	_.forEach(Enums.systemRoles, function (rol) {
-		self.roles.push(rol);
+	_.forEach(Roles.find().fetch(), function (rol) {
+		self.roles.push(rol.name);
 	});
 
 	self.addUser = function () {
