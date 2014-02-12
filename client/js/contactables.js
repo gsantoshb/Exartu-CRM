@@ -1,4 +1,11 @@
 var objType = ko.observable();
+
+var filters = ko.observable(ko.mapping.fromJS({
+    objType: '',
+    tags: [],
+    statuses: []
+}));
+
 ContactablesController = RouteController.extend({
     template: 'contactables',
     layoutTemplate: 'mainLayout',
@@ -12,66 +19,62 @@ ContactablesController = RouteController.extend({
         var type = this.params.hash || this.params.type;
         if (type != undefined && type != 'all') {
             var re = new RegExp("^" + type + "$", "i");
-            objType(ObjTypes.findOne({
+            filters().objType(ObjTypes.findOne({
                 objName: re
             }));
         } else {
-            objType(undefined);
+            filters().objType(undefined);
         }
         this.render('contactables');
     },
-    waitOn: function () {
-        return [Meteor.subscribe('contactables'), Meteor.subscribe('objTypes')];
-    },
+
 });
 Template.contactables.waitOn = 'ContactableHandler';
 
 Template.contactables.viewModel = function () {
-    //    debugger;
     var self = {};
     self.ready = ko.observable(false);
-    self.entities = ko.observableArray();
-    self.contactableTypes = ko.observableArray();
-    self.objName = ko.observable('Contactables');
-    var selectObjType = function (newValue) {
-        var entitiesQuery = {};
-        var filter = {
+
+    var query = ko.computed(function () {
+
+        var q = {};
+        var f = ko.toJS(filters);
+        if (f.objType)
+            q.objNameArray = f.objType.objName;
+
+        if (f.tags.length) {
+            q.tags = {
+                $in: f.tags
+            };
+        };
+
+        //        console.log('fetching entities');
+        //        console.dir(q);
+        return q;
+    });
+
+    self.entities = ko.meteor.find(Contactables, query);
+
+    self.contactableTypes = ko.computed(function () {
+        var q = {
             objGroupType: Enums.objGroupType.contactable
         };
-        if (newValue) {
-            entitiesQuery = {
-                objNameArray: {
-                    $in: [newValue.objName]
-                }
-            }
-            self.entities(ko.mapping.fromJS(Contactables.find(entitiesQuery).fetch())());
-            filter.objName = newValue.objName;
-            self.objName(newValue.objName)
-        } else {
-            self.objName('Contactables')
-        }
-
-
-        var result = ObjTypes.find(filter).fetch();
-
-        self.contactableTypes(result);
-
+        var objType = ko.toJS(filters().objType);
+        if (objType) {
+            q.objName = objType.objName;
+        };
+        //                console.log('fetching objtypes ');
+        //                console.dir(q);
+        return ObjTypes.find(q).fetch();
+    });
+    self.objName = ko.observable('Contactables');
+    self.tags = filters().tags;
+    self.tag = ko.observable();
+    self.addTag = function () {
+        filters().tags.push(self.tag());
+        self.tag('');
     }
-    selectObjType(objType());
 
-    objType.subscribe(selectObjType);
-
-    self.getIconForObjName = function (objname) {
-        var type = ObjTypes.findOne({
-            objName: objname
-        });
-        return 'glyphicon ' + type.glyphicon;
-    };
-    //    _.extend(self, helper.createObjTypefilter(['person.firstName', 'person.lastName', 'organization.organizationName'], result,
-    //        function () {
-    //            console.log('query', this.query);
-    //            self.entities(ko.mapping.fromJS(Contactables.find(this.query).fetch())());
-    //        }));
 
     self.ready(true);
 

@@ -52,10 +52,20 @@
                                     <h4>
                                         <strong>Tags</strong>
                                     </h4>
+                                    <div>
+                                        <div class="box-content-md ">
+                                            <div data-bind="foreach: tags ">
+                                                <a class="btn btn-xs btn-primary " href="# " data-bind="text: $data "></a>
+                                                <a style="margin-left: 4px; min-width: 7px; ">
+                                                    <i class="icon icon-close removeTag "></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Enter tags here...">
+                                        <input type="text" class="form-control" placeholder="Enter tags here..." data-bind="value:tag">
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button">Go!</button>
+                                            <button class="btn btn-primary" type="button" data-bind="click: addTag">Go!</button>
                                         </span>
                                     </div>
                                     <!-- /input-group -->
@@ -72,7 +82,8 @@
                             {{#if loading}}
                             <div id="lists">Loading...</div>
                             {{else}}
-                            <div class="table-items-box" data-bind="foreach: entities ">
+
+                            <div class="table-items-box" data-bind="foreach: entities">
                                 <div class="table-item odd ">
                                     <!-- ko if: $data.createdAt -->
                                     <div class="date" data-bind="text: moment(createdAt()).fromNow()"></div>
@@ -126,6 +137,9 @@
                                 </div>
                                 <!-- /.table-item -->
                             </div>
+
+
+
                             {{/if}}
                         </div>
                     </div>
