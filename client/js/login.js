@@ -58,7 +58,14 @@ Template.login.rendered = function () {
             }
         });
 
+        self.isValidating = ko.computed(function () {
+            return this.newAccount().username.isValidating() || this.newAccount().email.isValidating();
+        }, this);
+
         self.createNewAccount = function () {
+            if (self.isValidating())
+                return;
+
             if (!self.newAccount.isValid())
                 self.newAccount.errors.showAllMessages();
 

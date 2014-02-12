@@ -53,15 +53,8 @@ Meteor.publish("userData", function () {
         _id: this.userId
     });
 
-    // If there isn't user session then only show username and email of all users in system.
-    // This is used to check uniqueness of new user's username and email
     if (!user)
-        return Meteor.users.find({}, {
-            fields: {
-                'username': 1,
-                'emails': 1,
-            }
-        });;
+        return;
 
     return Meteor.users.find({
         hierId: user.hierId
@@ -82,31 +75,32 @@ Meteor.publish("users", function () {
     return Meteor.users.find();
 });
 
-var getPermissions= function(user)
-{
-    var userPermissions=[];
-    _.forEach(user.roles,function(role)
-    {
-        var dbrole=Roles.findOne({ name: role});
-        userPermissions= _.uniq(userPermissions.concat(dbrole.rolePermissions));
+var getPermissions = function (user) {
+    var userPermissions = [];
+    _.forEach(user.roles, function (role) {
+        var dbrole = Roles.findOne({
+            name: role
+        });
+        userPermissions = _.uniq(userPermissions.concat(dbrole.rolePermissions));
     });
     return userPermissions;
 }
 
 Meteor.methods({
-    userRoleRemove: function(role,user) {
+    userRoleRemove: function (role, user) {
         if (!user || !user.roles) return;
         var index = user.roles.indexOf(role);
         if (index > -1) {
             user.roles.splice(index, 1);
         };
-        Meteor.users.update({_id: user._id},
-            {
-                $set: {
-                    roles: user.roles,
-                    permissions: getPermissions(user)
-                }
-            });
+        Meteor.users.update({
+            _id: user._id
+        }, {
+            $set: {
+                roles: user.roles,
+                permissions: getPermissions(user)
+            }
+        });
     },
     addHierUser: function (user, hierId) {
         hierId = hierId || Meteor.user().hierId;
@@ -121,20 +115,22 @@ Meteor.methods({
             // more information from user
         }
         var userId = Accounts.createUser(options);
-        var userPermissions=[];
-         _.forEach(user.roles,function(role)
-            {
-                var dbrole=Roles.findOne({ name: role});
-                userPermissions= _.uniq(userPermissions.concat(dbrole.rolePermissions));
+        var userPermissions = [];
+        _.forEach(user.roles, function (role) {
+            var dbrole = Roles.findOne({
+                name: role
             });
+            userPermissions = _.uniq(userPermissions.concat(dbrole.rolePermissions));
+        });
 
-        Meteor.users.update({_id: userId},
-            {
-                $set: {
-                    roles: user.roles,
-                    permissions: userPermissions
-                }
-            });
+        Meteor.users.update({
+            _id: userId
+        }, {
+            $set: {
+                roles: user.roles,
+                permissions: userPermissions
+            }
+        });
         return userId;
     },
     getUserInformation: function (userId) {
@@ -158,5 +154,8 @@ Meteor.methods({
 
         console.dir(info);
         return info;
+    },
+    checkUniqueness: function (query) {
+        return Meteor.users.findOne(query) == null;
     }
 });

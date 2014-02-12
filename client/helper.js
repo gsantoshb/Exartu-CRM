@@ -317,17 +317,16 @@ ko.validation.rules['areSame'] = {
 };
 
 ko.validation.rules['uniqueUserInformation'] = {
-    validator: function (value, options) {
+    async: true,
+    validator: function (value, options, callback) {
         var query = {};
         query[options.field] = value;
-
-        return Meteor.users.findOne(query) == null;
+        Meteor.call('checkUniqueness', query, function (err, result) {
+            callback(!err && result);
+        });
     },
     message: '{0} is already in use',
 };
-
-
-
 
 // Register new rules
 ko.validation.registerExtenders();
