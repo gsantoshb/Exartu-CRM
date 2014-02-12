@@ -5,11 +5,12 @@ UsersController = RouteController.extend({
 UsersVM = function () {
     var self = this;
     self.users = ko.meteor.find(Meteor.users, {});
-    self.removeGroup=function(data)
+    self.removeGroup=function(role,user)
     {
-        if (confirm("Remove group: " + data + "?"))
         {
-
+            Meteor.call('userRoleRemove', role,user, function (err, result) {
+                    self.users(result);
+                });
         }
     };
     Meteor.call('getHierUsers', function (err, result) {

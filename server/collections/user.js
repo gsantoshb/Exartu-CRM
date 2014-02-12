@@ -77,8 +77,32 @@ Meteor.publish("users", function () {
 	return Meteor.users.find();
 });
 
+var getPermissions= function(user)
+{
+    var userPermissions=[];
+    _.forEach(user.roles,function(role)
+    {
+        var dbrole=Roles.findOne({ name: role});
+        userPermissions= _.uniq(userPermissions.concat(dbrole.rolePermissions));
+    });
+    return userPermissions;
+}
 
 Meteor.methods({
+    userRoleRemove: function(role,user) {
+        if (!user || !user.roles) return;
+        var index = user.roles.indexOf(role);
+        if (index > -1) {
+            user.roles.splice(index, 1);
+        };
+        Meteor.users.update({_id: user._id},
+            {
+                $set: {
+                    roles: user.roles,
+                    permissions: getPermissions(user)
+                }
+            });
+    },
 	addHierUser: function (user, hierId) {
 		hierId = hierId || Meteor.user().hierId;
 		var options = {};

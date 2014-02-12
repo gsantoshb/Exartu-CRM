@@ -25,7 +25,7 @@ Template.addUser.viewmodel = function () {
 	self.addUser = function () {
 		if (!self.newUserValidate.isValid())
 			self.newUserValidate.errors.showAllMessages();
-        console.log(ko.toJS(self.newUserValidate));
+
 		Meteor.call('addHierUser', ko.toJS(self.newUserValidate), function () {
 			$('#addUserModal').modal('hide');
 		});
