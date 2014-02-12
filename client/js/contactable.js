@@ -56,7 +56,9 @@ Template.contactable.rendered = function () {
             })
         }
 
-        // CONTACT METHODS
+        self.activeTab = ko.computed(function () {
+            return Router.current().params.hash || 'home';
+        });
 
 
         return self;
