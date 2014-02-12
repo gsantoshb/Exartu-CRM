@@ -1,121 +1,126 @@
 Accounts.onCreateUser(function (options, user) {
-	var hierId = '';
-	var userEmail = options.email;
+    var hierId = '';
+    var userEmail = options.email;
 
-	if (user.services) {
-		if (user.services.google) {
-			//todo: check if the account is already in the database
-			userEmail = user.services.google.email;
-			user.emails = [{
-				"address": userEmail,
-				"verified": true
+    if (user.services) {
+        if (user.services.google) {
+            //todo: check if the account is already in the database
+            userEmail = user.services.google.email;
+            user.emails = [{
+                "address": userEmail,
+                "verified": true
             }];
 
-		}
-	}
-	if (!options.profile || !options.profile.hierId) {
-        // if there are no hierarchies yet in the db, then this is give this user all roles including systemadministrator
-        if (!Hierarchies.findOne())
-        {
-            var userRoles=[];
-            var userPermissions=[];
-            _.forEach(Roles.find().fetch(),function(role)
-            {
-                userRoles.push(role.name);
-                userPermissions=userPermissions.concat(role.rolePermissions);
-            });
-            user.roles=userRoles;
-            user.permissions= _.uniq(userPermissions);
         }
-		hierId = Meteor.call('createHier', {
-			name: userEmail.split('@')[0]
-		});
-	} else
-		hierId = options.profile.hierId;
+    }
+    if (!options.profile || !options.profile.hierId) {
+        // if there are no hierarchies yet in the db, then this is give this user all roles including systemadministrator
+        if (!Hierarchies.findOne()) {
+            var userRoles = [];
+            var userPermissions = [];
+            _.forEach(Roles.find().fetch(), function (role) {
+                userRoles.push(role.name);
+                userPermissions = userPermissions.concat(role.rolePermissions);
+            });
+            user.roles = userRoles;
+            user.permissions = _.uniq(userPermissions);
+        }
+        hierId = Meteor.call('createHier', {
+            name: userEmail.split('@')[0]
+        });
+    } else
+        hierId = options.profile.hierId;
 
-	user.hierId = hierId;
+    user.hierId = hierId;
 
 
-	Hierarchies.update({
-		_id: user.hierId
-	}, {
-		$addToSet: {
-			users: user._id
-		}
-	});
+    Hierarchies.update({
+        _id: user.hierId
+    }, {
+        $addToSet: {
+            users: user._id
+        }
+    });
 
-	return user;
+    return user;
 });
 
 /*
  * extending the user data that is sended to the client
  */
 Meteor.publish("userData", function () {
+    var user = Meteor.users.findOne({
+        _id: this.userId
+    });
 
-	var user = Meteor.users.findOne({
-		_id: this.userId
-	});
-	if (!user)
-		return;
+    // If there isn't user session then only show username and email of all users in system.
+    // This is used to check uniqueness of new user's username and email
+    if (!user)
+        return Meteor.users.find({}, {
+            fields: {
+                'username': 1,
+                'emails': 1,
+            }
+        });;
 
-	return Meteor.users.find({
-		hierId: user.hierId
-	}, {
-		fields: {
-			'username': 1,
-			'emails': 1,
-			'services.google.picture': 1,
-			"hierId": 1,
-			"createdAt": 1,
-			"roles": 1,
-            "permissions":1
-		}
-	});
+    return Meteor.users.find({
+        hierId: user.hierId
+    }, {
+        fields: {
+            'username': 1,
+            'emails': 1,
+            'services.google.picture': 1,
+            "hierId": 1,
+            "createdAt": 1,
+            "roles": 1,
+            "permissions": 1
+        }
+    });
 });
 
 Meteor.publish("users", function () {
-	return Meteor.users.find();
+    return Meteor.users.find();
 });
 
 Meteor.methods({
-	addHierUser: function (user, hierId) {
-		hierId = hierId || Meteor.user().hierId;
-		var options = {};
-		options.username = user.username;
-		options.email = user.email;
-		options.password = user.password;
-		options.profile = {
-			hierId: hierId,
-			// more information from user
-		}
-		var userId = Accounts.createUser(options);
+    addHierUser: function (user, hierId) {
+        hierId = hierId || Meteor.user().hierId;
+        var options = {};
+        options.username = user.username;
+        options.email = user.email;
+        options.password = user.password;
+        options.profile = {
+            hierId: hierId,
+            // more information from user
+        }
+        var userId = Accounts.createUser(options);
 
-		_.forEach(user.roles, function (rol) {
-			Roles.addUsersToRoles(userId, rol);
-		})
+        _.forEach(user.roles, function (rol) {
+            Roles.addUsersToRoles(userId, rol);
+        })
 
-		return userId;
-	},
-	getUserInformation: function (userId) {
-		var user = Meteor.users.findOne({
-			_id: userId
-		});
-        
+        return userId;
+    },
+    getUserInformation: function (userId) {
+        var user = Meteor.users.findOne({
+            _id: userId
+        });
+
         if (user == undefined)
             return null;
-        
-		var info = {};
 
-		info.username = user.username || undefined;
-		if (user.emails)
-			info.email = user.emails[0].address;
-		if (user.services) {
-			if (user.services.google) {
-				info.picture = user.services.google.picture;
-			}
-		}
+        var info = {};
 
-		console.dir(info);
-		return info;
-	}
+        info.username = user.username || undefined;
+        if (user.emails)
+            info.email = user.emails[0].address;
+        if (user.services) {
+            if (user.services.google) {
+                info.picture = user.services.google.picture;
+            }
+        }
+
+        console.dir(info);
+        return info;
+    }
 });

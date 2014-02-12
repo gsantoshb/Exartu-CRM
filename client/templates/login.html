@@ -1,3 +1,160 @@
 <template name="login">
-	<div style="position: fixed; top: 20px; left: 200px">{{loginButtons align="right"}}</div>
+    <div name="loginVM">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">
+                        <span class="exartu-icon"></span>Exartu</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="main-nav">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="about.html">About</a>
+                        </li>
+                        <!--            <li><a href="pricing.html">Pricing</a></li>-->
+                        <li>
+                            <a href="contact.html">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5 col-md-offset-3">
+                    <div id="user">
+                        <div class="avatar">
+                            <div class="inner"></div>
+                            <img src="assets/pic-50x50.jpg">
+                        </div>
+                        <div class="text">
+                            <h4>Hello,
+                                <span class="user_name"></span>
+                            </h4>
+                        </div>
+                    </div>
+                    <div id="loginbox">
+                        <form id="loginform" action="dashboard.html">
+                            <p>Enter username and password to continue.</p>
+                            <div class="input-group input-sm">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                                <input class="form-control" type="text" id="email" placeholder="Email" data-bind="value: email" />
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-lock"></i>
+                                </span>
+                                <input class="form-control" type="password" id="password" placeholder="Password" data-bind="value: password" />
+                            </div>
+                            <div class="form-actions clearfix">
+                                <div class="pull-left">
+                                    <a href="#registerform" class="flip-link to-register blue">Create new account</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#recoverform" class="flip-link to-recover grey">Lost password?</a>
+                                </div>
+                                <input type="submit" class="btn btn-block btn-primary btn-default" value="Login" data-bind="click: function(){ $root.loginWithPassword(); }" />
+                            </div>
+                            <div class="footer-login">
+                                <div class="pull-left text">
+                                    Login with
+                                </div>
+                                <div class="pull-right btn-social">
+                                    <!--                    <a class="btn btn-facebook" href="#"><i class="fa fa-facebook"></i></a>-->
+                                    <!--                    <a class="btn btn-twitter" href="#"><i class="fa fa-twitter"></i></a>-->
+                                    <a class="btn btn-google-plus" data-bind="click: function() { $root.loginWith('Google'); }">
+                                        <i class="fa fa-google-plus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                        <form id="recoverform" action="#">
+                            <p>Enter your e-mail address below and we will send you instructions how to recover a password.</p>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-envelope"></i>
+                                </span>
+                                <input class="form-control" type="text" placeholder="E-mail address" />
+                            </div>
+                            <div class="form-actions clearfix">
+                                <div class="pull-left">
+                                    <a href="#loginform" class="grey flip-link to-login">Click to login</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#registerform" class="blue flip-link to-register">Create new account</a>
+                                </div>
+                                <input type="submit" class="btn btn-block btn-inverse" value="Recover" />
+                            </div>
+                        </form>
+                        <form id="registerform" action="#">
+                            <p>Enter information required to register:</p>
+                            <div data-bind="css:{'has-error': newAccount().username.isModified() && ! newAccount().username.isValid()}">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                    <input class="form-control" type="text" placeholder="Enter Username" data-bind="value: newAccount().username" />
+                                </div>
+                                <span class="text-danger" data-bind="validationMessage: newAccount().username"></span>
+                            </div>
+                            <div data-bind="css:{'has-error': newAccount().password.isModified() && ! newAccount().password.isValid()}">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                    <input class="form-control" type="password" placeholder="Choose Password" data-bind="value: newAccount().password" />
+                                </div>
+                                <span class="text-danger" data-bind="validationMessage: newAccount().password"></span>
+                            </div>
+                            <div data-bind="css:{'has-error': newAccount().passwordVerification.isModified() && ! newAccount().passwordVerification.isValid()}">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                    <input class="form-control" type="password" placeholder="Confirm password" data-bind="value: newAccount().passwordVerification" />
+                                </div>
+                                <span class="text-danger" data-bind="validationMessage: newAccount().passwordVerification"></span>
+                            </div>
+                            <div data-bind="css:{'has-error': newAccount().email.isModified() && ! newAccount().email.isValid()}">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                                    <input class="form-control" type="text" placeholder="Enter E-mail address" data-bind="value: newAccount().email" />
+                                </div>
+                                <span class="text-danger" data-bind="validationMessage: newAccount().email"></span>
+                            </div>
+
+                            <div class="form-actions clearfix">
+                                <div class="pull-left">
+                                    <a href="#loginform" class="grey flip-link to-login">Click to login</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#recoverform" class="grey flip-link to-recover">Lost password?</a>
+                                </div>
+                                <input type="submit" class="btn btn-block btn-success" value="Register" data-bind="click: function() { createNewAccount() }" />
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /#loginbox -->
+                </div>
+                <!-- /.col-md-5 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </div>
 </template>
