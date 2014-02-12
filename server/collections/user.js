@@ -77,6 +77,7 @@ Meteor.publish("users", function () {
 	return Meteor.users.find();
 });
 
+
 Meteor.methods({
 	addHierUser: function (user, hierId) {
 		hierId = hierId || Meteor.user().hierId;
@@ -91,10 +92,18 @@ Meteor.methods({
 			// more information from user
 		}
 		var userId = Accounts.createUser(options);
+        var userPermissions=[];
+         _.forEach(user.roles,function(role)
+            {
+                var dbrole=Roles.findOne({ name: role});
+                userPermissions= _.uniq(userPermissions.concat(dbrole.rolePermissions));
+            });
+
         Meteor.users.update({_id: userId},
             {
                 $set: {
-                    roles: user.roles
+                    roles: user.roles,
+                    permissions: userPermissions
                 }
             });
 		return userId;
