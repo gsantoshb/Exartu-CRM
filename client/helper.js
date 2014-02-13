@@ -284,20 +284,25 @@ _.extend(helper, {
 
 _.extend(helper, {
     showModal: function (templateName, view, parameter) {
-        var body = $('body');
 
-        var host = $('<div class="modal-host"></div>').appendTo(body);
+        var body = $('body');
+        var host = body.find(".modal-host")[0];
+        if (!host) {
+            host = $('<div class="modal-host"> </div>').appendTo(body);
+        } else {
+            host = $(host);
+        }
+        _.each(host.children(), function (m) {
+            m = $(m);
+            ko.cleanNode(m);
+            m.modal('toggle');
+            m.remove();
+        })
         var template = Template[templateName];
         var modal = $(template()).appendTo(host);
 
-        //        console.log('showmodal:template',template());
-        //        console.log('showmodal:templateName',templateName);
-        //        console.log('showmodal:Template[templateName].viewmodel',Template[templateName].viewmodel);
-        //        console.log('showmodal:parameter',parameter);
-        //        console.log('showmodal:view',view);
         modal.modal('show');
         if (Template[templateName].viewmodel) {
-            //console.log('applybindings: templatename,parameter,view',templateName,parameter,view);
             helper.applyBindings(new Template[templateName].viewmodel(parameter), view);
         };
 
