@@ -187,7 +187,7 @@ seedSystemObjTypes = function () {
                 icon: 'briefcase',
                 color: 'yellow'
             },
-            services: ['messages', 'tasks'],
+            services: ['messages', 'tasks', 'posts', 'tags'],
             fields: [{
                 name: 'jobTitle',
                 regex: '',
@@ -205,7 +205,7 @@ seedSystemObjTypes = function () {
                 icon: 'briefcase',
                 color: 'yellow'
             },
-            services: ['messages', 'tasks'],
+            services: ['messages', 'tasks', 'posts', 'tags'],
             fields: [{
                 name: 'Type',
                 regex: '.*',
@@ -221,31 +221,13 @@ seedSystemObjTypes = function () {
             }]
         },
         {
-            objGroupType: Enums.objGroupType.job,
-            objName: 'Direct Hire',
-            style: {
-                icon: 'briefcase',
-                color: 'yellow'
-            },
-            services: ['messages', 'tasks'],
-            fields: [{
-                name: 'JobTitle',
-                regex: '',
-                fieldType: Enums.fieldType.lookUp,
-                lookUpName: 'dealTitle',
-                multiple: false,
-                defaultValue: null,
-                showInAdd: true
-            }]
-        },
-        {
             objGroupType: Enums.objGroupType.deal,
             objName: 'Funding Deal',
             style: {
                 icon: 'briefcase',
                 color: 'yellow'
             },
-            services: ['messages', 'tasks'],
+            services: ['messages', 'tasks', 'posts', 'tags'],
             fields: [{
                 name: 'Estimated_Revenue',
                 regex: '.*',
@@ -269,7 +251,7 @@ seedSystemObjTypes = function () {
                 icon: 'briefcase',
                 color: 'yellow'
             },
-            services: ['messages', 'tasks'],
+            services: ['messages', 'tasks', 'posts', 'tags'],
             fields: [{
                 name: 'User_Count',
                 regex: '.*',

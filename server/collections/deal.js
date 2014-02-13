@@ -1,3 +1,4 @@
+"use strict";
 Meteor.publish('deals', function () {
     var user = Meteor.users.findOne({
         _id: this.userId
@@ -22,6 +23,9 @@ Deals.allow({
 
 Deals.before.insert(function (userId, doc) {
     var user = Meteor.user();
+//    var dealType=methods.getObjTypesFromObject(doc)[0];
+//    var dealTypeObj=doc[dealType.objName];
+//    doc.displayName = dealTypeObj.Deal_Name;
     doc.hierId = user.hierId;
     doc.userId = user._id;
     doc.createdAt = Date.now();
@@ -57,10 +61,6 @@ var beforeInsertOrUpdateDeal = function (deal) {
  * objTypes must be an array with the object's types that the deal references
  */
 var extendDeal = function (deal, objTypes) {
-    if (!deal.assignments)
-        deal.assignments = [];
-    if (!deal.candidates)
-        deal.assignments = [];
     _.forEach(objTypes, function (objType) {
         _.forEach(objType.services, function (service) {
             if (deal[service] == undefined)
