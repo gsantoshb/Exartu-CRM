@@ -39,7 +39,6 @@ validateObjType = function (obj, objType) {
 	console.log(objType.objName);
 	v = true;
 	_.every(objType.fields, function (field) {
-
 		if (objTypeFields[field.name] != undefined) {
 			v = validateField(objTypeFields[field.name], field);
 			if (!v) console.error(field.name + ' is invalid: ' + v);
@@ -131,6 +130,9 @@ var validateField = function (value, field) {
 		}
 
 		return true;
+        default:  // integer, others
+            return true;
+
 	}
 }
 /*
