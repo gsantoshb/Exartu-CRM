@@ -297,6 +297,7 @@ _.extend(helper, {
             ko.cleanNode(m);
             m.modal('toggle');
             m.remove();
+            $('.modal-backdrop').remove();
         })
         var template = Template[templateName];
         var modal = $(template()).appendTo(host);
