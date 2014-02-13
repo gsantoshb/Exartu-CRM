@@ -53,7 +53,6 @@ var handleError = function (err, viewName) {
         return;
     }
     console.log('binding error');
-    console.dir(err)
 }
 _.extend(helper, {
     applyBindings: function (vm, viewName, collectionHandler) {
