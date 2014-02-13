@@ -31,7 +31,7 @@ var icons = [
         value: 'icon-address-1'
     }
 ]
-
+var defaultIcon = 'icon-question-mark';
 
 /*** wraper for ko.applyBindings
 *    vm -> viewModel(obj) to bind
@@ -52,7 +52,7 @@ var handleError = function (err, viewName) {
         console.log(viewName + ' does not exist');
         return;
     }
-    console.log('binding error',err);
+    console.log('binding error', err);
 }
 _.extend(helper, {
     applyBindings: function (vm, viewName, collectionHandler) {
@@ -205,11 +205,15 @@ _.extend(helper, {
         var objtype = ObjTypes.findOne({
             objName: objname
         });
-        if (objtype || objtype.glyphicon != '') return objtype.glyphicon;
-        return 'glyphicon-question-sign';
+        if (objtype && objtype.style && objtype.style.icon)
+            return _.findWhere(icons, {
+                name: objtype.style.icon
+            }).value;
+
+        return defaultIcon;
     },
     getIconForObjType: function (objtype) {
-        if (objtype.glyphicon == '') return 'glyphicon-question-sign';
+        if (objtype.glyphicon == '') return defaultIcon;
         return objtype.glyphicon;
     },
     getObjNameArrayFromObject: function (obj) {
