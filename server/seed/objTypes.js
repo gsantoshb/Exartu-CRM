@@ -12,6 +12,7 @@ seedSystemObjTypes = function () {
     var systemObjGroupTypes = [
         {
             objGroupType: Enums.objGroupType.contactable,
+            services: ['messages', 'tasks', 'posts', 'tags'],
             fields: [
                 {
                     name: 'AllContactablesUseThisField',
@@ -23,10 +24,12 @@ seedSystemObjTypes = function () {
         },
         {
             objGroupType: Enums.objGroupType.job,
+            services: ['messages', 'tasks', 'posts', 'tags'],
             fields: []
         },
         {
             objGroupType: Enums.objGroupType.quote,
+            services: ['messages', 'tasks', 'posts', 'tags'],
             fields: [
                 {
                     name: 'Quote_Name',
@@ -60,6 +63,7 @@ seedSystemObjTypes = function () {
         },
         {
             objGroupType: Enums.objGroupType.deal,
+            services: ['messages', 'tasks', 'posts', 'tags','quotes'],
             fields: [
                 {
                     name: 'Deal_Name',
@@ -123,7 +127,7 @@ seedSystemObjTypes = function () {
                 color: 'red'
             },
             defaultPersonType: Enums.personType.organization,
-            services: ['messages', 'tasks', 'posts', 'tags'],
+            services: [],
             fields: [{
                 name: 'department',
                 regex: '.',
@@ -146,7 +150,7 @@ seedSystemObjTypes = function () {
                 color: 'red'
             },
             defaultPersonType: Enums.personType.human,
-            services: ['messages', 'tasks', 'posts', 'tags'],
+            services: [],
             fields: []
         },
         {
@@ -157,7 +161,7 @@ seedSystemObjTypes = function () {
                 color: 'pink'
             },
             defaultPersonType: Enums.personType.human,
-            services: ['messages', 'tasks', 'posts', 'tags'],
+            services: [],
             fields: [{
                 name: 'test',
                 regex: '.*',
@@ -187,7 +191,7 @@ seedSystemObjTypes = function () {
                 icon: 'briefcase',
                 color: 'yellow'
             },
-            services: ['messages', 'tasks', 'posts', 'tags'],
+            services: [],
             fields: [{
                 name: 'jobTitle',
                 regex: '',
@@ -205,7 +209,7 @@ seedSystemObjTypes = function () {
                 icon: 'briefcase',
                 color: 'yellow'
             },
-            services: ['messages', 'tasks', 'posts', 'tags'],
+            services: [],
             fields: [{
                 name: 'Type',
                 regex: '.*',
@@ -227,7 +231,7 @@ seedSystemObjTypes = function () {
                 icon: 'briefcase',
                 color: 'yellow'
             },
-            services: ['messages', 'tasks', 'posts', 'tags'],
+            services: [],
             fields: [{
                 name: 'Estimated_Revenue',
                 regex: '.*',
@@ -251,7 +255,7 @@ seedSystemObjTypes = function () {
                 icon: 'briefcase',
                 color: 'yellow'
             },
-            services: ['messages', 'tasks', 'posts', 'tags'],
+            services: [],
             fields: [{
                 name: 'User_Count',
                 regex: '.*',
@@ -272,19 +276,25 @@ seedSystemObjTypes = function () {
         var oldObjType = ObjTypes.findOne({
             objName: objtype.objName
         });
+
+        //
+        // fields
+        //
         var fields = objtype.fields;
         var objGroupType = _.find(systemObjGroupTypes, function(objgroup) { return objgroup.objGroupType==objtype.objGroupType});
-
         if (objGroupType)  fields=objGroupType.fields.concat(fields);
-        //console.log('fields',objGroupType,objtype,fields);
 
+        //
+        // services
+        //
+        var services = objtype.services;
+        if (objGroupType)  services=objGroupType.services.concat(services);
         if (oldObjType == null) {
-            //console.log('inserting objType ' + objtype.objName);
             ObjTypes.insert({
                 hierId: ExartuConfig.SystemHierarchyId,
                 objGroupType: objtype.objGroupType,
                 objName: objtype.objName,
-                services: objtype.services,
+                services: services,
                 fields: fields,
                 personType: objtype.defaultPersonType,
                 style: objtype.style
@@ -295,7 +305,7 @@ seedSystemObjTypes = function () {
                 _id: oldObjType._id
             }, {
                 $set: {
-                    services: objtype.services,
+                    services: services,
                     fields: fields,
                     style: objtype.style
                 }
