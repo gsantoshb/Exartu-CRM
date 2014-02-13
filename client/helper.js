@@ -52,8 +52,7 @@ var handleError = function (err, viewName) {
         console.log(viewName + ' does not exist');
         return;
     }
-    console.log('binding error');
-    console.dir(err)
+    console.log('binding error',err);
 }
 _.extend(helper, {
     applyBindings: function (vm, viewName, collectionHandler) {

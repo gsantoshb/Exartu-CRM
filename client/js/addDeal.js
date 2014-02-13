@@ -65,7 +65,7 @@ Template.addDeal.viewmodel = function (objname) {
 		_.forEach(fields, function (field) {
             self.deal()[self.objTypeName()][field.name] = field.value() == null ? field.defaultValue : field.value();
         });
-        console.log(ko.toJS(self.deal));
+        self.deal().displayName = self.deal()[self.objTypeName()].Deal_Name;
 		Meteor.call('addDeal', ko.toJS(self.deal), function (err, result) {
 			console.log(err);
 		});

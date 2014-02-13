@@ -96,8 +96,8 @@ var handleError = function (err, viewName) {
         return true;
     }
     if (!document.getElementsByName(viewName)[0]) {
-        console.err(viewName + ' does not exist');
+//        console.err(viewName + ' does not exist');
         return;
     }
-    console.err(err)
+//    console.err(err)
 }

@@ -47,12 +47,10 @@ JobHandler.wait = function (cb) {
 }
 
 
-Deals = new Meteor.Collection("deals", {
-    transform: function (contactable) {
-            contactable.displayName = contactable.dealName;
-
-        return contactable;
-    },
+Deals = new Meteor.Collection("deals",function() {
+    _.forEach(Deals.observers, function (cb) {
+        cb();
+    });
 });
 DealHandler = Meteor.subscribe('deals', function () {
     _.forEach(Deals.observers, function (cb) {
@@ -110,7 +108,7 @@ Conversations = new Meteor.Collection("conversations", {
         });
         
 		return conversation;
-	},
+	}
 });
 Meteor.subscribe('conversations');
 

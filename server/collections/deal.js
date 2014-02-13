@@ -7,18 +7,18 @@ Meteor.publish('deals', function () {
         return false;
 
     return Deals.find({
-        hierId: user.hierId
+        $or: filterByHiers(user.hierId)
     });
-})
+});
 
 Deals.allow({
-    update: function () {
-        return true;
-    },
     insert: function () {
         return true;
+    },
+    update: function () {
+        return true;
     }
-});
+})
 
 Deals.before.insert(function (userId, doc) {
     var user = Meteor.user();
@@ -27,58 +27,123 @@ Deals.before.insert(function (userId, doc) {
     doc.createdAt = Date.now();
 });
 
+
+
+
 Meteor.startup(function () {
     Meteor.methods({
         addDeal: function (deal) {
             if (beforeInsertOrUpdateDeal(deal)) {
                 Deals.insert(deal);
             } else {
-                console.error('Deal is not valid')
+                console.error('Deal not valid')
                 console.dir(deal);
             }
+        },
+        updateDeal: function (deal) {
+            if (beforeInsertOrUpdateDeal(deal)) {
+                Deals.update({
+                    _id: deal._id
+                }, deal);
+            } else {
+                console.error('Deal not valid')
+                console.dir(deal);
+            }
+        },
+        addDealTag: function (dealId, tag) {
+            // TODO: validations
+
+            Deals.update({
+                _id: dealId
+            }, {
+                $addToSet: {
+                    tags: tag
+                }
+            });
+        },
+        addDealPost: function (dealId, post) {
+            // TODO: validations
+            post.userId = Meteor.userId();
+            post.createdAt = Date.now();
+
+            console.log('New post ');
+            console.dir(post);
+
+            Deals.update({
+                _id: dealId
+            }, {
+                $addToSet: {
+                    posts: post
+                }
+            });
         }
     });
 });
 
 /*
- * extends and validate a deal before inserting or updating
+ * logic that is common to add and update a deal (extend and validate)
  */
 var beforeInsertOrUpdateDeal = function (deal) {
     var user = Meteor.user();
     if (user == null)
-    {
         throw new Meteor.Error(401, "Please login");
-    }
-    return true;
-};
 
+    if (!deal.objNameArray || !deal.objNameArray.length) {
+        console.error('the deal must have at least one objName');
+        throw new Meteor.Error(401, "invalid deal");
+    }
+    var objTypes = ObjTypes.find({
+        objName: {
+            $in: deal.objNameArray
+        }
+    }).fetch();
+
+    if (objTypes.length != deal.objNameArray.length) {
+        console.error('the deal objNameArray is suspicious');
+        console.dir(deal.objNameArray);
+        throw new Meteor.Error(401, "invalid objNameArray");
+    }
+    extendDeal(deal, objTypes)
+
+    return Validate(deal, objTypes)
+}
 /*
- * extend a deal with assignments, candidates and the services defined in objTypes
+ * extend the deal object with the contact methods and the services needed
  * objTypes must be an array with the object's types that the deal references
  */
 var extendDeal = function (deal, objTypes) {
-    if (!deal.assignments)
-        deal.assignments = [];
-    if (!deal.candidates)
-        deal.assignments = [];
+    if (!deal.contactMethods)
+        deal.contactMethods = [];
+
     _.forEach(objTypes, function (objType) {
-        _.forEach(objType.services, function (service) {
-            if (deal[service] == undefined)
-                deal[service] = [];
-        });
-    });
-}
+        if (objType) {
+            _.forEach(objType.services, function (service) {
+                if (deal[service] == undefined)
+                    deal[service] = [];
+            });
+        }
+    })
+};
 
 /*
- * validate a deal
+ * validate that the deal is valid for the objTypes passed
  * objTypes must be an array with the object's types that the deal references
  */
-var validate = function (deal, objTypes) {
+var Validate = function (deal, objTypes) {
+
+    if (!validateDeal(deal)) {
+        return false;
+    }
     var v = true;
     _.every(objTypes, function (objType) {
-        v = validateObjType(deal, objType);
+        v = v && validateObjType(deal, objType);
         return v;
     });
-
     return v;
 };
+
+
+var validateDeal = function (obj) {
+    return true;
+};
+
