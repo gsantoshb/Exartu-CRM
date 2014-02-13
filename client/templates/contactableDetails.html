@@ -1,7 +1,7 @@
 <template name="contactableDetails">
     <!-- Profile Home Section ------------------------------------ -->
     <div class="row">
-        <div class="col-md-12 col-lg-12">
+        <div class="col-md-4 col-lg-4">
             <div class="box ">
                 <div class="box-header-2">
                     <div class="box-title">
@@ -44,12 +44,16 @@
             </div>
             <!-- /.box -->
         </div>
-        <!-- /.col-lg-4 -->
+        <div class="col-md-8 col-lg-8">
+            <div data-bind="template: {name: $parent.getTemplateName($data), data: $parent.getObjTypeData($data)}"></div>
+        </div>
+        <!-- /.col-lg-8 -->
 
     </div>
     <div id="display-property" data-bind="if: name" style="display:none">
         <small data-bind="text: name + ': '"></small>
         <span data-bind="text: value"></span>
     </div>
+    {{>obj-type-template}}
     <!-- /.row -->
 </template>

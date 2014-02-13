@@ -3,7 +3,8 @@ var objType = ko.observable();
 var filters = ko.observable(ko.mapping.fromJS({
     objType: '',
     tags: [],
-    statuses: []
+    statuses: [],
+    inactives: false
 }));
 
 ContactablesController = RouteController.extend({
@@ -33,9 +34,10 @@ Template.contactables.waitOn = 'ContactableHandler';
 Template.contactables.viewModel = function () {
     var self = {};
     self.ready = ko.observable(false);
-
+    self.includeInacives = filters().inactives;
+    self.tags = filters().tags;
+    self.tag = ko.observable();
     var query = ko.computed(function () {
-
         var q = {};
         var f = ko.toJS(filters);
         if (f.objType)
@@ -46,9 +48,13 @@ Template.contactables.viewModel = function () {
                 $in: f.tags
             };
         };
-
-        //        console.log('fetching entities');
-        //        console.dir(q);
+        if (!f.inactives) {
+            q.inactive = {
+                $ne: true
+            };
+        }
+        console.log('fetching entities');
+        console.dir(q);
         return q;
     });
 
@@ -72,8 +78,7 @@ Template.contactables.viewModel = function () {
         }
         return 'Contactables';
     });
-    self.tags = filters().tags;
-    self.tag = ko.observable();
+
     self.addTag = function () {
         filters().tags.push(self.tag());
         self.tag('');
