@@ -65,15 +65,23 @@ Meteor.startup(function () {
             // TODO: validations
             post.userId = Meteor.userId();
             post.createdAt = Date.now();
-
-            console.log('New deal post ');
-            console.dir(post);
-
             Deals.update({
                 _id: dealId
             }, {
                 $addToSet: {
                     posts: post
+                }
+            });
+        },
+        addDealQuote: function (dealId, quote) {
+            // TODO: validations
+            quote.userId = Meteor.userId();
+            quote.createdAt = Date.now();
+            Deals.update({
+                _id: dealId
+            }, {
+                $addToSet: {
+                    quotes: quote
                 }
             });
         }
