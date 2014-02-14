@@ -1,4 +1,4 @@
-Template.addPost.viewmodel = function (contactableId) {
+Template.addPost.viewmodel = function (id,addcallname) {
 	var self = this;
 
 	self.newPost = ko.observable("");
@@ -6,7 +6,7 @@ Template.addPost.viewmodel = function (contactableId) {
 	self.adding = ko.observable(false);
 	self.addPost = function () {
 		self.adding(true);
-		Meteor.call('addContactablePost', contactableId, {
+		Meteor.call(addcallname, id, {
 			content: self.newPost()
 		}, function (err, result) {
 			if (!err) {

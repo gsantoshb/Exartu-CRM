@@ -66,7 +66,7 @@ Meteor.startup(function () {
             post.userId = Meteor.userId();
             post.createdAt = Date.now();
 
-            console.log('New post ');
+            console.log('New deal post ');
             console.dir(post);
 
             Deals.update({

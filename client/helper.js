@@ -216,26 +216,7 @@ _.extend(helper, {
         if (objtype.glyphicon == '') return defaultIcon;
         return objtype.glyphicon;
     },
-    getObjNameArrayFromObject: function (obj) {
-        //an object can have multiple names(objName), for example the same person can be both an employee and a contact
-        // return an array of the objNames for the supplied object
-        var objNameArray = [];
-        _.map(ObjTypes.find().fetch(), function (type) {
-            if (obj[type.objName]) objNameArray.push(type.objName);
-        });
-        return objNameArray;
-    },
-    getObjTypesFromObject: function (obj) {
-        // an object can have multiple purposes (objTypes, for example the same person can be both an employee and a contact
-        // return an array of the objTypes for the supplied object
-        var objTypeArray = [];
-        _.map(ObjTypes.find().fetch(), function (type) {
-            if (obj[type.objName]) objTypeArray.push(type);
 
-            console.dir(type);
-        });
-        return objTypeArray;
-    },
     getEntityColor: function (entity) {
         var type = ObjTypes.findOne({
             objName: entity.objNameArray[0]
@@ -283,8 +264,7 @@ _.extend(helper, {
 });
 
 _.extend(helper, {
-    showModal: function (templateName, view, parameter) {
-
+    showModal: function (templateName, view, parameter, callname) {
         var body = $('body');
         var host = body.find(".modal-host")[0];
         if (!host) {
@@ -304,7 +284,7 @@ _.extend(helper, {
 
         modal.modal('show');
         if (Template[templateName].viewmodel) {
-            helper.applyBindings(new Template[templateName].viewmodel(parameter), view);
+            helper.applyBindings(new Template[templateName].viewmodel(parameter,callname), view);
         };
 
         modal.on('hidden.bs.modal', function (e) {

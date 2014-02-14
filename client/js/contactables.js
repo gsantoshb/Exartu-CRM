@@ -53,8 +53,6 @@ Template.contactables.viewModel = function () {
                 $ne: true
             };
         }
-        console.log('fetching entities');
-        console.dir(q);
         return q;
     });
 
