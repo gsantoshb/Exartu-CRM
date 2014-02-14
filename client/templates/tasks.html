@@ -1,0 +1,132 @@
+<template name="tasks">
+    <div id="content">
+        <div id="content-header">
+            <h1>
+                <strong data-bind="text: tasks().length"></strong>
+                <span>Tasks</span>
+            </h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="#" title="Go to Home" class="tip-bottom">Home</a>
+            <a href="#" class="current">tasks</a>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 col-lg-3">
+
+                    <a class="btn btn-success btn-md btn-block btn-create" data-bind="click:add">Add Task</a>
+                    <sidebar>
+                        <div class="box-2">
+                            <form role="form">
+                                <h4>
+                                    <strong>Filters</strong>
+                                </h4>
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox">Include inactives
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox">Only recent week
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox">assigned to me
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- /.form-group -->
+
+                                <hr>
+                                <h4>
+                                    <strong>Statuses</strong>
+                                </h4>
+                                <button type="button" class="btn btn-xs btn-primary">Open</button>
+                                <button type="button" class="btn btn-xs btn-primary">Completed</button>
+                                <button type="button" class="btn btn-xs btn-primary">Ended</button>
+                                <hr>
+                        </div>
+                        <!-- /.box-2 -->
+                    </sidebar>
+                </div>
+                <!-- /.col-lg-4 -->
+                <div class="col-md-8 col-lg-9">
+
+                    <!-- Entities list -->
+                    <div>
+                        <div class="table-items-box" data-bind="foreach: tasks">
+                            <div class="table-item odd">
+                                <!-- ko if: $data.createdAt -->
+                                <div class="date" data-bind="text: moment(createdAt()).fromNow()"></div>
+                                <!-- /ko -->
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <div class="table-item-cell">
+                                            <div class="thumb">
+                                                <a href="#">
+                                                    <img height="70px" width="70px" src="/assets/user-photo-placeholder.jpg">
+                                                </a>
+                                            </div>
+                                            <div class="table-item-title">
+                                                <span data-bind="text: $data.note"></span>
+                                            </div>
+                                            <div class=" table-item-desc">
+                                                from:
+                                                <span data-bind="text: begin"></span>
+                                                to:
+                                                <span data-bind="text: end"></span>
+                                            </div>
+                                            <div class=" table-item-desc">
+                                                assigned:
+                                                <div data-bind="foreach: assign">
+                                                    <span data-bind="text: $data"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.table-item-cell -->
+                                    </div>
+                                    <!-- /.col-lg-6 -->
+                                    <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2">
+                                        <div class="table-item-cell">
+                                            <div class="table-item-type">
+                                                <div class="table-item-type-icon">
+                                                    <i class="icon-watch-1"></i>
+                                                </div>
+                                                <div class="table-item-type-label">
+                                                    <span>task</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.col-lg-2 -->
+                                    <div class="col-xs-8 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="table-item-cell table-item-cell-last">
+                                            <div class="table-item-contact">
+                                                <small class="pull-right" data-bind="text:creator"></small>
+                                                <span class="pull-right">creator:</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.col-lg-4 -->
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <!-- /.table-item -->
+                        </div>
+                    </div>
+                </div>
+                <!--/ko-->
+            </div>
+        </div>
+    </div>
+</template>

@@ -39,8 +39,7 @@ Router.map(function () {
         path: '/jobs',
         controller: 'JobsController'
     });
-    if ( Meteor.user() && Meteor.user().permissions &&  Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales)>0)
-    {
+    if (Meteor.user() && Meteor.user().permissions && Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) > 0) {
         this.route('deals', {
             path: '/deals',
             controller: 'DealsController'
@@ -59,6 +58,11 @@ Router.map(function () {
 
     this.route('messages', {
         path: '/messages',
-		controller: 'ConversationsController'
-    })
+        controller: 'ConversationsController'
+    });
+
+    this.route('tasks', {
+        path: '/tasks',
+        controller: 'TasksController'
+    });
 });
