@@ -34,14 +34,14 @@
 
                 <div class="container-fluid row ">
                     <!-- Nav tabs -->
-                    <ul class="nav nav-pills bottom-20 ">
-                        <li class="active ">
+                    <ul class="nav nav-pills bottom-20 " id="contactable-nav">
+                        <li data-bind="css:{'active': $parent.activeTab()=='home'}">
                             <a href="#home " data-toggle="tab ">All</a>
                         </li>
-                        <li>
+                        <li data-bind="css:{'active': $parent.activeTab()=='details'}">
                             <a href="#details " data-toggle="tab ">Details</a>
                         </li>
-                        <li>
+                        <li data-bind="css:{'active': $parent.activeTab()=='posts'}">
                             <a href="#posts " data-toggle="tab ">Posts
                                 <span class="custom-badge-2 " data-bind="text: posts().length"></span>
                             </a>

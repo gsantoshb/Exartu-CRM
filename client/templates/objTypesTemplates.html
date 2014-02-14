@@ -1,0 +1,36 @@
+<template name="obj-type-template">
+    <div style="display:none" id="employee-template">
+        <div class="box ">
+            <div class="box-header-2">
+                <div class="box-title">
+                    <i data-bind="attr:{class:helper.getIconForObjName('Employee')}"></i>Employee</div>
+            </div>
+            <div class="box-content-md">
+                <p data-bind="template: {name: 'display-property', data: {name: 'test', value: test} }"></p>
+                <p data-bind="template: {name: 'display-property', data: {name: 'test2', value: test2} }"></p>
+            </div>
+        </div>
+    </div>
+    <div style="display:none" id="customer-template">
+        <div class="box ">
+            <div class="box-header-2">
+                <div class="box-title">
+                    <i data-bind="attr:{class:helper.getIconForObjName('Customer')}"></i>Customer</div>
+            </div>
+            <div class="box-content-md">
+                <p data-bind="template: {name: 'display-property', data: {name: 'department', value: department} }"></p>
+            </div>
+        </div>
+    </div>
+    <div style="display:none" id="contact-template">
+        <div class="box ">
+            <div class="box-header-2">
+                <div class="box-title">
+                    <i data-bind="attr:{class:helper.getIconForObjName('Contact')}"></i>Contact</div>
+            </div>
+            <div class="box-content-md">
+                <p data-bind="template: {name: 'display-property', data: {name: 'customer', value: customer} }"></p>
+            </div>
+        </div>
+    </div>
+</template>

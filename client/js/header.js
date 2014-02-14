@@ -132,19 +132,19 @@ Template.header.rendered = function () {
 
 
     // === Tooltips === //
-    //    $('.tip').tooltip();
-    //    $('.tip-left').tooltip({
-    //        placement: 'left'
-    //    });
-    //    $('.tip-right').tooltip({
-    //        placement: 'right'
-    //    });
-    //    $('.tip-top').tooltip({
-    //        placement: 'top'
-    //    });
-    //    $('.tip-bottom').tooltip({
-    //        placement: 'bottom'
-    //    });
+        $('.tip').tooltip();
+     $('.tip-left').tooltip({
+         placement: 'left'
+     });
+     $('.tip-right').tooltip({
+         placement: 'right'
+     });
+     $('.tip-top').tooltip({
+         placement: 'top'
+     });
+     $('.tip-bottom').tooltip({
+         placement: 'bottom'
+     });
 
     $(document).on('click', '.submenus > li', function (e) {
         e.preventDefault();

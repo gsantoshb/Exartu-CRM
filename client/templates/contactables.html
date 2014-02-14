@@ -27,7 +27,7 @@
                                     <div class="form-group">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox">Include inactives
+                                                <input type="checkbox" data-bind="checked: includeInacives">Include inactives
                                             </label>
                                         </div>
                                     </div>
@@ -97,7 +97,7 @@
                                                     </a>
                                                 </div>
                                                 <div class="table-item-title ">
-                                                    <a data-bind="attr:{href: 'contactable/'+_id()}">
+                                                    <a data-bind="attr:{href: '/contactable/'+_id()}">
                                                         <span data-bind="text: displayName"></span>
                                                     </a>
                                                 </div>

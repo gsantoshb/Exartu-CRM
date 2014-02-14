@@ -8,11 +8,10 @@
                 <i class="fa fa-align-justify"></i>
             </a>
         </div>
-        <!-- /#header -->
 
         <div id="search">
-            <input type="text" placeholder="Search ..." />
-            <button type="submit" class="tip-right" title="Search">
+            <input type="text" placeholder="Search ...">
+            <button type="submit" class="tip-right" title="" data-original-title="Search">
                 <i class="fa fa-search"></i>
             </button>
         </div>
@@ -100,38 +99,43 @@
 
             </ul>
         </div>
-        <!-- /#user-nav -->
 
-        <div id="sidebar">
-            <ul>
-                <li id="dashboardNav" class="active">
-                    <a href="/">
-                        <i class="icon-house-2"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li id="contactablesNav" class="submenu contactables">
-                    <a href="/contactables">
-                        <i class="icon-connection-1"></i>
-                        <span>Contactables</span>
-                        <i class="arrow fa fa-chevron-right"></i>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="/contactables">
-                                <span>All</span>
-                            </a>
-                        </li>
+        {{>sidebar}}
+    </div>
+
+</template>
+
+<template name="sidebar">
+    <div id="sidebar">
+        <ul>
+            <li id="dashboardNav" class="active">
+                <a href="/">
+                    <i class="icon-house-2"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li id="contactablesNav" class="submenu contactables">
+                <a href="/contactables">
+                    <i class="icon-connection-1"></i>
+                    <span>Contactables</span>
+                    <i class="arrow fa fa-chevron-right"></i>
+                </a>
+                <ul>
+                    <li>
+                        <a href="/contactables">
+                            <span>All</span>
+                        </a>
+                    </li>
                         <!-- ko foreach: contactableObjTypes -->
-                        <li>
-                            <a data-bind="attr: {href: '/contactables/' + objName().toLowerCase()}">
-                                <span data-bind="text: objName"></span>
-                            </a>
-                        </li>
-                        <!-- /ko -->
-                    </ul>
-                </li>
-                <!--
+                    <li>
+                        <a data-bind="attr: {href: '/contactables/' + objName().toLowerCase()}">
+                            <span data-bind="text: objName"></span>
+                        </a>
+                    </li>
+                    <!-- /ko -->
+                </ul>
+            </li>
+            <!--
 				<li class="tasks">
 	<a href="tasks.html">
 		<i class="icon-check-list"></i>
@@ -140,9 +144,9 @@
 </li>
 -->
                 <li id="jobsNav" class="submenu jobs">
-                    <a href="/jobs">
-                        <i class="icon-briefcase"></i>
-                        <span>Jobs</span>
+                <a href="/jobs">
+                    <i class="icon-briefcase"></i>
+                    <span>Jobs</span>
                         <i class="arrow fa fa-chevron-right"></i>
                     </a>
                     <ul>
@@ -161,13 +165,13 @@
                     </ul>
                 </li>
 
-                <li id="dealsNav" class="deals" data-bind="visible: $data.showSales">
-                    <a href="/deals">
-                        <i class="icon-pop-corn"></i>
-                        <span>Deals</span>
-                    </a>
-                </li>
-                <!--
+            <li id="dealsNav" class="deals" data-bind="visible: $data.showSales">
+                <a href="/deals">
+                    <i class="icon-pop-corn"></i>
+                    <span>Deals</span>
+                </a>
+            </li>
+            <!--
 	<li class="assignments">
 	<a href="assignments.html">
 		<i class="icon-check-bubble"></i>

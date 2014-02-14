@@ -31,7 +31,7 @@ var icons = [
         value: 'icon-address-1'
     }
 ]
-
+var defaultIcon = 'icon-question-mark';
 
 /*** wraper for ko.applyBindings
 *    vm -> viewModel(obj) to bind
@@ -205,11 +205,15 @@ _.extend(helper, {
         var objtype = ObjTypes.findOne({
             objName: objname
         });
-        if (objtype || objtype.glyphicon != '') return objtype.glyphicon;
-        return 'glyphicon-question-sign';
+        if (objtype && objtype.style && objtype.style.icon)
+            return _.findWhere(icons, {
+                name: objtype.style.icon
+            }).value;
+
+        return defaultIcon;
     },
     getIconForObjType: function (objtype) {
-        if (objtype.glyphicon == '') return 'glyphicon-question-sign';
+        if (objtype.glyphicon == '') return defaultIcon;
         return objtype.glyphicon;
     },
     getObjNameArrayFromObject: function (obj) {
@@ -280,20 +284,26 @@ _.extend(helper, {
 
 _.extend(helper, {
     showModal: function (templateName, view, parameter) {
-        var body = $('body');
 
-        var host = $('<div class="modal-host"></div>').appendTo(body);
+        var body = $('body');
+        var host = body.find(".modal-host")[0];
+        if (!host) {
+            host = $('<div class="modal-host"> </div>').appendTo(body);
+        } else {
+            host = $(host);
+        }
+        _.each(host.children(), function (m) {
+            m = $(m);
+            ko.cleanNode(m);
+            m.modal('toggle');
+            m.remove();
+            $('.modal-backdrop').remove();
+        })
         var template = Template[templateName];
         var modal = $(template()).appendTo(host);
 
-        //        console.log('showmodal:template',template());
-        //        console.log('showmodal:templateName',templateName);
-        //        console.log('showmodal:Template[templateName].viewmodel',Template[templateName].viewmodel);
-        //        console.log('showmodal:parameter',parameter);
-        //        console.log('showmodal:view',view);
         modal.modal('show');
         if (Template[templateName].viewmodel) {
-            //console.log('applybindings: templatename,parameter,view',templateName,parameter,view);
             helper.applyBindings(new Template[templateName].viewmodel(parameter), view);
         };
 

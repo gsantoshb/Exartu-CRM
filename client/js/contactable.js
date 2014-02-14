@@ -56,7 +56,19 @@ Template.contactable.rendered = function () {
             })
         }
 
-        // CONTACT METHODS
+        self.getTemplateName = function (data) {
+            if (data.Employee) return 'employee-template';
+            if (data.Customer) return 'customer-template';
+            if (data.Contact) return 'contact-template';
+        }
+        self.getObjTypeData = function (data) {
+            if (data.Employee) return data.Employee;
+            if (data.Customer) return data.Customer;
+            if (data.Contact) return data.Contact;
+        };
+        self.activeTab = ko.computed(function () {
+            return Router.current().params.hash || 'home';
+        });
 
 
         return self;
