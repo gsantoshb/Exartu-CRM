@@ -11,8 +11,15 @@
  */
 
 Meteor.publish('tasks', function () {
+    var user = Meteor.users.findOne({
+        _id: this.userId
+    });
+
+    if (!user)
+        return false;
+
     return Tasks.find({
-        assign: this.userId
+        hierId: user.hierId
     });
 })
 
@@ -25,6 +32,8 @@ Meteor.startup(function () {
 });
 
 Tasks.before.insert(function (userId, doc) {
+    var user = Meteor.user();
+    doc.hierId = user.hierId;
+    doc.userId = user._id;
     doc.createdAt = Date.now();
-    doc.creator = Meteor.userId();
 });
