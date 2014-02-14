@@ -7,25 +7,38 @@
                     <h4 data-bind="text: objTypeName() + ' add'"></h4>
                 </div>
                 <div class="modal-body" data-bind="if: $data.ready">
-                    <div data-bind="with: job">
-                        <h5 data-bind="text: $root.objTypeName"></h5>
-                        <div id="list" data-bind="visible: $data[$root.objTypeName()]().length > 0, foreach: $data[$root.objTypeName()]">
-                            <fieldset data-bind="visible: $data.showInAdd">
-                                <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
-                            </fieldset>
-                        </div>
+                    <!-- Show static fields -->
+                    <div data-bind="with: entity">
+                        <fieldset>
+                            <div data-bind="template: { name: 'inStringField', data: {name: 'Public job title', value:$data.publicJobTitle } }" />
+                        </fieldset>
                     </div>
-                    <div data-bind="foreach: relations">
-                        <div>
-                            <h5 data-bind="text: relation.name"></h5>
-                            <select data-bind="options: data,optionsText:'displayName', value: value, optionsCaption: 'select...'"></select>
-                        </div>
-                    </div>
+
+                    <!-- Show dynamic fields and relations -->
+                    <div data-bind="template: { name: 'showDynamicObjectTemplate', data: $data}"></div>
                 </div>
                 <div class="modal-footer">
-                    <a data-bind="click:addJob" class="btn btn-success">Add</a>
+                    <a data-bind="click: add" class="btn btn-success">Add</a>
                     <a href="#" class="btn" data-dismiss="modal">Close</a>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template used to show object information dynamicly. It show fields and relations that are flaged with showInAdd -->
+    <div id="showDynamicObjectTemplate" style="display: none">
+        <div data-bind="with: entity">
+            <h5 data-bind="text: $root.objTypeName"></h5>
+            <div id="list" data-bind="visible: $data[$root.objTypeName()]().length > 0, foreach: $data[$root.objTypeName()]">
+                <fieldset data-bind="visible: $data.showInAdd">
+                    <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
+                </fieldset>
+            </div>
+        </div>
+        <div data-bind="foreach: relations">
+            <div>
+                <h5 data-bind="text: relation.name"></h5>
+                <select data-bind="options: data,optionsText:'displayName', value: value, optionsCaption: 'select...'"></select>
             </div>
         </div>
     </div>

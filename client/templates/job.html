@@ -1,0 +1,80 @@
+<template name="job">
+    <div class="jobs-page" name="jobVM">
+        <div id="content" data-bind="with: job">
+            <div id="content-header">
+                <h1 data-bind="text: displayName"></h1>
+            </div>
+            <div id="breadcrumb">
+                <a href="#" title="Go to Home" class="tip-bottom">Home</a>
+                <a href="#" class="current">Jobs</a>
+            </div>
+
+            <div class="container-fluid">
+                <div class="col-md-8 col-lg-8">
+                    <div class="box">
+                        <div class="box-content-lg">
+                            <a class="btn btn-success btn-lg pull-right" href="#">
+                                <i class="icon icon-edit-3"></i>
+                                Edit mode
+                            </a>
+                            <p class="text-muted">January 30</p>
+                            <img src="/assets/logo-google.png">
+                            <hr>
+                            <p>
+                                Tags:
+                                <!-- ko foreach: $data.tags -->
+                                <span class="badge">
+                                    <i class="fa fa-tag"></i>
+                                    <span data-bind="text: $data"></span>
+                                </span>
+                                <!-- /ko -->
+                            </p>
+                            <hr>
+                            <br>
+                            <h3>
+                                We’re looking for someone who excels in developing across the entire stack. You will own and drive all aspects of iterating on our web app.
+                                </p>
+                            </h3>
+                            The core of our technology stack is django with jQuery in the front end, so we are looking for a strong Python/django developer and Javascript developer.
+                            </p>
+                            <p>
+                                This app is the core of our growing financial services business and we’re proud of its success to date. You will take ownership of this technology and be responsible for its future success.
+                            </p>
+                            <hr>
+                            <h4>
+                                Our top priorities in the next 12 months are:
+                            </h4>
+                            <p>
+                                Iterating on our UI
+                                <br>Increasing automation
+                                <br>Launching a new product
+                                <br>To thrive in this position, you will need experience with:
+                                <br>
+                            </p>
+                            <hr>
+                            <h4>
+                                Agile development methods
+                            </h4>
+                            <p>
+                                Product skills: requirements definition, feature definition, user experience, product roadmaps and product release cycles
+                                <br>Server operations: monitoring, security, updates
+                                <br>Debugging and hotfixes
+                                <br>Testing automation
+                                <br>
+                            </p>
+
+                            <p>
+                                We’re looking for someone who is curious to learn the nature of our business, as this is essential to our application’s success. If you are excited by the prospect of gathering business requirements, designing a feature, creating an architecture and ultimately developing and deploying the solution, then this may be a great fit for you!
+                            </p>
+
+                            <p>
+                                We’re based in San Francisco, but you may be located anywhere since we all work remotely. This is a full-time position with competitive compensation.
+                            </p>
+                        </div>
+                        <!-- /.box-content-lg-->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col-lg-8-->
+            </div>
+</template>

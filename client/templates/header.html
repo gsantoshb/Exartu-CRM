@@ -7,98 +7,97 @@
             <a id="menu-trigger" href="#">
                 <i class="fa fa-align-justify"></i>
             </a>
-            <!-- /#header -->
+        </div>
 
-            <div id="search">
-                <input type="text" placeholder="Search ..." />
-                <button type="submit" class="tip-right" title="Search">
-                    <i class="fa fa-search"></i>
-                </button>
-            </div>
-            <div id="user-nav">
-                <ul class="btn-group">
-                    <li class="btn dropdown" style="margin-right: 20px">
-                        <a href="#">
-                            <span class="user-menu-thumb">
-                                {{#if hasPicture}}
-                                <img data-bind="attr:{src:picture(26)}" style="heigth: 26px;width: 26px;">{{else}}
-                                <img src="assets/user-photo-placeholder.jpg" style="heigth: 26px;width: 26px;" />{{/if}}
+        <div id="search">
+            <input type="text" placeholder="Search ...">
+            <button type="submit" class="tip-right" title="" data-original-title="Search">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+        <div id="user-nav">
+            <ul class="btn-group">
+                <li class="btn dropdown" style="margin-right: 20px">
+                    <a href="#">
+                        <span class="user-menu-thumb">
+                            {{#if hasPicture}}
+                            <img data-bind="attr:{src:picture(26)}" style="heigth: 26px;width: 26px;">{{else}}
+                            <img src="assets/user-photo-placeholder.jpg" style="heigth: 26px;width: 26px;" />{{/if}}
+                        </span>
+                        {{loginButtons}}
+                    </a>
+                </li>
+
+                <li class="btn dropdown" id="menu-messages">
+                    <a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
+                        <i class="fa fa-envelope-o"></i>
+                        <span class="text">Messages</span>
+                        <!-- ko if: $data.latestMessages().length > 0 -->
+                        <span class="notifications" data-bind="text: latestMessages().length"></span>
+                        <!-- /ko -->
+                    </a>
+                    <ul class="dropdown-menu dropdown-msgs">
+                        <li class="clearfix">
+                            <span class="pull-left">
+                                <a href="messages.html">
+                                    <i class="fa fa-inbox"></i>Inbox</a>
                             </span>
-                            {{loginButtons}}
-                        </a>
-                    </li>
+                            <span class="pull-right">
+                                <a href="messages.html">
+                                    <i class="fa fa-pencil"></i>Write new message</a>
+                            </span>
+                        </li>
 
-                    <li class="btn dropdown" id="menu-messages">
-                        <a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="text">Messages</span>
-                            <!-- ko if: $data.latestMessages().length > 0 -->
-                            <span class="notifications" data-bind="text: latestMessages().length"></span>
-                            <!-- /ko -->
-                        </a>
-                        <ul class="dropdown-menu dropdown-msgs">
-                            <li class="clearfix">
-                                <span class="pull-left">
-                                    <a href="messages.html">
-                                        <i class="fa fa-inbox"></i>Inbox</a>
-                                </span>
-                                <span class="pull-right">
-                                    <a href="messages.html">
-                                        <i class="fa fa-pencil"></i>Write new message</a>
-                                </span>
-                            </li>
+                        <!-- ko if: $data.latestMessages().length == 0 -->
+                        <span>No messages</span>
+                        <!-- /ko -->
 
-                            <!-- ko if: $data.latestMessages().length == 0 -->
-                            <span>No messages</span>
-                            <!-- /ko -->
-
-                            <!-- ko foreach: latestMessages -->
-                            <li data-bind="css: {unread: function() { return readed; } }">
-                                <a class="msg">
-                                    <div data-bind="with: helper.getUserInformation($data.from())">
-                                        <!-- ko if: $data.ready -->
-                                        <!-- ko if: $data.picture -->
-                                        <span class="msg-pic">
-                                            <img src="assets/pic-50x50-2.jpg" alt="" data-bind="attr: {src: picture}">
-                                        </span>
-                                        <!-- /ko -->
-                                        <!-- ko if: $data.username -->
-                                        <span class="msg-author" data-bind="text: username"></span>
-                                        <!-- /ko -->
-                                        <!-- ko if: !$data.username && $data.email -->
-                                        <span class="msg-author" data-bind="text: email"></span>
-                                        <!-- /ko -->
-                                        <!-- /ko -->
-                                    </div>
-                                    <span class="msg-content" data-bind="text: content">
+                        <!-- ko foreach: latestMessages -->
+                        <li data-bind="css: {unread: function() { return readed; } }">
+                            <a class="msg">
+                                <div data-bind="with: helper.getUserInformation($data.from())">
+                                    <!-- ko if: $data.ready -->
+                                    <!-- ko if: $data.picture -->
+                                    <span class="msg-pic">
+                                        <img src="assets/pic-50x50-2.jpg" alt="" data-bind="attr: {src: picture}">
                                     </span>
-                                    <span class="msg-date" data-bind="text: moment($data.createdAt).fromNow()"></span>
-                                </a>
-                            </li>
-                            <!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- ko if: $data.username -->
+                                    <span class="msg-author" data-bind="text: username"></span>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$data.username && $data.email -->
+                                    <span class="msg-author" data-bind="text: email"></span>
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <span class="msg-content" data-bind="text: content">
+                                </span>
+                                <span class="msg-date" data-bind="text: moment($data.createdAt).fromNow()"></span>
+                            </a>
+                        </li>
+                        <!-- /ko -->
 
-                            <li class="more">
-                                <a href="/messages">View all messages</a>
-                            </li>
-                        </ul>
-                    </li>
+                        <li class="more">
+                            <a href="/messages">View all messages</a>
+                        </li>
+                    </ul>
+                </li>
 
-                    <li class="btn dropdown" id="menu-settings">
-                        <a href="#" data-toggle="dropdown" data-target="#menu-settings" class="dropdown-toggle">
-                            <i class="fa fa-cog"></i>
-                            <span class="text">Settings</span>
-                        </a>
+                <li class="btn dropdown" id="menu-settings">
+                    <a href="#" data-toggle="dropdown" data-target="#menu-settings" class="dropdown-toggle">
+                        <i class="fa fa-cog"></i>
+                        <span class="text">Settings</span>
+                    </a>
 
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="/users">User Management</a>
-                            </li>
-                        </ul>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/users">User Management</a>
+                        </li>
+                    </ul>
 
-                    </li>
+                </li>
 
-                </ul>
-            </div>
+            </ul>
         </div>
 
         {{>sidebar}}
@@ -127,7 +126,7 @@
                             <span>All</span>
                         </a>
                     </li>
-                    <!-- ko foreach: objTypes -->
+                        <!-- ko foreach: contactableObjTypes -->
                     <li>
                         <a data-bind="attr: {href: '/contactables/' + objName().toLowerCase()}">
                             <span data-bind="text: objName"></span>
@@ -144,12 +143,28 @@
 	</a>
 </li>
 -->
-            <li id="jobsNav" class="jobs">
+                <li id="jobsNav" class="submenu jobs">
                 <a href="/jobs">
                     <i class="icon-briefcase"></i>
                     <span>Jobs</span>
-                </a>
-            </li>
+                        <i class="arrow fa fa-chevron-right"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/jobs">
+                                <span>All</span>
+                            </a>
+                        </li>
+                        <!-- ko foreach: jobObjTypes -->
+                        <li>
+                            <a data-bind="attr: {href: '/jobs/' + objName().toLowerCase()}">
+                                <span data-bind="text: objName"></span>
+                            </a>
+                        </li>
+                        <!-- /ko -->
+                    </ul>
+                </li>
+
             <li id="dealsNav" class="deals" data-bind="visible: $data.showSales">
                 <a href="/deals">
                     <i class="icon-pop-corn"></i>
@@ -164,6 +179,8 @@
 	</a>
 </li>
 -->
-        </ul>
+            </ul>
+        </div>
+        <!-- /#sidebar -->
     </div>
 </template>
