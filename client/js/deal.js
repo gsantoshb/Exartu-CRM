@@ -3,12 +3,27 @@ DealController = RouteController.extend({
     action: function () {
         // define which template to render in function of the url's hash
         switch (this.params.hash) {
-            case 'home':
-                this.render('dealHome', {
+            case 'details':
+                this.render('dealDetails', {
                     to: 'content'
                 });
                 break;
-            case undefined:
+            case 'details':
+                this.render('dealDetails', {
+                    to: 'content'
+                });
+                break;
+            case 'posts':
+                this.render('dealPosts', {
+                    to: 'content'
+                });
+                break;
+            case 'quotes':
+                this.render('dealQuotes', {
+                    to: 'content'
+                });
+                break;
+            default:
                 this.render('dealHome', {
                     to: 'content'
                 });

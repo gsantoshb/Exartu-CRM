@@ -24,13 +24,10 @@ ContactableHandler.wait = function (cb) {
 }
 
 Jobs = new Meteor.Collection("jobs", {
-    transform: function (contactable) {
-        if (contactable.person)
-            contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
-        if (contactable.organization)
-            contactable.displayName = contactable.organization.organizationName;
+    transform: function (job) {
+        job.displayName = job.publicJobTitle;
 
-        return contactable;
+        return job;
     },
 });
 JobHandler = Meteor.subscribe('jobs', function () {

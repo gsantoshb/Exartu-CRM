@@ -216,26 +216,7 @@ _.extend(helper, {
         if (objtype.glyphicon == '') return defaultIcon;
         return objtype.glyphicon;
     },
-    getObjNameArrayFromObject: function (obj) {
-        //an object can have multiple names(objName), for example the same person can be both an employee and a contact
-        // return an array of the objNames for the supplied object
-        var objNameArray = [];
-        _.map(ObjTypes.find().fetch(), function (type) {
-            if (obj[type.objName]) objNameArray.push(type.objName);
-        });
-        return objNameArray;
-    },
-    getObjTypesFromObject: function (obj) {
-        // an object can have multiple purposes (objTypes, for example the same person can be both an employee and a contact
-        // return an array of the objTypes for the supplied object
-        var objTypeArray = [];
-        _.map(ObjTypes.find().fetch(), function (type) {
-            if (obj[type.objName]) objTypeArray.push(type);
 
-            console.dir(type);
-        });
-        return objTypeArray;
-    },
     getEntityColor: function (entity) {
         var type = ObjTypes.findOne({
             objName: entity.objNameArray[0]
@@ -283,8 +264,7 @@ _.extend(helper, {
 });
 
 _.extend(helper, {
-    showModal: function (templateName, view, parameter) {
-
+    showModal: function (templateName, view, parameter, callname) {
         var body = $('body');
         var host = body.find(".modal-host")[0];
         if (!host) {
@@ -304,13 +284,94 @@ _.extend(helper, {
 
         modal.modal('show');
         if (Template[templateName].viewmodel) {
-            helper.applyBindings(new Template[templateName].viewmodel(parameter), view);
+            helper.applyBindings(new Template[templateName].viewmodel(parameter,callname), view);
         };
 
         modal.on('hidden.bs.modal', function (e) {
             ko.cleanNode(this);
             modal.remove();
         });
+    },
+
+    /* 
+     * Return an object with all component necessary to add a dynamic entity (like Contactable or Job).
+     * This object is used to extend a viewmodel
+     */
+    addExtend: function (options) {
+        var self = options.self;
+
+        var objType = ObjTypes.findOne({
+            objName: options.objname
+        });
+        var aux = {
+            objNameArray: ko.observableArray([objType.objName])
+        };
+
+
+        self.entity = ko.validatedObservable(aux);
+        self.objTypeName = ko.observable(objType.objName);
+        self.ready = ko.observable(false);
+
+        // Apply extend entity
+        _.extend(self.entity(), options.extendEntity());
+
+        _.forEach(objType.fields, function (item) {
+            _.extend(item, {
+                value: ko.observable().extend({
+                    pattern: {
+                        message: 'invalid value',
+                        params: item.regex
+                    }
+                })
+            });
+            if (item.fieldType == Enums.fieldType.lookUp) {
+                _.extend(item, {
+                    value: item.multiple ? ko.observableArray(item.defaultValue) : ko.observable(item.defaultValue),
+                    options: LookUps.findOne({
+                        name: item.lookUpName
+                    }).items,
+                })
+            }
+        });
+
+        aux[objType.objName] = ko.observableArray(objType.fields)
+
+        //relations
+        self.relations = ko.observableArray([]);
+        Meteor.call('getShowInAddRelations', objType.objName, function (err, result) {
+            _.each(result, function (r) {
+                self.relations.push({
+                    relation: r,
+                    data: ko.meteor.find(window[r.target.collection], r.target.query),
+                    value: ko.observable(null)
+                });
+            })
+
+            self.ready(true);
+        });
+
+        self.add = function () {
+            if (!self.entity.isValid()) {
+                self.entity.errors.showAllMessages();
+                return;
+            };
+            var relNames = _.map(self.relations(), function (r) {
+                return r.relation.name;
+            });
+            var relValues = _.map(self.relations(), function (r) {
+                if (r.value()) return r.value()._id();
+            });
+            _.extend(self.entity(), _.object(relNames, relValues));
+
+            var fields = self.entity()[self.objTypeName()]();
+            delete self.entity()[self.objTypeName()];
+            self.entity()[self.objTypeName()] = {};
+            _.forEach(fields, function (field) {
+                self.entity()[self.objTypeName()][field.name] = field.value() || field.defaultValue;
+            })
+
+            options.addCallback.call(this, self.entity);
+        }
     }
 })
 
