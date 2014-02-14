@@ -13,10 +13,15 @@ Template.header.rendered = function () {
             },
             limit: 4
         });
-        self.showSales=ko.observable(Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales)>=0);
-        self.objTypes = ko.meteor.find(ObjTypes, {
-            objGroupType: 'contactable'
+        self.showSales = ko.observable(Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) >= 0);
+        self.contactableObjTypes = ko.meteor.find(ObjTypes, {
+            objGroupType: Enums.objGroupType.contactable
         });
+
+        self.jobObjTypes = ko.meteor.find(ObjTypes, {
+            objGroupType: Enums.objGroupType.job
+        });
+
         self.picture = function (size) {
             return Meteor.user().services.google.picture.split('?')[0] + '?sz=' + size;
         }

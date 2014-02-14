@@ -45,23 +45,23 @@ var beforeInsertOrUpdateJob = function (job) {
     if (user == null)
         throw new Meteor.Error(401, "Please login");
 
-    if (!job.type || !job.type.length) {
-        console.error('the job must have a type');
-        return false;
+    if (!job.objNameArray || !job.objNameArray.length) {
+        console.error('the job must have at least one objName');
+        throw new Meteor.Error(401, "invalid contactable");
     }
     var objTypes = ObjTypes.find({
         objName: {
-            $in: job.type
+            $in: job.objNameArray
         }
     }).fetch();
 
-    if (objTypes.length != job.type.length) {
+    if (objTypes.length != job.objNameArray.length) {
         console.error('the job objNameArray is suspicious');
-        console.dir(job.type);
+        console.dir(job.objNameArray);
         throw new Meteor.Error(401, "invalid objNameArray");
     }
-
     extendJob(job, objTypes);
+
     return validate(job, objTypes);
 };
 

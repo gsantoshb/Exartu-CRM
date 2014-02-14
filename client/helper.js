@@ -52,7 +52,7 @@ var handleError = function (err, viewName) {
         console.log(viewName + ' does not exist');
         return;
     }
-    console.log('binding error',err);
+    console.log('binding error', err);
 }
 _.extend(helper, {
     applyBindings: function (vm, viewName, collectionHandler) {
@@ -301,6 +301,87 @@ _.extend(helper, {
             ko.cleanNode(this);
             modal.remove();
         });
+    },
+
+    /* 
+     * Return an object with all component necessary to add a dynamic entity (like Contactable or Job).
+     * This object is used to extend a viewmodel
+     */
+    addExtend: function (options) {
+        var self = options.self;
+
+        var objType = ObjTypes.findOne({
+            objName: options.objname
+        });
+        var aux = {
+            objNameArray: ko.observableArray([objType.objName])
+        };
+
+
+        self.entity = ko.validatedObservable(aux);
+        self.objTypeName = ko.observable(objType.objName);
+        self.ready = ko.observable(false);
+
+        // Apply extend entity
+        _.extend(self.entity(), options.extendEntity());
+
+        _.forEach(objType.fields, function (item) {
+            _.extend(item, {
+                value: ko.observable().extend({
+                    pattern: {
+                        message: 'invalid value',
+                        params: item.regex
+                    }
+                })
+            });
+            if (item.fieldType == Enums.fieldType.lookUp) {
+                _.extend(item, {
+                    value: item.multiple ? ko.observableArray(item.defaultValue) : ko.observable(item.defaultValue),
+                    options: LookUps.findOne({
+                        name: item.lookUpName
+                    }).items,
+                })
+            }
+        });
+
+        aux[objType.objName] = ko.observableArray(objType.fields)
+
+        //relations
+        self.relations = ko.observableArray([]);
+        Meteor.call('getShowInAddRelations', objType.objName, function (err, result) {
+            _.each(result, function (r) {
+                self.relations.push({
+                    relation: r,
+                    data: ko.meteor.find(window[r.target.collection], r.target.query),
+                    value: ko.observable(null)
+                });
+            })
+
+            self.ready(true);
+        });
+
+        self.add = function () {
+            if (!self.entity.isValid()) {
+                self.entity.errors.showAllMessages();
+                return;
+            };
+            var relNames = _.map(self.relations(), function (r) {
+                return r.relation.name;
+            });
+            var relValues = _.map(self.relations(), function (r) {
+                if (r.value()) return r.value()._id();
+            });
+            _.extend(self.entity(), _.object(relNames, relValues));
+
+            var fields = self.entity()[self.objTypeName()]();
+            delete self.entity()[self.objTypeName()];
+            self.entity()[self.objTypeName()] = {};
+            _.forEach(fields, function (field) {
+                self.entity()[self.objTypeName()][field.name] = field.value() || field.defaultValue;
+            })
+
+            options.addCallback.call(this, self.entity);
+        }
     }
 })
 

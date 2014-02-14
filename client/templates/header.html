@@ -122,7 +122,7 @@
                                 <span>All</span>
                             </a>
                         </li>
-                        <!-- ko foreach: objTypes -->
+                        <!-- ko foreach: contactableObjTypes -->
                         <li>
                             <a data-bind="attr: {href: '/contactables/' + objName().toLowerCase()}">
                                 <span data-bind="text: objName"></span>
@@ -139,12 +139,28 @@
 	</a>
 </li>
 -->
-                <li id="jobsNav" class="jobs">
+                <li id="jobsNav" class="submenu jobs">
                     <a href="/jobs">
                         <i class="icon-briefcase"></i>
                         <span>Jobs</span>
+                        <i class="arrow fa fa-chevron-right"></i>
                     </a>
+                    <ul>
+                        <li>
+                            <a href="/jobs">
+                                <span>All</span>
+                            </a>
+                        </li>
+                        <!-- ko foreach: jobObjTypes -->
+                        <li>
+                            <a data-bind="attr: {href: '/jobs/' + objName().toLowerCase()}">
+                                <span data-bind="text: objName"></span>
+                            </a>
+                        </li>
+                        <!-- /ko -->
+                    </ul>
                 </li>
+
                 <li id="dealsNav" class="deals" data-bind="visible: $data.showSales">
                     <a href="/deals">
                         <i class="icon-pop-corn"></i>
