@@ -123,6 +123,27 @@ Meteor.subscribe('userData');
 Roles = new Meteor.Collection("roles");
 Meteor.subscribe('roles');
 
+/*
+ * extended subscribe
+ */
+var extendedSubscribe = function (colectionName, handler) {
+    handler = Meteor.subscribe(colectionName, function () {
+        _.forEach(handler.observers, function (cb) {
+            cb();
+        });
+    });
+    handler.observers = [];
 
-//Test = new Meteor.Collection("test");
-//Meteor.subscribe('test');
+    handler.wait = function (cb) {
+        if (this.ready())
+            cb();
+        else
+            this.observers.push(cb);
+    }
+}
+/*
+ * Tasks
+ */
+Tasks = new Meteor.Collection("tasks");
+var TasksHandler = {};
+extendedSubscribe("tasks", TasksHandler);

@@ -33,17 +33,36 @@ var executeBinding = function (vm, view) {
 }
 
 Composer.showModal = function (templateName, parameter) {
+    //    debugger;
     var body = $('body');
+    var host = body.find(".modal-host")[0];
+    if (!host) {
+        host = $('<div class="modal-host"> </div>').appendTo(body);
+    } else {
+        host = $(host);
+    }
+    _.each(host.children(), function (m) {
+        m = $(m);
+        ko.cleanNode(m);
+        m.modal('toggle');
+        m.remove();
+        $('.modal-backdrop').remove();
+    })
 
-    var host = $('<div class="modal-host"></div>').appendTo(body);
     var template = Template[templateName];
     var modal = $(template()).appendTo(host);
 
 
     modal.modal('show');
-    if (Template[templateName].viewmodel)
-        executeBinding(new Template[templateName].viewmodel(parameter), modal);
-
+    if (Template[templateName].viewModel) {
+        var aux = function (parameter) {
+            var vm = Template[templateName].viewModel;
+            return vm.call({
+                modal: modal
+            }, parameter);
+        }
+        executeBinding(new aux(parameter), modal[0]);
+    }
     modal.on('hidden.bs.modal', function (e) {
         ko.cleanNode(this);
         modal.remove();
@@ -96,8 +115,8 @@ var handleError = function (err, viewName) {
         return true;
     }
     if (!document.getElementsByName(viewName)[0]) {
-//        console.err(viewName + ' does not exist');
+        //        console.err(viewName + ' does not exist');
         return;
     }
-//    console.err(err)
+    //    console.err(err)
 }

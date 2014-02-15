@@ -12,13 +12,15 @@ Conversations = new Meteor.Collection("conversations");
 
 Messages = new Meteor.Collection("messages");
 
+Tasks = new Meteor.Collection("tasks");
+
 ObjTypes = new Meteor.Collection("objTypes");
 
 Relations = new Meteor.Collection("relations");
 
 LookUps = new Meteor.Collection("lookUps");
 
-Roles =  new Meteor.Collection("roles");
+Roles = new Meteor.Collection("roles");
 
 
 //Test = new Meteor.Collection("test");
@@ -50,22 +52,22 @@ Roles =  new Meteor.Collection("roles");
 
 
 Collections = {
-	Hierarchies: Hierarchies,
+    Hierarchies: Hierarchies,
 
-	Jobs: Jobs,
+    Jobs: Jobs,
     Deals: Deals,
 
-	Activities: Activities,
+    Activities: Activities,
 
-	Contactables: Contactables,
+    Contactables: Contactables,
 
-    Conversations: Conversations, 
-    
-	Messages: Messages,
+    Conversations: Conversations,
 
-	ObjTypes: ObjTypes,
+    Messages: Messages,
 
-	Relations: Relations,
+    ObjTypes: ObjTypes,
 
-	LookUps: LookUps
+    Relations: Relations,
+
+    LookUps: LookUps
 }

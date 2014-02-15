@@ -1,0 +1,37 @@
+<template name="addTask">
+    <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addTagModal">
+        <div class="modal-dialog" style="width: 50%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">×</a>
+
+                    <h4>Add Taks</h4>
+                </div>
+                <div class="modal-body">
+                    <div data-bind="with: task">
+                        <fieldset>
+                            <label class="col-lg-2 control-label">begin:</label>
+                            <input class="col-lg-8 form-control" type="datetime-local" data-bind="value: moment(begin()).format()" />
+                        </fieldset>
+                        <fieldset>
+                            <label class="col-lg-2 control-label">end:</label>
+                            <input class="col-lg-8 form-control" type="datetime-local" data-bind="value: end" />
+                        </fieldset>
+                        <fieldset>
+                            <label class="col-lg-2 control-label">note:</label>
+                            <input class="col-lg-8 form-control" data-bind="value: note" />
+                        </fieldset>
+                        <fieldset>
+                            <label class="col-lg-2 control-label">assign:</label>
+                            <select class="col-lg-8 form-control" data-bind="options: $parent.users, optionsText: 'username', optionsValue: '_id', selectedOptions: assign" multiple />
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a data-bind="click:add" class="btn btn-success">Add</a>
+                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

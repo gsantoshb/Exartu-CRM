@@ -65,5 +65,10 @@ Router.map(function () {
     this.route('messages', {
         path: '/messages',
         controller: 'ConversationsController'
-    })
+    });
+
+    this.route('tasks', {
+        path: '/tasks',
+        controller: 'TasksController'
+    });
 });
