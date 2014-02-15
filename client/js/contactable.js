@@ -56,6 +56,26 @@ Template.contactable.rendered = function () {
             })
         }
 
+        self.editModeContactableInfo = ko.observable(false);
+        self.editModeContactableInfo.subscribe(function (value) {
+            if (!value) {
+                if (self.editOrganization)
+                    self.editOrganization.load(self.contactable().organization);
+                else
+                    self.editPerson.load(self.contactable().person);
+            }
+        })
+
+        if (self.contactable().person) {
+            self.editPerson = new koPerson();
+            self.editPerson.load(self.contactable().person);
+        }
+
+        if (self.contactable().organization) {
+            self.editOrganization = new koOrganization();
+            self.editOrganization.load(self.contactable().organization);
+        }
+
         self.getTemplateName = function (data) {
             if (data.Employee) return 'employee-template';
             if (data.Customer) return 'customer-template';
@@ -70,6 +90,40 @@ Template.contactable.rendered = function () {
             return Router.current().params.hash || 'home';
         });
 
+        self.updateContactableInformation = function () {
+            var objNameUpdated = '';
+            var objUpdated = {};
+
+            if (self.editOrganization) {
+                objUpdated = self.editOrganization;
+                objNameUpdated = 'organization';
+            } else {
+                objUpdated = self.editPerson;
+                objNameUpdated = 'person';
+            }
+
+            if (!objUpdated.isValid()) {
+                objUpdated.errors.showAllMessages();
+                return;
+            }
+
+            var toJSObj = ko.toJS(objUpdated());
+            _.forEach(_.keys(toJSObj), function (key) {
+                if (_.isFunction(toJSObj[key]))
+                    delete toJSObj[key];
+            });
+
+            var set = {};
+            set['$set'] = {};
+            set['$set'][objNameUpdated] = toJSObj;
+
+            Contactables.update({
+                _id: self.contactable()._id()
+            }, set, function (err, result) {
+                if (!err)
+                    self.editModeContactableInfo(false);
+            });
+        }
 
         return self;
     };

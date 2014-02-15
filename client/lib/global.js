@@ -15,7 +15,17 @@ var koObjectGenerator = function (fields) {
             });
     })
 
-    return ko.observable(p);
+    var koObj = ko.validatedObservable(p);
+    _.extend(koObj, {
+        load: function (obj) {
+            _.forEach(_.keys(koObj()), function (key) {
+                if (obj[key])
+                    koObj()[key](obj[key]());
+            })
+        }
+    });
+
+    return koObj;
 };
 
 koPerson = function () {

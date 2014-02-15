@@ -5,55 +5,80 @@
             <div class="box ">
                 <div class="box-header-2">
                     <div class="box-title">
-                        <i class="icon-information"></i>Info</div>
+                        <i class="icon-information"></i>Info
+                        <span class="pull-right">
+                            <i class="fa fa-pencil" data-bind="style: {color: $root.editModeContactableInfo()? '#2886c4': 'grey', cursor: 'pointer'}, click: function() { $root.editModeContactableInfo(!$root.editModeContactableInfo())}" />
+                        </span>
+                    </div>
                 </div>
                 <div class="box-content-md">
                     <div data-bind="if: $data.person">
-                        <div data-bind="with: $data.person">
-                            <p>
-                                <strong>Person</strong>
+                        <p>
+                            <strong>Person</strong>
+                        </p>
+                        <div data-bind="with: $root.editPerson">
+                            <p data-bind="template: {name: 'display-property', data: {name: 'First Name', value: firstName, editMode: $root.editModeContactableInfo} }">
                             </p>
-                            <p data-bind="template: {name: 'display-property', data: {name: 'First Name', value: firstName} }">
+                            <p ata-bind="template: {name: 'display-property', data: {name: 'Middle Name', value: middleName, editMode: $root.editModeContactableInfo} }">
                             </p>
-                            <p data-bind="template: {name: 'display-property', data: {name: 'Middle Name', value: middleName} }">
+                            <p data-bind="template: {name: 'display-property', data: {name: 'Last Name', value: lastName, editMode: $root.editModeContactableInfo} }">
                             </p>
-                            <p data-bind="template: {name: 'display-property', data: {name: 'Last Name', value: lastName} }">
+                            <p data-bind="template: {name: 'display-property', data: {name: 'Job Title', value: jobTitle, editMode: $root.editModeContactableInfo} }">
                             </p>
-                            <p data-bind="template: {name: 'display-property', data: {name: 'Job Title', value: jobTitle} }">
+                            <p data-bind="template: {name: 'display-property', data: {name: 'Salutation', value: salutation, editMode: $root.editModeContactableInfo} }">
                             </p>
-                            <p data-bind="template: {name: 'display-property', data: {name: 'Salutation', value: salutation} }">
-                            </p>
-                            <!--                            <a class="btn btn-default btn-block btn-md" href="#">Read more</a>-->
-
                         </div>
                     </div>
                     <div data-bind="if: $data.organization">
-                        <div data-bind="with: $data.organization">
-                            <p>
-                                <strong>Organization</strong>
-                            </p>
-                            <p data-bind="template: {name: 'display-property', data: {name: 'Organization Name', value: organizationName} }">
-                            </p>
+                        <p>
+                            <strong>Organization</strong>
+                        </p>
 
-
+                        <div data-bind="with: $root.editOrganization ">
+                            <p data-bind="template: {name: 'display-property', data: {name: 'Organization Name', value: organizationName, editMode: $root.editModeContactableInfo} }">
+                            </p>
                         </div>
                     </div>
-
                 </div>
-                <!-- /.box-content-md -->
+
+                <!-- ko if: $root.editModeContactableInfo -->
+                <div class="box-header-2" style="height: 60px">
+                    <div class="pull-right">
+                        <span class="btn btn-default" data-bind="click: function(){ return $root.editModeContactableInfo(false); }">
+                            Cancel
+                        </span>
+                        <span class="btn btn-info" data-bind="click: function(){ return $root.updateContactableInformation(); }">
+                            Save
+                        </span>
+                    </div>
+                </div>
+                <!-- /ko -->
             </div>
-            <!-- /.box -->
+            <!-- /.box-content-md -->
         </div>
+        <!-- /.box -->
         <div class="col-md-8 col-lg-8">
             <div data-bind="template: {name: $parent.getTemplateName($data), data: $parent.getObjTypeData($data)}"></div>
         </div>
         <!-- /.col-lg-8 -->
-
     </div>
+
     <div id="display-property" data-bind="if: name" style="display:none">
+        <!-- ko if: !$data.editMode || !$data.editMode() -->
         <small data-bind="text: name + ': '"></small>
         <span data-bind="text: value"></span>
+        <!-- /ko -->
+        <!-- ko if: $data.editMode -->
+        <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
+            <small class="control-label" data-bind="text: name"></small>
+            <div class="col-lg-10">
+                <input class="form-control" type="text" placeholder="" data-bind="value: value" />
+                <span class="text-danger" data-bind="validationMessage: value"></span>
+            </div>
+        </div>
+        <!-- /ko -->
     </div>
+
     {{>obj-type-template}}
     <!-- /.row -->
 </template>
