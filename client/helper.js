@@ -229,6 +229,9 @@ _.extend(helper, {
         var type = ObjTypes.findOne({
             objName: entity.objNameArray[0]
         });
+        if (!type) {
+            return defaultIcon;
+        }
         return _.findWhere(icons, {
             name: type.style.icon
         }).value;
@@ -284,7 +287,7 @@ _.extend(helper, {
 
         modal.modal('show');
         if (Template[templateName].viewmodel) {
-            helper.applyBindings(new Template[templateName].viewmodel(parameter,callname), view);
+            helper.applyBindings(new Template[templateName].viewmodel(parameter, callname), view);
         };
 
         modal.on('hidden.bs.modal', function (e) {
