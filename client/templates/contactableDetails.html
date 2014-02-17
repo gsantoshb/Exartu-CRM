@@ -58,7 +58,7 @@
         </div>
         <!-- /.box -->
         <div class="col-md-8 col-lg-8">
-            <div data-bind="template: {name: $parent.getTemplateName($data), data: $parent.getObjTypeData($data)}"></div>
+            <div data-bind="template: { name: $parent.getTemplateName($data), data: { objType: $root.editObjType, editMode: $root.editModeContactableObjType, edit: $root.updateContactableObjType } }"></div>
         </div>
         <!-- /.col-lg-8 -->
     </div>
