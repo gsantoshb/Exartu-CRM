@@ -29,7 +29,7 @@ ContactablesController = RouteController.extend({
     },
 
 });
-Template.contactables.waitOn = 'ContactableHandler';
+Template.contactables.waitOn = ['ContactableHandler', 'ObjTypesHandler'];
 
 Template.contactables.viewModel = function () {
     var self = {};
