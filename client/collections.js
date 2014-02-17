@@ -1,3 +1,25 @@
+/*
+ * extended subscribe
+ */
+var extendedSubscribe = function (colectionName, handlerName) {
+    //    debugger;
+    var handler = {};
+    handler = Meteor.subscribe(colectionName, function () {
+        _.forEach(handler.observers, function (cb) {
+            cb('colectionName');
+        });
+    });
+    handler.observers = [];
+
+    handler.wait = function (cb) {
+        if (this.ready())
+            cb();
+        else
+            this.observers.push(cb);
+    }
+    window[handlerName] = handler;
+}
+
 Contactables = new Meteor.Collection("contactables", {
     transform: function (contactable) {
         if (contactable.person)
@@ -10,18 +32,9 @@ Contactables = new Meteor.Collection("contactables", {
         return contactable;
     },
 });
-ContactableHandler = Meteor.subscribe('contactables', function () {
-    _.forEach(ContactableHandler.observers, function (cb) {
-        cb();
-    });
-});
-ContactableHandler.observers = [];
-ContactableHandler.wait = function (cb) {
-    if (this.ready())
-        cb();
-    else
-        this.observers.push(cb);
-}
+
+extendedSubscribe('contactables', 'ContactableHandler');
+
 
 Jobs = new Meteor.Collection("jobs", {
     transform: function (job) {
@@ -67,16 +80,16 @@ DealHandler.wait = function (cb) {
  * Messages
  */
 Messages = new Meteor.Collection("messages");
-Meteor.subscribe('messages', function () {
+MessagesHandler = Meteor.subscribe('messages', function () {
     _.forEach(MessagesHandler.observers, function (cb) {
         cb();
     });
 });
-MessagesHandler = Meteor.subscribe('contactables', function () {
-    _.forEach(ContactableHandler.observers, function (cb) {
-        cb();
-    });
-});
+//MessagesHandler = Meteor.subscribe('contactables', function () {
+//    _.forEach(ContactableHandler.observers, function (cb) {
+//        cb();
+//    });
+//});
 MessagesHandler.observers = [];
 MessagesHandler.wait = function (cb) {
     if (this.ready())
@@ -112,8 +125,7 @@ Meteor.subscribe('conversations');
 Activities = new Meteor.Collection("activities");
 Meteor.subscribe('activities');
 
-ObjTypes = new Meteor.Collection("objTypes");
-Meteor.subscribe('objTypes');
+
 
 LookUps = new Meteor.Collection("lookUps");
 Meteor.subscribe('lookUps');
@@ -123,24 +135,7 @@ Meteor.subscribe('userData');
 Roles = new Meteor.Collection("roles");
 Meteor.subscribe('roles');
 
-/*
- * extended subscribe
- */
-var extendedSubscribe = function (colectionName, handler) {
-    handler = Meteor.subscribe(colectionName, function () {
-        _.forEach(handler.observers, function (cb) {
-            cb();
-        });
-    });
-    handler.observers = [];
 
-    handler.wait = function (cb) {
-        if (this.ready())
-            cb();
-        else
-            this.observers.push(cb);
-    }
-}
 /*
  * Tasks
  */
@@ -158,5 +153,9 @@ Tasks = new Meteor.Collection("tasks", {
         return task;
     }
 });
-var TasksHandler = {};
-extendedSubscribe("tasks", TasksHandler);
+extendedSubscribe("tasks", 'TasksHandler');
+/*
+ * objTypes
+ */
+ObjTypes = new Meteor.Collection("objTypes");
+extendedSubscribe('objTypes', 'ObjTypesHandler');
