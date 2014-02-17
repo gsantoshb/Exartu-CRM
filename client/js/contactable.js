@@ -56,26 +56,6 @@ Template.contactable.rendered = function () {
             })
         }
 
-        self.editModeContactableInfo = ko.observable(false);
-        self.editModeContactableInfo.subscribe(function (value) {
-            if (!value) {
-                if (self.editOrganization)
-                    self.editOrganization.load(self.contactable().organization);
-                else
-                    self.editPerson.load(self.contactable().person);
-            }
-        })
-
-        if (self.contactable().person) {
-            self.editPerson = new koPerson();
-            self.editPerson.load(self.contactable().person);
-        }
-
-        if (self.contactable().organization) {
-            self.editOrganization = new koOrganization();
-            self.editOrganization.load(self.contactable().organization);
-        }
-
         self.getTemplateName = function (data) {
             if (data.Employee) return 'employee-template';
             if (data.Customer) return 'customer-template';
@@ -90,24 +70,15 @@ Template.contactable.rendered = function () {
             return Router.current().params.hash || 'home';
         });
 
-        self.updateContactableInformation = function () {
-            var objNameUpdated = '';
-            var objUpdated = {};
+        // Edit contactable
 
-            if (self.editOrganization) {
-                objUpdated = self.editOrganization;
-                objNameUpdated = 'organization';
-            } else {
-                objUpdated = self.editPerson;
-                objNameUpdated = 'person';
-            }
-
-            if (!objUpdated.isValid()) {
-                objUpdated.errors.showAllMessages();
+        self.updateContactable = function (options, callback) {
+            if (!options.objUpdated.isValid()) {
+                options.objUpdated.errors.showAllMessages();
                 return;
             }
 
-            var toJSObj = ko.toJS(objUpdated());
+            var toJSObj = ko.toJS(options.objUpdated());
             _.forEach(_.keys(toJSObj), function (key) {
                 if (_.isFunction(toJSObj[key]))
                     delete toJSObj[key];
@@ -115,18 +86,83 @@ Template.contactable.rendered = function () {
 
             var set = {};
             set['$set'] = {};
-            set['$set'][objNameUpdated] = toJSObj;
+            set['$set'][options.objNameUpdated] = toJSObj;
 
             Contactables.update({
                 _id: self.contactable()._id()
             }, set, function (err, result) {
                 if (!err)
-                    self.editModeContactableInfo(false);
+                    callback.call();
             });
+        };
+
+        // Edit contactable's general information (person or organization details)
+
+        self.editModeContactableInfo = ko.observable(false);
+        self.editModeContactableInfo.subscribe(function (value) {
+            if (!value) {
+                if (self.editOrganization)
+                    self.editOrganization.load(self.contactable().organization);
+                else
+                    self.editPerson.load(self.contactable().person);
+            }
+        });
+
+        if (self.contactable().person) {
+            self.editPerson = new koPerson();
+            self.editPerson.load(self.contactable().person);
         }
+
+        if (self.contactable().organization) {
+            self.editOrganization = new koOrganization();
+            self.editOrganization.load(self.contactable().organization);
+        }
+
+        self.updateContactableInformation = function () {
+            var options = {};
+
+            if (self.editOrganization) {
+                options.objUpdated = self.editOrganization;
+                options.objNameUpdated = 'organization';
+            } else {
+                options.objUpdated = self.editPerson;
+                options.objNameUpdated = 'person';
+            }
+
+            self.updateContactable(options, function () {
+                self.editModeContactableInfo(false);
+            })
+        };
+
+        // Edit objType
+
+        self.editModeContactableObjType = ko.observable(false);
+        self.editModeContactableObjType.subscribe(function (value) {
+            if (!value)
+                self.editObjType.load(self.contactable()[self.contactable().objNameArray()[0]]);
+        });
+
+        var objType = ObjTypes.findOne({
+            objName: self.contactable().objNameArray()[0]
+        });
+
+        self.editObjType = koObjectGenerator(objType.fields);
+        self.editObjType.load(self.contactable()[self.contactable().objNameArray()[0]]);
+
+        self.updateContactableObjType = function () {
+            var options = {
+                objUpdated: self.editObjType,
+                objNameUpdated: self.contactable().objNameArray()[0],
+            }
+
+            self.updateContactable(options, function () {
+                self.editModeContactableObjType(false);
+            });
+        };
 
         return self;
     };
+
     helper.applyBindings(vm, 'contactableVM', ContactableHandler);
 };
 

@@ -4,35 +4,65 @@
             <div class="box ">
                 <div class="box-header-2">
                     <div class="box-title">
-                        <i data-bind="attr:{class:helper.getIconForObjName('Employee')}"></i>Employee</div>
+                        <i data-bind="attr:{class:helper.getIconForObjName('Employee')}"></i>Employee
+                        <span class="pull-right">
+                            <i class="fa fa-pencil" data-bind="style: {color: editMode()? '#2886c4': 'grey', cursor: 'pointer'}, click: function() { editMode(!editMode())}" />
+                        </span>
+                    </div>
                 </div>
-                <div class="box-content-md">
-                    <p data-bind="template: {name: 'display-property', data: {name: 'test', value: test} }"></p>
-                    <p data-bind="template: {name: 'display-property', data: {name: 'test2', value: test2} }"></p>
+                <div class="box-content-md" data-bind="with: objType">
+                    <p data-bind="template: {name: 'display-property', data: {name: 'test', value: test, editMode: $parent.editMode} }"></p>
+                    <p data-bind="template: {name: 'display-property', data: {name: 'test2', value: test2, editMode: $parent.editMode} }"></p>
                 </div>
+                <div data-bind="template: { name:'editActions-template', data: { editMode: editMode, edit: edit } }"></div>
             </div>
         </div>
         <div style="display:none" id="customer-template">
             <div class="box ">
                 <div class="box-header-2">
                     <div class="box-title">
-                        <i data-bind="attr:{class:helper.getIconForObjName('Customer')}"></i>Customer</div>
+                        <i data-bind="attr:{class:helper.getIconForObjName('Customer')}"></i>Customer
+                        <span class="pull-right">
+                            <i class="fa fa-pencil" data-bind="style: {color: editMode()? '#2886c4': 'grey', cursor: 'pointer'}, click: function() { editMode(!editMode())}" />
+                        </span>
+                    </div>
                 </div>
-                <div class="box-content-md">
-                    <p data-bind="template: {name: 'display-property', data: {name: 'department', value: department} }"></p>
+                <div class="box-content-md" data-bind="with: objType">
+                    <p data-bind="template: {name: 'display-property', data: {name: 'department', value: department, editMode: $parent.editMode} }"></p>
                 </div>
+                <div data-bind="template: { name:'editActions-template', data: { editMode: editMode, edit: edit } }"></div>
             </div>
         </div>
         <div style="display:none" id="contact-template">
             <div class="box ">
                 <div class="box-header-2">
                     <div class="box-title">
-                        <i data-bind="attr:{class:helper.getIconForObjName('Contact')}"></i>Contact</div>
+                        <i data-bind="attr:{class:helper.getIconForObjName('Contact')}"></i>Contact
+                        <span class="pull-right">
+                            <i class="fa fa-pencil" data-bind="style: {color: editMode()? '#2886c4': 'grey', cursor: 'pointer'}, click: function() { editMode(!editMode())}" />
+                        </span>
+                    </div>
                 </div>
-                <div class="box-content-md">
-                    <p data-bind="template: {name: 'display-property', data: {name: 'customer', value: customer} }"></p>
+                <div class="box-content-md" data-bind="with: objType">
+                    <p data-bind="template: {name: 'display-property', data: {name: 'customer', value: customer, editMode: $parent.editMode} }"></p>
+                </div>
+                <div data-bind="template: { name:'editActions-template', data: { editMode: editMode, edit: edit } }"></div>
+            </div>
+        </div>
+
+        <div style="display:none" id="editActions-template">
+            <!-- ko if: $data.editMode -->
+            <div class="box-header-2" style="height: 60px">
+                <div class="pull-right">
+                    <span class="btn btn-default" data-bind="click: function(){ return $data.editMode(false); }">
+                        Cancel
+                    </span>
+                    <span class="btn btn-info" data-bind="click: function(){ return $data.edit(); }">
+                        Save
+                    </span>
                 </div>
             </div>
+            <!-- /ko -->
         </div>
     </div>
 </template>

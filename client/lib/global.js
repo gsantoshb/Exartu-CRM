@@ -1,4 +1,4 @@
-var koObjectGenerator = function (fields) {
+koObjectGenerator = function (fields) {
     var p = {};
     _.forEach(fields, function (field) {
         p[field.name] = ko.observable(field.defaultValue);
