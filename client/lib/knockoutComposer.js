@@ -26,7 +26,9 @@ Meteor.startup(function () {
 var executeBinding = function (vm, view) {
 
     try {
-        ko.applyBindings(vm, view);
+        if (!ko.dataFor(view))
+            ko.applyBindings(vm, view);
+
     } catch (err) {
         handleError(err);
     }
@@ -75,13 +77,45 @@ Composer.composeTemplate = function (templateName, context) {
 
     if (Template[templateName].waitOn) {
         var waitOn = Template[templateName].waitOn;
-        if (typeof waitOn == typeof 'string') {
-            waitOn = window[waitOn];
+        if (typeof waitOn == typeof[]) {
+            //            console.dir(waitOn);
+            var length = waitOn.length;
+            waitOn = _.map(waitOn, function (item) {
+                console.log(item);
+                console.dir(window[item]);
+                return window[item];
+
+            });
+            //            console.dir(waitOn.length);
+            _.each(waitOn, function (item) {
+                //                console.log(item);
+                var finished = []
+                item.wait(function (colectionId) {
+
+                    if (!_.contains(finished, colectionId)) {
+                        finished.push(colectionId);
+                        length = length - 1;
+                    }
+                    //                    debugger;
+                    if (length == 0) {
+                        //                        if (ObjTypes.find().fetch() == 0) {
+                        //                        debugger;
+                        //                        }
+                        var vm = Template[templateName].viewModel.call(this);
+                        executeBinding(vm, templateInstance);
+                    }
+                })
+            })
+
+        } else {
+            if (typeof waitOn == typeof 'string') {
+                waitOn = window[waitOn];
+            }
+            waitOn.wait(function () {
+                var vm = Template[templateName].viewModel.call(this);
+                executeBinding(vm, templateInstance);
+            });
         }
-        waitOn.wait(function () {
-            var vm = Template[templateName].viewModel.call(this);
-            executeBinding(vm, templateInstance);
-        });
     } else {
         executeBinding(Template[templateName].viewModel.call(this), templateInstance);
     }
