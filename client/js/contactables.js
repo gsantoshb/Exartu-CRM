@@ -33,10 +33,13 @@ Template.contactables.waitOn = 'ContactableHandler';
 
 Template.contactables.viewModel = function () {
     var self = {};
+    var searchFields = ['person.firstName', 'person.lastName', 'person.middleName', 'organization.organizationName'];
+    self.searchString = ko.observable();
     self.ready = ko.observable(false);
     self.includeInacives = filters().inactives;
     self.tags = filters().tags;
     self.tag = ko.observable();
+
     var query = ko.computed(function () {
         var q = {};
         var f = ko.toJS(filters);
@@ -51,6 +54,21 @@ Template.contactables.viewModel = function () {
         if (!f.inactives) {
             q.inactive = {
                 $ne: true
+            };
+        }
+        if (self.searchString()) {
+            var searchQuery = [];
+            _.each(searchFields, function (field) {
+                var aux = {};
+                aux[field] = {
+                    $regex: self.searchString()
+                }
+                searchQuery.push(aux);
+            });
+            q = {
+                $and: [q, {
+                    $or: searchQuery
+                }]
             };
         }
         return q;
