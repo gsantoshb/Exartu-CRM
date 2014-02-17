@@ -144,6 +144,19 @@ var extendedSubscribe = function (colectionName, handler) {
 /*
  * Tasks
  */
-Tasks = new Meteor.Collection("tasks");
+Tasks = new Meteor.Collection("tasks", {
+    transform: function (task) {
+        task.user = Meteor.users.findOne({
+            _id: task.userId
+        });
+        task.assignedUsers = _.map(task.assign, function (userId) {
+            return Meteor.users.findOne({
+                _id: task.userId
+            });
+        })
+
+        return task;
+    }
+});
 var TasksHandler = {};
 extendedSubscribe("tasks", TasksHandler);

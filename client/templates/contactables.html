@@ -24,6 +24,7 @@
                                     <h4>
                                         <strong>Filters</strong>
                                     </h4>
+                                    <!--                                    <input data-bind="value: searchString, valueUpdate: 'afterkeydown'" />-->
                                     <div class="form-group">
                                         <div class="checkbox">
                                             <label>
@@ -35,7 +36,8 @@
                                     <div class="form-group">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox">Only recent week
+                                                <input type="checkbox" data-bind="checked: onlyRecent">Only recent
+                                                <select data-bind="options: timeLimits, optionsText: 'name', value: selectedLimit, optionsValue: 'time'"></select>
                                             </label>
                                         </div>
                                     </div>

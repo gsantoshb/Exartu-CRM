@@ -6,6 +6,7 @@ Accounts.onCreateUser(function (options, user) {
         if (user.services.google) {
             //todo: check if the account is already in the database
             userEmail = user.services.google.email;
+            user.username = user.services.google.name;
             user.emails = [{
                 "address": userEmail,
                 "verified": true

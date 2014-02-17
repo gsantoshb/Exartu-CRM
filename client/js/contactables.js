@@ -33,10 +33,28 @@ Template.contactables.waitOn = 'ContactableHandler';
 
 Template.contactables.viewModel = function () {
     var self = {};
+    var searchFields = ['person.firstName', 'person.lastName', 'person.middleName', 'organization.organizationName'];
+    self.searchString = ko.observable();
     self.ready = ko.observable(false);
     self.includeInacives = filters().inactives;
+    self.onlyRecent = ko.observable(false);
     self.tags = filters().tags;
     self.tag = ko.observable();
+    self.selectedLimit = ko.observable();
+    self.timeLimits = ko.observableArray([{
+        name: 'day',
+        time: 24 * 60 * 60 * 1000
+    }, {
+        name: 'week',
+        time: 7 * 24 * 60 * 60 * 1000
+    }, {
+        name: 'month',
+        time: 30 * 24 * 60 * 60 * 1000
+    }, {
+        name: 'year',
+        time: 365 * 24 * 60 * 60 * 1000
+    }]);
+
     var query = ko.computed(function () {
         var q = {};
         var f = ko.toJS(filters);
@@ -53,6 +71,28 @@ Template.contactables.viewModel = function () {
                 $ne: true
             };
         }
+        if (self.onlyRecent()) {
+            //            debugger;
+            var dateLimit = new Date();
+            q.createdAt = {
+                $gte: dateLimit.getTime() - self.selectedLimit()
+            };
+        }
+        if (self.searchString()) {
+            var searchQuery = [];
+            _.each(searchFields, function (field) {
+                var aux = {};
+                aux[field] = {
+                    $regex: self.searchString()
+                }
+                searchQuery.push(aux);
+            });
+            q = {
+                $and: [q, {
+                    $or: searchQuery
+                }]
+            };
+        }
         return q;
     });
 
@@ -66,8 +106,6 @@ Template.contactables.viewModel = function () {
         if (objType) {
             q.objName = objType.objName;
         };
-        //                console.log('fetching objtypes ');
-        //                console.dir(q);
         return ObjTypes.find(q).fetch();
     });
     self.objName = ko.computed(function () {
