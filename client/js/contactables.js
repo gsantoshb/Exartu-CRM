@@ -98,7 +98,7 @@ Template.contactables.viewModel = function () {
 
     self.entities = ko.meteor.find(Contactables, query);
 
-    self.contactableTypes = ko.computed(function () {
+    var objTypesQuery = ko.computed(function () {
         var q = {
             objGroupType: Enums.objGroupType.contactable
         };
@@ -106,8 +106,12 @@ Template.contactables.viewModel = function () {
         if (objType) {
             q.objName = objType.objName;
         };
-        return ObjTypes.find(q).fetch();
+        return q;
     });
+
+    self.contactableTypes = ko.meteor.find(ObjTypes, objTypesQuery)
+
+
     self.objName = ko.computed(function () {
         if (filters().objType()) {
             return filters().objType().objName + 's';
