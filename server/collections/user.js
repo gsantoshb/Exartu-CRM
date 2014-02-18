@@ -1,7 +1,9 @@
 Accounts.onCreateUser(function (options, user) {
     var hierId = '';
     var userEmail = options.email;
-
+//    console.log('on create user');
+ //    console.dir(user);
+ //    console.dir(options);
     if (user.services) {
         if (user.services.google) {
             //todo: check if the account is already in the database
@@ -15,22 +17,29 @@ Accounts.onCreateUser(function (options, user) {
         }
     }
     if (!options.profile || !options.profile.hierId) {
-        // if there are no hierarchies yet in the db, then this is give this user all roles including systemadministrator
-        if (!Hierarchies.findOne()) {
-            var userRoles = [];
-            var userPermissions = [];
-            _.forEach(Roles.find().fetch(), function (role) {
-                userRoles.push(role.name);
-                userPermissions = userPermissions.concat(role.rolePermissions);
-            });
-            user.roles = userRoles;
-            user.permissions = _.uniq(userPermissions);
-        }
+        var userRoles = [];
+        var userPermissions = [];
+        _.forEach(Roles.find().fetch(), function (role) {
+            userRoles.push(role.name);
+            userPermissions = userPermissions.concat(role.rolePermissions);
+        });
+        user.roles = userRoles;
+        user.permissions = _.uniq(userPermissions);
         hierId = Meteor.call('createHier', {
             name: userEmail.split('@')[0]
         });
     } else
         hierId = options.profile.hierId;
+
+    if (!user.permissions) {
+        var userPermissions = [];
+        _.forEach(options.roles, function (role) {
+            var dbrole = Roles.findOne({
+                name: role
+            });
+            user.permissions = _.uniq(userPermissions.concat(dbrole.rolePermissions));
+        });
+    }
 
     user.hierId = hierId;
 
@@ -116,22 +125,22 @@ Meteor.methods({
             // more information from user
         }
         var userId = Accounts.createUser(options);
-        var userPermissions = [];
-        _.forEach(user.roles, function (role) {
-            var dbrole = Roles.findOne({
-                name: role
-            });
-            userPermissions = _.uniq(userPermissions.concat(dbrole.rolePermissions));
-        });
-
-        Meteor.users.update({
-            _id: userId
-        }, {
-            $set: {
-                roles: user.roles,
-                permissions: userPermissions
-            }
-        });
+        //        var userPermissions = [];
+        //        _.forEach(user.roles, function (role) {
+        //            var dbrole = Roles.findOne({
+        //                name: role
+        //            });
+        //            userPermissions = _.uniq(userPermissions.concat(dbrole.rolePermissions));
+        //        });
+        //
+        //        Meteor.users.update({
+        //            _id: userId
+        //        }, {
+        //            $set: {
+        //                roles: user.roles,
+        //                permissions: userPermissions
+        //            }
+        //        });
         return userId;
     },
     getUserInformation: function (userId) {
