@@ -1,13 +1,10 @@
 <head>
     <title>Exartu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
-    {{#if currentUser }} 
-        {{> header}} 
-        {{> fieldTemplatesDefinition}}
-        {{> relationTemplatesDefinition}}
-    {{/if}}
+    {{#if currentUser }} {{> header}} {{> fieldTemplatesDefinition}} {{> relationTemplatesDefinition}} {{/if}}
 
     <!-- Here is where layouts are rendered	-->
 </body>
