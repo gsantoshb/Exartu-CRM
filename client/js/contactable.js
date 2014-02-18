@@ -102,20 +102,20 @@ Template.contactable.rendered = function () {
         self.editModeContactableInfo.subscribe(function (value) {
             if (!value) {
                 if (self.editOrganization)
-                    self.editOrganization.load(self.contactable().organization);
+                    self.editOrganization().load(self.contactable().organization);
                 else
-                    self.editPerson.load(self.contactable().person);
+                    self.editPerson().load(self.contactable().person);
             }
         });
 
         if (self.contactable().person) {
             self.editPerson = ko.validatedObservable(new koPerson());
-            self.editPerson.load(self.contactable().person);
+            self.editPerson().load(self.contactable().person);
         }
 
         if (self.contactable().organization) {
             self.editOrganization = ko.validatedObservable(new koOrganization());
-            self.editOrganization.load(self.contactable().organization);
+            self.editOrganization().load(self.contactable().organization);
         }
 
         self.updateContactableInformation = function () {
@@ -139,7 +139,7 @@ Template.contactable.rendered = function () {
         self.editModeContactableObjType = ko.observable(false);
         self.editModeContactableObjType.subscribe(function (value) {
             if (!value)
-                self.editObjType.load(self.contactable()[self.contactable().objNameArray()[0]]);
+                self.editObjType().load(self.contactable()[self.contactable().objNameArray()[0]]);
         });
 
         var objType = ObjTypes.findOne({
@@ -147,7 +147,7 @@ Template.contactable.rendered = function () {
         });
 
         self.editObjType = ko.validatedObservable(koObjectGenerator(objType.fields));
-        self.editObjType.load(self.contactable()[self.contactable().objNameArray()[0]]);
+        self.editObjType().load(self.contactable()[self.contactable().objNameArray()[0]]);
 
         self.updateContactableObjType = function () {
             var options = {
