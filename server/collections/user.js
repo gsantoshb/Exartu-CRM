@@ -1,9 +1,10 @@
 Accounts.onCreateUser(function (options, user) {
     var hierId = '';
     var userEmail = options.email;
-//    console.log('on create user');
- //    console.dir(user);
- //    console.dir(options);
+    var roles = options.roles;
+    console.log('on create user');
+    console.dir(user);
+    console.dir(options);
     if (user.services) {
         if (user.services.google) {
             //todo: check if the account is already in the database
@@ -23,7 +24,7 @@ Accounts.onCreateUser(function (options, user) {
             userRoles.push(role.name);
             userPermissions = userPermissions.concat(role.rolePermissions);
         });
-        user.roles = userRoles;
+        roles = userRoles;
         user.permissions = _.uniq(userPermissions);
         hierId = Meteor.call('createHier', {
             name: userEmail.split('@')[0]
@@ -40,7 +41,7 @@ Accounts.onCreateUser(function (options, user) {
             user.permissions = _.uniq(userPermissions.concat(dbrole.rolePermissions));
         });
     }
-
+    user.roles = roles;
     user.hierId = hierId;
 
 
