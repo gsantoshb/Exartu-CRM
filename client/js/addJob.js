@@ -1,8 +1,10 @@
 Template.addJob.viewmodel = function (objname) {
     var options = {
         self: this,
-        extendEntity: function () {
-            return (new koJob())();
+        extendEntity: function (self) {
+            _.extend(self.entity(), new koJob());
+
+            return self;
         },
         objname: objname,
         addCallback: function (job) {

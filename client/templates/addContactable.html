@@ -9,27 +9,26 @@
                 </div>
                 <div class="modal-body " data-bind="if: $data.ready">
                     <select style="visibility: hidden" data-bind="options: helper.getPersonTypes(), value: selectedType"></select>
-                    <div data-bind="with: contactable">
-                                                {{>addPerson}} {{>addOrganization}}
+                    <!-- Show static fields -->
+                    <div data-bind="with: entity">
+                        {{>addPerson}} {{>addOrganization}}
                         <div id="list" data-bind="visible: $data[$root.objTypeName()]().length > 0, foreach: $data[$root.objTypeName()]">
                             <fieldset data-bind="visible: $data.showInAdd">
                                 <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
                             </fieldset>
                         </div>
                     </div>
-                    <!--
-                    <div data-bind="foreach: relations">
-    <div data-bind="template:{name: helper.relationVM($data.relation), data: $data}">
-    </div>
-</div>
--->
+                    <!-- Show dynamic fields and relations -->
+                    <div data-bind="template: { name: 'showDynamicObjectTemplate', data: $data}"></div>
                 </div>
                 <div class="modal-footer">
-                    <a data-bind="click:addContactable" class="btn btn-success">Add</a>
+                    <a data-bind="click: add" class="btn btn-success">Add</a>
                     <a href="#" class="btn" data-dismiss="modal">Close</a>
                 </div>
             </div>
         </div>
+        <!-- Templates -->
+        {{>showDynamicObjectTemplate}}
     </div>
 </template>
 
