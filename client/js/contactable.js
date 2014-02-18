@@ -109,12 +109,12 @@ Template.contactable.rendered = function () {
         });
 
         if (self.contactable().person) {
-            self.editPerson = new koPerson();
+            self.editPerson = ko.validatedObservable(new koPerson());
             self.editPerson.load(self.contactable().person);
         }
 
         if (self.contactable().organization) {
-            self.editOrganization = new koOrganization();
+            self.editOrganization = ko.validatedObservable(new koOrganization());
             self.editOrganization.load(self.contactable().organization);
         }
 
@@ -146,7 +146,7 @@ Template.contactable.rendered = function () {
             objName: self.contactable().objNameArray()[0]
         });
 
-        self.editObjType = koObjectGenerator(objType.fields);
+        self.editObjType = ko.validatedObservable(koObjectGenerator(objType.fields));
         self.editObjType.load(self.contactable()[self.contactable().objNameArray()[0]]);
 
         self.updateContactableObjType = function () {

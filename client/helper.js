@@ -284,7 +284,7 @@ _.extend(helper, {
 
         modal.modal('show');
         if (Template[templateName].viewmodel) {
-            helper.applyBindings(new Template[templateName].viewmodel(parameter,callname), view);
+            helper.applyBindings(new Template[templateName].viewmodel(parameter, callname), view);
         };
 
         modal.on('hidden.bs.modal', function (e) {
@@ -303,17 +303,18 @@ _.extend(helper, {
         var objType = ObjTypes.findOne({
             objName: options.objname
         });
+
         var aux = {
             objNameArray: ko.observableArray([objType.objName])
         };
-
+        aux[objType.objName] = ko.observableArray(objType.fields)
 
         self.entity = ko.validatedObservable(aux);
         self.objTypeName = ko.observable(objType.objName);
         self.ready = ko.observable(false);
 
         // Apply extend entity
-        _.extend(self.entity(), options.extendEntity());
+        _.extend(self, options.extendEntity(self));
 
         _.forEach(objType.fields, function (item) {
             _.extend(item, {
@@ -334,8 +335,6 @@ _.extend(helper, {
             }
         });
 
-        aux[objType.objName] = ko.observableArray(objType.fields)
-
         //relations
         self.relations = ko.observableArray([]);
         Meteor.call('getShowInAddRelations', objType.objName, function (err, result) {
@@ -351,7 +350,7 @@ _.extend(helper, {
         });
 
         self.add = function () {
-            if (!self.entity.isValid()) {
+            if (!self.entity().isValid()) {
                 self.entity.errors.showAllMessages();
                 return;
             };
