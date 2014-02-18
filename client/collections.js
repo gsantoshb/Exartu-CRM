@@ -6,14 +6,14 @@ var extendedSubscribe = function (colectionName, handlerName) {
     var handler = {};
     handler = Meteor.subscribe(colectionName, function () {
         _.forEach(handler.observers, function (cb) {
-            cb('colectionName');
+            cb(colectionName);
         });
     });
     handler.observers = [];
 
     handler.wait = function (cb) {
         if (this.ready())
-            cb();
+            cb(colectionName);
         else
             this.observers.push(cb);
     }
