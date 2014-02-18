@@ -6,31 +6,47 @@
 Composer = {
     displayErrors: true,
     retryBinding: true,
-    errorTemplate: function (msg, element) {
+    errorTemplate: function (msg) {
         return '<div class="alert-danger">' + msg + '</div>';
     }
 }
 
 /*
- * on startup find the templates that has vieModel defined to hook on template rendered and call knocout
+ * on startup find the templates that has vieModel defined to hook on template's rendered and call knocout
  */
 Meteor.startup(function () {
     _.each(_.keys(Template), function (name) {
         if (Template[name].viewModel) {
             Template[name].rendered = function () {
-                Composer.composeTemplate(name, this);
+                Composer.composeTemplate(name, this.firstNode);
             }
         }
     }, {});
 });
+/*
+ * log the error, if it's an extended error and display errors is set on true replace the dom
+ * return true if the dom was replaced
+ */
+var handleError = function (err, viewName) {
+    console.error(err);
+    if (displayErrors) {
+        if (err.originElement) {
+            $(err.originElement).replaceWith(Composer.errorTemplate(err.message));
+            return true;
+        }
+    }
+    return false;
+}
 var executeBinding = function (vm, view) {
-
     try {
-        if (!ko.dataFor(view))
+        if (!ko.dataFor(view)) {
+            //            debugger;
             ko.applyBindings(vm, view);
-
+        }
     } catch (err) {
-        handleError(err);
+        if (handleError(err) && Composer.retryBinding) {
+            executeBinding(vm, view);
+        }
     }
 }
 
@@ -71,86 +87,79 @@ Composer.showModal = function (templateName, parameter) {
     });
 };
 
+/*
+ * compose a template
+ * parameters:
+ *      - templateName
+ *      - domNode: the view instance of the template
+ */
+Composer.composeTemplate = function (templateName, domNode) {
+    /*
+     * get the view model and waitOns
+     */
+    var vm = Template[templateName].viewModel.call(this);
 
-Composer.composeTemplate = function (templateName, context) {
-    var templateInstance = context.firstNode;
-
-    if (Template[templateName].waitOn) {
-        var waitOn = Template[templateName].waitOn;
+    var waitOn = Template[templateName].waitOn;
+    if (waitOn) {
         if (typeof waitOn == typeof[]) {
-            //            console.dir(waitOn);
-            var length = waitOn.length;
-            waitOn = _.map(waitOn, function (item) {
-                console.log(item);
-                console.dir(window[item]);
-                return window[item];
-
+            var aux = waitOn;
+            waitOn = [];
+            _.each(aux, function (item) {
+                if (typeof item == typeof 'string') {
+                    item = window[item];
+                }
+                if (item.wait) {
+                    waitOn.push(item);
+                }
             });
-            //            console.dir(waitOn.length);
-            _.each(waitOn, function (item) {
-                //                console.log(item);
-                var finished = []
-                item.wait(function (colectionId) {
 
+        } else {
+            if (typeof item == typeof 'string')
+                waitOn = window[item];
+            if (!waitOn.wait) {
+                waitOn = undefined;
+            }
+        }
+        Composer.applyBindings(vm, domNode, waitOn);
+    } else {
+        Composer.applyBindings(vm, domNode);
+    }
+}
+/*
+ * applies ko binding beetwen domNade and vm, waiting for the collection handlers in wait on
+ * parameters:
+ *  - vm: js object
+ *  - domNode: a DOM node
+ *  - waitOn (optional): an extended collection handler oan array of it
+ */
+Composer.applyBindings = function (vm, domNode, waitOn) {
+    if (waitOn) {
+        if (typeof waitOn == typeof[]) {
+            /*
+             * subscribe to each collection handler through the wait function.
+             * record the collections that have been completed (this is currently necessary becouse some collections make the callback twice)
+             */
+
+            var length = waitOn.length;
+            var finished = [];
+            _.each(waitOn, function (item) {
+                item.wait(function (colectionId) {
                     if (!_.contains(finished, colectionId)) {
                         finished.push(colectionId);
                         length = length - 1;
                     }
-                    //                    debugger;
                     if (length == 0) {
-                        //                        if (ObjTypes.find().fetch() == 0) {
-                        //                        debugger;
-                        //                        }
-                        var vm = Template[templateName].viewModel.call(this);
-                        executeBinding(vm, templateInstance);
+                        executeBinding(vm, domNode);
                     }
                 })
             })
 
         } else {
-            if (typeof waitOn == typeof 'string') {
-                waitOn = window[waitOn];
-            }
             waitOn.wait(function () {
-                var vm = Template[templateName].viewModel.call(this);
-                executeBinding(vm, templateInstance);
+                executeBinding(vm, domNode);
             });
         }
     } else {
-        executeBinding(Template[templateName].viewModel.call(this), templateInstance);
-    }
-
-};
-Composer.applyBindings = function (vm, view, collectionHandler) {
-    //    var executeBinding = function () {
-    //        var vmAux = typeof (vm) == "function" ? new vm() : vm;
-    //        try {
-    //            ko.applyBindings(vmAux, document.getElementsByName(viewName)[0]);
-    //        } catch (err) {
-    //            handleError(err, viewName);
-    //        }
-    //    }
-    var viewInstance = typeof view == typeof 'string' ? document.getElementsByName(view)[0] : view;
-
-    if (!collectionHandler || !collectionHandler.wait) {
-        var vmAux = typeof (vm) == "function" ? new vm() : vm;
-        executeBinding(vmAux, viewInstance);
-    } else {
-        collectionHandler.wait(function () {
-            var vmAux = typeof (vm) == "function" ? new vm() : vm;
-            executeBinding(vmAux, viewInstance);
-        });
-    }
-};
-
-var handleError = function (err, viewName) {
-    if (err.originElement) {
-        $(err.originElement).replaceWith(Composer.errorTemplate(err.message));
-        return true;
-    }
-    if (!document.getElementsByName(viewName)[0]) {
-        //        console.err(viewName + ' does not exist');
-        return;
-    }
-    //    console.err(err)
+        executeBinding(vm, domNode);
+    };
 }
