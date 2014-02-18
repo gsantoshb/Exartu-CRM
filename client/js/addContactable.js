@@ -32,7 +32,10 @@ Template.addContactable.viewmodel = function (objname) {
             self.selectedType.subscribe(function (newval) {
                 self.setSelectedType(newval);
             });
-            self.selectedType(Enums.personType.human);
+            //            debugger;
+            self.selectedType(ObjTypes.findOne({
+                objName: self.objTypeName()
+            }).personType);
 
             return self;
         },

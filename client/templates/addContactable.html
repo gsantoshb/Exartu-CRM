@@ -8,7 +8,7 @@
                     <h4 data-bind="text: objTypeName() + ' add'"></h4>
                 </div>
                 <div class="modal-body " data-bind="if: $data.ready">
-                    <select style="visibility: hidden" data-bind="options: helper.getPersonTypes(), value: selectedType"></select>
+                    <select class="form-control" data-bind="options: helper.getPersonTypes(), value: selectedType"></select>
                     <!-- Show static fields -->
                     <div data-bind="with: entity">
                         {{>addPerson}} {{>addOrganization}}
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <!-- Show dynamic fields and relations -->
-                    <div data-bind="template: { name: 'showDynamicObjectTemplate', data: $data}"></div>
+                    <!--                    <div data-bind="template: { name: 'showDynamicObjectTemplate', data: $data}"></div>-->
                 </div>
                 <div class="modal-footer">
                     <a data-bind="click: add" class="btn btn-success">Add</a>
