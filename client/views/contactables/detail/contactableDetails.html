@@ -63,7 +63,7 @@
         <!-- /.col-lg-8 -->
     </div>
 
-    <div id="display-property" data-bind="if: name" style="display:none">
+    <div id="display-property" data-bind="bind: false" style="display:none">
         <!-- ko if: !$data.editMode || !$data.editMode() -->
         <small data-bind="text: name + ': '"></small>
         <span data-bind="text: value"></span>

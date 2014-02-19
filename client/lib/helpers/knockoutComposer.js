@@ -41,10 +41,10 @@ var handleError = function (err, viewName) {
 }
 var executeBinding = function (vm, view) {
     try {
-        if (!ko.dataFor(view)) {
-            //            debugger;
-            ko.applyBindings(vm, view);
-        }
+        //        if (!ko.dataFor(view)) {
+        //            debugger;
+        ko.applyBindings(vm, view);
+        //        }
     } catch (err) {
         if (handleError(err) && Composer.retryBinding) {
             executeBinding(vm, view);
