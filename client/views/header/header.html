@@ -17,15 +17,20 @@
         </div>
         <div id="user-nav">
             <ul class="btn-group">
-                <li class="btn dropdown" style="margin-right: 20px">
-                    <a href="#">
+                <li class="btn dropdown" id="menu-user" style="margin-right: 20px">
+                    <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle">
                         <span class="user-menu-thumb">
                             {{#if hasPicture}}
                             <img data-bind="attr:{src:picture(26)}" style="heigth: 26px;width: 26px;">{{else}}
                             <img src="assets/user-photo-placeholder.jpg" style="heigth: 26px;width: 26px;" />{{/if}}
                         </span>
-                        {{loginButtons}}
+                        <span data-bind="text: Meteor.user().username"></span>
                     </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/users" data-bind="click: Meteor.logout">Logout</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="btn dropdown" id="menu-messages">
@@ -42,7 +47,7 @@
                                 <a href="/messages">
                                     <i class="fa fa-inbox"></i>Inbox</a>
                             </span>
-<!--
+                            <!--
                             <span class="pull-right">
     <a href="/messages">
         <i class="fa fa-pencil"></i>Write new message</a>
