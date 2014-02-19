@@ -29,7 +29,7 @@ Meteor.startup(function () {
  */
 var handleError = function (err, viewName) {
     console.error(err);
-    if (displayErrors) {
+    if (Composer.displayErrors) {
         if (err.originElement) {
             $(err.originElement).replaceWith(Composer.errorTemplate(err.message));
             return true;
