@@ -28,9 +28,6 @@ Template.header.viewModel = function () {
 };
 
 Template.header.rendered = function () {
-    //    debugger;
-    helper.applyBindings(viewmodel, 'headerVM', MessagesHandler);
-
     var ul = $('#sidebar > ul');
     var ul2 = $('#sidebar li.open ul');
 

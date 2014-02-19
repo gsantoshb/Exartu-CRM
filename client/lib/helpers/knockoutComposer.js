@@ -17,9 +17,11 @@ Composer = {
 Meteor.startup(function () {
     _.each(_.keys(Template), function (name) {
         if (Template[name].viewModel) {
-            Template[name].rendered = function () {
+            Template[name].rendered = _.wrap(Template[name].rendered, function (rendered) {
+                if (rendered)
+                    rendered();
                 Composer.composeTemplate(name, this.firstNode);
-            }
+            });
         }
     }, {});
 });

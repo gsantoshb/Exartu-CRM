@@ -1,4 +1,4 @@
-Template.addContactable.viewmodel = function (objname) {
+Template.addContactable.viewModel = function (objname) {
     var self = this;
 
     var myPerson = new koPerson();
