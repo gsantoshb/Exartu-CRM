@@ -17,4 +17,5 @@ Template.deals.viewModel = function () {
             self.ready(true);
         }
     });
+    return self;
 };
