@@ -44,7 +44,6 @@ Router.map(function () {
         path: '/job/:_id',
         controller: 'JobController'
     });
-    debugger;
     if (Meteor.user() && Meteor.user().permissions && Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) > 0) {
         this.route('deals', {
             path: '/deals',
