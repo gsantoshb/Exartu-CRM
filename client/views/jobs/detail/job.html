@@ -1,10 +1,7 @@
 <template name="job">
     <div class="jobs-page" name="jobVM">
         <div id="content" data-bind="with: job">
-            <div id="content-header">
-                <h1 data-bind="text: displayName"></h1>
-            </div>
-            <div id="breadcrumb">
+            <div id="breadcrumb" class="bradcrumb-top">
                 <a href="#" title="Go to Home" class="tip-bottom">Home</a>
                 <a href="#" class="current">Jobs</a>
             </div>
@@ -13,68 +10,265 @@
                 <div class="col-md-8 col-lg-8">
                     <div class="box">
                         <div class="box-content-lg">
-                            <a class="btn btn-success btn-lg pull-right" href="#">
-                                <i class="icon icon-edit-3"></i>
-                                Edit mode
-                            </a>
-                            <p class="text-muted">January 30</p>
-                            <img src="/assets/logo-google.png">
-                            <hr>
-                            <p>
-                                Tags:
-                                <!-- ko foreach: $data.tags -->
-                                <span class="badge">
-                                    <i class="fa fa-tag"></i>
-                                    <span data-bind="text: $data"></span>
-                                </span>
-                                <!-- /ko -->
-                            </p>
-                            <hr>
+                            <h1 class="top-0" data-bind="text: displayName"></h1>
+                            <h4>Technology > Programming</h4>
                             <br>
-                            <h3>
-                                We’re looking for someone who excels in developing across the entire stack. You will own and drive all aspects of iterating on our web app.
+                            <table class="table table-striped">
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-calendar"></i>Start date:
+                                        <strong>12.10.2014</strong>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-calendar"></i>End date:
+                                        <strong>12.10.2014</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-clock-o"></i>Duration:
+                                        <strong>6 months</strong>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-info-circle"></i>Status:
+                                        <strong>Pending</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <i class="fa fa-globe"></i>Location:
+                                        <strong>Bucharest, Romania</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        Tags:
+                                        <!-- ko foreach: $data.tags -->
+                                        <span class="badge">
+                                            <i class="fa fa-tag"></i>
+                                            <span data-bind="text: $data"></span>
+                                        </span>
+                                        <!-- /ko -->
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--                            <br>-->
+                            <a data-toggle="collapse" href="#description">
+                                description
+                            </a>
+                            <div id="description" class="panel-collapse collapse">
+                                <h3>
+                                    We’re looking for someone who excels in developing across the entire stack. You will own and drive all aspects of iterating on our web app.
+                                    </p>
+                                </h3>
+                                The core of our technology stack is django with jQuery in the front end, so we are looking for a strong Python/django developer and Javascript developer.
                                 </p>
-                            </h3>
-                            The core of our technology stack is django with jQuery in the front end, so we are looking for a strong Python/django developer and Javascript developer.
-                            </p>
-                            <p>
-                                This app is the core of our growing financial services business and we’re proud of its success to date. You will take ownership of this technology and be responsible for its future success.
-                            </p>
-                            <hr>
-                            <h4>
-                                Our top priorities in the next 12 months are:
-                            </h4>
-                            <p>
-                                Iterating on our UI
-                                <br>Increasing automation
-                                <br>Launching a new product
-                                <br>To thrive in this position, you will need experience with:
-                                <br>
-                            </p>
-                            <hr>
-                            <h4>
-                                Agile development methods
-                            </h4>
-                            <p>
-                                Product skills: requirements definition, feature definition, user experience, product roadmaps and product release cycles
-                                <br>Server operations: monitoring, security, updates
-                                <br>Debugging and hotfixes
-                                <br>Testing automation
-                                <br>
-                            </p>
+                                <p>
+                                    This app is the core of our growing financial services business and we’re proud of its success to date. You will take ownership of this technology and be responsible for its future success.
+                                </p>
+                                <hr>
+                                <h4>
+                                    Our top priorities in the next 12 months are:
+                                </h4>
+                                <p>
+                                    Iterating on our UI
+                                    <br>Increasing automation
+                                    <br>Launching a new product
+                                    <br>To thrive in this position, you will need experience with:
+                                    <br>
+                                </p>
+                                <hr>
+                                <h4>
+                                    Agile development methods
+                                </h4>
+                                <p>
+                                    Product skills: requirements definition, feature definition, user experience, product roadmaps and product release cycles
+                                    <br>Server operations: monitoring, security, updates
+                                    <br>Debugging and hotfixes
+                                    <br>Testing automation
+                                    <br>
+                                </p>
 
-                            <p>
-                                We’re looking for someone who is curious to learn the nature of our business, as this is essential to our application’s success. If you are excited by the prospect of gathering business requirements, designing a feature, creating an architecture and ultimately developing and deploying the solution, then this may be a great fit for you!
-                            </p>
+                                <p>
+                                    We’re looking for someone who is curious to learn the nature of our business, as this is essential to our application’s success. If you are excited by the prospect of gathering business requirements, designing a feature, creating an architecture and ultimately developing and deploying the solution, then this may be a great fit for you!
+                                </p>
 
-                            <p>
-                                We’re based in San Francisco, but you may be located anywhere since we all work remotely. This is a full-time position with competitive compensation.
-                            </p>
+                                <p>
+                                    We’re based in San Francisco, but you may be located anywhere since we all work remotely. This is a full-time position with competitive compensation.
+                                </p>
+                                <br>
+                                <!--
+                                <div class="row">
+    <div class="col-lg-7 col-lg-offset-2">
+        <a class="btn btn-success btn-block btn-lg" href="#">
+            <i class="fa fa-caret-square-o-right"></i>Apply to this job</a>
+    </div>
+</div>
+-->
+                                <!-- /.row -->
+
+                            </div>
+                            <!-- /.description -->
                         </div>
                         <!-- /.box-content-lg-->
                     </div>
                     <!-- /.box -->
+                    {{>candidates}}
+
                 </div>
                 <!-- /.col-lg-8-->
+
+                <div class="col-md-4 col-lg-4">
+                    {{>assignment}} {{>customerInfo}}
+                    <!--
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-share"></i>
+                            <strong>Share this listing</strong>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-flag"></i>
+                            <strong>Report this listing</strong>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-link"></i>
+                            <strong>http://exrt.bz/j/19784</strong>
+                        </a>
+                    </div>
+-->
+
+
+                </div>
+                <!-- /.col-lg-4-->
             </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /.content -->
+</template>
+
+
+<template name="customerInfo">
+
+
+</template>
+<template name="similarJobs">
+    <section>
+        <div class="box">
+            <div class="box-header-2">
+                <div class="box-title">
+                    <i class="icon-briefcase"></i>Similar Jobs</div>
+            </div>
+            <ul class="list-type-1">
+                <li>
+                    <div class="thumb-sm item-logo">
+                        <a class="thumb-sm-content" href="#">
+                            <img src="assets/logo-exartu.png" alt="exartu">
+                        </a>
+                    </div>
+                    <div class="list-item-content">
+                        <p class="activity-author">
+                            <a href="#">Javascript Developer</a>
+                        </p>
+                        <div class="text-small">
+                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted">FULLTIME</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="thumb-sm item-logo">
+                        <a class="thumb-sm-content" href="#">
+                            <img src="assets/logo-exartu.png" alt="exartu">
+                        </a>
+                    </div>
+                    <div class="list-item-content">
+                        <p class="activity-author">
+                            <a href="#">Javascript Developer</a>
+                        </p>
+                        <div class="text-small">
+                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted">FULLTIME</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="thumb-sm item-logo">
+                        <a class="thumb-sm-content" href="#">
+                            <img src="assets/logo-exartu.png" alt="exartu">
+                        </a>
+                    </div>
+                    <div class="list-item-content">
+                        <p class="activity-author">
+                            <a href="#">Javascript Developer</a>
+                        </p>
+                        <div class="text-small">
+                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted">FULLTIME</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="thumb-sm item-logo">
+                        <a class="thumb-sm-content" href="#">
+                            <img src="assets/logo-exartu.png" alt="exartu">
+                        </a>
+                    </div>
+                    <div class="list-item-content">
+                        <p class="activity-author">
+                            <a href="#">Javascript Developer</a>
+                        </p>
+                        <div class="text-small">
+                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted">FULLTIME</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="thumb-sm item-logo">
+                        <a class="thumb-sm-content" href="#">
+                            <img src="assets/logo-exartu.png" alt="exartu">
+                        </a>
+                    </div>
+                    <div class="list-item-content">
+                        <p class="activity-author">
+                            <a href="#">Javascript Developer</a>
+                        </p>
+                        <div class="text-small">
+                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted">FULLTIME</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="thumb-sm item-logo">
+                        <a class="thumb-sm-content" href="#">
+                            <img src="assets/logo-exartu.png" alt="exartu">
+                        </a>
+                    </div>
+                    <div class="list-item-content">
+                        <p class="activity-author">
+                            <a href="#">Javascript Developer</a>
+                        </p>
+                        <div class="text-small">
+                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted">FULLTIME</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="thumb-sm item-logo">
+                        <a class="thumb-sm-content" href="#">
+                            <img src="assets/logo-exartu.png" alt="exartu">
+                        </a>
+                    </div>
+                    <div class="list-item-content">
+                        <p class="activity-author">
+                            <a href="#">Javascript Developer</a>
+                        </p>
+                        <div class="text-small">
+                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted">FULLTIME</div>
+                    </div>
+                </li>
+
+            </ul>
+            <!-- /. -->
+        </div>
+        <!-- /.box -->
+    </section>
 </template>
