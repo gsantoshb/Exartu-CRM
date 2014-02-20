@@ -127,8 +127,6 @@ Template.header.rendered = function () {
         });
     }
 
-
-
     // === Tooltips === //
     $('.tip').tooltip();
     $('.tip-left').tooltip({
@@ -177,7 +175,9 @@ Template.header.rendered = function () {
         $('html').getNiceScroll().resize();
     });
 
-    $(document).on('click', '.submenu > a', function (e) {
+    var submenuLink = $('.submenu > a');
+
+    submenuLink.unbind("click").click(function (e) {
         e.preventDefault();
         var submenu = $(this).siblings('ul');
         var li = $(this).parents('li');
