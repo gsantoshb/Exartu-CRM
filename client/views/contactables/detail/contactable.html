@@ -18,11 +18,12 @@
                             <strong data-bind="text: displayName"></strong>
                         </h1>
                         <div class="profile-btns ">
-                            <!--
-                            <a class="btn btn-default btn-sm " data-toggle="modal " data-target="#messagesModal ">
-    <i class="fa fa-envelope-o "></i>
-    Send Message</a>
--->
+
+                            <a class="btn btn-default btn-sm " data-bind="click: function () { Composer.showModal( 'sendMessage',$data); } ">
+                                <i class="fa fa-envelope-o "></i>
+                                Send Message
+                            </a>
+
                             <a class="btn btn-default btn-sm " data-toggle="modal " data-bind="click: function () { Composer.showModal( 'addPost', $data._id(),'addContactablePost'); } ">
                                 <i class=" fa fa-pencil "></i>
                                 Write Post
