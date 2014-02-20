@@ -175,7 +175,6 @@ Template.header.rendered = function () {
         $('html').getNiceScroll().resize();
     };
 
-    console.dir($('.submenu > a'));
     $('.submenu > a').on('click', submenuLogic);
 
     $('.go-full-screen').click(function () {
