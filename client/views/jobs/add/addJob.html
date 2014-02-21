@@ -10,7 +10,25 @@
                     <!-- Show static fields -->
                     <div data-bind="with: entity">
                         <fieldset>
-                            <div data-bind="template: { name: 'inStringField', data: {name: 'Public job title', value:$data.publicJobTitle } }" />
+                            <div data-bind="template: { name: 'inStringField', data: {name: 'Public job title', value: $data.publicJobTitle } }" />
+                        </fieldset>
+                        <fieldset>
+                            <div data-bind="template: { name: 'inDateField', data: {name: 'startDate', value: $data.startDate } }" />
+                        </fieldset>
+                        <fieldset>
+                            <div data-bind="template: { name: 'inDateField', data: {name: 'endDate', value: $data.endDate } }" />
+                        </fieldset>
+                        <fieldset>
+                            <div data-bind="template: { name: 'inLookUpField', data: {name: 'industry', value: $data.industry, options: $root.industries } }" />
+                        </fieldset>
+                        <fieldset>
+                            <div data-bind="template: { name: 'inLookUpField', data: {name: 'category', value: $data.category, options: $root.categories } }" />
+                        </fieldset>
+                        <fieldset>
+                            <div data-bind="template: { name: 'inLookUpField', data: {name: 'duration', value: $data.duration, options: $root.durations } }" />
+                        </fieldset>
+                        <fieldset>
+                            <div data-bind="template: { name: 'inLookUpField', data: {name: 'status', value: $data.status,options: $root.statuses } }" />
                         </fieldset>
                     </div>
                     <!-- Show dynamic fields and relations -->

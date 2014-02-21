@@ -35,11 +35,27 @@ Contactables = new Meteor.Collection("contactables", {
 
 extendedSubscribe('contactables', 'ContactableHandler');
 
-
+var getLookUpName = function (lookUpName, code) {
+    //    debugger;
+    var lookUp = LookUps.findOne({
+        name: lookUpName
+    });
+    if (!lookUp)
+        return;
+    var lookUpValue = _.find(lookUp.items, function (item) {
+        return item.code == code;
+    });
+    if (!lookUpValue)
+        return;
+    return lookUpValue.displayName;
+}
 Jobs = new Meteor.Collection("jobs", {
     transform: function (job) {
         job.displayName = job.publicJobTitle;
-
+        job.industryName = getLookUpName('jobIndustry', job.industry);
+        job.categoryName = getLookUpName('jobCategory', job.category);
+        job.durationName = getLookUpName('jobDuration', job.duration);
+        job.statusName = getLookUpName('jobStatus', job.status);
         return job;
     },
 });

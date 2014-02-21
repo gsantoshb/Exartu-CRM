@@ -6,14 +6,13 @@
       "iron-router": {},
       "knockout-client": {},
       "accounts-ui-bootstrap-3": {},
-      "collection-hooks": {},
-      "roles": {}
+      "collection-hooks": {}
     },
     "packages": {
       "bootstrap-3": {
         "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
-        "tag": "v0.3.7",
-        "commit": "5dd0d142c870647b910be80bc777b96f0dd45e5e"
+        "tag": "v3.1.0-1",
+        "commit": "329dccb08bfc18c635676dea600ac9953162cda9"
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",

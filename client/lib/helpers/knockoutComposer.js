@@ -78,7 +78,9 @@ Composer.showModal = function (templateName, parameter) {
         var aux = function (parameter) {
             var vm = Template[templateName].viewModel;
             return vm.call({
-                modal: modal
+                close: function (parameters) {
+                    $(modal).modal('toggle');
+                }
             }, parameter);
         }
         executeBinding(new aux(parameter), modal[0]);

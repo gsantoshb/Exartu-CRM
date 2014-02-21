@@ -1,7 +1,7 @@
 Template.sendMessage.viewModel = function (contactable) {
     contactable = ko.toJS(contactable);
     var thisModal = this.modal;
-    var self = {};
+    var self = this;
     var emailRE = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     self.methods = ko.observableArray(['email']);
@@ -81,7 +81,7 @@ Template.sendMessage.viewModel = function (contactable) {
             if (to && emailRE.test(to))
                 Meteor.call('sendEmail', self.to(), self.subject(), self.text(), function (err, result) {
                     if (!err) {
-                        $(thisModal).modal('toggle');
+                        self.close();
                     } else {}
                 })
             else
