@@ -33,7 +33,7 @@ var icons = [
 ]
 var defaultIcon = 'icon-question-mark';
 
-/*** wraper for ko.applyBindings
+/*** wrapper for ko.applyBindings
 *    vm -> viewModel(obj) to bind
 *    viewName -> string that identifies the DOM that holds view (must exist an element with name="viewName")
 *    collectionHandler(optional) -> Meteor collection handler extended with our wait function. The binding will apply when the collection is ready
