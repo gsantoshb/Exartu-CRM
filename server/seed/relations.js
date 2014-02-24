@@ -53,7 +53,7 @@
            {
                name: 'CustomerJobs',
                obj1: 'Customer',
-               obj2: 'Temporary',
+               obj2: 'job',
                visibilityOn1: {
                    name: 'Jobs',
                    collection: 'Jobs',
@@ -62,6 +62,7 @@
                        min: 0,
                        max: Infinity
                    },
+                   isGroupType: true,
                },
                visibilityOn2: {
                    name: 'Customer',
