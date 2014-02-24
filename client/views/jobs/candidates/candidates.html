@@ -3,144 +3,37 @@
         <div class="box-header-2">
             <div class="box-title">
                 <i class="fa fa-user"></i>Candidates
-                <span class="label label-default">10</span>
+                <span class="label label-default" data-bind="text:candidates().length"></span>
+                <a class="btn btn-success pull-right" data-bind="click: function () { Composer.showModal( 'candidateAdd',$data._id()); } ">
+                    <i class="fa fa-plus "></i>
+                    Add
+                </a>
             </div>
         </div>
         <div class="box-content">
-            <ul class="list-type-1 list-type-1-lg">
+            <ul class="list-type-1 list-type-1-lg" data-bind="foreach: candidates">
                 <li class="clearfix">
                     <div class="thumb">
                         <a class="thumb-content" href="#">
-                            <img src="assets/pic-70x70.jpg" alt="">
+                            <img height="70px" width="70px" src="/assets/user-photo-placeholder.jpg" alt="">
                         </a>
                     </div>
-                    <div class="list-item-content prefix-lg">
+                    <div class="list-item-content prefix-lg" data-bind="with:employeeInfo">
                         <h3 class="bottom-10">
-                            <a href="#">Mike Campbell</a>
+                            <a href="#" data-bind="attr:{href:'/contactable/' +_id()}, text: displayName">Mike Campbell</a>
                         </h3>
                         <div class="bottom-10 box-4 text-normal">
                             New York
                             <span class="pipe">|</span>
                             <i class="fa fa-check"></i>Recommended by:
-                            <strong>Aram Gugusian</strong>
+                            <strong>
+                                <span data-bind="text: $parent.user.username()+ ' (' + $parent.type() + ')'"></span>
+                            </strong>
                         </div>
-                        <div class="bottom-10">
-                            A 18 year user experience and design professional with strong visual communication skills and a proven record of delivering innovative solutions on...
+                        <div class="bottom-10" data-bind="text: $parent.note">
                         </div>
-                        <div CLASS="text-normal bottom-10">
-                            <strong>Skills: PHP, Yii, JS, HTML, CSS</strong>
-                        </div>
-                        <a class="btn btn-sm btn-default" href="#">
-                            <i class="fa fa-envelope-o"></i>mike@gmail.com</a>
-                        <a class="btn btn-sm btn-default" href="#">
-                            <i class="fa fa-phone"></i>555.2232.663</a>
-                    </div>
-                </li>
-                <li class="clearfix">
-                    <div class="thumb">
-                        <a class="thumb-content" href="#">
-                            <img src="assets/pic-70x70.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="list-item-content prefix-lg">
-                        <h3 class="bottom-10">
-                            <a href="#">Mike Campbell</a>
-                        </h3>
-                        <div class="bottom-10 box-4 text-normal">
-                            New York
-                            <span class="pipe">|</span>
-                            <i class="fa fa-check"></i>Recommended by:
-                            <strong>Aram Gugusian</strong>
-                        </div>
-                        <div class="bottom-10">
-                            A 18 year user experience and design professional with strong visual communication skills and a proven record of delivering innovative solutions on...
-                        </div>
-                        <div CLASS="text-normal bottom-10">
-                            <strong>Skills: PHP, Yii, JS, HTML, CSS</strong>
-                        </div>
-                        <a class="btn btn-sm btn-default" href="#">
-                            <i class="fa fa-envelope-o"></i>mike@gmail.com</a>
-                        <a class="btn btn-sm btn-default" href="#">
-                            <i class="fa fa-phone"></i>555.2232.663</a>
-                    </div>
-                </li>
-                <li class="clearfix">
-                    <div class="thumb">
-                        <a class="thumb-content" href="#">
-                            <img src="assets/pic-70x70.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="list-item-content prefix-lg">
-                        <h3 class="bottom-10">
-                            <a href="#">Mike Campbell</a>
-                        </h3>
-                        <div class="bottom-10 box-4 text-normal">
-                            New York
-                            <span class="pipe">|</span>
-                            <i class="fa fa-check"></i>Recommended by:
-                            <strong>Aram Gugusian</strong>
-                        </div>
-                        <div class="bottom-10">
-                            A 18 year user experience and design professional with strong visual communication skills and a proven record of delivering innovative solutions on...
-                        </div>
-                        <div CLASS="text-normal bottom-10">
-                            <strong>Skills: PHP, Yii, JS, HTML, CSS</strong>
-                        </div>
-                        <a class="btn btn-sm btn-default" href="#">
-                            <i class="fa fa-envelope-o"></i>mike@gmail.com</a>
-                        <a class="btn btn-sm btn-default" href="#">
-                            <i class="fa fa-phone"></i>555.2232.663</a>
-                    </div>
-                </li>
-                <li class="clearfix">
-                    <div class="thumb">
-                        <a class="thumb-content" href="#">
-                            <img src="assets/pic-70x70.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="list-item-content prefix-lg">
-                        <h3 class="bottom-10">
-                            <a href="#">Mike Campbell</a>
-                        </h3>
-                        <div class="bottom-10 box-4 text-normal">
-                            New York
-                            <span class="pipe">|</span>
-                            <i class="fa fa-check"></i>Recommended by:
-                            <strong>Aram Gugusian</strong>
-                        </div>
-                        <div class="bottom-10">
-                            A 18 year user experience and design professional with strong visual communication skills and a proven record of delivering innovative solutions on...
-                        </div>
-                        <div CLASS="text-normal bottom-10">
-                            <strong>Skills: PHP, Yii, JS, HTML, CSS</strong>
-                        </div>
-                        <a class="btn btn-sm btn-default" href="#">
-                            <i class="fa fa-envelope-o"></i>mike@gmail.com</a>
-                        <a class="btn btn-sm btn-default" href="#">
-                            <i class="fa fa-phone"></i>555.2232.663</a>
-                    </div>
-                </li>
-                <li class="clearfix">
-                    <div class="thumb">
-                        <a class="thumb-content" href="#">
-                            <img src="assets/pic-70x70.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="list-item-content prefix-lg">
-                        <h3 class="bottom-10">
-                            <a href="#">Mike Campbell</a>
-                        </h3>
-                        <div class="bottom-10 box-4 text-normal">
-                            New York
-                            <span class="pipe">|</span>
-                            <i class="fa fa-check"></i>Recommended by:
-                            <strong>Aram Gugusian</strong>
-                        </div>
-                        <div class="bottom-10">
-                            A 18 year user experience and design professional with strong visual communication skills and a proven record of delivering innovative solutions on...
-                        </div>
-                        <div CLASS="text-normal bottom-10">
-                            <strong>Skills: PHP, Yii, JS, HTML, CSS</strong>
+                        <div CLASS="text-normal bottom-10" data-bind="foreach: tags">
+                            <strong data-bind="text: $data"></strong>
                         </div>
                         <a class="btn btn-sm btn-default" href="#">
                             <i class="fa fa-envelope-o"></i>mike@gmail.com</a>

@@ -56,6 +56,16 @@ Jobs = new Meteor.Collection("jobs", {
         job.categoryName = getLookUpName('jobCategory', job.category);
         job.durationName = getLookUpName('jobDuration', job.duration);
         job.statusName = getLookUpName('jobStatus', job.status);
+        _.each(job.candidates, function (candidate) {
+            candidate.employeeInfo = Contactables.findOne({
+                _id: candidate.employee
+            });
+            candidate.user = Meteor.users.findOne({
+                _id: candidate.userId
+            });
+
+        });
+
         return job;
     },
 });

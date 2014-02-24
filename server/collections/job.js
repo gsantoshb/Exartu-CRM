@@ -28,6 +28,7 @@ Meteor.startup(function () {
     Meteor.methods({
         addJob: function (job) {
             if (beforeInsertOrUpdateJob(job)) {
+                job.candidates = [];
                 Jobs.insert(job);
             } else {
                 console.error('Job is not valid')

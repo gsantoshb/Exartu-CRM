@@ -1,0 +1,32 @@
+<template name="candidateAdd">
+    <div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Candidate add</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" data-bind="with: entity">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Employee</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" data-bind="options: $parent.employees,optionsText: 'displayName', optionsValue: '_id', value:employee, optionsCaption: 'Choose...'"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Note</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" data-bind="value:note" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a data-bind="click: add" class="btn btn-success">Add</a>
+                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
