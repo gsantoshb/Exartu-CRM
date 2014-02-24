@@ -35,8 +35,8 @@ validateObjType = function (obj, objType) {
 
     // Validating fields
     var objTypeFields = obj[objType.objName];
-    console.dir(obj);
-    console.log(objType.objName);
+    //    console.dir(obj);
+    //    console.log(objType.objName);
     v = true;
     _.every(objType.fields, function (field) {
         if (objTypeFields[field.name] != undefined) {
@@ -59,8 +59,7 @@ validateObjType = function (obj, objType) {
             {
                 obj1: objType.objName
             }, {
-                $and: 
-                [
+                $and: [
                     {
                         obj2: objType.objName
                     }, {
@@ -70,18 +69,17 @@ validateObjType = function (obj, objType) {
                     }
                 ]
             }, {
-                'visibilityOn1.isGroupType': true,
+                'visibilityOn2.isGroupType': true,
                 obj1: objType.objGroupType
             }, {
-                $and: 
-                [
+                $and: [
                     {
-                        obj2: objType.isGroupType
+                        obj2: objType.objGroupType
                     }, {
-                        $exists: {
-                            visibilityOn2: true
+                        visibilityOn2: {
+                            $exists: true
                         },
-                        'visibilityOn2.isGroupType': true,
+                        //                        'visibilityOn2.isGroupType': true,
                     }
                 ]
             }
@@ -91,10 +89,16 @@ validateObjType = function (obj, objType) {
     //    console.log('relations...');
     //    console.dir(relations);
     _.forEach(relations, function (rel) {
-        var objRel = objType.objName == rel.obj1 ? rel.visibilityOn1 : rel.visibilityOn2;
-        console.log('checking :' + rel.name + ' in ' + objType.objName);
-
+        var objRel = (objType.objName == rel.obj1 || objType.objGroupType == rel.obj1) ? rel.visibilityOn1 : rel.visibilityOn2;
+        //        console.info('rel')
+        //        console.dir(rel);
+        objTypeFields = objRel.isGroupType ? obj : objTypeFields;
+        console.log('checking: ' + rel.name + ' in ' + objType.objName);
+        //        console.dir(objTypeFields);
+        //        console.log(objRel.name);
+        //        console.dir(objTypeFields[objRel.name])
         if (objTypeFields[objRel.name] != undefined) {
+            console.info('calling beforeUpdateRelation');
             v = v && beforeUpdateRelation(obj, rel, objType.objName);
             if (!v) console.error(rel.name + ' is invalid: ');
         } else {

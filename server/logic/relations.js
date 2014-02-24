@@ -4,6 +4,7 @@
  */
 
 beforeUpdateRelation = function (obj, rel, objTypeName) {
+
     if (rel.visibilityOn1) {
         if (!rel.visibilityOn2) {
             return beforeUpdate.oneWay(obj[objTypeName][rel.visibilityOn1.name], rel.visibilityOn1);
@@ -41,6 +42,8 @@ beforeUpdate.oneWay = function (value, rel) {
 }
 
 beforeUpdate.twoWay = function (obj, objTypeField, rel) {
+    //    console.log('two way');
+    //    console.dir(obj)
     var rel1;
     var rel2;
     var targetName;
@@ -49,19 +52,22 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
     if (obj.objNameArray.indexOf(rel.obj1) >= 0) {
         rel1 = rel.visibilityOn1;
         rel2 = rel.visibilityOn2;
-        targetName = rel2.isGroupType ? undefined : rel.obj2;
+        targetName = rel1.isGroupType ? undefined : rel.obj2;
     } else {
         rel1 = rel.visibilityOn2;
         rel2 = rel.visibilityOn1;
-        targetName = rel2.isGroupType ? undefined : rel.obj1;
+        targetName = rel1.isGroupType ? undefined : rel.obj1;
     }
 
     var oldObjType = Collections[rel1.collection].findOne({
         _id: obj._id
     });
-    var oldObjTypeField = targetName ? oldObjType[targetName] : oldObjType;
-
-    var value = objTypeField[rel1.name];
+    var oldObjTypeField = targetName ? oldObjType[targetName] : obj;
+    //    console.log('**********************************************************************')
+    //    console.dir(rel1.name);
+    //    console.dir(oldObjTypeField);
+    var value = oldObjTypeField[rel1.name];
+    //    console.dir(value);
     var fieldName = targetName ? targetName + '.' + rel2.name : rel2.name;
 
     if (rel1.cardinality.max == 1) {
@@ -80,7 +86,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
 
         /*********  1 - 1  ******************************/
         if (rel2.cardinality.max == 1) {
-            console.log('cardinality == 1')
+            //            console.log('cardinality == 1')
             if (obj2[fieldName] && obj2[fieldName] != id) {
                 // TODO: Fix inconsistency
                 return false;
@@ -100,6 +106,8 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
 
         /*********  1 - N  ******************************/
         else {
+            //            console.log('1-n cardinality');
+            //            console.dir(value)
             if (!value) {
                 var aux = {};
                 aux[rel2.name] = null;
@@ -112,8 +120,10 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
                 return true;
             } else {
                 var aux = {};
+                var fieldName = rel1.name + '.' + fieldName
                 aux[fieldName] = id;
-                //console.log('updating ' + obj2._id);
+                //                console.log('**********************************************************************')
+                //                console.log('updating ' + obj2._id);
                 //                console.dir(aux);
                 collection2.update({
                     _id: obj2._id
@@ -155,7 +165,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
 
         /*********  N - 1  ******************************/
         if (rel2.cardinality.max == 1) {
-            //            console.log('card 1');
+            console.log('n-1 cardinality');
             var valid = true
             var value2;
             _.every(newTargets, function (obj2) {
@@ -270,22 +280,41 @@ var checkType = function (obj, typeName, collection) {
 }
 
 Meteor.methods({
-    getShowInAddRelations: function (objName) {
+    getShowInAddRelations: function (objName, objGroupName) {
+        //        console.dir(objGroupName)
+        //        console.dir(objName)
         var relations = [];
         var rels = Relations.find({
             $or: [
                 {
-                    obj1: objName,
-                    'visibilityOn1.showInAdd': true
-                }, {
-                    obj2: objName,
-                    visibilityOn2: {
-                        $exists: true
-                    },
-                    'visibilityOn2.showInAdd': true
-                }
-            ]
+                    obj1: objName
+                        }, {
+                    $and: [
+                        {
+                            obj2: objName
+                                }, {
+                            visibilityOn2: {
+                                $exists: true
+                            }
+                                }
+                            ]
+                        }, {
+                    'visibilityOn2.isGroupType': true,
+                    obj1: objGroupName
+                        }, {
+                    $and: [
+                        {
+                            obj2: objGroupName
+                        }, {
+                            visibilityOn2: {
+                                $exists: true
+                            }
+                            //                        'visibilityOn2.isGroupType': true,
+                        }]
+                    }
+             ]
         }).fetch();
+        //        console.dir(rels);
 
         _.forEach(rels, function (relation) {
             var objRel;

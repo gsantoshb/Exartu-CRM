@@ -27,6 +27,7 @@ Jobs.before.insert(function (userId, doc) {
 Meteor.startup(function () {
     Meteor.methods({
         addJob: function (job) {
+            job._id = new Meteor.Collection.ObjectID()._str;
             if (beforeInsertOrUpdateJob(job)) {
                 job.candidates = [];
                 Jobs.insert(job);

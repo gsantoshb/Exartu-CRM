@@ -57,12 +57,11 @@
                visibilityOn1: {
                    name: 'Jobs',
                    collection: 'Jobs',
-                   defaultValue: null,
+                   defaultValue: [],
                    cardinality: {
                        min: 0,
                        max: Infinity
                    },
-                   isGroupType: true,
                },
                visibilityOn2: {
                    name: 'Customer',
@@ -73,6 +72,7 @@
                        max: 1
                    },
                    showInAdd: true,
+                   isGroupType: true,
                },
                cascadeDelete: false,
             },
