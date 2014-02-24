@@ -7,9 +7,9 @@
                     <h4 data-bind="text: objTypeName() + ' add'"></h4>
                 </div>
                 <div class="modal-body" data-bind="if: $data.ready">
-                    <!-- Show static fields -->
-                    <div data-bind="with: entity">
-                        <fieldset>
+                    <form role="form">
+                        <!-- Show static fields -->
+                        <div data-bind="with: entity">
                             <div data-bind="template: { name: 'inStringField', data: {name: 'Public job title', value: $data.publicJobTitle } }" />
                         </fieldset>
                         <fieldset>
@@ -29,10 +29,9 @@
                         </fieldset>
                         <fieldset>
                             <div data-bind="template: { name: 'inLookUpField', data: {name: 'status', value: $data.status,options: $root.statuses } }" />
-                        </fieldset>
-                    </div>
-                    <!-- Show dynamic fields and relations -->
-                    <div data-bind="template: { name: 'showDynamicObjectTemplate', data: $data}"></div>
+                        </div>
+                        <!-- Show dynamic fields and relations -->
+                        <div data-bind="template: { name: 'showDynamicObjectTemplate', data: $data}"></div>
                 </div>
                 <div class="modal-footer">
                     <a data-bind="click: add" class="btn btn-success">Add</a>

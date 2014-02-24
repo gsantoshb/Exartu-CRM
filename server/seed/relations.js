@@ -50,6 +50,31 @@
                },
                cascadeDelete: false,
             },
+           {
+               name: 'CustomerJobs',
+               obj1: 'Customer',
+               obj2: 'Temporary',
+               visibilityOn1: {
+                   name: 'Jobs',
+                   collection: 'Jobs',
+                   defaultValue: null,
+                   cardinality: {
+                       min: 0,
+                       max: Infinity
+                   },
+               },
+               visibilityOn2: {
+                   name: 'Customer',
+                   collection: 'Contactables',
+                   defaultValue: null,
+                   cardinality: {
+                       min: 0,
+                       max: 1
+                   },
+                   showInAdd: true,
+               },
+               cascadeDelete: false,
+            },
         ];
 
        _.forEach(systemRelations, function (rel) {

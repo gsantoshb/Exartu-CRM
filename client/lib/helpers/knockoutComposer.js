@@ -12,7 +12,7 @@ Composer = {
 }
 
 /*
- * on startup find the templates that has vieModel defined to hook on template's rendered and call knocout
+ * on startup find the templates that has vieModel defined to hook on template's rendered and call knockout
  */
 Meteor.startup(function () {
     _.each(_.keys(Template), function (name) {
@@ -130,7 +130,7 @@ Composer.composeTemplate = function (templateName, domNode) {
     }
 }
 /*
- * applies ko binding beetwen domNade and vm, waiting for the collection handlers in wait on
+ * applies ko binding between domNade and vm, waiting for the collection handlers in wait on
  * parameters:
  *  - vm: js object
  *  - domNode: a DOM node
@@ -141,15 +141,15 @@ Composer.applyBindings = function (vm, domNode, waitOn) {
         if (typeof waitOn == typeof[]) {
             /*
              * subscribe to each collection handler through the wait function.
-             * record the collections that have been completed (this is currently necessary becouse some collections make the callback twice)
+             * record the collections that have been completed (this is currently necessary because some collections make the callback twice)
              */
 
             var length = waitOn.length;
             var finished = [];
             _.each(waitOn, function (item) {
-                item.wait(function (colectionId) {
-                    if (!_.contains(finished, colectionId)) {
-                        finished.push(colectionId);
+                item.wait(function (collectionId) {
+                    if (!_.contains(finished, collectionId)) {
+                        finished.push(collectionId);
                         length = length - 1;
                     }
                     if (length == 0) {
