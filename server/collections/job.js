@@ -29,7 +29,6 @@ Meteor.startup(function () {
         addJob: function (job) {
             job._id = new Meteor.Collection.ObjectID()._str;
             if (beforeInsertOrUpdateJob(job)) {
-                job.candidates = [];
                 Jobs.insert(job);
             } else {
                 console.error('Job is not valid')
@@ -72,10 +71,10 @@ var beforeInsertOrUpdateJob = function (job) {
  * objTypes must be an array with the object's types that the job references
  */
 var extendJob = function (job, objTypes) {
-    if (!job.assignments)
-        job.assignments = [];
+    if (!job.assignment)
+        job.assignment = null;
     if (!job.candidates)
-        job.assignments = [];
+        job.candidates = [];
     _.forEach(objTypes, function (objType) {
         _.forEach(objType.services, function (service) {
             if (job[service] == undefined)

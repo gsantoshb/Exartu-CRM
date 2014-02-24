@@ -149,8 +149,42 @@
 
 
 <template name="customerInfo">
-
-
+    <!-- ko if: Customer-->
+    <div class="box" data-bind="with: CustomerInfo">
+        <div class="box-header-2">
+            <div class="box-title">
+                <i class="fa fa-user"></i>
+                <span data-bind="text: displayName"></span>
+            </div>
+        </div>
+        <div class="box-content">
+            <p class="text-center">
+                <img src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google">
+            </p>
+            <p>Google is an American multinational corporation specializing in Internet-related services and products.</p>
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td>Location</td>
+                        <td>United States</td>
+                    </tr>
+                    <tr>
+                        <td>Member Since</td>
+                        <td data-bind="text: moment(createdAt()).format('MMMM YYYY')"></td>
+                    </tr>
+                    <tr>
+                        <td>Last Sign-in</td>
+                        <td>Feb 24, 2014</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a class="btn btn-default" href="#">Browse all Google jobs
+                <span>(5)</span>
+            </a>
+        </div>
+        <!-- /.box-content -->
+    </div>
+    <!--/ko-->
 </template>
 <template name="similarJobs">
     <section>

@@ -1,6 +1,13 @@
 <template name="assignment">
+    <!-- ko ifnot:$data.assignment-->
     <a href="#">
-        <a class="btn btn-lg btn-success btn-block bottom-20" href="#">
+        <a class="btn btn-lg btn-success btn-block bottom-20" data-bind="click: function () { Composer.showModal( 'assignmentAdd',$data._id()); }" href="#">
             <i class="fa fa-caret-square-o-right"></i>Assign</a>
     </a>
+    <!-- /ko-->
+    <!-- ko if:$data.assignment-->
+    <div data-bind="with: assignmentInfo">
+        <h5 data-bind="text: displayName"></h5>
+    </div>
+    <!-- /ko-->
 </template>

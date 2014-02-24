@@ -28,7 +28,6 @@ Contactables = new Meteor.Collection("contactables", {
             contactable.displayName = contactable.organization.organizationName;
 
         extendObject(contactable);
-
         return contactable;
     },
 });
@@ -65,6 +64,16 @@ Jobs = new Meteor.Collection("jobs", {
             });
 
         });
+        if (job.Customer) {
+            job.CustomerInfo = Contactables.findOne({
+                _id: job.Customer
+            });
+        }
+        if (job.assignment) {
+            job.assignmentInfo = Contactables.findOne({
+                _id: job.assignment
+            });
+        }
 
         return job;
     },
