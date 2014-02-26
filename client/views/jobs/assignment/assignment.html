@@ -1,13 +1,39 @@
 <template name="assignment">
     <!-- ko ifnot:$data.assignment-->
-    <a href="#">
-        <a class="btn btn-lg btn-success btn-block bottom-20" data-bind="click: function () { Composer.showModal( 'assignmentAdd',$data._id()); }" href="#">
-            <i class="fa fa-caret-square-o-right"></i>Assign</a>
-    </a>
+    <div class="box">
+        <div class="box-header-2">
+            <div class="box-title">
+                <i class="fa fa-user"></i>No one is assigned
+
+            </div>
+        </div>
+        <div class="box-content">
+            <a href="#">
+                <a class="btn btn-lg btn-success btn-block bottom-20" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id()); }" href="#">
+                    <i class="fa fa-caret-square-o-right"></i>Assign</a>
+            </a>
+        </div>
+        <!-- /.box-content -->
+    </div>
+
     <!-- /ko-->
     <!-- ko if:$data.assignment-->
-    <div data-bind="with: assignmentInfo">
-        <h5 data-bind="text: displayName"></h5>
+    <div class="box">
+        <div class="box-header-2">
+            <a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'assignmentAdd',$data._id(), assignment());}">
+                <i class="fa fa-pencil"></i>Edit
+            </a>
+            <div class="box-title">
+                <i class="fa fa-user"></i>Assigned
+            </div>
+
+        </div>
+        <div data-bind="with: assignmentInfo">
+            <div class="row" style="margin:3px;">
+                <img class="col-md-4" src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google">
+                <h5 class="col-md-4" data-bind="text: displayName"></h5>
+            </div>
+        </div>
     </div>
     <!-- /ko-->
 </template>
