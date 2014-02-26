@@ -274,7 +274,7 @@ _.extend(helper, {
 
         //relations
         self.relations = ko.observableArray([]);
-        Meteor.call('getShowInAddRelations', objType.objName, function (err, result) {
+        Meteor.call('getShowInAddRelations', objType.objName, objType.objGroupType, function (err, result) {
             _.each(result, function (r) {
                 self.relations.push({
                     relation: r,
