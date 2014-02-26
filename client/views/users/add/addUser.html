@@ -1,57 +1,48 @@
 <template name="addUser">
-	<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addUserModal">
-		<div class="modal-dialog" style="width: 50%;">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a class="close" data-dismiss="modal">×</a>
-					<h4>Add user</h4>
-				</div>
 
-				<div class="modal-body">
-					<fieldset>
-						<!-- Username -->
-						<div class="form-group" data-bind="css:{'has-error': newUserValidate().username.isModified() && ! newUserValidate().username.isValid()}">
-							<label class="col-lg-2 control-label">Username</label>
-							<div class="col-lg-10">
-								<input class="form-control" type="text" placeholder="Enter the user's name" data-bind="value: newUserValidate().username" />
-								<span class="text-danger" data-bind="validationMessage: newUserValidate().username"></span>
-							</div>
-						</div>
+    <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
-						<!-- Email-->
-						<div class="form-group" data-bind="css:{'has-error': newUserValidate().email.isModified() && ! newUserValidate().email.isValid()}">
-							<label class="col-lg-2 control-label">Email</label>
-							<div class="col-lg-10">
-								<input class="form-control" type="text" placeholder="Enter an email" data-bind="value: newUserValidate().email" />
-								<span class="text-danger" data-bind="validationMessage: newUserValidate().email"></span>
-							</div>
-						</div>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Add use</h4>
+                </div>
+                <div class="modal-body">
 
-						<!-- Password -->
-						<div class="form-group" data-bind="css:{'has-error': newUserValidate().password.isModified() && ! newUserValidate().password.isValid()}">
-							<label class="col-lg-2 control-label">Password</label>
-							<div class="col-lg-10">
-								<input class="form-control" type="text" placeholder="Enter the account password" data-bind="value: newUserValidate().password" />
-								<span class="text-danger" data-bind="validationMessage: newUserValidate().password"></span>
-							</div>
-						</div>
+                    <form role="form">
+                        <div class="form-group" data-bind="css:{'has-error': newUserValidate().email.isModified() && ! newUserValidate().email.isValid()}">
+                            <label for="exampleInputEmail1">Username</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" data-bind="value: newUserValidate().username">
+                            <span class="text-danger" data-bind="validationMessage: newUserValidate().username"></span>
+                        </div>
+                        <div class="form-group" data-bind="css:{'has-error': newUserValidate().email.isModified() && ! newUserValidate().email.isValid()}">
+                            <label for="exampleInputEmail1">Email</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" data-bind="value: newUserValidate().email">
+                            <span class="text-danger" data-bind="validationMessage: newUserValidate().email"></span>
+                        </div>
+                        <div class="form-group" data-bind="css:{'has-error': newUserValidate().email.isModified() && ! newUserValidate().email.isValid()}">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" data-bind="value: newUserValidate().password">
+                            <span class="text-danger" data-bind="validationMessage: newUserValidate().password"></span>
+                        </div>
+                        <div class="form-group" data-bind="css:{'has-error': newUserValidate().email.isModified() && ! newUserValidate().email.isValid()}">
+                            <label for="exampleInputPassword1">Roles</label>
+                            <select class="form-control" data-bind="options: roles, selectedOptions: newUserValidate().roles, attr:{multiple: true}"></select>
+                            <span class="text-danger" data-bind="validationMessage: newUserValidate().roles"></span>
+                        </div>
 
-						<!-- Password -->
-						<div class="form-group" data-bind="css:{'has-error': newUserValidate().roles.isModified() && ! newUserValidate().roles.isValid()}">
-							<label class="col-lg-2 control-label">Roles</label>
-							<div class="col-lg-10">
-								<select class="form-control" data-bind="options: roles, selectedOptions: newUserValidate().roles, attr:{multiple: true}"></select>
-								<span class="text-danger" data-bind="validationMessage: newUserValidate().roles"></span>
-							</div>
-						</div>
-					</fieldset>
-				</div>
+                    </form>
+                </div>
+                <!-- /.modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bind="click: addUser">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /modal-dialog -->
+    </div>
 
-				<div class="modal-footer">
-					<a class="btn btn-success" data-bind="click: addUser">Add</a>
-					<a href="#" class="btn" data-dismiss="modal">Close</a>
-				</div>
-			</div>
-		</div>
-	</div>
 </template>
