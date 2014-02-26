@@ -122,8 +122,11 @@ Template.contactables.viewModel = function () {
     self.addTag = function () {
         filters().tags.push(self.tag());
         self.tag('');
-    }
+    };
 
+    self.removeTag = function (tag) {
+        filters().tags.remove(tag);
+    };
 
     self.ready(true);
 
