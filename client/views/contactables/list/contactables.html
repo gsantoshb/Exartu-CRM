@@ -1,7 +1,7 @@
 <template name="contactables">
     <div class="contactables-page">
         <div id="content">
-            <div id="content-header">
+            <div id="content-header" class="mini">
                 <h1>
                     <strong data-bind="text: entities().length"></strong>
                     <span data-bind="text:objName "></span>
@@ -14,7 +14,7 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-4 col-lg-3">
+                    <div class="col-md-4 col-md-push-8 col-lg-push-9 col-lg-3">
                         <div data-bind="foreach: contactableTypes">
                             <a class="btn btn-success btn-md btn-block btn-create" data-toggle="modal" data-bind="click: function () { Composer.showModal('addContactable', $data.objName()); }, text: 'Add ' + objName()"></a>
                         </div>
@@ -78,7 +78,7 @@
                         </sidebar>
                     </div>
                     <!-- /.col-lg-4 -->
-                    <div class="col-md-8 col-lg-9">
+                    <div class="col-md-8 col-md-pull-4 col-lg-9 col-lg-pull-3">
 
                         <!-- Entities list -->
                         <div>

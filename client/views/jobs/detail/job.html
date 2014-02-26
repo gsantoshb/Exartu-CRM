@@ -1,42 +1,55 @@
 <template name="job">
     <div class="jobs-page" name="jobVM">
         <div id="content" data-bind="with: job">
+            <div id="content-header" class="mini">
+                <h1 data-bind="text: displayName">Senior Full-Stack Developer</h1>
+            </div>
             <div id="breadcrumb" class="bradcrumb-top">
-                <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-                <a href="#" class="current">Jobs</a>
+                <a href="/" title="Go to Home" class="tip-bottom">
+                    <i class="fa fa-home"></i>Home</a>
+                <a href="/jobs" class="current">Jobs</a>
+                <a href="/jobs" data-bind="text: industryName(), attr:{href:'/jobs#industry='+industry()}"></a>
+                <a href="/jobs" data-bind="text: categoryName(), attr:{href:'/jobs#category='+category()}"></a>
             </div>
 
             <div class="container-fluid">
                 <div class="col-md-8 col-lg-8">
                     <div class="box">
                         <div class="box-content-lg">
-                            <h1 class="top-0" data-bind="text: displayName"></h1>
-                            <h4 data-bind="text: industryName() + '>'+ categoryName()"></h4>
-                            <br>
                             <table class="table table-striped">
                                 <tr>
                                     <td>
-                                        <i class="fa fa-calendar"></i>Start date:
+                                        <i class="fa fa-calendar"></i>&nbsp;Start date:
                                         <strong data-bind="text: moment(startDate()).format('MM.DD.YYYY')"></strong>
                                     </td>
                                     <td>
-                                        <i class="fa fa-calendar"></i>End date:
+                                        <i class="fa fa-calendar"></i>&nbsp;End date:
                                         <strong data-bind="text: moment(endDate()).format('MM.DD.YYYY')"></strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <i class="fa fa-clock-o"></i>Duration:
+                                        <i class="fa fa-clock-o"></i>&nbsp;Duration:
                                         <strong data-bind="text: durationName()"></strong>
                                     </td>
                                     <td>
-                                        <i class="fa fa-info-circle"></i>Status:
+                                        <i class="fa fa-info-circle"></i>&nbsp;Status:
                                         <strong data-bind="text: statusName()">Pending</strong>
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>
+                                        <i class="fa fa-building-o"></i>&nbsp;Industry:
+                                        <strong data-bind="text: industryName()">Pending</strong>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-folder-open"></i>&nbsp;Category:
+                                        <strong data-bind="text: categoryName()"></strong>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td colspan="2">
-                                        <i class="fa fa-globe"></i>Location:
+                                        <i class="fa fa-globe"></i>&nbsp;Location:
                                         <strong>Bucharest, Romania</strong>
                                     </td>
                                 </tr>

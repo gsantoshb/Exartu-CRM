@@ -2,22 +2,20 @@
     <div name="headerVM">
         <div id="header">
             <h1>
-                <a href="./dashboard.html">EXARTU</a>
+                <a href="/">
+                    <span class="hidden-phone">EXARTU</span>
+                </a>
             </h1>
             <a id="menu-trigger" href="#">
                 <i class="fa fa-align-justify"></i>
             </a>
         </div>
 
-        <div id="search">
-            <input type="text" placeholder="Search ...">
-            <button type="submit" class="tip-right" title="" data-original-title="Search">
-                <i class="fa fa-search"></i>
-            </button>
-        </div>
-        <div id="user-nav">
+
+
+        <div id="user-nav" class="navbar-right">
             <ul class="btn-group">
-                <li class="btn dropdown" id="menu-user" style="margin-right: 20px">
+                <li class="btn dropdown">
                     <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle">
                         <span class="user-menu-thumb">
                             {{#if hasPicture}}
@@ -107,6 +105,20 @@
             </ul>
         </div>
 
+        <div id="switcher">
+            <div id="switcher-inner">
+                <h3>Theme Options</h3>
+                <h4>Colors</h4>
+                <p id="color-style">
+                    <a data-color="dark" title="dark" class="button-square dark-switcher active" href="#"></a>
+                    <a data-color="light" title="light" class="button-square light-switcher" href="#"></a>
+                </p>
+            </div>
+            <div id="switcher-button">
+                <i class="fa fa-cogs"></i>
+            </div>
+        </div>
+
         {{>sidebar}}
     </div>
 
@@ -114,7 +126,13 @@
 
 <template name="sidebar">
     <div id="sidebar">
-        <ul>
+        <div id="search">
+            <input type="text" placeholder="Search here...">
+            <button type="submit" class="tip-right" title="" data-original-title="Search">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+        <ul style="display: block">
             <li id="dashboardNav" class="active">
                 <a href="/">
                     <i class="icon-house-2"></i>
@@ -195,5 +213,4 @@
         </ul>
     </div>
     <!-- /#sidebar -->
-    </div>
 </template>
