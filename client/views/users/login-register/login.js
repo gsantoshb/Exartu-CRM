@@ -79,6 +79,16 @@ Template.login.viewModel = function () {
 Template.login.rendered = function () {
     $('body').attr('data-color', 'white');
 
+    var login = $('#loginform');
+    var recover = $('#recoverform');
+    var register = $('#registerform');
+    var login_recover = $('#loginform, #recoverform');
+    var login_register = $('#loginform, #registerform');
+    var recover_register = $('#recoverform, #registerform');
+    var loginbox = $('#loginbox');
+    var userbox = $('#user');
+    var animation_speed = 300;
+
     var loc = window.location + '';
     var ee = loc.split('#');
 
