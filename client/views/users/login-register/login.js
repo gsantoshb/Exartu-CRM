@@ -77,7 +77,7 @@ Template.login.viewModel = function () {
 };
 
 Template.login.rendered = function () {
-    // HTML Events
+    $('body').attr('data-color', 'white');
 
     var login = $('#loginform');
     var recover = $('#recoverform');
@@ -89,85 +89,82 @@ Template.login.rendered = function () {
     var userbox = $('#user');
     var animation_speed = 300;
 
-    $(document).ready(function () {
+    var loc = window.location + '';
+    var ee = loc.split('#');
 
-        var loc = window.location + '';
-        var ee = loc.split('#');
-
-        if (ee[1] == 'recoverform' && ee[1] != undefined) {
-            loginbox.css({
-                'height': '183px'
-            });
-            $('#loginform, #registerform').css({
-                'z-index': '100',
-                'opacity': '0.01'
-            });
-            $('#recoverform').css({
-                'z-index': '200',
-                'opacity': '1',
-                'display': 'block'
-            });
-        } else if (ee[1] = 'registerform' && ee[1] != undefined) {
-            loginbox.css({
-                'height': '280px'
-            });
-            login_recover.css({
-                'z-index': '100',
-                'opacity': '0.01'
-            });
-            register.css({
-                'z-index': '200',
-                'opacity': '1',
-                'display': 'block'
-            });
-        }
-
-        $('.flip-link.to-recover').click(function () {
-            switch_container(recover, login_register, 183);
+    if (ee[1] == 'recoverform' && ee[1] != undefined) {
+        loginbox.css({
+            'height': '183px'
         });
-        $('.flip-link.to-login').click(function () {
-            switch_container(login, recover_register, 255);
+        $('#loginform, #registerform').css({
+            'z-index': '100',
+            'opacity': '0.01'
         });
-        $('.flip-link.to-register').click(function () {
-            switch_container(register, login_recover, 280);
+        $('#recoverform').css({
+            'z-index': '200',
+            'opacity': '1',
+            'display': 'block'
         });
+    } else if (ee[1] = 'registerform' && ee[1] != undefined) {
+        loginbox.css({
+            'height': '280px'
+        });
+        login_recover.css({
+            'z-index': '100',
+            'opacity': '0.01'
+        });
+        register.css({
+            'z-index': '200',
+            'opacity': '1',
+            'display': 'block'
+        });
+    }
 
-        $('#loginform').submit(function (e) {
-            var thisForm = $(this);
-            var userinput = $('#username');
-            var passinput = $('#password');
-            if (userinput.val() == '' || passinput.val() == '') {
-                highlight_error(userinput);
-                highlight_error(passinput);
-                loginbox.effect('shake');
-                return false;
-            } else {
-                e.preventDefault();
-                loginbox.animate({
-                    'top': '+=100px',
-                    'opacity': '0'
+    $('.flip-link.to-recover').click(function () {
+        switch_container(recover, login_register, 183);
+    });
+    $('.flip-link.to-login').click(function () {
+        switch_container(login, recover_register, 255);
+    });
+    $('.flip-link.to-register').click(function () {
+        switch_container(register, login_recover, 280);
+    });
+
+    $('#loginform').submit(function (e) {
+        var thisForm = $(this);
+        var userinput = $('#username');
+        var passinput = $('#password');
+        if (userinput.val() == '' || passinput.val() == '') {
+            highlight_error(userinput);
+            highlight_error(passinput);
+            loginbox.effect('shake');
+            return false;
+        } else {
+            e.preventDefault();
+            loginbox.animate({
+                'top': '+=100px',
+                'opacity': '0'
+            }, 250, function () {
+                $('.user_name').text(userinput.val());
+                userbox.animate({
+                    'top': "+=75px",
+                    'opacity': '1'
                 }, 250, function () {
-                    $('.user_name').text(userinput.val());
-                    userbox.animate({
-                        'top': "+=75px",
-                        'opacity': '1'
-                    }, 250, function () {
-                        setTimeout(function () {
-                            thisForm.unbind('submit').submit();
-                        }, 600);
-                    });
+                    setTimeout(function () {
+                        thisForm.unbind('submit').submit();
+                    }, 600);
                 });
-                return true;
-            }
-        });
+            });
+            return true;
+        }
+    });
 
-        $('#username, #password').on('keyup', function () {
-            highlight_error($(this));
-        }).focus(function () {
-            highlight_error($(this));
-        }).blur(function () {
-            highlight_error($(this));
-        });
+    $('#username, #password').on('keyup', function () {
+        highlight_error($(this));
+    }).focus(function () {
+        highlight_error($(this));
+    }).blur(function () {
+        highlight_error($(this));
     });
 
     function highlight_error(el) {
