@@ -59,7 +59,7 @@ Accounts.onCreateUser(function (options, user) {
 /*
  * extending the user data that is sended to the client
  */
-Meteor.publish("userData", function () {
+Meteor.publish(null, function () {
     var user = Meteor.users.findOne({
         _id: this.userId
     });
