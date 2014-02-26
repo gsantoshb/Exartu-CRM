@@ -44,17 +44,17 @@ Router.map(function () {
         path: '/job/:_id',
         controller: 'JobController'
     });
-    if (Meteor.user() && Meteor.user().permissions && Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) > 0) {
-        this.route('deals', {
-            path: '/deals',
-            controller: 'DealsController'
-        });
+    //    if (Meteor.user() && Meteor.user().permissions && Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) > 0) {
+    this.route('deals', {
+        path: '/deals',
+        controller: 'DealsController'
+    });
 
-        this.route('deal', {
-            path: '/deal/:_id',
-            controller: 'DealController'
-        });
-    }
+    this.route('deal', {
+        path: '/deal/:_id',
+        controller: 'DealController'
+    });
+    //    }
 
     this.route('users', {
         path: '/users',

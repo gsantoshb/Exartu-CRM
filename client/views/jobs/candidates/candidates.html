@@ -2,12 +2,16 @@
     <div class="box">
         <div class="box-header-2">
             <div class="box-title">
+                <a class="btn btn-xs btn-default pull-right" href="#" data-bind="click: function () { Composer.showModal( 'candidateAdd',$data._id()); }">
+                    <i class="fa fa-plus"></i>add</a>
                 <i class="fa fa-user"></i>Candidates
                 <span class="label label-default" data-bind="text:candidates().length"></span>
+                <!--
                 <a class="btn btn-success pull-right" data-bind="click: function () { Composer.showModal( 'candidateAdd',$data._id()); } ">
-                    <i class="fa fa-plus "></i>
-                    Add
-                </a>
+    <i class="fa fa-plus "></i>
+    Add
+</a>
+-->
             </div>
         </div>
         <div class="box-content">

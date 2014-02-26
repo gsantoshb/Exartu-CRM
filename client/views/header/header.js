@@ -12,7 +12,7 @@ Template.header.viewModel = function () {
         },
         limit: 4
     });
-    self.showSales = true //ko.observable(Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) >= 0);
+    self.showSales = true; // ko.observable(Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) >= 0);
     self.contactableObjTypes = ko.meteor.find(ObjTypes, {
         objGroupType: Enums.objGroupType.contactable
     });
@@ -156,7 +156,6 @@ Template.header.rendered = function () {
         });
 
         var submenuLogic = function (e) {
-            e.preventDefault();
             var submenu = $(this).siblings('ul');
             var li = $(this).parents('li');
             if ($(window).width() > 480) {
