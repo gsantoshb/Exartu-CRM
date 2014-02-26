@@ -4,7 +4,11 @@
 </head>
 
 <body>
-    {{#if currentUser }} {{> header}} {{> fieldTemplatesDefinition}} {{> relationTemplatesDefinition}} {{/if}}
+    <span class="notRemove">
+    </span>
+    <div id="wrapper" data-color="dark">
+        {{#if currentUser }} {{> header}} {{> fieldTemplatesDefinition}} {{> relationTemplatesDefinition}} {{/if}}
 
+    </div>
     <!-- Here is where layouts are rendered	-->
 </body>
