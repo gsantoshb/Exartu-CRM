@@ -149,7 +149,9 @@
                                         <div class="col-sm-2">
                                             <div class="table-item-cell">
                                                 <div class="table-item-cell-container date">
+                                                    <!-- ko if: $data.createdAt -->
                                                     <span data-bind="text: moment(createdAt()).fromNow()"></span>
+                                                    <!-- /ko -->
                                                 </div>
                                                 <!-- /.table-item-cell-container -->
                                             </div>
