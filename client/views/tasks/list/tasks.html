@@ -1,132 +1,234 @@
 <template name="tasks">
     <div id="content">
-        <div id="content-header">
+        <div id="content-header" class="mini">
             <h1>
                 <strong data-bind="text: tasks().length"></strong>
                 <span>Tasks</span>
             </h1>
         </div>
         <div id="breadcrumb">
-            <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-            <a href="#" class="current">tasks</a>
+            <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+            <a href="/tasks" class="current">tasks</a>
         </div>
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-4 col-lg-3">
+                <div class="col-md-4 col-md-push-8 col-lg-push-9 col-lg-3">
 
                     <a class="btn btn-success btn-md btn-block btn-create" data-bind="click:add">Add Task</a>
                     <sidebar>
                         <div class="box-2">
                             <form role="form">
-                                <h4>
+                                <h4 class="bottom-20">
                                     <strong>Filters</strong>
                                 </h4>
-                                <div class="form-group">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox">Include inactives
-                                        </label>
-                                    </div>
-                                </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox">Only recent week
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox">assigned to me
-                                        </label>
-                                    </div>
-                                </div>
 
-                                <!-- /.form-group -->
+                                <form role="form">
 
-                                <hr>
-                                <h4>
-                                    <strong>Statuses</strong>
-                                </h4>
-                                <button type="button" class="btn btn-xs btn-primary">Open</button>
-                                <button type="button" class="btn btn-xs btn-primary">Completed</button>
-                                <button type="button" class="btn btn-xs btn-primary">Ended</button>
-                                <hr>
+                                    <div class="panel-group bottom-20" id="accordion">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#taskStatus">
+                                                        <strong>Status</strong>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="taskStatus" class="panel-collapse collapse in">
+                                                <div class="panel-body">
+                                                    <button type="button" class="btn btn-xs btn-tertiary">Active</button>
+                                                    <button type="button" class="btn btn-xs btn-success">Done</button>
+                                                    <button type="button" class="btn btn-xs btn-warning">Due</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#taskOwner">
+                                                        <strong>All Owners</strong>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="taskOwner" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <select class="form-control">
+                                                        <option>Select Owner</option>
+                                                        <option>Mike Arnatutovici</option>
+                                                        <option>Emma P.</option>
+                                                        <option>Tom Ford</option>
+                                                        <option>Penny Lim</option>
+                                                        <option>Paul C.</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#taskDueDate">
+                                                        <strong>Due Date</strong>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="taskDueDate" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox">Today
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox">Tomorrow
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox">Next 7 days
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox">Overdue
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox">Due Date
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
                         </div>
                         <!-- /.box-2 -->
                     </sidebar>
                 </div>
                 <!-- /.col-lg-4 -->
-                <div class="col-md-8 col-lg-9">
+                <div class="col-md-8 col-md-pull-4 col-lg-9 col-lg-pull-3">
 
                     <!-- Entities list -->
-                    <div>
-                        <div class="table-items-box" data-bind="foreach: tasks">
-                            <div class="table-item odd">
-                                <!-- ko if: $data.createdAt -->
-                                <div class="date" data-bind="text: moment(createdAt()).fromNow()"></div>
-                                <!-- /ko -->
+                    <div class="table-items-box">
+                        <div class="table-item search-bar">
+                            <div class="table-item-cell">
                                 <div class="row">
-                                    <div class="col-sm-6 col-md-6 col-lg-6">
-                                        <div class="table-item-cell">
-                                            <div class="thumb">
-                                                <a href="#">
-                                                    <img height="70px" width="70px" src="/assets/user-photo-placeholder.jpg">
-                                                </a>
-                                            </div>
-                                            <div class="table-item-title">
-                                                <span data-bind="text: $data.note"></span>
-                                            </div>
-                                            <div class=" table-item-desc">
-                                                from:
-                                                <span data-bind="text: moment(begin()).format('MMM Do YYYY, h:mm:ss a')"></span>
-                                                to:
-                                                <span data-bind="text: moment(end()).format('MMM Do YYYY, h:mm:ss a')"></span>
-                                            </div>
-                                            <div class=" table-item-desc">
-                                                assigned:
-                                                <div data-bind="foreach: assignedUsers">
-                                                    <span data-bind="text: username"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- /.table-item-cell -->
-                                    </div>
-                                    <!-- /.col-lg-6 -->
-                                    <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2">
-                                        <div class="table-item-cell">
-                                            <div class="table-item-type">
-                                                <div class="table-item-type-icon">
-                                                    <i class="icon-clock-3"></i>
-                                                </div>
-                                                <div class="table-item-type-label">
-                                                    <span>task</span>
-                                                </div>
-                                            </div>
+                                    <div class="col-sm-8 col-md-7 col-lg-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search Task">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary" type="button">
+                                                    <i class="fa fa-search"></i>Search</button>
+                                            </span>
                                         </div>
                                     </div>
-                                    <!-- /.col-lg-2 -->
-                                    <div class="col-xs-8 col-sm-4 col-md-4 col-lg-4">
-                                        <div class="table-item-cell table-item-cell-last">
-                                            <div class="table-item-contact pull-right">
-                                                <span>creator:</span>
-                                                <small data-bind="text:user.username"></small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.col-lg-4 -->
+                                    <!-- /.col-lg-5 -->
+                                    <div class="col-md-5 col-lg-6 text-right">
+                                        <strong data-bind="text: tasks().length+' task'+ (tasks().length > 1 ? 's':'')"></strong>&nbsp;due date</div>
                                 </div>
                                 <!-- /.row -->
                             </div>
-                            <!-- /.table-item -->
+                            <!-- /.table-item-cell -->
                         </div>
+
+                        <!-- ko foreach: tasks -->
+
+                        <div class="table-item magic">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="table-item-cell">
+                                        <div class="table-item-cell-container">
+                                            <div class="table-item-title">
+                                                <a href="/tasks">
+                                                    <span data-bind="text: $data.note"></span>
+                                                </a>
+                                            </div>
+                                            <div class="task-author">
+                                                by
+                                                <a href="#" data-bind="attr:{href:'/contactable/'+userId()}">
+                                                    <span data-bind="text: user.username"></span>
+                                                </a>
+                                                to
+                                                <i class="fa fa-long-arrow-right"></i>
+                                                <span data-bind="foreach: assignedUsers">
+                                                    <a href="#" data-bind="attr:{href:'/contactable/'+_id()}">
+                                                        <span data-bind="text: username"></span>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- /.table-item-cell-container -->
+                                    </div>
+                                    <!-- /.table-item-cell -->
+                                </div>
+                                <!-- /.col-sm-3 -->
+                                <div class="col-sm-2">
+                                    <div class="table-item-cell">
+                                        <div class="table-item-cell-container text-small">
+                                            <span data-bind="css:{'text-danger':! moment(new Date()).isBefore(begin())}">
+                                                <i class="fa fa-exclamation-circle"></i>&nbsp;Not Completed
+                                            </span>
+                                            <a class="btn btn-xs btn-primary text-small magic-content" href="#">
+                                                <i class="fa fa-check"></i>Complete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="table-item-cell">
+                                        <div class="table-item-cell-container magic-content text-small">
+                                            <a class="btn btn-xs btn-success text-small" href="#">
+                                                <i class="fa fa-pencil"></i>Edit</a>
+                                            <a class="btn btn-xs btn-danger text-small " href="#">
+                                                <i class="fa fa-times "></i>Delete</a>
+                                        </div>
+                                        <!-- /.table-item-cell-container -->
+                                    </div>
+                                    <!-- /.table-item-cell -->
+                                </div>
+                                <!-- /.col-sm-4 -->
+                                <div class="col-sm-3">
+                                    <div class="table-item-cell">
+                                        <div class="table-item-cell-container">
+                                            <div class="date">
+
+                                                <!--  ko ifnot: moment(new Date()).isBefore(begin())-->
+                                                <i class="fa fa-calendar text-danger"></i>
+                                                <!--                                                <br/>-->
+                                                <span class="text-danger">Due Date:</span>
+                                                <span data-bind="text: moment(end()).format('MMM Do YYYY, h:mm:ss a')"></span>
+                                                <!-- /ko -->
+                                                <!--  ko if: moment(new Date()).isBefore(begin())-->
+                                                <i class="fa fa-calendar text-success"></i>
+                                                <!--                                                <br/>-->
+                                                <span class="text-success">Starts:</span>
+                                                <span data-bind="text: moment(begin()).format('MMM Do YYYY, h:mm:ss a')"></span>
+                                                <!-- /ko -->
+                                            </div>
+                                        </div>
+                                        <!-- /.table-item-cell-container -->
+                                    </div>
+                                    <!-- /.table-item-cell -->
+                                </div>
+                                <!-- /.col-sm-3 -->
+                            </div>
+                            <!-- /ko -->
+
+                            <!-- /.col-lg-4 -->
+                        </div>
+                        <!-- /.row -->
+
+                        <!-- /ko -->
                     </div>
+                    <!-- /.table-item -->
                 </div>
-                <!--/ko-->
+
             </div>
+            <!--/ko-->
         </div>
+    </div>
     </div>
 </template>
