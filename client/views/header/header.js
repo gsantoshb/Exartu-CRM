@@ -29,6 +29,8 @@ Template.header.viewModel = function () {
 var init = true;
 Template.header.rendered = function () {
     $('body').attr('data-color', 'dark');
+    $('body').addClass("flat");
+
     if (init) {
         var ul = $('#sidebar > ul');
         var ul2 = $('#sidebar li.open ul');

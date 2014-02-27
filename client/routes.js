@@ -1,5 +1,6 @@
 Router.configure({
     disableProgressSpinner: true,
+    loadingTemplate: 'loading',
     before: function () {
         if (!Meteor.userId() && Router.current().route.name != 'login') {
             this.redirect('login');
