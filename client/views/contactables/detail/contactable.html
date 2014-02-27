@@ -136,10 +136,10 @@
                     </div>
                     <div class="box-content-md ">
                         <div data-bind="foreach: tags ">
-                            <a class="btn btn-xs btn-primary " href="# " data-bind="text: $data "></a>
-                            <a style="margin-left: 4px; min-width: 7px; ">
-                                <i class="icon icon-close removeTag "></i>
-                            </a>
+                            <button type="button" class="btn btn-xs btn-primary">
+                                <span data-bind="text: $data "></span>
+                                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+                            </button>
                         </div>
                         <hr>
                         <div class="input-group ">

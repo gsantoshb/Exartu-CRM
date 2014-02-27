@@ -54,6 +54,10 @@ Template.contactable.viewModel = function () {
         })
     }
 
+    self.removeTag = function (tag) {
+        Meteor.call('removeContactableTag', contactableId, tag)
+    };
+
     self.getTemplateName = function (data) {
         if (data.Employee) return 'employee-template';
         if (data.Customer) return 'customer-template';

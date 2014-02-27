@@ -100,6 +100,17 @@ Meteor.startup(function () {
                 }
             });
         },
+        removeContactableTag: function (contactableId, tag) {
+            // TODO: validations
+
+            Contactables.update({
+                _id: contactableId
+            }, {
+                $pull: {
+                    "tags": tag
+                }
+            });
+        },
         addContactablePost: function (contactableId, post) {
             // TODO: validations
             post.userId = Meteor.userId();
