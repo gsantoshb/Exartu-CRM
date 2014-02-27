@@ -23,11 +23,13 @@ Template.addUser.viewModel = function () {
     });
 
     self.addUser = function () {
-        if (!self.newUserValidate.isValid())
+        if (!self.newUserValidate.isValid()) {
             self.newUserValidate.errors.showAllMessages();
+            return;
+        }
 
         Meteor.call('addHierUser', ko.toJS(self.newUserValidate), function () {
-            $('#addUserModal').modal('hide');
+            self.close();
         });
     };
 
