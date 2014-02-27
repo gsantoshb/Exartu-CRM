@@ -1,15 +1,26 @@
 Template.addTask.viewModel = function () {
     var self = this;
-    self.task = ko.mapping.fromJS({
-        begin: new Date(),
-        end: null,
-        assign: [],
-        note: ''
+    self.task = ko.validatedObservable({
+        begin: ko.observable(new Date()).extend({
+            required: true
+        }),
+        end: ko.observable(new Date()).extend({
+            required: true
+        }),
+        assign: ko.observableArray().extend({
+            required: true
+        }),
+        note: ko.observable()
         //        state: ['created'],
     });
 
     self.users = ko.meteor.find(Meteor.users, {});
     self.add = function () {
+        if (!self.task.isValid()) {
+            self.task.errors.showAllMessages();
+            return;
+        }
+
         var task = ko.toJS(self.task);
         task.state = [{
             name: 'created',
@@ -19,7 +30,7 @@ Template.addTask.viewModel = function () {
             if (err) {
                 console.dir(err);
             } else {
-                self.modal.modal('hide');
+                $('#addTaskModal').modal('hide');
             }
         })
     };

@@ -10,20 +10,37 @@
                 <div class="modal-body">
                     <div data-bind="with: task">
                         <fieldset>
-                            <label class="col-lg-2 control-label">begin:</label>
-                            <input class="col-lg-8 form-control" type="datetime-local" data-bind="value: moment(begin()).format()" />
+                            <div class="form-group" data-bind="css:{'has-error': begin.isModified() && ! begin.isValid()}">
+                                <label class="control-label">begin:</label>
+                                <br/>
+                                <div data-bind="dateTimePicker: { date: begin }">
+                                    <div data-pick="date"></div>
+                                    <div data-pick="time"></div>
+                                </div>
+                                <span class="text-danger" data-bind="validationMessage: begin"></span>
+                            </div>
                         </fieldset>
                         <fieldset>
-                            <label class="col-lg-2 control-label">end:</label>
-                            <input class="col-lg-8 form-control" type="datetime-local" data-bind="value: end" />
+                            <div class="form-group" data-bind="css:{'has-error': end.isModified() && ! end.isValid()}">
+                                <label class="control-label">end:</label>
+                                <br/>
+                                <div data-bind="dateTimePicker: { date: end }">
+                                    <div data-pick="date"></div>
+                                    <div data-pick="time"></div>
+                                </div>
+                                <span class="text-danger" data-bind="validationMessage: end"></span>
+                            </div>
                         </fieldset>
                         <fieldset>
-                            <label class="col-lg-2 control-label">note:</label>
-                            <input class="col-lg-8 form-control" data-bind="value: note" />
+                            <label class="control-label">note:</label>
+                            <input class="form-control" data-bind="value: note" />
                         </fieldset>
                         <fieldset>
-                            <label class="col-lg-2 control-label">assign:</label>
-                            <select class="col-lg-8 form-control" data-bind="options: $parent.users, optionsText: 'username', optionsValue: '_id', selectedOptions: assign" multiple />
+                            <div class="form-group" data-bind="css:{'has-error': assign.isModified() && ! assign.isValid()}">
+                                <label class="control-label">assign:</label>
+                                <select class="form-control" data-bind="options: $parent.users, optionsText: 'username', optionsValue: '_id', selectedOptions: assign" multiple />
+                                <span class="text-danger" data-bind="validationMessage: assign"></span>
+                            </div>
                         </fieldset>
                     </div>
                 </div>
