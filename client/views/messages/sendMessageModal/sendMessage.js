@@ -4,36 +4,53 @@ Template.sendMessage.viewModel = function (contactable) {
     var self = this;
     var emailRE = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+    self.email = ko.validatedObservable({
+        to: ko.observable().extend({
+            required: true,
+            pattern: {
+                message: 'invalid mail',
+                params: emailRE
+            }
+        }),
+        subject: ko.observable(),
+        text: ko.observable().extend({
+            required: true
+        }),
+    })
+
     self.methods = ko.observableArray(['email']);
     self.selectedMethod = ko.observable();
-    self.to = ko.observable();
-    self.subject = ko.observable();
-    self.text = ko.observable();
+
+
     self.contactable = ko.meteor.findOne(Contactables, {
         _id: contactable._id
     });
+
     self.contactMethodName = ko.observable('email');
     self.showContactMethodName = ko.observable(false);
     self.selectedAdress = ko.observable();
+
     var oldValueOfTo = null;
+
     self.selectedAdress.subscribe(function (value) {
         if (value) {
-            oldValueOfTo = self.to();
-            self.to(value);
+            oldValueOfTo = self.email().to();
+            self.email().to(value);
         } else {
-            self.to(oldValueOfTo);
+            self.email().to(oldValueOfTo);
         }
     })
     self.existsInContactMethods = ko.computed(function () {
-        if (!contactable.contactMethods)
+        if (!self.contactable().contactMethods())
             return false;
-        return _.find(contactable.contactMethods, function (item) {
-            return item.value === self.to();
+        return _.find(self.contactable().contactMethods(), function (item) {
+            return item.value() === self.email().to();
         })
     });
 
     self.addToContactMethods = function () {
-        if (!self.to())
+        var email = ko.toJS(self.email);
+        if (!email.to)
             return;
         if (_.find(contactable.contactMethods, function (item) {
             return item.name === self.contactMethodName();
@@ -48,7 +65,7 @@ Template.sendMessage.viewModel = function (contactable) {
             $addToSet: {
                 'contactMethods': {
                     name: self.contactMethodName(),
-                    value: self.to()
+                    value: email.to
                 }
             }
         });
@@ -77,16 +94,15 @@ Template.sendMessage.viewModel = function (contactable) {
         var selectedMethod = self.selectedMethod();
         switch (selectedMethod) {
         case 'email':
-            var to = self.to();
-            if (to && emailRE.test(to))
-                Meteor.call('sendEmail', self.to(), self.subject(), self.text(), function (err, result) {
-                    if (!err) {
-                        self.close();
-                    } else {}
-                })
-            else
-                alert('invalid mail');
-            break;
+            if (!self.email.isValid()) {
+                self.email.errors.showAllMessages();
+            }
+            var email = ko.toJS(self.email);
+            Meteor.call('sendEmail', email.to, email.subject, email.text, function (err, result) {
+                if (!err) {
+                    self.close();
+                } else {}
+            });
         }
     }
     return self;
