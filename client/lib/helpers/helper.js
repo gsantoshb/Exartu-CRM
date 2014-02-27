@@ -264,7 +264,11 @@ _.extend(helper, {
             });
             if (item.fieldType == Enums.fieldType.lookUp) {
                 _.extend(item, {
-                    value: item.multiple ? ko.observableArray(item.defaultValue) : ko.observable(item.defaultValue),
+                    value: item.multiple ? ko.observableArray().extend({
+                        required: true
+                    }) : ko.observable().extend({
+                        required: true
+                    }),
                     options: LookUps.findOne({
                         name: item.lookUpName
                     }).items,
@@ -279,7 +283,7 @@ _.extend(helper, {
                 self.relations.push({
                     relation: r,
                     data: ko.meteor.find(window[r.target.collection], r.target.query),
-                    value: ko.observable(null)
+                    value: ko.observable()
                 });
             })
 

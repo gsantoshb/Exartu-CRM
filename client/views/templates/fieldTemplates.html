@@ -10,12 +10,15 @@
     </div>
     <!-- LookUp -->
     <div id="inLookUpField" style="display: none;">
-        <h5 data-bind="text: name"></h5>
-        <div data-bind="if: ($data.multiple)">
-            <select data-bind="options: options, optionsText:'displayName', optionsValue:'code', selectedOptions: value, optionsCaption: 'None...'" multiple></select>
-        </div>
-        <div data-bind="if: (!$data.multiple)">
-            <select data-bind="options: options, optionsText:'displayName', optionsValue:'code', value: value, optionsCaption: 'Choose...'"></select>
+        <div data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
+            <h5 data-bind="text: name"></h5>
+            <!-- ko if: $data.multiple -->
+            <select class="form-control" data-bind="options: options, optionsText:'displayName', optionsValue:'code', selectedOptions: value, optionsCaption: 'None...'" multiple></select>
+            <!-- /ko -->
+            <!-- ko if: !$data.multiple -->
+            <select class="form-control" data-bind="options: options, optionsText:'displayName', optionsValue:'code', value: value, optionsCaption: 'Choose...'"></select>
+            <!-- /ko -->
+            <span class="text-danger" data-bind="validationMessage: value"></span>
         </div>
     </div>
 
@@ -25,9 +28,10 @@
 
     <!-- Date -->
     <div id="inDateField" style="display: none;">
-        <label class="col-lg-2 control-label" data-bind="text: name"></label>
-        <div class="col-lg-10">
+        <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
+            <label class="control-label" data-bind="text: name"></label>
             <input class="form-control" type="date" data-bind="value: value" />
+            <span class="text-danger" data-bind="validationMessage: value"></span>
         </div>
     </div>
 

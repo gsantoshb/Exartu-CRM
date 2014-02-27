@@ -1,7 +1,7 @@
 koObjectGenerator = function (fields) {
     var p = {};
     _.forEach(fields, function (field) {
-        p[field.name] = ko.observable(field.defaultValue);
+        p[field.name] = ko.observable();
         if (field.required)
             p[field.name].extend({
                 required: true
