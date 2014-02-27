@@ -6,7 +6,8 @@
       "iron-router": {},
       "knockout-client": {},
       "accounts-ui-bootstrap-3": {},
-      "collection-hooks": {}
+      "collection-hooks": {},
+      "iron-router-progress": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -16,8 +17,8 @@
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.6.2",
-        "commit": "ce56e58b45624dce992490f3a1c10f10d3948bae"
+        "tag": "v0.6.4",
+        "commit": "927bbaed1b87894fb6fb70807f74ff3a5bd89f29"
       },
       "knockout-client": {
         "git": "https://github.com/zhouzhuojie/knockout-client.git",
@@ -33,6 +34,11 @@
         "git": "https://github.com/matb33/meteor-collection-hooks.git",
         "tag": "v0.6.2",
         "commit": "29484b2110206be93b01c6d11ce06ec9208de7bd"
+      },
+      "iron-router-progress": {
+        "git": "https://github.com/Multiply/iron-router-progress.git",
+        "tag": "v0.2.0",
+        "commit": "ce730d1d26feadb7c75ea25f22c5bfdb0c549a8b"
       }
     }
   }

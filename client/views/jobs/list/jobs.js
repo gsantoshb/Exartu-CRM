@@ -35,6 +35,63 @@ Template.jobs.viewModel = function () {
     var self = {};
     self.ready = ko.observable(false);
 
+    // Filters 
+    var extendFilters = function (items) {
+        _.forEach(items, function (item) {
+            _.extend(item, {
+                value: ko.observable(false)
+            })
+        });
+    };
+
+    self.industries = LookUps.findOne({
+        name: 'jobIndustry'
+    }, {
+        _id: 0,
+        items: 1
+    }).items;
+    extendFilters(self.industries);
+
+    self.categories = LookUps.findOne({
+        name: 'jobCategory'
+    }, {
+        _id: 0,
+        items: 1
+    }).items;
+    extendFilters(self.categories);
+
+    self.durations = LookUps.findOne({
+        name: 'jobDuration'
+    }, {
+        _id: 0,
+        items: 1
+    }).items;
+    extendFilters(self.durations);
+
+    self.statuses = LookUps.findOne({
+        name: 'jobStatus'
+    }, {
+        _id: 0,
+        items: 1
+    }).items;
+    extendFilters(self.statuses);
+
+    // TODO: search by customer name
+    var searchFields = ['categoryName', 'industryName', 'durationName', 'statusName', 'publicJobTitle'];
+    self.searchString = ko.observable();
+
+    var extendLookupFilterQuery = function (query, filter, fieldName) {
+        var filterBy = [];
+        _.forEach(filter, function (item) {
+            if (item.value())
+                filterBy.push(item.code);
+        })
+        if (filterBy.length > 0)
+            query[fieldName] = {
+                $in: filterBy
+            };
+    }
+
     var query = ko.computed(function () {
 
         var q = {};
@@ -47,6 +104,28 @@ Template.jobs.viewModel = function () {
                 $in: f.tags
             };
         };
+
+        // Lookups filter
+        extendLookupFilterQuery(q, self.industries, 'industry');
+        extendLookupFilterQuery(q, self.categories, 'category');
+        extendLookupFilterQuery(q, self.durations, 'duration');
+        extendLookupFilterQuery(q, self.statuses, 'status');
+
+        if (self.searchString()) {
+            var searchQuery = [];
+            _.each(searchFields, function (field) {
+                var aux = {};
+                aux[field] = {
+                    $regex: self.searchString()
+                }
+                searchQuery.push(aux);
+            });
+            q = {
+                $and: [q, {
+                    $or: searchQuery
+                }]
+            };
+        }
 
         return q;
     });
@@ -72,6 +151,10 @@ Template.jobs.viewModel = function () {
         filters().tags.push(self.tag());
         self.tag('');
     }
+    self.removeTag = function (tag) {
+        filters().tags.remove(tag);
+    };
+
 
     self.ready(true);
 
