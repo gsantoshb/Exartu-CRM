@@ -37,3 +37,9 @@ Tasks.before.insert(function (userId, doc) {
     doc.userId = user._id;
     doc.createdAt = Date.now();
 });
+Tasks.allow({
+    update: function (userId, doc, fields, modifier) {
+        // todo: check hiers
+        return true;
+    }
+})

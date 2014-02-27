@@ -8,19 +8,37 @@ TasksController = RouteController.extend({
 Template.tasks.viewModel = function () {
     var self = {};
 
-    self.tasks = ko.meteor.find(Tasks, {});
+    self.tasks = ko.meteor.find(Tasks, {
+        inactive: {
+            $ne: true
+        }
+    });
     self.add = function () {
-        Composer.showModal('addTask');
+        Composer.showModal('addEditTask');
     }
-    //    self.isSelected = function (conversation) {
-    //        return self.selectedConversation() && conversation._id() == self.selectedConversation()._id();
-    //    }
-    //    self.selectedConversation = ko.observable('');
-    //    self.selectedConversation.subscribe(function (newConversationSelected) {
-    //        Router.go('/messages#' + newConversationSelected._id());
-    //        $('#conversationMessagesNode').html(Template.conversationMessages());
-    //        Template.conversationMessages.rendered();
-    //    });
+    self.edit = function (data) {
+        Composer.showModal('addEditTask', ko.toJS(data));
+    }
+    self.remove = function (data) {
+        var task = ko.toJS(data);
+        Tasks.update({
+            _id: task._id,
+        }, {
+            $set: {
+                inactive: true,
+            }
+        });
+    };
+    self.complete = function (data) {
+        var task = ko.toJS(data);
+        Tasks.update({
+            _id: task._id
+        }, {
+            $set: {
+                completed: new Date()
+            }
+        });
+    };
 
     return self;
 };

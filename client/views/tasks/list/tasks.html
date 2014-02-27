@@ -168,21 +168,17 @@
                                 <!-- /.col-sm-3 -->
                                 <div class="col-sm-2">
                                     <div class="table-item-cell">
-                                        <div class="table-item-cell-container text-small">
-                                            <span data-bind="css:{'text-danger':! moment(new Date()).isBefore(begin())}">
-                                                <i class="fa fa-exclamation-circle"></i>&nbsp;Not Completed
-                                            </span>
-                                            <a class="btn btn-xs btn-primary text-small magic-content" href="#">
-                                                <i class="fa fa-check"></i>Complete</a>
+                                        <div data-bind="template: {name: 'showTaskState', data: state}">
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="table-item-cell">
                                         <div class="table-item-cell-container magic-content text-small">
-                                            <a class="btn btn-xs btn-success text-small" href="#">
+                                            <a class="btn btn-xs btn-success text-small" href="#" data-bind="click: $parent.edit">
                                                 <i class="fa fa-pencil"></i>Edit</a>
-                                            <a class="btn btn-xs btn-danger text-small " href="#">
+                                            <a class="btn btn-xs btn-danger text-small " href="#" data-bind="click: $parent.remove">
                                                 <i class="fa fa-times "></i>Delete</a>
                                         </div>
                                         <!-- /.table-item-cell-container -->
@@ -193,42 +189,60 @@
                                 <div class="col-sm-3">
                                     <div class="table-item-cell">
                                         <div class="table-item-cell-container">
-                                            <div class="date">
+                                            <div data-bind="template:{name:'showTaskDate', data:{state:state,begin:begin,end:end,completed: $data.completed}}">
 
-                                                <!--  ko ifnot: moment(new Date()).isBefore(begin())-->
-                                                <i class="fa fa-calendar text-danger"></i>
-                                                <!--                                                <br/>-->
-                                                <span class="text-danger">Due Date:</span>
-                                                <span data-bind="text: moment(end()).format('MMM Do YYYY, h:mm:ss a')"></span>
-                                                <!-- /ko -->
-                                                <!--  ko if: moment(new Date()).isBefore(begin())-->
-                                                <i class="fa fa-calendar text-success"></i>
-                                                <!--                                                <br/>-->
-                                                <span class="text-success">Starts:</span>
-                                                <span data-bind="text: moment(begin()).format('MMM Do YYYY, h:mm:ss a')"></span>
-                                                <!-- /ko -->
                                             </div>
+                                            <!-- /.table-item-cell-container -->
                                         </div>
-                                        <!-- /.table-item-cell-container -->
+                                        <!-- /.table-item-cell -->
                                     </div>
-                                    <!-- /.table-item-cell -->
+                                    <!-- /.col-sm-3 -->
                                 </div>
-                                <!-- /.col-sm-3 -->
+
+                                <!-- /.col-lg-4 -->
                             </div>
-                            <!-- /ko -->
-
-                            <!-- /.col-lg-4 -->
+                            <!-- /.row -->
                         </div>
-                        <!-- /.row -->
-
+                        <!-- /.table-item -->
                         <!-- /ko -->
                     </div>
-                    <!-- /.table-item -->
-                </div>
 
+                </div>
+                <div id="showTaskState" data-bind="bind:false" style="display: none">
+                    <div class="table-item-cell-container text-small" data-bind="css: helper.getTaskStateCSS($data)">
+                        <span>
+                            <i data-bind="css: helper.getTaskStateIcon($data)"></i>&nbsp;
+                            <span data-bind="text: $data"></span>
+                        </span>
+                        <a class="btn btn-xs btn-primary text-small magic-content" href="#" data-bind="visible: $data==Enums.taskState.pending, click: function(){$root.complete($parent);}">
+                            <i class="fa fa-check"></i>Complete</a>
+                    </div>
+                </div>
+                <div id="showTaskDate" data-bind="bind:false" style="display: none">
+                    <div class="date">
+                        <i class="fa fa-calendar" data-bind="css: helper.getTaskStateCSS($data.state())"></i>
+                        <span data-bind="visible: $data.state()==Enums.taskState.pending">
+                            <span data-bind="css: helper.getTaskStateCSS($data.state())">Due Date:</span>
+                            <span data-bind="text: moment(end()).format('MMM Do YYYY, h:mm:ss a')"></span>
+                        </span>
+                        <span data-bind="visible: $data.state()==Enums.taskState.future">
+                            <span data-bind="css: helper.getTaskStateCSS($data.state())">Starts:</span>
+                            <span data-bind="text: moment(begin()).format('MMM Do YYYY, h:mm:ss a')"></span>
+                        </span>
+                        <span data-bind="visible: $data.state()==Enums.taskState.complited">
+                            <span data-bind="css: helper.getTaskStateCSS($data.state())">completed:</span>
+                            <!--ko if: completed-->
+                            <span data-bind="text: moment(completed()).format('MMM Do YYYY, h:mm:ss a')"></span>
+                            <!--/ko-->
+                        </span>
+                        <span data-bind="visible: $data.state()==Enums.taskState.closed">
+                            <span data-bind="css: helper.getTaskStateCSS($data.state())">Ended:</span>
+                            <span data-bind="text: moment(end()).format('MMM Do YYYY, h:mm:ss a')"></span>
+
+                        </span>
+                    </div>
+                </div>
             </div>
-            <!--/ko-->
         </div>
-    </div>
     </div>
 </template>
