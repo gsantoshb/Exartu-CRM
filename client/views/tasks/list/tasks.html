@@ -51,14 +51,18 @@
                                             </div>
                                             <div id="taskOwner" class="panel-collapse collapse">
                                                 <div class="panel-body">
-                                                    <select class="form-control">
-                                                        <option>Select Owner</option>
-                                                        <option>Mike Arnatutovici</option>
-                                                        <option>Emma P.</option>
-                                                        <option>Tom Ford</option>
-                                                        <option>Penny Lim</option>
-                                                        <option>Paul C.</option>
-                                                    </select>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" data-bind="checked: ownedByMe" />Owned by me
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" data-bind="checked: assigned" />assigned to
+                                                            <select data-bind="options:users,optionsText:'username', optionsValue:'_id', value:assignedTo">
+                                                            </select>
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
