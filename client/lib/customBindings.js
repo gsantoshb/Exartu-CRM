@@ -30,5 +30,152 @@ ko.validation.rules['uniqueUserInformation'] = {
     message: '{0} is already in use',
 };
 
+/*
+ * bootstrap date-time picker
+ * 
+<element> <!--if the element is visible it will hide on click outside this element-->
+<div data-bind="dateTimePicker: {date:value,visible:visible, startLimit: startDate, endLimit: endDate}">
+<element>
+*/
+ko.bindingHandlers.dateTimePicker = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+
+        var value; //the observable that contains the date
+        var visible = true; //an observable with the visible flag
+        var startLimit = -Infinity;
+        var endLimit = Infinity;
+        var options = valueAccessor();
+
+        if (options.visible) {
+            visible = ko.utils.unwrapObservable(valueAccessor().visible);
+            valueAccessor().visible.subscribe(function (v) {
+                if (v) {
+                    $(element).show();
+                    $('body').on('click', hidder); //to hide inputs on click outside
+                } else {
+                    $(element).hide();
+                }
+            });
+        }
+        if (options.startLimit) {
+            startLimit = ko.utils.unwrapObservable(options.startLimit);
+        }
+        if (options.endLimit) {
+            endLimit = ko.utils.unwrapObservable(options.endLimit);
+        }
+        value = ko.utils.unwrapObservable(valueAccessor().date);
+        if (!value.getMonth) {
+            value = new Date(value);
+        }
+
+        if (!visible) {
+            $(element).hide();
+        }
+        var hidder = function (e) {
+            var parent = $(element).parent();
+            if ((!$(parent).is(e.target)) && $(parent).has(e.target).length === 0) { //if the click is outside the element's parent
+                valueAccessor().visible(false); //hide the element
+                $('body').off('click', hidder); //off the click event
+            }
+        };
+        //find  data-pick
+        var childrens = $(element).children();
+        //insert the input elements for childs with data-pick
+        //if the child has no data-pick the is removed from childs because is useless
+        ko.utils.arrayForEach(childrens, function (child) {
+            switch (insertInput(child)) {
+            case "date":
+                $(child).datetimepicker({
+                    pickTime: false,
+                    startDate: startLimit, // set a minimum date
+                    endDate: endLimit, // set a maximum date
+                });
+                $(child).data('datetimepicker').setLocalDate(value);
+
+                $(child).on('changeDate', function (e) {
+                    if (!value) {
+                        value(new Date);
+                        e.localDate = value;
+                    }
+                    value.setYear(e.localDate.getFullYear());
+                    value.setMonth(e.localDate.getMonth());
+                    value.setDate(e.localDate.getDate());
+                    valueAccessor().date(value);
+                });
+                break;
+            case "time":
+                $(child).datetimepicker({
+                    pickDate: false,
+                    pickSeconds: false,
+                    pick12HourFormat: true,
+                    startDate: startLimit, // set a minimum date
+                    endDate: endLimit // set a maximum date
+                });
+                $(child).data('datetimepicker').setLocalDate(value);
+
+                $(child).on('changeDate', function (e) {
+                    if (!value) {
+                        value(new Date);
+                        e.localDate = value;
+                    }
+                    value.setHours(e.localDate.getHours());
+                    value.setMinutes(e.localDate.getMinutes());
+                    value.setMilliseconds(e.localDate.getMilliseconds());
+                    valueAccessor().date(value);
+                });
+                break;
+            case "dateTime":
+                $(child).data('datetimepicker').setLocalDate(value);
+
+                $(element).datetimepicker({
+                    language: 'en',
+                    pickSeconds: false,
+                    pick12HourFormat: true,
+                    startDate: startLimit, // set a minimum date
+                    endDate: endLimit // set a maximum date
+                });
+                $(child).data('datetimepicker').setLocalDate(value);
+
+                $(child).on('changeDate', function (e) {
+                    value(e.localDate);
+                    valueAccessor().date(value);
+                });
+                break;
+            default:
+                //childrens.remove(child);
+            }
+        });
+
+    },
+    update: function (element, valueAccessor, allBindingsAccessor) {}
+};
+
+var insertInput = function (element) {
+    var type = element.getAttribute("data-pick");
+    element = $(element);
+    element.addClass("input-group");
+    if (type == "dateTime") {
+        element.append('<input class="form-control" data-format="MM/dd/yyyy HH:mm:ss PP" type="text"></input>' +
+            '<span class="input-group-addon add-on">' +
+            '<i class="glyphicon " data-time-icon="glyphicon-time" data-date-icon="glyphicon-calendar">' +
+            '</i>' +
+            '</span>');
+    } else if (type == "time") {
+        element.append('<input class="form-control" data-format="HH:mm:ss PP" type="text"></input>' +
+            '<span class="input-group-addon add-on">' +
+            '<i class="glyphicon " data-time-icon="glyphicon-time" data-date-icon="glyphicon-calendar">' +
+            '</i>' +
+            '</span>');
+    } else if (type == "date") {
+        element.append('<input class="form-control" data-format="MM/dd/yyyy" type="text"></input>' +
+            '<span class="input-group-addon add-on">' +
+            '<i class="glyphicon " data-time-icon="glyphicon-time" data-date-icon="glyphicon-calendar">' +
+            '</i>' +
+            '</span>');
+    }
+    return type;
+};
+
+
 // Register new rules
 ko.validation.registerExtenders();
