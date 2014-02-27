@@ -1,0 +1,25 @@
+<template name="lookupFilterTemplate">
+    <div id="lookupFilterTemplate" style="display: none;">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" data-bind="attr: { href: '#' + title }">
+                        <strong data-bind="text: title"></strong>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse" style="height: auto;" data-bind="attr: {id: title}">
+                <div class="panel-body">
+                    <!-- ko foreach: items -->
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" data-bind="checked: value">
+                            <span data-bind="text: displayName"></span>
+                        </label>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
