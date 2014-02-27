@@ -35,11 +35,10 @@
                                                 </h4>
                                             </div>
                                             <div id="taskStatus" class="panel-collapse collapse in">
-                                                <div class="panel-body">
-                                                    <button type="button" class="btn btn-xs btn-tertiary">Active</button>
-                                                    <button type="button" class="btn btn-xs btn-success">Done</button>
-                                                    <button type="button" class="btn btn-xs btn-warning">Due</button>
+                                                <div class="panel-body" data-bind="foreach: states">
+                                                    <button type="button" class="btn btn-xs " data-bind="text:name, click:$parent.selectState, css:{'btn-primary':$parent.selectedState()==$data}"></button>
                                                 </div>
+                                                <button type="button" class="btn btn-link " data-bind="click:clearState">clear</button>
                                             </div>
                                         </div>
                                         <div class="panel panel-default">

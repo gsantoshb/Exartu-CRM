@@ -5,21 +5,25 @@
  *  - createdAt: date created
  *  - begin: date begining
  *  - end: date
- *  - done: date complited
+ *  - completed: date completed
  *  - assign: array of user's ids that are assigned to this task
- *  - state: array that holds the historical states
+ *  - state (calculated in client's transform)
  */
 
 Meteor.publish('tasks', function () {
-    var user = Meteor.users.findOne({
-        _id: this.userId
-    });
+    //    var user = Meteor.users.findOne({
+    //        _id: this.userId
+    //    });
 
-    if (!user)
+    if (!this.userId)
         return false;
 
     return Tasks.find({
-        hierId: user.hierId
+        $or: [{
+            userId: this.userId
+    }, {
+            assign: this.userId
+    }]
     });
 })
 
