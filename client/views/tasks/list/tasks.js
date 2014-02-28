@@ -8,13 +8,7 @@ var states = [
     {
         name: 'Pending',
         query: {
-            $or: [{
-                completed: null,
-               }, {
-                completed: {
-                    $exists: false
-                }
-            }],
+            completed: null,
             begin: {
                 $lte: new Date(),
             },
@@ -25,13 +19,8 @@ var states = [
     }, {
         name: 'Closed',
         query: {
-            $or: [{
-                completed: null,
-               }, {
-                completed: {
-                    $exists: false
-                }
-            }],
+
+            completed: null,
 
             begin: {
                 $lt: new Date(),
@@ -50,22 +39,18 @@ var states = [
     }, {
         name: 'Future',
         query: {
-            $or: [{
-                completed: null,
-               }, {
-                completed: {
-                    $exists: false
-                }
-            }],
+            completed: null,
+
             begin: {
                 $gt: new Date()
             }
         }
-    },
-]
+    }
+];
+
 Template.tasks.viewModel = function () {
     var self = {};
-
+    self.searchString = ko.observable();
     self.selectedState = ko.observable();
     self.states = ko.observableArray(states);
     self.selectState = function (data) {
@@ -100,6 +85,11 @@ Template.tasks.viewModel = function () {
         }
         if (self.assigned() && self.assignedTo()) {
             q.assign = self.assignedTo()
+        }
+        if (self.searchString()) {
+            q.note = {
+                $regex: self.searchString()
+            };
         }
         console.dir(q);
         return q;
