@@ -64,8 +64,13 @@ ko.bindingHandlers.dateTimePicker = {
             endLimit = ko.utils.unwrapObservable(options.endLimit);
         }
         value = ko.utils.unwrapObservable(valueAccessor().date);
-        if (!value.getMonth) {
+        if (!value) {
+            value = new Date();
+            valueAccessor().date(value);
+        }
+        if (!value || !value.getMonth) {
             value = new Date(value);
+            valueAccessor().date(value);
         }
 
         if (!visible) {

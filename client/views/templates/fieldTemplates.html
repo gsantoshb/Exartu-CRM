@@ -8,6 +8,14 @@
             <span class="text-danger" data-bind="validationMessage: value"></span>
         </div>
     </div>
+    <div id="inLongStringField" style="display: none;">
+        <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
+            <label class="control-label" data-bind="text: name, attr: { for: name }"></label>
+            <textarea class="form-control" type="text" placeholder="" data-bind="value: value, attr: {id: name}" />
+            <span class="text-danger" data-bind="validationMessage: value"></span>
+        </div>
+    </div>
+
     <!-- LookUp -->
     <div id="inLookUpField" style="display: none;">
         <div data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
@@ -30,7 +38,9 @@
     <div id="inDateField" style="display: none;">
         <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
             <label class="control-label" data-bind="text: name"></label>
-            <input class="form-control" type="date" data-bind="value: value" />
+            <div data-bind="dateTimePicker: {date:value}">
+                <div data-pick="date"></div>
+            </div>
             <span class="text-danger" data-bind="validationMessage: value"></span>
         </div>
     </div>
