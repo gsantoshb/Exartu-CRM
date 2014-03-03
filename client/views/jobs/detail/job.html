@@ -24,36 +24,33 @@
                             <table class="table table-striped" style="table-layout: fixed;">
                                 <tr>
                                     <td>
-                                        <div data-bind="template:{name:'display-property-date',data:{icon:'fa fa-calendar',name:'Start date', value: startDate, editMode: $parent.editMode}}">
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-date',data:{icon:'fa fa-calendar',name:'Start date', value: startDate, editMode: $parent.editMode}}">
                                         </div>
                                     </td>
                                     <td>
-                                        <div data-bind="template:{name:'display-property-date',data:{icon:'fa fa-calendar', name:'End date', value: endDate, editMode: $parent.editMode}}">
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-date',data:{icon:'fa fa-calendar', name:'End date', value: endDate, editMode: $parent.editMode}}">
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-clock-o', name:'Duration', value: duration, valueName:durationName(), editMode: $parent.editMode, lookUpName:'jobDuration'}}">
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-clock-o', name:'Duration', value: duration, valueName:durationName(), editMode: $parent.editMode, lookUpName:'jobDuration'}}">
                                         </div>
 
                                     </td>
                                     <td>
-                                        <div data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-info-circle', name:'Status', value: status, valueName:statusName(), editMode: $parent.editMode, lookUpName:'jobStatus'}}">
-                                            <i class="fa fa-info-circle"></i>&nbsp;Status:
-                                            <strong data-bind="text: statusName()">Pending</strong>
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-info-circle', name:'Status', value: status, valueName:statusName(), editMode: $parent.editMode, lookUpName:'jobStatus'}}">
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-building-o', name:'Industry', value: industry, valueName:industryName(), editMode: $parent.editMode, lookUpName:'jobIndustry'}}">
-                                            <i class="fa fa-building-o"></i>&nbsp;Industry:
-                                            <strong data-bind="text: industryName()">Pending</strong>
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-building-o', name:'Industry', value: industry, valueName:industryName(), editMode: $parent.editMode, lookUpName:'jobIndustry'}}">
+                                        </div>
                                     </td>
                                     <td>
-                                        <div data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-folder-open', name:'Category', value: category, valueName:categoryName(), editMode: $parent.editMode, lookUpName:'jobCategory'}}">
-                                            <i class="fa fa-folder-open"></i>&nbsp;Category:
-                                            <strong data-bind="text: categoryName()"></strong>
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-folder-open', name:'Category', value: category, valueName:categoryName(), editMode: $parent.editMode, lookUpName:'jobCategory'}}">
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -77,12 +74,12 @@
                                             <div data-switch="false">
                                                 Tags
                                                 <!-- ko foreach: $data.tags -->
-                                                <button type="button" class="btn btn-xs btn-primary" data-bind="click: $root.removeTag">
-                                                    <span data-bind="text: $data"></span>
-                                                    <i class="fa fa-times"></i>
-                                                </button>
+                                                <span type="button" class="badge" data-bind="click: $root.removeTag" style="cursor: pointer" title="Remove">
+                                                    <span data-bind="text: $data" title="Remove"></span>
+                                                    <i class="fa fa-times" title="Remove"></i>
+                                                </span>
                                                 <!-- /ko -->
-                                                <div class="input-group ">
+                                                <div class="input-group">
                                                     <input type="text " class="form-control " placeholder="Enter tags here... " data-bind="value: $parent.newTag ">
                                                     <span class="input-group-btn ">
                                                         <button class="btn btn-success " type="button " data-bind="click: $root.addTag ">Add</button>
@@ -112,30 +109,30 @@
                                 </div>
                             </div>
                             <!-- /.description -->
+                        </div>
+                        <!-- /.box-content-lg-->
+                        <!--ko if: $parent.editMode            -->
+                        <div class="box-header-2" style="height: 60px">
+                            <div class="pull-right">
+                                <span class="btn btn-default" data-bind="click: function(){ return $parent.editMode(false); }">
+                                    Cancel
+                                </span>
+                                <span class="btn btn-info" data-bind="click: function(){ return $parent.save(); }">
+                                    Save
+                                </span>
                             </div>
-                            <!-- /.box-content-lg-->
-                            <!--ko if: $parent.editMode            -->
-                            <div class="box-header-2" style="height: 60px">
-                                <div class="pull-right">
-                                    <span class="btn btn-default" data-bind="click: function(){ return $parent.editMode(false); }">
-                                        Cancel
-                                    </span>
-                                    <span class="btn btn-info" data-bind="click: function(){ return $parent.save(); }">
-                                        Save
-                                    </span>
-                                </div>
-                            </div>
-                            <!--/ko-->
-                            </div>
-                            <!-- /.box -->
-                            {{>candidates}}
+                        </div>
+                        <!--/ko-->
+                    </div>
+                    <!-- /.box -->
+                    {{>candidates}}
 
-                            </div>
-                            <!-- /.col-lg-8-->
+                </div>
+                <!-- /.col-lg-8-->
 
-                            <div class="col-md-4 col-lg-4">
-                                {{>assignment}} {{>customerInfo}}
-                                <!--
+                <div class="col-md-4 col-lg-4">
+                    {{>assignment}} {{>customerInfo}}
+                    <!--
                     <div class="list-group">
                         <a href="#" class="list-group-item">
                             <i class="fa fa-share"></i>
@@ -153,13 +150,13 @@
 -->
 
 
-                            </div>
-                            <!-- /.col-lg-4-->
-                        </div>
-                        <!-- /.container-fluid -->
+                </div>
+                <!-- /.col-lg-4-->
+            </div>
+            <!-- /.container-fluid -->
 
-                    </div>
-                    <!-- /.content -->
+        </div>
+        <!-- /.content -->
 </template>
 
 

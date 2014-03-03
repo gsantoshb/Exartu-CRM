@@ -64,22 +64,22 @@
     </div>
 
     <div id="display-property-date" data-bind="bind: false" style="display:none">
-<div data-bind="switch:$data.editMode">
+        <div data-bind="switch:$data.editMode">
             <div data-switch="true">
                 <!--ko if: $data.icon-->
                 <i data-bind="css:icon, if: $data.icon"></i>&nbsp;
                 <!-- /ko -->
-                <span data-bind="text: name + ': '" style="width: 80px;">
+                <span data-bind="text: name + ': '" class="display-property-label">
                 </span>
                 <strong data-bind="text: moment(value()).format('MM.DD.YYYY')">
                 </strong>
             </div>
             <div data-switch="false">
-                <div class="form-group" style="margin:0" data-bind="css:{ 'has-error': value.isModified() && ! value.isValid()}">
+                <div class="form-group" data-bind="css:{ 'has-error': value.isModified() && ! value.isValid()}">
                     <!--ko if: $data.icon-->
-                    <i data-bind="css:icon, if: $data.icon" style="line-height: 2;" class="editableIcon pull-left"></i>&nbsp;
+                    <i data-bind="css:icon, if: $data.icon" class="editableIcon pull-left"></i>&nbsp;
                     <!-- /ko -->
-                    <label class="control-label pull-left" style="line-height: 2;width: 80px;" data-bind="text: name">
+                    <label class="control-label pull-left" data-bind="text: name">
                     </label>
                     <div class="col-lg-8" data-bind="dateTimePicker:{date:value}">
                         <div data-pick="dateTime"></div>
@@ -93,19 +93,19 @@
         <div data-bind="switch:$data.editMode">
             <div data-switch="true">
                 <!--ko if: $data.icon-->
-                <i data-bind="css:icon, if: $data.icon" class="editableIcon"></i>&nbsp;
+                <i data-bind="css:icon, if: $data.icon"></i>&nbsp;
                 <!-- /ko -->
-                <span data-bind="text: name + ': '" style="width: 80px;">
+                <span data-bind="text: name + ': '" class="display-property-label">
                 </span>
                 <strong data-bind="text: valueName">
                 </strong>
             </div>
             <div data-switch="false">
-                <div class="form-group" style="margin:0" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
+                <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
                     <!--ko if: $data.icon-->
-                    <i data-bind="css:icon, if: $data.icon" style="line-height: 2;" class="editableIcon pull-left"></i>&nbsp;
+                    <i data-bind="css:icon, if: $data.icon" class="pull-left"></i>&nbsp;
                     <!-- /ko -->
-                    <span class="control-label pull-left" style="line-height: 2;width: 80px;" data-bind="text: name"></span>
+                    <span class="control-label pull-left" data-bind="text: name"></span>
                     <div class="col-lg-8">
                         <select class="form-control" class="col-lg-10" data-bind="options:ko.meteor.findOne(LookUps,{name:lookUpName})().items(), optionsText:'displayName', value:value, optionsValue:'code'">
                         </select>
