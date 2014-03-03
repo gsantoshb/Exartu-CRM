@@ -125,9 +125,9 @@ ko.bindingHandlers.dateTimePicker = {
                 });
                 break;
             case "dateTime":
-                $(child).data('datetimepicker').setLocalDate(value);
+                //                $(child).data('datetimepicker').setLocalDate(value);
 
-                $(element).datetimepicker({
+                $(child).datetimepicker({
                     language: 'en',
                     pickSeconds: false,
                     pick12HourFormat: true,
@@ -137,8 +137,15 @@ ko.bindingHandlers.dateTimePicker = {
                 $(child).data('datetimepicker').setLocalDate(value);
 
                 $(child).on('changeDate', function (e) {
-                    value(e.localDate);
-                    valueAccessor().date(value);
+                    //                    debugger;
+                    if (!value) {
+                        value(new Date);
+                        e.localDate = value;
+                    }
+                    //                    value.setHours(e.localDate.getHours());
+                    //                    value.setMinutes(e.localDate.getMinutes());
+                    //                    value.setMilliseconds(e.localDate.getMilliseconds());
+                    valueAccessor().date(e.localDate);
                 });
                 break;
             default:
@@ -157,24 +164,77 @@ var insertInput = function (element) {
     if (type == "dateTime") {
         element.append('<input class="form-control" data-format="MM/dd/yyyy HH:mm:ss PP" type="text"></input>' +
             '<span class="input-group-addon add-on">' +
-            '<i class="glyphicon " data-time-icon="glyphicon-time" data-date-icon="glyphicon-calendar">' +
+            '<i class="glyphicon " data-time-icon="glyphicon glyphicon-time" data-date-icon="glyphicon glyphicon-calendar">' +
             '</i>' +
             '</span>');
     } else if (type == "time") {
         element.append('<input class="form-control" data-format="HH:mm:ss PP" type="text"></input>' +
             '<span class="input-group-addon add-on">' +
-            '<i class="glyphicon " data-time-icon="glyphicon-time" data-date-icon="glyphicon-calendar">' +
+            '<i class="glyphicon " data-time-icon="glyphicon glyphicon-time" data-date-icon="glyphicon glyphicon-calendar">' +
             '</i>' +
             '</span>');
     } else if (type == "date") {
         element.append('<input class="form-control" data-format="MM/dd/yyyy" type="text"></input>' +
             '<span class="input-group-addon add-on">' +
-            '<i class="glyphicon " data-time-icon="glyphicon-time" data-date-icon="glyphicon-calendar">' +
+            '<i class="glyphicon " data-time-icon="glyphicon glyphicon-time" data-date-icon="glyphicon glyphicon-calendar">' +
             '</i>' +
             '</span>');
     }
     return type;
 };
+
+ko.bindingHandlers.
+switch = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        var falseElement,
+            trueElement;
+
+        var childrens = $(element).children();
+        _.each(childrens, function (child) {
+            if ($(child).data('switch') == true) {
+                trueElement = $(child);
+            }
+            if ($(child).data('switch') == false) {
+                falseElement = $(child);
+            }
+        });
+        var value = ko.utils.unwrapObservable(valueAccessor());
+        if (!value) {
+            falseElement.hide();
+            trueElement.show();
+
+        } else {
+            trueElement.hide();
+            falseElement.show();
+        }
+
+    },
+    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        //        console.log(this.asd);
+        var falseElement,
+            trueElement;
+
+        var childrens = $(element).children();
+        _.each(childrens, function (child) {
+            if ($(child).data('switch') == true) {
+                trueElement = $(child);
+            }
+            if ($(child).data('switch') == false) {
+                falseElement = $(child);
+            }
+        })
+        var value = ko.utils.unwrapObservable(valueAccessor());
+        if (!value) {
+            falseElement.fadeOut('fast', function () {
+                trueElement.fadeIn('fast');
+            })
+        } else {
+            trueElement.fadeOut('fast', function () {
+                falseElement.fadeIn('fast');
+            })
+        }
+    }
+}
 
 
 // Register new rules

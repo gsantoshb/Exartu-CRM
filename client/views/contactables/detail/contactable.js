@@ -99,7 +99,7 @@ Template.contactable.viewModel = function () {
     };
 
     // Edit contactable's general information (person or organization details)
-
+    debugger;
     self.editModeContactableInfo = ko.observable(false);
     self.editModeContactableInfo.subscribe(function (value) {
         if (!value) {
