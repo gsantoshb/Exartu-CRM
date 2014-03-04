@@ -125,12 +125,15 @@
                         <!--/ko-->
                     </div>
                     <!-- /.box -->
-                    {{>candidates}}
+                    <div data-bind="with: $parent.job">
+                        {{>candidates}}
+                    </div>
 
                 </div>
                 <!-- /.col-lg-8-->
 
-                <div class="col-md-4 col-lg-4">
+                <div class="col-md-4 col-lg-4" data-bind="with: $parent.job">
+
                     {{>assignment}} {{>customerInfo}}
                     <!--
                     <div class="list-group">
@@ -184,7 +187,7 @@
                         <td>Member Since</td>
                         <td data-bind="text: moment(createdAt()).format('MMMM YYYY')"></td>
                     </tr>
-<!--
+                    <!--
                     <tr>
     <td>Last Sign-in</td>
     <td>Feb 24, 2014</td>
@@ -192,9 +195,11 @@
 -->
                 </tbody>
             </table>
+            <!--
             <a class="btn btn-default" href="#">Browse all Google jobs
-                <span>(5)</span>
-            </a>
+    <span>(5)</span>
+</a>
+-->
         </div>
         <!-- /.box-content -->
     </div>
