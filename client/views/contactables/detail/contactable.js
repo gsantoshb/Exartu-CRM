@@ -25,15 +25,12 @@ ContactableController = RouteController.extend({
             break;
         };
     },
-    data: function () {
-        Session.set('entityId', this.params._id); // save current contactable to later use on templates
-        Session.set('entityCollection', 'Contactables');
-    }
 });
 
+Template.contactable.waitOn = ['ObjTypesHandler', 'ContactableHandler'];
 Template.contactable.viewModel = function () {
     var self = this,
-        contactableId = Session.get('entityId');
+        contactableId = Router.current().params._id;
 
     self.contactable = ko.meteor.findOne(Contactables, {
         _id: contactableId
