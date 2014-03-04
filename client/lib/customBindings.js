@@ -176,6 +176,42 @@ var insertInput = function (element) {
     return type;
 };
 
+ko.bindingHandlers.executeOnEnter = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        var options = valueAccessor() || {};
+
+        var shiftDown = false;
+
+        $(element).onkeydown = function (evt) {
+            var evt2 = evt || window.event;
+            var keyCode = evt2.keyCode || evt2.which;
+            if (keyCode == 16)
+                self.shiftDown = true;
+        };
+        $(element).onkeyup = function (evt) {
+            var evt2 = evt || window.event;
+            var keyCode = evt2.keyCode || evt2.which;
+            if (keyCode == 16)
+                self.shiftDown = false;
+        };
+
+        $(element).keypress(function (event) {
+            if (!event.shiftKey) {
+                var keyCode = (event.which ? event.which : event.keyCode);
+                var execute = false;
+                ko.utils.arrayFirst(options.keys, function (key) {
+                    return execute = key == keyCode;
+                });
+                if (execute) {
+                    options.fn.call(viewModel);
+                    return false;
+                }
+                return true;
+            }
+        });
+    }
+};
+
 
 // Register new rules
 ko.validation.registerExtenders();

@@ -14,3 +14,7 @@ accounts-ui-bootstrap-3
 collection-hooks
 service-configuration
 iron-router-progress
+collectionFS
+cfs-public-folder
+imagemagick
+spin

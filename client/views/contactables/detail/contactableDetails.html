@@ -71,10 +71,8 @@
         <!-- ko if: $data.editMode -->
         <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
             <small class="control-label" data-bind="text: name"></small>
-            <div class="col-lg-10">
-                <input class="form-control" type="text" placeholder="" data-bind="value: value" />
-                <span class="text-danger" data-bind="validationMessage: value"></span>
-            </div>
+            <input class="form-control" type="text" placeholder="" data-bind="value: value" />
+            <span class="text-danger" data-bind="validationMessage: value"></span>
         </div>
         <!-- /ko -->
     </div>

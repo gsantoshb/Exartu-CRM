@@ -5,6 +5,9 @@
     "knockout-client": {},
     "accounts-ui-bootstrap-3": {},
     "collection-hooks": {},
-    "iron-router-progress": {}
+    "iron-router-progress": {},
+    "collectionFS": {},
+    "imagemagick": {},
+    "spin": {}
   }
 }

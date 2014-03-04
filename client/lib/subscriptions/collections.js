@@ -194,3 +194,10 @@ extendedSubscribe("tasks", 'TasksHandler');
  */
 ObjTypes = new Meteor.Collection("objTypes");
 extendedSubscribe('objTypes', 'ObjTypesHandler');
+
+// CollectionFS
+
+ContactablesFS = new CollectionFS('contactables', {
+    autopublish: false
+});
+Meteor.subscribe('contactableFiles');

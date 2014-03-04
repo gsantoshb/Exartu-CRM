@@ -39,7 +39,39 @@ Template.contactable.viewModel = function () {
         _id: contactableId
     });
 
-    Session.set('entityDisplayName', self.contactable().displayName());
+    // Contact methods
+    self.showAllContactMethods = ko.observable(false);
+    self.contactMethods = ko.computed(function () {
+        return self.showAllContactMethods() ? self.contactable().contactMethods() : self.contactable().contactMethods.slice(0, 3);
+    });
+
+    self.newContactMethod = ko.validatedObservable({
+        value: ko.observable().extend({
+            required: true
+        }),
+        type: ko.observable().extend({
+            required: true
+        }),
+    })
+    self.addContactMethod = function () {
+        if (!self.newContactMethod.isValid()) {
+            self.newContactMethod.errors.showAllMessages();
+            return;
+        }
+
+        Meteor.call('addContactableContactMethod', contactableId, {
+                value: self.newContactMethod().value(),
+                type: self.newContactMethod().type()
+            },
+            function (err, result) {
+                if (!err) {
+                    self.newContactMethod().value("");
+                    self.newContactMethod().value.isModified(false);
+                    self.newContactMethod().type("");
+                    self.newContactMethod().type.isModified(false);
+                }
+            })
+    }
 
     // TAGS
     self.newTag = ko.observable('');
@@ -162,10 +194,92 @@ Template.contactable.viewModel = function () {
         });
     };
 
+    // Posts
+    self.newPost = ko.observable("");
+
+    self.adding = ko.observable(false);
+    self.addPost = function () {
+        self.adding(true);
+        Meteor.call('addContactablePost', contactableId, {
+            content: self.newPost()
+        }, function (err, result) {
+            if (!err) {
+                self.adding(false);
+                self.newPost("");
+            }
+        });
+    }
+
+    // Contactable picture
+    var updatePicture = function () {
+        if (self.picture() && self.picture().fileHandler.size100x100) {
+            self.pictureUrl(self.picture().fileHandler.size100x100.url());
+        } else if (!self.picture().fileHandler.size100x100) {
+            var getUrl = function (retries) {
+                if (retries > 0) {
+                    setTimeout(function () {
+                        if (self.picture().fileHandler.size100x100)
+                            self.pictureUrl(self.picture().fileHandler.size100x100.url());
+                        else
+                            getUrl(retries - 1);
+                    }, 500);
+                } else {
+                    self.pictureErrorMessage("Error editing picture, try again");
+                }
+            }
+            getUrl(10);
+        }
+    }
+
+    if (!self.contactable().pictureFileId)
+        self.contactable().pictureFileId = ko.observable('');
+
+    var queryPicture = ko.computed(function () {
+        return {
+            _id: self.contactable().pictureFileId()
+        }
+    });
+
+    self.picture = ko.meteor.findOne(ContactablesFS, queryPicture);
+    self.picture.subscribe(function () {
+        updatePicture();
+    });
+    self.pictureUrl = ko.observable();
+    self.pictureUrl.subscribe(function (value) {
+        self.loadPicture(false);
+    });
+    self.loadPicture = ko.observable(true);
+
+    if (!self.picture()) {
+        self.loadPicture(false);
+    } else if (self.picture().fileHandler.size100x100)
+        self.pictureUrl(self.picture().fileHandler.size100x100.url());
+
+    self.pictureErrorMessage = ko.observable("");
+    self.editContactablePicture = function () {
+        $('#edit-picture').trigger('click');
+    }
+
+    $('#edit-picture').change(function (e) {
+        var fileId = ContactablesFS.storeFile(e.target.files[0], {
+            entityId: contactableId
+        });
+
+        self.loadPicture(true);
+
+        Meteor.call('updateContactablePicture', contactableId, fileId);
+    });
+
     return self;
 };
 
-
-Template.contactable.displayName = function () {
-    return Session.get('entityDisplayName');
+Template.contactable.rendered = function () {
+    // TODO: Avoid mutliple bindings
+    // Remove old binding to avoid multiple calls
+    var nodeIds = ['edit-picture-btn'];
+    _.forEach(nodeIds, function (nodeId) {
+        node = $('#' + nodeId)[0];
+        if (node)
+            ko.cleanNode(node);
+    })
 };

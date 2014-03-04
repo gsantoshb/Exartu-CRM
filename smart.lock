@@ -7,7 +7,10 @@
       "knockout-client": {},
       "accounts-ui-bootstrap-3": {},
       "collection-hooks": {},
-      "iron-router-progress": {}
+      "iron-router-progress": {},
+      "collectionFS": {},
+      "imagemagick": {},
+      "spin": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -39,6 +42,26 @@
         "git": "https://github.com/Multiply/iron-router-progress.git",
         "tag": "v0.2.0",
         "commit": "ce730d1d26feadb7c75ea25f22c5bfdb0c549a8b"
+      },
+      "collectionFS": {
+        "git": "https://github.com/raix/Meteor-CollectionFS.git",
+        "tag": "v0.3.7",
+        "commit": "34d9fb363472e44c6dba4a1473a9e106e107f5a9"
+      },
+      "imagemagick": {
+        "git": "https://github.com/sylvaingi/meteor-imagemagick.git",
+        "tag": "v0.1.2",
+        "commit": "d67bb926356d35cdff1a6d6c3c69750f3f54c059"
+      },
+      "spin": {
+        "git": "https://github.com/SachaG/meteor-spin.git",
+        "tag": "v0.2.2",
+        "commit": "3f655f0016228e4195acc784c45d3e3a247dc39f"
+      },
+      "cfs-public-folder": {
+        "git": "https://github.com/nooitaf/meteor-cfs-public-folder.git",
+        "tag": "v0.0.3",
+        "commit": "581c716424b374efb6f611110002621f9cc9212b"
       }
     }
   }
