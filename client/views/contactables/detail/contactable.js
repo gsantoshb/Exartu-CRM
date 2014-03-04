@@ -241,8 +241,10 @@ Template.contactable.viewModel = function () {
     self.picture.subscribe(function () {
         updatePicture();
     });
+    self.pictureErrorMessage = ko.observable("");
     self.pictureUrl = ko.observable();
     self.pictureUrl.subscribe(function (value) {
+        self.pictureErrorMessage("");
         self.loadPicture(false);
     });
     self.loadPicture = ko.observable(true);
@@ -252,7 +254,7 @@ Template.contactable.viewModel = function () {
     } else if (self.picture().fileHandler.size100x100)
         self.pictureUrl(self.picture().fileHandler.size100x100.url());
 
-    self.pictureErrorMessage = ko.observable("");
+
     self.editContactablePicture = function () {
         $('#edit-picture').trigger('click');
     }

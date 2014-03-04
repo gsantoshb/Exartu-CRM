@@ -33,7 +33,7 @@
 
         <div data-bind="with: organization">
             <fieldset>
-                <div data-bind="template: { name: 'inStringField', data: {name: 'organizationName', value:$data.organizationName} }" />
+                <div data-bind="template: { name: 'inStringField', data: {displayName: 'Organization name', value:$data.organizationName} }" />
             </fieldset>
         </div>
     </div>
@@ -41,15 +41,15 @@
 <template name="addPerson">
     <!-- ko if: $parent.selectedType()==Enums.personType.human -->
     <!-- ko with: person -->
-    <div class="form-group" data-bind="template: { name: 'inStringField', data: {name: 'firstName', value:$data.firstName} }">
+    <div class="form-group" data-bind="template: { name: 'inStringField', data: {displayName: 'First name', value:$data.firstName} }">
     </div>
-    <div class="form-group" data-bind="template: { name: 'inStringField', data: {name: 'middleName', value:$data.middleName} }">
+    <div class="form-group" data-bind="template: { name: 'inStringField', data: {displayName: 'Middle name', value:$data.middleName} }">
     </div>
-    <div class="form-group" data-bind="template: { name: 'inStringField', data: {name: 'lastName', value:$data.lastName} }">
+    <div class="form-group" data-bind="template: { name: 'inStringField', data: {displayName: 'Last name', value:$data.lastName} }">
     </div>
-    <div class="form-group" data-bind="template: { name: 'inStringField', data: {name: 'salutation', value:$data.salutation} }">
+    <div class="form-group" data-bind="template: { name: 'inStringField', data: {displayName: 'Salutation', value:$data.salutation} }">
     </div>
-    <div class="form-group" data-bind="template: { name: 'inStringField', data: {name: 'jobTitle', value:$data.jobTitle} }">
+    <div class="form-group" data-bind="template: { name: 'inStringField', data: {displayName: 'Job title', value:$data.jobTitle} }">
     </div>
     <!-- /ko -->
     <!-- /ko -->

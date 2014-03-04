@@ -3,15 +3,15 @@
     <!-- String -->
     <div id="inStringField" style="display: none;">
         <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
-            <label class="control-label" data-bind="text: name, attr: { for: name }"></label>
-            <input class="form-control" type="text" placeholder="" data-bind="value: value, attr: {id: name}" />
+            <label class="control-label" data-bind="text: displayName, attr: { for: displayName }"></label>
+            <input class="form-control" type="text" placeholder="" data-bind="value: value, attr: {id: displayName}" />
             <span class="text-danger" data-bind="validationMessage: value"></span>
         </div>
     </div>
     <div id="inLongStringField" style="display: none;">
         <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
-            <label class="control-label" data-bind="text: name, attr: { for: name }"></label>
-            <textarea class="form-control" type="text" placeholder="" data-bind="value: value, attr: {id: name}" />
+            <label class="control-label" data-bind="text: displayName, attr: { for: displayName }"></label>
+            <textarea class="form-control" type="text" placeholder="" data-bind="value: value, attr: {id: displayName}" />
             <span class="text-danger" data-bind="validationMessage: value"></span>
         </div>
     </div>
@@ -19,7 +19,7 @@
     <!-- LookUp -->
     <div id="inLookUpField" style="display: none;">
         <div data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
-            <h5 data-bind="text: name"></h5>
+            <h5 data-bind="text: displayName"></h5>
             <!-- ko if: $data.multiple -->
             <select class="form-control" data-bind="options: options, optionsText:'displayName', optionsValue:'code', selectedOptions: value, optionsCaption: 'None...'" multiple></select>
             <!-- /ko -->
@@ -37,7 +37,7 @@
     <!-- Date -->
     <div id="inDateField" style="display: none;">
         <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
-            <label class="control-label" data-bind="text: name"></label>
+            <label class="control-label" data-bind="text: displayName"></label>
             <div data-bind="dateTimePicker: {date:value}">
                 <div data-pick="date"></div>
             </div>

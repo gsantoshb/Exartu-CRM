@@ -13,16 +13,16 @@ seedSystemLookUps = function () {
         name: 'jobStatus',
         objGroupType: Enums.objGroupType.job,
         items: [{
-            displayName: 'open',
+            displayName: 'Open',
             code: 0
                 }, {
-            displayName: 'close',
+            displayName: 'Close',
             code: 1
             }, {
-            displayName: 'unfilled',
+            displayName: 'Unfilled',
             code: 2
             }, {
-            displayName: 'filled',
+            displayName: 'Filled',
             code: 3
             }],
         }, {

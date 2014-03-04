@@ -14,7 +14,7 @@
             </div>
             <div data-bind="foreach: relations">
                 <div>
-                    <h5 data-bind="text: relation.name"></h5>
+                    <h5 data-bind="text: relation.displayName"></h5>
                     <select class="form-control" data-bind="options: data,optionsText:'displayName', value: value, optionsCaption: 'select...'"></select>
                 </div>
             </div>

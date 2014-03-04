@@ -6,6 +6,7 @@
                obj2: 'Customer',
                visibilityOn1: {
                    name: 'customer',
+                   displayName: 'Customer',
                    collection: 'Contactables',
                    defaultValue: null,
                    cardinality: {
@@ -16,6 +17,7 @@
                },
                visibilityOn2: {
                    name: 'contacts',
+                   displayName: 'Contacts',
                    collection: 'Contactables',
                    defaultValue: [],
                    cardinality: {
@@ -27,35 +29,12 @@
                cascadeDelete: false,
             },
            {
-               name: 'asd',
-               obj1: 'Employee',
-               obj2: 'Customer',
-               visibilityOn1: {
-                   name: 'asdEmp',
-                   collection: 'Contactables',
-                   defaultValue: null,
-                   cardinality: {
-                       min: 0,
-                       max: 1
-                   },
-               },
-               visibilityOn2: {
-                   name: 'asdCus',
-                   collection: 'Contactables',
-                   defaultValue: null,
-                   cardinality: {
-                       min: 0,
-                       max: 1
-                   },
-               },
-               cascadeDelete: false,
-            },
-           {
                name: 'CustomerJobs',
                obj1: 'Customer',
                obj2: 'job',
                visibilityOn1: {
-                   name: 'Jobs',
+                   name: 'jobs',
+                   displayName: 'Jobs',
                    collection: 'Jobs',
                    defaultValue: [],
                    cardinality: {
@@ -64,11 +43,12 @@
                    },
                },
                visibilityOn2: {
-                   name: 'Customer',
+                   name: 'customer',
+                   displayName: 'Customer',
                    collection: 'Contactables',
                    defaultValue: null,
                    cardinality: {
-                       min: 0,
+                       min: 1,
                        max: 1
                    },
                    showInAdd: true,

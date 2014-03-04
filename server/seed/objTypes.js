@@ -13,14 +13,7 @@ seedSystemObjTypes = function () {
         {
             objGroupType: Enums.objGroupType.contactable,
             services: ['messages', 'tasks', 'posts', 'tags'],
-            fields: [
-                {
-                    name: 'AllContactablesUseThisField',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: false
-                }]
+            fields: []
         },
         {
             objGroupType: Enums.objGroupType.job,
@@ -67,6 +60,7 @@ seedSystemObjTypes = function () {
             fields: [
                 {
                     name: 'Deal_Name',
+                    displayName: 'Name',
                     regex: '.*',
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
@@ -74,6 +68,7 @@ seedSystemObjTypes = function () {
                 },
                 {
                     name: 'Deal_Description',
+                    displayName: 'Description',
                     regex: '.*',
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
@@ -81,6 +76,7 @@ seedSystemObjTypes = function () {
                 },
                 {
                     name: 'Competition',
+                    displayName: 'Competition',
                     regex: '.*',
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
@@ -88,6 +84,7 @@ seedSystemObjTypes = function () {
                 },
                 {
                     name: 'Customer',
+                    displayName: 'Customer',
                     regex: '.*',
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
@@ -95,6 +92,7 @@ seedSystemObjTypes = function () {
                 },
                 {
                     name: 'Statuses',
+                    displayName: 'Statuses',
                     regex: '.*',
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
@@ -102,6 +100,7 @@ seedSystemObjTypes = function () {
                 },
                 {
                     name: 'Revenue_Potential',
+                    displayName: 'Revenue potential',
                     regex: '.*',
                     fieldType: Enums.fieldType.int,
                     defaultValue: 0,
@@ -109,6 +108,7 @@ seedSystemObjTypes = function () {
                 },
                 {
                     name: 'Estimated_Close_Date',
+                    displayName: 'Estimated close date',
                     regex: '.*',
                     fieldType: Enums.fieldType.date,
                     defaultValue: '',
@@ -129,12 +129,14 @@ seedSystemObjTypes = function () {
             services: [],
             fields: [{
                 name: 'department',
+                displayName: 'Deparment',
                 regex: '.',
                 fieldType: Enums.fieldType.string,
                 defaultValue: 'Primary',
                 showInAdd: true
             }, {
                 name: 'description',
+                displayName: 'Description',
                 regex: '.*',
                 fieldType: Enums.fieldType.string,
                 defaultValue: '',
@@ -150,7 +152,14 @@ seedSystemObjTypes = function () {
             },
             defaultPersonType: Enums.personType.human,
             services: [],
-            fields: []
+            fields: [{
+                name: 'description',
+                displayName: 'Description',
+                regex: '.*',
+                fieldType: Enums.fieldType.string,
+                defaultValue: '',
+                showInAdd: true
+            }]
         },
         {
             objGroupType: Enums.objGroupType.contactable,
@@ -162,24 +171,11 @@ seedSystemObjTypes = function () {
             defaultPersonType: Enums.personType.human,
             services: [],
             fields: [{
-                name: 'test',
+                name: 'description',
+                displayName: 'Description',
                 regex: '.*',
                 fieldType: Enums.fieldType.string,
                 defaultValue: '',
-                showInAdd: true
-            }, {
-                name: 'test2',
-                regex: '.*',
-                fieldType: Enums.fieldType.string,
-                defaultValue: '',
-                showInAdd: true
-            }, {
-                name: 'statuses',
-                regex: '',
-                fieldType: Enums.fieldType.lookUp,
-                lookUpName: 'employeeStatuses',
-                multiple: true,
-                defaultValue: [],
                 showInAdd: true
             }]
         },
@@ -193,6 +189,7 @@ seedSystemObjTypes = function () {
             services: [],
             fields: [{
                 name: 'jobTitle',
+                displayName: 'Job title',
                 regex: '',
                 fieldType: Enums.fieldType.lookUp,
                 lookUpName: 'jobTitle',
@@ -209,19 +206,7 @@ seedSystemObjTypes = function () {
                 color: 'yellow'
             },
             services: [],
-            fields: [{
-                name: 'Type',
-                regex: '.*',
-                fieldType: Enums.fieldType.string,
-                defaultValue: '',
-                showInAdd: true
-            }, {
-                name: 'test2',
-                regex: '.*',
-                fieldType: Enums.fieldType.string,
-                defaultValue: '',
-                showInAdd: true
-            }]
+            fields: []
         },
         {
             objGroupType: Enums.objGroupType.deal,
@@ -231,15 +216,18 @@ seedSystemObjTypes = function () {
                 color: 'yellow'
             },
             services: [],
-            fields: [{
+            fields: [
+                {
                     name: 'Estimated_Revenue',
+                    displayName: 'Estimated revenue',
                     regex: '.*',
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
-            },
+                },
                 {
                     name: 'Credential_Check',
+                    displayName: 'Credential check',
                     regex: '.*',
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
@@ -257,18 +245,21 @@ seedSystemObjTypes = function () {
             services: [],
             fields: [{
                     name: 'User_Count',
+                    displayName: 'User count',
                     regex: '.*',
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
-            },
+                },
                 {
                     name: 'Modules_Note',
+                    displayName: 'Modules note',
                     regex: '.*',
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
-                }, ]
+                },
+            ]
         }
     ];
     _.forEach(systemObjTypes, function (objtype) {

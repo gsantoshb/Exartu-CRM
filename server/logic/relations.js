@@ -332,6 +332,7 @@ Meteor.methods({
 
             relations.push({
                 name: objRel.name,
+                displayName: objRel.displayName,
                 cardinality: objRel.cardinality,
                 target: {
                     collection: objRel.collection,
