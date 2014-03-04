@@ -188,8 +188,7 @@ var insertInput = function (element) {
     return type;
 };
 
-ko.bindingHandlers.
-switch = {
+ko.bindingHandlers['switch'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
         var falseElement,
             trueElement;
@@ -241,6 +240,38 @@ switch = {
     }
 }
 
+ko.bindingHandlers.map = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        //        debugger;
+
+        var address = ko.toJS(valueAccessor());
+
+        var mapOptions = {
+            zoom: 13,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(element, mapOptions);
+
+        var location = new google.maps.LatLng(address.geometry.location.d, address.geometry.location.e);
+        map.setCenter(location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: location,
+        });
+
+        ko.utils.domData.set(element, 'map', map);
+        ko.utils.domData.set(element, 'marker', marker);
+    },
+    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        var address = ko.toJS(valueAccessor());
+        var map = ko.utils.domData.get(element, 'map');
+        var marker = ko.utils.domData.get(element, 'marker');
+        var location = new google.maps.LatLng(address.geometry.location.d, address.geometry.location.e);
+        map.setCenter(location);
+        marker.setPosition(location);
+    }
+}
 
 // Register new rules
 ko.validation.registerExtenders();

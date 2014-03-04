@@ -15,6 +15,18 @@
                         </div>
                         <!-- Show dynamic fields and relations -->
                         <div data-bind="template: { name: 'showDynamicObjectTemplate', data: $data}"></div>
+                        Location:
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="value: locationString" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" data-bind="click:findLocation">
+                                    <i class="fa fa-search"></i>find
+                                </button>
+                            </span>
+                        </div>
+                        <!--                        ko if: location-->
+                        <div data-bind="map: location" style="width:500px;height:500px;margin:10px auto"></div>
+                        <!--                        /ko-->
                     </form>
                 </div>
                 <div class="modal-footer">
