@@ -8,3 +8,16 @@
     border-color: <COLOR>;
     display: none
 }
+.job-editable-property .display-property-label {
+    width: 80px;
+}
+.job-editable-property .form-group {
+    margin: 0;
+}
+.job-editable-property .form-group > i {
+    line-height: 2;
+}
+.job-editable-property .form-group .control-label {
+    line-height: 2;
+    width: 80px;
+}

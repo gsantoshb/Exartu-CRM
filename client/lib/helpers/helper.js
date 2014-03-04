@@ -314,3 +314,37 @@ _.extend(helper, {
         }
     }
 })
+
+/*
+ * Tasks
+ */
+var taskStatesStyle = {};
+
+taskStatesStyle['Pending'] = {
+    icon: 'fa fa-exclamation-circle',
+    textCSS: 'text-danger',
+};
+taskStatesStyle['Future'] = {
+    icon: 'fa fa-forward',
+    textCSS: 'text-info',
+};
+taskStatesStyle['Completed'] = {
+    icon: 'fa fa-check-circle',
+    textCSS: 'text-success',
+};
+taskStatesStyle['Closed'] = {
+    icon: 'fa fa-archive',
+    textCSS: 'text-muted',
+};
+
+_.extend(helper, {
+    getTaskStateIcon: function (state) {
+        var data = taskStatesStyle[state];
+        return data ? data.icon : '';
+    },
+    getTaskStateCSS: function (state) {
+        var data = taskStatesStyle[state];
+        return data ? data.textCSS : '';
+    }
+
+})

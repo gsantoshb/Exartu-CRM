@@ -1,6 +1,6 @@
 <template name="job">
     <div class="jobs-page" name="jobVM">
-        <div id="content" data-bind="with: job">
+        <div id="content" data-bind="with: editJob">
             <div id="content-header" class="mini">
                 <h1 data-bind="text: displayName">Senior Full-Stack Developer</h1>
             </div>
@@ -15,36 +15,42 @@
             <div class="container-fluid">
                 <div class="col-md-8 col-lg-8">
                     <div class="box">
+                        <div class="box-header-2">
+                            <a class="pull-right btn btn-xs" href="#" data-bind="click:$parent.edit, css:{'btn-primary':$parent.editMode(),'btn-default': !$parent.editMode()}">
+                                <i class="fa fa-pencil"></i>&nbsp;Edit</a>
+                            Job Details
+                        </div>
                         <div class="box-content-lg">
-                            <table class="table table-striped">
+                            <table class="table table-striped" style="table-layout: fixed;">
                                 <tr>
                                     <td>
-                                        <i class="fa fa-calendar"></i>&nbsp;Start date:
-                                        <strong data-bind="text: moment(startDate()).format('MM.DD.YYYY')"></strong>
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-date',data:{icon:'fa fa-calendar',name:'Start date', value: startDate, editMode: $parent.editMode}}">
+                                        </div>
                                     </td>
                                     <td>
-                                        <i class="fa fa-calendar"></i>&nbsp;End date:
-                                        <strong data-bind="text: moment(endDate()).format('MM.DD.YYYY')"></strong>
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-date',data:{icon:'fa fa-calendar', name:'End date', value: endDate, editMode: $parent.editMode}}">
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <i class="fa fa-clock-o"></i>&nbsp;Duration:
-                                        <strong data-bind="text: durationName()"></strong>
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-clock-o', name:'Duration', value: duration, valueName:durationName(), editMode: $parent.editMode, lookUpName:'jobDuration'}}">
+                                        </div>
+
                                     </td>
                                     <td>
-                                        <i class="fa fa-info-circle"></i>&nbsp;Status:
-                                        <strong data-bind="text: statusName()">Pending</strong>
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-info-circle', name:'Status', value: status, valueName:statusName(), editMode: $parent.editMode, lookUpName:'jobStatus'}}">
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <i class="fa fa-building-o"></i>&nbsp;Industry:
-                                        <strong data-bind="text: industryName()">Pending</strong>
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-building-o', name:'Industry', value: industry, valueName:industryName(), editMode: $parent.editMode, lookUpName:'jobIndustry'}}">
+                                        </div>
                                     </td>
                                     <td>
-                                        <i class="fa fa-folder-open"></i>&nbsp;Category:
-                                        <strong data-bind="text: categoryName()"></strong>
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-folder-open', name:'Category', value: category, valueName:categoryName(), editMode: $parent.editMode, lookUpName:'jobCategory'}}">
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -55,75 +61,68 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        Tags:
-                                        <!-- ko foreach: $data.tags -->
-                                        <span class="badge">
-                                            <i class="fa fa-tag"></i>
-                                            <span data-bind="text: $data"></span>
-                                        </span>
-                                        <!-- /ko -->
+                                        <div data-bind="switch: $parent.editMode">
+                                            <div data-switch="true">
+                                                Tags
+                                                <!-- ko foreach: $data.tags -->
+                                                <span class="badge">
+                                                    <i class="fa fa-tag"></i>
+                                                    <span data-bind="text: $data"></span>
+                                                </span>
+                                                <!-- /ko -->
+                                            </div>
+                                            <div data-switch="false">
+                                                Tags
+                                                <!-- ko foreach: $data.tags -->
+                                                <span type="button" class="badge" data-bind="click: $root.removeTag" style="cursor: pointer" title="Remove">
+                                                    <span data-bind="text: $data" title="Remove"></span>
+                                                    <i class="fa fa-times" title="Remove"></i>
+                                                </span>
+                                                <!-- /ko -->
+                                                <div class="input-group">
+                                                    <input type="text " class="form-control " placeholder="Enter tags here... " data-bind="value: $parent.newTag ">
+                                                    <span class="input-group-btn ">
+                                                        <button class="btn btn-success " type="button " data-bind="click: $root.addTag ">Add</button>
+                                                    </span>
+                                                </div>
+                                                <!-- /input-group -->
+                                                <!-- /.box-content-md -->
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
-                            <!--                            <br>-->
-                            <a data-toggle="collapse" href="#description">
-                                description
-                            </a>
-                            <div id="description" class="panel-collapse collapse">
-                                <h3>
-                                    We’re looking for someone who excels in developing across the entire stack. You will own and drive all aspects of iterating on our web app.
-                                    </p>
-                                </h3>
-                                The core of our technology stack is django with jQuery in the front end, so we are looking for a strong Python/django developer and Javascript developer.
-                                </p>
-                                <p>
-                                    This app is the core of our growing financial services business and we’re proud of its success to date. You will take ownership of this technology and be responsible for its future success.
-                                </p>
-                                <hr>
-                                <h4>
-                                    Our top priorities in the next 12 months are:
-                                </h4>
-                                <p>
-                                    Iterating on our UI
-                                    <br>Increasing automation
-                                    <br>Launching a new product
-                                    <br>To thrive in this position, you will need experience with:
-                                    <br>
-                                </p>
-                                <hr>
-                                <h4>
-                                    Agile development methods
-                                </h4>
-                                <p>
-                                    Product skills: requirements definition, feature definition, user experience, product roadmaps and product release cycles
-                                    <br>Server operations: monitoring, security, updates
-                                    <br>Debugging and hotfixes
-                                    <br>Testing automation
-                                    <br>
-                                </p>
+                            <div data-bind="switch: $parent.editMode">
+                                <div data-switch="true">
+                                    <a data-toggle="collapse" href="#description">
+                                        description
+                                    </a>
+                                    <div id="description" class="panel-collapse collapse" data-bind="html: $data.description">
 
-                                <p>
-                                    We’re looking for someone who is curious to learn the nature of our business, as this is essential to our application’s success. If you are excited by the prospect of gathering business requirements, designing a feature, creating an architecture and ultimately developing and deploying the solution, then this may be a great fit for you!
-                                </p>
+                                    </div>
+                                </div>
+                                <div data-switch="false">
+                                    Description:
+                                    <textarea data-bind="value:  $data.description">
 
-                                <p>
-                                    We’re based in San Francisco, but you may be located anywhere since we all work remotely. This is a full-time position with competitive compensation.
-                                </p>
-                                <br>
-                                <!--
-                                <div class="row">
-    <div class="col-lg-7 col-lg-offset-2">
-        <a class="btn btn-success btn-block btn-lg" href="#">
-            <i class="fa fa-caret-square-o-right"></i>Apply to this job</a>
-    </div>
-</div>
--->
-                                <!-- /.row -->
-
+                                    </textarea>
+                                </div>
                             </div>
                             <!-- /.description -->
                         </div>
                         <!-- /.box-content-lg-->
+                        <!--ko if: $parent.editMode            -->
+                        <div class="box-header-2" style="height: 60px">
+                            <div class="pull-right">
+                                <span class="btn btn-default" data-bind="click: function(){ return $parent.editMode(false); }">
+                                    Cancel
+                                </span>
+                                <span class="btn btn-info" data-bind="click: function(){ return $parent.save(); }">
+                                    Save
+                                </span>
+                            </div>
+                        </div>
+                        <!--/ko-->
                     </div>
                     <!-- /.box -->
                     {{>candidates}}
@@ -174,7 +173,7 @@
             <p class="text-center">
                 <img src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google">
             </p>
-            <p>Google is an American multinational corporation specializing in Internet-related services and products.</p>
+            <p data-bind="text: Customer.description"></p>
             <table class="table table-striped">
                 <tbody>
                     <tr>
@@ -185,10 +184,12 @@
                         <td>Member Since</td>
                         <td data-bind="text: moment(createdAt()).format('MMMM YYYY')"></td>
                     </tr>
+<!--
                     <tr>
-                        <td>Last Sign-in</td>
-                        <td>Feb 24, 2014</td>
-                    </tr>
+    <td>Last Sign-in</td>
+    <td>Feb 24, 2014</td>
+</tr>
+-->
                 </tbody>
             </table>
             <a class="btn btn-default" href="#">Browse all Google jobs

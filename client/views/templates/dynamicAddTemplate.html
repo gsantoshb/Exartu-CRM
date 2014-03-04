@@ -3,7 +3,7 @@
     <div data-bind="bind: false">
         <div id="showDynamicObjectTemplate" style="display: none">
             <div data-bind="with: entity">
-                <h3 data-bind="text: $root.objTypeName " />
+                <!--                <h4 data-bind="text: $root.objTypeName " />-->
                 <!--                    <i data-bind="css: 'icon ' + helper.getIconForObjName($root.objTypeName()), style: {color: helper.getColorForObjName($root.objTypeName()) }" style="font-size: 20px"></i>-->
 
                 <fieldset id="list " data-bind="visible: $data[$root.objTypeName()]().length>0, foreach: $data[$root.objTypeName()]">

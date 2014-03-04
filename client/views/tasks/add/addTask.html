@@ -1,4 +1,4 @@
-<template name="addTask">
+<template name="addEditTask">
     <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addTagModal">
         <div class="modal-dialog" style="width: 50%;">
             <div class="modal-content">
@@ -11,7 +11,7 @@
                     <div data-bind="with: task">
                         <fieldset>
                             <div class="form-group" data-bind="css:{'has-error': begin.isModified() && ! begin.isValid()}">
-                                <label class="control-label">begin:</label>
+                                <label class="control-label">Begin:</label>
                                 <br/>
                                 <div data-bind="dateTimePicker: { date: begin }">
                                     <div data-pick="date"></div>
@@ -22,7 +22,7 @@
                         </fieldset>
                         <fieldset>
                             <div class="form-group" data-bind="css:{'has-error': end.isModified() && ! end.isValid()}">
-                                <label class="control-label">end:</label>
+                                <label class="control-label">End:</label>
                                 <br/>
                                 <div data-bind="dateTimePicker: { date: end }">
                                     <div data-pick="date"></div>
@@ -32,14 +32,32 @@
                             </div>
                         </fieldset>
                         <fieldset>
-                            <label class="control-label">note:</label>
+                            <label class="control-label">Note:</label>
                             <input class="form-control" data-bind="value: note" />
                         </fieldset>
                         <fieldset>
                             <div class="form-group" data-bind="css:{'has-error': assign.isModified() && ! assign.isValid()}">
-                                <label class="control-label">assign:</label>
+                                <label class="control-label">Assign:</label>
                                 <select class="form-control" data-bind="options: $parent.users, optionsText: 'username', optionsValue: '_id', selectedOptions: assign" multiple />
                                 <span class="text-danger" data-bind="validationMessage: assign"></span>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" data-bind="checked: isCompleted" />Is completed:
+                                </label>
+                            </div>
+                        </fieldset>
+                        <fieldset data-bind="if:isCompleted">
+                            <div class="form-group" data-bind="css:{'has-error': completed.isModified() && ! completed.isValid()}">
+                                <label class="control-label">Date completed:</label>
+                                <br/>
+                                <div data-bind="dateTimePicker: { date: completed }">
+                                    <div data-pick="date"></div>
+                                    <div data-pick="time"></div>
+                                </div>
+                                <span class="text-danger" data-bind="validationMessage: completed"></span>
                             </div>
                         </fieldset>
                     </div>

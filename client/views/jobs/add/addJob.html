@@ -12,23 +12,31 @@
                         <div data-bind="with: entity">
                             <div data-bind="template: { name: 'inStringField', data: {name: 'Public job title', value: $data.publicJobTitle } }" />
                             </fieldset>
+                            <div class="row">
+                                <fieldset class="col-lg-6">
+                                    <div data-bind="template: { name: 'inDateField', data: {name: 'StartDate', value: $data.startDate } }" />
+                                </fieldset>
+                                <fieldset class="col-lg-6">
+                                    <div data-bind="template: { name: 'inDateField', data: {name: 'EndDate', value: $data.endDate } }" />
+                                </fieldset>
+                            </div>
+                            <div class="row">
+                                <fieldset class="col-lg-6">
+                                    <div data-bind="template: { name: 'inLookUpField', data: {name: 'Industry', value: $data.industry, options: $root.industries, mutiple: false } }" />
+                                </fieldset>
+                                <fieldset class="col-lg-6">
+                                    <div data-bind="template: { name: 'inLookUpField', data: {name: 'Category', value: $data.category, options: $root.categories, mutiple: false } }" />
+                                </fieldset>
+                            </div>
                             <fieldset>
-                                <div data-bind="template: { name: 'inDateField', data: {name: 'startDate', value: $data.startDate } }" />
+                                <div data-bind="template: { name: 'inLookUpField', data: {name: 'Duration', value: $data.duration, options: $root.durations,mutiple: false } }" />
                             </fieldset>
                             <fieldset>
-                                <div data-bind="template: { name: 'inDateField', data: {name: 'endDate', value: $data.endDate } }" />
+                                <div data-bind="template: { name: 'inLookUpField', data: {name: 'Status', value: $data.status,options: $root.statuses, mutiple: false } }" />
                             </fieldset>
                             <fieldset>
-                                <div data-bind="template: { name: 'inLookUpField', data: {name: 'industry', value: $data.industry, options: $root.industries, mutiple: false } }" />
+                                <div data-bind="template: { name: 'inLongStringField', data: {name: 'Description', value: $data.description } }" />
                             </fieldset>
-                            <fieldset>
-                                <div data-bind="template: { name: 'inLookUpField', data: {name: 'category', value: $data.category, options: $root.categories, mutiple: false } }" />
-                            </fieldset>
-                            <fieldset>
-                                <div data-bind="template: { name: 'inLookUpField', data: {name: 'duration', value: $data.duration, options: $root.durations,mutiple: false } }" />
-                            </fieldset>
-                            <fieldset>
-                                <div data-bind="template: { name: 'inLookUpField', data: {name: 'status', value: $data.status,options: $root.statuses, mutiple: false } }" />
                         </div>
                         <!-- Show dynamic fields and relations -->
                         <div data-bind="template: { name: 'showDynamicObjectTemplate', data: $data}"></div>

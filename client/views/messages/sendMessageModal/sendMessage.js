@@ -96,12 +96,15 @@ Template.sendMessage.viewModel = function (contactable) {
         case 'email':
             if (!self.email.isValid()) {
                 self.email.errors.showAllMessages();
+                return;
             }
             var email = ko.toJS(self.email);
             Meteor.call('sendEmail', email.to, email.subject, email.text, function (err, result) {
                 if (!err) {
                     self.close();
-                } else {}
+                } else {
+                    console.error(err);
+                }
             });
         }
     }

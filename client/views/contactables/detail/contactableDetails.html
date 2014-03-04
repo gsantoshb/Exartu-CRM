@@ -66,11 +66,12 @@
     <div id="display-property" data-bind="bind: false" style="display:none">
         <!-- ko if: !$data.editMode || !$data.editMode() -->
         <small data-bind="text: name + ': '"></small>
-        <span data-bind="text: value"></span>
+        <span data-bind="text: moment(value()).format('MM.DD.YYYY')"></span>
         <!-- /ko -->
         <!-- ko if: $data.editMode -->
         <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
-            <small class="control-label" data-bind="text: name"></small>
+            <label class="control-label" data-bind="text: name">
+            </label>
             <input class="form-control" type="text" placeholder="" data-bind="value: value" />
             <span class="text-danger" data-bind="validationMessage: value"></span>
         </div>
