@@ -1,16 +1,18 @@
 JobController = RouteController.extend({
     layoutTemplate: 'job',
-    action: function () {},
+
     data: function () {
         Session.set('entityId', this.params._id); // save current contactable to later use on templates
-    }
+    },
+
 });
 
 
 Template.job.waitOn = ['JobHandler', 'ObjTypesHandler'];
+
 Template.job.viewModel = function () {
     var self = this,
-        jobId = Session.get('entityId');
+        jobId = Router.current().params._id;
 
     /*
      * define wich field are going to be editable and the read only field wich are not saved back to mongo but need to be recomputed after an update
@@ -44,6 +46,7 @@ Template.job.viewModel = function () {
             self.editJob().tags(ko.toJS(self.job().tags));
         }
     });
+
 
     self.save = function () {
         if (!self.editJob.isValid()) {

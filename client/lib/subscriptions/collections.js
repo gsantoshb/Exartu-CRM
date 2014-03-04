@@ -78,18 +78,7 @@ Jobs = new Meteor.Collection("jobs", {
         return job;
     },
 });
-JobHandler = Meteor.subscribe('jobs', function () {
-    _.forEach(Jobs.observers, function (cb) {
-        cb();
-    });
-});
-JobHandler.observers = [];
-JobHandler.wait = function (cb) {
-    if (this.ready())
-        cb();
-    else
-        this.observers.push(cb);
-}
+extendedSubscribe('jobs', 'JobHandler');
 
 
 Deals = new Meteor.Collection("deals", function () {

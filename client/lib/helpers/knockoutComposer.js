@@ -101,10 +101,11 @@ Composer.composeTemplate = function (templateName, domNode) {
     /*
      * get the view model and waitOns
      */
-    var vm = Template[templateName].viewModel.call(this);
+    var vm = Template[templateName].viewModel;
 
     var waitOn = Template[templateName].waitOn;
     if (waitOn) {
+        //        debugger;
         if (typeof waitOn == typeof[]) {
             var aux = waitOn;
             waitOn = [];
@@ -132,7 +133,7 @@ Composer.composeTemplate = function (templateName, domNode) {
 /*
  * applies ko binding between domNade and vm, waiting for the collection handlers in wait on
  * parameters:
- *  - vm: js object
+ *  - vm: viewModel contructor
  *  - domNode: a DOM node
  *  - waitOn (optional): an extended collection handler oan array of it
  */
@@ -153,17 +154,17 @@ Composer.applyBindings = function (vm, domNode, waitOn) {
                         length = length - 1;
                     }
                     if (length == 0) {
-                        executeBinding(vm, domNode);
+                        executeBinding(vm.call(this), domNode);
                     }
                 })
             })
 
         } else {
             waitOn.wait(function () {
-                executeBinding(vm, domNode);
+                executeBinding(vm.call(this), domNode);
             });
         }
     } else {
-        executeBinding(vm, domNode);
+        executeBinding(vm.call(this), domNode);
     };
 }
