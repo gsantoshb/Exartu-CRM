@@ -173,7 +173,7 @@
             <p class="text-center">
                 <img src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google">
             </p>
-            <p>Google is an American multinational corporation specializing in Internet-related services and products.</p>
+            <p data-bind="text: Customer.description"></p>
             <table class="table table-striped">
                 <tbody>
                     <tr>
@@ -184,10 +184,12 @@
                         <td>Member Since</td>
                         <td data-bind="text: moment(createdAt()).format('MMMM YYYY')"></td>
                     </tr>
+<!--
                     <tr>
-                        <td>Last Sign-in</td>
-                        <td>Feb 24, 2014</td>
-                    </tr>
+    <td>Last Sign-in</td>
+    <td>Feb 24, 2014</td>
+</tr>
+-->
                 </tbody>
             </table>
             <a class="btn btn-default" href="#">Browse all Google jobs

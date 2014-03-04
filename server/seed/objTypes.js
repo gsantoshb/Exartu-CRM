@@ -37,7 +37,7 @@ seedSystemObjTypes = function () {
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
-                },                {
+                }, {
                     name: 'Quote_Description',
                     regex: '.*',
                     fieldType: Enums.fieldType.string,
@@ -63,7 +63,7 @@ seedSystemObjTypes = function () {
         },
         {
             objGroupType: Enums.objGroupType.deal,
-            services: ['messages', 'tasks', 'posts', 'tags','quotes'],
+            services: ['messages', 'tasks', 'posts', 'tags', 'quotes'],
             fields: [
                 {
                     name: 'Deal_Name',
@@ -117,8 +117,7 @@ seedSystemObjTypes = function () {
             ]
         }
     ]
-    var systemObjTypes =
-     [
+    var systemObjTypes = [
         {
             objGroupType: Enums.objGroupType.contactable,
             objName: 'Customer',
@@ -135,11 +134,11 @@ seedSystemObjTypes = function () {
                 defaultValue: 'Primary',
                 showInAdd: true
             }, {
-                name: 'test2',
+                name: 'description',
                 regex: '.*',
                 fieldType: Enums.fieldType.string,
                 defaultValue: '',
-                showInAdd: false
+                showInAdd: true
             }]
         },
         {
@@ -233,11 +232,11 @@ seedSystemObjTypes = function () {
             },
             services: [],
             fields: [{
-                name: 'Estimated_Revenue',
-                regex: '.*',
-                fieldType: Enums.fieldType.string,
-                defaultValue: '',
-                showInAdd: true
+                    name: 'Estimated_Revenue',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.string,
+                    defaultValue: '',
+                    showInAdd: true
             },
                 {
                     name: 'Credential_Check',
@@ -257,11 +256,11 @@ seedSystemObjTypes = function () {
             },
             services: [],
             fields: [{
-                name: 'User_Count',
-                regex: '.*',
-                fieldType: Enums.fieldType.string,
-                defaultValue: '',
-                showInAdd: true
+                    name: 'User_Count',
+                    regex: '.*',
+                    fieldType: Enums.fieldType.string,
+                    defaultValue: '',
+                    showInAdd: true
             },
                 {
                     name: 'Modules_Note',
@@ -269,7 +268,7 @@ seedSystemObjTypes = function () {
                     fieldType: Enums.fieldType.string,
                     defaultValue: '',
                     showInAdd: true
-                },   ]
+                }, ]
         }
     ];
     _.forEach(systemObjTypes, function (objtype) {
@@ -281,14 +280,16 @@ seedSystemObjTypes = function () {
         // fields
         //
         var fields = objtype.fields;
-        var objGroupType = _.find(systemObjGroupTypes, function(objgroup) { return objgroup.objGroupType==objtype.objGroupType});
-        if (objGroupType)  fields=objGroupType.fields.concat(fields);
+        var objGroupType = _.find(systemObjGroupTypes, function (objgroup) {
+            return objgroup.objGroupType == objtype.objGroupType
+        });
+        if (objGroupType) fields = objGroupType.fields.concat(fields);
 
         //
         // services
         //
         var services = objtype.services;
-        if (objGroupType)  services=objGroupType.services.concat(services);
+        if (objGroupType) services = objGroupType.services.concat(services);
         if (oldObjType == null) {
             ObjTypes.insert({
                 hierId: ExartuConfig.SystemHierarchyId,
