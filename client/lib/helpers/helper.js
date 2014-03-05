@@ -10,6 +10,10 @@ var colors = [
     {
         name: 'pink',
         value: '#cb53fc'
+    },
+    {
+        name: 'blue',
+        value: '#1c91f5'
     }
 ]
 

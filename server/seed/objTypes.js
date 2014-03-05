@@ -123,7 +123,7 @@ seedSystemObjTypes = function () {
             objName: 'Customer',
             style: {
                 icon: 'build',
-                color: 'red'
+                color: 'blue'
             },
             defaultPersonType: Enums.personType.organization,
             services: [],
@@ -148,7 +148,7 @@ seedSystemObjTypes = function () {
             objName: 'Contact',
             style: {
                 icon: 'contact',
-                color: 'red'
+                color: 'blue'
             },
             defaultPersonType: Enums.personType.human,
             services: [],
@@ -166,7 +166,7 @@ seedSystemObjTypes = function () {
             objName: 'Employee',
             style: {
                 icon: 'connection',
-                color: 'pink'
+                color: 'blue'
             },
             defaultPersonType: Enums.personType.human,
             services: [],
