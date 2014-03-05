@@ -9,6 +9,7 @@
         "googlemaps": {},
         "collectionFS": {},
         "imagemagick": {},
-        "spin": {}
+    "spin": {},
+    "bootstrap3-wysihtml5": {}
     }
 }

@@ -226,6 +226,19 @@ _.extend(helper, {
         });
 
         return info;
+    },
+    // Return picture's url, used in job list
+    getCustomerPictureUrl: function (customer) {
+        var defaultCustomerPicture = 'assets/logo-exartu.png';
+        if (!customer || !customer.pictureFileId)
+            return defaultCustomerPicture;
+        var picture = ContactablesFS.findOne({
+            _id: customer.pictureFileId()
+        });
+        if (!picture || !picture.fileHandler.size48x48)
+            return defaultCustomerPicture;
+
+        return picture.fileHandler.size48x48.url;
     }
 });
 

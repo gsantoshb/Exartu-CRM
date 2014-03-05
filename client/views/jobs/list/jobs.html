@@ -148,7 +148,7 @@
                                                 <div class="table-item-cell-container">
                                                     <div class="thumb">
                                                         <a href="#">
-                                                            <img src="assets/logo-exartu.png">
+                                                            <img src="assets/logo-exartu.png" data-bind="attr: {src: helper.getCustomerPictureUrl($data.CustomerInfo) }">
                                                         </a>
                                                     </div>
                                                     <div class="table-item-title">
@@ -160,7 +160,9 @@
                                                     </div>
                                                     <!-- ko if: $data.CustomerInfo -->
                                                     <span class="text-normal">
-                                                        <span data-bind="text: $data.CustomerInfo.displayName"></span>
+                                                        <a data-bind="attr: {href: '/contactable/' + $data.customer() }">
+                                                            <span data-bind="text: $data.CustomerInfo.displayName"></span>
+                                                        </a>
                                                     </span>
                                                     <!-- /ko -->
                                                 </div>

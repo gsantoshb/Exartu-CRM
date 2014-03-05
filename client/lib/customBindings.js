@@ -334,6 +334,24 @@ ko.bindingHandlers.executeOnEnter = {
     }
 };
 
+ko.bindingHandlers.htmlEditor = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        var editor = $(element),
+            value = valueAccessor();
+
+        editor.wysihtml5({
+            "color": true,
+            "size": 'xs',
+            "events": {
+                "blur": function () {
+                    value(editor.val());
+                }, // TODO: save when content change not in blur event
+            },
+        });
+        editor.val(value());
+        editor.width('90%');
+    }
+}
 
 
 // Register new rules
