@@ -64,9 +64,9 @@ Jobs = new Meteor.Collection("jobs", {
             });
 
         });
-        if (job.Customer) {
+        if (job.customer) {
             job.CustomerInfo = Contactables.findOne({
-                _id: job.Customer
+                _id: job.customer
             });
         }
         if (job.assignment) {

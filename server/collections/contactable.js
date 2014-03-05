@@ -67,6 +67,22 @@ var handler = {
         // Return the url
         return destination.fileData;
     },
+    size48x48: function (options) {
+        //... Test that it's an actual image...
+
+        // Uses meteorite package imagemagick.
+        var destination = options.destination();
+        console.dir(destination);
+        Imagemagick.resize({
+            srcData: options.blob,
+            dstPath: destination.serverFilename, // Imagemagick will create the file for us.
+            width: 48,
+            height: 48
+        });
+
+        // Return the url
+        return destination.fileData;
+    },
 }
 ContactablesFS.fileHandlers(handler);
 
