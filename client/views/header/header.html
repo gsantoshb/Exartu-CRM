@@ -15,23 +15,8 @@
 
         <div id="user-nav" class="navbar-right">
             <ul class="btn-group">
-                <li class="btn dropdown">
-                    <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle">
-                        <span class="user-menu-thumb">
-                            {{#if hasPicture}}
-                            <img data-bind="attr:{src:picture(26)}" style="heigth: 26px;width: 26px;">{{else}}
-                            <img src="assets/user-photo-placeholder.jpg" style="heigth: 26px;width: 26px;" />{{/if}}
-                        </span>
-                        <span data-bind="text: Meteor.user().username"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="/users" data-bind="click: Meteor.logout">Logout</a>
-                        </li>
-                    </ul>
-                </li>
 
-                <li class="btn dropdown" id="menu-messages">
+                <li class="btn dropdown" id="menu-messages" style="visibility: hidden">
                     <a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
                         <i class="fa fa-envelope-o"></i>
                         <span class="text">Messages</span>
@@ -45,12 +30,6 @@
                                 <a href="/messages">
                                     <i class="fa fa-inbox"></i>Inbox</a>
                             </span>
-                            <!--
-                            <span class="pull-right">
-    <a href="/messages">
-        <i class="fa fa-pencil"></i>Write new message</a>
-</span>
--->
                         </li>
 
                         <!-- ko if: $data.latestMessages().length == 0 -->
@@ -87,6 +66,23 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="btn dropdown">
+                    <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle">
+                        <span class="user-menu-thumb">
+                            {{#if hasPicture}}
+                            <img data-bind="attr:{src:picture(26)}" style="heigth: 26px;width: 26px;">{{else}}
+                            <img src="assets/user-photo-placeholder.jpg" style="heigth: 26px;width: 26px;" />{{/if}}
+                        </span>
+                        <span data-bind="text: Meteor.user().username"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/users" data-bind="click: Meteor.logout">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+
 
                 <li class="btn dropdown" id="menu-settings">
                     <a href="#" data-toggle="dropdown" data-target="#menu-settings" class="dropdown-toggle">
@@ -126,7 +122,7 @@
 
 <template name="sidebar">
     <div id="sidebar">
-<!--
+        <!--
         <div id="search">
     <input type="text" placeholder="Search here...">
     <button type="submit" class="tip-right" title="" data-original-title="Search">
@@ -192,12 +188,14 @@
                 </ul>
             </li>
 
+            <!--
             <li id="dealsNav" class="deals" data-bind="visible: $data.showSales">
                 <a href="/deals">
                     <i class="icon-pop-corn"></i>
                     <span>Deals</span>
                 </a>
             </li>
+-->
             <li id="TasksNav" class="tasks">
                 <a href="/tasks">
                     <i class="icon-clock-3"></i>
