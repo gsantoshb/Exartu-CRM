@@ -31,6 +31,45 @@ Contactables.before.insert(function (userId, doc) {
     doc.createdAt = Date.now();
 });
 
+
+// Contactables files
+ContactablesFS = new CollectionFS('contactables');
+Meteor.publish('contactableFiles', function () {
+    return ContactablesFS.find({});
+});
+
+ContactablesFS.allow({
+    insert: function (userId, file) {
+        return true;
+    },
+    update: function (userId, file, fields, modifier) {
+        return true;
+    },
+    remove: function (userId, file) {
+        return false;
+    }
+});
+
+var handler = {
+    size100x100: function (options) {
+        //... Test that it's an actual image...
+
+        // Uses meteorite package imagemagick.
+        var destination = options.destination();
+        console.dir(destination);
+        Imagemagick.resize({
+            srcData: options.blob,
+            dstPath: destination.serverFilename, // Imagemagick will create the file for us.
+            width: 100,
+            height: 100
+        });
+
+        // Return the url
+        return destination.fileData;
+    },
+}
+ContactablesFS.fileHandlers(handler);
+
 //Contactables.before.update(function (userId, doc, fieldNames, modifier, options) {
 //    console.info('*******updating*********')
 //    console.dir(arguments);
@@ -111,6 +150,17 @@ Meteor.startup(function () {
                 }
             });
         },
+        addContactableContactMethod: function (contactableId, contactMethod) {
+            // TODO: validations
+
+            Contactables.update({
+                _id: contactableId
+            }, {
+                $addToSet: {
+                    contactMethods: contactMethod
+                }
+            });
+        },
         addContactablePost: function (contactableId, post) {
             // TODO: validations
             post.userId = Meteor.userId();
@@ -124,6 +174,16 @@ Meteor.startup(function () {
             }, {
                 $addToSet: {
                     posts: post
+                }
+            });
+        },
+        updateContactablePicture: function (contactableId, fileId) {
+            console.log("contactalbe picture updated");
+            Contactables.update({
+                _id: contactableId
+            }, {
+                $set: {
+                    pictureFileId: fileId
                 }
             });
         }

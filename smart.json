@@ -1,11 +1,14 @@
 {
-  "packages": {
-    "bootstrap-3": {},
-    "iron-router": {},
-    "knockout-client": {},
-    "accounts-ui-bootstrap-3": {},
-    "collection-hooks": {},
-    "iron-router-progress": {},
-    "googlemaps": {}
-  }
+    "packages": {
+        "bootstrap-3": {},
+        "iron-router": {},
+        "knockout-client": {},
+        "accounts-ui-bootstrap-3": {},
+        "collection-hooks": {},
+        "iron-router-progress": {},
+        "googlemaps": {},
+        "collectionFS": {},
+        "imagemagick": {},
+        "spin": {}
+    }
 }

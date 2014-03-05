@@ -212,11 +212,14 @@ ko.bindingHandlers['switch'] = {
             falseElement.show();
         }
 
+
+
     },
     update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
         //        console.log(this.asd);
         var falseElement,
             trueElement;
+
 
         var childrens = $(element).children();
         _.each(childrens, function (child) {
@@ -246,32 +249,92 @@ ko.bindingHandlers.map = {
 
         var address = ko.toJS(valueAccessor());
 
+
         var mapOptions = {
             zoom: 13,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
         var map = new google.maps.Map(element, mapOptions);
-
-        var location = new google.maps.LatLng(address.geometry.location.d, address.geometry.location.e);
-        map.setCenter(location);
-        var marker = new google.maps.Marker({
-            map: map,
-            position: location,
-        });
-
-        ko.utils.domData.set(element, 'map', map);
-        ko.utils.domData.set(element, 'marker', marker);
+        if (address) {
+            $(element).show();
+            var location = new google.maps.LatLng(address.geometry.location.d, address.geometry.location.e);
+            map.setCenter(location);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: location,
+            });
+            $(element).data('marker', marker);
+        } else {
+            $(element).hide();
+        }
+        $(element).data('map', map);
     },
     update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        //        debugger;
         var address = ko.toJS(valueAccessor());
-        var map = ko.utils.domData.get(element, 'map');
-        var marker = ko.utils.domData.get(element, 'marker');
-        var location = new google.maps.LatLng(address.geometry.location.d, address.geometry.location.e);
-        map.setCenter(location);
-        marker.setPosition(location);
+        if (address) {
+            $(element).show();
+            var map = $(element).data('map');
+            var marker = $(element).data('marker');
+            var location = new google.maps.LatLng(address.geometry.location.d, address.geometry.location.e);
+
+            if (!marker) {
+                marker = new google.maps.Marker({
+                    map: map,
+                    position: location,
+                });
+                $(element).data('marker', marker);
+            }
+            setTimeout(function () {
+                google.maps.event.trigger(map, 'resize');
+                map.setCenter(location);
+                marker.setPosition(location);
+            }, 300);
+        } else {
+
+            $(element).hide();
+        }
     }
-}
+};
+
+ko.bindingHandlers.executeOnEnter = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        var options = valueAccessor() || {};
+
+        var shiftDown = false;
+
+        $(element).onkeydown = function (evt) {
+            var evt2 = evt || window.event;
+            var keyCode = evt2.keyCode || evt2.which;
+            if (keyCode == 16)
+                self.shiftDown = true;
+        };
+        $(element).onkeyup = function (evt) {
+            var evt2 = evt || window.event;
+            var keyCode = evt2.keyCode || evt2.which;
+            if (keyCode == 16)
+                self.shiftDown = false;
+        };
+
+        $(element).keypress(function (event) {
+            if (!event.shiftKey) {
+                var keyCode = (event.which ? event.which : event.keyCode);
+                var execute = false;
+                ko.utils.arrayFirst(options.keys, function (key) {
+                    return execute = key == keyCode;
+                });
+                if (execute) {
+                    options.fn.call(viewModel);
+                    return false;
+                }
+                return true;
+            }
+        });
+    }
+};
+
+
 
 // Register new rules
 ko.validation.registerExtenders();

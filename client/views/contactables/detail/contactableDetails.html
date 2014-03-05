@@ -55,9 +55,42 @@
                 <!-- /ko -->
             </div>
             <div class="box">
-                <!--                ko if: $data.location-->
-                <div data-bind="map:location" style="width:500px;height:500px;margin:10px auto"></div>
-                <!--                /ko-->
+                <div class="box-header-2">
+                    Location
+                    <span class="pull-right">
+                        <i class="fa fa-pencil" data-bind="style: {color: $parent.editModeLocation()? '#2886c4': 'grey', cursor: 'pointer'}, click: $parent.edit" />
+                    </span>
+                </div>
+                <div data-bind="switch: $parent.editModeLocation">
+                    <div data-switch="false">
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="value: $parent.locationString" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" data-bind="click:$parent.findLocation">
+                                    <i class="fa fa-search"></i>find
+                                </button>
+                            </span>
+                        </div>
+
+                        <div data-bind="map: $parent.editLocation" style="width:500px;height:500px;margin:10px auto"></div>
+
+                        <div class="box-header-2" style="height: 60px">
+                            <div class="pull-right">
+                                <span class="btn btn-default" data-bind="click: function(){ return $parent.editModeLocation(false); }">
+                                    Cancel
+                                </span>
+                                <span class="btn btn-info" data-bind="click: $parent.saveLocation">
+                                    Save
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-switch="true">
+
+                        <div data-bind="map:$data.location" style="width:500px;height:500px;margin:10px auto"></div>
+
+                    </div>
+                </div>
             </div>
             <!-- /.box-content-md -->
         </div>
@@ -77,10 +110,8 @@
         <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
             <label class="control-label" data-bind="text: name">
             </label>
-            <div class="col-lg-10">
-                <input class="form-control" type="text" placeholder="" data-bind="value: value" />
-                <span class="text-danger" data-bind="validationMessage: value"></span>
-            </div>
+            <input class="form-control" type="text" placeholder="" data-bind="value: value" />
+            <span class="text-danger" data-bind="validationMessage: value"></span>
         </div>
         <!-- /ko -->
     </div>

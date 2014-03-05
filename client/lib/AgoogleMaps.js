@@ -1,3 +1,13 @@
+GoogleMaps.observers = [];
+GoogleMaps._initialized = false;
+GoogleMaps.wait = function (cb) {
+    if (GoogleMaps._initialized) {
+        cb('googleMaps');
+    } else {
+        GoogleMaps.observers.push(cb);
+    }
+};
+
 Meteor.startup(function () {
     GoogleMaps.init({
         'sensor': true, //optional 
@@ -5,5 +15,10 @@ Meteor.startup(function () {
         //'MY-GOOGLEMAPS-API-KEY',
         //optional 'language': 'en' 
         //optional 
+    }, function () {
+        GoogleMaps._initialized = true;
+        _.each(GoogleMaps.observers, function (cb) {
+            cb('googleMaps');
+        })
     });
 });

@@ -25,21 +25,51 @@ ContactableController = RouteController.extend({
             break;
         };
     },
-    data: function () {
-        Session.set('entityId', this.params._id); // save current contactable to later use on templates
-        Session.set('entityCollection', 'Contactables');
-    }
 });
+var aux;
 
+Template.contactable.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps'];
 Template.contactable.viewModel = function () {
-    var self = this,
-        contactableId = Session.get('entityId');
+    var self = {},
+        contactableId = Router.current().params._id;
 
     self.contactable = ko.meteor.findOne(Contactables, {
         _id: contactableId
     });
 
-    Session.set('entityDisplayName', self.contactable().displayName());
+    // Contact methods
+    self.showAllContactMethods = ko.observable(false);
+    self.contactMethods = ko.computed(function () {
+        return self.showAllContactMethods() ? self.contactable().contactMethods() : self.contactable().contactMethods.slice(0, 3);
+    });
+
+    self.newContactMethod = ko.validatedObservable({
+        value: ko.observable().extend({
+            required: true
+        }),
+        type: ko.observable().extend({
+            required: true
+        }),
+    })
+    self.addContactMethod = function () {
+        if (!self.newContactMethod.isValid()) {
+            self.newContactMethod.errors.showAllMessages();
+            return;
+        }
+
+        Meteor.call('addContactableContactMethod', contactableId, {
+                value: self.newContactMethod().value(),
+                type: self.newContactMethod().type()
+            },
+            function (err, result) {
+                if (!err) {
+                    self.newContactMethod().value("");
+                    self.newContactMethod().value.isModified(false);
+                    self.newContactMethod().type("");
+                    self.newContactMethod().type.isModified(false);
+                }
+            })
+    }
 
     // TAGS
     self.newTag = ko.observable('');
@@ -97,10 +127,67 @@ Template.contactable.viewModel = function () {
                 callback.call();
         });
     };
+    /*
+     * location
+     */
+    self.hasLocation = ko.observable(ko.utils.unwrapObservable(self.contactable().location) != null);
+    self.hasEditLocation = ko.observable(ko.utils.unwrapObservable(self.editLocation) != null);
+    var geocoder = new google.maps.Geocoder();
+    self.editModeLocation = ko.observable(false);
+
+    self.editModeLocation.subscribe(function (value) {
+        self.editLocation(ko.toJS(self.contactable().location));
+    });
+
+    self.editLocation = ko.observable(ko.toJS(self.contactable().location));
+    self.edit = function () {
+        self.editModeLocation(!self.editModeLocation());
+    }
+    self.locationString = ko.observable(_.isFunction(self.contactable().location) && self.contactable().location() == null ? '' : self.contactable().location.formatted_address());
+    self.findLocation = function () {
+        //        debugger;
+        geocoder.geocode({
+            address: self.locationString(),
+        }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                //                debugger;
+                aux = results[0];
+                self.editLocation(aux);
+                self.hasEditLocation(true);
+            } else {
+                self.editLocation(null);
+                self.hasEditLocation(false);
+            }
+        })
+    };
+    self.saveLocation = function () {
+        //        debugger;
+        var location = self.editLocation();
+        removeExtrangePrototypes(location);
+        Contactables.update({
+            _id: contactableId
+        }, {
+            $set: {
+                location: ko.toJS(self.editLocation)
+            }
+        }, function (err) {
+
+            if (!err) {
+                self.editModeLocation(false);
+            } else {
+                console.log(err);
+            }
+        });
+    }
+
 
     // Edit contactable's general information (person or organization details)
 
     self.editModeContactableInfo = ko.observable(false);
+
+
+
+
     self.editModeContactableInfo.subscribe(function (value) {
         if (!value) {
             if (self.editOrganization)
@@ -162,10 +249,108 @@ Template.contactable.viewModel = function () {
         });
     };
 
+    // Posts
+    self.newPost = ko.observable("");
+
+    self.adding = ko.observable(false);
+    self.addPost = function () {
+        self.adding(true);
+        Meteor.call('addContactablePost', contactableId, {
+            content: self.newPost()
+        }, function (err, result) {
+            if (!err) {
+                self.adding(false);
+                self.newPost("");
+            }
+        });
+    }
+
+    // Contactable picture
+    var updatePicture = function () {
+        if (self.picture() && self.picture().fileHandler.size100x100) {
+            self.pictureUrl(self.picture().fileHandler.size100x100.url());
+        } else if (!self.picture().fileHandler.size100x100) {
+            var getUrl = function (retries) {
+                if (retries > 0) {
+                    setTimeout(function () {
+                        if (self.picture().fileHandler.size100x100)
+                            self.pictureUrl(self.picture().fileHandler.size100x100.url());
+                        else
+                            getUrl(retries - 1);
+                    }, 500);
+                } else {
+                    self.pictureErrorMessage("Error editing picture, try again");
+                }
+            }
+            getUrl(10);
+        }
+    }
+
+    if (!self.contactable().pictureFileId)
+        self.contactable().pictureFileId = ko.observable('');
+
+    var queryPicture = ko.computed(function () {
+        return {
+            _id: self.contactable().pictureFileId()
+        }
+    });
+
+    self.picture = ko.meteor.findOne(ContactablesFS, queryPicture);
+    self.picture.subscribe(function () {
+        updatePicture();
+    });
+    self.pictureErrorMessage = ko.observable("");
+    self.pictureUrl = ko.observable();
+    self.pictureUrl.subscribe(function (value) {
+        self.pictureErrorMessage("");
+        self.loadPicture(false);
+    });
+    self.loadPicture = ko.observable(true);
+
+    if (!self.picture()) {
+        self.loadPicture(false);
+    } else if (self.picture().fileHandler.size100x100)
+        self.pictureUrl(self.picture().fileHandler.size100x100.url());
+
+
+    self.editContactablePicture = function () {
+        $('#edit-picture').trigger('click');
+    }
+
+    $('#edit-picture').change(function (e) {
+        var fileId = ContactablesFS.storeFile(e.target.files[0], {
+            entityId: contactableId
+        });
+
+        self.loadPicture(true);
+
+        Meteor.call('updateContactablePicture', contactableId, fileId);
+    });
     return self;
 };
 
 
-Template.contactable.displayName = function () {
-    return Session.get('entityDisplayName');
+var objProto = {}.__proto__;
+var removeExtrangePrototypes = function (obj) {
+    if (_.isObject(obj)) {
+        if (obj.__proto__ != objProto) {
+            obj.__proto__ = objProto;
+        }
+        _.each(_.keys(obj), function (key) {
+            removeExtrangePrototypes(obj[key])
+        });
+    } else if (_.isArray(obj)) {
+        _.each(obj, removeExtrangePrototypes);
+    }
+}
+
+Template.contactable.rendered = function () {
+    // TODO: Avoid mutliple bindings
+    // Remove old binding to avoid multiple calls
+    var nodeIds = ['edit-picture-btn'];
+    _.forEach(nodeIds, function (nodeId) {
+        node = $('#' + nodeId)[0];
+        if (node)
+            ko.cleanNode(node);
+    })
 };
