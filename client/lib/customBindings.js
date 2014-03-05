@@ -188,8 +188,7 @@ var insertInput = function (element) {
     return type;
 };
 
-ko.bindingHandlers.
-switch = {
+ko.bindingHandlers['switch'] = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
         var falseElement,
             trueElement;
@@ -213,11 +212,14 @@ switch = {
             falseElement.show();
         }
 
+
+
     },
     update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
         //        console.log(this.asd);
         var falseElement,
             trueElement;
+
 
         var childrens = $(element).children();
         _.each(childrens, function (child) {
@@ -240,6 +242,61 @@ switch = {
         }
     }
 }
+
+ko.bindingHandlers.map = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        //        debugger;
+
+        var address = ko.toJS(valueAccessor());
+
+
+        var mapOptions = {
+            zoom: 13,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(element, mapOptions);
+        if (address) {
+            $(element).show();
+            var location = new google.maps.LatLng(address.geometry.location.d, address.geometry.location.e);
+            map.setCenter(location);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: location,
+            });
+            $(element).data('marker', marker);
+        } else {
+            $(element).hide();
+        }
+        $(element).data('map', map);
+    },
+    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        //        debugger;
+        var address = ko.toJS(valueAccessor());
+        if (address) {
+            $(element).show();
+            var map = $(element).data('map');
+            var marker = $(element).data('marker');
+            var location = new google.maps.LatLng(address.geometry.location.d, address.geometry.location.e);
+
+            if (!marker) {
+                marker = new google.maps.Marker({
+                    map: map,
+                    position: location,
+                });
+                $(element).data('marker', marker);
+            }
+            setTimeout(function () {
+                google.maps.event.trigger(map, 'resize');
+                map.setCenter(location);
+                marker.setPosition(location);
+            }, 300);
+        } else {
+
+            $(element).hide();
+        }
+    }
+};
 
 ko.bindingHandlers.executeOnEnter = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
@@ -295,6 +352,7 @@ ko.bindingHandlers.htmlEditor = {
         editor.width('90%');
     }
 }
+
 
 // Register new rules
 ko.validation.registerExtenders();

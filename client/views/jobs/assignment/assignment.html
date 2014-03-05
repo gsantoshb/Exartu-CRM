@@ -29,10 +29,12 @@
 
         </div>
         <div data-bind="with: assignmentInfo">
-            <div class="row" style="margin:3px;">
-                <img class="col-md-4" src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google">
-                <h5 class="col-md-4" data-bind="text: displayName"></h5>
-            </div>
+            <a data-bind="attr:{href:'/contactable/'+ _id()}">
+                <div class="row" style="margin:3px;">
+                    <img class="col-md-4" src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google">
+                    <h5 class="col-md-4" data-bind="text: displayName"></h5>
+                </div>
+            </a>
         </div>
     </div>
     <!-- /ko-->

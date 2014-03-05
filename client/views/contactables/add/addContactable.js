@@ -8,6 +8,21 @@ Template.addContactable.viewModel = function (objname) {
         self: self,
         extendEntity: function (self) {
             // Extend contactable with person or organization, this can be changed by the user
+            var geocoder = new google.maps.Geocoder();
+
+            self.locationString = ko.observable();
+            self.findLocation = function () {
+                geocoder.geocode({
+                    address: self.locationString(),
+                }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        self.location(results[0]);
+                    } else {
+                        self.location(null);
+                    }
+                })
+            };
+            self.location = ko.observable(null);
             self.selectedType = ko.observable();
             self.setSelectedType = function (val) {
                 switch (val) {
@@ -41,7 +56,9 @@ Template.addContactable.viewModel = function (objname) {
         },
         objname: objname,
         addCallback: function (contactable) {
-            Meteor.call('addContactable', ko.toJS(contactable));
+            var cont = ko.toJS(contactable);
+            cont.location = ko.toJS(self.location);
+            Meteor.call('addContactable', cont);
             $('#addContactableModal').modal('hide');
         }
     }

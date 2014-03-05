@@ -8,6 +8,7 @@
       "accounts-ui-bootstrap-3": {},
       "collection-hooks": {},
       "iron-router-progress": {},
+      "googlemaps": {},
       "collectionFS": {},
       "imagemagick": {},
       "spin": {},
@@ -44,6 +45,11 @@
         "tag": "v0.2.0",
         "commit": "ce730d1d26feadb7c75ea25f22c5bfdb0c549a8b"
       },
+      "googlemaps": {
+        "git": "https://github.com/drewjw81/meteor-googlemaps.git",
+        "tag": "v0.0.2",
+        "commit": "da8785c82cfd7de0111f898ef10728e7ed24e361"
+},
       "collectionFS": {
         "git": "https://github.com/raix/Meteor-CollectionFS.git",
         "tag": "v0.3.7",

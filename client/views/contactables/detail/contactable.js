@@ -26,10 +26,11 @@ ContactableController = RouteController.extend({
         };
     },
 });
+var aux;
 
-Template.contactable.waitOn = ['ObjTypesHandler', 'ContactableHandler'];
+Template.contactable.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps'];
 Template.contactable.viewModel = function () {
-    var self = this,
+    var self = {},
         contactableId = Router.current().params._id;
 
     self.contactable = ko.meteor.findOne(Contactables, {
@@ -126,10 +127,67 @@ Template.contactable.viewModel = function () {
                 callback.call();
         });
     };
+    /*
+     * location
+     */
+    self.hasLocation = ko.observable(ko.utils.unwrapObservable(self.contactable().location) != null);
+    self.hasEditLocation = ko.observable(ko.utils.unwrapObservable(self.editLocation) != null);
+    var geocoder = new google.maps.Geocoder();
+    self.editModeLocation = ko.observable(false);
+
+    self.editModeLocation.subscribe(function (value) {
+        self.editLocation(ko.toJS(self.contactable().location));
+    });
+
+    self.editLocation = ko.observable(ko.toJS(self.contactable().location));
+    self.edit = function () {
+        self.editModeLocation(!self.editModeLocation());
+    }
+    self.locationString = ko.observable(_.isFunction(self.contactable().location) && self.contactable().location() == null ? '' : self.contactable().location.formatted_address());
+    self.findLocation = function () {
+        //        debugger;
+        geocoder.geocode({
+            address: self.locationString(),
+        }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                //                debugger;
+                aux = results[0];
+                self.editLocation(aux);
+                self.hasEditLocation(true);
+            } else {
+                self.editLocation(null);
+                self.hasEditLocation(false);
+            }
+        })
+    };
+    self.saveLocation = function () {
+        //        debugger;
+        var location = self.editLocation();
+        removeExtrangePrototypes(location);
+        Contactables.update({
+            _id: contactableId
+        }, {
+            $set: {
+                location: ko.toJS(self.editLocation)
+            }
+        }, function (err) {
+
+            if (!err) {
+                self.editModeLocation(false);
+            } else {
+                console.log(err);
+            }
+        });
+    }
+
 
     // Edit contactable's general information (person or organization details)
 
     self.editModeContactableInfo = ko.observable(false);
+
+
+
+
     self.editModeContactableInfo.subscribe(function (value) {
         if (!value) {
             if (self.editOrganization)
@@ -268,9 +326,23 @@ Template.contactable.viewModel = function () {
 
         Meteor.call('updateContactablePicture', contactableId, fileId);
     });
-
     return self;
 };
+
+
+var objProto = {}.__proto__;
+var removeExtrangePrototypes = function (obj) {
+    if (_.isObject(obj)) {
+        if (obj.__proto__ != objProto) {
+            obj.__proto__ = objProto;
+        }
+        _.each(_.keys(obj), function (key) {
+            removeExtrangePrototypes(obj[key])
+        });
+    } else if (_.isArray(obj)) {
+        _.each(obj, removeExtrangePrototypes);
+    }
+}
 
 Template.contactable.rendered = function () {
     // TODO: Avoid mutliple bindings

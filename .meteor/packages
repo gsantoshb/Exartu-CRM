@@ -14,6 +14,7 @@ accounts-ui-bootstrap-3
 collection-hooks
 service-configuration
 iron-router-progress
+googlemaps
 collectionFS
 cfs-public-folder
 imagemagick
