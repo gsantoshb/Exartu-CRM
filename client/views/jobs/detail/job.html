@@ -94,7 +94,7 @@
                             </table>
                             <div data-bind="switch: $parent.editMode">
                                 <div data-switch="true">
-                                    <a data-toggle="collapse" href="#description">
+                                    <a class="btn btn-default btn-block btn-md " data-toggle="collapse" href="#description">
                                         description
                                     </a>
                                     <div id="description" class="panel-collapse collapse" data-bind="html: $data.description">
@@ -103,7 +103,7 @@
                                 </div>
                                 <div data-switch="false">
                                     Description:
-                                    <textarea data-bind="value:  $data.description">
+                                    <textarea data-bind="htmlEditor: $data.description">
 
                                     </textarea>
                                 </div>
@@ -164,7 +164,7 @@
 
 
 <template name="customerInfo">
-    <!-- ko if: Customer-->
+    <!-- ko if: $data.Customer-->
     <div class="box" data-bind="with: CustomerInfo">
         <div class="box-header-2">
             <div class="box-title">
