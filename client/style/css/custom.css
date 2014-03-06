@@ -21,3 +21,8 @@
     line-height: 2;
     width: 80px;
 }
+.map {
+    max-width: 500px;
+    height: 500px;
+    margin: 10px auto;
+}
