@@ -119,10 +119,12 @@ Composer.composeTemplate = function (templateName, domNode) {
             });
 
         } else {
-            if (typeof item == typeof 'string')
-                waitOn = window[item];
+            if (typeof waitOn == typeof 'string')
+                waitOn = window[waitOn];
             if (!waitOn.wait) {
                 waitOn = undefined;
+            } else {
+                waitOn = [waitOn];
             }
         }
         Composer.applyBindings(vm, domNode, waitOn);
