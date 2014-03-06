@@ -74,6 +74,7 @@ Meteor.publish(null, function () {
             'username': 1,
             'emails': 1,
             'services.google.picture': 1,
+            'profilePictureId': 1,
             "hierId": 1,
             "createdAt": 1,
             "roles": 1,
@@ -81,7 +82,11 @@ Meteor.publish(null, function () {
         }
     });
 });
-
+Meteor.users.allow({
+    update: function (userId, file, fields, modifier) {
+        return userId == file._id;
+    }
+})
 Meteor.publish("users", function () {
     return Meteor.users.find();
 });
@@ -168,5 +173,50 @@ Meteor.methods({
     },
     checkUniqueness: function (query) {
         return Meteor.users.findOne(query) == null;
+    },
+    updateUserPicture: function (fileId) {
+        console.log("user picture updated");
+
+        Meteor.users.update({
+            _id: Meteor.userId()
+        }, {
+            $set: {
+                profilePictureId: fileId
+            }
+        });
     }
 });
+
+/*
+ * user files
+ */
+
+// Contactables files
+UsersFS = new CollectionFS('users');
+Meteor.publish('usersFiles', function () {
+    return UsersFS.find({});
+});
+
+UsersFS.allow({
+    insert: function (userId, file) {
+        return true;
+    },
+    update: function (userId, file, fields, modifier) {
+        return true;
+    },
+    remove: function (userId, file) {
+        return false;
+    }
+});
+
+var handler = {
+    default: function (options) {
+        console.dir('user default handler');
+        console.dir(options);
+        return {
+            blob: options.blob,
+            fileRecord: options.fileRecord
+        };
+    },
+}
+UsersFS.fileHandlers(handler);
