@@ -58,7 +58,7 @@ Template.sendMessage.viewModel = function (contactable) {
         if (!email.to)
             return;
         if (_.find(contactable.contactMethods, function (item) {
-            return item.name === self.contactMethodName();
+            return item.type === self.contactMethodName();
         })) {
             self.showContactMethodName(true);
             return;
@@ -69,7 +69,7 @@ Template.sendMessage.viewModel = function (contactable) {
         }, {
             $addToSet: {
                 'contactMethods': {
-                    name: self.contactMethodName(),
+                    type: self.contactMethodName(),
                     value: email.to
                 }
             }
@@ -105,7 +105,6 @@ Template.sendMessage.viewModel = function (contactable) {
                 return;
             }
             var email = ko.toJS(self.email);
-            debugger;
             Meteor.call('sendEmail', email.to, email.subject, email.text, function (err, result) {
                 self.canSend(true);
                 if (!err) {
