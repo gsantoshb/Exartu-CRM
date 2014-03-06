@@ -1,6 +1,7 @@
 Template.addJob.viewModel = function (objname) {
+    var self = this;
     var options = {
-        self: this,
+        self: self,
         extendEntity: function (self) {
 
             _.extend(self.entity(), new koJob());
@@ -28,12 +29,19 @@ Template.addJob.viewModel = function (objname) {
                 _id: 0,
                 items: 1
             }).items;
+            self.canAdd = ko.observable(true);
             return self;
         },
         objname: objname,
         addCallback: function (job) {
-            Meteor.call('addJob', ko.toJS(job));
-            $('#addJobModal').modal('hide');
+            self.canAdd(false);
+            Meteor.call('addJob', ko.toJS(job), function (err, result) {
+                self.canAdd(true);
+                if (err)
+                    console.log(err);
+                else
+                    $('#addJobModal').modal('hide');
+            });
         }
     }
 
