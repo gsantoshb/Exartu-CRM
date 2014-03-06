@@ -35,6 +35,8 @@ Meteor.methods({
         if (!from.emails)
             return null;
         from = from.emails[0].address;
+        if (!subject)
+            subject = '';
         send(to, from, subject, text);
     }
 })
