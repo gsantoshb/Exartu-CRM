@@ -267,14 +267,19 @@ Template.contactable.viewModel = function () {
 
     // Contactable picture
     var updatePicture = function () {
-        if (self.picture() && self.picture().fileHandler.size100x100) {
-            self.pictureUrl(self.picture().fileHandler.size100x100.url());
-        } else if (!self.picture().fileHandler.size100x100) {
+        if (self.picture() && self.picture().fileHandler.
+            default) {
+            self.pictureUrl(self.picture().fileHandler.
+                default.url());
+        } else if (!self.picture().fileHandler.
+            default) {
             var getUrl = function (retries) {
                 if (retries > 0) {
                     setTimeout(function () {
-                        if (self.picture().fileHandler.size100x100)
-                            self.pictureUrl(self.picture().fileHandler.size100x100.url());
+                        if (self.picture().fileHandler.
+                            default)
+                            self.pictureUrl(self.picture().fileHandler.
+                                default.url());
                         else
                             getUrl(retries - 1);
                     }, 500);
@@ -309,8 +314,10 @@ Template.contactable.viewModel = function () {
 
     if (!self.picture()) {
         self.loadPicture(false);
-    } else if (self.picture().fileHandler.size100x100)
-        self.pictureUrl(self.picture().fileHandler.size100x100.url());
+    } else if (self.picture().fileHandler.
+        default)
+        self.pictureUrl(self.picture().fileHandler.
+            default.url());
 
 
     self.editContactablePicture = function () {

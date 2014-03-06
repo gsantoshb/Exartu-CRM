@@ -239,10 +239,12 @@ _.extend(helper, {
         var picture = ContactablesFS.findOne({
             _id: customer.pictureFileId()
         });
-        if (!picture || !picture.fileHandler.size48x48)
+        if (!picture || !picture.fileHandler.
+            default)
             return defaultCustomerPicture;
 
-        return picture.fileHandler.size48x48.url;
+        return picture.fileHandler.
+        default.url;
     }
 });
 
