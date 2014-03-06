@@ -233,7 +233,7 @@ _.extend(helper, {
     },
     // Return picture's url, used in job list
     getCustomerPictureUrl: function (customer) {
-        var defaultCustomerPicture = 'assets/logo-exartu.png';
+        var defaultCustomerPicture = '/assets/logo-exartu.png';
         if (!customer || !customer.pictureFileId)
             return defaultCustomerPicture;
         var picture = ContactablesFS.findOne({
