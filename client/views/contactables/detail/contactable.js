@@ -314,8 +314,10 @@ Template.contactable.viewModel = function () {
 
     if (!self.picture()) {
         self.loadPicture(false);
-    } else if (self.picture().fileHandler.size100x100)
-        self.pictureUrl(self.picture().fileHandler.size100x100.url());
+    } else if (self.picture().fileHandler.
+        default)
+        self.pictureUrl(self.picture().fileHandler.
+            default.url());
 
 
     self.editContactablePicture = function () {
