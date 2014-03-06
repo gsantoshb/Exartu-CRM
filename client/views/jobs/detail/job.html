@@ -164,11 +164,11 @@
 
 
 <template name="customerInfo">
-    <!-- ko if: $data.Customer-->
+    <!-- ko if: $data.customer-->
     <div class="box" data-bind="with: CustomerInfo">
         <div class="box-header-2">
             <div class="box-title">
-                <i class="fa fa-user"></i>
+                <i class="fa fa-building-o"></i>
                 <span data-bind="text: displayName"></span>
             </div>
         </div>
@@ -179,9 +179,9 @@
             <p data-bind="text: Customer.description"></p>
             <table class="table table-striped">
                 <tbody>
-                    <tr>
+                    <tr data-bind="if: location">
                         <td>Location</td>
-                        <td>United States</td>
+                        <td data-bind="text: location.formatted_address">United States</td>
                     </tr>
                     <tr>
                         <td>Member Since</td>
