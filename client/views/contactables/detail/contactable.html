@@ -222,11 +222,10 @@
     <!-- ko foreach: posts -->
     <div class="comment " data-bind="with: helper.getUserInformation($data.userId())">
         <!-- ko if: $data.ready -->
-        <!-- ko if: $data.picture -->
+
         <div class="comment-thumb">
-            <img height="70px" width="70px" data-bind="attr: {src: picture}" alt="gigi">
+            <img height="70px" width="70px" data-bind="attr: {src: picture, alt: $data.username}">
         </div>
-        <!-- /ko -->
         <div class="comment-content ">
             <div class="comment-text ">
                 <div class="comment-info ">
