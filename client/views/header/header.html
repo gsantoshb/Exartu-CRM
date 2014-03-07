@@ -17,18 +17,22 @@
             <ul class="btn-group">
 
                 <li class="btn dropdown">
-                    <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle">
+                    <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle" data-bind="with: helper.getUserInformation(Meteor.userId())">
+                        <!--ko if: ready-->
                         <span class="user-menu-thumb">
-                            {{#if hasPicture}}
-                            <img data-bind="attr:{src:picture(26)}" style="heigth: 26px;width: 26px;">{{else}}
-                            <img src="assets/user-photo-placeholder.jpg" style="heigth: 26px;width: 26px;" />{{/if}}
+                            <img data-bind="attr:{src:picture}" style="heigth: 26px;width: 26px;">
                         </span>
                         <span data-bind="text: Meteor.user().username"></span>
+                        <!--/ko-->
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="/users" data-bind="click: Meteor.logout">Logout</a>
+                            <a href="/login" data-bind="click: Meteor.logout">Logout</a>
                         </li>
+                        <li>
+                            <a href="/user">Account</a>
+                        </li>
+
                     </ul>
                 </li>
 
@@ -81,13 +85,7 @@
                     </ul>
                 </li>
 
-                    <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle" data-bind="with:  helper.getUserInformation(Meteor.userId())">
-                        <!--ko if: ready-->
-                            <img data-bind="attr:{src:picture}" style="heigth: 26px;width: 26px;">
-                        <!--/ko-->
-                            <a href="/user">Account</a>
-                        </li>
-                        <li>
+
 
 
                 <li class="btn dropdown" id="menu-settings">
