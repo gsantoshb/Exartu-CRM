@@ -73,6 +73,8 @@ Jobs = new Meteor.Collection("jobs", {
             job.assignmentInfo = Contactables.findOne({
                 _id: job.assignment
             });
+        } else {
+            job.assignmentInfo = null;
         }
 
         return job;
@@ -210,4 +212,4 @@ ContactablesFS = new CollectionFS('contactables', {
 Meteor.subscribe('contactableFiles');
 
 UsersFS = new CollectionFS('users');
-Meteor.subscribe('usersFiles');
+extendedSubscribe('usersFiles', 'UsersFSHandler');
