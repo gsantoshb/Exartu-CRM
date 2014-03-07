@@ -124,22 +124,16 @@ MessagesHandler.wait = function (cb) {
 
 Conversations = new Meteor.Collection("conversations", {
     transform: function (conversation) {
-        conversation.lastMessage = Messages.findOne({
-            $or: [
-                {
-                    from: conversation.user1,
-                    destination: conversation.user2
-                },
-                {
-                    from: conversation.user2,
-                    destination: conversation.user1
-                }
-            ]
-        }, {
-            sort: {
-                createdAt: -1
-            }
-        });
+        var conversationMessages = Messages.find({
+            conversationId: conversation._id
+        }).fetch();
+
+        var unreadMessages = (!_.isEmpty(conversationMessages) &&
+            _.every(conversationMessages, function (conversation) {
+                return conversation.readed;
+            })
+        );
+        conversation.readed = unreadMessages || (conversation.user1 == Meteor.userId() ? conversation.user1Readed : conversation.user2Readed);
 
         return conversation;
     }

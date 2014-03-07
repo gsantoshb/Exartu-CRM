@@ -47,15 +47,15 @@ Router.map(function () {
         controller: 'JobController'
     });
     //    if (Meteor.user() && Meteor.user().permissions && Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) > 0) {
-//    this.route('deals', {
-        //        path: '/deals',
-        //        controller: 'DealsController'
-        //    });
-        //
-        //    this.route('deal', {
-        //        path: '/deal/:_id',
-        //        controller: 'DealController'
-        //    });
+    //    this.route('deals', {
+    //        path: '/deals',
+    //        controller: 'DealsController'
+    //    });
+    //
+    //    this.route('deal', {
+    //        path: '/deal/:_id',
+    //        controller: 'DealController'
+    //    });
     //    }
 
     this.route('users', {
@@ -63,9 +63,14 @@ Router.map(function () {
         controller: 'UsersController'
     });
 
-    this.route('messages', {
-        path: '/messages',
+    this.route('inbox', {
+        path: '/inbox',
         controller: 'ConversationsController'
+    });
+
+    this.route('conversation', {
+        path: '/inbox/:_id',
+        controller: 'ConversationController'
     });
 
     this.route('tasks', {

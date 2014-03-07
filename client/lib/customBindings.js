@@ -353,6 +353,15 @@ ko.bindingHandlers.htmlEditor = {
     }
 }
 
+ko.bindingHandlers.bottomScroll = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        $(element).find('ul').bind('resize', function () {
+            element.scrollTop = element.scrollHeight;
+        })
+    },
+    update: function (element, valueAccessor) {}
+};
+
 
 // Register new rules
 ko.validation.registerExtenders();
