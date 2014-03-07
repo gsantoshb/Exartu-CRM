@@ -77,11 +77,11 @@ Template.conversations.viewModel = function () {
                 }
                 if (conversation.user1() == Meteor.userId())
                     set.$set = {
-                        user1Readed: true
+                        user1Readed: false
                     };
                 else
                     set.$set = {
-                        user2Readed: true
+                        user2Readed: false
                     };
                 Conversations.update({
                     _id: conversation._id()

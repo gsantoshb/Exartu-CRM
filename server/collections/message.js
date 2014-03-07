@@ -62,19 +62,14 @@ Meteor.startup(function () {
             });
         },
         createMessage: function (message) {
-
-            console.log("lalal message");
             // validations
             var user = Meteor.user();
             if (user == null)
                 throw new Meteor.Error(401, "Please login");
 
-            console.log("lalal message 2");
-
             if (typeof message.content != typeof '' || message.content == '')
                 throw new Meteor.Error(400, "Invalid message content");
 
-            console.log("lalal message 3");
 
             var conversation = Conversations.findOne({
                 _id: message.conversationId
@@ -82,7 +77,6 @@ Meteor.startup(function () {
             message.readed = false;
             message.from = conversation.user1 == message.destination ? conversation.user2 : conversation.user1;
 
-            console.log("newmessage");
             return Messages.insert(message);
         },
         markConversationMessagesAsReaded: function (conversationId) {
@@ -93,7 +87,6 @@ Meteor.startup(function () {
             var messageIds = _.map(conversationMessages, function (message) {
                 return message._id
             });
-            console.dir(messageIds);
             Messages.update({
                 _id: {
                     $in: messageIds
