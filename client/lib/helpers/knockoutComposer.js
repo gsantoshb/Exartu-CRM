@@ -101,7 +101,19 @@ Composer.composeTemplate = function (templateName, domNode) {
     /*
      * get the view model and waitOns
      */
+
     var vm = Template[templateName].viewModel;
+    if (Template[templateName].config) {
+        if (Template[templateName].config.singleton) {
+            vm = _.wrap(vm, function (vm) {
+                //                debugger;
+                if (!Template[templateName]._instance) {
+                    Template[templateName]._instance = vm();
+                }
+                return Template[templateName]._instance;
+            })
+        }
+    }
 
     var waitOn = Template[templateName].waitOn;
     if (waitOn) {
