@@ -35,7 +35,7 @@
                                                     </a>
                                                 </h4>
                                             </div>
-                                            <div id="taskStatus" class="panel-collapse collapse in">
+                                            <div id="taskStatus" class="panel-collapse collapse">
                                                 <div class="panel-body" data-bind="foreach: states">
                                                     <button type="button" class="btn btn-xs " data-bind="text:name, click:$parent.selectState, css:{'btn-primary':$parent.selectedState()==$data}"></button>
                                                 </div>
@@ -50,7 +50,7 @@
                                                     </a>
                                                 </h4>
                                             </div>
-                                            <div id="taskOwner" class="panel-collapse collapse">
+                                            <div id="taskOwner" class="panel-collapse collapse in">
                                                 <div class="panel-body">
                                                     <div class="checkbox">
                                                         <label>
@@ -68,44 +68,46 @@
                                             </div>
                                         </div>
 
+<!--
                                         <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion" href="#taskDueDate">
-                                                        <strong>Due Date</strong>
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="taskDueDate" class="panel-collapse collapse">
-                                                <div class="panel-body">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox">Today
-                                                        </label>
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox">Tomorrow
-                                                        </label>
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox">Next 7 days
-                                                        </label>
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox">Overdue
-                                                        </label>
-                                                    </div>
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox">Due Date
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#taskDueDate">
+                <strong>Due Date</strong>
+            </a>
+        </h4>
+    </div>
+    <div id="taskDueDate" class="panel-collapse collapse">
+        <div class="panel-body">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox">Today
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox">Tomorrow
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox">Next 7 days
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox">Overdue
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox">Due Date
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+-->
 
                                     </div>
                                 </form>

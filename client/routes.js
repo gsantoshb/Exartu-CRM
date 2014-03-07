@@ -62,6 +62,10 @@ Router.map(function () {
         path: '/users',
         controller: 'UsersController'
     });
+    this.route('userProfile', {
+        path: '/user/:_id?',
+        controller: 'UserProfileController'
+    });
 
     this.route('inbox', {
         path: '/inbox',

@@ -74,6 +74,7 @@ Meteor.publish(null, function () {
             'username': 1,
             'emails': 1,
             'services.google.picture': 1,
+            'profilePictureId': 1,
             "hierId": 1,
             "createdAt": 1,
             "roles": 1,
@@ -81,9 +82,29 @@ Meteor.publish(null, function () {
         }
     });
 });
-
+Meteor.users.allow({
+    update: function (userId, file, fields, modifier) {
+        var user = Meteor.users.findOne({
+            _id: userId
+        });
+        if (file.hierId != user.hierId)
+            return false;
+        if (!_.contains(user.roles, Enums.roleFunction.System_Administrator))
+            return false;
+        if (_.any(['createdAt', 'hierId', 'services'], function (field) {
+            return _.contains(fields, field);
+        }))
+            return false;
+        return true;
+    }
+});
 Meteor.publish("users", function () {
-    return Meteor.users.find();
+    var user = Meteor.users.findOne({
+        _id: this.userId
+    });
+    return Meteor.users.find({
+        hierId: user.hierId
+    });
 });
 
 var getPermissions = function (user) {
@@ -168,5 +189,50 @@ Meteor.methods({
     },
     checkUniqueness: function (query) {
         return Meteor.users.findOne(query) == null;
+    },
+    updateUserPicture: function (fileId) {
+        console.log("user picture updated");
+
+        Meteor.users.update({
+            _id: Meteor.userId()
+        }, {
+            $set: {
+                profilePictureId: fileId
+            }
+        });
     }
 });
+
+/*
+ * user files
+ */
+
+// Contactables files
+UsersFS = new CollectionFS('users');
+Meteor.publish('usersFiles', function () {
+    return UsersFS.find({});
+});
+
+UsersFS.allow({
+    insert: function (userId, file) {
+        return true;
+    },
+    update: function (userId, file, fields, modifier) {
+        return true;
+    },
+    remove: function (userId, file) {
+        return false;
+    }
+});
+
+var handler = {
+    default: function (options) {
+        console.dir('user default handler');
+        console.dir(options);
+        return {
+            blob: options.blob,
+            fileRecord: options.fileRecord
+        };
+    },
+}
+UsersFS.fileHandlers(handler);

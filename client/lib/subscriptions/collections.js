@@ -73,6 +73,8 @@ Jobs = new Meteor.Collection("jobs", {
             job.assignmentInfo = Contactables.findOne({
                 _id: job.assignment
             });
+        } else {
+            job.assignmentInfo = null;
         }
 
         return job;
@@ -148,7 +150,8 @@ Meteor.subscribe('activities');
 LookUps = new Meteor.Collection("lookUps");
 Meteor.subscribe('lookUps');
 
-Meteor.subscribe('userData');
+extendedSubscribe('users', 'UserHandler');
+//Meteor.subscribe('userData');
 
 Roles = new Meteor.Collection("roles");
 Meteor.subscribe('roles');
@@ -201,3 +204,6 @@ ContactablesFS = new CollectionFS('contactables', {
     autopublish: false
 });
 Meteor.subscribe('contactableFiles');
+
+UsersFS = new CollectionFS('users');
+extendedSubscribe('usersFiles', 'UsersFSHandler');

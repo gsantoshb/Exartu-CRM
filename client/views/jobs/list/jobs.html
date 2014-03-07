@@ -32,7 +32,7 @@
                                         <!-- /ko -->
                                         <!-- ko template: { name: 'lookupFilterTemplate', data: {title: 'Duration', items: durations } } -->
                                         <!-- /ko -->
-                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {title: 'Status', items: durations } } -->
+                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {title: 'Status', items: statuses } } -->
                                         <!-- /ko -->
                                     </div>
                                     <div class="panel panel-default">
@@ -148,7 +148,7 @@
                                                 <div class="table-item-cell-container">
                                                     <div class="thumb">
                                                         <a href="#">
-                                                            <img src="assets/logo-exartu.png" height="100" width="100" data-bind="attr: {src: helper.getCustomerPictureUrl($data.CustomerInfo) }">
+                                                            <img src="/assets/logo-exartu.png" style="height:48px; width:48px;" data-bind="attr: {src: helper.getCustomerPictureUrl($data.CustomerInfo) }">
                                                         </a>
                                                     </div>
                                                     <div class="table-item-title">

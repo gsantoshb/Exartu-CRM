@@ -9,8 +9,13 @@ Template.users.viewModel = function () {
     self.users = ko.meteor.find(Meteor.users, {});
     self.removeGroup = function (role, user) {
         {
-            Meteor.call('userRoleRemove', role, user, function (err, result) {
-                self.users(result);
+            var usr = ko.toJS(user);
+            Meteor.users.update({
+                _id: usr._id
+            }, {
+                $pull: {
+                    roles: role
+                }
             });
         }
     };

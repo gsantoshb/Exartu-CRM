@@ -220,22 +220,56 @@ _.extend(helper, {
         }).value;
     },
     getUserInformation: function (userId) {
+        //        debugger;
         var info = ko.observable({
             ready: ko.observable(false)
         });
-
-        Meteor.call('getUserInformation', userId, function (err, result) {
-            _.extend(info(), ko.mapping.fromJS(result));
-            info().ready(true);
-        });
+        var finished = [];
+        var waitingLengt = 2;
+        var callback = function (collectionId) {
+            if (!_.contains(finished, collectionId)) {
+                finished.push(collectionId);
+                waitingLengt = waitingLengt - 1;
+            }
+            if (waitingLengt == 0) {
+                _.extend(info(), Meteor.users.findOne({
+                    _id: userId
+                }));
+                info().picture = helper.getUserPictureUrl(info());
+                info().ready(true);
+            }
+        }
+        UserHandler.wait(callback);
+        UsersFSHandler.wait(callback);
 
         return info;
     },
+    getUserPictureUrl: function (user) {
+        //        debugger;
+        var user = ko.toJS(user);
+        var defaultUserPicture = '/img/avatar.jpg';
+        if (!user || !user.profilePictureId) {
+            if (user.services && user.services.google)
+                return user.services.google.picture
+            return defaultUserPicture;
+        }
+        var picture = UsersFS.findOne({
+            _id: user.profilePictureId
+        });
+        if (!picture || !picture.fileHandler.
+            default)
+            return defaultUserPicture;
+
+        return picture.fileHandler.
+        default.url;
+    },
     // Return picture's url, used in job list
     getCustomerPictureUrl: function (customer) {
-        var defaultCustomerPicture = 'assets/logo-exartu.png';
-        if (!customer || !customer.pictureFileId)
+        var defaultCustomerPicture = '/assets/logo-exartu.png';
+        if (!customer || !customer.pictureFileId) {
+
             return defaultCustomerPicture;
+        }
         var picture = ContactablesFS.findOne({
             _id: customer.pictureFileId()
         });
@@ -245,7 +279,8 @@ _.extend(helper, {
 
         return picture.fileHandler.
         default.url;
-    }
+    },
+
 });
 
 _.extend(helper, {

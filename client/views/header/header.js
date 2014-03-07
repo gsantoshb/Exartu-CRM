@@ -44,11 +44,11 @@ Template.header.rendered = function () {
             trigger: '#menu-trigger'
         });
         jPM.off();
-        $("html").niceScroll({
-            hideraildelay: 1,
-            zindex: 9999,
-            horizrailenabled: false
-        });
+        //        $("html").niceScroll({
+        //            hideraildelay: 1,
+        //            zindex: 9999,
+        //            horizrailenabled: false
+        //        });
 
         // === Resize window related === //
         $(window).resize(function () {
@@ -72,8 +72,8 @@ Template.header.rendered = function () {
                 });
                 if (!$('html').hasClass('jPanelMenu')) {
                     jPM.on();
-                    $('#jPanelMenu-menu').niceScroll();
-                    $('#jPanelMenu-menu').getNiceScroll().resize();
+                    //                    $('#jPanelMenu-menu').niceScroll();
+                    //                    $('#jPanelMenu-menu').getNiceScroll().resize();
                 }
 
                 if ($(window).scrollTop() > 35) {
@@ -102,7 +102,7 @@ Template.header.rendered = function () {
                     margin: '0'
                 });
             }
-            $('html').getNiceScroll().resize();
+            //            $('html').getNiceScroll().resize();
         });
 
 
@@ -117,8 +117,8 @@ Template.header.rendered = function () {
                 });
                 if (!$('html').hasClass('jPanelMenu')) {
                     jPM.on();
-                    $('#jPanelMenu-menu').niceScroll();
-                    $('#jPanelMenu-menu').getNiceScroll().resize();
+                    //                    $('#jPanelMenu-menu').niceScroll();
+                    //                    $('#jPanelMenu-menu').getNiceScroll().resize();
                 }
 
                 if ($(window).scrollTop() > 35) {
@@ -190,7 +190,7 @@ Template.header.rendered = function () {
                 submenus_parents.removeClass('open');
                 li.addClass('open');
             }
-            $('html').getNiceScroll().resize();
+            //            $('html').getNiceScroll().resize();
         };
 
         $('.submenu > a').on('click', submenuLogic);

@@ -13,6 +13,8 @@ Template.tags.viewModel = function () {
     self.newTag = ko.observable('');
     self.isAdding = ko.observable(false);
     self.addTag = function () {
+        if (!self.newTag())
+            return;
         self.isAdding(true);
         Meteor.call('addContactableTag', entityID, self.newTag(), function (err, result) {
             if (!err) {

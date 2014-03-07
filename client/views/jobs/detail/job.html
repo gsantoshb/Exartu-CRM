@@ -164,28 +164,28 @@
 
 
 <template name="customerInfo">
-    <!-- ko if: $data.Customer-->
+    <!-- ko if: $data.customer-->
     <div class="box" data-bind="with: CustomerInfo">
         <div class="box-header-2">
             <div class="box-title">
-                <i class="fa fa-user"></i>
+                <i class="fa fa-building-o"></i>
                 <span data-bind="text: displayName"></span>
             </div>
         </div>
         <div class="box-content">
             <p class="text-center">
-                <img src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google">
+                <img src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google" data-bind="attr: {src: helper.getCustomerPictureUrl($data.CustomerInfo) }">
             </p>
-            <p data-bind="text: Customer.description"></p>
-            <table class="table table-striped">
+            <p data-bind=" text: Customer.description "></p>
+            <table class="table table-striped ">
                 <tbody>
-                    <tr>
+                    <tr data-bind="if: location ">
                         <td>Location</td>
-                        <td>United States</td>
+                        <td data-bind="text: location.formatted_address ">United States</td>
                     </tr>
                     <tr>
                         <td>Member Since</td>
-                        <td data-bind="text: moment(createdAt()).format('MMMM YYYY')"></td>
+                        <td data-bind="text: moment(createdAt()).format( 'MMMM YYYY') "></td>
                     </tr>
                     <!--
                     <tr>
@@ -196,7 +196,7 @@
                 </tbody>
             </table>
             <!--
-            <a class="btn btn-default" href="#">Browse all Google jobs
+            <a class="btn btn-default " href="# ">Browse all Google jobs
     <span>(5)</span>
 </a>
 -->
@@ -205,117 +205,117 @@
     </div>
     <!--/ko-->
 </template>
-<template name="similarJobs">
+<template name="similarJobs ">
     <section>
-        <div class="box">
-            <div class="box-header-2">
-                <div class="box-title">
-                    <i class="icon-briefcase"></i>Similar Jobs</div>
+        <div class="box ">
+            <div class="box-header-2 ">
+                <div class="box-title ">
+                    <i class="icon-briefcase "></i>Similar Jobs</div>
             </div>
-            <ul class="list-type-1">
+            <ul class="list-type-1 ">
                 <li>
-                    <div class="thumb-sm item-logo">
-                        <a class="thumb-sm-content" href="#">
-                            <img src="assets/logo-exartu.png" alt="exartu">
+                    <div class="thumb-sm item-logo ">
+                        <a class="thumb-sm-content " href="# ">
+                            <img src="assets/logo-exartu.png " alt="exartu ">
                         </a>
                     </div>
-                    <div class="list-item-content">
-                        <p class="activity-author">
-                            <a href="#">Javascript Developer</a>
+                    <div class="list-item-content ">
+                        <p class="activity-author ">
+                            <a href="# ">Javascript Developer</a>
                         </p>
-                        <div class="text-small">
-                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted">FULLTIME</div>
+                        <div class="text-small ">
+                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted ">FULLTIME</div>
                     </div>
                 </li>
                 <li>
-                    <div class="thumb-sm item-logo">
-                        <a class="thumb-sm-content" href="#">
-                            <img src="assets/logo-exartu.png" alt="exartu">
+                    <div class="thumb-sm item-logo ">
+                        <a class="thumb-sm-content " href="# ">
+                            <img src="assets/logo-exartu.png " alt="exartu ">
                         </a>
                     </div>
-                    <div class="list-item-content">
-                        <p class="activity-author">
-                            <a href="#">Javascript Developer</a>
+                    <div class="list-item-content ">
+                        <p class="activity-author ">
+                            <a href="# ">Javascript Developer</a>
                         </p>
-                        <div class="text-small">
-                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted">FULLTIME</div>
+                        <div class="text-small ">
+                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted ">FULLTIME</div>
                     </div>
                 </li>
                 <li>
-                    <div class="thumb-sm item-logo">
-                        <a class="thumb-sm-content" href="#">
-                            <img src="assets/logo-exartu.png" alt="exartu">
+                    <div class="thumb-sm item-logo ">
+                        <a class="thumb-sm-content " href="# ">
+                            <img src="assets/logo-exartu.png " alt="exartu ">
                         </a>
                     </div>
-                    <div class="list-item-content">
-                        <p class="activity-author">
-                            <a href="#">Javascript Developer</a>
+                    <div class="list-item-content ">
+                        <p class="activity-author ">
+                            <a href="# ">Javascript Developer</a>
                         </p>
-                        <div class="text-small">
-                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted">FULLTIME</div>
+                        <div class="text-small ">
+                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted ">FULLTIME</div>
                     </div>
                 </li>
                 <li>
-                    <div class="thumb-sm item-logo">
-                        <a class="thumb-sm-content" href="#">
-                            <img src="assets/logo-exartu.png" alt="exartu">
+                    <div class="thumb-sm item-logo ">
+                        <a class="thumb-sm-content " href="# ">
+                            <img src="assets/logo-exartu.png " alt="exartu ">
                         </a>
                     </div>
-                    <div class="list-item-content">
-                        <p class="activity-author">
-                            <a href="#">Javascript Developer</a>
+                    <div class="list-item-content ">
+                        <p class="activity-author ">
+                            <a href="# ">Javascript Developer</a>
                         </p>
-                        <div class="text-small">
-                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted">FULLTIME</div>
+                        <div class="text-small ">
+                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted ">FULLTIME</div>
                     </div>
                 </li>
                 <li>
-                    <div class="thumb-sm item-logo">
-                        <a class="thumb-sm-content" href="#">
-                            <img src="assets/logo-exartu.png" alt="exartu">
+                    <div class="thumb-sm item-logo ">
+                        <a class="thumb-sm-content " href="# ">
+                            <img src="assets/logo-exartu.png " alt="exartu ">
                         </a>
                     </div>
-                    <div class="list-item-content">
-                        <p class="activity-author">
-                            <a href="#">Javascript Developer</a>
+                    <div class="list-item-content ">
+                        <p class="activity-author ">
+                            <a href="# ">Javascript Developer</a>
                         </p>
-                        <div class="text-small">
-                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted">FULLTIME</div>
+                        <div class="text-small ">
+                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted ">FULLTIME</div>
                     </div>
                 </li>
                 <li>
-                    <div class="thumb-sm item-logo">
-                        <a class="thumb-sm-content" href="#">
-                            <img src="assets/logo-exartu.png" alt="exartu">
+                    <div class="thumb-sm item-logo ">
+                        <a class="thumb-sm-content " href="# ">
+                            <img src="assets/logo-exartu.png " alt="exartu ">
                         </a>
                     </div>
-                    <div class="list-item-content">
-                        <p class="activity-author">
-                            <a href="#">Javascript Developer</a>
+                    <div class="list-item-content ">
+                        <p class="activity-author ">
+                            <a href="# ">Javascript Developer</a>
                         </p>
-                        <div class="text-small">
-                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted">FULLTIME</div>
+                        <div class="text-small ">
+                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted ">FULLTIME</div>
                     </div>
                 </li>
                 <li>
-                    <div class="thumb-sm item-logo">
-                        <a class="thumb-sm-content" href="#">
-                            <img src="assets/logo-exartu.png" alt="exartu">
+                    <div class="thumb-sm item-logo ">
+                        <a class="thumb-sm-content " href="# ">
+                            <img src="assets/logo-exartu.png " alt="exartu ">
                         </a>
                     </div>
-                    <div class="list-item-content">
-                        <p class="activity-author">
-                            <a href="#">Javascript Developer</a>
+                    <div class="list-item-content ">
+                        <p class="activity-author ">
+                            <a href="# ">Javascript Developer</a>
                         </p>
-                        <div class="text-small">
-                            <a href="#">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted">FULLTIME</div>
+                        <div class="text-small ">
+                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
+                        <div class="text-small text-muted ">FULLTIME</div>
                     </div>
                 </li>
 

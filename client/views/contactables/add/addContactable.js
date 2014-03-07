@@ -51,15 +51,22 @@ Template.addContactable.viewModel = function (objname) {
             self.selectedType(ObjTypes.findOne({
                 objName: self.objTypeName()
             }).personType);
+            self.canAdd = ko.observable(true);
 
             return self;
         },
         objname: objname,
         addCallback: function (contactable) {
+            self.canAdd(false);
             var cont = ko.toJS(contactable);
             cont.location = ko.toJS(self.location);
-            Meteor.call('addContactable', cont);
-            $('#addContactableModal').modal('hide');
+            Meteor.call('addContactable', cont, function (err, result) {
+                self.canAdd(true);
+                if (err)
+                    console.log(err);
+                else
+                    $('#addContactableModal').modal('hide');
+            });
         }
     }
 

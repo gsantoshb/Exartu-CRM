@@ -269,6 +269,9 @@ ko.bindingHandlers.map = {
             $(element).hide();
         }
         $(element).data('map', map);
+        $(element).resize(function () {
+            google.maps.event.trigger(map, 'resize');
+        })
     },
     update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
         //        debugger;
@@ -286,11 +289,11 @@ ko.bindingHandlers.map = {
                 });
                 $(element).data('marker', marker);
             }
-            setTimeout(function () {
-                google.maps.event.trigger(map, 'resize');
-                map.setCenter(location);
-                marker.setPosition(location);
-            }, 300);
+            //            setTimeout(function () {
+            google.maps.event.trigger(map, 'resize');
+            map.setCenter(location);
+            marker.setPosition(location);
+            //            }, 300);
         } else {
 
             $(element).hide();
