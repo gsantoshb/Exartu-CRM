@@ -1,10 +1,5 @@
 Template.sendMessage.viewModel = function (contactable) {
-    if (_.isObject(contactable))
-        contactable = ko.toJS(contactable);
-    else
-        contactable = Contactables.findOne({
-            _id: contactable
-        });
+    var contactableId = _.isObject(contactable) ? contactable._id() : contactable;
     var thisModal = this.modal;
     var self = this;
     var emailRE = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -28,7 +23,7 @@ Template.sendMessage.viewModel = function (contactable) {
 
 
     self.contactable = ko.meteor.findOne(Contactables, {
-        _id: contactable._id
+        _id: contactableId
     });
 
     self.contactMethodName = ko.observable('email');
@@ -57,7 +52,7 @@ Template.sendMessage.viewModel = function (contactable) {
         var email = ko.toJS(self.email);
         if (!email.to)
             return;
-        if (_.find(contactable.contactMethods, function (item) {
+        if (_.find(self.contactable().contactMethods(), function (item) {
             return item.type === self.contactMethodName();
         })) {
             self.showContactMethodName(true);
@@ -65,7 +60,7 @@ Template.sendMessage.viewModel = function (contactable) {
         }
 
         Contactables.update({
-            _id: contactable._id
+            _id: contactableId
         }, {
             $addToSet: {
                 'contactMethods': {
