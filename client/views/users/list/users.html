@@ -36,7 +36,7 @@
                         </div>
                         <!-- /.col-md-4-->
                         <div class="col-sm-3">
-                            <div class="table-item-cell" data-bind="foreach: roles">
+                            <div class="table-item-cell" data-bind="foreach: $data.roles">
                                 <div class="btn btn-default btn-xs">
                                     <span data-bind="text: $data "></span>
                                     <a data-bind="click: function () {  $root.removeGroup($data,$parent);}">

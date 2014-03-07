@@ -84,11 +84,27 @@ Meteor.publish(null, function () {
 });
 Meteor.users.allow({
     update: function (userId, file, fields, modifier) {
-        return userId == file._id;
+        var user = Meteor.users.findOne({
+            _id: userId
+        });
+        if (file.hierId != user.hierId)
+            return false;
+        if (!_.contains(user.roles, Enums.roleFunction.System_Administrator))
+            return false;
+        if (_.any(['createdAt', 'hierId', 'services'], function (field) {
+            return _.contains(fields, field);
+        }))
+            return false;
+        return true;
     }
-})
+});
 Meteor.publish("users", function () {
-    return Meteor.users.find();
+    var user = Meteor.users.findOne({
+        _id: this.userId
+    });
+    return Meteor.users.find({
+        hierId: user.hierId
+    });
 });
 
 var getPermissions = function (user) {
