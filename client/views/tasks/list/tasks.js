@@ -47,6 +47,10 @@ var states = [
         }
     }
 ];
+Template.tasks.config = {
+    singleton: true
+}
+Template.tasks.waitOn = ['TasksHandler'];
 
 Template.tasks.viewModel = function () {
     var self = {};
