@@ -1,32 +1,37 @@
 <template name="candidateAdd">
-    <div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
+    <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
         <div class="modal-dialog">
             <div class="modal-content">
+
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title" id="myModalLabel">Candidate add</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" data-bind="with: entity">
+
+                    <form class="form-horizontal" role="form" data-bind="with: entity">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Employee</label>
+                            <label for="inputEmail3" class="col-sm-2 control-label">Employee</label>
                             <div class="col-sm-10">
-                                <select class="form-control" data-bind="options: $parent.employees,optionsText: 'displayName', optionsValue: '_id', value:employee, optionsCaption: 'Choose...'"></select>
+                                <select class="form-control" data-bind="options: $parent.employees,optionsText: 'displayName', optionsValue: '_id', value:employee, optionsCaption: 'Choose...'">
+                                </select>
                             </div>
                         </div>
+                        <!-- /.form-group -->
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Note</label>
+                            <label for="inputEmail3" class="col-sm-2 control-label">Note</label>
                             <div class="col-sm-10">
-                                <input class="form-control" data-bind="value:note" />
+                                <input type="email" class="form-control" id="inputEmail3" placeholder="Note" data-bind="value:note">
                             </div>
                         </div>
-                    </form>
                 </div>
+                <!-- /.modal-body -->
                 <div class="modal-footer">
-                    <a data-bind="click: add" class="btn btn-success">Add</a>
-                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bind="click: add">Add</button>
                 </div>
             </div>
+            <!-- /.modal-content -->
         </div>
     </div>
 </template>
