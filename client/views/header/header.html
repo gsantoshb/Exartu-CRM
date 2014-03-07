@@ -41,11 +41,9 @@
                             <a class="msg">
                                 <div data-bind="with: helper.getUserInformation($data.from())">
                                     <!-- ko if: $data.ready -->
-                                    <!-- ko if: $data.picture -->
                                     <span class="msg-pic">
-                                        <img src="assets/pic-50x50-2.jpg" alt="" data-bind="attr: {src: picture}">
+                                        <img src="/assets/pic-50x50-2.jpg" alt="" data-bind="attr: {src: helper.getUserPictureUrl($data)}">
                                     </span>
-                                    <!-- /ko -->
                                     <!-- ko if: $data.username -->
                                     <span class="msg-author" data-bind="text: username"></span>
                                     <!-- /ko -->
@@ -68,13 +66,13 @@
                 </li>
 
                 <li class="btn dropdown">
-                    <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle">
+                    <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle" data-bind="with:  helper.getUserInformation(Meteor.userId())">
+                        <!--ko if: ready-->
                         <span class="user-menu-thumb">
-                            {{#if hasPicture}}
-                            <img data-bind="attr:{src:picture(26)}" style="heigth: 26px;width: 26px;">{{else}}
-                            <img src="assets/user-photo-placeholder.jpg" style="heigth: 26px;width: 26px;" />{{/if}}
+                            <img data-bind="attr:{src:picture}" style="heigth: 26px;width: 26px;">
                         </span>
                         <span data-bind="text: Meteor.user().username"></span>
+                        <!--/ko-->
                     </a>
                     <ul class="dropdown-menu">
                         <li>
