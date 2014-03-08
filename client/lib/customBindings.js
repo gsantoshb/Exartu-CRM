@@ -84,10 +84,10 @@ ko.bindingHandlers.dateTimePicker = {
             }
         };
         //find  data-pick
-        var childrens = $(element).children();
-        //insert the input elements for childs with data-pick
-        //if the child has no data-pick the is removed from childs because is useless
-        ko.utils.arrayForEach(childrens, function (child) {
+        var children = $(element).children();
+        //insert the input elements for children with data-pick
+        //if the child has no data-pick the is removed from children because is useless
+        ko.utils.arrayForEach(children, function (child) {
             switch (insertInput(child)) {
             case "date":
                 $(child).datetimepicker({
@@ -154,7 +154,7 @@ ko.bindingHandlers.dateTimePicker = {
                 });
                 break;
             default:
-                //childrens.remove(child);
+                //children.remove(child);
             }
         });
 
@@ -193,8 +193,8 @@ ko.bindingHandlers['switch'] = {
         var falseElement,
             trueElement;
 
-        var childrens = $(element).children();
-        _.each(childrens, function (child) {
+        var children = $(element).children();
+        _.each(children, function (child) {
             if ($(child).data('switch') == true) {
                 trueElement = $(child);
             }
@@ -221,8 +221,8 @@ ko.bindingHandlers['switch'] = {
             trueElement;
 
 
-        var childrens = $(element).children();
-        _.each(childrens, function (child) {
+        var children = $(element).children();
+        _.each(children, function (child) {
             if ($(child).data('switch') == true) {
                 trueElement = $(child);
             }

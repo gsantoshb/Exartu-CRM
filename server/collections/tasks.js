@@ -1,9 +1,9 @@
 /*
- * A way to comunicate with other system's users. It's private.
+ * A way to communicate with other system's users. It's private.
  *
  * Message:
  *  - createdAt: date created
- *  - begin: date begining
+ *  - begin: date beginning
  *  - end: date
  *  - completed: date completed
  *  - assign: array of user's ids that are assigned to this task
