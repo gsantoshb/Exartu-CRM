@@ -34,6 +34,9 @@ Template.job.viewModel = function () {
      *
      */
     self.editJob = ko.validatedObservable(ko.mapping.fromJS(ko.toJS(self.job)));
+    self.assignedPicture = ko.computed(function () {
+        return helper.getEmployeePictureUrl(self.job().assignmentInfo)
+    });
 
     self.editMode.subscribe(function (value) {
         if (!value) {

@@ -1,20 +1,14 @@
-Template.assignmentAdd.viewModel = function (jobId) {
+Template.assignmentAdd.viewModel = function (jobId, employeeId) {
     var self = this;
-    //    debugger
-    //    self.entity = ko.mapping.fromJS({
-    //        note: '',
-    //        employee: null,
-    //        type: Enums.candidateType.recruiter,
-    //        userId: Meteor.userId(),
-    //    });
+
+    self.edit = employeeId != undefined;
     self.employees = ko.meteor.find(Contactables, {
         Employee: {
             $exists: true
         }
     });
-    self.employee = ko.observable();
+    self.employee = ko.observable(employeeId);
     self.add = function () {
-        //        var candidate = ko.toJS(self.entity);
         if (!self.employee())
             return;
 
