@@ -28,19 +28,23 @@ Template.dashboard.viewModel = function () {
     var timeInADay = 24 * 60 * 60 * 1000;
     var days = [now.getTime() - (timeInADay) * 7, now.getTime() - (timeInADay) * 6, now.getTime() - (timeInADay) * 5, now.getTime() - (timeInADay) * 4, now.getTime() - (timeInADay) * 3, now.getTime() - (timeInADay) * 2, now.getTime() - (timeInADay) * 1, now.getTime() - (timeInADay) * 0];
 
-
-    self.jobHistory = ko.observableArray(getHistorical(Jobs, days));
-    self.customerHistory = ko.observableArray(getHistorical(Contactables, days, {
+    var customerQuery = {
         customer: {
             $exists: true
         }
-    }));
-    self.employeeHistory = ko.observableArray(getHistorical(Contactables, days), {
+    };
+    var employeeQuery = {
         Employee: {
             $exists: true
         }
-    });
-
+    }
+    self.jobHistory = getHistorical(Jobs, days);
+    self.customerHistory = getHistorical(Contactables, days, customerQuery);
+    self.employeeHistory = getHistorical(Contactables, days, employeeQuery);
+    self.jobCount = ko.observable(Jobs.find().count());
+    self.employeeCount = ko.observable(Contactables.find(employeeQuery).count());
+    self.customerCount = ko.observable(Contactables.find(customerQuery).count());
+    //    self.jobGrowth = ko.observable();
 
     return self;
 };
@@ -54,6 +58,11 @@ var getHistorical = function (collection, timeStamps, query) {
         }
         history.push(collection.find(q).count());
     })
+    var last = history.length - 1;
+
+    var growth = 100 * (history[last] - history[last - 1]) / history[last];
+    history = ko.observableArray(history);
+    history.growth = (growth > 0 ? '+' : growth < 0 ? '-' : '') + growth + '%';
     return history;
 }
 Template.dashboard.rendered = function () {

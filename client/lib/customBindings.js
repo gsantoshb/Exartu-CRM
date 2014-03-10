@@ -363,7 +363,7 @@ ko.bindingHandlers.sparkLine = {
 
         element.innerHTML = text;
         $(element).sparkline("html", {
-            type: "line",
+            type: "bar",
             fillColor: "#4cd964",
             lineColor: "#4cd964",
             width: "50",
