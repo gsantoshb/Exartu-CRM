@@ -52,8 +52,9 @@ var executeBinding = function (vm, view) {
     }
 }
 
-Composer.showModal = function (templateName, parameter) {
+Composer.showModal = function (templateName) {
     //    debugger;
+
     var body = $('body');
     var host = body.find(".modal-host")[0];
     if (!host) {
@@ -72,18 +73,18 @@ Composer.showModal = function (templateName, parameter) {
     var template = Template[templateName];
     var modal = $(template()).appendTo(host);
 
-
+    var parameters = Array.prototype.slice.call(arguments, 1);
     modal.modal('show');
     if (Template[templateName].viewModel) {
-        var aux = function (parameter) {
+        var aux = function () {
             var vm = Template[templateName].viewModel;
-            return vm.call({
-                close: function (parameters) {
+            return vm.apply({
+                close: function () {
                     $(modal).modal('toggle');
                 }
-            }, parameter);
+            }, parameters);
         }
-        executeBinding(new aux(parameter), modal[0]);
+        executeBinding(new aux(), modal[0]);
     }
     modal.on('hidden.bs.modal', function (e) {
         ko.cleanNode(this);
@@ -144,6 +145,7 @@ Composer.composeTemplate = function (templateName, domNode) {
         Composer.applyBindings(vm, domNode);
     }
 }
+var vmContext = {};
 /*
  * applies ko binding between domNade and vm, waiting for the collection handlers in wait on
  * parameters:
@@ -168,17 +170,17 @@ Composer.applyBindings = function (vm, domNode, waitOn) {
                         length = length - 1;
                     }
                     if (length == 0) {
-                        executeBinding(vm.call(this), domNode);
+                        executeBinding(vm.call(vmContext), domNode);
                     }
                 })
             })
 
         } else {
             waitOn.wait(function () {
-                executeBinding(vm.call(this), domNode);
+                executeBinding(vm.call(vmContext), domNode);
             });
         }
     } else {
-        executeBinding(vm.call(this), domNode);
+        executeBinding(vm.call(vmContext), domNode);
     };
 }

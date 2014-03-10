@@ -26,7 +26,9 @@ Contactables = new Meteor.Collection("contactables", {
             contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
         if (contactable.organization)
             contactable.displayName = contactable.organization.organizationName;
-
+        if (!contactable.pictureFileId) {
+            contactable.pictureFileId = null
+        }
         extendObject(contactable);
         return contactable;
     },
