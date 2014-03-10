@@ -8,7 +8,12 @@
     </span>
     <div id="wrapper" data-color="dark">
         {{#if currentUser }} {{> header}} {{> fieldTemplatesDefinition}} {{> relationTemplatesDefinition}} {{/if}}
-
+        <!-- Here is where layouts are rendered	-->
+        {{renderRouter}}
+        <div class="row">
+            <div id="footer" class="col-xs-12">
+                &copy; 2014 Temp Works
+            </div>
+        </div>
     </div>
-    <!-- Here is where layouts are rendered	-->
 </body>
