@@ -67,9 +67,14 @@ Router.map(function () {
         controller: 'UserProfileController'
     });
 
-    this.route('messages', {
-        path: '/messages',
+    this.route('inbox', {
+        path: '/inbox',
         controller: 'ConversationsController'
+    });
+
+    this.route('conversation', {
+        path: '/inbox/:_id',
+        controller: 'ConversationController'
     });
 
     this.route('tasks', {

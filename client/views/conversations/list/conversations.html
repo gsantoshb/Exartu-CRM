@@ -1,0 +1,100 @@
+<template name="conversations">
+    <div id="content">
+        <div id="content-header" class="mini">
+            <h1>Messages</h1>
+        </div>
+        <!-- /.content-header -->
+        <div id="breadcrumb">
+            <a href="#" title="Go to Home" class="tip-bottom">
+                <i class="fa fa-home"></i>Home</a>
+            <a href="#" class="current">Messages</a>
+        </div>
+        <div class="msgs-container">
+            <div class="msgs-header">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-checkbox btn-default dropdown-toggle" data-toggle="dropdown">
+                                <input type="checkbox">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu custom" role="menu">
+                                <li>
+                                    <a href="#" data-bind="click: selectAll">All Cases</a>
+                                </li>
+                                <li>
+                                    <a href="#" data-bind="click: clearSelections">None</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- ko if: !selectionMode() -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                                Sort:
+                                <strong data-bind="text: sortCriteria"></strong>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu custom" role="menu">
+                                <li>
+                                    <a href="#" data-bind="click: function() {newest(true)}">Newest</a>
+                                </li>
+                                <li>
+                                    <a href="#" data-bind="click: function() {newest(false)}">Oldest</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <a class="btn btn-sm btn-primary" href="#" data-bind="click: function () { Composer.showModal('addConversation'); }">
+                            <i class="fa fa-pencil"></i>&nbsp New Message</a>
+                        <!-- /ko -->
+                        <!-- ko if: selectionMode() -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-default" data-bind="click: markAsUnread">
+                                <i class="fa fa-eye"></i>&nbsp Mark as Unread</button>
+<!--
+                            <button type="button" class="btn btn-sm btn-default">
+    <i class="fa fa-trash-o"></i>&nbsp Delete</button>
+-->
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.msgs-header -->
+
+            <ul class="messages-list" data-bind="foreach: conversations">
+                <li data-bind="css: {selected: $data.selected, unread: !readed()}">
+                    <input class="item-check" type="checkbox" data-bind="checked: selected">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="msg-author" data-bind="with: helper.getUserInformation($root.getUserDestination($data))">
+                                <!-- ko if: $data.ready -->
+                                <img height="30px" width="30px" data-bind="attr: {src: $data.picture? $data.picture : '/assets/user-photo-placeholder.jpg'}">
+                                <a href="#" data-bind="text: username"></a>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="msg-title">
+                                <a data-bind="text: subject, attr: {href: 'inbox/' + _id()}"></a>
+                            </div>
+                        </div>
+                        <!-- /.col-sm-8 -->
+                        <div class="col-sm-3">
+                            <div class="msg-date">
+                                <span data-bind="text: moment(createdAt()).format('ll')"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </li>
+            </ul>
+
+            <br/>
+
+        </div>
+        <!-- /.msgs-container -->
+    </div>
+    <!-- /.content -->
+</template>

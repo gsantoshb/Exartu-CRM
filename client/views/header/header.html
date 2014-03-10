@@ -16,29 +16,49 @@
         <div id="user-nav" class="navbar-right">
             <ul class="btn-group">
 
-                <li class="btn dropdown" id="menu-messages" style="visibility: hidden">
+                <li class="btn dropdown">
+                    <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle" data-bind="with: helper.getUserInformation(Meteor.userId())">
+                        <!--ko if: ready-->
+                        <span class="user-menu-thumb">
+                            <img data-bind="attr:{src:picture}" style="heigth: 26px;width: 26px;">
+                        </span>
+                        <span data-bind="text: Meteor.user().username"></span>
+                        <!--/ko-->
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/login" data-bind="click: Meteor.logout">Logout</a>
+                        </li>
+                        <li>
+                            <a href="/user">Account</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li class="btn dropdown" id="menu-messages">
                     <a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
                         <i class="fa fa-envelope-o"></i>
                         <span class="text">Messages</span>
-                        <!-- ko if: $data.latestMessages().length > 0 -->
-                        <span class="notifications" data-bind="text: latestMessages().length"></span>
+                        <!-- ko if: $data.unreadMessages().length > 0 -->
+                        <span class="notifications" data-bind="text: unreadMessages().length"></span>
                         <!-- /ko -->
                     </a>
                     <ul class="dropdown-menu dropdown-msgs">
                         <li class="clearfix">
                             <span class="pull-left">
-                                <a href="/messages">
+                                <a href="/inbox">
                                     <i class="fa fa-inbox"></i>Inbox</a>
                             </span>
                         </li>
 
-                        <!-- ko if: $data.latestMessages().length == 0 -->
-                        <span>No messages</span>
+                        <!-- ko if: $data.latestUnreadMessages().length == 0 -->
+                        <span>There are not new messages</span>
                         <!-- /ko -->
 
-                        <!-- ko foreach: latestMessages -->
+                        <!-- ko foreach: latestUnreadMessages -->
                         <li data-bind="css: {unread: function() { return readed; } }">
-                            <a class="msg">
+                            <a class="msg" data-bind="attr: { href: '/inbox/' + conversationId() }">
                                 <div data-bind="with: helper.getUserInformation($data.from())">
                                     <!-- ko if: $data.ready -->
                                     <span class="msg-pic">
@@ -52,38 +72,20 @@
                                     <!-- /ko -->
                                     <!-- /ko -->
                                 </div>
-                                <span class="msg-content" data-bind="text: content">
-                                </span>
+                                <div class="msg-content" data-bind="html: content">
+                                </div>
                                 <span class="msg-date" data-bind="text: moment($data.createdAt).fromNow()"></span>
                             </a>
                         </li>
                         <!-- /ko -->
 
                         <li class="more">
-                            <a href="/messages">View all messages</a>
+                            <a href="/inbox">View all messages</a>
                         </li>
                     </ul>
                 </li>
 
-                <li class="btn dropdown">
-                    <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle" data-bind="with:  helper.getUserInformation(Meteor.userId())">
-                        <!--ko if: ready-->
-                        <span class="user-menu-thumb">
-                            <img data-bind="attr:{src:picture}" style="heigth: 26px;width: 26px;">
-                        </span>
-                        <span data-bind="text: Meteor.user().username"></span>
-                        <!--/ko-->
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="/user">Account</a>
-                        </li>
-                        <li>
-                            <a href="/users" data-bind="click: Meteor.logout">Logout</a>
-                        </li>
 
-                    </ul>
-                </li>
 
 
                 <li class="btn dropdown" id="menu-settings">

@@ -357,13 +357,11 @@ ko.bindingHandlers.htmlEditor = {
 }
 ko.bindingHandlers.sparkLine = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        debugger;
+        //        debugger;
         var value = ko.toJS(valueAccessor());
-        var text = '';
-        _.each(value, function (v) {
-            text = text + v + ',';
-        })
-        $(element).innerHTML = text;
+        var text = value.join();
+
+        element.innerHTML = text;
         $(element).sparkline("html", {
             type: "line",
             fillColor: "#4cd964",

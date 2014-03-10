@@ -12,7 +12,8 @@
       "collectionFS": {},
       "imagemagick": {},
       "spin": {},
-      "bootstrap3-wysihtml5": {}
+      "bootstrap3-wysihtml5": {},
+      "jquery-color-animation": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -49,7 +50,7 @@
         "git": "https://github.com/drewjw81/meteor-googlemaps.git",
         "tag": "v0.0.2",
         "commit": "da8785c82cfd7de0111f898ef10728e7ed24e361"
-},
+      },
       "collectionFS": {
         "git": "https://github.com/raix/Meteor-CollectionFS.git",
         "tag": "v0.3.7",
@@ -69,6 +70,11 @@
         "git": "https://github.com/andreioprisan/meteor-bootstrap3-wysihtml5.git",
         "tag": "v0.3.3",
         "commit": "251d564c3eb5b5b7a89a3e3e63f58633e0816332"
+      },
+      "jquery-color-animation": {
+        "git": "https://github.com/jonjamz/meteor-jquery-color-animation.git",
+        "tag": "v1.6.0",
+        "commit": "1999252f73e0d93067a44f46d476539922152e2e"
       },
       "cfs-public-folder": {
         "git": "https://github.com/nooitaf/meteor-cfs-public-folder.git",

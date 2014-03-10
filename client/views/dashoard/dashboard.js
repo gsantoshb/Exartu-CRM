@@ -24,12 +24,38 @@ Template.dashboard.viewModel = function () {
             return 'dashboardEmptyActivity';
         }
     };
+    var now = new Date();
+    var timeInADay = 24 * 60 * 60 * 1000;
+    var days = [now.getTime() - (timeInADay) * 7, now.getTime() - (timeInADay) * 6, now.getTime() - (timeInADay) * 5, now.getTime() - (timeInADay) * 4, now.getTime() - (timeInADay) * 3, now.getTime() - (timeInADay) * 2, now.getTime() - (timeInADay) * 1, now.getTime() - (timeInADay) * 0];
 
-    self.jobHistory = ko.observableArray([2, 4, 9, 7, 12, 10, 12]);
+
+    self.jobHistory = ko.observableArray(getHistorical(Jobs, days));
+    self.customerHistory = ko.observableArray(getHistorical(Contactables, days, {
+        customer: {
+            $exists: true
+        }
+    }));
+    self.employeeHistory = ko.observableArray(getHistorical(Contactables, days), {
+        Employee: {
+            $exists: true
+        }
+    });
+
 
     return self;
 };
-
+var getHistorical = function (collection, timeStamps, query) {
+    var history = [];
+    var q = query || {};
+    //    debugger;
+    _.each(timeStamps, function (time) {
+        q.createdAt = {
+            $lte: time
+        }
+        history.push(collection.find(q).count());
+    })
+    return history;
+}
 Template.dashboard.rendered = function () {
     exartu = {
         // === Peity charts === //

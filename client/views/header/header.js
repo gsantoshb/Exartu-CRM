@@ -1,17 +1,19 @@
 Template.header.viewModel = function () {
     var self = this;
 
-    self.latestMessages = ko.meteor.find(Messages, {
+    self.unreadMessages = ko.meteor.find(Messages, {
         readed: false,
-        from: {
-            $not: Meteor.userId()
-        }
+        destination: Meteor.userId()
     }, {
         sort: {
             createdAt: 1
         },
-        limit: 4
     });
+
+    self.latestUnreadMessages = ko.computed(function () {
+        return self.unreadMessages.slice(0, 4);
+    });
+
     self.showSales = true; // ko.observable(Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) >= 0);
     self.contactableObjTypes = ko.meteor.find(ObjTypes, {
         objGroupType: Enums.objGroupType.contactable
@@ -24,11 +26,13 @@ Template.header.viewModel = function () {
     self.picture = function (size) {
         return Meteor.user().services.google.picture.split('?')[0] + '?sz=' + size;
     }
+
     return self;
 };
+
 var init = true;
 Template.header.rendered = function () {
-    $('body').attr('data-color', 'dark');
+    $('body').attr('data-color', 'enterprise');
     $('body').addClass("flat");
 
     if (init) {
@@ -204,8 +208,8 @@ Template.header.rendered = function () {
                 switcherPanel.addClass('open');
             }
         });
-        $('body').attr('data-color', 'dark');
-        $('#color-style a[data-color=dark]').addClass('active');
+        $('body').attr('data-color', 'enterprise');
+        $('#color-style a[data-color=enterprise]').addClass('active');
 
         $('#color-style a').click(function () {
             var color = $(this).attr('data-color');
