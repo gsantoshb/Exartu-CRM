@@ -68,7 +68,7 @@
                                             </div>
                                         </div>
 
-<!--
+                                        <!--
                                         <div class="panel panel-default">
     <div class="panel-heading">
         <h4 class="panel-title">
@@ -220,7 +220,7 @@
                             <i data-bind="css: helper.getTaskStateIcon($data)"></i>&nbsp;
                             <span data-bind="text: $data"></span>
                         </span>
-                        <a class="btn btn-xs btn-primary text-small magic-content" href="#" data-bind="visible: $data==Enums.taskState.pending, click: function(){$root.complete($parent);}">
+                        <a class="btn btn-xs btn-primary text-small magic-content" href="#" data-bind="visible: $data==Enums.taskState.pending && _.contains($parent.assign(),Meteor.userId()), click: function(){$root.complete($parent);}">
                             <i class="fa fa-check"></i>Complete</a>
                     </div>
                 </div>

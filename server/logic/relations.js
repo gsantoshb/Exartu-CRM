@@ -122,7 +122,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
                 var aux = {};
                 var fieldName = rel1.name + '.' + fieldName
                 aux[fieldName] = id;
-                //                console.log('**********************************************************************')
+                //                console.log('********************************************************')
                 //                console.log('updating ' + obj2._id);
                 //                console.dir(aux);
                 collection2.update({
@@ -255,7 +255,7 @@ var checkCardinality = function (value, card) {
  * typeName ->      the name of the type we are matching against (ex: 'Employee')
  * collection ->    if obj is of the id of the obj this parameter is required,
  *                  it can be the name of the collection (ex: 'Contactables')
- *                  or it can be the actual meteor's collection
+ *                  or it can be the actual meteor collection
  */
 var checkType = function (obj, typeName, collection) {
     //    todo: receive type and check it

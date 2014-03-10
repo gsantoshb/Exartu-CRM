@@ -1,416 +1,416 @@
 <template name="dashboard">
-	<div id="content" name="dashboardVM">
-		<div id="content-header" class="mini">
-			<h1>Dashboard</h1>
-			<ul class="mini-stats" style="visibility: hidden">
-				<li>
-					<div class="left sparkline_bar_good">
-						<span>2,4,9,7,12,10,12</span>+10%</div>
-					<div class="right">
-						<strong>378</strong>
-						Jobs
-					</div>
-				</li>
-				<li>
-					<div class="left sparkline_bar_good">
-						<span>20,15,18,14,10,9,9,25</span>+5%</div>
-					<div class="right">
-						<strong>96</strong>
-						Customers
-					</div>
-				</li>
-				<li>
-					<div class="left sparkline_bar_bad">
-						<span>3,5,9,7,12,2,5</span>-20%</div>
-					<div class="right">
-						<strong>84</strong>
-						Employees
-					</div>
-				</li>
-			</ul>
-		</div>
-		<div id="breadcrumb">
-			<a href="#" title="Go to Home" class="tip-bottom">Home</a>
-			<a href="#" class="current">Dashboard</a>
-		</div>
+    <div id="content" name="dashboardVM">
+        <div id="content-header" class="mini">
+            <h1>Dashboard</h1>
+            <ul class="mini-stats">
+                <li>
+                    <div class="left sparkline_bar_good">
+                        <span data-bind="sparkLine: jobHistory"></span>+10%</div>
+                    <div class="right">
+                        <strong>378</strong>
+                        Jobs
+                    </div>
+                </li>
+                <li>
+                    <div class="left sparkline_bar_good">
+                        <span data-bind="sparkLine: customerHistory"></span>+5%</div>
+                    <div class="right">
+                        <strong>96</strong>
+                        Customers
+                    </div>
+                </li>
+                <li>
+                    <div class="left sparkline_bar_bad">
+                        <span data-bind="sparkLine: employeeHistory"></span>-20%</div>
+                    <div class="right">
+                        <strong>84</strong>
+                        Employees
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="breadcrumb">
+            <a href="#" title="Go to Home" class="tip-bottom">Home</a>
+            <a href="#" class="current">Dashboard</a>
+        </div>
 
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-9 col-md-8">
-					<section class="timeline">
-						<header class="box-header">
-							<div class="btn-group pull-right" style="visibility: hidden">
-								<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-									Sort by: Most Recent
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li>
-										<a href="#">Most Recent</a>
-									</li>
-									<li>
-										<a href="#">Another action</a>
-									</li>
-									<li>
-										<a href="#">Something else here</a>
-									</li>
-									<li class="divider"></li>
-									<li>
-										<a href="#">Separated link</a>
-									</li>
-								</ul>
-							</div>
-							<h4 class="box-title">Recent activity</h4>
-						</header>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-9 col-md-8">
+                    <section class="timeline">
+                        <header class="box-header">
+                            <div class="btn-group pull-right" style="visibility: hidden">
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    Sort by: Most Recent
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="#">Most Recent</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Another action</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Something else here</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#">Separated link</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <h4 class="box-title">Recent activity</h4>
+                        </header>
 
-						<div class="activity-container scroll-container" data-bind="visible: activities().length > 0, foreach: activities">
-							<div data-bind="template: { name: $root.activityVM($data), data: $data}"></div>
-						</div>
+                        <div class="activity-container scroll-container" data-bind="visible: activities().length > 0, foreach: activities">
+                            <div data-bind="template: { name: $root.activityVM($data), data: $data}"></div>
+                        </div>
 
-					</section>
-					<!-- /.timeline -->
-				</div>
-				<!-- /.col-lg-8 -->
-				<div class="col-md-4 col-lg-3" style="visibility: hidden">
-					<a class="btn btn-success btn-md btn-block btn-new-item" href="#">
-						<i class="fa fa-plus-circle fa-2x"></i>
-					</a>
-					<section>
-						<div class="box">
-							<div class="box-header-2">
-								<div class="box-title">
-									<i class="icon-business-chart-2"></i>Stats</div>
-							</div>
-							<div class="box-content-2">
-								<div class="">
-									<img class="img-responsive" src="assets/chart.png">
-								</div>
-							</div>
-							<!-- /.box-content-sm -->
-						</div>
-						<!-- /.box -->
-					</section>
-					<section>
-						<div class="box">
-							<div class="box-header-2">
-								<div class="box-title">
-									<i class="icon-chat-4"></i>Active Users</div>
-							</div>
-							<div class="box-content-2">
-								<div class="faces">
-									<div class="row">
-										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
-											<span></span>
-											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
-										</a>
-										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
-											<span></span>
-											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
-										</a>
-										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
-											<span></span>
-											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
-										</a>
-										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
-											<span></span>
-											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
-										</a>
-										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
-											<span></span>
-											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
-										</a>
-										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
-											<span></span>
-											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
-										</a>
-										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
-											<span></span>
-											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
-										</a>
-										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
-											<span></span>
-											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
-										</a>
-										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
-											<span></span>
-											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
-										</a>
-										<a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
-											<span></span>
-											<img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
-										</a>
-									</div>
-									<!-- /.row -->
-								</div>
-							</div>
-						</div>
-						<!-- /.box -->
-					</section>
+                    </section>
+                    <!-- /.timeline -->
+                </div>
+                <!-- /.col-lg-8 -->
+                <div class="col-md-4 col-lg-3" style="visibility: hidden">
+                    <a class="btn btn-success btn-md btn-block btn-new-item" href="#">
+                        <i class="fa fa-plus-circle fa-2x"></i>
+                    </a>
+                    <section>
+                        <div class="box">
+                            <div class="box-header-2">
+                                <div class="box-title">
+                                    <i class="icon-business-chart-2"></i>Stats</div>
+                            </div>
+                            <div class="box-content-2">
+                                <div class="">
+                                    <img class="img-responsive" src="assets/chart.png">
+                                </div>
+                            </div>
+                            <!-- /.box-content-sm -->
+                        </div>
+                        <!-- /.box -->
+                    </section>
+                    <section>
+                        <div class="box">
+                            <div class="box-header-2">
+                                <div class="box-title">
+                                    <i class="icon-chat-4"></i>Active Users</div>
+                            </div>
+                            <div class="box-content-2">
+                                <div class="faces">
+                                    <div class="row">
+                                        <a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+                                            <span></span>
+                                            <img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+                                        </a>
+                                        <a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+                                            <span></span>
+                                            <img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+                                        </a>
+                                        <a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+                                            <span></span>
+                                            <img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+                                        </a>
+                                        <a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+                                            <span></span>
+                                            <img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+                                        </a>
+                                        <a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+                                            <span></span>
+                                            <img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+                                        </a>
+                                        <a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+                                            <span></span>
+                                            <img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+                                        </a>
+                                        <a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+                                            <span></span>
+                                            <img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+                                        </a>
+                                        <a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+                                            <span></span>
+                                            <img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+                                        </a>
+                                        <a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+                                            <span></span>
+                                            <img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+                                        </a>
+                                        <a title="Mike" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 tip-bottom" href="#">
+                                            <span></span>
+                                            <img class="img-responsive" src="assets/pic-70x70.jpg" alt="">
+                                        </a>
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box -->
+                    </section>
 
-					<section>
-						<div class="box">
-							<div class="box-header-2">
-								<div class="box-title">
-									<i class="icon-buildings-1"></i>Top Customers</div>
-							</div>
-							<ul class="list-type-1">
-								<li>
-									<div class="thumb-sm item-pos">
-										<span class="thumb-sm-content">#1</span>
-									</div>
-									<div class="thumb-sm item-logo">
-										<a class="thumb-sm-content" href="#">
-											<img src="assets/logo-exartu.png" alt="exartu">
-										</a>
-									</div>
-									<div class="list-item-content">
-										<p class="activity-author">
-											<a href="#">CNN</a>
-										</p>
-										<p class="activity-label">Financial activity</p>
-										<div class="activity-rating">
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar empty"></div>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="thumb-sm item-pos">
-										<span class="thumb-sm-content">#2</span>
-									</div>
-									<div class="thumb-sm item-logo">
-										<a class="thumb-sm-content" href="#">
-											<img src="assets/logo-exartu.png" alt="exartu">
-										</a>
-									</div>
-									<div class="list-item-content">
-										<p class="activity-author">
-											<a href="#">CNN</a>
-										</p>
-										<p class="activity-label">Financial activity</p>
-										<div class="activity-rating">
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar empty"></div>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="thumb-sm item-pos">
-										<span class="thumb-sm-content">#3</span>
-									</div>
-									<div class="thumb-sm item-logo">
-										<a class="thumb-sm-content" href="#">
-											<img src="assets/logo-exartu.png" alt="exartu">
-										</a>
-									</div>
-									<div class="list-item-content">
-										<p class="activity-author">
-											<a href="#">CNN</a>
-										</p>
-										<p class="activity-label">Financial activity</p>
-										<div class="activity-rating">
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar empty"></div>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<!-- /. -->
-						</div>
-						<!-- /.box -->
-					</section>
+                    <section>
+                        <div class="box">
+                            <div class="box-header-2">
+                                <div class="box-title">
+                                    <i class="icon-buildings-1"></i>Top Customers</div>
+                            </div>
+                            <ul class="list-type-1">
+                                <li>
+                                    <div class="thumb-sm item-pos">
+                                        <span class="thumb-sm-content">#1</span>
+                                    </div>
+                                    <div class="thumb-sm item-logo">
+                                        <a class="thumb-sm-content" href="#">
+                                            <img src="assets/logo-exartu.png" alt="exartu">
+                                        </a>
+                                    </div>
+                                    <div class="list-item-content">
+                                        <p class="activity-author">
+                                            <a href="#">CNN</a>
+                                        </p>
+                                        <p class="activity-label">Financial activity</p>
+                                        <div class="activity-rating">
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar empty"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="thumb-sm item-pos">
+                                        <span class="thumb-sm-content">#2</span>
+                                    </div>
+                                    <div class="thumb-sm item-logo">
+                                        <a class="thumb-sm-content" href="#">
+                                            <img src="assets/logo-exartu.png" alt="exartu">
+                                        </a>
+                                    </div>
+                                    <div class="list-item-content">
+                                        <p class="activity-author">
+                                            <a href="#">CNN</a>
+                                        </p>
+                                        <p class="activity-label">Financial activity</p>
+                                        <div class="activity-rating">
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar empty"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="thumb-sm item-pos">
+                                        <span class="thumb-sm-content">#3</span>
+                                    </div>
+                                    <div class="thumb-sm item-logo">
+                                        <a class="thumb-sm-content" href="#">
+                                            <img src="assets/logo-exartu.png" alt="exartu">
+                                        </a>
+                                    </div>
+                                    <div class="list-item-content">
+                                        <p class="activity-author">
+                                            <a href="#">CNN</a>
+                                        </p>
+                                        <p class="activity-label">Financial activity</p>
+                                        <div class="activity-rating">
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar empty"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <!-- /. -->
+                        </div>
+                        <!-- /.box -->
+                    </section>
 
-					<section>
-						<div class="box">
-							<div class="box-header-2">
-								<div class="box-title">
-									<i class="icon-profile-bussiness-man"></i>Top Users</div>
-							</div>
-							<ul class="list-type-1">
-								<li>
-									<div class="thumb-sm item-pos">
-										<span class="thumb-sm-content">#1</span>
-									</div>
-									<div class="thumb-sm item-logo">
-										<a class="thumb-sm-content" href="#">
-											<img src="assets/logo-exartu.png" alt="exartu">
-										</a>
-									</div>
-									<div class="list-item-content">
-										<p class="activity-author">
-											<a href="#">CNN</a>
-										</p>
-										<p class="activity-label">Work activity</p>
-										<div class="activity-rating">
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar empty"></div>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="thumb-sm item-pos">
-										<span class="thumb-sm-content">#2</span>
-									</div>
-									<div class="thumb-sm item-logo">
-										<a class="thumb-sm-content" href="#">
-											<img src="assets/logo-exartu.png" alt="exartu">
-										</a>
-									</div>
-									<div class="list-item-content">
-										<p class="activity-author">
-											<a href="#">CNN</a>
-										</p>
-										<p class="activity-label">Work activity</p>
-										<div class="activity-rating">
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar empty"></div>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="thumb-sm item-pos">
-										<span class="thumb-sm-content">#3</span>
-									</div>
-									<div class="thumb-sm item-logo">
-										<a class="thumb-sm-content" href="#">
-											<img src="assets/logo-exartu.png" alt="exartu">
-										</a>
-									</div>
-									<div class="list-item-content">
-										<p class="activity-author">
-											<a href="#">CNN</a>
-										</p>
-										<p class="activity-label">Work activity</p>
-										<div class="activity-rating">
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar"></div>
-											<div class="rating-bar empty"></div>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<!-- /. -->
-						</div>
-						<!-- /.box -->
-					</section>
+                    <section>
+                        <div class="box">
+                            <div class="box-header-2">
+                                <div class="box-title">
+                                    <i class="icon-profile-bussiness-man"></i>Top Users</div>
+                            </div>
+                            <ul class="list-type-1">
+                                <li>
+                                    <div class="thumb-sm item-pos">
+                                        <span class="thumb-sm-content">#1</span>
+                                    </div>
+                                    <div class="thumb-sm item-logo">
+                                        <a class="thumb-sm-content" href="#">
+                                            <img src="assets/logo-exartu.png" alt="exartu">
+                                        </a>
+                                    </div>
+                                    <div class="list-item-content">
+                                        <p class="activity-author">
+                                            <a href="#">CNN</a>
+                                        </p>
+                                        <p class="activity-label">Work activity</p>
+                                        <div class="activity-rating">
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar empty"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="thumb-sm item-pos">
+                                        <span class="thumb-sm-content">#2</span>
+                                    </div>
+                                    <div class="thumb-sm item-logo">
+                                        <a class="thumb-sm-content" href="#">
+                                            <img src="assets/logo-exartu.png" alt="exartu">
+                                        </a>
+                                    </div>
+                                    <div class="list-item-content">
+                                        <p class="activity-author">
+                                            <a href="#">CNN</a>
+                                        </p>
+                                        <p class="activity-label">Work activity</p>
+                                        <div class="activity-rating">
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar empty"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="thumb-sm item-pos">
+                                        <span class="thumb-sm-content">#3</span>
+                                    </div>
+                                    <div class="thumb-sm item-logo">
+                                        <a class="thumb-sm-content" href="#">
+                                            <img src="assets/logo-exartu.png" alt="exartu">
+                                        </a>
+                                    </div>
+                                    <div class="list-item-content">
+                                        <p class="activity-author">
+                                            <a href="#">CNN</a>
+                                        </p>
+                                        <p class="activity-label">Work activity</p>
+                                        <div class="activity-rating">
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar"></div>
+                                            <div class="rating-bar empty"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <!-- /. -->
+                        </div>
+                        <!-- /.box -->
+                    </section>
 
-				</div>
-				<!-- /.col-lg-4 -->
-			</div>
-			<!-- /.row -->
-		</div>
-		<!-- /.container-fluid -->
-	</div>
-	<!-- /.content -->
+                </div>
+                <!-- /.col-lg-4 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
 
 
 
-	<!-- Activity templates ------------------------------------------------------------------------ -->
+    <!-- Activity templates ------------------------------------------------------------------------ -->
 
-	<!-- Hack: template for activities that doesn't have html yet -->
-	<div id="dashboardEmptyActivity" style="display: none">
-	</div>
+    <!-- Hack: template for activities that doesn't have html yet -->
+    <div id="dashboardEmptyActivity" style="display: none">
+    </div>
 
-	<!-- New contactable activity ------------------------------------ -->
-	<div id="dashboardContactableActivity2" style="display: none">
-		<div class="item item-customer">
-			<div class="item-info">
-				<div class="time">
-					<i class="icon-clock-3"></i>
-					<span data-bind="text: moment(data.createdAt()).fromNow()"></span>
-				</div>
-				<div class="type" data-bind="style: {background: helper.getActivityColor($data)}">
-					<i data-bind="css: helper.getActivityIcon($data)"></i>
-				</div>
-			</div>
-			<!-- /.item-info -->
-			<div class="item-content">
-				<div class="box">
-					<div class="box-content" data-bind="with: data">
-						<div class="thumb">
-							<div class="user-avatar-container">
-								<a class="user-avatar" href="#">
-									<img style="width: 64px; height: 64px; padding:0" src="img/avatar.jpg" alt="CNN">
-								</a>
-							</div>
-						</div>
-						<div class="item-title">
-							<strong>
-								<a href="#" data-bind="text: displayName">
-								</a>
-							</strong>
-							is now our
-							<span data-bind="text: objTypeName"></span>
-						</div>
+    <!-- New contactable activity ------------------------------------ -->
+    <div id="dashboardContactableActivity2" style="display: none">
+        <div class="item item-customer">
+            <div class="item-info">
+                <div class="time">
+                    <i class="icon-clock-3"></i>
+                    <span data-bind="text: moment(data.createdAt()).fromNow()"></span>
+                </div>
+                <div class="type" data-bind="style: {background: helper.getActivityColor($data)}">
+                    <i data-bind="css: helper.getActivityIcon($data)"></i>
+                </div>
+            </div>
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box">
+                    <div class="box-content" data-bind="with: data">
+                        <div class="thumb">
+                            <div class="user-avatar-container">
+                                <a class="user-avatar" href="#">
+                                    <img style="width: 64px; height: 64px; padding:0" src="img/avatar.jpg" alt="CNN">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item-title">
+                            <strong>
+                                <a href="#" data-bind="text: displayName">
+                                </a>
+                            </strong>
+                            is now our
+                            <span data-bind="text: objTypeName"></span>
+                        </div>
 
-						<!-- ko if: $data.person -->
-						<h4 class="item-title" data-bind="text: person.jobTitle" />
-						<!-- /ko -->
-						<div class="item-actions">
-							<a class="btn btn-xs btn-default" href="#">
-								<i class="fa fa-envelope"></i>Send Message</a>
-							<a class="btn btn-xs btn-default" href="#">Details</a>
-						</div>
-					</div>
-					<!-- /.box-content -->
-				</div>
-				<!-- /.box -->
-			</div>
-			<!-- /.item-content -->
-		</div>
-		<!-- /.item -->
-	</div>
+                        <!-- ko if: $data.person -->
+                        <h4 class="item-title" data-bind="text: person.jobTitle" />
+                        <!-- /ko -->
+                        <div class="item-actions">
+                            <a class="btn btn-xs btn-default" href="#">
+                                <i class="fa fa-envelope"></i>Send Message</a>
+                            <a class="btn btn-xs btn-default" href="#">Details</a>
+                        </div>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    </div>
 
-	<!-- New contactable activity ------------------------------------ -->
-	<div id="dashboardContactableActivity" style="display: none">
-		<div class="item item-customer">
-			<div class="item-info">
-				<div class="time">
-					<i class="icon-clock-3"></i>
-					<span data-bind="text: moment(data.createdAt()).fromNow()"></span>
-				</div>
-				<div class="type" data-bind="style: {background: helper.getActivityColor($data)}">
-					<i data-bind="css: helper.getActivityIcon($data)"></i>
-				</div>
-			</div>
-			<!-- /.item-info -->
-			<div class="item-content">
-				<div class="box">
-					<div class="box-content" data-bind="with: data">
-						<h4 class="item-title">
-							<span data-bind="text: objTypeName"></span>
-							<span class="spacer">–</span>
-							<a href="#">
-								<strong>
-									<span href="#" data-bind="text: displayName"></span>
-								</strong>
-							</a>
-						</h4>
-						<div class="item-actions">
-							<a class="btn btn-default tip-bottom" title="Send Message" data-bind="click: function () { Composer.showModal( 'sendMessage',$parent.entityId()); } ">
-								<i class="fa fa-comment-o"></i>
-							</a>
-							<a class="btn btn-default tip-bottom" title="Customer Info" data-bind="attr: {href: '/contactable/' +  $parent.entityId()}">
-								<i class="fa fa-info"></i>
-							</a>
-							<!--
+    <!-- New contactable activity ------------------------------------ -->
+    <div id="dashboardContactableActivity" style="display: none">
+        <div class="item item-customer">
+            <div class="item-info">
+                <div class="time">
+                    <i class="icon-clock-3"></i>
+                    <span data-bind="text: moment(data.createdAt()).fromNow()"></span>
+                </div>
+                <div class="type" data-bind="style: {background: helper.getActivityColor($data)}">
+                    <i data-bind="css: helper.getActivityIcon($data)"></i>
+                </div>
+            </div>
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box">
+                    <div class="box-content" data-bind="with: data">
+                        <h4 class="item-title">
+                            <span data-bind="text: objTypeName"></span>
+                            <span class="spacer">–</span>
+                            <a href="#">
+                                <strong>
+                                    <span href="#" data-bind="text: displayName"></span>
+                                </strong>
+                            </a>
+                        </h4>
+                        <div class="item-actions">
+                            <a class="btn btn-default tip-bottom" title="Send Message" data-bind="click: function () { Composer.showModal( 'sendMessage',$parent.entityId()); } ">
+                                <i class="fa fa-comment-o"></i>
+                            </a>
+                            <a class="btn btn-default tip-bottom" title="Customer Info" data-bind="attr: {href: '/contactable/' +  $parent.entityId()}">
+                                <i class="fa fa-info"></i>
+                            </a>
+                            <!--
 							<a class="btn btn-default tip-bottom" title="Propose Deal" href="#">
 								<i class="fa fa-money"></i>Deal</a>
 							<a class="btn btn-default tip-bottom" title="Phone No." href="#">
@@ -418,126 +418,126 @@
 							<a class="btn btn-default tip-bottom" title="Email" href="#">
 								<i class="fa fa-envelope-o"></i>p.morgan@cnn.com</a>
 -->
-						</div>
-					</div>
-					<!-- /.box-content -->
-				</div>
-				<!-- /.box -->
-			</div>
-			<!-- /.item-content -->
-		</div>
-		<!-- /.item -->
-	</div>
+                        </div>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    </div>
 
-	<!-- New task activity ------------------------------------ -->
-	<div id="dashboardTaskActivity" style="display: none">
-		<div class="item item-task">
-			<div class="item-info">
-				<div class="time">
-					<i class="icon-clock-3"></i>
-					<span data-bind="text: moment(data.createdAt()).fromNow()"></span>
-				</div>
-				<div class="type">
-					<i class="icon-clock-3"></i>
-				</div>
-			</div>
-			<!-- /.item-info -->
-			<div class="item-content" data-bind="with: data">
-				<div class="box">
-					<div class="box-content">
-						<h4 class="item-title">
-							Task
-							<span class="spacer">–</span>
-							<a href="#">
-								<strong data-bind="text: note"></strong>
-							</a>
-							assigned to
-							<!-- ko foreach: asign -->
-							<!-- ko with: helper.getUserInformation($data) -->
-							<!-- ko if: $data.ready -->
-							<a data-bind="text: username"></a>,
-							<!-- /ko -->
-							<!-- /ko -->
-							<!-- /ko -->
-						</h4>
-						<div class="item-actions">
-							<a class="btn btn-default tip-bottom" title="Task Owner" href="#">by
-								<i class="fa fa-user"></i>
-								<!-- ko with: helper.getUserInformation($parent.userId()) -->
-								<!-- ko if: $data.ready -->
-								<span data-bind="text: username"></span>
-								<!-- /ko -->
-								<!-- /ko -->
-							</a>
-							<a class="btn btn-default tip-bottom" title="Task Info" data-bind="click: function () { Composer.showModal( 'addEditTask',$parent.entityId()); }">
-								<i class="fa fa-info"></i>
-							</a>
-							<a class="btn btn-default tip-bottom" title="Task Start Date" href="#">Start:
-								<i class="fa fa-calendar"></i>
-								<span data-bind="text: moment(begin()).format('lll')"></span>
-							</a>
-							<a class="btn btn-default tip-bottom" title="Task Start Date" href="#">End:
-								<i class="fa fa-calendar"></i>
-								<span data-bind="text: moment(end()).format('lll')"></span>
-							</a>
-						</div>
-					</div>
-					<!-- /.box-content -->
-				</div>
-				<!-- /.box -->
-			</div>
-			<!-- /.item-content -->
-		</div>
-		<!-- /.item -->
-	</div>
+    <!-- New task activity ------------------------------------ -->
+    <div id="dashboardTaskActivity" style="display: none">
+        <div class="item item-task">
+            <div class="item-info">
+                <div class="time">
+                    <i class="icon-clock-3"></i>
+                    <span data-bind="text: moment(data.createdAt()).fromNow()"></span>
+                </div>
+                <div class="type">
+                    <i class="icon-clock-3"></i>
+                </div>
+            </div>
+            <!-- /.item-info -->
+            <div class="item-content" data-bind="with: data">
+                <div class="box">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            Task
+                            <span class="spacer">–</span>
+                            <a href="#">
+                                <strong data-bind="text: note"></strong>
+                            </a>
+                            assigned to
+                            <!-- ko foreach: asign -->
+                            <!-- ko with: helper.getUserInformation($data) -->
+                            <!-- ko if: $data.ready -->
+                            <a data-bind="text: username"></a>,
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                        </h4>
+                        <div class="item-actions">
+                            <a class="btn btn-default tip-bottom" title="Task Owner" href="#">by
+                                <i class="fa fa-user"></i>
+                                <!-- ko with: helper.getUserInformation($parent.userId()) -->
+                                <!-- ko if: $data.ready -->
+                                <span data-bind="text: username"></span>
+                                <!-- /ko -->
+                                <!-- /ko -->
+                            </a>
+                            <a class="btn btn-default tip-bottom" title="Task Info" data-bind="click: function () { Composer.showModal( 'addEditTask',$parent.entityId()); }">
+                                <i class="fa fa-info"></i>
+                            </a>
+                            <a class="btn btn-default tip-bottom" title="Task Start Date" href="#">Start:
+                                <i class="fa fa-calendar"></i>
+                                <span data-bind="text: moment(begin()).format('lll')"></span>
+                            </a>
+                            <a class="btn btn-default tip-bottom" title="Task Start Date" href="#">End:
+                                <i class="fa fa-calendar"></i>
+                                <span data-bind="text: moment(end()).format('lll')"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    </div>
 
-	<!-- New job activity ------------------------------------ -->
-	<div id="dashboardJobActivity" style="display: none">
-		<div class="item item-job">
-			<div class="item-info">
-				<div class="time">
-					<i class="icon-clock-3"></i>3 HR</div>
-				<div class="type">
-					<i class="icon-briefcase"></i>
-				</div>
-			</div>
-			<!-- /.item-info -->
-			<div class="item-content">
-				<div class="box" data-bind="with: data">
-					<div class="box-content">
-						<h4 class="item-title">
-							Job
-							<span class="spacer">–</span>
-							<a href="#">
-								<strong data-bind="text: publicJobTitle"></strong>
-							</a>@
-							<!-- ko if: $data.customer -->
-							<a href="#" data-bind="text: customerName, attr: {href: '/contactable/' +  $data.customer}"></a>
-							<!-- /ko -->
-						</h4>
-						<div class="item-actions">
-							<a class="btn btn-default tip-bottom" title="Job Details" data-bind="attr: {href: '/job/' +  $parent.entityId()}">
-								<i class="fa fa-info"></i>
-							</a>
-							<!--
+    <!-- New job activity ------------------------------------ -->
+    <div id="dashboardJobActivity" style="display: none">
+        <div class="item item-job">
+            <div class="item-info">
+                <div class="time">
+                    <i class="icon-clock-3"></i>3 HR</div>
+                <div class="type">
+                    <i class="icon-briefcase"></i>
+                </div>
+            </div>
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box" data-bind="with: data">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            Job
+                            <span class="spacer">–</span>
+                            <a href="#">
+                                <strong data-bind="text: publicJobTitle"></strong>
+                            </a>@
+                            <!-- ko if: $data.customer -->
+                            <a href="#" data-bind="text: customerName, attr: {href: '/contactable/' +  $data.customer}"></a>
+                            <!-- /ko -->
+                        </h4>
+                        <div class="item-actions">
+                            <a class="btn btn-default tip-bottom" title="Job Details" data-bind="attr: {href: '/job/' +  $parent.entityId()}">
+                                <i class="fa fa-info"></i>
+                            </a>
+                            <!--
 <a class="btn btn-default tip-bottom" title="Share Job" href="#">
 	<i class="fa fa-share-square-o"></i>
 </a>
 -->
-							<a class="btn btn-default tip-bottom" title="Assign Candidate" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $parent.entityId()); }">
-								<i class="fa fa-anchor"></i>Assign Candidate</a>
-							<!--
+                            <a class="btn btn-default tip-bottom" title="Assign Candidate" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $parent.entityId()); }">
+                                <i class="fa fa-anchor"></i>Assign Candidate</a>
+                            <!--
 							<a class="btn btn-default tip-bottom" title="Email" href="#">
 								<i class="fa fa-envelope-o"></i>gregg@tempworks.com</a>
 -->
-						</div>
-					</div>
-					<!-- /.box-content -->
-				</div>
-				<!-- /.box -->
-			</div>
-			<!-- /.item-content -->
-		</div>
-		<!-- /.item -->
-	</div>
+                        </div>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    </div>
 </template>

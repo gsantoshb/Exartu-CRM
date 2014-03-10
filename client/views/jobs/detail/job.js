@@ -15,10 +15,10 @@ Template.job.viewModel = function () {
         jobId = Router.current().params._id;
 
     /*
-     * define wich field are going to be editable and the read only field wich are not saved back to mongo but need to be recomputed after an update
+     * define which field are going to be editable and the read only field which are not saved back to mongo but need to be recomputed after an update
      */
     var fields = ['category', 'duration', 'displayName', 'endDate', 'industry', 'publicJobTitle', 'startDate', 'status', 'tags', 'description'];
-    var readOnlyField = ['categoryName', 'durationName', 'industryName']
+    var readOnlyField = ['categoryName', 'durationName', 'industryName', 'statusName']
 
     self.editMode = ko.observable(false);
     self.edit = function () {
