@@ -108,21 +108,23 @@
                 <div class="box ">
                     <div class="box-header-2 ">
                         <div class="box-title ">
-                            <i class="icon-contact "></i>Contact</div>
+                            <i class="icon-contact "></i>Contact methods</div>
                     </div>
                     <div class="box-content-md ">
                         <ul class="list-1 " data-bind="foreach: $root.contactMethods ">
                             <li>
-                                <strong data-bind="text: type "></strong>
+                                <strong data-bind="text: $root.getContactMethodDisplayName($data.type) "></strong>
                                 <br>
                                 <span data-bind="text: value "></span>
                             </li>
                         </ul>
+                        <!-- ko if: $data.contactMethods().length > 3 -->
                         <!-- ko if: !$root.showAllContactMethods() -->
                         <a class="btn btn-default btn-block btn-md " data-bind="click: function() { $root.showAllContactMethods(true); }">Show all</a>
                         <!-- /ko -->
                         <!-- ko if: $root.showAllContactMethods() -->
                         <a class="btn btn-default btn-block btn-md " data-bind="click: function() { $root.showAllContactMethods(false); }">Show less</a>
+                        <!-- /ko -->
                         <!-- /ko -->
                         <hr/>
                         <div data-bind="css:{'has-error': $root.newContactMethod().value.isModified() && ! $root.newContactMethod().value.isValid()}">
@@ -130,7 +132,7 @@
                             <span class="text-danger" data-bind="validationMessage: $root.newContactMethod().value"></span>
                         </div>
                         <div data-bind="css:{'has-error': $root.newContactMethod().type.isModified() && ! $root.newContactMethod().type.isValid()}">
-                            <input class="form-control" placeholder="Type" data-bind="value: $root.newContactMethod().type, valueUpdate: 'afterkeydown', executeOnEnter: {fn: $root.addContactMethod, keys: [13]}" />
+                            <select class="form-control" class="col-lg-10" data-bind="options: Enums.contactMethodTypes, optionsText:'displayName', value:$root.newContactMethod().type, optionsValue:'code', executeOnEnter: {fn: $root.addContactMethod, keys: [13]}" />
                             <span class="text-danger" data-bind="validationMessage: $root.newContactMethod().type"></span>
                         </div>
                         <span class="btn btn-link pull-right" data-bind="click: $root.addContactMethod">Save</span>

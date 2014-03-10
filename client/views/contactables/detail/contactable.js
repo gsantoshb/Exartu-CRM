@@ -51,6 +51,14 @@ Template.contactable.viewModel = function () {
             required: true
         }),
     })
+
+    self.getContactMethodDisplayName = function (type) {
+        var typeDisplayName = _.findWhere(Enums.contactMethodTypes, {
+            code: type()
+        });
+        return typeDisplayName ? typeDisplayName.displayName : '';
+    };
+
     self.addContactMethod = function () {
         if (!self.newContactMethod.isValid()) {
             self.newContactMethod.errors.showAllMessages();
