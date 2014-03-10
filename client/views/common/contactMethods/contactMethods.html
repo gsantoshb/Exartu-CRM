@@ -1,5 +1,5 @@
 <template name="contactMethods">
-	<!--
+    <!--
     <div name="contactMethodVM" style="float: inherit; margin-left: 20%;">
 		<h5 class="panel-section-title">Contact methods</h5>
         <div data-bind="foreach: contactable().contactMethods " style="overflow-y: auto; overflow-x: hidden ">
@@ -27,20 +27,20 @@
         </div>
     </div>
 -->
-	<div name="contactMethodVM" class="box">
-		<div class="box-header-2">
-			<div class="box-title">Contact</div>
-		</div>
-		<div class="box-content-md">
-			<ul class="list-1" data-bind="foreach: contactable().contactMethods">
-				<li>
-					<strong data-bind="text: type "></strong>
-					<br>
-					<span data-bind="text: value"></span>
-				</li>
-			</ul>
-		</div>
-		<!-- /.box-content-md -->
-	</div>
-	<!-- /.box -->
+    <div name="contactMethodVM" class="box">
+        <div class="box-header-2">
+            <div class="box-title">Contact</div>
+        </div>
+        <div class="box-content-md">
+            <ul class="list-1" data-bind="foreach: contactable().contactMethods">
+                <li>
+                    <strong data-bind="text:  helper.getContactMethodDisplayName(type)"></strong>
+                    <br>
+                    <span data-bind="text: value"></span>
+                </li>
+            </ul>
+        </div>
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
 </template>

@@ -154,11 +154,18 @@ _.extend(helper, {
 
         return self;
     },
+    getContactMethodDisplayName: function (type) {
+        var typeDisplayName = _.findWhere(Enums.contactMethodTypes, {
+            code: type()
+        });
+        return typeDisplayName ? typeDisplayName.displayName : '';
+    },
     getObjType: function (id) {
         return ObjTypes.findOne({
             _id: id
         });
     },
+
     getPersonTypes: function () {
         var persontypes = [];
         _.each(Enums.personType, function (err, v) {
@@ -171,6 +178,7 @@ _.extend(helper, {
             objGroupType: Enums.objGroupType.job
         }).fetch();
     },
+
     getIconForObjName: function (objname) {
         var objtype = ObjTypes.findOne({
             objName: objname

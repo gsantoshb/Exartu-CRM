@@ -113,7 +113,7 @@
                     <div class="box-content-md ">
                         <ul class="list-1 " data-bind="foreach: $root.contactMethods ">
                             <li>
-                                <strong data-bind="text: $root.getContactMethodDisplayName($data.type) "></strong>
+                                <strong data-bind="text: helper.getContactMethodDisplayName($data.type) "></strong>
                                 <br>
                                 <span data-bind="text: value "></span>
                             </li>
