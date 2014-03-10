@@ -355,7 +355,24 @@ ko.bindingHandlers.htmlEditor = {
         editor.width('90%');
     }
 }
-
+ko.bindingHandlers.sparkLine = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        debugger;
+        var value = ko.toJS(valueAccessor());
+        var text = '';
+        _.each(value, function (v) {
+            text = text + v + ',';
+        })
+        $(element).innerHTML = text;
+        $(element).sparkline("html", {
+            type: "line",
+            fillColor: "#4cd964",
+            lineColor: "#4cd964",
+            width: "50",
+            height: "24"
+        });
+    }
+}
 
 // Register new rules
 ko.validation.registerExtenders();
