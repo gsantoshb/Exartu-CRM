@@ -273,23 +273,29 @@ _.extend(helper, {
     },
     // Return picture's url, used in job list
     getCustomerPictureUrl: function (customer) {
-        var defaultCustomerPicture = '/assets/logo-exartu.png';
-        if (!customer || !customer.pictureFileId) {
-
-            return defaultCustomerPicture;
-        }
-        var picture = ContactablesFS.findOne({
-            _id: customer.pictureFileId()
-        });
-        if (!picture || !picture.fileHandler.
-            default)
-            return defaultCustomerPicture;
-
-        return picture.fileHandler.
-        default.url;
+        return getContactablePictureUrl(customer, '/assets/logo-exartu.png')
+    },
+    getEmployeePictureUrl: function (employee) {
+        return getContactablePictureUrl(employee, '/assets/user-photo-placeholder.jpg')
     },
 
 });
+var getContactablePictureUrl = function (contactable, defaultURL) {
+    if (!contactable || !contactable.pictureFileId) {
+
+        return defaultURL;
+    }
+    var picture = ContactablesFS.findOne({
+        _id: contactable.pictureFileId()
+    });
+    if (!picture || !picture.fileHandler.
+        default)
+        return defaultURL;
+
+    return picture.fileHandler.
+    default.url;
+}
+
 
 _.extend(helper, {
     /* 

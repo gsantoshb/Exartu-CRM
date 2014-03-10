@@ -31,8 +31,8 @@
         <div data-bind="with: assignmentInfo">
             <a data-bind="attr:{href:'/contactable/'+ _id()}">
                 <div class="row" style="margin:3px;">
-                    <img class="col-md-4" src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google">
-                    <h5 class="col-md-4" data-bind="text: displayName"></h5>
+                    <img class="col-md-4" src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google" data-bind="attr: {src: helper.getEmployeePictureUrl($data)}">
+                    <h5 class="col-md-8" data-bind="text: displayName"></h5>
                 </div>
             </a>
         </div>
