@@ -8,7 +8,8 @@ Router.configure({
     },
     waitOn: function () {
         return [Meteor.subscribe('messages'), Meteor.subscribe('objTypes')];
-    }
+    },
+    autoRender: false
 });
 
 Router.map(function () {
