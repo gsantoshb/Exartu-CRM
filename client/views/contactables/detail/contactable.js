@@ -337,6 +337,14 @@ Template.contactable.viewModel = function () {
 
         Meteor.call('updateContactablePicture', contactableId, fileId);
     });
+
+    // Extra information on header for each objType
+    self.getHeaderInfoVM = function (data) {
+        if (data.Employee) return 'employee-header';
+        if (data.Customer) return 'empty-header';
+        if (data.Contact) return 'empty-header';
+    };
+
     return self;
 };
 
