@@ -79,7 +79,7 @@
                         <div class="box">
                             <div class="box-header-2">
                                 <div class="box-title">
-                                    <i class="icon-business-chart-2"></i>Stats</div>
+                                    <i class="icon icon-business-chart-2"></i>Stats</div>
                             </div>
                             <div class="box-content-2">
                                 <div class="">
@@ -94,7 +94,7 @@
                         <div class="box">
                             <div class="box-header-2">
                                 <div class="box-title">
-                                    <i class="icon-chat-4"></i>Active Users</div>
+                                    <i class="icon icon-chat-4"></i>Active Users</div>
                             </div>
                             <div class="box-content-2">
                                 <div class="faces">
@@ -151,7 +151,7 @@
                         <div class="box">
                             <div class="box-header-2">
                                 <div class="box-title">
-                                    <i class="icon-buildings-1"></i>Top Customers</div>
+                                    <i class="icon icon-buildings-1"></i>Top Customers</div>
                             </div>
                             <ul class="list-type-1">
                                 <li>
@@ -233,7 +233,7 @@
                         <div class="box">
                             <div class="box-header-2">
                                 <div class="box-title">
-                                    <i class="icon-profile-bussiness-man"></i>Top Users</div>
+                                    <i class="icon icon-profile-bussiness-man"></i>Top Users</div>
                             </div>
                             <ul class="list-type-1">
                                 <li>
@@ -333,11 +333,11 @@
         <div class="item item-customer">
             <div class="item-info">
                 <div class="time">
-                    <i class="icon-clock-3"></i>
+                    <i class="icon icon-clock-3"></i>
                     <span data-bind="text: moment(data.createdAt()).fromNow()"></span>
                 </div>
                 <div class="type" data-bind="style: {background: helper.getActivityColor($data)}">
-                    <i data-bind="css: helper.getActivityIcon($data)"></i>
+                    <i data-bind="css: 'icon ' + helper.getActivityIcon($data)"></i>
                 </div>
             </div>
             <!-- /.item-info -->
@@ -383,11 +383,11 @@
         <div class="item item-customer">
             <div class="item-info">
                 <div class="time">
-                    <i class="icon-clock-3"></i>
+                    <i class="icon icon-clock-3"></i>
                     <span data-bind="text: moment(data.createdAt()).fromNow()"></span>
                 </div>
                 <div class="type" data-bind="style: {background: helper.getActivityColor($data)}">
-                    <i data-bind="css: helper.getActivityIcon($data)"></i>
+                    <i data-bind="css: 'icon ' + helper.getActivityIcon($data)"></i>
                 </div>
             </div>
             <!-- /.item-info -->
@@ -434,11 +434,11 @@
         <div class="item item-task">
             <div class="item-info">
                 <div class="time">
-                    <i class="icon-clock-3"></i>
+                    <i class="icon icon-clock-3"></i>
                     <span data-bind="text: moment(data.createdAt()).fromNow()"></span>
                 </div>
                 <div class="type">
-                    <i class="icon-clock-3"></i>
+                    <i class="icon icon-clock-3"></i>
                 </div>
             </div>
             <!-- /.item-info -->
@@ -496,9 +496,9 @@
         <div class="item item-job">
             <div class="item-info">
                 <div class="time">
-                    <i class="icon-clock-3"></i>3 HR</div>
+                    <i class="icon icon-clock-3"></i>3 HR</div>
                 <div class="type">
-                    <i class="icon-briefcase"></i>
+                    <i class="icon icon-briefcase"></i>
                 </div>
             </div>
             <!-- /.item-info -->
