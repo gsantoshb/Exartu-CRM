@@ -63,7 +63,7 @@ Template.userProfile.viewModel = function () {
         //        debugger;
         if (self.picture() && self.picture().fileHandler.
             default) {
-            debugger;
+            //            debugger;
             self.pictureUrl(self.picture().fileHandler.
                 default.url());
         } else if (!self.picture().fileHandler.
@@ -73,7 +73,7 @@ Template.userProfile.viewModel = function () {
                     setTimeout(function () {
                         if (self.picture().fileHandler.
                             default) {
-                            debugger;
+                            //                            debugger;
                             self.pictureUrl(self.picture().fileHandler.
                                 default.url());
                         } else

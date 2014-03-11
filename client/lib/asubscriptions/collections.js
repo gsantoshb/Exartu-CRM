@@ -27,29 +27,30 @@ Contactables = new Meteor.Collection("contactables", {
         if (contactable.organization)
             contactable.displayName = contactable.organization.organizationName;
         if (!contactable.pictureFileId) {
-        if (contactable.assignment) {
-            contactable.assignmentInfo = Jobs.findOne({
-                _id: contactable.assignment
-            }, {
-                transform: null
-            });
-            contactable.assignmentInfo.displayName = contactable.assignmentInfo.publicJobTitle;
-            if (contactable.assignmentInfo.customer) {
-                contactable.assignmentInfo.CustomerInfo = Contactables.findOne({
-                    _id: contactable.assignmentInfo.customer
+            if (contactable.assignment) {
+                contactable.assignmentInfo = Jobs.findOne({
+                    _id: contactable.assignment
                 }, {
                     transform: null
                 });
-                if (!contactable.assignmentInfo.CustomerInfo.pictureFileId)
-                    contactable.assignmentInfo.CustomerInfo.pictureFileId = null;
+                contactable.assignmentInfo.displayName = contactable.assignmentInfo.publicJobTitle;
+                if (contactable.assignmentInfo.customer) {
+                    contactable.assignmentInfo.CustomerInfo = Contactables.findOne({
+                        _id: contactable.assignmentInfo.customer
+                    }, {
+                        transform: null
+                    });
+                    if (!contactable.assignmentInfo.CustomerInfo.pictureFileId)
+                        contactable.assignmentInfo.CustomerInfo.pictureFileId = null;
+                }
+            } else {
+                contactable.assignment = null;
+                contactable.assignmentInfo = null;
             }
-        } else {
-            contactable.assignment = null;
-            contactable.assignmentInfo = null;
-        }
 
-        extendObject(contactable);
-        return contactable;
+            extendObject(contactable);
+            return contactable;
+        }
     },
 });
 
