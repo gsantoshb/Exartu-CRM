@@ -18,6 +18,15 @@ Template.assignmentAdd.viewModel = function (jobId, employeeId) {
             $set: {
                 assignment: self.employee()
             }
+        }, function (err, result) {
+            if (!err)
+                Contactables.update({
+                    _id: self.employee()
+                }, {
+                    $set: {
+                        assignment: jobId
+                    }
+                })
         });
         self.close();
     }

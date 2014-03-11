@@ -8,6 +8,7 @@
                 </div>
                 <div id="content-header" class="content-header-bottom ">
                     <div class="profile-content-header ">
+                        <div data-bind="template: { name: $parent.getHeaderInfoVM($data), data: $data}"></div>
                         <div class="profile-pic ">
                             <a id="edit-picture-btn" class="edit-pic btn btn-default btn-xs" href="#" data-bind="click: function(){  $root.editContactablePicture() }">
                                 <i class="fa fa-pencil"></i>Edit Picture</a>
@@ -62,7 +63,19 @@
             </div>
         </div>
     </div>
+
+    <div data-bind="bind: false">
+        <div style="display:none" id="employee-header">
+            <div class="pull-right" style="margin-right: 20px; width: 25%">
+                {{>contactableAssignment}}
+            </div>
+        </div>
+        <div style="display:none" id="empty-header">
+        </div>
+    </div>
 </template>
+
+
 
 <template name="contactableHome">
     <!-- Profile Home Section ------------------------------------ -->
