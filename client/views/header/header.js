@@ -1,3 +1,4 @@
+Template.header.waitOn = ['UsersHandler', 'UsersFSHandler']
 Template.header.viewModel = function () {
     var self = this;
 

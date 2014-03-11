@@ -152,7 +152,40 @@ Meteor.subscribe('activities');
 LookUps = new Meteor.Collection("lookUps");
 Meteor.subscribe('lookUps');
 
-extendedSubscribe('users', 'UserHandler');
+//extendedSubscribe('users', 'UserHandler');
+UsersHandler = {
+    ready: function () {
+        if (!Accounts.loginServicesConfigured())
+            return false;
+        if (Meteor.loggingIn()) {
+            return false;
+        }
+        return true;
+    },
+    observers: [],
+    wait: function (cb) {
+        //        debugger;
+        if (UsersHandler.ready()) {
+            cb('users');
+        } else {
+            if (UsersHandler.observers.length == 0) {
+                setTimeout(UsersHandler.check, 500);
+            }
+            UsersHandler.observers.push(cb);
+        }
+    },
+    check: function () {
+        //        debugger;
+        if (UsersHandler.ready()) {
+            _.each(UsersHandler.observers, function (cb) {
+                cb('users');
+            })
+        } else {
+            setTimeout(UsersHandler.check, 500);
+        }
+    }
+
+}
 //Meteor.subscribe('userData');
 
 Roles = new Meteor.Collection("roles");
