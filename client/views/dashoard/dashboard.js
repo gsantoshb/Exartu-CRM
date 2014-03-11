@@ -59,9 +59,14 @@ var getHistorical = function (collection, timeStamps, query) {
         history.push(collection.find(q).count());
     })
     var last = history.length - 1;
-
-    var growth = 100 * (history[last] - history[last - 1]) / history[last];
+//    debugger;
+    if(history[last]!=0){
+        var growth = 100 * (history[last] - history[last - 1]) / history[last];
+    }else{
+        var growth =0;
+    }
     history = ko.observableArray(history);
+
     history.growth = (growth > 0 ? '+' : growth < 0 ? '-' : '') + growth + '%';
     return history;
 }
