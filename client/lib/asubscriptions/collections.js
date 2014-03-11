@@ -47,10 +47,11 @@ Contactables = new Meteor.Collection("contactables", {
                 contactable.assignment = null;
                 contactable.assignmentInfo = null;
             }
-
-            extendObject(contactable);
-            return contactable;
         }
+
+        extendObject(contactable);
+        return contactable;
+
     },
 });
 
