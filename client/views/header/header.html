@@ -60,7 +60,7 @@
                                 <div data-bind="with: helper.getUserInformation($data.from())">
                                     <!-- ko if: $data.ready -->
                                     <span class="msg-pic">
-                                        <img src="/assets/pic-50x50-2.jpg" alt="" data-bind="attr: {src: helper.getUserPictureUrl($data)}">
+                                        <img src="/assets/pic-50x50-2.jpg" alt="" style="max-height: 50px;max-width: 50px;" data-bind="attr: {src: helper.getUserPictureUrl($data)}">
                                     </span>
                                     <!-- ko if: $data.username -->
                                     <span class="msg-author" data-bind="text: username"></span>

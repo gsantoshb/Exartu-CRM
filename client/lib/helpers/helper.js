@@ -220,6 +220,7 @@ _.extend(helper, {
         }).value;
     },
     getActivityIcon: function (activity) {
+
         var style = ObjTypes.findOne({
             objName: activity.data.objTypeName()
         }).style;
@@ -228,27 +229,14 @@ _.extend(helper, {
         }).value;
     },
     getUserInformation: function (userId) {
-        //        debugger;
         var info = ko.observable({
             ready: ko.observable(false)
         });
-        var finished = [];
-        var waitingLengt = 2;
-        var callback = function (collectionId) {
-            if (!_.contains(finished, collectionId)) {
-                finished.push(collectionId);
-                waitingLengt = waitingLengt - 1;
-            }
-            if (waitingLengt == 0) {
-                _.extend(info(), Meteor.users.findOne({
-                    _id: userId
-                }));
-                info().picture = helper.getUserPictureUrl(info());
-                info().ready(true);
-            }
-        }
-        UserHandler.wait(callback);
-        UsersFSHandler.wait(callback);
+        _.extend(info(), Meteor.users.findOne({
+            _id: userId
+        }));
+        info().picture = helper.getUserPictureUrl(info());
+        info().ready(true);
 
         return info;
     },

@@ -1,7 +1,7 @@
 UserProfileController = RouteController.extend({
     layoutTemplate: 'userProfile',
 });
-Template.userProfile.waitOn = 'UserHandler';
+Template.userProfile.waitOn = 'UsersHandler';
 
 Template.userProfile.viewModel = function () {
     var self = {},
@@ -60,8 +60,10 @@ Template.userProfile.viewModel = function () {
 
     // Contactable picture
     var updatePicture = function () {
+        //        debugger;
         if (self.picture() && self.picture().fileHandler.
             default) {
+            //            debugger;
             self.pictureUrl(self.picture().fileHandler.
                 default.url());
         } else if (!self.picture().fileHandler.
@@ -70,12 +72,13 @@ Template.userProfile.viewModel = function () {
                 if (retries > 0) {
                     setTimeout(function () {
                         if (self.picture().fileHandler.
-                            default)
+                            default) {
+                            //                            debugger;
                             self.pictureUrl(self.picture().fileHandler.
                                 default.url());
-                        else
+                        } else
                             getUrl(retries - 1);
-                    }, 500);
+                    }, 1000);
                 } else {
                     self.pictureErrorMessage("Error editing picture, try again");
                 }

@@ -5,25 +5,31 @@
             <ul class="mini-stats">
                 <li>
                     <div class="left sparkline_bar_good">
-                        <span data-bind="sparkLine: jobHistory"></span>+10%</div>
+                        <span data-bind="sparkLine: jobHistory"></span>
+                        <span data-bind="text: jobHistory.growth"></span>
+                    </div>
                     <div class="right">
-                        <strong>378</strong>
+                        <strong data-bind="text: jobCount"></strong>
                         Jobs
                     </div>
                 </li>
                 <li>
                     <div class="left sparkline_bar_good">
-                        <span data-bind="sparkLine: customerHistory"></span>+5%</div>
+                        <span data-bind="sparkLine: customerHistory"></span>
+                        <span data-bind="text: customerHistory.growth"></span>
+                    </div>
                     <div class="right">
-                        <strong>96</strong>
+                        <strong data-bind="text: customerCount"></strong>
                         Customers
                     </div>
                 </li>
                 <li>
-                    <div class="left sparkline_bar_bad">
-                        <span data-bind="sparkLine: employeeHistory"></span>-20%</div>
+                    <div class="left sparkline_bar_good">
+                        <span data-bind="sparkLine: employeeHistory"></span>
+                        <span data-bind="text: employeeHistory.growth"></span>
+                    </div>
                     <div class="right">
-                        <strong>84</strong>
+                        <strong data-bind="text: employeeCount"></strong>
                         Employees
                     </div>
                 </li>
@@ -36,7 +42,7 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-9 col-md-8">
+                <div class="col-lg-12 col-md-12">
                     <section class="timeline">
                         <header class="box-header">
                             <div class="btn-group pull-right" style="visibility: hidden">
