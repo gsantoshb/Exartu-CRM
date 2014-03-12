@@ -6,6 +6,7 @@
 Composer = {
     displayErrors: true,
     retryBinding: true,
+    numberOfRetries:8,
     errorTemplate: function (msg) {
         return '<div class="alert-danger">' + msg + '</div>';
     }
@@ -40,16 +41,24 @@ var handleError = function (err, viewName) {
     return false;
 }
 var executeBinding = function (vm, view) {
-    try {
-        //        if (!ko.dataFor(view)) {
-        //            debugger;
-        ko.applyBindings(vm, view);
-        //        }
-    } catch (err) {
-        if (handleError(err) && Composer.retryBinding) {
-            executeBinding(vm, view);
+//    debugger;
+    var retries = Composer.numberOfRetries;
+    var keepTring = true;
+    while (retries > 0 && keepTring)
+    {
+        retries=retries-1;
+        try {
+            ko.applyBindings(vm, view);
+            keepTring=false;
+        } catch (err) {
+            if (handleError(err) && Composer.retryBinding) {
+//                executeBinding(vm, view);
+            }else{
+                keepTring=false;
+            }
         }
     }
+
 }
 
 Composer.showModal = function (templateName) {
