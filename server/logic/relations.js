@@ -44,6 +44,7 @@ beforeUpdate.oneWay = function (value, rel) {
 beforeUpdate.twoWay = function (obj, objTypeField, rel) {
     //    console.log('two way');
     //    console.dir(obj)
+    debugger;
     var rel1;
     var rel2;
     var targetName;
@@ -52,23 +53,23 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
     if (obj.objNameArray.indexOf(rel.obj1) >= 0) {
         rel1 = rel.visibilityOn1;
         rel2 = rel.visibilityOn2;
-        targetName = rel1.isGroupType ? undefined : rel.obj2;
+        targetName = rel.obj2;
     } else {
         rel1 = rel.visibilityOn2;
         rel2 = rel.visibilityOn1;
-        targetName = rel1.isGroupType ? undefined : rel.obj1;
+        targetName = rel.obj1;
     }
 
-    var oldObjType = Collections[rel1.collection].findOne({
-        _id: obj._id
-    });
-    var oldObjTypeField = targetName ? oldObjType[targetName] : obj;
+//    var oldObjType = Collections[rel1.collection].findOne({
+//        _id: obj._id
+//    });
+    var oldObjTypeField = rel1.isGroupType ? obj : objTypeField;
     //    console.log('**********************************************************************')
     //    console.dir(rel1.name);
     //    console.dir(oldObjTypeField);
     var value = oldObjTypeField[rel1.name];
     //    console.dir(value);
-    var fieldName = targetName ? targetName + '.' + rel2.name : rel2.name;
+    var targetFieldName = rel2.isGroupType ? rel2.name : targetName + '.' + rel2.name;
 
     if (rel1.cardinality.max == 1) {
 
@@ -87,13 +88,13 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
         /*********  1 - 1  ******************************/
         if (rel2.cardinality.max == 1) {
             //            console.log('cardinality == 1')
-            if (obj2[fieldName] && obj2[fieldName] != id) {
+            if (obj2[targetFieldName] && obj2[targetFieldName] != id) {
                 // TODO: Fix inconsistency
                 return false;
             } else {
                 var aux = {};
 
-                aux[fieldName] = id;
+                aux[targetFieldName] = id;
                 collection2.update({
                     _id: obj2._id
                 }, {
@@ -120,8 +121,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
                 return true;
             } else {
                 var aux = {};
-                var fieldName = rel1.name + '.' + fieldName
-                aux[fieldName] = id;
+                aux[targetFieldName] = id;
                 //                console.log('********************************************************')
                 //                console.log('updating ' + obj2._id);
                 //                console.dir(aux);
@@ -185,7 +185,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
 
 
             if (oldTargets.length > 0) {
-                aux[fieldName] = null;
+                aux[targetFieldName] = null;
 
                 console.info('updating old values....')
                 console.dir(oldTargets);
@@ -202,7 +202,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
                 });
             }
             if (newTargets.length > 0) {
-                aux[fieldName] = id;
+                aux[targetFieldName] = id;
 
                 console.info('updating new values....')
                 console.dir(newTargets);
@@ -288,31 +288,37 @@ Meteor.methods({
             $or: [
                 {
                     obj1: objName
-                        }, {
+                },
+                {
                     $and: [
                         {
                             obj2: objName
-                                }, {
+                        },
+                        {
                             visibilityOn2: {
                                 $exists: true
                             }
-                                }
-                            ]
-                        }, {
+                        }
+                    ]
+                },
+                {
                     'visibilityOn2.isGroupType': true,
                     obj1: objGroupName
-                        }, {
+                },
+                {
                     $and: [
                         {
                             obj2: objGroupName
-                        }, {
+                        },
+                        {
                             visibilityOn2: {
                                 $exists: true
                             }
                             //                        'visibilityOn2.isGroupType': true,
-                        }]
-                    }
-             ]
+                        }
+                    ]
+                }
+            ]
         }).fetch();
         //        console.dir(rels);
 
@@ -329,7 +335,6 @@ Meteor.methods({
                 query[relation.obj1] = {};
                 query[relation.obj1]['$exists'] = true;
             }
-
             relations.push({
                 name: objRel.name,
                 displayName: objRel.displayName,
@@ -337,7 +342,8 @@ Meteor.methods({
                 target: {
                     collection: objRel.collection,
                     query: query
-                }
+                },
+                isGroupType: objRel.isGroupType
             });
         });
 

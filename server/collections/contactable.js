@@ -101,6 +101,7 @@ ContactablesFS.fileHandlers(handler);
 Meteor.startup(function () {
     Meteor.methods({
         addContactable: function (contactable) {
+            contactable._id=new Meteor.Collection.ObjectID()._str;
             if (beforeInsertOrUpdateContactable(contactable)) {
                 Contactables.insert(contactable);
             } else {

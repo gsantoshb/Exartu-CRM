@@ -26,22 +26,22 @@ Template.addContactable.viewModel = function (objname) {
             self.selectedType = ko.observable();
             self.setSelectedType = function (val) {
                 switch (val) {
-                case Enums.personType.human:
-                    _.extend(self.entity(), {
-                        person: myPerson
-                    });
-                    if (self.entity().organization) {
-                        self.entity().organization = null;
-                    }
-                    break;
-                case Enums.personType.organization:
-                    _.extend(self.entity(), {
-                        organization: myOrg
-                    });
-                    if (self.entity().person) {
-                        self.entity().person = null;
-                    }
-                    break;
+                    case Enums.personType.human:
+                        _.extend(self.entity(), {
+                            person: myPerson
+                        });
+                        if (self.entity().organization) {
+                            self.entity().organization = null;
+                        }
+                        break;
+                    case Enums.personType.organization:
+                        _.extend(self.entity(), {
+                            organization: myOrg
+                        });
+                        if (self.entity().person) {
+                            self.entity().person = null;
+                        }
+                        break;
                 }
             };
             self.selectedType.subscribe(function (newval) {
@@ -60,6 +60,7 @@ Template.addContactable.viewModel = function (objname) {
             self.canAdd(false);
             var cont = ko.toJS(contactable);
             cont.location = ko.toJS(self.location);
+            asd = cont;
             Meteor.call('addContactable', cont, function (err, result) {
                 self.canAdd(true);
                 if (err)
