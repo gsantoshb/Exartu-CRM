@@ -63,8 +63,8 @@ validateObjType = function (obj, objType) {
                     {
                         obj2: objType.objName
                     }, {
-                        $exists: {
-                            visibilityOn2: true
+                        visibilityOn2 : {
+                            $exists: true
                         }
                     }
                 ]
@@ -78,8 +78,7 @@ validateObjType = function (obj, objType) {
                     }, {
                         visibilityOn2: {
                             $exists: true
-                        },
-                        //                        'visibilityOn2.isGroupType': true,
+                        }
                     }
                 ]
             }
@@ -88,7 +87,9 @@ validateObjType = function (obj, objType) {
 
     //    console.log('relations...');
     //    console.dir(relations);
+    debugger;
     _.forEach(relations, function (rel) {
+
         var objRel = (objType.objName == rel.obj1 || objType.objGroupType == rel.obj1) ? rel.visibilityOn1 : rel.visibilityOn2;
         //        console.info('rel')
         //        console.dir(rel);
