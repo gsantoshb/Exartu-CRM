@@ -11,7 +11,7 @@ Template.addConversation.viewModel = function () {
     );
 
     self.newConversation = ko.validatedObservable({
-        subject: ko.observable().extend({
+        subject: ko.observable(null).extend({
             required: true
         }),
         destination: ko.observable().extend({
@@ -25,6 +25,7 @@ Template.addConversation.viewModel = function () {
     self.createConversation = function () {
         if (!self.newConversation.isValid()) {
             self.newConversation.errors.showAllMessages();
+            return;
         }
         Meteor.call('createConversation', {
             user2: self.newConversation().destination(),
@@ -34,7 +35,7 @@ Template.addConversation.viewModel = function () {
                 Meteor.call('createMessage', {
                     conversationId: result,
                     content: self.newConversation().message(),
-                    destination: self.newConversation().destination(),
+                    destination: self.newConversation().destination()
                 });
                 $('#addConversationModal').modal('hide');
             }

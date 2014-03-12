@@ -27,16 +27,16 @@ ko.validation.rules['uniqueUserInformation'] = {
             callback(!err && result);
         });
     },
-    message: '{0} is already in use',
+    message: '{0} is already in use'
 };
 
 /*
  * bootstrap date-time picker
  * 
-<element> <!--if the element is visible it will hide on click outside this element-->
-<div data-bind="dateTimePicker: {date:value,visible:visible, startLimit: startDate, endLimit: endDate}">
-<element>
-*/
+ <element> <!--if the element is visible it will hide on click outside this element-->
+ <div data-bind="dateTimePicker: {date:value,visible:visible, startLimit: startDate, endLimit: endDate}">
+ <element>
+ */
 ko.bindingHandlers.dateTimePicker = {
     init: function (element, valueAccessor, allBindingsAccessor) {
 
@@ -89,77 +89,78 @@ ko.bindingHandlers.dateTimePicker = {
         //if the child has no data-pick the is removed from childs because is useless
         ko.utils.arrayForEach(childrens, function (child) {
             switch (insertInput(child)) {
-            case "date":
-                $(child).datetimepicker({
-                    pickTime: false,
-                    startDate: startLimit, // set a minimum date
-                    endDate: endLimit, // set a maximum date
-                });
-                $(child).data('datetimepicker').setLocalDate(value);
+                case "date":
+                    $(child).datetimepicker({
+                        pickTime: false,
+                        startDate: startLimit, // set a minimum date
+                        endDate: endLimit // set a maximum date
+                    });
+                    $(child).data('datetimepicker').setLocalDate(value);
 
-                $(child).on('changeDate', function (e) {
-                    if (!value) {
-                        value(new Date);
-                        e.localDate = value;
-                    }
-                    value.setYear(e.localDate.getFullYear());
-                    value.setMonth(e.localDate.getMonth());
-                    value.setDate(e.localDate.getDate());
-                    valueAccessor().date(value);
-                });
-                break;
-            case "time":
-                $(child).datetimepicker({
-                    pickDate: false,
-                    pickSeconds: false,
-                    pick12HourFormat: true,
-                    startDate: startLimit, // set a minimum date
-                    endDate: endLimit // set a maximum date
-                });
-                $(child).data('datetimepicker').setLocalDate(value);
+                    $(child).on('changeDate', function (e) {
+                        if (!value) {
+                            value(new Date);
+                            e.localDate = value;
+                        }
+                        value.setYear(e.localDate.getFullYear());
+                        value.setMonth(e.localDate.getMonth());
+                        value.setDate(e.localDate.getDate());
+                        valueAccessor().date(value);
+                    });
+                    break;
+                case "time":
+                    $(child).datetimepicker({
+                        pickDate: false,
+                        pickSeconds: false,
+                        pick12HourFormat: true,
+                        startDate: startLimit, // set a minimum date
+                        endDate: endLimit // set a maximum date
+                    });
+                    $(child).data('datetimepicker').setLocalDate(value);
 
-                $(child).on('changeDate', function (e) {
-                    if (!value) {
-                        value(new Date);
-                        e.localDate = value;
-                    }
-                    value.setHours(e.localDate.getHours());
-                    value.setMinutes(e.localDate.getMinutes());
-                    value.setMilliseconds(e.localDate.getMilliseconds());
-                    valueAccessor().date(value);
-                });
-                break;
-            case "dateTime":
-                //                $(child).data('datetimepicker').setLocalDate(value);
+                    $(child).on('changeDate', function (e) {
+                        if (!value) {
+                            value(new Date);
+                            e.localDate = value;
+                        }
+                        value.setHours(e.localDate.getHours());
+                        value.setMinutes(e.localDate.getMinutes());
+                        value.setMilliseconds(e.localDate.getMilliseconds());
+                        valueAccessor().date(value);
+                    });
+                    break;
+                case "dateTime":
+                    //                $(child).data('datetimepicker').setLocalDate(value);
 
-                $(child).datetimepicker({
-                    language: 'en',
-                    pickSeconds: false,
-                    pick12HourFormat: true,
-                    startDate: startLimit, // set a minimum date
-                    endDate: endLimit // set a maximum date
-                });
-                $(child).data('datetimepicker').setLocalDate(value);
+                    $(child).datetimepicker({
+                        language: 'en',
+                        pickSeconds: false,
+                        pick12HourFormat: true,
+                        startDate: startLimit, // set a minimum date
+                        endDate: endLimit // set a maximum date
+                    });
+                    $(child).data('datetimepicker').setLocalDate(value);
 
-                $(child).on('changeDate', function (e) {
-                    //                    debugger;
-                    if (!value) {
-                        value(new Date);
-                        e.localDate = value;
-                    }
-                    //                    value.setHours(e.localDate.getHours());
-                    //                    value.setMinutes(e.localDate.getMinutes());
-                    //                    value.setMilliseconds(e.localDate.getMilliseconds());
-                    valueAccessor().date(e.localDate);
-                });
-                break;
-            default:
+                    $(child).on('changeDate', function (e) {
+                        //                    debugger;
+                        if (!value) {
+                            value(new Date);
+                            e.localDate = value;
+                        }
+                        //                    value.setHours(e.localDate.getHours());
+                        //                    value.setMinutes(e.localDate.getMinutes());
+                        //                    value.setMilliseconds(e.localDate.getMilliseconds());
+                        valueAccessor().date(e.localDate);
+                    });
+                    break;
+                default:
                 //childrens.remove(child);
             }
         });
 
     },
-    update: function (element, valueAccessor, allBindingsAccessor) {}
+    update: function (element, valueAccessor, allBindingsAccessor) {
+    }
 };
 
 var insertInput = function (element) {
@@ -167,19 +168,19 @@ var insertInput = function (element) {
     element = $(element);
     element.addClass("input-group");
     if (type == "dateTime") {
-        element.append('<input class="form-control" data-format="MM/dd/yyyy HH:mm:ss PP" type="text"></input>' +
+        element.append('<input class="form-control" data-format="MM/dd/yyyy HH:mm:ss PP" type="text"/>' +
             '<span class="input-group-addon add-on">' +
             '<i class="glyphicon " data-time-icon="glyphicon glyphicon-time" data-date-icon="glyphicon glyphicon-calendar">' +
             '</i>' +
             '</span>');
     } else if (type == "time") {
-        element.append('<input class="form-control" data-format="HH:mm:ss PP" type="text"></input>' +
+        element.append('<input class="form-control" data-format="HH:mm:ss PP" type="text"/>' +
             '<span class="input-group-addon add-on">' +
             '<i class="glyphicon " data-time-icon="glyphicon glyphicon-time" data-date-icon="glyphicon glyphicon-calendar">' +
             '</i>' +
             '</span>');
     } else if (type == "date") {
-        element.append('<input class="form-control" data-format="MM/dd/yyyy" type="text"></input>' +
+        element.append('<input class="form-control" data-format="MM/dd/yyyy" type="text"/>' +
             '<span class="input-group-addon add-on">' +
             '<i class="glyphicon " data-time-icon="glyphicon glyphicon-time" data-date-icon="glyphicon glyphicon-calendar">' +
             '</i>' +
@@ -211,7 +212,6 @@ ko.bindingHandlers['switch'] = {
             trueElement.hide();
             falseElement.show();
         }
-
 
 
     },
@@ -262,7 +262,7 @@ ko.bindingHandlers.map = {
             map.setCenter(location);
             var marker = new google.maps.Marker({
                 map: map,
-                position: location,
+                position: location
             });
             $(element).data('marker', marker);
         } else {
@@ -285,7 +285,7 @@ ko.bindingHandlers.map = {
             if (!marker) {
                 marker = new google.maps.Marker({
                     map: map,
-                    position: location,
+                    position: location
                 });
                 $(element).data('marker', marker);
             }
@@ -342,19 +342,26 @@ ko.bindingHandlers.htmlEditor = {
         var editor = $(element),
             value = valueAccessor();
 
+//        debugger;
         editor.wysihtml5({
             "color": true,
             "size": 'xs',
             "events": {
                 "blur": function () {
                     value(editor.val());
-                }, // TODO: save when content change not in blur event
-            },
+                } // TODO: save when content change not in blur event
+            }
         });
         editor.val(value());
         editor.width('90%');
+    },
+    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+//        debugger;
+        var editor = $(element).data("wysihtml5").editor;
+        editor.setValue(ko.utils.unwrapObservable(valueAccessor()));
     }
 }
+
 ko.bindingHandlers.sparkLine = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
         //        debugger;
@@ -371,6 +378,16 @@ ko.bindingHandlers.sparkLine = {
         });
     }
 }
+
+ko.bindingHandlers.bottomScroll = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        $(element).find('ul').bind('resize', function () {
+            element.scrollTop = element.scrollHeight;
+        })
+    },
+    update: function (element, valueAccessor) {
+    }
+};
 
 // Register new rules
 ko.validation.registerExtenders();
