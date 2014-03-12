@@ -385,7 +385,7 @@ _.extend(helper, {
             var ObjGroupRelNames =[];
 
             var ObjGroupRelValues =[];
-            debugger;
+//            debugger;
             _.each(self.relations(), function (r) {
                 if(r.relation.isGroupType){
                     ObjGroupRelNames.push(r.relation.name);

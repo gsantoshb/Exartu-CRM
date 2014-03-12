@@ -29,7 +29,7 @@ Template.dashboard.viewModel = function () {
     var days = [now.getTime() - (timeInADay) * 7, now.getTime() - (timeInADay) * 6, now.getTime() - (timeInADay) * 5, now.getTime() - (timeInADay) * 4, now.getTime() - (timeInADay) * 3, now.getTime() - (timeInADay) * 2, now.getTime() - (timeInADay) * 1, now.getTime() - (timeInADay) * 0];
 
     var customerQuery = {
-        customer: {
+        Customer: {
             $exists: true
         }
     };
