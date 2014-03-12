@@ -342,17 +342,23 @@ ko.bindingHandlers.htmlEditor = {
         var editor = $(element),
             value = valueAccessor();
 
+//        debugger;
         editor.wysihtml5({
             "color": true,
             "size": 'xs',
             "events": {
                 "blur": function () {
                     value(editor.val());
-                }, // TODO: save when content change not in blur event
-            },
+                } // TODO: save when content change not in blur event
+            }
         });
         editor.val(value());
         editor.width('90%');
+    },
+    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+//        debugger;
+        var editor= $(element).data("wysihtml5").editor;
+        editor.setValue(ko.utils.unwrapObservable(valueAccessor()));
     }
 }
 ko.bindingHandlers.sparkLine = {
