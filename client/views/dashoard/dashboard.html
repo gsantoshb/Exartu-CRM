@@ -403,9 +403,9 @@
                         <h4 class="item-title">
                             <span data-bind="text: objTypeName"></span>
                             <span class="spacer">–</span>
-                            <a href="#">
+                            <a>
                                 <strong>
-                                    <span href="#" data-bind="text: displayName"></span>
+                                    <span data-bind="text: displayName"></span>
                                 </strong>
                             </a>
                         </h4>
@@ -514,11 +514,12 @@
                         <h4 class="item-title">
                             Job
                             <span class="spacer">–</span>
-                            <a href="#">
+                            <a href="/" data-bind="attr: { href: '/job/' + $parent.entityId() }">
                                 <strong data-bind="text: publicJobTitle"></strong>
-                            </a>@
+                            </a>
                             <!-- ko if: $data.customer -->
-                            <a href="#" data-bind="text: customerName, attr: {href: '/contactable/' +  $data.customer}"></a>
+                            @
+                            <a href="#" data-bind="text: customerName, attr: {href: '/contactable/' +  $data.customer._id()}"></a>
                             <!-- /ko -->
                         </h4>
                         <div class="item-actions">

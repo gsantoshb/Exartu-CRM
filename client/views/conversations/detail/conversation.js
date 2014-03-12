@@ -58,8 +58,9 @@ Template.conversation.viewModel = function () {
             conversationId: conversationId,
             content: self.newMessage(),
             destination: self.destinationUser
+        },function(){
+            self.newMessage("");
         });
-        self.newMessage("");
     };
 
     self.markAsUnread = function () {

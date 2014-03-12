@@ -41,12 +41,14 @@
                                                             <input type="checkbox" data-bind="checked: includeInacives">Include inactives
                                                         </label>
                                                     </div>
+
                                                     <div class="checkbox">
-                                                        <label>
+                                                        <label >
                                                             <input type="checkbox" data-bind="checked: onlyRecent">Only recent
-                                                            <select data-bind="options: timeLimits, optionsText: 'name', value: selectedLimit, optionsValue: 'time'"></select>
                                                         </label>
                                                     </div>
+                                                    <select data-bind="options: timeLimits, optionsText: 'name', value: selectedLimit, optionsValue: 'time'" class="form-control"></select>
+
                                                 </div>
                                             </div>
                                         </div>
