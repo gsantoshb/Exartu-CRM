@@ -43,6 +43,7 @@ Contactables = new Meteor.Collection("contactables", {
                     if (!contactable.assignmentInfo.CustomerInfo.pictureFileId)
                         contactable.assignmentInfo.CustomerInfo.pictureFileId = null;
                 }
+                }
             } else {
                 contactable.assignment = null;
                 contactable.assignmentInfo = null;
