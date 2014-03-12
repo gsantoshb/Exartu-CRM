@@ -31,12 +31,11 @@ Contactables.after.insert(function (userId, doc) {
 			jobTitle: doc.person.jobTitle
 		}
 	} else {
-		data.displayName = doc.displayName = doc.organization.organizationName;
+    data.displayName = doc.organization.organizationName;
 	}
-
 	Activities.insert({
 		userId: userId,
-		hierId: Meteor.user().hierId,
+		hierId: doc.hierId,
 		type: Enums.activitiesType.contactableAdd,
 		entityId: doc._id,
 		data: data,
@@ -90,7 +89,7 @@ Jobs.after.insert(function (userId, doc) {
 
 	Activities.insert({
 		userId: userId,
-		hierId: Meteor.user().hierId,
+		hierId: doc.hierId,
 		type: Enums.activitiesType.jobAdd,
 		entityId: doc._id,
 		data: {

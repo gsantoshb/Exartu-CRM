@@ -18,10 +18,12 @@ Jobs.allow({
 });
 
 Jobs.before.insert(function (userId, doc) {
+  if (this.connection) {
     var user = Meteor.user();
     doc.hierId = user.hierId;
     doc.userId = user._id;
-    doc.createdAt = Date.now();
+  }
+  doc.createdAt = Date.now();
 });
 
 Meteor.startup(function () {
@@ -43,7 +45,7 @@ Meteor.startup(function () {
  */
 var beforeInsertOrUpdateJob = function (job) {
     var user = Meteor.user();
-    if (user == null)
+    if (user == null && !process.env.DEMO)
         throw new Meteor.Error(401, "Please login");
 
     if (!job.objNameArray || !job.objNameArray.length) {

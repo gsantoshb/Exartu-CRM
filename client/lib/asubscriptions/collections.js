@@ -51,6 +51,7 @@ Contactables = new Meteor.Collection("contactables", {
 
         extendObject(contactable);
         return contactable;
+    }
 });
 
 extendedSubscribe('contactables', 'ContactableHandler');

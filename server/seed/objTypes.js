@@ -206,7 +206,16 @@ seedSystemObjTypes = function () {
                 color: 'yellow'
             },
             services: [],
-            fields: []
+            fields: [{
+              name: 'jobTitle',
+              displayName: 'Job title',
+              regex: '',
+              fieldType: Enums.fieldType.lookUp,
+              lookUpName: 'jobTitle',
+              multiple: false,
+              defaultValue: null,
+              showInAdd: true
+            }]
         },
         {
             objGroupType: Enums.objGroupType.deal,
