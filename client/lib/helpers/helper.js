@@ -291,7 +291,7 @@ _.extend(helper, {
      */
     addExtend: function (options) {
         var self = options.self;
-
+//        debugger;
         var objType = ObjTypes.findOne({
             objName: options.objname
         });
@@ -350,13 +350,26 @@ _.extend(helper, {
                 self.entity.errors.showAllMessages();
                 return;
             };
-            var relNames = _.map(self.relations(), function (r) {
-                return r.relation.name;
+            var objRels =[];
+            var ObjGroupRelNames =[];
+
+            var ObjGroupRelValues =[];
+            debugger;
+            _.each(self.relations(), function (r) {
+                if(r.relation.isGroupType){
+                    ObjGroupRelNames.push(r.relation.name);
+                    if (r.value())
+                        ObjGroupRelValues.push(r.value()._id());
+                }else{
+                    objRels.push({
+                        name:r.relation.name,
+                        value: r.value() ? r.value()._id(): null
+                    });
+                }
             });
-            var relValues = _.map(self.relations(), function (r) {
-                if (r.value()) return r.value()._id();
-            });
-            _.extend(self.entity(), _.object(relNames, relValues));
+
+            _.extend(self.entity(), _.object(ObjGroupRelNames, ObjGroupRelValues));
+
 
             var fields = self.entity()[self.objTypeName()]();
             delete self.entity()[self.objTypeName()];
@@ -364,6 +377,10 @@ _.extend(helper, {
             _.forEach(fields, function (field) {
                 self.entity()[self.objTypeName()][field.name] = field.value() || field.defaultValue;
             })
+            _.forEach(objRels, function (rel) {
+                self.entity()[self.objTypeName()][rel.name] = rel.value ;
+            })
+//            _.extend(self.entity()[self.objTypeName()], _.object(relNames, relValues));
 
             options.addCallback.call(this, self.entity);
         }
