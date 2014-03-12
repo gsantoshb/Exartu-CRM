@@ -1,7 +1,7 @@
 UserProfileController = RouteController.extend({
     layoutTemplate: 'userProfile',
 });
-Template.userProfile.waitOn = 'UsersHandler';
+Template.userProfile.waitOn = ['UsersHandler','UsersFSHandler'];
 
 Template.userProfile.viewModel = function () {
     var self = {},
