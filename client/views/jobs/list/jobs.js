@@ -3,7 +3,8 @@ var objType = ko.observable();
 var filters = ko.observable(ko.mapping.fromJS({
     objType: '',
     tags: [],
-    statuses: []
+    statuses: [],
+    limit: 100
 }));
 
 JobsController = RouteController.extend({
@@ -26,7 +27,7 @@ JobsController = RouteController.extend({
         }
 
         this.render('jobs');
-    },
+    }
 });
 
 Template.jobs.waitOn = 'JobHandler';
@@ -129,8 +130,14 @@ Template.jobs.viewModel = function () {
 
         return q;
     });
+    var options=ko.computed(function(){
+        return {limit: ko.toJS(filters().limit)}
+    })
 
-    self.entities = ko.meteor.find(Jobs, query);
+    self.showMore=function(){
+        filters().limit(filters().limit()+50);
+    }
+    self.entities = ko.meteor.find(Jobs, query, options);
 
     self.jobTypes = ko.computed(function () {
         var q = {
