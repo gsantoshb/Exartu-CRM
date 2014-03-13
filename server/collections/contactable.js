@@ -187,7 +187,7 @@ Meteor.startup(function () {
  */
 var beforeInsertOrUpdateContactable = function (contactable) {
   var user = Meteor.user();
-  if (user == null && !process.env.DEMO)
+  if (user == null && !Meteor.settings.demo)
     throw new Meteor.Error(401, "Please login");
 
   if (!contactable.objNameArray || !contactable.objNameArray.length) {

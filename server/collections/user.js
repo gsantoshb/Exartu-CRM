@@ -33,16 +33,13 @@ Accounts.onCreateUser(function (options, user) {
 
     // Demo data
     // Seed database with all kind of data to make a demo faster and easier
-    // This seed is applied only if meter server is executed with env DEMO on TRUE
-    if (process.env.DEMO)
+    // This seed is applied only if meteor server is executed with  Meteor.settings.demo on TRUE
+    if (Meteor.settings.demo)
     {
-      console.log("DEMO DATA ------------------------------------");
       _.forEach(demoSeed, function (seedFn) {
         seedFn.apply(this, [hierId]);
       });
     }
-    else
-      console.log("NO DEMO")
   } else
     hierId = options.profile.hierId;
 

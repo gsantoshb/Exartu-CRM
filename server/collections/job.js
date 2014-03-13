@@ -45,7 +45,7 @@ Meteor.startup(function () {
  */
 var beforeInsertOrUpdateJob = function (job) {
     var user = Meteor.user();
-    if (user == null && !process.env.DEMO)
+    if (user == null && !Meteor.settings.demo)
         throw new Meteor.Error(401, "Please login");
 
     if (!job.objNameArray || !job.objNameArray.length) {

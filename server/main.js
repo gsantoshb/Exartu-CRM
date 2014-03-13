@@ -6,7 +6,7 @@ var dbSeed = {
 }
 
 Meteor.startup(function () {
-
+    console.log(Meteor.settings);
      // Seed database
      // Execute all function defined in seedSystemObjTypes
     _.forEach(dbSeed, function (seedFn) {
