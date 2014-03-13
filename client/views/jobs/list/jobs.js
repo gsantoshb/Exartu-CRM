@@ -131,7 +131,10 @@ Template.jobs.viewModel = function () {
         return q;
     });
     var options=ko.computed(function(){
-        return {limit: ko.toJS(filters().limit)}
+        return {
+            sort: { 'publicJobTitle' : 1 },
+            limit: ko.toJS(filters().limit)
+        }
     })
 
     self.showMore=function(){
