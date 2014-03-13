@@ -21,12 +21,14 @@
                         <div class="box-content-md">
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label for="" class="col-sm-2 control-label"></label>
+                                    <label class="col-sm-2 control-label"></label>
                                     <div class="col-sm-10">
-                                        <div class="profile-pic">
+                                        <div class="profile-pic" data-bind="with: helper.getUserInformation(user()._id())">
+                                            <!--ko:if ready-->
                                             <a href="#">
-                                                <img class="img-responsive img-rounded " data-bind="attr:{src:pictureUrl}" style: "heigth:284px; width: 284px;">
+                                                <img class="img-responsive img-rounded " data-bind="attr:{src:picture}" style="heigth:284px; width: 284px;">
                                             </a>
+                                            <!--/ko-->
                                         </div>
                                         <br>
                                         <a id="edit-picture-btn" class="edit-pic btn btn-default btn-xs" href="#" data-bind="click: $root.editPicture">

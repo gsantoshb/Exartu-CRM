@@ -25,7 +25,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="/login" data-bind="click: Meteor.logout">Logout</a>
+                            <a href="/" data-bind="click: function(){ Meteor.logout(function(){Router.go('/login');});}">Logout</a>
                         </li>
                         <li>
                             <a href="/user">Account</a>

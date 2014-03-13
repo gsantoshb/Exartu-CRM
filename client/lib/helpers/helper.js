@@ -230,13 +230,16 @@ _.extend(helper, {
     },
     getUserInformation: function (userId) {
         var info = ko.observable({
-            ready: ko.observable(false)
+            ready: ko.observable(false),
+            picture: ko.observable()
         });
         _.extend(info(), Meteor.users.findOne({
             _id: userId
         }));
-        info().picture = helper.getUserPictureUrl(info());
-        info().ready(true);
+        helper.getUserPictureUrlAsync(info(),function(pictureURL){
+            info().picture(pictureURL);
+            info().ready(true);
+        });
 
         return info;
     },
@@ -259,6 +262,34 @@ _.extend(helper, {
         return picture.fileHandler.
         default.url;
     },
+    getUserPictureUrlAsync: function (user, cb) {
+//        debugger;
+        var user = ko.toJS(user);
+        var defaultUserPicture = '/img/avatar.jpg';
+        var counter=0;
+        var chechFileHandler=function(pictureId, cb){
+            var picture = UsersFS.findOne({
+                _id: pictureId
+            });
+            if (!picture)
+                return cb(defaultUserPicture);
+            if (picture.fileHandler.default)
+                return cb(picture.fileHandler.default.url);
+            counter++;
+            if(counter>20){
+                return cb(defaultUserPicture);
+            }
+            setTimeout(function(){
+                chechFileHandler(pictureId, cb);
+            },200+counter*200)
+        }
+        if (!user || !user.profilePictureId) {
+            if (user.services && user.services.google)
+                return cb(user.services.google.picture);
+            return cb(defaultUserPicture);
+        }
+        chechFileHandler(user.profilePictureId, cb);
+    },
     // Return picture's url, used in job list
     getCustomerPictureUrl: function (customer) {
         return getContactablePictureUrl(customer && customer.pictureFileId ? customer.pictureFileId() : null, '/assets/logo-exartu.png')
@@ -266,8 +297,58 @@ _.extend(helper, {
     getEmployeePictureUrl: function (employee) {
         return getContactablePictureUrl(employee && employee.pictureFileId ? employee.pictureFileId() : null, '/assets/user-photo-placeholder.jpg')
     },
+    getEmployeePictureAsync : function(employee){
+//        debugger;
+        return getContactablePictureAsync(ko.toJS(employee), Global.defaultEmployeePicture);
+    }
 
 });
+var getContactablePictureAsync=function(contactable, defaultURL){
+    var data= ko.observable({
+        ready: ko.observable(false),
+        picture: ko.observable()
+    });
+
+    if (! contactable.pictureFileId){
+        data().picture(defaultURL);
+        data().ready(true);
+    }else{
+        getPictureAsync(ContactablesFS, contactable.pictureFileId, defaultURL, function(url){
+            data().picture(url);
+            data().ready(true);
+        })
+    }
+    return data;
+}
+// tries to get a picture maxCallStack times (20 is the default)
+getPictureAsync= function (colection, id, defaultUrl, cb, maxCallStack) {
+    if (!maxCallStack) {
+        maxCallStack = 20;
+    }
+    var chechFileHandler= function(callStackSize){
+        if (!callStackSize)
+            callStackSize= 0;
+
+        var picture = colection.findOne({
+            _id: id
+        });
+        if (!picture)
+            return cb(defaultUrl);
+
+        if (picture.fileHandler.default)
+            return cb(picture.fileHandler.default.url);
+
+        if(callStackSize>maxCallStack){
+            return cb(defaultUrl);
+        }
+
+        setTimeout(function(){
+            chechFileHandler(callStackSize + 1);
+        },200+callStackSize*200)
+    }
+    chechFileHandler();
+};
+
 var getContactablePictureUrl = function (pictureFileId, defaultURL) {
     if (!pictureFileId) {
         return defaultURL;
@@ -354,7 +435,7 @@ _.extend(helper, {
             var ObjGroupRelNames =[];
 
             var ObjGroupRelValues =[];
-            debugger;
+//            debugger;
             _.each(self.relations(), function (r) {
                 if(r.relation.isGroupType){
                     ObjGroupRelNames.push(r.relation.name);
