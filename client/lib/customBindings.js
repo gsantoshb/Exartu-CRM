@@ -388,6 +388,23 @@ ko.bindingHandlers.bottomScroll = {
     update: function (element, valueAccessor) {
     }
 };
+ko.bindingHandlers.onScrollBottom= {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+
+        var cb= valueAccessor();
+        var height = $(window).height();
+        var scrollTop = $(window).scrollTop();
+        if(height==scrollTop){
+            cb();
+        }
+        var windowElement=$(window);
+        windowElement.bind("scroll", _.debounce(function(){
+            if(windowElement.scrollTop() + windowElement.height() > $(document).height() - 50){
+                cb();
+            }
+        },300));
+    }
+};
 
 // Register new rules
 ko.validation.registerExtenders();
