@@ -242,10 +242,13 @@ ko.bindingHandlers['switch'] = {
         }
     }
 }
-
+var getLatLng = function(address){
+    var lat= address.coords ? address.coords.latitud : address.geometry.location.lat();
+    var lnt= address.coords ? address.coords.longitud : address.geometry.location.lng();
+    return new google.maps.LatLng(lat, lnt);
+}
 ko.bindingHandlers.map = {
     init: function (element, valueAccessor, allBindingsAccessor) {
-        //        debugger;
 
         var address = ko.toJS(valueAccessor());
 
@@ -258,7 +261,7 @@ ko.bindingHandlers.map = {
         var map = new google.maps.Map(element, mapOptions);
         if (address) {
             $(element).show();
-            var location = new google.maps.LatLng(address.geometry.location.d, address.geometry.location.e);
+            var location = getLatLng(address)
             map.setCenter(location);
             var marker = new google.maps.Marker({
                 map: map,
@@ -280,7 +283,9 @@ ko.bindingHandlers.map = {
             $(element).show();
             var map = $(element).data('map');
             var marker = $(element).data('marker');
-            var location = new google.maps.LatLng(address.geometry.location.d, address.geometry.location.e);
+            var location = getLatLng(address);
+
+//            google.maps.event.trigger(map, 'resize');
 
             if (!marker) {
                 marker = new google.maps.Marker({
@@ -288,12 +293,14 @@ ko.bindingHandlers.map = {
                     position: location
                 });
                 $(element).data('marker', marker);
+            } else {
+                marker.setPosition(location);
             }
-            //            setTimeout(function () {
-            google.maps.event.trigger(map, 'resize');
             map.setCenter(location);
-            marker.setPosition(location);
-            //            }, 300);
+            setTimeout(function(){
+                map.setCenter(marker.getPosition());
+            },500);
+
         } else {
 
             $(element).hide();
