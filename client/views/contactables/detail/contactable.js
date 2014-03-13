@@ -154,7 +154,8 @@ Template.contactable.viewModel = function () {
             address: self.locationString(),
         }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-                //                debugger;
+//                                debugger;
+
                 aux = results[0];
                 self.editLocation(aux);
                 self.hasEditLocation(true);
@@ -167,6 +168,8 @@ Template.contactable.viewModel = function () {
     self.saveLocation = function () {
         //        debugger;
         var location = self.editLocation();
+        if (!location.coords)
+            location.coords = helper.getCoords(location)
         removeExtrangePrototypes(location);
         Contactables.update({
             _id: contactableId
