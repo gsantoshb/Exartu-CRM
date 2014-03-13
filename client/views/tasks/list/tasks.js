@@ -72,6 +72,8 @@ Template.tasks.viewModel = function () {
     self.assigned = ko.observable(true);
     self.assignedTo = ko.observable(Meteor.userId());
 
+    self.includeInactives=ko.observable(false);
+
     self.users = ko.meteor.find(Meteor.users, {});
     var query = ko.computed(function () {
 
@@ -81,21 +83,25 @@ Template.tasks.viewModel = function () {
             _.extend(q, selectedState.query);
         }
 
-        q.inactive = {
-            $ne: true
-        };
+        if(!self.includeInactives()){
+            q.inactive = {
+                $ne: true
+            };
+        }
+
         if (self.ownedByMe()) {
             q.userId = Meteor.userId();
         }
+
         if (self.assigned() && self.assignedTo()) {
             q.assign = self.assignedTo()
         }
+
         if (self.searchString()) {
             q.note = {
                 $regex: self.searchString()
             };
         }
-        console.dir(q);
         return q;
     });
 
