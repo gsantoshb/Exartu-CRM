@@ -297,8 +297,58 @@ _.extend(helper, {
     getEmployeePictureUrl: function (employee) {
         return getContactablePictureUrl(employee && employee.pictureFileId ? employee.pictureFileId() : null, '/assets/user-photo-placeholder.jpg')
     },
+    getEmployeePictureAsync : function(employee){
+//        debugger;
+        return getContactablePictureAsync(ko.toJS(employee), Global.defaultEmployeePicture);
+    }
 
 });
+var getContactablePictureAsync=function(contactable, defaultURL){
+    var data= ko.observable({
+        ready: ko.observable(false),
+        picture: ko.observable()
+    });
+
+    if (! contactable.pictureFileId){
+        data().picture(defaultURL);
+        data().ready(true);
+    }else{
+        getPictureAsync(ContactablesFS, contactable.pictureFileId, defaultURL, function(url){
+            data().picture(url);
+            data().ready(true);
+        })
+    }
+    return data;
+}
+// tries to get a picture maxCallStack times (20 is the default)
+getPictureAsync= function (colection, id, defaultUrl, cb, maxCallStack) {
+    if (!maxCallStack) {
+        maxCallStack = 20;
+    }
+    var chechFileHandler= function(callStackSize){
+        if (!callStackSize)
+            callStackSize= 0;
+
+        var picture = colection.findOne({
+            _id: id
+        });
+        if (!picture)
+            return cb(defaultUrl);
+
+        if (picture.fileHandler.default)
+            return cb(picture.fileHandler.default.url);
+
+        if(callStackSize>maxCallStack){
+            return cb(defaultUrl);
+        }
+
+        setTimeout(function(){
+            chechFileHandler(callStackSize + 1);
+        },200+callStackSize*200)
+    }
+    chechFileHandler();
+};
+
 var getContactablePictureUrl = function (pictureFileId, defaultURL) {
     if (!pictureFileId) {
         return defaultURL;
