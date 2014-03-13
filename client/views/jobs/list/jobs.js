@@ -4,7 +4,7 @@ var filters = ko.observable(ko.mapping.fromJS({
     objType: '',
     tags: [],
     statuses: [],
-    limit: 100
+    limit: 20
 }));
 
 JobsController = RouteController.extend({
@@ -138,7 +138,7 @@ Template.jobs.viewModel = function () {
     })
 
     self.showMore=function(){
-        filters().limit(filters().limit()+50);
+        filters().limit(filters().limit()+20);
     }
     self.entities = ko.meteor.find(Jobs, query, options);
 
