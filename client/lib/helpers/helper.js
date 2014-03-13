@@ -501,3 +501,11 @@ _.extend(helper, {
     }
 
 })
+_.extend(helper, {
+    getCoords:function(address){
+        return{
+            latitud: address.geometry.location.lat(),
+            longitud: address.geometry.location.lng()
+        }
+    }
+});

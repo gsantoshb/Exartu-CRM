@@ -54,6 +54,10 @@
                                                 <div class="panel-body">
                                                     <div class="checkbox">
                                                         <label>
+                                                            <input type="checkbox" data-bind="checked: includeInactives" />Archived
+                                                        </label>
+                                                    </div><div class="checkbox">
+                                                        <label>
                                                             <input type="checkbox" data-bind="checked: ownedByMe" />Owned by me
                                                         </label>
                                                     </div>
@@ -184,8 +188,8 @@
                                         <div class="table-item-cell-container magic-content text-small">
                                             <a class="btn btn-xs btn-success text-small" href="#" data-bind="click: $parent.edit">
                                                 <i class="fa fa-pencil"></i>Edit</a>
-                                            <a class="btn btn-xs btn-danger text-small " href="#" data-bind="click: $parent.remove">
-                                                <i class="fa fa-times "></i>Delete</a>
+                                            <a class="btn btn-xs btn-danger text-small " href="#" data-bind="click: $parent.remove, visible: ! $data.inactive || ! $data.inactive()">
+                                                <i class="fa fa-times "></i>Archive</a>
                                         </div>
                                         <!-- /.table-item-cell-container -->
                                     </div>

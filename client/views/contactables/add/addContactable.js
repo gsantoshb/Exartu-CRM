@@ -60,7 +60,7 @@ Template.addContactable.viewModel = function (objname) {
             self.canAdd(false);
             var cont = ko.toJS(contactable);
             cont.location = ko.toJS(self.location);
-            asd = cont;
+            cont.location.coords = helper.getCoords(cont.location);
             Meteor.call('addContactable', cont, function (err, result) {
                 self.canAdd(true);
                 if (err)

@@ -4,7 +4,7 @@ Template.contactableAssignmentAdd.viewModel = function (contactableId) {
     self.jobs = ko.meteor.find(Jobs, {});
     // Add job's customer display name on job display name
     _.forEach(self.jobs(), function (job) {
-        if (job.CustomerInfo.displayName)
+        if (job.CustomerInfo && job.CustomerInfo.displayName)
             job.displayName = job.displayName() + ' at ' + job.CustomerInfo.displayName();
     });
 
