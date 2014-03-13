@@ -19,17 +19,25 @@
                 <li class="clearfix">
                     <div class="thumb">
                         <a class="thumb-content" href="#">
-                            <img height="70px" width="70px" src="/assets/user-photo-placeholder.jpg" alt="">
+                            <!--ko with: helper.getEmployeePictureAsync(employeeInfo)-->
+                            <!--ko if: ready-->
+                            <img style="max-height:70px; width:70px;" data-bind="attr: {src: picture}" alt="">
+                            <!--/ko-->
+                            <!--/ko-->
                         </a>
                     </div>
                     <div class="list-item-content prefix-lg" data-bind="with:employeeInfo">
-                        <h3 class="bottom-10">
-                            <a href="#" data-bind="attr:{href:'/contactable/' +_id()}, text: displayName">Mike Campbell</a>
+                        <h3 class="bottom-10" style="margin-top: 0">
+                            <a href="#" data-bind="attr:{href:'/contactable/' +_id()}, text: displayName"></a>
                         </h3>
-                        <div class="bottom-10 box-4 text-normal">
-                            New York
-                            <span class="pipe">|</span>
-                            <i class="fa fa-check"></i>Recommended by:
+                        <div class="bottom-10 box-4 text-normal" style="margin-left: 20px;">
+                            <!--ko if: location-->
+                            <i class="fa fa-map-marker" style="width:7px; margin-left: 1px;"></i>&nbsp;
+                            <span data-bind="text: location.formatted_address"></span>
+                            <br/>
+                            <!--/ko-->
+                            <!--<span class="pipe">|</span>-->
+                            <i class="fa fa-check"></i>&nbsp;Recommended by:
                             <strong>
                                 <span data-bind="text: $parent.user.username()+ ' (' + $parent.type() + ')'"></span>
                             </strong>
@@ -39,10 +47,12 @@
                         <div CLASS="text-normal bottom-10" data-bind="foreach: tags">
                             <strong data-bind="text: $data"></strong>
                         </div>
-                        <a class="btn btn-sm btn-default" href="#">
-                            <i class="fa fa-envelope-o"></i>mike@gmail.com</a>
-                        <a class="btn btn-sm btn-default" href="#">
-                            <i class="fa fa-phone"></i>555.2232.663</a>
+
+                        <!--<a class="btn btn-sm btn-default" href="#">-->
+                            <!--<i class="fa fa-envelope-o"></i><span data-bind="text: value"></span></a>-->
+                       <!---->
+                        <!--<a class="btn btn-sm btn-default" href="#">-->
+                            <!--<i class="fa fa-phone"></i>555.2232.663</a>-->
                     </div>
                 </li>
             </ul>
