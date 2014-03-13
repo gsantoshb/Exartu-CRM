@@ -66,28 +66,29 @@
             <ul class="messages-list" data-bind="foreach: conversations">
                 <li data-bind="css: {selected: $data.selected, unread: !readed()}">
                     <input class="item-check" type="checkbox" data-bind="checked: selected">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="msg-author" data-bind="with: helper.getUserInformation($root.getUserDestination($data))">
-                                <!-- ko if: $data.ready -->
-                                <img height="30px" width="30px" data-bind="attr: {src: $data.picture? $data.picture : '/assets/user-photo-placeholder.jpg'}">
-                                <a href="#" data-bind="text: username"></a>
-                                <!-- /ko -->
+                        <div class="row" data-bind="click: function() { Router.current().redirect('/inbox/' + _id());}">
+                            <div class="col-sm-3">
+                                <div class="msg-author" data-bind="with: helper.getUserInformation($root.getUserDestination($data))">
+                                    <span data-bind="if: $data.ready">
+                                        <img height="30px" width="30px" data-bind="attr: {src: $data.picture? $data.picture : '/assets/user-photo-placeholder.jpg'}">
+                                        <a data-bind="text: username"></a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="msg-title">
+                                    <a data-bind="text: subject"></a>
+                                </div>
+                            </div>
+                            <!-- /.col-sm-8 -->
+                            <div class="col-sm-3">
+                                <div class="msg-date">
+                                    <span data-bind="text: moment(createdAt()).format('ll')"></span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="msg-title">
-                                <a data-bind="text: subject, attr: {href: 'inbox/' + _id()}"></a>
-                            </div>
-                        </div>
-                        <!-- /.col-sm-8 -->
-                        <div class="col-sm-3">
-                            <div class="msg-date">
-                                <span data-bind="text: moment(createdAt()).format('ll')"></span>
-                            </div>
-                        </div>
-                    </div>
                     <!-- /.row -->
+
                 </li>
             </ul>
 
