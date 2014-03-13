@@ -158,7 +158,8 @@ Conversations = new Meteor.Collection("conversations", {
                 return conversation.readed;
             })
         );
-        conversation.readed = unreadMessages && (conversation.user1 == Meteor.userId() ? conversation.user1Readed : conversation.user2Readed);
+
+        conversation.readed = (conversation.user1 == Meteor.userId() ? conversation.user1Readed : conversation.user2Readed);
 
         return conversation;
     }

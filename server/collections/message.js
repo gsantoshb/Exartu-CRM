@@ -57,7 +57,7 @@ Meteor.startup(function () {
                 user1: conversation.user1,
                 user2: conversation.user2,
                 subject: conversation.subject,
-                user1Readed: false,
+                user1Readed: true,
                 user2Readed: false,
             });
         },
