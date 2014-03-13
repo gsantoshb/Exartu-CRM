@@ -6,9 +6,6 @@ Router.configure({
             this.redirect('login');
         }
     },
-    waitOn: function () {
-        return [Meteor.subscribe('messages'), Meteor.subscribe('objTypes')];
-    },
     autoRender: false
 });
 
