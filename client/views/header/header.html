@@ -125,7 +125,7 @@
 </template>
 
 <template name="sidebar">
-    <div id="sidebar">
+    <div data-bind="sidebar:true" id="sidebar">
         <!--
         <div id="search">
     <input type="text" placeholder="Search here...">
@@ -134,7 +134,7 @@
     </button>
 </div>
 -->
-        <ul style="display: block">
+        <ul class="navbar navbar-inverse nav-stacked">
             <li id="dashboardNav" class="active">
                 <a href="/">
                     <i class="icon icon-house-2"></i>
