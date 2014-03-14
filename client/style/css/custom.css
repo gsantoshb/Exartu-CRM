@@ -41,3 +41,6 @@
     width: auto;
     padding: 3px;
 }
+.nav-stacked>li+li{
+    margin: 0
+}

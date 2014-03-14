@@ -413,5 +413,75 @@ ko.bindingHandlers.onScrollBottom= {
     }
 };
 
+ko.bindingHandlers.sidebar={
+    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+        var sidebar=$(element),
+            body=$('body'),
+            trigger=$('#menu-trigger'),
+            isOpen=false;
+        var animationWidth=200;
+        var minimunWidth=768;
+        var hideIfClickOutside=function(e){
+            if (!sidebar.is(e.target) && sidebar.has(e.target).length === 0
+                && !trigger.is(e.target) && trigger.has(e.target).length === 0) {
+                hide();
+                body.off('click',hideIfClickOutside);
+            }
+        }
+        var hide=function(){
+            body.animate({left: "0px"},500);
+            sidebar.animate({left: '-'+animationWidth+'px'},500);
+            isOpen=false;
+        }
+        var show=function(){
+            sidebar.show();
+            body.animate({left: animationWidth+'px'},500);
+            sidebar.animate({left: "0px"},500);
+            isOpen=true;
+        }
+        var start=function(){
+            sidebar.css('position','fixed');
+            sidebar.css('left','-'+animationWidth+'px');
+            body.css('position','absolute');
+            body.css('width','100%');
+
+            isOpen=false;
+            body.css('left',"0px");
+            sidebar.css('left','-'+animationWidth+'px');
+
+            trigger.unbind( "click" );
+            trigger.click(function(){
+                console.log('click');
+                if(isOpen){
+                    hide();
+                } else {
+                    show();
+                    body.click(hideIfClickOutside);
+                }
+            })
+        }
+        var stop = function(){
+            sidebar.css('position','relative');
+            sidebar.css('left','0px');
+            body.css('position','inherit');
+            body.css('width','100%');
+            body.off('click',hideIfClickOutside);
+            trigger.unbind( "click" );
+        };
+        if ($(window).width() < minimunWidth){
+            start();
+        }
+        $(window).resize(_.debounce(function(){
+            if ($(window).width() < minimunWidth){
+                start();
+            }else{
+                stop();
+            }
+        },400));
+    },
+    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+    }
+}
+
 // Register new rules
 ko.validation.registerExtenders();
