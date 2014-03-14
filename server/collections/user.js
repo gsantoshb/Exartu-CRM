@@ -31,30 +31,30 @@ Accounts.onCreateUser(function (options, user) {
       name: userEmail.split('@')[0]
     });
 
+    user._id = Meteor.uuid();
+
     // Demo data
     // Seed database with all kind of data to make a demo faster and easier
     // This seed is applied only if meteor server is executed with  Meteor.settings.demo on TRUE
     if (Meteor.settings.demo)
     {
       _.forEach(demoSeed, function (seedFn) {
-        seedFn.apply(this, [hierId]);
+        seedFn.apply(this, [hierId, user.username, user._id]);
       });
     }
   } else
     hierId = options.profile.hierId;
-
   if (!user.permissions) {
     var userPermissions = [];
     _.forEach(options.roles, function (role) {
       var dbrole = Roles.findOne({
-        name: role
+        name: role.name
       });
       user.permissions = _.uniq(userPermissions.concat(dbrole.rolePermissions));
     });
   }
   user.roles = roles;
   user.hierId = hierId;
-
 
   Hierarchies.update({
     _id: user.hierId

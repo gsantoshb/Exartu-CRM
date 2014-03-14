@@ -1,127 +1,128 @@
+// Common data
+var employees = [
+  {
+    firstName:"Doe",
+    lastName:"Andrew"},
+  {
+    firstName:"Gate",
+    lastName:"John"
+  },
+  {
+    firstName:"Smith",
+    lastName:"John"
+  },
+  {
+    firstName:"Campos",
+    lastName:"Wilson"
+  },
+  {
+    firstName:"Berneche"
+    ,lastName:"Joe"
+  },
+  {
+    firstName:"Soto",
+    lastName:"Roger"
+  },
+  {
+    firstName:"Schrute",
+    lastName:"Anna"
+  },
+  {
+    firstName:"Paycardguy",
+    lastName:"Johnny"
+  },
+  {
+    firstName:"Pasarini",
+    lastName:"Fernando"
+  },
+  {
+    firstName:"Campos",
+    lastName:"Epay"
+  },
+  {
+    firstName:"Climer",
+    lastName:"Rae"
+  },
+  {
+    firstName:"Lewis",
+    lastName:"James"
+  },
+  {
+    firstName:"InstantPay",
+    lastName:"Jeff"
+  },
+  {
+    firstName:"Cardtest",
+    lastName:"EJpay"
+  },
+  {
+    firstName:"Hanna",
+    lastName:"Randy"
+  },
+  {
+    firstName:"Pasarini",
+    lastName:"Epay"
+  },
+  {
+    firstName:"Lee",
+    lastName:"Nestor"
+  },
+  {
+    firstName:"McKee",
+    lastName:"Geoffrey"
+  },
+  {
+    firstName:"Pennington",
+    lastName:"Charlene"
+  },
+  {
+    firstName:"Wayne",
+    lastName:"John"
+  },
+  {
+    firstName:"Norris",
+    lastName:"Aram"
+  },
+  {
+    firstName:"Bean",
+    lastName:"Mark"
+  },
+  {
+    firstName:"Cossey",
+    lastName:"Michael"
+  },
+  {
+    firstName:"Edwards",
+    lastName:"Robert"
+  },
+  {
+    firstName:"Fox",
+    lastName:"William"
+  },
+  {
+    firstName:"Crosby",
+    lastName:"Howard"
+  },
+  {
+    firstName:"Small",
+    lastName:"Jeff"
+  },
+  {
+    firstName:"Whitson",
+    lastName:"Charles"
+  },
+  {
+    firstName:"Hart",
+    lastName:"Pamela"
+  },
+  {
+    firstName:"Cossey",
+    lastName:"Zoe"
+  },
+]
+
 var loadContactables = function(hierId) {
   // Employees
-  var employees = [
-    {
-      firstName:"Doe",
-      lastName:"Andrew"},
-    {
-      firstName:"Gate",
-      lastName:"John"
-    },
-    {
-      firstName:"Smith",
-      lastName:"John"
-    },
-    {
-      firstName:"Campos",
-      lastName:"Wilson"
-    },
-    {
-      firstName:"Berneche"
-      ,lastName:"Joe"
-    },
-    {
-      firstName:"Soto",
-      lastName:"Roger"
-    },
-    {
-      firstName:"Schrute",
-      lastName:"Anna"
-    },
-    {
-      firstName:"Paycardguy",
-      lastName:"Johnny"
-    },
-    {
-      firstName:"Pasarini",
-      lastName:"Fernando"
-    },
-    {
-      firstName:"Campos",
-      lastName:"Epay"
-    },
-    {
-      firstName:"Climer",
-      lastName:"Rae"
-    },
-    {
-      firstName:"Lewis",
-      lastName:"James"
-    },
-    {
-      firstName:"InstantPay",
-      lastName:"Jeff"
-    },
-    {
-      firstName:"Cardtest",
-      lastName:"EJpay"
-    },
-    {
-      firstName:"Hanna",
-      lastName:"Randy"
-    },
-    {
-      firstName:"Pasarini",
-      lastName:"Epay"
-    },
-    {
-      firstName:"Lee",
-      lastName:"Nestor"
-    },
-    {
-      firstName:"McKee",
-      lastName:"Geoffrey"
-    },
-    {
-      firstName:"Pennington",
-      lastName:"Charlene"
-    },
-    {
-      firstName:"Wayne",
-      lastName:"John"
-    },
-    {
-      firstName:"Norris",
-      lastName:"Aram"
-    },
-    {
-      firstName:"Bean",
-      lastName:"Mark"
-    },
-    {
-      firstName:"Cossey",
-      lastName:"Michael"
-    },
-    {
-      firstName:"Edwards",
-      lastName:"Robert"
-    },
-    {
-      firstName:"Fox",
-      lastName:"William"
-    },
-    {
-      firstName:"Crosby",
-      lastName:"Howard"
-    },
-    {
-      firstName:"Small",
-      lastName:"Jeff"
-    },
-    {
-      firstName:"Whitson",
-      lastName:"Charles"
-    },
-    {
-      firstName:"Hart",
-      lastName:"Pamela"
-    },
-    {
-      firstName:"Cossey",
-      lastName:"Zoe"
-    },
-  ]
-
   _.forEach(employees, function(data){
     var jobTitles = LookUps.findOne({name: 'jobTitle'}).items;
     console.log('HierId:' + hierId);
@@ -408,6 +409,7 @@ var loadJobs = function(hierId) {
   var categories = LookUps.findOne({name: 'jobCategory'}).items;
   var durations = LookUps.findOne({name: 'jobDuration'}).items;
   var jobTitles = LookUps.findOne({name: 'jobTitle'}).items;
+  var statuses = LookUps.findOne({name: 'jobStatus'}).items;
   var publicJobTitles = [
     ["QCI"  ],
     ["Production/sewing"  ],
@@ -960,20 +962,28 @@ var loadJobs = function(hierId) {
     ["Administrative Support"  ],
     ["Administrative Support"  ]
   ];
+  var today = new Date();
+  var tomorrow = new Date();
+  tomorrow.setDate(today.getDate()+1);
 
-  for(var i = 0; i < 500; ++i) {
+  for(var i = 0; i < 100; ++i) {
     var randomJobType = jobTypes[Math.floor(Math.random()*jobTypes.length)];
     var randomCustomer = customers[Math.floor(Math.random()*customers.length)];
     var randomJobTitle = jobTitles [Math.floor(Math.random()*jobTitles .length)];
     var randomPublicJobTitle = publicJobTitles [Math.floor(Math.random()*publicJobTitles .length)];
+
     var newJob = {
       customer: randomCustomer._id,
       objNameArray: [randomJobType.objName],
       hierId: hierId,
       industry: industries[Math.floor(Math.random()*industries.length)].code,
       category: categories[Math.floor(Math.random()*categories.length)].code,
-      durations: durations[Math.floor(Math.random()*durations.length)].code,
-      publicJobTitle: randomPublicJobTitle[0]
+      duration: durations[Math.floor(Math.random()*durations.length)].code,
+      status: statuses[Math.floor(Math.random()*statuses.length)].code,
+      publicJobTitle: randomPublicJobTitle[0],
+      startDate: today,
+      endDate: tomorrow,
+      description: ""
     }
     // TODO: check objType's fields
     newJob[randomJobType.objName] = {
@@ -990,7 +1000,53 @@ var loadJobs = function(hierId) {
   };
 };
 
+var loadTasks = function(hierId, usermane, userId) {
+  var notes = [
+    "Call " + employees[Math.floor(Math.random()*employees.length)].firstName + " asap",
+    "Contact " + employees[Math.floor(Math.random()*employees.length)].lastName
+  ];
+
+  // Add users to hier
+  var userIds = [];
+  var rol = Roles.findOne();
+  console.dir(rol);
+  for(var j = 0; j < 5; ++j) {
+    var newUser = {
+      username: usermane + j,
+      email: usermane + j + '@' + usermane + j + '.com',
+      password: usermane + j,
+      roles: [rol]
+    }
+    var id = Meteor.call('addHierUser', newUser, hierId);
+    userIds.push(id);
+  }
+
+  var today = new Date();
+  var tomorrow = new Date();
+  tomorrow.setDate(today.getDate()+1);
+
+  for(var i = 0; i < 50; ++ i) {
+    var newTask = {
+      begin: today,
+      end: tomorrow,
+      assign: [userIds[Math.floor(Math.random()*userIds.length)]],
+      note: notes[Math.floor(Math.random()*notes.length)],
+      completed: null,
+      hierId: hierId,
+      userId: userId
+    }
+
+    Meteor.call('crateTask', newTask, function(err, result){
+      if(!err)
+        console.log("Task created for demo");
+      else
+        console.log(err);
+    })
+  }
+};
+
 demoSeed = {
   loadContactables: loadContactables,
-  loadJobs: loadJobs
+  loadJobs: loadJobs,
+  loadTasks: loadTasks
 }

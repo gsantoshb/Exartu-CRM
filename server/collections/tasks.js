@@ -11,39 +11,45 @@
  */
 
 Meteor.publish('tasks', function () {
-    //    var user = Meteor.users.findOne({
-    //        _id: this.userId
-    //    });
+  //    var user = Meteor.users.findOne({
+  //        _id: this.userId
+  //    });
 
-    if (!this.userId)
-        return false;
+  if (!this.userId)
+    return false;
 
-    return Tasks.find({
-        $or: [{
-            userId: this.userId
-    }, {
-            assign: this.userId
-    }]
-    });
+  return Tasks.find({
+    $or: [
+      {
+        userId: this.userId
+      },
+      {
+        assign: this.userId
+      }
+    ]
+  });
 })
 
 Meteor.startup(function () {
-    Meteor.methods({
-        crateTask: function (task) {
-            Tasks.insert(task);
-        },
-    });
+  Meteor.methods({
+    crateTask: function (task) {
+      Tasks.insert(task);
+    },
+  });
 });
 
 Tasks.before.insert(function (userId, doc) {
+  if (this.connection) {
+    console.log("errrooooor");
     var user = Meteor.user();
     doc.hierId = user.hierId;
     doc.userId = user._id;
-    doc.createdAt = Date.now();
+  }
+  doc.createdAt = Date.now();
 });
 Tasks.allow({
-    update: function (userId, doc, fields, modifier) {
-        // todo: check hiers
-        return true;
-    }
+  update: function (userId, doc, fields, modifier) {
+    // todo: check hiers
+    return true;
+  }
 })

@@ -59,8 +59,8 @@ Messages.after.insert(function (userId, doc) {
 
 Tasks.after.insert(function (userId, doc) {
 	Activities.insert({
-		userId: userId,
-		hierId: Meteor.user().hierId,
+		userId: doc.userId,
+		hierId: doc.hierId,
 		type: Enums.activitiesType.taskAdd,
 		entityId: doc._id,
 		data: {
