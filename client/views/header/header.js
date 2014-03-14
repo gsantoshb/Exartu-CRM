@@ -33,7 +33,7 @@ Template.header.viewModel = function () {
 
 var init = true;
 Template.header.rendered = function () {
-    $('body').attr('data-color', 'enterprise');
+//    $('body').attr('data-color', 'enterprise-dark');
     $('body').addClass("flat");
 
     if (init) {
@@ -209,8 +209,8 @@ Template.header.rendered = function () {
                 switcherPanel.addClass('open');
             }
         });
-        $('body').attr('data-color', 'enterprise');
-        $('#color-style a[data-color=enterprise]').addClass('active');
+        $('body').attr('data-color', 'enterprise-dark');
+        $('#color-style a[data-color=enterprise-dark]').addClass('active');
 
         $('#color-style a').click(function () {
             var color = $(this).attr('data-color');

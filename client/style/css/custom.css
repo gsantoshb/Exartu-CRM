@@ -37,3 +37,7 @@
     position: relative;
     border-bottom: 1px solid #e5e5e5;
 }
+#user-nav > ul > li.btn.dropdown.open > ul{
+    width: auto;
+    padding: 3px;
+}
