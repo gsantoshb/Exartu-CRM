@@ -6,7 +6,7 @@ DashboardController = RouteController.extend({
 var filters = ko.observable(ko.mapping.fromJS({
   limit: 10
 }));
-
+Template.dashboard.waitOn=['ObjTypesHandler', 'UsersHandler']
 Template.dashboard.viewModel = function () {
   var self = this;
 
