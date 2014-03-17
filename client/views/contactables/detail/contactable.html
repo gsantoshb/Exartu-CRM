@@ -85,7 +85,7 @@
                 <div class="box ">
                     <div class="box-header-2 ">
                         <div class="box-title ">
-                            <i class="icon icon-contact "></i>Details</div>
+                            <i class="icon icon-information "></i>Details</div>
                     </div>
                     <div class="box-content-md ">
                         <p>
@@ -186,9 +186,14 @@
             </div>
             <!-- /.col-lg-4 -->
             <div class="col-md-8 col-lg-8 ">
+                <!-- ko if: $data.Employee || $data.Contact -->
                 {{>contactablePosts}}
+                <!-- /ko -->
+                <!-- ko if: $data.Customer -->
+                {{>customerJobs}}
+                <!-- /ko -->
             </div>
-            <!-- /.col-lg-6 -->
+            <!-- /.col-lg-8 -->
         </div>
         <!-- /.row -->
 
