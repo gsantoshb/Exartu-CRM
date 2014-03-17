@@ -44,3 +44,9 @@
 .nav-stacked>li+li{
     margin: 0
 }
+
+.jqstooltip {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
