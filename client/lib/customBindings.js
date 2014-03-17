@@ -440,6 +440,7 @@ ko.bindingHandlers.sidebar={
             sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
                 sidebar.removeClass('animating');
             });
+            body.off('click',hideIfClickOutside);
             isOpen=false;
         }
         var show=function(){
