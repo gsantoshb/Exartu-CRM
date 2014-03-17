@@ -168,7 +168,7 @@ _.extend(helper, {
 
     getPersonTypes: function () {
         var persontypes = [];
-        _.each(Enums.personType, function (err, v) {
+        _.each(Enums.personType, function (v) {
             persontypes.push(v);
         });
         return persontypes;
@@ -502,7 +502,10 @@ _.extend(helper, {
 
 })
 _.extend(helper, {
-    getCoords:function(address){
+    getCoords: function(address){
+        if (!address){
+            return null;
+        }
         return{
             latitud: address.geometry.location.lat(),
             longitud: address.geometry.location.lng()

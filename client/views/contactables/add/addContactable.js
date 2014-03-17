@@ -59,8 +59,10 @@ Template.addContactable.viewModel = function (objname) {
         addCallback: function (contactable) {
             self.canAdd(false);
             var cont = ko.toJS(contactable);
-            cont.location = ko.toJS(self.location);
-            cont.location.coords = helper.getCoords(cont.location);
+            if(cont.location ){
+                cont.location = ko.toJS(self.location);
+                cont.location.coords = helper.getCoords(cont.location);
+            }
             Meteor.call('addContactable', cont, function (err, result) {
                 self.canAdd(true);
                 if (err)
