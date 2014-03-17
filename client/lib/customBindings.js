@@ -265,7 +265,8 @@ ko.bindingHandlers.map = {
             map.setCenter(location);
             var marker = new google.maps.Marker({
                 map: map,
-                position: location
+                position: location,
+                title: address.formatted_address
             });
             $(element).data('marker', marker);
         } else {
@@ -280,17 +281,17 @@ ko.bindingHandlers.map = {
         //        debugger;
         var address = ko.toJS(valueAccessor());
         if (address) {
+
             $(element).show();
             var map = $(element).data('map');
             var marker = $(element).data('marker');
             var location = getLatLng(address);
-
-//            google.maps.event.trigger(map, 'resize');
-
+            var windowString = '<div>' + '<h4>' + address.formatted_address + '</h4>' + '</div>';
             if (!marker) {
                 marker = new google.maps.Marker({
                     map: map,
-                    position: location
+                    position: location,
+                    title: address.formatted_address
                 });
                 $(element).data('marker', marker);
             } else {
@@ -300,6 +301,15 @@ ko.bindingHandlers.map = {
             setTimeout(function(){
                 map.setCenter(marker.getPosition());
             },500);
+
+            var infowindow = new google.maps.InfoWindow({
+                content: windowString,
+                maxWidth: 200
+            });
+
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.open(map,marker);
+            });
 
         } else {
 
