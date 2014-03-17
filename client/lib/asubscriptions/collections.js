@@ -50,6 +50,19 @@ Contactables = new Meteor.Collection("contactables", {
               contactable.assignmentInfo = null;
         }
 
+      if(contactable.Customer) {
+        contactable.Customer.jobsInfo = Jobs.find(
+          {
+            _id: {
+              $in: contactable.Customer.jobs
+            }
+          },
+          {
+            transform: null
+          }
+        ).fetch();
+      }
+
         extendObject(contactable);
         return contactable;
 }
