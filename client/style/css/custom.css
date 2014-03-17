@@ -164,3 +164,18 @@
         left:200px
     }
 }
+
+/* Mobile header */
+@media (max-width: 768px) {
+    body[data-color="enterprise-dark"] #header h1{
+        height: 30px;
+    }
+    #user-nav {
+        top: 7px;
+        width: initial;
+        left: 0;
+    }
+    #header{
+        height: 50px;
+    }
+}

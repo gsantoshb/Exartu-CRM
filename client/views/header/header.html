@@ -1,37 +1,16 @@
 <template name="header">
-    <div name="headerVM">
-        <div id="header">
-            <h1>
-                <a href="/">
-                    <span class="hidden-phone">EXARTU</span>
-                </a>
-            </h1>
-            <a id="menu-trigger" href="#">
-                <i class="fa fa-align-justify"></i>
-            </a>
-        </div>
-
-        <div id="user-nav" class="navbar-right">
+    <div name="headerVM" style="position: relative;">
+        <div id="user-nav" class="navbar-right pull-right">
             <ul class="btn-group">
-
-                <li class="btn dropdown">
-                    <a href="#" data-toggle="dropdown" data-target="#menu-user" class="dropdown-toggle" data-bind="with: helper.getUserInformation(Meteor.userId())">
+                <li class="hidden-xs">
+                    <a href="/user" data-bind="with: helper.getUserInformation(Meteor.userId())" style="display: inline-flex;">
                         <!--ko if: ready-->
                         <span class="user-menu-thumb">
-                            <img data-bind="attr:{src:picture}" style="heigth: 26px;width: 26px;">
+                            <img data-bind="attr:{src: picture, alt: Meteor.user().username}" style="height: 26px;width: 26px;">
                         </span>
-                        <span data-bind="text: Meteor.user().username"></span>
                         <!--/ko-->
+                        <span data-bind="text: Meteor.user().username"></span>
                     </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="/" data-bind="click: function(){ Meteor.logout(function(){Router.go('/login');});}">Logout</a>
-                        </li>
-                        <li>
-                            <a href="/user">Account</a>
-                        </li>
-
-                    </ul>
                 </li>
 
                 <li class="btn dropdown" id="menu-messages">
@@ -94,7 +73,21 @@
 
                     <ul class="dropdown-menu pull-right">
                         <li>
+                            <a href="/user" data-bind="with: helper.getUserInformation(Meteor.userId())">
+                                <!--ko if: ready-->
+                                <!--<span class="user-menu-thumb">-->
+                                <!--<img data-bind="attr:{src: picture, alt: Meteor.user().username}" style="height: 26px;width: 26px;">-->
+                                <!--</span>-->
+                                <!--/ko-->
+                                My Profile
+                            </a>
+                        </li>
+                        <li>
                             <a href="/users">User Management</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/" data-bind="click: function(){ Meteor.logout(function(){Router.go('/login');});}">Logout</a>
                         </li>
                     </ul>
 
@@ -102,6 +95,18 @@
 
             </ul>
         </div>
+        <div id="header">
+            <h1>
+                <a href="/">
+                    <span class="hidden-phone">EXARTU</span>
+                </a>
+            </h1>
+
+        </div>
+        <a id="menu-trigger" href="#">
+            <i class="fa fa-align-justify"></i>
+        </a>
+
 
         <!--
         <div id="switcher">
