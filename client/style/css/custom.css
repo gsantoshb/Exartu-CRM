@@ -44,3 +44,126 @@
 .nav-stacked>li+li{
     margin: 0
 }
+
+/*************** SidePanel ****************/
+
+@media (max-width: 768px) {
+    .spanel-menu{
+        position: fixed;
+        left: -100%
+    }
+    .spanel-menu.in{
+        left: 0
+    }
+    .spanel-menu.in.animating{
+        -moz-animation-duration: 0.5s;
+        -webkit-animation-duration: 0.5s;
+        -moz-animation-name: slidein;
+        -webkit-animation-name: slidein;
+    }
+    .spanel-menu.animating{
+        -moz-animation-duration: 0.5s;
+        -webkit-animation-duration: 0.5s;
+        -moz-animation-name: slideout;
+        -webkit-animation-name: slideout;
+    }
+}
+
+
+@-moz-keyframes slidein {
+    from {
+        left:-200px;
+    }
+    to {
+        left:0%;
+    }
+}
+
+@-webkit-keyframes slidein {
+    from {
+        left:-200px;
+    }
+    to {
+        left:0%;
+    }
+}
+
+@-moz-keyframes slideout {
+    from {
+        left:0;
+    }
+    to {
+        left:-200px;
+    }
+}
+
+@-webkit-keyframes slideout {
+    from {
+        left:0;
+    }
+    to {
+        left:-200px;
+    }
+}
+@media (max-width: 768px) {
+    body{
+        position: absolute;
+        width: 100%;
+        left:0px
+    }
+    body.in{
+        left:200px
+    }
+
+
+
+    body.in.animating{
+        -moz-animation-duration: 0.5s;
+        -webkit-animation-duration: 0.5s;
+        -moz-animation-name: bodyslideout;
+        -webkit-animation-name: bodyslideout;
+    }
+    body.animating{
+        -moz-animation-duration: 0.5s;
+        -webkit-animation-duration: 0.5s;
+        -moz-animation-name: bodyslidein;
+        -webkit-animation-name: bodyslidein;
+    }
+}
+
+
+@-moz-keyframes bodyslidein {
+    from {
+        left:200px;
+    }
+    to {
+        left:0;
+    }
+}
+
+@-webkit-keyframes bodyslidein {
+    from {
+        left:200px;
+    }
+    to {
+        left:0;
+    }
+}
+
+@-moz-keyframes bodyslideout {
+    from {
+        left:0;
+    }
+    to {
+        left:200px;
+    }
+}
+
+@-webkit-keyframes bodyslideout {
+    from {
+        left:0;
+    }
+    to {
+        left:200px
+    }
+}

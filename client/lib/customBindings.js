@@ -419,8 +419,8 @@ ko.bindingHandlers.sidebar={
             body=$('body'),
             trigger=$('#menu-trigger'),
             isOpen=false;
-        var animationWidth=200;
         var minimunWidth=768;
+
         var hideIfClickOutside=function(e){
             if (!sidebar.is(e.target) && sidebar.has(e.target).length === 0
                 && !trigger.is(e.target) && trigger.has(e.target).length === 0) {
@@ -429,29 +429,40 @@ ko.bindingHandlers.sidebar={
             }
         }
         var hide=function(){
-            body.animate({left: "0px"},500);
-            sidebar.animate({left: '-'+animationWidth+'px'},500);
+            body.removeClass('in');
+            body.addClass('animating');
+            sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+                body.removeClass('animating');
+            });
+
+            sidebar.removeClass('in');
+            sidebar.addClass('animating');
+            sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+                sidebar.removeClass('animating');
+            });
             isOpen=false;
         }
         var show=function(){
             sidebar.show();
-            body.animate({left: animationWidth+'px'},500);
-            sidebar.animate({left: "0px"},500);
+
+            body.addClass('in');
+            body.addClass('animating');
+            sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+                body.removeClass('animating');
+            });
+
+
+            sidebar.addClass('in');
+            sidebar.addClass('animating');
+            sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+                sidebar.removeClass('animating');
+            });
             isOpen=true;
         }
         var start=function(){
-            sidebar.css('position','fixed');
-            sidebar.css('left','-'+animationWidth+'px');
-            body.css('position','absolute');
-            body.css('width','100%');
-
             isOpen=false;
-            body.css('left',"0px");
-            sidebar.css('left','-'+animationWidth+'px');
-
             trigger.unbind( "click" );
             trigger.click(function(){
-                console.log('click');
                 if(isOpen){
                     hide();
                 } else {
@@ -461,10 +472,8 @@ ko.bindingHandlers.sidebar={
             })
         }
         var stop = function(){
-            sidebar.css('position','relative');
-            sidebar.css('left','0px');
-            body.css('position','inherit');
-            body.css('width','100%');
+            sidebar.removeClass('in');
+            body.removeClass('in');
             body.off('click',hideIfClickOutside);
             trigger.unbind( "click" );
         };
