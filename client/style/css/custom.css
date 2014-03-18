@@ -43,6 +43,7 @@
 .nav-stacked>li+li{
     margin: 0
 }
+
 /*************** SidePanel ****************/
 
 @media (max-width: 768px) {
@@ -164,12 +165,14 @@
         left:200px
     }
 }
+/*************** End ****************/
 
 .jqstooltip {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
+
 /* Mobile header */
 @media (max-width: 768px) {
     body[data-color="enterprise-dark"] #header h1{
@@ -182,5 +185,29 @@
     }
     #header{
         height: 50px;
+    }
+}
+
+.vm-fadein{
+    -moz-animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    -moz-animation-name: fadeIn;
+    -webkit-animation-name: fadeIn;
+}
+@-moz-keyframes fadeIn {
+    from {
+        opacity: 0.1;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0.1;
+    }
+    to {
+        opacity: 1;
     }
 }
