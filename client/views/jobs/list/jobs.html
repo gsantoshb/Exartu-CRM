@@ -25,14 +25,10 @@
                                     <strong>Job Filters</strong>
                                 </h4>
                                 <form role="form">
-                                    <div class="panel-group bottom-20" id="accordion">
-                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {title: 'Industry', items: industries } } -->
+                                    <div class="panel-group bottom-20">
+                                        <!-- ko foreach: lookFilters -->
+                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } -->
                                         <!-- /ko -->
-                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {title: 'Category', items: categories } } -->
-                                        <!-- /ko -->
-                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {title: 'Duration', items: durations } } -->
-                                        <!-- /ko -->
-                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {title: 'Status', items: statuses } } -->
                                         <!-- /ko -->
                                     </div>
                                     <div class="panel panel-default">

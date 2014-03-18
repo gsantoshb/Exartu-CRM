@@ -13,7 +13,8 @@
       "imagemagick": {},
       "spin": {},
       "bootstrap3-wysihtml5": {},
-      "jquery-color-animation": {}
+      "jquery-color-animation": {},
+      "select2": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -38,8 +39,8 @@
       },
       "collection-hooks": {
         "git": "https://github.com/matb33/meteor-collection-hooks.git",
-        "tag": "v0.6.2",
-        "commit": "29484b2110206be93b01c6d11ce06ec9208de7bd"
+        "tag": "v0.6.3",
+        "commit": "70f2598bf991cb36effd72aea2555cba96f88355"
       },
       "iron-router-progress": {
         "git": "https://github.com/Multiply/iron-router-progress.git",
@@ -75,6 +76,11 @@
         "git": "https://github.com/jonjamz/meteor-jquery-color-animation.git",
         "tag": "v1.6.0",
         "commit": "1999252f73e0d93067a44f46d476539922152e2e"
+      },
+      "select2": {
+        "git": "https://github.com/nate-strauser/meteor-select2.git",
+        "tag": "v3.4.5",
+        "commit": "4a8d05582b949a14f0ee217c185166abbf112822"
       },
       "cfs-public-folder": {
         "git": "https://github.com/nooitaf/meteor-cfs-public-folder.git",

@@ -185,7 +185,7 @@ Meteor.subscribe('activities');
 
 
 LookUps = new Meteor.Collection("lookUps");
-Meteor.subscribe('lookUps');
+extendedSubscribe('lookUps', 'LookUpsHandler');
 
 //extendedSubscribe('users', 'UserHandler');
 UsersHandler = {

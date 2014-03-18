@@ -503,5 +503,23 @@ ko.bindingHandlers.sidebar={
     }
 }
 
+ko.bindingHandlers.select2 = {
+  init: function (element, valueAccessor) {
+    var options = _.map(valueAccessor().options, function(option){
+      return {id: option.code, text: option.displayName };
+    });
+    var selectedValues = valueAccessor().selectedValues;
+
+    $(element).select2({
+      data: options
+    });
+
+    ko.utils.registerEventHandler(element, "select2-selected", function (data) {
+      if (_.findWhere(selectedValues(), {id: data.choice.id}) == undefined)
+        selectedValues.push(data.choice);
+    });
+  }
+};
+
 // Register new rules
 ko.validation.registerExtenders();

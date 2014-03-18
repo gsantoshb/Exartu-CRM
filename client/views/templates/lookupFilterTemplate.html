@@ -1,5 +1,5 @@
 <template name="lookupFilterTemplate">
-    <div id="lookupFilterTemplate" style="display: none;" data-bind="bind: false">
+    <div id="lookupFilterTemplate" style="display: none" data-bind="bind: false">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
@@ -10,13 +10,14 @@
             </div>
             <div id="collapseOne" class="panel-collapse collapse" style="height: auto;" data-bind="attr: {id: title}">
                 <div class="panel-body">
-                    <!-- ko foreach: items -->
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" data-bind="checked: value">
-                            <span data-bind="text: displayName"></span>
-                        </label>
-                    </div>
+                    <input style="width: 100%" type='hidden' placeholder="Search" data-bind="select2: { options: items, selectedValues: selectedValues }"/>
+                    <hr/>
+                    <!-- ko foreach: selectedValues -->
+                    <span style="word-wrap: break-word">
+                        <span data-bind="text: text"></span>
+                        <i class="fa fa-times" style="cursor: pointer" data-bind="click: $parent.selectedValues.removeSelection"></i>
+                    </span>
+                    <br/>
                     <!-- /ko -->
                 </div>
             </div>
