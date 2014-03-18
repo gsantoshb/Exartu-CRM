@@ -46,26 +46,37 @@ Contactables = new Meteor.Collection("contactables", {
                     contactable.assignmentInfo.CustomerInfo.pictureFileId = null;
             }
         } else {
-              contactable.assignment = null;
-              contactable.assignmentInfo = null;
+            contactable.assignment = null;
+            contactable.assignmentInfo = null;
         }
 
-      if(contactable.Customer) {
-        contactable.Customer.jobsInfo = Jobs.find(
-          {
-            _id: {
-              $in: contactable.Customer.jobs
+        if(contactable.Customer) {
+            contactable.Customer.jobsInfo = Jobs.find(
+                {
+                    _id: {
+                        $in: contactable.Customer.jobs
+                    }
+                },
+                {
+                    transform: null
+                }
+            ).fetch();
+            if(contactable.Customer.contacts){
+                contactable.Customer.contactsInfo = Contactables.find(
+                    {
+                        _id: {
+                            $in: contactable.Customer.contacts
+                        }
+                    }
+                ).fetch();
+            } else{
+                contactable.Customer.contactsInfo=[];
             }
-          },
-          {
-            transform: null
-          }
-        ).fetch();
-      }
+        }
 
         extendObject(contactable);
         return contactable;
-}
+    }
 });
 
 extendedSubscribe('contactables', 'ContactableHandler');
@@ -170,7 +181,7 @@ Conversations = new Meteor.Collection("conversations", {
             _.every(conversationMessages, function (conversation) {
                 return conversation.readed;
             })
-        );
+            );
 
         conversation.readed = (conversation.user1 == Meteor.userId() ? conversation.user1Readed : conversation.user2Readed);
 
