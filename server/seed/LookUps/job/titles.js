@@ -1,11 +1,9 @@
 _.forEach([
   {
     displayName: 'Developer',
-    code: 0
   },
   {
     displayName: 'Designer',
-    code: 1
   }
 ],
   function (item) {

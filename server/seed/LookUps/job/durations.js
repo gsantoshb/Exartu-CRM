@@ -1,40 +1,32 @@
 _.forEach([
   {
-    code: "JTFT",
-    displayName: "Full-Time"
+		displayName: "Full-Time"
   },
   {
-    code: "JTPT",
-    displayName: "Part-Time"
+		displayName: "Part-Time"
   },
   {
-    code: "JTFP",
-    displayName: "Full-Time/Part-Time"
+		displayName: "Full-Time/Part-Time"
   },
   {
-    code: "JTCT",
-    displayName: "Contractor"
+		displayName: "Contractor"
   },
   {
-    code: "JTIN",
-    displayName: "Intern"
+		displayName: "Intern"
   },
   {
-    code: "JTSE",
-    displayName: "Seasonal/Temp"
+		displayName: "Seasonal/Temp"
   },
   {
-    code: "JTPD",
-    displayName: "Per Diem"
+		displayName: "Per Diem"
   },
   {
-    code: "JTFR",
-    displayName: "Franchises"
+		displayName: "Franchises"
   }
 
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.job.duration.code;
-    systemLookUps.push(item);
+item.codeType = Enums.lookUpTypes.job.duration.code;
+systemLookUps.push(item);
   }
 );
