@@ -1,5 +1,8 @@
 ContactableController = RouteController.extend({
     layoutTemplate: 'contactable',
+    data: function(){
+        Session.set('entityId',this.params._id);
+    },
     action: function () {
         // define which template to render in function of the url's hash
         switch (this.params.hash) {
@@ -27,7 +30,9 @@ ContactableController = RouteController.extend({
     },
 });
 var aux;
-
+Template.contactable.entityId = function(){
+    return Session.get('entityId');
+}
 Template.contactable.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps'];
 Template.contactable.viewModel = function () {
     var self = {},
