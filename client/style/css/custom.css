@@ -218,17 +218,18 @@
     height:70px;
     width:70px;
 }
-.thumb.thumb-md img{
+.thumb.thumb-md > a > img{
     max-height:70px;
     max-width:70px;
     width: auto;
     height: auto
 }
-.thumb img{
-    max-height:50px !important;
-    max-width:50px !important;
-    width: auto !important;
-    height: auto !important;
+
+.thumb > a > img{
+max-height:50px;
+    max-width:50px;
+    width: auto;
+    height: auto;
 }
 
 
