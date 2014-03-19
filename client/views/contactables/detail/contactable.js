@@ -11,11 +11,6 @@ ContactableController = RouteController.extend({
                 to: 'content'
             });
             break;
-        case 'details':
-            this.render('contactableDetails', {
-                to: 'content'
-            });
-            break;
         case 'posts':
             this.render('contactablePosts', {
                 to: 'content'
@@ -27,7 +22,7 @@ ContactableController = RouteController.extend({
             });
             break;
         };
-    },
+    }
 });
 var aux;
 Template.contactable.entityId = function(){
@@ -253,7 +248,7 @@ Template.contactable.viewModel = function () {
     self.updateContactableObjType = function () {
         var options = {
             objUpdated: self.editObjType,
-            objNameUpdated: self.contactable().objNameArray()[0],
+            objNameUpdated: self.contactable().objNameArray()[0]
         }
 
         self.updateContactable(options, function () {
