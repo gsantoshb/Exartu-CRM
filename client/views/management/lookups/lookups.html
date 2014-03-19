@@ -1,0 +1,82 @@
+<template name="lookUpsManagement">
+    <div id="content">
+        <div id="content-header">
+            <h1>Lookups management</h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Management</a>
+            <a href="#" class="current">Lookups</a>
+        </div>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <select class="form-control" data-bind="options: lookUpTypes, optionsText: 'displayName', value: selectedLookUp" />
+                <br/>
+                <div class="row">
+                    <span class="col-lg-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search" data-bind="value: searchString, valueUpdate: 'afterkeydown'" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fa fa-search"></i> Search</button>
+                            </span>
+                        </div>
+                    </span>
+                    <span class="col-lg-offset-4 col-lg-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="New item" data-bind="value: newLookUpItem, valueUpdate: 'afterkeydown'" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" data-bind="click: addNewLookupItem">
+                                    <i class="fa fa-plus"></i> Add</button>
+                            </span>
+                        </div>
+                    </span>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Display name</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody data-bind="foreach: items">
+                        <tr>
+                            <!-- ko if: !$data.editMode || !$data.editMode() -->
+                            <td>
+                                <span data-bind="text: displayName"></span>
+                            </td>
+                            <!--<td>desc</td>-->
+                            <td>
+                                <span style="cursor: pointer" data-bind="click: $root.startEditing">
+                                    <i class="glyphicon glyphicon-edit" ></i>
+                                    Edit
+                                </span>
+                            </td>
+                            <!-- /ko -->
+                            <!-- ko if: $data.editMode -->
+                            <td>
+                                    <input class="form-control" type="text" placeholder="" data-bind="value: displayName" />
+                                    <span class="text-danger" data-bind="text: errMsg"></span>
+                            </td>
+                            <!--<td>desc</td>-->
+                            <td>
+                                <span style="cursor: pointer" data-bind="click: $root.edit">
+                                    <i class="glyphicon glyphicon-ok" ></i>
+                                    Save
+                                </span>
+                                <span style="cursor: pointer" data-bind="click: $root.cancelEdit">
+                                    <i class="glyphicon glyphicon-remove" ></i>
+                                    Cancel
+                                </span>
+                            </td>
+                            <!-- /ko -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</template>
