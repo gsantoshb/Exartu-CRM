@@ -116,7 +116,6 @@ Composer.composeTemplate = function (templateName, domNode) {
     if (Template[templateName].config) {
         if (Template[templateName].config.singleton) {
             vm = _.wrap(vm, function (vm) {
-                //                debugger;
                 if (!Template[templateName]._instance) {
                     Template[templateName]._instance = vm();
                 }
@@ -127,7 +126,6 @@ Composer.composeTemplate = function (templateName, domNode) {
 
     var waitOn = Template[templateName].waitOn;
     if (waitOn) {
-        //        debugger;
         if (typeof waitOn == typeof[]) {
             var aux = waitOn;
             waitOn = [];

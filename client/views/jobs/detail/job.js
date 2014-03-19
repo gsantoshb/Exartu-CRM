@@ -88,6 +88,14 @@ Template.job.viewModel = function () {
         self.editJob().tags.remove(data);
     };
     self.editTag = ko.observable();
+    self.assign=function(data){
+        Meteor.call('assign', jobId , ko.toJS(data._id),function(err, result){
+            if(!err){
+            }else{
+                console.log(err);
+            }
+        });
+    }
 
     return self;
 };

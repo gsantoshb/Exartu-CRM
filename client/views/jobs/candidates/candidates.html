@@ -1,32 +1,29 @@
 <template name="candidates">
     <div class="box">
         <div class="box-header-2">
+            <a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'candidateAdd',$data._id()); }">
+                <i class="fa fa-plus"></i>Add
+            </a>
             <div class="box-title">
-                <a class="btn btn-xs btn-default pull-right" href="#" data-bind="click: function () { Composer.showModal( 'candidateAdd',$data._id()); }">
-                    <i class="fa fa-plus"></i>add</a>
                 <i class="fa fa-user"></i>Candidates
-                <span class="label label-default" data-bind="text:candidates().length"></span>
-                <!--
-                <a class="btn btn-success pull-right" data-bind="click: function () { Composer.showModal( 'candidateAdd',$data._id()); } ">
-    <i class="fa fa-plus "></i>
-    Add
-</a>
--->
             </div>
+
         </div>
+
         <div class="box-content">
             <ul class="list-type-1 list-type-1-lg" data-bind="foreach: candidates">
                 <li class="clearfix">
-                    <div class="thumb">
+                    <div class="thumb thumb-md">
                         <a class="thumb-content" href="#">
                             <!--ko with: helper.getEmployeePictureAsync(employeeInfo)-->
-                            <!--ko if: ready-->
-                            <img style="max-height:70px; width:70px;" data-bind="attr: {src: picture}" alt="">
-                            <!--/ko-->
+                                <!--ko if: ready-->
+                                    <img data-bind="attr: {src: picture}" alt="">
+                                <!--/ko-->
                             <!--/ko-->
                         </a>
                     </div>
-                    <div class="list-item-content prefix-lg" data-bind="with:employeeInfo">
+                    <div class="list-item-content prefix-lg" data-bind="with: employeeInfo">
+                        <button class="btn btn-xs btn-primary pull-right" data-bind="click: $root.assign">Assign</button>
                         <h3 class="bottom-10" style="margin-top: 0">
                             <a href="#" data-bind="attr:{href:'/contactable/' +_id()}, text: displayName"></a>
                         </h3>

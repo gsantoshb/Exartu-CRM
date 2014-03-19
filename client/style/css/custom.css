@@ -173,7 +173,7 @@
     box-sizing: content-box;
 }
 
-/* Mobile header */
+/* Header */
 @media (max-width: 768px) {
     body[data-color="enterprise-dark"] #header h1{
         height: 30px;
@@ -213,6 +213,25 @@
         opacity: 1;
     }
 }
+
+.thumb.thumb-md{
+    height:70px;
+    width:70px;
+}
+.thumb.thumb-md > a > img{
+    max-height:70px;
+    max-width:70px;
+    width: auto;
+    height: auto
+}
+
+.thumb > a > img{
+max-height:50px;
+    max-width:50px;
+    width: auto;
+    height: auto;
+}
+
 
 .drop-zone {
     height: 150px;

@@ -12,29 +12,13 @@ Template.assignmentAdd.viewModel = function (jobId, employeeId) {
     self.add = function () {
         if (!self.employee())
             return;
-        self.canSave(false)
-        Jobs.update({
-            _id: jobId
-        }, {
-            $set: {
-                assignment: self.employee()
-            }
-        }, function (err, result) {
-            if (!err){
-                Contactables.update({
-                    _id: self.employee()
-                }, {
-                    $set: {
-                        assignment: jobId
-                    }
-                }, function(){
-                    debugger;
-                    self.canSave(true);
-
-                    self.close();
-                })
-            } else {
-                self.canSave(true);
+        self.canSave(false);
+        Meteor.call('assign', jobId , self.employee(),function(err, result){
+            self.canSave(true);
+            if(!err){
+                self.close();
+            }else{
+                console.log(err);
             }
         });
     }
