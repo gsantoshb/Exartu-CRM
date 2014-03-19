@@ -4,8 +4,8 @@ ContactableController = RouteController.extend({
         Session.set('entityId',this.params._id);
     },
     action: function () {
-        // define which template to render in function of the url's hash
-        switch (this.params.hash) {
+      // define which template to render in function of the url's hash
+      switch (this.params.hash) {
         case 'details':
             this.render('contactableDetails', {
                 to: 'content'
@@ -21,12 +21,17 @@ ContactableController = RouteController.extend({
                 to: 'content'
             });
             break;
+          case 'documents':
+            this.render('documents', {
+              to: 'content'
+            });
+            break;
         default:
             this.render('contactableHome', {
                 to: 'content'
             });
             break;
-        };
+      };
     },
 });
 var aux;

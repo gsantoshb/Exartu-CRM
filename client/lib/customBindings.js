@@ -521,5 +521,49 @@ ko.bindingHandlers.select2 = {
   }
 };
 
+ko.bindingHandlers.dragAndDrop = {
+  init: function (element, valueAccessor) {
+    var options = valueAccessor();
+
+    $(element).addClass('drop-zone')
+
+    ko.utils.registerEventHandler(element, "dragenter",
+      function (data) {
+        data.stopPropagation();
+        data.preventDefault();
+        $(element).addClass('drop-zone-hover');
+      }
+    );
+
+    ko.utils.registerEventHandler(element, "dragexit",
+      function (data) {
+        data.stopPropagation();
+        data.preventDefault();
+        $(element).removeClass('drop-zone-hover');
+      }
+    );
+
+    ko.utils.registerEventHandler(element, "dragover",
+      function (data) {
+        data.stopPropagation();
+        data.preventDefault();
+      }
+    );
+
+    ko.utils.registerEventHandler(element, "drop",
+      function (data) {
+        data.stopPropagation();
+        data.preventDefault();
+        debugger;
+        var files = data.originalEvent.dataTransfer.files;
+
+        for (var i = 0, f; f = files[i]; i++) {
+          options.onDrop(f);
+        }
+      }
+    );
+  }
+};
+
 // Register new rules
 ko.validation.registerExtenders();

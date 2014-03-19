@@ -58,6 +58,9 @@
                                 <span class="custom-badge-2 " data-bind="text: posts().length"></span>
                             </a>
                         </li>
+                        <li data-bind="css:{'active': $parent.activeTab()=='documents'}">
+                            <a href="#documents" data-toggle="tab ">Documents</a>
+                        </li>
                     </ul>
                     <div class="tab-content ">
                         {{yield 'content'}}
