@@ -13,11 +13,11 @@
         <div class="box-content">
             <ul class="list-type-1 list-type-1-lg" data-bind="foreach: candidates">
                 <li class="clearfix">
-                    <div class="thumb" style="height:70px; width:70px;">
+                    <div class="thumb thumb-md">
                         <a class="thumb-content" href="#">
                             <!--ko with: helper.getEmployeePictureAsync(employeeInfo)-->
                                 <!--ko if: ready-->
-                                    <img style="max-height:70px; max-width:70px;width: auto;height: auto" data-bind="attr: {src: picture}" alt="">
+                                    <img data-bind="attr: {src: picture}" alt="">
                                 <!--/ko-->
                             <!--/ko-->
                         </a>
