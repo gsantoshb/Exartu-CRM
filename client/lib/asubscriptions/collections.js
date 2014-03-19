@@ -78,7 +78,6 @@ Contactables = new Meteor.Collection("contactables", {
         return contactable;
     }
 });
-
 extendedSubscribe('contactables', 'ContactableHandler');
 
 var getLookUpName = function (lookUpName, code) {
@@ -95,6 +94,7 @@ var getLookUpName = function (lookUpName, code) {
         return;
     return lookUpValue.displayName;
 }
+
 Jobs = new Meteor.Collection("jobs", {
     transform: function (job) {
         job.displayName = job.publicJobTitle;
@@ -130,46 +130,15 @@ Jobs = new Meteor.Collection("jobs", {
 extendedSubscribe('jobs', 'JobHandler');
 
 
-Deals = new Meteor.Collection("deals", function () {
-    _.forEach(Deals.observers, function (cb) {
-        cb();
-    });
-});
-DealHandler = Meteor.subscribe('deals', function () {
-    _.forEach(Deals.observers, function (cb) {
-        cb();
-    });
-});
-DealHandler.observers = [];
-DealHandler.wait = function (cb) {
-    if (this.ready())
-        cb();
-    else
-        this.observers.push(cb);
-}
-
+Deals = new Meteor.Collection("deals");
+extendedSubscribe('deals', 'DealHandler');
 
 /*
  * Messages
  */
+
 Messages = new Meteor.Collection("messages");
-MessagesHandler = Meteor.subscribe('messages', function () {
-    _.forEach(MessagesHandler.observers, function (cb) {
-        cb();
-    });
-});
-//MessagesHandler = Meteor.subscribe('contactables', function () {
-//    _.forEach(ContactableHandler.observers, function (cb) {
-//        cb();
-//    });
-//});
-MessagesHandler.observers = [];
-MessagesHandler.wait = function (cb) {
-    if (this.ready())
-        cb();
-    else
-        this.observers.push(cb);
-}
+extendedSubscribe('messages', 'MessagesHandler');
 
 Conversations = new Meteor.Collection("conversations", {
     transform: function (conversation) {
@@ -198,7 +167,6 @@ Meteor.subscribe('activities');
 LookUps = new Meteor.Collection("lookUps");
 extendedSubscribe('lookUps', 'LookUpsHandler');
 
-//extendedSubscribe('users', 'UserHandler');
 UsersHandler = {
     ready: function () {
         if (!Accounts.loginServicesConfigured())
@@ -232,7 +200,6 @@ UsersHandler = {
     }
 
 }
-//Meteor.subscribe('userData');
 
 Roles = new Meteor.Collection("roles");
 Meteor.subscribe('roles');
@@ -284,7 +251,7 @@ extendedSubscribe('objTypes', 'ObjTypesHandler');
 ContactablesFS = new CollectionFS('contactables', {
     autopublish: false
 });
-Meteor.subscribe('contactableFiles');
+extendedSubscribe('contactableFiles', 'ContactablesFSHandler');
 
 UsersFS = new CollectionFS('users');
 extendedSubscribe('usersFiles', 'UsersFSHandler');
