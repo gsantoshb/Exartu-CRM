@@ -74,6 +74,20 @@ Contactables = new Meteor.Collection("contactables", {
             }
         }
 
+        if(contactable.contactMethods){
+            _.each(contactable.contactMethods,function(cm){
+                var type = ContactMethods.findOne({_id: cm.type});
+                if (type){
+                    cm.typeName=type.displayName;
+                    cm.typeEnum=type.type;
+                } else {
+                    cm.typeName='Unknown';
+                    cm.typeEnum=-1;
+                }
+
+            })
+        }
+
         extendObject(contactable);
         return contactable;
     }
@@ -98,10 +112,10 @@ var getLookUpName = function (lookUpName, code) {
 Jobs = new Meteor.Collection("jobs", {
     transform: function (job) {
         job.displayName = job.publicJobTitle;
-        job.industryName = getLookUpName('jobIndustry', job.industry);
-        job.categoryName = getLookUpName('jobCategory', job.category);
-        job.durationName = getLookUpName('jobDuration', job.duration);
-        job.statusName = getLookUpName('jobStatus', job.status);
+        job.industryName = LookUps.findOne({ _id: job.industry }).displayName;
+        job.categoryName = LookUps.findOne({ _id: job.category }).displayName;
+        job.durationName = LookUps.findOne({ _id: job.duration }).displayName;
+        job.statusName = LookUps.findOne({ _id: job.status }).displayName;
         _.each(job.candidates, function (candidate) {
             candidate.employeeInfo = Contactables.findOne({
                 _id: candidate.employee
@@ -244,6 +258,7 @@ extendedSubscribe("tasks", 'TasksHandler');
  * objTypes
  */
 ObjTypes = new Meteor.Collection("objTypes");
+
 extendedSubscribe('objTypes', 'ObjTypesHandler');
 
 // CollectionFS
@@ -255,3 +270,6 @@ extendedSubscribe('contactableFiles', 'ContactablesFSHandler');
 
 UsersFS = new CollectionFS('users');
 extendedSubscribe('usersFiles', 'UsersFSHandler');
+
+ContactMethods= new Meteor.Collection('contactMethods');
+extendedSubscribe('contactMethods', 'ContactMethodsHandler');
