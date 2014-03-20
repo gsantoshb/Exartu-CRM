@@ -143,26 +143,26 @@
 </div>
 -->
         <ul class="navbar navbar-inverse nav-stacked">
-            <li id="dashboardNav" class="active">
+            <li data-bind="css:{active: activeRoute() == 'dashboard'}">
                 <a href="/">
                     <i class="icon icon-house-2"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li id="contactablesNav" class="submenu contactables">
+            <li class="submenu contactables" data-bind="css:{active: activeRoute() == 'contactables'}">
                 <a href="/contactables">
                     <i class="icon icon-connection-1"></i>
                     <span>Contactables</span>
                     <i class="arrow fa fa-chevron-right"></i>
                 </a>
                 <ul>
-                    <li>
+                    <li data-bind="css: { active: activeRoute() == 'contactables' && activeRouteType() == undefined }">
                         <a href="/contactables">
                             <span>All</span>
                         </a>
                     </li>
                     <!-- ko foreach: contactableObjTypes -->
-                    <li>
+                    <li data-bind="css: { active: $parent.activeRoute() == 'contactables' && $parent.activeRouteType() == objName().toLowerCase() }">
                         <a data-bind="attr: {href: '/contactables/' + objName().toLowerCase()}">
                             <span data-bind="text: objName"></span>
                         </a>
@@ -178,20 +178,20 @@
 	</a>
 </li>
 -->
-            <li id="jobsNav" class="submenu jobs">
+            <li class="submenu jobs" data-bind="css:{active: activeRoute() == 'jobs'}">
                 <a href="/jobs">
                     <i class="icon icon-briefcase"></i>
                     <span>Jobs</span>
                     <i class="arrow fa fa-chevron-right"></i>
                 </a>
                 <ul>
-                    <li>
+                    <li data-bind="css: { active: activeRoute() == 'jobs' && activeRouteType() == undefined }">
                         <a href="/jobs">
                             <span>All</span>
                         </a>
                     </li>
                     <!-- ko foreach: jobObjTypes -->
-                    <li>
+                    <li data-bind="css: { active: $parent.activeRoute() == 'jobs' && $parent.activeRouteType() == objName().toLowerCase() }">
                         <a data-bind="attr: {href: '/jobs/' + objName().toLowerCase()}">
                             <span data-bind="text: objName"></span>
                         </a>
@@ -208,7 +208,7 @@
                 </a>
             </li>
 -->
-            <li id="TasksNav" class="tasks">
+            <li class="tasks" data-bind="css:{active: activeRoute() == 'tasks'}">
                 <a href="/tasks">
                     <i class="icon icon-clock-3"></i>
                     <span>Tasks</span>
