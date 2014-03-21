@@ -13,10 +13,10 @@ Meteor.publish('contactMethods', function () {
         _id: this.userId
     });
 
-//    if (!user)
-//        return false;
+    if (!user)
+        return false;
 
     return ContactMethods.find({
-//        hierId: user.hierId
+        $or: filterByHiers(user.hierId)
     });
 })
