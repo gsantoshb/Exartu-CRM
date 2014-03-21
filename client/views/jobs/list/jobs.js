@@ -30,7 +30,7 @@ JobsController = RouteController.extend({
   }
 });
 
-Template.jobs.waitOn = ['JobHandler', 'LookUpsHandler'];
+Template.jobs.waitOn = ['JobHandler', 'LookUpsHandler', 'ObjTypesHandler'];
 
 Template.jobs.viewModel = function () {
   var self = {};
@@ -60,12 +60,11 @@ Template.jobs.viewModel = function () {
     }
   ];
   _.forEach(self.lookFilters, function(filter){
-    filter.items = LookUps.findOne({
-      name: filter.name
-    }, {
-      _id: 0,
-      items: 1
-    }).items;
+
+    filter.items = LookUps.find({
+      codeType: Enums.lookUpTypes.job[filter.fieldName].code
+    }).fetch();
+//      debugger;
     filter.selectedItems = ko.observableArray();
     filter.selectedItems.removeSelection = function(data) {
       filter.selectedItems.remove(data);

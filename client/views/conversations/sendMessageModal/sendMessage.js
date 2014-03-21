@@ -52,24 +52,22 @@ Template.sendMessage.viewModel = function (contactable) {
         var email = ko.toJS(self.email);
         if (!email.to)
             return;
-        if (_.find(self.contactable().contactMethods(), function (item) {
-            return item.type === self.contactMethodName();
-        })) {
-            self.showContactMethodName(true);
+        if (!self.email().to.isValid())
             return;
-        }
+
+        debugger;
+        var type = ContactMethods.findOne({type: Enums.contactMethodTypes.email})
 
         Contactables.update({
             _id: contactableId
         }, {
             $addToSet: {
                 'contactMethods': {
-                    type: self.contactMethodName(),
+                    type: type._id,
                     value: email.to
                 }
             }
         });
-        self.showContactMethodName(false);
     }
     self.emails = ko.computed(function () {
         if (!self.contactable())

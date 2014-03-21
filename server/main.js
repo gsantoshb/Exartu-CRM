@@ -2,7 +2,8 @@ var dbSeed = {
     seedSystemLookUps: seedSystemLookUps,
     seedSystemObjTypes: seedSystemObjTypes,
     seedSystemRelations: seedSystemRelations,
-    seedSystemRoles: seedSystemRoles
+    seedSystemRoles: seedSystemRoles,
+    seedSystemContactMethods: seedSystemContactMethods
 }
 
 Meteor.startup(function () {
@@ -10,6 +11,7 @@ Meteor.startup(function () {
      * Seed database
      * Execute all function defined in seedSystemObjTypes
      */
+    debugger;
     _.forEach(dbSeed, function (seedFn) {
         seedFn.call();
     });

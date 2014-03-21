@@ -13,11 +13,11 @@
                     <input style="width: 100%" type='hidden' placeholder="Search" data-bind="select2: { options: items, selectedValues: selectedValues }"/>
                     <hr/>
                     <!-- ko foreach: selectedValues -->
-                    <span style="word-wrap: break-word">
-                        <span data-bind="text: text"></span>
-                        <i class="fa fa-times" style="cursor: pointer" data-bind="click: $parent.selectedValues.removeSelection"></i>
-                    </span>
-                    <br/>
+                        <span style="word-wrap: break-word">
+                            <span data-bind="text: text"></span>
+                            <i class="fa fa-times" style="cursor: pointer" data-bind="click: $parent.selectedValues.removeSelection"></i>
+                        </span>
+                        <br/>
                     <!-- /ko -->
                 </div>
             </div>

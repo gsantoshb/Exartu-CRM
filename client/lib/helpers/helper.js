@@ -244,7 +244,6 @@ _.extend(helper, {
     return info;
   },
   getUserPictureUrl: function (user) {
-    //        debugger;
     var user = ko.toJS(user);
     var defaultUserPicture = '/img/avatar.jpg';
     if (!user || !user.profilePictureId) {
@@ -263,7 +262,6 @@ _.extend(helper, {
       default.url;
   },
   getUserPictureUrlAsync: function (user, cb) {
-//        debugger;
     var user = ko.toJS(user);
     var defaultUserPicture = '/img/avatar.jpg';
     var counter = 0;
@@ -304,7 +302,7 @@ _.extend(helper, {
     return getContactablePictureUrl(contact && contact.pictureFileId ? contact.pictureFileId() : null, '/assets/user-photo-placeholder.jpg')
   },
   getEmployeePictureAsync: function (employee) {
-    return getContactablePictureAsync(ko.toJS(employee), Global.defaultEmployeePicture);
+        return getContactablePictureAsync(ko.toJS(employee), Global.defaultEmployeePicture);
   },
   getContactableFilePictureAsync: function (fileId) {
     var data = ko.observable({
@@ -387,7 +385,6 @@ _.extend(helper, {
    */
   addExtend: function (options) {
     var self = options.self;
-//        debugger;
     var objType = ObjTypes.findOne({
       objName: options.objname
     });
@@ -420,9 +417,9 @@ _.extend(helper, {
           }) : ko.observable().extend({
             required: true
           }),
-          options: LookUps.findOne({
-            name: item.lookUpName
-          }).items,
+                    options: LookUps.find({
+                        codeType: item.lookUpCode
+                    }).fetch()
         })
       }
     });
@@ -451,7 +448,6 @@ _.extend(helper, {
       var ObjGroupRelNames = [];
 
       var ObjGroupRelValues = [];
-//            debugger;
       _.each(self.relations(), function (r) {
         if (r.relation.isGroupType) {
           ObjGroupRelNames.push(r.relation.name);

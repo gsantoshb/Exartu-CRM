@@ -3,12 +3,12 @@ JobController = RouteController.extend({
 
     data: function () {
         Session.set('entityId', this.params._id); // save current contactable to later use on templates
-    },
+    }
 
 });
 
 
-Template.job.waitOn = ['JobHandler', 'ObjTypesHandler'];
+Template.job.waitOn = ['JobHandler', 'ObjTypesHandler', 'ContactMethodsHandler'];
 
 Template.job.viewModel = function () {
     var self = this,

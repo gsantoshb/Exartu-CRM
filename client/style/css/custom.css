@@ -299,7 +299,13 @@ max-height:50px;
     position: absolute;
     right: 15px;
 }
+body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open{
+    background-color: #363636;
 
+}
+body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
+    color: rgba(255, 255, 255, 0.55);
+}
 .document-actions button {
     background-color: rgba(255, 255, 255, 0.85);
 }

@@ -21,10 +21,10 @@
         <div data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
             <h5 data-bind="text: displayName"></h5>
             <!-- ko if: $data.multiple -->
-            <select class="form-control" data-bind="options: options, optionsText:'displayName', optionsValue:'code', selectedOptions: value, optionsCaption: 'None...'" multiple></select>
+            <select class="form-control" data-bind="options: options, optionsText:'displayName', optionsValue:'_id', selectedOptions: value, optionsCaption: 'None...'" multiple></select>
             <!-- /ko -->
             <!-- ko if: !$data.multiple -->
-            <select class="form-control" data-bind="options: options, optionsText:'displayName', optionsValue:'code', value: value, optionsCaption: 'Choose...'"></select>
+            <select class="form-control" data-bind="options: options, optionsText:'displayName', optionsValue:'_id', value: value, optionsCaption: 'Choose...'"></select>
             <!-- /ko -->
             <span class="text-danger" data-bind="validationMessage: value"></span>
         </div>
@@ -116,7 +116,7 @@
                     <!-- /ko -->
                     <span class="control-label pull-left" data-bind="text: name"></span>
                     <div class="col-lg-8">
-                        <select class="form-control" class="col-lg-10" data-bind="options:ko.meteor.findOne(LookUps,{name:lookUpName})().items(), optionsText:'displayName', value:value, optionsValue:'code'">
+                        <select class="form-control" class="col-lg-10" data-bind="options:ko.meteor.find(LookUps,{codeType:lookUpCode}), optionsText:'displayName', value:value, optionsValue:'_id'">
                         </select>
                     </div>
                 </div>

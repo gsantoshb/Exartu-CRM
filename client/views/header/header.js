@@ -27,7 +27,12 @@ Template.header.viewModel = function () {
     self.picture = function (size) {
         return Meteor.user().services.google.picture.split('?')[0] + '?sz=' + size;
     }
-
+    self.activeRoute = ko.dep(function(){
+        return Router.current().route.name;
+    });
+    self.activeRouteType = ko.dep(function(){
+        return Router.current().params.type;
+    });
     return self;
 };
 
@@ -242,25 +247,4 @@ Template.header.rendered = function () {
 Template.header.hasPicture = function () {
     var user = Meteor.user();
     return user && user.services && user.services.google && user.services.google.picture;
-}
-
-Template.header.events = {
-    'click #dashboardNav': function () {
-        // Remove class from previous navigation link
-        $('#sidebar > ul > li.active').removeClass('active');
-        // Add class
-        $('#dashboardNav').addClass('active');
-    },
-    'click #contactablesNav': function () {
-        // Remove class from previous navigation link
-        $('#sidebar > ul > li.active').removeClass('active');
-        // Add class
-        $('#contactablesNav').addClass('active');
-    },
-    'click #jobsNav': function () {
-        // Remove class from previous navigation link
-        $('#sidebar > ul > li.active').removeClass('active');
-        // Add class
-        $('#jobsNav').addClass('active');
-    }
 }

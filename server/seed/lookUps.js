@@ -1,10 +1,12 @@
 seedSystemLookUps = function () {
     _.forEach(systemLookUps, function (item) {
+//        debugger;
         var oldItem = LookUps.findOne({
-            'code': item.code,
+            'displayName': item.displayName,
             'typeCode': item.typeCode
         });
         if (oldItem == undefined) {
+
             item.hierId = ExartuConfig.SystemHierarchyId;
             LookUps.insert(item);
         } else {
