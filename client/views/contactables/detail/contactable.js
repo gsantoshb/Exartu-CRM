@@ -33,7 +33,7 @@ var aux;
 Template.contactable.entityId = function(){
     return Session.get('entityId');
 }
-Template.contactable.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps'];
+Template.contactable.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps', 'ContactMethodsHandler'];
 Template.contactable.viewModel = function () {
     var self = {},
         contactableId = Router.current().params._id;
@@ -42,7 +42,9 @@ Template.contactable.viewModel = function () {
         _id: contactableId
     });
 
-    // Contact methods
+    // <editor-fold desc="******  Contact Methods  ******">
+
+    self.contactMethodsTypes = ko.meteor.find(ContactMethods,{});
     self.showAllContactMethods = ko.observable(false);
     self.contactMethods = ko.computed(function () {
         return self.showAllContactMethods() ? self.contactable().contactMethods() : self.contactable().contactMethods.slice(0, 3);
@@ -76,8 +78,9 @@ Template.contactable.viewModel = function () {
                 }
             })
     }
+    // </editor-fold>
 
-    // TAGS
+    // <editor-fold desc="****** TAGS  ******">
     self.newTag = ko.observable('');
     self.isAdding = ko.observable(false);
     self.addTag = function () {
@@ -96,6 +99,7 @@ Template.contactable.viewModel = function () {
     self.removeTag = function (tag) {
         Meteor.call('removeContactableTag', contactableId, tag)
     };
+    // </editor-fold>
 
     self.getTemplateName = function (data) {
         if (data.Employee) return 'employee-template';
@@ -111,34 +115,8 @@ Template.contactable.viewModel = function () {
         return Router.current().params.hash || 'home';
     });
 
-    // Edit contactable
 
-    self.updateContactable = function (options, callback) {
-        if (!options.objUpdated.isValid()) {
-            options.objUpdated.errors.showAllMessages();
-            return;
-        }
-
-        var toJSObj = ko.toJS(options.objUpdated());
-        _.forEach(_.keys(toJSObj), function (key) {
-            if (_.isFunction(toJSObj[key]))
-                delete toJSObj[key];
-        });
-
-        var set = {};
-        set['$set'] = {};
-        set['$set'][options.objNameUpdated] = toJSObj;
-
-        Contactables.update({
-            _id: self.contactable()._id()
-        }, set, function (err, result) {
-            if (!err)
-                callback.call();
-        });
-    };
-    /*
-     * location
-     */
+    // <editor-fold desc="****** LOCATION  ******">
     self.hasLocation = ko.observable(ko.utils.unwrapObservable(self.contactable().location) != null);
     self.hasEditLocation = ko.observable(ko.utils.unwrapObservable(self.editLocation) != null);
     var geocoder = new google.maps.Geocoder();
@@ -191,7 +169,34 @@ Template.contactable.viewModel = function () {
             }
         });
     }
+    // </editor-fold>
 
+
+    // <editor-fold desc="****** EDIT  ******">
+
+    self.updateContactable = function (options, callback) {
+        if (!options.objUpdated.isValid()) {
+            options.objUpdated.errors.showAllMessages();
+            return;
+        }
+
+        var toJSObj = ko.toJS(options.objUpdated());
+        _.forEach(_.keys(toJSObj), function (key) {
+            if (_.isFunction(toJSObj[key]))
+                delete toJSObj[key];
+        });
+
+        var set = {};
+        set['$set'] = {};
+        set['$set'][options.objNameUpdated] = toJSObj;
+
+        Contactables.update({
+            _id: self.contactable()._id()
+        }, set, function (err, result) {
+            if (!err)
+                callback.call();
+        });
+    };
 
     // Edit contactable's general information (person or organization details)
 
@@ -260,8 +265,10 @@ Template.contactable.viewModel = function () {
             self.editModeContactableObjType(false);
         });
     };
+    // </editor-fold>
 
-    // Posts
+
+    // <editor-fold desc="****** POSTS  ******">
     self.newPost = ko.observable("");
 
     self.adding = ko.observable(false);
@@ -276,8 +283,10 @@ Template.contactable.viewModel = function () {
             }
         });
     }
+    // </editor-fold>
 
-    // Contactable picture
+
+    // <editor-fold desc="****** PICTURE  ******">
     var updatePicture = function () {
         if (self.picture() && self.picture().fileHandler.
             default) {
@@ -345,6 +354,7 @@ Template.contactable.viewModel = function () {
 
         Meteor.call('updateContactablePicture', contactableId, fileId);
     });
+    // </editor-fold>
 
     // Extra information on header for each objType
     self.getHeaderInfoVM = function (data) {

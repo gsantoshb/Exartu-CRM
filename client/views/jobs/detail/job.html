@@ -190,14 +190,14 @@
                     </tr>
                     <!--ko if: contactMethods().length >= 1-->
                     <tr data-bind="with: contactMethods()[0]">
-                        <td data-bind="text: helper.getContactMethodDisplayName($data.type)"></td>
+                        <td data-bind="text: typeName"></td>
                         <td data-bind="text: value "></td>
                     </tr>
                     <!--/ko-->
 
                     <!--ko if: contactMethods().length >= 2-->
                     <tr data-bind="with: contactMethods()[1]">
-                        <td data-bind="text: helper.getContactMethodDisplayName($data.type)"></td>
+                        <td data-bind="text: typeName"></td>
                         <td data-bind="text: value "></td>
                     </tr>
                     <!--/ko-->

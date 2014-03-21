@@ -28,7 +28,7 @@
                             <a href="#" data-bind="attr:{href:'/contactable/' +_id()}, text: displayName"></a>
                         </h3>
                         <div class="bottom-10 box-4 text-normal" style="margin-left: 20px;">
-                            <!--ko if: location-->
+                            <!--ko if: $data.location-->
                             <i class="fa fa-map-marker" style="width:7px; margin-left: 1px;"></i>&nbsp;
                             <span data-bind="text: location.formatted_address"></span>
                             <br/>

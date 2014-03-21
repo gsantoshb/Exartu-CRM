@@ -193,6 +193,7 @@ seedSystemObjTypes = function () {
                 regex: '',
                 fieldType: Enums.fieldType.lookUp,
                 lookUpName: 'jobTitle',
+                lookUpCode: Enums.lookUpTypes.job.titles.code,
                 multiple: false,
                 defaultValue: null,
                 showInAdd: true

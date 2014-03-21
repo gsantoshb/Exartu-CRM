@@ -87,7 +87,6 @@ validateObjType = function (obj, objType) {
 
     //    console.log('relations...');
     //    console.dir(relations);
-    debugger;
     _.forEach(relations, function (rel) {
 
         var objRel = (objType.objName == rel.obj1 || objType.objGroupType == rel.obj1) ? rel.visibilityOn1 : rel.visibilityOn2;
@@ -122,9 +121,7 @@ var validateField = function (value, field) {
     case Enums.fieldType.string:
         return value.match ? value.match(field.regex) != null : false;
     case Enums.fieldType.lookUp:
-        var lookUp = LookUps.findOne({
-            name: field.lookUpName
-        });
+        debugger;
         if (field.multiple) {
 
             if (typeof value != typeof[])
@@ -132,9 +129,15 @@ var validateField = function (value, field) {
             else {
                 var v = true;
                 _.every(value, function (val) {
-                    var item = _.findWhere(lookUp.items, {
-                        code: val
+                    var item = LookUps.findOne({
+                        codeType: field.lookUpCode,
+                        _id: val
                     });
+                    if (! item)
+                        v = false;
+//                    var item = _.findWhere(lookUp.items, {
+//                        code: val
+//                    });
                     if (item.dependencies) {
                         if (_.difference(item.dependencies, value)) {
                             console.error(item.name + ' dependencies fails');
@@ -146,9 +149,13 @@ var validateField = function (value, field) {
                 return v;
             }
         } else {
-            var item = _.findWhere(lookUp.items, {
-                code: value
+            var item = LookUps.findOne({
+                codeType: field.lookUpCode,
+                _id: value
             });
+//            var item = _.findWhere(lookUp.items, {
+//                code: value
+//            });
             if (!item) {
                 return false;
             }
