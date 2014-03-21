@@ -525,7 +525,7 @@ ko.bindingHandlers.dragAndDrop = {
   init: function (element, valueAccessor) {
     var options = valueAccessor();
 
-    $(element).addClass('drop-zone')
+    $(element).addClass('drop-zone');
 
     ko.utils.registerEventHandler(element, "dragenter",
       function (data) {
@@ -554,7 +554,6 @@ ko.bindingHandlers.dragAndDrop = {
       function (data) {
         data.stopPropagation();
         data.preventDefault();
-        debugger;
         var files = data.originalEvent.dataTransfer.files;
 
         for (var i = 0, f; f = files[i]; i++) {
