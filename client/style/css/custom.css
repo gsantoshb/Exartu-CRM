@@ -225,6 +225,38 @@
     height: auto
 }
 
+.thumb.thumb-md > img{
+    max-height:70px;
+    max-width:70px;
+    width: auto;
+    height: auto;
+}
+
+.thumb-lg{
+    height:100px;
+    width:100px;
+}
+.thumb.thumb-lg > a > img{
+    max-height:100px;
+    max-width:100px;
+    width: auto;
+    height: auto
+}
+
+.thumb.thumb-lg > img{
+    max-height:100px;
+    max-width:100px;
+    width: auto;
+    height: auto;
+}
+
+.thumb > img{
+    max-height:50px;
+    max-width:50px;
+    width: auto;
+    height: auto;
+}
+
 .thumb > a > img{
 max-height:50px;
     max-width:50px;
@@ -234,13 +266,38 @@ max-height:50px;
 
 
 .drop-zone {
-    height: 150px;
-    width: 150px;
+    height: 100px;
     border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    border-color: rgb(184, 184, 184);
+    text-align: center;
+    padding-top: 20px;
+    font-size: x-large;
+    color: grey;
+    background-color: rgb(224, 224, 224);
 }
 .drop-zone.drop-zone-hover {
     border-style: dashed;
-    border-width: 3px;
+    border-width: 2px;
+    border-radius: 5px;
+    border-color: rgb(184, 184, 184);
+    text-align: center;
+    padding-top: 20px;
+    font-size: x-large;
+    color: grey;
+    background-color: rgb(224, 224, 224);
+}
+
+@media (max-width: 1199px) {
+    .drop-zone {
+        display: none;
+    }
+}
+
+.document-actions {
+    position: absolute;
+    right: 15px;
 }
 body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open{
     background-color: #363636;
@@ -248,4 +305,106 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open{
 }
 body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     color: rgba(255, 255, 255, 0.55);
+}
+.document-actions button {
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+.document-filter {
+    margin: 5px;
+    padding: 5px;
+    background-color: #808080;
+    border-radius: 3px;
+}
+
+
+.document-thumbnail {
+    min-height: 200px;
+}
+
+@media (min-width: 1200px) {
+    .document-thumbnail .thumb{
+        height: 150px;
+        width:100%;
+    }
+
+    .document-thumbnail .thumb.thumb-lg > a > img{
+        max-height: 150px !important;
+        max-width:100% !important;
+        width: auto;
+        height: auto;
+    }
+
+    .document-thumbnail .document-details {
+        display: none;
+    }
+
+    .document-thumbnail .document-name{
+        display: none;
+    }
+
+    .document-thumbnail{
+        -moz-animation-duration: 0.5s;
+        -webkit-animation-duration: 0.5s;
+        -moz-animation-name: fadeIn;
+        -webkit-animation-name: fadeIn;
+    }
+
+    /*hover*/
+
+    .document-thumbnail:hover {
+        -moz-animation-duration: 0.5s;
+        -webkit-animation-duration: 0.5s;
+        -moz-animation-name: fadeIn;
+        -webkit-animation-name: fadeIn;
+    }
+
+    .document-thumbnail:hover .thumb{
+        height: 100px;
+        width: 40%;
+    }
+
+    .document-thumbnail:hover .thumb.thumb-lg > a > img{
+        max-height: 100px !important;
+        max-width: 100% !important;
+        height: auto;
+        width: auto;
+    }
+
+    .document-thumbnail:hover .document-details {
+        display: block;
+    }
+
+    .document-thumbnail:hover .document-name{
+        display: block;
+    }
+}
+
+@media (max-width: 1199px) {
+    .document-thumbnail {
+        -moz-animation-duration: 0.5s;
+        -webkit-animation-duration: 0.5s;
+        -moz-animation-name: fadeIn;
+        -webkit-animation-name: fadeIn;
+    }
+
+    .document-thumbnail.thumb{
+        height: 100px;
+        width: 40%;
+    }
+
+    .document-thumbnail.thumb.thumb-lg > a > img{
+        max-height: 100px !important;
+        max-width: 100% !important;
+        height: auto;
+        width: auto;
+    }
+
+    .document-thumbnail.document-details {
+        display: block;
+    }
+
+    .document-thumbnail.document-name{
+        display: block;
+    }
 }

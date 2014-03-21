@@ -46,7 +46,7 @@ ContactablesFS.allow({
         return true;
     },
     remove: function (userId, file) {
-        return false;
+        return true; // TODO: allow correctly
     }
 });
 
