@@ -275,3 +275,7 @@ var validateOrganization = function (org) {
         return false;
     return true;
 }
+
+// indexes
+Contactables._ensureIndex({hierId: 1});
+Contactables._ensureIndex({objNameArray: 1});

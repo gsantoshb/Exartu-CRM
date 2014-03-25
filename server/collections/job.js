@@ -117,3 +117,7 @@ var validate = function (job, objTypes) {
 
     return v;
 };
+
+// indexes
+Jobs._ensureIndex({hierId: 1});
+Jobs._ensureIndex({objNameArray:1});

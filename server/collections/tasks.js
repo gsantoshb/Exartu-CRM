@@ -47,3 +47,8 @@ Tasks.allow({
         return true;
     }
 })
+
+// indexes
+Tasks._ensureIndex({hierId: 1});
+Tasks._ensureIndex({assign: 1});
+Tasks._ensureIndex({userId: 1});
