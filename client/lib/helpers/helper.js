@@ -63,6 +63,8 @@ _.extend(helper, {
     switch (field.fieldType) {
       case 0:
         return 'inStringField';
+      case 1:
+        return 'inIntField';
       case 2:
         return 'inDateField';
       case 5:
