@@ -117,3 +117,5 @@ Messages.before.insert(function (userId, doc) {
 Conversations.before.insert(function (userId, doc) {
     doc.createdAt = Date.now();
 });
+// indexes
+Messages._ensureIndex({conversationId: 1});
