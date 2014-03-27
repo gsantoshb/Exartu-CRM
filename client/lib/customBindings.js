@@ -39,7 +39,6 @@ ko.validation.rules['uniqueUserInformation'] = {
  */
 ko.bindingHandlers.dateTimePicker = {
     init: function (element, valueAccessor, allBindingsAccessor) {
-
         var value; //the observable that contains the date
         var visible = true; //an observable with the visible flag
         var startLimit = -Infinity;

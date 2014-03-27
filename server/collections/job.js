@@ -31,15 +31,17 @@ Meteor.startup(function () {
             if (beforeInsertOrUpdateJob(job)) {
                 Jobs.insert(job);
             } else {
-                console.error('Job is not valid')
+                console.error('Job is not valid');
                 console.dir(job);
             }
         },
-        assign: function(jobId, employeeId){
+        assign: function(jobId, employeeId, assignmentInfo){
             debugger;
-            var j= Jobs.findOne({_id:jobId},{_id: 1});
-            var e= Contactables.findOne({_id:employeeId , Employee:{$exists: true}},{_id: 1});
+            var j= Jobs.findOne({ _id: jobId },{ _id: 1 });
+            var e= Contactables.findOne({ _id: employeeId , Employee: { $exists: true } },{_id: 1});
             if (j && e){
+                // update the job and the employee
+                // then unlock the client and create the assignment entity
                 Jobs.update({
                     _id: jobId
                 }, {
@@ -54,6 +56,11 @@ Meteor.startup(function () {
                         assignment: jobId
                     }
                 });
+                this.unblock();
+                assignmentInfo=assignmentInfo||{};
+                createAssignment(j, e, assignmentInfo);
+            }else{
+                throw new Meteor.Error(400, "the employee or the job could not be found");
             }
         }
     });

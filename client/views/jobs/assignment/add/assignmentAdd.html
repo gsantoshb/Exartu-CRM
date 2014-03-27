@@ -1,21 +1,50 @@
 <template name="assignmentAdd">
-    <div class="modal fade" id="addContactableModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addContactableModal">
+    <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
         <div class="modal-dialog">
             <div class="modal-content">
+
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">Assignment
-                        <span data-bind="text: edit? 'edit': 'add'"></span>
-                    </h4>
+                    <h4 class="modal-title" id="myModalLabel">Assignment</h4>
                 </div>
+
                 <div class="modal-body">
-                    <form role="form">
+                    <form role="form" class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Employee</label>
+                            <label class="col-sm-2 control-label">Employee:</label>
                             <div class="col-sm-10">
                                 <select class="form-control" data-bind="options: employees,optionsText: 'displayName', optionsValue: '_id', value:employee, optionsCaption: 'None...'" />
                             </div>
                         </div>
+                        <!--ko with: info-->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Start:</label>
+                                <div class="col-sm-10" data-bind="dateTimePicker: {date: start}">
+                                    <div data-pick="dateTime"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">End:</label>
+                                <!--ko if: end-->
+                                    <div class="col-sm-10" data-bind="dateTimePicker: {date: end}">
+                                        <div data-pick="dateTime"></div>
+                                    </div>
+                                <!--/ko-->
+                                <!--ko ifnot: end-->
+                                    <button href="#" class="btn btn-link" data-bind="click: function(){ end(new Date()); }">click to end this assingment</button>
+                                <!--/ko-->
+                            </div>
+                            <hr/>
+                            <h5>Rates</h5>
+                            <!--ko with: rate-->
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Regular:</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" data-bind="value: regular"/>
+                                    </div>
+                                </div>
+                            <!--/ko-->
+                        <!--/ko-->
                     </form>
                 </div>
                 <div class="modal-footer">
