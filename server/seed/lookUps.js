@@ -3,10 +3,9 @@ seedSystemLookUps = function () {
 //        debugger;
         var oldItem = LookUps.findOne({
             'displayName': item.displayName,
-            'typeCode': item.typeCode
+            'codeType': item.codeType
         });
         if (oldItem == undefined) {
-
             item.hierId = ExartuConfig.SystemHierarchyId;
             LookUps.insert(item);
         } else {

@@ -16,6 +16,15 @@
         </div>
     </div>
 
+    <!-- Int -->
+    <div id="inIntField" style="display: none;">
+        <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
+            <label class="control-label" data-bind="text: displayName, attr: { for: displayName }"></label>
+            <input class="form-control" type="text" placeholder="" data-bind="value: value, attr: {id: displayName}" />
+            <span class="text-danger" data-bind="validationMessage: value"></span>
+        </div>
+    </div>
+
     <!-- LookUp -->
     <div id="inLookUpField" style="display: none;">
         <div data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
