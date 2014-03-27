@@ -77,7 +77,20 @@ Meteor.startup(function () {
             }else{
                 throw new Meteor.Error(400, "the employee or the job could not be found");
             }
-        }
+        },
+      updateCandidateNegotiation: function(data) {
+        Jobs.update(
+          {
+            _id: data.jobId,
+            'candidates.employee': data.employeeId
+          },
+          {
+            $set: {
+              'candidates.$.negotiation': data.negotiation
+            }
+          }
+        )
+      }
     });
 });
 
