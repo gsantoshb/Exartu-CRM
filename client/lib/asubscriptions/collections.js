@@ -29,9 +29,9 @@ Contactables = new Meteor.Collection("contactables", {
         if (!contactable.pictureFileId) {
             contactable.pictureFileId=null;
         }
-        if (contactable.assignment) {
+        if (contactable.jopAssigned) {
             contactable.assignmentInfo = Jobs.findOne({
-                _id: contactable.assignment
+                _id: contactable.jopAssigned
             }, {
                 transform: null
             });
@@ -130,16 +130,16 @@ Jobs = new Meteor.Collection("jobs", {
                 _id: job.customer
             });
         }
-        if (job.assignment) {
+        if (job.employeeAssigned) {
             job.assignmentInfo = Contactables.findOne({
-                _id: job.assignment
+                _id: job.employeeAssigned
             });
         } else {
             job.assignmentInfo = null;
         }
 
         return job;
-    },
+    }
 });
 extendedSubscribe('jobs', 'JobHandler');
 
@@ -273,3 +273,6 @@ extendedSubscribe('usersFiles', 'UsersFSHandler');
 
 ContactMethods= new Meteor.Collection('contactMethods');
 extendedSubscribe('contactMethods', 'ContactMethodsHandler');
+
+Assignments= new Meteor.Collection('assignment');
+extendedSubscribe('assignment', 'AssignmentsHandler');

@@ -3,9 +3,7 @@ Meteor.publish('assignment', function () {
     if (!this.userId)
         return false;
 
-    return Assignment.find({
-        $or: filterByHiers(user.hierId)
-    });
+    return Assignment.find();
 })
 
 Meteor.startup(function(){
@@ -22,26 +20,38 @@ Meteor.startup(function(){
         }
         assignment.start= assignmentInfo.start ? assignmentInfo.start : new Date();
         assignment.end= assignmentInfo.end ? assignmentInfo.end : null;
-        assignment.rates= createRates(job, assignmentInfo.rate);
+        assignment.rates= createRates(job, assignmentInfo);
         assignment.qualification= null;
 
-        Assignment.insert(assignment);
+        return Assignment.insert(assignment);
     };
 
-    createRates= function(job, ratesInfo){
-        ratesInfo= ratesInfo || {};
-        if (job.objNameArray.indexOf('Temporary') >= 0){
-            var rate= {
-                payRate:{
-                    regular: ratesInfo.regular
-                }
-            }
-            if (!rate.payRate.regular){
-                var frequency = LookUps.find({ codeType: Enums.lookUpTypes.payRate.frequencies.code, code: job.Temporary.frequency });
-                rate.payRate.regular = frequency ? (job.Temporary.pay / frequency.hours) : null;
-            }
-            return rate;
-        }
-
+    createRates= function(job, assignmentInfo){
+        var payRatesInfo= assignmentInfo.payRate || {};
+        var billRatesInfo= assignmentInfo.billRate || {};
+        var rate= {
+            payRate:payRatesInfo,
+            billRate:billRatesInfo
+        };
+//        if (job.Temporary){
+//
+//            var frequency = LookUps.find({ codeType: Enums.lookUpTypes.payRate.frequencies.code, code: job.Temporary.frequency });
+//
+//            if (!rate.payRate.regular){
+//                rate.payRate.regular = frequency ? (job.Temporary.pay / frequency.hours) : null;
+//            }
+//            if (!rate.payRate.overTime){
+//                rate.payRate.regular = frequency ? (job.Temporary.pay / frequency.hours) : null;
+//            }
+//            if (!rate.payRate.doubleTime){
+//                rate.payRate.regular = frequency ? (job.Temporary.pay / frequency.hours) : null;
+//            }
+//        }else if (job['Direct Hire']){
+//
+//            if (!rate.payRate.salary){
+//                rate.payRate.salary = job['Direct Hire'].salary;
+//            }
+//        }
+        return rate;
     }
 })
