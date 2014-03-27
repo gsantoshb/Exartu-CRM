@@ -55,7 +55,20 @@ Meteor.startup(function () {
                     }
                 });
             }
-        }
+        },
+      updateCandidateNegotiation: function(data) {
+        Jobs.update(
+          {
+            _id: data.jobId,
+            'candidates.employee': data.employeeId
+          },
+          {
+            $set: {
+              'candidates.$.negotiation': data.negotiation
+            }
+          }
+        )
+      }
     });
 });
 

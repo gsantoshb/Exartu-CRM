@@ -60,44 +60,6 @@ var handler = {
 }
 ContactablesFS.fileHandlers(handler);
 
-//Contactables.before.update(function (userId, doc, fieldNames, modifier, options) {
-//    console.info('*******updating*********')
-//    console.dir(arguments);
-//    //    console.dir(doc.objNameArray);
-//    //    console.dir(fieldNames);
-//
-//    var objTypes = ObjTypes.find({
-//        objName: {
-//            $in: doc.objNameArray
-//        }
-//    }).fetch();
-//
-//    var relations = Relations.find({
-//        $or: [{
-//                obj1: {
-//                    $in: doc.objNameArray
-//                }
-//            }, {
-//                obj2: {
-//                    $in: doc.objNameArray
-//                },
-//                visibilityOn2: {
-//                    $exists: true
-//                }
-//            }
-//        ]
-//    }).fetch();
-//    var typesByName = _.object(_.map(objTypes, function (t) {
-//        return t.objName
-//    }), objTypes);
-//    _.every(fieldNames, function (field) {
-//        if (typesByName[field]) {
-//            console.dir(field);
-//        }
-//    });
-//});
-
-
 Meteor.startup(function () {
     Meteor.methods({
         addContactable: function (contactable) {
@@ -177,6 +139,17 @@ Meteor.startup(function () {
                     pictureFileId: fileId
                 }
             });
+        },
+        createCandidate: function(candidate, jobId) {
+          candidate.cratedAt = new Date();
+          candidate.negotiation = '';
+          Jobs.update({
+            _id: jobId
+          }, {
+            $addToSet: {
+              candidates: candidate
+            }
+          });
         }
     });
 });
