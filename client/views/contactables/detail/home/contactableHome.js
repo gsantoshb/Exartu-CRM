@@ -1,5 +1,5 @@
-Template.contactableHome.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps', 'ContactMethodsHandler'];
-Template.contactableHome.viewModel = function () {
+Template.contactablePosts.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps', 'ContactMethodsHandler'];
+Template.contactablePosts.viewModel = function () {
     var self= {},
         contactableId= Session.get('entityId');
 
