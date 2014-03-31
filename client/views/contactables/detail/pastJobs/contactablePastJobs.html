@@ -27,15 +27,7 @@
                                         <span data-bind="text: $data.jobTitle"></span>
                                     </a>
                                 </span>
-                                <div>
-                                    <!--ko if: $data.tags-->
-                                    <div data-bind="foreach: tags">
-                                        <button type="button" class="btn btn-xs btn-primary">
-                                            <span data-bind="text: $data"></span>
-                                        </button>
-                                    </div>
-                                    <!--/ko-->
-                                </div>
+
                             </div>
                             <!-- /.table-item-cell-container -->
                         </div>
@@ -63,7 +55,7 @@
 
                     </div>
                     <div class="col-sm-6">
-                        <div class="table-item-cel">
+                        <div class="table-item-cell">
                             <!--ko if: $data.description-->
                                 <div class="table-item-cell-container magic-content text-small">
                                     <span data-bind="text: description"></span>
@@ -74,7 +66,15 @@
                     </div>
                 </div>
                 <!-- /.row -->
-
+                <div>
+                    <!--ko if: $data.tags-->
+                        <div data-bind="foreach: tags">
+                            <button type="button" class="btn btn-xs btn-primary">
+                                <span data-bind="text: $data"></span>
+                            </button>
+                        </div>
+                    <!--/ko-->
+                </div>
             </div>
         </div>
     </div>
