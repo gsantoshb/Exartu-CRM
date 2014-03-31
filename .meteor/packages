@@ -10,10 +10,8 @@ bootstrap-3
 iron-router
 knockout-client
 email
-accounts-ui-bootstrap-3
 collection-hooks
 service-configuration
-iron-router-progress
 googlemaps
 collectionFS
 cfs-public-folder
@@ -22,3 +20,9 @@ spin
 bootstrap3-wysihtml5
 jquery-color-animation
 select2
+http
+connect
+xml2js
+npm
+cfs-filesystem
+blaze-layout

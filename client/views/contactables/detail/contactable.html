@@ -63,7 +63,7 @@
                         </li>
                     </ul>
                     <div class="tab-content" data-bind="bind: false">
-                        {{yield 'content'}}
+                        {{> yield 'content'}}
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
 
 
 <template name="contactableHome">
-    <!-- Profile Home Section ------------------------------------ -->
+    <!-- Profile Home Section -->
     <div class="tab-pane active" id="profile-home">
         <div class="row">
             <div class="col-md-4 col-lg-4">
@@ -151,7 +151,7 @@
                             <span class="text-danger" data-bind="validationMessage: $root.newContactMethod().value"></span>
                         </div>
                         <div data-bind="css:{'has-error': $root.newContactMethod().type.isModified() && ! $root.newContactMethod().type.isValid()}">
-                            <select class="form-control" class="col-lg-10" data-bind="options: $root.contactMethodsTypes, optionsText:'displayName', value:$root.newContactMethod().type, optionsValue:'_id', executeOnEnter: {fn: $root.addContactMethod, keys: [13]}" />
+                            <select class="form-control col-lg-10" data-bind="options: $root.contactMethodsTypes, optionsText:'displayName', value:$root.newContactMethod().type, optionsValue:'_id', executeOnEnter: {fn: $root.addContactMethod, keys: [13]}" > </select>
                             <span class="text-danger" data-bind="validationMessage: $root.newContactMethod().type"></span>
                         </div>
                         <span class="btn btn-link pull-right" data-bind="click: $root.addContactMethod">Save</span>

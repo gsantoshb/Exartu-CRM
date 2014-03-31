@@ -1,5 +1,5 @@
 <template name="contactableDetails">
-    <!-- Profile Home Section ------------------------------------ -->
+    <!-- Profile Home Section -->
     <div class="row">
         <div class="col-md-4 col-lg-4">
             <div class="box ">
@@ -7,7 +7,7 @@
                     <div class="box-title">
                         <i class="icon icon-information"></i>Info
                         <span class="pull-right">
-                            <i class="fa fa-pencil" data-bind="style: {color: $root.editModeContactableInfo()? '#2886c4': 'grey', cursor: 'pointer'}, click: function() { $root.editModeContactableInfo(!$root.editModeContactableInfo())}" />
+                            <i class="fa fa-pencil" data-bind="style: {color: $root.editModeContactableInfo()? '#2886c4': 'grey', cursor: 'pointer'}, click: function() { $root.editModeContactableInfo(!$root.editModeContactableInfo())}" > </i>
                         </span>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                 <div class="box-header-2">
                     Location
                     <span class="pull-right">
-                        <i class="fa fa-pencil" data-bind="style: {color: $parent.editModeLocation()? '#2886c4': 'grey', cursor: 'pointer'}, click: $parent.edit" />
+                        <i class="fa fa-pencil" data-bind="style: {color: $parent.editModeLocation()? '#2886c4': 'grey', cursor: 'pointer'}, click: $parent.edit" > </i>
                     </span>
                 </div>
                 <div data-bind="switch: $parent.editModeLocation">
@@ -116,6 +116,6 @@
         <!-- /ko -->
     </div>
 
-    {{>obj-type-template}}
+    {{>objTypeTemplate}}
     <!-- /.row -->
 </template>

@@ -1,5 +1,5 @@
 <template name="assignmentAdd">
-    <div class="modal fade" id="addContactableModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addContactableModal">
+    <div class="modal fade" id="addContactableModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addContactableModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -13,7 +13,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Employee</label>
                             <div class="col-sm-10">
-                                <select class="form-control" data-bind="options: employees,optionsText: 'displayName', optionsValue: '_id', value:employee, optionsCaption: 'None...'" />
+                                <input type='hidden' style="width: 100%" placeholder="Search" data-bind="select2: { options: ko.toJS(employees), selectedValues: employee, filter: $root.filter }"/>
                             </div>
                         </div>
                     </form>
