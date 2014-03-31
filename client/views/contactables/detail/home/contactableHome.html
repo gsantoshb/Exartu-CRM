@@ -1,6 +1,5 @@
 <template name="contactableHome">
-
-    <div class="tab-pane active" id="profile-home">
+    <div>
         <!-- Profile Home Section -->
         <div class="row">
             <div class="col-md-4 col-lg-4">
@@ -15,21 +14,21 @@
                         </p>
                         <div data-bind="if: $data.person">
                             <div data-bind="with: $data.person">
-                                <p data-bind="template: {name: 'display-property', data: {name: 'First Name', value: firstName, editMode: false} }">
+                                <p data-bind="template: {name: 'display-property2', data: {name: 'First Name', value: firstName, editMode: false} }">
                                 </p>
-                                <p data-bind="template: {name: 'display-property', data: {name: 'Middle Name', value: middleName, editMode: false} }">
+                                <p data-bind="template: {name: 'display-property2', data: {name: 'Middle Name', value: middleName, editMode: false} }">
                                 </p>
-                                <p data-bind="template: {name: 'display-property', data: {name: 'Last Name', value: lastName, editMode: false} }">
+                                <p data-bind="template: {name: 'display-property2', data: {name: 'Last Name', value: lastName, editMode: false} }">
                                 </p>
-                                <p data-bind="template: {name: 'display-property', data: {name: 'Job Title', value: jobTitle, editMode: false} }">
+                                <p data-bind="template: {name: 'display-property2', data: {name: 'Job Title', value: jobTitle, editMode: false} }">
                                 </p>
-                                <p data-bind="template: {name: 'display-property', data: {name: 'Salutation', value: salutation, editMode: false} }">
+                                <p data-bind="template: {name: 'display-property2', data: {name: 'Salutation', value: salutation, editMode: false} }">
                                 </p>
                             </div>
                         </div>
                         <div data-bind="if: $data.organization">
                             <div data-bind="with: $data.organization">
-                                <p data-bind="template: {name: 'display-property', data: {name: 'Organization Name', value: organizationName, editMode: false} }">
+                                <p data-bind="template: {name: 'display-property2', data: {name: 'Organization Name', value: organizationName, editMode: false} }">
                                 </p>
                             </div>
                         </div>
@@ -109,7 +108,9 @@
             <!-- /.col-lg-4 -->
             <div class="col-md-8 col-lg-8" data-bind="with: contactable">
                 <!-- ko if: $data.Employee || $data.Contact -->
-                    {{>contactablePosts}}
+                    <!--ko with: $parent-->
+                        {{>contactablePosts}}
+                    <!-- /ko -->
                 <!-- /ko -->
                 <!-- ko if: $data.Customer -->
                     {{>customerJobs}}
@@ -120,8 +121,8 @@
         </div>
         <!-- /.row -->
 
-        <div id="display-property" data-bind="if: name" style="display:none">
-            <!-- ko if: !$data.editMode || !$data.editMode() -->
+        <div id="display-property2" data-bind="bind: false" style="display:none">
+            <!-- ko ifnot: $data.editMode-->
             <small data-bind="text: name + ': '"></small>
             <span data-bind="text: value"></span>
             <!-- /ko -->

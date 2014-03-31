@@ -1,5 +1,6 @@
-Template.contactablePosts.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps', 'ContactMethodsHandler'];
-Template.contactablePosts.viewModel = function () {
+Template.contactableHome.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps', 'ContactMethodsHandler'];
+Template.contactableHome.viewModel = function () {
+//    debugger;
     var self= {},
         contactableId= Session.get('entityId');
 
@@ -67,5 +68,22 @@ Template.contactablePosts.viewModel = function () {
     };
     // </editor-fold>
 
+
+    // <editor-fold desc="****** Posts  ******">
+    self.newPost = ko.observable("");
+
+    self.adding = ko.observable(false);
+    self.addPost = function () {
+        self.adding(true);
+        Meteor.call('addContactablePost', contactableId, {
+            content: self.newPost()
+        }, function (err, result) {
+            if (!err) {
+                self.adding(false);
+                self.newPost("");
+            }
+        });
+    }
+    // </editor-fold>
     return self;
 }
