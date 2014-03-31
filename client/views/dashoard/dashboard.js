@@ -82,6 +82,21 @@ var getHistorical = function (collection, timeStamps, query) {
   history.growth = (growth > 0 ? '+' : growth < 0 ? '-' : '') + growth + '%';
   return history;
 }
+
+var deepLog = function(obj, path) {
+  if (path == undefined)
+    path = "";
+  _.forEach(_.keys(obj), function(key) {
+    if(_.isObject(key))
+      deepLog(key,  path + ' > ' + key);
+    else {
+      console.log('-----------------------------------------------------');
+      path += ' > ' + key;
+      console.log(path + ': ' + obj[key]);
+    }
+  })
+};
+
 Template.dashboard.rendered = function () {
   exartu = {
     // === Peity charts === //

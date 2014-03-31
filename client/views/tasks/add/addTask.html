@@ -38,7 +38,7 @@
                         <fieldset>
                             <div class="form-group" data-bind="css:{'has-error': assign.isModified() && ! assign.isValid()}">
                                 <label class="control-label">Assign:</label>
-                                <select class="form-control" data-bind="options: $parent.users, optionsText: 'username', optionsValue: '_id', selectedOptions: assign" multiple />
+                                <select class="form-control" data-bind="options: $parent.users, optionsText: 'username', optionsValue: '_id', selectedOptions: assign" multiple> </select>
                                 <span class="text-danger" data-bind="validationMessage: assign"></span>
                             </div>
                         </fieldset>

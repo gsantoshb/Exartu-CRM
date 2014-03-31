@@ -1,5 +1,5 @@
 <template name="addJob">
-    <div class="modal fade" id="addJobModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addJobModal">
+    <div class="modal fade" id="addJobModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addJobModal">
         <div class="modal-dialog" style="width: 50%;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -10,36 +10,36 @@
                     <form role="form">
                         <!-- Show static fields -->
                         <div data-bind="with: entity">
-                            <div data-bind="template: { name: 'inStringField', data: {displayName: 'Public job title', value: $data.publicJobTitle } }" />
-                            </fieldset>
+                            <div data-bind="template: { name: 'inStringField', data: { data: {displayName: 'Public job title', value: $data.publicJobTitle } } }" > </div>
                             <div class="row">
                                 <fieldset class="col-lg-6">
-                                    <div data-bind="template: { name: 'inDateField', data: {displayName: 'StartDate', value: $data.startDate } }" />
+                                    <div data-bind="template: { name: 'inDateField', data: { data: {displayName: 'StartDate', value: $data.startDate } } }"> </div>
                                 </fieldset>
                                 <fieldset class="col-lg-6">
-                                    <div data-bind="template: { name: 'inDateField', data: {displayName: 'EndDate', value: $data.endDate } }" />
+                                    <div data-bind="template: { name: 'inDateField', data: { data: {displayName: 'EndDate', value: $data.endDate } } }"> </div>
                                 </fieldset>
                             </div>
                             <div class="row">
                                 <fieldset class="col-lg-6">
-                                    <div data-bind="template: { name: 'inLookUpField', data: {displayName: 'Industry', value: $data.industry, options: $root.industries, mutiple: false } }" />
+                                    <div data-bind="template: { name: 'inLookUpField', data: { data: {displayName: 'Industry', value: $data.industry, options: $root.industries, mutiple: false }, filter: $root.filterSelectedValue } }" > </div>
                                 </fieldset>
                                 <fieldset class="col-lg-6">
-                                    <div data-bind="template: { name: 'inLookUpField', data: {displayName: 'Category', value: $data.category, options: $root.categories, mutiple: false } }" />
+                                    <div data-bind="template: { name: 'inLookUpField', data: { data: {displayName: 'Category', value: $data.category, options: $root.categories, mutiple: false }, filter: $root.filterSelectedValue } }" > </div>
                                 </fieldset>
                             </div>
                             <fieldset>
-                                <div data-bind="template: { name: 'inLookUpField', data: {displayName: 'Duration', value: $data.duration, options: $root.durations,mutiple: false } }" />
+                                <div data-bind="template: { name: 'inLookUpField', data: { data: {displayName: 'Duration', value: $data.duration, options: $root.durations,mutiple: false} , filter: $root.filterSelectedValue } }" > </div>
                             </fieldset>
                             <fieldset>
-                                <div data-bind="template: { name: 'inLookUpField', data: {displayName: 'Status', value: $data.status,options: $root.statuses, mutiple: false } }" />
+                                <div data-bind="template: { name: 'inLookUpField', data: { data: {displayName: 'Status', value: $data.status,options: $root.statuses, mutiple: false}, filter: $root.filterSelectedValue } }" > </div>
                             </fieldset>
                             <fieldset>
-                                <div data-bind="template: { name: 'inLongStringField', data: {displayName: 'Description', value: $data.description } }" />
+                                <div data-bind="template: { name: 'inLongStringField', data: { data: {displayName: 'Description', value: $data.description } } }" > </div>
                             </fieldset>
                         </div>
                         <!-- Show dynamic fields and relations -->
-                        <div data-bind="template: { name: 'showDynamicObjectTemplate', data: $data}"></div>
+                        <div data-bind="template: { name: 'showDynamicObjectTemplate', data: { data: $data, filter: $root.filterSelectedValue} }"></div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <a data-bind="click: add, enable: canAdd" class="btn btn-success">Add</a>

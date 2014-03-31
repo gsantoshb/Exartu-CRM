@@ -53,6 +53,9 @@ Template.assignmentAdd.viewModel = function (jobInfo, employeeId) {
             $exists: true
         }
     });
+    self.filter = function(data) {
+      return data._id;
+    }
     self.canSave=ko.observable(true);
     self.employee = ko.observable(job.employeeAssigned);
 

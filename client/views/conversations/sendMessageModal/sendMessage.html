@@ -21,7 +21,7 @@
 
                             <div class="form-group" data-bind="css:{'has-error': to.isModified() && ! to.isValid()}">
 
-                                <label class="control-label" for: "to">Email address</label>
+                                <label class="control-label" for="to">Email address</label>
                                 <input class="form-control" data-bind="value: to, valueUpdate:'afterkeydown'" placeholder="Email Address..." />
                                 <span class="text-danger" data-bind="validationMessage: to"></span>
                             </div>
@@ -34,14 +34,14 @@
                                 <span class="text-muted" data-bind="visible: $parent.existsInContactMethods()">Added to contact methods</span>
                             </div>
                             <div class="form-group" data-bind="css:{'has-error': subject.isModified() && ! subject.isValid()}">
-                                <label class="control-label" for: "subject">Subject</label>
+                                <label class="control-label" for="subject">Subject</label>
                                 <input class="form-control" data-bind="value: subject" placeholder="Subject..." />
                                 <span class="text-danger" data-bind="validationMessage: subject"></span>
                             </div>
 
                             <div class="form-group" data-bind="css:{'has-error': text.isModified() && ! text.isValid()}">
-                                <label class="control-label" for: "text">Message</label>
-                                <textarea class="form-control" rows="3" data-bind="value:text" placeholder="Message..." />
+                                <label class="control-label" for="text">Message</label>
+                                <textarea class="form-control" rows="3" data-bind="value:text" placeholder="Message..." ></textarea>
                                 <span class="text-danger" data-bind="validationMessage: text"></span>
                             </div>
                         </div>

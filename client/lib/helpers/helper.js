@@ -440,6 +440,10 @@ _.extend(helper, {
       self.ready(true);
     });
 
+    self.filterSelectedValue = function (data) {
+      return ko.isObservable(data._id)? data._id() : data._id;
+    }
+
     self.add = function () {
       if (!self.entity().isValid()) {
         self.entity.errors.showAllMessages();
@@ -454,11 +458,11 @@ _.extend(helper, {
         if (r.relation.isGroupType) {
           ObjGroupRelNames.push(r.relation.name);
           if (r.value())
-            ObjGroupRelValues.push(r.value()._id());
+            ObjGroupRelValues.push(r.value());
         } else {
           objRels.push({
             name: r.relation.name,
-            value: r.value() ? r.value()._id() : null
+            value: r.value() ? r.value() : null
           });
         }
       });
@@ -477,6 +481,7 @@ _.extend(helper, {
       })
 //            _.extend(self.entity()[self.objTypeName()], _.object(relNames, relValues));
 
+      console.dir(self.entity());
       options.addCallback.call(this, self.entity);
     }
   }

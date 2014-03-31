@@ -1,6 +1,6 @@
 <template name="contactableDetails">
     <div>
-        <!-- Profile Details Section ------------------------------------ -->
+        <!-- Profile Details Section  -->
         <div class="row">
             <div class="col-md-4 col-lg-4">
                 <div class="box " data-bind="with: contactable">
@@ -8,7 +8,7 @@
                         <div class="box-title">
                             <i class="icon icon-information"></i>Info
                             <span class="pull-right">
-                                <i class="fa fa-pencil" data-bind="style: {color: $root.editModeContactableInfo()? '#2886c4': 'grey', cursor: 'pointer'}, click: function() { $root.editModeContactableInfo(!$root.editModeContactableInfo())}" />
+                                <i class="fa fa-pencil" data-bind="style: {color: $root.editModeContactableInfo()? '#2886c4': 'grey', cursor: 'pointer'}, click: function() { $root.editModeContactableInfo(!$root.editModeContactableInfo())}" > </i>
                             </span>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
             <div class="box-header-2">
                 Location
                     <span class="pull-right">
-                        <i class="fa fa-pencil" data-bind="style: {color: editModeLocation()? '#2886c4': 'grey', cursor: 'pointer'}, click: edit" />
+                        <i class="fa fa-pencil" data-bind="style: {color: editModeLocation()? '#2886c4': 'grey', cursor: 'pointer'}, click: edit" > </i>
                     </span>
             </div>
             <div data-bind="switch: editModeLocation">
@@ -115,7 +115,7 @@
             <!-- /ko -->
         </div>
 
-        {{>obj-type-template}}
+        {{> objTypeTemplate}}
         <!-- /.row -->
     </div>
 </template>

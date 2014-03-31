@@ -504,18 +504,30 @@ ko.bindingHandlers.sidebar={
 
 ko.bindingHandlers.select2 = {
   init: function (element, valueAccessor) {
-    var options = _.map(valueAccessor().options, function(option){
-      return {id: option.code, text: option.displayName };
+    var options = _.map(ko.isObservable(valueAccessor().options)? valueAccessor().options(): valueAccessor().options, function(option){
+      option.id = ko.isObservable(option._id)? option._id(): option._id;
+      option.text = ko.isObservable(option.displayName)? option.displayName() : option.displayName;
+
+      return option;
     });
     var selectedValues = valueAccessor().selectedValues;
+    var filter = valueAccessor().filter;
 
     $(element).select2({
       data: options
     });
 
+    var add = function(data){
+      if (_.isArray(selectedValues())) {
+        if (_.findWhere(selectedValues(), {id: data.id}) == undefined)
+          selectedValues.push(filter? filter(data) : data);
+      }
+      else
+        selectedValues(filter? filter(data) : data);
+    };
+
     ko.utils.registerEventHandler(element, "select2-selected", function (data) {
-      if (_.findWhere(selectedValues(), {id: data.choice.id}) == undefined)
-        selectedValues.push(data.choice);
+        add(data.choice)
     });
   }
 };
