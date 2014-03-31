@@ -31,9 +31,13 @@ Contactables.before.insert(function (userId, doc) {
     doc.createdAt = Date.now();
 });
 
-
 // Contactables files
-ContactablesFS = new CollectionFS('contactables');
+ContactablesFS = new FS.Collection('contactables', {
+  stores: [
+    new FS.Store.FileSystem("contactables", {path: "~/uploads"}),
+    new FS.Store.GridFS("contactableFiles", {})
+  ]
+});
 Meteor.publish('contactableFiles', function () {
     return ContactablesFS.find({});
 });
@@ -50,15 +54,15 @@ ContactablesFS.allow({
     }
 });
 
-var handler = {
-    default: function (options) {
-        return {
-            blob: options.blob,
-            fileRecord: options.fileRecord
-        };
-    },
-}
-ContactablesFS.fileHandlers(handler);
+//var handler = {
+//    default: function (options) {
+//        return {
+//            blob: options.blob,
+//            fileRecord: options.fileRecord
+//        };
+//    },
+//}
+//ContactablesFS.fileHandlers(handler);
 
 Meteor.startup(function () {
     Meteor.methods({

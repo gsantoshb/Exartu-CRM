@@ -24,16 +24,19 @@ Template.addDocument.viewModel = function (data) {
       return;
     }
 
-    var fileId = ContactablesFS.storeFile(data.file, {
+    var fsFile = new FS.File(data.file);
+    fsFile.metadata = {
       entityId: data.entityId,
       name: self.newDocument().name(),
       description: self.newDocument().description(),
       tags: self.newDocument().tags()
+    };
+    ContactablesFS.insert(fsFile, function (err) {
+      if (!err)
+        $('#addDocument').modal('hide');
+      else
+        console.log('File upload error');
     });
-    if(fileId)
-      $('#addDocument').modal('hide');
-    else
-      console.log('File upload error');
   };
 
   return self;

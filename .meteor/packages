@@ -26,3 +26,4 @@ xml2js
 npm
 cfs-filesystem
 blaze-layout
+cfs-gridfs

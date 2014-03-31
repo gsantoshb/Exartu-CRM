@@ -207,8 +207,13 @@ Meteor.methods({
  * user files
  */
 
-// Contactables files
-UsersFS = new CollectionFS('users');
+UsersFS = new FS.Collection('users',{
+  stores: [
+    new FS.Store.FileSystem("users", {path: "~/uploads"}),
+    new FS.Store.GridFS("userFiles", {})
+  ]
+});
+
 Meteor.publish('usersFiles', function () {
     return UsersFS.find({});
 });
@@ -225,14 +230,14 @@ UsersFS.allow({
     }
 });
 
-var handler = {
-    default: function (options) {
-        console.dir('user default handler');
-        console.dir(options);
-        return {
-            blob: options.blob,
-            fileRecord: options.fileRecord
-        };
-    },
-}
-UsersFS.fileHandlers(handler);
+//var handler = {
+//    default: function (options) {
+//        console.dir('user default handler');
+//        console.dir(options);
+//        return {
+//            blob: options.blob,
+//            fileRecord: options.fileRecord
+//        };
+//    },
+//}
+//UsersFS.fileHandlers(handler);

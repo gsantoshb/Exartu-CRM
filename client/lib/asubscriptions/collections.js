@@ -263,12 +263,20 @@ extendedSubscribe('objTypes', 'ObjTypesHandler');
 
 // CollectionFS
 
-ContactablesFS = new CollectionFS('contactables', {
-    autopublish: false
+ContactablesFS = new FS.Collection('contactables', {
+  stores: [
+    new FS.Store.FileSystem("contactables", {path: "~/uploads"}),
+    new FS.Store.GridFS("files", {})
+  ]
 });
 extendedSubscribe('contactableFiles', 'ContactablesFSHandler');
 
-UsersFS = new CollectionFS('users');
+UsersFS = new FS.Collection('users',{
+  stores: [
+    new FS.Store.FileSystem("users", {path: "~/uploads"}),
+    new FS.Store.GridFS("files", {})
+  ]
+});
 extendedSubscribe('usersFiles', 'UsersFSHandler');
 
 ContactMethods= new Meteor.Collection('contactMethods');
