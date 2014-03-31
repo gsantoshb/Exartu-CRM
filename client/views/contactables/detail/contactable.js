@@ -112,7 +112,7 @@ Template.contactable.viewModel = function () {
         if (data.Customer) return data.Customer;
         if (data.Contact) return data.Contact;
     };
-    self.activeTab = ko.computed(function () {
+    self.activeTab =ko.dep(function(){
         return Router.current().params.hash || 'home';
     });
 
