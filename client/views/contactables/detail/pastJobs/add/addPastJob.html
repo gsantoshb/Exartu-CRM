@@ -43,6 +43,23 @@
                             </div>
                         </fieldset>
                         <fieldset>
+                            <div class="form-group">
+                                <label class="control-label">Tags</label>
+                                <div data-bind="foreach: tags">
+                                    <button type="button" class="btn btn-xs btn-primary">
+                                        <span data-bind="text: $data"></span>
+                                        <i class="fa fa-times" data-bind="click: $parent.removeTag"></i>
+                                    </button>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter tags here..." data-bind="value: $parent.newTag">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success" type="button" data-bind="click: $parent.addTag">Add</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
                             <div class="form-group" data-bind="css:{'has-error': description.isModified() && ! description.isValid()}">
                                 <label class="control-label">Description</label>
                                 <textarea class="form-control" data-bind="value: description"></textarea>

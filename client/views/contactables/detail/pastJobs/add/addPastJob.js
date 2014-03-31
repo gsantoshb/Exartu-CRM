@@ -5,7 +5,8 @@ Template.addPastJob.viewModel = function (contactableId) {
         startDate:ko.observable(),
         endDate:ko.observable(),
         jobTitle:ko.observable().extend({required:true}),
-        description: ko.observable()
+        description: ko.observable(),
+        tags: ko.observableArray()
     })
     self.canAdd=ko.observable(true);
     self.add=function(){
@@ -18,9 +19,7 @@ Template.addPastJob.viewModel = function (contactableId) {
         _.each(_.functions(js),function(key){
                 delete js[key];
             });
-        debugger;
         Meteor.call('addPastJob',contactableId,js,function(err, result){
-            debugger;
             if (err){
                 console.log(err);
                 self.canAdd(true);
@@ -29,7 +28,14 @@ Template.addPastJob.viewModel = function (contactableId) {
                 self.close();
             }
         })
-
     };
+    self.newTag=ko.observable();
+    self.addTag=function(){
+        if (! self.newTag()){
+            return;
+        }
+        self.pastJob().tags.push(self.newTag());
+        self.newTag('');
+    }
     return self;
 }
