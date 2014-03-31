@@ -24,7 +24,6 @@ Template.contactableDetails.viewModel = function () {
 
         var set = {};
         set['$set'] = {};
-        debugger;
         _.each(_.keys(toJSObj),function(key){
             set['$set'][options.objNameUpdated + '.' + key] = toJSObj[key];
         })
@@ -145,7 +144,7 @@ Template.contactableDetails.viewModel = function () {
         if (!location.coords)
             location.coords = helper.getCoords(location)
         removeExtrangePrototypes(location);
-        debugger;
+//        debugger;
         Contactables.update({
             _id: entityId
         }, {

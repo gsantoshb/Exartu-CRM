@@ -78,8 +78,8 @@
                 <!-- /.box -->
                 <!-- /ko-->
 
-                <!-- ko if: contactable().tags -->
-                <div class="box" data-bind="with: contactable">
+                <!-- ko if: $data.tags -->
+                    <div class="box" data-bind="with: contactable">
                     <div class="box-header-2">
                         <div class="box-title">
                             <i class="icon icon-tag-1"></i>Tags</div>
@@ -102,7 +102,7 @@
                     </div>
                     <!-- /.box-content-md -->
                 </div>
-                <!-- /.box -->
+                    <!-- /.box -->
                 <!-- /ko-->
 
             </div>
