@@ -18,15 +18,15 @@
                                 <strong>Person</strong>
                             </p>
                             <div data-bind="with: $root.editPerson">
-                                <p data-bind="template: {name: 'display-property', data: {name: 'First Name', value: firstName, editMode: $root.editModeContactableInfo} }">
+                                <p data-bind="template: { name: 'display-property', data: { data: { name: 'First Name', value: firstName, editMode: $root.editModeContactableInfo } } }">
                                 </p>
-                                <p ata-bind="template: {name: 'display-property', data: {name: 'Middle Name', value: middleName, editMode: $root.editModeContactableInfo} }">
+                                <p ata-bind="template: { name: 'display-property', data: { data: { name: 'Middle Name', value: middleName, editMode: $root.editModeContactableInfo } } }">
                                 </p>
-                                <p data-bind="template: {name: 'display-property', data: {name: 'Last Name', value: lastName, editMode: $root.editModeContactableInfo} }">
+                                <p data-bind="template: { name: 'display-property', data: { data: { name: 'Last Name', value: lastName, editMode: $root.editModeContactableInfo } } }">
                                 </p>
-                                <p data-bind="template: {name: 'display-property', data: {name: 'Job Title', value: jobTitle, editMode: $root.editModeContactableInfo} }">
+                                <p data-bind="template: { name: 'display-property', data: { data: { name: 'Job Title', value: jobTitle, editMode: $root.editModeContactableInfo } } }">
                                 </p>
-                                <p data-bind="template: {name: 'display-property', data: {name: 'Salutation', value: salutation, editMode: $root.editModeContactableInfo} }">
+                                <p data-bind="template: { name: 'display-property', data: { data: { name: 'Salutation', value: salutation, editMode: $root.editModeContactableInfo } } }">
                                 </p>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                             </p>
 
                             <div data-bind="with: $root.editOrganization ">
-                                <p data-bind="template: {name: 'display-property', data: {name: 'Organization Name', value: organizationName, editMode: $root.editModeContactableInfo} }">
+                                <p data-bind="template: { name: 'display-property', data: { data: { name: 'Organization Name', value: organizationName, editMode: $root.editModeContactableInfo } } }">
                                 </p>
                             </div>
                         </div>
@@ -100,20 +100,6 @@
             </div>
         </div>
 
-        <div id="display-property" data-bind="bind: false" style="display:none">
-            <!-- ko if: !$data.editMode || !$data.editMode() -->
-            <small data-bind="text: name + ': '"></small>
-            <span data-bind="text: moment(value()).format('MM.DD.YYYY')"></span>
-            <!-- /ko -->
-            <!-- ko if: $data.editMode -->
-            <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
-                <label class="control-label" data-bind="text: name">
-                </label>
-                <input class="form-control" type="text" placeholder="" data-bind="value: value" />
-                <span class="text-danger" data-bind="validationMessage: value"></span>
-            </div>
-            <!-- /ko -->
-        </div>
 
         {{> objTypeTemplate}}
         <!-- /.row -->
