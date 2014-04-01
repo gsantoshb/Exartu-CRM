@@ -1,0 +1,97 @@
+<template name="contactableEducation">
+    <div class="box" data-bind="with: contactable">
+        <div class="box-header-2">
+            <a class="pull-right btn btn-xs btn-default" data-bind="click: function(){Composer.showModal('addEditEducation',_id()); }">
+                <i class="fa fa-plus"></i>&nbsp;Add
+            </a>
+            Education
+        </div>
+        <div data-bind="foreach: educations">
+            <div class="table-item magic">
+                <div class="row">
+                    <div class="row col-sm-6">
+                        <!--employeer and jobTitle-->
+                        <div class="col-sm-6">
+                            <div class="table-item-cell">
+                                <div class="table-item-cell-container">
+                                    <!--<div class="thumb">-->
+                                    <!--<a href="#">-->
+                                    <!--<img src="/assets/logo-exartu.png">-->
+                                    <!--</a>-->
+                                    <!--</div>-->
+                                    <div class="table-item-title">
+                                        <a>
+                                            <span data-bind="text: $data.schoolName"></span>
+                                        </a>
+                                    </div>
+                                <span class="text-normal">
+                                    <a>
+                                        <span data-bind="text: $data.field"></span>
+                                    </a>
+                                </span>
+
+                                </div>
+                                <!-- /.table-item-cell-container -->
+                            </div>
+                            <!-- /.table-item-cell -->
+                        </div>
+                        <!--dates-->
+                        <div class="col-sm-6">
+                            <div class="table-item-cell">
+                                <!--ko if: $data.startDate-->
+                                <div class="table-item-cell-container text-small">
+                                    <strong>
+                                        <span data-bind="text: moment($data.startDate()).format('MMMM YYYY')"></span>
+                                    </strong>
+                                    <!--ko if: $data.endDate-->
+                                    <strong>&nbsp;to&nbsp;
+                                        <span data-bind="text: moment($data.endDate()).format('MMMM YYYY')"></span>
+                                    </strong>
+                                    <!-- /ko -->
+                                </div>
+                                <!-- /.table-item-cell-container -->
+                                <!-- /ko -->
+
+                            </div>
+                            <!-- /.table-item-cell -->
+
+                        </div>
+                        <!--tags-->
+                        <div  class="col-sm-12">
+                            <!--ko if: $data.tags-->
+                            <div data-bind="foreach: tags">
+                                <button type="button" class="btn btn-xs btn-primary">
+                                    <span data-bind="text: $data"></span>
+                                </button>
+                            </div>
+                            <!--/ko-->
+                        </div>
+                    </div>
+
+
+                    <!--actions-->
+                    <div class="col-sm-1">
+                        <div class="table-item-cell">
+                            <a class="btn btn-xs btn-success text-small" href="#" data-bind="click: function(){ Composer.showModal('addEditEducation', $parent._id(), $data)}">
+                                <i class="fa fa-pencil"></i>&nbsp;Edit
+                            </a>
+                        </div>
+                    </div>
+                    <!--description-->
+                    <div class="col-sm-5">
+                        <div class="table-item-cell">
+                            <!--ko if: $data.description-->
+                                <div class="table-item-cell-container magic-content text-small">
+                                    <span data-bind="text: description"></span>
+                                </div>
+                            <!-- /ko -->
+                        </div>
+                        <!-- /.table-item-cell -->
+                    </div>
+                </div>
+                <!-- /.row -->
+
+            </div>
+        </div>
+    </div>
+</template>

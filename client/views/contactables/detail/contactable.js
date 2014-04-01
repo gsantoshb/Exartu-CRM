@@ -26,6 +26,11 @@ ContactableController = RouteController.extend({
               to: 'content'
             });
             break;
+          case 'educations':
+            this.render('contactableEducation', {
+              to: 'content'
+            });
+            break;
         default:
             this.render('contactableHome', {
                 to: 'content'

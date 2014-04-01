@@ -62,9 +62,14 @@
                             <a href="#documents" data-toggle="tab ">Documents</a>
                         </li>
                         <!--ko if: $data.pastJobs-->
-                        <li data-bind="css:{'active': $parent.activeTab()=='pastJobs'}">
-                            <a href="#pastJobs" data-toggle="tab ">Past Jobs</a>
-                        </li>
+                            <li data-bind="css:{'active': $parent.activeTab()=='pastJobs'}">
+                                <a href="#pastJobs" data-toggle="tab ">Past Jobs</a>
+                            </li>
+                        <!--/ko-->
+                        <!--ko if: $data.educations-->
+                            <li data-bind="css:{'active': $parent.activeTab()=='educations'}">
+                                <a href="#educations" data-toggle="tab ">Educations</a>
+                            </li>
                         <!--/ko-->
                     </ul>
                     <div class="tab-content" data-bind="bind: false">

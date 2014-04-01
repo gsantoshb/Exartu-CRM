@@ -209,7 +209,6 @@ Meteor.methods({
 
 UsersFS = new FS.Collection('users',{
   stores: [
-    new FS.Store.FileSystem("users", {path: "~/uploads"}),
     new FS.Store.GridFS("userFiles", {})
   ]
 });

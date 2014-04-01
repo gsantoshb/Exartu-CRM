@@ -178,7 +178,7 @@ seedSystemObjTypes = function () {
                 color: 'blue'
             },
             defaultPersonType: Enums.personType.human,
-            services: ['pastJobs'],
+            services: ['pastJobs','educations'],
             fields: [{
                 name: 'description',
                 displayName: 'Description',

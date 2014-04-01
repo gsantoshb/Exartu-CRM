@@ -34,7 +34,6 @@ Contactables.before.insert(function (userId, doc) {
 // Contactables files
 ContactablesFS = new FS.Collection('contactables', {
   stores: [
-    new FS.Store.FileSystem("contactables", {path: "~/uploads"}),
     new FS.Store.GridFS("contactableFiles", {})
   ]
 });
