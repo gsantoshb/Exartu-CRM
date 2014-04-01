@@ -24,35 +24,34 @@
         </div>
         <!-- /.box -->
         <!--ko with: contactable-->
-            <!-- ko foreach: posts -->
+            <!-- ko foreach: $data.posts -->
                 <div class="comment" data-bind="with: helper.getUserInformation($data.userId())">
-                <!-- ko if: $data.ready -->
-
-                <div class="comment-thumb">
-                    <img height="70px" width="70px" data-bind="attr: {src: picture, alt: $data.username}">
-                </div>
-                <div class="comment-content">
-                    <div class="comment-text">
-                        <div class="comment-info">
-                            <a href="#">
-                                <!-- ko if: $data.username -->
-                                <strong data-bind="text: username">
-                                </strong>
-                                <!-- /ko -->
-                                <!-- ko if: !$data.username && $data.email -->
-                                <strong data-bind="text: email"></strong>
-                                <!-- /ko -->
-                            </a>
-                            <span class="pipe">|</span>
-                            <span data-bind="text: moment($parent.createdAt()).format('LL')"></span>
+                    <!-- ko if: $data.ready -->
+                        <div class="comment-thumb">
+                            <img height="70px" width="70px" data-bind="attr: {src: picture, alt: $data.username}">
                         </div>
-                        <p data-bind="text: $parent.content">
-                        </p>
-                    </div>
+                        <div class="comment-content">
+                            <div class="comment-text">
+                                <div class="comment-info">
+                                    <a href="#">
+                                        <!-- ko if: $data.username -->
+                                            <strong data-bind="text: username">
+                                            </strong>
+                                        <!-- /ko -->
+                                        <!-- ko if: !$data.username && $data.email -->
+                                            <strong data-bind="text: email"></strong>
+                                        <!-- /ko -->
+                                    </a>
+                                    <span class="pipe">|</span>
+                                    <span data-bind="text: moment($parent.createdAt()).format('LL')"></span>
+                                </div>
+                                <p data-bind="text: $parent.content">
+                                </p>
+                            </div>
+                        </div>
+                        <!-- /.comment-content -->
+                    <!-- /ko -->
                 </div>
-                <!-- /.comment-content -->
-                <!-- /ko -->
-            </div>
             <!-- /ko -->
         <!-- /ko -->
         <!-- /.comment -->
