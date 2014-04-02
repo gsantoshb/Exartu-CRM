@@ -107,8 +107,6 @@ Template.contactableDetails.viewModel = function () {
     // </editor-fold>
 
     // <editor-fold desc="****** LOCATION  ******">
-    self.hasLocation = ko.observable(ko.utils.unwrapObservable(self.contactable().location) != null);
-    self.hasEditLocation = ko.observable(ko.utils.unwrapObservable(self.editLocation) != null);
     var geocoder = new google.maps.Geocoder();
     self.editModeLocation = ko.observable(false);
 
@@ -131,20 +129,21 @@ Template.contactableDetails.viewModel = function () {
 
                 aux = results[0];
                 self.editLocation(aux);
-                self.hasEditLocation(true);
             } else {
                 self.editLocation(null);
-                self.hasEditLocation(false);
             }
         })
     };
     self.saveLocation = function () {
         //        debugger;
         var location = self.editLocation();
-        if (!location.coords)
-            location.coords = helper.getCoords(location)
-        removeExtrangePrototypes(location);
+        if (location){
+            if (!location.coords)
+                location.coords = helper.getCoords(location)
+            removeExtrangePrototypes(location);
+        }
 //        debugger;
+
         Contactables.update({
             _id: entityId
         }, {

@@ -51,16 +51,18 @@ Contactables = new Meteor.Collection("contactables", {
         }
 
         if(contactable.Customer) {
-            contactable.Customer.jobsInfo = Jobs.find(
-                {
-                    _id: {
-                        $in: contactable.Customer.jobs
+            if(contactable.Customer.jobs){
+                contactable.Customer.jobsInfo = Jobs.find(
+                    {
+                        _id: {
+                            $in: contactable.Customer.jobs
+                        }
+                    },
+                    {
+                        transform: null
                     }
-                },
-                {
-                    transform: null
-                }
-            ).fetch();
+                ).fetch();
+            }
             if(contactable.Customer.contacts){
                 contactable.Customer.contactsInfo = Contactables.find(
                     {

@@ -57,9 +57,10 @@ Template.addContactable.viewModel = function (objname) {
         },
         objname: objname,
         addCallback: function (contactable) {
+            debugger;
             self.canAdd(false);
             var cont = ko.toJS(contactable);
-            if(cont.location ){
+            if (self.location()){
                 cont.location = ko.toJS(self.location);
                 cont.location.coords = helper.getCoords(cont.location);
             }

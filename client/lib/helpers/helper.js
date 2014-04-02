@@ -481,7 +481,6 @@ _.extend(helper, {
       })
 //            _.extend(self.entity()[self.objTypeName()], _.object(relNames, relValues));
 
-      console.dir(self.entity());
       options.addCallback.call(this, self.entity);
     }
   }

@@ -81,7 +81,7 @@
                             </span>
                     </div>
 
-                    <div data-bind="map: editLocation" class="map"></div>
+                    <div data-bind="map: editLocation, log: 'editing'" class="map"></div>
 
                     <div class="box-header-2" style="height: 60px">
                         <div class="pull-right">
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div data-switch="true">
-                    <div data-bind="map: contactable().location" class="map"></div>
+                    <div data-bind="map: contactable().location, log: 'contactable'" class="map"></div>
                 </div>
             </div>
         </div>

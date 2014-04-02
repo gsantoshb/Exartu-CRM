@@ -277,10 +277,10 @@ ko.bindingHandlers.map = {
         })
     },
     update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-        //        debugger;
-        var address = ko.toJS(valueAccessor());
-        if (address) {
 
+        var address = ko.toJS(valueAccessor());
+        console.log(allBindings().log ? allBindings().log : '');
+        if (address) {
             $(element).show();
             var map = $(element).data('map');
             var marker = $(element).data('marker');
@@ -298,8 +298,9 @@ ko.bindingHandlers.map = {
             }
             map.setCenter(location);
             setTimeout(function(){
+                google.maps.event.trigger(map, 'resize');
                 map.setCenter(marker.getPosition());
-            },500);
+            },1000);
 
             var infowindow = new google.maps.InfoWindow({
                 content: windowString,
@@ -311,8 +312,9 @@ ko.bindingHandlers.map = {
             });
 
         } else {
-
             $(element).hide();
+            var map = $(element).data('map');
+            google.maps.event.trigger(map, 'resize');
         }
     }
 };
