@@ -12,7 +12,7 @@
             <div data-bind="foreach: data.relations">
                 <div>
                     <h5 data-bind="text: relation.displayName"></h5>
-                    <input type='hidden' style="width: 100%" placeholder="Search" data-bind="select2: { options: data, selectedValues: value, filter: $parent.filter }"/>
+                    <input type='hidden' style="width: 100%" placeholder="Search" data-bind="select2: { options: data, selectedValues: value, filter: $root.filter }"/>
                 </div>
             </div>
         </div>

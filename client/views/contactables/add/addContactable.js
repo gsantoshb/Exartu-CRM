@@ -52,6 +52,9 @@ Template.addContactable.viewModel = function (objname) {
                 objName: self.objTypeName()
             }).personType);
             self.canAdd = ko.observable(true);
+            self.filter=function(option){
+                return option._id;
+            }
 
             return self;
         },
