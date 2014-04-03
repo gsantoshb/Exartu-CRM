@@ -167,7 +167,7 @@
                                                 <i class="fa fa-long-arrow-right"></i>
                                                 <span data-bind="foreach: assignedUsers">
                                                     <a href="#" data-bind="attr:{href:'/contactable/'+_id()}">
-                                                        <span data-bind="text: username"></span>
+                                                        <span data-bind="text: username, style: { color: _id()==Meteor.userId() ? '#FF1B1B' : 'inherit' }"></span>
                                                     </a>
                                                 </span>
                                             </div>

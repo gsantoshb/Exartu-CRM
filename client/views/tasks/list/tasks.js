@@ -67,7 +67,7 @@ Template.tasks.viewModel = function () {
     }
 
     self.ownedByMe = ko.observable(false);
-    self.assigned = ko.observable(true);
+    self.assigned = ko.observable(false);
     self.assignedTo = ko.observable(Meteor.userId());
 
     self.includeInactives=ko.observable(false);
