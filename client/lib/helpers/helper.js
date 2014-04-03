@@ -46,7 +46,11 @@ var defaultIcon = 'icon-question-mark';
 var errorElement = function (msg) {
   return '<div class="alert-danger">' + msg + '</div>';
 }
-helper = {};
+helper = {
+    emailRE:/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+};
+helper.emailRE.str="^(([^<>()[\\]\\.,;:\\s@\"]+(\\.[^<>()[\\]\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))";
+
 var handleError = function (err, viewName) {
   if (err.originElement) {
     $(err.originElement).replaceWith(errorElement(err.message));
