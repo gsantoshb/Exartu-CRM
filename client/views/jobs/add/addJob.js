@@ -18,10 +18,14 @@ Template.addJob.viewModel = function (objname) {
                 codeType: Enums.lookUpTypes.job.duration.code
             }).fetch();
             self.canAdd = ko.observable(true);
+            self.filter=function(option){
+                return option._id;
+            }
             return self;
         },
         objname: objname,
         addCallback: function (job) {
+            debugger;
             self.canAdd(false);
             Meteor.call('addJob', ko.toJS(job), function (err, result) {
                 self.canAdd(true);
@@ -30,6 +34,7 @@ Template.addJob.viewModel = function (objname) {
                 else
                     $('#addJobModal').modal('hide');
             });
+
         }
     }
 
