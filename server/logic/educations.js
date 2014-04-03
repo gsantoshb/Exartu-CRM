@@ -8,7 +8,7 @@ Meteor.startup(function () {
                 throw new Meteor.Error(400, "contactable not found");
             }
             if(!contactable.educations){
-                throw new Meteor.Error(400, "the contactable does not have past jobs");
+                throw new Meteor.Error(400, "the contactable does not have education");
             }
             if (education._id){
                 var old= _.findWhere(contactable.educations,{ _id: education._id });
@@ -18,7 +18,7 @@ Meteor.startup(function () {
                         'educations._id':education._id
                     },{
                         $set:{
-                            'pastJobs.$': education
+                            'educations.$': education
                         }
                     });
                 }else{

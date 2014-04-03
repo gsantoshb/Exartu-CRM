@@ -33,7 +33,6 @@ Template.addEditEducation.viewModel = function (contactableId, education) {
     }
     self.canAcept=ko.observable(true);
     self.accept=function(){
-        debugger;
         if (! self.education.isValid()){
             self.education.errors.showAllMessages();
             return;
