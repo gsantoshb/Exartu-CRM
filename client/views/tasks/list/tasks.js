@@ -1,8 +1,6 @@
 TasksController = RouteController.extend({
     template: 'tasks',
-    waitOn: function () {
-        return [Meteor.subscribe('tasks')];
-    }
+    layoutTemplate: 'mainLayout'
 });
 var states = [
     {
