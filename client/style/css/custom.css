@@ -408,3 +408,8 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
         display: block;
     }
 }
+
+.postAdd textarea{
+    max-width: 100%;
+    margin-bottom:5px
+}
