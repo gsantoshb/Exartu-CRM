@@ -29,9 +29,9 @@ Contactables = new Meteor.Collection("contactables", {
         if (!contactable.pictureFileId) {
             contactable.pictureFileId=null;
         }
-        if (contactable.jopAssigned) {
+        if (contactable.jobAssigned) {
             contactable.assignmentInfo = Jobs.findOne({
-                _id: contactable.jopAssigned
+                _id: contactable.jobAssigned
             }, {
                 transform: null
             });

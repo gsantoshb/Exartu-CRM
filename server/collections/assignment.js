@@ -4,7 +4,74 @@ Meteor.publish('assignment', function () {
         return false;
 
     return Assignment.find();
+});
+
+
+//<editor-fold desc="************ update job and contactable ****************">
+Assignment.before.insert(function(userId, doc){
+    if(!doc._id){
+        doc._id=Meteor.uuid();
+    }
+    Contactables.update({
+        _id: doc.employee
+    }, {
+        $set: {
+            jobAssigned: doc.job,
+            assignment: doc._id
+        }
+    });
+    Jobs.update({
+        _id: doc.job
+    }, {
+        $set: {
+            employeeAssigned: doc.employee,
+            assignment: doc._id
+        }
+    });
 })
+//before set the employee and job in null becouse they may change
+Assignment.before.update(function(userId, doc, fieldNames, modifier, options){
+
+    if (modifier && modifier.$set && modifier.$set.employee && (modifier.$set.employee != doc.employee)){
+       Contactables.update({
+            _id: doc.employee
+        }, {
+            $set: {
+                jobAssigned: null,
+                assignment: null
+            }
+        });
+    }
+//        Jobs.update({
+//            _id: doc.job
+//        }, {
+//            $set: {
+//                employeeAssigned: null,
+//                assignment: null
+//            }
+//        });
+
+});
+//after update the employee and job
+Assignment.after.update(function(userId, doc, fieldNames, modifier, options){
+    Contactables.update({
+        _id: doc.employee
+    }, {
+        $set: {
+            jobAssigned: doc.job,
+            assignment: doc._id
+        }
+    });
+    Jobs.update({
+        _id: doc.job
+    }, {
+        $set: {
+            employeeAssigned: doc.employee,
+            assignment: doc._id
+        }
+    });
+});
+//</editor-fold>
 
 Meteor.startup(function(){
     createAssignment= function(job, employee, assignmentInfo){
