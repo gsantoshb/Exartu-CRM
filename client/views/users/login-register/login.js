@@ -3,8 +3,10 @@ Template.login.viewModel = function () {
 
     self.errorMessage = ko.observable();
 
-    self.email = ko.observable();
-    self.password = ko.observable();
+    self.credentials= ko.validatedObservable({
+        email : ko.observable().extend({required: true}),
+        password: ko.observable().extend({required: true})
+    });
 
     self.loginWith = function (serviceName) {
         if (Meteor['loginWith' + serviceName])
@@ -14,9 +16,14 @@ Template.login.viewModel = function () {
     }
 
     self.loginWithPassword = function () {
+        if (!self.credentials.isValid()) {
+            self.credentials.errors.showAllMessages();
+            return;
+        }
+
         Meteor.loginWithPassword({
-            email: self.email()
-        }, self.password(), function (err, result) {
+            email: self.credentials().email()
+        }, self.credentials().password(), function (err, result) {
             if (err)
                 self.errorMessage('Something is wrong with your email or password. Try again.');
             else
@@ -46,7 +53,7 @@ Template.login.viewModel = function () {
                 },
                 message: 'Email is already in use by another account'
             }
-        }),
+        })
     })
 
     self.newAccount().passwordVerification.extend({

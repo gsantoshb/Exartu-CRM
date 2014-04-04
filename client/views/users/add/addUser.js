@@ -28,7 +28,7 @@ Template.addUser.viewModel = function () {
 
     self.addUser = function () {
         if (!self.newUserValidate.isValid()) {
-            self.newUserValidate.errors.showAllMessages();
+            self.newUserValidate.error.showAllMessages();
             return;
         }
 
