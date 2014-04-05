@@ -27,7 +27,7 @@ Meteor.startup(function () {
     }, {});
 });
 /*
- * log the error, if it's an extended error and display errors is set on true replace the dom
+ * log the error, if it's an extended error and display errors is set to true replace the dom
  * return true if the dom was replaced
  */
 var handleError = function (err, viewName) {
@@ -154,7 +154,7 @@ Composer.composeTemplate = function (templateName, domNode) {
 }
 var vmContext = {};
 /*
- * applies ko binding between domNade and vm, waiting for the collection handlers in wait on
+ * applies ko binding between domNode and vm, waiting for the collection handlers in wait on
  * parameters:
  *  - vm: viewModel contructor
  *  - domNode: a DOM node

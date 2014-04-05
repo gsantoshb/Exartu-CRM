@@ -83,7 +83,11 @@ _.extend(helper, {
       return 'inMultiple'
   },
   /*  Generate the functions and elements necessary
-   for perform full text search and filter * over a list with entities which have dynamic obj types.*Params: * -fieldsToSearch: names of the entity fields where the search will be performed.*-objTypes: list         of types that are used by entities in collection.*-callback: function called after each search * Return: * -searchString: observable item used to search * -filter: ..
+   to perform full text search and filter * over a list of entities which have dynamic obj types.
+   *Params: * -fieldsToSearch: names of the entity fields where the search will be performed.
+   * *-objTypes: list         of types that are used by entities in collection.*-callback: function called after each search
+   * * Return:
+   * * -searchString: observable item used to search * -filter: ..
    */
   createObjTypefilter: function (fieldsToSearch, objtypes, callback) {
     var self = {};

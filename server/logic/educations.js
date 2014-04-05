@@ -1,4 +1,4 @@
-// employee pasts jobs
+// employee past jobs
 
 Meteor.startup(function () {
     Meteor.methods({
@@ -22,7 +22,7 @@ Meteor.startup(function () {
                         }
                     });
                 }else{
-                    throw new Meteor.Error(400, "the element tou are trying to edit does not exists");
+                    throw new Meteor.Error(400, "the element you are trying to edit does not exist");
                 }
             }else{
                 education._id=Meteor.uuid();
