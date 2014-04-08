@@ -44,7 +44,6 @@ beforeUpdate.oneWay = function (value, rel) {
 beforeUpdate.twoWay = function (obj, objTypeField, rel) {
     //    console.log('two way');
     //    console.dir(obj)
-    debugger;
     var rel1;
     var rel2;
     var targetName;

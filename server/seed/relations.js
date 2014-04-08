@@ -13,7 +13,7 @@
                        min: 0,
                        max: 1
                    },
-                   showInAdd: true,
+                   showInAdd: true
                },
                visibilityOn2: {
                    name: 'contacts',
@@ -24,10 +24,10 @@
                        min: 0,
                        max: Infinity
                    },
-                   showInAdd: true,
+                   showInAdd: true
                },
-               cascadeDelete: false,
-            },
+               cascadeDelete: false
+           },
            {
                name: 'CustomerJobs',
                obj1: 'Customer',
@@ -40,7 +40,7 @@
                    cardinality: {
                        min: 0,
                        max: Infinity
-                   },
+                   }
                },
                visibilityOn2: {
                    name: 'customer',
@@ -52,9 +52,9 @@
                        max: 1
                    },
                    showInAdd: true,
-                   isGroupType: true,
+                   isGroupType: true
                },
-               cascadeDelete: false,
+               cascadeDelete: false
             },
         ];
 

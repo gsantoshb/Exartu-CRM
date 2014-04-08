@@ -9,126 +9,30 @@
  *    - objType Temporary
  */
 seedSystemObjTypes = function () {
-    var systemObjGroupTypes = [
-        {
+    var newObjType=dType.constructor.objType;
+
+    var systemObjGroupTypes = [newObjType({
+            collection: Contactables,
             objGroupType: Enums.objGroupType.contactable,
-            services: ['messages', 'tasks', 'posts', 'tags'],
-            fields: []
-        },
-        {
+            name: 'contactable',
+            services: ['messages', 'tasks', 'posts', 'tags']
+        }),
+        newObjType({
+            collection: Jobs,
+            name: 'job',
             objGroupType: Enums.objGroupType.job,
             services: ['messages', 'tasks', 'posts', 'tags'],
-            fields: [
-              {
+            fields: [{
                 name: 'fee',
                 displayName: 'Fee (%)',
-                regex: '.*',
-                fieldType: Enums.fieldType.int,
-                defaultValue: 0,
-                showInAdd: true
-              }
-            ]
-        },
-        {
-            objGroupType: Enums.objGroupType.quote,
-            services: ['messages', 'tasks', 'posts', 'tags'],
-            fields: [
-                {
-                    name: 'Quote_Name',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true
-                }, {
-                    name: 'Quote_Description',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true
-                },
-                {
-                    name: 'Deal',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: false
-                },
-                {
-                    name: 'Statuses',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: false
-                }
-            ]
-
-        },
-        {
-            objGroupType: Enums.objGroupType.deal,
-            services: ['messages', 'tasks', 'posts', 'tags', 'quotes'],
-            fields: [
-                {
-                    name: 'Deal_Name',
-                    displayName: 'Name',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true
-                },
-                {
-                    name: 'Deal_Description',
-                    displayName: 'Description',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true
-                },
-                {
-                    name: 'Competition',
-                    displayName: 'Competition',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true
-                },
-                {
-                    name: 'Customer',
-                    displayName: 'Customer',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: false
-                },
-                {
-                    name: 'Statuses',
-                    displayName: 'Statuses',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: false
-                },
-                {
-                    name: 'Revenue_Potential',
-                    displayName: 'Revenue potential',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.int,
-                    defaultValue: 0,
-                    showInAdd: false
-                },
-                {
-                    name: 'Estimated_Close_Date',
-                    displayName: 'Estimated close date',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.date,
-                    defaultValue: '',
-                    showInAdd: false
-                }
-            ]
-        }
+                fieldType: Enums.fieldType.int
+            }]
+        })
     ]
     var systemObjTypes = [
-        {
+        newObjType({
             objGroupType: Enums.objGroupType.contactable,
+            parent: 'contactable',
             objName: 'Customer',
             style: {
                 icon: 'build',
@@ -139,20 +43,13 @@ seedSystemObjTypes = function () {
             fields: [{
                 name: 'department',
                 displayName: 'Deparment',
-                regex: '.',
-                fieldType: Enums.fieldType.string,
-                defaultValue: 'Primary',
-                showInAdd: true
+                defaultValue: 'Primary'
             }, {
                 name: 'description',
-                displayName: 'Description',
-                regex: '.*',
-                fieldType: Enums.fieldType.string,
-                defaultValue: '',
-                showInAdd: true
+                displayName: 'Description'
             }]
-        },
-        {
+        }),
+        newObjType({
             objGroupType: Enums.objGroupType.contactable,
             objName: 'Contact',
             style: {
@@ -163,14 +60,10 @@ seedSystemObjTypes = function () {
             services: [],
             fields: [{
                 name: 'description',
-                displayName: 'Description',
-                regex: '.*',
-                fieldType: Enums.fieldType.string,
-                defaultValue: '',
-                showInAdd: true
+                displayName: 'Description'
             }]
-        },
-        {
+        }),
+        newObjType({
             objGroupType: Enums.objGroupType.contactable,
             objName: 'Employee',
             style: {
@@ -181,14 +74,10 @@ seedSystemObjTypes = function () {
             services: ['pastJobs','educations'],
             fields: [{
                 name: 'description',
-                displayName: 'Description',
-                regex: '.*',
-                fieldType: Enums.fieldType.string,
-                defaultValue: '',
-                showInAdd: true
+                displayName: 'Description'
             }]
-        },
-        {
+        }),
+        newObjType({
             objGroupType: Enums.objGroupType.job,
             objName: 'Direct Hire',
             style: {
@@ -196,28 +85,20 @@ seedSystemObjTypes = function () {
                 color: 'yellow'
             },
             services: [],
-            fields: [
-              {
+            fields: [{
                 name: 'salary',
                 displayName: 'Salary',
-                regex: '.*',
-                fieldType: Enums.fieldType.int,
-                defaultValue: 0,
-                showInAdd: true
+                fieldType: Enums.fieldType.int
               }, {
                 name: 'jobTitle',
                 displayName: 'Job title',
-                regex: '',
                 fieldType: Enums.fieldType.lookUp,
                 lookUpName: 'jobTitle',
-                lookUpCode: Enums.lookUpTypes.job.titles.code,
-                multiple: false,
-                defaultValue: null,
-                showInAdd: true
+                lookUpCode: Enums.lookUpTypes.job.titles.code
               }
             ]
-        },
-        {
+        }),
+        newObjType({
             objGroupType: Enums.objGroupType.job,
             objName: 'Temporary',
             style: {
@@ -225,81 +106,19 @@ seedSystemObjTypes = function () {
                 color: 'yellow'
             },
             services: [],
-            fields: [
-              {
+            fields: [{
                 name: 'frequency',
                 displayName: 'Frequency pay rate',
-                regex: '.*',
                 fieldType: Enums.fieldType.lookUp,
                 lookUpName: 'payRateFrequency',
-                lookUpCode: Enums.lookUpTypes.payRate.frequencies.code,
-                multiple: false,
-                defaultValue: null,
-                showInAdd: true
-              },
-              {
+                lookUpCode: Enums.lookUpTypes.payRate.frequencies.code
+              }, {
                 name: 'pay',
                 displayName: 'Pay',
-                regex: '.*',
-                fieldType: Enums.fieldType.int,
-                defaultValue: 0,
-                showInAdd: true
+                fieldType: Enums.fieldType.int
               }
             ]
-        },
-        {
-            objGroupType: Enums.objGroupType.deal,
-            objName: 'Funding Deal',
-            style: {
-                icon: 'briefcase',
-                color: 'yellow'
-            },
-            services: [],
-            fields: [
-                {
-                    name: 'Estimated_Revenue',
-                    displayName: 'Estimated revenue',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true
-                },
-                {
-                    name: 'Credential_Check',
-                    displayName: 'Credential check',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: false
-                },
-            ]
-        },
-        {
-            objGroupType: Enums.objGroupType.deal,
-            objName: 'Software Deal',
-            style: {
-                icon: 'briefcase',
-                color: 'yellow'
-            },
-            services: [],
-            fields: [{
-                    name: 'User_Count',
-                    displayName: 'User count',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true
-                },
-                {
-                    name: 'Modules_Note',
-                    displayName: 'Modules note',
-                    regex: '.*',
-                    fieldType: Enums.fieldType.string,
-                    defaultValue: '',
-                    showInAdd: true
-                },
-            ]
-        }
+        })
     ];
     _.forEach(systemObjTypes, function (objtype) {
         var oldObjType = ObjTypes.findOne({
