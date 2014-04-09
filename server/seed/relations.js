@@ -24,7 +24,8 @@
                        min: 0,
                        max: Infinity
                    },
-                   showInAdd: true
+                   showInAdd: true,
+                   target: 'Contact'
                },
                cascadeDelete: false
            },

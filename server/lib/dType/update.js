@@ -1,13 +1,15 @@
-if (!process.dType){
-    dType={};
-}
+Meteor.startup(function(){
+    if (!process.dType){
+        dType={};
+    }
 
-dType.update=function(doc, fieldNames, modifier){
-    var relations= dType.core.getRelations(doc);
-    _.each(fieldNames,function(name){
-        if (relations[name]){
-            //update
-        }
-    })
+    dType.updater=function(doc, fieldNames, modifier){
+        var relations= dType.core.getRelations(doc);
+        _.each(fieldNames,function(name){
+            if (relations[name]){
+                //update
+            }
+        })
 
-};
+    };
+});

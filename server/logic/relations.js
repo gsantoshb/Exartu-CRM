@@ -97,7 +97,6 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
                 collection2.update({
                     _id: obj2._id
                 }, {
-
                     $set: aux
                 });
                 return true;
