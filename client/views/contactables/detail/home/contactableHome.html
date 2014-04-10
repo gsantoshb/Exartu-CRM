@@ -1,0 +1,139 @@
+<template name="contactableHome">
+
+    <div class="tab-pane active" id="profile-home">
+        <!-- Profile Home Section ------------------------------------ -->
+        <div class="row">
+            <div class="col-md-4 col-lg-4">
+                <div class="box">
+                    <div class="box-header-2">
+                        <div class="box-title">
+                            <i class="icon icon-information"></i>Details</div>
+                    </div>
+                    <div class="box-content-md" data-bind="with: contactable">
+                        <p>
+                            <strong>Summary</strong>
+                        </p>
+                        <div data-bind="if: $data.person">
+                            <div data-bind="with: $data.person">
+                                <p data-bind="template: {name: 'display-property', data: {name: 'First Name', value: firstName, editMode: false} }">
+                                </p>
+                                <p data-bind="template: {name: 'display-property', data: {name: 'Middle Name', value: middleName, editMode: false} }">
+                                </p>
+                                <p data-bind="template: {name: 'display-property', data: {name: 'Last Name', value: lastName, editMode: false} }">
+                                </p>
+                                <p data-bind="template: {name: 'display-property', data: {name: 'Job Title', value: jobTitle, editMode: false} }">
+                                </p>
+                                <p data-bind="template: {name: 'display-property', data: {name: 'Salutation', value: salutation, editMode: false} }">
+                                </p>
+                            </div>
+                        </div>
+                        <div data-bind="if: $data.organization">
+                            <div data-bind="with: $data.organization">
+                                <p data-bind="template: {name: 'display-property', data: {name: 'Organization Name', value: organizationName, editMode: false} }">
+                                </p>
+                            </div>
+                        </div>
+                        <a class="btn btn-default btn-block btn-md" href="#details">Read more</a>
+                    </div>
+                    <!-- /.box-content-md -->
+                </div>
+                <!-- /.box -->
+
+                <!-- ko if: contactable().contactMethods -->
+                <div class="box"  data-bind="with: contactable">
+                    <div class="box-header-2">
+                        <div class="box-title">
+                            <i class="icon icon-contact"></i>Contact methods</div>
+                    </div>
+                    <div class="box-content-md">
+                        <ul class="list-1" data-bind="foreach: $root.contactMethods">
+                            <li>
+                                <strong data-bind="text: typeName"></strong>
+                                <br>
+                                <span data-bind="text: value"></span>
+                            </li>
+                        </ul>
+                        <!-- ko if: $data.contactMethods().length > 3 -->
+                            <!-- ko if: !$root.showAllContactMethods() -->
+                                <a class="btn btn-default btn-block btn-md" data-bind="click: function() { $root.showAllContactMethods(true); }">Show all</a>
+                            <!-- /ko -->
+                            <!-- ko if: $root.showAllContactMethods() -->
+                                <a class="btn btn-default btn-block btn-md" data-bind="click: function() { $root.showAllContactMethods(false); }">Show less</a>
+                            <!-- /ko -->
+                        <!-- /ko -->
+                        <hr/>
+                        <div data-bind="css:{'has-error': $root.newContactMethod().value.isModified() && ! $root.newContactMethod().value.isValid()}">
+                            <input class="form-control" placeholder="Value" data-bind="value: $root.newContactMethod().value, valueUpdate: 'afterkeydown', executeOnEnter: {fn: $root.addContactMethod, keys: [13]}" />
+                            <span class="text-danger" data-bind="validationMessage: $root.newContactMethod().value"></span>
+                        </div>
+                        <div data-bind="css:{'has-error': $root.newContactMethod().type.isModified() && ! $root.newContactMethod().type.isValid()}">
+                            <select class="form-control" class="col-lg-10" data-bind="options: $root.contactMethodsTypes, optionsText:'displayName', value:$root.newContactMethod().type, optionsValue:'_id', executeOnEnter: {fn: $root.addContactMethod, keys: [13]}" />
+                            <span class="text-danger" data-bind="validationMessage: $root.newContactMethod().type"></span>
+                        </div>
+                        <span class="btn btn-link pull-right" data-bind="click: $root.addContactMethod">Save</span>
+                        <br/>
+                    </div>
+                    <!-- /.box-content-md -->
+                </div>
+                <!-- /.box -->
+                <!-- /ko-->
+
+                <!-- ko if: $data.tags -->
+                    <div class="box" data-bind="with: contactable">
+                    <div class="box-header-2">
+                        <div class="box-title">
+                            <i class="icon icon-tag-1"></i>Tags</div>
+                    </div>
+                    <div class="box-content-md">
+                        <div data-bind="foreach: tags">
+                            <button type="button" class="btn btn-xs btn-primary">
+                                <span data-bind="text: $data"></span>
+                                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+                            </button>
+                        </div>
+                        <hr>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Enter tags here..." data-bind="value: $root.newTag">
+                            <span class="input-group-btn">
+                                <button class="btn btn-success" type="button" data-bind="click: $root.addTag">Add</button>
+                            </span>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                    <!-- /.box-content-md -->
+                </div>
+                    <!-- /.box -->
+                <!-- /ko-->
+
+            </div>
+            <!-- /.col-lg-4 -->
+            <div class="col-md-8 col-lg-8" data-bind="with: contactable">
+                <!-- ko if: $data.Employee || $data.Contact -->
+                    {{>contactablePosts}}
+                <!-- /ko -->
+                <!-- ko if: $data.Customer -->
+                    {{>customerJobs}}
+                    {{>customerContacts}}
+                <!-- /ko -->
+            </div>
+            <!-- /.col-lg-8 -->
+        </div>
+        <!-- /.row -->
+
+        <div id="display-property" data-bind="if: name" style="display:none">
+            <!-- ko if: !$data.editMode || !$data.editMode() -->
+            <small data-bind="text: name + ': '"></small>
+            <span data-bind="text: value"></span>
+            <!-- /ko -->
+            <!-- ko if: $data.editMode -->
+            <div class="form-group" data-bind="css:{'has-error': value.isModified() && ! value.isValid()}">
+                <small class="control-label" data-bind="text: name"></small>
+                <div class="col-lg-10">
+                    <input class="form-control" type="text" placeholder="" data-bind="value: value" />
+                    <span class="text-danger" data-bind="validationMessage: value"></span>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</template>

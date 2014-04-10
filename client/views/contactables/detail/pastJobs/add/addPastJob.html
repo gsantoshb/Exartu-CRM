@@ -1,0 +1,61 @@
+<template name="addPastJob">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">×</a>
+                    <h4>Add Past Job</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" data-bind="with: pastJob">
+                        <fieldset>
+                            <div class="form-group" data-bind="css:{'has-error': employerName.isModified() && ! employerName.isValid()}">
+                                <label class="control-label" for="employer">Employer Namee</label>
+                                <input class="form-control" type="text" placeholder="Employer..." data-bind="value: employerName" id="employer">
+                                <span class="text-danger" data-bind="validationMessage: employerName" style="display: none;"></span>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group" data-bind="css:{'has-error': jobTitle.isModified() && ! jobTitle.isValid()}">
+                                <label class="control-label" for="jobTitle">Job Title</label>
+                                <input class="form-control" type="text" placeholder="Job Title..." data-bind="value: jobTitle" id="jobTitle">
+                                <span class="text-danger" data-bind="validationMessage: jobTitle" style="display: none;"></span>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group" data-bind="css:{'has-error': startDate.isModified() && ! startDate.isValid()}">
+                                <label class="control-label">Start Date</label>
+                                <div data-bind="dateTimePicker: {date: startDate}">
+                                    <div data-pick="date">
+                                    </div>
+                                </div>
+                                <span class="text-danger" data-bind="validationMessage: startDate" style="display: none;"></span>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group" data-bind="css:{'has-error': endDate.isModified() && ! endDate.isValid()}">
+                                <label class="control-label">End Date</label>
+                                <div data-bind="dateTimePicker: {date: endDate}">
+                                    <div data-pick="date">
+                                    </div>
+                                </div>
+                                <span class="text-danger" data-bind="validationMessage: endDate" style="display: none;"></span>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group" data-bind="css:{'has-error': description.isModified() && ! description.isValid()}">
+                                <label class="control-label">Description</label>
+                                <textarea class="form-control" data-bind="value: description"></textarea>
+                                <span class="text-danger" data-bind="validationMessage: description" style="display: none;"></span>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button data-bind="click: add, enable:canAdd" class="btn btn-success">Add</button>
+                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

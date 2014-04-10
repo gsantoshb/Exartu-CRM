@@ -55,6 +55,11 @@
                                 <span class="custom-badge-2 " data-bind="text: posts().length"></span>
                             </a>
                         </li>
+                        <!--ko if: $data.pastJobs-->
+                        <li data-bind="css:{'active': $parent.activeTab()=='pastJobs'}">
+                            <a href="#pastJobs" data-toggle="tab ">Past Jobs</a>
+                        </li>
+                        <!--/ko-->
                     </ul>
                     <div class="tab-content ">
                         {{yield 'content'}}
