@@ -2,7 +2,7 @@ Template.documents.waitOn = ['ContactablesFSHandler'];
 Template.documents.viewModel = function() {
   var self = {},
       entityId = Session.get('entityId'),
-      entityCollection = ContactablesFS; // TODO: Get it from Session
+      entityCollection = ContactablesFS.getCollection(); // TODO: Get it from Session
 
   self.searchString = ko.observable();
   var query = ko.computed(function() {

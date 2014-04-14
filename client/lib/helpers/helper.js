@@ -357,13 +357,20 @@ getPictureAsync = function (colection, id, defaultUrl, cb, maxCallStack) {
     });
     if (!picture)
       return cb(defaultUrl);
+    //debugger;
+    var url = picture.url({store: 'contactableFiles'});
 
-    if (picture.fileHandler.default)
-      return cb(picture.fileHandler.default.url);
+    if (url)
+      return cb(url);
 
-    if (callStackSize > maxCallStack) {
-      return cb(defaultUrl);
-    }
+    return;
+
+//    if (picture.fileHandler.default)
+//      return cb(picture.fileHandler.default.url);
+//
+//    if (callStackSize > maxCallStack) {
+//      return cb(defaultUrl);
+//    }
 
     setTimeout(function () {
       chechFileHandler(callStackSize + 1);

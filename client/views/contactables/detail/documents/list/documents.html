@@ -42,10 +42,10 @@
                         <div class="document-details" style="margin-top: 25px; word-wrap: break-word">
                             <p>
                                 <small> Created </small>
-                                <small data-bind="text: moment($parent.uploadDate()).fromNow()"></small>
+                                <small data-bind="text: moment($parent.uploadedAt()).fromNow()"></small>
                             </p>
                             <p data-bind="text: $parent.metadata.description"></p>
-                            <p data-bind="text: $parent.contentType"></p>
+                            <p data-bind="text: $parent.type"></p>
                             <div data-bind="foreach: $parent.metadata.tags">
                                 <button type="button" class="btn btn-xs btn-primary">
                                     <i class="fa fa-tag"></i>

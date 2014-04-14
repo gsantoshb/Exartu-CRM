@@ -36,4 +36,6 @@ Meteor.startup(function () {
             console.log('google accounts configured successfully');
         }
     }
+
+  FS.debug = true;
 });

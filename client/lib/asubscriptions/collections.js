@@ -264,14 +264,10 @@ ObjTypes = new Meteor.Collection("objTypes");
 extendedSubscribe('objTypes', 'ObjTypesHandler');
 
 // CollectionFS
-
-ContactablesFS = new FS.Collection('contactables', {
-  stores: [
-    new FS.Store.FileSystem("contactables", {path: "~/uploads"}),
-    new FS.Store.GridFS("files", {})
-  ]
+ContactablesFS = new Document.Collection({
+  collection: Contactables
 });
-extendedSubscribe('contactableFiles', 'ContactablesFSHandler');
+extendedSubscribe(ContactablesFS.publishName, 'ContactablesFSHandler');
 
 UsersFS = new FS.Collection('users',{
   stores: [
