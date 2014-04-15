@@ -1,7 +1,5 @@
 var dbSeed = {
     seedSystemLookUps: seedSystemLookUps,
-    seedSystemObjTypes: seedSystemObjTypes,
-    seedSystemRelations: seedSystemRelations,
     seedSystemRoles: seedSystemRoles,
     seedSystemContactMethods: seedSystemContactMethods
 }
