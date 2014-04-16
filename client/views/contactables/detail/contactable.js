@@ -153,7 +153,7 @@ Template.contactable.viewModel = function () {
     self.edit = function () {
         self.editModeLocation(!self.editModeLocation());
     }
-    self.locationString = ko.observable(_.isFunction(self.contactable().location) && self.contactable().location() == null ? '' : self.contactable().location.formatted_address());
+    self.locationString = ko.observable(!self.contactable().location || (_.isFunction(self.contactable().location) && self.contactable().location() == null) ? '' : self.contactable().location.formatted_address());
     self.findLocation = function () {
         //        debugger;
         geocoder.geocode({
