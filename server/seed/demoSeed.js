@@ -1050,3 +1050,16 @@ demoSeed = {
   loadJobs: loadJobs,
   loadTasks: loadTasks
 }
+
+// For testing
+Meteor.methods({
+  loadDemoData: function() {
+    var user = Meteor.user();
+    if (!user)
+      return;
+
+    loadContactables(user.hierId);
+    loadJobs(user.hierId);
+    loadTasks(user.hierId, user.username, user._id);
+  }
+})
