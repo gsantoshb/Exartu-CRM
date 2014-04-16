@@ -18,6 +18,11 @@ ContactableController = RouteController.extend({
               to: 'content'
             });
             break;
+       case 'documents':
+            this.render('documents', {
+              to: 'content'
+            });
+            break;
         case 'pastJobs':
             this.render('contactablePastJobs', {
                 to: 'content'
@@ -47,7 +52,6 @@ Template.contactable.viewModel = function () {
     self.contactMethods = ko.computed(function () {
         return self.showAllContactMethods() ? self.contactable().contactMethods() : self.contactable().contactMethods.slice(0, 3);
     });
-
     self.newContactMethod = ko.validatedObservable({
         value: ko.observable().extend({
             required: true
@@ -62,7 +66,6 @@ Template.contactable.viewModel = function () {
             self.newContactMethod.errors.showAllMessages();
             return;
         }
-
         Meteor.call('addContactableContactMethod', contactableId, {
                 value: self.newContactMethod().value(),
                 type: self.newContactMethod().type()
@@ -76,14 +79,12 @@ Template.contactable.viewModel = function () {
                 }
             })
     }
-
     // TAGS
     self.newTag = ko.observable('');
     self.isAdding = ko.observable(false);
     self.addTag = function () {
         if (!self.newTag())
             return;
-
         self.isAdding(true);
         Meteor.call('addContactableTag', contactableId, self.newTag(), function (err, result) {
             if (!err) {
@@ -107,7 +108,7 @@ Template.contactable.viewModel = function () {
         if (data.Customer) return data.Customer;
         if (data.Contact) return data.Contact;
     };
-    self.activeTab = ko.computed(function () {
+    self.activeTab =ko.dep(function(){
         return Router.current().params.hash || 'home';
     });
 

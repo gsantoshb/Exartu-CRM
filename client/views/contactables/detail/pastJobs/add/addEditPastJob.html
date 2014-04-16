@@ -1,10 +1,10 @@
-<template name="addPastJob">
+<template name="addEditPastJob">
     <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close" data-dismiss="modal">×</a>
-                    <h4>Add Past Job</h4>
+                    <h4> <span data-bind="text:modalTitle"></span> Past Job</h4>
                 </div>
                 <div class="modal-body">
                     <form role="form" data-bind="with: pastJob">
@@ -43,6 +43,23 @@
                             </div>
                         </fieldset>
                         <fieldset>
+                            <div class="form-group">
+                                <label class="control-label">Tags</label>
+                                <div data-bind="foreach: tags" style="padding: 5px;">
+                                    <button type="button" class="btn btn-xs btn-primary">
+                                        <span data-bind="text: $data"></span>
+                                        <i class="fa fa-times" data-bind="click: $parent.removeTag"></i>
+                                    </button>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter tags here..." data-bind="value: $parent.newTag">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success" type="button" data-bind="click: $parent.addTag">Add</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
                             <div class="form-group" data-bind="css:{'has-error': description.isModified() && ! description.isValid()}">
                                 <label class="control-label">Description</label>
                                 <textarea class="form-control" data-bind="value: description"></textarea>
@@ -52,7 +69,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button data-bind="click: add, enable:canAdd" class="btn btn-success">Add</button>
+                    <button data-bind="click: accept, enable:canAcept, text: acceptButton" class="btn btn-success">Add</button>
                     <a href="#" class="btn" data-dismiss="modal">Close</a>
                 </div>
             </div>
