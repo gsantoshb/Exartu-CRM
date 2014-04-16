@@ -168,7 +168,7 @@ _.extend(helper, {
 
     getPersonTypes: function () {
         var persontypes = [];
-        _.each(Enums.personType, function (err, v) {
+        _.each(Enums.personType, function (v) {
             persontypes.push(v);
         });
         return persontypes;
