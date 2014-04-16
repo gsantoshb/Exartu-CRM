@@ -18,6 +18,11 @@ ContactableController = RouteController.extend({
               to: 'content'
             });
             break;
+       case 'documents':
+            this.render('documents', {
+              to: 'content'
+            });
+            break;
         case 'pastJobs':
             this.render('contactablePastJobs', {
                 to: 'content'
