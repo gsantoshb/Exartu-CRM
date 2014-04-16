@@ -1,4 +1,4 @@
-// employee pasts jobs
+// employee past jobs
 
 Meteor.startup(function () {
     Meteor.methods({

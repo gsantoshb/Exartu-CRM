@@ -1,37 +1,40 @@
 <template name="contactable">
     <div name="contactableVM">
+        <div style="display:none">
+            {{entityId}}
+        </div>
         <div class="contactables-page" data-bind="with: contactable">
             <div id="content" class="light-content">
-                <div id="breadcrumb" class="breadcrumb-top ">
-                    <a href="# " title="Go to Home " class="tip-bottom ">Home</a>
-                    <a href="# " class="current ">Contactables</a>
+                <div id="breadcrumb" class="breadcrumb-top">
+                    <a href="#" title="Go to Home" class="tip-bottom">Home</a>
+                    <a href="#" class="current">Contactables</a>
                 </div>
-                <div id="content-header" class="content-header-bottom ">
-                    <div class="profile-content-header ">
+                <div id="content-header" class="content-header-bottom">
+                    <div class="profile-content-header">
                         <div data-bind="template: { name: $parent.getHeaderInfoVM($data), data: $data}"></div>
-                        <div class="profile-pic ">
+                        <div class="profile-pic">
                             <a id="edit-picture-btn" class="edit-pic btn btn-default btn-xs" href="#" data-bind="click: function(){  $root.editContactablePicture() }">
                                 <i class="fa fa-pencil"></i>Edit Picture</a>
-                            <a href="# ">
+                            <a href="#">
                                 <!-- ko if: $root.loadPicture -->
                                 {{> spinner}}
                                 <!-- /ko -->
                                 <!-- ko if: $root.pictureUrl() -->
-                                <img class="img-responsive " height="100" width="100" data-bind="attr: { src: $root.pictureUrl }">
+                                <img class="img-responsive" height="100" width="100" data-bind="attr: { src: $root.pictureUrl }">
                                 <!-- /ko -->
                                 <!-- ko if: !$root.pictureUrl() -->
-                                <img class="img-responsive " src="/assets/user-photo-placeholder.jpg">
+                                <img class="img-responsive" src="/assets/user-photo-placeholder.jpg">
                                 <!-- /ko -->
                                 <span class="has-error" data-bind="text: $root.pictureErrorMessage"></span>
                             </a>
                             <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader" />
                         </div>
-                        <h1 class="profile-name ">
+                        <h1 class="profile-name">
                             <strong data-bind="text: displayName"></strong>
                         </h1>
-                        <div class="profile-btns ">
-                            <a class="btn btn-default btn-sm " data-bind="click: function () { Composer.showModal( 'sendMessage',$data); } ">
-                                <i class="fa fa-envelope-o "></i>
+                        <div class="profile-btns">
+                            <a class="btn btn-default btn-sm" data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">
+                                <i class="fa fa-envelope-o"></i>
                                 Send Message
                             </a>
                         </div>
@@ -43,29 +46,33 @@
 
                 <div class="container-fluid">
                     <!-- Nav tabs -->
-                    <ul class="nav nav-pills bottom-20 " id="contactable-nav">
+                    <ul class="nav nav-pills bottom-20" id="contactable-nav">
                         <li data-bind="css:{'active': $parent.activeTab()=='home'}">
-                            <a href="#home " data-toggle="tab ">All</a>
+                            <a href="#home">All</a>
                         </li>
                         <li data-bind="css:{'active': $parent.activeTab()=='details'}">
-                            <a href="#details " data-toggle="tab ">Details</a>
+                            <a href="#details">Details</a>
                         </li>
                         <li data-bind="css:{'active': $parent.activeTab()=='posts'}">
-                            <a href="#posts " data-toggle="tab ">Posts
-                                <span class="custom-badge-2 " data-bind="text: posts().length"></span>
+                            <a href="#posts">Posts
+                                <span class="custom-badge-2" data-bind="text: posts().length"></span>
                             </a>
                         </li>
+                        <li data-bind="css:{'active': $parent.activeTab()=='documents'}">
+                            <a href="#documents" data-toggle="tab ">Documents</a>
+                        </li>
                         <!--ko if: $data.pastJobs-->
-                        <li data-bind="css:{'active': $parent.activeTab()=='pastJobs'}">
-                            <a href="#pastJobs" data-toggle="tab ">Past Jobs</a>
-                        </li>
+                            <li data-bind="css:{'active': $parent.activeTab()=='pastJobs'}">
+                                <a href="#pastJobs" data-toggle="tab ">Past Jobs</a>
+                            </li>
                         <!--/ko-->
-                        <li data-bind="css:{'active': $parent.activeTab()=='pastJobs'}">
-                            <a href="#pastJobs" data-toggle="tab ">Past Jobs</a>
-                        </li>
+                        <!--ko if: $data.educations-->
+                            <li data-bind="css:{'active': $parent.activeTab()=='educations'}">
+                                <a href="#educations" data-toggle="tab ">Educations</a>
+                            </li>
                         <!--/ko-->
                     </ul>
-                    <div class="tab-content ">
+                    <div class="tab-content" data-bind="bind: false">
                         {{yield 'content'}}
                     </div>
                 </div>
@@ -82,64 +89,4 @@
         <div style="display:none" id="empty-header">
         </div>
     </div>
-</template>
-
-<template name="contactablPostsView">
-    <div class="box">
-        <div class="box-header-2">
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#post" data-toggle="tab">
-                        <i class="icon icon-list-4"></i>Post</a>
-                </li>
-            </ul>
-        </div>
-        <div class="box-content">
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div class="tab-pane active" id="post">
-                    <textarea class="form-control" rows="3" placeholder="Write something..." data-bind="value: $root.newPost, valueUpdate: 'afterkeydown', executeOnEnter: {fn: $root.addPost, keys: [13]}"></textarea>
-                </div>
-                <!-- /#post -->
-            </div>
-            <!-- /.tab-content -->
-        </div>
-        <!-- /.box-content-md  -->
-    </div>
-    <!-- /.box -->
-
-    <!-- ko foreach: posts -->
-    <div class="comment " data-bind="with: helper.getUserInformation($data.userId())">
-        <!-- ko if: $data.ready -->
-
-        <div class="comment-thumb">
-            <img height="70px" width="70px" data-bind="attr: {src: picture, alt: $data.username}">
-        </div>
-        <div class="comment-content ">
-            <div class="comment-text ">
-                <div class="comment-info ">
-                    <a href="# ">
-                        <!-- ko if: $data.username -->
-                        <strong data-bind="text: username">
-                        </strong>
-                        <!-- /ko -->
-                        <!-- ko if: !$data.username && $data.email -->
-                        <strong data-bind="text: email"></strong>
-                        <!-- /ko -->
-                    </a>
-                    <span class="pipe">|</span>
-                    <span data-bind="text: moment($parent.createdAt()).format('LL')"></span>
-                </div>
-                <p data-bind="text: $parent.content">
-                </p>
-            </div>
-        </div>
-        <!-- /.comment-content -->
-        <!-- /ko -->
-    </div>
-    <!-- /ko -->
-    <!-- /.comment -->
-
-    <!-- /.box -->
 </template>

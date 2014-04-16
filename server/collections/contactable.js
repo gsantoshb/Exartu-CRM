@@ -25,16 +25,16 @@ Contactables.allow({
 })
 
 Contactables.before.insert(function (userId, doc) {
-  if (this.connection) {
+//  if (this.connection) {
     var user = Meteor.user();
     doc.hierId = user.hierId;
     doc.userId = user._id;
-  }
+//  }
   doc.createdAt = Date.now();
 });
 
-
 // Contactables files
+
 ContactablesFS = new CollectionFS('contactables');
 Meteor.publish('contactableFiles', function () {
   return ContactablesFS.find({});
@@ -48,7 +48,7 @@ ContactablesFS.allow({
     return true;
   },
   remove: function (userId, file) {
-    return false;
+        return true; // TODO: allow correctly
   }
 });
 
@@ -58,47 +58,9 @@ var handler = {
       blob: options.blob,
       fileRecord: options.fileRecord
     };
-  },
+  }
 }
 ContactablesFS.fileHandlers(handler);
-
-//Contactables.before.update(function (userId, doc, fieldNames, modifier, options) {
-//    console.info('*******updating*********')
-//    console.dir(arguments);
-//    //    console.dir(doc.objNameArray);
-//    //    console.dir(fieldNames);
-//
-//    var objTypes = ObjTypes.find({
-//        objName: {
-//            $in: doc.objNameArray
-//        }
-//    }).fetch();
-//
-//    var relations = Relations.find({
-//        $or: [{
-//                obj1: {
-//                    $in: doc.objNameArray
-//                }
-//            }, {
-//                obj2: {
-//                    $in: doc.objNameArray
-//                },
-//                visibilityOn2: {
-//                    $exists: true
-//                }
-//            }
-//        ]
-//    }).fetch();
-//    var typesByName = _.object(_.map(objTypes, function (t) {
-//        return t.objName
-//    }), objTypes);
-//    _.every(fieldNames, function (field) {
-//        if (typesByName[field]) {
-//            console.dir(field);
-//        }
-//    });
-//});
-
 
 Meteor.startup(function () {
   Meteor.methods({
@@ -178,6 +140,17 @@ Meteor.startup(function () {
           pictureFileId: fileId
         }
       });
+        },
+        createCandidate: function(candidate, jobId) {
+          candidate.cratedAt = new Date();
+          candidate.negotiation = '';
+          Jobs.update({
+            _id: jobId
+          }, {
+            $addToSet: {
+              candidates: candidate
+            }
+          });
     }
   });
 });
@@ -276,3 +249,7 @@ var validateOrganization = function (org) {
     return false;
   return true;
 }
+
+// indexes
+Contactables._ensureIndex({hierId: 1});
+Contactables._ensureIndex({objNameArray: 1});

@@ -52,11 +52,15 @@ Template.addContactable.viewModel = function (objname) {
                 objName: self.objTypeName()
             }).personType);
             self.canAdd = ko.observable(true);
+            self.filter=function(option){
+                return option._id;
+            }
 
             return self;
         },
         objname: objname,
         addCallback: function (contactable) {
+//            debugger;
             self.canAdd(false);
             var cont = ko.toJS(contactable);
             _.each(_.functions(cont),function(funcName){
@@ -66,7 +70,7 @@ Template.addContactable.viewModel = function (objname) {
                 cont.location = ko.toJS(self.location);
                 cont.location.coords = helper.getCoords(cont.location);
             }
-            debugger
+//            debugger
             Meteor.call('addContactable', cont, function (err, result) {
                 self.canAdd(true);
                 if (err)

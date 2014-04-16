@@ -99,3 +99,6 @@ Jobs.after.insert(function (userId, doc) {
 		}
 	});
 });
+
+// indexes
+Activities._ensureIndex({hierId: 1});

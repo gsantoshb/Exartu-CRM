@@ -24,32 +24,32 @@
                             <table class="table table-striped" style="table-layout: fixed;">
                                 <tr>
                                     <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-date',data:{icon:'fa fa-calendar',name:'Start date', value: startDate, editMode: $parent.editMode}}">
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-date', data: { data:{icon:'fa fa-calendar',name:'Start date', value: startDate, editMode: $parent.editMode } } }">
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-date',data:{icon:'fa fa-calendar', name:'End date', value: endDate, editMode: $parent.editMode}}">
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-date', data: { data:{icon:'fa fa-calendar', name:'End date', value: endDate, editMode: $parent.editMode } } }">
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-clock-o', name:'Duration', value: duration, valueName:durationName(), editMode: $parent.editMode, lookUpName:'jobDuration'}}">
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp', data: { data:{icon:'fa fa-clock-o', name:'Duration', value: duration, valueName:durationName(), editMode: $parent.editMode, lookUpCode:Enums.lookUpTypes.job.duration.code } } }">
                                         </div>
 
                                     </td>
                                     <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-info-circle', name:'Status', value: status, valueName:statusName(), editMode: $parent.editMode, lookUpName:'jobStatus'}}">
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp', data: { data:{icon:'fa fa-info-circle', name:'Status', value: status, valueName:statusName(), editMode: $parent.editMode, lookUpCode:Enums.lookUpTypes.job.status.code } } }">
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-building-o', name:'Industry', value: industry, valueName:industryName(), editMode: $parent.editMode, lookUpName:'jobIndustry'}}">
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp', data: { data:{icon:'fa fa-building-o', name:'Industry', value: industry, valueName:industryName(), editMode: $parent.editMode, lookUpCode: Enums.lookUpTypes.job.industry.code } } }">
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp',data:{icon:'fa fa-folder-open', name:'Category', value: category, valueName:categoryName(), editMode: $parent.editMode, lookUpName:'jobCategory'}}">
+                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp', data: { data:{icon:'fa fa-folder-open', name:'Category', value: category, valueName:categoryName(), editMode: $parent.editMode, lookUpCode: Enums.lookUpTypes.job.category.code } } }">
                                         </div>
                                     </td>
                                 </tr>
@@ -160,6 +160,7 @@
 
         </div>
         <!-- /.content -->
+    </div>
 </template>
 
 
@@ -190,14 +191,14 @@
                     </tr>
                     <!--ko if: contactMethods().length >= 1-->
                     <tr data-bind="with: contactMethods()[0]">
-                        <td data-bind="text: helper.getContactMethodDisplayName($data.type)"></td>
+                        <td data-bind="text: typeName"></td>
                         <td data-bind="text: value "></td>
                     </tr>
                     <!--/ko-->
 
                     <!--ko if: contactMethods().length >= 2-->
                     <tr data-bind="with: contactMethods()[1]">
-                        <td data-bind="text: helper.getContactMethodDisplayName($data.type)"></td>
+                        <td data-bind="text: typeName"></td>
                         <td data-bind="text: value "></td>
                     </tr>
                     <!--/ko-->

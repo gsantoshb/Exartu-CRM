@@ -2,20 +2,17 @@
     <!-- Template used to show object information dynamically. It show fields and relations that are flagged with showInAdd -->
     <div data-bind="bind: false">
         <div id="showDynamicObjectTemplate" style="display: none">
-            <div data-bind="with: entity">
-                <!--                <h4 data-bind="text: $root.objTypeName " />-->
-                <!--                    <i data-bind="css: 'icon ' + helper.getIconForObjName($root.objTypeName()), style: {color: helper.getColorForObjName($root.objTypeName()) }" style="font-size: 20px"></i>-->
-
-                <fieldset id="list " data-bind="visible: $data[$root.objTypeName()]().length>0, foreach: $data[$root.objTypeName()]">
+            <div>
+                <fieldset id="list " data-bind="foreach: $data.data.entity()[$root.objTypeName()]">
                     <!-- ko if: $data.showInAdd -->
-                    <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: $data}"></div>
+                    <div style="margin-top: 5px" data-bind="template: { name: helper.fieldVM($data), data: { data: $data, filter: $parent.filter }}"></div>
                     <!-- /ko -->
                 </fieldset>
             </div>
-            <div data-bind="foreach: relations">
+            <div data-bind="foreach: data.relations">
                 <div>
                     <h5 data-bind="text: relation.displayName"></h5>
-                    <select class="form-control" data-bind="options: data,optionsText:'displayName', value: value, optionsCaption: 'select...'"></select>
+                    <input type='hidden' style="width: 100%" placeholder="Search" data-bind="select2: { options: data, selectedValues: value, filter: $root.filter }"/>
                 </div>
             </div>
         </div>

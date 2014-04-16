@@ -5,35 +5,27 @@ Template.addJob.viewModel = function (objname) {
         extendEntity: function (self) {
 
             _.extend(self.entity(), new koJob());
-            self.industries = LookUps.findOne({
-                name: 'jobIndustry'
-            }, {
-                _id: 0,
-                items: 1
-            }).items;
-            self.categories = LookUps.findOne({
-                name: 'jobCategory'
-            }, {
-                _id: 0,
-                items: 1
-            }).items;
-            self.statuses = LookUps.findOne({
-                name: 'jobStatus'
-            }, {
-                _id: 0,
-                items: 1
-            }).items;
-            self.durations = LookUps.findOne({
-                name: 'jobDuration'
-            }, {
-                _id: 0,
-                items: 1
-            }).items;
+            self.industries = LookUps.find({
+                codeType: Enums.lookUpTypes.job.industry.code
+            }).fetch();
+            self.categories = LookUps.find({
+                codeType: Enums.lookUpTypes.job.category.code
+            }).fetch();
+            self.statuses = LookUps.find({
+                codeType: Enums.lookUpTypes.job.status.code
+            }).fetch();
+            self.durations = LookUps.find({
+                codeType: Enums.lookUpTypes.job.duration.code
+            }).fetch();
             self.canAdd = ko.observable(true);
+            self.filter=function(option){
+                return option._id;
+            }
             return self;
         },
         objname: objname,
         addCallback: function (job) {
+            debugger;
             self.canAdd(false);
             Meteor.call('addJob', ko.toJS(job), function (err, result) {
                 self.canAdd(true);
@@ -42,6 +34,7 @@ Template.addJob.viewModel = function (objname) {
                 else
                     $('#addJobModal').modal('hide');
             });
+
         }
     }
 

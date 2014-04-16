@@ -33,10 +33,66 @@ Meteor.startup(function () {
             if (beforeInsertOrUpdateJob(job)) {
                 Jobs.insert(job);
             } else {
-                console.error('Job is not valid')
+                console.error('Job is not valid');
                 console.dir(job);
             }
-        }
+        },
+        assign: function(jobId, employeeId, assignmentInfo){
+            var j= Jobs.findOne({ _id: jobId },{ _id: 1 });
+            var e= Contactables.findOne({ _id: employeeId , Employee: { $exists: true } },{_id: 1});
+            if (j && e){
+                // update the job and the employee
+                // then unlock the client and create the assignment entity
+                var assignmentId=j.assignment;
+                if (j.assignment){
+                    Assignment.update({_id: j.assignment},{
+                        $set:{
+                            employee : employeeId,
+                            start : assignmentInfo.start,
+                            end :  assignmentInfo.end,
+                            rates : {
+                                payRate: assignmentInfo.payRate,
+                                billRate:  assignmentInfo.billRate
+                            }
+                    }});
+                } else{
+                    assignmentId=createAssignment(j, e, assignmentInfo);
+                }
+                Jobs.update({
+                    _id: jobId
+                }, {
+                    $set: {
+                        employeeAssigned: employeeId,
+                        assignment: assignmentId
+                    }
+                });
+                Contactables.update({
+                    _id: employeeId
+                }, {
+                    $set: {
+                        jobAssigned: jobId,
+                        assignment: assignmentId
+                    }
+                });
+
+
+            }else{
+                throw new Meteor.Error(400, "the employee or the job could not be found");
+            }
+        },
+      updateCandidateNegotiation: function(data) {
+        Jobs.update(
+          {
+            _id: data.jobId,
+            'candidates.employee': data.employeeId
+          },
+          {
+            $set: {
+              'candidates.$.negotiation': data.negotiation
+            }
+          }
+        )
+      }
     });
 });
 
@@ -98,3 +154,7 @@ var validate = function (job, objTypes) {
 
     return v;
 };
+
+// indexes
+Jobs._ensureIndex({hierId: 1});
+Jobs._ensureIndex({objNameArray:1});

@@ -39,7 +39,6 @@ ko.validation.rules['uniqueUserInformation'] = {
  */
 ko.bindingHandlers.dateTimePicker = {
     init: function (element, valueAccessor, allBindingsAccessor) {
-
         var value; //the observable that contains the date
         var visible = true; //an observable with the visible flag
         var startLimit = -Infinity;
@@ -265,7 +264,8 @@ ko.bindingHandlers.map = {
             map.setCenter(location);
             var marker = new google.maps.Marker({
                 map: map,
-                position: location
+                position: location,
+                title: address.formatted_address
             });
             $(element).data('marker', marker);
         } else {
@@ -277,20 +277,20 @@ ko.bindingHandlers.map = {
         })
     },
     update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-        //        debugger;
+
         var address = ko.toJS(valueAccessor());
+        console.log(allBindings().log ? allBindings().log : '');
         if (address) {
             $(element).show();
             var map = $(element).data('map');
             var marker = $(element).data('marker');
             var location = getLatLng(address);
-
-//            google.maps.event.trigger(map, 'resize');
-
+            var windowString = '<div>' + '<h4>' + address.formatted_address + '</h4>' + '</div>';
             if (!marker) {
                 marker = new google.maps.Marker({
                     map: map,
-                    position: location
+                    position: location,
+                    title: address.formatted_address
                 });
                 $(element).data('marker', marker);
             } else {
@@ -298,12 +298,23 @@ ko.bindingHandlers.map = {
             }
             map.setCenter(location);
             setTimeout(function(){
+                google.maps.event.trigger(map, 'resize');
                 map.setCenter(marker.getPosition());
-            },500);
+            },1000);
+
+            var infowindow = new google.maps.InfoWindow({
+                content: windowString,
+                maxWidth: 200
+            });
+
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.open(map,marker);
+            });
 
         } else {
-
             $(element).hide();
+            var map = $(element).data('map');
+            google.maps.event.trigger(map, 'resize');
         }
     }
 };
@@ -419,8 +430,8 @@ ko.bindingHandlers.sidebar={
             body=$('body'),
             trigger=$('#menu-trigger'),
             isOpen=false;
-        var animationWidth=200;
         var minimunWidth=768;
+
         var hideIfClickOutside=function(e){
             if (!sidebar.is(e.target) && sidebar.has(e.target).length === 0
                 && !trigger.is(e.target) && trigger.has(e.target).length === 0) {
@@ -429,29 +440,41 @@ ko.bindingHandlers.sidebar={
             }
         }
         var hide=function(){
-            body.animate({left: "0px"},500);
-            sidebar.animate({left: '-'+animationWidth+'px'},500);
+            body.removeClass('in');
+            body.addClass('animating');
+            sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+                body.removeClass('animating');
+            });
+
+            sidebar.removeClass('in');
+            sidebar.addClass('animating');
+            sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+                sidebar.removeClass('animating');
+            });
+            body.off('click',hideIfClickOutside);
             isOpen=false;
         }
         var show=function(){
             sidebar.show();
-            body.animate({left: animationWidth+'px'},500);
-            sidebar.animate({left: "0px"},500);
+
+            body.addClass('in');
+            body.addClass('animating');
+            sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+                body.removeClass('animating');
+            });
+
+
+            sidebar.addClass('in');
+            sidebar.addClass('animating');
+            sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+                sidebar.removeClass('animating');
+            });
             isOpen=true;
         }
         var start=function(){
-            sidebar.css('position','fixed');
-            sidebar.css('left','-'+animationWidth+'px');
-            body.css('position','absolute');
-            body.css('width','100%');
-
             isOpen=false;
-            body.css('left',"0px");
-            sidebar.css('left','-'+animationWidth+'px');
-
             trigger.unbind( "click" );
             trigger.click(function(){
-                console.log('click');
                 if(isOpen){
                     hide();
                 } else {
@@ -461,10 +484,8 @@ ko.bindingHandlers.sidebar={
             })
         }
         var stop = function(){
-            sidebar.css('position','relative');
-            sidebar.css('left','0px');
-            body.css('position','inherit');
-            body.css('width','100%');
+            sidebar.removeClass('in');
+            body.removeClass('in');
             body.off('click',hideIfClickOutside);
             trigger.unbind( "click" );
         };
@@ -482,6 +503,79 @@ ko.bindingHandlers.sidebar={
     update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
     }
 }
+
+ko.bindingHandlers.select2 = {
+  init: function (element, valueAccessor) {
+    var options = _.map(ko.isObservable(valueAccessor().options)? valueAccessor().options(): valueAccessor().options, function(option){
+      option.id = ko.isObservable(option._id)? option._id(): option._id;
+      option.text = ko.isObservable(option.displayName)? option.displayName() : option.displayName;
+
+      return option;
+    });
+    var selectedValues = valueAccessor().selectedValues;
+    var filter = valueAccessor().filter;
+
+    $(element).select2({
+      data: options
+    });
+
+    var add = function(data){
+      if (_.isArray(selectedValues())) {
+        if (_.findWhere(selectedValues(), {id: data.id}) == undefined)
+          selectedValues.push(filter? filter(data) : data);
+      }
+      else
+        selectedValues(filter? filter(data) : data);
+    };
+
+    ko.utils.registerEventHandler(element, "select2-selected", function (data) {
+        add(data.choice)
+    });
+  }
+};
+
+ko.bindingHandlers.dragAndDrop = {
+  init: function (element, valueAccessor) {
+    var options = valueAccessor();
+
+    $(element).addClass('drop-zone');
+
+    ko.utils.registerEventHandler(element, "dragenter",
+      function (data) {
+        data.stopPropagation();
+        data.preventDefault();
+        $(element).addClass('drop-zone-hover');
+      }
+    );
+
+    ko.utils.registerEventHandler(element, "dragexit",
+      function (data) {
+        data.stopPropagation();
+        data.preventDefault();
+        $(element).removeClass('drop-zone-hover');
+      }
+    );
+
+    ko.utils.registerEventHandler(element, "dragover",
+      function (data) {
+        data.stopPropagation();
+        data.preventDefault();
+      }
+    );
+
+    ko.utils.registerEventHandler(element, "drop",
+      function (data) {
+        data.stopPropagation();
+        data.preventDefault();
+        var files = data.originalEvent.dataTransfer.files;
+
+        for (var i = 0, f; f = files[i]; i++) {
+          options.onDrop(f);
+        }
+      }
+    );
+  }
+};
 
 // Register new rules
 ko.validation.registerExtenders();

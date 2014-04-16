@@ -14,14 +14,14 @@
                         <span class="text-danger" data-bind="validationMessage: destination"></span>
                     </div>
                     <div class="form-group" data-bind="css:{'has-error': subject.isModified() && ! subject.isValid()}">
-                        <label class="control-label" for: "subject">Subject</label>
+                        <label class="control-label" for="subject">Subject</label>
                         <input class="form-control" data-bind="value: subject" placeholder="Subject..." />
                         <span class="text-danger" data-bind="validationMessage: subject"></span>
                     </div>
 
                     <div class="form-group" data-bind="css:{'has-error': message.isModified() && ! message.isValid()}">
                         <label class="control-label">Message</label>
-                        <textarea class="form-control" rows="3" data-bind="value:message" placeholder="Message..." />
+                        <textarea class="form-control" rows="3" data-bind="value:message" placeholder="Message..." > </textarea>
                         <span class="text-danger" data-bind="validationMessage: message"></span>
                     </div>
                     <!-- /ko -->

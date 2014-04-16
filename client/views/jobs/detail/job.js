@@ -3,12 +3,12 @@ JobController = RouteController.extend({
 
     data: function () {
         Session.set('entityId', this.params._id); // save current contactable to later use on templates
-    },
+    }
 
 });
 
 
-Template.job.waitOn = ['JobHandler', 'ObjTypesHandler'];
+Template.job.waitOn = ['JobHandler', 'ObjTypesHandler', 'ContactMethodsHandler'];
 
 Template.job.viewModel = function () {
     var self = this,
@@ -88,6 +88,20 @@ Template.job.viewModel = function () {
         self.editJob().tags.remove(data);
     };
     self.editTag = ko.observable();
+    self.assign=function(data){
+        Meteor.call('assign', jobId , ko.toJS(data._id),function(err, result){
+            if(!err){
+            }else{
+                console.log(err);
+            }
+        });
+    }
+
+  self.updateNegotiation = function(data) {
+    Meteor.call('updateCandidateNegotiation', {jobId: jobId, employeeId: data.employee(), negotiation: data.negotiation()});
+    // Collapse editor
+    $('#' + data.employee()).collapse('hide');
+  }
 
     return self;
 };

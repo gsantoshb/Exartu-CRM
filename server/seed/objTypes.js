@@ -18,7 +18,16 @@ seedSystemObjTypes = function () {
         {
             objGroupType: Enums.objGroupType.job,
             services: ['messages', 'tasks', 'posts', 'tags'],
-            fields: []
+            fields: [
+              {
+                name: 'fee',
+                displayName: 'Fee (%)',
+                regex: '.*',
+                fieldType: Enums.fieldType.int,
+                defaultValue: 0,
+                showInAdd: true
+              }
+            ]
         },
         {
             objGroupType: Enums.objGroupType.quote,
@@ -169,7 +178,7 @@ seedSystemObjTypes = function () {
                 color: 'blue'
             },
             defaultPersonType: Enums.personType.human,
-            services: ['pastJobs'],
+            services: ['pastJobs','educations'],
             fields: [{
                 name: 'description',
                 displayName: 'Description',
@@ -187,16 +196,26 @@ seedSystemObjTypes = function () {
                 color: 'yellow'
             },
             services: [],
-            fields: [{
+            fields: [
+              {
+                name: 'salary',
+                displayName: 'Salary',
+                regex: '.*',
+                fieldType: Enums.fieldType.int,
+                defaultValue: 0,
+                showInAdd: true
+              }, {
                 name: 'jobTitle',
                 displayName: 'Job title',
                 regex: '',
                 fieldType: Enums.fieldType.lookUp,
                 lookUpName: 'jobTitle',
+                lookUpCode: Enums.lookUpTypes.job.titles.code,
                 multiple: false,
                 defaultValue: null,
                 showInAdd: true
-            }]
+              }
+            ]
         },
         {
             objGroupType: Enums.objGroupType.job,
@@ -206,16 +225,27 @@ seedSystemObjTypes = function () {
                 color: 'yellow'
             },
             services: [],
-            fields: [{
-              name: 'jobTitle',
-              displayName: 'Job title',
-              regex: '',
-              fieldType: Enums.fieldType.lookUp,
-              lookUpName: 'jobTitle',
-              multiple: false,
-              defaultValue: null,
-              showInAdd: true
-            }]
+            fields: [
+              {
+                name: 'frequency',
+                displayName: 'Frequency pay rate',
+                regex: '.*',
+                fieldType: Enums.fieldType.lookUp,
+                lookUpName: 'payRateFrequency',
+                lookUpCode: Enums.lookUpTypes.payRate.frequencies.code,
+                multiple: false,
+                defaultValue: null,
+                showInAdd: true
+              },
+              {
+                name: 'pay',
+                displayName: 'Pay',
+                regex: '.*',
+                fieldType: Enums.fieldType.int,
+                defaultValue: 0,
+                showInAdd: true
+              }
+            ]
         },
         {
             objGroupType: Enums.objGroupType.deal,

@@ -29,9 +29,9 @@ Contactables = new Meteor.Collection("contactables", {
         if (!contactable.pictureFileId) {
             contactable.pictureFileId=null;
         }
-        if (contactable.assignment) {
+        if (contactable.jopAssigned) {
             contactable.assignmentInfo = Jobs.findOne({
-                _id: contactable.assignment
+                _id: contactable.jopAssigned
             }, {
                 transform: null
             });
@@ -46,15 +46,54 @@ Contactables = new Meteor.Collection("contactables", {
                     contactable.assignmentInfo.CustomerInfo.pictureFileId = null;
             }
         } else {
-              contactable.assignment = null;
-              contactable.assignmentInfo = null;
+            contactable.assignment = null;
+            contactable.assignmentInfo = null;
+        }
+
+        if(contactable.Customer) {
+            if(contactable.Customer.jobs){
+                contactable.Customer.jobsInfo = Jobs.find(
+                    {
+                        _id: {
+                            $in: contactable.Customer.jobs
+                        }
+                    },
+                    {
+                        transform: null
+                    }
+                ).fetch();
+            }
+            if(contactable.Customer.contacts){
+                contactable.Customer.contactsInfo = Contactables.find(
+                    {
+                        _id: {
+                            $in: contactable.Customer.contacts
+                        }
+                    }
+                ).fetch();
+            } else{
+                contactable.Customer.contactsInfo=[];
+            }
+        }
+
+        if(contactable.contactMethods){
+            _.each(contactable.contactMethods,function(cm){
+                var type = ContactMethods.findOne({_id: cm.type});
+                if (type){
+                    cm.typeName=type.displayName;
+                    cm.typeEnum=type.type;
+                } else {
+                    cm.typeName='Unknown';
+                    cm.typeEnum=-1;
+                }
+
+            })
         }
 
         extendObject(contactable);
         return contactable;
     }
 });
-
 extendedSubscribe('contactables', 'ContactableHandler');
 
 var getLookUpName = function (lookUpName, code) {
@@ -71,13 +110,14 @@ var getLookUpName = function (lookUpName, code) {
         return;
     return lookUpValue.displayName;
 }
+
 Jobs = new Meteor.Collection("jobs", {
     transform: function (job) {
         job.displayName = job.publicJobTitle;
-        job.industryName = getLookUpName('jobIndustry', job.industry);
-        job.categoryName = getLookUpName('jobCategory', job.category);
-        job.durationName = getLookUpName('jobDuration', job.duration);
-        job.statusName = getLookUpName('jobStatus', job.status);
+        job.industryName = LookUps.findOne({ _id: job.industry }).displayName;
+        job.categoryName = LookUps.findOne({ _id: job.category }).displayName;
+        job.durationName = LookUps.findOne({ _id: job.duration }).displayName;
+        job.statusName = LookUps.findOne({ _id: job.status }).displayName;
         _.each(job.candidates, function (candidate) {
             candidate.employeeInfo = Contactables.findOne({
                 _id: candidate.employee
@@ -92,60 +132,29 @@ Jobs = new Meteor.Collection("jobs", {
                 _id: job.customer
             });
         }
-        if (job.assignment) {
+        if (job.employeeAssigned) {
             job.assignmentInfo = Contactables.findOne({
-                _id: job.assignment
+                _id: job.employeeAssigned
             });
         } else {
             job.assignmentInfo = null;
         }
 
         return job;
-    },
+    }
 });
 extendedSubscribe('jobs', 'JobHandler');
 
 
-Deals = new Meteor.Collection("deals", function () {
-    _.forEach(Deals.observers, function (cb) {
-        cb();
-    });
-});
-DealHandler = Meteor.subscribe('deals', function () {
-    _.forEach(Deals.observers, function (cb) {
-        cb();
-    });
-});
-DealHandler.observers = [];
-DealHandler.wait = function (cb) {
-    if (this.ready())
-        cb();
-    else
-        this.observers.push(cb);
-}
-
+Deals = new Meteor.Collection("deals");
+extendedSubscribe('deals', 'DealHandler');
 
 /*
  * Messages
  */
+
 Messages = new Meteor.Collection("messages");
-MessagesHandler = Meteor.subscribe('messages', function () {
-    _.forEach(MessagesHandler.observers, function (cb) {
-        cb();
-    });
-});
-//MessagesHandler = Meteor.subscribe('contactables', function () {
-//    _.forEach(ContactableHandler.observers, function (cb) {
-//        cb();
-//    });
-//});
-MessagesHandler.observers = [];
-MessagesHandler.wait = function (cb) {
-    if (this.ready())
-        cb();
-    else
-        this.observers.push(cb);
-}
+extendedSubscribe('messages', 'MessagesHandler');
 
 Conversations = new Meteor.Collection("conversations", {
     transform: function (conversation) {
@@ -157,7 +166,7 @@ Conversations = new Meteor.Collection("conversations", {
             _.every(conversationMessages, function (conversation) {
                 return conversation.readed;
             })
-        );
+            );
 
         conversation.readed = (conversation.user1 == Meteor.userId() ? conversation.user1Readed : conversation.user2Readed);
 
@@ -172,9 +181,8 @@ Meteor.subscribe('activities');
 
 
 LookUps = new Meteor.Collection("lookUps");
-Meteor.subscribe('lookUps');
+extendedSubscribe('lookUps', 'LookUpsHandler');
 
-//extendedSubscribe('users', 'UserHandler');
 UsersHandler = {
     ready: function () {
         if (!Accounts.loginServicesConfigured())
@@ -208,7 +216,6 @@ UsersHandler = {
     }
 
 }
-//Meteor.subscribe('userData');
 
 Roles = new Meteor.Collection("roles");
 Meteor.subscribe('roles');
@@ -253,6 +260,7 @@ extendedSubscribe("tasks", 'TasksHandler');
  * objTypes
  */
 ObjTypes = new Meteor.Collection("objTypes");
+
 extendedSubscribe('objTypes', 'ObjTypesHandler');
 
 // CollectionFS
@@ -260,7 +268,13 @@ extendedSubscribe('objTypes', 'ObjTypesHandler');
 ContactablesFS = new CollectionFS('contactables', {
     autopublish: false
 });
-Meteor.subscribe('contactableFiles');
+extendedSubscribe('contactableFiles', 'ContactablesFSHandler');
 
 UsersFS = new CollectionFS('users');
 extendedSubscribe('usersFiles', 'UsersFSHandler');
+
+ContactMethods= new Meteor.Collection('contactMethods');
+extendedSubscribe('contactMethods', 'ContactMethodsHandler');
+
+Assignments= new Meteor.Collection('assignment');
+extendedSubscribe('assignment', 'AssignmentsHandler');

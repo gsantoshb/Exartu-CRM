@@ -219,8 +219,8 @@ Meteor.methods({
  * user files
  */
 
-// Contactables files
 UsersFS = new CollectionFS('users');
+
 Meteor.publish('usersFiles', function () {
   return UsersFS.find({});
 });
@@ -245,6 +245,6 @@ var handler = {
       blob: options.blob,
       fileRecord: options.fileRecord
     };
-  },
+  }
 }
 UsersFS.fileHandlers(handler);

@@ -6,7 +6,11 @@ Template.addUser.viewModel = function () {
             required: true
         }),
         email: ko.observable('').extend({
-            required: true
+            required: true,
+            pattern: {
+                message: 'check this value',
+                params: helper.emailRE.str
+            }
         }),
         password: ko.observable('').extend({
             required: true

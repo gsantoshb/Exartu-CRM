@@ -22,6 +22,10 @@ LookUps = new Meteor.Collection("lookUps");
 
 Roles = new Meteor.Collection("roles");
 
+ContactMethods = new Meteor.Collection("contactMethods");
+
+Assignment = new Meteor.Collection("assignment");
+
 
 //Test = new Meteor.Collection("test");
 //

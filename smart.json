@@ -1,16 +1,19 @@
 {
   "packages": {
     "bootstrap-3": {},
-    "iron-router": {},
+    "iron-router": "0.6.4",
     "knockout-client": {},
-    "accounts-ui-bootstrap-3": {},
     "collection-hooks": {},
-    "iron-router-progress": {},
     "googlemaps": {},
-    "collectionFS": {},
+    "collectionFS": "0.3.7",
     "imagemagick": {},
     "spin": {},
     "bootstrap3-wysihtml5": {},
-    "jquery-color-animation": {}
+    "jquery-color-animation": "1.6.0",
+    "select2": {},
+    "connect": {},
+    "xml2js": {},
+    "npm": {},
+    "cfs-filesystem": {}
   }
 }
