@@ -47,10 +47,12 @@ Accounts.onCreateUser(function (options, user) {
   if (!user.permissions) {
     var userPermissions = [];
     _.forEach(options.roles, function (role) {
-      var dbrole = Roles.findOne({
+        var dbrole = Roles.findOne({
         name: role.name
-      });
-      user.permissions = _.uniq(userPermissions.concat(dbrole.rolePermissions));
+        });
+        if (dbrole){
+            user.permissions = _.uniq(userPermissions.concat(dbrole.rolePermissions));
+        }
     });
   }
   user.roles = roles;
