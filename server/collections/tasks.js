@@ -39,13 +39,13 @@ Meteor.startup(function () {
 });
 
 Tasks.before.insert(function (userId, doc) {
-  if (this.connection) {
-    console.log("errrooooor");
+//  if (this.connection) {
+    debugger;
     var user = Meteor.user();
     doc.hierId = user.hierId;
     doc.userId = user._id;
-  }
-  doc.createdAt = Date.now();
+//  }
+    doc.createdAt = Date.now();
 });
 Tasks.allow({
   update: function (userId, doc, fields, modifier) {
