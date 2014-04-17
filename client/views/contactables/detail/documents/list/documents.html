@@ -35,7 +35,12 @@
 
                     <div class="thumb thumb-lg">
                         <a>
+                            <!-- ko if: $parent.contentType().match("^image/") != null -->
                             <img data-bind="attr: {src: picture}">
+                            <!-- /ko -->
+                            <!-- ko if: $parent.contentType().match("^image/") == null -->
+                            <span> Not image available</span>
+                            <!-- /ko -->
                         </a>
                     </div>
                     <div class="caption" >
