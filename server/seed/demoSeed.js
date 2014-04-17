@@ -124,8 +124,9 @@ var employees = [
 var loadContactables = function(hierId) {
   // Employees
   _.forEach(employees, function(data){
-    var jobTitles = LookUps.findOne({name: 'jobTitle'}).items;
+    var jobTitles = LookUps.find({codeType: Enums.lookUpTypes.job.titles.code}).fetch();
     console.log('HierId:' + hierId);
+    console.log('jobTitles:' + jobTitles.length);
     var randomJobTitle = jobTitles[Math.floor(Math.random()*jobTitles.length)];
     var newEmployee = {
       objNameArray: ["Employee"],
@@ -405,11 +406,11 @@ var loadContactables = function(hierId) {
 var loadJobs = function(hierId) {
   var customers = Contactables.find({objNameArray: 'Customer'}).fetch();
   var jobTypes = ObjTypes.find({objGroupType: 'job'}).fetch();
-  var industries = LookUps.findOne({name: 'jobIndustry'}).items;
-  var categories = LookUps.findOne({name: 'jobCategory'}).items;
-  var durations = LookUps.findOne({name: 'jobDuration'}).items;
-  var jobTitles = LookUps.findOne({name: 'jobTitle'}).items;
-  var statuses = LookUps.findOne({name: 'jobStatus'}).items;
+  var industries = LookUps.find({codeType: Enums.lookUpTypes.job.industry.code}).fetch();
+  var categories = LookUps.find({codeType: Enums.lookUpTypes.job.category.code}).fetch();
+  var durations = LookUps.find({codeType: Enums.lookUpTypes.job.duration.code}).fetch();
+  var jobTitles = LookUps.find({codeType: Enums.lookUpTypes.job.titles.code}).fetch();
+  var statuses = LookUps.find({codeType: Enums.lookUpTypes.job.titles.code}).fetch();
   var publicJobTitles = [
     ["QCI"  ],
     ["Production/sewing"  ],
@@ -976,10 +977,10 @@ var loadJobs = function(hierId) {
       customer: randomCustomer._id,
       objNameArray: [randomJobType.objName],
       hierId: hierId,
-      industry: industries[Math.floor(Math.random()*industries.length)].code,
-      category: categories[Math.floor(Math.random()*categories.length)].code,
-      duration: durations[Math.floor(Math.random()*durations.length)].code,
-      status: statuses[Math.floor(Math.random()*statuses.length)].code,
+      industry: industries[Math.floor(Math.random()*industries.length)]._id,
+      category: categories[Math.floor(Math.random()*categories.length)]._id,
+      duration: durations[Math.floor(Math.random()*durations.length)]._id,
+      status: statuses[Math.floor(Math.random()*statuses.length)]._id,
       publicJobTitle: randomPublicJobTitle[0],
       startDate: today,
       endDate: tomorrow,
