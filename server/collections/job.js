@@ -18,12 +18,10 @@ Jobs.allow({
 });
 
 Jobs.before.insert(function (userId, doc) {
-  if (this.connection) {
     var user = Meteor.user();
     doc.hierId = user.hierId;
     doc.userId = user._id;
-  }
-  doc.createdAt = Date.now();
+    doc.createdAt = Date.now();
 });
 
 Meteor.startup(function () {
