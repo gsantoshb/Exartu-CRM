@@ -345,6 +345,9 @@ var getContactablePictureAsync = function (contactable, defaultURL) {
 }
 // tries to get a picture maxCallStack times (20 is the default)
 getPictureAsync = function (colection, id, defaultUrl, cb, maxCallStack) {
+    if (!id){
+        return cb(defaultUrl);
+    }
   if (!maxCallStack) {
     maxCallStack = 20;
   }
