@@ -45,4 +45,7 @@ Meteor.startup(function () {
       console.log('google accounts configured successfully');
     }
   }
+
+  var appId = process.env['APM_ID'] || 'vy8mpCMHy6r3RrByb';
+  Apm.connect(appId, 'dfe473b6-b92b-4848-862d-120bff294695');
 });
