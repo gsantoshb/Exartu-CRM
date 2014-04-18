@@ -73,7 +73,7 @@ var getHistorical = function (collection, timeStamps, query) {
   var last = history.length - 1;
 //    debugger;
   if (history[last] != 0) {
-    var growth = 100 * (history[last] - history[last - 1]) / history[last];
+    var growth = Math.round(100 * (history[last] - history[last - 1]) / history[last]);
   } else {
     var growth = 0;
   }
