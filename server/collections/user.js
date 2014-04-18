@@ -1,3 +1,16 @@
+Accounts.validateNewUser(function(user) {
+    if (user.services.google)
+    {
+        var oldUser = Meteor.users.findOne({
+            'emails.address': user.services.google.email
+        });
+        if (oldUser)
+            throw new Meteor.Error(403, user.services.google.email + " email is already in use");
+    }
+
+    return true;
+});
+
 Accounts.onCreateUser(function (options, user) {
   var hierId = '';
   var userEmail = options.email;
