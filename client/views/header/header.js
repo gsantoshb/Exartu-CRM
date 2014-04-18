@@ -39,6 +39,8 @@ Template.header.viewModel = function () {
 var init = true;
 Template.header.rendered = function () {
     $('body').addClass("flat");
+    $('body').attr('data-color', 'enterprise-dark');
+    $('#color-style a[data-color=enterprise-dark]').addClass('active');
 
     if (init) {
         //=== Tooltips === 
@@ -103,9 +105,7 @@ Template.header.rendered = function () {
                 switcherPanel.addClass('open');
             }
         });
-        $('body').attr('data-color', 'enterprise-dark');
-        $('#color-style a[data-color=enterprise-dark]').addClass('active');
-
+        
         $('#color-style a').click(function () {
             var color = $(this).attr('data-color');
             $(this).parent().find('a').removeClass('active');
