@@ -90,6 +90,9 @@ Contactables = new Meteor.Collection("contactables", {
 
             })
         }
+        if(contactable.location==undefined){
+            contactable.location=null;
+        }
 
         extendObject(contactable);
         return contactable;
