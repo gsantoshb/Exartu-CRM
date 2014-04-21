@@ -89,7 +89,6 @@ Template.sendMessage.viewModel = function (contactable) {
 
     self.canSend = ko.observable(true);
     self.send = function () {
-        self.canSend(false);
         var selectedMethod = self.selectedMethod();
         switch (selectedMethod) {
         case 'email':
@@ -97,6 +96,7 @@ Template.sendMessage.viewModel = function (contactable) {
                 self.email.errors.showAllMessages();
                 return;
             }
+            self.canSend(false);
             var email = ko.toJS(self.email);
             Meteor.call('sendEmail', email.to, email.subject, email.text, function (err, result) {
                 self.canSend(true);
