@@ -60,7 +60,6 @@ Template.addContactable.viewModel = function (objname) {
         },
         objname: objname,
         addCallback: function (contactable) {
-//            debugger;
             self.canAdd(false);
             var cont = ko.toJS(contactable);
             _.each(_.functions(cont),function(funcName){

@@ -4,7 +4,6 @@
  */
 
 beforeUpdateRelation = function (obj, rel, objTypeName) {
-
     if (rel.visibilityOn1) {
         if (!rel.visibilityOn2) {
             return beforeUpdate.oneWay(obj[objTypeName][rel.visibilityOn1.name], rel.visibilityOn1);

@@ -197,7 +197,10 @@ var extendContactable = function (contactable, objTypes) {
           contactable[service] = [];
       });
     }
-  })
+  });
+  if (!contactable._id){    //is inserting
+      contactable._id= Meteor.uuid();
+  }
 };
 
 /*
