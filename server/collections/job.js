@@ -56,24 +56,6 @@ Meteor.startup(function () {
                 } else{
                     assignmentId=createAssignment(j, e, assignmentInfo);
                 }
-                Jobs.update({
-                    _id: jobId
-                }, {
-                    $set: {
-                        employeeAssigned: employeeId,
-                        assignment: assignmentId
-                    }
-                });
-                Contactables.update({
-                    _id: employeeId
-                }, {
-                    $set: {
-                        jobAssigned: jobId,
-                        assignment: assignmentId
-                    }
-                });
-
-
             }else{
                 throw new Meteor.Error(400, "the employee or the job could not be found");
             }
