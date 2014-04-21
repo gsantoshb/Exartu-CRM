@@ -8,8 +8,11 @@ Template.login.viewModel = function () {
 
   self.loginWith = function (serviceName) {
     if (Meteor['loginWith' + serviceName])
-      Meteor['loginWith' + serviceName]({}, function () {
-        Router.go('/');
+      Meteor['loginWith' + serviceName]({}, function (err) {
+        if(err)
+            self.errorMessage(err.reason);
+        else
+          Router.go('/');
       });
   }
 
