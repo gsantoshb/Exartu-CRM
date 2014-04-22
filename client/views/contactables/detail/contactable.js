@@ -155,7 +155,7 @@ Template.contactable.viewModel = function () {
     self.getHeaderInfoVM = function (data) {
         if (data.Employee) return 'employee-header';
         if (data.Customer) return 'empty-header';
-        if (data.Contact) return 'empty-header';
+        if (data.Contact) return 'contact-header';
     };
 
     return self;
