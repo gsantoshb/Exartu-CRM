@@ -4,7 +4,8 @@
     "basePackages": {
       "bootstrap-3": {},
       "iron-router": {
-        "version": "0.6.4"
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "branch": "dev"
       },
       "knockout-client": {},
       "collection-hooks": {},
@@ -15,15 +16,12 @@
       "imagemagick": {},
       "spin": {},
       "bootstrap3-wysihtml5": {},
-      "jquery-color-animation": {
-        "version": "1.6.0"
-      },
+      "jquery-color-animation": {},
       "select2": {},
       "connect": {},
       "xml2js": {},
       "npm": {},
-      "cfs-filesystem": {},
-      "apm": {}
+      "cfs-filesystem": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -33,8 +31,8 @@
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.6.4",
-        "commit": "82115001bb648ef1e5cadcc5ee9f312080723ec4"
+        "branch": "dev",
+        "commit": "dbe82ad1e0c72cb8cf1031563d123445b2951052"
       },
       "knockout-client": {
         "git": "https://github.com/zhouzhuojie/knockout-client.git",
@@ -101,15 +99,10 @@
         "tag": "v0.0.23",
         "commit": "0df660c3d38a9983388e9af5b8f24a8bf1bd3a7a"
       },
-      "apm": {
-        "git": "https://github.com/arunoda/meteor-apm-client.git",
-        "tag": "v1.2.2",
-        "commit": "46019950b917191b78a9c81349421521ce07a932"
-      },
-      "apm": {
-        "git": "https://github.com/arunoda/meteor-apm-client.git",
-        "tag": "v1.2.2",
-        "commit": "46019950b917191b78a9c81349421521ce07a932"
+      "blaze-layout": {
+        "git": "https://github.com/EventedMind/blaze-layout.git",
+        "tag": "v0.2.4",
+        "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
       },
       "cfs-base-package": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-base-package.git",
