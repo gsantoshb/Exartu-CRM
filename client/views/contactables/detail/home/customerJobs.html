@@ -2,10 +2,18 @@
     <div class="box">
         <div class="box-header-2">
             <div class="box-title ">
+                <div class="pull-right btn-group btn-xs">
+                    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+                        Add <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" data-bind="foreach: ObjTypes.find({objGroupType: Enums.objGroupType.job}).fetch()">
+                        <li><a href="#" data-bind="text: 'Add '+ $data.objName, click: function () { Composer.showModal('addJob', $data.objName, { customer: $parent._id() }); }"></a></li>
+                    </ul>
+                </div>
+                <!--<a class="pull-right btn btn-xs btn-default"  data-bind="click: function () { Composer.showModal('addJob', 'Contact',{customer: _id()}); }">-->
+                    <!--<i class="fa fa-plus"></i>&nbsp;Add-->
+                <!--</a>-->
                 <i class="icon icon-briefcase"></i>Jobs</div>
-            <!--<div class="pull-right">-->
-                <!--<i style="cursor: pointer" class="glyphicon glyphicon-plus" data-toggle="modal" data-bind="click: function () { Composer.showModal('addJob', {objName: $data.objName, customer: $data._id()}); }"></i>-->
-            <!--</div>-->
         </div>
         <div data-bind="foreach: $data.Customer.jobsInfo">
             <div class="table-item magic">

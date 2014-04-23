@@ -1,27 +1,37 @@
 <template name="contactableCustomer">
     <!--ko with: Contact-->
-    <!--ko if: $data.customer-->
-        <div class="box">
+        <!--ko if: $data.customer-->
+            <div class="box">
 
+                <div class="box-header-2">
+                    <a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'contactCustomerAddEdit',$parent);}">
+                        <i class="fa fa-pencil"></i>Edit
+                    </a>
+                    <div class="box-title">
+                        <i class="icon-buildings-1"></i>Customer
+                    </div>
+
+                </div>
+                <div data-bind="with: ko.meteor.findOne(Contactables,{_id: customer()})">
+                    <a data-bind="attr:{href:'/contactable/'+ _id()}">
+                        <div class="row" style="margin:3px;">
+                            <img class="col-md-4" style="heigth:70px; width:70px;" alt="google" data-bind="attr: {src: helper.getCustomerPictureUrl($data)}">
+                            <h5 class="col-md-4" data-bind="text: displayName"></h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        <!--/ko-->
+        <!--ko ifnot: $data.customer-->
             <div class="box-header-2">
-                <!--<a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'contactableAssignmentAdd',$data._id(), assignment());}">-->
-                <!--<i class="fa fa-pencil"></i>Edit-->
-                <!--</a>-->
+                <a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'contactCustomerAddEdit',$parent);}">
+                    <i class="fa fa-pencil"></i>Edit
+                </a>
                 <div class="box-title">
-                    <i class="icon-buildings-1"></i>Customer
+                    <i class="icon-buildings-1"></i>No Customer
                 </div>
 
             </div>
-            <div data-bind="with: customerInfo">
-                <a data-bind="attr:{href:'/contactable/'+ _id()}">
-                    <div class="row" style="margin:3px;">
-                        <img class="col-md-4" style="heigth:70px; width:70px;" alt="google" data-bind="attr: {src: helper.getCustomerPictureUrl($data)}">
-                        <h5 class="col-md-4" data-bind="text: displayName"></h5>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!--/ko-->
+        <!--/ko-->
     <!--/ko-->
 </template>

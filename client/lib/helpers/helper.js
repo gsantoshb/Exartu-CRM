@@ -406,6 +406,7 @@ _.extend(helper, {
       objNameArray: ko.observableArray([objType.objName])
     };
     aux[objType.objName] = ko.observableArray(objType.fields)
+    var entityOptions=options.entityOptions || {};
 
     self.entity = ko.validatedObservable(aux);
     self.objTypeName = ko.observable(objType.objName);
@@ -415,40 +416,47 @@ _.extend(helper, {
     _.extend(self, options.extendEntity(self));
 
     _.forEach(objType.fields, function (item) {
-      _.extend(item, {
-        value: ko.observable().extend({
-          pattern: {
-            message: 'invalid value',
-            params: item.regex
-          }
-        })
-      });
-      if (item.fieldType == Enums.fieldType.lookUp) {
         _.extend(item, {
-          value: item.multiple ? ko.observableArray().extend({
-            required: true
-          }) : ko.observable().extend({
-            required: true
-          }),
-                    options: LookUps.find({
-                        codeType: item.lookUpCode
-                    }).fetch()
-        })
-      }
+            value: ko.observable().extend({
+              pattern: {
+                message: 'invalid value',
+                params: item.regex
+              }
+            })
+        });
+        if (item.fieldType == Enums.fieldType.lookUp) {
+            _.extend(item, {
+              value: item.multiple ? ko.observableArray().extend({
+                required: true
+              }) : ko.observable().extend({
+                required: true
+              }),
+                options: LookUps.find({
+                    codeType: item.lookUpCode
+                }).fetch()
+            })
+        }
+        if (entityOptions.hasOwnProperty(item.name)){
+            item.value(entityOptions[item.name]);
+            item.editable=false;
+        }else{
+            item.editable=true;
+        }
     });
 
     //relations
     self.relations = ko.observableArray([]);
     Meteor.call('getShowInAddRelations', objType.objName, objType.objGroupType, function (err, result) {
-      _.each(result, function (r) {
-        self.relations.push({
-          relation: r,
-          data: ko.meteor.find(window[r.target.collection], r.target.query),
-          value: ko.observable()
-        });
-      })
-
-      self.ready(true);
+        _.each(result, function (r) {
+//            debugger;
+            self.relations.push({
+                relation: r,
+                data: ko.meteor.find(window[r.target.collection], r.target.query),
+                value: ko.observable(entityOptions.hasOwnProperty(r.name) ? entityOptions[r.name] : undefined),
+                editable: ! entityOptions.hasOwnProperty(r.name)
+            });
+        })
+        self.ready(true);
     });
 
     self.filterSelectedValue = function (data) {

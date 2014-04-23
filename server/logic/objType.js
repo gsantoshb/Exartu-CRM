@@ -97,7 +97,8 @@ validateObjType = function (obj, objType) {
         //        console.dir(objTypeFields);
         //        console.log(objRel.name);
         //        console.dir(objTypeFields[objRel.name])
-        if (objTypeFields[objRel.name] != undefined) {
+        if (objTypeFields[objRel.name] !== undefined) {
+
             console.info('calling beforeUpdateRelation');
             v = v && beforeUpdateRelation(obj, rel, objType.objName);
             if (!v) console.error(rel.name + ' is invalid: ');

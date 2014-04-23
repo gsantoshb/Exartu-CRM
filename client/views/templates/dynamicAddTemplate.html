@@ -12,7 +12,12 @@
             <div data-bind="foreach: data.relations">
                 <div>
                     <h5 data-bind="text: relation.displayName"></h5>
-                    <input type='hidden' style="width: 100%" placeholder="Search" data-bind="select2: { options: data, selectedValues: value, filter: $root.filter }"/>
+                    <!--ko if: editable-->
+                        <input type='hidden' style="width: 100%" placeholder="Search" data-bind="select2: { options: data, selectedValues: value, filter: $root.filter }"/>
+                    <!--/ko-->
+                    <!--ko ifnot: editable-->
+                        <span class="text-muted" data-bind="text: _.findWhere(ko.toJS(data), { _id: value() }).displayName"></span>
+                    <!--/ko-->
                 </div>
             </div>
         </div>

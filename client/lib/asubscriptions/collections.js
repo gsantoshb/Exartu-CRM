@@ -64,29 +64,29 @@ Contactables = new Meteor.Collection("contactables", {
                     }
                 ).fetch();
             }
-            if(contactable.Customer.contacts){
-                contactable.Customer.contactsInfo = Contactables.find(
-                    {
-                        _id: {
-                            $in: contactable.Customer.contacts
-                        }
-                    }
-                ).fetch();
-            } else{
-                contactable.Customer.contactsInfo=[];
-            }
+//            if(contactable.Customer.contacts){
+//                contactable.Customer.contactsInfo = Contactables.find(
+//                    {
+//                        _id: {
+//                            $in: contactable.Customer.contacts
+//                        }
+//                    }
+//                ).fetch();
+//            } else{
+//                contactable.Customer.contactsInfo=[];
+//            }
         }
 
-        if (contactable.Contact){
-            if(contactable.Contact.customer){
-                contactable.Contact.customerInfo=Contactables.findOne({
-                        _id: contactable.Contact.customer
-                    },{
-                        transform: null
-                    });
-                addDisplayName(contactable.Contact.customerInfo);
-            }
-        }
+//        if (contactable.Contact){
+//            if(contactable.Contact.customer){
+//                contactable.Contact.customerInfo=Contactables.findOne({
+//                        _id: contactable.Contact.customer
+//                    },{
+//                        transform: null
+//                    });
+//                addDisplayName(contactable.Contact.customerInfo);
+//            }
+//        }
 
         if(contactable.contactMethods){
             _.each(contactable.contactMethods,function(cm){

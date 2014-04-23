@@ -1,11 +1,12 @@
-Template.addContactable.viewModel = function (objname) {
+Template.addContactable.viewModel = function (objname, options) {
     var self = this;
 
     var myPerson = new koPerson();
     var myOrg = new koOrganization();
-
+//    debugger;
     var options = {
         self: self,
+        entityOptions: options,
         extendEntity: function (self) {
             // Extend contactable with person or organization, this can be changed by the user
             var geocoder = new google.maps.Geocoder();
