@@ -12,11 +12,11 @@ Document.Collection.prototype.getThumbnailUrl = function(fileId, data) {
   return data;
 };
 
-getUrlAsync = function (colection, id, storeName, cb, maxCallStack) {
+getUrlAsync = function (collection, id, storeName, cb, maxCallStack) {
   if (!maxCallStack) {
     maxCallStack = 20;
   }
-  var file = colection.findOne({
+  var file = collection.findOne({
     _id: id
   });
 
@@ -48,7 +48,7 @@ Document.Collection.prototype.getFileInformation = function(fileId) {
     ready: ko.observable(false)
   });
 
-  getInfoAsync(this.documents, fileId, function (file) {
+  getInfoAsync(this, fileId, function (file) {
     data().file(file);
     data().ready(true);
   });
@@ -82,8 +82,11 @@ getInfoAsync = function(self, id, cb) {
         file.fileUrl(url);
       });
 
+      file.thumbUrl = ko.observable();
       if (file.isImage())
-        file.thumbUrl = file.url(self.collectionName + "Thumbs");
+        getUrlAsync(self, file._id, self.collectionName + "Thumbs", function (url) {
+          file.thumbUrl(url);
+        });
 
       return cb(file);
     }

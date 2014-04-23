@@ -39,12 +39,12 @@
                     </div>
 
                     <div class="thumb thumb-lg">
-                        <!-- ko if: file().thumbUrl -->
+                        <!-- ko if: file().thumbUrl() -->
                         <a>
                             <img data-bind="attr: {src: file().thumbUrl}">
                         </a>
                         <!-- /ko -->
-                        <!-- ko if: !file().thumbUrl -->
+                        <!-- ko if: !file().thumbUrl() -->
                         <a> No preview available </a>
                         <!-- /ko -->
                     </div>
