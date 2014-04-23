@@ -170,9 +170,13 @@
                                             <div class="table-item-cell">
                                                 <div class="table-item-cell-container">
                                                     <div class="thumb">
+                                                        <!-- ko with: $root.filesCollection.getThumbnailUrl($data.pictureFileId())-->
+                                                        <!-- ko if: ready -->
                                                         <a href="#">
-                                                            <img data-bind="attr: {src: helper.getContactablePictureUrl($data) }">
+                                                            <img data-bind="attr: {src: picture }">
                                                         </a>
+                                                        <!-- /ko -->
+                                                        <!-- /ko -->
                                                     </div>
                                                     <div class="table-item-title">
                                                         <a data-bind="text: displayName, attr:{href: '/contactable/'+_id()}"></a>

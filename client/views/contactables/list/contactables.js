@@ -35,6 +35,9 @@ Template.contactables.waitOn = ['ContactableHandler', 'ObjTypesHandler'];
 Template.contactables.viewModel = function () {
   var self = {};
   var searchFields = ['person.firstName', 'person.lastName', 'person.middleName', 'organization.organizationName'];
+
+  self.filesCollection = ContactablesFS;
+
   self.searchString = ko.observable();
   self.ready = ko.observable(false);
   self.includeInacives = filters().inactives;

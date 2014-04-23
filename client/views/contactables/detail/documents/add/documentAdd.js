@@ -29,7 +29,8 @@ Template.addDocument.viewModel = function (data) {
       entityId: data.entityId,
       name: self.newDocument().name(),
       description: self.newDocument().description(),
-      tags: self.newDocument().tags()
+      tags: self.newDocument().tags(),
+      owner: Meteor.userId()
     };
     ContactablesFS.insert(fsFile, function (err) {
       if (!err)

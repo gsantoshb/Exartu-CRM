@@ -32,36 +32,10 @@ Contactables.before.insert(function (userId, doc) {
 });
 
 // Contactables files
-ContactablesFS = new FS.Collection('contactables', {
-  stores: [
-    new FS.Store.GridFS("contactableFiles", {})
-  ]
+ContactablesFS = new Document.Collection({
+  collection: Contactables
 });
-Meteor.publish('contactableFiles', function () {
-    return ContactablesFS.find({});
-});
-
-ContactablesFS.allow({
-    insert: function (userId, file) {
-        return true;
-    },
-    update: function (userId, file, fields, modifier) {
-        return true;
-    },
-    remove: function (userId, file) {
-        return true; // TODO: allow correctly
-    }
-});
-
-//var handler = {
-//    default: function (options) {
-//        return {
-//            blob: options.blob,
-//            fileRecord: options.fileRecord
-//        };
-//    },
-//}
-//ContactablesFS.fileHandlers(handler);
+ContactablesFS.publish(); // Default publish and allow options
 
 Meteor.startup(function () {
     Meteor.methods({

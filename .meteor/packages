@@ -27,3 +27,5 @@ npm
 cfs-filesystem
 blaze-layout
 cfs-gridfs
+document
+cfs-graphicsmagick
