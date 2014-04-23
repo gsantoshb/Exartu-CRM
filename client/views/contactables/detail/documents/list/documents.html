@@ -4,7 +4,7 @@
             Drop files here
         </div>
         <div class="document-filter row">
-            <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="col-lg-4 col-md-4 col-sm-12 ">
                 <div class="input-group" >
                     <input type="text" class="form-control" placeholder="Search document" data-bind="value: searchString, valueUpdate: 'afterkeydown'" />
                     <span class="input-group-btn">
@@ -24,19 +24,29 @@
         <!-- ko if: $root.listMode() == 'thumbnail' -->
         <div class="row" data-bind="foreach: documents">
             <div class="col-sm-6 col-md-4" style="margin-bottom: 10px">
-                <!-- ko with: helper.getContactableFilePictureAsync($data._id())-->
+                <!-- ko with: $root.documentsCollection.getFileInformation($data._id())-->
+                <!-- ko if: !ready() -->
+                <div class="thumbnail document-thumbnail" style="margin-bottom: 0px">
+                    Uploading document..
+                </div>
+                <!-- /ko -->
                 <!-- ko if: ready -->
                 <div class="thumbnail document-thumbnail" style="margin-bottom: 0px">
                     <div class="document-actions btn-group">
-                        <!--<button type="button" class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></button>-->
                         <button type="button" class="btn btn-default" data-bind="click: function() { $root.delete($parent) }"><i class="glyphicon glyphicon-remove"></i></button>
-                        <a type="button" class="btn btn-default" target="_blank" data-bind="attr: { href: picture }"><i class="glyphicon glyphicon-eye-open"></i></a>
+                        <a type="button" class="btn btn-default" target="_blank" data-bind="attr: { href: file().fileUrl }"><i class="glyphicon glyphicon-eye-open"></i></a>
+                        <a type="button" class="btn btn-default" target="_blank" data-bind="attr: { href: file().fileUrl , download: $parent.metadata.name() + '.' + file().getExtension()}"> <i class="glyphicon glyphicon-download"></i></a>
                     </div>
 
                     <div class="thumb thumb-lg">
+                        <!-- ko if: file().thumbUrl -->
                         <a>
-                            <img data-bind="attr: {src: picture}">
+                            <img data-bind="attr: {src: file().thumbUrl}">
                         </a>
+                        <!-- /ko -->
+                        <!-- ko if: !file().thumbUrl -->
+                        <a> No preview available </a>
+                        <!-- /ko -->
                     </div>
                     <div class="caption" >
                         <div class="document-details" style="margin-top: 25px; word-wrap: break-word">
@@ -55,7 +65,7 @@
                         </div>
                         <div style="position: absolute; bottom: 10px; width: 80%">
                             <div style="right: 0px; position: absolute; display: inline-flex">
-                                <!-- ko with: helper.getUserInformation($parent.owner()) -->
+                                <!-- ko with: helper.getUserInformation($parent.metadata.owner()) -->
                                 <!-- ko if: $data.ready -->
                                 <!-- ko if: $data.picture -->
                                 <a>
@@ -94,7 +104,7 @@
                     <div class="col-sm-4">
                         <div class="table-item-cell">
                             <div class="table-item-cell-container">
-                                <span data-bind="text: filename"></span>
+                                <span data-bind="text: name"></span>
                                 <span data-bind="text: contentType"></span>
                             </div>
                             <!-- /.table-item-cell-container -->
@@ -106,7 +116,6 @@
                         <div class="table-item-cell">
                             <div class="table-item-cell-container date">
                                 <span data-bind="text: moment(uploadDate()).fromNow()"></span>
-
                             </div>
                             <!-- /.table-item-cell-container -->
                         </div>

@@ -3,28 +3,29 @@ Document = Document || {};
 Document.Collection = function(options) {
   var self = this;
 
-  handleOptions(options);
-
-  self.collectionName = options.collectionName;
-  self.documents = new FS.Collection(self.collectionName , {
+  handleOptions(self, options);
+  self.documents = new FS.Collection(self.collectionName, {
     stores: options.store
   });
-  self.publishName = options.publishName;
-  self.storeNames = options.storeNames;
 };
 
 Document.Collection.prototype.insert = function(file, cb) {
-  var self = this;
-  self.documents.insert(file, cb);
+  return this.documents.insert(file, cb);
+}
+
+Document.Collection.prototype.remove = function(filter, cb) {
+  if (cb)
+    this.documents.remove(filter || {}, cb);
+  else
+    this.documents.remove(filter || {});
 }
 
 Document.Collection.prototype.update = function(file, cb) {
-  var self = this;
-  self.documents.update({_id: file._id}, {$set: { metadata: file.metadata }}, cb);
+  this.documents.update({_id: file._id}, {$set: { metadata: file.metadata }}, cb);
 }
 
 Document.Collection.prototype.find = function(filters) {
-  return this.documents.find(filters);
+  return this.documents.find(filters || {});
 };
 
 Document.Collection.prototype.getCollection = function() {
@@ -32,33 +33,30 @@ Document.Collection.prototype.getCollection = function() {
 };
 
 Document.Collection.prototype.findOne = function(filters) {
-  return this.documents.findOne(filters);
+  return this.documents.findOne(filters || {});
 };
 
-Document.Collection.prototype.getUrl = function(fileId, storeName) {
-  var self = this;
-
-  if (!storeName)
-    storeName = storeNames[0];
-  var document = self.documents.findOne({_id: fileId});
-  if (!document)
-    throw new Error('[Document] ERROR: Document does not exists!');
-
-  return document.url({store: storeName});
-};
-
-var handleOptions = function(options) {
+var handleOptions = function(self, options) {
   if (!options.collection)
     throw new Error('[Document] ERROR: Collection not defined!');
 
-  if (!options.store)
-    options.store = [new FS.Store.GridFS(options.collection._name + 'GridFS', {})];
+  self.collectionName = options.collection._name + 'FS';
 
-  options.storeNames = [];
+  if (!options.store) {
+    options.store = [
+      new FS.Store.GridFS(self.collectionName, {}),
+      new FS.Store.GridFS(self.collectionName + "Thumbs", {
+          transformWrite: function(fileObj, readStream, writeStream) {
+            if (fileObj.isImage())
+              gm(readStream).resize(100).stream('PNG').pipe(writeStream);
+          }
+        }
+      )
+    ];
+  }
+
+  self.storeNames = [];
   _.forEach(options.store, function(store) {
-    options.storeNames.push(store.name)
+    self.storeNames.push(store.name)
   });
-
-  if (!options.publishName)
-    options.publishName = options.collection._name + 'Documents';
 };

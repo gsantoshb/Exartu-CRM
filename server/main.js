@@ -11,7 +11,6 @@ Meteor.startup(function () {
      * Seed database
      * Execute all function defined in seedSystemObjTypes
      */
-    debugger;
     _.forEach(dbSeed, function (seedFn) {
         seedFn.call();
     });

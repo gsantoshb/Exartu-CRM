@@ -324,7 +324,8 @@ _.extend(helper, {
       data().ready(true);
     });
     return data;
-  }
+  },
+
 });
 var getContactablePictureAsync = function (contactable, defaultURL) {
   var data = ko.observable({
@@ -343,6 +344,7 @@ var getContactablePictureAsync = function (contactable, defaultURL) {
   }
   return data;
 }
+
 // tries to get a picture maxCallStack times (20 is the default)
 getPictureAsync = function (colection, id, defaultUrl, cb, maxCallStack) {
   if (!maxCallStack) {

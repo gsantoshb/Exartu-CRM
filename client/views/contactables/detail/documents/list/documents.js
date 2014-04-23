@@ -1,8 +1,9 @@
-Template.documents.waitOn = ['ContactablesFSHandler'];
+//Template.documents.waitOn = ['ContactablesFSHandler'];
 Template.documents.viewModel = function() {
-  var self = {},
-      entityId = Session.get('entityId'),
-      entityCollection = ContactablesFS.getCollection(); // TODO: Get it from Session
+  var self = this,
+    entityId = Session.get('entityId');
+
+  self.documentsCollection = ContactablesFS;
 
   self.searchString = ko.observable();
   var query = ko.computed(function() {
@@ -14,10 +15,10 @@ Template.documents.viewModel = function() {
     if (self.searchString()) {
       q.$or.push(
         { 'metadata.name':
-          {
-            $regex: self.searchString(),
-            $options: 'i'
-          }
+        {
+          $regex: self.searchString(),
+          $options: 'i'
+        }
         }
       );
       var tagRegex =new RegExp(self.searchString(), 'i');
@@ -37,7 +38,7 @@ Template.documents.viewModel = function() {
   });
 
   self.listMode = ko.observable('thumbnail');
-  self.documents = ko.meteor.find(entityCollection, query);
+  self.documents = ko.meteor.find(self.documentsCollection, query);
 
   self.addTrigger = function () {
     $('#add-file').trigger('click');

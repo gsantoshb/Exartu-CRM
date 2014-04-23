@@ -39,3 +39,5 @@
 /reactive-property
 /micro-queue
 /cfs-filesystem
+/cfs-collection-filters
+/numeral

@@ -35,9 +35,7 @@ Contactables.before.insert(function (userId, doc) {
 ContactablesFS = new Document.Collection({
   collection: Contactables
 });
-ContactablesFS.publish(function(){
-  return ContactablesFS.find();
-});
+ContactablesFS.publish(); // Default publish and allow options
 
 Meteor.startup(function () {
     Meteor.methods({
