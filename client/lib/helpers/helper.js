@@ -481,7 +481,7 @@ _.extend(helper, {
         } else {
           objRels.push({
             name: r.relation.name,
-            value: r.value() ? r.value() : null
+            value: r.value() ? r.value() : undefined
           });
         }
       });

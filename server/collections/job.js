@@ -35,6 +35,16 @@ Meteor.startup(function () {
                 console.dir(job);
             }
         },
+        updateJob: function (job) {
+            if (beforeInsertOrUpdateJob(job)) {
+                Jobs.update({
+                    _id: job._id
+                }, job);
+            } else {
+                console.error('Job not valid')
+                console.dir(Job);
+            }
+        },
         assign: function(jobId, employeeId, assignmentInfo){
             var j= Jobs.findOne({ _id: jobId },{ _id: 1 });
             var e= Contactables.findOne({ _id: employeeId , Employee: { $exists: true } },{_id: 1});

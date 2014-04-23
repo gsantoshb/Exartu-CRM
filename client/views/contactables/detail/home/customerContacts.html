@@ -8,7 +8,7 @@
                 <i class="icon icon-briefcase"></i>Contacts</div>
 
         </div>
-        <div data-bind="foreach: ko.meteor.find(Contactables, { _id: { $in: Customer.contacts() } })">
+        <div data-bind="foreach: ko.meteor.find(Contactables, { _id: { $in: Customer.contacts() || [] } })">
             <div class="table-item magic">
                 <div class="row">
                     <div class="col-sm-6">

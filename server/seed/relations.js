@@ -13,7 +13,7 @@
                        min: 0,
                        max: 1
                    },
-                   showInAdd: true,
+                   showInAdd: true
                },
                visibilityOn2: {
                    name: 'contacts',
@@ -24,9 +24,9 @@
                        min: 0,
                        max: Infinity
                    },
-                   showInAdd: true,
+                   showInAdd: true
                },
-               cascadeDelete: false,
+               cascadeDelete: false
             },
            {
                name: 'CustomerJobs',
@@ -40,7 +40,7 @@
                    cardinality: {
                        min: 0,
                        max: Infinity
-                   },
+                   }
                },
                visibilityOn2: {
                    name: 'customer',
@@ -48,15 +48,15 @@
                    collection: 'Contactables',
                    defaultValue: null,
                    cardinality: {
-                       min: 1,
+                       min: 0,
                        max: 1
                    },
                    showInAdd: true,
-                   isGroupType: true,
+                   isGroupType: true
                },
-               cascadeDelete: false,
-            },
-        ];
+               cascadeDelete: false
+            }
+       ];
 
        _.forEach(systemRelations, function (rel) {
            var oldRel = Relations.findOne({
