@@ -69,7 +69,7 @@
                     {{/if}}
                 </ul>
                 <div class="tab-content" data-bind="bind: false">
-                    {{> yield region='content'}}
+                        {{> yield region='content'}}
                 </div>
             </div>
             </div>
@@ -80,6 +80,11 @@
         <div style="display:none" id="employee-header">
             <div class="pull-right" style="margin-right: 20px; width: 25%">
                 {{>contactableAssignment}}
+            </div>
+        </div>
+        <div style="display:none" id="contact-header">
+            <div class="pull-right" style="margin-right: 20px; width: 25%">
+                {{>contactableCustomer}}
             </div>
         </div>
         <div style="display:none" id="contact-header">

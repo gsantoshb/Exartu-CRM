@@ -111,8 +111,8 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
 
         /*********  1 - N  ******************************/
         else {
-            debugger;
-            //updvate old
+//            debugger;
+            //update old
             if ((oldObjTypeFields && oldObjTypeFields[rel1.name] && value != oldObjTypeFields[rel1.name]) ){
                 var aux = {};
                 aux[targetFieldName] = id;

@@ -35,6 +35,20 @@ Document.Collection.prototype.getUrl = function(fileId, data) {
   return data;
 };
 
+Document.Collection.prototype.getUrl = function(fileId, data) {
+  var data = data || ko.observable({
+    ready: ko.observable(false),
+    picture: ko.observable()
+  });
+
+  getUrlAsync(this, fileId, this.collectionName, function (url) {
+    data().picture(url);
+    data().ready(true);
+  });
+
+  return data;
+};
+
 getUrlAsync = function (collection, id, storeName, cb, maxCallStack) {
   if (!maxCallStack) {
     maxCallStack = 20;

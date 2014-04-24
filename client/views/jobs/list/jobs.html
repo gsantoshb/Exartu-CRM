@@ -150,8 +150,8 @@
                                             <div class="table-item-cell">
                                                 <div class="table-item-cell-container">
                                                     <div class="thumb">
-                                                        <!-- ko if: $data.customer -->
-                                                        <!-- ko with: helper.getCustomerPictureUrl($data.customer())-->
+                                                        <!-- ko if: $data.CustomerInfo -->
+                                                        <!-- ko with: $root.filesCollection.getThumbnailUrl($data.CustomerInfo.pictureFileId())-->
                                                         <!-- ko if: ready -->
                                                         <a href="#">
                                                             <img data-bind="attr: {src: picture }">
@@ -159,7 +159,7 @@
                                                         <!-- /ko -->
                                                         <!-- /ko -->
                                                         <!-- /ko -->
-                                                        <!-- ko if: !$data.customer -->
+                                                        <!-- ko if: !$data.CustomerInfo -->
                                                         <img src="/assets/logo-exartu.png" />
                                                         <!-- /ko -->
                                                     </div>

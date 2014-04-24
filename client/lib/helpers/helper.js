@@ -247,8 +247,8 @@ _.extend(helper, {
     _.extend(info(), Meteor.users.findOne({
       _id: userId
     }));
+    debugger;
     UsersFS.getThumbnailUrl(info().profilePictureId, info);
-      info().ready(true).picture(info().services.google.picture);
 
     return info;
   },
