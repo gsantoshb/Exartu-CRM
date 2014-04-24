@@ -148,11 +148,11 @@ Jobs = new Meteor.Collection("jobs", {
             });
 
         });
-        if (job.customer) {
-            job.CustomerInfo = Contactables.findOne({
-                _id: job.customer
-            });
-        }
+//        if (job.customer) {
+//            job.CustomerInfo = Contactables.findOne({
+//                _id: job.customer
+//            });
+//        }
         if (job.employeeAssigned) {
             job.assignmentInfo = Contactables.findOne({
                 _id: job.employeeAssigned

@@ -64,14 +64,14 @@ Template.header.rendered = function () {
       var submenu = $(this).siblings('ul');
       var li = $(this).parents('li');
 
-      var hideIfClickOutside = function (e) {
-        if (!submenu.is(e.target) && submenu.has(e.target).length === 0
-          && !li.is(e.target) && li.has(e.target).length === 0) {
-          submenu.slideUp();
-          li.removeClass('open');
-          $('body').off('click', hideIfClickOutside);
-        }
-      }
+            var hideIfClickOutside=function(e){
+                if (!submenu.is(e.target) && submenu.has(e.target).length === 0
+                    && !li.is(e.target) && li.has(e.target).length === 0) {
+                    submenu.slideUp();
+                    li.removeClass('open');
+                    $('body').off('click',hideIfClickOutside);
+                }
+            }
       if ($(window).width() > 480) {
         var submenus = $('#sidebar li.submenu ul');
         var submenus_parents = $('#sidebar li.submenu');
@@ -91,7 +91,7 @@ Template.header.rendered = function () {
         if (($(window).width() > 768) || ($(window).width() <= 480)) {
           submenus.slideUp();
           submenu.slideDown();
-          $('body').on('click', hideIfClickOutside);
+                    $('body').on('click',hideIfClickOutside);
 
         } else {
           submenus.fadeOut(250);
@@ -118,7 +118,7 @@ Template.header.rendered = function () {
         switcherPanel.addClass('open');
       }
     });
-
+        
     $('#color-style a').click(function () {
       var color = $(this).attr('data-color');
       $(this).parent().find('a').removeClass('active');

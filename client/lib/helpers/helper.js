@@ -246,7 +246,6 @@ _.extend(helper, {
     _.extend(info(), Meteor.users.findOne({
       _id: userId
     }));
-    debugger;
     UsersFS.getThumbnailUrl(info().profilePictureId, info);
 
     return info;
@@ -298,9 +297,14 @@ _.extend(helper, {
     chechFileHandler(user.profilePictureId, cb);
   },
   // Return picture's url, used in job list
-  getCustomerPictureUrl: function (customer) {
-    return getContactablePictureUrl(customer && customer.pictureFileId ? customer.pictureFileId() : null, '/assets/logo-exartu.png')
+  getCustomerPictureUrl: function (customerId) {
+    var customer = Contactables.findOne({_id: customerId});
+    if (!customer)
+      return {};
+
+    return ContactablesFS.getThumbnailUrl(customer.pictureFileId);
   },
+
   getEmployeePictureUrl: function (employee) {
     return getContactablePictureUrl(employee && employee.pictureFileId ? employee.pictureFileId() : null, '/assets/user-photo-placeholder.jpg')
   },
@@ -489,7 +493,7 @@ _.extend(helper, {
         } else {
           objRels.push({
             name: r.relation.name,
-            value: r.value() ? r.value() : null
+            value: r.value() ? r.value() : undefined
           });
         }
       });

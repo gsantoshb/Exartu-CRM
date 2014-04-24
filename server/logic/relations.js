@@ -61,7 +61,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
         thisObjName = rel.obj2;
     }
 
-    var oldObjType = Collections[rel1.collection].findOne({
+    var oldObjType = Collections[rel2.collection].findOne({
         _id: obj._id
     });
 
@@ -111,8 +111,8 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
 
         /*********  1 - N  ******************************/
         else {
-//            debugger;
-            //update old
+            debugger;
+            //updvate old
             if ((oldObjTypeFields && oldObjTypeFields[rel1.name] && value != oldObjTypeFields[rel1.name]) ){
                 var aux = {};
                 aux[targetFieldName] = id;
@@ -125,6 +125,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
             }
             //update new
             if (obj2){
+                debugger;
                 var aux = {};
                 aux[targetFieldName] = id;
                 //                console.log('********************************************************')
@@ -144,6 +145,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
     }
 
     if (rel1.cardinality.max == Infinity) {
+        debugger;
         if (!checkCardinality(value, rel1.cardinality)) {
             console.error('card fail');
             return false;
@@ -171,6 +173,7 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
 
         /*********  N - 1  ******************************/
         if (rel2.cardinality.max == 1) {
+            debugger;
             console.log('n-1 cardinality');
             var valid = true
             var value2;
