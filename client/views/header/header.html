@@ -7,7 +7,7 @@
                 <!-- ko if: ready -->
                 <li class="hidden-xs">
                     <a href="/user" style="display: inline-flex">
-                        <img class="img-responsive" style="max-height:26px; max-width:26px" data-bind="attr: { src: picture }">
+                        <img class="img-responsive"  data-bind="attr: { src: picture }">
                         <span class="msg-author" data-bind="text: Meteor.user().username "></span>
                     </a>
                 </li>
@@ -18,7 +18,7 @@
                 <!-- ko if: !Meteor.user().profilePictureId && Meteor.user().services && Meteor.user().services.google -->
                 <li class="hidden-xs">
                     <a href="/user" style="display: inline-flex">
-                        <img data-bind="attr: {src: Meteor.user().services.google.picture }">
+                        <img style="max-height:26px; max-width:26px" data-bind="attr: {src: Meteor.user().services.google.picture }">
                         <span class="msg-author" data-bind="text: Meteor.user().username "></span>
                     </a>
                 </li>
