@@ -1,7 +1,8 @@
-Template.addJob.viewModel = function (objname) {
+Template.addJob.viewModel = function (objname, options) {
     var self = this;
     var options = {
         self: self,
+        entityOptions: options,
         extendEntity: function (self) {
 
             _.extend(self.entity(), new koJob());
@@ -25,7 +26,6 @@ Template.addJob.viewModel = function (objname) {
         },
         objname: objname,
         addCallback: function (job) {
-            debugger;
             self.canAdd(false);
             Meteor.call('addJob', ko.toJS(job), function (err, result) {
                 self.canAdd(true);

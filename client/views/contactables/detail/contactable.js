@@ -31,6 +31,16 @@ ContactableController = RouteController.extend({
           to: 'content'
         });
         break;
+       case 'documents':
+            this.render('documents', {
+              to: 'content'
+            });
+            break;
+        case 'pastJobs':
+            this.render('contactablePastJobs', {
+                to: 'content'
+            });
+            break;
       default:
         this.render('contactableHome', {
           to: 'content'
@@ -92,7 +102,7 @@ Template.contactable.viewModel = function () {
   self.getHeaderInfoVM = function (data) {
     if (data.Employee) return 'employee-header';
     if (data.Customer) return 'empty-header';
-    if (data.Contact) return 'empty-header';
+        if (data.Contact) return 'contact-header';
   };
 
   return self;

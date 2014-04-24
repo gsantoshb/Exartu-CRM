@@ -14,6 +14,9 @@ Template.job.viewModel = function () {
     var self = this,
         jobId = Router.current().params._id;
 
+
+    self.filesCollection = ContactablesFS;
+
     /*
      * define which field are going to be editable and the read only field which are not saved back to mongo but need to be recomputed after an update
      */

@@ -1,20 +1,21 @@
 <template name="customerContacts">
     <div class="box">
         <div class="box-header-2">
+            <a class="pull-right btn btn-xs btn-default"  data-bind="click: function () { Composer.showModal('addContactable', 'Contact',{customer: _id()}); }">
+                <i class="fa fa-plus"></i>&nbsp;Add
+            </a>
             <div class="box-title ">
                 <i class="icon icon-briefcase"></i>Contacts</div>
-            <!--<div class="pull-right">-->
-            <!--<i style="cursor: pointer" class="glyphicon glyphicon-plus" data-toggle="modal" data-bind="click: function () { Composer.showModal('addJob', {objName: $data.objName, customer: $data._id()}); }"></i>-->
-            <!--</div>-->
+
         </div>
-        <div data-bind="foreach: $data.Customer.contactsInfo">
+        <div data-bind="foreach: ko.meteor.find(Contactables, { _id: { $in: Customer.contacts() } })">
             <div class="table-item magic">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="table-item-cell">
                             <div class="table-item-cell-container">
                                 <div class="table-item-title">
-                                    <a href="#" data-bind="attr:{href: '/contactable/'+_id()}">
+                                    <a href="#" data-bind="attr: { href: '/contactable/' + _id() }">
                                         <span data-bind="text: $data.displayName"></span>
                                     </a>
                                 </div>

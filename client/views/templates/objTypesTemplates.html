@@ -45,10 +45,10 @@
                 </div>
                 <div class="box-content-md" data-bind="with: objType">
                     <!--ko if: $data.customer-->
-                    <p data-bind="template: {name: 'display-property', data: { name: 'Customer', value: customer, editMode: $parent.editMode } }"></p>
+                        <p data-bind="template: {name: 'display-property', data: { name: 'Customer', value: customer, editMode: $parent.editMode } }"></p>
                     <!--/ko-->
                 </div>
-                <div data-bind="template: { name:'editActions-template', data: { editMode: editMode, edit: edit } }"></div>
+                <div data-bind="template: { name:'editActions-template', data: { data: {  editMode: editMode, edit: edit } } }"></div>
             </div>
         </div>
 

@@ -27,11 +27,12 @@ Contactables = new Meteor.Collection("contactables", {
         if (contactable.organization)
             contactable.displayName = contactable.organization.organizationName;
         if (!contactable.pictureFileId) {
-            contactable.pictureFileId=null;
+            contactable.pictureFileId= null;
         }
-        if (contactable.jopAssigned) {
+        if (contactable.jobAssigned) {
+
             contactable.assignmentInfo = Jobs.findOne({
-                _id: contactable.jopAssigned
+                _id: contactable.jobAssigned
             }, {
                 transform: null
             });
@@ -63,18 +64,29 @@ Contactables = new Meteor.Collection("contactables", {
                     }
                 ).fetch();
             }
-            if(contactable.Customer.contacts){
-                contactable.Customer.contactsInfo = Contactables.find(
-                    {
-                        _id: {
-                            $in: contactable.Customer.contacts
-                        }
-                    }
-                ).fetch();
-            } else{
-                contactable.Customer.contactsInfo=[];
-            }
+//            if(contactable.Customer.contacts){
+//                contactable.Customer.contactsInfo = Contactables.find(
+//                    {
+//                        _id: {
+//                            $in: contactable.Customer.contacts
+//                        }
+//                    }
+//                ).fetch();
+//            } else{
+//                contactable.Customer.contactsInfo=[];
+//            }
         }
+
+//        if (contactable.Contact){
+//            if(contactable.Contact.customer){
+//                contactable.Contact.customerInfo=Contactables.findOne({
+//                        _id: contactable.Contact.customer
+//                    },{
+//                        transform: null
+//                    });
+//                addDisplayName(contactable.Contact.customerInfo);
+//            }
+//        }
 
         if(contactable.contactMethods){
             _.each(contactable.contactMethods,function(cm){
@@ -89,11 +101,20 @@ Contactables = new Meteor.Collection("contactables", {
 
             })
         }
+        if(contactable.location==undefined){
+            contactable.location=null;
+        }
 
         extendObject(contactable);
         return contactable;
     }
 });
+var addDisplayName = function(contactable){
+    if (contactable.person)
+        contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
+    if (contactable.organization)
+        contactable.displayName = contactable.organization.organizationName;
+}
 extendedSubscribe('contactables', 'ContactableHandler');
 
 var getLookUpName = function (lookUpName, code) {
@@ -269,13 +290,10 @@ ContactablesFS = new Document.Collection({
 });
 Meteor.subscribe(ContactablesFS.collectionName);
 
-UsersFS = new FS.Collection('users',{
-  stores: [
-    new FS.Store.FileSystem("users", {path: "~/uploads"}),
-    new FS.Store.GridFS("files", {})
-  ]
+UsersFS = new Document.Collection({
+  collection: Meteor.users
 });
-extendedSubscribe('usersFiles', 'UsersFSHandler');
+Meteor.subscribe(UsersFS.collectionName);
 
 ContactMethods= new Meteor.Collection('contactMethods');
 extendedSubscribe('contactMethods', 'ContactMethodsHandler');

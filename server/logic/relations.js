@@ -4,7 +4,6 @@
  */
 
 beforeUpdateRelation = function (obj, rel, objTypeName) {
-
     if (rel.visibilityOn1) {
         if (!rel.visibilityOn2) {
             return beforeUpdate.oneWay(obj[objTypeName][rel.visibilityOn1.name], rel.visibilityOn1);
@@ -44,30 +43,35 @@ beforeUpdate.oneWay = function (value, rel) {
 beforeUpdate.twoWay = function (obj, objTypeField, rel) {
     //    console.log('two way');
     //    console.dir(obj)
-    debugger;
+
     var rel1;
     var rel2;
     var targetName;
     var id = obj._id;
-
+    var thisObjName;
     if (obj.objNameArray.indexOf(rel.obj1) >= 0) {
         rel1 = rel.visibilityOn1;
         rel2 = rel.visibilityOn2;
         targetName = rel.obj2;
+        thisObjName = rel.obj1;
     } else {
         rel1 = rel.visibilityOn2;
         rel2 = rel.visibilityOn1;
         targetName = rel.obj1;
+        thisObjName = rel.obj2;
     }
 
-//    var oldObjType = Collections[rel1.collection].findOne({
-//        _id: obj._id
-//    });
-    var oldObjTypeField = rel1.isGroupType ? obj : objTypeField;
+    var oldObjType = Collections[rel1.collection].findOne({
+        _id: obj._id
+    });
+
+    var oldObjTypeFields = oldObjType ? rel1.isGroupType ? oldObjType : oldObjType[thisObjName] : null;
+
+    var objTypeField = rel1.isGroupType ? obj : objTypeField;
     //    console.log('**********************************************************************')
     //    console.dir(rel1.name);
-    //    console.dir(oldObjTypeField);
-    var value = oldObjTypeField[rel1.name];
+    //    console.dir(objTypeField);
+    var value = objTypeField[rel1.name];
     //    console.dir(value);
     var targetFieldName = rel2.isGroupType ? rel2.name : targetName + '.' + rel2.name;
 
@@ -107,19 +111,20 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
 
         /*********  1 - N  ******************************/
         else {
-            //            console.log('1-n cardinality');
-            //            console.dir(value)
-            if (!value) {
+//            debugger;
+            //update old
+            if ((oldObjTypeFields && oldObjTypeFields[rel1.name] && value != oldObjTypeFields[rel1.name]) ){
                 var aux = {};
-                aux[rel2.name] = null;
-                //console.log('updating ' + oldObjTypeField[rel1.name]);
+                aux[targetFieldName] = id;
+                //console.log('updating ' + objTypeField[rel1.name]);
                 collection2.update({
-                    _id: oldObjTypeField[rel1.name]
+                    _id: oldObjTypeFields[rel1.name]
                 }, {
                     $pull: aux
                 })
-                return true;
-            } else {
+            }
+            //update new
+            if (obj2){
                 var aux = {};
                 aux[targetFieldName] = id;
                 //                console.log('********************************************************')
@@ -130,8 +135,9 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
                 }, {
                     $addToSet: aux
                 })
-                return true;
             }
+
+            return true;
 
         }
 
@@ -158,8 +164,8 @@ beforeUpdate.twoWay = function (obj, objTypeField, rel) {
         if (!valid) {
             return false;
         }
-        //        console.dir(oldObjTypeField);
-        var oldValue = oldObjTypeField[rel1.name];
+        //        console.dir(objTypeField);
+        var oldValue = objTypeField[rel1.name];
         var newTargets = _.difference(value, oldValue);
         var oldTargets = _.difference(oldValue, value);
 
@@ -257,28 +263,6 @@ var checkCardinality = function (value, card) {
  *                  it can be the name of the collection (ex: 'Contactables')
  *                  or it can be the actual meteor collection
  */
-var checkType = function (obj, typeName, collection) {
-    //    todo: receive type and check it
-    if (typeof obj == typeof {})
-        return obj.type ? typeof obj.type == typeof[] ? obj.type.indexOf(typeName) >= 0 : false : false;
-    else {
-        var col = typeof collection == typeof "" ? Collections[collection] : collection;
-        //        console.log(obj);
-        //        console.dir(collection);
-        //        console.log(typeName);
-        var target = col.findOne({
-            _id: obj,
-            objNameArray: typeName
-        }, {
-            _id: 1
-        });
-        //        console.dir(target);
-        //        console.log(target != undefined);
-        return target != undefined;
-
-    }
-}
-
 Meteor.methods({
     getShowInAddRelations: function (objName, objGroupName) {
         //        console.dir(objGroupName)
@@ -350,3 +334,28 @@ Meteor.methods({
         return relations;
     }
 });
+
+var checkType = function (obj, typeName, collection) {
+    //    todo: receive type and check it
+    if (obj===null){
+        return true
+    }
+    if (_.isObject(obj))
+        return obj.type ? typeof obj.type == typeof[] ? obj.type.indexOf(typeName) >= 0 : false : false;
+    else {
+        var col = typeof collection == typeof "" ? Collections[collection] : collection;
+        //        console.log(obj);
+        //        console.dir(collection);
+        //        console.log(typeName);
+        var target = col.findOne({
+            _id: obj,
+            objNameArray: typeName
+        }, {
+            _id: 1
+        });
+        //        console.dir(target);
+        //        console.log(target != undefined);
+        return target != undefined;
+
+    }
+}

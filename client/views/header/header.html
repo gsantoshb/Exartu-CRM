@@ -2,16 +2,27 @@
     <div name="headerVM" style="position: relative;">
         <div id="user-nav" class="navbar-right pull-right">
             <ul class="btn-group">
+                <!-- ko if: Meteor.user().profilePictureId -->
+                <!-- ko with: $root.filesCollection.getThumbnailUrl(Meteor.user().profilePictureId)-->
+                <!-- ko if: ready -->
                 <li class="hidden-xs">
-                    <a href="/user" data-bind="with: helper.getUserInformation(Meteor.userId())" style="display: inline-flex;">
-                        <!--ko if: ready-->
-                        <span class="user-menu-thumb">
-                            <img data-bind="attr:{src: picture, alt: Meteor.user().username}" style="height: 26px;width: 26px;">
-                        </span>
-                        <!--/ko-->
-                        <span data-bind="text: Meteor.user().username"></span>
+                    <a href="/user" style="display: inline-flex">
+                        <img class="img-responsive" style="max-height:26px; max-width:26px" data-bind="attr: { src: picture }">
+                        <span class="msg-author" data-bind="text: Meteor.user().username "></span>
                     </a>
                 </li>
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- /ko -->
+
+                <!-- ko if: !Meteor.user().profilePictureId && Meteor.user().services && Meteor.user().services.google -->
+                <li class="hidden-xs">
+                    <a href="/user" style="display: inline-flex">
+                        <img data-bind="attr: {src: Meteor.user().services.google.picture }">
+                        <span class="msg-author" data-bind="text: Meteor.user().username "></span>
+                    </a>
+                </li>
+                <!-- /ko -->
 
                 <li class="btn dropdown" id="menu-messages">
                     <a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
@@ -73,12 +84,7 @@
 
                     <ul class="dropdown-menu pull-right">
                         <li>
-                            <a href="/user" data-bind="with: helper.getUserInformation(Meteor.userId())">
-                                <!--ko if: ready-->
-                                <!--<span class="user-menu-thumb">-->
-                                <!--<img data-bind="attr:{src: picture, alt: Meteor.user().username}" style="height: 26px;width: 26px;">-->
-                                <!--</span>-->
-                                <!--/ko-->
+                            <a href="/user">
                                 My Profile
                             </a>
                         </li>

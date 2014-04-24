@@ -30,11 +30,17 @@ JobsController = RouteController.extend({
   }
 });
 
+Template.jobs.config = {
+  singleton: true
+}
+
 Template.jobs.waitOn = ['JobHandler', 'LookUpsHandler', 'ObjTypesHandler'];
 
 Template.jobs.viewModel = function () {
   var self = {};
   self.ready = ko.observable(false);
+
+  self.filesCollection = ContactablesFS;
 
   // Filters
   self.lookFilters = [

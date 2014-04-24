@@ -29,6 +29,7 @@ Meteor.startup(function () {
 		},
 		/*
 		 *  ---- Testing
+		 *
 		 */
 		testHierSystem: function () {
 			// Test: Create a child hier

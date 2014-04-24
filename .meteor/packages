@@ -24,8 +24,6 @@ http
 connect
 xml2js
 npm
-cfs-filesystem
-blaze-layout
-cfs-gridfs
+apm
 document
 cfs-graphicsmagick

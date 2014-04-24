@@ -1,11 +1,12 @@
-Template.addContactable.viewModel = function (objname) {
+Template.addContactable.viewModel = function (objname, options) {
     var self = this;
 
     var myPerson = new koPerson();
     var myOrg = new koOrganization();
-
+//    debugger;
     var options = {
         self: self,
+        entityOptions: options,
         extendEntity: function (self) {
             // Extend contactable with person or organization, this can be changed by the user
             var geocoder = new google.maps.Geocoder();
@@ -60,13 +61,16 @@ Template.addContactable.viewModel = function (objname) {
         },
         objname: objname,
         addCallback: function (contactable) {
-            debugger;
             self.canAdd(false);
             var cont = ko.toJS(contactable);
+            _.each(_.functions(cont),function(funcName){
+                delete cont[funcName];
+            })
             if (self.location()){
                 cont.location = ko.toJS(self.location);
                 cont.location.coords = helper.getCoords(cont.location);
             }
+//            debugger
             Meteor.call('addContactable', cont, function (err, result) {
                 self.canAdd(true);
                 if (err)

@@ -1,10 +1,7 @@
 {
   "packages": {
     "bootstrap-3": {},
-    "iron-router": {
-      "git": "https://github.com/EventedMind/iron-router.git",
-      "branch": "dev"
-    },
+    "iron-router": "0.6.4",
     "knockout-client": {},
     "collection-hooks": {},
     "googlemaps": {},
@@ -12,11 +9,12 @@
     "imagemagick": {},
     "spin": {},
     "bootstrap3-wysihtml5": {},
-    "jquery-color-animation": {},
+    "jquery-color-animation": "1.6.0",
     "select2": {},
     "connect": {},
     "xml2js": {},
     "npm": {},
-    "cfs-filesystem": {}
+    "cfs-filesystem": {},
+    "apm": {}
   }
 }

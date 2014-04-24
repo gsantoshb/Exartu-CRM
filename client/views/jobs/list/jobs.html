@@ -15,31 +15,41 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-4 col-md-push-8 col-lg-push-9 col-lg-3">
-                        <div data-bind="foreach: jobTypes">
+                        <div class="visible-lg visible-md" data-bind="foreach: jobTypes">
                             <a class="btn btn-success btn-md btn-block btn-create" data-toggle="modal" data-bind="click: function () { Composer.showModal('addJob', $data.objName); }, text: 'Add ' + objName"></a>
+                        </div>
+                        <div class="hidden-lg hidden-md">
+                            <div class="btn-group btn-block btn-new-item">
+                                <button type="button" class="btn btn-block btn-success dropdown-toggle" data-toggle="dropdown">
+                                    Add <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" data-bind="foreach: jobTypes">
+                                    <li><a href="#" data-bind="click: function () { Composer.showModal('addJob', $data.objName); }, text: objName"></a></li>
+                                </ul>
+                            </div>
                         </div>
                         <br/>
                         <sidebar>
-                            <div class="box-2">
+                            <div class="box-2 visible-lg visible-md">
                                 <h4 class="bottom-20">
                                     <strong>Job Filters</strong>
                                 </h4>
                                 <form role="form">
                                     <div class="panel-group bottom-20">
                                         <!-- ko foreach: lookFilters -->
-                                            <!-- ko template: { name: 'lookupFilterTemplate', data: {title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } -->
-                                            <!-- /ko -->
+                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {filterGroupId: 1, title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } -->
+                                        <!-- /ko -->
                                         <!-- /ko -->
                                     </div>
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree1">
                                                     <strong>Tags</strong>
                                                 </a>
                                             </h4>
                                         </div>
-                                        <div id="collapseThree" class="panel-collapse collapse">
+                                        <div id="collapseThree1" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <p>
                                                     <!-- ko foreach: tags -->
@@ -60,51 +70,47 @@
                                     </div>
                                 </form>
                             </div>
-
-                            <div class="box-2" style="display: none">
-                                <form role="form">
-                                    <h4>
-                                        <strong>Filters</strong>
-                                    </h4>
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">Include inactives
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <!-- /.form-group -->
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">Only recent week
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <!-- /.form-group -->
-
-
-                                    <h4>
-                                        <strong>Tags</strong>
-                                    </h4>
-                                    <div class="box-content-md ">
-                                        <div data-bind="foreach: tags ">
-                                            <a class="btn btn-xs btn-primary " href="# " data-bind="text: $data "></a>
-                                            <a style="margin-left: 4px; min-width: 7px; ">
-                                                <i class="icon icon-close removeTag "></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Enter tags here..." data-bind="value:tag">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button" data-bind="click: addTag">Go!</button>
-                                        </span>
-                                    </div>
-                                    <!-- /input-group -->
-                                </form>
-                            </div>
                             <!-- /.box-2 -->
+                            <div class="box-2 hidden-lg hidden-md" style="margin-bottom: 0;padding:10px">
+                                <a data-toggle="collapse" href="#filterBody">
+                                    <h4>Filters</h4>
+                                </a>
+                                <div id="filterBody" class="panel-collapse collapse">
+                                    <div class="panel-group bottom-20">
+                                        <!-- ko foreach: lookFilters -->
+                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {filterGroupId: 2, title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } -->
+                                        <!-- /ko -->
+                                        <!-- /ko -->
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree1">
+                                                    <strong>Tags</strong>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseThree1" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <p>
+                                                    <!-- ko foreach: tags -->
+                                                    <button type="button" class="btn btn-xs btn-primary">
+                                                        <span data-bind="text: $data "></span>
+                                                        <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+                                                    </button>
+                                                    <!-- /ko -->
+                                                </p>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Enter tags here..." data-bind="value:tag">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary" type="button" data-bind="click: addTag">Add</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </sidebar>
                     </div>
                     <!-- /.col-lg-4 -->
@@ -144,9 +150,18 @@
                                             <div class="table-item-cell">
                                                 <div class="table-item-cell-container">
                                                     <div class="thumb">
+                                                        <!-- ko if: $data.CustomerInfo -->
+                                                        <!-- ko with: $root.filesCollection.getThumbnailUrl($data.CustomerInfo.pictureFileId())-->
+                                                        <!-- ko if: ready -->
                                                         <a href="#">
-                                                            <img src="/assets/logo-exartu.png" data-bind="attr: {src: helper.getCustomerPictureUrl($data.CustomerInfo) }">
+                                                            <img data-bind="attr: {src: picture }">
                                                         </a>
+                                                        <!-- /ko -->
+                                                        <!-- /ko -->
+                                                        <!-- /ko -->
+                                                        <!-- ko if: !$data.CustomerInfo -->
+                                                        <img src="/assets/logo-exartu.png" />
+                                                        <!-- /ko -->
                                                     </div>
                                                     <div class="table-item-title">
                                                         <!--ko if: $data.displayName-->
@@ -216,4 +231,8 @@
         </div>
         {{>lookupFilterTemplate}}
     </div>
+</template>
+
+<template name="jobFilters">
+
 </template>

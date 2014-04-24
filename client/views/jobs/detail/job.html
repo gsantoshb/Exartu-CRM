@@ -176,12 +176,15 @@
             </div>
         </div>
         <div class="box-content">
-            <a data-bind="attr:{href:'/contactable/'+_id()}">
+            <!-- ko with: $root.filesCollection.getThumbnailUrl($data.pictureFileId())-->
+            <!-- ko if: ready -->
+            <a data-bind="attr:{href:'/contactable/'+ $parent._id()}">
                 <p class="text-center">
-
-                    <img src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google" data-bind="attr: {src: helper.getCustomerPictureUrl($data) }">
+                    <img src="/assets/user-photo-placeholder.jpg" style="max-heigth:100px; max-width:100px;" data-bind="attr: {src: picture }">
                 </p>
             </a>
+            <!-- /ko -->
+            <!-- /ko -->
             <p data-bind=" text: Customer.description "></p>
             <table class="table table-striped ">
                 <tbody>
