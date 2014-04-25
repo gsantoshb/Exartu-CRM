@@ -23,12 +23,15 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label"></label>
                                     <div class="col-sm-10">
-                                        <div class="profile-pic" data-bind="with: helper.getUserInformation(user()._id())">
-                                            <!--ko:if ready-->
+                                        <div class="profile-pic">
+                                            <!-- ko if: user().profilePictureId() &&  $root.pictureUrl() -->
+                                            <img class="img-responsive" style="max-height:200px; max-width:200px" data-bind="attr: { src: $root.pictureUrl }">
+                                            <!-- /ko -->
+                                            <!-- ko if: !user().profilePictureId() && user().services && user().services.google -->
                                             <a href="#">
-                                                <img class="img-responsive img-rounded " data-bind="attr:{src:picture}" style="heigth:284px; width: 284px;">
+                                                <img data-bind="attr: {src: user().services.google.picture() }">
                                             </a>
-                                            <!--/ko-->
+                                            <!-- /ko -->
                                         </div>
                                         <br>
                                         <a id="edit-picture-btn" class="edit-pic btn btn-default btn-xs" href="#" data-bind="click: $root.editPicture">

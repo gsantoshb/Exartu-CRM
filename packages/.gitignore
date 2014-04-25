@@ -39,6 +39,8 @@
 /reactive-property
 /micro-queue
 /cfs-filesystem
-/cfs-graphicsmagick
-/data-man
+/cfs-collection-filters
+/numeral
 /apm
+/data-man
+/cfs-graphicsmagick

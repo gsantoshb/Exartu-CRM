@@ -14,18 +14,15 @@
                         <div data-bind="template: { name: $parent.getHeaderInfoVM($data), data: $data}"></div>
                         <div class="profile-pic">
                             <a id="edit-picture-btn" class="edit-pic btn btn-default btn-xs" href="#" data-bind="click: function(){  $root.editContactablePicture() }">
-                                <i class="fa fa-pencil"></i>Edit Picture</a>
+                                <i class="fa fa-pencil"></i>Edit Picture
+                            </a>
                             <a href="#">
-                                <!-- ko if: $root.loadPicture -->
-                                {{> spinner}}
-                                <!-- /ko -->
                                 <!-- ko if: $root.pictureUrl() -->
                                 <img class="img-responsive" height="100" width="100" data-bind="attr: { src: $root.pictureUrl }">
                                 <!-- /ko -->
                                 <!-- ko if: !$root.pictureUrl() -->
                                 <img class="img-responsive" src="/assets/user-photo-placeholder.jpg">
                                 <!-- /ko -->
-                                <span class="has-error" data-bind="text: $root.pictureErrorMessage"></span>
                             </a>
                             <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader" />
                         </div>
@@ -62,14 +59,14 @@
                             <a href="#documents" data-toggle="tab ">Documents</a>
                         </li>
                         <!--ko if: $data.pastJobs-->
-                            <li data-bind="css:{'active': $parent.activeTab()=='pastJobs'}">
-                                <a href="#pastJobs" data-toggle="tab ">Past Jobs</a>
-                            </li>
+                        <li data-bind="css:{'active': $parent.activeTab()=='pastJobs'}">
+                            <a href="#pastJobs" data-toggle="tab ">Past Jobs</a>
+                        </li>
                         <!--/ko-->
                         <!--ko if: $data.educations-->
-                            <li data-bind="css:{'active': $parent.activeTab()=='educations'}">
-                                <a href="#educations" data-toggle="tab ">Educations</a>
-                            </li>
+                        <li data-bind="css:{'active': $parent.activeTab()=='educations'}">
+                            <a href="#educations" data-toggle="tab ">Educations</a>
+                        </li>
                         <!--/ko-->
                     </ul>
                     <div class="tab-content" data-bind="bind: false">

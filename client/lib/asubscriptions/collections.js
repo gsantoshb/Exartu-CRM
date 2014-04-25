@@ -284,15 +284,16 @@ ObjTypes = new Meteor.Collection("objTypes");
 
 extendedSubscribe('objTypes', 'ObjTypesHandler');
 
-// CollectionFS
-
-ContactablesFS = new CollectionFS('contactables', {
-    autopublish: false
+// Documents
+ContactablesFS = new Document.Collection({
+  collection: Contactables
 });
-extendedSubscribe('contactableFiles', 'ContactablesFSHandler');
+Meteor.subscribe(ContactablesFS.collectionName);
 
-UsersFS = new CollectionFS('users');
-extendedSubscribe('usersFiles', 'UsersFSHandler');
+UsersFS = new Document.Collection({
+  collection: Meteor.users
+});
+Meteor.subscribe(UsersFS.collectionName);
 
 ContactMethods= new Meteor.Collection('contactMethods');
 extendedSubscribe('contactMethods', 'ContactMethodsHandler');
