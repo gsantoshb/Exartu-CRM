@@ -69,7 +69,7 @@ Tasks.after.insert(function (userId, doc) {
 			begin: doc.begin,
 			end: doc.end,
 			completed: doc.completed,
-			asign: doc.assign,
+			assign: doc.assign,
 		}
 	})
 });
