@@ -113,7 +113,8 @@ Template.jobs.viewModel = function () {
       _.each(searchFields, function (field) {
         var aux = {};
         aux[field] = {
-          $regex: self.searchString()
+          $regex: self.searchString(),
+            $options: 'i'
         }
         searchQuery.push(aux);
       });

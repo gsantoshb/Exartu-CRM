@@ -97,7 +97,8 @@ Template.tasks.viewModel = function () {
 
         if (self.searchString()) {
             q.note = {
-                $regex: self.searchString()
+                $regex: self.searchString(),
+                $options: 'i'
             };
         }
         return q;
