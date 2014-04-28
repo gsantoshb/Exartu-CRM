@@ -109,7 +109,7 @@ Template.contactable.viewModel = function () {
 };
 
 Template.contactable.rendered = function () {
-  // TODO: Avoid mutliple bindings
+  // TODO: Avoid multiple bindings
   // Remove old binding to avoid multiple calls
   var nodeIds = ['edit-picture-btn'];
   _.forEach(nodeIds, function (nodeId) {
