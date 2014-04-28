@@ -1,12 +1,12 @@
 Router.configure({
     disableProgressSpinner: true,
     loadingTemplate: 'loading',
-    before: function () {
+    onBeforeAction: function () {
         if (!Meteor.userId() && Router.current().route.name != 'login') {
             this.redirect('login');
         }
     },
-    autoRender: false
+    autoRender: true
 });
 
 Router.map(function () {
@@ -18,7 +18,7 @@ Router.map(function () {
   this.route('login', {
     path: '/login',
     template: 'login',
-    before: function () {
+      onBeforeAction: function () {
       if (Meteor.user()) {
         this.redirect('dashboard');
       }
