@@ -13,12 +13,16 @@
 
                 </div>
                 <div data-bind="with: ko.meteor.findOne(Contactables,{_id: customer()})">
-                    <a data-bind="attr:{href:'/contactable/'+ _id()}">
-                        <div class="row" style="margin:3px;">
-                            <img class="col-md-4" style="heigth:70px; width:70px;" alt="google" data-bind="attr: {src: helper.getCustomerPictureUrl($data)}">
-                            <h5 class="col-md-4" data-bind="text: displayName"></h5>
-                        </div>
-                    </a>
+                    <div class="row" style="margin:3px;">
+                        <!-- ko with: $root.filesCollection.getThumbnailUrl($data.pictureFileId())-->
+                        <!-- ko if: ready -->
+                        <a data-bind="attr:{href:'/contactable/'+ $parent._id()}">
+                            <img class="col-md-4" style="heigth:70px; width:70px;"  data-bind="attr: {src: picture }">
+                            <h5 class="col-md-4" data-bind="text: $parent.displayName"></h5>
+                        </a>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                    </div>
                 </div>
             </div>
         <!--/ko-->

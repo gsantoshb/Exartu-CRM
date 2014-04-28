@@ -64,6 +64,8 @@ Template.contactable.viewModel = function () {
         _id: contactableId
     });
 
+    self.filesCollection = ContactablesFS;
+
     self.getObjTypeData = function (data) {
         if (data.Employee) return data.Employee;
         if (data.Customer) return data.Customer;
