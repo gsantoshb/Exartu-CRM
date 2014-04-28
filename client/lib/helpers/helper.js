@@ -243,10 +243,15 @@ _.extend(helper, {
       ready: ko.observable(false),
       picture: ko.observable()
     });
+
     _.extend(info(), Meteor.users.findOne({
       _id: userId
     }));
-    UsersFS.getThumbnailUrl(info().profilePictureId, info);
+
+    if (info().profilePictureId)
+      UsersFS.getThumbnailUrl(info().profilePictureId, info);
+    else if (!info().profilePictureId && info().services && info().services.google)
+      info().ready(true).picture(info().services.google.picture);
 
     return info;
   },

@@ -26,7 +26,7 @@
         <!-- /.box -->
         <!--ko with: contactable-->
             <!-- ko foreach: $data.posts -->
-                <div class="comment" data-bind="with: helper.getUserInformation($data.userId())">
+                <div class="comment" data-bind="with: helper.getUserInformation(Meteor.userId())">
                     <!-- ko if: $data.ready -->
                         <div class="comment-thumb">
                             <img height="70px" width="70px" data-bind="attr: {src: picture, alt: $data.username}">
