@@ -2633,7 +2633,8 @@ fieldset[disabled] .btn-tertiary.active {
     top: 11px;
     left: 10px;
 }
-.flat {
+
+.body {
     overflow-y: hidden;
 }
 

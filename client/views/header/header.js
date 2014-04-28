@@ -41,6 +41,7 @@ Template.header.viewModel = function () {
 var init = true;
 Template.header.rendered = function () {
   $('body').addClass("flat");
+  $('body').addClass("body");
   $('body').attr('data-color', 'enterprise-dark');
   $('#color-style a[data-color=enterprise-dark]').addClass('active');
 
