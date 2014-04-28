@@ -14,7 +14,6 @@ collection-hooks
 service-configuration
 googlemaps
 collectionFS
-cfs-public-folder
 imagemagick
 spin
 bootstrap3-wysihtml5
@@ -25,3 +24,6 @@ connect
 xml2js
 npm
 apm
+document
+cfs-graphicsmagick
+blaze-layout

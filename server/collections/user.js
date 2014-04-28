@@ -230,36 +230,29 @@ Meteor.methods({
   }
 });
 
-/*
- * user files
- */
-
-UsersFS = new CollectionFS('users');
-
-Meteor.publish('usersFiles', function () {
-  return UsersFS.find({});
+// Users files
+UsersFS = new Document.Collection({
+  collection: Meteor.users
 });
+UsersFS.publish(); // Default publish and allow options
 
-UsersFS.allow({
-  insert: function (userId, file) {
-    return true;
-  },
-  update: function (userId, file, fields, modifier) {
-    return true;
-  },
-  remove: function (userId, file) {
-    return false;
-  }
-});
-
-var handler = {
-  default: function (options) {
-    console.dir('user default handler');
-    console.dir(options);
-    return {
-      blob: options.blob,
-      fileRecord: options.fileRecord
-    };
-  }
-}
-UsersFS.fileHandlers(handler);
+//UsersFS.allow({
+//  insert: function (userId, file) {
+//    return true;
+//  },
+//  update: function (userId, file, fields, modifier) {
+//    return true;
+//  },
+//  remove: function (userId, file) {
+//    return false;
+//  }
+//});
+//
+//  default: function (options) {
+//    console.dir('user default handler');
+//    console.dir(options);
+//    return {
+//      blob: options.blob,
+//      fileRecord: options.fileRecord
+//    };
+//  }

@@ -163,63 +163,6 @@
     </div>
 </template>
 
-
-<template name="customerInfo">
-    <!-- ko if: $data.customer-->
-    <div class="box" data-bind="with: CustomerInfo">
-        <div class="box-header-2">
-            <div class="box-title">
-                <a data-bind="attr:{href:'/contactable/'+_id()}" style="color: black;">
-                    <i class="fa fa-building-o"></i>
-                    <span data-bind="text: displayName"></span>
-                </a>
-            </div>
-        </div>
-        <div class="box-content">
-            <a data-bind="attr:{href:'/contactable/'+_id()}">
-                <p class="text-center">
-
-                    <img src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google" data-bind="attr: {src: helper.getCustomerPictureUrl($data) }">
-                </p>
-            </a>
-            <p data-bind=" text: Customer.description "></p>
-            <table class="table table-striped ">
-                <tbody>
-                    <tr data-bind="if: location ">
-                        <td>Location</td>
-                        <td data-bind="text: location.formatted_address ">United States</td>
-                    </tr>
-                    <!--ko if: contactMethods().length >= 1-->
-                    <tr data-bind="with: contactMethods()[0]">
-                        <td data-bind="text: typeName"></td>
-                        <td data-bind="text: value "></td>
-                    </tr>
-                    <!--/ko-->
-
-                    <!--ko if: contactMethods().length >= 2-->
-                    <tr data-bind="with: contactMethods()[1]">
-                        <td data-bind="text: typeName"></td>
-                        <td data-bind="text: value "></td>
-                    </tr>
-                    <!--/ko-->
-                    <!--
-                    <tr>
-    <td>Last Sign-in</td>
-    <td>Feb 24, 2014</td>
-</tr>
--->
-                </tbody>
-            </table>
-            <!--
-            <a class="btn btn-default " href="# ">Browse all Google jobs
-    <span>(5)</span>
-</a>
--->
-        </div>
-        <!-- /.box-content -->
-    </div>
-    <!--/ko-->
-</template>
 <template name="similarJobs ">
     <section>
         <div class="box ">

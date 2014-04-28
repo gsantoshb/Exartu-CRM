@@ -1,4 +1,5 @@
 {
   "restler": "3.2.0",
-  "request": "2.34.0"
+  "request": "2.34.0",
+  "imagemagick": "0.1.3"
 }

@@ -246,10 +246,7 @@ _.extend(helper, {
     _.extend(info(), Meteor.users.findOne({
       _id: userId
     }));
-    helper.getUserPictureUrlAsync(info(), function (pictureURL) {
-      info().picture(pictureURL);
-      info().ready(true);
-    });
+    UsersFS.getThumbnailUrl(info().profilePictureId, info);
 
     return info;
   },
@@ -271,6 +268,7 @@ _.extend(helper, {
     return picture.fileHandler.
       default.url;
   },
+
   getUserPictureUrlAsync: function (user, cb) {
     var user = ko.toJS(user);
     var defaultUserPicture = '/img/avatar.jpg';
@@ -299,9 +297,14 @@ _.extend(helper, {
     chechFileHandler(user.profilePictureId, cb);
   },
   // Return picture's url, used in job list
-  getCustomerPictureUrl: function (customer) {
-    return getContactablePictureUrl(customer && customer.pictureFileId ? customer.pictureFileId() : null, '/assets/logo-exartu.png')
+  getCustomerPictureUrl: function (customerId) {
+    var customer = Contactables.findOne({_id: customerId});
+    if (!customer)
+      return {};
+
+    return ContactablesFS.getThumbnailUrl(customer.pictureFileId);
   },
+
   getEmployeePictureUrl: function (employee) {
     return getContactablePictureUrl(employee && employee.pictureFileId ? employee.pictureFileId() : null, '/assets/user-photo-placeholder.jpg')
   },
@@ -324,7 +327,8 @@ _.extend(helper, {
       data().ready(true);
     });
     return data;
-  }
+  },
+
 });
 var getContactablePictureAsync = function (contactable, defaultURL) {
   var data = ko.observable({
@@ -343,6 +347,7 @@ var getContactablePictureAsync = function (contactable, defaultURL) {
   }
   return data;
 }
+
 // tries to get a picture maxCallStack times (20 is the default)
 getPictureAsync = function (colection, id, defaultUrl, cb, maxCallStack) {
     if (!id){
@@ -360,13 +365,20 @@ getPictureAsync = function (colection, id, defaultUrl, cb, maxCallStack) {
     });
     if (!picture)
       return cb(defaultUrl);
+    //debugger;
+    var url = picture.url({store: 'contactableFiles'});
 
-    if (picture.fileHandler.default)
-      return cb(picture.fileHandler.default.url);
+    if (url)
+      return cb(url);
 
-    if (callStackSize > maxCallStack) {
-      return cb(defaultUrl);
-    }
+    return;
+
+//    if (picture.fileHandler.default)
+//      return cb(picture.fileHandler.default.url);
+//
+//    if (callStackSize > maxCallStack) {
+//      return cb(defaultUrl);
+//    }
 
     setTimeout(function () {
       chechFileHandler(callStackSize + 1);
@@ -481,7 +493,7 @@ _.extend(helper, {
         } else {
           objRels.push({
             name: r.relation.name,
-            value: r.value() ? r.value() : null
+            value: r.value() ? r.value() : undefined
           });
         }
       });

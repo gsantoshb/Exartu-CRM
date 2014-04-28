@@ -40,6 +40,8 @@ Template.jobs.viewModel = function () {
   var self = {};
   self.ready = ko.observable(false);
 
+  self.filesCollection = ContactablesFS;
+
   // Filters
   self.lookFilters = [
     {
