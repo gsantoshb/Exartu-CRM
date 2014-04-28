@@ -2633,6 +2633,11 @@ fieldset[disabled] .btn-tertiary.active {
     top: 11px;
     left: 10px;
 }
+
+.body {
+    overflow-y: hidden;
+}
+
 .flat #sidebar ul {
     margin-top: 0;
 }

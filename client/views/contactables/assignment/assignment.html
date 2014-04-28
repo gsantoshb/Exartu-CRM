@@ -28,12 +28,16 @@
 
         </div>
         <div data-bind="with: assignmentInfo">
-            <a data-bind="attr:{href:'/job/'+ _id()}">
-                <div class="row" style="margin:3px;">
-                    <img class="col-md-4" style="heigth:70px; width:70px;" alt="google" data-bind="attr: {src: helper.getCustomerPictureUrl($data.CustomerInfo)}">
-                    <h5 class="col-md-4" data-bind="text: displayName"></h5>
-                </div>
-            </a>
+            <div class="row" style="margin:3px;">
+                <!-- ko with: $root.filesCollection.getThumbnailUrl($data.CustomerInfo.pictureFileId())-->
+                <!-- ko if: ready -->
+                <a data-bind="attr:{href:'/job/'+ $parent._id()}">
+                    <img class="col-md-4" style="heigth:70px; width:70px;"  data-bind="attr: {src: picture }">
+                    <h5 class="col-md-4" data-bind="text: $parent.displayName"></h5>
+                </a>
+                <!-- /ko -->
+                <!-- /ko -->
+            </div>
         </div>
     </div>
     <!-- /ko-->
