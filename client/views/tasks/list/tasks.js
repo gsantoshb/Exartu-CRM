@@ -104,8 +104,14 @@ Template.tasks.viewModel = function () {
         return q;
     });
 
+    var options = ko.computed(function () {
+        return {
+            sort: { createdAt: -1 }
+        }
+    })
 
-    self.tasks = ko.meteor.find(Tasks, query);
+
+    self.tasks = ko.meteor.find(Tasks, query, options);
     self.add = function () {
         Composer.showModal('addEditTask');
     }

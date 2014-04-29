@@ -113,7 +113,10 @@ Template.contactables.viewModel = function () {
     });
 
     var options = ko.computed(function () {
-        return {limit: ko.toJS(filters().limit)}
+        return {
+            limit: ko.toJS(filters().limit),
+            sort: { createdAt: -1 }
+        }
     })
 
     self.showMore = function () {
