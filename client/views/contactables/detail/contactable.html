@@ -1,94 +1,1650 @@
 <template name="contactable">
-    <div name="contactableVM">
-        <div style="display:none">
-            {{entityId}}
-        </div>
-        <div class="contactables-page" data-bind="with: contactable">
-            <div id="content" class="light-content">
-                <div id="breadcrumb" class="breadcrumb-top">
-                    <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-                    <a href="#" class="current">Contactables</a>
-                </div>
-                <div id="content-header" class="content-header-bottom">
-                    <div class="profile-content-header">
-                        <div data-bind="template: { name: $parent.getHeaderInfoVM($data), data: $data}"></div>
-                        <div class="profile-pic">
-                            <a id="edit-picture-btn" class="edit-pic btn btn-default btn-xs" href="#" data-bind="click: function(){  $root.editContactablePicture() }">
-                                <i class="fa fa-pencil"></i>Edit Picture
-                            </a>
-                            <a href="#">
-                                <!-- ko if: $root.pictureUrl() -->
-                                <img class="img-responsive" height="100" width="100" data-bind="attr: { src: $root.pictureUrl }">
-                                <!-- /ko -->
-                                <!-- ko if: !$root.pictureUrl() -->
-                                <img class="img-responsive" src="/assets/user-photo-placeholder.jpg">
-                                <!-- /ko -->
-                            </a>
-                            <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader" />
-                        </div>
-                        <h1 class="profile-name">
-                            <strong data-bind="text: displayName"></strong>
-                        </h1>
-                        <div class="profile-btns">
-                            <a class="btn btn-default btn-sm" data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">
-                                <i class="fa fa-envelope-o"></i>
-                                Send Message
-                            </a>
-                        </div>
-                        <!-- /.profile-btns -->
-                    </div>
-                    <!-- /.profile-content-header -->
-                </div>
-                <!-- /.content-header -->
+<div name="contactableVM">
+<div style="display:none">
+    {{entityId}}
+</div>
+<div class="contactable-page-details" data-bind="with: contactable">
+<div id="content">
 
-                <div class="container-fluid">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-pills bottom-20" id="contactable-nav">
-                        <li data-bind="css:{'active': $parent.activeTab()=='home'}">
-                            <a href="#home">All</a>
-                        </li>
-                        <li data-bind="css:{'active': $parent.activeTab()=='details'}">
-                            <a href="#details">Details</a>
-                        </li>
-                        <li data-bind="css:{'active': $parent.activeTab()=='posts'}">
-                            <a href="#posts">Posts
-                                <span class="custom-badge-2" data-bind="text: posts().length"></span>
-                            </a>
-                        </li>
-                        <li data-bind="css:{'active': $parent.activeTab()=='documents'}">
-                            <a href="#documents" data-toggle="tab ">Documents</a>
-                        </li>
-                        <!--ko if: $data.pastJobs-->
-                            <li data-bind="css:{'active': $parent.activeTab()=='pastJobs'}">
-                                <a href="#pastJobs" data-toggle="tab ">Past Jobs</a>
-                            </li>
-                        <!--/ko-->
-                        <!--ko if: $data.educations-->
-                            <li data-bind="css:{'active': $parent.activeTab()=='educations'}">
-                                <a href="#educations" data-toggle="tab ">Educations</a>
-                            </li>
-                        <!--/ko-->
-                    </ul>
-                    <div class="tab-content" data-bind="bind: false">
-                        {{yield 'content'}}
-                    </div>
+<div id="breadcrumb" class="breadcrumb-top">
+    <a href="#" title="Go to Home" class="tip-bottom">Home</a>
+    <a href="#" class="current">Contactables</a>
+</div>
+<div id="content-header" class="content-header-bottom">
+    <div class="profile-content-header">
+        <div class="profile-pic">
+            <div class="profile-pic-icon" data-bind="click: function(){  $root.editContactablePicture() }">
+                <!-- ko if: $root.pictureUrl() -->
+                <img class="img-responsive" height="100" width="100" data-bind="attr: { src: $root.pictureUrl }">
+                <!-- /ko -->
+                <!-- ko if: !$root.pictureUrl() -->
+                <div>
+                    <i class="icon-profile-bussiness-man"></i>
                 </div>
+                <!-- /ko -->
             </div>
+            <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader"/>
+        </div>
+        <!-- ko if: $data.Customer -->
+        {{>profile_content_header_customer}}
+        <!-- /ko -->
+    </div>
+</div>
+<!-- /.content-header -->
+
+
+<!--<div id="breadcrumb" class="breadcrumb-top">-->
+<!--<a href="#" title="Go to Home" class="tip-bottom">Home</a>-->
+<!--<a href="#" class="current">Contactables</a>-->
+<!--</div>-->
+<!--<div id="content-header" class="content-header-bottom">-->
+<!--<div class="profile-content-header">-->
+<!--<div data-bind="template: { name: $parent.getHeaderInfoVM($data), data: $data}"></div>-->
+<!--<div class="profile-pic">-->
+<!--<a id="edit-picture-btn" class="edit-pic btn btn-default btn-xs" href="#" data-bind="click: function(){  $root.editContactablePicture() }">-->
+<!--<i class="fa fa-pencil"></i>Edit Picture-->
+<!--</a>-->
+<!--<a href="#">-->
+<!--&lt;!&ndash; ko if: $root.pictureUrl() &ndash;&gt;-->
+<!--<img class="img-responsive" height="100" width="100" data-bind="attr: { src: $root.pictureUrl }">-->
+<!--&lt;!&ndash; /ko &ndash;&gt;-->
+<!--&lt;!&ndash; ko if: !$root.pictureUrl() &ndash;&gt;-->
+<!--<img class="img-responsive" src="/assets/user-photo-placeholder.jpg">-->
+<!--&lt;!&ndash; /ko &ndash;&gt;-->
+<!--</a>-->
+<!--<input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader" />-->
+<!--</div>-->
+<!--<h1 class="profile-name">-->
+<!--<strong data-bind="text: displayName"></strong>-->
+<!--</h1>-->
+<!--<div class="profile-btns">-->
+<!--<a class="btn btn-default btn-sm" data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">-->
+<!--<i class="fa fa-envelope-o"></i>-->
+<!--Send Message-->
+<!--</a>-->
+<!--</div>-->
+<!--&lt;!&ndash; /.profile-btns &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; /.profile-content-header &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; /.content-header &ndash;&gt;-->
+
+<!--&lt;!&ndash; Nav tabs &ndash;&gt;-->
+<!--<ul class="nav nav-pills bottom-20" id="contactable-nav">-->
+<!--<li data-bind="css:{'active': $parent.activeTab()=='home'}">-->
+<!--<a href="#home">All</a>-->
+<!--</li>-->
+<!--<li data-bind="css:{'active': $parent.activeTab()=='details'}">-->
+<!--<a href="#details">Details</a>-->
+<!--</li>-->
+<!--<li data-bind="css:{'active': $parent.activeTab()=='posts'}">-->
+<!--<a href="#posts">Posts-->
+<!--<span class="custom-badge-2" data-bind="text: posts().length"></span>-->
+<!--</a>-->
+<!--</li>-->
+<!--<li data-bind="css:{'active': $parent.activeTab()=='documents'}">-->
+<!--<a href="#documents" data-toggle="tab ">Documents</a>-->
+<!--</li>-->
+<!--&lt;!&ndash;ko if: $data.pastJobs&ndash;&gt;-->
+<!--<li data-bind="css:{'active': $parent.activeTab()=='pastJobs'}">-->
+<!--<a href="#pastJobs" data-toggle="tab ">Past Jobs</a>-->
+<!--</li>-->
+<!--&lt;!&ndash;/ko&ndash;&gt;-->
+<!--&lt;!&ndash;ko if: $data.educations&ndash;&gt;-->
+<!--<li data-bind="css:{'active': $parent.activeTab()=='educations'}">-->
+<!--<a href="#educations" data-toggle="tab ">Educations</a>-->
+<!--</li>-->
+<!--&lt;!&ndash;/ko&ndash;&gt;-->
+<!--</ul>-->
+<div class="container-fluid">
+
+<!--
+The tabs appear only when one section has more then X items, if not then we dont display the tabs nav
+-->
+
+<ul id="contactable-nav" class="nav nav-pills bottom-20">
+    <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">8</span></a></li>
+    <li class=""><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">6</span></a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+
+<!-- Profile All Section -->
+<div class="tab-pane active" id="profile-notes">
+
+    <div class="row">
+        <!-- Contactable left col -->
+        <div class="col-sm-8 col-lg-5 contactable-left-col">
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs nav-tabs-add">
+                <li class="active">
+                    <a class="active" href="#note" data-toggle="tab"><span class="btn btn-sm btn-primary"><i
+                            class="fa fa-plus"></i> Add Note</span></a>
+                </li>
+                <li>
+                    <a href="#job" data-toggle="tab"><span class="btn btn-sm btn-warning"><i
+                            class="fa fa-plus"></i> Assign Job</span></a>
+                </li>
+                <li>
+                    <a href="#document" data-toggle="tab"><span class="btn btn-sm btn-default"><i
+                            class="fa fa-plus"></i> Document</span></a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+
+                <!-- Add Note -->
+                <div class="tab-pane active" id="note">
+                    <div class="box-5">
+                        <div class="add-note-form">
+                            <textarea class="form-control add-note-txt input-lg" rows="3" placeholder="Add Note here..."
+                                      data-bind="value: $root.newPost, valueUpdate: 'afterkeydown', executeOnEnter: {fn: $root.addPost, keys: [13]}"></textarea>
+                            <button class="btn btn-primary pull-right add-note-btn" style="display:none;">Add Note
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.tab-pane-box -->
+
+                </div>
+                <!-- /#post -->
+
+                <!-- Add Job -->
+                <div class="tab-pane" id="job">
+                    <div class="box-5">
+                        <form role="form">
+                            <select class="form-control input-lg">
+                                <option>Select job to Assign</option>
+                            </select>
+                        </form>
+                    </div>
+                    <!-- /.box-5 -->
+                </div>
+                <!-- /#job -->
+
+                <!-- Document -->
+                <div class="tab-pane" id="document">
+                    <div class="box-5">
+                        <div class="upload-panel">
+                            <h3 class="lead">Drop files here</h3>
+
+                            <p>or</p>
+                            <br>
+                            <input id="" type="button" value="Select Files" class="btn btn-default btn-lg">
+                        </div>
+                        <!-- /.upload-panel -->
+                    </div>
+                    <!-- /.box-5 -->
+                </div>
+                <!-- /#document -->
+            </div>
+            <!-- /.tab-content -->
+
+            <h3>Notes
+                <small>— 4</small>
+            </h3>
+            <ul class="list-2" data-bind="foreach: $root.posts">
+                <li data-bind="with: helper.getUserInformation(Meteor.userId())">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <a href="#"><strong data-bind="text: username"></strong></a>
+
+                            <div class="text-muted">
+                                <span data-bind="text: moment($parent.createdAt()).format('MMMM Do YYYY, h:mm a')"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="note-title" data-bind="text: $parent.content"></p>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /#profile-all -->
+
+<!-- Profile Tasks Section -->
+<div class="tab-pane" id="profile-tasks">
+
+<div class="row">
+<!-- Contactable left col -->
+<div class="col-sm-8 col-lg-5 contactable-left-col">
+    <h3 class="top-0">Tasks
+        <small>— 4</small>
+    </h3>
+    <ul class="list-3 stripped has-thumb">
+        <li class="list-3-item warning">
+            <div class="list-thumb"><i class="icon-clock-3"></i></div>
+            <div class="list-3-content list-magic">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-check"></i> Done</a>
+                    </div>
+                    <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                    <h4 class="list-3-item-title">Call to Close the Deal</h4>
+
+                    <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian</div>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-clock-3"></i></div>
+            <div class="list-3-content">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-check"></i> Done</a>
+                    </div>
+                    <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                    <h4 class="list-3-item-title">Call Mihai to get feedback</h4>
+
+                    <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian</div>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-clock-3"></i></div>
+            <div class="list-3-content">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-check"></i> Done</a>
+                    </div>
+                    <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                    <h4 class="list-3-item-title">Send Email to Mihai with our proposal</h4>
+
+                    <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian</div>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-clock-3"></i></div>
+            <div class="list-3-content">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-check"></i> Done</a>
+                    </div>
+                    <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                    <h4 class="list-3-item-title">Call Mihai to get feedback</h4>
+
+                    <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian</div>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-clock-3"></i></div>
+            <div class="list-3-content">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-check"></i> Done</a>
+                    </div>
+                    <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                    <h4 class="list-3-item-title">Send Email to Mihai with our proposal</h4>
+
+                    <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian</div>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-clock-3"></i></div>
+            <div class="list-3-content">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-check"></i> Done</a>
+                    </div>
+                    <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                    <h4 class="list-3-item-title">Call Mihai to get feedback</h4>
+
+                    <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian</div>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-clock-3"></i></div>
+            <div class="list-3-content">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-check"></i> Done</a>
+                    </div>
+                    <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                    <h4 class="list-3-item-title">Send Email to Mihai with our proposal</h4>
+
+                    <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian</div>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-clock-3"></i></div>
+            <div class="list-3-content">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-check"></i> Done</a>
+                    </div>
+                    <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                    <h4 class="list-3-item-title">Call Mihai to get feedback</h4>
+
+                    <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian</div>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-clock-3"></i></div>
+            <div class="list-3-content">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-check"></i> Done</a>
+                    </div>
+                    <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                    <h4 class="list-3-item-title">Send Email to Mihai with our proposal</h4>
+
+                    <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian</div>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+    </ul>
+</div>
+<!-- /.col-md-6 -->
+
+<!-- Contactable Right col - sidebar -->
+<div class="col-sm-4 col-lg-7 contactable-right-col">
+<div class="row">
+<div class="col-lg-6">
+
+    <!-- Notes -->
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action" href="#"><i class="fa fa-plus"></i></a>
+
+            <div class="box-title">
+                <a class="" href="#">
+                    <strong>8</strong> Notes</a>
+            </div>
+        </div>
+        <div class="box-content-md">
+            <ul class="list-3 stripped has-thumb">
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-check"></i></div>
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <div class="list-3-actions">
+                                <a href="#"><i class="fa fa-check"></i> Done</a>
+                            </div>
+                            <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                            <h4 class="list-3-item-title">Very excited about the product and opportunity. Wants to buy
+                                pro plan now. Send over email about the details and call back to get payment
+                                information.</h4>
+
+                            <div class="list-3-item-meta-bottom">by Gregg Dourgarian</div>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-check"></i></div>
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <div class="list-3-actions">
+                                <a href="#"><i class="fa fa-check"></i> Done</a>
+                            </div>
+                            <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                            <h4 class="list-3-item-title">Very excited about the product and opportunity. Wants to buy
+                                pro plan now. Send over email about the details and call back to get payment
+                                information.</h4>
+
+                            <div class="list-3-item-meta-bottom">by Gregg Dourgarian</div>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-check"></i></div>
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <div class="list-3-actions">
+                                <a href="#"><i class="fa fa-check"></i> Done</a>
+                            </div>
+                            <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                            <h4 class="list-3-item-title">Very excited about the product and opportunity. Wants to buy
+                                pro plan now. Send over email about the details and call back to get payment
+                                information.</h4>
+
+                            <div class="list-3-item-meta-bottom">by Gregg Dourgarian</div>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+
+            </ul>
+            <div class="btn-container">
+                <a class="btn btn-default btn-block top-10" href="#">View all</a>
+            </div>
+        </div>
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
+
+    <!-- Employee Status -->
+    <div class="box">
+        <div class="box-header-2">
+            <div class="box-title">Employee Status</div>
+        </div>
+        <form class="box-content-form" role="form">
+            <select class="form-control">
+                <option>Select job to Assign</option>
+            </select>
+        </form>
+        <div class="box-content-md">
+            <ul class="list-3 stripped has-thumb">
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-briefcase"></i></div>
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <div class="list-3-actions">
+                                <a href="#"><i class="fa fa-trash-o"></i> Remove</a>
+                            </div>
+                            <div class="list-3-item-meta-top">Adobe</div>
+                            <h4 class="list-3-item-title"><a href="#">Senior Webdesigner</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-briefcase"></i></div>
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <div class="list-3-actions">
+                                <a href="#"><i class="fa fa-trash-o"></i> Remove</a>
+                            </div>
+                            <div class="list-3-item-meta-top">Tempworks</div>
+                            <h4 class="list-3-item-title"><a href="#">Fron-end Developer</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-briefcase"></i></div>
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <div class="list-3-actions">
+                                <a href="#"><i class="fa fa-trash-o"></i> Remove</a>
+                            </div>
+                            <div class="list-3-item-meta-top">Google</div>
+                            <h4 class="list-3-item-title"><a href="#">Creative Director</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
+
+    <!-- Details -->
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action" href="#"><i class="fa fa-pencil"></i></a>
+
+            <div class="box-title">
+                Details
+            </div>
+        </div>
+        <div class="box-content-md">
+            <table class="table box-table table-striped">
+                <tbody>
+                <tr>
+                    <td>First Name</td>
+                    <td>Mihai</td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td>Constantinescu</td>
+                </tr>
+                <tr>
+                    <td>Job Title</td>
+                    <td>Designer</td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td>Bucharest</td>
+                </tr>
+                <tr>
+                    <td>Country</td>
+                    <td>Romania</td>
+                </tr>
+                <tr>
+                    <td>Experience</td>
+                    <td>7 Years (2006-20014)</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>
+                        My name is Mihai Constantinescu and leftside.ro is my Web Design portfolio. I am a mixture
+                        of passion and curiosity. I thrive to understand every aspect of what surrounds me, and I
+                        admit that sometimes things work even if they're not perfect.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
+
+</div>
+<!-- /.col-md-6 -->
+
+<div class="col-lg-6">
+
+    <!-- Deals -->
+    <div class="box">
+        <div class="box-header-2 box-header-deals">
+            <a class="btn-action tip-top" data-original-title="Add Deal" href="#"><i class="fa fa-plus"></i></a>
+
+            <div class="box-title">
+                <a href="#"><strong>0</strong> Deals</a>
+            </div>
+        </div>
+        <div class="box-content-md">
+            <div class="box-v-msg">
+                <div class="box-v-msg-content">
+                    <p>You currently have no deals <br>
+                        <a href="#">Make a new deal</a>
+                    </p>
+                </div>
+                <!-- /.box-v-msg-content -->
+            </div>
+        </div>
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
+
+    <!-- Contacts -->
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action tip-top" data-original-title="Add Contact" href="#"><i class="fa fa-plus"></i></a>
+
+            <div class="box-title">Contacts</div>
+        </div>
+        <div class="box-content-md">
+            <ul class="list-3 stripped has-thumb">
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-address-1"></i></div>
+                    <div class="list-3-content">
+                        <div class="list-3-content-wrap">
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                            </div>
+                            <div class="list-3-item-meta-top">Designer</div>
+                            <h4 class="list-3-item-title"><a href="#">Mihai Constantinescu</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-address-1"></i></div>
+                    <div class="list-3-content">
+                        <div class="list-3-content-wrap">
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                            </div>
+                            <div class="list-3-item-meta-top">CEO</div>
+                            <h4 class="list-3-item-title"><a href="#">Peter S.</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-address-1"></i></div>
+                    <div class="list-3-content">
+                        <div class="list-3-content-wrap">
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                            </div>
+                            <div class="list-3-item-meta-top">CEO</div>
+                            <h4 class="list-3-item-title"><a href="#">Johnny B.</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
+
+    <!-- Documents -->
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action tip-top" data-original-title="Upload Document" href="#"><i
+                    class="fa fa-upload"></i></a>
+
+            <div class="box-title"><a href="#">Documents</a></div>
+        </div>
+        <div class="box-content-md">
+            <ul class="list-3 stripped has-thumb">
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-document-1"></i></div>
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <div class="list-3-actions">
+                                <a href="#"><i class="fa fa-download"></i> Download</a>
+                                <span class="bullet-spacer">·</span>
+                                <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                            </div>
+                            <div class="list-3-item-meta-top">PDF</div>
+                            <h4 class="list-3-item-title"><a href="#">mihai's C.V</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-document-1"></i></div>
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <div class="list-3-actions">
+                                <a href="#"><i class="fa fa-download"></i> Download</a>
+                                <span class="bullet-spacer">·</span>
+                                <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                            </div>
+                            <div class="list-3-item-meta-top">RAR archive</div>
+                            <h4 class="list-3-item-title"><a href="#">Mihai's Portfolio</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
+
+    <!-- Tags -->
+    <div class="box">
+        <div class="box-header-2">
+            <div class="box-title">Tags</div>
+        </div>
+        <form class="box-content-form" role="form">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Enter tags here...">
+                                            <span class="input-group-btn">
+                                              <button class="btn btn-success" type="button">Add</button>
+                                            </span>
+            </div>
+            <!-- /input-group -->
+        </form>
+        <div class="box-content-md tags-content">
+            <button type="button" class="btn btn-xs btn-primary">
+                <span data-bind="text: $data ">CSS</span>
+                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+            </button>
+            <button type="button" class="btn btn-xs btn-primary">
+                <span data-bind="text: $data ">HTML</span>
+                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+            </button>
+            <button type="button" class="btn btn-xs btn-primary">
+                <span data-bind="text: $data ">Opportunity</span>
+                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+            </button>
+        </div>
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
+
+</div>
+<!-- /.col-md-6 -->
+</div>
+<!-- /.row -->
+</div>
+<!-- /.col-md-6 -->
+</div>
+<!-- /.row -->
+</div>
+<!-- /#profile-all -->
+
+<!-- Profile Documents Section -->
+<div class="tab-pane" id="profile-documents">
+
+<div class="row">
+<!-- Contactable left col -->
+<div class="col-sm-8 col-lg-5 contactable-left-col">
+    <h3 class="top-0">Documents
+        <small>— 4</small>
+    </h3>
+    <ul class="list-3 stripped has-thumb">
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-document-1"></i></div>
+            <div class="list-3-content list-magic">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-download"></i> Download</a>
+                        <span class="bullet-spacer">·</span>
+                        <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                    </div>
+                    <div class="list-3-item-meta-top">PDF</div>
+                    <h4 class="list-3-item-title"><a href="#">mihai's C.V</a></h4>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-document-1"></i></div>
+            <div class="list-3-content list-magic">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-download"></i> Download</a>
+                        <span class="bullet-spacer">·</span>
+                        <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                    </div>
+                    <div class="list-3-item-meta-top">RAR archive</div>
+                    <h4 class="list-3-item-title"><a href="#">Mihai's Portfolio</a></h4>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-document-1"></i></div>
+            <div class="list-3-content list-magic">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-download"></i> Download</a>
+                        <span class="bullet-spacer">·</span>
+                        <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                    </div>
+                    <div class="list-3-item-meta-top">PDF</div>
+                    <h4 class="list-3-item-title"><a href="#">mihai's C.V</a></h4>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-document-1"></i></div>
+            <div class="list-3-content list-magic">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-download"></i> Download</a>
+                        <span class="bullet-spacer">·</span>
+                        <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                    </div>
+                    <div class="list-3-item-meta-top">RAR archive</div>
+                    <h4 class="list-3-item-title"><a href="#">Mihai's Portfolio</a></h4>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-document-1"></i></div>
+            <div class="list-3-content list-magic">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-download"></i> Download</a>
+                        <span class="bullet-spacer">·</span>
+                        <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                    </div>
+                    <div class="list-3-item-meta-top">PDF</div>
+                    <h4 class="list-3-item-title"><a href="#">mihai's C.V</a></h4>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-document-1"></i></div>
+            <div class="list-3-content list-magic">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-download"></i> Download</a>
+                        <span class="bullet-spacer">·</span>
+                        <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                    </div>
+                    <div class="list-3-item-meta-top">RAR archive</div>
+                    <h4 class="list-3-item-title"><a href="#">Mihai's Portfolio</a></h4>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-document-1"></i></div>
+            <div class="list-3-content list-magic">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-download"></i> Download</a>
+                        <span class="bullet-spacer">·</span>
+                        <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                    </div>
+                    <div class="list-3-item-meta-top">PDF</div>
+                    <h4 class="list-3-item-title"><a href="#">mihai's C.V</a></h4>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+        <li class="list-3-item">
+            <div class="list-thumb"><i class="icon-document-1"></i></div>
+            <div class="list-3-content list-magic">
+                <div class="list-3-content-wrap">
+                    <div class="list-3-actions">
+                        <a href="#"><i class="fa fa-download"></i> Download</a>
+                        <span class="bullet-spacer">·</span>
+                        <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                    </div>
+                    <div class="list-3-item-meta-top">RAR archive</div>
+                    <h4 class="list-3-item-title"><a href="#">Mihai's Portfolio</a></h4>
+                </div>
+                <!-- /.list-3-content-wrap -->
+            </div>
+        </li>
+    </ul>
+</div>
+<!-- /.col-md-6 -->
+
+<!-- Contactable Right col - sidebar -->
+<div class="col-sm-4 col-lg-7 contactable-right-col">
+<div class="row">
+<div class="col-lg-6">
+<!-- Tasks -->
+<div class="box">
+    <div class="box-header-2 box-header-tasks">
+        <a class="btn-action tip-top" data-original-title="Add Task" href="#"><i class="fa fa-plus"></i></a>
+
+        <div class="box-title">
+            <a href="#"><strong>25</strong> Tasks</a></div>
+    </div>
+    <div class="box-content-md">
+        <ul class="list-3 stripped has-thumb">
+            <li class="list-3-item warning">
+                <div class="list-thumb"><i class="icon-clock-3"></i></div>
+                <div class="list-3-content list-magic">
+                    <div class="list-3-content-wrap">
+                        <div class="list-3-actions">
+                            <a href="#"><i class="fa fa-check"></i> Done</a>
+                        </div>
+                        <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                        <h4 class="list-3-item-title">Call to Close the Deal</h4>
+
+                        <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian
+                        </div>
+                    </div>
+                    <!-- /.list-3-content-wrap -->
+                </div>
+            </li>
+            <li class="list-3-item">
+                <div class="list-thumb"><i class="icon-clock-3"></i></div>
+                <div class="list-3-content">
+                    <div class="list-3-content-wrap">
+                        <div class="list-3-actions">
+                            <a href="#"><i class="fa fa-check"></i> Done</a>
+                        </div>
+                        <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                        <h4 class="list-3-item-title">Call Mihai to get feedback</h4>
+
+                        <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian
+                        </div>
+                    </div>
+                    <!-- /.list-3-content-wrap -->
+                </div>
+            </li>
+            <li class="list-3-item">
+                <div class="list-thumb"><i class="icon-clock-3"></i></div>
+                <div class="list-3-content">
+                    <div class="list-3-content-wrap">
+                        <div class="list-3-actions">
+                            <a href="#"><i class="fa fa-check"></i> Done</a>
+                        </div>
+                        <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                        <h4 class="list-3-item-title">Send Email to Mihai with our proposal</h4>
+
+                        <div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian
+                        </div>
+                    </div>
+                    <!-- /.list-3-content-wrap -->
+                </div>
+            </li>
+        </ul>
+        <div class="btn-container">
+            <a class="btn btn-default btn-block top-10" href="#">View all</a>
         </div>
     </div>
+    <!-- /.box-content-md -->
+</div>
+<!-- /.box -->
 
-    <div data-bind="bind: false">
-        <div style="display:none" id="employee-header">
-            <div class="pull-right" style="margin-right: 20px; width: 25%">
-                {{>contactableAssignment}}
+<!-- Notes -->
+<div class="box">
+    <div class="box-header-2">
+        <a class="btn-action" href="#"><i class="fa fa-plus"></i></a>
+
+        <div class="box-title">
+            <a class="" href="#">
+                <strong>8</strong> Notes</a>
+        </div>
+    </div>
+    <div class="box-content-md">
+        <ul class="list-3 stripped has-thumb">
+            <li class="list-3-item">
+                <div class="list-thumb"><i class="icon-check"></i></div>
+                <div class="list-3-content list-magic">
+                    <div class="list-3-content-wrap">
+                        <div class="list-3-actions">
+                            <a href="#"><i class="fa fa-check"></i> Done</a>
+                        </div>
+                        <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                        <h4 class="list-3-item-title">Very excited about the product and opportunity. Wants to buy pro
+                            plan now. Send over email about the details and call back to get payment information.</h4>
+
+                        <div class="list-3-item-meta-bottom">by Gregg Dourgarian</div>
+                    </div>
+                    <!-- /.list-3-content-wrap -->
+                </div>
+            </li>
+            <li class="list-3-item">
+                <div class="list-thumb"><i class="icon-check"></i></div>
+                <div class="list-3-content list-magic">
+                    <div class="list-3-content-wrap">
+                        <div class="list-3-actions">
+                            <a href="#"><i class="fa fa-check"></i> Done</a>
+                        </div>
+                        <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                        <h4 class="list-3-item-title">Very excited about the product and opportunity. Wants to buy pro
+                            plan now. Send over email about the details and call back to get payment information.</h4>
+
+                        <div class="list-3-item-meta-bottom">by Gregg Dourgarian</div>
+                    </div>
+                    <!-- /.list-3-content-wrap -->
+                </div>
+            </li>
+            <li class="list-3-item">
+                <div class="list-thumb"><i class="icon-check"></i></div>
+                <div class="list-3-content list-magic">
+                    <div class="list-3-content-wrap">
+                        <div class="list-3-actions">
+                            <a href="#"><i class="fa fa-check"></i> Done</a>
+                        </div>
+                        <div class="list-3-item-meta-top">Today - 2:30 PM</div>
+                        <h4 class="list-3-item-title">Very excited about the product and opportunity. Wants to buy pro
+                            plan now. Send over email about the details and call back to get payment information.</h4>
+
+                        <div class="list-3-item-meta-bottom">by Gregg Dourgarian</div>
+                    </div>
+                    <!-- /.list-3-content-wrap -->
+                </div>
+            </li>
+
+        </ul>
+        <div class="btn-container">
+            <a class="btn btn-default btn-block top-10" href="#">View all</a>
+        </div>
+    </div>
+    <!-- /.box-content-md -->
+</div>
+<!-- /.box -->
+
+<!-- Employee Status -->
+<div class="box">
+    <div class="box-header-2">
+        <div class="box-title">Employee Status</div>
+    </div>
+    <form class="box-content-form" role="form">
+        <select class="form-control">
+            <option>Select job to Assign</option>
+        </select>
+    </form>
+    <div class="box-content-md">
+        <ul class="list-3 stripped has-thumb">
+            <li class="list-3-item">
+                <div class="list-thumb"><i class="icon-briefcase"></i></div>
+                <div class="list-3-content list-magic">
+                    <div class="list-3-content-wrap">
+                        <div class="list-3-actions">
+                            <a href="#"><i class="fa fa-trash-o"></i> Remove</a>
+                        </div>
+                        <div class="list-3-item-meta-top">Adobe</div>
+                        <h4 class="list-3-item-title"><a href="#">Senior Webdesigner</a></h4>
+                    </div>
+                    <!-- /.list-3-content-wrap -->
+                </div>
+            </li>
+            <li class="list-3-item">
+                <div class="list-thumb"><i class="icon-briefcase"></i></div>
+                <div class="list-3-content list-magic">
+                    <div class="list-3-content-wrap">
+                        <div class="list-3-actions">
+                            <a href="#"><i class="fa fa-trash-o"></i> Remove</a>
+                        </div>
+                        <div class="list-3-item-meta-top">Tempworks</div>
+                        <h4 class="list-3-item-title"><a href="#">Fron-end Developer</a></h4>
+                    </div>
+                    <!-- /.list-3-content-wrap -->
+                </div>
+            </li>
+            <li class="list-3-item">
+                <div class="list-thumb"><i class="icon-briefcase"></i></div>
+                <div class="list-3-content list-magic">
+                    <div class="list-3-content-wrap">
+                        <div class="list-3-actions">
+                            <a href="#"><i class="fa fa-trash-o"></i> Remove</a>
+                        </div>
+                        <div class="list-3-item-meta-top">Google</div>
+                        <h4 class="list-3-item-title"><a href="#">Creative Director</a></h4>
+                    </div>
+                    <!-- /.list-3-content-wrap -->
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <!-- /.box-content-md -->
+</div>
+<!-- /.box -->
+
+<!-- Details -->
+<div class="box">
+    <div class="box-header-2">
+        <a class="btn-action" href="#"><i class="fa fa-pencil"></i></a>
+
+        <div class="box-title">
+            Details
+        </div>
+    </div>
+    <div class="box-content-md">
+        <table class="table box-table table-striped">
+            <tbody>
+            <tr>
+                <td>First Name</td>
+                <td>Mihai</td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td>Constantinescu</td>
+            </tr>
+            <tr>
+                <td>Job Title</td>
+                <td>Designer</td>
+            </tr>
+            <tr>
+                <td>City</td>
+                <td>Bucharest</td>
+            </tr>
+            <tr>
+                <td>Country</td>
+                <td>Romania</td>
+            </tr>
+            <tr>
+                <td>Experience</td>
+                <td>7 Years (2006-20014)</td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td>
+                    My name is Mihai Constantinescu and leftside.ro is my Web Design portfolio. I am a mixture
+                    of passion and curiosity. I thrive to understand every aspect of what surrounds me, and I
+                    admit that sometimes things work even if they're not perfect.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-content-md -->
+</div>
+<!-- /.box -->
+
+</div>
+<!-- /.col-md-6 -->
+
+<div class="col-lg-6">
+
+    <!-- Deals -->
+    <div class="box">
+        <div class="box-header-2 box-header-deals">
+            <a class="btn-action tip-top" data-original-title="Add Deal" href="#"><i class="fa fa-plus"></i></a>
+
+            <div class="box-title">
+                <a href="#"><strong>0</strong> Deals</a>
             </div>
         </div>
-        <div style="display:none" id="contact-header">
-            <div class="pull-right" style="margin-right: 20px; width: 25%">
-                {{>contactableCustomer}}
+        <div class="box-content-md">
+            <div class="box-v-msg">
+                <div class="box-v-msg-content">
+                    <p>You currently have no deals <br>
+                        <a href="#">Make a new deal</a>
+                    </p>
+                </div>
+                <!-- /.box-v-msg-content -->
             </div>
         </div>
-        <div style="display:none" id="empty-header">
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
+
+    <!-- Contacts -->
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action tip-top" data-original-title="Add Contact" href="#"><i class="fa fa-plus"></i></a>
+
+            <div class="box-title">Contacts</div>
+        </div>
+        <div class="box-content-md">
+            <ul class="list-3 stripped has-thumb">
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-address-1"></i></div>
+                    <div class="list-3-content">
+                        <div class="list-3-content-wrap">
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                            </div>
+                            <div class="list-3-item-meta-top">Designer</div>
+                            <h4 class="list-3-item-title"><a href="#">Mihai Constantinescu</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-address-1"></i></div>
+                    <div class="list-3-content">
+                        <div class="list-3-content-wrap">
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                            </div>
+                            <div class="list-3-item-meta-top">CEO</div>
+                            <h4 class="list-3-item-title"><a href="#">Peter S.</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-address-1"></i></div>
+                    <div class="list-3-content">
+                        <div class="list-3-content-wrap">
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#"
+                                   data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                            </div>
+                            <div class="list-3-item-meta-top">CEO</div>
+                            <h4 class="list-3-item-title"><a href="#">Johnny B.</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
+
+    <!-- Documents -->
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action tip-top" data-original-title="Upload Document" href="#"><i
+                    class="fa fa-upload"></i></a>
+
+            <div class="box-title"><a href="#">Documents</a></div>
+        </div>
+        <div class="box-content-md">
+            <ul class="list-3 stripped has-thumb">
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-document-1"></i></div>
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <div class="list-3-actions">
+                                <a href="#"><i class="fa fa-download"></i> Download</a>
+                                <span class="bullet-spacer">·</span>
+                                <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                            </div>
+                            <div class="list-3-item-meta-top">PDF</div>
+                            <h4 class="list-3-item-title"><a href="#">mihai's C.V</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="icon-document-1"></i></div>
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <div class="list-3-actions">
+                                <a href="#"><i class="fa fa-download"></i> Download</a>
+                                <span class="bullet-spacer">·</span>
+                                <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                            </div>
+                            <div class="list-3-item-meta-top">RAR archive</div>
+                            <h4 class="list-3-item-title"><a href="#">Mihai's Portfolio</a></h4>
+                        </div>
+                        <!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
+
+    <!-- Tags -->
+    <div class="box">
+        <div class="box-header-2">
+            <div class="box-title">Tags</div>
+        </div>
+        <form class="box-content-form" role="form">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Enter tags here...">
+                                            <span class="input-group-btn">
+                                              <button class="btn btn-success" type="button">Add</button>
+                                            </span>
+            </div>
+            <!-- /input-group -->
+        </form>
+        <div class="box-content-md tags-content">
+            <button type="button" class="btn btn-xs btn-primary">
+                <span data-bind="text: $data ">CSS</span>
+                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+            </button>
+            <button type="button" class="btn btn-xs btn-primary">
+                <span data-bind="text: $data ">HTML</span>
+                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+            </button>
+            <button type="button" class="btn btn-xs btn-primary">
+                <span data-bind="text: $data ">Opportunity</span>
+                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+            </button>
+        </div>
+        <!-- /.box-content-md -->
+    </div>
+    <!-- /.box -->
+
+</div>
+<!-- /.col-md-6 -->
+</div>
+<!-- /.row -->
+</div>
+<!-- /.col-md-6 -->
+</div>
+<!-- /.row -->
+</div>
+<!-- /#profile-documents -->
+
+</div>
+<!-- /.tab-content -->
+
+<!--&lt;!&ndash; Contactable Right col - sidebar &ndash;&gt;-->
+<!--<div class="col-sm-4 col-lg-7 contactable-right-col has-tabs">-->
+<!--<div class="row">-->
+<!--<div class="col-lg-6">-->
+    <!--&lt;!&ndash; Employee Status &ndash;&gt;-->
+    <!--<div class="box">-->
+        <!--<div class="box-header-2">-->
+            <!--<div class="box-title">Employee Status</div>-->
+        <!--</div>-->
+        <!--<form class="box-content-form" role="form">-->
+            <!--<select class="form-control">-->
+                <!--<option>Select job to Assign</option>-->
+            <!--</select>-->
+        <!--</form>-->
+        <!--<div class="box-content-md">-->
+            <!--<ul class="list-3 stripped has-thumb">-->
+                <!--<li class="list-3-item">-->
+                    <!--<div class="list-thumb"><i class="icon-briefcase"></i></div>-->
+                    <!--<div class="list-3-content list-magic">-->
+                        <!--<div class="list-3-content-wrap">-->
+                            <!--<div class="list-3-actions">-->
+                                <!--<a href="#"><i class="fa fa-trash-o"></i> Remove</a>-->
+                            <!--</div>-->
+                            <!--<div class="list-3-item-meta-top">Adobe</div>-->
+                            <!--<h4 class="list-3-item-title"><a href="#">Senior Webdesigner</a></h4>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash; /.list-3-content-wrap &ndash;&gt;-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li class="list-3-item">-->
+                    <!--<div class="list-thumb"><i class="icon-briefcase"></i></div>-->
+                    <!--<div class="list-3-content list-magic">-->
+                        <!--<div class="list-3-content-wrap">-->
+                            <!--<div class="list-3-actions">-->
+                                <!--<a href="#"><i class="fa fa-trash-o"></i> Remove</a>-->
+                            <!--</div>-->
+                            <!--<div class="list-3-item-meta-top">Tempworks</div>-->
+                            <!--<h4 class="list-3-item-title"><a href="#">Fron-end Developer</a></h4>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash; /.list-3-content-wrap &ndash;&gt;-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li class="list-3-item">-->
+                    <!--<div class="list-thumb"><i class="icon-briefcase"></i></div>-->
+                    <!--<div class="list-3-content list-magic">-->
+                        <!--<div class="list-3-content-wrap">-->
+                            <!--<div class="list-3-actions">-->
+                                <!--<a href="#"><i class="fa fa-trash-o"></i> Remove</a>-->
+                            <!--</div>-->
+                            <!--<div class="list-3-item-meta-top">Google</div>-->
+                            <!--<h4 class="list-3-item-title"><a href="#">Creative Director</a></h4>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash; /.list-3-content-wrap &ndash;&gt;-->
+                    <!--</div>-->
+                <!--</li>-->
+
+            <!--</ul>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; /.box-content-md &ndash;&gt;-->
+    <!--</div>-->
+    <!--&lt;!&ndash; /.box &ndash;&gt;-->
+
+    <!--&lt;!&ndash; Details &ndash;&gt;-->
+    <!--<div class="box">-->
+        <!--<div class="box-header-2">-->
+            <!--<a class="btn-action" href="#"><i class="fa fa-pencil"></i></a>-->
+
+            <!--<div class="box-title">-->
+                <!--Details-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="box-content-md">-->
+            <!--<table class="table box-table table-striped">-->
+                <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td>First Name</td>-->
+                    <!--<td>Mihai</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>Last Name</td>-->
+                    <!--<td>Constantinescu</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>Job Title</td>-->
+                    <!--<td>Designer</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>City</td>-->
+                    <!--<td>Bucharest</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>Country</td>-->
+                    <!--<td>Romania</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>Experience</td>-->
+                    <!--<td>7 Years (2006-20014)</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>Description</td>-->
+                    <!--<td>-->
+                        <!--My name is Mihai Constantinescu and leftside.ro is my Web Design portfolio. I am a mixture-->
+                        <!--of passion and curiosity. I thrive to understand every aspect of what surrounds me, and I-->
+                        <!--admit that sometimes things work even if they're not perfect.-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; /.box-content-md &ndash;&gt;-->
+    <!--</div>-->
+    <!--&lt;!&ndash; /.box &ndash;&gt;-->
+
+<!--</div>-->
+<!--&lt;!&ndash; /.col-md-6 &ndash;&gt;-->
+
+<!--<div class="col-lg-6">-->
+
+    <!--&lt;!&ndash; Contacts &ndash;&gt;-->
+    <!--<div class="box">-->
+        <!--<div class="box-header-2">-->
+            <!--<a class="btn-action tip-top" data-original-title="Add Contact" href="#"><i class="fa fa-plus"></i></a>-->
+
+            <!--<div class="box-title">Contacts</div>-->
+        <!--</div>-->
+        <!--<div class="box-content-md">-->
+            <!--<ul class="list-3 stripped has-thumb">-->
+                <!--<li class="list-3-item">-->
+                    <!--<div class="list-thumb"><i class="icon-address-1"></i></div>-->
+                    <!--<div class="list-3-content">-->
+                        <!--<div class="list-3-content-wrap">-->
+                            <!--<div class="pull-right">-->
+                                <!--<a class="btn btn-xs btn-default tip-bottom" title="" href="#"-->
+                                   <!--data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>-->
+                                <!--<a class="btn btn-xs btn-default tip-bottom" title="" href="#"-->
+                                   <!--data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>-->
+                                <!--<a class="btn btn-xs btn-default tip-bottom" title="" href="#"-->
+                                   <!--data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>-->
+                            <!--</div>-->
+                            <!--<div class="list-3-item-meta-top">Designer</div>-->
+                            <!--<h4 class="list-3-item-title"><a href="#">Mihai Constantinescu</a></h4>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash; /.list-3-content-wrap &ndash;&gt;-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li class="list-3-item">-->
+                    <!--<div class="list-thumb"><i class="icon-address-1"></i></div>-->
+                    <!--<div class="list-3-content">-->
+                        <!--<div class="list-3-content-wrap">-->
+                            <!--<div class="pull-right">-->
+                                <!--<a class="btn btn-xs btn-default tip-bottom" title="" href="#"-->
+                                   <!--data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>-->
+                                <!--<a class="btn btn-xs btn-default tip-bottom" title="" href="#"-->
+                                   <!--data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>-->
+                                <!--<a class="btn btn-xs btn-default tip-bottom" title="" href="#"-->
+                                   <!--data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>-->
+                            <!--</div>-->
+                            <!--<div class="list-3-item-meta-top">CEO</div>-->
+                            <!--<h4 class="list-3-item-title"><a href="#">Peter S.</a></h4>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash; /.list-3-content-wrap &ndash;&gt;-->
+                    <!--</div>-->
+                <!--</li>-->
+
+                <!--<li class="list-3-item">-->
+                    <!--<div class="list-thumb"><i class="icon-address-1"></i></div>-->
+                    <!--<div class="list-3-content">-->
+                        <!--<div class="list-3-content-wrap">-->
+                            <!--<div class="pull-right">-->
+                                <!--<a class="btn btn-xs btn-default tip-bottom" title="" href="#"-->
+                                   <!--data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>-->
+                                <!--<a class="btn btn-xs btn-default tip-bottom" title="" href="#"-->
+                                   <!--data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>-->
+                                <!--<a class="btn btn-xs btn-default tip-bottom" title="" href="#"-->
+                                   <!--data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>-->
+                            <!--</div>-->
+                            <!--<div class="list-3-item-meta-top">CEO</div>-->
+                            <!--<h4 class="list-3-item-title"><a href="#">Johnny B.</a></h4>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash; /.list-3-content-wrap &ndash;&gt;-->
+                    <!--</div>-->
+                <!--</li>-->
+            <!--</ul>-->
+
+        <!--</div>-->
+        <!--&lt;!&ndash; /.box-content-md &ndash;&gt;-->
+    <!--</div>-->
+    <!--&lt;!&ndash; /.box &ndash;&gt;-->
+
+    <!--&lt;!&ndash; Documents &ndash;&gt;-->
+    <!--<div class="box">-->
+        <!--<div class="box-header-2">-->
+            <!--<a class="btn-action tip-top" data-original-title="Upload Document" href="#"><i-->
+                    <!--class="fa fa-upload"></i></a>-->
+
+            <!--<div class="box-title"><a href="#">Documents</a></div>-->
+        <!--</div>-->
+        <!--<div class="box-content-md">-->
+            <!--<ul class="list-3 stripped has-thumb">-->
+                <!--<li class="list-3-item">-->
+                    <!--<div class="list-thumb"><i class="icon-document-1"></i></div>-->
+                    <!--<div class="list-3-content list-magic">-->
+                        <!--<div class="list-3-content-wrap">-->
+                            <!--<div class="list-3-actions">-->
+                                <!--<a href="#"><i class="fa fa-download"></i> Download</a>-->
+                                <!--<span class="bullet-spacer">·</span>-->
+                                <!--<a href="#"><i class="fa fa-trash-o"></i> Delete</a>-->
+                            <!--</div>-->
+                            <!--<div class="list-3-item-meta-top">PDF</div>-->
+                            <!--<h4 class="list-3-item-title"><a href="#">mihai's C.V</a></h4>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash; /.list-3-content-wrap &ndash;&gt;-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<li class="list-3-item">-->
+                    <!--<div class="list-thumb"><i class="icon-document-1"></i></div>-->
+                    <!--<div class="list-3-content list-magic">-->
+                        <!--<div class="list-3-content-wrap">-->
+                            <!--<div class="list-3-actions">-->
+                                <!--<a href="#"><i class="fa fa-download"></i> Download</a>-->
+                                <!--<span class="bullet-spacer">·</span>-->
+                                <!--<a href="#"><i class="fa fa-trash-o"></i> Delete</a>-->
+                            <!--</div>-->
+                            <!--<div class="list-3-item-meta-top">RAR archive</div>-->
+                            <!--<h4 class="list-3-item-title"><a href="#">Mihai's Portfolio</a></h4>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash; /.list-3-content-wrap &ndash;&gt;-->
+                    <!--</div>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; /.box-content-md &ndash;&gt;-->
+    <!--</div>-->
+    <!--&lt;!&ndash; /.box &ndash;&gt;-->
+
+    <!--&lt;!&ndash; Tags &ndash;&gt;-->
+    <!--<div class="box">-->
+        <!--<div class="box-header-2">-->
+            <!--<div class="box-title">Tags</div>-->
+        <!--</div>-->
+        <!--<form class="box-content-form" role="form">-->
+            <!--<div class="input-group">-->
+                <!--<input type="text" class="form-control" placeholder="Enter tags here...">-->
+                                            <!--<span class="input-group-btn">-->
+                                              <!--<button class="btn btn-success" type="button">Add</button>-->
+                                            <!--</span>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; /input-group &ndash;&gt;-->
+        <!--</form>-->
+        <!--<div class="box-content-md tags-content">-->
+            <!--<button type="button" class="btn btn-xs btn-primary">-->
+                <!--<span data-bind="text: $data ">CSS</span>-->
+                <!--<i class="fa fa-times" data-bind="click: $root.removeTag"></i>-->
+            <!--</button>-->
+            <!--<button type="button" class="btn btn-xs btn-primary">-->
+                <!--<span data-bind="text: $data ">HTML</span>-->
+                <!--<i class="fa fa-times" data-bind="click: $root.removeTag"></i>-->
+            <!--</button>-->
+            <!--<button type="button" class="btn btn-xs btn-primary">-->
+                <!--<span data-bind="text: $data ">Opportunity</span>-->
+                <!--<i class="fa fa-times" data-bind="click: $root.removeTag"></i>-->
+            <!--</button>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; /.box-content-md &ndash;&gt;-->
+    <!--</div>-->
+    <!--&lt;!&ndash; /.box &ndash;&gt;-->
+
+<!--</div>-->
+<!--&lt;!&ndash; /.col-md-6 &ndash;&gt;-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; /.col-md-6 &ndash;&gt;-->
+
+
+<!-- /.row -->
+</div>
+<!-- /.col-md-6 -->
+
+</div>
+<div data-bind="bind: false">
+    <div style="display:none" id="employee-header">
+        <div class="pull-right" style="margin-right: 20px; width: 25%">
+            {{>contactableAssignment}}
+        </div>
+    </div>
+    <div style="display:none" id="contact-header">
+        <div class="pull-right" style="margin-right: 20px; width: 25%">
+            {{>contactableCustomer}}
+        </div>
+    </div>
+    <div style="display:none" id="empty-header">
+    </div>
+</div>
+</template>
+
+<template name="profile_content_header_customer">
+    <h1 class="profile-name">
+        <strong data-bind="text: displayName"></strong>
+        <small data-bind="text: Customer.department"></small>
+    </h1>
+    <p class="profile-adress">
+        <i class="fa fa-map-marker"></i>
+        <!-- ko if: $data.location()   -->
+        <span data-bind="text: $data.location"></span>
+        <!-- /ko -->
+        <!-- ko if: !$data.location()-->
+        <em> Click here to add an address </em>
+        <!-- /ko -->
+    </p>
+
+    <div class="profile-btns">
+        <!-- ko if: $root.firstCellPhone -->
+        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+            <span class="btn-round"><i class="fa fa-phone"></i></span>
+            <span data-bind="text: $root.firstCellPhone.value"></span>
+        </a>
+        <!-- /ko -->
+        <!-- ko if: $root.firstCellPhone -->
+        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+            <span class="btn-round"><i class="fa fa-envelope"></i></span>
+            <span data-bind="text: $root.firstEmail.value"></span>
+        </a>
+        <!-- /ko -->
+        <a class="btn btn-default btn-custom-with-cyrcle" href="#"
+           data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">
+            <span class="btn-round"><i class="fa fa-envelope"></i></span>
+            Message
+        </a>
+        <a class="btn btn-default btn-custom-with-cyrcle" href="#"
+           data-bind="click: function () { Composer.showModal('addContactable', 'Contact',{customer: $data._id()}); }">
+            <span class="btn-round"><i class="fa fa-plus"></i></span>
+            Add Contact Method
+        </a>
+
+        <div class="profile-last-update">
+            Created at
+            <small data-bind="text: moment($data.createdAt()).format('lll')"></small>
         </div>
     </div>
 </template>
