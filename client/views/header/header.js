@@ -5,7 +5,7 @@ Template.header.viewModel = function () {
   self.filesCollection = UsersFS;
 
   self.unreadMessages = ko.meteor.find(Messages, {
-    readed: false,
+    read: false,
     destination: Meteor.userId()
   }, {
     sort: {

@@ -64,7 +64,7 @@
             <!-- /.msgs-header -->
 
             <ul class="messages-list" data-bind="foreach: conversations">
-                <li data-bind="css: {selected: $data.selected, unread: !readed()}">
+                <li data-bind="css: {selected: $data.selected, unread: !read()}">
                     <input class="item-check" type="checkbox" data-bind="checked: selected">
                         <div class="row" data-bind="click: function() { Router.current().redirect('/inbox/' + _id());}">
                             <div class="col-sm-3">

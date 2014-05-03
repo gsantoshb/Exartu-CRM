@@ -45,7 +45,7 @@
                         <!-- /ko -->
 
                         <!-- ko foreach: latestUnreadMessages -->
-                        <li data-bind="css: {unread: function() { return readed; } }">
+                        <li data-bind="css: {unread: function() { return read; } }">
                             <a class="msg" data-bind="attr: { href: '/inbox/' + conversationId() }">
                                 <div data-bind="with: helper.getUserInformation($data.from())">
                                     <!-- ko if: $data.ready -->

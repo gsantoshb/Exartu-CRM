@@ -6,7 +6,7 @@
  *  - from: current user id
  *  - subject: string
  *  - content: string
- *  - readed: boolean
+ *  - read: boolean
  */
 
 Meteor.publish('messages', function () {
@@ -57,8 +57,8 @@ Meteor.startup(function () {
                 user1: conversation.user1,
                 user2: conversation.user2,
                 subject: conversation.subject,
-                user1Readed: true,
-                user2Readed: false,
+                user1Read: true,
+                user2Read: false,
             });
         },
         createMessage: function (message) {
@@ -74,12 +74,12 @@ Meteor.startup(function () {
             var conversation = Conversations.findOne({
                 _id: message.conversationId
             });
-            message.readed = false;
+            message.read = false;
             message.from = conversation.user1 == message.destination ? conversation.user2 : conversation.user1;
 
             return Messages.insert(message);
         },
-        markConversationMessagesAsReaded: function (conversationId) {
+        markConversationMessagesAsRead: function (conversationId) {
             var conversationMessages = Messages.find({
                 conversationId: conversationId
             }).fetch();
@@ -93,7 +93,7 @@ Meteor.startup(function () {
                 }
             }, {
                 $set: {
-                    readed: true
+                    read: true
                 }
             }, {
                 multi: true
