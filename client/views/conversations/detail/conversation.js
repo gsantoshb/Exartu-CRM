@@ -10,18 +10,18 @@ Template.conversation.viewModel = function () {
         _id: conversationId
     });
 
-    // Mark conversion as readed
+    // Mark conversion as read
     var markReadState = function (state) {
         var set = {
             $set: {}
         }
         if (self.conversation.user1 == Meteor.userId())
             set.$set = {
-                user1Readed: state
+                user1Read: state
             };
         else
             set.$set = {
-                user2Readed: state
+                user2Read: state
             };
         Conversations.update({
             _id: self.conversation._id
@@ -31,7 +31,7 @@ Template.conversation.viewModel = function () {
     markReadState(true);
 
     setTimeout(function () {
-        Meteor.call('markConversationMessagesAsReaded', self.conversation._id);
+        Meteor.call('markConversationMessagesAsRead', self.conversation._id);
     }, 1000);
 
     self.destinationUser = self.conversation.user1 == Meteor.userId() ? self.conversation.user2 : self.conversation.user1;
@@ -46,7 +46,7 @@ Template.conversation.viewModel = function () {
                 _id: newValue._id()
             }, {
                 $set: {
-                    readed: true
+                    read: true
                 }
             });
     });
@@ -72,7 +72,7 @@ Template.conversation.viewModel = function () {
     };
 
     self.unreadMessageFadeIn = function (element, data) {
-        if (!data.readed())
+        if (!data.read())
             $(element).filter("li")
                 .animate({
                     backgroundColor: 'rgba(238, 203, 114, 0.22)'

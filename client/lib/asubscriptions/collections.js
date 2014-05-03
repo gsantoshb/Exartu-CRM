@@ -185,11 +185,11 @@ Conversations = new Meteor.Collection("conversations", {
 
         var unreadMessages = (!_.isEmpty(conversationMessages) &&
             _.every(conversationMessages, function (conversation) {
-                return conversation.readed;
+                return conversation.read;
             })
             );
 
-        conversation.readed = (conversation.user1 == Meteor.userId() ? conversation.user1Readed : conversation.user2Readed);
+        conversation.read = (conversation.user1 == Meteor.userId() ? conversation.user1Read : conversation.user2Read);
 
         return conversation;
     }
