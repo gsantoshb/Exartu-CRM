@@ -1,4 +1,4 @@
-Template.contactCustomerAddEdit.viewModel = function (contact) {
+FTemplate.contactCustomerAddEdit.viewModel = function (contact) {
     var self = this;
     self.contact= Contactables.findOne({ _id: (_.isObject(contact) ? contact._id(): contact) }, { transform: null });
 

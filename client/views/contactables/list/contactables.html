@@ -208,7 +208,8 @@
                                             <div class="table-item-cell">
                                                 <div class="table-item-cell-container date">
                                                     <!-- ko if: $data.createdAt -->
-                                                    <span data-bind="text: moment(createdAt()).fromNow()"></span>
+                                                    <span data-bind="text: moment(createdAt()).fromNow()"></span><br>
+                                                    <span data-bind="text: _id"></span>
                                                     <!-- /ko -->
                                                 </div>
                                                 <!-- /.table-item-cell-container -->
