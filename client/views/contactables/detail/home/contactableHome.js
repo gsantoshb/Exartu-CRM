@@ -1,12 +1,17 @@
 Template.contactableHome.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps', 'ContactMethodsHandler'];
 Template.contactableHome.viewModel = function () {
-//    debugger;
     var self= {},
         contactableId= Session.get('entityId');
+    var obsId=ko.observable(contactableId);
 
-    self.contactable= ko.meteor.findOne(Contactables, {
-        _id: contactableId
-    });
+    self.contactable= ko.meteor.findOne(Contactables, ko.computed(function(){
+        return {
+            _id: obsId()
+        }
+    }));
+    self.contactable.subscribe(function(value){
+        console.dir(value);
+    })
 
     // <editor-fold desc="******  Contact Methods  ******">
 
@@ -85,5 +90,13 @@ Template.contactableHome.viewModel = function () {
         });
     }
     // </editor-fold>
+
+    var updateVM=function(){
+        var id=Session.get('entityId');
+        obsId(id);
+
+    }
+    Meteor.autorun(updateVM);
+
     return self;
 }
