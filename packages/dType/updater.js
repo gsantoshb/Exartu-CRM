@@ -1,10 +1,37 @@
 if (!dType){
     dType={};
 }
-
 dType.updater={
+    afterInsert:function(userId, doc){
+        var types= dType.core.getObjTypes(doc);
+
+        _.each(types,function(type){
+            var relations= dType.core.getTypeRelations(type);
+            _.each(relations, function(relation){
+                var oppositeVisibility= dType.core.getRelationOppositeVisivilityOnType(type, relation);
+                var myVisibility= dType.core.getRelationVisivilityOnType(type, relation);
+                if (oppositeVisibility){
+                    var collection= dType.core.getCollection(myVisibility.collection);
+                    var update=  getUpdate(doc, oppositeVisibility, myVisibility.target);
+                    var targetId= getTargetId(doc, myVisibility);
+
+                    if (targetId){
+                        collection.update({ _id: targetId }, update,function(err, result){
+                            if (err){
+                                throw err
+                            }else{
+                                console.log(result);
+                            }
+                        })
+                    }
+                }
+            })
+        })
+
+    },
     afterUpdate:function(userId, doc, fieldNames, modifier, options){
         var relations= dType.core.getRelations(doc);
+
         relations= dType.util.toObject(relations, 'name');
         _.each(fieldNames,function(name){
             var relation= relations[name];
@@ -24,23 +51,27 @@ var getTargetId= function(obj, visibility){
     return obj[visibility.name];
 }
 var getUpdate= function(obj, visibility, typeName){
-    var result= {};
+    var result= {
+        __notRunHook:true,
+    };
     var selector= getPath(typeName) + '.' + visibility.name;
     //todo: the rel has field?
     result[selector]=obj._id;
 
     if (visibility.cardinality.max== 1){
-        return result.$set=result;
+        return { $set: result };
     }else{
-        return result.$addToSet=result;
+        return { $addToSet: result };
     }
 }
 var getPath= function(typeName){
     var result=typeName;
     var type=dType.core.getObjType(typeName);
+
     while (type.parent){
-        result = type.parent + '.' + result;
         type=dType.core.getObjType(type.parent);
+        if (type.parent)
+            result = type.name + '.' + result;
     }
     return result;
 }

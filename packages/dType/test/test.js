@@ -1,18 +1,17 @@
 Tinytest.add('dType - simple Test', function(test){
-    var contactablesCollection= new Meteor.Collection('test.contactable');
-    var jobCollection= new Meteor.Collection('test.job');
+    var contactablesCollection= new Meteor.Collection(null);
+    var jobCollection= new Meteor.Collection(null);
     jobCollection.remove({});
-
+    contactablesCollection.remove({});
     var newObjType=dType.constructor.objType;
     var newRelation=dType.constructor.relation;
+    console.log('Contactable...');
     newObjType({
         name: 'contactable',
-        fields:[{
-            name: 'name',
-            regex: '.+'
-        }],
+        fields:[],
         collection: contactablesCollection
     })
+    console.log('employee...');
     newObjType({
         name: 'employee',
         fields:[{
@@ -22,6 +21,7 @@ Tinytest.add('dType - simple Test', function(test){
         }],
         parent: 'contactable'
     })
+    console.log('customer...');
     newObjType({
         name: 'customer',
         fields:[{
@@ -31,6 +31,7 @@ Tinytest.add('dType - simple Test', function(test){
         }],
         parent: 'contactable'
     })
+    console.log('job...');
     newObjType({
         name: 'job',
         fields:[{
@@ -40,6 +41,7 @@ Tinytest.add('dType - simple Test', function(test){
         }],
         collection: jobCollection
     })
+    console.log('Contactable...');
 
     newRelation({
         name: 'CustomerJobs',
@@ -47,6 +49,7 @@ Tinytest.add('dType - simple Test', function(test){
         obj2: 'customer',
         visibilityOn1: {
             name: 'customer',
+            collection: contactablesCollection,
             cardinality: {
                 min: 1,
                 max: 1
@@ -54,6 +57,7 @@ Tinytest.add('dType - simple Test', function(test){
         },
         visibilityOn2: {
             name: 'jobs',
+            collection: jobCollection,
             cardinality: {
                 min: 0,
                 max: Infinity
@@ -66,6 +70,7 @@ Tinytest.add('dType - simple Test', function(test){
         obj2: 'job',
         visibilityOn1: {
             name: 'assigned',
+            collection: jobCollection,
             cardinality: {
                 min: 0,
                 max: 1
@@ -73,6 +78,7 @@ Tinytest.add('dType - simple Test', function(test){
         },
         visibilityOn2: {
             name: 'assigned',
+            collection: contactablesCollection,
             cardinality: {
                 min: 0,
                 max: 1
@@ -80,7 +86,7 @@ Tinytest.add('dType - simple Test', function(test){
         }
     });
 
-    console.log('******************************************+++');
+    console.log('******************************************');
     //job without name
     jobCollection.insert({
         objNameArray: ['job'],
@@ -88,7 +94,7 @@ Tinytest.add('dType - simple Test', function(test){
     })
     test.equal(jobCollection.find().count(), 0,'a job without name was inserted');
 
-    console.log('******************************************+++');
+//    console.log('******************************************');
     //job without customer
     jobCollection.insert({
         objNameArray: ['job'],
@@ -97,17 +103,19 @@ Tinytest.add('dType - simple Test', function(test){
     })
     test.equal(jobCollection.find().count(), 0,'a job without customer was inserted');
 
-
+    console.log('******************************************');
     //insert a customer
-    var costumerID=contactablesCollection.insert({
-        objNameArray: 'contactable',
+    var customerId=contactablesCollection.insert({
+        objNameArray: ['customer'],
         name:'contactableName',
         customer:{
-            name:'customerName'
+            name:'customerName',
+            jobs: []
         }
     })
+    console.log(customerId)
     test.equal(contactablesCollection.find().count(), 1,'the customer was NOT inserted');
-
+    console.log('******************************************');
     //insert a job with a bad customer
     jobCollection.insert({
         objNameArray: ['job'],
@@ -115,13 +123,22 @@ Tinytest.add('dType - simple Test', function(test){
         customer: 'badCustomer'
     })
     test.equal(jobCollection.find().count(), 0,'a job with a bad customer was inserted');
-
+    console.log('******************************************');
     //insert a job
-    jobCollection.insert({
+//    console.log(customerId);
+    var jobID=jobCollection.insert({
         objNameArray: ['job'],
-        name: 'noCustomer',
-        customer: costumerID
+        name: 'one job',
+        customer: customerId
     })
     test.equal(jobCollection.find().count(), 1,'a job was NOT inserted');
+
+
+    console.log('******************************************');
+    //check that the customer is updated
+    var customer=contactablesCollection.findOne({_id: customerId});
+//    console.dir(customer)
+    test.equal(customer.customer.jobs,[jobID],'customer\'s job');
+
 
 })

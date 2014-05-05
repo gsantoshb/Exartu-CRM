@@ -3,7 +3,7 @@ if (!dType){
 }
 dType.validator={
     validateInsert: function(userId, doc){
-        console.log('validating insert..')
+//    debugger;
         var types= dType.core.getObjTypes(doc);
         return _.every(types, function(type){
             if(type.customValidation){
@@ -13,10 +13,59 @@ dType.validator={
         })
     },
     validateUpdate: function(userId, doc, fieldNames, modifier, options){
-        var baseType=dTypes.core.getObjBaseType(doc);
+        if(modifier.__notRunHook){
+            delete modifier.__notRunHook;
+            return this._super.call(this.context,userId, doc, fieldNames, modifier, options)
+        }
+        var baseType=dType.core.getObjBaseType(doc);
         return isValidObjUpdate(baseType, modifier.$set);
     }
 }
+//loop throw the obj keys, find out what that key represents (field, relation, etc) and validate it
+// if the key represents a child objType, then it validates that child
+var isValidObj= function(type, obj){
+    //check if the obj has every required key
+    debugger;
+    var required=getRequiredkeys(type);
+    if (! isContained(required, _.keys(obj))){
+        return false;
+    }
+    completeObj(type, obj);
+    return _.every(_.keys(obj), function(key){
+        return isValidProperty(type, obj, key);
+    })
+}
+var getRequiredkeys= function(type){
+    var result=[];
+    _.each(type.fields,function(field){
+        if (field.required || field.defaultValue === undefined){
+            result.push(field.name);
+        }
+    })
+    return result;
+}
+
+var isContained= function(contained, cointainee){
+    return _.every(contained,function(item){
+        return _.contains(cointainee, item);
+    })
+}
+
+var completeObj= function(type, obj){
+    var optional=[];
+    _.each(type.fields,function(field){
+        if (!field.required && field.defaultValue !== undefined){
+            optional.push({key: field.name, value: field.defaultValue});
+        }
+    })
+    _.each(optional, function(opt){
+        if(obj[opt.key] === undefined){
+            obj[opt.key]= _.isFunction(opt.value) ? opt.value() : opt.value;
+        }
+    })
+};
+// validates an updateObject (a mongo modifier object) transforming it in a nested object (see getFormatedModifier)
+// and then it proceeds as isValidObj but not checking the completeness
 var isValidObjUpdate= function(baseType, modifier){
     var formatedModifier=getFormatedModifier(modifier);
     return _.every(_.keys(formatedModifier), function(key){
@@ -26,41 +75,33 @@ var isValidObjUpdate= function(baseType, modifier){
 
 
 
-var isValidUpdate= function(type, obj){
-    return _.every(_.keys(obj), function(key){
-        return isValidProperty(type, obj, key);
-    })
-}
-// loop throw the keys of the obj and use the isValidProperty
-// is recursive cuz is isValidProperty call isValidObj if the propName is a type
 
-//todo: if the obj does not has a property that is needed?
-var isValidObj= function(type, obj){
-    return _.every(_.keys(obj), function(key){
-        return isValidProperty(type, obj, key);
-    })
-}
 var isValidProperty= function(type, obj, propName){
-    console.log('isValidProperty:' + propName);
     var result;
     result=isField(type, propName);
     if (result){
+        console.log('validating field: ' + propName);
         return isValidField(result, obj[propName]);
     }
     result=isService(type, propName);
     if (result){
+        console.log('validating service: ' + propName);
         return result.isValid(obj[propName], result.setting)
     }
     result=isRelation(type, propName);
     if (result){
-        console.log('validating relation:' + propName);
-        return isValidRelation(result, obj[propName])
+        console.log('validating relation: ' + propName);
+        var v= isValidRelation(result, obj[propName])
+        if(!v){
+            console.log('invalid rel')
+        }
+        return v;
     }
     result=isSubType(type, propName);
     if (result){
+        console.log('validating subType: ' + propName);
         return isValidObj(result, obj[propName]);
     }
-    console.error(propName + ' is nothing')
 
     return true;
 }
@@ -68,7 +109,6 @@ var isValidProperty= function(type, obj, propName){
 var isField= function(type, propName){
     return _.findWhere(type.fields,{name: propName});
 }
-
 var isService= function(type, propName){
     var setting=_.findWhere(type.services,{name: propName})
     if (setting){
@@ -89,126 +129,32 @@ var isSubType= function(type, propName){
     }
 }
 
-// return true if the obj is a valid instance of type
-// assumes that obj is 'direct' instance of type, e.g. if  type is employee, obj must not be person (the parent type of employee),
-//  it must be the sub-document concerning to employee ('person[employee]' if you like)
-
-//  for each service if the obj has the property concerning to the service, it call the isValid hook,
-//      if not it call assign the return of service's defaultValue function into that property
-var isValidObject2 = function(type, obj){
-    // Validating services
-    //get the name, hooks, and setting for every service configured in this type
-    var servicesObject=dType.core.getServices(type.services);
-
-    if  (!_.every(servicesObject, function(service){
-            if(obj[service.name] != undefined){
-               return servicesObject.isValid(obj[service.name], servicesObject.setting);
-            }else{
-                obj[service.name]= service.defaultValue(servicesObject.setting);
-                return true;
-            }
-        }))
-    {
-        return false;
-    }
-
-    // Validating fields
-    if  (!_.every(type.fields, function(field){
-            if(obj[field.name] != undefined){
-                return isValidField(field, obj[field.name]);
-            }else{
-                obj[service.name]= field.defaultValue;
-                return true;
-            }
-        }))
-    {
-        return false;
-    }
-
-    var relations= dType.core.getRelationsVisivilityOnType(type);
-    console.log('validating rels')
-    console.dir(relations)
-    // Validating Relations
-    if  (!_.every(relations, function(relation){
-        console.log('validating: ' + relation.name);
-        if(obj[relation.name] != undefined){
-            return isValidRelation(relation, obj[relation.name]);
-        }else{
-            obj[relation.name]= relation.defaultValue;
-            return true;
-        }
-    }))
-    {
-        return false;
-    }
-
-    return true;
-}
-
-
 var isValidField= function(field, value){
-    switch (field.fieldType) {
-        case dType.fieldTypes.string:
-            return value.match ? value.match(field.regex) != null : false;
-        case dType.fieldTypes.lookUp:
-            if (field.multiple) {
-
-                if (typeof value != typeof[])
-                    return false;
-                else {
-                    var v = true;
-                    _.every(value, function (val) {
-                        var item = LookUps.findOne({
-                            codeType: field.lookUpCode,
-                            _id: val
-                        });
-                        if (! item)
-                            v = false;
-                        if (item.dependencies) {
-                            if (_.difference(item.dependencies, value)) {
-                                console.error(item.name + ' dependencies fails');
-                                v = false;
-                            }
-                        }
-                        return v;
-                    })
-                    return v;
-                }
-            } else {
-                var item = LookUps.findOne({
-                    codeType: field.lookUpCode,
-                    _id: value
-                });
-                if (!item) {
-                    return false;
-                }
-            }
-
-            return true;
-        default:
-        //todo integer, others
-            return true;
-
+    var aux= dType.core.getFieldType(field.fieldType).validate(value, field);
+    if(!aux){
+        console.log('value: ' + value + ' is not valid for field ' + field.name)
     }
+    return aux;
 }
-
 var isValidRelation= function(visibility, value){
-    if (!checkCardinality(value, visibility.cardinality))
+    if (!checkCardinality(value, visibility.cardinality)){
+        console.log('invalid card')
         return false;
+    }
 
     if (visibility.cardinality.max == 1) {
         //check if the value's type is the same as this relation's target (rel.obj2)
-        return checkType(value, visibility.target);
+
+        return checkType(value, visibility.target, dType.core.getCollection(visibility.collection));
     }
     else {
         //checking if all the values are correct
         return _.every(value, function (val) {
-            return checkType(val, visibility.target);
+            return checkType(val, visibility.target, dType.core.getCollection(visibility.collection));
         });
     }
     //todo check other side
 }
-
 // check if value adjust to card
 var checkCardinality = function (value, card) {
     if (!value) {
@@ -238,29 +184,42 @@ var checkCardinality = function (value, card) {
  * collection ->    if obj is of the id of the obj this parameter is required
  */
 var checkType = function (obj, typeName, collection) {
-    if (typeof obj == typeof {})
-        return obj.type ? typeof obj.type == typeof[] ? obj.type.indexOf(typeName) >= 0 : false : false;
-    else {
 
+    if (_.isObject(obj))
+        return obj.objNameArray && _.isArray(obj.objNameArray) && (obj.objNameArray.indexOf(typeName) >= 0);
+    else {
+//        console.log('collection')
+//        console.dir(collection.find().fetch());
+//        console.log('obj')
+//        console.dir(obj);
+//        console.log('objNameArray')
+//        console.dir(typeName);
         var exists = collection.findOne({
             _id: obj,
             objNameArray: typeName
         }, {
             _id: 1
         });
+        if (!exists){
+            console.log(obj+'not Exists')
+        }
         return exists != undefined;
-
     }
 }
 
 
 var getFormatedModifier= function(modifier){
-    var result ={};
-    _.each(_.keys(modifier),function(key){
-        var parts= key.split('.');
-        result[parts[0]]= getFormatedParts(modifier, parts.slice(1), modifier[key]);
-    })
-    return result;
+
+    if(!_.isObject(modifier)){
+        return {};
+    }else{
+        var result ={};
+        _.each(_.keys(modifier), function(key){
+            var parts= key.split('.');
+            result[parts[0]]= getFormatedParts(modifier, parts.slice(1), modifier[key]);
+        })
+        return result;
+    }
 }
 var getFormatedParts=function(modifier, partArray, value){
     var aux={};

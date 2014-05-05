@@ -1,9 +1,19 @@
-if (!dType){
-    dType={};
+if (!dType) {
+    dType = {};
 }
 /*
  * The constructor module provides an interface to define or modify dTypes
  */
+
+
+dType.constructor.fieldType = function (options) {
+    var fieldType = {
+        name: options.name,
+        validate: options.validate,
+        defaultValue: options.defaultValue
+    }
+    dType.core.createFieldType(fieldType);
+}
 
 //create and return a field
 //      options = {
@@ -23,26 +33,20 @@ if (!dType){
 //          lookUpCode:
 //          multiple:   default=false
 //      }
-dType.constructor.field= function(options){
+dType.constructor.field = function (options) {
 
-   var field= {
-        name: options.name,
-        displayName: options.displayName || options.name,
-        fieldType: options.fieldType || dType.fieldTypes.string,
-        fieldGroup: options.fieldGroup || 'defaultGroup',
-        showInAdd: true,
-        customValidation: options.customValidation || null
-    }
-    field.defaultValue= dType.fieldTypes.defaultVal[field.fieldType];
+    if (options.fieldType && !dType.core.getFieldType(options.fieldType))
+        throw new Error('the field type ' + options.fieldType + ' does not exists');
+    var field = options
+//    debugger;
+    field.name= options.name;
+    field.displayName= options.displayName || options.name;
+    field.fieldType= options.fieldType || 'string';
+    field.fieldGroup= options.fieldGroup || 'defaultGroup';
+    field.showInAdd= true;
 
-    if(field.fieldType==dType.fieldTypes.string){
-        field.regex= options.regex || '.*';
-    }
-    if(field.fieldType == dType.fieldTypes.lookUp){
-        field.lookUpName= options.lookUpName;
-        field.lookUpCode= options.lookUpCode;
-        field.multiple= options.multiple || false
-    }
+    field.defaultValue = options.defaultValue || dType.core.getFieldType(options.fieldType).defaultValue;
+
     return field;
 };
 
@@ -54,14 +58,16 @@ dType.constructor.field= function(options){
 //          update: see dType.fieldTypes.defaultVal default depend on options.fieldType
 //
 //      }
-dType.constructor.service=function(options){
-    var returnTrueFunction=function(){
-     return true;
+dType.constructor.service = function (options) {
+    var returnTrueFunction = function () {
+        return true;
     };
-    var service= {
+    var service = {
         name: options.name,
-        getSettings: options.getSettings || function(){return {name: options.name}; },
-        isValid: options.isValid ||returnTrueFunction,
+        getSettings: options.getSettings || function () {
+            return {name: options.name};
+        },
+        isValid: options.isValid || returnTrueFunction,
         insert: options.insert || returnTrueFunction,
         update: options.update || returnTrueFunction
     }
@@ -69,33 +75,25 @@ dType.constructor.service=function(options){
     return service;
 };
 
-dType.constructor.objType=function(options){
-    var objType={
+dType.constructor.objType = function (options) {
+    var objType = {
         fields: [],
         services: [],
         name: options.name
     }
-    if (options.collection){
-        objType.collection=options.collection
-    }else if (options.parent){
-        objType.parent=options.collection
+    if (options.collection) {
+        objType.collection = options.collection
+    } else if (options.parent) {
+        objType.parent = options.parent
     }
-//        if (options.parent){
-//          var parent= dType.core.getObjType(options.parent);
-//          if (parent){
-//              what data of my parent do i need?
-//          }
-//        }
-
-
-    _.each(options.fields || [],function(field){
+    _.each(options.fields || [], function (field) {
         objType.fields.push(dType.constructor.field(field))
     })
-    _.each(options.services || [],function(service){
+    _.each(options.services || [], function (service) {
         var name = _.isString(service) ? service : service.name;
         var options = _.isString(service) ? {} : service.options;
-        var service= dType.core.getService(name);
-        if (service){
+        var service = dType.core.getService(name);
+        if (service) {
             objType.services.push(service.getSettings(options));
         }
     })
@@ -104,7 +102,7 @@ dType.constructor.objType=function(options){
     return objType;
 };
 
-dType.constructor.relation=function (options){
+dType.constructor.relation = function (options) {
     var relation = {
         name: options.name,
         obj1: options.obj1,
@@ -112,17 +110,85 @@ dType.constructor.relation=function (options){
         visibilityOn1: options.visibilityOn1,
         visibilityOn2: options.visibilityOn2
     };
-    var getDefault=function(cardinality){
-        return cardinality.max == 1 ? null: [];
-    }
-    relation.visibilityOn1.target= relation.obj2;
-    relation.visibilityOn1.defaultValue= relation.visibilityOn1.defaultValue || getDefault(relation.visibilityOn1.cardinality);
-    relation.visibilityOn1.showInAdd= !(_.isUndefined(relation.visibilityOn1.showInAdd)) ? relation.visibilityOn1.showInAdd : true;
 
-    relation.visibilityOn2.target=relation.obj1;
-    relation.visibilityOn2.defaultValue=relation.visibilityOn2.defaultValue || getDefault(relation.visibilityOn2.cardinality);
-    relation.visibilityOn2.showInAdd= !(_.isUndefined(relation.visibilityOn2.showInAdd)) ? relation.visibilityOn2.showInAdd : true;
+    extendVisiblity(relation.visibilityOn1, relation.obj2);
+
+    extendVisiblity(relation.visibilityOn2, relation.obj1);
 
     dType.core.createRelation(relation);
     return relation;
 };
+
+var extendVisiblity = function (visibility, target) {
+    visibility.target = visibility.target || target;
+    visibility.collection = dType.core.getCollectionOfType(target)._collection._dtypeId;
+
+    visibility.defaultValue = visibility.defaultValue || getDefault(visibility.cardinality);
+    visibility.showInAdd = !(_.isUndefined(visibility.showInAdd)) ? visibility.showInAdd : true;
+}
+var getDefault = function (cardinality) {
+    return cardinality.max == 1 ? null : [];
+}
+
+
+//todo: move this code
+// basic FieldTypes
+dType.core.createFieldType({
+    name: 'string',
+    validate: function(value, fieldDefinition){
+        if (!_.isString(value))
+            return false;
+
+        if(!fieldDefinition.regex)
+            return true;
+
+        return new RegExp(fieldDefinition.regex).test(value);
+    },
+    defaultValue: ''
+})
+dType.core.createFieldType({
+    name: 'number',
+    validate: function(value, fieldDefinition){
+        if (!_.isNumber(value))
+            return false
+        if (!fieldDefinition.range){
+            return true
+        }
+        return fieldDefinition.range.min >= value && fieldDefinition.range.min >= value;
+    },
+    defaultValue: 0
+})
+dType.core.createFieldType({
+    name: 'date',
+    validate: function(value, fieldDefinition){
+        if (!_.isDate(value))
+            return false;
+        return true
+
+    },
+    defaultValue: new Date()
+})
+dType.core.createFieldType({
+    name: 'enum',
+    validate: function(value, fieldDefinition){
+        if (!fieldDefinition.options){
+            return true
+        }
+        return _.contains(fieldDefinition.options, value);
+    },
+    defaultValue: null
+})
+dType.core.createFieldType({
+    name: 'boolean',
+    validate: function(value, fieldDefinition){
+        return _.isBoolean(value)
+    },
+    defaultValue: true
+})
+//dType.core.createFieldType({
+//    name: 'lookUp',
+//    validate: function(value, fieldDefinition){
+//        return true;
+//    },
+//    defaultValue: null
+//})

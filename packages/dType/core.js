@@ -11,31 +11,55 @@ _ObjTypes = new Meteor.Collection("dtype.objTypes");
 _Relations = new Meteor.Collection("dtype.relations");
 
 _Services = {};
+Collections= {};
+_FieldTypes= {};
 
 dType.core={
+
+    //objTypes
     createObjType: function(objType){
 
-        console.log('creating2')
+        if(objType.collection){
+//            debugger;
+            if (! objType.collection._collection._dtypeId){
+                if (! objType.collection._collection._name)
+                    objType.collection._collection._dtypeId='localCollection' + _.keys(Collections).length;
+                else{
+                    objType.collection._collection._dtypeId=objType.collection._collection._name
+                }
+            }
+
+            Collections[objType.collection._collection._dtypeId]=objType.collection;
+            var collection=objType.collection
+
+            objType.collection=objType.collection._collection._dtypeId;
+        }
+//        console.log('\n\ncollection')
+//        console.dir(Collections)
         var oldObj=_ObjTypes.findOne({name: objType.name});
         if (oldObj){
-            console.log('updating');
-//            _ObjTypes.update({_id: oldObj._id}, objType);
+//            console.log('updating');
+            _ObjTypes.update({_id:oldObj._id},objType);
         }else{
-            console.log('inserting');
             _ObjTypes.insert(objType);
         }
 
-        if (objType.collection){
-            console.log('hooking')
-            var col=objType.collection;
-            col.before.insert(dType.validator.validateInsert);
-            col.after.insert(dType.updater.afterUpdate);
+        if (collection){
+            collection.before.insert(function(userId, doc){
 
-            col.before.update(dType.validator.validateUpdate);
-            col.after.update(dType.updater.afterUpdate);
+                return dType.validator.validateInsert.call(this, userId, doc);
+            });
+            collection.after.insert(function(userId, doc){
+//                console.log('super**************************************************************')
+//                console.dir(this._super);
+                return dType.updater.afterInsert.call(this, userId, doc);
+            });
 
-            col.after.remove(dType.validator.validateRemove);
-            col.before.remove(dType.updater.afterRemove);
+            collection.before.update(dType.validator.validateUpdate);
+            collection.after.update(dType.updater.afterUpdate);
+
+            collection.after.remove(dType.validator.validateRemove);
+            collection.before.remove(dType.updater.afterRemove);
         }
     },
     getObjType: function(name){
@@ -44,9 +68,43 @@ dType.core={
     getObjTypes: function(obj){
         return _ObjTypes.find({ name: { $in: obj.objNameArray } }).fetch();
     },
+    getObjBaseType: function(obj){
+        var types = this.getObjTypes(obj),
+            base=types[0];
+        while (base.parent){
+            base= this.getObjType(base.parent);
+        }
+        return base;
+    },
+    getCollectionOfType: function(type){
+        var typeObject= _.isObject(type) ? type : this.getObjType(type);
+//        console.dir(typeObject)
+        while (typeObject.parent){
+            typeObject=this.getObjType(typeObject.parent)
+        }
+        return Collections[typeObject.collection];
+    },
 
+    //relations
     createRelation: function(relation){
-        _Relations.insert(relation);
+        console.log('\ncreateRelation')
+//        console.dir(relation)
+//        if(_.isObject(relation.visibilityOn1.collection)){
+//            if (!Collections[relation.visibilityOn1.collection._dTypeId])
+//                throw new Error('collection '+ relation.visibilityOn1.collection._dTypeId + ' not exists')
+//            relation.visibilityOn1.collection=relation.visibilityOn1.collection._dTypeId;
+//        }
+        var oldRel=_Relations.findOne({name: relation.name});
+        if (oldRel){
+//            console.log('updating rel ' + relation.name);
+            _Relations.update({ _id:oldRel._id },relation);
+        }else{
+//            console.log('inserting rel ' + relation.name);
+            _Relations.insert(relation);
+        }
+    },
+    getCollection: function(collectionName){
+        return Collections[collectionName];
     },
     getTypeRelations: function(type){
         return _Relations.find({
@@ -64,34 +122,25 @@ dType.core={
                         }
                     ]
                 },
-//                    {
-//                        'visibilityOn2.isGroupType': true,
-//                        obj1: type.objGroupType
-//                    },
-//                    {
-//                        $and: [
-//                            {
-//                                obj2: type.objGroupType
-//                            }, {
-//                                visibilityOn2: {
-//                                    $exists: true
-//                                }
-//                            }
-//                        ]
-//                    }
             ]
         }).fetch();
     },
     getRelations: function(obj){
+//        console.log('getRealtions--------------');
+//        console.log('obj');
+//        console.dir(obj);
         var types =  this.getObjTypes(obj);
-        var relations={};
+//        console.log('types');
+//        console.dir(types);
+        var relations=[];
         _.each(types, function(type){
             var typeRelations= dType.core.getTypeRelations(type);
-            _.extend(relations,typeRelations);
+//            console.log('typeRelations');
+//            console.dir(typeRelations);
+            relations.concat(typeRelations);
         })
         return relations;
     },
-
     //returns from the relations that use this type, the visibility on this type
     getRelationsVisivilityOnType: function(type){
         var relationsArray= dType.core.getTypeRelations(type);
@@ -116,15 +165,8 @@ dType.core={
         var typeName= _.isObject(type) ? type.name : type;
         return relation.obj1==typeName ? relation.visibilityOn1 : relation.obj2==typeName ? relation.visibilityOn2 : null;
     },
-    getCollectionOfType: function(type){
-        var typeObject= _.isObject(type) ? type : this.getObjType(type);
 
-        while (typeObject.parent){
-            typeObject=this.getObjType(typeObject.parent)
-        }
-        return typeObject.collection;
-    },
-
+    //services
     createService: function(services){
         _Services[services.name]=services;
     },
@@ -145,6 +187,13 @@ dType.core={
 
         })
         return services;
-    }
+    },
 
+    //fieldTypes
+    createFieldType: function(fieldType){
+        _FieldTypes[fieldType.name]=fieldType;
+    },
+    getFieldType: function(name){
+        return _FieldTypes[name];
+    }
 };
