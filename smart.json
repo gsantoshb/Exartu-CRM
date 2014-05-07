@@ -15,6 +15,7 @@
     "xml2js": {},
     "npm": {},
     "cfs-filesystem": {},
-    "apm": {}
+    "apm": {},
+    "moment": {}
   }
 }

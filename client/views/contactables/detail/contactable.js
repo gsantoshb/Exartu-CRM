@@ -31,16 +31,16 @@ ContactableController = RouteController.extend({
           to: 'content'
         });
         break;
-       case 'documents':
-            this.render('documents', {
-              to: 'content'
-            });
-            break;
-        case 'pastJobs':
-            this.render('contactablePastJobs', {
-                to: 'content'
-            });
-            break;
+      case 'documents':
+        this.render('documents', {
+          to: 'content'
+        });
+        break;
+      case 'pastJobs':
+        this.render('contactablePastJobs', {
+          to: 'content'
+        });
+        break;
       default:
         this.render('contactableHome', {
           to: 'content'
@@ -50,71 +50,64 @@ ContactableController = RouteController.extend({
     ;
   }
 });
-var aux;
-Template.contactable.entityId = function () {
-  return Session.get('entityId');
+
+Template.contactable.rendered=function(){
+  var asd=function(){
+    var hash=Router.current().params.hash || 'home';
+    $('.nav-pills>.active').removeClass('active');
+    $('.nav-pills-' + hash).addClass('active');
+  }
+  Meteor.autorun(asd);
 }
-Template.contactable.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps', 'ContactMethodsHandler'];
-Template.contactable.viewModel = function () {
-  var self = {},
-    contactableId = Router.current().params._id;
 
-  self.contactable = ko.meteor.findOne(Contactables, {
-    _id: contactableId
-  });
+UI.registerHelper('date', function (value) {
+  debugger;
+  return moment(value).format('MMMM Do YYYY, h:mm a');
+});
 
-  self.getObjTypeData = function (data) {
-    if (data.Employee) return data.Employee;
-    if (data.Customer) return data.Customer;
-    if (data.Contact) return data.Contact;
-  };
-  self.activeTab = ko.dep(function () {
-    return Router.current().params.hash || 'home';
-  });
+Template.contactable.helpers({
+  contactable: function(){
+    return Contactables.findOne({
+      _id: Session.get('entityId')
+    })
+  },
+  pictureUrl:function(){
+    if (this.pictureFileId){
+      return ContactablesFS.getThumbnailUrlForBlaze(this.pictureFileId);
+    }
+    return "/assets/user-photo-placeholder.jpg";
+  },
+  createdAtFormatted: function() {
+    return moment(this.createdAt).format('lll');
+  }
+})
 
-  self.contactablePicture = ContactablesFS.getThumbnailUrl(self.contactable().pictureFileId());
-
-  self.pictureUrl = ko.computed(function() {
-    if (self.contactablePicture().ready())
-      return self.contactablePicture().picture();
-    else
-      return undefined;
-  });
-
-  self.editContactablePicture = function () {
+Template.contactable.events({
+  'click .edit-pic': function(){
     $('#edit-picture').trigger('click');
-  };
-
-  $('#edit-picture').change(function (e) {
-    var fsFile = new FS.File(e.target.files[0]);
+  },
+  'change #edit-picture': function(e){
+    var fsFile = new FS.File(e.target.files[0]),
+      contactableId=Session.get('entityId');
     fsFile.metadata = {
       entityId: contactableId,
       owner: Meteor.userId(),
       name: fsFile.name
     };
-    var file = ContactablesFS.insert(fsFile); //, function(err, result) {
-    ContactablesFS.getThumbnailUrl(file._id, self.contactablePicture);
+    var file = ContactablesFS.insert(fsFile);
     Meteor.call('updateContactablePicture', contactableId, file._id);
-    //});
-  });
-
-  // Extra information on header for each objType
-  self.getHeaderInfoVM = function (data) {
-    if (data.Employee) return 'employee-header';
-    if (data.Customer) return 'empty-header';
-        if (data.Contact) return 'contact-header';
-  };
-
-  return self;
-};
-
-Template.contactable.rendered = function () {
-  // TODO: Avoid multiple bindings
-  // Remove old binding to avoid multiple calls
-  var nodeIds = ['edit-picture-btn'];
-  _.forEach(nodeIds, function (nodeId) {
-    node = $('#' + nodeId)[0];
-    if (node)
-      ko.cleanNode(node);
-  })
-};
+  },
+  'click .send-message': function(e){
+    Composer.showModal('sendMessage', $data);
+  },
+  'keypress #note-input': function (e) {
+    if (e.which === 13) {
+      Meteor.call('addContactablePost', Session.get('entityId'), {
+        content: e.currentTarget.value
+      }, function (err, result) {
+        if (!err) {
+        }
+      });
+    }
+  }
+});
