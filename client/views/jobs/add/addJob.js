@@ -23,10 +23,11 @@ Template.addJob.viewModel = function (objname) {
             }
             return self;
         },
-        objname: objname,
+        name: objname,
         addCallback: function (job) {
-            debugger;
+//            debugger;
             self.canAdd(false);
+            console.log(ko.toJS(job));
             Meteor.call('addJob', ko.toJS(job), function (err, result) {
                 self.canAdd(true);
                 if (err)

@@ -162,9 +162,9 @@
                         </a>
                     </li>
                     <!-- ko foreach: contactableObjTypes -->
-                    <li data-bind="css: { active: $parent.activeRoute() == 'contactables' && $parent.activeRouteType() == objName().toLowerCase() }">
-                        <a data-bind="attr: {href: '/contactables/' + objName().toLowerCase()}">
-                            <span data-bind="text: objName"></span>
+                    <li data-bind="css: { active: $parent.activeRoute() == 'contactables' && $parent.activeRouteType() == name().toLowerCase() }">
+                        <a data-bind="attr: {href: '/contactables/' + name().toLowerCase()}">
+                            <span data-bind="text: name"></span>
                         </a>
                     </li>
                     <!-- /ko -->
@@ -191,9 +191,9 @@
                         </a>
                     </li>
                     <!-- ko foreach: jobObjTypes -->
-                    <li data-bind="css: { active: $parent.activeRoute() == 'jobs' && $parent.activeRouteType() == objName().toLowerCase() }">
-                        <a data-bind="attr: {href: '/jobs/' + objName().toLowerCase()}">
-                            <span data-bind="text: objName"></span>
+                    <li data-bind="css: { active: $parent.activeRoute() == 'jobs' && $parent.activeRouteType() == name().toLowerCase() }">
+                        <a data-bind="attr: {href: '/jobs/' + name().toLowerCase()}">
+                            <span data-bind="text: name"></span>
                         </a>
                     </li>
                     <!-- /ko -->

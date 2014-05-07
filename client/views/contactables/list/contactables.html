@@ -4,7 +4,7 @@
             <div id="content-header" class="mini">
                 <h1>
                     <strong data-bind="text: entities().length"></strong>
-                    <span data-bind="text:objName "></span>
+                    <span data-bind="text:name "></span>
                 </h1>
             </div>
             <div id="breadcrumb">
@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-md-4 col-md-push-8 col-lg-push-9 col-lg-3">
                         <div class="visible-lg visible-md" data-bind="foreach: contactableTypes">
-                            <a class="btn btn-success btn-md btn-block btn-create" data-toggle="modal" data-bind="click: function () { Composer.showModal('addContactable', $data.objName()); }, text: 'Add ' + objName()"></a>
+                            <a class="btn btn-success btn-md btn-block btn-create" data-toggle="modal" data-bind="click: function () { Composer.showModal('addContactable', $data.name()); }, text: 'Add ' + name()"></a>
                         </div>
                         <div class="hidden-lg hidden-md">
                             <div class="btn-group btn-block btn-new-item">
@@ -24,7 +24,7 @@
                                     Add <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
-                                    <li><a href="#" data-bind="click: function () { Composer.showModal('addContactable', $data.objName()); }, text: objName()"></a></li>
+                                    <li><a href="#" data-bind="click: function () { Composer.showModal('addContactable', $data.name()); }, text: name()"></a></li>
                                  </ul>
                             </div>
                         </div>

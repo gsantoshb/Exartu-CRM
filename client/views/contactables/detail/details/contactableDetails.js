@@ -87,8 +87,8 @@ Template.contactableDetails.viewModel = function () {
             self.editObjType().load(self.contactable()[self.contactable().objNameArray()[0]]);
     });
 
-    var objType = ObjTypes.findOne({
-        objName: self.contactable().objNameArray()[0]
+    var objType = dType.ObjTypes.findOne({
+        name: self.contactable().objNameArray()[0]
     });
 
     self.editObjType = ko.validatedObservable(koObjectGenerator(objType.fields));
