@@ -1,73 +1,4 @@
-dType.core.createFieldType({
-    name: 'lookUp',
-    validate: function(value, fieldDefinition){
-        var lookUp=LookUps.findOne({ codeType: fieldDefinition.lookUpCode, _id: value });
-        return !! lookUp;
-    },
-    defaultValue: null
-})
-dType.constructor.service({
-    name: 'tags',
-    getSettings: function(options){
-        return {name: 'tags'};
-    },
-    isValid: function(value, serviceSettings){
-        return _.isArray(value) && _.every(value,function(t){
-                                                    return _.isString(t);
-                                                });
-    },
-    initValue: function(value){
-        return []
-    }
-})
-dType.constructor.service({
-    name: 'messages',
-    getSettings: function(options){
-        return {name: 'messages'};
-    },
-    isValid: function(value, serviceSettings){
-        return _.isArray(value);
-    },
-    initValue: function(value){
-        return []
-    }
-})
-dType.constructor.service({
-    name: 'tasks',
-    getSettings: function(options){
-        return {name: 'tasks'};
-    },
-    isValid: function(value, serviceSettings){
-        return _.isArray(value);
-    },
-    initValue: function(value){
-        return []
-    }
-})
-dType.constructor.service({
-    name: 'posts',
-    getSettings: function(options){
-        return {name: 'posts'};
-    },
-    isValid: function(value, serviceSettings){
-        return _.isArray(value);
-    },
-    initValue: function(value){
-        return []
-    }
-})
-dType.constructor.service({
-    name: 'contactMethods',
-    getSettings: function(options){
-        return {name: 'contactMethods'};
-    },
-    isValid: function(value, serviceSettings){
-        return _.isArray(value);
-    },
-    initValue: function(value){
-        return []
-    }
-})
+
 
 /*
  * Add to system hierarchy the basic obj types
@@ -80,7 +11,6 @@ dType.constructor.service({
  *    - objType Temporary
  */
 var newObjType=dType.constructor.objType;
-debugger;
 
 newObjType({
     collection: Contactables,

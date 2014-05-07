@@ -1,6 +1,5 @@
 seedSystemLookUps = function () {
     _.forEach(systemLookUps, function (item) {
-//        debugger;
         var oldItem = LookUps.findOne({
             'displayName': item.displayName,
             'codeType': item.codeType

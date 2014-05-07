@@ -17,6 +17,7 @@ Package.on_use(function(api){
     api.add_files('updater.js', ['server']);
     api.add_files('core.js', ['server']);
     api.add_files('constructor.js', ['server']);
+    api.add_files('basicFieldTypesDefinition.js', ['server']);
     api.add_files('client.js', ['client']);
     api.export("dType")
 });
