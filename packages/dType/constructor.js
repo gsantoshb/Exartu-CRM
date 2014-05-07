@@ -68,6 +68,7 @@ dType.constructor.service = function (options) {
             return {name: options.name};
         },
         isValid: options.isValid || returnTrueFunction,
+        initValue: options.initValue,
         insert: options.insert || returnTrueFunction,
         update: options.update || returnTrueFunction
     }
@@ -76,27 +77,33 @@ dType.constructor.service = function (options) {
 };
 
 dType.constructor.objType = function (options) {
-    var objType = {
-        fields: [],
-        services: [],
-        name: options.name
+    var objType = _.clone(options);
+    if(! options.collection && ! options.parent){
+        throw new Error('the ObjType ' + options.name + ' has no collection and no parent, you must specify one')
     }
-    if (options.collection) {
-        objType.collection = options.collection
-    } else if (options.parent) {
-        objType.parent = options.parent
-    }
+//    if (options.collection) {
+//        objType.collection = options.collection
+//    } else if (options.parent) {
+//        objType.parent = options.parent
+//    }
+    objType.fields=[];
     _.each(options.fields || [], function (field) {
         objType.fields.push(dType.constructor.field(field))
     })
-    _.each(options.services || [], function (service) {
-        var name = _.isString(service) ? service : service.name;
-        var options = _.isString(service) ? {} : service.options;
-        var service = dType.core.getService(name);
-        if (service) {
-            objType.services.push(service.getSettings(options));
-        }
-    })
+
+    objType.services=[];
+    if(options.services){
+        _.each(options.services, function (service) {
+            var name = _.isString(service) ? service : service.name;
+            var options = _.isString(service) ? {} : service.options;
+            var service = dType.core.getService(name);
+            if (service) {
+                objType.services.push(service.getSettings(options));
+            }else{
+                throw new Error('the service ' + name + ' does not exists')
+            }
+        })
+    }
 
     dType.core.createObjType(objType);
     return objType;

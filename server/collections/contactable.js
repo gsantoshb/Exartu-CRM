@@ -67,12 +67,12 @@ Meteor.startup(function () {
     Meteor.methods({
         addContactable: function (contactable) {
             contactable._id=new Meteor.Collection.ObjectID()._str;
-            if (beforeInsertOrUpdateContactable(contactable)) {
+//            if (beforeInsertOrUpdateContactable(contactable)) {
                 Contactables.insert(contactable);
-            } else {
-                console.error('Contactable not valid')
-                console.dir(contactable);
-            }
+//            } else {
+//                console.error('Contactable not valid')
+//                console.dir(contactable);
+//            }
         },
         updateContactable: function (contactable) {
             if (beforeInsertOrUpdateContactable(contactable)) {

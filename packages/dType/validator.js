@@ -4,13 +4,14 @@ if (!dType){
 dType.validator={
     validateInsert: function(userId, doc){
 //    debugger;
-        var types= dType.core.getObjTypes(doc);
-        return _.every(types, function(type){
+        var type= dType.core.getObjBaseType(doc);
+        //todo: multiple objTypes
+//        return _.every(types, function(type){
             if(type.customValidation){
                 return type.customValidation(doc);
             }
             return isValidObj(type, doc);
-        })
+//        })
     },
     validateUpdate: function(userId, doc, fieldNames, modifier, options){
         if(modifier.__notRunHook){
@@ -25,7 +26,6 @@ dType.validator={
 // if the key represents a child objType, then it validates that child
 var isValidObj= function(type, obj){
     //check if the obj has every required key
-    debugger;
     var required=getRequiredkeys(type);
     if (! isContained(required, _.keys(obj))){
         return false;
@@ -52,6 +52,7 @@ var isContained= function(contained, cointainee){
 }
 
 var completeObj= function(type, obj){
+    //fields
     var optional=[];
     _.each(type.fields,function(field){
         if (!field.required && field.defaultValue !== undefined){
@@ -63,6 +64,17 @@ var completeObj= function(type, obj){
             obj[opt.key]= _.isFunction(opt.value) ? opt.value() : opt.value;
         }
     })
+
+    //services
+    var service;
+    debugger;
+    _.each(type.services,function(serviceSetting){
+        service= dType.core.getService(serviceSetting.name);
+        if (service.initValue){
+            obj[service.name]= service.initValue(obj[service.name]);
+        }
+    });
+
 };
 // validates an updateObject (a mongo modifier object) transforming it in a nested object (see getFormatedModifier)
 // and then it proceeds as isValidObj but not checking the completeness
@@ -102,7 +114,7 @@ var isValidProperty= function(type, obj, propName){
         console.log('validating subType: ' + propName);
         return isValidObj(result, obj[propName]);
     }
-
+//    console.log(propName + ' is nothing')
     return true;
 }
 

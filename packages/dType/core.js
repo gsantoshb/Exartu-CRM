@@ -7,7 +7,17 @@ if (!dType){
  */
 
 _ObjTypes = new Meteor.Collection("dtype.objTypes");
+Meteor.publish('dtype.objTypes', function () {
+    if (Meteor.users){
+        var user = Meteor.users.findOne({
+            _id: this.userId
+        });
 
+        if (!user)
+            return false;
+    }
+    return _ObjTypes.find({});
+})
 _Relations = new Meteor.Collection("dtype.relations");
 
 _Services = {};
@@ -20,7 +30,6 @@ dType.core={
     createObjType: function(objType){
 
         if(objType.collection){
-//            debugger;
             if (! objType.collection._collection._dtypeId){
                 if (! objType.collection._collection._name)
                     objType.collection._collection._dtypeId='localCollection' + _.keys(Collections).length;
@@ -34,11 +43,8 @@ dType.core={
 
             objType.collection=objType.collection._collection._dtypeId;
         }
-//        console.log('\n\ncollection')
-//        console.dir(Collections)
         var oldObj=_ObjTypes.findOne({name: objType.name});
         if (oldObj){
-//            console.log('updating');
             _ObjTypes.update({_id:oldObj._id},objType);
         }else{
             _ObjTypes.insert(objType);
@@ -50,8 +56,6 @@ dType.core={
                 return dType.validator.validateInsert.call(this, userId, doc);
             });
             collection.after.insert(function(userId, doc){
-//                console.log('super**************************************************************')
-//                console.dir(this._super);
                 return dType.updater.afterInsert.call(this, userId, doc);
             });
 
@@ -78,8 +82,7 @@ dType.core={
     },
     getCollectionOfType: function(type){
         var typeObject= _.isObject(type) ? type : this.getObjType(type);
-//        console.dir(typeObject)
-        while (typeObject.parent){
+        while (typeObject && typeObject.parent){
             typeObject=this.getObjType(typeObject.parent)
         }
         return Collections[typeObject.collection];
@@ -87,19 +90,11 @@ dType.core={
 
     //relations
     createRelation: function(relation){
-        console.log('\ncreateRelation')
-//        console.dir(relation)
-//        if(_.isObject(relation.visibilityOn1.collection)){
-//            if (!Collections[relation.visibilityOn1.collection._dTypeId])
-//                throw new Error('collection '+ relation.visibilityOn1.collection._dTypeId + ' not exists')
-//            relation.visibilityOn1.collection=relation.visibilityOn1.collection._dTypeId;
-//        }
+
         var oldRel=_Relations.findOne({name: relation.name});
         if (oldRel){
-//            console.log('updating rel ' + relation.name);
             _Relations.update({ _id:oldRel._id },relation);
         }else{
-//            console.log('inserting rel ' + relation.name);
             _Relations.insert(relation);
         }
     },
@@ -126,17 +121,10 @@ dType.core={
         }).fetch();
     },
     getRelations: function(obj){
-//        console.log('getRealtions--------------');
-//        console.log('obj');
-//        console.dir(obj);
         var types =  this.getObjTypes(obj);
-//        console.log('types');
-//        console.dir(types);
         var relations=[];
         _.each(types, function(type){
             var typeRelations= dType.core.getTypeRelations(type);
-//            console.log('typeRelations');
-//            console.dir(typeRelations);
             relations.concat(typeRelations);
         })
         return relations;

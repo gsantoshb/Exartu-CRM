@@ -1,6 +1,24 @@
 Tinytest.add('dType - field Test', function(test){
     var foo= new Meteor.Collection(null);
+    var LookUps= new Meteor.Collection(null);
+    LookUps.insert({
+        name:'a'
+    });
+    LookUps.insert({
+        name:'b'
+    });
+    LookUps.insert({
+        name:'c'
+    });
 //    debugger;
+    dType.core.createFieldType({
+        name: 'lookUp',
+        validate: function(value, fieldDefinition){
+            var lookUp=LookUps.findOne({ _id: value });
+            return !! lookUp;
+        },
+        defaultValue: null
+    })
     dType.constructor.objType({
         name: 'foo',
         fields:[{
@@ -27,6 +45,10 @@ Tinytest.add('dType - field Test', function(test){
             name: 'boolean',
             fieldType: 'boolean',
             defaultValue: true
+        },{
+            name: 'lookUp',
+            fieldType: 'lookUp',
+            defaultValue: LookUps.findOne({name:'b'})._id
         }],
         collection: foo
     });
@@ -77,7 +99,8 @@ Tinytest.add('dType - field Test', function(test){
         number: dType.core.getFieldType('number').defaultValue,
         date: dType.core.getFieldType('date').defaultValue,
         enum: 'one',
-        boolean: dType.core.getFieldType('boolean').defaultValue
+        boolean: dType.core.getFieldType('boolean').defaultValue,
+        lookUp:LookUps.findOne({name:'b'})._id
     },'nonEmpty 2: object check');
 
 
@@ -119,5 +142,34 @@ Tinytest.add('dType - field Test', function(test){
 //        boolean: ''
     });
     test.equal(foo.findOne({_id: id}), undefined,'number 2');
+
+    id=null;
+    console.log('******************* lookUp ***********************');
+    id=foo.insert({
+        objNameArray: ['foo'],
+        nonEmpty: 'badLookup',
+//        anyString: 'any',
+//        number: 'NAN',
+//        date: '',
+//        enum: '',
+//        boolean: ''
+        lookUp:'badLookup'
+    });
+    test.equal(foo.findOne({_id: id}), undefined,'lookUp');
+
+    id=null;
+    console.log('******************* lookUp 2 ***********************');
+    id=foo.insert({
+        objNameArray: ['foo'],
+        nonEmpty: 'badLookup',
+//        anyString: 'any',
+//        number: 'NAN',
+//        date: '',
+//        enum: '',
+//        boolean: ''
+        lookUp: LookUps.findOne({name: 'c'})._id
+    });
+    test.notEqual(foo.findOne({_id: id}), undefined,'lookUp 2');
+    test.equal(foo.findOne({_id: id}).lookUp, LookUps.findOne({name: 'c'})._id,'lookUp 2 - value of the lookup');
 
 });

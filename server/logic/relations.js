@@ -279,72 +279,107 @@ var checkType = function (obj, typeName, collection) {
 
 Meteor.methods({
     getShowInAddRelations: function (objName, objGroupName) {
-        //        console.dir(objGroupName)
-        //        console.dir(objName)
-        var relations = [];
-        var rels = Relations.find({
-            $or: [
-                {
-                    obj1: objName
-                },
-                {
-                    $and: [
-                        {
-                            obj2: objName
-                        },
-                        {
-                            visibilityOn2: {
-                                $exists: true
-                            }
-                        }
-                    ]
-                },
-                {
-                    'visibilityOn2.isGroupType': true,
-                    obj1: objGroupName
-                },
-                {
-                    $and: [
-                        {
-                            obj2: objGroupName
-                        },
-                        {
-                            visibilityOn2: {
-                                $exists: true
-                            }
-                            //                        'visibilityOn2.isGroupType': true,
-                        }
-                    ]
-                }
-            ]
-        }).fetch();
-        //        console.dir(rels);
+        //todo: all this logic should be moved to dType package
+        var result=[];
+        var objType=dType.core.getObjType(objName);
+        var isGrpuType={};
+        console.dir(objType)
+        while (objType && objType.parent){
+            var visibilities=dType.core.getRelationsVisivilityOnType(objType);
+            _.each(visibilities, function(v){
+                isGrpuType[v.name]= ! objType.parent;
+            })
+            result.concat(visibilities);
+            objType=dType.core.getObjType(objType.parent);
+        }
+        var visibilities=dType.core.getRelationsVisivilityOnType(objType);
+        _.each(visibilities, function(v){
+            isGrpuType[v.name]= ! objType.parent;
+        })
+        result= result.concat(visibilities);
 
-        _.forEach(rels, function (relation) {
-            var objRel;
+        _.forEach(result, function (visibility) {
+            if (! visibility.showInAdd){
+                result.slice(result.indexOf(visibility))
+                return
+            }
             var query = {};
 
-            if (relation.obj1 == objName) {
-                objRel = relation.visibilityOn1;
-                query[relation.obj2] = {};
-                query[relation.obj2]['$exists'] = true;
-            } else {
-                objRel = relation.visibilityOn2;
-                query[relation.obj1] = {};
-                query[relation.obj1]['$exists'] = true;
+            query[visibility.target] = {};
+            query[visibility.target]['$exists'] = true;
+            var target=visibility.target
+            visibility.target={
+                collection: dType.core.getCollectionOfType(target)._name=='contactables' ? 'Contactables': 'Jobs',  //******* hack ******
+                query: query
             }
-            relations.push({
-                name: objRel.name,
-                displayName: objRel.displayName,
-                cardinality: objRel.cardinality,
-                target: {
-                    collection: objRel.collection,
-                    query: query
-                },
-                isGroupType: objRel.isGroupType
-            });
-        });
 
-        return relations;
+            visibility.isGroupType=isGrpuType[visibility.name] ? isGrpuType[visibility.name]: false;
+        });
+        return result;
+
+//        var relations = [];
+//        var rels = Relations.find({
+//            $or: [
+//                {
+//                    obj1: objName
+//                },
+//                {
+//                    $and: [
+//                        {
+//                            obj2: objName
+//                        },
+//                        {
+//                            visibilityOn2: {
+//                                $exists: true
+//                            }
+//                        }
+//                    ]
+//                },
+//                {
+//                    'visibilityOn2.isGroupType': true,
+//                    obj1: objGroupName
+//                },
+//                {
+//                    $and: [
+//                        {
+//                            obj2: objGroupName
+//                        },
+//                        {
+//                            visibilityOn2: {
+//                                $exists: true
+//                            }
+//                            //                        'visibilityOn2.isGroupType': true,
+//                        }
+//                    ]
+//                }
+//            ]
+//        }).fetch();
+//
+//        _.forEach(rels, function (relation) {
+//            var objRel;
+//            var query = {};
+//
+//            if (relation.obj1 == objName) {
+//                objRel = relation.visibilityOn1;
+//                query[relation.obj2] = {};
+//                query[relation.obj2]['$exists'] = true;
+//            } else {
+//                objRel = relation.visibilityOn2;
+//                query[relation.obj1] = {};
+//                query[relation.obj1]['$exists'] = true;
+//            }
+//            relations.push({
+//                name: objRel.name,
+//                displayName: objRel.displayName,
+//                cardinality: objRel.cardinality,
+//                target: {
+//                    collection: objRel.collection,
+//                    query: query
+//                },
+//                isGroupType: objRel.isGroupType
+//            });
+//        });
+//
+//        return relations;
     }
 });
