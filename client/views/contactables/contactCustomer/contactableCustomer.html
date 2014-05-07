@@ -1,4 +1,41 @@
 <template name="contactableCustomer">
+    {{#with Contact}}
+        {{#if customer}}
+            <div class="box">
+                <div class="box-header-2">
+                    <a class="pull-right btn btn-xs btn-default add-edit">
+                        <i class="fa fa-pencil"></i>Edit
+                    </a>
+                    <div class="box-title">
+                        <i class="icon-buildings-1"></i>Customer
+                    </div>
+
+                </div>
+                <div>
+                    {{#with customerInfo}}
+                        <div class="row" style="margin:3px;">
+                            <a href="{{_id}}">
+                                <img class="col-md-4" style="heigth:70px; width:70px;"  src="{{customerPicture}}">
+                                <h5 class="col-md-4">{{displayName}}</h5>
+                            </a>
+                        </div>
+                    {{/with}}
+                </div>
+            </div>
+        {{else}}
+            <div class="box-header-2">
+                <a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'contactCustomerAddEdit',$parent);}">
+                    <i class="fa fa-pencil"></i>Edit
+                </a>
+                <div class="box-title">
+                    <i class="icon-buildings-1"></i>No Customer
+                </div>
+
+            </div>
+        {{/if}}
+    {{/with}}
+</template>
+<template name="contactableCustomer2">
     <!--ko with: Contact-->
         <!--ko if: $data.customer-->
             <div class="box">
@@ -13,12 +50,16 @@
 
                 </div>
                 <div data-bind="with: ko.meteor.findOne(Contactables,{_id: customer()})">
-                    <a data-bind="attr:{href:'/contactable/'+ _id()}">
-                        <div class="row" style="margin:3px;">
-                            <img class="col-md-4" style="heigth:70px; width:70px;" alt="google" data-bind="attr: {src: helper.getCustomerPictureUrl($data)}">
-                            <h5 class="col-md-4" data-bind="text: displayName"></h5>
-                        </div>
-                    </a>
+                    <div class="row" style="margin:3px;">
+                        <!-- ko with: $root.filesCollection.getThumbnailUrl($data.pictureFileId())-->
+                        <!-- ko if: ready -->
+                        <a data-bind="attr:{href:'/contactable/'+ $parent._id()}">
+                            <img class="col-md-4" style="heigth:70px; width:70px;"  data-bind="attr: {src: picture }">
+                            <h5 class="col-md-4" data-bind="text: $parent.displayName"></h5>
+                        </a>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                    </div>
                 </div>
             </div>
         <!--/ko-->

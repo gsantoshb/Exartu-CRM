@@ -248,7 +248,6 @@ UsersFS.publish(); // Default publish and allow options
 //  }
 //});
 //
-//var handler = {
 //  default: function (options) {
 //    console.dir('user default handler');
 //    console.dir(options);
@@ -257,5 +256,3 @@ UsersFS.publish(); // Default publish and allow options
 //      fileRecord: options.fileRecord
 //    };
 //  }
-//}
-//UsersFS.fileHandlers(handler);

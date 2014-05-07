@@ -60,13 +60,18 @@ Template.userProfile.viewModel = function () {
     });
   }
 
-  self.userPicture = UsersFS.getUrl(self.user().profilePictureId());
+  var googlePicture = undefined;
+  if (self.user().services && self.user().services.google)
+    googlePicture = ko.observable({
+      ready: ko.observable(true),
+      picture: self.user().services.google.picture
+    });
 
+  self.userPicture = self.user().profilePictureId? UsersFS.getUrl(self.user().profilePictureId()) : googlePicture;
   self.pictureUrl = ko.computed(function() {
-    if (self.userPicture().ready())
-      return self.userPicture().picture();
-    else
+    if (!self.userPicture || !self.userPicture().ready())
       return undefined;
+    return self.userPicture().picture();
   });
 
   self.editPicture = function () {

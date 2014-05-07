@@ -97,14 +97,21 @@ Template.tasks.viewModel = function () {
 
         if (self.searchString()) {
             q.note = {
-                $regex: self.searchString()
+                $regex: self.searchString(),
+                $options: 'i'
             };
         }
         return q;
     });
 
+    var options = ko.computed(function () {
+        return {
+            sort: { createdAt: -1 }
+        }
+    })
 
-    self.tasks = ko.meteor.find(Tasks, query);
+
+    self.tasks = ko.meteor.find(Tasks, query, options);
     self.add = function () {
         Composer.showModal('addEditTask');
     }

@@ -24,14 +24,14 @@
                                     <label class="col-sm-2 control-label"></label>
                                     <div class="col-sm-10">
                                         <div class="profile-pic">
-                                            <!-- ko if: user().profilePictureId() &&  $root.pictureUrl() -->
+                                            <!-- ko if: $root.pictureUrl -->
                                             <img class="img-responsive" style="max-height:200px; max-width:200px" data-bind="attr: { src: $root.pictureUrl }">
                                             <!-- /ko -->
                                             <!-- ko if: !user().profilePictureId() && user().services && user().services.google -->
-                                            <a href="#">
-                                                <img data-bind="attr: {src: user().services.google.picture() }">
-                                            </a>
                                             <!-- /ko -->
+                                            <!--&lt;!&ndash; ko if: $root.pictureUrl == undefined && (!!$root.user().services && !!$root.user().services.google) &ndash;&gt;-->
+                                            <!--<img data-bind="attr: {src: user().services.google.picture() }">-->
+                                            <!--&lt;!&ndash; /ko &ndash;&gt;-->
                                         </div>
                                         <br>
                                         <a id="edit-picture-btn" class="edit-pic btn btn-default btn-xs" href="#" data-bind="click: $root.editPicture">

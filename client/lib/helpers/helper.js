@@ -243,6 +243,7 @@ _.extend(helper, {
       ready: ko.observable(false),
       picture: ko.observable()
     });
+
     _.extend(info(), Meteor.users.findOne({
       _id: userId
     }));
