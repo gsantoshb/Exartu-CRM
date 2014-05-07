@@ -27,6 +27,8 @@
                                             <!-- ko if: $root.pictureUrl -->
                                             <img class="img-responsive" style="max-height:200px; max-width:200px" data-bind="attr: { src: $root.pictureUrl }">
                                             <!-- /ko -->
+                                            <!-- ko if: !user().profilePictureId() && user().services && user().services.google -->
+                                            <!-- /ko -->
                                             <!--&lt;!&ndash; ko if: $root.pictureUrl == undefined && (!!$root.user().services && !!$root.user().services.google) &ndash;&gt;-->
                                             <!--<img data-bind="attr: {src: user().services.google.picture() }">-->
                                             <!--&lt;!&ndash; /ko &ndash;&gt;-->

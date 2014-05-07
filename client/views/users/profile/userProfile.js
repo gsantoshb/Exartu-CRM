@@ -68,11 +68,9 @@ Template.userProfile.viewModel = function () {
     });
 
   self.userPicture = self.user().profilePictureId? UsersFS.getUrl(self.user().profilePictureId()) : googlePicture;
-
   self.pictureUrl = ko.computed(function() {
     if (!self.userPicture || !self.userPicture().ready())
       return undefined;
-
     return self.userPicture().picture();
   });
 

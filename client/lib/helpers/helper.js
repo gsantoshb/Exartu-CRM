@@ -247,10 +247,7 @@ _.extend(helper, {
     _.extend(info(), Meteor.users.findOne({
       _id: userId
     }));
-
-    if (info().profilePictureId)
-      UsersFS.getThumbnailUrl(info().profilePictureId, info);
-    else if (!info().profilePictureId && info().services && info().services.google)
+    UsersFS.getThumbnailUrl(info().profilePictureId, info);
       info().ready(true).picture(info().services.google.picture);
 
     return info;

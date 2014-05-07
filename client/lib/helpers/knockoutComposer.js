@@ -80,7 +80,7 @@ Composer.showModal = function (templateName) {
     })
 
     var template = Template[templateName];
-    var modal = $(template.render().toHTML()).appendTo(host);
+    var modal = $(template()).appendTo(host);
 
     var parameters = Array.prototype.slice.call(arguments, 1);
     modal.modal('show');

@@ -4,8 +4,7 @@
     "basePackages": {
       "bootstrap-3": {},
       "iron-router": {
-        "git": "https://github.com/EventedMind/iron-router.git",
-        "branch": "dev"
+        "version": "0.6.4"
       },
       "knockout-client": {},
       "collection-hooks": {},
@@ -34,7 +33,7 @@
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "branch": "dev",
+        "tag": "v0.6.4",
         "commit": "82115001bb648ef1e5cadcc5ee9f312080723ec4"
       },
       "knockout-client": {
@@ -107,10 +106,10 @@
         "tag": "v1.2.2",
         "commit": "46019950b917191b78a9c81349421521ce07a932"
       },
-      "blaze-layout": {
-        "git": "https://github.com/EventedMind/blaze-layout.git",
-        "tag": "v0.2.5",
-        "commit": "273e3ab7d005d91a1a59c71bd224533b4dae2fbd"
+      "apm": {
+        "git": "https://github.com/arunoda/meteor-apm-client.git",
+        "tag": "v1.2.2",
+        "commit": "46019950b917191b78a9c81349421521ce07a932"
       },
       "cfs-base-package": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-base-package.git",
