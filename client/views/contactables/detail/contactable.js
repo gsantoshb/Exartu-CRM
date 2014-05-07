@@ -50,107 +50,64 @@ ContactableController = RouteController.extend({
     ;
   }
 });
-var aux;
-Template.contactable.entityId = function () {
-  return Session.get('entityId');
-}
-Template.contactable.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps', 'ContactMethodsHandler'];
-Template.contactable.viewModel = function () {
-  var self = {},
-    contactableId = Router.current().params._id;
-  _contactableId = contactableId;
 
-  self.contactable = ko.meteor.findOne(Contactables, {
-    _id: contactableId
-  });
-
-  if (self.contactable().contactMethods()) {
-    self.firstCellPhone = _.findWhere(ko.toJS(self.contactable().contactMethods()), {typeEnum: 0});
-    self.firstEmail = _.findWhere(ko.toJS(self.contactable().contactMethods()), {typeEnum: 2});
+Template.contactable.rendered=function(){
+  var asd=function(){
+    var hash=Router.current().params.hash || 'home';
+    $('.nav-pills>.active').removeClass('active');
+    $('.nav-pills-' + hash).addClass('active');
   }
+  Meteor.autorun(asd);
+}
 
-  self.filesCollection = ContactablesFS;
+UI.registerHelper('date', function (value) {
+  debugger;
+  return moment(value).format('MMMM Do YYYY, h:mm a');
+});
 
-  self.getObjTypeData = function (data) {
-    if (data.Employee) return data.Employee;
-    if (data.Customer) return data.Customer;
-    if (data.Contact) return data.Contact;
-  };
-  self.activeTab = ko.dep(function () {
-    return Router.current().params.hash || 'home';
-  });
+Template.contactable.helpers({
+  contactable: function(){
+    return Contactables.findOne({
+      _id: Session.get('entityId')
+    })
+  },
+  pictureUrl:function(){
+    if (this.pictureFileId){
+      return ContactablesFS.getThumbnailUrlForBlaze(this.pictureFileId);
+    }
+    return "/assets/user-photo-placeholder.jpg";
+  },
+  createdAtFormatted: function() {
+    return moment(this.createdAt).format('lll');
+  }
+})
 
-  self.contactablePicture = ContactablesFS.getThumbnailUrl(self.contactable().pictureFileId());
-  _contactablePicture = self.contactablePicture
-  self.pictureUrl = ko.computed(function () {
-    if (self.contactablePicture().ready())
-      return self.contactablePicture().picture();
-    else
-      return undefined;
-  });
-
-  self.editContactablePicture = function () {
+Template.contactable.events({
+  'click .edit-pic': function(){
     $('#edit-picture').trigger('click');
-  };
-
-  $('#edit-picture').off('change', updatePicture);
-  $('#edit-picture').change(updatePicture);
-
-  // Extra information on header for each objType
-  self.getHeaderInfoVM = function (data) {
-    if (data.Employee) return 'employee-header';
-    if (data.Customer) return 'empty-header';
-    if (data.Contact) return 'contact-header';
-  };
-
-  // Posts
-  self.posts = ko.computed(function() {
-    var clone = _.clone(self.contactable().posts());
-    return clone.reverse();
-  });
-
-  self.newPost = ko.observable("");
-
-  self.adding = ko.observable(false);
-  self.addPost = function () {
-    self.adding(true);
-    Meteor.call('addContactablePost', contactableId, {
-      content: self.newPost()
-    }, function (err, result) {
-      if (!err) {
-        self.adding(false);
-        self.newPost("");
-      }
-    });
+  },
+  'change #edit-picture': function(e){
+    var fsFile = new FS.File(e.target.files[0]),
+      contactableId=Session.get('entityId');
+    fsFile.metadata = {
+      entityId: contactableId,
+      owner: Meteor.userId(),
+      name: fsFile.name
+    };
+    var file = ContactablesFS.insert(fsFile);
+    Meteor.call('updateContactablePicture', contactableId, file._id);
+  },
+  'click .send-message': function(e){
+    Composer.showModal('sendMessage', $data);
+  },
+  'keypress #note-input': function (e) {
+    if (e.which === 13) {
+      Meteor.call('addContactablePost', Session.get('entityId'), {
+        content: e.currentTarget.value
+      }, function (err, result) {
+        if (!err) {
+        }
+      });
+    }
   }
-
-  return self;
-};
-//hack: the vm is called multiple times, so the image was being uploaded multiple times
-//      a temp fix is to take the uploadfunction out of the vm, so i can make the $(...).off('change', updatePicture)
-//      to make this i had to have this two variables (the ones with _...) with the data from the vm that is needed here
-var _contactableId;
-var _contactablePicture;
-var updatePicture = function (e) {
-  var fsFile = new FS.File(e.target.files[0]);
-  fsFile.metadata = {
-    entityId: _contactableId,
-    owner: Meteor.userId(),
-    name: fsFile.name
-  };
-  var file = ContactablesFS.insert(fsFile); //, function(err, result) {
-  ContactablesFS.getThumbnailUrl(file._id, _contactablePicture);
-  Meteor.call('updateContactablePicture', _contactableId, file._id);
-  //});
-}
-
-Template.contactable.rendered = function () {
-  // TODO: Avoid mutliple bindings
-  // Remove old binding to avoid multiple calls
-  var nodeIds = ['edit-picture-btn'];
-  _.forEach(nodeIds, function (nodeId) {
-    node = $('#' + nodeId)[0];
-    if (node)
-      ko.cleanNode(node);
-  })
-};
+});
