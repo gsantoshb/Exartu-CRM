@@ -248,7 +248,6 @@ _.extend(helper, {
       _id: userId
     }));
     UsersFS.getThumbnailUrl(info().profilePictureId, info);
-      info().ready(true).picture(info().services.google.picture);
 
     return info;
   },
