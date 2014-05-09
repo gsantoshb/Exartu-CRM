@@ -55,7 +55,7 @@
                                 <small data-bind="text: moment($parent.uploadedAt()).fromNow()"></small>
                             </p>
                             <p data-bind="text: $parent.metadata.description"></p>
-                            <p data-bind="text: $parent.type"></p>
+                            <p data-bind="text: $parent.type()"></p>
                             <div data-bind="foreach: $parent.metadata.tags">
                                 <button type="button" class="btn btn-xs btn-primary">
                                     <i class="fa fa-tag"></i>
