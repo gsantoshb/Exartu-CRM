@@ -1,7 +1,7 @@
 {
   "packages": {
     "bootstrap-3": {},
-    "iron-router": "0.6.4",
+    "iron-router": "0.7.1",
     "knockout-client": {},
     "collection-hooks": {},
     "googlemaps": {},
