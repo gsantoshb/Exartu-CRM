@@ -3,23 +3,25 @@ if (!dType){
 }
 dType.validator={
     validateInsert: function(userId, doc){
-//    debugger;
-        var type= dType.core.getObjBaseType(doc);
-        //todo: multiple objTypes
-//        return _.every(types, function(type){
+//        debugger;
+        var types= dType.core.getObjBaseTypes(doc);
+        return _.every(types, function(type){
             if(type.customValidation){
                 return type.customValidation(doc);
             }
             return isValidObj(type, doc);
-//        })
+        })
     },
     validateUpdate: function(userId, doc, fieldNames, modifier, options){
         if(modifier.__notRunHook){
             delete modifier.__notRunHook;
             return this._super.call(this.context,userId, doc, fieldNames, modifier, options)
         }
-        var baseType=dType.core.getObjBaseType(doc);
-        return isValidObjUpdate(baseType, modifier.$set);
+        var baseTypes=dType.core.getObjBaseTypes(doc);
+        return _.every(baseTypes, function(type){
+            //todo: suport $push, $addToSet, etc
+            return isValidObjUpdate(type, modifier.$set);
+        })
     }
 }
 //loop throw the obj keys, find out what that key represents (field, relation, etc) and validate it
@@ -67,7 +69,6 @@ var completeObj= function(type, obj){
 
     //services
     var service;
-    debugger;
     _.each(type.services,function(serviceSetting){
         service= dType.core.getService(serviceSetting.name);
         if (service.initValue){
@@ -84,9 +85,6 @@ var isValidObjUpdate= function(baseType, modifier){
         return isValidProperty(baseType, formatedModifier, key);
     })
 }
-
-
-
 
 var isValidProperty= function(type, obj, propName){
     var result;
