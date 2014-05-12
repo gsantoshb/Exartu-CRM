@@ -18,6 +18,48 @@ newObjType({
     name: 'contactable',
     services: ['messages', 'tasks', 'posts', 'tags', 'contactMethods']
 });
+
+//todo: suport an objType without parent and collection
+newObjType({
+    parent: 'contactable',
+    name: 'person',
+    services: [],
+    fields: [
+        {
+            name: 'firstName',
+            displayName: 'First name',
+            required: true
+        },
+        {
+            name: 'lastName',
+            displayName: 'Last name',
+            required: true
+        },
+        {
+            name: 'middleName',
+            displayName: 'Middle name'
+        },
+        {
+            name: 'jobTitle',
+            displayName: 'Job title'
+        },
+        {
+            name: 'salutation',
+            displayName: 'Salutation'
+        }
+    ]
+});
+newObjType({
+    parent: 'contactable',
+    name: 'organization',
+    services: [],
+    fields: [{
+        name: 'organizationName',
+        displayName: 'Organization name',
+        required: true
+    }]
+});
+
 newObjType({
     collection: Jobs,
     name: 'job',
