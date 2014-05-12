@@ -1,84 +1,136 @@
 if (!dType){
     dType={};
 }
+dType.core={};
 /*
  * The core module provides an interface to access the objTypes, relations and services
  * This module make the hooks with the meteor collections
  */
+if (Meteor.isServer){
+    dType.ObjTypes = new Meteor.Collection("dtype.objTypes");
+    Meteor.publish('dtype.objTypes', function () {
+        if (Meteor.users){
+            var user = Meteor.users.findOne({
+                _id: this.userId
+            });
 
-_ObjTypes = new Meteor.Collection("dtype.objTypes");
-Meteor.publish('dtype.objTypes', function () {
-    if (Meteor.users){
-        var user = Meteor.users.findOne({
-            _id: this.userId
-        });
+            if (!user)
+                return false;
+        }
+        return dType.ObjTypes.find({});
+    })
+    dType.Relations = new Meteor.Collection("dtype.relations");
+    Meteor.publish('dtype.relations', function () {
+        if (Meteor.users){
+            var user = Meteor.users.findOne({
+                _id: this.userId
+            });
 
-        if (!user)
-            return false;
-    }
-    return _ObjTypes.find({});
-})
-_Relations = new Meteor.Collection("dtype.relations");
+            if (!user)
+                return false;
+        }
+        return dType.Relations.find({});
+    })
 
-_Services = {};
-Collections= {};
-_FieldTypes= {};
+    _Services = {};
+    Collections= {};
+    _FieldTypes= {};
+}
+if (Meteor.isClient){
+    dType.ObjTypes= new Meteor.Collection("dtype.objTypes");
+    dType.ObjTypesHandler=Meteor.subscribe("dtype.objTypes");
 
-dType.core={
+    dType.Relations=new Meteor.Collection("dtype.relations");
+    dType.RelationsHandler=Meteor.subscribe("dtype.relations");
 
-    //objTypes
-    createObjType: function(objType){
-
-        if(objType.collection){
-            if (! objType.collection._collection._dtypeId){
-                if (! objType.collection._collection._name)
-                    objType.collection._collection._dtypeId='localCollection' + _.keys(Collections).length;
-                else{
-                    objType.collection._collection._dtypeId=objType.collection._collection._name
+    _FieldTypes={};
+}
+if (Meteor.isServer){
+    _.extend(dType.core,{
+        createObjType: function(objType){
+            if(objType.collection){
+                if (! objType.collection._collection._dtypeId){
+                    if (! objType.collection._collection._name)
+                        objType.collection._collection._dtypeId='localCollection' + _.keys(Collections).length;
+                    else{
+                        objType.collection._collection._dtypeId=objType.collection._collection._name
+                    }
                 }
+
+                Collections[objType.collection._collection._dtypeId]=objType.collection;
+                var collection=objType.collection
+
+                objType.collection=objType.collection._collection._dtypeId;
+            }
+            var oldObj=dType.ObjTypes.findOne({name: objType.name});
+            if (oldObj){
+                dType.ObjTypes.update({_id:oldObj._id},objType);
+            }else{
+                dType.ObjTypes.insert(objType);
             }
 
-            Collections[objType.collection._collection._dtypeId]=objType.collection;
-            var collection=objType.collection
+            if (collection){
+                collection.before.insert(function(userId, doc){
 
-            objType.collection=objType.collection._collection._dtypeId;
-        }
-        var oldObj=_ObjTypes.findOne({name: objType.name});
-        if (oldObj){
-            _ObjTypes.update({_id:oldObj._id},objType);
-        }else{
-            _ObjTypes.insert(objType);
-        }
+                    return dType.validator.validateInsert.call(this, userId, doc);
+                });
+                collection.after.insert(function(userId, doc){
+                    return dType.updater.afterInsert.call(this, userId, doc);
+                });
 
-        if (collection){
-            collection.before.insert(function(userId, doc){
+                collection.before.update(dType.validator.validateUpdate);
+                collection.after.update(dType.updater.afterUpdate);
 
-                return dType.validator.validateInsert.call(this, userId, doc);
-            });
-            collection.after.insert(function(userId, doc){
-                return dType.updater.afterInsert.call(this, userId, doc);
-            });
+                collection.after.remove(dType.validator.validateRemove);
+                collection.before.remove(dType.updater.afterRemove);
+            }
+        },
+        createRelation: function(relation){
 
-            collection.before.update(dType.validator.validateUpdate);
-            collection.after.update(dType.updater.afterUpdate);
+            var oldRel= dType.Relations.findOne({name: relation.name});
+            if (oldRel){
+                 dType.Relations.update({ _id:oldRel._id },relation);
+            }else{
+                 dType.Relations.insert(relation);
+            }
+        },
+        createService: function(services){
+            _Services[services.name]=services;
+        },
+    });
+}
+_.extend(dType.core,{
+    //objTypes
 
-            collection.after.remove(dType.validator.validateRemove);
-            collection.before.remove(dType.updater.afterRemove);
-        }
-    },
     getObjType: function(name){
-        return _ObjTypes.findOne({name: name});
+        return dType.ObjTypes.findOne({name: name});
     },
     getObjTypes: function(obj){
-        return _ObjTypes.find({ name: { $in: obj.objNameArray } }).fetch();
+        return dType.ObjTypes.find({ name: { $in: obj.objNameArray } }).fetch();
     },
-    getObjBaseType: function(obj){
-        var types = this.getObjTypes(obj),
-            base=types[0];
-        while (base.parent){
-            base= this.getObjType(base.parent);
-        }
-        return base;
+//    getObjBaseType: function(obj){
+//        var types = dType.core.getObjTypes(obj),
+//            bases=[];
+//        _.each(types,function(type){
+//            while (type.parent){
+//                type= dType.core.getObjType(base.parent);
+//            }
+//            if(bases.indexOf(type)<0)
+//                bases.push(type);
+//        })
+//        return bases;
+//    },
+    getObjBaseTypes: function(obj){
+        var types = dType.core.getObjTypes(obj),
+            bases=[];
+        _.each(types,function(type){
+            while (type.parent){
+                type= dType.core.getObjType(type.parent);
+            }
+            if(! _.findWhere(bases,{name: type.name}))
+                bases.push(type);
+        })
+        return bases;
     },
     getCollectionOfType: function(type){
         var typeObject= _.isObject(type) ? type : this.getObjType(type);
@@ -89,20 +141,11 @@ dType.core={
     },
 
     //relations
-    createRelation: function(relation){
-
-        var oldRel=_Relations.findOne({name: relation.name});
-        if (oldRel){
-            _Relations.update({ _id:oldRel._id },relation);
-        }else{
-            _Relations.insert(relation);
-        }
-    },
     getCollection: function(collectionName){
         return Collections[collectionName];
     },
     getTypeRelations: function(type){
-        return _Relations.find({
+        return  dType.Relations.find({
             $or: [
                 {
                     obj1: type.name
@@ -131,10 +174,10 @@ dType.core={
     },
     //returns from the relations that use this type, the visibility on this type
     getRelationsVisivilityOnType: function(type){
+
         var relationsArray= dType.core.getTypeRelations(type);
         var visibilities=[];
         _.each(relationsArray, function(rel){
-
             if(rel.obj1==type.name){
                 visibilities.push(rel.visibilityOn1);
 
@@ -155,9 +198,7 @@ dType.core={
     },
 
     //services
-    createService: function(services){
-        _Services[services.name]=services;
-    },
+
     getService: function(serviceName){
         return _Services[serviceName];
     },
@@ -184,4 +225,4 @@ dType.core={
     getFieldType: function(name){
         return _FieldTypes[name];
     }
-};
+});
