@@ -19,9 +19,7 @@ newObjType({
     services: ['messages', 'tasks', 'posts', 'tags', 'contactMethods']
 });
 
-//todo: suport an objType without parent and collection
 newObjType({
-    parent: 'contactable',
     name: 'person',
     services: [],
     fields: [
@@ -50,7 +48,6 @@ newObjType({
     ]
 });
 newObjType({
-    parent: 'contactable',
     name: 'organization',
     services: [],
     fields: [{

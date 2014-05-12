@@ -21,7 +21,6 @@ var createContactable= function(objTypeName){
 }
 var setPersonType= function(personType, contactable){
         var personModel= new dType.objTypeInstance(personType)
-        var personModel= personModel.subTypes[0];//get the actual person
         contactable.subTypes=contactable.subTypes.filter(function(obj) {
             return [Enums.personType.human, Enums.personType.organization].indexOf(obj.name) === -1;
         });

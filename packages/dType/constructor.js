@@ -78,9 +78,9 @@ dType.constructor.service = function (options) {
 
 dType.constructor.objType = function (options) {
     var objType = _.clone(options);
-    if(! options.collection && ! options.parent){
-        throw new Error('the ObjType ' + options.name + ' has no collection and no parent, you must specify one')
-    }
+//    if(! options.collection && ! options.parent){
+//        throw new Error('the ObjType ' + options.name + ' has no collection and no parent, you must specify one')
+//    }
 //    if (options.collection) {
 //        objType.collection = options.collection
 //    } else if (options.parent) {
