@@ -1,0 +1,97 @@
+<template name="addContactablePage">
+    <div id="content" class="content-gray">
+        <div class="container-fluid">
+
+            <div class="add-box">
+                <div class="add-box-head">
+                    <a class="btn btn-default pull-left" href="#"><i class="fa fa-long-arrow-left"></i> Go Back</a>
+                    <div class="add-item-icon"><i class="icon-profile-bussiness-man"></i></div>
+                    <h1>+ Add {{objTypeName}}</h1>
+                </div><!-- /.add-box-head -->
+
+                <div class="add-box-content">
+
+
+                        <div class="form-group">
+                            <select class="form-control input-lg" id="personType">
+                                <option value="organization" selected="{{selected}}">Organization</option>
+                                <option value="person" selected="{{selected}}">Person</option>
+                            </select>
+                        </div><!-- /.form-group -->
+                        {{#with contactable}}
+                            {{#each subTypes}}
+                                {{name}}
+                                {{> typeInput }}
+                            {{/each}}
+
+                            {{> typeInput }}
+
+                            <!--<div class="form-group">-->
+                                <!--<input class="form-control input-lg" type="text" placeholder="Job Title">-->
+                            <!--</div>&lt;!&ndash; /.form-group &ndash;&gt;-->
+
+
+                            <!--<div class="form-group">-->
+                                <!--<div class="input-group">-->
+                                    <!--<input type="text" class="form-control input-lg" placeholder="Location">-->
+                                    <!--<span class="input-group-btn">-->
+                                      <!--<button class="btn btn-default btn-lg" type="button" data-bind="click:findLocation">-->
+                                          <!--<i class="fa fa-map-marker"></i> Find-->
+                                      <!--</button>-->
+                                    <!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="form-group">-->
+                                <!--<textarea class="form-control input-lg" rows="3" placeholder="Description"></textarea>-->
+                            <!--</div>&lt;!&ndash; /.form-group &ndash;&gt;-->
+
+                            <div class="form-group text-center top-30">
+                                <button class="btn btn-success btn-lg">Add Employee</button>
+                            </div><!-- /.form-group -->
+
+                        {{/with}}
+
+                </div><!-- /.add-box-content -->
+            </div><!-- /.add-box -->
+
+
+        </div><!-- /.container-fluid -->
+    </div>
+</template>
+<template name="typeInput">
+    {{#each fieldGroups}}
+        {{name}}
+        <div class="fieldGroup">
+            {{#each items}}
+                {{#if isField .}}
+                    {{#if showInAdd}}
+                        {{>fieldInput .}}
+                    {{/if}}
+                {{else}}
+                    {{#if showInAdd}}
+                        {{>relInput .}}
+                    {{/if}}
+                {{/if}}
+            {{/each}}
+        </div>
+    {{/each}}
+</template>
+
+<template name="fieldInput">
+    <div class="form-group {{hasError}}">
+        <input class="form-control input-lg" type="text" placeholder="{{displayName}}" value="{{value}}">
+        <span>{{error}}</span>
+    </div><!-- /.form-group -->
+</template>
+
+<template name="relInput">
+    <span>{{displayName}} :</span>
+    <div class="form-group" id="rel">
+        <select class="form-control input-lg" type="text" placeholder="{{displayName}}">
+            {{#each options}}
+                <option value="{{_id}}">{{displayName}}</option>
+            {{/each}}
+        </select>
+    </div><!-- /.form-group -->
+</template>

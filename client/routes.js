@@ -34,6 +34,12 @@ Router.map(function () {
     path: '/contactable/:_id',
     controller: 'ContactableController'
   });
+//    debugger;
+  this.route('addContactablePage', {
+    path: '/contactableAdd/:objType',
+    controller: 'ContactableAddController',
+    waitOn: [dType.ObjTypesHandler]
+  });
 
   this.route('jobs', {
     path: '/jobs/:type?',
