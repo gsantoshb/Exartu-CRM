@@ -16,7 +16,8 @@
                 <div class="row">
                     <div class="col-md-4 col-md-push-8 col-lg-push-9 col-lg-3">
                         <div class="visible-lg visible-md" data-bind="foreach: contactableTypes">
-                            <a class="btn btn-success btn-md btn-block btn-create" data-toggle="modal" data-bind="click: function () { Composer.showModal('addContactable', $data.name()); }, text: 'Add ' + name()"></a>
+                            <a class="btn btn-success btn-md btn-block btn-create" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'Add ' + name()"></a>
+                            <!--<a class="btn btn-success btn-md btn-block btn-create" href="{{pathFor 'addContactablePage'}}">asd</a>-->
                         </div>
                         <div class="hidden-lg hidden-md">
                             <div class="btn-group btn-block btn-new-item">
