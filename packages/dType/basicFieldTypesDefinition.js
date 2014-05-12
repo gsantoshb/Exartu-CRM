@@ -65,6 +65,7 @@ dType.core.createFieldType({
     name: 'enum',
     validate: function(value, fieldDefinition, error){
         var error=error||{};
+        debugger;
         if (fieldDefinition.required && !value){
             error.message='this field is required';
             return false;
@@ -72,7 +73,7 @@ dType.core.createFieldType({
         if (!fieldDefinition.options){
             return true
         }
-        if(_.contains(fieldDefinition.options, value)){
+        if(! _.contains(fieldDefinition.options, value)){
             error.message='invalid value';
             return false;
         }

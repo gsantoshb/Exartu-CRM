@@ -3,7 +3,7 @@ if (!dType){
 }
 dType.validator={
     validateInsert: function(userId, doc){
-//        debugger;
+        debugger;
         var types= dType.core.getObjBaseTypes(doc);
         return _.every(types, function(type){
             if(type.customValidation){
@@ -134,7 +134,7 @@ var isRelation= function(type,propName){
 }
 var isSubType= function(type, propName){
     var subType= dType.core.getObjType(propName);
-    if (subType && (subType.parent == type.name)){
+    if (subType && ( (subType.parent == type.name) || (! subType.collection && !subType.parent))){
         return subType;
     }
 }

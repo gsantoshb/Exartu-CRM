@@ -57,7 +57,7 @@ Template.addContactablePage.events({
         var cont=dType.buildAddModel(this)
         console.dir(cont);
         Meteor.call('addContactable', cont, function(err, result){
-            debugger;
+//            debugger;
         });
     },
     'blur input': function(e){

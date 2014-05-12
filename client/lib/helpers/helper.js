@@ -219,6 +219,7 @@ _.extend(helper, {
     }).value;
   },
   getActivityColor: function (activity) {
+//      debugger;
     var style = dType.ObjTypes.findOne({
       name: activity.data.objTypeName()
     }).style;

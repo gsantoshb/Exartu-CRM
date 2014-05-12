@@ -127,7 +127,7 @@ _.extend(dType.core,{
             while (type.parent){
                 type= dType.core.getObjType(type.parent);
             }
-            if(! _.findWhere(bases,{name: type.name}))
+            if((type.collection) &&! _.findWhere(bases,{name: type.name}))
                 bases.push(type);
         })
         return bases;
