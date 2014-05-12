@@ -9,15 +9,16 @@ var both = ["client", "server"];
 Package.on_use(function(api){
     api.use([
         "collection-hooks",
+        "underscore",
     ], both);
 
     api.add_files('common.js', ['server']);
     api.add_files('util.js', ['server']);
     api.add_files('validator.js', ['server']);
     api.add_files('updater.js', ['server']);
-    api.add_files('core.js', ['server']);
+    api.add_files('core.js', both);
     api.add_files('constructor.js', ['server']);
-    api.add_files('basicFieldTypesDefinition.js', ['server']);
+    api.add_files('basicFieldTypesDefinition.js', both);
     api.add_files('client.js', ['client']);
     api.export("dType")
 });
