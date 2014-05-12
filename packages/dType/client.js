@@ -1,79 +1,69 @@
-dType={};
-dType.ObjTypes= new Meteor.Collection("dtype.objTypes");
-Meteor.subscribe("dtype.objTypes");
-
-dType.Relations=new Meteor.Collection("dtype.relations");
-Meteor.subscribe("dtype.relations");
 var getObjType=function(name){
     return  dType.ObjTypes.findOne({name: name});
 }
-dType.obj=function(ObjTypeName){
-    var objType=getObjType(ObjTypeName);
-    var model=this;
-    model.fieldGruoups={};
-//    return model;
+dType.objTypeInstance=function(ObjTypeName){
+    var objType=dType.core.getObjType(ObjTypeName);
+    var model={};
+    model.name=objType.name;
+    model.fieldGroups=[];
     _.each(objType.fields, function(field){
-        if (! model.fieldGruoups[field.fieldGroup || 'defaultGroup'])
-            model.fieldGruoups[field.fieldGroup || 'defaultGroup'] = [];
-        model.fieldGruoups[field.fieldGroup || 'defaultGroup'].push(new getFieldModel(field))
+        addToFieldGroup(model.fieldGroups, field.fieldGroup, new fieldInstance(field));
     })
-    return model;
+    var visibilities= dType.core.getRelationsVisivilityOnType(objType);
     _.each(visibilities, function(v){
-        if (! model.fieldGruoups[v.fieldGroup || 'defaultGroup'])
-            model.fieldGruoups[v.fieldGroup || 'defaultGroup'] = [];
-        model.fieldGruoups[v.fieldGroup || 'defaultGroup'].push(new getVisibilityModel(v))
+        addToFieldGroup(model.fieldGroups, v.fieldGroup, new relation(v));
     })
+    if (objType.parent){
+        var child=model;
+        model=dType.objTypeInstance(objType.parent);
+        if(! model.subTypes){
+            model.subTypes=[];
+        }
+//        child.name=objType.name;
+        model.subTypes.push(child);
+    }
+    return model;
 }
-dType.obj.prototype={
+
+var addToFieldGroup=function(fieldGroups, fieldGroupName, item){
+    var fieldGroup=fieldGroupName || 'defaultGroup';
+
+    if (!_.findWhere(fieldGroups,{fieldGroupName: fieldGroup}))
+        fieldGroups.push({fieldGroupName: fieldGroup, items: []});
+
+    _.findWhere(fieldGroups,{fieldGroupName: fieldGroup}).items.push(item)
+}
+dType.objTypeInstance.prototype={
     toKO:function(){
         var self=this;
         var result=ko.mapping.fromJS(self);
         return result
     }
 }
-
-var build=function(model){
-    if (!model().isValid()) {
-        model.errors.showAllMessages();
-        return;
-    };
-    var objRels = [];
-    var ObjGroupRelNames = [];
-
-    var ObjGroupRelValues = [];
-    _.each(self.relations(), function (r) {
-        if (r.relation.isGroupType) {
-            ObjGroupRelNames.push(r.relation.name);
-            if (r.value())
-                ObjGroupRelValues.push(r.value());
-        } else {
-            objRels.push({
-                name: r.relation.name,
-                value: r.value() ? r.value() : null
-            });
-        }
+var build=function(fieldGroups, object){
+    var obj=object || {};
+    _.each(fieldGroups, function(fieldGroup){
+        _.each(fieldGroup.items, function(item){
+            obj[item.name]=item.value;
+        })
     });
-
-    _.extend(model(), _.object(ObjGroupRelNames, ObjGroupRelValues));
-
-
-    var fields = model()[self.objTypeName()]();
-    delete model()[self.objTypeName()];
-    model()[self.objTypeName()] = {};
-    _.forEach(fields, function (field) {
-        model()[self.objTypeName()][field.name] = field.value() || field.defaultValue;
-    })
-    _.forEach(objRels, function (rel) {
-        model()[self.objTypeName()][rel.name] = rel.value;
-    })
-    //            _.extend(model()[self.objTypeName()], _.object(relNames, relValues));
-    model().objNameArray=[self.objTypeName()];
-
-    return ko.toJS(model);
+    return obj
 }
-var getFieldModel= function(field){
-    var item= this;
-    item._field=_.clone(field);
+dType.buildAddModel=function(addModel){
+    var obj={};
+    obj.objNameArray=[];
+    _.each(addModel.subTypes, function(subType){
+        obj[subType.name]= build(subType.fieldGroups)
+        obj.objNameArray.push(subType.name);
+    })
+    obj.objNameArray.push(addModel.name);
+    build(addModel.fieldGroups, obj)
+
+    return obj
+}
+
+var fieldInstance= function(field){
+    var item=_.clone(field);
     var value;
     if (field.fieldType == 'string') {
         value= field.defaultValue;
@@ -91,5 +81,35 @@ var getFieldModel= function(field){
             value: ko.observable()
         })
     }
-    return item;
+    item.type='field';
+    return item
+}
+dType.isValid=function(model){
+    return _.every(model.fieldGroups,function(group){
+        return _.every(group.items, function(field){
+            if(field.type=='relation'){
+                return dType.isValidRelation(field);
+            }
+            if(field.type=='field'){
+                return dType.isValidField(field);
+            }
+        });
+    }) && _.every(model.subTypes, function(type){
+        return dType.isValid(type);
+    })
+}
+dType.isValidRelation=function(rel){
+    return rel.required ? (!! rel.value): true;
+}
+dType.isValidField= function(options){
+    var error={};
+    var result= dType.core.getFieldType(options.fieldType).validate(options.value, options, error);
+    options.error=error.message;
+    return result
+}
+var relation= function(relation){
+    var rel= _.clone(relation);
+    rel.type= 'relation';
+    rel.value= relation.defaultValue;
+    return rel
 }
