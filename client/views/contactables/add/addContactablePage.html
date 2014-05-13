@@ -19,35 +19,14 @@
                             </select>
                         </div><!-- /.form-group -->
                         {{#with contactable}}
-                            {{#each subTypes}}
-                                {{name}}
+                            {{#each subTypeArray}}
                                 {{> typeInput }}
                             {{/each}}
 
                             {{> typeInput }}
 
-                            <!--<div class="form-group">-->
-                                <!--<input class="form-control input-lg" type="text" placeholder="Job Title">-->
-                            <!--</div>&lt;!&ndash; /.form-group &ndash;&gt;-->
-
-
-                            <!--<div class="form-group">-->
-                                <!--<div class="input-group">-->
-                                    <!--<input type="text" class="form-control input-lg" placeholder="Location">-->
-                                    <!--<span class="input-group-btn">-->
-                                      <!--<button class="btn btn-default btn-lg" type="button" data-bind="click:findLocation">-->
-                                          <!--<i class="fa fa-map-marker"></i> Find-->
-                                      <!--</button>-->
-                                    <!--</span>-->
-                                <!--</div>-->
-                            <!--</div>-->
-
-                            <!--<div class="form-group">-->
-                                <!--<textarea class="form-control input-lg" rows="3" placeholder="Description"></textarea>-->
-                            <!--</div>&lt;!&ndash; /.form-group &ndash;&gt;-->
-
                             <div class="form-group text-center top-30">
-                                <button class="btn btn-success btn-lg">Add Employee</button>
+                                <button class="btn btn-success btn-lg">Add {{objTypeName}}</button>
                             </div><!-- /.form-group -->
 
                         {{/with}}
@@ -64,22 +43,16 @@
         {{name}}
         <div class="fieldGroup">
             {{#each items}}
-                {{#if isField .}}
-                    {{#if showInAdd}}
-                        {{>fieldInput .}}
-                    {{/if}}
-                {{else}}
-                    {{#if showInAdd}}
-                        {{>relInput .}}
-                    {{/if}}
-                {{/if}}
+                {{#displayProperty .}}
+
+                {{/displayProperty}}
             {{/each}}
         </div>
     {{/each}}
 </template>
 
 <template name="fieldInput">
-    <div class="form-group {{hasError}}">
+    <div class="form-group {{hasError}}" id="prop">
         <input class="form-control input-lg" type="text" placeholder="{{displayName}}" value="{{value}}">
         <span>{{error}}</span>
     </div><!-- /.form-group -->

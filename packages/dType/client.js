@@ -1,10 +1,12 @@
 var getObjType=function(name){
     return  dType.ObjTypes.findOne({name: name});
 }
+
+
 dType.objTypeInstance=function(ObjTypeName){
     var objType=dType.core.getObjType(ObjTypeName);
     var model={};
-    model.name=objType.name;
+    model.name=ObjTypeName;
     model.fieldGroups=[];
     _.each(objType.fields, function(field){
         addToFieldGroup(model.fieldGroups, field.fieldGroup, new fieldInstance(field));
@@ -19,7 +21,6 @@ dType.objTypeInstance=function(ObjTypeName){
         if(! model.subTypes){
             model.subTypes=[];
         }
-//        child.name=objType.name;
         model.subTypes.push(child);
     }
     return model;
@@ -33,13 +34,7 @@ var addToFieldGroup=function(fieldGroups, fieldGroupName, item){
 
     _.findWhere(fieldGroups,{fieldGroupName: fieldGroup}).items.push(item)
 }
-dType.objTypeInstance.prototype={
-    toKO:function(){
-        var self=this;
-        var result=ko.mapping.fromJS(self);
-        return result
-    }
-}
+
 var build=function(fieldGroups, object){
     var obj=object || {};
     _.each(fieldGroups, function(fieldGroup){
@@ -47,40 +42,54 @@ var build=function(fieldGroups, object){
             obj[item.name]=item.value;
         })
     });
+
     return obj
 }
 dType.buildAddModel=function(addModel){
-    var obj={};
-    obj.objNameArray=[];
-    _.each(addModel.subTypes, function(subType){
-        obj[subType.name]= build(subType.fieldGroups)
-        obj.objNameArray.push(subType.name);
-    })
-    obj.objNameArray.push(addModel.name);
-    build(addModel.fieldGroups, obj)
+    var obj={
+        objNameArray:[]
+    };
 
+    _.each(addModel.subTypes, function(subType){
+        obj[subType.name]= build(subType.fieldGroups);
+        obj.objNameArray.push(subType.name)
+    })
+
+    build(addModel.fieldGroups, obj)
+    obj.objNameArray.push(addModel.name)
     return obj
 }
 
 var fieldInstance= function(field){
     var item=_.clone(field);
-    var value;
-    if (field.fieldType == 'string') {
-        value= field.defaultValue;
-        _.extend(item, {
-            value: value
-        });
 
-    } else if (field.fieldType == 'lookUp') {
-        value= field.defaultValue;
-        _.extend(item, {
-            value: value
-        })
-    } else{
-        _.extend(item, {
-            value: ko.observable()
-        })
-    }
+    item._dep=new Deps.Dependency;
+    item._depError=new Deps.Dependency;
+
+    item._value=  field.defaultValue;
+    item._error=  '';
+
+    Object.defineProperty(item, 'value',{
+        get:function(){
+            this._dep.depend();
+            return this._value;
+        },
+        set:function(newValue){
+            this._value=newValue;
+            this._dep.changed();
+        }
+    })
+    Object.defineProperty(item, 'error',{
+        get:function(){
+            this._depError.depend();
+            return this._error;
+        },
+        set:function(newValue){
+            this._error=newValue;
+            this._depError.changed();
+        }
+    })
+
     item.type='field';
     return item
 }
@@ -96,6 +105,21 @@ dType.isValid=function(model){
         });
     }) && _.every(model.subTypes, function(type){
         return dType.isValid(type);
+    })
+}
+dType.displayAllMessages=function(model){
+    _.each(model.fieldGroups,function(group){
+        _.each(group.items, function(field){
+            if(field.type=='relation'){
+                dType.isValidRelation(field);
+            }
+            if(field.type=='field'){
+                dType.isValidField(field);
+            }
+        });
+    })
+    _.each(model.subTypes, function(type){
+        return dType.displayAllMessages(type);
     })
 }
 dType.isValidRelation=function(rel){

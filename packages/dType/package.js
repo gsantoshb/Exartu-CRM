@@ -10,7 +10,12 @@ Package.on_use(function(api){
     api.use([
         "collection-hooks",
         "underscore",
+
     ], both);
+
+    api.use([
+        'deps',
+    ], 'client');
 
     api.add_files('common.js', ['server']);
     api.add_files('util.js', ['server']);

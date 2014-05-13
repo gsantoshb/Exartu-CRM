@@ -417,3 +417,12 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .ex-front #loginbox{
     height: 284px;
 }
+
+/*input errors*/
+.form-group.error > input{
+    color: #F00;
+    border-color: #FF0000;
+}
+.form-group.error > span{
+    color: #F00;
+}
