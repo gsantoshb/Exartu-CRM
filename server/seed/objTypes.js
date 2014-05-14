@@ -61,11 +61,70 @@ newObjType({
     collection: Jobs,
     name: 'job',
     objGroupType: Enums.objGroupType.job,
-    services: ['messages', 'tasks', 'posts', 'tags'],
+    services: ['messages', 'tasks', 'posts', 'tags', 'candidates'],
     fields: [{
         name: 'fee',
         displayName: 'Fee (%)',
         fieldType: 'number'
+    },{
+        name: 'publicJobTitle',
+        displayName: 'Public job title',
+        required: true
+    },{
+        name: 'description',
+        displayName: 'Description',
+        required: false
+    },{
+        name: 'startDate',
+        displayName: 'Start date',
+        fieldType: 'date',
+        defaultValue: null,
+        required: true
+    },{
+        name: 'endDate',
+        displayName: 'End date',
+        fieldType: 'date',
+        defaultValue: null,
+        required: true
+    },{
+        name: 'duration',
+        displayName: 'Duration',
+        fieldType: 'lookUp',
+        lookUpName: 'jobDuration',
+        lookUpCode: Enums.lookUpTypes.job.duration.code,
+        defaultValue: null,
+        required: true,
+        multiple: false
+    },{
+        name: 'status',
+        displayName: 'Status',
+        fieldType: 'lookUp',
+        lookUpName: 'jobStatus',
+        lookUpCode: Enums.lookUpTypes.job.status.code,
+        required: true,
+        lookUpName: 'jobTitle',
+        multiple: false,
+        defaultValue: null
+    },{
+        name: 'industry',
+        displayName: 'Industry',
+        fieldType: 'lookUp',
+        lookUpName: 'jobIndustry',
+        lookUpCode: Enums.lookUpTypes.job.industry.code,
+        required: true,
+        lookUpName: 'jobTitle',
+        multiple: false,
+        defaultValue: null
+    },{
+        name: 'category',
+        displayName: 'Category',
+        fieldType: 'lookUp',
+        lookUpName: 'jobCategory',
+        lookUpCode: Enums.lookUpTypes.job.category.code,
+        required: true,
+        lookUpName: 'jobTitle',
+        multiple: false,
+        defaultValue: null
     }]
 });
 

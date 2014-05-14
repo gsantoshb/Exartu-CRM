@@ -123,7 +123,11 @@ dType.displayAllMessages=function(model){
     })
 }
 dType.isValidRelation=function(rel){
-    return rel.required ? (!! rel.value): true;
+    if (rel.required && !! rel.value){
+        relation.error='this field is required';
+        return false
+    }
+    return true;
 }
 dType.isValidField= function(options){
     var error={};
@@ -135,5 +139,19 @@ var relation= function(relation){
     var rel= _.clone(relation);
     rel.type= 'relation';
     rel.value= relation.defaultValue;
+
+    rel._error=  '';
+    rel._depError=new Deps.Dependency;
+
+    Object.defineProperty(rel, 'error',{
+        get:function(){
+            this._depError.depend();
+            return this._error;
+        },
+        set:function(newValue){
+            this._error=newValue;
+            this._depError.changed();
+        }
+    })
     return rel
 }

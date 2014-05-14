@@ -40,6 +40,11 @@ Router.map(function () {
     controller: 'ContactableAddController',
     waitOn: [dType.ObjTypesHandler]
   });
+  this.route('addJobPage', {
+    path: '/jobAdd/:objType',
+    controller: 'JobAddController',
+    waitOn: [dType.ObjTypesHandler]
+  });
 
   this.route('jobs', {
     path: '/jobs/:type?',

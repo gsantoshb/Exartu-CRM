@@ -86,3 +86,15 @@ dType.constructor.service({
         return []
     }
 })
+dType.constructor.service({
+    name: 'candidates',
+    getSettings: function(options){
+        return {name: 'candidates'};
+    },
+    isValid: function(value, serviceSettings){
+        return _.isArray(value);
+    },
+    initValue: function(value){
+        return []
+    }
+})

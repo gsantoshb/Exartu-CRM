@@ -1,17 +1,13 @@
 ContactableAddController = RouteController.extend({
-//    template: 'addContactablePage',
     layoutTemplate: 'addContactablePage',
     data: function(){
         Session.set('objType',this.params.objType);
     }
-//    action: function () {
-//        this.render('addContactablePage');
-//    }
 });
 var contactable;
 var subTypesDep=new Deps.Dependency;
 var createContactable= function(objTypeName){
-    var type=dType.core.getObjType('Customer')
+    var type=dType.core.getObjType(objTypeName)
     contactable= new dType.objTypeInstance(objTypeName);
     setPersonType(type.defaultPersonType,contactable)
     return contactable
@@ -23,15 +19,12 @@ var setPersonType= function(personType, contactable){
     });
     contactable.subTypes.unshift(personModel);
     subTypesDep.changed();
-    console.log(personType);
 }
 Template.addContactablePage.helpers({
     contactable: function(){
         if (!contactable){
             contactable=createContactable(Session.get('objType'));
         }
-        console.dir(contactable)
-
         return contactable;
     },
     subTypeArray: function(){
@@ -40,6 +33,10 @@ Template.addContactablePage.helpers({
     },
     objTypeName: function(){
         return Session.get('objType');
+    },
+    selected:function(personType){
+        subTypesDep.depend();
+        return contactable && contactable.subTypes && !!_.findWhere(contactable.subTypes,{name: personType});
     }
 })
 
@@ -53,38 +50,15 @@ Template.addContactablePage.events({
             return;
         }
         var cont=dType.buildAddModel(this)
-//        console.dir(cont);
         Meteor.call('addContactable', cont, function(err, result){
-//            debugger;
         });
     }
 })
 
 Template.addContactablePage.destroyed=function(){
-    delete contactable;
+   contactable=undefined;
 }
 
-
-
-//<editor-fold desc="***********************  fieldInput *********************">
-Template.fieldInput.helpers({
-    hasError :function(){
-        return this.error? 'error': '';
-    }
-})
-//Template.fieldInput.events({
-//    'blur input': function(e, data){
-//        debugger;
-//        this.value=e.target.value;
-//        dType.isValidField(this)
-////        if (! dType.isValidField(this)){
-////            $(e.target.parentElement).addClass('error')
-////        }
-////        contactable._dep.changed();
-//    }
-//
-//})
-//</editor-fold>
 
 Template.typeInput.helpers({
     isField: function (field) {
@@ -92,42 +66,71 @@ Template.typeInput.helpers({
     }
 })
 
+//<editor-fold desc="***********************  fieldInput *********************">
+Template.fieldInput.helpers({
+    hasError :function(){
+        return this.error? 'error': '';
+    }
+})
+Template.lookUpFieldInput.helpers({
+    options: function(){
+//        debugger;
+        return LookUps.find({codeType: this.lookUpCode});
+    },
+    hasError :function(){
+        return this.error? 'error': '';
+    }
+})
+
+
+
+//</editor-fold>
+
 //<editor-fold desc="***********************  relInput *********************">
+
 Template.relInput.helpers({
     options: function(){
         var q={};
         q[this.target]={ $exists: true };
         //todo: get collection from this.collection
         return Contactables.find(q);
+    },
+    hasError :function(){
+        return this.error? 'error': '';
     }
 })
-//Template.relInput.events({
-//    'change select':function(e, data){
-//        this.value=e.target.value;
-////        contactable._dep.changed();
-//    }
-//})
 
 //</editor-fold>
 
 
-UI.registerHelper('displayProperty', function(parameters){
-    var self = this;
+UI.registerHelper('displayProperty', function(){
     if(this.showInAdd){
-//        debugger;
         if(this.type=="field"){
-            Template['fieldInput'].events({
-                'blur input': function(e, data){
-//                    debugger;
+            var template=Template[this.fieldType + 'FieldInput'] || Template['fieldInput'];
+            template.events({
+                'blur input': function(e){
+                    switch (this.fieldType) {
+                        case 'number':
+                            this.value=Number.parseFloat(e.target.value);
+                            break;
+                        case 'date':
+                            this.value=new Date(e.target.value);
+                            break;
+                        default:
+                            this.value=e.target.value;
+                    }
+                    dType.isValidField(this);
+                },
+                'change select':function(e){
                     this.value=e.target.value;
                     dType.isValidField(this);
                 }
             });
-            return Template['fieldInput']
+            return template
         }
         else{
             Template['relInput'].events({
-                'change select':function(e, data){
+                'change select':function(e){
                     this.value=e.target.value;
                 }
             })
@@ -136,13 +139,3 @@ UI.registerHelper('displayProperty', function(parameters){
     }
     return null;
 })
-
-//{{#if isField .}}
-//    {{#if showInAdd}}
-//        {{>fieldInput .}}
-//        {{/if}}
-//            {{else}}
-//            {{#if showInAdd}}
-//                {{>relInput .}}
-//                {{/if}}
-//                    {{/if}}
