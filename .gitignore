@@ -14,3 +14,4 @@ server/zconfig.js
 WindowsInstall.bat
 /.idea/codeStyleSettings.xml
 /config.sh
+dump/

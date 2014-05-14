@@ -18,12 +18,12 @@ Template.header.viewModel = function () {
   });
 
   self.showSales = true; // ko.observable(Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) >= 0);
-  self.contactableObjTypes = ko.meteor.find(ObjTypes, {
-    objGroupType: Enums.objGroupType.contactable
+    self.contactableObjTypes = ko.meteor.find(dType.ObjTypes, {
+        parent: Enums.objGroupType.contactable
   });
 
-  self.jobObjTypes = ko.meteor.find(ObjTypes, {
-    objGroupType: Enums.objGroupType.job
+    self.jobObjTypes = ko.meteor.find(dType.ObjTypes, {
+        parent: Enums.objGroupType.job
   });
 
   self.picture = function (size) {

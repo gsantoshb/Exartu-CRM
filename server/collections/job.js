@@ -28,12 +28,12 @@ Meteor.startup(function () {
     Meteor.methods({
         addJob: function (job) {
             job._id = new Meteor.Collection.ObjectID()._str;
-            if (beforeInsertOrUpdateJob(job)) {
+//            if (beforeInsertOrUpdateJob(job)) {
                 Jobs.insert(job);
-            } else {
-                console.error('Job is not valid');
-                console.dir(job);
-            }
+//            } else {
+//                console.error('Job is not valid');
+//                console.dir(job);
+//            }
         },
         updateJob: function (job) {
             if (beforeInsertOrUpdateJob(job)) {

@@ -19,11 +19,13 @@ Meteor.publish('activities', function () {
 		hierId: user.hierId
 	});
 })
-
+var mainTypes=['Employee','Contact','Customer']
 Contactables.after.insert(function (userId, doc) {
 	var data = {};
 	data.createdAt = doc.createdAt;
-	data.objTypeName = doc.objNameArray[0];
+	data.objTypeName = _.find(doc.objNameArray,function(item){
+        return  mainTypes.indexOf(item)>=0
+    });
 
 	if (doc.person) {
 		data.displayName = doc.person.lastName + ', ' + doc.person.firstName + ' ' + doc.person.middleName;

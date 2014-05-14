@@ -20,8 +20,8 @@ ContactablesController = RouteController.extend({
         var type = this.params.hash || this.params.type;
         if (type != undefined && type != 'all') {
             var re = new RegExp("^" + type + "$", "i");
-            filters().objType(ObjTypes.findOne({
-                objName: re
+      filters().objType(dType.ObjTypes.findOne({
+        name: re
             }));
         } else {
             filters().objType(undefined);
@@ -126,17 +126,17 @@ Template.contactables.viewModel = function () {
     self.entities = ko.meteor.find(Contactables, query, options);
 
     var objTypesQuery = ko.computed(function () {
+
         var q = {
-            objGroupType: Enums.objGroupType.contactable
+      parent: Enums.objGroupType.contactable
         };
         var objType = ko.toJS(filters().objType);
         if (objType) {
-            q.objName = objType.objName;
+      q.name = objType.name;
         }
         return q;
     });
-
-    self.contactableTypes = ko.meteor.find(ObjTypes, objTypesQuery);
+  self.contactableTypes = ko.meteor.find(dType.ObjTypes, objTypesQuery);
 
     self.objName = ko.computed(function () {
         if (filters().objType()) {
