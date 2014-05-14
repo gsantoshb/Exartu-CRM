@@ -1,11 +1,10 @@
 {
   "packages": {
     "bootstrap-3": {},
-    "iron-router": "0.6.4",
+    "iron-router": "0.7.1",
     "knockout-client": {},
     "collection-hooks": {},
     "googlemaps": {},
-    "collectionFS": "0.4.8",
     "imagemagick": {},
     "spin": {},
     "bootstrap3-wysihtml5": {},
@@ -14,8 +13,8 @@
     "connect": {},
     "xml2js": {},
     "npm": {},
-    "cfs-filesystem": {},
     "apm": {},
-    "moment": {}
+    "moment": {},
+    "collectionFS": {}
   }
 }

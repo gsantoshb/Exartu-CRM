@@ -13,7 +13,6 @@ email
 collection-hooks
 service-configuration
 googlemaps
-collectionFS
 imagemagick
 spin
 bootstrap3-wysihtml5
@@ -25,7 +24,5 @@ xml2js
 npm
 apm
 document
-cfs-graphicsmagick
-document
 dType
-cfs-graphicsmagick
+collectionFS

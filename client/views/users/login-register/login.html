@@ -15,25 +15,20 @@
                         </div>
                     </div>
                     <div id="loginbox">
-                        <form id="loginform" action="dashboard.html" data-bind="with: credentials">
-                            <p data-bind="text: $parent.errorMessage() || 'Enter email and password to continue.', css:{'text-danger': $parent.errorMessage()}"></p>
-
-                            <div class="input-group input-sm form-group" data-bind="css:{'has-error': email.isModified() && ! email.isValid()}">
+                        <form id="loginform" action="dashboard.html">
+                            <p>Enter username and password to continue.</p>
+                            <div class="input-group input-sm">
                                 <span class="input-group-addon">
-                                    <i class="fa fa-envelope"></i>
+                                    <i class="fa fa-user"></i>
                                 </span>
                                 <input class="form-control" type="text" id="email" placeholder="Email" data-bind="value: email" />
                             </div>
-                            <!--<span class="text-danger" data-bind="validationMessage: email"></span>-->
-
-                            <div class="input-group form-group" data-bind="css:{'has-error': email.isModified() && ! email.isValid()}">
+                            <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="fa fa-lock"></i>
                                 </span>
                                 <input class="form-control" type="password" id="password" placeholder="Password" data-bind="value: password" />
                             </div>
-                            <!--<span class="text-danger" data-bind="validationMessage: email"></span>-->
-
                             <div class="form-actions clearfix">
                                 <div class="pull-left">
                                     <a href="#registerform" class="flip-link to-register blue">Create new account</a>
