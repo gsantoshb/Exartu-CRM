@@ -5,6 +5,7 @@
     "knockout-client": "0.0.2",
     "collection-hooks": {},
     "googlemaps": {},
+    "collectionFS": "0.4.8",
     "imagemagick": {},
     "spin": {},
     "bootstrap3-wysihtml5": {},

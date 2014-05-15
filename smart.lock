@@ -3,12 +3,11 @@
   "dependencies": {
     "basePackages": {
       "bootstrap-3": {},
-      "iron-router": {
+      "iron-router": {},
         "version": "0.7.1"
       },
       "knockout-client": {
         "version": "0.0.2"
-      },
       "collection-hooks": {},
       "googlemaps": {},
       "imagemagick": {},
@@ -38,8 +37,8 @@
       },
       "knockout-client": {
         "git": "https://github.com/zhouzhuojie/knockout-client.git",
-        "tag": "v0.0.2",
-        "commit": "550e9293ab933573db8661c780839ba056f3d883"
+        "tag": "v0.0.3",
+        "commit": "10d31af865531b0e6e11c09b176baa602a74901a"
       },
       "collection-hooks": {
         "git": "https://github.com/matb33/meteor-collection-hooks.git",

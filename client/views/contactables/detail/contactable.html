@@ -1,325 +1,150 @@
 <template name="contactable">
-    <div name="contactableVM">
-        <div style="display:none">
-            {{entityId}}
-        </div>
-        <div class="contactable-page-details">
-            <div id="content">
+    <div class="contactable-page-details">
+        <div id="content">
 
-                <div id="breadcrumb" class="breadcrumb-top">
-                    <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-                    <a href="#" class="current">Contactables</a>
-                </div>
-                <div id="content-header" class="content-header-bottom">
-                    {{#with contactable}}
-                    <div class="profile-content-header">
-                        <div class="profile-pic">
-                            <div id="edit-picture-btn" class="profile-pic-icon">
-                                {{#if pictureUrl}}
-                                    <img class="img-responsive" height="100" width="100" src="{{pictureUrl}}">
-                                {{else}}
-                                    <div>
-                                        <i class="icon-profile-bussiness-man"></i>
-                                    </div>
-                                {{/if}}
-                            </div>
-                            <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader"/>
-                        </div>
-                        {{#if Customer}}
-                            {{>profile_content_header_customer}}
-                        {{/if}}
-                        <div class="profile-last-update">
-                            Created at
-                            <small>{{createdAtFormatted}}</small>
-                        </div>
-                    </div>
-                    {{/with}}
-                </div>
-
-                <!-- /.content-header -->
-                <div class="container-fluid">
-                    <div class="row">
-                        <!-- Left Column -->
-                        <div class="col-sm-8 col-lg-5 contactable-left-col">
-
-                            <!--
-                                The tabs appear only when one section has more then X items, if not then we dont display the tabs nav
-                            -->
-                            <ul class="nav nav-tabs nav-tabs-main bottom-20">
-                                <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">8</span></a></li>
-                                <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">6</span></a></li>
-                            </ul>
-
-                            <div class="tab-content">
-
-                                <!-- Notes Tab -->
-                                <div class="tab-pane active" id="profile-notes">
-                                    <!-- Nav tabs -->
-                                    <ul class="nav nav-tabs nav-tabs-add">
-                                        <li class="active">
-                                            <a class="active" href="#note" data-toggle="tab"><span class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add Note</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#job" data-toggle="tab"><span class="btn btn-sm btn-warning"><i class="fa fa-plus"></i> Assign Job</span></a>
-                                        </li>
-                                        <li>
-                                            <a href="#document" data-toggle="tab"><span class="btn btn-sm btn-default"><i class="fa fa-plus"></i> Document</span></a>
-                                        </li>
-                                    </ul>
-
-                                    <div class="tab-content">
-                                        <!-- Add Note -->
-                                        <div class="tab-pane active" id="note">
-                                            <div class="box-5">
-                                                <div class="add-note-form">
-                                                    <textarea id="note-input" class="form-control add-note-txt input-lg" rows="3" placeholder="Add Note here..."></textarea>
-                                                    <button class="btn btn-primary pull-right add-note-btn" style="display:none;">Add Note</button>
-                                                </div>
-                                            </div><!-- /.tab-pane-box -->
-                                        </div><!-- /#post -->
-
-                                        <!-- Add Deal -->
-                                        <div class="tab-pane" id="deal">
-                                            <div class="box-5">
-                                                Add Deal
-                                            </div><!-- /.box-5 -->
-                                        </div><!-- /#deal -->
-
-                                        <!-- Add Job -->
-                                        <div class="tab-pane" id="job">
-                                            <div class="box-5">
-                                                <form role="form">
-                                                    <select class="form-control input-lg">
-                                                        <option>Select job to Assign</option>
-                                                    </select>
-                                                </form>
-                                            </div><!-- /.box-5 -->
-                                        </div><!-- /#job -->
-
-                                        <div class="tab-pane" id="document">
-                                            <div class="box-5">
-                                                <div class="upload-panel">
-                                                    <h3 class="lead">Drop files here</h3>
-                                                    <p>or</p>
-                                                    <br>
-                                                    <input id="" type="button" value="Select Files" class="btn btn-default btn-lg">
-                                                </div><!-- /.upload-panel -->
-                                            </div><!-- /.box-5 -->
-                                        </div><!-- /#document -->
-                                    </div><!-- /.tab-content -->
-
-                                    <h3>Notes <small>— 4</small></h3>
-                                    <ul class="list-2">
-                                        {{#with contactable.posts}}
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-sm-3">
-                                                        <a href="#"><strong> username </strong></a>
-
-                                                        <div class="text-muted">
-                                                            <span>{{#date createdAt}}{{/date}}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-9">
-                                                        <p class="note-title">{{content}}</p>
-                                                    </div>
-                                                </div>
-                                                <!-- /.row -->
-                                            </li>
-                                        {{/with}}
-                                    </ul>
+            <div id="breadcrumb" class="breadcrumb-top">
+                <a href="#" title="Go to Home" class="tip-bottom">Home</a>
+                <a href="#" class="current">Contactables</a>
+            </div>
+            <div id="content-header" class="content-header-bottom">
+                {{#with contactable}}
+                <div class="profile-content-header">
+                    <div class="profile-pic">
+                        <div id="edit-picture-btn" class="profile-pic-icon">
+                            {{#if pictureUrl}}
+                                <img class="img-responsive" height="100" width="100" src="{{pictureUrl}}">
+                            {{else}}
+                                <div>
+                                    <i class="icon-profile-bussiness-man"></i>
                                 </div>
-
-                                <!-- Documents Tab -->
-                                <div class="tab-pane" id="profile-documents">
-                                    <h3 class="top-0">Documents <small>— 4</small></h3>
-                                    <ul class="list-3 stripped has-thumb">
-                                        <li class="list-3-item">
-                                            <div class="list-thumb"><i class="icon-document-1"></i></div>
-                                            <div class="list-3-content list-magic">
-                                                <div class="list-3-content-wrap">
-                                                    <div class="list-3-actions">
-                                                        <a href="#"><i class="fa fa-download"></i> Download</a>
-                                                        <span class="bullet-spacer">·</span>
-                                                        <a href="#"><i class="fa fa-trash-o"></i> Delete</a>
-                                                    </div>
-                                                    <div class="list-3-item-meta-top">PDF</div>
-                                                    <h4 class="list-3-item-title"><a href="#">mihai's C.V</a></h4>
-                                                </div><!-- /.list-3-content-wrap -->
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div><!-- /.profile-documents -->
-
-                            </div>
+                            {{/if}}
                         </div>
+                        <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader"/>
+                    </div>
+                    {{#if Customer}}
+                        {{>customer_header}}
+                    {{/if}}
+                    <div class="profile-last-update">
+                        Created at
+                        <small>{{createdAtFormatted}}</small>
+                    </div>
+                </div>
+                {{/with}}
+            </div>
 
-                        <!-- Right Column -->
-                        <div class="col-sm-4 col-lg-7 contactable-right-col has-tabs">
-                            <div class="row">
-                                <div class="col-lg-6">
+            <!-- /.content-header -->
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-sm-8 col-lg-5 contactable-left-col">
+                        {{>customer_actions contactable}}
+                    </div>
 
-                                    <!-- Details -->
-                                    <div class="box">
-                                        <div class="box-header-2">
-                                            <a class="btn-action" href="#"><i class="fa fa-pencil"></i></a>
-                                            <div class="box-title">
-                                                Details
-                                            </div>
-                                        </div>
-                                        <div class="box-content-md">
-                                            <table class="table box-table table-striped">
-                                                <tr>
-                                                    <td>First Name</td>
-                                                    <td>Mihai</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Last Name</td>
-                                                    <td>Constantinescu</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Job Title</td>
-                                                    <td>Designer</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>City</td>
-                                                    <td>Bucharest</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Country</td>
-                                                    <td>Romania</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Experience</td>
-                                                    <td>7 Years (2006-20014)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Description</td>
-                                                    <td>
-                                                        My name is Mihai Constantinescu and leftside.ro is my Web Design portfolio. I am a mixture
-                                                        of passion and curiosity. I thrive to understand every aspect of what surrounds me, and I
-                                                        admit that sometimes things work even if they're not perfect.
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div><!-- /.box-content-md -->
-                                    </div><!-- /.box -->
+                    <!-- Right Column -->
+                    <div class="col-sm-4 col-lg-7 contactable-right-col has-tabs">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                {{>contactableDetailBox}}
+                            </div><!-- /.col-md-6 -->
 
-                                </div><!-- /.col-md-6 -->
+                            <div class="col-lg-6">
 
-                                <div class="col-lg-6">
-
-                                    <!-- Contacts -->
-                                    <div class="box">
-                                        <div class="box-header-2">
+                                <!-- Contacts -->
+                                <div class="box">
+                                    <div class="box-header-2">
                                             <a class="btn-action tip-top addContact" data-original-title="Add Contact" href="#"><i class="fa fa-plus"></i></a>
-                                            <div class="box-title">Contacts</div>
-                                        </div>
-                                        <div class="box-content-md">
-                                            <ul class="list-3 stripped has-thumb">
-                                                <li class="list-3-item">
-                                                    <div class="list-thumb"><i class="icon-address-1"></i></div>
-                                                    <div class="list-3-content">
-                                                        <div class="list-3-content-wrap">
-                                                            <div class="pull-right">
-                                                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
-                                                            </div>
-                                                            <div class="list-3-item-meta-top">Designer</div>
-                                                            <h4 class="list-3-item-title"><a href="#">Mihai Constantinescu</a></h4>
-                                                        </div><!-- /.list-3-content-wrap -->
-                                                    </div>
-                                                </li>
-                                                <li class="list-3-item">
-                                                    <div class="list-thumb"><i class="icon-address-1"></i></div>
-                                                    <div class="list-3-content">
-                                                        <div class="list-3-content-wrap">
-                                                            <div class="pull-right">
-                                                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
-                                                            </div>
-                                                            <div class="list-3-item-meta-top">CEO</div>
-                                                            <h4 class="list-3-item-title"><a href="#">Peter S.</a></h4>
-                                                        </div><!-- /.list-3-content-wrap -->
-                                                    </div>
-                                                </li>
+                                        <div class="box-title">Contacts</div>
+                                    </div>
+                                    <div class="box-content-md">
+                                        <ul class="list-3 stripped has-thumb">
+                                            <li class="list-3-item">
+                                                <div class="list-thumb"><i class="icon-address-1"></i></div>
+                                                <div class="list-3-content">
+                                                    <div class="list-3-content-wrap">
+                                                        <div class="pull-right">
+                                                            <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                                                        </div>
+                                                        <div class="list-3-item-meta-top">Designer</div>
+                                                        <h4 class="list-3-item-title"><a href="#">Mihai Constantinescu</a></h4>
+                                                    </div><!-- /.list-3-content-wrap -->
+                                                </div>
+                                            </li>
+                                            <li class="list-3-item">
+                                                <div class="list-thumb"><i class="icon-address-1"></i></div>
+                                                <div class="list-3-content">
+                                                    <div class="list-3-content-wrap">
+                                                        <div class="pull-right">
+                                                            <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                                                        </div>
+                                                        <div class="list-3-item-meta-top">CEO</div>
+                                                        <h4 class="list-3-item-title"><a href="#">Peter S.</a></h4>
+                                                    </div><!-- /.list-3-content-wrap -->
+                                                </div>
+                                            </li>
 
-                                                <li class="list-3-item">
-                                                    <div class="list-thumb"><i class="icon-address-1"></i></div>
-                                                    <div class="list-3-content">
-                                                        <div class="list-3-content-wrap">
-                                                            <div class="pull-right">
-                                                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
-                                                            </div>
-                                                            <div class="list-3-item-meta-top">CEO</div>
-                                                            <h4 class="list-3-item-title"><a href="#">Johnny B.</a></h4>
-                                                        </div><!-- /.list-3-content-wrap -->
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                            <li class="list-3-item">
+                                                <div class="list-thumb"><i class="icon-address-1"></i></div>
+                                                <div class="list-3-content">
+                                                    <div class="list-3-content-wrap">
+                                                        <div class="pull-right">
+                                                            <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                                                        </div>
+                                                        <div class="list-3-item-meta-top">CEO</div>
+                                                        <h4 class="list-3-item-title"><a href="#">Johnny B.</a></h4>
+                                                    </div><!-- /.list-3-content-wrap -->
+                                                </div>
+                                            </li>
+                                        </ul>
 
-                                        </div><!-- /.box-content-md -->
-                                    </div><!-- /.box -->
+                                    </div><!-- /.box-content-md -->
+                                </div><!-- /.box -->
 
-                                    <!-- Tags -->
-                                    <div class="box">
-                                        <div class="box-header-2">
-                                            <div class="box-title">Tags</div>
-                                        </div>
-                                        <form class="box-content-form" role="form">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Enter tags here...">
-                                                <span class="input-group-btn">
-                                                  <button class="btn btn-success" type="button">Add</button>
-                                                </span>
-                                            </div><!-- /input-group -->
-                                        </form>
-                                        <div class="box-content-md tags-content">
-                                            <button type="button" class="btn btn-xs btn-primary">
-                                                <span data-bind="text: $data ">CSS</span>
-                                                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-xs btn-primary">
-                                                <span data-bind="text: $data ">HTML</span>
-                                                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-xs btn-primary">
-                                                <span data-bind="text: $data ">Opportunity</span>
-                                                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
-                                            </button>
-                                        </div><!-- /.box-content-md -->
-                                    </div><!-- /.box -->
-                                </div><!-- /.col-md-6 -->
-                            </div><!-- /.row -->
-                        </div><!-- /.contactable-right-col -->
-                        <!-- / Right Column -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div><!-- /.content -->
-        </div>
+                                <!-- Tags -->
+                                <div class="box">
+                                    <div class="box-header-2">
+                                        <div class="box-title">Tags</div>
+                                    </div>
+                                    <form class="box-content-form" role="form">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Enter tags here...">
+                                            <span class="input-group-btn">
+                                              <button class="btn btn-success" type="button">Add</button>
+                                            </span>
+                                        </div><!-- /input-group -->
+                                    </form>
+                                    <div class="box-content-md tags-content">
+                                        <button type="button" class="btn btn-xs btn-primary">
+                                            <span data-bind="text: $data ">CSS</span>
+                                            <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-xs btn-primary">
+                                            <span data-bind="text: $data ">HTML</span>
+                                            <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-xs btn-primary">
+                                            <span data-bind="text: $data ">Opportunity</span>
+                                            <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+                                        </button>
+                                    </div><!-- /.box-content-md -->
+                                </div><!-- /.box -->
+                            </div><!-- /.col-md-6 -->
+                        </div><!-- /.row -->
+                    </div><!-- /.contactable-right-col -->
+                    <!-- / Right Column -->
 
-        <div data-bind="bind: false">
-            <div style="display:none" id="employee-header">
-                <div class="pull-right" style="margin-right: 20px; width: 25%">
-                    {{>contactableAssignment}}
-                </div>
-            </div>
-            <div style="display:none" id="contact-header">
-                <div class="pull-right" style="margin-right: 20px; width: 25%">
-                    {{>contactableCustomer}}
-                </div>
-            </div>
-            <div style="display:none" id="empty-header">
-            </div>
-        </div>
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div><!-- /.content -->
     </div>
 </template>
 
-<template name="profile_content_header_customer">
+<template name="customer_header">
     <h1 class="profile-name">
         <strong>{{displayName}}</strong>
         <small>{{Customer.department}}</small>
@@ -356,6 +181,26 @@
             <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
             <!--Add Contact Method-->
         <!--</a>-->
+    </div>
+</template>
+
+<template name="customer_actions">
+    <ul class="nav nav-tabs nav-tabs-main bottom-20">
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">8</span></a></li>
+        <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">6</span></a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Notes Tab -->
+        <div class="tab-pane active" id="profile-notes">
+            {{> contactableNotesAdd entity=.}}
+            {{> contactableNotesList entity=.}}
+        </div>
+        <!-- Documents Tab -->
+        <div class="tab-pane" id="profile-documents">
+            {{> contactableDocumentsAdd entity=. collection="ContactablesFS"}}
+            {{> contactableDocumentsList entity=. collection="ContactablesFS"}}
+        </div><!-- /.profile-documents -->
     </div>
 </template>
 

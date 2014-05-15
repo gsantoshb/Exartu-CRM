@@ -1,20 +1,7 @@
-loading=true;
-stopLoading=function(){
-    loading=false;
-    loadDep.changed()
-}
-loadDep=new Deps.Dependency
-var ForEverHandler={
-    ready:function(){
-        loadDep.depend();
-        return ! loading;
-    }
-}
-
 ContactableController = RouteController.extend({
 //  layoutTemplate: 'contactable',
     waitOn: function () {
-        return [ObjTypesHandler, ContactableHandler, ContactMethodsHandler, ForEverHandler]//GoogleMaps
+        return [ObjTypesHandler, ContactableHandler, ContactMethodsHandler]//GoogleMaps
     },
   data: function () {
     Session.set('entityId', this.params._id);
@@ -80,11 +67,6 @@ Template.contactable.rendered=function(){
   Meteor.autorun(asd);
 }
 
-UI.registerHelper('date', function (value) {
-  debugger;
-  return moment(value).format('MMMM Do YYYY, h:mm a');
-});
-
 Template.contactable.helpers({
   contactable: function(){
     return Contactables.findOne({
@@ -100,7 +82,7 @@ Template.contactable.helpers({
   createdAtFormatted: function() {
     return moment(this.createdAt).format('lll');
   }
-})
+});
 
 Template.contactable.events({
   'click .edit-pic': function(){
@@ -119,16 +101,6 @@ Template.contactable.events({
   },
   'click .send-message': function(e){
     Composer.showModal('sendMessage', $data);
-  },
-  'keypress #note-input': function (e) {
-    if (e.which === 13) {
-      Meteor.call('addContactablePost', Session.get('entityId'), {
-        content: e.currentTarget.value
-      }, function (err, result) {
-        if (!err) {
-        }
-      });
-    }
   },
 'click .addContact': function(){
     Session.set('options',{Contact:{customer: Session.get('entityId')}})
