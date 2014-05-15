@@ -3,9 +3,7 @@
   "dependencies": {
     "basePackages": {
       "bootstrap-3": {},
-      "iron-router": {
-        "version": "0.6.4"
-      },
+      "iron-router": {},
       "knockout-client": {},
       "collection-hooks": {},
       "googlemaps": {},
@@ -34,18 +32,18 @@
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.6.4",
-        "commit": "927bbaed1b87894fb6fb70807f74ff3a5bd89f29"
+        "tag": "v0.7.1",
+        "commit": "d1ffb3f06ea4c112132b030f2eb1a70b81675ecb"
       },
       "knockout-client": {
         "git": "https://github.com/zhouzhuojie/knockout-client.git",
-        "tag": "v0.0.2",
-        "commit": "550e9293ab933573db8661c780839ba056f3d883"
+        "tag": "v0.0.3",
+        "commit": "10d31af865531b0e6e11c09b176baa602a74901a"
       },
       "collection-hooks": {
         "git": "https://github.com/matb33/meteor-collection-hooks.git",
-        "tag": "v0.6.3",
-        "commit": "70f2598bf991cb36effd72aea2555cba96f88355"
+        "tag": "v0.6.7",
+        "commit": "f1d2ac629864edda09df6c955fa5ff3df26f739c"
       },
       "googlemaps": {
         "git": "https://github.com/drewjw81/meteor-googlemaps.git",
@@ -104,13 +102,18 @@
       },
       "apm": {
         "git": "https://github.com/arunoda/meteor-apm-client.git",
-        "tag": "v1.2.6",
-        "commit": "426e3c3c33457736ec64d8af17c765d477d1476b"
+        "tag": "v1.3.1",
+        "commit": "0ed9f0d89a31ff186f45130cb0ae508b56f268db"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
+      },
+      "blaze-layout": {
+        "git": "https://github.com/EventedMind/blaze-layout.git",
+        "tag": "v0.2.4",
+        "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
       },
       "cfs-base-package": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-base-package.git",
@@ -119,8 +122,8 @@
       },
       "cfs-file": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-file.git",
-        "tag": "v0.1.3",
-        "commit": "d9ba95d58ec9d5de021972a515495b74fe7672f1"
+        "tag": "v0.1.4",
+        "commit": "118ee62a459f20e48468378d576f0d42e4b15dd7"
       },
       "cfs-collection": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-collection.git",
@@ -175,7 +178,7 @@
       "data-man": {
         "git": "https://github.com/CollectionFS/Meteor-data-man.git",
         "branch": "master",
-        "commit": "eba0055619be2b5dfd7af6b4e946dc6fe393a040"
+        "commit": "c42e97728b38c29522d59db58d290e928df831ba"
       },
       "cfs-upload-ddp": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-upload-ddp.git",
@@ -189,8 +192,8 @@
       },
       "cfs-gridfs": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-gridfs.git",
-        "tag": "v0.0.20",
-        "commit": "74bbb595eb1269b54fbb6ba482893aca306875f1"
+        "tag": "v0.0.21",
+        "commit": "7e72587c6a7a334b380bbbeff5b2347b7692952b"
       },
       "cfs-tempstore": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-tempstore.git",

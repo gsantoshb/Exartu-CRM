@@ -1,0 +1,39 @@
+<template name="contactableNotesAdd">
+    <!-- Add Note -->
+    <div class="tab-pane active" id="note">
+        <div class="box-5">
+            <div class="add-note-form">
+                <textarea id="note-input" class="form-control add-note-txt input-lg" rows="3" placeholder="Add Note here..."></textarea>
+                <button class="btn btn-primary pull-right add-note-btn" style="display:none;">Add Note</button>
+                <span id="add-note-feedback" class="label label-danger"></span>
+            </div>
+        </div><!-- /.tab-pane-box -->
+    </div><!-- /#post -->
+</template>
+
+<template name="contactableNotesList">
+    <h3>Notes <small>— {{notesCounts}}</small></h3>
+    <ul class="list-2">
+        {{#each notes}}
+        <li>
+            <div class="row">
+                <div class="col-sm-3">
+                    {{#userInfo userId=userId}}
+                        <a href="#"><strong id="username"> {{username}} </strong></a>
+                    {{/userInfo}}
+                    <div class="text-muted">
+                        {{#formattedDate value=createdAt format="lll"}}
+                            <span>{{date}}</span>
+                        {{/formattedDate}}
+                    </div>
+                </div>
+
+                <div class="col-sm-9">
+                    <p class="note-title">{{content}}</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </li>
+        {{/each}}
+    </ul>
+</template>

@@ -24,8 +24,8 @@ Document.Collection.prototype.update = function(file, cb) {
   this.documents.update({_id: file._id}, {$set: { metadata: file.metadata }}, cb);
 }
 
-Document.Collection.prototype.find = function(filters) {
-  return this.documents.find(filters || {});
+Document.Collection.prototype.find = function(filters, options) {
+  return this.documents.find(filters || {}, options || {});
 };
 
 Document.Collection.prototype.getCollection = function() {

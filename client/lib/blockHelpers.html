@@ -1,0 +1,35 @@
+<!--Template used by userInfo helper-->
+<template name="user_info_template">
+    {{> UI.contentBlock info }}
+</template>
+
+<template name="formatted_date">
+    {{> UI.contentBlock . }}
+</template>
+
+<template name="object_property_single">
+    <span class="prop-input">
+        {{> UI.contentBlock value=value}}
+        <span class="text text-danger">{{error}}</span>
+    </span>
+</template>
+
+<template name="object_property_multiple">
+    {{#each data}}
+        {{> UI.contentBlock value=.}}
+    {{/each}}
+    <span class="text text-danger">{{error}}</span>
+</template>
+
+<template name="fileProgress">
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%;">
+        </div>
+    </div>
+</template>
+
+<template name="dropzone_template">
+    <div class="upload-panel" style="padding: 10px">
+        {{> UI.contentBlock }}
+    </div>
+</template>
