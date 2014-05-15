@@ -122,7 +122,6 @@ var validateField = function (value, field) {
     case Enums.fieldType.string:
         return value.match ? value.match(field.regex) != null : false;
     case Enums.fieldType.lookUp:
-        debugger;
         if (field.multiple) {
 
             if (typeof value != typeof[])

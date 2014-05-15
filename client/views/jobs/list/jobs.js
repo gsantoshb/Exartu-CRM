@@ -19,8 +19,9 @@ JobsController = RouteController.extend({
     var type = this.params.hash || this.params.type;
     if (type != undefined && type != 'all') {
       var re = new RegExp("^" + type + "$", "i");
-      filters().objType(ObjTypes.findOne({
-        objName: re
+//        debugger;
+      filters().objType(dType.ObjTypes.findOne({
+        name: re
       }));
     } else {
       filters().objType(undefined);
@@ -95,7 +96,7 @@ Template.jobs.viewModel = function () {
     var q = {};
     var f = ko.toJS(filters);
     if (f.objType)
-      q.objNameArray = f.objType.objName;
+      q.objNameArray = f.objType.name;
 
     if (f.tags.length) {
       q.tags = {
@@ -141,15 +142,15 @@ Template.jobs.viewModel = function () {
 
   self.jobTypes = ko.computed(function () {
     var q = {
-      objGroupType: Enums.objGroupType.job
+      parent: Enums.objGroupType.job
     };
     var objType = ko.toJS(filters().objType);
     if (objType) {
-      q.objName = objType.objName;
-    }
-    ;
+      q.name = objType.name;
+    };
+//      debugger
 
-    return ObjTypes.find(q).fetch();
+    return dType.ObjTypes.find(q).fetch();
   });
 
   self.objName = ko.observable('Jobs');

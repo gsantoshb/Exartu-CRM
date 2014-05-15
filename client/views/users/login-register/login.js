@@ -1,6 +1,16 @@
 Template.login.viewModel = function () {
   var self = this;
 
+    self.login=ko.observable(true);
+    self.register=function(){
+        self.login(false);
+        self.errorMessage('')
+    }
+    self.signin=function(){
+        self.login(true);
+        self.errorMessage('')
+    }
+
   self.errorMessage = ko.observable();
 
   self.email = ko.observable();
@@ -68,8 +78,10 @@ Template.login.viewModel = function () {
     if (self.isValidating())
       return;
     self.seeding(true);
-    if (!self.newAccount.isValid())
+    if (!self.newAccount.isValid()){
       self.newAccount.errors.showAllMessages();
+        return;
+    }
 
     Accounts.createUser(_.omit(ko.toJS(self.newAccount()), 'passwordVerification'), function (err, result) {
       if (!err) {

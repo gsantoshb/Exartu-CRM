@@ -1,8 +1,8 @@
 {
   "packages": {
     "bootstrap-3": {},
-    "iron-router": {},
-    "knockout-client": {},
+    "iron-router": "0.7.1",
+    "knockout-client": "0.0.2",
     "collection-hooks": {},
     "googlemaps": {},
     "collectionFS": "0.4.8",
@@ -14,8 +14,8 @@
     "connect": {},
     "xml2js": {},
     "npm": {},
-    "cfs-filesystem": {},
     "apm": {},
-    "moment": {}
+    "moment": {},
+    "collectionFS": {}
   }
 }

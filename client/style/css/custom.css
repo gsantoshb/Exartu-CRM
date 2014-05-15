@@ -413,3 +413,48 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     max-width: 100%;
     margin-bottom:5px
 }
+
+.ex-front #loginbox{
+    height: 284px;
+}
+
+/*input errors*/
+.form-group.error > input{
+    color: #F00;
+    border-color: #FF0000;
+}
+.form-group.error > span{
+    color: #F00;
+}
+
+.login-footer{
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-top: 1px solid #e6e6e6;
+}
+.login-footer .text{
+    font-size: 16px;
+    font-weight: bold;
+    color: #555555;
+    padding: 12px 20px;
+}
+
+.login-footer .btn-google-plus{
+    display: inline-block;
+    font-size: 20px;
+    border-left: 1px solid #e6e6e6;
+    color: #888888;
+    padding: 9px 0 10px;
+    margin: 0 0 0 -4px;
+    border-radius: 0;
+}
+.login-footer .btn-google-plus:hover{
+    background-color: #da4834
+}
+.login-footer .btn-google-plus:hover i{
+    color: #fff
+}
+.login-footer i{
+    padding: 0 15px 0 17px;
+}

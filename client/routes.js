@@ -35,6 +35,17 @@ Router.map(function () {
         controller: 'ContactableController',
         waitOn: [ObjTypesHandler, ContactableHandler, ContactMethodsHandler]//GoogleMaps
     });
+//    debugger;
+  this.route('addContactablePage', {
+    path: '/contactableAdd/:objType',
+    controller: 'ContactableAddController',
+    waitOn: [dType.ObjTypesHandler]
+  });
+  this.route('addJobPage', {
+    path: '/jobAdd/:objType',
+    controller: 'JobAddController',
+    waitOn: [dType.ObjTypesHandler]
+  });
 
     this.route('jobs', {
         path: '/jobs/:type?',

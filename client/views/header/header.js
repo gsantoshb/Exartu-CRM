@@ -18,12 +18,12 @@ Template.header.viewModel = function () {
   });
 
   self.showSales = true; // ko.observable(Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) >= 0);
-  self.contactableObjTypes = ko.meteor.find(ObjTypes, {
-    objGroupType: Enums.objGroupType.contactable
+    self.contactableObjTypes = ko.meteor.find(dType.ObjTypes, {
+        parent: Enums.objGroupType.contactable
   });
 
-  self.jobObjTypes = ko.meteor.find(ObjTypes, {
-    objGroupType: Enums.objGroupType.job
+    self.jobObjTypes = ko.meteor.find(dType.ObjTypes, {
+        parent: Enums.objGroupType.job
   });
 
   self.picture = function (size) {
@@ -41,8 +41,8 @@ Template.header.viewModel = function () {
 var init = true;
 Template.header.rendered = function () {
   $('body').addClass("flat");
-  $('body').attr('data-color', 'enterprise-dark');
-  $('#color-style a[data-color=enterprise-dark]').addClass('active');
+  $('body').attr('data-color', 'dark');
+  $('#color-style a[data-color=dark]').addClass('active');
 
   if (init) {
     //=== Tooltips ===

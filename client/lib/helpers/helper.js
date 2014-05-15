@@ -89,7 +89,7 @@ _.extend(helper, {
    * * Return:
    * * -searchString: observable item used to search * -filter: ..
    */
-  createObjTypefilter: function (fieldsToSearch, objtypes, callback) {
+  createObjTypefilter: function (fieldsToSearch, objTypes, callback) {
     var self = {};
 
     var search = function () {
@@ -147,10 +147,10 @@ _.extend(helper, {
     };
 
     self.filter = ko.observableArray(
-      _.map(objtypes, function (type) {
+      _.map(dType.ObjTypes, function (type) {
         var filter = {
           check: ko.observable(true),
-          label: type.objName,
+          label: type.name,
           typeId: type._id,
           glyphicon: type.glyphicon
         };
@@ -171,7 +171,7 @@ _.extend(helper, {
     return typeDisplayName ? typeDisplayName.displayName : '';
   },
   getObjType: function (id) {
-    return ObjTypes.findOne({
+    return dType.ObjTypes.findOne({
       _id: id
     });
   },
@@ -184,14 +184,14 @@ _.extend(helper, {
     return persontypes;
   },
   getJobTypes: function () {
-    return ObjTypes.find({
+    return dType.ObjTypes.find({
       objGroupType: Enums.objGroupType.job
     }).fetch();
   },
 
-  getIconForObjName: function (objname) {
-    var objtype = ObjTypes.findOne({
-      objName: objname
+  getIconForObjName: function (name) {
+    var objtype = dType.ObjTypes.findOne({
+      name: name
     });
     if (objtype && objtype.style && objtype.style.icon)
       return _.findWhere(icons, {
@@ -206,24 +206,26 @@ _.extend(helper, {
   },
 
   getEntityColor: function (entity) {
-    var type = ObjTypes.findOne({
-      objName: entity.objNameArray[0]
+    var type = dType.ObjTypes.findOne({
+      name: entity.objNameArray[0]
     });
     return _.findWhere(colors, {
       name: type.style.color
     }).value;
   },
   getEntityIcon: function (entity) {
-    var type = ObjTypes.findOne({
-      objName: entity.objNameArray[0]
+    var type = dType.ObjTypes.findOne({
+      name: { $in: entity.objNameArray },
+        style: { $exists: true }
     });
     return _.findWhere(icons, {
       name: type.style.icon
     }).value;
   },
   getActivityColor: function (activity) {
-    var style = ObjTypes.findOne({
-      objName: activity.data.objTypeName()
+//      debugger;
+    var style = dType.ObjTypes.findOne({
+      name: activity.data.objTypeName()
     }).style;
     return _.findWhere(colors, {
       name: style.color
@@ -231,8 +233,8 @@ _.extend(helper, {
   },
   getActivityIcon: function (activity) {
 
-    var style = ObjTypes.findOne({
-      objName: activity.data.objTypeName()
+    var style = dType.ObjTypes.findOne({
+      name: activity.data.objTypeName()
     }).style;
     return _.findWhere(icons, {
       name: style.icon
@@ -411,18 +413,18 @@ _.extend(helper, {
    */
   addExtend: function (options) {
     var self = options.self;
-    var objType = ObjTypes.findOne({
-      objName: options.objname
+    var objType = dType.ObjTypes.findOne({
+      name: options.name
     });
 
     var aux = {
-      objNameArray: ko.observableArray([objType.objName])
+      objNameArray: ko.observableArray([objType.name])
     };
-    aux[objType.objName] = ko.observableArray(objType.fields)
+    aux[objType.name] = ko.observableArray(objType.fields)
     var entityOptions=options.entityOptions || {};
 
     self.entity = ko.validatedObservable(aux);
-    self.objTypeName = ko.observable(objType.objName);
+    self.objTypeName = ko.observable(objType.name);
     self.ready = ko.observable(false);
 
     // Apply extend entity
@@ -459,7 +461,7 @@ _.extend(helper, {
 
     //relations
     self.relations = ko.observableArray([]);
-    Meteor.call('getShowInAddRelations', objType.objName, objType.objGroupType, function (err, result) {
+    Meteor.call('getShowInAddRelations', objType.name, objType.objGroupType, function (err, result) {
         _.each(result, function (r) {
 //            debugger;
             self.relations.push({

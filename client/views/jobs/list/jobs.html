@@ -4,7 +4,7 @@
             <div id="content-header" class="mini">
                 <h1>
                     <strong data-bind="text: Jobs.find().count()"></strong>
-                    <span data-bind="text:objName "></span>
+                    <span data-bind="text:objName"></span>
                 </h1>
             </div>
             <div id="breadcrumb">
@@ -14,21 +14,7 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-4 col-md-push-8 col-lg-push-9 col-lg-3">
-                        <div class="visible-lg visible-md" data-bind="foreach: jobTypes">
-                            <a class="btn btn-success btn-md btn-block btn-create" data-toggle="modal" data-bind="click: function () { Composer.showModal('addJob', $data.objName); }, text: 'Add ' + objName"></a>
-                        </div>
-                        <div class="hidden-lg hidden-md">
-                            <div class="btn-group btn-block btn-new-item">
-                                <button type="button" class="btn btn-block btn-success dropdown-toggle" data-toggle="dropdown">
-                                    Add <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu" data-bind="foreach: jobTypes">
-                                    <li><a href="#" data-bind="click: function () { Composer.showModal('addJob', $data.objName); }, text: objName"></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <br/>
+                    <div class="col-md-4 col-md-push-8">
                         <sidebar>
                             <div class="box-2 visible-lg visible-md">
                                 <h4 class="bottom-20">
@@ -114,116 +100,123 @@
                         </sidebar>
                     </div>
                     <!-- /.col-lg-4 -->
-                    <div class="col-md-8 col-md-pull-4 col-lg-9 col-lg-pull-3">
-
+                    <div class="col-md-8 col-md-pull-4">
+                        <div class="actions-head">
+                            <div class="row">
+                                <div class="col-sm-8 col-md-7 col-lg-6">
+                                    <!-- Single button -->
+                                    <div class="btn-group pull-left suffix-5">
+                                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                                            <span class="fa fa-plus"></span> Add
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu" data-bind="foreach: jobTypes">
+                                            <li><a href="#" data-bind="attr: { href: '/jobAdd/'+name }, text: 'New ' + name">New Direct Hire Job</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search job"  data-bind="value: searchString, valueUpdate: 'afterkeydown'">
+                                          <span class="input-group-btn">
+                                            <button class="btn btn-primary" type="button"><i class="fa fa-search"></i> Search</button>
+                                          </span>
+                                    </div>
+                                </div><!-- /.col-lg-5 -->
+                            </div><!-- /.row -->
+                        </div>
                         <!-- Entities list -->
-                        <div>
-                            {{#if loading}}
-                            <div id="lists">Loading...</div>
-                            {{else}}
-
-                            <div class="table-items-box">
-                                <div class="table-item search-bar">
-                                    <div class="table-item-cell">
-                                        <div class="row">
-                                            <div class="col-sm-8 col-md-7 col-lg-6">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Search job" data-bind="value: searchString, valueUpdate: 'afterkeydown'">
-                                                    <span class="input-group-btn">
-                                                        <button class="btn btn-primary" type="button">
-                                                            <i class="fa fa-search"></i>Search
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <!-- /.col-lg-5 -->
-                                        </div>
-                                        <!-- /.row -->
-                                    </div>
-                                    <!-- /.table-item-cell -->
-                                </div>
+                        <div class="table-items-box">
                                 <!-- /.table-item -->
-                                <!-- ko foreach: entities-->
-                                <div class="table-item magic">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="table-item-cell">
-                                                <div class="table-item-cell-container">
-                                                    <div class="thumb">
-                                                        <!-- ko if: $data.customer -->
-                                                        <!-- ko with: helper.getCustomerPictureUrl($data.customer())-->
-                                                        <!-- ko if: ready -->
-                                                        <a href="#">
-                                                            <img data-bind="attr: {src: picture }">
-                                                        </a>
-                                                        <!-- /ko -->
-                                                        <!-- /ko -->
-                                                        <!-- /ko -->
-                                                        <!-- ko if: !$data.customer -->
-                                                        <img src="/assets/logo-exartu.png" />
+                                <!--ko if: entities().length > 0-->
+                                    <!-- ko foreach: entities-->
+                                        <div class="table-item magic">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="table-item-cell">
+                                                        <div class="table-item-cell-container">
+                                                            <div class="thumb">
+                                                                <!-- ko if: $data.customer -->
+                                                                <!-- ko with: helper.getCustomerPictureUrl($data.customer())-->
+                                                                <!-- ko if: ready -->
+                                                                <a href="#">
+                                                                    <img data-bind="attr: {src: picture }">
+                                                                </a>
+                                                                <!-- /ko -->
+                                                                <!-- /ko -->
+                                                                <!-- /ko -->
+                                                                <!-- ko if: !$data.customer -->
+                                                                <img src="/assets/logo-exartu.png" />
+                                                                <!-- /ko -->
+                                                            </div>
+                                                            <div class="table-item-title">
+                                                                <!--ko if: $data.displayName-->
+                                                                <a href="#" data-bind="attr:{href: '/job/'+_id()}">
+                                                                    <span data-bind="text: $data.displayName"></span>
+                                                                </a>
+                                                                <!--/ko-->
+                                                            </div>
+                                                            <!-- ko if: $data.CustomerInfo -->
+                                                            <span class="text-normal">
+                                                                <a data-bind="attr: {href: '/contactable/' + $data.customer() }">
+                                                                    <span data-bind="text: $data.CustomerInfo.displayName"></span>
+                                                                </a>
+                                                            </span>
+                                                            <!-- /ko -->
+                                                        </div>
+                                                        <!-- /.table-item-cell-container -->
+                                                    </div>
+                                                    <!-- /.table-item-cell -->
+                                                </div>
+                                                <!-- /.col-sm-3 -->
+                                                <div class="col-sm-3">
+                                                    <div class="table-item-cell">
+                                                        <!--ko if: $data.candidates-->
+                                                        <div class="table-item-cell-container magic-content text-small">
+                                                            <br>
+                                                            <strong>
+                                                                <span data-bind="text: $data.candidates().length"></span>
+                                                            </strong>Candidates
+                                                        </div>
+                                                        <!-- /.table-item-cell-container -->
                                                         <!-- /ko -->
                                                     </div>
-                                                    <div class="table-item-title">
-                                                        <!--ko if: $data.displayName-->
-                                                        <a href="#" data-bind="attr:{href: '/job/'+_id()}">
-                                                            <span data-bind="text: $data.displayName"></span>
-                                                        </a>
-                                                        <!--/ko-->
+                                                    <!-- /.table-item-cell -->
+                                                </div>
+                                                <!-- /.col-sm-4 -->
+                                                <div class="col-sm-3">
+                                                    <div class="table-item-cell">
+                                                        <div class="table-item-cell-container">
+                                                            <!--                                                    <div class="location">Bankok, Thailand</div>-->
+                                                            <!--ko if: $data.createdAt-->
+                                                            <div class="date">
+                                                                <span data-bind="text: moment(createdAt()).fromNow()"></span>
+                                                            </div>
+                                                            <!-- /ko -->
+                                                        </div>
+                                                        <!-- /.table-item-cell-container -->
                                                     </div>
-                                                    <!-- ko if: $data.CustomerInfo -->
-                                                    <span class="text-normal">
-                                                        <a data-bind="attr: {href: '/contactable/' + $data.customer() }">
-                                                            <span data-bind="text: $data.CustomerInfo.displayName"></span>
-                                                        </a>
-                                                    </span>
-                                                    <!-- /ko -->
+                                                    <!-- /.table-item-cell -->
                                                 </div>
-                                                <!-- /.table-item-cell-container -->
+                                                <!-- /.col-sm-3 -->
                                             </div>
-                                            <!-- /.table-item-cell -->
+                                            <!-- /.row -->
                                         </div>
-                                        <!-- /.col-sm-3 -->
-                                        <div class="col-sm-3">
-                                            <div class="table-item-cell">
-                                                <!--ko if: $data.candidates-->
-                                                <div class="table-item-cell-container magic-content text-small">
-                                                    <br>
-                                                    <strong>
-                                                        <span data-bind="text: $data.candidates().length"></span>
-                                                    </strong>Candidates
-                                                </div>
-                                                <!-- /.table-item-cell-container -->
-                                                <!-- /ko -->
-                                            </div>
-                                            <!-- /.table-item-cell -->
-                                        </div>
-                                        <!-- /.col-sm-4 -->
-                                        <div class="col-sm-3">
-                                            <div class="table-item-cell">
-                                                <div class="table-item-cell-container">
-                                                    <!--                                                    <div class="location">Bankok, Thailand</div>-->
-                                                    <!--ko if: $data.createdAt-->
-                                                    <div class="date">
-                                                        <span data-bind="text: moment(createdAt()).fromNow()"></span>
-                                                    </div>
-                                                    <!-- /ko -->
-                                                </div>
-                                                <!-- /.table-item-cell-container -->
-                                            </div>
-                                            <!-- /.table-item-cell -->
-                                        </div>
-                                        <!-- /.col-sm-3 -->
-                                    </div>
-                                    <!-- /.row -->
-                                </div>
-                                <!-- /.table-item -->
+                                    <!-- /.table-item -->
+                                    <!-- /ko -->
                                 <!-- /ko -->
-
+                                <!--ko ifnot: entities().length >0-->
+                                    <div class="v-wrapper">
+                                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                                            <i class="icon-briefcase text-large"></i>
+                                            <h1>You currently have no Jobs</h1>
+                                            <!--ko foreach: jobTypes-->
+                                                <a href="#" data-bind="attr: { href: '/jobAdd/'+name }, text: 'New ' + name + ' Job'"></a>
+                                                <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
+                                            <!-- /ko -->
+                                        </div><!-- /.v-wrapper-cell -->
+                                    </div>
+                                <!-- /ko -->
                                 <!--infinite scroll-->
                                 <div data-bind="onScrollBottom:showMore"></div>
                             </div>
-                            {{/if}}
-                        </div>
                     </div>
                     <!--/ko-->
                 </div>

@@ -42,12 +42,12 @@ ContactablesFS.publish(); // Default publish and allow options
 Meteor.startup(function () {
   Meteor.methods({
     addContactable: function (contactable) {
-      if (beforeInsertOrUpdateContactable(contactable)) {
+//            if (beforeInsertOrUpdateContactable(contactable)) {
         Contactables.insert(contactable);
-      } else {
-        console.error('Contactable not valid')
-        console.dir(contactable);
-      }
+//            } else {
+//                console.error('Contactable not valid')
+//                console.dir(contactable);
+//            }
     },
     updateContactable: function (contactable) {
       if (beforeInsertOrUpdateContactable(contactable)) {
