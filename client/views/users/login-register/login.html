@@ -1,46 +1,39 @@
 <template name="login">
     <div name="loginVM" class="ex-front">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-5 col-md-offset-3">
-                    <div id="user">
-                        <div class="avatar">
-                            <div class="inner"></div>
-                            <img src="assets/pic-50x50.jpg">
-                        </div>
-                        <div class="text">
-                            <h4>Hello,
-                                <span class="user_name"></span>
-                            </h4>
-                        </div>
+        <!--******* login ******-->
+        <!--ko if:login-->
+            <div class="container">
+                <div id="login-wrapper">
+                    <div class="header"><img alt="Exartu" src="img/logo.png"></div>
+                    <div class="banner">
+                        <h1>Cloud CRM &amp; Staffing Software.</h1>
+                        <h2>Sign in to continue to Exartu</h2>
                     </div>
-                    <div id="loginbox">
-                        <form id="loginform" action="dashboard.html">
-                            <p>Enter username and password to continue.</p>
-                            <div class="input-group input-sm">
-                                <span class="input-group-addon">
-                                    <i class="fa fa-user"></i>
-                                </span>
-                                <input class="form-control" type="text" id="email" placeholder="Email" data-bind="value: email" />
+                    <div class="login-card">
+                        <div class="login-avatar">
+                            <div class="login-avatar-icon"><i class="icon-profile-bussiness-man"></i></div>
+                        </div>
+                        <form role="form">
+                            <div class="form-group">
+                                <label class="sr-only" for="usernameInput">Email address</label>
+                                <input type="email" class="form-control input-lg" id="usernameInput" placeholder="Email" data-bind="value: email">
                             </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="fa fa-lock"></i>
-                                </span>
-                                <input class="form-control" type="password" id="password" placeholder="Password" data-bind="value: password" />
+                            <div class="form-group">
+                                <label class="sr-only" for="passwordInput">Password</label>
+                                <input type="password" name="password" class="form-control input-lg" id="passwordInput" placeholder="Password" data-bind="value: password">
                             </div>
-                            <div class="form-actions clearfix">
-                                <div class="pull-left">
-                                    <a href="#registerform" class="flip-link to-register blue">Create new account</a>
-                                </div>
-                                <!--
-                                <div class="pull-right">
-    <a href="#recoverform" class="flip-link to-recover grey">Lost password?</a>
-</div>
--->
-                                <input type="submit" class="btn btn-block btn-primary btn-default" value="Login" data-bind="click: function(){ $root.loginWithPassword(); }" />
+                            <div class="form-group">
+                                <button class="btn btn-block btn-primary"  data-bind="click: function(){ $root.loginWithPassword(); }"><strong>Sign in</strong></button>
                             </div>
-                            <div class="footer-login">
+                            <!--<a class="pull-right text-normal help-link" href="#">Lost Password?</a>-->
+                            <!--<div class="checkbox">-->
+                                <!--<label class="text-normal">-->
+                                    <!--<input type="checkbox" value="">-->
+                                    <!--Stay signed in-->
+                                <!--</label>-->
+                            <!--</div>-->
+                        </form>
+                            <div class="login-footer">
                                 <div class="pull-left text">
                                     Login with
                                 </div>
@@ -52,87 +45,89 @@
                                     </a>
                                 </div>
                             </div>
-                        </form>
-                        <!--
-                        <form id="recoverform" action="#">
-                            <p>Enter your e-mail address below and we will send you instructions how to recover a password.</p>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="fa fa-envelope"></i>
-                                </span>
-                                <input class="form-control" type="text" placeholder="E-mail address" />
-                            </div>
-                            <div class="form-actions clearfix">
-                                <div class="pull-left">
-                                    <a href="#loginform" class="grey flip-link to-login">Click to login</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#registerform" class="blue flip-link to-register">Create new account</a>
-                                </div>
-                                <input type="submit" class="btn btn-block btn-inverse" value="Recover" />
-                            </div>
-                        </form>
--->
-                        <form id="registerform" action="#">
-                            <p>Enter information required to register:</p>
+                    </div><!-- /.login-card -->
+
+
+                    <p class="create-account"><a href="#" data-bind="click: register">Create an account</a></p>
+                </div>
+
+                <span class="label label-danger center-block" data-bind="text: errorMessage"></span>
+            </div>
+            <!-- /.container -->
+        <!--/ko-->
+        <!-- /login -->
+
+        <!--******* register ******-->
+
+        <!--ko ifnot:login-->
+            <div class="register-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="pull-right"><a class="btn btn-primary top-10" href="#" data-bind="click: signin">Sign In</a></div>
+                            <a href="#"><img alt="Exartu" src="img/logo.png"></a>
+                        </div>
+                    </div>
+                </div><!-- /.container -->
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <form role="form">
+                            <h1>Sign Up</h1>
+                            <!--<div class="form-group">-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-6"><input class="form-control input-lg" type="text" placeholder="First Name"></div>-->
+                                    <!--<div class="col-md-6"><input class="form-control input-lg" type="text" placeholder="Last Name"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
                             <div data-bind="css:{'has-error': newAccount().username.isModified() && ! newAccount().username.isValid()}">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-user"></i>
-                                    </span>
-                                    <input class="form-control" type="text" placeholder="Enter Username" data-bind="value: newAccount().username" />
+                                <div class="form-group">
+                                    <input class="form-control input-lg" type="text" placeholder="Choose your Exartu Username" data-bind="value: newAccount().username" />
                                 </div>
                                 <span class="text-danger" data-bind="validationMessage: newAccount().username"></span>
                             </div>
                             <div data-bind="css:{'has-error': newAccount().password.isModified() && ! newAccount().password.isValid()}">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-lock"></i>
-                                    </span>
-                                    <input class="form-control" type="password" placeholder="Choose Password" data-bind="value: newAccount().password" />
+                                <div class="form-group">
+                                    <input class="form-control input-lg" type="password" placeholder="Choose Password" data-bind="value: newAccount().password" />
                                 </div>
                                 <span class="text-danger" data-bind="validationMessage: newAccount().password"></span>
                             </div>
                             <div data-bind="css:{'has-error': newAccount().passwordVerification.isModified() && ! newAccount().passwordVerification.isValid()}">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-lock"></i>
-                                    </span>
-                                    <input class="form-control" type="password" placeholder="Confirm password" data-bind="value: newAccount().passwordVerification" />
+                                <div class="form-group">
+                                    <input class="form-control input-lg" type="password" placeholder="Confirm password" data-bind="value: newAccount().passwordVerification" />
                                 </div>
                                 <span class="text-danger" data-bind="validationMessage: newAccount().passwordVerification"></span>
                             </div>
-                            <div data-bind="css:{'has-error': newAccount().email.isModified() && ! newAccount().email.isValid()}">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-envelope"></i>
-                                    </span>
-                                    <input class="form-control" type="text" placeholder="Enter E-mail address" data-bind="value: newAccount().email" />
+                            <div data-bind="css:{'has-error': newAccount().username.isModified() && ! newAccount().username.isValid()}">
+                                <div class="form-group">
+                                    <input class="form-control input-lg" type="text" placeholder="Email" data-bind="value: newAccount().email">
                                 </div>
                                 <span class="text-danger" data-bind="validationMessage: newAccount().email"></span>
                             </div>
-
-                            <div class="form-actions clearfix">
-                                <div class="pull-left">
-                                    <a href="#loginform" class="grey flip-link to-login">Click to login</a>
-                                </div>
-                                <!--
-                                <div class="pull-right">
-    <a href="#recoverform" class="grey flip-link to-recover">Lost password?</a>
-</div>
--->
-                                <input type="submit" class="btn btn-block btn-success" value="Register" data-bind="css: {disabled:isValidating}, click: function() { createNewAccount() }" />
+                            <div class="form-group">
+                                <button class="btn btn-primary top-10 btn-lg" data-bind="css: {disabled:isValidating}, click: function() { createNewAccount() }">Create Account</button>
                             </div>
                         </form>
-                        <label class="label label-info" data-bind="visible: seeding"> Populating database for demo..</label >
+                        <span class="label label-danger center-block" data-bind="text: errorMessage"></span>
+
+                        <br><br><br><br>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-8 text-center">
+                                <br><br>
+                                <h4>Take Exartu with you.</h4>
+                                <p>Switch between devices, and pick up wherever you left off.</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <img alt="Exartu CRM mobile" src="img/exartu-mobile.jpg">
+                            </div>
+                        </div>
+
                     </div>
-                    <!-- /#loginbox -->
-                    <span class="label label-danger center-block" data-bind="text: errorMessage"></span>
                 </div>
-                <!-- /.col-md-5 -->
             </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container -->
+        <!--/ko-->
     </div>
 </template>
