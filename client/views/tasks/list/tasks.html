@@ -13,9 +13,7 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-4 col-md-push-8 col-lg-push-9 col-lg-3">
-
-                    <a class="btn btn-success btn-md btn-block btn-create" data-bind="click:add">Add Task</a>
+                <div class="col-md-4 col-md-push-8 col-lg-push-8 col-lg-4">
                     <br/>
                     <sidebar>
                         <div class="box-2 visible-lg visible-md">
@@ -132,30 +130,33 @@
                     </sidebar>
                 </div>
                 <!-- /.col-lg-4 -->
-                <div class="col-md-8 col-md-pull-4 col-lg-9 col-lg-pull-3">
+                <div class="col-md-8 col-md-pull-4 col-lg-8 col-lg-pull-4">
+                    <div class="actions-head">
+                        <div class="row">
+                            <div class="pull-right visible-lg">
+                                <strong data-bind="text: tasks().length+' task'+ (tasks().length > 1 ? 's':'')"></strong>&nbsp;due date
+                            </div>
+                            <div class="col-sm-8 col-md-12 col-lg-8">
+                                <!-- Single button -->
+                                <div class="btn-group pull-left suffix-5">
+                                    <button type="button" class="btn btn-success" data-bind="click:add">
+                                        <span class="fa fa-plus"></span> Add
+                                    </button>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search tasks" data-bind="value: searchString, valueUpdate: 'afterkeydown'">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fa fa-search"></i> Search
+                                        </button>
+                                    </span>
+                                </div>
+                            </div><!-- /.col-lg-5 -->
 
+                        </div><!-- /.row -->
+                    </div>
                     <!-- Entities list -->
                     <div class="table-items-box">
-                        <div class="table-item search-bar">
-                            <div class="table-item-cell">
-                                <div class="row">
-                                    <div class="col-sm-8 col-md-7 col-lg-6">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search Task" data-bind="value: searchString, valueUpdate:'afterkeydown'">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-primary" type="button">
-                                                    <i class="fa fa-search"></i>Search</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <!-- /.col-lg-5 -->
-                                    <div class="col-md-5 col-lg-6 text-right">
-                                        <strong data-bind="text: tasks().length+' task'+ (tasks().length > 1 ? 's':'')"></strong>&nbsp;due date</div>
-                                </div>
-                                <!-- /.row -->
-                            </div>
-                            <!-- /.table-item-cell -->
-                        </div>
                         <!--ko if: tasks().length>0-->
                             <!-- ko foreach: tasks -->
                                 <div class="table-item magic">
