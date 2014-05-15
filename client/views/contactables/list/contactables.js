@@ -12,7 +12,7 @@ ContactablesController = RouteController.extend({
     template: 'contactables',
     layoutTemplate: 'mainLayout',
     action: function () {
-        //        debugger;
+//                debugger;
         if (this.isFirstRun == false) {
             this.render();
             return;
@@ -73,7 +73,7 @@ Template.contactables.viewModel = function () {
         var q = {};
         var f = ko.toJS(filters);
         if (f.objType)
-            q.objNameArray = f.objType.objName;
+            q.objNameArray = f.objType.name;
 
         if (f.tags.length) {
             q.tags = {
@@ -109,6 +109,7 @@ Template.contactables.viewModel = function () {
                 }]
             };
         }
+        console.dir(q);
         return q;
     });
 
@@ -123,24 +124,24 @@ Template.contactables.viewModel = function () {
         filters().limit(filters().limit() + 20);
     }
 
-    self.entities = ko.meteor.find(Contactables, query, options);
+    self.entities = ko.meteor.find(Contactables, query);
 
     var objTypesQuery = ko.computed(function () {
 
         var q = {
-      parent: Enums.objGroupType.contactable
+            parent: Enums.objGroupType.contactable
         };
         var objType = ko.toJS(filters().objType);
         if (objType) {
-      q.name = objType.name;
+            q.name = objType.name;
         }
         return q;
     });
   self.contactableTypes = ko.meteor.find(dType.ObjTypes, objTypesQuery);
 
-    self.objName = ko.computed(function () {
+    self.name = ko.computed(function () {
         if (filters().objType()) {
-            return filters().objType().objName + 's';
+            return filters().objType().name + 's';
         }
         return 'Contactables';
     });

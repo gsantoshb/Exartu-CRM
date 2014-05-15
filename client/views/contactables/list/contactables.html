@@ -4,7 +4,7 @@
             <div id="content-header" class="mini">
                 <h1>
                     <strong data-bind="text: entities().length"></strong>
-                    <span data-bind="text:objName "></span>
+                    <span data-bind="text:name "></span>
                 </h1>
             </div>
             <div id="breadcrumb">
@@ -175,8 +175,13 @@
                             <div class="v-wrapper">
                                 <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                                     <i class="icon-connection-1 text-large"></i>
-                                    <h1>You currently have no contactables</h1>
-                                    <p class="lead">A contactable is an Employee, Customer or Contact.</p>
+                                    <h1>You currently have no
+                                    <!--ko text:name-->
+                                        <!--/ko-->
+                                    </h1>
+                                    <!--ko if:name()=='contactable'-->
+                                        <p class="lead">A contactable is an Employee, Customer or Contact.</p>
+                                    <!-- /ko -->
                                     <!--ko foreach: contactableTypes-->
                                         <a href="#" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
                                         <span class="bullet-spacer" data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
