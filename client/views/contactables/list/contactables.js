@@ -108,7 +108,6 @@ Template.contactables.viewModel = function () {
                 }]
             };
         }
-        console.dir(q);
         return q;
     });
 

@@ -3,18 +3,18 @@
         <div id="user-nav" class="navbar-right pull-right">
             <ul class="btn-group">
                 <!-- ko if: Meteor.user().profilePictureId -->
-                <!-- ko with: $root.filesCollection.getThumbnailUrl(Meteor.user().profilePictureId)-->
-                <!-- ko if: ready -->
-                <li class="hidden-xs">
-                    <a href="/user" style="display: inline-flex">
-                        <span class="user-menu-thumb">
-                            <img class="img-responsive"  data-bind="attr: { src: picture }">
-                        </span>
-                        <span class="msg-author" data-bind="text: Meteor.user().username "></span>
-                    </a>
-                </li>
-                <!-- /ko -->
-                <!-- /ko -->
+                    <!-- ko with: $root.filesCollection.getThumbnailUrl(Meteor.user().profilePictureId)-->
+                        <!-- ko if: ready -->
+                        <li class="hidden-xs">
+                            <a href="/user" style="display: inline-flex">
+                                <span class="user-menu-thumb">
+                                    <img class="img-responsive"  data-bind="attr: { src: picture }">
+                                </span>
+                                <span class="msg-author" data-bind="text: Meteor.user().username "></span>
+                            </a>
+                        </li>
+                        <!-- /ko -->
+                    <!-- /ko -->
                 <!-- /ko -->
 
                 <!-- ko if: !Meteor.user().profilePictureId && Meteor.user().services && Meteor.user().services.google -->

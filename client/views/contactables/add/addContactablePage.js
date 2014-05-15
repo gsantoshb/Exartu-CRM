@@ -6,9 +6,9 @@ ContactableAddController = RouteController.extend({
 });
 var contactable;
 var subTypesDep=new Deps.Dependency;
-var createContactable= function(objTypeName){
+var createContactable= function(objTypeName, options){
     var type=dType.core.getObjType(objTypeName)
-    contactable= new dType.objTypeInstance(objTypeName);
+    contactable= new dType.objTypeInstance(objTypeName, options);
     setPersonType(type.defaultPersonType,contactable)
     return contactable
 }
@@ -23,7 +23,11 @@ var setPersonType= function(personType, contactable){
 Template.addContactablePage.helpers({
     contactable: function(){
         if (!contactable){
-            contactable=createContactable(Session.get('objType'));
+            var options=Session.get('options');
+            if (options){
+                Session.set('options',undefined);
+            }
+            contactable=createContactable(Session.get('objType'), options);
         }
         return contactable;
     },
@@ -51,7 +55,15 @@ Template.addContactablePage.events({
         }
         var cont=dType.buildAddModel(this)
         Meteor.call('addContactable', cont, function(err, result){
+            if(err){
+                console.dir(err)
+            }else{
+                history.back();
+            }
         });
+    },
+    'click .goBack': function(){
+        history.back();
     }
 })
 
@@ -97,6 +109,12 @@ Template.relInput.helpers({
     },
     hasError :function(){
         return this.error? 'error': '';
+    },
+    isDisabled:function(){
+        return ! this.editable;
+    },
+    isSelected: function(id){
+        return (this.value || this._id) ==id;
     }
 })
 

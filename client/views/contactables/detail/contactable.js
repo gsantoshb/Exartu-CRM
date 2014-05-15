@@ -109,5 +109,9 @@ Template.contactable.events({
         }
       });
     }
-  }
+  },
+'click .addContact': function(){
+    Session.set('options',{Contact:{customer: Session.get('entityId')}})
+    Router.go('addContactablePage', {objType: 'Contact'});
+}
 });
