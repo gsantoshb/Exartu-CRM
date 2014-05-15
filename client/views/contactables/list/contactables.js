@@ -12,7 +12,7 @@ ContactablesController = RouteController.extend({
     template: 'contactables',
     layoutTemplate: 'mainLayout',
     action: function () {
-//                debugger;
+                debugger;
         if (this.isFirstRun == false) {
             this.render();
             return;
@@ -124,7 +124,7 @@ Template.contactables.viewModel = function () {
         filters().limit(filters().limit() + 20);
     }
 
-    self.entities = ko.meteor.find(Contactables, query);
+    self.entities = ko.meteor.find(Contactables, query,options);
 
     var objTypesQuery = ko.computed(function () {
 
