@@ -1,11 +1,13 @@
 <template name="candidates">
     <div class="box">
         <div class="box-header-2">
-            <a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'candidateAdd',$data._id()); }">
-                <i class="fa fa-plus"></i>Add
-            </a>
+            <a class="btn-action tip-top" data-original-title="Add Candidate" href="#"><i class="fa fa-plus" data-bind="click: function () { Composer.showModal( 'candidateAdd',$data._id()); }"></i></a>
+
+            <!--<a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'candidateAdd',$data._id()); }">-->
+                <!--<i class="fa fa-plus"></i>Add-->
+            <!--</a>-->
             <div class="box-title">
-                <i class="fa fa-user"></i>Candidates
+                Candidates
             </div>
 
         </div>

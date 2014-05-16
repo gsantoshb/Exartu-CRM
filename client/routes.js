@@ -17,11 +17,11 @@ Router.map(function () {
     this.route('login', {
         path: '/login',
         template: 'login',
-    onBeforeAction: function () {
-            if (Meteor.user()) {
-                this.redirect('dashboard');
+        onBeforeAction: function () {
+                if (Meteor.user()) {
+                    this.redirect('dashboard');
+                }
             }
-        }
     });
 
     this.route('contactables', {
