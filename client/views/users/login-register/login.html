@@ -13,6 +13,9 @@
                         <div class="login-avatar">
                             <div class="login-avatar-icon"><i class="icon-profile-bussiness-man"></i></div>
                         </div>
+
+                        <span class="label label-danger center-block" style="margin-bottom: 10px;" data-bind="text: errorMessage"></span>
+
                         <form role="form">
                             <div class="form-group">
                                 <label class="sr-only" for="usernameInput">Email address</label>
@@ -49,9 +52,9 @@
 
 
                     <p class="create-account"><a href="#" data-bind="click: register">Create an account</a></p>
+
                 </div>
 
-                <span class="label label-danger center-block" data-bind="text: errorMessage"></span>
             </div>
             <!-- /.container -->
         <!--/ko-->
@@ -99,7 +102,7 @@
                                 </div>
                                 <span class="text-danger" data-bind="validationMessage: newAccount().passwordVerification"></span>
                             </div>
-                            <div data-bind="css:{'has-error': newAccount().username.isModified() && ! newAccount().username.isValid()}">
+                            <div data-bind="css:{'has-error': newAccount().email.isModified() && ! newAccount().email.isValid()}">
                                 <div class="form-group">
                                     <input class="form-control input-lg" type="text" placeholder="Email" data-bind="value: newAccount().email">
                                 </div>
@@ -109,8 +112,6 @@
                                 <button class="btn btn-primary top-10 btn-lg" data-bind="css: {disabled:isValidating}, click: function() { createNewAccount() }">Create Account</button>
                             </div>
                         </form>
-                        <span class="label label-danger center-block" data-bind="text: errorMessage"></span>
-
                         <br><br><br><br>
                         <hr>
 

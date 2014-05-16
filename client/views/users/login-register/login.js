@@ -51,8 +51,13 @@ Template.login.viewModel = function () {
       required: true
     }),
     passwordVerification: ko.observable(),
+
     email: ko.observable().extend({
       required: true,
+        pattern: {
+            message: 'Invalid Email',
+            params:  helper.emailRE.str
+        },
       uniqueUserInformation: {
         params: {
           field: 'emails.address'
