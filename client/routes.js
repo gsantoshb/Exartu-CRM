@@ -5,7 +5,7 @@ Router.configure({
             this.redirect('login');
         }
     },
-  autoRender: true,
+  autoRender: true
 });
 
 Router.map(function () {
@@ -84,3 +84,17 @@ Router.map(function () {
         controller: 'LookupsManagementController'
     })
 });
+
+// handler for testing loading pages
+//foreverHandler={
+//    wait: true,
+//    dep: new Deps.Dependency,
+//    ready: function(){
+//        this.dep.depend()
+//        return ! this.wait
+//    },
+//    stopWaiting:function(){
+//        this.wait=false;
+//        this.dep.changed();
+//    }
+//}
