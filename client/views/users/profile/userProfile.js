@@ -60,9 +60,11 @@ Template.userProfile.viewModel = function () {
     });
   }
 
-  self.userPicture = UsersFS.getUrl(self.user().profilePictureId());
+  self.userPicture = self.user().profilePictureId ? UsersFS.getUrl(self.user().profilePictureId()) : null;
 
   self.pictureUrl = ko.computed(function() {
+      if (! self.userPicture)
+        return '/assets/user-photo-placeholder.jpg'
     if (self.userPicture().ready())
       return self.userPicture().picture();
     else
@@ -81,7 +83,7 @@ Template.userProfile.viewModel = function () {
       name: fsFile.name
     };
     var file = UsersFS.insert(fsFile);
-    UsersFS.getUrl(file._id, self.userPicture);
+      self.userPicture=UsersFS.getUrl(file._id, self.userPicture);
     Meteor.call('updateUserPicture', file._id);
   });
 
