@@ -14,7 +14,14 @@ UI.registerHelper('userInfo', function() {
 });
 
 UI.registerHelper('formattedDate', function() {
-  this.date = moment(this.value).format(this.format || 'lll');
+   switch(this.format){
+       case 'fromNow':
+           this.date=moment(this.value).fromNow();
+           break;
+       default:
+           this.date = moment(this.value).format(this.format || 'lll');
+
+   }
   return Template.formatted_date;
 });
 

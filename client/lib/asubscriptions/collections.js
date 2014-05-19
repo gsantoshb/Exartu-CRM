@@ -194,7 +194,8 @@ Conversations = new Meteor.Collection("conversations", {
         return conversation;
     }
 });
-Meteor.subscribe('conversations');
+
+extendedSubscribe('conversations', 'conversationsHandler');
 
 Activities = new Meteor.Collection("activities");
 Meteor.subscribe('activities');

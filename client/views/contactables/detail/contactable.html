@@ -6,117 +6,124 @@
                 <a href="#" title="Go to Home" class="tip-bottom">Home</a>
                 <a href="#" class="current">Contactables</a>
             </div>
+            <div id="content-header" class="content-header-bottom">
+                {{#with contactable}}
+                <div class="profile-content-header">
+                    <div class="profile-pic">
+                        {{#if pictureFileId}}
+                            <div id="edit-pic" class="profile-pic" title="Click to Edit" style="cursor: pointer;">
+                                <img class="img-responsive" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
+                            </div>
 
-            {{#with contactable}}
-                <div id="content-header" class="content-header-bottom">
-                    <div class="profile-content-header">
-                        <div class="profile-pic">
-                            <div id="edit-picture-btn" class="profile-pic-icon">
-                                {{#if pictureUrl}}
-                                    <img class="img-responsive" height="100" width="100" src="{{pictureUrl}}">
-                                {{else}}
-                                    <div>
-                                        <i class="icon-profile-bussiness-man"></i>
-                                    </div>
+                        {{else}}
+                            <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
+                                {{#if person}}
+                                    <i class="icon-profile-bussiness-man"></i>
+                                {{/if}}
+                                {{#if organization}}
+                                    <i class="icon-profile-bussiness-man"></i>
                                 {{/if}}
                             </div>
-                            <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader"/>
-                        </div>
-                        {{#if Customer}}
-                            {{>customer_header}}
                         {{/if}}
-                        <div class="profile-last-update">
-                            Created at
-                            <small>{{createdAtFormatted}}</small>
-                        </div>
+                        <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader"/>
+                    </div>
+                    {{#if Customer}}
+                        {{>customer_header}}
+                    {{/if}}
+                    {{#if Employee}}
+                        {{>employee_header}}
+                    {{/if}}
+                    <div class="profile-last-update">
+                        Created at
+                        <small>{{createdAtFormatted}}</small>
                     </div>
                 </div>
+                {{/with}}
+            </div>
 
-                <!-- /.content-header -->
-                <div class="container-fluid contactable-content">
-                    <div class="row">
-                        <!-- Left Column -->
-                        <div class="col-sm-8 col-lg-5 contactable-left-col">
-                            {{>customer_actions}}
-                        </div>
+            <!-- /.content-header -->
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-sm-8 col-lg-5 contactable-left-col">
+                        {{>customer_actions contactable}}
+                    </div>
 
-                        <!-- Right Column -->
-                        <div class="col-sm-4 col-lg-7 contactable-right-col-custom has-tabs">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    {{>contactableDetailBox}}
-                                </div><!-- /.col-md-6 -->
+                    <!-- Right Column -->
+                    <div class="col-sm-4 col-lg-7 contactable-right-col has-tabs">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                {{>contactableDetailBox}}
+                            </div><!-- /.col-md-6 -->
 
-                                <div class="col-lg-6">
+                            <div class="col-lg-6">
 
-                                    <!-- Contacts -->
-                                    <div class="box">
-                                        <div class="box-header-2">
-                                                <a class="btn-action tip-top addContact" data-original-title="Add Contact" href="#"><i class="fa fa-plus"></i></a>
-                                            <div class="box-title">Contacts</div>
-                                        </div>
-                                        <div class="box-content-md">
-                                            <ul class="list-3 stripped has-thumb">
-                                                <li class="list-3-item">
-                                                    <div class="list-thumb"><i class="icon-address-1"></i></div>
-                                                    <div class="list-3-content">
-                                                        <div class="list-3-content-wrap">
-                                                            <div class="pull-right">
-                                                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
-                                                            </div>
-                                                            <div class="list-3-item-meta-top">Designer</div>
-                                                            <h4 class="list-3-item-title"><a href="#">Mihai Constantinescu</a></h4>
-                                                        </div><!-- /.list-3-content-wrap -->
-                                                    </div>
-                                                </li>
-                                                <li class="list-3-item">
-                                                    <div class="list-thumb"><i class="icon-address-1"></i></div>
-                                                    <div class="list-3-content">
-                                                        <div class="list-3-content-wrap">
-                                                            <div class="pull-right">
-                                                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
-                                                            </div>
-                                                            <div class="list-3-item-meta-top">CEO</div>
-                                                            <h4 class="list-3-item-title"><a href="#">Peter S.</a></h4>
-                                                        </div><!-- /.list-3-content-wrap -->
-                                                    </div>
-                                                </li>
+                                <!-- Contacts -->
+                                <div class="box">
+                                    <div class="box-header-2">
+                                            <a class="btn-action tip-top addContact" data-original-title="Add Contact" href="#"><i class="fa fa-plus"></i></a>
+                                        <div class="box-title">Contacts</div>
+                                    </div>
+                                    <div class="box-content-md">
+                                        <ul class="list-3 stripped has-thumb">
+                                            <li class="list-3-item">
+                                                <div class="list-thumb"><i class="icon-address-1"></i></div>
+                                                <div class="list-3-content">
+                                                    <div class="list-3-content-wrap">
+                                                        <div class="pull-right">
+                                                            <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                                                        </div>
+                                                        <div class="list-3-item-meta-top">Designer</div>
+                                                        <h4 class="list-3-item-title"><a href="#">Mihai Constantinescu</a></h4>
+                                                    </div><!-- /.list-3-content-wrap -->
+                                                </div>
+                                            </li>
+                                            <li class="list-3-item">
+                                                <div class="list-thumb"><i class="icon-address-1"></i></div>
+                                                <div class="list-3-content">
+                                                    <div class="list-3-content-wrap">
+                                                        <div class="pull-right">
+                                                            <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                                                        </div>
+                                                        <div class="list-3-item-meta-top">CEO</div>
+                                                        <h4 class="list-3-item-title"><a href="#">Peter S.</a></h4>
+                                                    </div><!-- /.list-3-content-wrap -->
+                                                </div>
+                                            </li>
 
-                                                <li class="list-3-item">
-                                                    <div class="list-thumb"><i class="icon-address-1"></i></div>
-                                                    <div class="list-3-content">
-                                                        <div class="list-3-content-wrap">
-                                                            <div class="pull-right">
-                                                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
-                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
-                                                            </div>
-                                                            <div class="list-3-item-meta-top">CEO</div>
-                                                            <h4 class="list-3-item-title"><a href="#">Johnny B.</a></h4>
-                                                        </div><!-- /.list-3-content-wrap -->
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                            <li class="list-3-item">
+                                                <div class="list-thumb"><i class="icon-address-1"></i></div>
+                                                <div class="list-3-content">
+                                                    <div class="list-3-content-wrap">
+                                                        <div class="pull-right">
+                                                            <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                                                        </div>
+                                                        <div class="list-3-item-meta-top">CEO</div>
+                                                        <h4 class="list-3-item-title"><a href="#">Johnny B.</a></h4>
+                                                    </div><!-- /.list-3-content-wrap -->
+                                                </div>
+                                            </li>
+                                        </ul>
 
-                                        </div><!-- /.box-content-md -->
-                                    </div><!-- /.box -->
+                                    </div><!-- /.box-content-md -->
+                                </div><!-- /.box -->
 
-                                    <!-- Tags -->
+                                <!-- Tags -->
                                     {{>contactableTagsBox}}
 
-                                </div><!-- /.col-md-6 -->
-                            </div><!-- /.row -->
-                        </div><!-- /.contactable-right-col -->
-                        <!-- / Right Column -->
+                            </div><!-- /.col-md-6 -->
+                        </div><!-- /.row -->
+                    </div><!-- /.contactable-right-col -->
+                    <!-- / Right Column -->
 
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            {{/with}}
-
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
         </div><!-- /.content -->
     </div>
 </template>
@@ -162,7 +169,7 @@
 </template>
 
 <template name="customer_actions">
-    <ul class="nav nav-tabs contactable-nav-tabs-main bottom-20">
+    <ul class="nav nav-tabs nav-tabs-main bottom-20">
         <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">8</span></a></li>
         <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">6</span></a></li>
     </ul>
@@ -181,7 +188,50 @@
     </div>
 </template>
 
-        <template name="loadingContactable">
+
+<template name="employee_header">
+    <h1 class="profile-name">
+        <strong>{{displayName}}</strong>
+        {{#if person}}
+            <small>— {{person.jobTitle}}</small>
+        {{/if}}
+    </h1>
+    <p class="profile-adress">
+        <i class="fa fa-map-marker"></i>
+        {{#if location}}
+            <span>{{location}}</span>
+        {{else}}
+            <em> Click here to add an address </em>
+        {{/if}}
+    </p>
+
+    <div class="profile-btns">
+        {{#if firstCellPhone }}
+        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+            <span class="btn-round"><i class="fa fa-phone"></i></span>
+            <span>{{firstCellPhone}}</span>
+        </a>
+        {{/if}}
+        {{#if firstEmail }}
+        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+            <span class="btn-round"><i class="fa fa-envelope"></i></span>
+            <span>{{firstEmail.value}}</span>
+        </a>
+        {{/if}}
+        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
+        <!--data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">-->
+        <!--<span class="btn-round"><i class="fa fa-envelope"></i></span>-->
+        <!--Message-->
+        <!--</a>-->
+        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
+        <!--data-bind="click: function () { Composer.showModal('addContactable', 'Contact',{customer: $data._id()}); }">-->
+        <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
+        <!--Add Contact Method-->
+        <!--</a>-->
+    </div>
+</template>
+
+<template name="loadingContactable">
             <div id="content">
                 <div id="content-header" class="mini">
                     <h1>Dashboard</h1>
