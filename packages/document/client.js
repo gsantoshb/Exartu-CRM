@@ -14,31 +14,7 @@ Document.Collection.prototype.getThumbnailUrl = function(fileId, data) {
 
 Document.Collection.prototype.getThumbnailUrlForBlaze = function(fileId) {
   var file= this.findOne({
-    id: fileId
-  });
-  if (!file)
-        return null;
-
-  return file.url({store: this.collectionName + "Thumbs"})
-};
-
-Document.Collection.prototype.getUrl = function(fileId, data) {
-  var data = data || ko.observable({
-    ready: ko.observable(false),
-    picture: ko.observable()
-  });
-
-  getUrlAsync(this, fileId, this.collectionName, function (url) {
-    data().picture(url);
-    data().ready(true);
-  });
-
-  return data;
-};
-
-Document.Collection.prototype.getThumbnailUrlForBlaze = function(fileId) {
-  var file= this.findOne({
-    id: fileId
+    _id: fileId
   });
   if (!file)
         return null;

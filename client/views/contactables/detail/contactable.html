@@ -10,19 +10,28 @@
                 {{#with contactable}}
                 <div class="profile-content-header">
                     <div class="profile-pic">
-                        <div id="edit-picture-btn" class="profile-pic-icon">
-                            {{#if pictureUrl}}
-                                <img class="img-responsive" height="100" width="100" src="{{pictureUrl}}">
-                            {{else}}
-                                <div>
+                        {{#if pictureFileId}}
+                            <div id="edit-pic" class="profile-pic" title="Click to Edit" style="cursor: pointer;">
+                                <img class="img-responsive" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
+                            </div>
+
+                        {{else}}
+                            <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
+                                {{#if person}}
                                     <i class="icon-profile-bussiness-man"></i>
-                                </div>
-                            {{/if}}
-                        </div>
+                                {{/if}}
+                                {{#if organization}}
+                                    <i class="icon-profile-bussiness-man"></i>
+                                {{/if}}
+                            </div>
+                        {{/if}}
                         <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader"/>
                     </div>
                     {{#if Customer}}
                         {{>customer_header}}
+                    {{/if}}
+                    {{#if Employee}}
+                        {{>employee_header}}
                     {{/if}}
                     <div class="profile-last-update">
                         Created at
@@ -204,7 +213,50 @@
     </div>
 </template>
 
-        <template name="loadingContactable">
+
+<template name="employee_header">
+    <h1 class="profile-name">
+        <strong>{{displayName}}</strong>
+        {{#if person}}
+            <small>— {{person.jobTitle}}</small>
+        {{/if}}
+    </h1>
+    <p class="profile-adress">
+        <i class="fa fa-map-marker"></i>
+        {{#if location}}
+            <span>{{location}}</span>
+        {{else}}
+            <em> Click here to add an address </em>
+        {{/if}}
+    </p>
+
+    <div class="profile-btns">
+        {{#if firstCellPhone }}
+        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+            <span class="btn-round"><i class="fa fa-phone"></i></span>
+            <span>{{firstCellPhone}}</span>
+        </a>
+        {{/if}}
+        {{#if firstEmail }}
+        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+            <span class="btn-round"><i class="fa fa-envelope"></i></span>
+            <span>{{firstEmail.value}}</span>
+        </a>
+        {{/if}}
+        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
+        <!--data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">-->
+        <!--<span class="btn-round"><i class="fa fa-envelope"></i></span>-->
+        <!--Message-->
+        <!--</a>-->
+        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
+        <!--data-bind="click: function () { Composer.showModal('addContactable', 'Contact',{customer: $data._id()}); }">-->
+        <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
+        <!--Add Contact Method-->
+        <!--</a>-->
+    </div>
+</template>
+
+<template name="loadingContactable">
             <div id="content">
                 <div id="content-header" class="mini">
                     <h1>Dashboard</h1>
