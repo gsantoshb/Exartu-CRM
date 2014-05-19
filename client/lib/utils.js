@@ -3,12 +3,13 @@ Utils = {};
 _.extend(Utils, {
   getUserInformation: function(userId) {
     var user = Meteor.users.findOne({_id: userId});
+    if(!user)return null
 
     UsersFS.getThumbnailUrlForBlaze(user.profilePictureId, user);
 
     return {
       username: user.username,
-      picture: user.picture
+      picture: user.picture || '/assets/user-photo-placeholder.jpg'
     };
   }
 });
