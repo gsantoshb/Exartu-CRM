@@ -62,7 +62,7 @@
                 <!-- /.row -->
             </div>
             <!-- /.msgs-header -->
-            <!--ko if: conversations().lengt>0-->
+            <!--ko if: conversations().length > 0-->
                 <ul class="messages-list" data-bind="foreach: conversations">
                     <li data-bind="css: {selected: $data.selected, unread: !read()}">
                     <input class="item-check" type="checkbox" data-bind="checked: selected">
@@ -92,7 +92,7 @@
                 </ul>
             <!--/ko-->
 
-            <!--ko ifnot: conversations().lengt>0-->
+            <!--ko ifnot: conversations().length > 0-->
                 <div class="v-wrapper">
                     <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                         <i class="icon-mail-2 text-large"></i>
