@@ -5,7 +5,7 @@ _.extend(Utils, {
     var user = Meteor.users.findOne({_id: userId});
     if(!user)return null
 
-    UsersFS.getThumbnailUrlForBlaze(user.profilePictureId, user);
+    user.picture=UsersFS.getThumbnailUrlForBlaze(user.profilePictureId);
 
     return {
       username: user.username,
