@@ -106,33 +106,8 @@
                                     </div><!-- /.box -->
 
                                     <!-- Tags -->
-                                    <div class="box">
-                                        <div class="box-header-2">
-                                            <div class="box-title">Tags</div>
-                                        </div>
-                                        <form class="box-content-form" role="form">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Enter tags here...">
-                                                <span class="input-group-btn">
-                                                  <button class="btn btn-success" type="button">Add</button>
-                                                </span>
-                                            </div><!-- /input-group -->
-                                        </form>
-                                        <div class="box-content-md tags-content">
-                                            <button type="button" class="btn btn-xs btn-primary">
-                                                <span data-bind="text: $data ">CSS</span>
-                                                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-xs btn-primary">
-                                                <span data-bind="text: $data ">HTML</span>
-                                                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-xs btn-primary">
-                                                <span data-bind="text: $data ">Opportunity</span>
-                                                <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
-                                            </button>
-                                        </div><!-- /.box-content-md -->
-                                    </div><!-- /.box -->
+                                    {{>contactableTagsBox}}
+
                                 </div><!-- /.col-md-6 -->
                             </div><!-- /.row -->
                         </div><!-- /.contactable-right-col -->

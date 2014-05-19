@@ -1,0 +1,25 @@
+<template name="contactableTagsBox">
+    {{#if hasTags}}
+        <div class="box">
+            <div class="box-header-2">
+                <div class="box-title">Tags</div>
+            </div>
+            <form class="box-content-form" role="form">
+                <div class="input-group">
+                    <input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">
+                    <span class="input-group-btn">
+                      <button class="add-tag btn btn-success" type="button">Add</button>
+                    </span>
+                </div><!-- /input-group -->
+            </form>
+            <div class="box-content-md tags-content">
+                {{#objectProperty property=tags}}
+                    <button type="button" class="tag btn btn-xs btn-primary">
+                        <span >{{value}}</span>
+                        <i class="remove-tag fa fa-times"></i>
+                    </button>
+                {{/objectProperty}}
+            </div><!-- /.box-content-md -->
+        </div><!-- /.box -->
+    {{/if}}
+</template>

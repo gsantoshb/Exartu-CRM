@@ -31,6 +31,7 @@ Utils.ObjectDefinition = function(definition) {
     var prop = self[propName];
     prop.reactive = true;
     prop.dep = new Deps.Dependency;
+    prop.cb = definition.reactiveProps[propName].cb;
 
     switch(definition.reactiveProps[propName].type) {
       case Utils.ReactivePropertyTypes.array:
@@ -50,10 +51,14 @@ Utils.ObjectDefinition = function(definition) {
         prop.insert = function(newValue) {
           this.val.push(newValue);
           this.dep.changed();
+          if (this.cb && this.cb.onInsert)
+            this.cb.onInsert(newValue);
         };
         prop.remove = function(element) {
           this.val = _.without(this.value, _.findWhere(this.value, element));
           this.dep.changed();
+          if (this.cb && this.cb.onRemove)
+            this.cb.onRemove(element);
         };
 
         break;
