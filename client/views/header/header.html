@@ -35,13 +35,13 @@
                             <li class="{{unread .}}">
                                 <a class="msg" href="{{conversationURL .}}">
                                     {{#with userInfo .}}
-                                            <span class="msg-pic">
-                                                <img style="max-height: 50px;max-width: 50px;" src="{{picture}}">
-                                            </span>
-                                            <span class="msg-author">{{username}}</span>
+                                        <span class="msg-pic">
+                                            <img style="max-height: 50px;max-width: 50px;" src="{{picture}}">
+                                        </span>
+                                        <span class="msg-author">{{username}}</span>
                                     {{/with}}
-                                    <div class="msg-content" style="display: inline">{{content}}
-                                    </div>
+                                        <div class="msg-content" style="display: inline">{{content}}
+                                        </div>
                                     {{#formattedDate value=createdAt format='fromNow'}}
                                         <span class="msg-date">{{date}}</span>
                                     {{/formattedDate}}
