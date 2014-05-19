@@ -22,7 +22,7 @@ Utils.ReactivePropertyTypes = {
 };
 
 Utils.ObjectDefinition = function(definition) {
-  var self = this;
+  var self = {};
 
   // Reactives properties
   _.forEach(_.keys(definition.reactiveProps), function(propName) {
@@ -101,7 +101,7 @@ Utils.ObjectDefinition = function(definition) {
 
   // Not reactive properties
   _.forEach(_.keys(definition), function(propName) {
-    self[propName] = {};
+    self[propName] = definition[propName];
     var prop = self[propName];
     if (propName != 'reactiveProps') {
       prop.validator = function() { return true; }; // Always validate
@@ -123,8 +123,8 @@ Utils.ObjectDefinition = function(definition) {
   };
 
   self.isValid = function() {
-    return _.every(self, function(prop) {
-      return prop.validator? prop.validator() : true;
+    return _.every(_.keys(definition.reactiveProps), function(propName) {
+      return self[propName].validator? self[propName].validator() : true;
     });
   };
 
@@ -137,18 +137,19 @@ Utils.ObjectDefinition = function(definition) {
 
   self.reset = function() {
     _.forEach(_.keys(definition.reactiveProps), function(propName) {
+        var defaultValue = definition.reactiveProps[propName].default;
         switch(definition.reactiveProps[propName].type) {
           case Utils.ReactivePropertyTypes.string:
-            self[propName].value = '';
+            self[propName].value = defaultValue || '';
             break;
           case Utils.ReactivePropertyTypes.int:
-            self[propName].value= 0;
+            self[propName].value= defaultValue || 0;
             break;
           case Utils.ReactivePropertyTypes.array:
-            self[propName].value = [];
+            self[propName].value = defaultValue || [];
             break;
           default:
-            self[propName].value = '';
+            self[propName].value = defaultValue || '';
             break;
         };
         self[propName].error.hasError = false;
@@ -161,6 +162,30 @@ Utils.ObjectDefinition = function(definition) {
     });
   };
 
+  self.generateUpdate = function() {
+    var update = {
+      $set: {}
+    };
+    _.forEach(_.keys(definition.reactiveProps), function(propName) {
+        var propertyUpdatePath = definition.reactiveProps[propName].update;
+        if (self[propName].value != definition.reactiveProps[propName].default && propertyUpdatePath)
+          update.$set[propertyUpdatePath] = self[propName].value
+    });
+
+    return update;
+  };
+
+  self.updateDefaults = function() {
+    _.forEach(_.keys(definition.reactiveProps), function(propName) {
+      definition.reactiveProps[propName].default = self[propName].value;
+    });
+  };
+
   return self;
 };
+
+Utils.Validators = {};
+Utils.Validators.stringNotEmpty = function() {
+  return !_.isEmpty(this.value);
+}
 

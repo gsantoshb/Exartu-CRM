@@ -2,46 +2,122 @@
     <!-- Details -->
     <div class="box">
         <div class="box-header-2">
-            <a class="btn-action" href="#"><i class="fa fa-pencil"></i></a>
+            <a class="btn-action" href="#"><i id="edit-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>
             <div class="box-title">
                 Details
             </div>
         </div>
         <div class="box-content-md">
-            <table class="table box-table table-striped">
-                <tr>
-                    <td>First Name</td>
-                    <td>Mihai</td>
-                </tr>
-                <tr>
-                    <td>Last Name</td>
-                    <td>Constantinescu</td>
-                </tr>
-                <tr>
-                    <td>Job Title</td>
-                    <td>Designer</td>
-                </tr>
-                <tr>
-                    <td>City</td>
-                    <td>Bucharest</td>
-                </tr>
-                <tr>
-                    <td>Country</td>
-                    <td>Romania</td>
-                </tr>
-                <tr>
-                    <td>Experience</td>
-                    <td>7 Years (2006-20014)</td>
-                </tr>
-                <tr>
-                    <td>Description</td>
-                    <td>
-                        My name is Mihai Constantinescu and leftside.ro is my Web Design portfolio. I am a mixture
-                        of passion and curiosity. I thrive to understand every aspect of what surrounds me, and I
-                        admit that sometimes things work even if they're not perfect.
-                    </td>
-                </tr>
-            </table>
+            {{#with contactable }}
+                <table class="table box-table table-striped">
+                    {{#if person }}
+                        <tr>
+                            <td>First Name</td>
+                            <td>
+                                {{#objectProperty property=firstName editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                {{else}}
+                                    <span >{{value}}</span>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Last Name</td>
+                            <td>
+                                {{#objectProperty property=lastName editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                {{else}}
+                                    <span >{{value}}</span>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>MiddleName</td>
+                            <td>
+                                {{#objectProperty property=middleName editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                {{else}}
+                                    <span >{{value}}</span>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Job title</td>
+                            <td>
+                                {{#objectProperty property=jobTitle editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                {{else}}
+                                    <span >{{value}}</span>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                    {{/if}}
+                    {{#if organization }}
+                        <tr>
+                            <td>Organization</td>
+                            <td>
+                                {{#objectProperty property=organizationName editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                {{else}}
+                                    <span >{{value}}</span>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                    {{/if}}
+                    {{#if customer }}
+                        <tr>
+                            <td>Department</td>
+                            <td>
+                                {{#objectProperty property=department editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                {{else}}
+                                    <span >{{value}}</span>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>
+                                {{#objectProperty property=description editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                {{else}}
+                                    <span >{{value}}</span>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                    {{/if}}
+                    {{#if employee }}
+                        <tr>
+                            <td>Description</td>
+                            <td>
+                                {{#objectProperty property=description editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                {{else}}
+                                    <span >{{value}}</span>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                    {{/if}}
+                    {{#if contact }}
+                        <tr>
+                            <td>Description</td>
+                            <td>
+                                {{#objectProperty property=description editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                {{else}}
+                                    <span >{{value}}</span>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                    {{/if}}
+                </table>
+            {{/with}}
         </div><!-- /.box-content-md -->
+        {{#if editMode }}
+            <div class="box-header-2">
+                <a id="cancel-details" class="btn btn-default" > Cancel </a>
+                <a id="save-details" class="btn btn-success pull-right" > Save </a>
+            </div>
+        {{/if}}
     </div><!-- /.box -->
 </template>
