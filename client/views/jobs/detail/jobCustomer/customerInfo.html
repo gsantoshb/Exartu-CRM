@@ -3,72 +3,56 @@
     <!-- ko if: $data.customer-->
         <div class="box" data-bind="with: ko.meteor.findOne(Contactables, { _id: customer() })">
             <div class="box-header-2">
-            <a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'jobCustomerAddEdit',$parent);}">
-                <i class="fa fa-pencil"></i>Edit
-            </a>
-            <div class="box-title">
-                <a data-bind="attr:{href:'/contactable/'+_id()}" style="color: black;">
-                    <i class="fa fa-building-o"></i>
-                    <span data-bind="text: displayName"></span>
-                </a>
+                <a class="btn-action" href="#" data-bind="click: function () { Composer.showModal( 'jobCustomerAddEdit',$parent);}"><i class="fa fa-pencil"></i></a>
+                <div class="box-title">
+                    <a data-bind="attr:{href:'/contactable/'+_id()}" style="color: #777;">
+                        <span data-bind="text: displayName"></span>
+                    </a>
+                </div>
             </div>
-        </div>
             <div class="box-content">
-            <!-- ko with: $root.filesCollection.getThumbnailUrl($data.pictureFileId())-->
-            <!-- ko if: ready -->
-            <a data-bind="attr:{href:'/contactable/'+ $parent._id()}">
-                <p class="text-center">
-                    <img src="/assets/user-photo-placeholder.jpg" style="max-heigth:100px; max-width:100px;" data-bind="attr: {src: picture }">
-                </p>
-            </a>
-            <!-- /ko -->
-            <!-- /ko -->
-            <p data-bind=" text: Customer.description "></p>
-            <table class="table table-striped ">
-                <tbody>
-                <tr data-bind="if: location ">
-                    <td>Location</td>
-                    <td data-bind="text: location.formatted_address ">United States</td>
-                </tr>
-                <!--ko if: contactMethods().length >= 1-->
-                <tr data-bind="with: contactMethods()[0]">
-                    <td data-bind="text: typeName"></td>
-                    <td data-bind="text: value "></td>
-                </tr>
-                <!--/ko-->
+                <!-- ko with: $root.filesCollection.getThumbnailUrl($data.pictureFileId())-->
+                    <!-- ko if: ready -->
+                        <a data-bind="attr:{href:'/contactable/'+ $parent._id()}">
+                            <p class="text-center">
+                                <img src="/assets/user-photo-placeholder.jpg" style="max-heigth:100px; max-width:100px;" data-bind="attr: {src: picture }">
+                            </p>
+                        </a>
+                    <!-- /ko -->
+                <!-- /ko -->
+                <p data-bind=" text: Customer.description "></p>
+                <table class="table table-striped ">
+                    <tbody>
+                    <tr data-bind="if: location ">
+                        <td>Location</td>
+                        <td data-bind="text: location.formatted_address ">United States</td>
+                    </tr>
+                    <!--ko if: contactMethods().length >= 1-->
+                        <tr data-bind="with: contactMethods()[0]">
+                            <td data-bind="text: typeName"></td>
+                            <td data-bind="text: value "></td>
+                        </tr>
+                    <!--/ko-->
 
-                <!--ko if: contactMethods().length >= 2-->
-                <tr data-bind="with: contactMethods()[1]">
-                    <td data-bind="text: typeName"></td>
-                    <td data-bind="text: value "></td>
-                </tr>
-                <!--/ko-->
-                <!--
-                <tr>
-<td>Last Sign-in</td>
-<td>Feb 24, 2014</td>
-</tr>
--->
-                </tbody>
-            </table>
-            <!--
-            <a class="btn btn-default " href="# ">Browse all Google jobs
-    <span>(5)</span>
-</a>
--->
-        </div>
+                    <!--ko if: contactMethods().length >= 2-->
+                        <tr data-bind="with: contactMethods()[1]">
+                            <td data-bind="text: typeName"></td>
+                            <td data-bind="text: value "></td>
+                        </tr>
+                    <!--/ko-->
+                    </tbody>
+                </table>
+            </div>
             <!-- /.box-content -->
         </div>
     <!--/ko-->
     <!-- ko ifnot: $data.customer-->
         <div class="box" >
             <div class="box-header-2">
-                <a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'jobCustomerAddEdit',$parent);}">
-                    <i class="fa fa-pencil"></i>Edit
-                </a>
+                <a class="btn-action" href="#" data-bind="click: function () { Composer.showModal( 'jobCustomerAddEdit',$parent);}"><i class="fa fa-pencil"></i></a>
+
                 <div class="box-title">
-                    <a style="color: black;">
-                        <i class="fa fa-building-o"></i>
+                    <a style="color: #777;">
                         <span>No Customer</span>
                     </a>
                 </div>

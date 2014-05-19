@@ -158,7 +158,7 @@ var relation= function(relation){
 
     reactiveProp(rel, 'value', relation.defaultValue);
     reactiveProp(rel, 'error', '');
-    rel.editable = true;
+    rel.editable=true;
 
     return rel;
 }

@@ -13,15 +13,19 @@
             </div>
 
             <div class="container-fluid">
+
                 <div class="col-md-8 col-lg-8">
                     <div class="box">
                         <div class="box-header-2">
-                            <a class="pull-right btn btn-xs" href="#" data-bind="click:$parent.edit, css:{'btn-primary':$parent.editMode(),'btn-default': !$parent.editMode()}">
-                                <i class="fa fa-pencil"></i>&nbsp;Edit</a>
-                            Job Details
+                            <a class="btn-action" href="#" data-bind="click:$parent.edit, style: { color: $parent.editMode() ? '#008DFC' : '#ddd'}"><i class="fa fa-pencil"></i></a>
+                            <!--<a class="pull-right btn btn-xs" href="#" data-bind="click:$parent.edit, css:{'btn-primary':$parent.editMode(),'btn-default': !$parent.editMode()}">-->
+                                <!--<i class="fa fa-pencil"></i>&nbsp;Edit-->
+                            <!--</a>-->
+                           <div class="box-title">Job Details</div>
                         </div>
                         <div class="box-content-lg">
-                            <table class="table table-striped" style="table-layout: fixed;">
+                            <table class="table custom-table text-normal" style="table-layout: fixed;">
+                                <tbody>
                                 <tr>
                                     <td>
                                         <div class="job-editable-property" data-bind="template:{name:'display-property-date', data: { data:{icon:'fa fa-calendar',name:'Start date', value: startDate, editMode: $parent.editMode } } }">
@@ -91,6 +95,7 @@
                                         </div>
                                     </td>
                                 </tr>
+                                </tbody>
                             </table>
                             <div data-bind="switch: $parent.editMode">
                                 <div data-switch="true">

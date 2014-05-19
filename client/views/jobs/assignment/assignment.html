@@ -3,8 +3,7 @@
     <div class="box">
         <div class="box-header-2">
             <div class="box-title">
-                <i class="fa fa-user"></i>No one is assigned
-
+                No one is assigned
             </div>
         </div>
         <div class="box-content">
@@ -20,11 +19,13 @@
     <!-- ko if:$data.assignment-->
     <div class="box">
         <div class="box-header-2">
-            <a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id(), assignment());}">
-                <i class="fa fa-pencil"></i>Edit
-            </a>
+            <a class="btn-action" href="#" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id(), assignment());}"><i class="fa fa-pencil"></i></a>
+
+            <!--<a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id(), assignment());}">-->
+                <!--<i class="fa fa-pencil"></i>Edit-->
+            <!--</a>-->
             <div class="box-title">
-                <i class="fa fa-user"></i>Assigned
+                Assigned
             </div>
 
         </div>

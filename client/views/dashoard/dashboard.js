@@ -1,6 +1,16 @@
+
+
 DashboardController = RouteController.extend({
-  template: 'dashboard',
-  layoutTemplate: 'mainLayout'
+  layoutTemplate: 'mainLayout',
+    waitOn: function () {
+        return [ObjTypesHandler, UsersHandler];
+    },
+    action: function () {
+        if (this.ready())
+            this.render('dashboard');
+        else
+            this.render('loading');
+    }
 });
 
 var filters = ko.observable(ko.mapping.fromJS({

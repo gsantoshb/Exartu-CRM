@@ -1,9 +1,17 @@
 ContactableController = RouteController.extend({
-  layoutTemplate: 'contactable',
+//  layoutTemplate: 'contactable',
+    waitOn: function () {
+        return [ObjTypesHandler, ContactableHandler, ContactMethodsHandler]//GoogleMaps
+    },
   data: function () {
     Session.set('entityId', this.params._id);
   },
   action: function () {
+    if(!this.ready()){
+        this.render('loadingContactable')
+        return;
+    }
+      this.render('contactable')
     // define which template to render in function of the url's hash
     switch (this.params.hash) {
       case 'details':
@@ -46,8 +54,7 @@ ContactableController = RouteController.extend({
           to: 'content'
         });
         break;
-    }
-    ;
+    };
   }
 });
 

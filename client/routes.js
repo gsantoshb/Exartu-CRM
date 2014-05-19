@@ -1,6 +1,5 @@
 Router.configure({
     disableProgressSpinner: true,
-    loadingTemplate: 'loading',
   onBeforeAction: function () {
         if (!Meteor.userId() && Router.current().route.name != 'login') {
             this.redirect('login');
@@ -18,11 +17,11 @@ Router.map(function () {
     this.route('login', {
         path: '/login',
         template: 'login',
-    onBeforeAction: function () {
-            if (Meteor.user()) {
-                this.redirect('dashboard');
+        onBeforeAction: function () {
+                if (Meteor.user()) {
+                    this.redirect('dashboard');
+                }
             }
-        }
     });
 
     this.route('contactables', {
@@ -32,8 +31,7 @@ Router.map(function () {
 
     this.route('contactable', {
         path: '/contactable/:_id',
-        controller: 'ContactableController',
-        waitOn: [ObjTypesHandler, ContactableHandler, ContactMethodsHandler]//GoogleMaps
+        controller: 'ContactableController'
     });
 //    debugger;
   this.route('addContactablePage', {
@@ -56,17 +54,6 @@ Router.map(function () {
         path: '/job/:_id',
         controller: 'JobController'
     });
-    //    if (Meteor.user() && Meteor.user().permissions && Meteor.user().permissions.indexOf(Enums.permissionFunction.Sales) > 0) {
-    //    this.route('deals', {
-    //        path: '/deals',
-    //        controller: 'DealsController'
-    //    });
-    //
-    //    this.route('deal', {
-    //        path: '/deal/:_id',
-    //        controller: 'DealController'
-    //    });
-    //    }
 
     this.route('users', {
         path: '/users',
@@ -97,3 +84,17 @@ Router.map(function () {
         controller: 'LookupsManagementController'
     })
 });
+
+// handler for testing loading pages
+//foreverHandler={
+//    wait: true,
+//    dep: new Deps.Dependency,
+//    ready: function(){
+//        this.dep.depend()
+//        return ! this.wait
+//    },
+//    stopWaiting:function(){
+//        this.wait=false;
+//        this.dep.changed();
+//    }
+//}
