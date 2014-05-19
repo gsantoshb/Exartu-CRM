@@ -160,5 +160,5 @@ var relation= function(relation){
     reactiveProp(rel, 'error', '');
     rel.editable=true;
 
-    return rel
+    return rel;
 }

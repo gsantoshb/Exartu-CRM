@@ -28,18 +28,25 @@ UI.registerHelper('formattedDate', function() {
 UI.registerHelper('objectProperty', function() {
   var self = this;
   var template = {};
-  switch(self.type) {
+  switch(self.property.type) {
     case 2:
       template = Template.object_property_multiple;
       template.data = function() {
-        return self.value;
+        return self.property.value;
       };
       break;
     default:
-      template = Template.object_property_single;
+      if (self.editable !== undefined) {
+        template = Template.object_property_single_editable;
+        template.isEditable = function() {
+          return self.editable;
+        }
+      }
+      else
+        template = Template.object_property_single;
       template.error = function() {
-        this.error.dep.depend();
-        return this.error.hasError? this.error.message : '';
+        this.property.error.dep.depend();
+        return this.property.error.hasError? this.error.message : '';
       };
   }
 
@@ -48,8 +55,14 @@ UI.registerHelper('objectProperty', function() {
 
 Template.object_property_single.events = {
   'change .prop-input': function(e) {
-    this.value = e.target.value;
-  },
+    this.property.value = e.target.value;
+  }
+};
+
+Template.object_property_single_editable.events = {
+  'change .prop-input': function(e) {
+    this.property.value = e.target.value;
+  }
 };
 
 Template.fileProgress.progress = function() {
@@ -64,7 +77,6 @@ Template.dropzone_template.events = {
     e.preventDefault();
     $(e.currentTarget).addClass('drop-zone-hover');
   },
-
   "dragexit": function (e) {
     e.stopPropagation();
     e.preventDefault();
@@ -79,10 +91,10 @@ Template.dropzone_template.events = {
     e.preventDefault();
     var files = e.originalEvent.dataTransfer.files;
 
-//    for (var i = 0, f; f = files[i]; i++) {
-//      console.log('file dropped!');
-//      this.onDrop(f);
-//    }
+    //for (var i = 0, f; f = files[i]; i++) {
+    //  console.log('file dropped!');
+    //  this.onDrop(f);
+    //}
     // TODO: support drop multiple files
     if (files[0])
       this.onDrop(files[0]);
@@ -92,3 +104,85 @@ Template.dropzone_template.events = {
 UI.registerHelper('dragAndDrop', function() {
   return Template.dropzone_template;
 });
+
+// Dynamic reactive object
+
+Template.typeInput.helpers({
+  isField: function (field) {
+    return field.type=='field';
+  }
+})
+
+//<editor-fold desc="***********************  fieldInput *********************">
+Template.fieldInput.helpers({
+  hasError :function(){
+    return this.error? 'error': '';
+  }
+})
+Template.lookUpFieldInput.helpers({
+  options: function(){
+//        debugger;
+    return LookUps.find({codeType: this.lookUpCode});
+  },
+  hasError :function(){
+    return this.error? 'error': '';
+  }
+})
+//</editor-fold>
+
+//<editor-fold desc="***********************  relInput *********************">
+Template.relInput.helpers({
+  options: function(){
+    var q={};
+    q[this.target]={ $exists: true };
+    //todo: get collection from this.collection
+    return Contactables.find(q);
+  },
+  hasError :function(){
+    return this.error? 'error': '';
+  },
+  isDisabled:function(){
+    return ! this.editable;
+  },
+  isSelected: function(id){
+    return (this.value || this._id) ==id;
+  }
+})
+//</editor-fold>
+
+UI.registerHelper('displayProperty', function(){
+  if(this.showInAdd){
+    if(this.type=="field"){
+      var template=Template[this.fieldType + 'FieldInput'] || Template['fieldInput'];
+      template.events({
+        'blur input': function(e){
+          switch (this.fieldType) {
+            case 'number':
+              this.value=Number.parseFloat(e.target.value);
+              break;
+            case 'date':
+              this.value=new Date(e.target.value);
+              break;
+            default:
+              this.value=e.target.value;
+          }
+          dType.isValidField(this);
+        },
+        'change select':function(e){
+          this.value=e.target.value;
+          dType.isValidField(this);
+        }
+      });
+      return template
+    }
+    else{
+      Template['relInput'].events({
+        'change select':function(e){
+          this.value=e.target.value;
+        }
+      })
+      return Template['relInput']
+    }
+  }
+  return null;
+})
