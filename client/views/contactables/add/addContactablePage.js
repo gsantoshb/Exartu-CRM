@@ -1,7 +1,14 @@
 ContactableAddController = RouteController.extend({
-    layoutTemplate: 'addContactablePage',
+//    layoutTemplate: 'addContactablePage',
     data: function(){
         Session.set('objType',this.params.objType);
+    },
+    action: function () {
+        if (!this.ready()) {
+            this.render('loadingContactable');
+            return;
+        }
+        this.render('addContactablePage');
     }
 });
 var contactable;
@@ -49,6 +56,7 @@ Template.addContactablePage.events({
         setPersonType(e.target.value, contactable)
     },
     'click .btn-success': function(){
+
         if (!dType.isValid(this)){
             dType.displayAllMessages(this);
             return;
