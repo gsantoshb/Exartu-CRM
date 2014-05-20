@@ -423,6 +423,10 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     color: #F00;
     border-color: #FF0000;
 }
+.form-group.error > select{
+    color: #F00;
+    border-color: #FF0000;
+}
 .form-group.error > span{
     color: #F00;
 }

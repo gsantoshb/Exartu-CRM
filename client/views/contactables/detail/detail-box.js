@@ -48,10 +48,11 @@ var generateReactiveObject = function(contactable) {
       },
       middleName: {
         default: contactable.person.middleName,
+        update: 'person.middleName'
       },
       jobTitle: {
         default: contactable.person.jobTitle,
-        validator: Utils.Validators.stringNotEmpty,
+//        validator: Utils.Validators.stringNotEmpty,
         update: 'person.jobTitle'
       }
     });
@@ -101,7 +102,7 @@ var generateReactiveObject = function(contactable) {
       },
       description: {
         default: employee.description,
-        validator: Utils.Validators.stringNotEmpty,
+//        validator: Utils.Validators.stringNotEmpty,
         update: updateBase + 'description'
       }
     });

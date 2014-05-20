@@ -1,7 +1,14 @@
 JobAddController = RouteController.extend({
-    layoutTemplate: 'addJobPage',
+//    layoutTemplate: 'addJobPage',
     data: function(){
         Session.set('objType',this.params.objType);
+    },
+    action: function () {
+        if (!this.ready()) {
+            this.render('loadingContactable');
+            return;
+        }
+        this.render('addJobPage');
     }
 });
 var model;
@@ -51,7 +58,15 @@ Template.addJobPage.events({
         }
         var obj=dType.buildAddModel(model)
         Meteor.call('addJob', obj, function(err, result){
+            if(err){
+                console.dir(err)
+            }else{
+                history.back();
+            }
         });
+    },
+    'click .goBack': function(){
+        history.back();
     }
 })
 
