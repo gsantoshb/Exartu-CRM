@@ -7,13 +7,14 @@ dType.updater={
 
         _.each(types,function(type){
             var relations= dType.core.getTypeRelations(type);
+            var obj= type.collection ? doc : doc[type.name];
             _.each(relations, function(relation){
                 var oppositeVisibility= dType.core.getRelationOppositeVisivilityOnType(type, relation);
                 var myVisibility= dType.core.getRelationVisivilityOnType(type, relation);
                 if (oppositeVisibility){
                     var collection= dType.core.getCollection(myVisibility.collection);
                     var update=  getUpdate(doc, oppositeVisibility, myVisibility.target);
-                    var targetId= getTargetId(doc, myVisibility);
+                    var targetId= getTargetId(obj, myVisibility);
 
                     if (targetId){
                         collection.update({ _id: targetId }, update,function(err, result){
