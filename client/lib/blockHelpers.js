@@ -46,7 +46,7 @@ UI.registerHelper('objectProperty', function() {
         template = Template.object_property_single;
       template.error = function() {
         this.property.error.dep.depend();
-        return this.property.error.hasError? this.error.message : '';
+        return this.property.error.hasError? this.property.error.message : '';
       };
   }
 
@@ -116,7 +116,7 @@ Template.typeInput.helpers({
 //<editor-fold desc="***********************  fieldInput *********************">
 Template.fieldInput.helpers({
   hasError :function(){
-    return this.error? 'error': '';
+    return this.isValid? '': 'error';
   }
 })
 Template.lookUpFieldInput.helpers({
@@ -125,7 +125,7 @@ Template.lookUpFieldInput.helpers({
     return LookUps.find({codeType: this.lookUpCode});
   },
   hasError :function(){
-    return this.error? 'error': '';
+    return this.isValid? '': 'error';
   }
 })
 //</editor-fold>
@@ -139,7 +139,7 @@ Template.relInput.helpers({
     return Contactables.find(q);
   },
   hasError :function(){
-    return this.error? 'error': '';
+    return this.isValid? '': 'error';
   },
   isDisabled:function(){
     return ! this.editable;
