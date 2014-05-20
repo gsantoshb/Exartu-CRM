@@ -134,10 +134,6 @@ Template.contactable.events({
     'click .send-message': function (e) {
         Composer.showModal('sendMessage', $data);
     },
-    'click .addContact': function () {
-        Session.set('options', {Contact: {customer: Session.get('entityId')}})
-        Router.go('addContactablePage', {objType: 'Contact'});
-    },
     'resize .img-responsive': function(){
 
     }
