@@ -135,8 +135,8 @@ Utils.ObjectDefinition = function(definition) {
   };
 
   self.showErrors = function() {
-    _.forEach(self, function(prop) {
-        prop.error.hasError = !(prop.validator? prop.validator() : true);
+    _.forEach(_.keys(self.reactiveProps), function(propName) {
+        self[propName].error.hasError = !(self[propName].validator? self[propName].validator() : true);
       }
     );
   };
