@@ -86,6 +86,7 @@ Template.contactable.rendered = function () {
 
     this.$('.img-responsive').on('resize',centerImage);
 
+    this.$('#content').css('background-color','transparent');
 
     var asd = function () {
         var hash = Router.current().params.hash || 'home';
