@@ -3,7 +3,6 @@ if (!dType){
 }
 dType.validator={
     validateInsert: function(userId, doc){
-        debugger;
         var types= dType.core.getObjBaseTypes(doc);
         return _.every(types, function(type){
             if(type.customValidation){
@@ -26,17 +25,21 @@ dType.validator={
 }
 //loop throw the obj keys, find out what that key represents (field, relation, etc) and validate it
 // if the key represents a child objType, then it validates that child
-var isValidObj= function(type, obj){
-    //check if the obj has every required key
-    var required=getRequiredkeys(type);
-    if (! isContained(required, _.keys(obj))){
-        return false;
+var isValidObj= function(type, obj, isUpdate){
+    if(!isUpdate){
+        //check if the obj has every required key
+        var required=getRequiredkeys(type);
+        if (! isContained(required, _.keys(obj))){
+            console.log('the obj is not valid, some required keys missing for type '+type.name)
+            return false;
+        }
+        completeObj(type, obj);
     }
-    completeObj(type, obj);
     return _.every(_.keys(obj), function(key){
         return isValidProperty(type, obj, key);
     })
 }
+
 var getRequiredkeys= function(type){
     var result=[];
     _.each(type.fields,function(field){
@@ -82,11 +85,11 @@ var completeObj= function(type, obj){
 var isValidObjUpdate= function(baseType, modifier){
     var formatedModifier=getFormatedModifier(modifier);
     return _.every(_.keys(formatedModifier), function(key){
-        return isValidProperty(baseType, formatedModifier, key);
+        return isValidProperty(baseType, formatedModifier, key, true);
     })
 }
 
-var isValidProperty= function(type, obj, propName){
+var isValidProperty= function(type, obj, propName, isUpdate){
     var result;
     result=isField(type, propName);
     if (result){
@@ -110,7 +113,7 @@ var isValidProperty= function(type, obj, propName){
     result=isSubType(type, propName);
     if (result){
         console.log('validating subType: ' + propName);
-        return isValidObj(result, obj[propName]);
+        return isValidObj(result, obj[propName], isUpdate);
     }
 //    console.log(propName + ' is nothing')
     return true;
@@ -140,9 +143,11 @@ var isSubType= function(type, propName){
 }
 
 var isValidField= function(field, value){
-    var aux= dType.core.getFieldType(field.fieldType).validate(value, field);
+    var error={}
+    var aux= dType.core.getFieldType(field.fieldType).validate(value, field, error);
     if(!aux){
-        console.log('value: ' + value + ' is not valid for field ' + field.name)
+        console.log('value: ' + value + ' is not valid for field ' + field.name+':')
+        console.log(error.message)
     }
     return aux;
 }
