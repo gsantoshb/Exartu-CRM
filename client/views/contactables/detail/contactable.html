@@ -1,129 +1,129 @@
 <template name="contactable">
     <div class="contactable-page-details">
         <div id="content">
+            {{#with contactable}}
+                <div id="breadcrumb" class="breadcrumb-top">
+                    <a href="#" title="Go to Home" class="tip-bottom">Home</a>
+                    <a href="#" class="current">Contactables</a>
+                </div>
+                <div id="content-header" class="content-header-bottom">
 
-            <div id="breadcrumb" class="breadcrumb-top">
-                <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-                <a href="#" class="current">Contactables</a>
-            </div>
-            <div id="content-header" class="content-header-bottom">
-                {{#with contactable}}
-                <div class="profile-content-header">
-                    <div class="profile-pic">
-                        {{#if pictureFileId}}
-                            <div id="edit-pic" class="profile-pic" title="Click to Edit" style="cursor: pointer;">
-                                <img class="img-responsive" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
-                            </div>
+                    <div class="profile-content-header">
+                        <div class="profile-pic">
+                            {{#if pictureFileId}}
+                                <div id="edit-pic" class="profile-pic" title="Click to Edit" style="cursor: pointer;">
+                                    <img class="img-responsive" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
+                                </div>
 
-                        {{else}}
-                            <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
-                                {{#if person}}
-                                    <i class="icon-profile-bussiness-man"></i>
-                                {{/if}}
-                                {{#if organization}}
-                                    <i class="icon-profile-bussiness-man"></i>
-                                {{/if}}
-                            </div>
+                            {{else}}
+                                <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
+                                    {{#if person}}
+                                        <i class="icon-profile-bussiness-man"></i>
+                                    {{/if}}
+                                    {{#if organization}}
+                                        <i class="icon-profile-bussiness-man"></i>
+                                    {{/if}}
+                                </div>
+                            {{/if}}
+                            <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader"/>
+                        </div>
+                        {{#if Customer}}
+                            {{>customer_header}}
                         {{/if}}
-                        <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader"/>
-                    </div>
-                    {{#if Customer}}
-                        {{>customer_header}}
-                    {{/if}}
-                    {{#if Employee}}
-                        {{>employee_header}}
-                    {{/if}}
-                    <div class="profile-last-update">
-                        Created at
-                        <small>{{createdAtFormatted}}</small>
+                        {{#if Employee}}
+                            {{>employee_header}}
+                        {{/if}}
+                        <div class="profile-last-update">
+                            Created at
+                            <small>{{createdAtFormatted}}</small>
+                        </div>
                     </div>
                 </div>
-                {{/with}}
-            </div>
 
-            <!-- /.content-header -->
-            <div class="container-fluid">
-                <div class="row">
-                    <!-- Left Column -->
-                    <div class="col-sm-8 col-lg-5 contactable-left-col">
-                        {{>customer_actions contactable}}
-                    </div>
+                <!-- /.content-header -->
+                <div class="container-fluid contactable-content">
+                    <div class="row">
+                        <!-- Left Column -->
+                        <div class="col-sm-8 col-lg-5 contactable-left-col">
+                            {{>customer_actions contactable}}
+                        </div>
 
-                    <!-- Right Column -->
-                    <div class="col-sm-4 col-lg-7 contactable-right-col has-tabs">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                {{>contactableDetailBox}}
-                            </div><!-- /.col-md-6 -->
+                        <!-- Right Column -->
+                        <div class="col-sm-4 col-lg-7 contactable-right-col-custom has-tabs">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{>contactableDetailBox}}
+                                </div><!-- /.col-md-6 -->
 
-                            <div class="col-lg-6">
+                                <div class="col-lg-6">
 
-                                <!-- Contacts -->
-                                <div class="box">
-                                    <div class="box-header-2">
-                                            <a class="btn-action tip-top addContact" data-original-title="Add Contact" href="#"><i class="fa fa-plus"></i></a>
-                                        <div class="box-title">Contacts</div>
-                                    </div>
-                                    <div class="box-content-md">
-                                        <ul class="list-3 stripped has-thumb">
-                                            <li class="list-3-item">
-                                                <div class="list-thumb"><i class="icon-address-1"></i></div>
-                                                <div class="list-3-content">
-                                                    <div class="list-3-content-wrap">
-                                                        <div class="pull-right">
-                                                            <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
-                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
-                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
-                                                        </div>
-                                                        <div class="list-3-item-meta-top">Designer</div>
-                                                        <h4 class="list-3-item-title"><a href="#">Mihai Constantinescu</a></h4>
-                                                    </div><!-- /.list-3-content-wrap -->
-                                                </div>
-                                            </li>
-                                            <li class="list-3-item">
-                                                <div class="list-thumb"><i class="icon-address-1"></i></div>
-                                                <div class="list-3-content">
-                                                    <div class="list-3-content-wrap">
-                                                        <div class="pull-right">
-                                                            <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
-                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
-                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
-                                                        </div>
-                                                        <div class="list-3-item-meta-top">CEO</div>
-                                                        <h4 class="list-3-item-title"><a href="#">Peter S.</a></h4>
-                                                    </div><!-- /.list-3-content-wrap -->
-                                                </div>
-                                            </li>
+                                    <!-- Contacts -->
+                                    <div class="box">
+                                        <div class="box-header-2">
+                                                <a class="btn-action tip-top addContact" data-original-title="Add Contact" href="#"><i class="fa fa-plus"></i></a>
+                                            <div class="box-title">Contacts</div>
+                                        </div>
+                                        <div class="box-content-md">
+                                            <ul class="list-3 stripped has-thumb">
+                                                <li class="list-3-item">
+                                                    <div class="list-thumb"><i class="icon-address-1"></i></div>
+                                                    <div class="list-3-content">
+                                                        <div class="list-3-content-wrap">
+                                                            <div class="pull-right">
+                                                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                                                            </div>
+                                                            <div class="list-3-item-meta-top">Designer</div>
+                                                            <h4 class="list-3-item-title"><a href="#">Mihai Constantinescu</a></h4>
+                                                        </div><!-- /.list-3-content-wrap -->
+                                                    </div>
+                                                </li>
+                                                <li class="list-3-item">
+                                                    <div class="list-thumb"><i class="icon-address-1"></i></div>
+                                                    <div class="list-3-content">
+                                                        <div class="list-3-content-wrap">
+                                                            <div class="pull-right">
+                                                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                                                            </div>
+                                                            <div class="list-3-item-meta-top">CEO</div>
+                                                            <h4 class="list-3-item-title"><a href="#">Peter S.</a></h4>
+                                                        </div><!-- /.list-3-content-wrap -->
+                                                    </div>
+                                                </li>
 
-                                            <li class="list-3-item">
-                                                <div class="list-thumb"><i class="icon-address-1"></i></div>
-                                                <div class="list-3-content">
-                                                    <div class="list-3-content-wrap">
-                                                        <div class="pull-right">
-                                                            <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
-                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
-                                                            <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
-                                                        </div>
-                                                        <div class="list-3-item-meta-top">CEO</div>
-                                                        <h4 class="list-3-item-title"><a href="#">Johnny B.</a></h4>
-                                                    </div><!-- /.list-3-content-wrap -->
-                                                </div>
-                                            </li>
-                                        </ul>
+                                                <li class="list-3-item">
+                                                    <div class="list-thumb"><i class="icon-address-1"></i></div>
+                                                    <div class="list-3-content">
+                                                        <div class="list-3-content-wrap">
+                                                            <div class="pull-right">
+                                                                <a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>
+                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>
+                                                                <a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>
+                                                            </div>
+                                                            <div class="list-3-item-meta-top">CEO</div>
+                                                            <h4 class="list-3-item-title"><a href="#">Johnny B.</a></h4>
+                                                        </div><!-- /.list-3-content-wrap -->
+                                                    </div>
+                                                </li>
+                                            </ul>
 
-                                    </div><!-- /.box-content-md -->
-                                </div><!-- /.box -->
+                                        </div><!-- /.box-content-md -->
+                                    </div><!-- /.box -->
 
-                                <!-- Tags -->
+                                    <!-- Tags -->
                                     {{>contactableTagsBox}}
 
-                            </div><!-- /.col-md-6 -->
-                        </div><!-- /.row -->
-                    </div><!-- /.contactable-right-col -->
-                    <!-- / Right Column -->
+                                </div><!-- /.col-md-6 -->
+                            </div><!-- /.row -->
+                        </div><!-- /.contactable-right-col -->
+                        <!-- / Right Column -->
 
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            {{/with}}
         </div><!-- /.content -->
     </div>
 </template>
@@ -169,7 +169,7 @@
 </template>
 
 <template name="customer_actions">
-    <ul class="nav nav-tabs nav-tabs-main bottom-20">
+    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
         <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">8</span></a></li>
         <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">6</span></a></li>
     </ul>
@@ -232,44 +232,44 @@
 </template>
 
 <template name="loadingContactable">
-            <div id="content">
-                <div id="content-header" class="mini">
-                    <h1>Dashboard</h1>
-                    <ul class="mini-stats box-3">
-                        <li>
-                            <div class="left sparkline_bar_good"><span><canvas width="41" height="24" style="display: inline-block; width: 41px; height: 24px; vertical-align: top;"></canvas></span>+10%</div>
-                            <div class="right">
-                                <strong>36094</strong>
-                                Visits
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left sparkline_bar_neutral"><span><canvas width="47" height="24" style="display: inline-block; width: 47px; height: 24px; vertical-align: top;"></canvas></span>0%</div>
-                            <div class="right">
-                                <strong>1433</strong>
-                                Users
-                            </div>
-                        </li>
-                        <li>
-                            <div class="left sparkline_bar_bad"><span><canvas width="41" height="24" style="display: inline-block; width: 41px; height: 24px; vertical-align: top;"></canvas></span>+50%</div>
-                            <div class="right">
-                                <strong>8650</strong>
-                                Orders
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div id="breadcrumb">
-                    <a href="#" title="" class="tip-bottom" data-original-title="Go to Home"><i class="fa fa-home"></i> Home</a>
-                    <a href="#" class="current">Dashboard</a>
-                </div>
-                <div class="container-fluid">
+    <div id="content">
+        <div id="content-header" class="mini">
+            <h1>Dashboard</h1>
+            <ul class="mini-stats box-3">
+                <li>
+                    <div class="left sparkline_bar_good"><span><canvas width="41" height="24" style="display: inline-block; width: 41px; height: 24px; vertical-align: top;"></canvas></span>+10%</div>
+                    <div class="right">
+                        <strong>36094</strong>
+                        Visits
+                    </div>
+                </li>
+                <li>
+                    <div class="left sparkline_bar_neutral"><span><canvas width="47" height="24" style="display: inline-block; width: 47px; height: 24px; vertical-align: top;"></canvas></span>0%</div>
+                    <div class="right">
+                        <strong>1433</strong>
+                        Users
+                    </div>
+                </li>
+                <li>
+                    <div class="left sparkline_bar_bad"><span><canvas width="41" height="24" style="display: inline-block; width: 41px; height: 24px; vertical-align: top;"></canvas></span>+50%</div>
+                    <div class="right">
+                        <strong>8650</strong>
+                        Orders
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="breadcrumb">
+            <a href="#" title="" class="tip-bottom" data-original-title="Go to Home"><i class="fa fa-home"></i> Home</a>
+            <a href="#" class="current">Dashboard</a>
+        </div>
+        <div class="container-fluid">
 
-                    <div class="page-loader" style="height: 748px;">
+            <div class="page-loader" style="height: 748px;">
 
-                    </div><!-- /.page-loader -->
+            </div><!-- /.page-loader -->
 
-                </div><!-- /.container-fluid -->
+        </div><!-- /.container-fluid -->
 
-            </div>
-        </template>
+    </div>
+</template>
