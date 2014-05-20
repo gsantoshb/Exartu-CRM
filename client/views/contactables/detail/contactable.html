@@ -33,6 +33,9 @@
                         {{#if Employee}}
                             {{>employee_header}}
                         {{/if}}
+                        {{#if Contact }}
+                            {{>contact_header}}
+                        {{/if}}
                         <div class="profile-last-update">
                             Created at
                             <small>{{createdAtFormatted}}</small>
@@ -45,7 +48,7 @@
                     <div class="row">
                         <!-- Left Column -->
                         <div class="col-sm-8 col-lg-5 contactable-left-col">
-                            {{>customer_actions contactable}}
+                            {{>customer_tabs}}
                         </div>
 
                         <!-- Right Column -->
@@ -72,6 +75,8 @@
         </div><!-- /.content -->
     </div>
 </template>
+
+<!-- Headers -->
 
 <template name="customer_header">
     <h1 class="profile-name">
@@ -113,26 +118,47 @@
     </div>
 </template>
 
-<template name="customer_actions">
-    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">8</span></a></li>
-        <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">6</span></a></li>
-    </ul>
+<template name="contact_header">
+    <h1 class="profile-name">
+        <strong>{{displayName}}</strong>
+        {{#if person}}
+        <small>— {{person.jobTitle}}</small>
+        {{/if}}
+    </h1>
+    <p class="profile-adress">
+        <i class="fa fa-map-marker"></i>
+        {{#if location}}
+        <span>{{location}}</span>
+        {{else}}
+        <em> Click here to add an address </em>
+        {{/if}}
+    </p>
 
-    <div class="tab-content">
-        <!-- Notes Tab -->
-        <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=.}}
-            {{> contactableNotesList entity=.}}
-        </div>
-        <!-- Documents Tab -->
-        <div class="tab-pane" id="profile-documents">
-            {{> contactableDocumentsAdd entity=. collection="ContactablesFS"}}
-            {{> contactableDocumentsList entity=. collection="ContactablesFS"}}
-        </div><!-- /.profile-documents -->
+    <div class="profile-btns">
+        {{#if firstCellPhone }}
+        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+            <span class="btn-round"><i class="fa fa-phone"></i></span>
+            <span>{{firstCellPhone}}</span>
+        </a>
+        {{/if}}
+        {{#if firstEmail }}
+        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+            <span class="btn-round"><i class="fa fa-envelope"></i></span>
+            <span>{{firstEmail.value}}</span>
+        </a>
+        {{/if}}
+        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
+        <!--data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">-->
+        <!--<span class="btn-round"><i class="fa fa-envelope"></i></span>-->
+        <!--Message-->
+        <!--</a>-->
+        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
+        <!--data-bind="click: function () { Composer.showModal('addContactable', 'Contact',{customer: $data._id()}); }">-->
+        <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
+        <!--Add Contact Method-->
+        <!--</a>-->
     </div>
 </template>
-
 
 <template name="employee_header">
     <h1 class="profile-name">
@@ -173,6 +199,28 @@
         <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
         <!--Add Contact Method-->
         <!--</a>-->
+    </div>
+</template>
+
+<!-- Tabs -->
+
+<template name="customer_tabs">
+    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">8</span></a></li>
+        <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">6</span></a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Notes Tab -->
+        <div class="tab-pane active" id="profile-notes">
+            {{> contactableNotesAdd entity=.}}
+            {{> contactableNotesList entity=.}}
+        </div>
+        <!-- Documents Tab -->
+        <div class="tab-pane" id="profile-documents">
+            {{> contactableDocumentsAdd entity=. collection="ContactablesFS"}}
+            {{> contactableDocumentsList entity=. collection="ContactablesFS"}}
+        </div><!-- /.profile-documents -->
     </div>
 </template>
 
