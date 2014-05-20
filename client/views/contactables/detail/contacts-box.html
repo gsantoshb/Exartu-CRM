@@ -1,0 +1,31 @@
+<template name="contactableContactsBox">
+    {{#if hasContacts }}
+        <div class="box">
+            <div class="box-header-2">
+                <a class="btn-action tip-top addContact" data-original-title="Add Contact" href="#"><i class="fa fa-plus"></i></a>
+                <div class="box-title">Contacts</div>
+            </div>
+            <div class="box-content-md">
+                <ul class="list-3 stripped has-thumb">
+                    {{#each contacts }}
+                        <li class="list-3-item">
+                            {{_id}}
+                            <div class="list-thumb"><i class="icon-address-1"></i></div>
+                            <div class="list-3-content">
+                                <div class="list-3-content-wrap">
+                                    <!--<div class="pull-right">-->
+                                        <!--<a class="btn btn-xs btn-default tip-bottom" title="" href="#" data-original-title="gregg@tempworks.com"><i class="fa fa-envelope-o"></i> </a>-->
+                                        <!--<a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>-->
+                                        <!--<a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>-->
+                                    <!--</div>-->
+                                    <div class="list-3-item-meta-top">Designer</div>
+                                    <h4 class="list-3-item-title"><a href="#">Mihai Constantinescu</a></h4>
+                                </div><!-- /.list-3-content-wrap -->
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div><!-- /.box-content-md -->
+        </div><!-- /.box -->
+    {{/if}}
+</template>
