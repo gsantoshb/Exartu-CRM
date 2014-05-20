@@ -53,7 +53,9 @@
                     <div class="col-sm-4 col-lg-7 contactable-right-col has-tabs">
                         <div class="row">
                             <div class="col-lg-6">
-                                {{>contactableDetailBox}}
+                                {{#with contactable}}
+                                    {{>contactableDetailBox}}
+                                {{/with}}
                             </div><!-- /.col-md-6 -->
 
                             <div class="col-lg-6">
@@ -115,7 +117,9 @@
                                 </div><!-- /.box -->
 
                                 <!-- Tags -->
+                                {{#with contactable}}
                                     {{>contactableTagsBox}}
+                                {{/with}}
 
                             </div><!-- /.col-md-6 -->
                         </div><!-- /.row -->
