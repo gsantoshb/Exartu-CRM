@@ -31,6 +31,11 @@
         "tag": "v3.1.1-1",
         "commit": "63dd38968828bb8963636df93e9a1c45e2dfe67e"
       },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.7.1",
+        "commit": "d1ffb3f06ea4c112132b030f2eb1a70b81675ecb"
+      },
       "knockout-client": {
         "git": "https://github.com/zhouzhuojie/knockout-client.git",
         "tag": "v0.0.2",
@@ -93,13 +98,18 @@
       },
       "apm": {
         "git": "https://github.com/arunoda/meteor-apm-client.git",
-        "tag": "v1.3.1",
-        "commit": "0ed9f0d89a31ff186f45130cb0ae508b56f268db"
+        "tag": "v1.4.1",
+        "commit": "51e1fd890bea6e9b7b55e501f0abf8124fd1a611"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
+      },
+      "blaze-layout": {
+        "git": "https://github.com/EventedMind/blaze-layout.git",
+        "tag": "v0.2.4",
+        "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
       },
       "cfs-base-package": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-base-package.git",
@@ -108,8 +118,8 @@
       },
       "cfs-file": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-file.git",
-        "tag": "v0.1.4",
-        "commit": "118ee62a459f20e48468378d576f0d42e4b15dd7"
+        "tag": "v0.1.5",
+        "commit": "02dbe5f51a9d1067c3891e3658c48d4fadb9dff6"
       },
       "cfs-collection": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-collection.git",
