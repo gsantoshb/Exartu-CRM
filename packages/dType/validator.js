@@ -152,21 +152,25 @@ var isValidField= function(field, value){
     return aux;
 }
 var isValidRelation= function(visibility, value){
+    debugger;
     if (!checkCardinality(value, visibility.cardinality)){
         console.log('invalid card')
         return false;
     }
+    if(value){
+        if (visibility.cardinality.max == 1) {
+            //check if the value's type is the same as this relation's target (rel.obj2)
 
-    if (visibility.cardinality.max == 1) {
-        //check if the value's type is the same as this relation's target (rel.obj2)
-
-        return checkType(value, visibility.target, dType.core.getCollection(visibility.collection));
-    }
-    else {
-        //checking if all the values are correct
-        return _.every(value, function (val) {
-            return checkType(val, visibility.target, dType.core.getCollection(visibility.collection));
-        });
+            return checkType(value, visibility.target, dType.core.getCollection(visibility.collection));
+        }
+        else {
+            //checking if all the values are correct
+            return _.every(value, function (val) {
+                return checkType(val, visibility.target, dType.core.getCollection(visibility.collection));
+            });
+        }
+    }else{
+        return true;
     }
     //todo check other side
 }
