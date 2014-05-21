@@ -213,6 +213,11 @@
         {{#if person}}
             <small>— {{person.jobTitle}}</small>
         {{/if}}
+        {{#if assignmentInfo}}
+            <a class="pull-right" href="/job/{{assignmentInfo._id}}">
+                <i class="icon icon-briefcase"> <span>{{assignmentInfo.displayName}}</span></i>
+            </a>
+        {{/if}}
     </h1>
     <p class="profile-adress">
         <i class="fa fa-map-marker"></i>
