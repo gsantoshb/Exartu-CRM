@@ -7,26 +7,15 @@
                     <a href="#" class="current">Contactables</a>
                 </div>
                 <div id="content-header" class="content-header-bottom">
-
                     <div class="profile-content-header">
-                        <div class="profile-pic">
-                            {{#if pictureFileId}}
+                        {{#if pictureFileId}}
+                            <div class="profile-pic">
                                 <div id="edit-pic" class="profile-pic" title="Click to Edit" style="cursor: pointer;">
                                     <img class="img-responsive" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
                                 </div>
-
-                            {{else}}
-                                <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
-                                    {{#if person}}
-                                        <i class="icon-profile-bussiness-man"></i>
-                                    {{/if}}
-                                    {{#if organization}}
-                                    <i class="icon-buildings-1"></i>
-                                    {{/if}}
-                                </div>
-                            {{/if}}
-                            <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader"/>
-                        </div>
+                            </div>
+                        {{/if}}
+                        <input id="edit-picture" style="visibility:hidden; display: none" name="files" type="file" class="fileUploader"/>
                         {{#if Customer}}
                             {{>customer_header}}
                         {{/if}}
@@ -79,6 +68,21 @@
 <!-- Headers -->
 
 <template name="customer_header">
+
+    {{#if pictureFileId}}
+    {{else}}
+        <div class="profile-pic">
+            <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
+                {{#if person}}
+                    <i class="icon-profile-bussiness-man"></i>
+                {{/if}}
+                {{#if organization}}
+                    <i class="icon-buildings-1"></i>
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
+
     <h1 class="profile-name">
         <strong>{{displayName}}</strong>
         <small>{{Customer.department}}</small>
@@ -119,33 +123,51 @@
 </template>
 
 <template name="contact_header">
+    {{#if pictureFileId}}
+    {{else}}
+        <div class="profile-pic">
+            <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
+                {{#if person}}
+                    <i class="icon-contact-book-2"></i>
+                {{/if}}
+                {{#if organization}}
+                    <i class="icon-buildings-1"></i>
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
+
     <h1 class="profile-name">
         <strong>{{displayName}}</strong>
         {{#if person}}
-        <small>— {{person.jobTitle}}</small>
+            <small>— {{person.jobTitle}}</small>
         {{/if}}
+        <a class="pull-right" href="/contactable/{{Contact.customer}}">
+            <i class="icon-buildings-1"></i>
+            {{Contact.customerName}}
+        </a>
     </h1>
     <p class="profile-adress">
         <i class="fa fa-map-marker"></i>
         {{#if location}}
-        <span>{{location}}</span>
+            <span>{{location}}</span>
         {{else}}
-        <em> Click here to add an address </em>
+            <em> Click here to add an address </em>
         {{/if}}
     </p>
 
     <div class="profile-btns">
         {{#if firstCellPhone }}
-        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
-            <span class="btn-round"><i class="fa fa-phone"></i></span>
-            <span>{{firstCellPhone}}</span>
-        </a>
+            <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                <span class="btn-round"><i class="fa fa-phone"></i></span>
+                <span>{{firstCellPhone}}</span>
+            </a>
         {{/if}}
         {{#if firstEmail }}
-        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
-            <span class="btn-round"><i class="fa fa-envelope"></i></span>
-            <span>{{firstEmail.value}}</span>
-        </a>
+            <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                <span class="btn-round"><i class="fa fa-envelope"></i></span>
+                <span>{{firstEmail.value}}</span>
+            </a>
         {{/if}}
         <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
         <!--data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">-->
@@ -161,6 +183,20 @@
 </template>
 
 <template name="employee_header">
+    {{#if pictureFileId}}
+    {{else}}
+        <div class="profile-pic">
+            <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
+                {{#if person}}
+                <i class="icon-profile-man"></i>
+                {{/if}}
+                {{#if organization}}
+                <i class="icon-buildings-1"></i>
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
+
     <h1 class="profile-name">
         <strong>{{displayName}}</strong>
         {{#if person}}
