@@ -94,8 +94,6 @@ Template.contactable.rendered = function () {
         $('.nav-pills-' + hash).addClass('active');
     }
     Meteor.autorun(asd);
-
-
 }
 
 Template.contactable.helpers({
@@ -126,9 +124,10 @@ Template.contactable.events({
         fsFile.metadata = {
             entityId: contactableId,
             owner: Meteor.userId(),
-            name: fsFile.name
+            name: fsFile.name()
         };
-        var file = ContactablesFS.insert(fsFile);
+
+        var file = ContactablesFS.insert(fsFile, function() {});
 
         Meteor.call('updateContactablePicture', contactableId, file._id);
     },
