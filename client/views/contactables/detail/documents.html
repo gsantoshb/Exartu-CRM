@@ -8,7 +8,7 @@
                     <h3 class="lead">Drop files here</h3>
                     <p>or</p>
                     <br>
-                    <span id="add-trigger" class="btn btn-default"> Upload file </span>
+                    <span class="btn btn-default add-trigger"> Upload file </span>
                     <input style="visibility: hidden" id="add-file" type="file">
                 {{/dragAndDrop}}
             {{/if}}
@@ -109,6 +109,15 @@
                     </div><!-- /.list-3-content-wrap -->
                 </div>
             </li>
+        {{else}}
+            <div class="box-v-msg">
+                <div class="box-v-msg-content">
+                    <i class="icon-document-1"></i>
+                    <p>No document added yet<br>
+                        <a href="#" class="add-document-trigger">Add new document</a>
+                    </p>
+                </div><!-- /.box-v-msg-content -->
+            </div>
         {{/each}}
     </ul>
 </template>
