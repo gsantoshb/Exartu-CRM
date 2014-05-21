@@ -106,6 +106,11 @@ Template.contactableLocationBox.rendered=function(){
         }
     }
     var mapUpdate=function(){
+        $map=this.$('.map')
+        //hack find a way to stop running this
+        if (!$map[0])
+            return;
+
         var location
         if (EditLocationMode.value){
             location=data.location;
