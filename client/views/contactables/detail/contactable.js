@@ -1,7 +1,7 @@
 ContactableController = RouteController.extend({
-//  layoutTemplate: 'contactable',
+    layoutTemplate: 'mainLayout',
     waitOn: function () {
-        return [ObjTypesHandler, ContactableHandler, ContactMethodsHandler, GoogleMapsHandler]//GoogleMaps
+        return [ObjTypesHandler, ContactableHandler, ContactMethodsHandler, GoogleMapsHandler]
     },
     data: function () {
         Session.set('entityId', this.params._id);
@@ -112,3 +112,9 @@ Template.contactable.events({
         $('#edit-Location').trigger('click');
     }
 });
+
+Template.contact_header.events({
+    "click .editCustomer": function(){
+        Composer.showModal( 'contactCustomerAddEdit', Session.get('entityId'));
+    }
+})
