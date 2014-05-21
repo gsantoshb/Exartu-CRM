@@ -11,10 +11,11 @@
                     <div class="profile-content-header">
                         <div class="profile-pic">
                             {{#if pictureFileId}}
-                                <div id="edit-pic" class="profile-pic" title="Click to Edit" style="cursor: pointer;">
-                                    <img class="img-responsive" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
+                                <div class="thumb thumb-md profile-pic-photo" title="Click to Edit" style="cursor: pointer;">
+                                    <a href="#">
+                                        <img class="" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
+                                    </a>
                                 </div>
-
                             {{else}}
                                 <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
                                     {{#if person}}
