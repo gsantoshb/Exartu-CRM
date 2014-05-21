@@ -159,5 +159,9 @@ Template.contactables.viewModel = function () {
         Session.set('newContactableTypeId', typeId);
         $('#addContactableModal').modal('show');
     };
+
+    self.isFilering=ko.dep(function(){
+        return Contactables.find().count()!=0;
+    })
     return self;
 };
