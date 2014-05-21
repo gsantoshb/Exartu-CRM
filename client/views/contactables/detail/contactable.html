@@ -148,10 +148,15 @@
         {{#if person}}
             <small>— {{person.jobTitle}}</small>
         {{/if}}
-        <a class="pull-right" href="/contactable/{{Contact.customer}}">
-            <i class="icon-buildings-1"></i>
-            {{Contact.customerName}}
-        </a>
+
+        {{#if Contact.customerName}}
+            <a class="pull-right" href="/contactable/{{Contact.customer}}">
+                <i class="icon-buildings-1"></i>
+                {{Contact.customerName}}
+            </a>
+        {{else}}
+            <a class="pull-right editCustomer" href="#"> <i class="icon-buildings-1"></i> Link to a Customer</a>
+        {{/if}}
     </h1>
     <p class="profile-adress">
         <i class="fa fa-map-marker"></i>

@@ -111,3 +111,9 @@ Template.contactable.events({
         $('#edit-Location').trigger('click');
     }
 });
+
+Template.contact_header.events({
+    "click .editCustomer": function(){
+        Composer.showModal( 'contactCustomerAddEdit', Session.get('entityId'));
+    }
+})

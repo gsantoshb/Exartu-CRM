@@ -13,13 +13,20 @@ Template.contactCustomerAddEdit.viewModel = function (contact) {
         if(cont.Contact.customer===undefined){
             cont.Contact.customer=null;
         }
-        Meteor.call('updateContactable', cont, function(err, result){
+        Contactables.update({_id: cont._id},{$set:{'Contact.customer':cont.Contact.customer}},function(err, result){
             if(!err)
                 self.close();
             else{
                 console.dir(err);
             }
-        })
+        });
+//        Meteor.call('updateContactable', cont, function(err, result){
+//            if(!err)
+//                self.close();
+//            else{
+//                console.dir(err);
+//            }
+//        })
     }
     return self;
 }
