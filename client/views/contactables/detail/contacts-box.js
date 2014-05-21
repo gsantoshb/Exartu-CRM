@@ -12,7 +12,6 @@ Template.contactableContactsBox.hasContacts = function() {
 };
 
 Template.contactableContactsBox.contacts = function() {
-  debugger;
   return Contactables.find({ _id: { $in: this.Customer.contacts } });
 }
 

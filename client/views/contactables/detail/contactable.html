@@ -53,6 +53,7 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     {{>contactableDetailBox}}
+                                    {{>contactableLocationBox}}
                                 </div><!-- /.col-md-6 -->
 
                                 <div class="col-lg-6">
@@ -81,9 +82,11 @@
     <p class="profile-adress">
         <i class="fa fa-map-marker"></i>
         {{#if location}}
-            <span>{{location}}</span>
+            <span>{{location.displayName}}</span>
         {{else}}
-            <em> Click here to add an address </em>
+            <a class="addLocation" href="#">
+                <em>Click here to add an address </em>
+            </a>
         {{/if}}
     </p>
 
