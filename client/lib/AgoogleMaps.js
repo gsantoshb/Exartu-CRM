@@ -20,5 +20,13 @@ Meteor.startup(function () {
         _.each(GoogleMaps.observers, function (cb) {
             cb('googleMaps');
         })
+        dep.changed();
     });
 });
+var dep=new Deps.Dependency;
+GoogleMapsHandler={
+    ready:function(){
+        dep.depend();
+        return GoogleMaps._initialized;
+    }
+}

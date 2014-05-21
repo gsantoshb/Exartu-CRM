@@ -1,7 +1,7 @@
 ContactableController = RouteController.extend({
 //  layoutTemplate: 'contactable',
     waitOn: function () {
-        return [ObjTypesHandler, ContactableHandler, ContactMethodsHandler]//GoogleMaps
+        return [ObjTypesHandler, ContactableHandler, ContactMethodsHandler, GoogleMapsHandler]//GoogleMaps
     },
     data: function () {
         Session.set('entityId', this.params._id);
@@ -134,7 +134,7 @@ Template.contactable.events({
     'click .send-message': function (e) {
         Composer.showModal('sendMessage', $data);
     },
-    'resize .img-responsive': function(){
-
+    'click .addLocation':function(){
+        $('#edit-Location').trigger('click');
     }
 });
