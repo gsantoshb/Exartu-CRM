@@ -26,7 +26,7 @@
 </template>
 
 <template name="object_property_multiple">
-    {{#each data}}
+    {{#each values}}
         {{> UI.contentBlock value=.}}
     {{/each}}
     <span class="text text-danger">{{error}}</span>

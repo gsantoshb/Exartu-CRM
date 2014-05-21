@@ -105,6 +105,11 @@ Contactables = new Meteor.Collection("contactables", {
             contactable.location=null;
         }
 
+      if (contactable.Contact && contactable.Contact.customer) {
+        var customer = Contactables.findOne({_id: contactable.Contact.customer });
+        contactable.Contact.customerName = customer.displayName;
+      }
+
         extendObject(contactable);
         return contactable;
     }

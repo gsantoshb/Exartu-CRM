@@ -7,32 +7,24 @@
                     <a href="#" class="current">Contactables</a>
                 </div>
                 <div id="content-header" class="content-header-bottom">
-
                     <div class="profile-content-header">
-                        <div class="profile-pic">
-                            {{#if pictureFileId}}
+                        {{#if pictureFileId}}
                                 <div class="thumb thumb-md profile-pic-photo" title="Click to Edit" style="cursor: pointer;">
                                     <a href="#">
                                         <img class="" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
                                     </a>
                                 </div>
-                            {{else}}
-                                <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
-                                    {{#if person}}
-                                        <i class="icon-profile-bussiness-man"></i>
-                                    {{/if}}
-                                    {{#if organization}}
-                                    <i class="icon-buildings-1"></i>
-                                    {{/if}}
-                                </div>
-                            {{/if}}
-                            <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader"/>
-                        </div>
+                            </div>
+                        {{/if}}
+                        <input id="edit-picture" style="visibility:hidden; display: none" name="files" type="file" class="fileUploader"/>
                         {{#if Customer}}
                             {{>customer_header}}
                         {{/if}}
                         {{#if Employee}}
                             {{>employee_header}}
+                        {{/if}}
+                        {{#if Contact }}
+                            {{>contact_header}}
                         {{/if}}
                         <div class="profile-last-update">
                             Created at
@@ -46,7 +38,7 @@
                     <div class="row">
                         <!-- Left Column -->
                         <div class="col-sm-8 col-lg-5 contactable-left-col">
-                            {{>customer_actions contactable}}
+                            {{>customer_tabs}}
                         </div>
 
                         <!-- Right Column -->
@@ -75,7 +67,24 @@
     </div>
 </template>
 
+<!-- Headers -->
+
 <template name="customer_header">
+
+    {{#if pictureFileId}}
+    {{else}}
+        <div class="profile-pic">
+            <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
+                {{#if person}}
+                    <i class="icon-profile-bussiness-man"></i>
+                {{/if}}
+                {{#if organization}}
+                    <i class="icon-buildings-1"></i>
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
+
     <h1 class="profile-name">
         <strong>{{displayName}}</strong>
         <small>{{Customer.department}}</small>
@@ -117,28 +126,81 @@
     </div>
 </template>
 
-<template name="customer_actions">
-    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">8</span></a></li>
-        <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">6</span></a></li>
-    </ul>
-
-    <div class="tab-content">
-        <!-- Notes Tab -->
-        <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=.}}
-            {{> contactableNotesList entity=.}}
+<template name="contact_header">
+    {{#if pictureFileId}}
+    {{else}}
+        <div class="profile-pic">
+            <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
+                {{#if person}}
+                    <i class="icon-contact-book-2"></i>
+                {{/if}}
+                {{#if organization}}
+                    <i class="icon-buildings-1"></i>
+                {{/if}}
+            </div>
         </div>
-        <!-- Documents Tab -->
-        <div class="tab-pane" id="profile-documents">
-            {{> contactableDocumentsAdd entity=. collection="ContactablesFS"}}
-            {{> contactableDocumentsList entity=. collection="ContactablesFS"}}
-        </div><!-- /.profile-documents -->
+    {{/if}}
+
+    <h1 class="profile-name">
+        <strong>{{displayName}}</strong>
+        {{#if person}}
+            <small>— {{person.jobTitle}}</small>
+        {{/if}}
+        <a class="pull-right" href="/contactable/{{Contact.customer}}">
+            <i class="icon-buildings-1"></i>
+            {{Contact.customerName}}
+        </a>
+    </h1>
+    <p class="profile-adress">
+        <i class="fa fa-map-marker"></i>
+        {{#if location}}
+            <span>{{location}}</span>
+        {{else}}
+            <em> Click here to add an address </em>
+        {{/if}}
+    </p>
+
+    <div class="profile-btns">
+        {{#if firstCellPhone }}
+            <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                <span class="btn-round"><i class="fa fa-phone"></i></span>
+                <span>{{firstCellPhone}}</span>
+            </a>
+        {{/if}}
+        {{#if firstEmail }}
+            <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                <span class="btn-round"><i class="fa fa-envelope"></i></span>
+                <span>{{firstEmail.value}}</span>
+            </a>
+        {{/if}}
+        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
+        <!--data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">-->
+        <!--<span class="btn-round"><i class="fa fa-envelope"></i></span>-->
+        <!--Message-->
+        <!--</a>-->
+        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
+        <!--data-bind="click: function () { Composer.showModal('addContactable', 'Contact',{customer: $data._id()}); }">-->
+        <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
+        <!--Add Contact Method-->
+        <!--</a>-->
     </div>
 </template>
 
-
 <template name="employee_header">
+    {{#if pictureFileId}}
+    {{else}}
+        <div class="profile-pic">
+            <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
+                {{#if person}}
+                <i class="icon-profile-man"></i>
+                {{/if}}
+                {{#if organization}}
+                <i class="icon-buildings-1"></i>
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
+
     <h1 class="profile-name">
         <strong>{{displayName}}</strong>
         {{#if person}}
@@ -177,6 +239,28 @@
         <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
         <!--Add Contact Method-->
         <!--</a>-->
+    </div>
+</template>
+
+<!-- Tabs -->
+
+<template name="customer_tabs">
+    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">8</span></a></li>
+        <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">6</span></a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Notes Tab -->
+        <div class="tab-pane active" id="profile-notes">
+            {{> contactableNotesAdd entity=.}}
+            {{> contactableNotesList entity=.}}
+        </div>
+        <!-- Documents Tab -->
+        <div class="tab-pane" id="profile-documents">
+            {{> contactableDocumentsAdd entity=. collection="ContactablesFS"}}
+            {{> contactableDocumentsList entity=. collection="ContactablesFS"}}
+        </div><!-- /.profile-documents -->
     </div>
 </template>
 

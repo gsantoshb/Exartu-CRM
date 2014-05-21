@@ -37,6 +37,8 @@ Document.Collection.prototype.getUrl = function(fileId, data) {
 };
 
 getUrlAsync = function (collection, id, storeName, cb, maxCallStack) {
+  var defaultPicture = '/assets/user-photo-placeholder.jpg';
+
   if (!maxCallStack) {
     maxCallStack = 20;
   }
@@ -45,14 +47,14 @@ getUrlAsync = function (collection, id, storeName, cb, maxCallStack) {
   });
 
   if (!file)
-    return cb('');
+    return cb(defaultPicture);
 
   var checkFileHandler = function (callStackSize) {
     if (!callStackSize)
       callStackSize = 0;
 
     if (callStackSize > maxCallStack )
-      return cb('');
+      return cb(defaultPicture);
 
     var url = file.url({store: storeName});
 

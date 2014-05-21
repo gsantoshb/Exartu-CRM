@@ -60,6 +60,7 @@ ContactableController = RouteController.extend({
 });
 
 Template.contactable.rendered = function () {
+    this.$('#content').css('background-color','transparent');
     var asd = function () {
         var hash = Router.current().params.hash || 'home';
         $('.nav-pills>.active').removeClass('active');
@@ -96,9 +97,10 @@ Template.contactable.events({
         fsFile.metadata = {
             entityId: contactableId,
             owner: Meteor.userId(),
-            name: fsFile.name
+            name: fsFile.name()
         };
-        var file = ContactablesFS.insert(fsFile);
+
+        var file = ContactablesFS.insert(fsFile, function() {});
 
         Meteor.call('updateContactablePicture', contactableId, file._id);
     },
