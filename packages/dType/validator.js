@@ -152,7 +152,6 @@ var isValidField= function(field, value){
     return aux;
 }
 var isValidRelation= function(visibility, value){
-    debugger;
     if (!checkCardinality(value, visibility.cardinality)){
         console.log('invalid card')
         return false;
