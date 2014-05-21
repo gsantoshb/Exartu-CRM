@@ -31,8 +31,8 @@ UI.registerHelper('objectProperty', function() {
   switch(self.property.type) {
     case 2:
       template = Template.object_property_multiple;
-      template.data = function() {
-        return self.property.value;
+      template.values = function() {
+        return this.property.value;
       };
       break;
     default:
