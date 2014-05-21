@@ -1,18 +1,9 @@
-var contacts = {};
-var hasContacts = true;
-
-Template.contactableContactsBox.created = function() {
-  if (!this.data.Customer) {
-    hasContacts = false;
-  }
-};
 
 Template.contactableContactsBox.hasContacts = function() {
-  return hasContacts;
+  return _.isObject(this.Customer);
 };
 
 Template.contactableContactsBox.contacts = function() {
-  debugger;
   return Contactables.find({ _id: { $in: this.Customer.contacts } });
 }
 

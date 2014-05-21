@@ -9,7 +9,6 @@
                 <ul class="list-3 stripped has-thumb">
                     {{#each contacts }}
                         <li class="list-3-item">
-                            {{_id}}
                             <div class="list-thumb"><i class="icon-address-1"></i></div>
                             <div class="list-3-content">
                                 <div class="list-3-content-wrap">
@@ -18,8 +17,10 @@
                                         <!--<a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="+40. 752.313.301"><i class="fa fa-phone"></i></a>-->
                                         <!--<a class="btn btn-xs btn-default tip-bottom"  title="" href="#" data-original-title="Skype id: mihai_con"><i class="fa fa-skype"></i></a>-->
                                     <!--</div>-->
-                                    <div class="list-3-item-meta-top">Designer</div>
-                                    <h4 class="list-3-item-title"><a href="#">Mihai Constantinescu</a></h4>
+                                    {{#if person}}
+                                        <div class="list-3-item-meta-top">{{person.jobTitle}}</div>
+                                    {{/if}}
+                                    <h4 class="list-3-item-title"><a href="/contactable/{{_id}}">{{displayName}}</a></h4>
                                 </div><!-- /.list-3-content-wrap -->
                             </div>
                         </li>

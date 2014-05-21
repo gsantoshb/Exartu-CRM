@@ -123,14 +123,11 @@ var generateReactiveObject = function(contactable) {
     });
   }
 
-  return Utils.ObjectDefinition(definition);
-};
-
-Template.contactableDetailBox.created = function() {
-  contactable = generateReactiveObject(this.data);
+  return new Utils.ObjectDefinition(definition);
 };
 
 Template.contactableDetailBox.contactable = function() {
+  contactable = generateReactiveObject(this);
   return contactable;
 };
 

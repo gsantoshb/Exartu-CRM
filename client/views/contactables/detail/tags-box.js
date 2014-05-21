@@ -1,37 +1,27 @@
 var contactable = {};
-var hasTags = true;
 
-Template.contactableTagsBox.created = function() {
-  var self = this;
-  if (!_.isArray(self.data.tags)) {
-    debugger;
-    hasTags = false;
-  }
-  else
-    contactable = Utils.ObjectDefinition({
-      reactiveProps: {
-        tags: {
-          type: Utils.ReactivePropertyTypes.array,
-          default: this.data.tags,
-          cb: {
-            onInsert: function(newValue) {
-              Contactables.update({ _id: self.data._id}, {$addToSet: {tags: newValue}});
-            },
-            onRemove: function(value) {
-              Contactables.update({ _id: self.data._id}, {$pull: {tags: value}});
-            }
+Template.contactableTagsBox.tags = function() {
+  contactable = new Utils.ObjectDefinition({
+    reactiveProps: {
+      tags: {
+        type: Utils.ReactivePropertyTypes.array,
+        default: this.tags,
+        cb: {
+          onInsert: function(newValue) {
+            Contactables.update({ _id: this._id}, {$addToSet: {tags: newValue}});
+          },
+          onRemove: function(value) {
+            Contactables.update({ _id: this._id}, {$pull: {tags: value}});
           }
         }
       }
-    });
-}
-
-Template.contactableTagsBox.tags = function() {
+    }
+  });
   return contactable.tags;
 };
 
 Template.contactableTagsBox.hasTags = function() {
-  return hasTags;
+  return _.isArray(this.tags);
 };
 
 Template.contactableTagsBox.events = {
@@ -51,4 +41,4 @@ Template.contactableTagsBox.events = {
   'click .remove-tag': function() {
     contactable.tags.remove(this.value);
   }
-}
+};
