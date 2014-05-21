@@ -60,34 +60,7 @@ ContactableController = RouteController.extend({
 });
 
 Template.contactable.rendered = function () {
-    //center image
-    var centerImage = _.bind(function () {
-//        debugger;
-        var $ = this.$;
-        var parent = $('#edit-pic');
-        var img = parent.find('img');
-        //height
-        if(parent.css('padding-top')=='0px'){
-            var imgHeight=img.height()
-            var parentHeight=parent.outerHeight()
-            if (imgHeight < parentHeight) {
-                parent.css('padding-top', (parentHeight - imgHeight) / 2 + 'px')
-            }
-        }
-        //width
-        if(parent.css('padding-left')=='0px'){
-            var imgWidth=img.width()
-            var parentWidth=parent.outerWidth()
-            if (imgWidth < parentWidth) {
-                parent.css('padding-left', (parentWidth - imgWidth) / 2 + 'px')
-            }
-        }
-    }, this);
-
-    this.$('.img-responsive').on('resize',centerImage);
-
     this.$('#content').css('background-color','transparent');
-
     var asd = function () {
         var hash = Router.current().params.hash || 'home';
         $('.nav-pills>.active').removeClass('active');

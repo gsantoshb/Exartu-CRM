@@ -10,12 +10,15 @@
                     <div class="profile-content-header">
                         {{#if pictureFileId}}
                             <div class="profile-pic">
-                                <div id="edit-pic" class="profile-pic" title="Click to Edit" style="cursor: pointer;">
-                                    <img class="img-responsive" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
+                                <div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">
+                                    <a href="#" id="edit-pic" title="Click to Edit">
+                                        <img class="" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
+                                    </a>
                                 </div>
                             </div>
                         {{/if}}
                         <input id="edit-picture" style="visibility:hidden; display: none" name="files" type="file" class="fileUploader"/>
+
                         {{#if Customer}}
                             {{>customer_header}}
                         {{/if}}
@@ -245,7 +248,7 @@
 
 <template name="customer_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">8</span></a></li>
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{posts.length}}</span></a></li>
         <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">6</span></a></li>
     </ul>
 

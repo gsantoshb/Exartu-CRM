@@ -181,22 +181,35 @@
                                 <!-- /ko -->
                             <!-- /ko -->
                             <!--ko ifnot: entities().length > 0-->
-                            <div class="v-wrapper">
-                                <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                                    <i class="icon-connection-1 text-large"></i>
-                                    <h1>You currently have no
-                                    <!--ko text:name-->
-                                        <!--/ko-->
-                                    </h1>
-                                    <!--ko if:name()=='contactable'-->
-                                        <p class="lead">A contactable is an Employee, Customer or Contact.</p>
-                                    <!-- /ko -->
-                                    <!--ko foreach: contactableTypes-->
-                                        <a href="#" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
-                                        <span class="bullet-spacer" data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
-                                    <!-- /ko -->
-                                </div><!-- /.v-wrapper-cell -->
-                            </div>
+                                <!--ko ifnot:isFilering-->
+                                    <div class="v-wrapper">
+                                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                                            <i class="icon-connection-1 text-large"></i>
+                                            <h1>You currently have no
+                                            <!--ko text:name-->
+                                                <!--/ko-->
+                                            </h1>
+                                            <!--ko if:name()=='contactable'-->
+                                                <p class="lead">A contactable is an Employee, Customer or Contact.</p>
+                                            <!-- /ko -->
+                                            <!--ko foreach: contactableTypes-->
+                                                <a href="#" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
+                                                <span class="bullet-spacer" data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
+                                            <!-- /ko -->
+                                        </div><!-- /.v-wrapper-cell -->
+                                    </div>
+                                <!-- /ko -->
+                                <!--ko if:isFilering-->
+                                    <div class="v-wrapper">
+                                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                                            <i class="icon-connection-1 text-large"></i>
+                                            <h1>No <!--ko text:name-->
+                                                <!--/ko--> Found
+                                            </h1>
+
+                                        </div><!-- /.v-wrapper-cell -->
+                                    </div>
+                                <!-- /ko -->
                             <!-- /ko -->
                             <!--infinite scroll-->
                             <div data-bind="onScrollBottom:showMore"></div>
