@@ -27,7 +27,7 @@ Template.contactableDocumentsAdd.addForm = function() {
 };
 
 Template.contactableDocumentsAdd.events = {
-  'click #add-trigger': function() {
+  'click .add-trigger': function() {
     $('#add-file').trigger('click');
   },
   'change #add-file': function(e) {
@@ -187,5 +187,8 @@ Template.contactableDocumentsList.events = {
     var file = this;
     FS.HTTP.uploadQueue.cancel(file);
     fileCollection.remove({_id: file._id});
+  },
+  'click .add-document-trigger': function() {
+    $('#add-file').trigger('click');
   }
 };
