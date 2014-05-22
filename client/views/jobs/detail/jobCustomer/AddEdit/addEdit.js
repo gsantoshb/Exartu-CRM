@@ -14,13 +14,20 @@ Template.jobCustomerAddEdit.viewModel = function (job) {
         if (job.customer === undefined){
             job.customer= null;
         }
-        Meteor.call('updateJob', job, function(err, result){
+        Jobs.update({ _id: job._id },{ $set: {'customer': job.customer } }, function(err, result){
             if(!err)
                 self.close();
             else{
                 console.dir(err);
             }
         })
+//        Meteor.call('updateJob', job, function(err, result){
+//            if(!err)
+//                self.close();
+//            else{
+//                console.dir(err);
+//            }
+//        })
     }
     return self;
 }
