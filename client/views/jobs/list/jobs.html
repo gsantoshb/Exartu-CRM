@@ -46,7 +46,7 @@
                                                     <!-- /ko -->
                                                 </p>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Enter tags here..." data-bind="value:tag">
+                                                    <input id="tag-filter" type="text" class="form-control" placeholder="Enter tags here..." data-bind="value:tag, valueUpdate: 'afterkeydown'">
                                                     <span class="input-group-btn">
                                                         <button class="btn btn-primary" type="button" data-bind="click: addTag">Add</button>
                                                     </span>

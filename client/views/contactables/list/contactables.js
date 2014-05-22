@@ -149,6 +149,13 @@ Template.contactables.viewModel = function () {
         self.tag('');
     };
 
+    $('#tag-filter').on('keypress', function(e) {
+      if (e.keyCode == 13) {
+        self.addTag();
+        e.preventDefault();
+      }
+    });
+
     self.removeTag = function (tag) {
         filters().tags.remove(tag);
     };
