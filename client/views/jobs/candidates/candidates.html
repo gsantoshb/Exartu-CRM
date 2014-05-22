@@ -17,11 +17,11 @@
                 <li class="clearfix">
                     <div class="thumb thumb-md">
                         <a class="thumb-content" href="#">
-                            <!--ko with: helper.getEmployeePictureAsync(employeeInfo)-->
-                                <!--ko if: ready-->
-                                    <img data-bind="attr: {src: picture}" alt="">
-                                <!--/ko-->
-                            <!--/ko-->
+                            <!-- ko with: ContactablesFS.getThumbnailUrl(employeeInfo.pictureFileId())-->
+                                <!-- ko if: ready -->
+                                    <img data-bind="attr: {src: picture }">
+                                <!-- /ko -->
+                            <!-- /ko -->
                         </a>
                     </div>
                     <div class="list-item-content prefix-lg" data-bind="with: employeeInfo">
