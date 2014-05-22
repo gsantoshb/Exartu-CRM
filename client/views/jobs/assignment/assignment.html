@@ -1,46 +1,43 @@
 <template name="assignment">
-    <!-- ko ifnot:$data.assignment-->
-    <div class="box">
-        <div class="box-header-2">
-            <div class="box-title">
-                No one is assigned
-            </div>
-        </div>
-        <div class="box-content">
-            <a href="#">
-                <a class="btn btn-lg btn-success btn-block bottom-20" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id()); }" href="#">
-                    <i class="fa fa-caret-square-o-right"></i>Assign</a>
-            </a>
-        </div>
-        <!-- /.box-content -->
-    </div>
-
-    <!-- /ko-->
-    <!-- ko if:$data.assignment-->
-    <div class="box">
-        <div class="box-header-2">
-            <a class="btn-action" href="#" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id(), assignment());}"><i class="fa fa-pencil"></i></a>
-
-            <!--<a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id(), assignment());}">-->
-                <!--<i class="fa fa-pencil"></i>Edit-->
-            <!--</a>-->
-            <div class="box-title">
-                Assigned
-            </div>
-
-        </div>
-        <div data-bind="with: assignmentInfo">
-            <a data-bind="attr:{href:'/contactable/'+ _id()}">
-                <div class="row" style="margin:3px;">
-                    <!--ko with: helper.getEmployeePictureAsync($data)-->
-                    <!--ko if: ready-->
-                    <img class="col-md-4" src="/assets/user-photo-placeholder.jpg" style="heigth:70px; width:70px;" alt="google" data-bind="attr: {src: picture}">
-                    <!--/ko-->
-                    <!--/ko-->
-                    <h5 class="col-md-8" data-bind="text: displayName"></h5>
+    <!--ko ifnot:$data.assignment-->
+        <div class="box">
+            <div class="box-header-2">
+                <div class="box-title">
+                    No one is assigned
                 </div>
-            </a>
+            </div>
+            <div class="box-content">
+                <a href="#">
+                    <a class="btn btn-lg btn-success btn-block bottom-20" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id()); }" href="#">
+                        <i class="fa fa-caret-square-o-right"></i>Assign</a>
+                </a>
+            </div>
+            <!-- /.box-content -->
         </div>
-    </div>
-    <!-- /ko-->
+    <!--/ko-->
+    <!--ko if:$data.assignment-->
+        <div class="box">
+            <div class="box-header-2">
+                <a class="btn-action" href="#" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id(), assignment());}"><i class="fa fa-pencil"></i></a>
+
+
+                <div class="box-title">
+                    Assigned
+                </div>
+
+            </div>
+            <div data-bind="with: assignmentInfo">
+                <a data-bind="attr:{href:'/contactable/'+ _id()}">
+                    <div class="row" style="margin:3px;">
+                        <!-- ko with: ContactablesFS.getThumbnailUrl($data.pictureFileId())-->
+                            <!-- ko if: ready -->
+                                <img class="col-md-4" style="heigth:70px; width:70px;" data-bind="attr: {src: picture }">
+                            <!-- /ko -->
+                        <!-- /ko -->
+                        <h5 class="col-md-8" data-bind="text: displayName"></h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+    <!--/ko-->
 </template>
