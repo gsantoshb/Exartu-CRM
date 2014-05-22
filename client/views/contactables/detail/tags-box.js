@@ -29,19 +29,29 @@ Template.contactableTagsBox.isEmptyTags = function() {
   return _.isEmpty(contactable.tags.value);
 };
 
+var addTag = function() {
+  var inputTag = $('#new-tag')[0];
+
+  if (!inputTag.value)
+    return;
+
+  if (_.indexOf(contactable.tags.value, inputTag.value) != -1)
+    return;
+
+  contactable.tags.insert(inputTag.value);
+  inputTag.value = '';
+  inputTag.focus();
+}
+
 Template.contactableTagsBox.events = {
   'click .add-tag': function() {
-    var inputTag = $('#new-tag')[0];
-
-    if (!inputTag.value)
-      return;
-
-    if (_.indexOf(contactable.tags.value, inputTag.value) != -1)
-      return;
-
-    contactable.tags.insert(inputTag.value);
-    inputTag.value = '';
-    inputTag.focus();
+    addTag();
+  },
+  'keypress #new-tag': function(e) {
+    if (e.keyCode == 13) {
+      e.preventDefault();
+      addTag();
+    }
   },
   'click .remove-tag': function() {
     contactable.tags.remove(this.value);
