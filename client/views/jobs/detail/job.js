@@ -100,11 +100,11 @@ Template.job.viewModel = function () {
         });
     }
 
-  self.updateNegotiation = function(data) {
-    Meteor.call('updateCandidateNegotiation', {jobId: jobId, employeeId: data.employee(), negotiation: data.negotiation()});
-    // Collapse editor
-    $('#' + data.employee()).collapse('hide');
-  }
+//  self.updateNegotiation = function(data) {
+//    Meteor.call('updateCandidateNegotiation', {jobId: jobId, employeeId: data.employee(), negotiation: data.negotiation()});
+//    // Collapse editor
+//    $('#' + data.employee()).collapse('hide');
+//  }
 
     return self;
 };
