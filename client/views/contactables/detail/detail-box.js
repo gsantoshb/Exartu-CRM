@@ -82,12 +82,10 @@ var generateReactiveObject = function(contactable) {
       },
       department: {
         default: customer.department,
-        validator: Utils.Validators.stringNotEmpty,
         update: updateBase + 'department'
       },
       description: {
         default: customer.description,
-        validator: Utils.Validators.stringNotEmpty,
         update: updateBase + 'description'
       }
     });
@@ -102,7 +100,6 @@ var generateReactiveObject = function(contactable) {
       },
       description: {
         default: employee.description,
-//        validator: Utils.Validators.stringNotEmpty,
         update: updateBase + 'description'
       }
     });
@@ -117,7 +114,6 @@ var generateReactiveObject = function(contactable) {
       },
       description: {
         default: contact.description,
-        validator: Utils.Validators.stringNotEmpty,
         update: updateBase + 'description'
       }
     });
