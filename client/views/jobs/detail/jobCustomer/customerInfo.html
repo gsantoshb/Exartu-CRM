@@ -1,56 +1,54 @@
 
 <template name="customerInfo">
-    <!-- ko if: $data.customer-->
-        <div class="box" data-bind="with: ko.meteor.findOne(Contactables, { _id: customer() })">
-            <div class="box-header-2">
-                <a class="btn-action" href="#" data-bind="click: function () { Composer.showModal( 'jobCustomerAddEdit',$parent);}"><i class="fa fa-pencil"></i></a>
-                <div class="box-title">
-                    <a data-bind="attr:{href:'/contactable/'+_id()}" style="color: #777;">
-                        <span data-bind="text: displayName"></span>
-                    </a>
-                </div>
-            </div>
-            <div class="box-content">
-                <!-- ko with: $root.filesCollection.getThumbnailUrl($data.pictureFileId())-->
-                    <!-- ko if: ready -->
-                        <a data-bind="attr:{href:'/contactable/'+ $parent._id()}">
-                            <p class="text-center">
-                                <img src="/assets/user-photo-placeholder.jpg" style="max-heigth:100px; max-width:100px;" data-bind="attr: {src: picture }">
-                            </p>
+    {{#if customer}}
+        <div class="box">
+            {{#with customer}}
+                <div class="box-header-2">
+                    <a class="btn-action addEdit" href="#"><i class="fa fa-pencil"></i></a>
+                    <div class="box-title">
+                        <a href="/contactable/{{_id}}" style="color: #777;">
+                            <span>{{displayName}}</span>
                         </a>
-                    <!-- /ko -->
-                <!-- /ko -->
-                <p data-bind=" text: Customer.description "></p>
-                <table class="table table-striped ">
-                    <tbody>
-                    <tr data-bind="if: location ">
-                        <td>Location</td>
-                        <td data-bind="text: location.displayName ">United States</td>
-                    </tr>
-                    <!--ko if: contactMethods().length >= 1-->
-                        <tr data-bind="with: contactMethods()[0]">
-                            <td data-bind="text: typeName"></td>
-                            <td data-bind="text: value "></td>
-                        </tr>
-                    <!--/ko-->
+                    </div>
+                </div>
+                <div class="box-content">
+                    <a data-bind="attr:{href:'/contactable/'+ $parent._id()}">
+                        <p class="text-center">
+                            <img style="max-heigth:100px; max-width:100px;" src="{{pictureUrl}}">
+                        </p>
+                    </a>
+                    <p>{{Customer.description}}</p>
+                    <table class="table table-striped ">
+                        <tbody>
+                        {{#if location}}
+                            <tr>
+                                <td>Location</td>
+                                <td>{{location.displayName}}</td>
+                            </tr>
+                        {{/if}}
+                        {{#with contactMethod 0}}
+                            <tr>
+                                <td>{{typeName}}</td>
+                                <td>{{value}}</td>
+                            </tr>
+                        {{/with}}
 
-                    <!--ko if: contactMethods().length >= 2-->
-                        <tr data-bind="with: contactMethods()[1]">
-                            <td data-bind="text: typeName"></td>
-                            <td data-bind="text: value "></td>
-                        </tr>
-                    <!--/ko-->
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.box-content -->
+                        {{#with contactMethod 1}}
+                            <tr>
+                                <td>{{typeName}}</td>
+                                <td>{{value}}</td>
+                            </tr>
+                        {{/with}}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-content -->
+            {{/with}}
         </div>
-    <!--/ko-->
-    <!-- ko ifnot: $data.customer-->
-        <div class="box" >
+    {{else}}
+        <div class="box">
             <div class="box-header-2">
-                <a class="btn-action" href="#" data-bind="click: function () { Composer.showModal( 'jobCustomerAddEdit',$parent);}"><i class="fa fa-pencil"></i></a>
-
+                <a class="btn-action addEdit" href="#"><i class="fa fa-pencil"></i></a>
                 <div class="box-title">
                     <a style="color: #777;">
                         <span>No Customer</span>
@@ -58,5 +56,5 @@
                 </div>
             </div>
         </div>
-    <!--/ko-->
+    {{/if}}
 </template>

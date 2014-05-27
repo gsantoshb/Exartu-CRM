@@ -1,5 +1,22 @@
 <template name="assignment">
-    <!--ko ifnot:$data.assignment-->
+    {{#with employeeAssignment}}
+        <div class="box">
+            <div class="box-header-2">
+                <a class="btn-action editAssign" href="#"><i class="fa fa-pencil"></i></a>
+                <div class="box-title">
+                    Assigned
+                </div>
+            </div>
+            <div>
+                <a href="/contactable/{{_id}}">
+                    <div class="row" style="margin:3px;">
+                        <img class="col-md-4" style="heigth:70px; width:70px;" src="{{pictureUrl}}">
+                        <h5 class="col-md-8">{{displayName}}</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+    {{else}}
         <div class="box">
             <div class="box-header-2">
                 <div class="box-title">
@@ -8,36 +25,11 @@
             </div>
             <div class="box-content">
                 <a href="#">
-                    <a class="btn btn-lg btn-success btn-block bottom-20" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id()); }" href="#">
+                    <a class="btn btn-lg btn-success btn-block bottom-20 editAssign" href="#">
                         <i class="fa fa-caret-square-o-right"></i>Assign</a>
                 </a>
             </div>
             <!-- /.box-content -->
         </div>
-    <!--/ko-->
-    <!--ko if:$data.assignment-->
-        <div class="box">
-            <div class="box-header-2">
-                <a class="btn-action" href="#" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id(), assignment());}"><i class="fa fa-pencil"></i></a>
-
-
-                <div class="box-title">
-                    Assigned
-                </div>
-
-            </div>
-            <div data-bind="with: assignmentInfo">
-                <a data-bind="attr:{href:'/contactable/'+ _id()}">
-                    <div class="row" style="margin:3px;">
-                        <!-- ko with: ContactablesFS.getThumbnailUrl($data.pictureFileId())-->
-                            <!-- ko if: ready -->
-                                <img class="col-md-4" style="heigth:70px; width:70px;" data-bind="attr: {src: picture }">
-                            <!-- /ko -->
-                        <!-- /ko -->
-                        <h5 class="col-md-8" data-bind="text: displayName"></h5>
-                    </div>
-                </a>
-            </div>
-        </div>
-    <!--/ko-->
+    {{/with}}
 </template>

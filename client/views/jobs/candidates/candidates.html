@@ -1,64 +1,73 @@
 <template name="candidates">
     <div class="box">
         <div class="box-header-2">
-            <a class="btn-action tip-top" data-original-title="Add Candidate" href="#"><i class="fa fa-plus" data-bind="click: function () { Composer.showModal( 'candidateAdd',$data._id()); }"></i></a>
-
-            <!--<a class="pull-right btn btn-xs btn-default" data-bind="click: function () { Composer.showModal( 'candidateAdd',$data._id()); }">-->
-                <!--<i class="fa fa-plus"></i>Add-->
-            <!--</a>-->
+            <a class="btn-action tip-top addEditCandidate" data-original-title="Add Candidate" href="#"><i class="fa fa-plus"></i></a>
             <div class="box-title">
                 Candidates
             </div>
-
         </div>
 
         <div class="box-content">
-            <ul class="list-type-1 list-type-1-lg" data-bind="foreach: candidates">
-                <li class="clearfix">
-                    <div class="thumb thumb-md">
-                        <a class="thumb-content" href="#">
-                            <!-- ko with: ContactablesFS.getThumbnailUrl(employeeInfo.pictureFileId())-->
-                                <!-- ko if: ready -->
-                                    <img data-bind="attr: {src: picture }">
-                                <!-- /ko -->
-                            <!-- /ko -->
-                        </a>
+            <ul class="list-type-1 list-type-1-lg">
+                {{#each candidates}}
+                <span id="outside"></span>
+                    {{#with employeeInfo .}}
+                        <li class="clearfix">
+                            <div class="thumb thumb-md">
+                                <a class="thumb-content" href="#">
+                                    <img src="{{pictureUrl}}">
+                                </a>
+                            </div>
+                            <div class="list-item-content prefix-lg">
+                                    <button class="btn btn-xs btn-primary pull-right" data-bind="click: $root.assign">Assign</button>
+                                    <h3 class="bottom-10" style="margin-top: 0">
+                                        <a href="/contactable/{{_id}}">{{displayName}}</a>
+                                    </h3>
+                                    <div class="bottom-10 box-4 text-normal" style="margin-left: 20px;">
+                                        {{#if location}}
+                                            <i class="fa fa-map-marker" style="width:7px; margin-left: 1px;"></i>&nbsp;
+                                            <span data-bind="text: location.formatted_address"></span>
+                                            <br/>
+                                        {{/if}}
+                                        <i class="fa fa-check"></i>&nbsp;Recommended by:
+                                        <strong>
+                                            {{#userInfo userId=../userId}}
+                                                <span> {{username}} <small>({{../../type}})</small></span>
+                                            {{/userInfo}}
+                                        </strong>
+                                    </div>
+                                    <div class="bottom-10">
+                                        {{../note}}
+                                    </div>
+                                    <div class="text-normal bottom-10">
+                                        {{#each tags}}
+                                            <strong>{{.}}</strong>
+                                        {{/each}}
+                                    </div>
+
+                                    <!--<a class="btn btn-link btn-sm pull-right" data-toggle="collapse" data-bind="attr: { href: '#' + _id() }">-->
+                                        <!--Negotiation note-->
+                                    <!--</a>-->
+
+                                    <!--<div class="panel-collapse collapse" style="margin-top: 40px" data-bind="attr: { id: $data._id()}">-->
+                                        <!--<textarea data-bind="htmlEditor: $parent.negotiation">-->
+
+                                        <!--</textarea>-->
+                                        <!--<span class="btn btn-success btn-sm pull-right" style="margin-right: 4%; margin-top: 10px;" data-bind="click: function() { $root.updateNegotiation($parent)}"> Save </span>-->
+                                    <!--</div>-->
+                            </div>
+                        </li>
+                    {{/with}}
+                {{else}}
+                    <div class="box-v-msg">
+                        <div class="box-v-msg-content">
+                            <i class="icon-profile-man"></i>
+                            <p>You currently have no candidates for this job <br>
+                                <a href="#" class="addEditCandidate">Add a Candidate</a>
+                            </p>
+                        </div><!-- /.box-v-msg-content -->
                     </div>
-                    <div class="list-item-content prefix-lg" data-bind="with: employeeInfo">
-                        <button class="btn btn-xs btn-primary pull-right" data-bind="click: $root.assign">Assign</button>
-                        <h3 class="bottom-10" style="margin-top: 0">
-                            <a href="#" data-bind="attr:{href:'/contactable/' +_id()}, text: displayName"></a>
-                        </h3>
-                        <div class="bottom-10 box-4 text-normal" style="margin-left: 20px;">
-                            <!--ko if: $data.location-->
-                            <i class="fa fa-map-marker" style="width:7px; margin-left: 1px;"></i>&nbsp;
-                            <span data-bind="text: location.formatted_address"></span>
-                            <br/>
-                            <!--/ko-->
-                            <!--<span class="pipe">|</span>-->
-                            <i class="fa fa-check"></i>&nbsp;Recommended by:
-                            <strong>
-                                <span data-bind="text: $parent.user.username()+ ' (' + $parent.type() + ')'"></span>
-                            </strong>
-                        </div>
-                        <div class="bottom-10" data-bind="text: $parent.note">
-                        </div>
-                        <div class="text-normal bottom-10" data-bind="foreach: tags">
-                            <strong data-bind="text: $data"></strong>
-                        </div>
-
-                        <a class="btn btn-link btn-sm pull-right" data-toggle="collapse" data-bind="attr: { href: '#' + _id() }">
-                            Negotiation note
-                        </a>
-
-                        <div class="panel-collapse collapse" style="margin-top: 40px" data-bind="attr: { id: $data._id()}">
-                            <textarea data-bind="htmlEditor: $parent.negotiation">
-
-                            </textarea>
-                            <span class="btn btn-success btn-sm pull-right" style="margin-right: 4%; margin-top: 10px;" data-bind="click: function() { $root.updateNegotiation($parent)}"> Save </span>
-                        </div>
-                    </div>
-                </li>
+                {{/each}}
             </ul>
         </div>
         <!-- /.box-content -->
