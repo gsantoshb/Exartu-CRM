@@ -144,27 +144,27 @@ Jobs = new Meteor.Collection("jobs", {
         job.categoryName = LookUps.findOne({ _id: job.category }).displayName;
         job.durationName = LookUps.findOne({ _id: job.duration }).displayName;
         job.statusName = LookUps.findOne({ _id: job.status }).displayName;
-        _.each(job.candidates, function (candidate) {
-            candidate.employeeInfo = Contactables.findOne({
-                _id: candidate.employee
-            });
-            candidate.user = Meteor.users.findOne({
-                _id: candidate.userId
-            });
-
-        });
+//        _.each(job.candidates, function (candidate) {
+//            candidate.employeeInfo = Contactables.findOne({
+//                _id: candidate.employee
+//            });
+//            candidate.user = Meteor.users.findOne({
+//                _id: candidate.userId
+//            });
+//
+//        });
 //        if (job.customer) {
 //            job.CustomerInfo = Contactables.findOne({
 //                _id: job.customer
 //            });
 //        }
-        if (job.employeeAssigned) {
-            job.assignmentInfo = Contactables.findOne({
-                _id: job.employeeAssigned
-            });
-        } else {
-            job.assignmentInfo = null;
-        }
+//        if (job.employeeAssigned) {
+//            job.assignmentInfo = Contactables.findOne({
+//                _id: job.employeeAssigned
+//            });
+//        } else {
+//            job.assignmentInfo = null;
+//        }
 
         return job;
     }
