@@ -15,11 +15,29 @@ _.extend(Utils, {
 });
 
 // Prop template
+Utils.reactiveProp=function(object, key, value){
+  var depName='_dep'+key;
+  var valueName='_'+key;
+  object[depName]= new Deps.Dependency;
+  object[valueName]= value;
 
+  Object.defineProperty(object, key,{
+    get:function(){
+      this[depName].depend();
+      return this[valueName];
+    },
+    set:function(newValue){
+      this[valueName]=newValue;
+      this[depName].changed();
+    }
+  })
+}
 Utils.ReactivePropertyTypes = {
   string: 0,
   int: 1,
-  array: 2
+  array: 2,
+  date: 3,
+  lookUp: 4
 };
 
 Utils.ObjectDefinition = function(definition) {
@@ -103,6 +121,13 @@ Utils.ObjectDefinition = function(definition) {
     }
     else
       prop.validator = function() { return true; }; // Always validate
+
+    if(definition.reactiveProps[propName].options){
+      prop.options=definition.reactiveProps[propName].options
+    }
+    if(definition.reactiveProps[propName].displayName){
+      prop.displayName=definition.reactiveProps[propName].displayName
+    }
   });
 
   // Not reactive properties
