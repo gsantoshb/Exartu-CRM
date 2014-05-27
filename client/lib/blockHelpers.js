@@ -29,11 +29,14 @@ UI.registerHelper('objectProperty', function() {
   var self = this;
   var template = {};
   switch(self.property.type) {
-    case 2:
+    case Utils.ReactivePropertyTypes.array:
       template = Template.object_property_multiple;
       template.values = function() {
         return this.property.value;
       };
+      break;
+    case Utils.ReactivePropertyTypes.boolean:
+      template = Template.object_property_checkbox;
       break;
     default:
       if (self.editable !== undefined) {
@@ -62,6 +65,12 @@ Template.object_property_single.events = {
 Template.object_property_single_editable.events = {
   'change .prop-input': function(e) {
     this.property.value = e.target.value;
+  }
+};
+
+Template.object_property_checkbox.events = {
+  'change .prop-input': function(e) {
+    this.property.value = e.target.checked;
   }
 };
 
@@ -186,3 +195,23 @@ UI.registerHelper('displayProperty', function(){
   }
   return null;
 })
+
+UI.registerHelper('infinityScroll', function() {
+  debugger;
+  var height = $(window).height();
+  var scrollTop = $(window).scrollTop();
+  var cb = this.cb;
+
+  if(height==scrollTop){
+    cb();
+  }
+  var windowElement=$(window);
+  windowElement.bind("scroll", _.debounce(function(){
+    if(windowElement.scrollTop() + windowElement.height() > $(document).height() - 50){
+      debugger;
+      cb();
+    }
+  },300));
+
+  return null;
+});

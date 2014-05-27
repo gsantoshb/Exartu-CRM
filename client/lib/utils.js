@@ -19,7 +19,8 @@ _.extend(Utils, {
 Utils.ReactivePropertyTypes = {
   string: 0,
   int: 1,
-  array: 2
+  array: 2,
+  boolean: 3
 };
 
 Utils.ObjectDefinition = function(definition) {

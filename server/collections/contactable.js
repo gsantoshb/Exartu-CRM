@@ -25,12 +25,15 @@ Contactables.allow({
 })
 
 Contactables.before.insert(function (userId, doc) {
-//  if (this.connection) {
-    var user = Meteor.user();
-    doc.hierId = user.hierId;
-    doc.userId = user._id;
-//  }
+  var user = Meteor.user();
+  doc.hierId = user.hierId;
+  doc.userId = user._id;
   doc.createdAt = Date.now();
+
+  var shortId = Meteor.require('shortid');
+  var aux = shortId.generate();
+  doc.searchKey = aux;
+  console.log('shortId: ' + aux);
 });
 
 // Contactables files
