@@ -23,7 +23,8 @@
       "xml2js": {},
       "npm": {},
       "apm": {},
-      "moment": {}
+      "moment": {},
+      "bootstrap3-datetimepicker": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -98,13 +99,18 @@
       },
       "apm": {
         "git": "https://github.com/arunoda/meteor-apm-client.git",
-        "tag": "v1.4.1",
-        "commit": "51e1fd890bea6e9b7b55e501f0abf8124fd1a611"
+        "tag": "v1.4.2",
+        "commit": "ea3fdb8b65f7988ccb78ffa3c72cd7a7d0c36360"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
+      },
+      "bootstrap3-datetimepicker": {
+        "git": "https://github.com/tsega/meteor-bootstrap3-datetimepicker.git",
+        "tag": "v0.0.5",
+        "commit": "30b5fa0759f98b75761772ad891876408f7cc8c4"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

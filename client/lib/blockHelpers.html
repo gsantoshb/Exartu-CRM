@@ -13,6 +13,17 @@
         <span class="text text-danger">{{error}}</span>
     </span>
 </template>
+<template name="object_property_date">
+    <span class="prop-input">
+         {{#if isEditable}}
+            {{> UI.contentBlock value=property.value}}
+            <span class="text text-danger">{{error}}</span>
+        {{else}}
+            {{> UI.elseBlock value=property.value}}
+        {{/if}}
+    </span>
+</template>
+
 
 <template name="object_property_single_editable">
     <span class="prop-input">
@@ -25,11 +36,34 @@
     </span>
 </template>
 
+<template name="object_property_lookup">
+    <span class="prop-input">
+        {{#if isEditable}}
+            {{> UI.contentBlock value=property.value options=property.options isSelected=isSelected}}
+            <span class="text text-danger">{{error}}</span>
+        {{else}}
+            {{> UI.elseBlock value=property.value displayName=property.displayName}}
+        {{/if}}
+    </span>
+</template>
+
 <template name="object_property_multiple">
     {{#each values}}
         {{> UI.contentBlock value=.}}
     {{/each}}
     <span class="text text-danger">{{error}}</span>
+</template>
+
+<template name="object_property_multiple_editable">
+    {{#if isEditable}}
+        {{> UI.contentBlock value=property.value}}
+        <span class="text text-danger">{{error}}</span>
+    {{else}}
+        {{#each values}}
+            {{> UI.elseBlock value=.}}
+        {{/each}}
+    {{/if}}
+
 </template>
 
 <template name="fileProgress">
@@ -91,4 +125,15 @@
         </select>
         <span>{{error}}</span>
     </div><!-- /.form-group -->
+</template>
+
+
+
+<template name="dateTimePickerTemp">
+    <input type='text' class="form-control prop-input hidden" />
+    <div class='input-group date dateTimePicker' >
+        <input type='text' class="form-control" />
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+        </span>
+    </div>
 </template>
