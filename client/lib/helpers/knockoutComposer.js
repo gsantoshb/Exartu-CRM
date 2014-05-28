@@ -62,7 +62,6 @@ var executeBinding = function (vm, view) {
 }
 
 Composer.showModal = function (templateName) {
-    //    debugger;
 
     var body = $('body');
     var host = body.find(".modal-host")[0];
@@ -78,9 +77,9 @@ Composer.showModal = function (templateName) {
         m.remove();
         $('.modal-backdrop').remove();
     })
-
     var template = Template[templateName];
-    var modal = $(template.render().toHTML()).appendTo(host);
+    UI.insert(UI.render(template), host[0])
+    var modal = host.children();
 
     var parameters = Array.prototype.slice.call(arguments, 1);
     modal.modal('show');
