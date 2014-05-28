@@ -197,7 +197,6 @@ UI.registerHelper('displayProperty', function(){
 })
 
 UI.registerHelper('infinityScroll', function() {
-  debugger;
   var height = $(window).height();
   var scrollTop = $(window).scrollTop();
   var cb = this.cb;

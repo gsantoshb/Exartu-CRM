@@ -29,28 +29,6 @@ Contactables = new Meteor.Collection("contactables", {
     if (!contactable.pictureFileId) {
       contactable.pictureFileId = null;
     }
-    if (contactable.assignment) {
-      var assignment = Assignments.findOne({_id: contactable.assignment});
-
-      var job = Jobs.findOne({
-        _id: assignment.job
-      }, {
-        transform: null
-      });
-
-      var customer = Contactables.findOne({_id: job.customer}, {transform: null});
-
-      contactable.assignmentInfo = {};
-      contactable.assignmentInfo.job = job._id;
-      contactable.assignmentInfo.jobTitle = job.publicJobTitle;
-      if (customer) {
-        contactable.assignmentInfo.customerName = customer.organization.organizationName;
-        contactable.assignmentInfo.customer = customer._id;
-      }
-    } else {
-      contactable.assignment = null;
-      contactable.assignmentInfo = null;
-    }
 
     if (contactable.Customer) {
       if (contactable.Customer.jobs) {
