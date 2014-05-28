@@ -306,3 +306,6 @@ extendedSubscribe('contactMethods', 'ContactMethodsHandler');
 
 Assignments= new Meteor.Collection('assignment');
 extendedSubscribe('assignment', 'AssignmentsHandler');
+
+JobRateTypes= new Meteor.Collection('jobRateTypes');
+JobRateTypesHandler= Meteor.subscribe('jobRateTypes');

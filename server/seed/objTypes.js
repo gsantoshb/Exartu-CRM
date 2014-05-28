@@ -185,7 +185,7 @@ newObjType({
         icon: 'briefcase',
         color: 'yellow'
     },
-    services: [],
+    services: ['jobRates'],
     fields: [{
         name: 'salary',
         displayName: 'Salary',
