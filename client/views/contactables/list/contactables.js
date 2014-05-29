@@ -269,24 +269,25 @@ Template.contactablesListItem.displayObjType = function() {
 
 // Employee item
 Template.employeeInformation.assignmentInfo = function () {
+  if (!this.assignment)
+    return undefined;
+
   var assignmentInfo = {};
-  if (this.assignment) {
-    var assignment = Assignments.findOne({_id: this.assignment});
+  var assignment = Assignments.findOne({_id: this.assignment});
 
-    var job = Jobs.findOne({
-      _id: assignment.job
-    }, {
-      transform: null
-    });
+  var job = Jobs.findOne({
+    _id: assignment.job
+  }, {
+    transform: null
+  });
 
-    var customer = Contactables.findOne({_id: job.customer}, {transform: null});
+  var customer = Contactables.findOne({_id: job.customer}, {transform: null});
 
-    assignmentInfo.job = job._id;
-    assignmentInfo.jobTitle = job.publicJobTitle;
-    if (customer) {
-      assignmentInfo.customerName = customer.organization.organizationName;
-      assignmentInfo.customer = customer._id;
-    }
+  assignmentInfo.job = job._id;
+  assignmentInfo.jobTitle = job.publicJobTitle;
+  if (customer) {
+    assignmentInfo.customerName = customer.organization.organizationName;
+    assignmentInfo.customer = customer._id;
   }
 
   return assignmentInfo;
