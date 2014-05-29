@@ -207,7 +207,6 @@ UI.registerHelper('infinityScroll', function() {
   var windowElement=$(window);
   windowElement.bind("scroll", _.debounce(function(){
     if(windowElement.scrollTop() + windowElement.height() > $(document).height() - 50){
-      debugger;
       cb();
     }
   },300));
