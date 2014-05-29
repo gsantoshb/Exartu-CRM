@@ -1,85 +1,77 @@
-Template.assignmentAdd.viewModel = function (jobInfo, employeeId) {
-    var self = this,
-        jobId='',
-        job=jobInfo;
-    if(_.isObject(jobInfo)){
-        jobId=jobInfo._id;
-        job=jobInfo;
-    }else{
-        jobId=jobInfo;
-        job=Jobs.findOne({_id: jobId});
-    }
-    var rates=Enums.rates;
-    var getPayRates=function(){
-
-        var result={};
-
-        if(job.Temporary){
-            var pay=parseInt(job.Temporary.pay) || 0;
-            result[rates.regular]=pay;
-            result[rates.doubleTime]=pay * 2;
-            result[rates.overTime]=pay * 1.5;
-        }else if (job['Direct Hire']){
-            result.salary=parseInt(job['Direct Hire'].salary);
-        }
-        return result;
-    };
-    var getBillRates=function(){
-        var result={};
-
-        if(job.Temporary){
-            var bill=parseInt(job.Temporary.pay) || 0;
-            var fee=parseInt(job.Temporary.fee) || 0;
-            fee=fee/100;
-            bill= bill + bill*(fee);
-
-            result[rates.regular]= bill;
-            result[rates.doubleTime]= bill * 2;
-            result[rates.overTime]= bill * 1.5;
-
-        }else if (job['Direct Hire']){
-            var salary= parseInt(job['Direct Hire'].salary) || 0;
-            var fee= job['Direct Hire'].fee || 0;
-            fee=fee/100;
-
-            result.bill= salary + salary*fee;
-        }
-        return result;
-    };
-
-    self.edit = employeeId != undefined;
-    self.employees = ko.meteor.find(Contactables, {
-        Employee: {
-            $exists: true
-        }
-    });
-    self.filter = function(data) {
-      return data._id;
-    }
-    self.canSave=ko.observable(true);
-    self.employee = ko.observable(job.employeeAssigned);
-
-    var oldAssignment=Assignments.findOne({_id: job.assignment}) || {};
-
-    self.info= ko.mapping.fromJS({
-        start: oldAssignment.start || new Date(),
-        end: oldAssignment.end || null,
-        payRate: oldAssignment.rates ? oldAssignment.rates.payRate || getPayRates(): getPayRates(),
-        billRate: oldAssignment.rates ? oldAssignment.rates.billRate || getBillRates(): getBillRates()
-    });
-    self.add = function () {
-        if (!self.employee())
-            return;
-        self.canSave(false);
-        Meteor.call('assign', jobId , self.employee(), ko.toJS(self.info),function(err, result){
-            self.canSave(true);
-            if(!err){
-                self.close();
-            }else{
-                console.log(err);
-            }
-        });
-    }
-
-    return self;
+var assignment=null;
+var employeeId=null;
+var newRate={
+  type:null,
+  pay: 0,
+  bill: 0
 }
+var endDateDependency=new Deps.Dependency;
+Template.assignmentAdd.helpers({
+  assignment:function(){
+    if(!assignment){
+      var job=Jobs.findOne({
+        _id: Session.get('entityId')
+      });
+      assignment= {
+        start: new Date(),
+        end: null,
+        rates: job.rates
+      };
+    }
+    endDateDependency.depend();
+    return assignment;
+  },
+  employees:function(){
+    return Contactables.find({
+      Employee: {
+        $exists: true
+      }
+    });
+  },
+  getType: function(typeId){
+    return  JobRateTypes.findOne({ _id: typeId });
+  },
+  newRate:function(){
+    return newRate;
+  },
+  getAvailableType: function(){
+    var rateTypes=JobRateTypes.find().fetch();
+    return _.filter(rateTypes,function(type){
+      return ! _.findWhere(assignment.rates,{type: type._id});
+    });
+  }
+})
+
+Template.assignmentAdd.events({
+  'click .save':function(){
+    if (!employeeId)
+      return;
+
+    assignment.job= Session.get('entityId');
+    assignment.employee= employeeId;
+    Assignments.insert(assignment,function(err, result){
+      if(err){
+        console.log(err)
+      }else{
+        $('.modal-host').children().modal('toggle')
+      }
+    });
+  },
+  'change .employeeSelect':function(e){
+    employeeId= e.target.value;
+  },
+  'change .payRateInput': function(e){
+    this.pay= e.target.value;
+  },
+  'change .billRateInput': function(e){
+    this.bill= e.target.value;
+  },
+  'change .hasEnded': function(e){
+    if(e.target.checked){
+      assignment.end=new Date;
+    }else{
+      assignment.end=null;
+    }
+    endDateDependency.changed();
+  }
+});

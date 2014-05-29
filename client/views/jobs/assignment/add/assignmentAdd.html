@@ -5,8 +5,8 @@
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">Assignment
-                        <span data-bind="text: edit? 'edit': 'add'"></span>
+                    <h4 class="modal-title" id="myModalLabel">Add Assignment
+
                     </h4>
                 </div>
 
@@ -15,58 +15,82 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Employee:</label>
                             <div class="col-sm-10">
-                                <input type='hidden' style="width: 100%" placeholder="Search" data-bind="select2: { options: ko.toJS(employees), selectedValues: employee, filter: $root.filter }"/>
+                                <select class="form-control employeeSelect">
+                                    <option value="null">--select--</option>
+                                    {{#each employees}}
+                                        <option value="{{_id}}">{{displayName}}</option>
+                                    {{/each}}
+                                </select>
                             </div>
                         </div>
-                        <!--ko with: info-->
+                        {{#with assignment}}
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Start:</label>
-                                <div class="col-sm-10" data-bind="dateTimePicker: {date: start}">
-                                    <div data-pick="dateTime"></div>
+                                <div class="col-sm-10">
+                                    {{#dateTimePicker value=start}}
+                                    {{/dateTimePicker}}
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">End:</label>
-                                <!--ko if: end-->
-                                    <div class="col-sm-10" data-bind="dateTimePicker: {date: end}">
-                                        <div data-pick="dateTime"></div>
+                                <div class="col-sm-2 control-label">
+                                    <div class="checkbox" style="padding-top: 0">
+                                        <label class="control-label"><input type="checkbox" class="hasEnded"> End:</label>
                                     </div>
-                                <!--/ko-->
-                                <!--ko ifnot: end-->
-                                    <button href="#" class="btn btn-link" data-bind="click: function(){ end(new Date()); }">click to end this assingment</button>
-                                <!--/ko-->
+                                </div>
+                                <div class="col-sm-10">
+                                    {{#if end}}
+                                        {{#dateTimePicker value=end}}
+                                        {{/dateTimePicker}}
+                                    {{else}}
+                                        <label class="text-muted" style="margin-top: 7px;">No end date specified</label>
+                                    {{/if}}
+                                </div>
                             </div>
                             <hr/>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h5>Pay Rates</h5>
-                                    <!--ko foreach: _.keys($data.payRate)-->
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label" data-bind="text:$data"></label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" data-bind="value: $parent.payRate[$data]"/>
-                                            </div>
-                                        </div>
-                                    <!--/ko-->
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>Bill Rates</h5>
-                                    <!--ko foreach: _.keys($data.billRate)-->
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label" data-bind="text:$data"></label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" data-bind="value: $parent.billRate[$data]"/>
-                                            </div>
-                                        </div>
-                                    <!--/ko-->
-                                </div>
-                            </div>
-                        <!--/ko-->
+                            <h4 style="text-align: center">Rates</h4>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr style="font-weight: bold;">
+                                    <td class="col-md-4">Type</td>
+                                    <td class="col-md-2">Bill</td>
+                                    <td class="col-md-2">Pay</td>
+                                    <td class="col-md-1"></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{#each rates}}
+                                <tr>
+                                    {{#with getType type}}
+                                        <td title="{{description}}">{{displayName}}</td>
+                                    {{/with}}
+                                    <td><input type="number" class="billRateInput form-control" value="{{bill}}"></td>
+                                    <td><input type="number" class="payRateInput form-control" value="{{pay}}"></td>
+                                    <td></td>
+                                </tr>
+                                {{/each}}
+                                <tr style="background-color: #B8B8B8;">
+                                    {{#with newRate}}
+                                        <td style="background-color: inherit;">
+                                            <select class="form-control">
+                                                <option value="null">--select--</option>
+                                                {{#each getAvailableType}}
+                                                    <option value="_id">{{displayName}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </td>
+                                        <td style="background-color: inherit;"><input type="number" class="billRateInput form-control" value="{{bill}}"></td>
+                                        <td style="background-color: inherit;"><input type="number" class="payRateInput form-control" value="{{pay}}"></td>
+                                        <td style="background-color: inherit;"><a class="btn btn-primary">Add</a></td>
+                                    {{/with}}
+                                </tr>
+                                </tbody>
+                            </table>
+                        {{/with}}
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button data-bind="click: add, enable: canSave" class="btn btn-success">Save</button>
                     <a href="#" class="btn" data-dismiss="modal">Close</a>
+                    <button class="btn btn-primary save">Save</button>
                 </div>
             </div>
         </div>

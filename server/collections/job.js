@@ -26,50 +26,25 @@ Jobs.before.insert(function (userId, doc) {
 
 Meteor.startup(function () {
     Meteor.methods({
-        addJob: function (job) {
-            job._id = new Meteor.Collection.ObjectID()._str;
+      addJob: function (job) {
+          job._id = new Meteor.Collection.ObjectID()._str;
 //            if (beforeInsertOrUpdateJob(job)) {
-                Jobs.insert(job);
+              Jobs.insert(job);
 //            } else {
 //                console.error('Job is not valid');
 //                console.dir(job);
 //            }
-        },
-        updateJob: function (job) {
-            if (beforeInsertOrUpdateJob(job)) {
-                Jobs.update({
-                    _id: job._id
-                }, job);
-            } else {
-                console.error('Job not valid')
-                console.dir(Job);
-            }
-        },
-        assign: function(jobId, employeeId, assignmentInfo){
-            var j= Jobs.findOne({ _id: jobId },{ _id: 1 });
-            var e= Contactables.findOne({ _id: employeeId , Employee: { $exists: true } },{_id: 1});
-            if (j && e){
-                // update the job and the employee
-                // then unlock the client and create the assignment entity
-                var assignmentId=j.assignment;
-                if (j.assignment){
-                    Assignment.update({_id: j.assignment},{
-                        $set:{
-                            employee : employeeId,
-                            start : assignmentInfo.start,
-                            end :  assignmentInfo.end,
-                            rates : {
-                                payRate: assignmentInfo.payRate,
-                                billRate:  assignmentInfo.billRate
-                            }
-                    }});
-                } else{
-                    assignmentId=createAssignment(j, e, assignmentInfo);
-                }
-            }else{
-                throw new Meteor.Error(400, "the employee or the job could not be found");
-            }
-        },
+      },
+      updateJob: function (job) {
+          if (beforeInsertOrUpdateJob(job)) {
+              Jobs.update({
+                  _id: job._id
+              }, job);
+          } else {
+              console.error('Job not valid')
+              console.dir(Job);
+          }
+      },
       updateCandidateNegotiation: function(data) {
         Jobs.update(
           {

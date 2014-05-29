@@ -1,29 +1,16 @@
 <template name="assignment">
-    {{#with employeeAssignment}}
-        <div class="box">
-            <div class="box-header-2">
-                <a class="btn-action editAssign" href="#"><i class="fa fa-pencil"></i></a>
-                <div class="box-title">
-                    Assigned
-                </div>
-            </div>
-            <div>
-                <a href="/contactable/{{_id}}">
-                    <div class="row" style="margin:3px;">
-                        <img class="col-md-4" style="heigth:70px; width:70px;" src="{{pictureUrl}}">
-                        <h5 class="col-md-8">{{displayName}}</h5>
-                    </div>
-                </a>
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action editAssign" href="#"><i class="fa fa-plus"></i></a>
+            <div class="box-title">
+                Assignments
             </div>
         </div>
-    {{else}}
-        <div class="box">
-            <div class="box-header-2">
-                <div class="box-title">
-                    No one is assigned
-                </div>
-            </div>
-            <div class="box-content">
+
+        <div class="box-content">
+            {{#with currentAssignment}}
+                {{>employeeInfo}}
+            {{else}}
                 <div class="box-v-msg">
                     <div class="box-v-msg-content">
                         <i class="icon-profile-man"></i>
@@ -32,8 +19,44 @@
                         </p>
                     </div><!-- /.box-v-msg-content -->
                 </div>
-            </div>
-            <!-- /.box-content -->
+                <!-- /.box-content -->
+            {{/with}}
+
+            <a class="pull-right showOld" style="padding-top: 5px;cursor: pointer">see
+                {{#if showOld}}
+                    less <i class="fa fa-caret-up"></i>
+                {{else}}
+                    more <i class="fa fa-caret-down"></i>
+                {{/if}}
+            </a>
+            <hr style="width: 67%"/>
+            {{#if showOld}}
+                {{#each oldAssignments}}
+                    {{>employeeInfo}}
+                {{/each}}
+            {{/if}}
         </div>
+    </div>
+</template>
+<template name="employeeInfo">
+    {{#with employeeData}}
+        <a href="/contactable/{{_id}}">
+            <div class="row" style="margin:3px;">
+                <img class="col-md-4" style="heigth:70px; width:70px;" src="{{pictureUrl}}">
+                <h5 class="col-md-8">{{displayName}}</h5>
+                <span class="pull-right" style="color: #BEBEBE;font-size: 11px;font-weight: bold;">
+                    from
+                    {{#formattedDate value=../start format='MM/DD/YYYY'}}
+                        {{date}}
+                    {{/formattedDate}}
+                    {{#if ../end}}
+                        to
+                        {{#formattedDate value=../end format='MM/DD/YYYY'}}
+                            {{date}}
+                        {{/formattedDate}}
+                    {{/if}}
+                </span>
+            </div>
+        </a>
     {{/with}}
 </template>
