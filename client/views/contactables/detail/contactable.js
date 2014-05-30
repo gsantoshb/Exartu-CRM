@@ -59,6 +59,18 @@ ContactableController = RouteController.extend({
   }
 });
 
+var resizer = function() {
+  $(".contactable-left-col").css("height", $('.contactable-right-col-custom').height() - 30 + 'px');
+};
+
+Template.contactable.created = function() {
+  $(window).resize(resizer);
+};
+
+Template.contactable.distroyed = function() {
+  $(window).off('resize', resizer);
+};
+
 Template.contactable.rendered = function () {
   $('body').scrollTop(0)
   this.$('#content').css('background-color', 'transparent');
