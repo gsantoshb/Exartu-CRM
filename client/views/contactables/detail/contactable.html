@@ -30,14 +30,18 @@
                         {{/if}}
                         <div class="profile-btns">
                             {{#with mainContactMethods}}
-                                <a class="btn btn-default btn-custom-with-cyrcle" href="#">
-                                    <span class="btn-round"><i class="fa fa-phone"></i></span>
-                                    {{phone.value}}
-                                </a>
-                                <a class="btn btn-default btn-custom-with-cyrcle" href="#">
-                                    <span class="btn-round"><i class="fa fa-envelope"></i></span>
-                                    {{email.value}}
-                                </a>
+                                {{#if phone.value}}
+                                    <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                                        <span class="btn-round"><i class="fa fa-phone"></i></span>
+                                        {{phone.value}}
+                                    </a>
+                                {{/if}}
+                                {{#if email.value}}
+                                    <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                                        <span class="btn-round"><i class="fa fa-envelope"></i></span>
+                                        {{email.value}}
+                                    </a>
+                                {{/if}}
                             {{/with}}
                             <a class="btn btn-default btn-custom-with-cyrcle" href="#">
                                 <span class="btn-round"><i class="fa fa-envelope"></i></span>
