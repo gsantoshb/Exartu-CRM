@@ -114,5 +114,8 @@ Template.contactableContactMethodsBox.events = {
   'click .contact-method-type': function() {
     selectedType = this;
     dep.changed();
+  },
+  'click .addContactMethod': function () {
+    EditContactMethodsMode.show();
   }
 };
