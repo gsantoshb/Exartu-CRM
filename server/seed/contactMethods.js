@@ -5,8 +5,8 @@ seedSystemContactMethods = function (){
     var systemContactMethods =
         [
             {
-                displayName: 'Cell Phone',
-                type: Enums.contactMethodTypes.cellPhone
+                displayName: 'Phone',
+                type: Enums.contactMethodTypes.phone
             },
             {
                 displayName: 'Email',

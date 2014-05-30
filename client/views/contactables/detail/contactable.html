@@ -28,9 +28,21 @@
                         {{#if Contact }}
                             {{>contact_header}}
                         {{/if}}
-                        <div class="profile-last-update">
-                            Created at
-                            <small>{{createdAtFormatted}}</small>
+                        <div class="profile-btns">
+                            {{#with mainContactMethods}}
+                                <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                                    <span class="btn-round"><i class="fa fa-phone"></i></span>
+                                    {{phone.value}}
+                                </a>
+                                <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                                    <span class="btn-round"><i class="fa fa-envelope"></i></span>
+                                    {{email.value}}
+                                </a>
+                            {{/with}}
+                            <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                                <span class="btn-round"><i class="fa fa-envelope"></i></span>
+                                Message
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -48,6 +60,9 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     {{>contactableDetailBox}}
+
+                                    {{>contactableContactMethodsBox}}
+
                                     {{>contactableLocationBox}}
                                 </div><!-- /.col-md-6 -->
 
@@ -118,16 +133,6 @@
             <span>{{firstEmail.value}}</span>
         </a>
         {{/if}}
-        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
-           <!--data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">-->
-            <!--<span class="btn-round"><i class="fa fa-envelope"></i></span>-->
-            <!--Message-->
-        <!--</a>-->
-        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
-           <!--data-bind="click: function () { Composer.showModal('addContactable', 'Contact',{customer: $data._id()}); }">-->
-            <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
-            <!--Add Contact Method-->
-        <!--</a>-->
     </div>
 </template>
 
@@ -183,16 +188,6 @@
                 <span>{{firstEmail.value}}</span>
             </a>
         {{/if}}
-        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
-        <!--data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">-->
-        <!--<span class="btn-round"><i class="fa fa-envelope"></i></span>-->
-        <!--Message-->
-        <!--</a>-->
-        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
-        <!--data-bind="click: function () { Composer.showModal('addContactable', 'Contact',{customer: $data._id()}); }">-->
-        <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
-        <!--Add Contact Method-->
-        <!--</a>-->
     </div>
 </template>
 

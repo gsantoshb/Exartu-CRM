@@ -87,6 +87,26 @@ Template.contactable.helpers({
   },
   documentCount: function() {
     return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count();
+  },
+  mainContactMethods: function() {
+    var result = {};
+    var contactMethods = ContactMethods.find().fetch();
+    _.some(this.contactMethods, function(cm){
+      var type = _.findWhere(contactMethods, {_id: cm.type});
+      if (!type)
+        return false;
+      if (type.type == Enums.contactMethodTypes.email)
+        result.email = cm;
+      if (type.type == Enums.contactMethodTypes.phone)
+        result.phone = cm;
+
+      if (!result.email || !result.phone)
+        return false;
+
+      return true;
+    });
+
+    return result;
   }
 });
 

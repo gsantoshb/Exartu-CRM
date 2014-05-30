@@ -1,0 +1,56 @@
+<template name="contactableContactMethodsBox">
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action" href="#"><i id="edit-contact-method-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>
+            <div class="box-title"><a href="#">Contact methods</a></div>
+        </div>
+        <div class="box-content-md">
+            <ul class="list-3 stripped has-thumb">
+                {{#each contactMethods}}
+                    <li class="list-3-item">
+                        <div class="list-thumb"><i class="{{contactMethodTypeIcon}}"></i></div>
+                        <div class="list-3-content list-magic">
+                            <div class="list-3-content-wrap">
+                                <div class="list-3-item-meta-top">{{displayName}}</div>
+                                <h4 class="list-3-item-title"><a href="#">{{value}}</a></h4>
+                            </div>
+                            <!-- /.list-3-content-wrap -->
+                        </div>
+                    </li>
+                {{else}}
+                    <div class="map-notFound">
+                        <div class="box-v-msg">
+                            <div class="box-v-msg-content">
+                                <i class="icon-address-1"></i>
+                                <p>Contact Method Not Found<br>
+                                    <a href="#" class="addContactMethod">Add new contact method</a>
+                                </p>
+                            </div><!-- /.box-v-msg-content -->
+                        </div>
+                    </div>
+                {{/each}}
+            </ul>
+
+        </div>
+        <!-- /.box-content-md -->
+
+        {{#if editMode }}
+            <div class="box-header-2">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{selectedType}} <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            {{#each contactMethodsTypes}}
+                                <li><a class="contact-method-type" href="#">{{displayName}}</a></li>
+                            {{/each}}
+                        </ul>
+                    </div><!-- /btn-group -->
+                    <input id="new-contact-method-value" type="text" class="form-control">
+                </div><!-- /input-group -->
+                <a id="cancel-contact-method" class="btn btn-default"> Cancel </a>
+                <span id="add-contact-method-error" class="label label-danger"></span>
+                <a id="add-contact-method" class="btn btn-success pull-right"> Add </a>
+            </div>
+        {{/if}}
+    </div>
+</template>
