@@ -3,8 +3,20 @@
         <div id="content">
             <div id="content-header" class="mini">
                 <h1>
-                    <strong data-bind="text: entities().length"></strong>
-                    <span data-bind="text:name "></span>
+                    {{#with information}}
+                        {{#objectProperty property=contactablesCount }}
+                            <strong> {{value}} </strong>
+                        {{/objectProperty}}
+
+                        {{#objectProperty property=objType}}
+                            {{#if value}}
+                                <span> {{value}}s </span>
+                            {{else}}
+                                members
+                            {{/if}}
+                        {{/objectProperty}}
+                        on my Network
+                    {{/with}}
                 </h1>
             </div>
             <div id="breadcrumb">
@@ -16,208 +28,261 @@
                 <div class="row">
                     <div class="col-md-4 col-md-push-8 col-lg-push-8 col-lg-4">
                         <sidebar>
-                            <div class="box-2">
-                                <h4 class="bottom-20">
-                                    <strong>Filters</strong>
-                                </h4>
-                                <form role="form">
-                                    <div class="panel-group bottom-20">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                                        <strong>Mode</strong>
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne" class="panel-collapse collapse in">
-                                                <div class="panel-body">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" data-bind="checked: includeInacives">Include inactives
-                                                        </label>
-                                                    </div>
-
-                                                    <div class="checkbox">
-                                                        <label >
-                                                            <input type="checkbox" data-bind="checked: onlyRecent">Only recent
-                                                        </label>
-                                                    </div>
-                                                    <select data-bind="options: timeLimits, optionsText: 'name', value: selectedLimit, optionsValue: 'time'" class="form-control"></select>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                                                        <strong>Tags</strong>
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseThree" class="panel-collapse collapse">
-                                                <div class="panel-body">
-                                                    <p>
-                                                        <!-- ko foreach: tags -->
-                                                        <button type="button" class="btn btn-xs btn-primary">
-                                                            <span data-bind="text: $data "></span>
-                                                            <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
-                                                        </button>
-                                                        <!-- /ko -->
-                                                    </p>
-                                                    <div class="input-group">
-                                                        <input id="tag-filter" type="text" class="form-control" placeholder="Enter tags here..." data-bind="value:tag, valueUpdate: 'afterkeydown'">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn btn-primary" type="button" data-bind="click: addTag">Add</button>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- /.box-2 -->
+                            {{> contactablesFilters }}
                         </sidebar>
                     </div>
                     <!-- /.col-lg-4 -->
+
                     <div class="col-md-8 col-md-pull-4 col-lg-8 col-lg-pull-4">
-
-                        <!-- Entities list -->
-                        <div>
-                            <div class="actions-head">
-                                <div class="row">
-                                    <div class="col-sm-8 col-md-12 col-lg-8">
-                                        <!-- Single button -->
-                                        <div class="btn-group pull-left suffix-5">
-                                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                                                <span class="fa fa-plus"></span> Add
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
-                                                <li><a href="#" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'Add ' + name()"></a></li>
-                                            </ul>
-                                        </div>
-                                        <!--<a class="btn btn-success pull-left suffix-10" href="#"><i class="fa fa-cloud-download"></i> Import</a>-->
-                                        <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Search contactable" data-bind="value: searchString, valueUpdate: 'afterkeydown'"/>
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-primary" type="button">
-                                                        <i class="fa fa-search"></i> Search
-                                                    </button>
-                                                </span>
-                                        </div>
-                                    </div><!-- /.col-lg-5 -->
-                                </div><!-- /.row -->
-                            </div>
-                            <!--ko if: entities().length > 0-->
-                                <!-- ko foreach: entities-->
-                                    <div class="table-item magic">
-                                        <div class="row ">
-                                            <div class="col-sm-6">
-                                                <div class="table-item-cell">
-                                                    <div class="table-item-cell-container">
-                                                        <div class="thumb">
-                                                            <!-- ko with: $root.filesCollection.getThumbnailUrl($data.pictureFileId())-->
-                                                            <!-- ko if: ready -->
-                                                            <!-- ko if: !picture() && $parent.Customer -->
-                                                            <a href="#">
-                                                                <i class="icon-building-1"></i>
-                                                            </a>
-                                                            <!-- /ko -->
-                                                            <!-- ko if: !picture() && !$parent.Customer -->
-                                                            <a href="#">
-                                                                <i class="icon-profile-man"></i>
-                                                            </a>
-                                                            <!-- /ko -->
-                                                            <a href="#">
-                                                                <img data-bind="attr: {src: picture }">
-                                                            </a>
-                                                            <!-- /ko -->
-                                                            <!-- /ko -->
-                                                        </div>
-                                                        <div class="table-item-title">
-                                                            <a data-bind="text: displayName, attr:{href: '/contactable/'+_id()}"></a>
-                                                            <br/>
-                                                            <i data-bind="attr: { class: helper.getEntityIcon(ko.toJS($data))}"></i>
-                                                        </div>
-                                                    </div>
-                                                    <!-- /.table-item-cell-container -->
-                                                </div>
-                                                <!-- /.table-item-cell -->
-                                            </div>
-                                            <!-- /.col-sm-3 -->
-                                            <div class="col-sm-4">
-                                                <div class="table-item-cell">
-                                                    <div class="table-item-cell-container magic-content">
-                                                        <a class="btn btn-default btn-sm tip-bottom" title="Send Message" data-bind="click: function () { Composer.showModal( 'sendMessage', $data._id()); } ">
-                                                            <i class="fa fa-comment-o"></i>
-                                                            Send message
-                                                        </a>
-                                                        <!--<a class="btn btn-sm btn-default tip-bottom" title="Email" href="#">-->
-                                                        <!--<i class="fa fa-envelope-o"></i>gregg@tempworks.com</a>-->
-                                                    </div>
-                                                    <!-- /.table-item-cell-container -->
-                                                </div>
-                                                <!-- /.table-item-cell -->
-                                            </div>
-                                            <!-- /.col-sm-4 -->
-                                            <div class="col-sm-2">
-                                                <div class="table-item-cell">
-                                                    <div class="table-item-cell-container date">
-                                                        <!-- ko if: $data.createdAt -->
-                                                        <span data-bind="text: moment(createdAt()).fromNow()"></span><br>
-                                                        <!-- /ko -->
-                                                    </div>
-                                                    <!-- /.table-item-cell-container -->
-                                                </div>
-                                                <!-- /.table-item-cell -->
-                                            </div>
-                                            <!-- /.col-sm-3 -->
-                                        </div>
-                                        <!-- /.row -->
-                                    </div>
-                                    <!-- /.table-item -->
-                                <!-- /ko -->
-                            <!-- /ko -->
-                            <!--ko ifnot: entities().length > 0-->
-                                <!--ko ifnot:isFilering-->
-                                    <div class="v-wrapper">
-                                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                                            <i class="icon-connection-1 text-large"></i>
-                                            <h1>You currently have no
-                                            <!--ko text:name-->
-                                                <!--/ko-->
-                                            </h1>
-                                            <!--ko if:name()=='contactable'-->
-                                                <p class="lead">A contactable is an Employee, Customer or Contact.</p>
-                                            <!-- /ko -->
-                                            <!--ko foreach: contactableTypes-->
-                                                <a href="#" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
-                                                <span class="bullet-spacer" data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
-                                            <!-- /ko -->
-                                        </div><!-- /.v-wrapper-cell -->
-                                    </div>
-                                <!-- /ko -->
-                                <!--ko if:isFilering-->
-                                    <div class="v-wrapper">
-                                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                                            <i class="icon-connection-1 text-large"></i>
-                                            <h1>No <!--ko text:name-->
-                                                <!--/ko--> Found
-                                            </h1>
-
-                                        </div><!-- /.v-wrapper-cell -->
-                                    </div>
-                                <!-- /ko -->
-                            <!-- /ko -->
-                            <!--infinite scroll-->
-                            <div data-bind="onScrollBottom:showMore"></div>
-                        </div>
+                        {{> contactablesList }}
+                        {{#infinityScroll cb=showMore}} {{/infinityScroll}}
                     </div>
                 </div>
                 <!--/ko-->
             </div>
         </div>
+    </div>
+</template>
+
+<template name="contactablesFilters">
+    <div class="box-2">
+        <h4 class="bottom-20"><strong>Filters</strong></h4>
+        <form role="form">
+            <div class="panel-group bottom-20">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a>
+                                <strong>Mode</strong>
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="checkbox">
+                            <label>
+                                {{#objectProperty property=query.inactives}}
+                                    <input type="checkbox" value="{{value}}"> Include inactives
+                                {{/objectProperty}}
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                {{#objectProperty property=query.onlyRecents}}
+                                    <input type="checkbox" value="{{value}}"> Only recent
+                                {{/objectProperty}}
+                            </label>
+                            <div class="pull-right">
+                                <button type="button" class="{{recentOptionClass recentOptions.day}}" id="recent-day">day</button>
+                                <button type="button" class="{{recentOptionClass recentOptions.week}}" id="recent-week">week</button>
+                                <button type="button" class="{{recentOptionClass recentOptions.month}}" id="recent-month">month</button>
+                                <button type="button" class="{{recentOptionClass recentOptions.year}}" id="recent-year">year</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <strong>Tags</strong>
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        {{#objectProperty property=tags}}
+                        <button type="button" class="tag btn btn-xs btn-primary">
+                            <span >{{value}}</span>
+                            <i class="remove-tag fa fa-times"></i>
+                        </button>
+                        {{/objectProperty}}
+                        <div class="input-group">
+                            <input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">
+                            <span class="input-group-btn">
+                              <button class="add-tag btn btn-success" type="button">Add</button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</template>
+
+<template name="contactablesList">
+    <div>
+        {{> contactablesListSearch }}
+
+        {{#each contactables}}
+            {{> contactablesListItem }}
+        {{else}}
+            {{#if info.isFiltering }}
+                <div class="v-wrapper">
+                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                        <i class="icon-connection-1 text-large"></i>
+                        <h1>No {{#if info.objName}} {{info.objName}} {{else}} members {{/if}}
+                            Found
+                        </h1>
+                    </div><!-- /.v-wrapper-cell -->
+                </div>
+            {{else}}
+                <div class="v-wrapper">
+                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                        <i class="icon-connection-1 text-large"></i>
+                        <h1>You currently have no
+                            <!--ko text:name-->
+                            <!--/ko-->
+                        </h1>
+                        <!--ko if:name()=='contactable'-->
+                        <p class="lead">A contactable is an Employee, Customer or Contact.</p>
+                        <!-- /ko -->
+                        <!--ko foreach: contactableTypes-->
+                        <a href="#" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
+                        <span class="bullet-spacer" data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
+                        <!-- /ko -->
+                    </div><!-- /.v-wrapper-cell -->
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
+</template>
+
+<template name="contactablesListItem">
+    <div class="table-item magic">
+        <div class="row ">
+            <div class="col-sm-4">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container">
+                        <div class="thumb">
+                            {{#with pictureUrl pictureFileId}}
+                                {{#if . }}
+                                    <a href="#">
+                                        <img src="{{.}}">
+                                    </a>
+                                {{else}}
+                                    {{#if ../organization }}
+                                        <a href="#">
+                                            <i class="icon-building-1"></i>
+                                        </a>
+                                    {{/if}}
+                                    {{#if ../person }}
+                                        <a href="#">
+                                            <i class="icon-profile-man"></i>
+                                        </a>
+                                    {{/if}}
+                                {{/if}}
+                            {{/with}}
+                        </div>
+                        <div class="table-item-title">
+                            <a href="/contactable/{{_id}}">{{displayName}}</a>
+                            <br/>
+                            <strong class="text text-muted text-small">{{displayObjType}}</strong>
+                        </div>
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-3 -->
+            <div class="col-sm-6">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container text-muted">
+                        {{#if Customer}}
+                            {{> customerInformation }}
+                        {{/if}}
+                        {{#if Employee}}
+                            {{> employeeInformation }}
+                        {{/if}}
+                        {{#if Contact}}
+                            {{> contactInformation }}
+                        {{/if}}
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-4 -->
+            <div class="col-sm-2">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container date">
+                        {{#formatted_date date=createdAt format='fromNow'}}
+                        <span>{{value}}</span><br>
+                        {{/formatted_date}}
+                        {{#if searchKey }}
+                            <i class="glyphicon glyphicon-search"></i>
+                            {{searchKey}}
+                        {{/if}}
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-3 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.table-item -->
+</template>
+
+<template name="customerInformation">
+    {{#if location.displayName}}
+        <i class="icon-map-marker-1"></i>
+        {{location.displayName}}
+    {{/if}}
+</template>
+
+<template name="employeeInformation">
+    {{#if assignmentInfo}}
+        {{#with assignmentInfo}}
+            <i class="icon-briefcase" style="color: forestgreen"></i>
+            Currently assigned as <strong> <a href="/job/{{job}}"> {{jobTitle}} </a></strong> {{#if customerName}} at <strong> <a href="/contactable/{{customer}}"> {{customerName}} </a></strong> {{/if}}
+    {{/with}}
+    {{else}}
+        {{#if person}}
+            <i class="icon-briefcase"></i>
+            {{person.jobTitle}}
+        {{/if}}
+    {{/if}}
+    <br/>
+    {{#if location.displayName}}
+        <i class="icon-map-marker-1"></i>
+        {{location.displayName}}
+    {{/if}}
+</template>
+
+<template name="contactInformation">
+    {{#if Contact.customer}}
+        <i class="icon-building-2"></i>
+        <a href="/contactable/{{Contact.customer}}">
+            <strong>{{Contact.customerName}}</strong>
+        </a>
+    {{/if}}
+</template>
+
+<template name="contactablesListSearch">
+    <div class="actions-head">
+        <div class="row">
+            <div class="col-sm-8 col-md-12 col-lg-8">
+                <!-- Single button -->
+                <div class="btn-group pull-left suffix-5">
+                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                        <span class="fa fa-plus"></span> Add
+                    </button>
+                    <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
+                        {{#each contactableTypes}}
+                        <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <!--<a class="btn btn-success pull-left suffix-10" href="#"><i class="fa fa-cloud-download"></i> Import</a>-->
+                <div class="input-group">
+                    {{#objectProperty property=searchString}}
+                        <input type="text" class="form-control" placeholder="Search contactable" value="{{value}}">
+                    {{/objectProperty}}
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fa fa-search"></i> Search
+                        </button>
+                    </span>
+                </div>
+            </div><!-- /.col-lg-5 -->
+        </div><!-- /.row -->
     </div>
 </template>

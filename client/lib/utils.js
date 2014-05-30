@@ -37,6 +37,7 @@ Utils.ReactivePropertyTypes = {
   int: 1,
   array: 2,
   date: 3,
+  boolean: 5,
   lookUp: 4
 };
 

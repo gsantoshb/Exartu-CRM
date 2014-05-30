@@ -47,6 +47,14 @@
     </span>
 </template>
 
+<template name="object_property_checkbox">
+    <span class="prop-input">
+        {{> UI.contentBlock value=property.value}}
+        <span class="text text-danger">{{error}}</span>
+    </span>
+</template>
+
+
 <template name="object_property_multiple">
     {{#each values}}
         {{> UI.contentBlock value=.}}

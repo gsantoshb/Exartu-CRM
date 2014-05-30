@@ -86,11 +86,12 @@ Template.object_property_date.events = {
       }
   }
 };
-Template.object_property_single_editable.events = {
-    'change .prop-input': function(e, ctx) {
-        ctx.data.property.value = e.target.value;
-    }
+Template.object_property_single.events = {
+  'change .prop-input': function(e) {
+    this.property.value = e.target.value;
+  }
 };
+
 Template.object_property_single_editable.events = {
   'change .prop-input': function(e, ctx) {
       ctx.data.property.value = e.target.value;
@@ -234,4 +235,20 @@ UI.registerHelper('dateTimePicker', function() {
     return template;
 });
 
+UI.registerHelper('infinityScroll', function() {
+  var height = $(window).height();
+  var scrollTop = $(window).scrollTop();
+  var cb = this.cb;
 
+  if(height==scrollTop){
+    cb();
+  }
+  var windowElement=$(window);
+  windowElement.bind("scroll", _.debounce(function(){
+    if(windowElement.scrollTop() + windowElement.height() > $(document).height() - 50){
+      cb();
+    }
+  },300));
+
+  return null;
+});
