@@ -77,11 +77,13 @@ Composer.showModal = function (templateName) {
         m.remove();
         $('.modal-backdrop').remove();
     })
+    var parameters = Array.prototype.slice.call(arguments, 1);
+
     var template = Template[templateName];
-    UI.insert(UI.render(template), host[0])
+    UI.insert(UI.renderWithData(template, parameters), host[0])
     var modal = host.children();
 
-    var parameters = Array.prototype.slice.call(arguments, 1);
+
     modal.modal('show');
     if (Template[templateName].viewModel) {
         var aux = function () {
