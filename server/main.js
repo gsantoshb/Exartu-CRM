@@ -1,7 +1,8 @@
 var dbSeed = {
   seedSystemLookUps: seedSystemLookUps,
   seedSystemRoles: seedSystemRoles,
-  seedSystemContactMethods: seedSystemContactMethods
+  seedSystemContactMethods: seedSystemContactMethods,
+  seedSystemJobRateTypes:seedSystemJobRateTypes
 }
 
 var handleConfiguration = function () {

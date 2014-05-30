@@ -1,290 +1,210 @@
 <template name="job">
     <div class="jobs-page" name="jobVM">
-        <div id="content" data-bind="with: editJob">
-            <div id="content-header" class="mini">
-                <h1 data-bind="text: displayName">Senior Full-Stack Developer</h1>
-            </div>
-            <div id="breadcrumb" class="bradcrumb-top">
-                <a href="/" title="Go to Home" class="tip-bottom">
-                    <i class="fa fa-home"></i>Home</a>
-                <a href="/jobs" class="current">Jobs</a>
-                <a href="/jobs" data-bind="text: industryName(), attr:{href:'/jobs#industry='+industry()}"></a>
-                <a href="/jobs" data-bind="text: categoryName(), attr:{href:'/jobs#category='+category()}"></a>
-            </div>
+        <div id="content">
+            {{#with originalJob}}
+                <div id="content-header" class="mini">
+                    <h1>{{displayName}}</h1>
+                </div>
+                <div id="breadcrumb" class="bradcrumb-top">
+                    <a href="/" title="Go to Home" class="tip-bottom">
+                        <i class="fa fa-home"></i>Home</a>
+                    <a href="/jobs" class="current">Jobs</a>
+                    <a href="/jobs#industry={{industry}}">{{industryName}}</a>
+                    <a href="/jobs#category={{category}}">{{categoryName}}</a>
+                </div>
+            {{/with}}
+            {{#with job}}
+                <div class="container-fluid">
 
-            <div class="container-fluid">
-
-                <div class="col-md-8 col-lg-8">
-                    <div class="box">
-                        <div class="box-header-2">
-                            <a class="btn-action" href="#" data-bind="click:$parent.edit, style: { color: $parent.editMode() ? '#008DFC' : '#ddd'}"><i class="fa fa-pencil"></i></a>
-                            <!--<a class="pull-right btn btn-xs" href="#" data-bind="click:$parent.edit, css:{'btn-primary':$parent.editMode(),'btn-default': !$parent.editMode()}">-->
-                                <!--<i class="fa fa-pencil"></i>&nbsp;Edit-->
-                            <!--</a>-->
-                           <div class="box-title">Job Details</div>
-                        </div>
-                        <div class="box-content-lg">
-                            <table class="table custom-table text-normal" style="table-layout: fixed;">
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-date', data: { data:{icon:'fa fa-calendar',name:'Start date', value: startDate, editMode: $parent.editMode } } }">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-date', data: { data:{icon:'fa fa-calendar', name:'End date', value: endDate, editMode: $parent.editMode } } }">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp', data: { data:{icon:'fa fa-clock-o', name:'Duration', value: duration, valueName:durationName(), editMode: $parent.editMode, lookUpCode:Enums.lookUpTypes.job.duration.code } } }">
-                                        </div>
-
-                                    </td>
-                                    <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp', data: { data:{icon:'fa fa-info-circle', name:'Status', value: status, valueName:statusName(), editMode: $parent.editMode, lookUpCode:Enums.lookUpTypes.job.status.code } } }">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp', data: { data:{icon:'fa fa-building-o', name:'Industry', value: industry, valueName:industryName(), editMode: $parent.editMode, lookUpCode: Enums.lookUpTypes.job.industry.code } } }">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="job-editable-property" data-bind="template:{name:'display-property-lookUp', data: { data:{icon:'fa fa-folder-open', name:'Category', value: category, valueName:categoryName(), editMode: $parent.editMode, lookUpCode: Enums.lookUpTypes.job.category.code } } }">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <i class="fa fa-globe"></i>&nbsp;Location:
-                                        <strong>Bucharest, Romania</strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <div data-bind="switch: $parent.editMode">
-                                            <div data-switch="true">
-                                                Tags
-                                                <!-- ko foreach: $data.tags -->
-                                                <span class="badge">
-                                                    <i class="fa fa-tag"></i>
-                                                    <span data-bind="text: $data"></span>
-                                                </span>
-                                                <!-- /ko -->
-                                            </div>
-                                            <div data-switch="false">
-                                                Tags
-                                                <!-- ko foreach: $data.tags -->
-                                                <span type="button" class="badge" data-bind="click: $root.removeTag" style="cursor: pointer" title="Remove">
-                                                    <span data-bind="text: $data" title="Remove"></span>
+                    <div class="col-md-8 col-lg-8">
+                        <div class="box">
+                            <div class="box-header-2">
+                                <a class="btn-action editJob pull-right" href="#" style="color: {{colorEdit}}"><i class="fa fa-pencil"></i></a>
+                                <div class="box-title">Job Details</div>
+                            </div>
+                            <div class="box-content-lg">
+                                <table class="table custom-table text-normal" style="table-layout: fixed;">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <i class="fa fa-calendar"></i>&nbsp;Start Name:
+                                            {{#objectProperty property=startDate editable=editMode}}
+                                                    {{#dateTimePicker value=value}}
+                                                    {{/dateTimePicker}}
+                                            {{else}}
+                                                <strong>
+                                                    {{#formattedDate value=value format='MM.DD.YYYY'}}
+                                                        {{date}}
+                                                    {{/formattedDate}}
+                                                </strong>
+                                            {{/objectProperty}}
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-calendar"></i>&nbsp;End date:
+                                            {{#objectProperty property=endDate editable=editMode}}
+                                                {{#dateTimePicker value=value}}
+                                                {{/dateTimePicker}}
+                                                {{else}}
+                                                <strong>
+                                                    {{#formattedDate value=value format='MM.DD.YYYY'}}
+                                                    {{date}}
+                                                    {{/formattedDate}}
+                                                </strong>
+                                            {{/objectProperty}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <i class="fa fa-clock-o"></i>&nbsp;Duration:
+                                            {{#objectProperty property=duration editable=editMode}}
+                                                <div class="form-group  {{hasError}}">
+                                                    <select class="form-control input-lg">
+                                                        {{#each options}}
+                                                            <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
+                                                        {{/each}}
+                                                    </select>
+                                                    <span>{{error}}</span>
+                                                </div><!-- /.form-group -->
+                                            {{else}}
+                                                <strong>
+                                                    <strong>{{displayName}}</strong>
+                                                </strong>
+                                            {{/objectProperty}}
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-info-circle"></i>&nbsp;Status:
+                                            {{#objectProperty property=status editable=editMode}}
+                                            <div class="form-group  {{hasError}}">
+                                                <select class="form-control input-lg">
+                                                    {{#each options}}
+                                                    <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
+                                                    {{/each}}
+                                                </select>
+                                                <span>{{error}}</span>
+                                            </div><!-- /.form-group -->
+                                            {{else}}
+                                            <strong>
+                                                <strong>{{displayName}}</strong>
+                                            </strong>
+                                            {{/objectProperty}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <i class="fa fa-building-o"></i>&nbsp;Industry:
+                                            {{#objectProperty property=industry editable=editMode}}
+                                            <div class="form-group  {{hasError}}">
+                                                <select class="form-control input-lg">
+                                                    {{#each options}}
+                                                    <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
+                                                    {{/each}}
+                                                </select>
+                                                <span>{{error}}</span>
+                                            </div><!-- /.form-group -->
+                                            {{else}}
+                                            <strong>
+                                                <strong>{{displayName}}</strong>
+                                            </strong>
+                                            {{/objectProperty}}
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-folder-open"></i>&nbsp;Category:
+                                            {{#objectProperty property=category editable=editMode}}
+                                            <div class="form-group  {{hasError}}">
+                                                <select class="form-control input-lg">
+                                                    {{#each options}}
+                                                    <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
+                                                    {{/each}}
+                                                </select>
+                                                <span>{{error}}</span>
+                                            </div><!-- /.form-group -->
+                                            {{else}}
+                                            <strong>
+                                                <strong>{{displayName}}</strong>
+                                            </strong>
+                                            {{/objectProperty}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <i class="fa fa-globe"></i>&nbsp;Location:
+                                            <strong>Bucharest, Romania</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Tags:
+                                            {{#objectProperty property=tags editable=editMode}}
+                                                <span type="button" class="badge" style="cursor: pointer" title="Remove">
+                                                    <span title="Remove">{{value}}</span>
                                                     <i class="fa fa-times" title="Remove"></i>
                                                 </span>
-                                                <!-- /ko -->
-                                                <div class="input-group">
-                                                    <input type="text " class="form-control " placeholder="Enter tags here... " data-bind="value: $parent.newTag ">
-                                                    <span class="input-group-btn ">
-                                                        <button class="btn btn-success " type="button " data-bind="click: $root.addTag ">Add</button>
-                                                    </span>
-                                                </div>
-                                                <!-- /input-group -->
-                                                <!-- /.box-content-md -->
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div data-bind="switch: $parent.editMode">
-                                <div data-switch="true">
-                                    <a class="btn btn-default btn-block btn-md " data-toggle="collapse" href="#description">
-                                        description
-                                    </a>
-                                    <div id="description" class="panel-collapse collapse" data-bind="html: $data.description">
 
+                                                <div class="input-group">
+                                                    <input type="text " class="form-control" placeholder="Enter tags here...">
+                                                        <span class="input-group-btn ">
+                                                            <button class="btn btn-success " type="button ">
+                                                                Add
+                                                            </button>
+                                                        </span>
+                                                </div>
+                                            {{else}}
+                                                <span class="badge">
+                                                    <i class="fa fa-tag"></i>
+                                                    <span data-bind="text: $data">{{value}}</span>
+                                                </span>
+                                            {{/objectProperty}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                {{#objectProperty property=description editable=editMode}}
+                                    Description:
+                                        <textarea>{{value}}
+                                        </textarea>
+                                    {{else}}
+                                    <div id="description" class="job-description {{collapsed}}">
+                                        <div class="text">
+                                        {{value}}
+                                        </div>
+                                        <div class="see-more">See more</div>
+                                        <div class="see-less">See less</div>
+                                    </div>
+
+                                {{/objectProperty}}
+                                <!-- /.description -->
+                            </div>
+                            <!-- /.box-content-lg-->
+                            {{#if editMode}}
+                                <div class="box-header-2" style="height: 60px">
+                                    <div class="pull-right">
+                                        <span class="btn btn-default cancelButton">
+                                            Cancel
+                                        </span>
+                                        <span class="btn btn-info saveButton">
+                                            Save
+                                        </span>
                                     </div>
                                 </div>
-                                <div data-switch="false">
-                                    Description:
-                                    <textarea data-bind="htmlEditor: $data.description">
-
-                                    </textarea>
-                                </div>
-                            </div>
-                            <!-- /.description -->
+                            {{/if}}
                         </div>
-                        <!-- /.box-content-lg-->
-                        <!--ko if: $parent.editMode            -->
-                        <div class="box-header-2" style="height: 60px">
-                            <div class="pull-right">
-                                <span class="btn btn-default" data-bind="click: function(){ return $parent.editMode(false); }">
-                                    Cancel
-                                </span>
-                                <span class="btn btn-info" data-bind="click: function(){ return $parent.save(); }">
-                                    Save
-                                </span>
-                            </div>
+                        <!-- /.box -->
+                        <div data-bind="with: $parent.job">
+                            {{>candidates}}
                         </div>
-                        <!--/ko-->
-                    </div>
-                    <!-- /.box -->
-                    <div data-bind="with: $parent.job">
-                        {{>candidates}}
-                    </div>
 
+                    </div>
+                    <!-- /.col-lg-8-->
+
+                    <div class="col-md-4 col-lg-4" data-bind="with: $parent.job">
+                        {{>assignment}}
+                        {{>customerInfo}}
+                        {{>jobRates}}
+                    </div>
+                    <!-- /.col-lg-4-->
                 </div>
-                <!-- /.col-lg-8-->
-
-                <div class="col-md-4 col-lg-4" data-bind="with: $parent.job">
-
-                    {{>assignment}} {{>customerInfo}}
-                    <!--
-                    <div class="list-group">
-                        <a href="#" class="list-group-item">
-                            <i class="fa fa-share"></i>
-                            <strong>Share this listing</strong>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <i class="fa fa-flag"></i>
-                            <strong>Report this listing</strong>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <i class="fa fa-link"></i>
-                            <strong>http://exrt.bz/j/19784</strong>
-                        </a>
-                    </div>
--->
-
-
-                </div>
-                <!-- /.col-lg-4-->
-            </div>
-            <!-- /.container-fluid -->
-
+                <!-- /.container-fluid -->
+            {{/with}}
         </div>
         <!-- /.content -->
     </div>
-</template>
-
-<template name="similarJobs ">
-    <section>
-        <div class="box ">
-            <div class="box-header-2 ">
-                <div class="box-title ">
-                    <i class="icon icon-briefcase "></i>Similar Jobs</div>
-            </div>
-            <ul class="list-type-1 ">
-                <li>
-                    <div class="thumb-sm item-logo ">
-                        <a class="thumb-sm-content " href="# ">
-                            <img src="assets/logo-exartu.png " alt="exartu ">
-                        </a>
-                    </div>
-                    <div class="list-item-content ">
-                        <p class="activity-author ">
-                            <a href="# ">Javascript Developer</a>
-                        </p>
-                        <div class="text-small ">
-                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted ">FULLTIME</div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb-sm item-logo ">
-                        <a class="thumb-sm-content " href="# ">
-                            <img src="assets/logo-exartu.png " alt="exartu ">
-                        </a>
-                    </div>
-                    <div class="list-item-content ">
-                        <p class="activity-author ">
-                            <a href="# ">Javascript Developer</a>
-                        </p>
-                        <div class="text-small ">
-                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted ">FULLTIME</div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb-sm item-logo ">
-                        <a class="thumb-sm-content " href="# ">
-                            <img src="assets/logo-exartu.png " alt="exartu ">
-                        </a>
-                    </div>
-                    <div class="list-item-content ">
-                        <p class="activity-author ">
-                            <a href="# ">Javascript Developer</a>
-                        </p>
-                        <div class="text-small ">
-                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted ">FULLTIME</div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb-sm item-logo ">
-                        <a class="thumb-sm-content " href="# ">
-                            <img src="assets/logo-exartu.png " alt="exartu ">
-                        </a>
-                    </div>
-                    <div class="list-item-content ">
-                        <p class="activity-author ">
-                            <a href="# ">Javascript Developer</a>
-                        </p>
-                        <div class="text-small ">
-                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted ">FULLTIME</div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb-sm item-logo ">
-                        <a class="thumb-sm-content " href="# ">
-                            <img src="assets/logo-exartu.png " alt="exartu ">
-                        </a>
-                    </div>
-                    <div class="list-item-content ">
-                        <p class="activity-author ">
-                            <a href="# ">Javascript Developer</a>
-                        </p>
-                        <div class="text-small ">
-                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted ">FULLTIME</div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb-sm item-logo ">
-                        <a class="thumb-sm-content " href="# ">
-                            <img src="assets/logo-exartu.png " alt="exartu ">
-                        </a>
-                    </div>
-                    <div class="list-item-content ">
-                        <p class="activity-author ">
-                            <a href="# ">Javascript Developer</a>
-                        </p>
-                        <div class="text-small ">
-                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted ">FULLTIME</div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb-sm item-logo ">
-                        <a class="thumb-sm-content " href="# ">
-                            <img src="assets/logo-exartu.png " alt="exartu ">
-                        </a>
-                    </div>
-                    <div class="list-item-content ">
-                        <p class="activity-author ">
-                            <a href="# ">Javascript Developer</a>
-                        </p>
-                        <div class="text-small ">
-                            <a href="# ">EXARTU</a>&nbsp;&nbsp; Bankok, Thailand</div>
-                        <div class="text-small text-muted ">FULLTIME</div>
-                    </div>
-                </li>
-
-            </ul>
-            <!-- /. -->
-        </div>
-        <!-- /.box -->
-    </section>
 </template>

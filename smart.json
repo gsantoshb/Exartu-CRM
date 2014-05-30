@@ -15,6 +15,7 @@
     "xml2js": {},
     "npm": {},
     "apm": {},
-    "moment": {}
+    "moment": {},
+    "bootstrap3-datetimepicker": {}
   }
 }

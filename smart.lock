@@ -23,7 +23,8 @@
       "xml2js": {},
       "npm": {},
       "apm": {},
-      "moment": {}
+      "moment": {},
+      "bootstrap3-datetimepicker": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -106,6 +107,11 @@
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
       },
+      "bootstrap3-datetimepicker": {
+        "git": "https://github.com/tsega/meteor-bootstrap3-datetimepicker.git",
+        "tag": "v0.0.5",
+        "commit": "30b5fa0759f98b75761772ad891876408f7cc8c4"
+      },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
         "tag": "v0.2.4",
@@ -158,8 +164,8 @@
       },
       "cfs-storage-adapter": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-storage-adapter.git",
-        "tag": "v0.0.25",
-        "commit": "3c9724e159696a909e9785339cef04bd6c2732de"
+        "tag": "v0.0.26",
+        "commit": "cb9808ec519f8673d2cc4cc881b6eda9e56bdead"
       },
       "http-methods": {
         "git": "https://github.com/CollectionFS/Meteor-http-methods.git",

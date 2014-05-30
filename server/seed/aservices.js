@@ -98,3 +98,17 @@ dType.constructor.service({
         return []
     }
 })
+dType.constructor.service({
+    name: 'jobRates',
+    getSettings: function(options){
+        return {name: 'jobRates'};
+    },
+    isValid: function(value, serviceSettings){
+        return _.isArray(value);
+    },
+    initValue: function(value){
+        return []
+    }
+})
+
+

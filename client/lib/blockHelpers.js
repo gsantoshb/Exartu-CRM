@@ -30,15 +30,31 @@ UI.registerHelper('objectProperty', function() {
   var template = {};
   switch(self.property.type) {
     case Utils.ReactivePropertyTypes.array:
-      template = Template.object_property_multiple;
+      if (self.editable !== undefined) {
+        template = Template.object_property_multiple_editable;
+        template.isEditable = function() {
+          return self.editable;
+        }
+      }else{
+        template = Template.object_property_multiple;
+      }
       template.values = function() {
         return this.property.value;
       };
       break;
-    case Utils.ReactivePropertyTypes.boolean:
-      template = Template.object_property_checkbox;
+    case  Utils.ReactivePropertyTypes.lookUp:
+      template = Template.object_property_lookup;
+      template.isEditable = function() {
+        return self.editable;
+      }
       break;
-    default:
+    case  Utils.ReactivePropertyTypes.date:
+      template = Template.object_property_date;
+      template.isEditable = function() {
+        return self.editable;
+      }
+      break;
+    default:{
       if (self.editable !== undefined) {
         template = Template.object_property_single_editable;
         template.isEditable = function() {
@@ -47,6 +63,7 @@ UI.registerHelper('objectProperty', function() {
       }
       else
         template = Template.object_property_single;
+      }
       template.error = function() {
         this.property.error.dep.depend();
         return this.property.error.hasError? this.property.error.message : '';
@@ -55,7 +72,20 @@ UI.registerHelper('objectProperty', function() {
 
   return template;
 });
+Template.object_property_lookup.events = {
+  'change select': function(e, ctx) {
+    ctx.data.property.value = e.target.value;
+  }
+};
 
+
+Template.object_property_date.events = {
+  'change.dp .dateTimePicker': function(e, ctx) {
+      if ($(e.target).hasClass('dateTimePicker')){
+            ctx.data.property.value = $(e.target).data('DateTimePicker').date.toDate();
+      }
+  }
+};
 Template.object_property_single.events = {
   'change .prop-input': function(e) {
     this.property.value = e.target.value;
@@ -63,14 +93,8 @@ Template.object_property_single.events = {
 };
 
 Template.object_property_single_editable.events = {
-  'change .prop-input': function(e) {
-    this.property.value = e.target.value;
-  }
-};
-
-Template.object_property_checkbox.events = {
-  'change .prop-input': function(e) {
-    this.property.value = e.target.checked;
+  'change .prop-input': function(e, ctx) {
+      ctx.data.property.value = e.target.value;
   }
 };
 
@@ -195,6 +219,21 @@ UI.registerHelper('displayProperty', function(){
   }
   return null;
 })
+
+UI.registerHelper('dateTimePicker', function() {
+
+    var template=Template.dateTimePickerTemp;
+
+    template.rendered= function(){
+        this.$('.dateTimePicker').datetimepicker({
+            language: 'en',
+            defaultDate: this.data.value,
+            useSeconds: false
+        })
+    };
+
+    return template;
+});
 
 UI.registerHelper('infinityScroll', function() {
   var height = $(window).height();

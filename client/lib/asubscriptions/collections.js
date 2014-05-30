@@ -95,33 +95,33 @@ var getLookUpName = function (lookUpName, code) {
 }
 
 Jobs = new Meteor.Collection("jobs", {
-  transform: function (job) {
-    job.displayName = job.publicJobTitle;
-    job.industryName = LookUps.findOne({ _id: job.industry }).displayName;
-    job.categoryName = LookUps.findOne({ _id: job.category }).displayName;
-    job.durationName = LookUps.findOne({ _id: job.duration }).displayName;
-    job.statusName = LookUps.findOne({ _id: job.status }).displayName;
-    _.each(job.candidates, function (candidate) {
-      candidate.employeeInfo = Contactables.findOne({
-        _id: candidate.employee
-      });
-      candidate.user = Meteor.users.findOne({
-        _id: candidate.userId
-      });
-
-    });
+    transform: function (job) {
+        job.displayName = job.publicJobTitle;
+        job.industryName = LookUps.findOne({ _id: job.industry }).displayName;
+        job.categoryName = LookUps.findOne({ _id: job.category }).displayName;
+        job.durationName = LookUps.findOne({ _id: job.duration }).displayName;
+        job.statusName = LookUps.findOne({ _id: job.status }).displayName;
+//        _.each(job.candidates, function (candidate) {
+//            candidate.employeeInfo = Contactables.findOne({
+//                _id: candidate.employee
+//            });
+//            candidate.user = Meteor.users.findOne({
+//                _id: candidate.userId
+//            });
+//
+//        });
 //        if (job.customer) {
 //            job.CustomerInfo = Contactables.findOne({
 //                _id: job.customer
 //            });
 //        }
-    if (job.employeeAssigned) {
-      job.assignmentInfo = Contactables.findOne({
-        _id: job.employeeAssigned
-      });
-    } else {
-      job.assignmentInfo = null;
-    }
+//        if (job.employeeAssigned) {
+//            job.assignmentInfo = Contactables.findOne({
+//                _id: job.employeeAssigned
+//            });
+//        } else {
+//            job.assignmentInfo = null;
+//        }
 
     return job;
   }
@@ -262,3 +262,6 @@ extendedSubscribe('contactMethods', 'ContactMethodsHandler');
 
 Assignments = new Meteor.Collection('assignment');
 extendedSubscribe('assignment', 'AssignmentsHandler');
+
+JobRateTypes= new Meteor.Collection('jobRateTypes');
+JobRateTypesHandler= Meteor.subscribe('jobRateTypes');

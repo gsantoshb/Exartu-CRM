@@ -231,7 +231,6 @@ Template.contactablesFilters.events = {
     $('#new-tag')[0].focus();
   },
   'click #recent-day': function(e) {
-    debugger;
     query.selectedLimit.value = timeLimits.day;
   },
   'click #recent-week': function(e) {

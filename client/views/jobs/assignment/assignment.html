@@ -1,43 +1,62 @@
 <template name="assignment">
-    <!--ko ifnot:$data.assignment-->
-        <div class="box">
-            <div class="box-header-2">
-                <div class="box-title">
-                    No one is assigned
-                </div>
-            </div>
-            <div class="box-content">
-                <a href="#">
-                    <a class="btn btn-lg btn-success btn-block bottom-20" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id()); }" href="#">
-                        <i class="fa fa-caret-square-o-right"></i>Assign</a>
-                </a>
-            </div>
-            <!-- /.box-content -->
-        </div>
-    <!--/ko-->
-    <!--ko if:$data.assignment-->
-        <div class="box">
-            <div class="box-header-2">
-                <a class="btn-action" href="#" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $data._id(), assignment());}"><i class="fa fa-pencil"></i></a>
-
-
-                <div class="box-title">
-                    Assigned
-                </div>
-
-            </div>
-            <div data-bind="with: assignmentInfo">
-                <a data-bind="attr:{href:'/contactable/'+ _id()}">
-                    <div class="row" style="margin:3px;">
-                        <!-- ko with: ContactablesFS.getThumbnailUrl($data.pictureFileId())-->
-                            <!-- ko if: ready -->
-                                <img class="col-md-4" style="heigth:70px; width:70px;" data-bind="attr: {src: picture }">
-                            <!-- /ko -->
-                        <!-- /ko -->
-                        <h5 class="col-md-8" data-bind="text: displayName"></h5>
-                    </div>
-                </a>
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action editAssign" href="#"><i class="fa fa-plus"></i></a>
+            <div class="box-title">
+                Assignments
             </div>
         </div>
-    <!--/ko-->
+
+        <div class="box-content">
+            {{#with currentAssignment}}
+                {{>employeeInfo}}
+            {{else}}
+                <div class="box-v-msg">
+                    <div class="box-v-msg-content">
+                        <i class="icon-profile-man"></i>
+                        <p>No-one is assigned to this job <br>
+                            <a href="#" class="editAssign">assign an Employee</a>
+                        </p>
+                    </div><!-- /.box-v-msg-content -->
+                </div>
+                <!-- /.box-content -->
+            {{/with}}
+
+            <a class="pull-right showOld" style="padding-top: 5px;cursor: pointer">see
+                {{#if showOld}}
+                    less <i class="fa fa-caret-up"></i>
+                {{else}}
+                    more <i class="fa fa-caret-down"></i>
+                {{/if}}
+            </a>
+            <hr style="width: 67%"/>
+            {{#if showOld}}
+                {{#each oldAssignments}}
+                    {{>employeeInfo}}
+                {{/each}}
+            {{/if}}
+        </div>
+    </div>
+</template>
+<template name="employeeInfo">
+    {{#with employeeData}}
+        <a href="/contactable/{{_id}}">
+            <div class="row" style="margin:3px;">
+                <img class="col-md-4" style="heigth:70px; width:70px;" src="{{pictureUrl}}">
+                <h5 class="col-md-8">{{displayName}}</h5>
+                <span class="pull-right" style="color: #BEBEBE;font-size: 11px;font-weight: bold;">
+                    from
+                    {{#formattedDate value=../start format='MM/DD/YYYY'}}
+                        {{date}}
+                    {{/formattedDate}}
+                    {{#if ../end}}
+                        to
+                        {{#formattedDate value=../end format='MM/DD/YYYY'}}
+                            {{date}}
+                        {{/formattedDate}}
+                    {{/if}}
+                </span>
+            </div>
+        </a>
+    {{/with}}
 </template>

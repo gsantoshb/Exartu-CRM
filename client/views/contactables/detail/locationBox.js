@@ -155,28 +155,3 @@ Template.contactableLocationBox.rendered=function(){
             google.maps.event.trigger(map, 'resize');
     },300))
 }
-
-
-//Template.map.rendered=function(){
-////    debugger;
-//    //hack
-//    var location = this.data.location;
-//    if(location){
-//        var mapOptions = {
-//            zoom: 13,
-//            mapTypeId: google.maps.MapTypeId.ROADMAP
-//        };
-//
-//        var element=this.$('.map')[0];
-//
-//        var map = new google.maps.Map(element, mapOptions);
-//
-//        var LatLng=new google.maps.LatLng(location.lat, location.lng);
-//        map.setCenter(LatLng);
-//        var marker = new google.maps.Marker({
-//            map: map,
-//            position: LatLng,
-//            title: location.dsiplayName
-//        });
-//    }
-//}

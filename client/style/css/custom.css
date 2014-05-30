@@ -512,3 +512,51 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .contactable-nav-tabs-main li:first-child {
     border-left: 1px solid #e7e7e7;
 }
+
+.job-description:not(.none)>.text{
+    max-height: 100px;
+    overflow-y: hidden;
+    cursor: pointer;
+}
+.job-description.in:not(.none)>.text{
+    max-height: none;
+    overflow-y: hidden;
+    cursor: auto;
+}
+.job-description:not(.none)>.see-more{
+    font-size: smaller;
+    color: #266AFA;
+    position: absolute;
+    display: block;
+    width: 83%;
+    background-color:#ffffff;
+    -moz-box-shadow: 0px -10px 37px 18px #FFFFFF;
+    -webkit-box-shadow: 0px -10px 37px 18px #FFFFFF;
+    box-shadow: 0px -10px 37px 18px #FFFFFF;
+    text-align: right;
+    cursor: pointer;
+}
+
+.job-description.in:not(.none)>.see-more{
+    display: none;
+}
+
+.job-description:not(.none)>.see-less{
+    display: none;
+}
+.job-description.in:not(.none)>.see-less{
+    font-size: smaller;
+    color: #266AFA;
+    position: absolute;
+    display: block;
+    width: 83%;
+    height: 1px;
+    text-align: right;
+    cursor: pointer;
+}
+.job-description.none>.see-more{
+    display: none;
+}
+.job-description.none>.see-less{
+    display: none;
+}

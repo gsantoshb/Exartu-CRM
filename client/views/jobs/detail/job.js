@@ -1,83 +1,232 @@
 JobController = RouteController.extend({
-    layoutTemplate: 'job',
-
+    layoutTemplate: 'mainLayout',
+    waitOn: function(){
+        return [JobHandler, ObjTypesHandler]
+    },
     data: function () {
-        Session.set('entityId', this.params._id); // save current contactable to later use on templates
+        Session.set('entityId', this.params._id);
+    },
+    action:function(){
+        if (!this.ready()) {
+            this.render('loadingContactable')
+            return;
+        }
+        this.render('job')
     }
 
 });
 
 
-Template.job.waitOn = ['JobHandler', 'ObjTypesHandler', 'ContactMethodsHandler'];
+var job = {};
 
-Template.job.viewModel = function () {
-    var self = this,
-        jobId = Router.current().params._id;
-
-
-    self.filesCollection = ContactablesFS;
-
-    /*
-     * define which field are going to be editable and the read only field which are not saved back to mongo but need to be recomputed after an update
-     */
-    var fields = ['category', 'duration', 'displayName', 'endDate', 'industry', 'publicJobTitle', 'startDate', 'status', 'tags', 'description'];
-    var readOnlyField = ['categoryName', 'durationName', 'industryName', 'statusName']
-
-    self.editMode = ko.observable(false);
-    self.edit = function () {
-        self.editMode(!self.editMode());
+toReactiveObject=function(addModel, obj){
+    var reactiveObj={
+        _id: obj._id,
+        reactiveProps: {}
     }
-    self.job = ko.meteor.findOne(Jobs, {
-        _id: jobId
-    });
+    var object=obj;
+    var path='';
+    var props={};
+    _.each(addModel.fieldGroups,function(fieldGroup){
+        _.each(fieldGroup.items,function(item){
+            if(item.type=='field'){
+                var type;
+                switch (item.fieldType){
+                  case 'string':
+                    type=Utils.ReactivePropertyTypes.string;
+                    break;
+                  case 'date':
+                    type=Utils.ReactivePropertyTypes.date;
+                    break;
+                  case 'number':
+                    type=Utils.ReactivePropertyTypes.int;
+                    break;
+                  case 'lookUp':
+                    type=Utils.ReactivePropertyTypes.lookUp;
+                    break;
+                }
+                props[item.name]={
+                  default: object[item.name],
+                  update: path+ item.name,
+                  type: type
+                }
+                if(type==Utils.ReactivePropertyTypes.lookUp){
+                  props[item.name].displayName=obj[item.name+'Name'];
+                  props[item.name].options=LookUps.find({codeType: item.lookUpCode});
+                }
+            }
+        })
+    })
+    _.each(addModel.subTypes,function(subType){
+        path=subType.name + '.';
+        object=obj[subType.name];
+        _.each(subType.fieldGroups,function(fieldGroup){
+            _.each(fieldGroup.items,function(item){
+                if(item.type=='field'){
+                    var type;
+                    switch (item.fieldType){
+                        case 'string':
+                            type=Utils.ReactivePropertyTypes.string;
+                            break;
+                        case 'date':
+                            type=Utils.ReactivePropertyTypes.date;
+                            break;
+                        case 'number':
+                            type=Utils.ReactivePropertyTypes.int;
+                            break;
+                        case 'lookUp':
+                            type=Utils.ReactivePropertyTypes.lookUp;
+                            break;
+                    }
+                    props[item.name]={
+                        default: object[item.name],
+                        update: path+ item.name,
+                        type: type
+                    }
+                }
+            })
+        })
+    })
 
-    /*
-     * a clean copy of job to be used in editing mode
-     *  when exit edit mode the value of the copy is updated with the value of the original job
-     *
-     */
-    self.editJob = ko.validatedObservable(ko.mapping.fromJS(ko.toJS(self.job)));
-//    self.assignedPicture = ko.computed(function () {
-//        return helper.getEmployeePictureUrl(self.job().assignmentInfo)
+    _.extend(reactiveObj.reactiveProps, props);
+    return reactiveObj;
+}
+
+var generateReactiveObject = function(job) {
+//    var definition = {
+//        _id: job._id,
+//        reactiveProps: {}
+//    };
+
+//    _.extend(definition.reactiveProps, {
+//
+//        startDate: {
+//            default: job.startDate,
+//            update: 'startDate',
+//            type: Utils.ReactivePropertyTypes.date
+//        },
+//        endDate: {
+//            default: job.endDate,
+//            update: 'endDate',
+//            type: Utils.ReactivePropertyTypes.date
+//        },
+//        duration: {
+//            default: job.duration,
+//            update: 'duration',
+//            type: Utils.ReactivePropertyTypes.lookUp
+//
+//        },
+//        status: {
+//            default: job.status,
+//            update: 'status',
+//            type: Utils.ReactivePropertyTypes.lookUp
+//        },
+//        industry: {
+//            default: job.industry,
+//            update: 'industry',
+//            type: Utils.ReactivePropertyTypes.lookUp
+//        },
+//        category: {
+//            default: job.category,
+//            update: 'category',
+//            type: Utils.ReactivePropertyTypes.lookUp
+//        }
 //    });
 
-    self.editMode.subscribe(function (value) {
-        if (!value) {
-            _.forEach(fields, function (field) {
-                self.editJob()[field](self.job()[field]());
-            });
-            _.forEach(readOnlyField, function (field) {
-                self.editJob()[field](self.job()[field]());
-            });
-            self.editJob().tags(ko.toJS(self.job().tags));
-        }
-    });
+
+//    var updateBase = '';
+
+    // Customer
+//    if (contactable.Customer){
+//        updateBase = 'Customer.';
+//        var customer = contactable.Customer;
+//        _.extend(definition.reactiveProps, {
+//            customer: {
+//                default: true
+//            },
+//            department: {
+//                default: customer.department,
+//                update: updateBase + 'department'
+//            },
+//            description: {
+//                default: customer.description,
+//                update: updateBase + 'description'
+//            }
+//        });
+//    }
 
 
-    self.save = function () {
-        if (!self.editJob.isValid()) {
-            self.editJob.errors.showAllMessages();
+//    return new Utils.ObjectDefinition(definition);
+  var type=job.objNameArray[1-job.objNameArray.indexOf('job')];
+  var definition= toReactiveObject(dType.objTypeInstance(type), job);
+  definition.reactiveProps.tags={
+    default: job.tags,
+    update: 'tags',
+    type: Utils.ReactivePropertyTypes.array
+  }
+  return new Utils.ObjectDefinition(definition);
+};
+
+
+
+var self={};
+Utils.reactiveProp(self, 'editMode', false);
+
+Template.job.helpers({
+    job: function(){
+        job = generateReactiveObject(Jobs.findOne({ _id: Session.get('entityId') }));
+        return job;
+    },
+    originalJob:function(){
+      return Jobs.findOne({ _id: Session.get('entityId') });
+    },
+    editMode:function(){
+        return self.editMode;
+    },
+    colorEdit:function(){
+        return self.editMode ? '#008DFC' : '#ddd'
+    },
+    collapsed: function(){
+      return this.value.length <= 1000 ? 'none': '';
+    }
+
+})
+Template.job.events({
+    'click .editJob':function(){
+        self.editMode= ! self.editMode;
+    },
+    'click .saveButton':function(){
+        if (!job.isValid()) {
+            job.showErrors();
             return;
         }
-        var set = {};
-        var newJob = ko.toJS(self.editJob());
-        var oldJob = ko.toJS(self.job());
-        _.forEach(fields, function (field) {
-            if (newJob[field] != oldJob[field]) {
-                set[field] = newJob[field];
-            }
-        });
-
-        Jobs.update({
-            _id: jobId
-        }, {
-            $set: set
-        }, function (err, result) {
+        console.dir(job.generateUpdate())
+        Jobs.update({_id: job._id}, job.generateUpdate(), function(err, result) {
             if (!err) {
-                self.editMode(false);
+                self.editMode=false;
+                job.updateDefaults();
             }
         });
+    },
+    'click .cancelButton':function(){
+        self.editMode=false;
+    },
+    'click .see-less':function(){
+      $('.job-description').removeClass('in')
+    },
+    'click .see-more':function(){
+      $('.job-description').addClass('in')
+    },
+    'click .job-description':function(e){
+      if (!$(e.target).hasClass('see-less')){
+        $('.job-description').addClass('in')
+      }
     }
+})
+
+
+Template.job.asd = function () {
+
     self.newTag = ko.observable();
     self.addTag = function () {
         if (!self.newTag()) {
@@ -91,20 +240,6 @@ Template.job.viewModel = function () {
         self.editJob().tags.remove(data);
     };
     self.editTag = ko.observable();
-    self.assign=function(data){
-        Meteor.call('assign', jobId , ko.toJS(data._id),function(err, result){
-            if(!err){
-            }else{
-                console.log(err);
-            }
-        });
-    }
-
-  self.updateNegotiation = function(data) {
-    Meteor.call('updateCandidateNegotiation', {jobId: jobId, employeeId: data.employee(), negotiation: data.negotiation()});
-    // Collapse editor
-    $('#' + data.employee()).collapse('hide');
-  }
 
     return self;
 };
