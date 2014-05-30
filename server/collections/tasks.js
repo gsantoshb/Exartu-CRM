@@ -40,7 +40,6 @@ Meteor.startup(function () {
 
 Tasks.before.insert(function (userId, doc) {
 //  if (this.connection) {
-    debugger;
     var user = Meteor.user();
     doc.hierId = user.hierId;
     doc.userId = user._id;
@@ -49,6 +48,10 @@ Tasks.before.insert(function (userId, doc) {
 });
 Tasks.allow({
   update: function (userId, doc, fields, modifier) {
+    // todo: check hiers
+    return true;
+  },
+  insert: function (userId, doc, fields, modifier) {
     // todo: check hiers
     return true;
   }
