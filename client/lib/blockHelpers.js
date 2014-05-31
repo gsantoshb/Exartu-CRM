@@ -235,6 +235,28 @@ UI.registerHelper('dateTimePicker', function() {
     return template;
 });
 
+UI.registerHelper('htmlEditor', function() {
+  var template=Template.htmlEditorTemplate;
+
+  template.rendered= function(){
+    var editor=this.$('.editor');
+    editor.wysihtml5({
+      "color": true,
+      "size": 'xs',
+      "events": {
+        "change": _.bind(function () {
+          editor.trigger('change',editor.val());
+        },this)
+      },
+    });
+
+    editor.val(this.data.value);
+    editor.width('90%');
+  };
+
+  return template;
+});
+
 UI.registerHelper('infinityScroll', function() {
   var height = $(window).height();
   var scrollTop = $(window).scrollTop();
@@ -251,4 +273,11 @@ UI.registerHelper('infinityScroll', function() {
   },300));
 
   return null;
+});
+UI.registerHelper('showAsHTML', function() {
+  Template.showAsHTMLTemplate.rendered=function(){
+    var container=this.$('div')
+    container[0].innerHTML=this.data.value;
+  }
+  return Template.showAsHTMLTemplate
 });

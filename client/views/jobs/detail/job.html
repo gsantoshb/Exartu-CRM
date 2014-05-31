@@ -157,18 +157,19 @@
                                     </tr>
                                     </tbody>
                                 </table>
+                                Description:
                                 {{#objectProperty property=description editable=editMode}}
-                                    Description:
-                                        <textarea>{{value}}
-                                        </textarea>
+                                        {{#htmlEditor}}
+                                        {{/htmlEditor}}
                                     {{else}}
-                                    <div id="description" class="job-description {{collapsed}}">
-                                        <div class="text">
-                                        {{value}}
+                                        <div id="description" class="job-description">
+                                            <div class="text">
+                                                {{#showAsHTML value=value}}
+                                                {{/showAsHTML}}
+                                            </div>
+                                            <div class="see-more">See more</div>
+                                            <div class="see-less">See less</div>
                                         </div>
-                                        <div class="see-more">See more</div>
-                                        <div class="see-less">See less</div>
-                                    </div>
 
                                 {{/objectProperty}}
                                 <!-- /.description -->

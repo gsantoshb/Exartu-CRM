@@ -185,9 +185,6 @@ Template.job.helpers({
     },
     colorEdit:function(){
         return self.editMode ? '#008DFC' : '#ddd'
-    },
-    collapsed: function(){
-      return this.value.length <= 1000 ? 'none': '';
     }
 
 })
@@ -223,7 +220,18 @@ Template.job.events({
       }
     }
 })
-
+Template.job.rendered=function(){
+  var description=$('.job-description');
+  var container=description.find('.htmlContainer');
+  if(container.height()<=100){
+    description.addClass('none')
+  }
+  container.on('resize', _.debounce(function(){
+    if(container.height()<=100){
+      description.addClass('none')
+    }
+  },200));
+}
 
 Template.job.asd = function () {
 
