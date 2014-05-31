@@ -30,14 +30,14 @@ UI.registerHelper('objectProperty', function() {
   var template = {};
   switch(self.property.type) {
     case Utils.ReactivePropertyTypes.array:
-      if (self.editable !== undefined) {
-        template = Template.object_property_multiple_editable;
-        template.isEditable = function() {
-          return self.editable;
-        }
-      }else{
+//      if (self.editable !== undefined) {
+//        template = Template.object_property_multiple_editable;
+//        template.isEditable = function() {
+//          return self.editable;
+//        }
+//      }else{
         template = Template.object_property_multiple;
-      }
+//      }
       template.values = function() {
         return this.property.value;
       };
@@ -97,6 +97,16 @@ Template.object_property_single_editable.events = {
       ctx.data.property.value = e.target.value;
   }
 };
+
+//Template.object_property_multiple_editable.events={
+//  'click button': function(e, ctx){
+//    if(ctx.$('input').val()){
+//      debugger;
+//      ctx.data.property.value.push(ctx.$('input').val());
+//    }
+//  }
+//}
+
 
 Template.fileProgress.progress = function() {
   if (!this)

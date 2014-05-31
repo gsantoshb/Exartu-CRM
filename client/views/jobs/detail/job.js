@@ -93,70 +93,7 @@ toReactiveObject=function(addModel, obj){
 }
 
 var generateReactiveObject = function(job) {
-//    var definition = {
-//        _id: job._id,
-//        reactiveProps: {}
-//    };
 
-//    _.extend(definition.reactiveProps, {
-//
-//        startDate: {
-//            default: job.startDate,
-//            update: 'startDate',
-//            type: Utils.ReactivePropertyTypes.date
-//        },
-//        endDate: {
-//            default: job.endDate,
-//            update: 'endDate',
-//            type: Utils.ReactivePropertyTypes.date
-//        },
-//        duration: {
-//            default: job.duration,
-//            update: 'duration',
-//            type: Utils.ReactivePropertyTypes.lookUp
-//
-//        },
-//        status: {
-//            default: job.status,
-//            update: 'status',
-//            type: Utils.ReactivePropertyTypes.lookUp
-//        },
-//        industry: {
-//            default: job.industry,
-//            update: 'industry',
-//            type: Utils.ReactivePropertyTypes.lookUp
-//        },
-//        category: {
-//            default: job.category,
-//            update: 'category',
-//            type: Utils.ReactivePropertyTypes.lookUp
-//        }
-//    });
-
-
-//    var updateBase = '';
-
-    // Customer
-//    if (contactable.Customer){
-//        updateBase = 'Customer.';
-//        var customer = contactable.Customer;
-//        _.extend(definition.reactiveProps, {
-//            customer: {
-//                default: true
-//            },
-//            department: {
-//                default: customer.department,
-//                update: updateBase + 'department'
-//            },
-//            description: {
-//                default: customer.description,
-//                update: updateBase + 'description'
-//            }
-//        });
-//    }
-
-
-//    return new Utils.ObjectDefinition(definition);
   var type=job.objNameArray[1-job.objNameArray.indexOf('job')];
   var definition= toReactiveObject(dType.objTypeInstance(type), job);
   definition.reactiveProps.tags={
@@ -193,17 +130,18 @@ Template.job.events({
         self.editMode= ! self.editMode;
     },
     'click .saveButton':function(){
-        if (!job.isValid()) {
-            job.showErrors();
-            return;
-        }
-        console.dir(job.generateUpdate())
-        Jobs.update({_id: job._id}, job.generateUpdate(), function(err, result) {
-            if (!err) {
-                self.editMode=false;
-                job.updateDefaults();
-            }
-        });
+
+      if (!job.isValid()) {
+          job.showErrors();
+          return;
+      }
+//      console.dir(job.generateUpdate())
+      Jobs.update({_id: job._id}, job.generateUpdate(), function(err, result) {
+          if (!err) {
+              self.editMode=false;
+              job.updateDefaults();
+          }
+      });
     },
     'click .cancelButton':function(){
         self.editMode=false;
@@ -218,8 +156,34 @@ Template.job.events({
       if (!$(e.target).hasClass('see-less')){
         $('.job-description').addClass('in')
       }
-    }
+    },
+    'click .add-tag': function() {
+      addTag();
+    },
+    'keypress #new-tag': function(e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        addTag();
+      }
+    },
+    'click .remove-tag': function() {
+      job.tags.remove(this.value);
+    },
 })
+
+
+var addTag = function() {
+  var inputTag = $('#new-tag')[0];
+
+  if (!inputTag.value)
+    return;
+
+  if (_.indexOf(job.tags.value, inputTag.value) != -1)
+    return;
+  job.tags.insert(inputTag.value);
+  inputTag.value = '';
+  inputTag.focus();
+};
 Template.job.rendered=function(){
   var description=$('.job-description');
   var container=description.find('.htmlContainer');

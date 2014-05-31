@@ -56,7 +56,7 @@ Utils.ObjectDefinition = function(definition) {
     switch(definition.reactiveProps[propName].type) {
       case Utils.ReactivePropertyTypes.array:
         prop.type = Utils.ReactivePropertyTypes.array;
-        prop.val = definition.reactiveProps[propName].default || [];
+        prop.val = _.clone(definition.reactiveProps[propName].default) || [];
         Object.defineProperty(prop, "value", {
           get: function () {
             this.dep.depend();
@@ -198,6 +198,7 @@ Utils.ObjectDefinition = function(definition) {
     var update = {
       $set: {}
     };
+//    debugger;
     _.forEach(_.keys(definition.reactiveProps), function(propName) {
         var propertyUpdatePath = definition.reactiveProps[propName].update;
         if (self[propName].value != definition.reactiveProps[propName].default && propertyUpdatePath)

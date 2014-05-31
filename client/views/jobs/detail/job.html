@@ -133,26 +133,23 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">Tags:
-                                            {{#objectProperty property=tags editable=editMode}}
-                                                <span type="button" class="badge" style="cursor: pointer" title="Remove">
-                                                    <span title="Remove">{{value}}</span>
-                                                    <i class="fa fa-times" title="Remove"></i>
+                                            {{#objectProperty property=tags}}
+                                            <!--<button type="button" class="tag btn btn-xs btn-primary">-->
+                                                <span class="badge badge-primary"><i class="fa fa-tag"></i> {{value}}
+                                                    {{#if editMode}}
+                                                        <i class="remove-tag fa fa-times" style="padding-left: 7px;cursor: pointer;" title="Remove"></i>
+                                                    {{/if}}
                                                 </span>
-
-                                                <div class="input-group">
-                                                    <input type="text " class="form-control" placeholder="Enter tags here...">
-                                                        <span class="input-group-btn ">
-                                                            <button class="btn btn-success " type="button ">
-                                                                Add
-                                                            </button>
-                                                        </span>
-                                                </div>
-                                            {{else}}
-                                                <span class="badge">
-                                                    <i class="fa fa-tag"></i>
-                                                    <span data-bind="text: $data">{{value}}</span>
-                                                </span>
+                                            <!--</button>-->
                                             {{/objectProperty}}
+                                            {{#if editMode}}
+                                                <div class="input-group">
+                                                    <input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">
+                                                    <span class="input-group-btn">
+                                                      <button class="add-tag btn btn-success" type="button">Add</button>
+                                                    </span>
+                                                </div><!-- /input-group -->
+                                            {{/if}}
                                         </td>
                                     </tr>
                                     </tbody>
@@ -167,8 +164,8 @@
                                                 {{#showAsHTML value=value}}
                                                 {{/showAsHTML}}
                                             </div>
-                                            <div class="see-more">See more</div>
-                                            <div class="see-less">See less</div>
+                                            <div class="see-more">See more <i class="fa fa-caret-down"></i></div>
+                                            <div class="see-less">See less <i class="fa fa-caret-up"></i></div>
                                         </div>
 
                                 {{/objectProperty}}
