@@ -20,7 +20,7 @@ Template.addJobRate.events({
     if(!type)
       return;
 
-    Jobs.update({_id: Session.get('entityId')},{$push: {rates: {type: type, bill: bill, pay: pay}}}, function(err, result){
+    Jobs.update({_id: Session.get('entityId')},{$push: {jobRates: {type: type, bill: bill, pay: pay}}}, function(err, result){
       if(err){
         console.log(err)
       }else{

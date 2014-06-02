@@ -75,7 +75,7 @@ var completeObj= function(type, obj){
     _.each(type.services,function(serviceSetting){
         service= dType.core.getService(serviceSetting.name);
         if (service.initValue){
-            obj[service.name]= service.initValue(obj[service.name]);
+            obj[service.name]= service.initValue(obj[service.name], serviceSetting, type, obj);
         }
     });
 

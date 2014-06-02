@@ -12,6 +12,9 @@ seedSystemJobRateTypes = function (){
       {
         displayName: 'Double Time',
         description: ''
+      }, {
+        displayName: 'Salary',
+        description: ''
       },
     ];
 
