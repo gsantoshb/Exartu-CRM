@@ -12,7 +12,6 @@
       "collection-hooks": {},
       "googlemaps": {},
       "collectionFS": {},
-      "imagemagick": {},
       "spin": {},
       "bootstrap3-wysihtml5": {},
       "jquery-color-animation": {
@@ -56,11 +55,6 @@
         "git": "https://github.com/CollectionFS/Meteor-CollectionFS.git",
         "tag": "v0.4.8",
         "commit": "fea890b1e27799ccc9f71046748fb23a84330a16"
-      },
-      "imagemagick": {
-        "git": "https://github.com/sylvaingi/meteor-imagemagick.git",
-        "tag": "v0.1.2",
-        "commit": "d67bb926356d35cdff1a6d6c3c69750f3f54c059"
       },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
