@@ -40,7 +40,8 @@ var getDefinitionFromField=function(field, obj, path){
     type: type
   }
   if(type==Utils.ReactivePropertyTypes.lookUp){
-    result.displayName=obj[field.name+'Name'];
+    var displayName=obj[field.name+'Name']? obj[field.name+'Name']: LookUps.findOne({_id: obj[field.name]}).displayName;
+    result.displayName=displayName;
     result.options=LookUps.find({codeType: field.lookUpCode});
   }
   return result;
