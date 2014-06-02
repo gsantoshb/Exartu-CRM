@@ -222,3 +222,10 @@ Utils.Validators.stringNotEmpty = function() {
   return !_.isEmpty(this.value);
 }
 
+Utils.getLocation = function (googleLocation) {
+  return {
+    displayName: googleLocation.formatted_address,
+    lat: googleLocation.geometry.location.lat(),
+    lng: googleLocation.geometry.location.lng()
+  }
+}

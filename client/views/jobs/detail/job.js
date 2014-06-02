@@ -1,7 +1,7 @@
 JobController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function(){
-        return [JobHandler, ObjTypesHandler]
+        return [JobHandler, ObjTypesHandler, GoogleMapsHandler]
     },
     data: function () {
         Session.set('entityId', this.params._id);
@@ -86,6 +86,10 @@ var generateReactiveObject = function(job) {
     update: 'tags',
     type: Utils.ReactivePropertyTypes.array
   }
+  definition.reactiveProps.location={
+    default: job.location,
+    update: 'location'
+  }
   return new Utils.ObjectDefinition(definition);
 };
 
@@ -97,7 +101,7 @@ Utils.reactiveProp(self, 'editMode', false);
 Template.job.helpers({
     job: function(){
         job = generateReactiveObject(Jobs.findOne({ _id: Session.get('entityId') }));
-
+        console.dir(job)
         return job;
     },
     originalJob:function(){
@@ -186,23 +190,5 @@ Template.job.rendered=function(){
       description.removeClass('none')
     }
   },200));
+
 }
-
-Template.job.asd = function () {
-
-    self.newTag = ko.observable();
-    self.addTag = function () {
-        if (!self.newTag()) {
-            return;
-        }
-        self.editJob().tags.push(self.newTag());
-        self.newTag('');
-
-    };
-    self.removeTag = function (data) {
-        self.editJob().tags.remove(data);
-    };
-    self.editTag = ko.observable();
-
-    return self;
-};

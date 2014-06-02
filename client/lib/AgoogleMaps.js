@@ -11,7 +11,7 @@ GoogleMaps.wait = function (cb) {
 Meteor.startup(function () {
     GoogleMaps.init({
         'sensor': true, //optional 
-        // 'key': ,
+        'libraries': 'places',
         //'MY-GOOGLEMAPS-API-KEY',
         //optional 'language': 'en' 
         //optional 

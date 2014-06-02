@@ -102,14 +102,6 @@ Template.object_property_single_editable.events = {
   }
 };
 
-//Template.object_property_multiple_editable.events={
-//  'click button': function(e, ctx){
-//    if(ctx.$('input').val()){
-//      debugger;
-//      ctx.data.property.value.push(ctx.$('input').val());
-//    }
-//  }
-//}
 
 
 Template.fileProgress.progress = function() {
@@ -294,4 +286,21 @@ UI.registerHelper('showAsHTML', function() {
     container[0].innerHTML=this.data.value;
   }
   return Template.showAsHTMLTemplate
+});
+UI.registerHelper('inputLocation', function() {
+  Template.inputLocationTemplate.rendered=function(){
+    var placeSearch, autocomplete, element=this.$('.location')[0];
+    var getLocation = _.bind(function() {
+      var place = autocomplete.getPlace();
+      this.value=Utils.getLocation(place);
+      console.dir(this);
+    },this.data);
+
+    autocomplete = new google.maps.places.Autocomplete(element, { types: ['geocode'] });
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      getLocation();
+    });
+  }
+  return Template.inputLocationTemplate
 });
