@@ -16,9 +16,35 @@ JobController = RouteController.extend({
 
 });
 
+var getDefinitionFromField=function(field, obj, path){
+  var type;
+  switch (field.fieldType){
+    case 'string':
+      type=Utils.ReactivePropertyTypes.string;
+      break;
+    case 'date':
+      type=Utils.ReactivePropertyTypes.date;
+      break;
+    case 'number':
+      type=Utils.ReactivePropertyTypes.int;
+      break;
+    case 'lookUp':
+      type=Utils.ReactivePropertyTypes.lookUp;
+      break;
 
-var job = {};
+  }
 
+  var result={
+    default: obj[field.name],
+    update: path+ field.name,
+    type: type
+  }
+  if(type==Utils.ReactivePropertyTypes.lookUp){
+    result.displayName=obj[field.name+'Name'];
+    result.options=LookUps.find({codeType: field.lookUpCode});
+  }
+  return result;
+}
 toReactiveObject=function(addModel, obj){
     var reactiveObj={
         _id: obj._id,
@@ -30,30 +56,8 @@ toReactiveObject=function(addModel, obj){
     _.each(addModel.fieldGroups,function(fieldGroup){
         _.each(fieldGroup.items,function(item){
             if(item.type=='field'){
-                var type;
-                switch (item.fieldType){
-                  case 'string':
-                    type=Utils.ReactivePropertyTypes.string;
-                    break;
-                  case 'date':
-                    type=Utils.ReactivePropertyTypes.date;
-                    break;
-                  case 'number':
-                    type=Utils.ReactivePropertyTypes.int;
-                    break;
-                  case 'lookUp':
-                    type=Utils.ReactivePropertyTypes.lookUp;
-                    break;
-                }
-                props[item.name]={
-                  default: object[item.name],
-                  update: path+ item.name,
-                  type: type
-                }
-                if(type==Utils.ReactivePropertyTypes.lookUp){
-                  props[item.name].displayName=obj[item.name+'Name'];
-                  props[item.name].options=LookUps.find({codeType: item.lookUpCode});
-                }
+              props[item.name]=getDefinitionFromField(item, object, path);
+
             }
         })
     })
@@ -63,26 +67,7 @@ toReactiveObject=function(addModel, obj){
         _.each(subType.fieldGroups,function(fieldGroup){
             _.each(fieldGroup.items,function(item){
                 if(item.type=='field'){
-                    var type;
-                    switch (item.fieldType){
-                        case 'string':
-                            type=Utils.ReactivePropertyTypes.string;
-                            break;
-                        case 'date':
-                            type=Utils.ReactivePropertyTypes.date;
-                            break;
-                        case 'number':
-                            type=Utils.ReactivePropertyTypes.int;
-                            break;
-                        case 'lookUp':
-                            type=Utils.ReactivePropertyTypes.lookUp;
-                            break;
-                    }
-                    props[item.name]={
-                        default: object[item.name],
-                        update: path+ item.name,
-                        type: type
-                    }
+                  props[item.name]=getDefinitionFromField(item, object, path);
                 }
             })
         })
@@ -112,6 +97,7 @@ Utils.reactiveProp(self, 'editMode', false);
 Template.job.helpers({
     job: function(){
         job = generateReactiveObject(Jobs.findOne({ _id: Session.get('entityId') }));
+
         return job;
     },
     originalJob:function(){
@@ -122,6 +108,9 @@ Template.job.helpers({
     },
     colorEdit:function(){
         return self.editMode ? '#008DFC' : '#ddd'
+    },
+    isType:function(typeName){
+      return !! Jobs.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
     }
 
 })
@@ -135,7 +124,7 @@ Template.job.events({
           job.showErrors();
           return;
       }
-//      console.dir(job.generateUpdate())
+      console.dir(job.generateUpdate())
       Jobs.update({_id: job._id}, job.generateUpdate(), function(err, result) {
           if (!err) {
               self.editMode=false;

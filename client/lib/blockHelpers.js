@@ -94,7 +94,11 @@ Template.object_property_single.events = {
 
 Template.object_property_single_editable.events = {
   'change .prop-input': function(e, ctx) {
+    if(e.target.type=='number'){
+      ctx.data.property.value = Number.parseFloat(e.target.value) || 0;
+    }else{
       ctx.data.property.value = e.target.value;
+    }
   }
 };
 
