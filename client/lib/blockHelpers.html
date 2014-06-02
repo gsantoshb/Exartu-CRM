@@ -63,13 +63,20 @@
 </template>
 
 <template name="object_property_multiple_editable">
+    {{#each values}}
+    {{> UI.elseBlock value=.}}
+    {{/each}}
+
     {{#if isEditable}}
-        {{> UI.contentBlock value=property.value}}
+        <div class="input-group">
+            <input type="text " class="form-control" placeholder="Enter tags here...">
+                <span class="input-group-btn ">
+                    <button class="btn btn-success " type="button ">
+                        Add
+                    </button>
+                </span>
+        </div>
         <span class="text text-danger">{{error}}</span>
-    {{else}}
-        {{#each values}}
-            {{> UI.elseBlock value=.}}
-        {{/each}}
     {{/if}}
 
 </template>
@@ -145,3 +152,14 @@
         </span>
     </div>
 </template>
+
+
+<template name="htmlEditorTemplate">
+    <textarea class="editor" style="height: 400px">
+
+    </textarea>
+</template>
+<template name="showAsHTMLTemplate">
+    <div class="htmlContainer" style="border: groove 1px #fff; padding: 4px; display: inline-block;"></div>
+</template>
+

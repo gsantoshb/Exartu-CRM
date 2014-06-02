@@ -61,7 +61,7 @@ newObjType({
     collection: Jobs,
     name: 'job',
     objGroupType: Enums.objGroupType.job,
-    services: ['messages', 'tasks', 'posts', 'tags', 'candidates'],
+    services: ['messages', 'tasks', 'posts', 'tags', 'candidates', 'jobRates'],
     fields: [{
         name: 'fee',
         displayName: 'Fee (%)',
@@ -185,7 +185,7 @@ newObjType({
         icon: 'briefcase',
         color: 'yellow'
     },
-    services: ['jobRates'],
+    services: [],
     fields: [{
         name: 'salary',
         displayName: 'Salary',

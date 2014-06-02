@@ -30,14 +30,14 @@ UI.registerHelper('objectProperty', function() {
   var template = {};
   switch(self.property.type) {
     case Utils.ReactivePropertyTypes.array:
-      if (self.editable !== undefined) {
-        template = Template.object_property_multiple_editable;
-        template.isEditable = function() {
-          return self.editable;
-        }
-      }else{
+//      if (self.editable !== undefined) {
+//        template = Template.object_property_multiple_editable;
+//        template.isEditable = function() {
+//          return self.editable;
+//        }
+//      }else{
         template = Template.object_property_multiple;
-      }
+//      }
       template.values = function() {
         return this.property.value;
       };
@@ -94,9 +94,23 @@ Template.object_property_single.events = {
 
 Template.object_property_single_editable.events = {
   'change .prop-input': function(e, ctx) {
+    if(e.target.type=='number'){
+      ctx.data.property.value = Number.parseFloat(e.target.value) || 0;
+    }else{
       ctx.data.property.value = e.target.value;
+    }
   }
 };
+
+//Template.object_property_multiple_editable.events={
+//  'click button': function(e, ctx){
+//    if(ctx.$('input').val()){
+//      debugger;
+//      ctx.data.property.value.push(ctx.$('input').val());
+//    }
+//  }
+//}
+
 
 Template.fileProgress.progress = function() {
   if (!this)
@@ -235,6 +249,28 @@ UI.registerHelper('dateTimePicker', function() {
     return template;
 });
 
+UI.registerHelper('htmlEditor', function() {
+  var template=Template.htmlEditorTemplate;
+
+  template.rendered= function(){
+    var editor=this.$('.editor');
+    editor.wysihtml5({
+      "color": true,
+      "size": 'xs',
+      "events": {
+        "change": _.bind(function () {
+          editor.trigger('change',editor.val());
+        },this)
+      },
+    });
+
+    editor.val(this.data.value);
+    editor.width('90%');
+  };
+
+  return template;
+});
+
 UI.registerHelper('infinityScroll', function() {
   var height = $(window).height();
   var scrollTop = $(window).scrollTop();
@@ -251,4 +287,11 @@ UI.registerHelper('infinityScroll', function() {
   },300));
 
   return null;
+});
+UI.registerHelper('showAsHTML', function() {
+  Template.showAsHTMLTemplate.rendered=function(){
+    var container=this.$('div')
+    container[0].innerHTML=this.data.value;
+  }
+  return Template.showAsHTMLTemplate
 });

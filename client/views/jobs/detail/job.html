@@ -126,6 +126,58 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td>
+                                            {{#if isType 'Temporary'}}
+                                                <i class="fa fa-money"></i>&nbsp;pay:
+                                                {{#objectProperty property=pay editable=editMode}}
+                                                    <input class="form-control" type="number" value="{{value}}">
+                                                {{else}}
+                                                    <strong>{{value}}</strong>
+                                                {{/objectProperty}}
+                                            {{/if}}
+                                            {{#if isType 'Direct Hire'}}
+                                                <i class="fa fa-money"></i>&nbsp;Salary:
+                                                {{#objectProperty property=salary editable=editMode}}
+                                                    <input class="form-control" type="number" value="{{value}}">
+                                                {{else}}
+                                                    <strong>{{value}}</strong>
+                                                {{/objectProperty}}
+                                            {{/if}}
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-dollar"></i>&nbsp;fee:
+                                            {{#objectProperty property=fee editable=editMode}}
+                                            <div class="form-group  {{hasError}}">
+                                                <input class="form-control" type="number" value="{{value}}">
+                                                <span>{{error}}</span>
+                                            </div><!-- /.form-group -->
+                                            {{else}}
+                                                <strong>
+                                                    {{value}}%
+                                                </strong>
+                                            {{/objectProperty}}
+                                        </td>
+                                    </tr>
+                                    {{#if isType 'Temporary'}}
+                                        <tr>
+                                            <td colspan="2">
+                                                <i class="fa fa-calendar-o"></i>&nbsp;frequency:
+                                                {{#objectProperty property=frequency editable=editMode}}
+                                                    <div class="form-group  {{hasError}}">
+                                                        <select class="form-control input-lg">
+                                                            {{#each options}}
+                                                            <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
+                                                            {{/each}}
+                                                        </select>
+                                                        <span>{{error}}</span>
+                                                    </div><!-- /.form-group -->
+                                                {{else}}
+                                                    <strong>{{displayName}}</strong>
+                                                {{/objectProperty}}
+                                            </td>
+                                        </tr>
+                                    {{/if}}
+                                    <tr>
                                         <td colspan="2">
                                             <i class="fa fa-globe"></i>&nbsp;Location:
                                             <strong>Bucharest, Romania</strong>
@@ -133,42 +185,40 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">Tags:
-                                            {{#objectProperty property=tags editable=editMode}}
-                                                <span type="button" class="badge" style="cursor: pointer" title="Remove">
-                                                    <span title="Remove">{{value}}</span>
-                                                    <i class="fa fa-times" title="Remove"></i>
+                                            {{#objectProperty property=tags}}
+                                            <!--<button type="button" class="tag btn btn-xs btn-primary">-->
+                                                <span class="badge badge-primary"><i class="fa fa-tag"></i> {{value}}
+                                                    {{#if editMode}}
+                                                        <i class="remove-tag fa fa-times" style="padding-left: 7px;cursor: pointer;" title="Remove"></i>
+                                                    {{/if}}
                                                 </span>
-
-                                                <div class="input-group">
-                                                    <input type="text " class="form-control" placeholder="Enter tags here...">
-                                                        <span class="input-group-btn ">
-                                                            <button class="btn btn-success " type="button ">
-                                                                Add
-                                                            </button>
-                                                        </span>
-                                                </div>
-                                            {{else}}
-                                                <span class="badge">
-                                                    <i class="fa fa-tag"></i>
-                                                    <span data-bind="text: $data">{{value}}</span>
-                                                </span>
+                                            <!--</button>-->
                                             {{/objectProperty}}
+                                            {{#if editMode}}
+                                                <div class="input-group">
+                                                    <input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">
+                                                    <span class="input-group-btn">
+                                                      <button class="add-tag btn btn-success" type="button">Add</button>
+                                                    </span>
+                                                </div><!-- /input-group -->
+                                            {{/if}}
                                         </td>
                                     </tr>
                                     </tbody>
                                 </table>
+                                Description:
                                 {{#objectProperty property=description editable=editMode}}
-                                    Description:
-                                        <textarea>{{value}}
-                                        </textarea>
+                                        {{#htmlEditor}}
+                                        {{/htmlEditor}}
                                     {{else}}
-                                    <div id="description" class="job-description {{collapsed}}">
-                                        <div class="text">
-                                        {{value}}
+                                        <div id="description" class="job-description">
+                                            <div class="text">
+                                                {{#showAsHTML value=value}}
+                                                {{/showAsHTML}}
+                                            </div>
+                                            <div class="see-more">See more <i class="fa fa-caret-down"></i></div>
+                                            <div class="see-less">See less <i class="fa fa-caret-up"></i></div>
                                         </div>
-                                        <div class="see-more">See more</div>
-                                        <div class="see-less">See less</div>
-                                    </div>
 
                                 {{/objectProperty}}
                                 <!-- /.description -->
