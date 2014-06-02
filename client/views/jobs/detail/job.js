@@ -193,6 +193,8 @@ Template.job.rendered=function(){
   container.on('resize', _.debounce(function(){
     if(container.height()<=100){
       description.addClass('none')
+    }else{
+      description.removeClass('none')
     }
   },200));
 }
