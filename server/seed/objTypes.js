@@ -61,7 +61,7 @@ newObjType({
     collection: Jobs,
     name: 'job',
     objGroupType: Enums.objGroupType.job,
-    services: ['messages', 'tasks', 'posts', 'tags', 'candidates'],
+    services: ['messages', 'tasks', 'posts', 'tags', 'candidates', 'jobRates'],
     fields: [{
         name: 'fee',
         displayName: 'Fee (%)',
@@ -95,16 +95,6 @@ newObjType({
         defaultValue: null,
         required: true,
         multiple: false
-    },{
-        name: 'status',
-        displayName: 'Status',
-        fieldType: 'lookUp',
-        lookUpName: 'jobStatus',
-        lookUpCode: Enums.lookUpTypes.job.status.code,
-        required: true,
-        lookUpName: 'jobTitle',
-        multiple: false,
-        defaultValue: null
     },{
         name: 'industry',
         displayName: 'Industry',

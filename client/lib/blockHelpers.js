@@ -29,13 +29,32 @@ UI.registerHelper('objectProperty', function() {
   var self = this;
   var template = {};
   switch(self.property.type) {
-    case 2:
-      template = Template.object_property_multiple;
+    case Utils.ReactivePropertyTypes.array:
+//      if (self.editable !== undefined) {
+//        template = Template.object_property_multiple_editable;
+//        template.isEditable = function() {
+//          return self.editable;
+//        }
+//      }else{
+        template = Template.object_property_multiple;
+//      }
       template.values = function() {
         return this.property.value;
       };
       break;
-    default:
+    case  Utils.ReactivePropertyTypes.lookUp:
+      template = Template.object_property_lookup;
+      template.isEditable = function() {
+        return self.editable;
+      }
+      break;
+    case  Utils.ReactivePropertyTypes.date:
+      template = Template.object_property_date;
+      template.isEditable = function() {
+        return self.editable;
+      }
+      break;
+    default:{
       if (self.editable !== undefined) {
         template = Template.object_property_single_editable;
         template.isEditable = function() {
@@ -44,6 +63,7 @@ UI.registerHelper('objectProperty', function() {
       }
       else
         template = Template.object_property_single;
+      }
       template.error = function() {
         this.property.error.dep.depend();
         return this.property.error.hasError? this.property.error.message : '';
@@ -52,7 +72,20 @@ UI.registerHelper('objectProperty', function() {
 
   return template;
 });
+Template.object_property_lookup.events = {
+  'change select': function(e, ctx) {
+    ctx.data.property.value = e.target.value;
+  }
+};
 
+
+Template.object_property_date.events = {
+  'change.dp .dateTimePicker': function(e, ctx) {
+      if ($(e.target).hasClass('dateTimePicker')){
+            ctx.data.property.value = $(e.target).data('DateTimePicker').date.toDate();
+      }
+  }
+};
 Template.object_property_single.events = {
   'change .prop-input': function(e) {
     this.property.value = e.target.value;
@@ -60,10 +93,16 @@ Template.object_property_single.events = {
 };
 
 Template.object_property_single_editable.events = {
-  'change .prop-input': function(e) {
-    this.property.value = e.target.value;
+  'change .prop-input': function(e, ctx) {
+    if(e.target.type=='number'){
+      ctx.data.property.value = Number.parseFloat(e.target.value) || 0;
+    }else{
+      ctx.data.property.value = e.target.value;
+    }
   }
 };
+
+
 
 Template.fileProgress.progress = function() {
   if (!this)
@@ -121,9 +160,13 @@ Template.fieldInput.helpers({
 })
 Template.lookUpFieldInput.helpers({
   options: function(){
-//        debugger;
     return LookUps.find({codeType: this.lookUpCode});
   },
+  hasError :function(){
+    return this.isValid? '': 'error';
+  }
+})
+Template.dateFieldInput.helpers({
   hasError :function(){
     return this.isValid? '': 'error';
   }
@@ -154,6 +197,7 @@ UI.registerHelper('displayProperty', function(){
   if(this.showInAdd){
     if(this.type=="field"){
       var template=Template[this.fieldType + 'FieldInput'] || Template['fieldInput'];
+
       template.events({
         'blur input': function(e){
           switch (this.fieldType) {
@@ -186,3 +230,79 @@ UI.registerHelper('displayProperty', function(){
   }
   return null;
 })
+
+UI.registerHelper('dateTimePicker', function() {
+    return Template.dateTimePickerTemp;
+});
+Template.dateTimePickerTemp.rendered= function(){
+  this.$('.dateTimePicker').datetimepicker({
+    language: 'en',
+    defaultDate: this.data.value,
+    useSeconds: false
+  })
+};
+
+
+UI.registerHelper('htmlEditor', function() {
+  var template=Template.htmlEditorTemplate;
+
+  template.rendered= function(){
+    var editor=this.$('.editor');
+    editor.wysihtml5({
+      "color": true,
+      "size": 'xs',
+      "events": {
+        "change": _.bind(function () {
+          editor.trigger('change',editor.val());
+        },this)
+      },
+    });
+
+    editor.val(this.data.value);
+    editor.width('90%');
+  };
+
+  return template;
+});
+
+UI.registerHelper('infinityScroll', function() {
+  var height = $(window).height();
+  var scrollTop = $(window).scrollTop();
+  var cb = this.cb;
+
+  if(height==scrollTop){
+    cb();
+  }
+  var windowElement=$(window);
+  windowElement.bind("scroll", _.debounce(function(){
+    if(windowElement.scrollTop() + windowElement.height() > $(document).height() - 50){
+      cb();
+    }
+  },300));
+
+  return null;
+});
+UI.registerHelper('showAsHTML', function() {
+  Template.showAsHTMLTemplate.rendered=function(){
+    var container=this.$('div')
+    container[0].innerHTML=this.data.value;
+  }
+  return Template.showAsHTMLTemplate
+});
+UI.registerHelper('inputLocation', function() {
+  Template.inputLocationTemplate.rendered=function(){
+    var placeSearch, autocomplete, element=this.$('.location')[0];
+    var getLocation = _.bind(function() {
+      var place = autocomplete.getPlace();
+      this.value=Utils.getLocation(place);
+      console.dir(this);
+    },this.data);
+
+    autocomplete = new google.maps.places.Autocomplete(element, { types: ['geocode'] });
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      getLocation();
+    });
+  }
+  return Template.inputLocationTemplate
+});

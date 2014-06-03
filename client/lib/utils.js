@@ -15,11 +15,30 @@ _.extend(Utils, {
 });
 
 // Prop template
+Utils.reactiveProp=function(object, key, value){
+  var depName='_dep'+key;
+  var valueName='_'+key;
+  object[depName]= new Deps.Dependency;
+  object[valueName]= value;
 
+  Object.defineProperty(object, key,{
+    get:function(){
+      this[depName].depend();
+      return this[valueName];
+    },
+    set:function(newValue){
+      this[valueName]=newValue;
+      this[depName].changed();
+    }
+  })
+}
 Utils.ReactivePropertyTypes = {
   string: 0,
   int: 1,
-  array: 2
+  array: 2,
+  date: 3,
+  boolean: 5,
+  lookUp: 4
 };
 
 Utils.ObjectDefinition = function(definition) {
@@ -37,7 +56,7 @@ Utils.ObjectDefinition = function(definition) {
     switch(definition.reactiveProps[propName].type) {
       case Utils.ReactivePropertyTypes.array:
         prop.type = Utils.ReactivePropertyTypes.array;
-        prop.val = definition.reactiveProps[propName].default || [];
+        prop.val = _.clone(definition.reactiveProps[propName].default) || [];
         Object.defineProperty(prop, "value", {
           get: function () {
             this.dep.depend();
@@ -103,6 +122,13 @@ Utils.ObjectDefinition = function(definition) {
     }
     else
       prop.validator = function() { return true; }; // Always validate
+
+    if(definition.reactiveProps[propName].options){
+      prop.options=definition.reactiveProps[propName].options
+    }
+    if(definition.reactiveProps[propName].displayName){
+      prop.displayName=definition.reactiveProps[propName].displayName
+    }
   });
 
   // Not reactive properties
@@ -172,6 +198,7 @@ Utils.ObjectDefinition = function(definition) {
     var update = {
       $set: {}
     };
+//    debugger;
     _.forEach(_.keys(definition.reactiveProps), function(propName) {
         var propertyUpdatePath = definition.reactiveProps[propName].update;
         if (self[propName].value != definition.reactiveProps[propName].default && propertyUpdatePath)
@@ -195,3 +222,10 @@ Utils.Validators.stringNotEmpty = function() {
   return !_.isEmpty(this.value);
 }
 
+Utils.getLocation = function (googleLocation) {
+  return {
+    displayName: googleLocation.formatted_address,
+    lat: googleLocation.geometry.location.lat(),
+    lng: googleLocation.geometry.location.lng()
+  }
+}

@@ -1,69 +1,67 @@
 <template name="addEditTask">
-    <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addTagModal">
+    <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" style="width: 50%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close" data-dismiss="modal">×</a>
-
                     <h4>Add Taks</h4>
                 </div>
                 <div class="modal-body">
-                    <div data-bind="with: task">
-                        <fieldset>
-                            <div class="form-group" data-bind="css:{'has-error': begin.isModified() && ! begin.isValid()}">
-                                <label class="control-label">Begin:</label>
-                                <br/>
-                                <div data-bind="dateTimePicker: { date: begin }">
-                                    <div data-pick="date"></div>
-                                    <div data-pick="time"></div>
+                    <div>
+                        {{#with task}}
+
+                            <fieldset>
+                                <div class="form-group begin">
+                                    <label class="control-label">Begin:</label>
+                                    <br/>
+                                    {{#dateTimePicker value=begin}}
+                                    {{/dateTimePicker}}
                                 </div>
-                                <span class="text-danger" data-bind="validationMessage: begin"></span>
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <div class="form-group" data-bind="css:{'has-error': end.isModified() && ! end.isValid()}">
-                                <label class="control-label">End:</label>
-                                <br/>
-                                <div data-bind="dateTimePicker: { date: end }">
-                                    <div data-pick="date"></div>
-                                    <div data-pick="time"></div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group end">
+                                    <label class="control-label">End:</label>
+                                    <br/>
+                                    {{#dateTimePicker value=end}}
+                                    {{/dateTimePicker}}
                                 </div>
-                                <span class="text-danger" data-bind="validationMessage: end"></span>
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <label class="control-label">Note:</label>
-                            <input class="form-control" data-bind="value: note" />
-                        </fieldset>
-                        <fieldset>
-                            <div class="form-group" data-bind="css:{'has-error': assign.isModified() && ! assign.isValid()}">
-                                <label class="control-label">Assign:</label>
-                                <select class="form-control" data-bind="options: $parent.users, optionsText: 'username', optionsValue: '_id', selectedOptions: assign" multiple> </select>
-                                <span class="text-danger" data-bind="validationMessage: assign"></span>
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" data-bind="checked: isCompleted" />Completed
-                                </label>
-                            </div>
-                        </fieldset>
-                        <fieldset data-bind="if:isCompleted">
-                            <div class="form-group" data-bind="css:{'has-error': completed.isModified() && ! completed.isValid()}">
-                                <label class="control-label">Date completed:</label>
-                                <br/>
-                                <div data-bind="dateTimePicker: { date: completed }">
-                                    <div data-pick="date"></div>
-                                    <div data-pick="time"></div>
+                            </fieldset>
+                            <fieldset>
+                                <label class="control-label">Note:</label>
+                                <input class="form-control note" value="{{note}}"/>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="control-label">Assign:</label>
+                                    <select class="form-control assign" multiple>
+                                        {{#each users}}
+                                            <option value="{{_id}}" selected="{{isSelected}}">{{username}}</option>
+                                        {{/each}}
+                                    </select>
                                 </div>
-                                <span class="text-danger" data-bind="validationMessage: completed"></span>
-                            </div>
-                        </fieldset>
+                            </fieldset>
+                            <fieldset>
+                                <div class="checkbox">
+                                    <label>
+                                        <input class="isCompleted" type="checkbox" checked="{{isCompleted}}" />Completed
+                                    </label>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                {{#if completed}}
+                                    <div class="form-group completed">
+                                        <label class="control-label">Date completed:</label>
+                                        <br/>
+                                        {{#dateTimePicker value=completed}}
+                                        {{/dateTimePicker}}
+                                    </div>
+                                {{/if}}
+                            </fieldset>
+                        {{/with}}
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a data-bind="click:add" class="btn btn-success">Add</a>
+                    <a class="btn btn-success accept">Add</a>
                     <a href="#" class="btn" data-dismiss="modal">Close</a>
                 </div>
             </div>

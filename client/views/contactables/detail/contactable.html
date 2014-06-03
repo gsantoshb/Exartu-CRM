@@ -28,9 +28,25 @@
                         {{#if Contact }}
                             {{>contact_header}}
                         {{/if}}
-                        <div class="profile-last-update">
-                            Created at
-                            <small>{{createdAtFormatted}}</small>
+                        <div class="profile-btns">
+                            {{#with mainContactMethods}}
+                                {{#if phone.value}}
+                                    <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                                        <span class="btn-round"><i class="fa fa-phone"></i></span>
+                                        {{phone.value}}
+                                    </a>
+                                {{/if}}
+                                {{#if email.value}}
+                                    <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                                        <span class="btn-round"><i class="fa fa-envelope"></i></span>
+                                        {{email.value}}
+                                    </a>
+                                {{/if}}
+                            {{/with}}
+                            <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                                <span class="btn-round"><i class="fa fa-envelope"></i></span>
+                                Message
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -40,7 +56,7 @@
                     <div class="row">
                         <!-- Left Column -->
                         <div class="col-sm-8 col-lg-5 contactable-left-col">
-                            {{>customer_tabs}}
+                            {{>customer_tabs contactable=. documentCount=documentCount}}
                         </div>
 
                         <!-- Right Column -->
@@ -48,6 +64,9 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     {{>contactableDetailBox}}
+
+                                    {{>contactableContactMethodsBox}}
+
                                     {{>contactableLocationBox}}
                                 </div><!-- /.col-md-6 -->
 
@@ -57,6 +76,9 @@
 
                                     <!-- Tags -->
                                     {{>contactableTagsBox}}
+
+                                    <!-- Assignments -->
+                                    {{>contactableAssignmentsBox}}
                                 </div><!-- /.col-md-6 -->
                             </div><!-- /.row -->
                         </div><!-- /.contactable-right-col -->
@@ -115,16 +137,6 @@
             <span>{{firstEmail.value}}</span>
         </a>
         {{/if}}
-        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
-           <!--data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">-->
-            <!--<span class="btn-round"><i class="fa fa-envelope"></i></span>-->
-            <!--Message-->
-        <!--</a>-->
-        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
-           <!--data-bind="click: function () { Composer.showModal('addContactable', 'Contact',{customer: $data._id()}); }">-->
-            <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
-            <!--Add Contact Method-->
-        <!--</a>-->
     </div>
 </template>
 
@@ -180,16 +192,6 @@
                 <span>{{firstEmail.value}}</span>
             </a>
         {{/if}}
-        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
-        <!--data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">-->
-        <!--<span class="btn-round"><i class="fa fa-envelope"></i></span>-->
-        <!--Message-->
-        <!--</a>-->
-        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
-        <!--data-bind="click: function () { Composer.showModal('addContactable', 'Contact',{customer: $data._id()}); }">-->
-        <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
-        <!--Add Contact Method-->
-        <!--</a>-->
     </div>
 </template>
 
@@ -241,16 +243,6 @@
             <span>{{firstEmail.value}}</span>
         </a>
         {{/if}}
-        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
-        <!--data-bind="click: function () { Composer.showModal( 'sendMessage',$data); }">-->
-        <!--<span class="btn-round"><i class="fa fa-envelope"></i></span>-->
-        <!--Message-->
-        <!--</a>-->
-        <!--<a class="btn btn-default btn-custom-with-cyrcle" href="#"-->
-        <!--data-bind="click: function () { Composer.showModal('addContactable', 'Contact',{customer: $data._id()}); }">-->
-        <!--<span class="btn-round"><i class="fa fa-plus"></i></span>-->
-        <!--Add Contact Method-->
-        <!--</a>-->
     </div>
 </template>
 
@@ -258,20 +250,20 @@
 
 <template name="customer_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{posts.length}}</span></a></li>
-        <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">6</span></a></li>
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.posts.length}}</span></a></li>
+        <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>
     </ul>
 
     <div class="tab-content">
         <!-- Notes Tab -->
         <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=.}}
-            {{> contactableNotesList entity=.}}
+            {{> contactableNotesAdd entity=contactable}}
+            {{> contactableNotesList entity=contactable}}
         </div>
         <!-- Documents Tab -->
         <div class="tab-pane" id="profile-documents">
-            {{> contactableDocumentsAdd entity=. collection="ContactablesFS"}}
-            {{> contactableDocumentsList entity=. collection="ContactablesFS"}}
+            {{> contactableDocumentsAdd entity=contactable collection="ContactablesFS"}}
+            {{> contactableDocumentsList entity=contactable collection="ContactablesFS"}}
         </div><!-- /.profile-documents -->
     </div>
 </template>
@@ -279,34 +271,10 @@
 <template name="loadingContactable">
     <div id="content">
         <div id="content-header" class="mini">
-            <h1>Dashboard</h1>
-            <ul class="mini-stats box-3">
-                <li>
-                    <div class="left sparkline_bar_good"><span><canvas width="41" height="24" style="display: inline-block; width: 41px; height: 24px; vertical-align: top;"></canvas></span>+10%</div>
-                    <div class="right">
-                        <strong>36094</strong>
-                        Visits
-                    </div>
-                </li>
-                <li>
-                    <div class="left sparkline_bar_neutral"><span><canvas width="47" height="24" style="display: inline-block; width: 47px; height: 24px; vertical-align: top;"></canvas></span>0%</div>
-                    <div class="right">
-                        <strong>1433</strong>
-                        Users
-                    </div>
-                </li>
-                <li>
-                    <div class="left sparkline_bar_bad"><span><canvas width="41" height="24" style="display: inline-block; width: 41px; height: 24px; vertical-align: top;"></canvas></span>+50%</div>
-                    <div class="right">
-                        <strong>8650</strong>
-                        Orders
-                    </div>
-                </li>
-            </ul>
+            <h1>Loading</h1>
         </div>
         <div id="breadcrumb">
             <a href="#" title="" class="tip-bottom" data-original-title="Go to Home"><i class="fa fa-home"></i> Home</a>
-            <a href="#" class="current">Dashboard</a>
         </div>
         <div class="container-fluid">
 

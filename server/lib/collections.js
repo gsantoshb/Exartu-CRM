@@ -26,6 +26,8 @@ ContactMethods = new Meteor.Collection("contactMethods");
 
 Assignment = new Meteor.Collection("assignment");
 
+JobRateTypes = new Meteor.Collection("jobRateTypes");
+
 
 //Test = new Meteor.Collection("test");
 //

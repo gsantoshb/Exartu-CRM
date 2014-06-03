@@ -25,12 +25,15 @@ Contactables.allow({
 })
 
 Contactables.before.insert(function (userId, doc) {
-//  if (this.connection) {
-    var user = Meteor.user();
-    doc.hierId = user.hierId;
-    doc.userId = user._id;
-//  }
+  var user = Meteor.user();
+  doc.hierId = user.hierId;
+  doc.userId = user._id;
   doc.createdAt = Date.now();
+
+  var shortId = Meteor.require('shortid');
+  var aux = shortId.generate();
+  doc.searchKey = aux;
+  console.log('shortId: ' + aux);
 });
 
 // Contactables files
@@ -39,15 +42,27 @@ ContactablesFS = new Document.Collection({
 });
 ContactablesFS.publish(); // Default publish and allow options
 
+ResumesFS = new FS.Collection("resumes", {
+  stores: [new FS.Store.FileSystem("resumes", {path: "~/resumes"})]
+});
+
+Meteor.publish('resumes', function() {
+  return ResumesFS.find({'metadata.owner': Meteor.userId});
+});
+
+ResumesFS.allow({
+  insert: function (userId, doc) {
+    return true;
+  },
+  update: function() {
+    return true;
+  }
+});
+
 Meteor.startup(function () {
   Meteor.methods({
     addContactable: function (contactable) {
-//            if (beforeInsertOrUpdateContactable(contactable)) {
-        Contactables.insert(contactable);
-//            } else {
-//                console.error('Contactable not valid')
-//                console.dir(contactable);
-//            }
+      return Contactables.insert(contactable);
     },
     updateContactable: function (contactable) {
       if (beforeInsertOrUpdateContactable(contactable)) {
@@ -58,6 +73,83 @@ Meteor.startup(function () {
         console.error('Contactable not valid')
         console.dir(contactable);
       }
+    },
+    createEmployeeFromResume: function(resumeFileId) {
+      FS.debug = true;
+
+      var file = ResumesFS.findOne({_id: resumeFileId});
+      var fsFile = new FS.File(file);
+      var stream = fsFile.createReadStream('contactablesFS');
+      var form = new FormData();
+
+      var tempEmployee = {};
+      tempEmployee.objNameArray = ['person', 'Employee', 'contactable'];
+      tempEmployee.person = {
+        firstName: '',
+        middleName: '',
+        lastName: ''
+      };
+      tempEmployee.Employee = {};
+
+      var syncParse = Meteor._wrapAsync(
+        Meteor.bindEnvironment(function(stream, resumeFileId, cb) {
+            form.append("file", stream);
+            form.submit(
+              {
+                host: "xr2demo.tempworks.com",
+                path: "/resumeparser/api/Parser/Parse",
+                headers: _.extend(form.getHeaders(), {
+                  'Accept-Encoding': 'gzip,deflate',
+                  'Accept': 'application/json'
+                })
+              },
+              Meteor.bindEnvironment(function(err, res){
+                var body = "";
+                res.setEncoding('utf8');
+                res.on('data', function (chunk) {
+                  body += chunk;
+                })
+                  .on('end', Meteor.bindEnvironment(function () {
+                    var json = JSON.parse(body);
+                    //console.log(json);
+                    xml2js.parseString(json, Meteor.bindEnvironment(function (err, result) {
+                      if (err || !result || !result.StructuredXMLResume) {
+                        cb(new Meteor.Error(500, "Error parsing resume"), null);
+                        return;
+                      }
+
+                      if (result.StructuredXMLResume.ContactInfo && result.StructuredXMLResume.ContactInfo[0].PersonName) {
+                        var personName = result.StructuredXMLResume.ContactInfo[0].PersonName[0];
+                        tempEmployee.person = {};
+                        if (personName.GivenName)
+                          tempEmployee.person.firstName = personName.GivenName[0];
+                        if (personName.MiddleName)
+                          tempEmployee.person.middleName = personName.MiddleName[0];
+
+                        if (personName.FamilyName)
+                          tempEmployee.person.lastName = personName.FamilyName[0];
+                      }
+
+                      Meteor.call('addContactable', tempEmployee, function(err, result) {
+                        if (!err) {
+                          ResumesFS.update({_id: resumeFileId}, {
+                            $set: {
+                              'metadata.completed' : true,
+                              'metadata.employeeId' : result
+                            }
+                          });
+                          cb(null, tempEmployee);
+                        }else
+                          cb(new Meteor.Error(500, "Error during employee creating"), null);
+                      });
+                    }));
+                  }));
+              }
+            ));
+        }
+      ));
+
+      return syncParse(stream, resumeFileId);
     },
     addContactableTag: function (contactableId, tag) {
       // TODO: validations

@@ -1,38 +1,38 @@
 Router.configure({
-    disableProgressSpinner: true,
+  disableProgressSpinner: true,
   onBeforeAction: function () {
-        if (!Meteor.userId() && Router.current().route.name != 'login') {
-            this.redirect('login');
-        }
-    },
+    if (!Meteor.userId() && Router.current().route.name != 'login') {
+      this.redirect('login');
+    }
+  },
   autoRender: true
 });
 
 Router.map(function () {
-    this.route('dashboard', {
-        path: '/',
-        controller: 'DashboardController'
-    });
+  this.route('dashboard', {
+    path: '/',
+    controller: 'DashboardController'
+  });
 
-    this.route('login', {
-        path: '/login',
-        template: 'login',
-        onBeforeAction: function () {
-                if (Meteor.user()) {
-                    this.redirect('dashboard');
-                }
-            }
-    });
+  this.route('login', {
+    path: '/login',
+    template: 'login',
+    onBeforeAction: function () {
+      if (Meteor.user()) {
+        this.redirect('dashboard');
+      }
+    }
+  });
 
-    this.route('contactables', {
-        path: '/contactables/:type?',
-        controller: 'ContactablesController'
-    });
+  this.route('contactables', {
+    path: '/contactables/:type?',
+    controller: 'ContactablesController'
+  });
 
-    this.route('contactable', {
-        path: '/contactable/:_id',
-        controller: 'ContactableController'
-    });
+  this.route('contactable', {
+    path: '/contactable/:_id',
+    controller: 'ContactableController'
+  });
 //    debugger;
   this.route('addContactablePage', {
     path: '/contactableAdd/:objType',
@@ -45,44 +45,49 @@ Router.map(function () {
     waitOn: [dType.ObjTypesHandler]
   });
 
-    this.route('jobs', {
-        path: '/jobs/:type?',
-        controller: 'JobsController'
-    });
+  this.route('jobs', {
+    path: '/jobs/:type?',
+    controller: 'JobsController'
+  });
 
-    this.route('job', {
-        path: '/job/:_id',
-        controller: 'JobController'
-    });
+  this.route('job', {
+    path: '/job/:_id',
+    controller: 'JobController'
+  });
 
-    this.route('users', {
-        path: '/users',
-        controller: 'UsersController'
-    });
-    this.route('userProfile', {
-        path: '/user/:_id?',
-        controller: 'UserProfileController'
-    });
+  this.route('users', {
+    path: '/users',
+    controller: 'UsersController'
+  });
+  this.route('userProfile', {
+    path: '/user/:_id?',
+    controller: 'UserProfileController'
+  });
 
-    this.route('inbox', {
-        path: '/inbox',
-        controller: 'ConversationsController'
-    });
+  this.route('inbox', {
+    path: '/inbox',
+    controller: 'ConversationsController'
+  });
 
-    this.route('conversation', {
-        path: '/inbox/:_id',
-        controller: 'ConversationController'
-    });
+  this.route('conversation', {
+    path: '/inbox/:_id',
+    controller: 'ConversationController'
+  });
 
-    this.route('tasks', {
-        path: '/tasks',
-        controller: 'TasksController'
-    })
+  this.route('tasks', {
+    path: '/tasks',
+    controller: 'TasksController'
+  })
 
-    this.route('lookupManagement', {
-        path: '/management/lookups',
-        controller: 'LookupsManagementController'
-    })
+  this.route('lookupManagement', {
+    path: '/management/lookups',
+    controller: 'LookupsManagementController'
+  })
+
+  this.route('resumeParser', {
+    path: '/resumeparser',
+    controller: 'ResumeParserController'
+  })
 });
 
 // handler for testing loading pages

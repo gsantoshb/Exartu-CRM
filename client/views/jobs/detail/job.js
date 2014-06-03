@@ -1,110 +1,198 @@
 JobController = RouteController.extend({
-    layoutTemplate: 'job',
-
+    layoutTemplate: 'mainLayout',
+    waitOn: function(){
+        return [JobHandler, ObjTypesHandler, GoogleMapsHandler]
+    },
     data: function () {
-        Session.set('entityId', this.params._id); // save current contactable to later use on templates
+        Session.set('entityId', this.params._id);
+    },
+    action:function(){
+        if (!this.ready()) {
+            this.render('loadingContactable')
+            return;
+        }
+        this.render('job')
     }
 
 });
 
+var getDefinitionFromField=function(field, obj, path){
+  var type;
+  switch (field.fieldType){
+    case 'string':
+      type=Utils.ReactivePropertyTypes.string;
+      break;
+    case 'date':
+      type=Utils.ReactivePropertyTypes.date;
+      break;
+    case 'number':
+      type=Utils.ReactivePropertyTypes.int;
+      break;
+    case 'lookUp':
+      type=Utils.ReactivePropertyTypes.lookUp;
+      break;
 
-Template.job.waitOn = ['JobHandler', 'ObjTypesHandler', 'ContactMethodsHandler'];
+  }
 
-Template.job.viewModel = function () {
-    var self = this,
-        jobId = Router.current().params._id;
-
-
-    self.filesCollection = ContactablesFS;
-
-    /*
-     * define which field are going to be editable and the read only field which are not saved back to mongo but need to be recomputed after an update
-     */
-    var fields = ['category', 'duration', 'displayName', 'endDate', 'industry', 'publicJobTitle', 'startDate', 'status', 'tags', 'description'];
-    var readOnlyField = ['categoryName', 'durationName', 'industryName', 'statusName']
-
-    self.editMode = ko.observable(false);
-    self.edit = function () {
-        self.editMode(!self.editMode());
+  var result={
+    default: obj[field.name],
+    update: path+ field.name,
+    type: type
+  }
+  if(type==Utils.ReactivePropertyTypes.lookUp){
+    var displayName=obj[field.name+'Name']? obj[field.name+'Name']: LookUps.findOne({_id: obj[field.name]}).displayName;
+    result.displayName=displayName;
+    result.options=LookUps.find({codeType: field.lookUpCode});
+  }
+  return result;
+}
+toReactiveObject=function(addModel, obj){
+    var reactiveObj={
+        _id: obj._id,
+        reactiveProps: {}
     }
-    self.job = ko.meteor.findOne(Jobs, {
-        _id: jobId
-    });
+    var object=obj;
+    var path='';
+    var props={};
+    _.each(addModel.fieldGroups,function(fieldGroup){
+        _.each(fieldGroup.items,function(item){
+            if(item.type=='field'){
+              props[item.name]=getDefinitionFromField(item, object, path);
 
-    /*
-     * a clean copy of job to be used in editing mode
-     *  when exit edit mode the value of the copy is updated with the value of the original job
-     *
-     */
-    self.editJob = ko.validatedObservable(ko.mapping.fromJS(ko.toJS(self.job)));
-//    self.assignedPicture = ko.computed(function () {
-//        return helper.getEmployeePictureUrl(self.job().assignmentInfo)
-//    });
-
-    self.editMode.subscribe(function (value) {
-        if (!value) {
-            _.forEach(fields, function (field) {
-                self.editJob()[field](self.job()[field]());
-            });
-            _.forEach(readOnlyField, function (field) {
-                self.editJob()[field](self.job()[field]());
-            });
-            self.editJob().tags(ko.toJS(self.job().tags));
-        }
-    });
-
-
-    self.save = function () {
-        if (!self.editJob.isValid()) {
-            self.editJob.errors.showAllMessages();
-            return;
-        }
-        var set = {};
-        var newJob = ko.toJS(self.editJob());
-        var oldJob = ko.toJS(self.job());
-        _.forEach(fields, function (field) {
-            if (newJob[field] != oldJob[field]) {
-                set[field] = newJob[field];
             }
-        });
+        })
+    })
+    _.each(addModel.subTypes,function(subType){
+        path=subType.name + '.';
+        object=obj[subType.name];
+        _.each(subType.fieldGroups,function(fieldGroup){
+            _.each(fieldGroup.items,function(item){
+                if(item.type=='field'){
+                  props[item.name]=getDefinitionFromField(item, object, path);
+                }
+            })
+        })
+    })
 
-        Jobs.update({
-            _id: jobId
-        }, {
-            $set: set
-        }, function (err, result) {
-            if (!err) {
-                self.editMode(false);
-            }
-        });
-    }
-    self.newTag = ko.observable();
-    self.addTag = function () {
-        if (!self.newTag()) {
-            return;
-        }
-        self.editJob().tags.push(self.newTag());
-        self.newTag('');
+    _.extend(reactiveObj.reactiveProps, props);
+    return reactiveObj;
+}
 
-    };
-    self.removeTag = function (data) {
-        self.editJob().tags.remove(data);
-    };
-    self.editTag = ko.observable();
-    self.assign=function(data){
-        Meteor.call('assign', jobId , ko.toJS(data._id),function(err, result){
-            if(!err){
-            }else{
-                console.log(err);
-            }
-        });
-    }
+var generateReactiveObject = function(job) {
 
-//  self.updateNegotiation = function(data) {
-//    Meteor.call('updateCandidateNegotiation', {jobId: jobId, employeeId: data.employee(), negotiation: data.negotiation()});
-//    // Collapse editor
-//    $('#' + data.employee()).collapse('hide');
-//  }
-
-    return self;
+  var type=job.objNameArray[1-job.objNameArray.indexOf('job')];
+  var definition= toReactiveObject(dType.objTypeInstance(type), job);
+  definition.reactiveProps.tags={
+    default: job.tags,
+    update: 'tags',
+    type: Utils.ReactivePropertyTypes.array
+  }
+  definition.reactiveProps.location={
+    default: job.location,
+    update: 'location'
+  }
+  definition.reactiveProps.status={
+    default: job.status
+  }
+  return new Utils.ObjectDefinition(definition);
 };
+
+
+
+var self={};
+Utils.reactiveProp(self, 'editMode', false);
+
+Template.job.helpers({
+    job: function(){
+        job = generateReactiveObject(Jobs.findOne({ _id: Session.get('entityId') }));
+        console.dir(job)
+        return job;
+    },
+    originalJob:function(){
+      return Jobs.findOne({ _id: Session.get('entityId') });
+    },
+    editMode:function(){
+        return self.editMode;
+    },
+    colorEdit:function(){
+        return self.editMode ? '#008DFC' : '#ddd'
+    },
+    isType:function(typeName){
+      return !! Jobs.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
+    }
+
+})
+Template.job.events({
+    'click .editJob':function(){
+        self.editMode= ! self.editMode;
+    },
+    'click .saveButton':function(){
+
+      if (!job.isValid()) {
+          job.showErrors();
+          return;
+      }
+      console.dir(job.generateUpdate())
+      Jobs.update({_id: job._id}, job.generateUpdate(), function(err, result) {
+          if (!err) {
+              self.editMode=false;
+              job.updateDefaults();
+          }
+      });
+    },
+    'click .cancelButton':function(){
+        self.editMode=false;
+    },
+    'click .see-less':function(){
+      $('.job-description').removeClass('in')
+    },
+    'click .see-more':function(){
+      $('.job-description').addClass('in')
+    },
+    'click .job-description':function(e){
+      if (!$(e.target).hasClass('see-less')){
+        $('.job-description').addClass('in')
+      }
+    },
+    'click .add-tag': function() {
+      addTag();
+    },
+    'keypress #new-tag': function(e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        addTag();
+      }
+    },
+    'click .remove-tag': function() {
+      job.tags.remove(this.value);
+    },
+})
+
+
+var addTag = function() {
+  var inputTag = $('#new-tag')[0];
+
+  if (!inputTag.value)
+    return;
+
+  if (_.indexOf(job.tags.value, inputTag.value) != -1)
+    return;
+  job.tags.insert(inputTag.value);
+  inputTag.value = '';
+  inputTag.focus();
+};
+Template.job.rendered=function(){
+  var description=$('.job-description');
+  var container=description.find('.htmlContainer');
+  if(container.height()<=100){
+    description.addClass('none')
+  }
+  container.on('resize', _.debounce(function(){
+    if(container.height()<=100){
+      description.addClass('none')
+    }else{
+      description.removeClass('none')
+    }
+  },200));
+
+}
