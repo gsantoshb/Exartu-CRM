@@ -13,7 +13,6 @@ email
 collection-hooks
 service-configuration
 googlemaps
-imagemagick
 spin
 bootstrap3-wysihtml5
 jquery-color-animation
@@ -26,5 +25,6 @@ apm
 document
 dType
 collectionFS
-cfs-graphicsmagick
 bootstrap3-datetimepicker
+cfs-filesystem
+cfs-graphicsmagick
