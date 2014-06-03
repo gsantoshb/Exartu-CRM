@@ -163,12 +163,15 @@ Template.lookUpFieldInput.helpers({
     return LookUps.find({codeType: this.lookUpCode});
   },
   hasError :function(){
-    return this.isValid? '': 'error';
+    return this.isValid ? '': 'error';
+  },
+  isSelected: function(value, selected){
+    return value==selected;
   }
 })
 Template.dateFieldInput.helpers({
   hasError :function(){
-    return this.isValid? '': 'error';
+    return this.isValid ? '': 'error';
   }
 })
 //</editor-fold>

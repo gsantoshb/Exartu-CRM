@@ -120,9 +120,9 @@
     <span>{{displayName}} :</span>
     <div class="form-group {{hasError}}">
         <select class="form-control input-lg" type="text" placeholder="{{displayName}}">
-            <option value="null" selected>--Select--</option>
+            <option value="null" selected="{{isSelected null value}}">--Select--</option>
             {{#each options}}
-            <option value="{{_id}}">{{displayName}}</option>
+                <option value="{{_id}}" selected="{{isSelected _id ../value}}">{{displayName}}</option>
             {{/each}}
         </select>
         <span>{{error}}</span>
