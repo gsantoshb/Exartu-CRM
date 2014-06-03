@@ -91,6 +91,9 @@ var generateReactiveObject = function(job) {
     default: job.location,
     update: 'location'
   }
+  definition.reactiveProps.status={
+    default: job.status
+  }
   return new Utils.ObjectDefinition(definition);
 };
 

@@ -96,16 +96,6 @@ newObjType({
         required: true,
         multiple: false
     },{
-        name: 'status',
-        displayName: 'Status',
-        fieldType: 'lookUp',
-        lookUpName: 'jobStatus',
-        lookUpCode: Enums.lookUpTypes.job.status.code,
-        required: true,
-        lookUpName: 'jobTitle',
-        multiple: false,
-        defaultValue: null
-    },{
         name: 'industry',
         displayName: 'Industry',
         fieldType: 'lookUp',
