@@ -128,6 +128,13 @@
         <span>{{error}}</span>
     </div><!-- /.form-group -->
 </template>
+<template name="dateFieldInput">
+    <span>{{displayName}} :</span>
+    <div class="form-group {{hasError}}">
+        {{>dateTimePickerTemp}}
+        <span>{{error}}</span>
+    </div><!-- /.form-group -->
+</template>
 
 <template name="relInput">
     <span>{{displayName}} : </span>

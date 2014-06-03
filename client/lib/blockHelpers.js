@@ -160,9 +160,13 @@ Template.fieldInput.helpers({
 })
 Template.lookUpFieldInput.helpers({
   options: function(){
-//        debugger;
     return LookUps.find({codeType: this.lookUpCode});
   },
+  hasError :function(){
+    return this.isValid? '': 'error';
+  }
+})
+Template.dateFieldInput.helpers({
   hasError :function(){
     return this.isValid? '': 'error';
   }
@@ -193,6 +197,7 @@ UI.registerHelper('displayProperty', function(){
   if(this.showInAdd){
     if(this.type=="field"){
       var template=Template[this.fieldType + 'FieldInput'] || Template['fieldInput'];
+
       template.events({
         'blur input': function(e){
           switch (this.fieldType) {
@@ -227,19 +232,16 @@ UI.registerHelper('displayProperty', function(){
 })
 
 UI.registerHelper('dateTimePicker', function() {
-
-    var template=Template.dateTimePickerTemp;
-
-    template.rendered= function(){
-        this.$('.dateTimePicker').datetimepicker({
-            language: 'en',
-            defaultDate: this.data.value,
-            useSeconds: false
-        })
-    };
-
-    return template;
+    return Template.dateTimePickerTemp;
 });
+Template.dateTimePickerTemp.rendered= function(){
+  this.$('.dateTimePicker').datetimepicker({
+    language: 'en',
+    defaultDate: this.data.value,
+    useSeconds: false
+  })
+};
+
 
 UI.registerHelper('htmlEditor', function() {
   var template=Template.htmlEditorTemplate;
