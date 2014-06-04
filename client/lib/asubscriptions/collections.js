@@ -271,3 +271,6 @@ extendedSubscribe('assignment', 'AssignmentsHandler');
 
 JobRateTypes= new Meteor.Collection('jobRateTypes');
 JobRateTypesHandler= Meteor.subscribe('jobRateTypes');
+
+Hierarchies = new Meteor.Collection("hierarchies");
+HierarchiesHandler = Meteor.subscribe('hierarchies');
