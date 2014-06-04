@@ -19,7 +19,7 @@
                                 </a>
                             </div>
                             <div class="list-item-content prefix-lg">
-                                    <button class="btn btn-xs btn-primary pull-right" data-bind="click: $root.assign">Assign</button>
+                                    <button class="btn btn-xs btn-primary pull-right assign">Assign</button>
                                     <h3 class="bottom-10" style="margin-top: 0">
                                         <a href="/contactable/{{_id}}">{{displayName}}</a>
                                     </h3>
@@ -45,16 +45,16 @@
                                         {{/each}}
                                     </div>
 
-                                    <!--<a class="btn btn-link btn-sm pull-right" data-toggle="collapse" data-bind="attr: { href: '#' + _id() }">-->
-                                        <!--Negotiation note-->
-                                    <!--</a>-->
+                        <!--<a class="btn btn-link btn-sm pull-right" data-toggle="collapse" data-bind="attr: { href: '#' + _id() }">-->
+                            <!--Negotiation note-->
+                        <!--</a>-->
 
-                                    <!--<div class="panel-collapse collapse" style="margin-top: 40px" data-bind="attr: { id: $data._id()}">-->
-                                        <!--<textarea data-bind="htmlEditor: $parent.negotiation">-->
+                        <!--<div class="panel-collapse collapse" style="margin-top: 40px" data-bind="attr: { id: $data._id()}">-->
+                            <!--<textarea data-bind="htmlEditor: $parent.negotiation">-->
 
-                                        <!--</textarea>-->
-                                        <!--<span class="btn btn-success btn-sm pull-right" style="margin-right: 4%; margin-top: 10px;" data-bind="click: function() { $root.updateNegotiation($parent)}"> Save </span>-->
-                                    <!--</div>-->
+                            <!--</textarea>-->
+                            <!--<span class="btn btn-success btn-sm pull-right" style="margin-right: 4%; margin-top: 10px;" data-bind="click: function() { $root.updateNegotiation($parent)}"> Save </span>-->
+                        <!--</div>-->
                             </div>
                         </li>
                     {{/with}}

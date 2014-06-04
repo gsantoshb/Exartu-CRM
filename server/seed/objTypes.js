@@ -92,19 +92,9 @@ newObjType({
         fieldType: 'lookUp',
         lookUpName: 'jobDuration',
         lookUpCode: Enums.lookUpTypes.job.duration.code,
-        defaultValue: null,
+        defaultValue: LookUps.findOne({ codeType: Enums.lookUpTypes.job.duration.code })._id,
         required: true,
         multiple: false
-    },{
-        name: 'status',
-        displayName: 'Status',
-        fieldType: 'lookUp',
-        lookUpName: 'jobStatus',
-        lookUpCode: Enums.lookUpTypes.job.status.code,
-        required: true,
-        lookUpName: 'jobTitle',
-        multiple: false,
-        defaultValue: null
     },{
         name: 'industry',
         displayName: 'Industry',
@@ -114,7 +104,7 @@ newObjType({
         required: true,
         lookUpName: 'jobTitle',
         multiple: false,
-        defaultValue: null
+        defaultValue: LookUps.findOne({ codeType: Enums.lookUpTypes.job.industry.code })._id
     },{
         name: 'category',
         displayName: 'Category',
@@ -124,7 +114,7 @@ newObjType({
         required: true,
         lookUpName: 'jobTitle',
         multiple: false,
-        defaultValue: null
+        defaultValue: LookUps.findOne({ codeType: Enums.lookUpTypes.job.category.code })._id
     }]
 });
 
@@ -195,7 +185,8 @@ newObjType({
         displayName: 'Job title',
         fieldType: 'lookUp',
         lookUpName: 'jobTitle',
-        lookUpCode: Enums.lookUpTypes.job.titles.code
+        lookUpCode: Enums.lookUpTypes.job.titles.code,
+        defaultValue: LookUps.findOne({ codeType: Enums.lookUpTypes.job.titles.code })._id
       }
     ]
 })
@@ -213,7 +204,8 @@ newObjType({
         displayName: 'Frequency pay rate',
         fieldType: 'lookUp',
         lookUpName: 'payRateFrequency',
-        lookUpCode: Enums.lookUpTypes.payRate.frequencies.code
+        lookUpCode: Enums.lookUpTypes.payRate.frequencies.code,
+        defaultValue: LookUps.findOne({ codeType:  Enums.lookUpTypes.payRate.frequencies.code })._id
       }, {
         name: 'pay',
         displayName: 'Pay',

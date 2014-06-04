@@ -6,11 +6,18 @@ var newRate={
   bill: 0
 }
 var endDateDependency=new Deps.Dependency;
+var employeeDependency=new Deps.Dependency;
 Template.assignmentAdd.helpers({
   assignment:function(){
+    var jobId=this[0],
+      employeeParameter=this[1];
+    if(employeeParameter){
+      employeeId=employeeParameter;
+      employeeDependency.changed()
+    }
     if(!assignment){
       var job=Jobs.findOne({
-        _id: Session.get('entityId')
+        _id: jobId
       });
       assignment= {
         start: new Date(),
@@ -39,6 +46,10 @@ Template.assignmentAdd.helpers({
     return _.filter(rateTypes,function(type){
       return ! _.findWhere(assignment.rates,{type: type._id});
     });
+  },
+  isSelected: function(id){
+    employeeDependency.depend();
+    return employeeId==id;
   }
 })
 

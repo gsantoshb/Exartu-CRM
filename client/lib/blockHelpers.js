@@ -102,14 +102,6 @@ Template.object_property_single_editable.events = {
   }
 };
 
-//Template.object_property_multiple_editable.events={
-//  'click button': function(e, ctx){
-//    if(ctx.$('input').val()){
-//      debugger;
-//      ctx.data.property.value.push(ctx.$('input').val());
-//    }
-//  }
-//}
 
 
 Template.fileProgress.progress = function() {
@@ -168,11 +160,18 @@ Template.fieldInput.helpers({
 })
 Template.lookUpFieldInput.helpers({
   options: function(){
-//        debugger;
     return LookUps.find({codeType: this.lookUpCode});
   },
   hasError :function(){
-    return this.isValid? '': 'error';
+    return this.isValid ? '': 'error';
+  },
+  isSelected: function(value, selected){
+    return value==selected;
+  }
+})
+Template.dateFieldInput.helpers({
+  hasError :function(){
+    return this.isValid ? '': 'error';
   }
 })
 //</editor-fold>
@@ -201,6 +200,7 @@ UI.registerHelper('displayProperty', function(){
   if(this.showInAdd){
     if(this.type=="field"){
       var template=Template[this.fieldType + 'FieldInput'] || Template['fieldInput'];
+
       template.events({
         'blur input': function(e){
           switch (this.fieldType) {
@@ -235,19 +235,16 @@ UI.registerHelper('displayProperty', function(){
 })
 
 UI.registerHelper('dateTimePicker', function() {
-
-    var template=Template.dateTimePickerTemp;
-
-    template.rendered= function(){
-        this.$('.dateTimePicker').datetimepicker({
-            language: 'en',
-            defaultDate: this.data.value,
-            useSeconds: false
-        })
-    };
-
-    return template;
+    return Template.dateTimePickerTemp;
 });
+Template.dateTimePickerTemp.rendered= function(){
+  this.$('.dateTimePicker').datetimepicker({
+    language: 'en',
+    defaultDate: this.data.value,
+    useSeconds: false
+  })
+};
+
 
 UI.registerHelper('htmlEditor', function() {
   var template=Template.htmlEditorTemplate;
@@ -294,4 +291,21 @@ UI.registerHelper('showAsHTML', function() {
     container[0].innerHTML=this.data.value;
   }
   return Template.showAsHTMLTemplate
+});
+UI.registerHelper('inputLocation', function() {
+  Template.inputLocationTemplate.rendered=function(){
+    var placeSearch, autocomplete, element=this.$('.location')[0];
+    var getLocation = _.bind(function() {
+      var place = autocomplete.getPlace();
+      this.value=Utils.getLocation(place);
+      console.dir(this);
+    },this.data);
+
+    autocomplete = new google.maps.places.Autocomplete(element, { types: ['geocode'] });
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      getLocation();
+    });
+  }
+  return Template.inputLocationTemplate
 });

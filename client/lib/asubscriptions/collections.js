@@ -93,35 +93,30 @@ var getLookUpName = function (lookUpName, code) {
     return;
   return lookUpValue.displayName;
 }
-
+JobStatus={
+  get:function(job){
+//    debugger;
+    var now=new Date;
+    var start= _.isDate(job.startDate)? job.startDate: new Date(job.startDate)
+    var end= _.isDate(job.endDate)? job.endDate: new Date(job.endDate)
+    if(now < start)
+      return Enums.jobStatus.open;
+    if(end < now)
+      return Enums.jobStatus.closed;
+    if(job.assignment)
+      return Enums.jobStatus.filled;
+    else
+      return Enums.jobStatus.unfilled;
+  }
+}
 Jobs = new Meteor.Collection("jobs", {
     transform: function (job) {
         job.displayName = job.publicJobTitle;
         job.industryName = LookUps.findOne({ _id: job.industry }).displayName;
         job.categoryName = LookUps.findOne({ _id: job.category }).displayName;
         job.durationName = LookUps.findOne({ _id: job.duration }).displayName;
-        job.statusName = LookUps.findOne({ _id: job.status }).displayName;
-//        _.each(job.candidates, function (candidate) {
-//            candidate.employeeInfo = Contactables.findOne({
-//                _id: candidate.employee
-//            });
-//            candidate.user = Meteor.users.findOne({
-//                _id: candidate.userId
-//            });
-//
-//        });
-//        if (job.customer) {
-//            job.CustomerInfo = Contactables.findOne({
-//                _id: job.customer
-//            });
-//        }
-//        if (job.employeeAssigned) {
-//            job.assignmentInfo = Contactables.findOne({
-//                _id: job.employeeAssigned
-//            });
-//        } else {
-//            job.assignmentInfo = null;
-//        }
+//        job.statusName = LookUps.findOne({ _id: job.status }).displayName;
+      job.status=JobStatus.get(job);
 
     return job;
   }

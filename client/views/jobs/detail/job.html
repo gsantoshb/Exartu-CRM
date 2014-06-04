@@ -73,20 +73,10 @@
                                         </td>
                                         <td>
                                             <i class="fa fa-info-circle"></i>&nbsp;Status:
-                                            {{#objectProperty property=status editable=editMode}}
-                                            <div class="form-group  {{hasError}}">
-                                                <select class="form-control input-lg">
-                                                    {{#each options}}
-                                                    <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
-                                                    {{/each}}
-                                                </select>
-                                                <span>{{error}}</span>
-                                            </div><!-- /.form-group -->
-                                            {{else}}
+
                                             <strong>
-                                                <strong>{{displayName}}</strong>
+                                                <strong>{{status.value}}</strong>
                                             </strong>
-                                            {{/objectProperty}}
                                         </td>
                                     </tr>
                                     <tr>
@@ -180,19 +170,26 @@
                                     <tr>
                                         <td colspan="2">
                                             <i class="fa fa-globe"></i>&nbsp;Location:
-                                            <strong>Bucharest, Romania</strong>
+                                            {{#if editMode}}
+                                                {{#inputLocation location}}
+                                                {{/inputLocation}}
+                                            {{else}}
+                                                {{#with location.value}}
+                                                    <strong>{{displayName}}</strong>
+                                                {{else}}
+                                                    <strong class="text-muted">Not set</strong>
+                                                {{/with}}
+                                            {{/if}}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">Tags:
                                             {{#objectProperty property=tags}}
-                                            <!--<button type="button" class="tag btn btn-xs btn-primary">-->
                                                 <span class="badge badge-primary"><i class="fa fa-tag"></i> {{value}}
                                                     {{#if editMode}}
                                                         <i class="remove-tag fa fa-times" style="padding-left: 7px;cursor: pointer;" title="Remove"></i>
                                                     {{/if}}
                                                 </span>
-                                            <!--</button>-->
                                             {{/objectProperty}}
                                             {{#if editMode}}
                                                 <div class="input-group">

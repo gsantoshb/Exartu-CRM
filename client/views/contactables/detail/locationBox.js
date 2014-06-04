@@ -61,7 +61,7 @@ Template.contactableLocationBox.events({
     }, function (results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
 
-        data.location = getLocation(results[0]);
+        data.location = Utils.getLocation(results[0]);
         console.log(data.location.displayName)
       } else {
         data.location = null;
@@ -87,13 +87,7 @@ Template.contactableLocationBox.events({
   }
 })
 
-var getLocation = function (googleLocation) {
-  return {
-    displayName: googleLocation.formatted_address,
-    lat: googleLocation.geometry.location.lat(),
-    lng: googleLocation.geometry.location.lng()
-  }
-}
+
 Template.contactableLocationBox.rendered = function () {
 
   var map = null;
