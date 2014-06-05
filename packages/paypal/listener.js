@@ -14,7 +14,7 @@ Router.map(function () {
       } else {
         this.response.writeHead(404);
       }
-      return this.response.end(this.request)
+      return this.response.end()
     }
   })
 });
@@ -35,11 +35,11 @@ var respondeIPNMessage=function(request){
     query: result
   }, function(err, result){
 
-    if (!error) {
+    if (!err) {
       console.dir(result)
     }else{
       console.log('Error')
-      console.dir(error)
+      console.dir(err)
     }
   })
 }
