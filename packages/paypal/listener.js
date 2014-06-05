@@ -25,7 +25,7 @@ var verified='VERIFIED';
 var payments=new Meteor.Collection('payments');
 var invalidPayments=new Meteor.Collection('invalidPayments');
 
-var paypal={
+paypal={
   registerHandler: function(path, cb){
     if(!_.isString(path)) return;
     if(!_.isFunction(cb)) return;
