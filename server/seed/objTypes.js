@@ -11,7 +11,10 @@
  *    - objType Temporary
  */
 var newObjType=dType.constructor.objType;
-
+var getFirst=function(code){
+  var first=LookUps.findOne({ codeType: code});
+  return first? first._id: null
+}
 newObjType({
     collection: Contactables,
     objGroupType: Enums.objGroupType.contactable,
@@ -92,7 +95,7 @@ newObjType({
         fieldType: 'lookUp',
         lookUpName: 'jobDuration',
         lookUpCode: Enums.lookUpTypes.job.duration.code,
-        defaultValue: LookUps.findOne({ codeType: Enums.lookUpTypes.job.duration.code })._id,
+        defaultValue: getFirst( Enums.lookUpTypes.job.duration.code ),
         required: true,
         multiple: false
     },{
@@ -104,7 +107,7 @@ newObjType({
         required: true,
         lookUpName: 'jobTitle',
         multiple: false,
-        defaultValue: LookUps.findOne({ codeType: Enums.lookUpTypes.job.industry.code })._id
+        defaultValue: getFirst( Enums.lookUpTypes.job.industry.code )
     },{
         name: 'category',
         displayName: 'Category',
@@ -114,7 +117,7 @@ newObjType({
         required: true,
         lookUpName: 'jobTitle',
         multiple: false,
-        defaultValue: LookUps.findOne({ codeType: Enums.lookUpTypes.job.category.code })._id
+        defaultValue: getFirst( Enums.lookUpTypes.job.category.code )
     }]
 });
 
@@ -186,7 +189,7 @@ newObjType({
         fieldType: 'lookUp',
         lookUpName: 'jobTitle',
         lookUpCode: Enums.lookUpTypes.job.titles.code,
-        defaultValue: LookUps.findOne({ codeType: Enums.lookUpTypes.job.titles.code })._id
+        defaultValue: getFirst(Enums.lookUpTypes.job.titles.code)
       }
     ]
 })
@@ -205,7 +208,7 @@ newObjType({
         fieldType: 'lookUp',
         lookUpName: 'payRateFrequency',
         lookUpCode: Enums.lookUpTypes.payRate.frequencies.code,
-        defaultValue: LookUps.findOne({ codeType:  Enums.lookUpTypes.payRate.frequencies.code })._id
+        defaultValue: getFirst(  Enums.lookUpTypes.payRate.frequencies.code )
       }, {
         name: 'pay',
         displayName: 'Pay',
@@ -213,3 +216,4 @@ newObjType({
       }
     ]
 });
+
