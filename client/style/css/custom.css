@@ -560,3 +560,15 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .job-description.none>.see-less{
     display: none;
 }
+
+.disabled-feature {
+    opacity: 0.4;
+}
+
+.disabled-feature-message {
+    display: none;
+}
+
+.disabled-feature:hover .disabled-feature-message {
+    display: block;
+}

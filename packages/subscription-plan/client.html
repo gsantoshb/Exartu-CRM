@@ -1,0 +1,11 @@
+<template name="disabledFeature">
+    {{#if allow}}
+        {{>UI.contentBlock}}
+    {{else}}
+        <div title="{{message}}">
+            <div class="disabled-feature">
+                {{>UI.contentBlock}}
+            </div>
+        </div>
+    {{/if}}
+</template>
