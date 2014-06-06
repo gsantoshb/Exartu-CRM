@@ -29,6 +29,7 @@ SubscriptionPlan.loadPlans = function(plans) {
             methods: plan.methods,
             storageLimit: plan.storageLimit,
             usersLimit: plan.usersLimit,
+            price: plan.price
           }
         }
       );
@@ -121,4 +122,24 @@ SubscriptionPlan.checkStorage = function() {
 
   if (SubscriptionPlan.storageUsed() >= plan.storageLimit)
     throw new Meteor.Error(500, 'Storage limit reached');
+};
+
+SubscriptionPlan.upgrade = function(hierId, planCode, amount, currency) {
+  var plan = SubscriptionPlans.findOne({code: planCode});
+
+  if (!plan)
+    throw new Meteor.Error(500, 'Payment plan is invalid');
+
+  if (currency != 'USD')
+    throw new Meteor.Error(500, 'Payment currency is invalid');
+
+  if (amount != plan.price)
+    throw new Meteor.Error(500, 'Payment amount is invalid');
+
+  var hier = Hierarchies.findOne({_id: hierId});
+
+  if (!hier)
+    throw new Meteor.Error(500, 'Payment hierarchy is invalid');
+
+  Hierarchies.update({_id: hierId}, {$set: { planCode: planCode} });
 };

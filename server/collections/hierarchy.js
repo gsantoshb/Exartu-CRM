@@ -23,6 +23,8 @@ Meteor.startup(function () {
 				hier._id = generateUniqueHierId(ExartuConfig.SystemHierarchyId);
 			}
 
+      hier.planCode = 0;
+      
 			Hierarchies.insert(hier);
 
 			return hier._id;

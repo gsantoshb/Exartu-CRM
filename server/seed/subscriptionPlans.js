@@ -33,7 +33,8 @@ seedSubscriptionPlans = function() {
           type: SubscriptionPlan.collectionLimitTypes.monthly
         }
       },
-      storageLimit: 2000
+      storageLimit: 2000,
+      price: 20
     }
   };
 
