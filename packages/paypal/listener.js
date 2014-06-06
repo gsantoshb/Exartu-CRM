@@ -114,3 +114,12 @@ var processPayment= function(request, cb, result){
     payments.insert(data);
   }
 }
+var paypalAccountEmail=null
+Meteor.startup(function(){
+  paypalAccountEmail=process.env.paypalAccountEmail;
+  if(!paypalAccountEmail){
+    console.log('paypalAccountEmail NOT set')
+  }else{
+    console.log('paypalAccountEmail configured correctly')
+  }
+})
