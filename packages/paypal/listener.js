@@ -70,7 +70,7 @@ var respondeIPNMessage=function(request, cb){
   }, function(err, result){
 
     if (!err) {
-      processPayment(request, cb)
+      processPayment(request, cb, result)
 
     }else{
       console.log('Error')
@@ -79,7 +79,7 @@ var respondeIPNMessage=function(request, cb){
   })
 }
 
-var processPayment= function(request, cb){
+var processPayment= function(request, cb, result){
   var data=request.body;
 
   if(! result.content == verified){
