@@ -11,8 +11,10 @@ SubscriptionPlan.getUserPlan = Meteor.bindEnvironment(function() {
   var user = Meteor.users.findOne({_id: Meteor.isServer? Meteor.userId: Meteor.userId()});
 
   var hier = Hierarchies.findOne({_id: user.hierId});
-  var plan = SubscriptionPlans.findOne({code: hier.planCode});
+    if(!hier)
+    throw new Meteor.Error(404, 'Hierarchy not found');
 
+  var plan = SubscriptionPlans.findOne({code: hier.planCode});
   if (!plan)
     throw new Meteor.Error(500, 'Hierarchy without subscription plan');
 
@@ -31,4 +33,8 @@ SubscriptionPlan.storageUsed = function() {
 
   return totalStorageUsed / (1024*1024);
 };
+
+SubscriptionPlan.getPlan = function(planCode) {
+  return SubscriptionPlans.findOne({code: planCode});
+}
 

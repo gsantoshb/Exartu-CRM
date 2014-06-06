@@ -5,13 +5,11 @@
         </div>
         <!-- /.content-header -->
 
-
         <div id="breadcrumb">
             <a href="/" title="" class="tip-bottom" data-original-title="Go to Home">
                 <i class="fa fa-home"></i>Home</a>
             <a href="#" class="current">Account Settings</a>
         </div>
-
 
         <div class="container-fluid">
             <div class="row">
@@ -40,9 +38,6 @@
                                     <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader" />
                                 </div>
 
-
-
-
                                 <div data-bind="with: editUser">
                                     <div data-bind="template: { name: 'inStringField', data: { data: {displayName: 'Username', value: username } } }" > </div>
                                     <div data-bind="template: { name: 'inStringField', data: { data: {displayName: 'Email', value: email } } }" > </div>
@@ -55,9 +50,6 @@
                                 </div>
                             </form>
 
-                            {{>paypal}}
-
-
                         </div>
                         <!-- /.box-content-md -->
                     </div>
@@ -68,6 +60,5 @@
             <!-- /.row -->
         </div>
         <!-- /.modal-->
-
-    </div>
+</div>
 </template>

@@ -109,6 +109,17 @@ Router.map(function () {
     template: 'planLimitation'
   })
 
+  this.route('subscriptionPlan', {
+    path: '/subscriptionplan',
+    template: 'subscriptionPlanTemplate',
+    action: function() {
+      if (!this.ready()) {
+        this.render('loadingContactable');
+        return;
+      }
+      this.render('subscriptionPlanTemplate');
+    }
+  })
 });
 
 // handler for testing loading pages

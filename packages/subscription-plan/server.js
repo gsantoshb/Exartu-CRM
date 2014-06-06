@@ -47,7 +47,6 @@ Meteor.startup(function() {
     if (!Meteor.user())
       return;
     var plan = SubscriptionPlan.getUserPlan();
-    console.log(Meteor.users.find({hierId: Meteor.user().hierId}).count());
     if (plan.usersLimit && Meteor.users.find({hierId: Meteor.user().hierId}).count() >= plan.usersLimit)
       throw new Meteor.Error(500, 'Limit users reached');
   });
@@ -56,7 +55,10 @@ Meteor.startup(function() {
   _.forEach(_.keys(Collections), function(collectionName) {
     var collection = Collections[collectionName];
 
-    collection.before.insert(function() {
+    collection.before.insert(function(userId) {
+      if (!userId)
+        return;
+
       var collectionPlan = getCollectionRestrictions(collectionName);
 
       if (!collectionPlan)
@@ -83,13 +85,19 @@ Meteor.startup(function() {
         throw new Meteor.Error(500, 'Your hierarchy has reached max count of items in ' + collectionName);
     });
 
-    collection.before.update(function() {
+    collection.before.update(function(userId) {
+      if (!userId)
+        return;
+
       var collectionPlan = getCollectionRestrictions(collectionName);
       if (collectionPlan && collectionPlan.blocked)
         throw new Meteor.Error(500, 'Data restricted for your current plan subscription');
     });
 
-    collection.before.remove(function() {
+    collection.before.remove(function(userId) {
+      if (!userId)
+        return;
+
       var collectionPlan = getCollectionRestrictions(collectionName);
       if (collectionPlan && collectionPlan.blocked)
         throw new Meteor.Error(500, 'Data restricted for your current plan subscription');
@@ -107,10 +115,10 @@ Meteor.startup(function() {
 });
 
 SubscriptionPlan.checkFunction = function(options, fn) {
-  if (SubscriptionPlan.isAllowed(options.plans))
-    return fn;
-
   return function() {
+    console.log(this.argument);
+    if (SubscriptionPlan.isAllowed(options.plans))
+      return fn.apply({}, this.argument);
     throw new Meteor.Error(500, 'Function not included in users plan subscription');
   };
 };
