@@ -15,9 +15,9 @@ Defines the IPN Listener
 //  var user=getUser(custom);
 //  var item=getItem(item_number);
 //  if(item.price!=amount){
-//    return 'Somebody is trying to rob me!!'
+//    throw 'Somebody is trying to rob me!!'
 //  }
-//  processThePayment(user, item);
+//  someBodyHasPayedMe(user, item);
 //
 //})
 var verified='VERIFIED';
@@ -106,12 +106,11 @@ var processPayment= function(request, cb, result){
     return;
   }
 
-
-  var error= cb.call(data, data.mc_gross, data.mc_currency, data.item_name, data.item_number, data.custom);
-  if (error){
-    invalidPayments.insert({ ipn: data, invalidation: error });
-  }else{
+  try{
+    cb.call(data, data.mc_gross, data.mc_currency, data.item_name, data.item_number, data.custom);
     payments.insert(data);
+  }catch (e){
+    invalidPayments.insert({ ipn: data, invalidation: e.reason || e.message });
   }
 }
 var paypalAccountEmail=null
