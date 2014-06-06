@@ -1,5 +1,3 @@
-Document.collections = {};
-
 Document.Collection.prototype.publish = function(publishFN, allowOptions) {
   var self = this;
 
@@ -23,6 +21,4 @@ Document.Collection.prototype.publish = function(publishFN, allowOptions) {
   };
 
   self.documents.allow(allow);
-
-  Document.collections[self.collectionName] = self;
-}
+};
