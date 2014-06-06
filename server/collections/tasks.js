@@ -32,9 +32,11 @@ Meteor.publish('tasks', function () {
 
 Meteor.startup(function () {
   Meteor.methods({
-    crateTask: function (task) {
-      Tasks.insert(task);
-    },
+    crateTask: SubscriptionPlan.checkFunction([SubscriptionPlan.plansEnum.enterprise],
+      function (task) {
+        Tasks.insert(task);
+      }
+    )
   });
 });
 

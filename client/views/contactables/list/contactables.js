@@ -104,6 +104,10 @@ Template.contactablesListSearch.contactableTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
 };
 
+Template.contactablesListSearch.resumeParserRestrictions = function() {
+  return [SubscriptionPlan.plansEnum.enterprise];
+};
+
 Template.contactablesList.contactables = function() {
   var searchQuery = {};
 

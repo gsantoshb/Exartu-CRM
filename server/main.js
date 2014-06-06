@@ -1,9 +1,10 @@
-var dbSeed = {
-  seedSystemLookUps: seedSystemLookUps,
-  seedSystemRoles: seedSystemRoles,
-  seedSystemContactMethods: seedSystemContactMethods,
-  seedSystemJobRateTypes:seedSystemJobRateTypes
-}
+var dbSeed = [
+  seedSystemLookUps,
+  seedSystemRoles,
+  seedSystemContactMethods,
+  seedSystemJobRateTypes,
+  seedSubscriptionPlans
+];
 
 var handleConfiguration = function () {
   if (!ExartuConfig)

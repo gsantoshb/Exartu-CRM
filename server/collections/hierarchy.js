@@ -1,3 +1,8 @@
+Meteor.publish('hierarchies', function() {
+  var user = Meteor.users.findOne({_id: Meteor.userId});
+  return Hierarchies.find({_id: user.hierId});
+});
+
 Meteor.startup(function () {
 	Meteor.methods({
 		createHier: function (hier) {

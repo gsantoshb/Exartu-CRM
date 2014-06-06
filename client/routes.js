@@ -1,5 +1,8 @@
 Router.configure({
   disableProgressSpinner: true,
+  waitOn: function() {
+    return [HierarchiesHandler];
+  },
   onBeforeAction: function () {
     if (!Meteor.userId() && Router.current().route.name != 'login') {
       this.redirect('login');
@@ -11,7 +14,17 @@ Router.configure({
 Router.map(function () {
   this.route('dashboard', {
     path: '/',
-    controller: 'DashboardController'
+    controller: 'DashboardController',
+    waitOn: function() {
+      return [HierarchiesHandler];
+    },
+    action: function() {
+      if (!this.ready()) {
+        this.render('loadingContactable');
+        return;
+      }
+      this.render();
+    },
   });
 
   this.route('login', {
@@ -26,7 +39,7 @@ Router.map(function () {
 
   this.route('contactables', {
     path: '/contactables/:type?',
-    controller: 'ContactablesController'
+    controller: 'ContactablesController',
   });
 
   this.route('contactable', {
@@ -76,7 +89,8 @@ Router.map(function () {
 
   this.route('tasks', {
     path: '/tasks',
-    controller: 'TasksController'
+    controller: 'TasksController',
+    plans: [SubscriptionPlan.plansEnum.enterprise]
   })
 
   this.route('lookupManagement', {
@@ -86,8 +100,15 @@ Router.map(function () {
 
   this.route('resumeParser', {
     path: '/resumeparser',
-    controller: 'ResumeParserController'
+    controller: 'ResumeParserController',
+    plans: [SubscriptionPlan.plansEnum.enterprise]
   })
+
+  this.route('planLimitation', {
+    path: '/planlimitation',
+    template: 'planLimitation'
+  })
+
 });
 
 // handler for testing loading pages

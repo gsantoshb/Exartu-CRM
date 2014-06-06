@@ -203,7 +203,7 @@
                 <div class="table-item-cell">
                     <div class="table-item-cell-container date">
                         {{#formatted_date date=createdAt format='fromNow'}}
-                        <span>{{value}}</span><br>
+                            <span>{{value}}</span><br>
                         {{/formatted_date}}
                         {{#if searchKey }}
                             <i class="glyphicon glyphicon-search"></i>
@@ -267,11 +267,13 @@
                     </button>
                     <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
                         {{#each contactableTypes}}
-                        <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
+                            <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
                         {{/each}}
                     </ul>
                 </div>
-                <a class="btn btn-success pull-left suffix-10" href="/resumeparser"><i class="fa fa-cloud-download"></i> Import</a>
+                {{#subscriptionPlan plans=resumeParserRestrictions }}
+                    <a class="btn btn-success pull-left suffix-10" href="/resumeparser"><i class="fa fa-cloud-download"></i> Import</a>
+                {{/subscriptionPlan}}
                 <div class="input-group">
                     {{#objectProperty property=searchString}}
                         <input type="text" class="form-control" placeholder="Search contactable" value="{{value}}">
