@@ -13,7 +13,7 @@ Composer = {
 }
 
 /*
- * on startup find the templates that has vieModel defined to hook on template's rendered and call knockout
+ * on startup find the templates that has viewModel defined to hook on template's rendered and call knockout
  */
 Meteor.startup(function () {
     _.each(_.keys(Template), function (name) {

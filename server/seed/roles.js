@@ -24,7 +24,7 @@ seedSystemRoles = function ()
             },
             {
                 name: Enums.roleFunction.Sales_Executive,
-                roleDescription: 'Manages contactables, deals, quotes',
+                roleDescription: 'Manages network, deals, quotes',
                 rolePermissions: [Enums.permissionFunction.CRM,Enums.permissionFunction.Sales]
             },
             {

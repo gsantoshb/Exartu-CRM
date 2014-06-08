@@ -1,11 +1,11 @@
 _.forEach([
   {
     displayName: 'Invited',
-    weigth: 2,
+    weight: 2,
   },
   {
     displayName: 'Recruited',
-    weigth: 3,
+    weight: 3,
     dependencies: [0]
   }
 ],
