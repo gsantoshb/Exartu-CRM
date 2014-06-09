@@ -22,7 +22,10 @@ SubscriptionPlan.getPercentageStorageUsed = function() {
             this.render('loadingContactable');
             return;
           }
-          fn && fn.call();
+          if(!fn)
+            this.render(this.template);
+          else
+            fn.call();
         });
         options.onBeforeAction = _.wrap(options.onBeforeAction, function(fn) {
           if (!this.ready()) {
