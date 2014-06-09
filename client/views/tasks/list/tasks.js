@@ -5,7 +5,8 @@ TasksController = RouteController.extend({
 var states = [
     {
         name: 'Pending',
-        query: {
+        query:function() {
+          return {
             completed: null,
             begin: {
                 $lte: new Date(),
@@ -13,35 +14,39 @@ var states = [
             end: {
                 $gte: new Date(),
             }
+          }
         }
     }, {
         name: 'Closed',
-        query: {
-
+        query: function() {
+          return {
             completed: null,
-
             begin: {
                 $lt: new Date(),
             },
             end: {
                 $lt: new Date(),
             }
+          }
         }
     }, {
         name: 'Completed',
-        query: {
+        query: function() {
+          return {
             completed: {
                 $ne: null
             }
+          }
         }
     }, {
         name: 'Future',
-        query: {
+        query: function() {
+          return {
             completed: null,
-
             begin: {
                 $gt: new Date()
             }
+          }
         }
     }
 ];
@@ -78,7 +83,7 @@ Template.tasks.viewModel = function () {
         var q = {};
         var selectedState = self.selectedState();
         if (selectedState) {
-            _.extend(q, selectedState.query);
+            _.extend(q, selectedState.query());
         }
 
         if(!self.includeInactives()){

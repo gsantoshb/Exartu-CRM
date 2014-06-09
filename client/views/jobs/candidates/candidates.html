@@ -26,7 +26,7 @@
                                     <div class="bottom-10 box-4 text-normal" style="margin-left: 20px;">
                                         {{#if location}}
                                             <i class="fa fa-map-marker" style="width:7px; margin-left: 1px;"></i>&nbsp;
-                                            <span data-bind="text: location.formatted_address"></span>
+                                            <span>{{location.displayName}}</span>
                                             <br/>
                                         {{/if}}
                                         <i class="fa fa-check"></i>&nbsp;Recommended by:
