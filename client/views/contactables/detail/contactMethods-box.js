@@ -29,10 +29,8 @@ var contactMethodsTypes;
 Template.contactableContactMethodsBox.created = function() {
   contactMethodsTypes = ContactMethods.find({}).fetch();
   selectedType = contactMethodsTypes[0];
-};
-Template.contactableContactMethodsBox.created=function(){
   EditContactMethodsMode.value=false;
-}
+};
 Template.contactableContactMethodsBox.editMode = function() {
   return EditContactMethodsMode.value;
 };
