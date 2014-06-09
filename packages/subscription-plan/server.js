@@ -133,6 +133,8 @@ SubscriptionPlan.checkStorage = function() {
 };
 
 SubscriptionPlan.upgrade = function(hierId, planCode, amount, currency) {
+  planCode = parseInt(planCode);
+
   var plan = SubscriptionPlans.findOne({code: parseInt(planCode)});
 
 
