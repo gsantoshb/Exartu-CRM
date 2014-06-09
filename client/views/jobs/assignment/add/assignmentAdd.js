@@ -5,7 +5,7 @@ var newRate={
   pay: 0,
   bill: 0
 }
-var endDateDependency=new Deps.Dependency;
+var assignmentDependency=new Deps.Dependency;
 var employeeDependency=new Deps.Dependency;
 Template.assignmentAdd.helpers({
   assignment:function(){
@@ -22,10 +22,10 @@ Template.assignmentAdd.helpers({
       assignment= {
         start: new Date(),
         end: null,
-        rates: job.rates
+        rates: job.jobRates
       };
     }
-    endDateDependency.depend();
+    assignmentDependency.depend();
     return assignment;
   },
   employees:function(){
@@ -68,6 +68,19 @@ Template.assignmentAdd.events({
       }
     });
   },
+  'click .addRate': function(){
+    if (! newRate.type) return;
+
+    assignment.rates.push(newRate);
+    assignmentDependency.changed();
+  },
+  'click .removeRate': function(){
+    assignment.rates= _.without(assignment.rates, this);
+    assignmentDependency.changed();
+  },
+  'change .newRateType': function(e){
+    newRate.type= e.target.value;
+  },
   'change .employeeSelect':function(e){
     employeeId= e.target.value;
   },
@@ -83,6 +96,6 @@ Template.assignmentAdd.events({
     }else{
       assignment.end=null;
     }
-    endDateDependency.changed();
+    assignmentDependency.changed();
   }
 });

@@ -65,22 +65,22 @@
                                     {{/with}}
                                     <td><input type="number" class="billRateInput form-control" value="{{bill}}"></td>
                                     <td><input type="number" class="payRateInput form-control" value="{{pay}}"></td>
-                                    <td></td>
+                                    <td><a class="btn btn-default removeRate">Remove</a></td>
                                 </tr>
                                 {{/each}}
                                 <tr style="background-color: #B8B8B8;">
                                     {{#with newRate}}
                                         <td style="background-color: inherit;">
-                                            <select class="form-control">
+                                            <select class="form-control newRateType">
                                                 <option value="null">--select--</option>
                                                 {{#each getAvailableType}}
-                                                    <option value="_id">{{displayName}}</option>
+                                                    <option value="{{_id}}">{{displayName}}</option>
                                                 {{/each}}
                                             </select>
                                         </td>
                                         <td style="background-color: inherit;"><input type="number" class="billRateInput form-control" value="{{bill}}"></td>
                                         <td style="background-color: inherit;"><input type="number" class="payRateInput form-control" value="{{pay}}"></td>
-                                        <td style="background-color: inherit;"><a class="btn btn-primary">Add</a></td>
+                                        <td style="background-color: inherit;"><a class="btn btn-primary addRate">Add</a></td>
                                     {{/with}}
                                 </tr>
                                 </tbody>
