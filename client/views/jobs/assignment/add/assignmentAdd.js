@@ -7,6 +7,9 @@ var newRate={
 }
 var assignmentDependency=new Deps.Dependency;
 var employeeDependency=new Deps.Dependency;
+Template.assignmentAdd.created=function(){
+  assignment=null;
+}
 Template.assignmentAdd.helpers({
   assignment:function(){
     var jobId=this[0],
