@@ -132,8 +132,9 @@ SubscriptionPlan.checkStorage = function() {
     throw new Meteor.Error(500, 'Storage limit reached');
 };
 
-SubscriptionPlan.upgrade = function(hierId, planCode, amount, currency) {
-  var plan = SubscriptionPlans.findOne({code: planCode});
+SubscriptionPlan.upgrade = function(hierIconsoloed, planCode, amount, currency) {
+  var plan = SubscriptionPlans.findOne({code: parseInt(planCode)});
+
 
   if (!plan)
     throw new Meteor.Error(500, 'Payment plan is invalid');
