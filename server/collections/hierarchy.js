@@ -1,5 +1,9 @@
 Meteor.publish('hierarchies', function() {
   var user = Meteor.users.findOne({_id: this.userId});
+
+  if(!user)
+    return false;
+
   return Hierarchies.find({_id: user.hierId});
 });
 
