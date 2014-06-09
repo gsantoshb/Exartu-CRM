@@ -1,5 +1,5 @@
 Meteor.publish('hierarchies', function() {
-  var user = Meteor.users.findOne({_id: Meteor.userId});
+  var user = Meteor.users.findOne({_id: this.userId});
   return Hierarchies.find({_id: user.hierId});
 });
 
@@ -24,7 +24,7 @@ Meteor.startup(function () {
 			}
 
       hier.planCode = 0;
-      
+
 			Hierarchies.insert(hier);
 
 			return hier._id;

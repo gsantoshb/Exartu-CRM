@@ -11,7 +11,7 @@ SubscriptionPlan.getUserPlan = function() {
   var user = Meteor.users.findOne({_id: Meteor.isServer? Meteor.userId: Meteor.userId()});
 
   var hier = Hierarchies.findOne({_id: user.hierId});
-    if(!hier)
+  if(!hier)
     throw new Meteor.Error(404, 'Hierarchy not found');
 
   var plan = SubscriptionPlans.findOne({code: hier.planCode});
