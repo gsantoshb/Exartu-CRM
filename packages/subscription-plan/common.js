@@ -18,6 +18,8 @@ SubscriptionPlan.getUserPlan = function() {
   if (!plan)
     throw new Meteor.Error(500, 'Hierarchy without subscription plan');
 
+  console.dir(plan);
+
   return plan;
 };
 
