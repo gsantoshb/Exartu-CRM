@@ -8,9 +8,12 @@ SubscriptionPlan.plansEnum = {
 };
 
 SubscriptionPlan.getUserPlan = function() {
-  var user = Meteor.users.findOne({_id: Meteor.isServer? Meteor.userId: Meteor.userId()});
+  var user = Meteor.users.findOne({_id: Meteor.userId()});
+  console.dir(user);
 
   var hier = Hierarchies.findOne({_id: user.hierId});
+  console.dir(hier);
+
   if(!hier)
     throw new Meteor.Error(404, 'Hierarchy not found');
 
