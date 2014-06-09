@@ -100,5 +100,15 @@ Template.assignmentAdd.events({
       assignment.end=null;
     }
     assignmentDependency.changed();
+  },
+  'change.dp .startDate > .dateTimePicker': function(e, ctx) {
+    if ($(e.target).hasClass('dateTimePicker')){
+      assignment.start = $(e.target).data('DateTimePicker').date.toDate();
+    }
+  },
+  'change.dp .endDate > .dateTimePicker': function(e, ctx) {
+    if ($(e.target).hasClass('dateTimePicker')){
+      assignment.end = $(e.target).data('DateTimePicker').date.toDate();
+    }
   }
 });

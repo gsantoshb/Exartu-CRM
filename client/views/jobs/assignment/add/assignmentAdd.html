@@ -26,7 +26,7 @@
                         {{#with assignment}}
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Start:</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-10 startDate">
                                     {{#dateTimePicker value=start}}
                                     {{/dateTimePicker}}
                                 </div>
@@ -37,7 +37,7 @@
                                         <label class="control-label"><input type="checkbox" class="hasEnded"> End:</label>
                                     </div>
                                 </div>
-                                <div class="col-sm-10">
+                                <div class="col-sm-10 endDate">
                                     {{#if end}}
                                         {{#dateTimePicker value=end}}
                                         {{/dateTimePicker}}
