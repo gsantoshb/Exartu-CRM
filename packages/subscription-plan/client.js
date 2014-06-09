@@ -22,7 +22,7 @@ SubscriptionPlan.getPercentageStorageUsed = function() {
             this.render('loadingContactable');
             return;
           }
-          fn.call();
+          fn && fn.call();
         });
         options.onBeforeAction = _.wrap(options.onBeforeAction, function(fn) {
           if (!this.ready()) {
@@ -31,7 +31,7 @@ SubscriptionPlan.getPercentageStorageUsed = function() {
           if (!SubscriptionPlan.isAllowed(options.plans)) {
             return Router.go('planLimitation');
           }
-          fn.call();
+          fn && fn.call();
         });
       }
       Router._route(name, options);
