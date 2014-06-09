@@ -7,7 +7,7 @@ SubscriptionPlan.plansEnum = {
   enterprise: 1
 };
 
-SubscriptionPlan.getUserPlan = Meteor.bindEnvironment(function() {
+SubscriptionPlan.getUserPlan = function() {
   var user = Meteor.users.findOne({_id: Meteor.isServer? Meteor.userId: Meteor.userId()});
 
   var hier = Hierarchies.findOne({_id: user.hierId});
@@ -19,7 +19,7 @@ SubscriptionPlan.getUserPlan = Meteor.bindEnvironment(function() {
     throw new Meteor.Error(500, 'Hierarchy without subscription plan');
 
   return plan;
-});
+};
 
 SubscriptionPlan.isAllowed = function(plans) {
   return _.indexOf(plans, SubscriptionPlan.getUserPlan().code) != -1;
