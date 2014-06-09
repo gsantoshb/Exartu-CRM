@@ -64,7 +64,14 @@ Template.userProfile.viewModel = function () {
 
   self.pictureUrl = ko.computed(function() {
       if (! self.userPicture)
-        return '/assets/user-photo-placeholder.jpg'
+      {
+        if (self.user().services && self.user().services.google){
+          return self.user().services.google.picture();
+        }else{
+          return '/assets/user-photo-placeholder.jpg'
+        }
+      }
+
     if (self.userPicture().ready())
       return self.userPicture().picture();
     else
