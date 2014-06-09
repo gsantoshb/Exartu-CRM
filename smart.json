@@ -15,6 +15,7 @@
     "npm": {},
     "apm": {},
     "moment": {},
-    "bootstrap3-datetimepicker": {}
+    "bootstrap3-datetimepicker": {},
+    "percolatestudio-migrations": {}
   }
 }

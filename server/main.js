@@ -17,6 +17,10 @@ var handleConfiguration = function () {
 
 Meteor.startup(function () {
   console.log(Meteor.settings);
+
+  // Run migrations
+  Migrations.migrateTo('latest');
+
   // Seed database
   // Execute all function defined in seedSystemObjTypes
   _.forEach(dbSeed, function (seedFn) {

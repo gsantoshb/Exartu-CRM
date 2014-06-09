@@ -23,7 +23,8 @@
       "npm": {},
       "apm": {},
       "moment": {},
-      "bootstrap3-datetimepicker": {}
+      "bootstrap3-datetimepicker": {},
+      "percolatestudio-migrations": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -43,8 +44,8 @@
       },
       "collection-hooks": {
         "git": "https://github.com/matb33/meteor-collection-hooks.git",
-        "tag": "v0.6.7",
-        "commit": "f1d2ac629864edda09df6c955fa5ff3df26f739c"
+        "tag": "v0.7.0",
+        "commit": "20a6de81f3818f112bccf67b5e1d3db342cf0b18"
       },
       "googlemaps": {
         "git": "https://github.com/drewjw81/meteor-googlemaps.git",
@@ -93,8 +94,8 @@
       },
       "apm": {
         "git": "https://github.com/arunoda/meteor-apm-client.git",
-        "tag": "v1.4.4",
-        "commit": "36f2f9775178621e9798d14c99baf24c06cc43c0"
+        "tag": "v1.4.6",
+        "commit": "5a185029dd65816c27f988bccedbb77785eab6dc"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
@@ -105,6 +106,11 @@
         "git": "https://github.com/tsega/meteor-bootstrap3-datetimepicker.git",
         "tag": "v0.0.5",
         "commit": "30b5fa0759f98b75761772ad891876408f7cc8c4"
+      },
+      "percolatestudio-migrations": {
+        "git": "https://github.com/percolatestudio/meteor-migrations.git",
+        "tag": "v0.6.0",
+        "commit": "baa77d4c121f6f06b6aa142ee11f71ace8795f7f"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
