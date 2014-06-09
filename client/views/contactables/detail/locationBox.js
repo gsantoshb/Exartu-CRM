@@ -87,6 +87,9 @@ Template.contactableLocationBox.events({
   }
 })
 
+Template.contactableLocationBox.created=function(){
+  EditLocationMode.value=false;
+}
 
 Template.contactableLocationBox.rendered = function () {
 
