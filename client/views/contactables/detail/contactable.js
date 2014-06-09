@@ -146,6 +146,9 @@ Template.contactable.events({
   },
   'click .addLocation': function () {
     $('#edit-Location').trigger('click');
+  },
+  'click .sendMessage':function(){
+    Composer.showModal('sendMessage', Session.get('entityId'));
   }
 });
 
