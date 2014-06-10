@@ -185,12 +185,14 @@ var addTag = function() {
   inputTag.value = '';
   inputTag.focus();
 };
-Template.job.rendered=function(){
+Template.jobDescription.rendered=function(){
   var description=$('.job-description');
   var container=description.find('.htmlContainer');
   if(container.height()<=100){
     description.addClass('none')
   }
+
+
   container.on('resize', _.debounce(function(){
     if(container.height()<=100){
       description.addClass('none')

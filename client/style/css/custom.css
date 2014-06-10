@@ -560,6 +560,10 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .job-description.none>.see-less{
     display: none;
 }
+.job-description:not(.none)>.htmlContainer{
+    border: groove 1px #fff; padding: 4px; display: inline-block;
+}
+
 
 .disabled-feature {
     opacity: 0.4;

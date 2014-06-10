@@ -208,14 +208,7 @@
                                         {{#htmlEditor}}
                                         {{/htmlEditor}}
                                     {{else}}
-                                        <div id="description" class="job-description">
-                                            <div class="text">
-                                                {{#showAsHTML value=value}}
-                                                {{/showAsHTML}}
-                                            </div>
-                                            <div class="see-more">See more <i class="fa fa-caret-down"></i></div>
-                                            <div class="see-less">See less <i class="fa fa-caret-up"></i></div>
-                                        </div>
+                                       {{>jobDescription}}
 
                                 {{/objectProperty}}
                                 <!-- /.description -->
@@ -253,5 +246,16 @@
             {{/with}}
         </div>
         <!-- /.content -->
+    </div>
+</template>
+
+<template name="jobDescription">
+    <div id="description" class="job-description">
+        <div class="text">
+            {{#showAsHTML value=value}}
+            {{/showAsHTML}}
+        </div>
+        <div class="see-more">See more <i class="fa fa-caret-down"></i></div>
+        <div class="see-less">See less <i class="fa fa-caret-up"></i></div>
     </div>
 </template>
