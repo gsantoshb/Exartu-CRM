@@ -54,7 +54,7 @@ var centerBox = function (box) {
   }, 2000);
 }
 Template.contactableLocationBox.events({
-  'click .findLocation': function () {
+  'click .findLocation': function (e, ctx) {
     var geocoder = new google.maps.Geocoder;
     geocoder.geocode({
       address: $('#locationInput')[0].value
@@ -62,7 +62,8 @@ Template.contactableLocationBox.events({
       if (status == google.maps.GeocoderStatus.OK) {
 
         data.location = Utils.getLocation(results[0]);
-        console.log(data.location.displayName)
+        console.log(data.location.displayName);
+        centerBox(ctx.$('.box')[0]);
       } else {
         data.location = null;
       }
