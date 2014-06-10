@@ -1,44 +1,102 @@
 <template name="jobRates">
     <div class="box">
         <div class="box-header-2">
-            <a class="btn-action tip-top addRate" data-original-title="Add Job Rate" href="#"><i class="fa fa-plus"></i></a>
+            <a class="btn-action tip-top editRate" data-original-title="Add Job Rate" href="#"><i class="fa fa-pencil"></i></a>
             <div class="box-title">
                 Job Rates
             </div>
         </div>
 
         <div class="box-content">
-            {{#if rates}}
-                <table class="table table-striped">
-                    <thead>
+            {{#if editMode}}
+                {{#ratesEdit rates=rates}}
+                {{/ratesEdit}}
+            {{else}}
+                {{#if rates}}
+                    <table class="table table-striped">
+                        <thead>
                         <tr>
                             <td>Type</td>
                             <td>Bill</td>
                             <td>Pay</td>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         {{#each rates}}
-                            <tr>
-                                {{#with getType type}}
-                                    <td title="{{description}}">{{displayName}}</td>
-                                {{/with}}
-                                <td>{{round bill}}</td>
-                                <td>{{round pay}}</td>
-                            </tr>
+                        <tr>
+                            {{#with getType type}}
+                            <td title="{{description}}">{{displayName}}</td>
+                            {{/with}}
+                            <td>{{round bill}}</td>
+                            <td>{{round pay}}</td>
+                        </tr>
                         {{/each}}
-                    </tbody>
-                </table>
-            {{else}}
-                <div class="box-v-msg">
-                    <div class="box-v-msg-content">
-                        <i class="icon-money"></i>
-                        <p>You Currently have no Rates for this Job<br>
-                            <a href="#" class="addRate">add a Rate</a>
-                        </p>
-                    </div><!-- /.box-v-msg-content -->
-                </div>
+                        </tbody>
+                    </table>
+                {{else}}
+                    <div class="box-v-msg">
+                        <div class="box-v-msg-content">
+                            <i class="icon-money"></i>
+                            <p>You Currently have no Rates for this Job<br>
+                                <a href="#" class="addRate">add a Rate</a>
+                            </p>
+                        </div><!-- /.box-v-msg-content -->
+                    </div>
+                {{/if}}
             {{/if}}
         </div>
+        {{#if editMode}}
+            <div class="box-header-2" style="height: 60px">
+                <div class="pull-right">
+                    <span class="btn btn-default cancelButtonRates">
+                        Cancel
+                    </span>
+                    <span class="btn btn-info saveButtonRates">
+                        Save
+                    </span>
+                </div>
+            </div>
+        {{/if}}
     </div>
+</template>
+
+
+<template name="ratesEditTemplate">
+    <table class="table table-striped">
+        <thead>
+        <tr style="font-weight: bold;">
+            <td class="col-md-4">Type</td>
+            <td class="col-md-2">Bill</td>
+            <td class="col-md-2">Pay</td>
+            <td class="col-md-1"></td>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each rates}}
+        <tr>
+            {{#with getType type}}
+            <td title="{{description}}">{{displayName}}</td>
+            {{/with}}
+            <td><input type="number" class="billRateInput form-control" value="{{bill}}"></td>
+            <td><input type="number" class="payRateInput form-control" value="{{pay}}"></td>
+            <td><a class="btn btn-default removeRate">Remove</a></td>
+        </tr>
+        {{/each}}
+        <tr style="background-color: #B8B8B8;">
+            {{#with newRate}}
+            <td style="background-color: inherit;">
+                <select class="form-control newRateType">
+                    <option value="">--select--</option>
+                    {{#each getAvailableType}}
+                    <option value="{{_id}}">{{displayName}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td style="background-color: inherit;"><input type="number" class="billRateInput form-control" value="{{bill}}"></td>
+            <td style="background-color: inherit;"><input type="number" class="payRateInput form-control" value="{{pay}}"></td>
+            <td style="background-color: inherit;"><a class="btn btn-primary addRate">Add</a></td>
+            {{/with}}
+        </tr>
+        </tbody>
+    </table>
 </template>
