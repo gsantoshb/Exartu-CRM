@@ -160,7 +160,7 @@ SubscriptionPlan.upgrade = function(hierId, planCode, amount, currency) {
             to: user.emails[0].address,
             from: 'Exartu',
             subject: 'Exartu - Subscription upgrade!',
-            html: Template.upgradeNotificationEmail.render().toHTML()
+            html: 'Your account have been upgrade to Enterprise. Congratulations!'
           });
       })
   });
