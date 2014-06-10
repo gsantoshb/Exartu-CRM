@@ -137,7 +137,6 @@ SubscriptionPlan.upgrade = function(hierId, planCode, amount, currency) {
 
   var plan = SubscriptionPlans.findOne({code: parseInt(planCode)});
 
-
   if (!plan)
     throw new Meteor.Error(500, 'Payment plan is invalid');
 
@@ -152,5 +151,17 @@ SubscriptionPlan.upgrade = function(hierId, planCode, amount, currency) {
   if (!hier)
     throw new Meteor.Error(500, 'Payment hierarchy is invalid');
 
-  Hierarchies.update({_id: hierId}, {$set: { planCode: planCode} });
+  Hierarchies.update({_id: hierId}, {$set: { planCode: planCode} }, function(err) {
+    if (!err)
+      _.forEach(hier.users, function(userId){
+        var user = Meteor.users.findOne({_id: userId});
+        if(user && user.emails && user.emails[0])
+          Email.send({
+            to: user.emails[0].address,
+            from: 'Exartu',
+            subject: 'Exartu - Subscription upgrade!',
+            html: 'Your account have been upgrade to Enterprise. Congratulations!'
+          });
+      })
+  });
 };
