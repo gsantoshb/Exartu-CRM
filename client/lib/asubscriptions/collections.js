@@ -107,6 +107,34 @@ JobStatus={
       return Enums.jobStatus.filled;
     else
       return Enums.jobStatus.unfilled;
+  },
+  getQuery: function(type){
+    var now=new Date;
+
+    switch (type){
+      case Enums.jobStatus.open:
+        return {
+          startDate: { $gte: now }
+        }
+      case Enums.jobStatus.closed:
+        return {
+          endDate: { $lte: now }
+        }
+      case Enums.jobStatus.filled:
+        return {
+          $and:[
+            { assignment: { $ne: null } },
+            { assignment: { $exists: true} }
+          ]
+        }
+      case Enums.jobStatus.unfilled:
+        return {
+          $or:[
+            { assignment: null },
+            { assignment: { $exists: false } }
+          ]
+        }
+    }
   }
 }
 Jobs = new Meteor.Collection("jobs", {

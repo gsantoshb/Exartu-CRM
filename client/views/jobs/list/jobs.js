@@ -55,23 +55,36 @@ Template.jobs.viewModel = function () {
       title: 'Categories',
       fieldName: 'category'
     },
-    {
-      name: 'jobStatus'
-      , title: 'Statuses',
-      fieldName: 'status'
-    },
+//    {
+//      name: 'jobStatus'
+//      , title: 'Statuses',
+//      fieldName: 'status'
+//    },
     {
       name:'jobDuration',
       title: 'Durations',
       fieldName: 'duration'
     }
   ];
+
+  self.status=[]
+  _.each(_.keys(Enums.jobStatus),function(key){
+    self.status.push({
+      displayName: Enums.jobStatus[key],
+      isSelected: ko.observable(false),
+    })
+  })
+
+  self.selectStatus=function(item){
+    item.isSelected(!item.isSelected());
+  }
+
+
   _.forEach(self.lookFilters, function(filter){
 
     filter.items = LookUps.find({
       codeType: Enums.lookUpTypes.job[filter.fieldName].code
     }).fetch();
-//      debugger;
     filter.selectedItems = ko.observableArray();
     filter.selectedItems.removeSelection = function(data) {
       filter.selectedItems.remove(data);
@@ -125,6 +138,12 @@ Template.jobs.viewModel = function () {
         }]
       };
     }
+//    statusFilter
+    _.each(self.status, function(item){
+      if (item.isSelected()){
+        _.extend(q, JobStatus.getQuery(item.displayName));
+      }
+    })
 
     return q;
   });
