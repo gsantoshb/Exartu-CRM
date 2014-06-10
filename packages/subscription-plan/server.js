@@ -155,13 +155,15 @@ SubscriptionPlan.upgrade = function(hierId, planCode, amount, currency) {
     if (!err)
       _.forEach(hier.users, function(userId){
         var user = Meteor.users.findOne({_id: userId});
-        if(user && user.emails && user.emails[0])
+        if(user && user.emails && user.emails[0]) {
+          console.log('sending email');
           Email.send({
             to: user.emails[0].address,
-            from: 'Exartu',
+            from: 'exartu.developer@gmail.com',
             subject: 'Exartu - Subscription upgrade!',
             html: 'Your account have been upgrade to Enterprise. Congratulations!'
           });
+        }
       })
   });
 };
