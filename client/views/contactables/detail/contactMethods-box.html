@@ -10,6 +10,11 @@
                     <li class="list-3-item">
                         <div class="list-thumb"><i class="{{contactMethodTypeIcon}}"></i></div>
                         <div class="list-3-content list-magic">
+                            {{#if editMode }}
+                                <div class="list-3-actions">
+                                    <a class="delete" href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                                </div>
+                            {{/if}}
                             <div class="list-3-content-wrap">
                                 <div class="list-3-item-meta-top">{{displayName}}</div>
                                 <h4 class="list-3-item-title"><a href="#">{{value}}</a></h4>
