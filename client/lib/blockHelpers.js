@@ -54,6 +54,12 @@ UI.registerHelper('objectProperty', function() {
         return self.editable;
       }
       break;
+    case Utils.ReactivePropertyTypes.boolean:
+      template = Template.object_property_checkbox;
+      template.value = function() {
+        return this.property.value;
+      };
+      break;
     default:{
       if (self.editable !== undefined) {
         template = Template.object_property_single_editable;
@@ -72,6 +78,8 @@ UI.registerHelper('objectProperty', function() {
 
   return template;
 });
+
+
 Template.object_property_lookup.events = {
   'change select': function(e, ctx) {
     ctx.data.property.value = e.target.value;
@@ -102,6 +110,11 @@ Template.object_property_single_editable.events = {
   }
 };
 
+Template.object_property_checkbox.events = {
+  'change .prop-input': function(e, ctx) {
+    ctx.data.property.value = e.target.checked;
+  }
+};
 
 
 Template.fileProgress.progress = function() {

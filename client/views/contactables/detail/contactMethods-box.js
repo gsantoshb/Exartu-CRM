@@ -24,13 +24,16 @@ Object.defineProperty(EditContactMethodsMode, "value", {
 
 var dep = new Deps.Dependency;
 var selectedType;
+var contactableId;
 
 var contactMethodsTypes;
 Template.contactableContactMethodsBox.created = function() {
   contactMethodsTypes = ContactMethods.find({}).fetch();
   selectedType = contactMethodsTypes[0];
+  contactableId = this.data._id;
   EditContactMethodsMode.value=false;
 };
+
 Template.contactableContactMethodsBox.editMode = function() {
   return EditContactMethodsMode.value;
 };
@@ -117,5 +120,17 @@ Template.contactableContactMethodsBox.events = {
   },
   'click .addContactMethod': function () {
     EditContactMethodsMode.show();
+  },
+  'click .delete': function() {
+    Contactables.update({_id: contactableId},
+      {
+        $pull: {
+          contactMethods: {
+            type: this.type,
+            value: this.value
+          }
+        }
+      }
+    );
   }
 };

@@ -151,24 +151,24 @@
                 <div class="table-item-cell">
                     <div class="table-item-cell-container">
                         <div class="thumb">
-                            {{#with pictureUrl pictureFileId}}
-                                {{#if . }}
+                            {{#if pictureFileId }}
+                                {{#with pictureUrl pictureFileId}}
                                     <a href="#">
                                         <img src="{{.}}">
                                     </a>
-                                {{else}}
-                                    {{#if ../organization }}
-                                        <a href="#">
-                                            <i class="icon-building-1"></i>
-                                        </a>
-                                    {{/if}}
-                                    {{#if ../person }}
-                                        <a href="#">
-                                            <i class="icon-profile-man"></i>
-                                        </a>
-                                    {{/if}}
+                                {{/with}}
+                            {{else}}
+                                {{#if organization }}
+                                    <a href="#" style="color: #707070; font-size: 27px">
+                                        <i class="icon-buildings-1" style="display: block; margin-top: 10px;"></i>
+                                    </a>
                                 {{/if}}
-                            {{/with}}
+                                {{#if person }}
+                                    <a href="#" style="color: #707070; font-size: 27px">
+                                        <i class="icon-profile-bussiness-man" style="display: block; margin-top: 10px;"></i>
+                                    </a>
+                                {{/if}}
+                            {{/if}}
                         </div>
                         <div class="table-item-title">
                             <a href="/contactable/{{_id}}">{{displayName}}</a>

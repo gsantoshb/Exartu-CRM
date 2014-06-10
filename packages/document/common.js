@@ -79,7 +79,7 @@ Document.Collection.prototype.getCollectionSize = function() {
   var totalSize = 0;
   _.forEach(documentSizes, function(size) {
     _.forEach(storeNames, function(storeName) {
-      if (size.copies[storeName])
+      if (size.copies && size.copies[storeName])
         totalSize += size.copies[storeName].size;
     });
   });
