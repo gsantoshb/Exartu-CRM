@@ -575,13 +575,20 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     display: block;
 }
 @media (max-width: 1500px) and (min-width: 890px) {
-        .table-rates > tbody > tr > td {
-            padding: 0px;
-            padding-top: 8px;
-        }
-        .table-rates > tbody > tr > td > input{
-            padding: 0px;
-            padding-left: 2px;
-        }
+    .table-rates > tbody > tr > td {
+        padding: 0px;
+        padding-top: 8px;
     }
+    .table-rates > tbody > tr > td > input{
+        padding: 0px;
+        padding-left: 2px;
+    }
+}
+
+
+.text-muted > a{
+    color: #848484;
+}
+.text-muted > a:hover{
+    color: #427dff;
 }

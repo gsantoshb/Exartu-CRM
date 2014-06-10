@@ -134,16 +134,18 @@
                                                         <div class="table-item-cell-container">
                                                             <div class="thumb">
                                                                 <!-- ko if: $data.customer -->
-                                                                <!-- ko with: helper.getCustomerPictureUrl($data.customer())-->
-                                                                <!-- ko if: ready -->
-                                                                <a href="#">
-                                                                    <img data-bind="attr: {src: picture }">
-                                                                </a>
+                                                                    <!-- ko with: helper.getCustomerPictureUrl($data.customer())-->
+                                                                        <!-- ko if: ready -->
+                                                                            <a href="#" data-bind="attr:{href: '/job/'+ $parent._id()}">
+                                                                                <img data-bind="attr: {src: picture }">
+                                                                            </a>
+                                                                        <!-- /ko -->
+                                                                    <!-- /ko -->
                                                                 <!-- /ko -->
-                                                                <!-- /ko -->
-                                                                <!-- /ko -->
-                                                                <!-- ko if: !$data.customer -->
-                                                                <img src="/assets/logo-exartu.png" />
+                                                                <!-- ko ifnot: $data.customer -->
+                                                                    <a href="#" style="color: #707070; font-size: 27px" data-bind="attr:{href: '/job/'+_id()}">
+                                                                        <i class="icon icon-briefcase" style="display: block; margin-top: 10px;"></i>
+                                                                    </a>
                                                                 <!-- /ko -->
                                                             </div>
                                                             <div class="table-item-title">
@@ -151,15 +153,20 @@
                                                                 <a href="#" data-bind="attr:{href: '/job/'+_id()}">
                                                                     <span data-bind="text: $data.displayName"></span>
                                                                 </a>
+                                                                <!-- ko with: Contactables.findOne({_id: $data.customer()}) -->
+
+                                                                <strong class="text-normal text-muted">
+                                                                    <a data-bind="attr: {href: '/contactable/' + _id }">
+                                                                        at
+                                                                        <span data-bind="text: displayName"></span>
+                                                                    </a>
+                                                                </strong>
+                                                                <!-- /ko -->
                                                                 <!--/ko-->
+                                                                <br/>
+                                                                <strong class="text text-muted text-small" data-bind="text: $data.Temporary ? 'Temporary': 'Direct Hire'"></strong>
                                                             </div>
-                                                            <!-- ko if: $data.CustomerInfo -->
-                                                            <span class="text-normal">
-                                                                <a data-bind="attr: {href: '/contactable/' + $data.customer() }">
-                                                                    <span data-bind="text: $data.CustomerInfo.displayName"></span>
-                                                                </a>
-                                                            </span>
-                                                            <!-- /ko -->
+
                                                         </div>
                                                         <!-- /.table-item-cell-container -->
                                                     </div>
@@ -168,15 +175,25 @@
                                                 <!-- /.col-sm-3 -->
                                                 <div class="col-sm-3">
                                                     <div class="table-item-cell">
-                                                        <!--ko if: $data.candidates-->
-                                                        <div class="table-item-cell-container magic-content text-small">
-                                                            <br>
-                                                            <strong>
-                                                                <span data-bind="text: $data.candidates().length"></span>
-                                                            </strong>Candidates
+                                                        <div class="table-item-cell-container text-small">
+                                                            <strong data-bind="text: status">
+
+                                                            </strong>
+                                                            <!--ko if: $data.assignment -->
+                                                                <!--ko with: Assignments.findOne({_id: $data.assignment() })-->
+                                                                    <!--ko with: Contactables.findOne({_id: $data.employee})-->
+                                                                        <br>
+                                                                        <a data-bind="attr: {href: '/contactable/' + _id}">
+                                                                            <strong>
+                                                                                <span data-bind="text: displayName"></span>
+                                                                            </strong> Is assigned
+                                                                        </a>
+                                                                    <!-- /ko -->
+                                                                <!-- /ko -->
+                                                            <!-- /ko -->
+
                                                         </div>
                                                         <!-- /.table-item-cell-container -->
-                                                        <!-- /ko -->
                                                     </div>
                                                     <!-- /.table-item-cell -->
                                                 </div>
