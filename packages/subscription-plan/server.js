@@ -155,7 +155,7 @@ SubscriptionPlan.upgrade = function(hierId, planCode, amount, currency) {
     if (!err)
       _.forEach(hier.users, function(userId){
         var user = Meteor.users.findOne({_id: userId});
-        if(user.emails && user.emails[0])
+        if(user && user.emails && user.emails[0])
           Email.send({
             to: user.emails[0].address,
             from: 'Exartu',
