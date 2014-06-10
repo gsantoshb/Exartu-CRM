@@ -563,8 +563,6 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .job-description:not(.none)>.htmlContainer{
     border: groove 1px #fff; padding: 4px; display: inline-block;
 }
-
-
 .disabled-feature {
     opacity: 0.4;
 }
@@ -575,4 +573,15 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 .disabled-feature:hover .disabled-feature-message {
     display: block;
+}
+@media (max-width: 1500px) and (min-width: 890px) {
+        .table-rates > tbody > tr > td {
+            padding: 0px;
+            padding-top: 8px;
+        }
+        .table-rates > tbody > tr > td > input{
+            padding: 0px;
+            padding-left: 2px;
+        }
+    }
 }
