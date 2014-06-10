@@ -1,6 +1,6 @@
 var assignment=null;
 var employeeId=null;
-
+var jobId=null
 var assignmentDependency=new Deps.Dependency;
 var employeeDependency=new Deps.Dependency;
 Template.assignmentAdd.created=function(){
@@ -8,8 +8,8 @@ Template.assignmentAdd.created=function(){
 }
 Template.assignmentAdd.helpers({
   assignment:function(){
-    var jobId=this[0],
-      employeeParameter=this[1];
+    jobId=this[0];
+    var employeeParameter=this[1];
     if(employeeParameter){
       employeeId=employeeParameter;
       employeeDependency.changed()
@@ -19,8 +19,8 @@ Template.assignmentAdd.helpers({
         _id: jobId
       });
       assignment= {
-        start: new Date(),
-        end: null,
+        start: job.startDate,
+        end: job.endDate,
         rates: job.jobRates
       };
     }
@@ -40,7 +40,19 @@ Template.assignmentAdd.helpers({
   isSelected: function(id){
     employeeDependency.depend();
     return employeeId==id;
-  }
+  },
+  getJobStart: function(){
+    var job=Jobs.findOne({
+      _id: jobId
+    });
+    return job.startDate;
+  },
+    getJobEnd: function(){
+      var job=Jobs.findOne({
+        _id: jobId
+      });
+      return job.endDate;
+    }
 })
 
 Template.assignmentAdd.events({

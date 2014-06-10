@@ -251,11 +251,18 @@ UI.registerHelper('dateTimePicker', function() {
     return Template.dateTimePickerTemp;
 });
 Template.dateTimePickerTemp.rendered= function(){
-  this.$('.dateTimePicker').datetimepicker({
+  var options={
     language: 'en',
     defaultDate: this.data.value,
     useSeconds: false
-  })
+  }
+  if (this.data.from){
+    options.startDate=this.data.from
+  }
+  if (this.data.from){
+    options.endDate=this.data.to
+  }
+  this.$('.dateTimePicker').datetimepicker(options)
 };
 
 
