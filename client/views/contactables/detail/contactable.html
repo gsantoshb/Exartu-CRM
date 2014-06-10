@@ -31,19 +31,19 @@
                         <div class="profile-btns">
                             {{#with mainContactMethods}}
                                 {{#if phone.value}}
-                                    <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                                    <a class="btn btn-default btn-custom-with-cyrcle" href="callto:{{phone.value}}">
                                         <span class="btn-round"><i class="fa fa-phone"></i></span>
                                         {{phone.value}}
                                     </a>
                                 {{/if}}
                                 {{#if email.value}}
-                                    <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                                    <a class="btn btn-default btn-custom-with-cyrcle" href="mailto:{{phone.value}}">
                                         <span class="btn-round"><i class="fa fa-envelope"></i></span>
                                         {{email.value}}
                                     </a>
                                 {{/if}}
                             {{/with}}
-                            <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+                            <a class="btn btn-default btn-custom-with-cyrcle sendMessage" href="#">
                                 <span class="btn-round"><i class="fa fa-envelope"></i></span>
                                 Message
                             </a>

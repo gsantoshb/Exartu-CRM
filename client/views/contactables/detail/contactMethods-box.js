@@ -31,6 +31,7 @@ Template.contactableContactMethodsBox.created = function() {
   contactMethodsTypes = ContactMethods.find({}).fetch();
   selectedType = contactMethodsTypes[0];
   contactableId = this.data._id;
+  EditContactMethodsMode.value=false;
 };
 
 Template.contactableContactMethodsBox.editMode = function() {

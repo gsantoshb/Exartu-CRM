@@ -122,6 +122,10 @@ var generateReactiveObject = function(contactable) {
   return new Utils.ObjectDefinition(definition);
 };
 
+Template.contactableDetailBox.created=function(){
+  EditMode.hide();
+}
+
 Template.contactableDetailBox.contactable = function() {
   contactable = generateReactiveObject(this);
   return contactable;

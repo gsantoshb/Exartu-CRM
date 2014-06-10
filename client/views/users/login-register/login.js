@@ -19,7 +19,6 @@ Template.login.viewModel = function () {
   self.loginWith = function (serviceName) {
     if (Meteor['loginWith' + serviceName])
       Meteor['loginWith' + serviceName]({}, function (err) {
-        debugger;
         if(err)
             self.errorMessage(err.reason);
         else

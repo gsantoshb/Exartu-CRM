@@ -102,6 +102,10 @@ var generateReactiveObject = function(job) {
 var self={};
 Utils.reactiveProp(self, 'editMode', false);
 
+Template.job.created=function(){
+  self.editMode=false;
+}
+
 Template.job.helpers({
     job: function(){
         job = generateReactiveObject(Jobs.findOne({ _id: Session.get('entityId') }));

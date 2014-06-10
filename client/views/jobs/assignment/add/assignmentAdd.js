@@ -1,12 +1,11 @@
 var assignment=null;
 var employeeId=null;
-var newRate={
-  type:null,
-  pay: 0,
-  bill: 0
-}
-var endDateDependency=new Deps.Dependency;
+
+var assignmentDependency=new Deps.Dependency;
 var employeeDependency=new Deps.Dependency;
+Template.assignmentAdd.created=function(){
+  assignment=null;
+}
 Template.assignmentAdd.helpers({
   assignment:function(){
     var jobId=this[0],
@@ -22,10 +21,10 @@ Template.assignmentAdd.helpers({
       assignment= {
         start: new Date(),
         end: null,
-        rates: job.rates
+        rates: job.jobRates
       };
     }
-    endDateDependency.depend();
+    assignmentDependency.depend();
     return assignment;
   },
   employees:function(){
@@ -38,15 +37,6 @@ Template.assignmentAdd.helpers({
   getType: function(typeId){
     return  JobRateTypes.findOne({ _id: typeId });
   },
-  newRate:function(){
-    return newRate;
-  },
-  getAvailableType: function(){
-    var rateTypes=JobRateTypes.find().fetch();
-    return _.filter(rateTypes,function(type){
-      return ! _.findWhere(assignment.rates,{type: type._id});
-    });
-  },
   isSelected: function(id){
     employeeDependency.depend();
     return employeeId==id;
@@ -54,9 +44,14 @@ Template.assignmentAdd.helpers({
 })
 
 Template.assignmentAdd.events({
-  'click .save':function(){
-    if (!employeeId)
+  'change .employeeSelect':function(e, ctx){
+    employeeId= e.target.value;
+  },
+  'click .save':function(e, ctx){
+    if (!employeeId){
+
       return;
+    }
 
     assignment.job= Session.get('entityId');
     assignment.employee= employeeId;
@@ -68,21 +63,26 @@ Template.assignmentAdd.events({
       }
     });
   },
-  'change .employeeSelect':function(e){
-    employeeId= e.target.value;
-  },
-  'change .payRateInput': function(e){
-    this.pay= e.target.value;
-  },
-  'change .billRateInput': function(e){
-    this.bill= e.target.value;
-  },
+
   'change .hasEnded': function(e){
     if(e.target.checked){
       assignment.end=new Date;
     }else{
       assignment.end=null;
     }
-    endDateDependency.changed();
+    assignmentDependency.changed();
+  },
+  'change.dp .startDate > .dateTimePicker': function(e, ctx) {
+    if ($(e.target).hasClass('dateTimePicker')){
+      assignment.start = $(e.target).data('DateTimePicker').date.toDate();
+    }
+  },
+  'change.dp .endDate > .dateTimePicker': function(e, ctx) {
+    if ($(e.target).hasClass('dateTimePicker')){
+      assignment.end = $(e.target).data('DateTimePicker').date.toDate();
+    }
   }
 });
+
+
+
