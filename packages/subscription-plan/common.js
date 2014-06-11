@@ -9,10 +9,10 @@ SubscriptionPlan.plansEnum = {
 
 SubscriptionPlan.getUserPlan = function() {
   var user = Meteor.users.findOne({_id: Meteor.userId()});
-  console.dir(user);
+//  console.dir(user);
 
   var hier = Hierarchies.findOne({_id: user.hierId});
-  console.dir(hier);
+//  console.dir(hier);
 
   if(!hier)
     throw new Meteor.Error(404, 'Hierarchy not found');
@@ -21,7 +21,7 @@ SubscriptionPlan.getUserPlan = function() {
   if (!plan)
     throw new Meteor.Error(500, 'Hierarchy without subscription plan');
 
-  console.dir(plan);
+//  console.dir(plan);
 
   return plan;
 };
