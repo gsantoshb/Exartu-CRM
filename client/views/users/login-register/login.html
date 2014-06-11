@@ -15,6 +15,9 @@
                         </div>
 
                         <span class="label label-danger center-block" style="margin-bottom: 10px;" data-bind="text: errorMessage"></span>
+                        <!--ko if: notVerified -->
+                            <a href="#" data-bind="click: resendVerification"> Resend email verification </a>
+                        <!--/ko-->
 
                         <form role="form">
                             <div class="form-group">

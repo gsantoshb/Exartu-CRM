@@ -28,8 +28,13 @@ Meteor.startup(function () {
   });
 
   // Load system configuration
+  Accounts.config({
+    sendVerificationEmail: true
+  });
+
   handleConfiguration();
   var accountsConfig = Accounts.loginServiceConfiguration._collection;
+
   var googleConfig = accountsConfig.findOne({
     "service": 'google'
   });

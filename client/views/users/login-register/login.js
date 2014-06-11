@@ -15,6 +15,7 @@ Template.login.viewModel = function () {
 
   self.email = ko.observable();
   self.password = ko.observable();
+  self.notVerified = ko.observable(false);
 
   self.loginWith = function (serviceName) {
     if (Meteor['loginWith' + serviceName])
@@ -30,12 +31,32 @@ Template.login.viewModel = function () {
     Meteor.loginWithPassword({
       email: self.email()
     }, self.password(), function (err, result) {
-      if (err)
-        self.errorMessage('Something is wrong with your email or password. Try again.');
-      else
+      if (err) {
+        if(err.reason == 'Email not verified') {
+          self.notVerified(true);
+          self.errorMessage(err.reason);
+        }
+        else {
+          self.notVerified(false);
+          self.errorMessage('Something is wrong with your email or password. Try again.');
+        }
+      }
+      else {
+        self.notVerified(false);
         Router.go('/');
+      }
     });
   }
+
+  self.resendVerification = function() {
+    Meteor.call('resendEmailVerification', self.email(), function(err) {
+      if (err) {
+        self.errorMessage('Something is wrong with your email or password. Try again.');
+      } else
+        self.errorMessage('');
+      self.notVerified(false);
+    });
+  };
 
   self.newAccount = ko.validatedObservable({
     username: ko.observable().extend({
