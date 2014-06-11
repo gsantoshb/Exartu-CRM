@@ -13,10 +13,8 @@ seedSubscriptionPlans = function() {
           type: SubscriptionPlan.collectionLimitTypes.forever
         },
         Tasks: {
-          blocked: true
-        },
-        ContactablesFS: {
-          blocked: true
+          limit: 100,
+          type: SubscriptionPlan.collectionLimitTypes.forever
         },
         Messages: {
           limit: 100,

@@ -108,7 +108,11 @@
                             <strong> Tasks </strong>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            <i class="icon-cross-1"></i>
+                            {{#if isFree}}
+                                {{tasksCount}}/{{collections.Tasks.limit}}
+                            {{else}}
+                                {{collections.Tasks.limit}}
+                            {{/if}}
                         </div>
                     </div>
                 </li>
