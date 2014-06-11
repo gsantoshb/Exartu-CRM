@@ -407,7 +407,7 @@ var loadContactables = function (hierId) {
 
 var loadJobs = function (hierId) {
     var customers = Contactables.find({objNameArray: 'Customer'}).fetch();
-    var jobTypes = ObjTypes.find({objGroupType: 'job'}).fetch();
+    var jobTypes = dType.ObjTypes.find({parent: 'job'}).fetch()
     var industries = LookUps.find({codeType: Enums.lookUpTypes.job.industry.code}).fetch();
     var categories = LookUps.find({codeType: Enums.lookUpTypes.job.category.code}).fetch();
     var durations = LookUps.find({codeType: Enums.lookUpTypes.job.duration.code}).fetch();
@@ -977,7 +977,7 @@ var loadJobs = function (hierId) {
 
         var newJob = {
             customer: randomCustomer._id,
-            objNameArray: [randomJobType.objName],
+            objNameArray: ['job', randomJobType.name],
             hierId: hierId,
             industry: industries[Math.floor(Math.random() * industries.length)]._id,
             category: categories[Math.floor(Math.random() * categories.length)]._id,
@@ -990,8 +990,8 @@ var loadJobs = function (hierId) {
             testData: true
         }
         // TODO: check objType's fields
-        newJob[randomJobType.objName] = {
-            jobTitle: randomJobTitle.code
+        newJob[randomJobType.name] = {
+            jobTitle: randomJobTitle._id
         };
 
 //    console.dir(newJob);
