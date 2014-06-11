@@ -1,5 +1,6 @@
 Router.configure({
   disableProgressSpinner: true,
+  notFoundTemplate: 'notFoundTemplate',
   waitOn: function() {
     return [HierarchiesHandler];
   },
