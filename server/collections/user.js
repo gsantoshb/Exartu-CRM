@@ -1,3 +1,13 @@
+Accounts.validateLoginAttempt(function(attempt) {
+  if (!attempt.allowed)
+    return false;
+
+  if (attempt.type == 'password' && !attempt.user.emails[0].verified)
+    throw new Meteor.Error(500, 'Email not verified');
+
+  return true;
+});
+
 Accounts.validateNewUser(function(user) {
     if (user.services.google)
     {
@@ -81,6 +91,19 @@ Accounts.onCreateUser(function (options, user) {
 
   return user;
 });
+
+// Email validation template
+
+Accounts.emailTemplates.siteName = "Exartu ";
+Accounts.emailTemplates.from = "Exartu team<exartu.developer@gmail.com>";
+Accounts.emailTemplates.enrollAccount.subject = function (user) {
+  return "Welcome to CRM Exartu, " + user.profile.name;
+};
+Accounts.emailTemplates.enrollAccount.text = function (user, url) {
+  return "You have been selected to participate in building a better future!"
+    + " To activate your account, simply click the link below:\n\n"
+    + url;
+};
 
 /*
  * extending the user data that is sended to the client
@@ -227,6 +250,14 @@ Meteor.methods({
         profilePictureId: fileId
       }
     });
+  },
+  resendEmailVerification: function(email) {
+    var user = Meteor.users.findOne({'emails.address': email});
+
+    if (!user)
+      throw new Meteor.Error(500, 'User does not exist');
+
+    Accounts.sendVerificationEmail(user._id);
   }
 });
 
