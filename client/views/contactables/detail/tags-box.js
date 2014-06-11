@@ -1,5 +1,9 @@
 var contactable = {};
-
+var self={};
+Utils.reactiveProp(self, 'editMode', false);
+Template.contactableTagsBox.created=function(){
+  self.editMode=false;
+}
 Template.contactableTagsBox.tags = function() {
   contactable = new Utils.ObjectDefinition({
     reactiveProps: {
@@ -20,6 +24,14 @@ Template.contactableTagsBox.tags = function() {
   });
   return contactable.tags;
 };
+
+Template.contactableTagsBox.editMode = function() {
+  return self.editMode;
+};
+
+Template.contactableTagsBox.editModeColor = function() {
+  return self.editMode? '#008DFC' : '';
+}
 
 Template.contactableTagsBox.hasTags = function() {
   return _.isArray(this.tags);
@@ -58,5 +70,8 @@ Template.contactableTagsBox.events = {
   },
   'click .focusAddTag': function(){
     $('#new-tag')[0].focus();
+  },
+  'click .editTags': function(){
+    self.editMode = ! self.editMode;
   }
 };
