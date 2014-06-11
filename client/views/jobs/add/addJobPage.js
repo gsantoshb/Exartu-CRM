@@ -1,5 +1,4 @@
 JobAddController = RouteController.extend({
-//    layoutTemplate: 'addJobPage',
     data: function(){
         Session.set('objType',this.params.objType);
     },
@@ -14,19 +13,15 @@ JobAddController = RouteController.extend({
 var model;
 var subTypesDep=new Deps.Dependency;
 var createJob= function(objTypeName){
-//    var type=dType.core.getObjType(objTypeName)
-    model= new dType.objTypeInstance(objTypeName);
-//    setPersonType(type.defaultPersonType,contactable)
+    var options= Session.get('addOptions');
+    if (options){
+      Session.set('addOptions', undefined);
+    }
+
+    model= new dType.objTypeInstance(Session.get('objType'), options);
     return model
 }
-//var setPersonType= function(personType, contactable){
-//    var personModel= new dType.objTypeInstance(personType)
-//    contactable.subTypes=contactable.subTypes.filter(function(obj) {
-//        return [Enums.personType.human, Enums.personType.organization].indexOf(obj.name) === -1;
-//    });
-//    contactable.subTypes.unshift(personModel);
-//    subTypesDep.changed();
-//}
+
 Template.addJobPage.helpers({
     model: function(){
         if (!model){
@@ -41,16 +36,9 @@ Template.addJobPage.helpers({
     objTypeName: function(){
         return Session.get('objType');
     }
-//    selected:function(personType){
-//        subTypesDep.depend();
-//        return contactable && contactable.subTypes && !!_.findWhere(contactable.subTypes,{name: personType});
-//    }
 })
 
 Template.addJobPage.events({
-//    'change #personType': function(e){
-//        setPersonType(e.target.value, contactable)
-//    },
     'click .btn-success': function(){
         if (!dType.isValid(model)){
             dType.displayAllMessages(model);
