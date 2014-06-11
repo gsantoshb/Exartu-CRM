@@ -114,11 +114,10 @@ Meteor.startup(function() {
 
 });
 
-SubscriptionPlan.checkFunction = function(options, fn) {
+SubscriptionPlan.checkFunction = function(plans, fn) {
   return function() {
-    console.log(this.argument);
-    if (SubscriptionPlan.isAllowed(options.plans))
-      return fn.apply({}, this.argument);
+    if (SubscriptionPlan.isAllowed(plans))
+      return fn.apply({}, arguments);
     throw new Meteor.Error(500, 'Function not included in users plan subscription');
   };
 };
