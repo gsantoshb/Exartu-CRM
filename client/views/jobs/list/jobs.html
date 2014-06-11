@@ -21,6 +21,20 @@
                                     <strong>Job Filters</strong>
                                 </h4>
                                 <form role="form">
+                                    <div  class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#statusFilter">
+                                                    <strong>Status</strong>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="statusFilter" class="panel-collapse collapse">
+                                            <div data-bind="foreach: status" style="padding: 10px;">
+                                                <button class="btn btn-xs" data-bind="text: displayName, css:{'btn-primary':isSelected(), 'btn-default': !isSelected()}, click: $parent.selectStatus"></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="panel-group bottom-20">
                                         <!-- ko foreach: lookFilters -->
                                         <!-- ko template: { name: 'lookupFilterTemplate', data: {filterGroupId: 1, title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } -->
@@ -232,7 +246,7 @@
                                     </div>
                                 <!-- /ko -->
                                 <!--infinite scroll-->
-                                <div data-bind="onScrollBottom:showMore"></div>
+                                <div data-bind="onScrollBottom: showMore"></div>
                             </div>
                     </div>
                     <!--/ko-->
