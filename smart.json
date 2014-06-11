@@ -16,6 +16,7 @@
     "apm": {},
     "moment": {},
     "bootstrap3-datetimepicker": {},
-    "percolatestudio-migrations": {}
+    "percolatestudio-migrations": {},
+    "kadira": {}
   }
 }

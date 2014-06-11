@@ -24,7 +24,8 @@
       "apm": {},
       "moment": {},
       "bootstrap3-datetimepicker": {},
-      "percolatestudio-migrations": {}
+      "percolatestudio-migrations": {},
+      "kadira": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -111,6 +112,11 @@
         "git": "https://github.com/percolatestudio/meteor-migrations.git",
         "tag": "v0.6.0",
         "commit": "baa77d4c121f6f06b6aa142ee11f71ace8795f7f"
+      },
+      "kadira": {
+        "git": "https://github.com/meteorhacks/kadira.git",
+        "tag": "v2.1.5",
+        "commit": "1d33f51a7228fc430fb1823276fcfeeb6f251255"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
