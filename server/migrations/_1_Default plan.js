@@ -2,6 +2,6 @@
 Migrations.add({
   version: 1,
   up: function() {
-    Hierarchies.update({$exists: { planCode: false}}, {$set: {planCode: 0}}, { multi: true });
+    Hierarchies.update({planCode : { $exists: false}}, {$set: {planCode: 0}}, { multi: true });
   }
 });
