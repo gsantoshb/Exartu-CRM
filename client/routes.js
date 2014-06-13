@@ -1,3 +1,7 @@
+var registerPageView = function() {
+  GAnalytics.pageview(this.path);
+}
+
 Router.configure({
   disableProgressSpinner: true,
   notFoundTemplate: 'notFoundTemplate',
@@ -24,6 +28,7 @@ Router.map(function () {
         this.render('loadingContactable');
         return;
       }
+      GAnalytics.pageview();
       this.render();
     },
   });
@@ -61,7 +66,8 @@ Router.map(function () {
 
   this.route('jobs', {
     path: '/jobs/:type?',
-    controller: 'JobsController'
+    controller: 'JobsController',
+    onRun: registerPageView
   });
 
   this.route('job', {
