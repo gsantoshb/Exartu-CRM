@@ -66,10 +66,6 @@ newObjType({
     objGroupType: Enums.objGroupType.job,
     services: ['messages', 'tasks', 'posts', 'tags', 'candidates', 'jobRates'],
     fields: [{
-        name: 'fee',
-        displayName: 'Fee (%)',
-        fieldType: 'number'
-    },{
         name: 'publicJobTitle',
         displayName: 'Public job title',
         required: true
@@ -184,6 +180,10 @@ newObjType({
         displayName: 'Salary',
         fieldType: 'number'
       }, {
+        name: 'fee',
+        displayName: 'Fee (%)',
+        fieldType: 'number'
+      }, {
         name: 'jobTitle',
         displayName: 'Job title',
         fieldType: 'lookUp',
@@ -204,7 +204,7 @@ newObjType({
     services: [],
     fields: [{
         name: 'frequency',
-        displayName: 'Frequency pay rate',
+        displayName: 'Pay Frequency',
         fieldType: 'lookUp',
         lookUpName: 'payRateFrequency',
         lookUpCode: Enums.lookUpTypes.payRate.frequencies.code,
@@ -213,7 +213,11 @@ newObjType({
         name: 'pay',
         displayName: 'Pay',
         fieldType: 'number'
-      }
+      }, {
+        name: 'bill',
+        displayName: 'Bill',
+        fieldType: 'number'
+    }
     ]
 });
 
