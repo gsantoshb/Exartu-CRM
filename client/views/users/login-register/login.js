@@ -38,7 +38,7 @@ Template.login.viewModel = function () {
         }
         else {
           self.notVerified(false);
-          self.errorMessage('Something is wrong with your email or password. Try again.');
+          self.errorMessage('Email or password is wrong. Try again.');
         }
       }
       else {
@@ -51,7 +51,7 @@ Template.login.viewModel = function () {
   self.resendVerification = function() {
     Meteor.call('resendEmailVerification', self.email(), function(err) {
       if (err) {
-        self.errorMessage('Something is wrong with your email or password. Try again.');
+        self.errorMessage('Email or password is wrong. Try again.');
       } else
         self.errorMessage('');
       self.notVerified(false);

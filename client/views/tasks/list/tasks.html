@@ -61,7 +61,7 @@
                                                     </div>
                                                     <div class="checkbox">
                                                         <label>
-                                                            <input type="checkbox" data-bind="checked: assigned" />assigned to
+                                                            <input type="checkbox" data-bind="checked: assigned" />Assigned to
                                                             <select class="form-control" data-bind="options:users,optionsText:'username', optionsValue:'_id', value:assignedTo" >
                                                             </select>
                                                         </label>
@@ -116,7 +116,7 @@
                                             </div>
                                                 <div class="checkbox">
                                                     <label>
-                                                        <input type="checkbox" data-bind="checked: assigned" />assigned to
+                                                        <input type="checkbox" data-bind="checked: assigned" />Assigned to
                                                         <select class="form-control" data-bind="options:users,optionsText:'username', optionsValue:'_id', value:assignedTo" >
                                                         </select>
                                                     </label>
@@ -165,8 +165,8 @@
                                             <div class="table-item-cell">
                                                 <div class="table-item-cell-container">
                                                     <div class="table-item-title">
-                                                        <a href="/tasks">
-                                                            <span data-bind="text: $data.note"></span>
+                                                        <a  href="#" data-bind="click: $parent.edit">
+                                                             <span data-bind="text: $data.note"></span>
                                                         </a>
                                                     </div>
                                                     <div class="task-author">
@@ -234,7 +234,7 @@
                             <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                                 <i class="icon-clock-3 text-large"></i>
                                 <h1>You currently have no Tasks.</h1>
-                                <a href="#" data-bind="click:add">New Task</a>
+                                <a href="#" data-bind="click:add">Add Task</a>
                             </div><!-- /.v-wrapper-cell -->
                         </div>
                         <!-- /ko -->
@@ -262,7 +262,7 @@
                             <span data-bind="css: helper.getTaskStateCSS($data.state())">Starts:</span>
                             <span data-bind="text: moment(begin()).format('MMM Do YYYY, h:mm:ss a')"></span>
                         </span>
-                        <span data-bind="visible: $data.state()==Enums.taskState.complited">
+                        <span data-bind="visible: $data.state()==Enums.taskState.completed">
                             <span data-bind="css: helper.getTaskStateCSS($data.state())">completed:</span>
                             <!--ko if: completed-->
                             <span data-bind="text: moment(completed()).format('MMM Do YYYY, h:mm:ss a')"></span>

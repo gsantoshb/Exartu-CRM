@@ -9,7 +9,7 @@
             <a href="#" class="current">Users</a>
         </div>
 
-        <button class="btn btn-link" data-bind="click: function () { Composer.showModal('addUser', 'addUserModal'); }">Create user</button>
+        <button class="btn btn-link" data-bind="click: function () { Composer.showModal('addUser', 'addUserModal'); }">Add user</button>
         <div class="container-fluid">
             <div class="table-items-box" data-bind="foreach: users">
                 <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
@@ -30,7 +30,7 @@
                         </div>
                         <!-- /.col-md-2-->
                         <div class="col-sm-3  text-small">
-                            <div class="table-item-cell" data-bind="text: createdAt ">
+                            Created: <div class="table-item-cell" data-bind="text: createdAt ">
 
                             </div>
                         </div>

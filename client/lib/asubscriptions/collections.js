@@ -248,7 +248,7 @@ Tasks = new Meteor.Collection("tasks", {
       task.state = Enums.taskState.future;
     } else {
       if (task.completed) {
-        task.state = Enums.taskState.complited;
+        task.state = Enums.taskState.completed;
       } else {
         if (now.isBefore(task.end)) {
           task.state = Enums.taskState.pending;
