@@ -115,8 +115,8 @@
       },
       "kadira": {
         "git": "https://github.com/meteorhacks/kadira.git",
-        "tag": "v2.1.5",
-        "commit": "1d33f51a7228fc430fb1823276fcfeeb6f251255"
+        "tag": "v2.3.0",
+        "commit": "ddda2b47af879bb7dd54d1def3c914efb14f90df"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
