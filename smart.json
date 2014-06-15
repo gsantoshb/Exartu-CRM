@@ -17,6 +17,7 @@
     "moment": {},
     "bootstrap3-datetimepicker": {},
     "percolatestudio-migrations": {},
-    "kadira": {}
+    "kadira": {},
+    "GAnalytics": {}
   }
 }

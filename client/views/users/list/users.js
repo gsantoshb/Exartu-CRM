@@ -17,6 +17,9 @@ Template.users.viewModel = function () {
                     roles: role
                 }
             });
+            Meteor.call('getHierUsers', function (err, result) {
+                self.users(result);
+            });
         }
     };
     Meteor.call('getHierUsers', function (err, result) {

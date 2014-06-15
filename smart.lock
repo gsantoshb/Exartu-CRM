@@ -25,7 +25,8 @@
       "moment": {},
       "bootstrap3-datetimepicker": {},
       "percolatestudio-migrations": {},
-      "kadira": {}
+      "kadira": {},
+      "GAnalytics": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -115,8 +116,13 @@
       },
       "kadira": {
         "git": "https://github.com/meteorhacks/kadira.git",
-        "tag": "v2.1.5",
-        "commit": "1d33f51a7228fc430fb1823276fcfeeb6f251255"
+        "tag": "v2.2.0",
+        "commit": "0f0f6b90a80f2be3980154977fe19f84cc535cf8"
+      },
+      "GAnalytics": {
+        "git": "https://github.com/datariot/meteor-ganalytics.git",
+        "tag": "v0.2.0",
+        "commit": "2d5e48d5cc4c2f88edd40c0b2341d378bd4a702b"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
