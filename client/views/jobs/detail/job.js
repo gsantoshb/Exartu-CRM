@@ -14,7 +14,7 @@ JobController = RouteController.extend({
         this.render('job')
     },
   onAfterAction: function() {
-    var title = Session.get('jobDisplayName'),
+    var title = 'Jobs / ' + Session.get('jobDisplayName'),
       description = 'Job information';
     SEO.set({
       title: title,
