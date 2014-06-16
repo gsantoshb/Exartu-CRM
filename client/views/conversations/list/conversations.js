@@ -1,5 +1,19 @@
 ConversationsController = RouteController.extend({
     template: 'conversations',
+  onAfterAction: function() {
+    var title = 'Conversations',
+      description = '';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
 });
 
 Template.waitOn = ['conversationsHandler'];

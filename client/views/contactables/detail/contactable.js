@@ -57,6 +57,20 @@ ContactableController = RouteController.extend({
     };
 
     GAnalytics.event("contactables", "details");
+  },
+  onAfterAction: function() {
+    var title = Session.get('contactableDisplayName'),
+      description = 'Contact information';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
   }
 });
 
@@ -85,9 +99,12 @@ Template.contactable.rendered = function () {
 
 Template.contactable.helpers({
   contactable: function () {
-    return Contactables.findOne({
+    var contactable = Contactables.findOne({
       _id: Session.get('entityId')
-    })
+    });
+
+    Session.set('contactableDisplayName', contactable.displayName);
+    return contactable;
   },
   pictureUrl: function () {
     if (this.pictureFileId) {

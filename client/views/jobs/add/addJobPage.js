@@ -8,7 +8,21 @@ JobAddController = RouteController.extend({
             return;
         }
         this.render('addJobPage');
-    }
+    },
+  onAfterAction: function() {
+    var title = 'Add ' + Session.get('objType'),
+      description = '';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
 });
 var model;
 var subTypesDep=new Deps.Dependency;

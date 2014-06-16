@@ -1,6 +1,21 @@
 UserProfileController = RouteController.extend({
   layoutTemplate: 'userProfile',
+  onAfterAction: function() {
+    var title = 'My profile',
+      description = '';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
 });
+
 Template.userProfile.waitOn = ['UsersHandler'];
 
 Template.userProfile.viewModel = function () {

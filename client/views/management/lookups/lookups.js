@@ -1,5 +1,19 @@
 LookupsManagementController = RouteController.extend({
-  template: 'lookUpsManagement'
+  template: 'lookUpsManagement',
+  onAfterAction: function() {
+    var title = 'Settings',
+      description = 'Lookup configurations, etc';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
 });
 
 Template.lookUpsManagement.waitOn = ['LookUpsHandler'];
