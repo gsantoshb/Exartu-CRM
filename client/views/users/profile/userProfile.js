@@ -1,5 +1,5 @@
 UserProfileController = RouteController.extend({
-  layoutTemplate: 'userProfile',
+  template: 'userProfile',
   onAfterAction: function() {
     var title = 'My profile',
       description = '';
