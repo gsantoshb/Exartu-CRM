@@ -203,7 +203,7 @@ Meteor.startup(function () {
       });
     },
     updateContactablePicture: function (contactableId, fileId) {
-      console.log("contactalbe picture updated");
+      console.log("contact picture updated");
       Contactables.update({
         _id: contactableId
       }, {
@@ -235,8 +235,8 @@ var beforeInsertOrUpdateContactable = function (contactable) {
     throw new Meteor.Error(401, "Please login");
 
   if (!contactable.objNameArray || !contactable.objNameArray.length) {
-    console.error('the contactable must have at least one objName');
-    throw new Meteor.Error(401, "invalid contactable");
+    console.error('the contact must have at least one objName');
+    throw new Meteor.Error(401, "invalid contact");
   }
   var objTypes = ObjTypes.find({
     objName: {
