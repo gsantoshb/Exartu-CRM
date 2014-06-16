@@ -9,7 +9,21 @@ ContactableAddController = RouteController.extend({
             return;
         }
         this.render('addContactablePage');
-    }
+    },
+  onAfterAction: function() {
+    var title = 'Add ' + Session.get('objType'),
+      description = '';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
 });
 var contactable;
 var subTypesDep=new Deps.Dependency;

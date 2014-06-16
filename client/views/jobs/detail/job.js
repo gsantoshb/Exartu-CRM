@@ -12,8 +12,21 @@ JobController = RouteController.extend({
             return;
         }
         this.render('job')
-    }
-
+    },
+  onAfterAction: function() {
+    var title = Session.get('jobDisplayName'),
+      description = 'Job information';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
 });
 
 var getDefinitionFromField=function(field, obj, path){
@@ -109,7 +122,7 @@ Template.job.created=function(){
 Template.job.helpers({
     job: function(){
         job = generateReactiveObject(Jobs.findOne({ _id: Session.get('entityId') }));
-        console.dir(job)
+      Session.set('jobDisplayName', job.displayName);
         return job;
     },
     originalJob:function(){

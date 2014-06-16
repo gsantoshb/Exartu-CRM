@@ -40,6 +40,20 @@ Router.map(function () {
       if (Meteor.user()) {
         this.redirect('dashboard');
       }
+    },
+    onAfterAction: function() {
+      var title = 'Login',
+        description = '';
+      SEO.set({
+        title: title,
+        meta: {
+          'description': description
+        },
+        og: {
+          'title': title,
+          'description': description
+        }
+      });
     }
   });
 
@@ -125,6 +139,20 @@ Router.map(function () {
         return;
       }
       this.render('subscriptionPlanTemplate');
+    },
+    onAfterAction: function() {
+      var title = 'Subscription',
+        description = 'Subscription management';
+      SEO.set({
+        title: title,
+        meta: {
+          'description': description
+        },
+        og: {
+          'title': title,
+          'description': description
+        }
+      });
     }
   })
 });

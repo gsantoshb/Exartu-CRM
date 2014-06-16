@@ -7,6 +7,20 @@ ResumeParserController = RouteController.extend({
       return;
     }
     this.render('resumeParser');
+  },
+  onAfterAction: function() {
+    var title = 'Resume parser',
+      description = '';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
   }
 });
 

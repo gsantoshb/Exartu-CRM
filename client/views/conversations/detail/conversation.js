@@ -1,5 +1,19 @@
 ConversationController = RouteController.extend({
     template: 'conversation',
+  onAfterAction: function() {
+    var title = "Conversation messages",
+      description = '';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
 });
 
 Template.conversation.viewModel = function () {

@@ -10,6 +10,20 @@ DashboardController = RouteController.extend({
             this.render('dashboard');
         else
             this.render('loading');
+    },
+    onAfterAction: function() {
+      var title = 'Dashboard',
+        description = 'Check quickly your system status and activities';
+      SEO.set({
+        title: title,
+        meta: {
+          'description': description
+        },
+        og: {
+          'title': title,
+          'description': description
+        }
+      });
     }
 });
 

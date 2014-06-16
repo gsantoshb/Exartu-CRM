@@ -28,6 +28,20 @@ JobsController = RouteController.extend({
     }
 
     this.render('jobs');
+  },
+  onAfterAction: function() {
+    var title = 'Jobs',
+      description = 'All your jobs are here';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
   }
 });
 
@@ -96,12 +110,14 @@ Template.jobs.viewModel = function () {
   self.searchString = ko.observable();
 
   var extendLookupFilterQuery = function (query, filter, fieldName) {
-    if (filter().length > 0)
+    if (filter().length > 0) {
       query[fieldName] = {
         $in: _.map(filter(), function(option){
             return option.id;
         })
       };
+      GAnalytics.event("/jobs", "Search by " + fieldName);
+    }
   }
 
   var query = ko.computed(function () {
@@ -115,6 +131,7 @@ Template.jobs.viewModel = function () {
       q.tags = {
         $in: f.tags
       };
+      GAnalytics.event("/jobs", "Search by tags");
     }
 
     // Lookups filter
@@ -137,6 +154,7 @@ Template.jobs.viewModel = function () {
           $or: searchQuery
         }]
       };
+      GAnalytics.event("/jobs", "Search by string");
     }
 //    statusFilter
     _.each(self.status, function(item){

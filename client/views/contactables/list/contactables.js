@@ -37,6 +37,20 @@ ContactablesController = RouteController.extend({
       info.objType.value = undefined;
     }
     this.render('contactables');
+  },
+  onAfterAction: function() {
+    var title = 'My Network',
+      description = 'All your contacts ara here';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
   }
 });
 

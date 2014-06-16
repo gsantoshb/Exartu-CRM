@@ -1,6 +1,20 @@
 UsersController = RouteController.extend({
     template: 'users',
-    layoutTemplate: 'usersLayout'
+    layoutTemplate: 'usersLayout',
+  onAfterAction: function() {
+    var title = 'Users',
+      description = '';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
 });
 
 Template.users.viewModel = function () {
