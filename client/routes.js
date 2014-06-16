@@ -1,5 +1,5 @@
 var registerPageView = function() {
-  GAnalytics.pageview(this.path);
+//  GAnalytics.pageview(this.path);
 }
 
 Router.configure({

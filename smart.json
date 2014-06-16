@@ -18,6 +18,7 @@
     "bootstrap3-datetimepicker": {},
     "percolatestudio-migrations": {},
     "kadira": {},
-    "GAnalytics": {}
+    "GAnalytics": {},
+    "GraphicsMagick": {}
   }
 }

@@ -28,11 +28,11 @@ Template.sendMessage.viewModel = function (contactable) {
 
     self.contactMethodName = ko.observable('email');
     self.showContactMethodName = ko.observable(false);
-    self.selectedAdress = ko.observable();
+    self.selectedAddress = ko.observable();
 
     var oldValueOfTo = null;
 
-    self.selectedAdress.subscribe(function (value) {
+    self.selectedAddress.subscribe(function (value) {
         if (value) {
             oldValueOfTo = self.email().to();
             self.email().to(value);

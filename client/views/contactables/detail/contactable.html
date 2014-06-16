@@ -31,19 +31,19 @@
                         <div class="profile-btns">
                             {{#with mainContactMethods}}
                                 {{#if phone.value}}
-                                    <a class="btn btn-default btn-custom-with-cyrcle" href="callto:{{phone.value}}">
+                                    <a class="btn btn-default btn-custom-with-circle" href="callto:{{phone.value}}">
                                         <span class="btn-round"><i class="fa fa-phone"></i></span>
                                         {{phone.value}}
                                     </a>
                                 {{/if}}
                                 {{#if email.value}}
-                                    <a class="btn btn-default btn-custom-with-cyrcle" href="mailto:{{phone.value}}">
+                                    <a class="btn btn-default btn-custom-with-circle" href="mailto:{{phone.value}}">
                                         <span class="btn-round"><i class="fa fa-envelope"></i></span>
                                         {{email.value}}
                                     </a>
                                 {{/if}}
                             {{/with}}
-                            <a class="btn btn-default btn-custom-with-cyrcle sendMessage" href="#">
+                            <a class="btn btn-default btn-custom-with-circle sendMessage" href="#">
                                 <span class="btn-round"><i class="fa fa-envelope"></i></span>
                                 Message
                             </a>
@@ -116,7 +116,7 @@
         <strong>{{displayName}}</strong>
         <small>{{Customer.department}}</small>
     </h1>
-    <p class="profile-adress">
+    <p class="profile-address">
         <i class="fa fa-map-marker"></i>
         {{#if location}}
             <span>{{location.displayName}}</span>
@@ -129,13 +129,13 @@
 
     <div class="profile-btns">
         {{#if firstCellPhone }}
-        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+        <a class="btn btn-default btn-custom-with-circle" href="#">
             <span class="btn-round"><i class="fa fa-phone"></i></span>
             <span>{{firstCellPhone}}</span>
         </a>
         {{/if}}
         {{#if firstEmail }}
-        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+        <a class="btn btn-default btn-custom-with-circle" href="#">
             <span class="btn-round"><i class="fa fa-envelope"></i></span>
             <span>{{firstEmail.value}}</span>
         </a>
@@ -170,10 +170,10 @@
                 {{Contact.customerName}}
             </a>
         {{else}}
-            <a class="pull-right editCustomer" href="#"> <i class="icon-buildings-1"></i> Link to a Customer</a>
+            <a class="pull-right editCustomer" href="#"> <i class="icon-buildings-1"></i></a>
         {{/if}}
     </h1>
-    <p class="profile-adress">
+    <p class="profile-address">
         <i class="fa fa-map-marker"></i>
         {{#if location}}
             <span>{{location.displayName}}</span>
@@ -184,13 +184,13 @@
 
     <div class="profile-btns">
         {{#if firstCellPhone }}
-            <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+            <a class="btn btn-default btn-custom-with-circle" href="#">
                 <span class="btn-round"><i class="fa fa-phone"></i></span>
                 <span>{{firstCellPhone}}</span>
             </a>
         {{/if}}
         {{#if firstEmail }}
-            <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+            <a class="btn btn-default btn-custom-with-circle" href="#">
                 <span class="btn-round"><i class="fa fa-envelope"></i></span>
                 <span>{{firstEmail.value}}</span>
             </a>
@@ -224,7 +224,7 @@
             </a>
         {{/if}}
     </h1>
-    <p class="profile-adress">
+    <p class="profile-address">
         <i class="fa fa-map-marker"></i>
         {{#if location}}
             <span>{{location.displayName}}</span>
@@ -235,13 +235,13 @@
 
     <div class="profile-btns">
         {{#if firstCellPhone }}
-        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+        <a class="btn btn-default btn-custom-with-circle" href="#">
             <span class="btn-round"><i class="fa fa-phone"></i></span>
             <span>{{firstCellPhone}}</span>
         </a>
         {{/if}}
         {{#if firstEmail }}
-        <a class="btn btn-default btn-custom-with-cyrcle" href="#">
+        <a class="btn btn-default btn-custom-with-circle" href="#">
             <span class="btn-round"><i class="fa fa-envelope"></i></span>
             <span>{{firstEmail.value}}</span>
         </a>
