@@ -40,7 +40,7 @@ ContactablesController = RouteController.extend({
   },
   onAfterAction: function() {
     var title = 'My Network',
-      description = 'All your contacts ara here';
+      description = 'All your contacts are here';
     SEO.set({
       title: title,
       meta: {

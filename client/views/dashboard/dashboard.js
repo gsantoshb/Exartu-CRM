@@ -13,7 +13,7 @@ DashboardController = RouteController.extend({
     },
     onAfterAction: function() {
       var title = 'Dashboard',
-        description = 'Check quickly your system status and activities';
+        description = 'Quickly check system status and activity';
       SEO.set({
         title: title,
         meta: {
