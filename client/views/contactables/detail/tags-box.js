@@ -13,6 +13,7 @@ Template.contactableTagsBox.tags = function() {
         cb: {
           onInsert: function(newValue) {
             Contactables.update({ _id: contactable._id}, {$addToSet: {tags: newValue}});
+            GAnalytics.event("/contactable", "tags", "add");
           },
           onRemove: function(value) {
             Contactables.update({ _id: contactable._id}, {$pull: {tags: value}});

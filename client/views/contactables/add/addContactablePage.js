@@ -66,6 +66,7 @@ Template.addContactablePage.events({
             if(err){
                 console.dir(err)
             }else{
+                GAnalytics.event("/contactableAdd", Session.get('objType'));
                 history.back();
             }
         });

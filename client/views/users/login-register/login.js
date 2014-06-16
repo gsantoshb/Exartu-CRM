@@ -22,8 +22,10 @@ Template.login.viewModel = function () {
       Meteor['loginWith' + serviceName]({}, function (err) {
         if(err)
             self.errorMessage(err.reason);
-        else
+        else{
           Router.go('/');
+          GAnalytics.event("account","signin");
+        }
       });
   }
 
@@ -44,6 +46,7 @@ Template.login.viewModel = function () {
       else {
         self.notVerified(false);
         Router.go('/');
+        GAnalytics.event("account","signin");
       }
     });
   }
