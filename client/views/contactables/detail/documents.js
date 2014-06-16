@@ -96,6 +96,7 @@ Template.addDocumentForm.events = {
       if (!err){
         AddForm.hide();
         document.reset();
+        GAnalytics.event("/contactable", "Add document", newDocument.file.type());
       }
       else
         console.log('File upload error');

@@ -96,8 +96,10 @@ Template.contactableContactMethodsBox.events = {
     };
 
     Contactables.update({_id: Session.get('entityId')}, {$addToSet: {contactMethods: newContactMethod}}, function(err, result) {
-      if (!err)
+      if (!err) {
         newContactMethodValue.val('');
+        GAnalytics.event("/contactable", "Add contact method");
+      }
     });
   },
   'keypress #new-contact-method-value': function() {

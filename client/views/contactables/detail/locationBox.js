@@ -60,11 +60,12 @@ Template.contactableLocationBox.events({
       address: $('#locationInput')[0].value
     }, function (results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-
+        GAnalytics.event("/contactable", "Set location success");
         data.location = Utils.getLocation(results[0]);
         console.log(data.location.displayName);
         centerBox(ctx.$('.box')[0]);
       } else {
+        GAnalytics.event("/contactable", "Set location fail");
         data.location = null;
       }
     })

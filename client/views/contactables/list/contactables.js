@@ -132,6 +132,7 @@ Template.contactablesList.contactables = function() {
       searchStringQuery.push(aux);
     });
     searchQuery.$or =  searchStringQuery;
+    GAnalytics.event("/contactables", "Search by string");
   }
 
   if (query.onlyRecents.value) {
@@ -296,4 +297,16 @@ Template.employeeInformation.assignmentInfo = function () {
   return assignmentInfo;
 }
 
+// Google analytic
+
+_.forEach(['employeeInformation', 'contactInformation', 'customerInformation'],
+  function(templateName){
+    Template[templateName]._events = Template[templateName]._events || [];
+    Template[templateName]._events.push({
+      events: 'click',
+      handler: function() {
+        GAnalytics.event("/contactables", "quickAccess", templateName);
+      },
+    });
+});
 

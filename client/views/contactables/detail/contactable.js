@@ -54,8 +54,9 @@ ContactableController = RouteController.extend({
           to: 'content'
         });
         break;
-    }
-    ;
+    };
+
+    GAnalytics.event("contactables", "details");
   }
 });
 

@@ -15,6 +15,7 @@ Template.contactableNotesAdd.events({
       }, function (err, result) {
         if (!err) {
           e.currentTarget.value = '';
+          GAnalytics.event("/contactable", "Add note");
         }
       });
     }

@@ -158,6 +158,7 @@ Template.contactableDetailBox.events = {
       if (!err) {
         EditMode.hide();
         contactable.updateDefaults();
+        GAnalytics.event("/contactable", "Edit contactable details", contactable.generateUpdate() != {}? 'With changes' : 'Without changes');
       }
     });
   },
