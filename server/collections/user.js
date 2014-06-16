@@ -9,14 +9,14 @@ Accounts.validateLoginAttempt(function(attempt) {
 });
 
 Accounts.validateNewUser(function(user) {
-    if (user.services.google)
-    {
-        var oldUser = Meteor.users.findOne({
-            'emails.address': user.services.google.email
-        });
-        if (oldUser)
-            throw new Meteor.Error(403, user.services.google.email + " email is already in use");
-    }
+//    if (user.services.google)
+//    {
+//        var oldUser = Meteor.users.findOne({
+//            'emails.address': user.services.google.email
+//        });
+//        if (oldUser)
+//            throw new Meteor.Error(403, user.services.google.email + " email is already in use");
+//    }
 
     return true;
 });
@@ -106,7 +106,7 @@ Accounts.emailTemplates.enrollAccount.text = function (user, url) {
 };
 
 /*
- * extending the user data that is sended to the client
+ * extending the user data that is sent to the client
  */
 Meteor.publish(null, function () {
   var user = Meteor.users.findOne({

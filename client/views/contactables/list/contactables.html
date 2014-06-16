@@ -118,7 +118,7 @@
                 <div class="v-wrapper">
                     <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                         <i class="icon-connection-1 text-large"></i>
-                        <h1>No {{#if info.objName}} {{info.objName}} {{else}} members {{/if}}
+                        <h1>No {{#if info.objName}} {{info.objName}} {{else}} records {{/if}}
                             Found
                         </h1>
                     </div><!-- /.v-wrapper-cell -->
@@ -277,7 +277,7 @@
                 {{/subscriptionPlan}}
                 <div class="input-group">
                     {{#objectProperty property=searchString}}
-                        <input type="text" class="form-control" placeholder="Search contactable" value="{{value}}">
+                        <input type="text" class="form-control" placeholder="" value="{{value}}">
                     {{/objectProperty}}
                     <span class="input-group-btn">
                         <button class="btn btn-primary" type="button">

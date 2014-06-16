@@ -68,7 +68,7 @@ Template.contactable.created = function() {
   $(window).resize(resizer);
 };
 
-Template.contactable.distroyed = function() {
+Template.contactable.destroyed = function() {
   $(window).off('resize', resizer);
 };
 

@@ -115,7 +115,7 @@ validateObjType = function (obj, objType) {
 }
 /*
  * validate a field depending on the type
- * not complited
+ * not completed
  */
 var validateField = function (value, field) {
     switch (field.fieldType) {
