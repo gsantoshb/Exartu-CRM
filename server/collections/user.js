@@ -291,12 +291,17 @@ Router.map(function () {
 
       Meteor.users.update({'emails.token': token},
         {
+          $pop: {
+            emails: -1
+          }
+        }
+      );
+
+      Meteor.users.update({'emails.token': token},
+        {
           $set: {
             'emails.$.verified': true,
             'emails.$.token': null
-          },
-          $pop: {
-            emails: -1
           }
         }
       );
