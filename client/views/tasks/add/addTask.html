@@ -27,17 +27,21 @@
                                 </div>
                             </fieldset>
                             <fieldset>
-                                <label class="control-label">Note:</label>
-                                <input class="form-control note" value="{{note}}"/>
+                                <div class="form-group {{hasError 'note'}}">
+                                    <label class="control-label">Note:</label>
+                                    <input class="form-control note" value="{{note}}"/>
+                                    <span>{{error.note}}</span>
+                                </div>
                             </fieldset>
                             <fieldset>
-                                <div class="form-group">
+                                <div class="form-group {{hasError 'assign'}}">
                                     <label class="control-label">Assign:</label>
                                     <select class="form-control assign" multiple>
                                         {{#each users}}
                                             <option value="{{_id}}" selected="{{isSelected}}">{{username}}</option>
                                         {{/each}}
                                     </select>
+                                    <span>{{error.assign}}</span>
                                 </div>
                             </fieldset>
                             <fieldset>

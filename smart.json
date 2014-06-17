@@ -13,11 +13,11 @@
     "connect": {},
     "xml2js": {},
     "npm": {},
-    "apm": {},
     "moment": {},
     "bootstrap3-datetimepicker": {},
     "percolatestudio-migrations": {},
     "kadira": {},
-    "GAnalytics": {}
+    "GAnalytics": {},
+    "ms-seo": {}
   }
 }

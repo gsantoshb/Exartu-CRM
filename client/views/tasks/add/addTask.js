@@ -1,5 +1,7 @@
 var task;
+var Error={};
 var taskDep=new Deps.Dependency;
+var errorDep=new Deps.Dependency;
 var createTask=function(task){
 
   var task=task || {};
@@ -35,17 +37,62 @@ Template.addEditTask.helpers({
   },
   isSelected:function(){
     return _.contains(task.assign,this._id);
+  },
+  error: function(){
+    errorDep.depend()
+    return Error;
+  },
+  hasError:function(key){
+    errorDep.depend();
+    return Error[key] ? 'error': '';
   }
-})
 
+})
+var isValid= function(task, key){
+  var result= true;
+
+  if (key){
+    if (key=='note'){
+      if (!task.note){
+        Error.note='This field is required';
+        result=false;
+      }else{
+        Error.note='';
+      }
+    }
+    if (key=='assign'){
+      if (!task.assign || !task.assign.length){
+        Error.assign='This field is required';
+        result=false;
+      }else{
+        Error.assign='';
+      }
+    }
+  }
+  else{
+    if (!task.note){
+      Error.note='This field is required';
+      result=false;
+    }else{
+      Error.note='';
+    }
+
+    if (!task.assign.length){
+      Error.assign='This field is required';
+      result=false;
+    }else{
+      Error.assign='';
+    }
+  }
+  errorDep.changed();
+  return result;
+}
 Template.addEditTask.events({
   'click .accept':function(){
     //todo: validation
-//    if (!self.task.isValid()) {
-//      self.task.errors.showAllMessages();
-//      return;
-//    }
-//
+    if (!isValid(task)) {
+      return;
+    }
 
     if (task._id){
       Tasks.update({
@@ -95,6 +142,12 @@ Template.addEditTask.events({
   },
   'change .assign': function(e){
     task.assign=$(e.target).val()
+  },
+  'blur .note': function(){
+    isValid(task, 'note');
+  },
+  'blur .assign': function(){
+    isValid(task, 'assign');
   }
 })
 
