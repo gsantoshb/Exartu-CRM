@@ -22,6 +22,16 @@ Document.Collection.prototype.getThumbnailUrlForBlaze = function(fileId) {
   return file.url({store: this.collectionName + "Thumbs"})
 };
 
+Document.Collection.prototype.getUrlForBlaze = function(fileId) {
+  var file= this.findOne({
+    _id: fileId
+  });
+  if (!file)
+    return null;
+
+  return file.url({store: this.collectionName})
+};
+
 Document.Collection.prototype.getUrl = function(fileId, data) {
   var data = data || ko.observable({
     ready: ko.observable(false),
