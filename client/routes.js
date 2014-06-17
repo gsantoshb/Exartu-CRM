@@ -159,7 +159,7 @@ Router.map(function () {
   this.route('emailVerification', {
     path: '/emailVerification/:token',
     action: function () {
-      this.render('/user');
+      this.redirect('/user');
     }
   });
 });
