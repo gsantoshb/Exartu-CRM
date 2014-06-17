@@ -123,6 +123,7 @@ Meteor.publish(null, function () {
       'username': 1,
       'emails': 1,
       'services.google.picture': 1,
+      'services.email': 1,
       'profilePictureId': 1,
       "hierId": 1,
       "createdAt": 1,
@@ -136,6 +137,10 @@ Meteor.users.allow({
     var user = Meteor.users.findOne({
       _id: userId
     });
+
+    if (userId == file._id)
+      return true;
+
     if (file.hierId != user.hierId)
       return false;
     if (!_.contains(user.roles, Enums.roleFunction.System_Administrator))
@@ -258,7 +263,29 @@ Meteor.methods({
       throw new Meteor.Error(500, 'User does not exist');
 
     Accounts.sendVerificationEmail(user._id);
+  },
+  updateEmailVerification: function(email) {
+    var shortId = Meteor.require('shortid');
+    var token = shortId.generate();
+    var url = Meteor.absoluteUrl('emailVerification/' + token);
+    var html = 'Email verification, click in the link bellow to active your new email: <br/>' +
+                '<a href="' + url + '"> </a> '+ url + '<br/>' +
+                'Once you verified this email your previous email is disabled';
+
+    Meteor.call('sendEmail', email ,'TempWorks - Email verification', html, true);
   }
+});
+
+Router.map(function () {
+  this.route('emailVerification', {
+    where: 'server',
+    path: '/emailVerification/:token',
+    action: function () {
+      console.log('email verification');
+      var token = this.params.token;
+      console.log('token: ' + token);
+    }
+  });
 });
 
 // Users files
