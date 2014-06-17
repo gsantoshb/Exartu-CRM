@@ -272,6 +272,8 @@ Meteor.methods({
                 '<a href="' + url + '"> </a> '+ url + '<br/>' +
                 'Once you verified this email your previous email is disabled';
 
+    Meteor.users.update({_id: Meteor.userId(), 'emails.address': email }, {$set: { 'emails.$.token': token }});
+
     Meteor.call('sendEmail', email ,'TempWorks - Email verification', html, true);
   }
 });
@@ -281,9 +283,23 @@ Router.map(function () {
     where: 'server',
     path: '/emailVerification/:token',
     action: function () {
-      console.log('email verification');
       var token = this.params.token;
-      console.log('token: ' + token);
+      var user = Meteor.users.find({'emails.token': token});
+
+      if(!user )
+        throw new Meteor.Error(500, 'Invalid token for email update');
+
+      Meteor.users.update({'emails.token': token},
+        {
+          $set: {
+            'emails.$.verified': true,
+            'emails.$.token': null
+          },
+          $pop: {
+            emails: -1
+          }
+        }
+      );
     }
   });
 });
