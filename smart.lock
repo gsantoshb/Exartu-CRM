@@ -21,7 +21,6 @@
       "connect": {},
       "xml2js": {},
       "npm": {},
-      "apm": {},
       "moment": {},
       "bootstrap3-datetimepicker": {},
       "percolatestudio-migrations": {},
@@ -94,11 +93,6 @@
         "git": "https://github.com/arunoda/meteor-npm.git",
         "tag": "v0.2.6",
         "commit": "177ab6118de5bf8cffb19481343d5762ff7a2aaf"
-      },
-      "apm": {
-        "git": "https://github.com/arunoda/meteor-apm-client.git",
-        "tag": "v1.4.6",
-        "commit": "5a185029dd65816c27f988bccedbb77785eab6dc"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",

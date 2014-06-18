@@ -18,10 +18,48 @@ _.forEach([
 //employee status
 _.forEach([
   {
-    displayName: 'One'
+    displayName:  "Candidate"
   },
   {
-    displayName: 'Two'
+    displayName: "Interview"
+  },
+  {
+    displayName: "Offered"
+  },
+  {
+    displayName: "Placed"
+  },
+  {
+    displayName: "Refused"
+  },
+  {
+    displayName: "Rejected"
+  },
+  {
+    displayName: "NA"
+  },{
+    displayName: "Sendout"
+  },
+  {
+    displayName: "Submitted"
+  },
+  {
+    displayName: "WCandidate"
+  },
+  {
+    displayName: "Accepted"
+  },
+  {
+    displayName: "Extend"
+  },
+  {
+    displayName: "Interview1"
+  },
+  {
+    displayName: "Interview2"
+  },
+  {
+    displayName: "Pending"
   }
 ],
   function (item) {
