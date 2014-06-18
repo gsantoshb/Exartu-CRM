@@ -586,9 +586,19 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 }
 
 
-.text-muted > a{
+.text-muted > a.muted{
     color: #848484;
 }
-.text-muted > a:hover{
+.text-muted > a.muted:hover{
     color: #427dff;
+}
+.separatedLinks{
+    display: inline;
+}
+.separatedLinks+.separatedLinks:before{
+    content: '·';
+    padding: 0 3px;
+    margin-right: 3px;
+    color: #333;
+
 }
