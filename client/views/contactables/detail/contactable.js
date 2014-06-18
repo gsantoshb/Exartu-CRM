@@ -59,7 +59,7 @@ ContactableController = RouteController.extend({
     GAnalytics.event("contactables", "details");
   },
   onAfterAction: function() {
-    var title = Session.get('contactableDisplayName'),
+    var title = 'My Network / ' + Session.get('contactableDisplayName'),
       description = 'Contact information';
     SEO.set({
       title: title,

@@ -46,7 +46,7 @@
                                 <div class="pull-right btn-social">
                                     <!--                    <a class="btn btn-facebook" href="#"><i class="fa fa-facebook"></i></a>-->
                                     <!--                    <a class="btn btn-twitter" href="#"><i class="fa fa-twitter"></i></a>-->
-                                    <a class="btn btn-google-plus" data-bind="click: function() { $root.loginWith('Google'); }">
+                                    <a class="btn btn-google-plus" title="Login using your google account" data-bind="click: function() { $root.loginWith('Google'); }">
                                         <i class="fa fa-google-plus"></i>
                                     </a>
                                 </div>
@@ -87,33 +87,42 @@
                                     <!--<div class="col-md-6"><input class="form-control input-lg" type="text" placeholder="Last Name"></div>-->
                                 <!--</div>-->
                             <!--</div>-->
-                            <div data-bind="css:{'has-error': newAccount().username.isModified() && ! newAccount().username.isValid()}">
-                                <div class="form-group">
-                                    <input class="form-control input-lg" type="text" placeholder="Choose your Exartu Username" data-bind="value: newAccount().username" />
+                            <!-- ko if: !accountCreated() -->
+                                <div data-bind="css:{'has-error': newAccount().username.isModified() && ! newAccount().username.isValid()}">
+                                    <div class="form-group">
+                                        <input class="form-control input-lg" type="text" placeholder="Choose your Exartu Username" data-bind="value: newAccount().username" />
+                                    </div>
+                                    <span class="text-danger" data-bind="validationMessage: newAccount().username"></span>
                                 </div>
-                                <span class="text-danger" data-bind="validationMessage: newAccount().username"></span>
-                            </div>
-                            <div data-bind="css:{'has-error': newAccount().password.isModified() && ! newAccount().password.isValid()}">
-                                <div class="form-group">
-                                    <input class="form-control input-lg" type="password" placeholder="Choose Password" data-bind="value: newAccount().password" />
+                                <div data-bind="css:{'has-error': newAccount().password.isModified() && ! newAccount().password.isValid()}">
+                                    <div class="form-group">
+                                        <input class="form-control input-lg" type="password" placeholder="Choose Password" data-bind="value: newAccount().password" />
+                                    </div>
+                                    <span class="text-danger" data-bind="validationMessage: newAccount().password"></span>
                                 </div>
-                                <span class="text-danger" data-bind="validationMessage: newAccount().password"></span>
-                            </div>
-                            <div data-bind="css:{'has-error': newAccount().passwordVerification.isModified() && ! newAccount().passwordVerification.isValid()}">
-                                <div class="form-group">
-                                    <input class="form-control input-lg" type="password" placeholder="Confirm password" data-bind="value: newAccount().passwordVerification" />
+                                <div data-bind="css:{'has-error': newAccount().passwordVerification.isModified() && ! newAccount().passwordVerification.isValid()}">
+                                    <div class="form-group">
+                                        <input class="form-control input-lg" type="password" placeholder="Confirm password" data-bind="value: newAccount().passwordVerification" />
+                                    </div>
+                                    <span class="text-danger" data-bind="validationMessage: newAccount().passwordVerification"></span>
                                 </div>
-                                <span class="text-danger" data-bind="validationMessage: newAccount().passwordVerification"></span>
-                            </div>
-                            <div data-bind="css:{'has-error': newAccount().email.isModified() && ! newAccount().email.isValid()}">
-                                <div class="form-group">
-                                    <input class="form-control input-lg" type="text" placeholder="Email" data-bind="value: newAccount().email">
+                                <div data-bind="css:{'has-error': newAccount().email.isModified() && ! newAccount().email.isValid()}">
+                                    <div class="form-group">
+                                        <input class="form-control input-lg" type="text" placeholder="Email" data-bind="value: newAccount().email">
+                                    </div>
+                                    <span class="text-danger" data-bind="validationMessage: newAccount().email"></span>
                                 </div>
-                                <span class="text-danger" data-bind="validationMessage: newAccount().email"></span>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary top-10 btn-lg" data-bind="css: {disabled:isValidating}, click: function() { createNewAccount() }">Create Account</button>
-                            </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary top-10 btn-lg" data-bind="css: {disabled:isValidating}, click: function() { createNewAccount() }">Create Account</button>
+                                </div>
+                            <!-- /ko -->
+                            <!-- ko if: accountCreated() -->
+                                <div class="col-md-8 text-center" style="margin-bottom: 150px">
+                                    <br><br>
+                                    <h4>Congratulations your account has been created</h4>
+                                    <p>Before login you should verify your email account, check your inbox</p>
+                                </div>
+                            <!-- /ko -->
                         </form>
                         <br><br><br><br>
                         <hr>
