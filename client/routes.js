@@ -9,7 +9,7 @@ Router.configure({
     return [HierarchiesHandler];
   },
   onBeforeAction: function () {
-    if (!Meteor.userId() && Router.current().route.name != 'login') {
+    if (!Meteor.userId() && Router.current().route.name != 'login' && Router.current().route.name != 'notFound') {
       this.redirect('login');
     }
   },
@@ -156,12 +156,10 @@ Router.map(function () {
     }
   })
 
-  this.route('emailVerification', {
-    path: '/emailVerification/:token',
-    action: function () {
-      this.redirect('/user');
-    }
-  });
+  this.route('notFound', {
+    path: '/notfound',
+    template: 'notFoundTemplate'
+  })
 });
 
 // handler for testing loading pages

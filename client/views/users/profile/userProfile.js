@@ -93,6 +93,19 @@ Template.userProfile.isGoogleUser = function() {
   return _.isObject(Meteor.user().services.google);
 };
 
+var pendingEmail;
+Template.userProfile.pendingEmail = function() {
+  _.any(Meteor.user().emails, function(email) {
+    if(email.token) {
+      pendingEmail = email.address;
+      return true;
+    }
+    return false;
+  });
+
+  return pendingEmail;
+};
+
 Template.userProfile.events = {
   'click #edit-pic': function () {
     $('#edit-picture').trigger('click');
@@ -132,9 +145,8 @@ Template.userProfile.events = {
       }
       else {
         userInfo.errorMessage.value = '';
-        debugger;
         if (userInfo.email.value != userInfo.email.default) {
-          userInfo.successMessage.value = 'Verified your email to use it';
+          userInfo.successMessage.value = 'Information saved. Verify your new email';
           Meteor.call('updateEmailVerification', userInfo.email.value);
         }
         else
@@ -161,6 +173,12 @@ Template.userProfile.events = {
   },
   'click #edit-pic-google': function() {
     Meteor.call('updateUserPicture', null);
+  },
+  'click #resendEmailVerification': function() {
+    if (!pendingEmail)
+      return;
+
+    Meteor.call('updateEmailVerification', pendingEmail);
   }
 }
 

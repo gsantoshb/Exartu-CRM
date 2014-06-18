@@ -45,8 +45,19 @@
                                         <input class="form-control" type="text" placeholder="" value="{{value}}"/>
                                     {{/objectProperty}}
                                 </div>
+                                <div>
+                                    {{#with pendingEmail}}
+                                        Email verification for <strong> {{.}} </strong> is pending, click <a id="resendEmailVerification">here</a> to resend.
+                                    {{/with}}
+                                </div>
 
                                 <div class="pull-right">
+                                    {{#objectProperty property=errorMessage}}
+                                        <span class="text text-sm text-danger">{{value}}</span>
+                                    {{/objectProperty}}
+                                    {{#objectProperty property=successMessage}}
+                                        <span class="text text-sm text-success">{{value}}</span>
+                                    {{/objectProperty}}
                                     <button id="save" class="btn btn-primary">Save</button>
                                 </div>
                             {{/with}}

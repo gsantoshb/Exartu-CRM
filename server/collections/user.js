@@ -267,10 +267,25 @@ Meteor.methods({
   updateEmailVerification: function(email) {
     var shortId = Meteor.require('shortid');
     var token = shortId.generate();
-    var url = Meteor.absoluteUrl('emailVerification/' + token);
+    var url = Meteor.absoluteUrl('emailverification/' + token);
     var html = 'Email verification, click in the link bellow to active your new email: <br/>' +
                 '<a href="' + url + '"> </a> '+ url + '<br/>' +
-                'Once you verified this email your previous email is disabled';
+                'Once you verified this email your previous email will be disabled';
+
+    Meteor.users.update({_id: Meteor.userId()},
+      {
+        $pull: {
+          emails: {
+            token: {
+              $exists: true
+            },
+            $not: {
+              token: null
+            }
+          }
+        }
+      }
+    );
 
     Meteor.users.update({_id: Meteor.userId(), 'emails.address': email }, {$set: { 'emails.$.token': token }});
 
@@ -284,10 +299,17 @@ Router.map(function () {
     path: '/emailVerification/:token',
     action: function () {
       var token = this.params.token;
-      var user = Meteor.users.find({'emails.token': token});
+      var user = Meteor.users.findOne({'emails.token': token});
 
-      if(!user )
-        throw new Meteor.Error(500, 'Invalid token for email update');
+      if(!user ) {
+        this.response.writeHead(301,
+          {
+            Location: Meteor.absoluteUrl('notfound')
+          }
+        );
+        this.response.end();
+        return;
+      }
 
       Meteor.users.update({'emails.token': token},
         {
@@ -305,6 +327,13 @@ Router.map(function () {
           }
         }
       );
+
+      this.response.writeHead(301,
+        {
+          Location: Meteor.absoluteUrl()
+        }
+      );
+      this.response.end();
     }
   });
 });
