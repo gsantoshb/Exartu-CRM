@@ -66,6 +66,12 @@ Contactables = new Meteor.Collection("contactables", {
       var customer = Contactables.findOne({_id: contactable.Contact.customer });
       contactable.Contact.customerName = customer.displayName;
     }
+    if (contactable.Employee){
+      if (! contactable.Employee.recruiterStatus)
+        contactable.recruiterStatus=null;
+      var type=LookUps.findOne({_id: contactable.Employee.recruiterStatus});
+      contactable.Employee.recruiterStatusName= type? type.displayName : '';
+    }
 
     extendObject(contactable);
     return contactable;

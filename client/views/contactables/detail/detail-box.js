@@ -101,6 +101,13 @@ var generateReactiveObject = function(contactable) {
       description: {
         default: employee.description,
         update: updateBase + 'description'
+      },
+      status: {
+        default: employee.recruiterStatus,
+        update: updateBase + 'recruiterStatus',
+        type: Utils.ReactivePropertyTypes.lookUp,
+        displayName: employee.recruiterStatusName,
+        options: LookUps.find({codeType: Enums.lookUpTypes.employee.recruiterStatus.code})
       }
     });
   }
@@ -124,6 +131,9 @@ var generateReactiveObject = function(contactable) {
 
 Template.contactableDetailBox.created=function(){
   EditMode.hide();
+}
+Template.contactableDetailBox.isSelected=function(value1, value2){
+  return value1==value2
 }
 
 Template.contactableDetailBox.contactable = function() {
@@ -153,7 +163,7 @@ Template.contactableDetailBox.events = {
       contactable.showErrors();
       return;
     }
-
+    console.dir(contactable.generateUpdate());
     Contactables.update({_id: contactable._id}, contactable.generateUpdate(), function(err, result) {
       if (!err) {
         EditMode.hide();

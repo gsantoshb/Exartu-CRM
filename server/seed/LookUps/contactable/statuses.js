@@ -14,3 +14,18 @@ _.forEach([
     systemLookUps.push(item);
   }
 );
+
+//employee status
+_.forEach([
+  {
+    displayName: 'One'
+  },
+  {
+    displayName: 'Two'
+  }
+],
+  function (item) {
+    item.codeType = Enums.lookUpTypes.employee.recruiterStatus.code;
+    systemLookUps.push(item);
+  }
+);
