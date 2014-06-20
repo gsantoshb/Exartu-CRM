@@ -101,8 +101,8 @@
       },
       "bootstrap3-datetimepicker": {
         "git": "https://github.com/tsega/meteor-bootstrap3-datetimepicker.git",
-        "tag": "v0.0.5",
-        "commit": "30b5fa0759f98b75761772ad891876408f7cc8c4"
+        "tag": "v0.1.1",
+        "commit": "c202932d46b2f3fd21340c19df64143f99e736a0"
       },
       "percolatestudio-migrations": {
         "git": "https://github.com/percolatestudio/meteor-migrations.git",
@@ -111,8 +111,8 @@
       },
       "kadira": {
         "git": "https://github.com/meteorhacks/kadira.git",
-        "tag": "v2.4.0",
-        "commit": "18ac6e2b054f891560063427bfa36c817e585567"
+        "tag": "v2.4.3",
+        "commit": "6b8fd8cf89304fecef2c4a2fd3b390ab9c314a10"
       },
       "GAnalytics": {
         "git": "https://github.com/datariot/meteor-ganalytics.git",
@@ -201,8 +201,8 @@
       },
       "cfs-tempstore": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-tempstore.git",
-        "tag": "v0.0.26",
-        "commit": "0b95e286b94754ca317b968a4d818cc65913dd72"
+        "tag": "v0.0.27",
+        "commit": "d8fe0422b2767391738ab537bf6749395e4030a0"
       },
       "emitter": {
         "git": "https://github.com/Meteor-Reaction/meteor-emitter.git",

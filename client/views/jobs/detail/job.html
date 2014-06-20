@@ -3,7 +3,11 @@
         <div id="content">
             {{#with originalJob}}
                 <div id="content-header" class="mini">
-                    <h1>{{displayName}}</h1>
+                    <h1>{{displayName}}
+                        <a class="pull-right" href="/contactable/{{customer}}">
+                        <i class="icon-buildings-1"></i>
+                        {{customerName}}
+                    </a></h1>
                 </div>
                 <div id="breadcrumb" class="bradcrumb-top">
                     <a href="/" title="Go to Home" class="tip-bottom">
