@@ -10,12 +10,12 @@
 
                         {{#objectProperty property=objType}}
                             {{#if value}}
-                                <span> {{value}}s </span>
+                                <span> {{value}}(s) </span>
                             {{else}}
-                                members
+                                records
                             {{/if}}
                         {{/objectProperty}}
-                        in network
+
                     {{/with}}
                 </h1>
             </div>
@@ -127,10 +127,10 @@
                 <div class="v-wrapper">
                     <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                         <i class="icon-connection-1 text-large"></i>
-                        <h1>You currently have no members in your network
+                        <!--<h1>You currently have no members in your network-->
 
-                        </h1>
-                        <p class="lead">In your network you can have Employees, Customers or Contacts.</p>
+                        <!--</h1>-->
+                        <!--<p class="lead">In your network you can have Employees, Customers or Contacts.</p>-->
 
                         {{#each contactableTypes}}
                             <a href="/contactableAdd/{{name}}" class="separatedLinks">Create {{name}}</a>

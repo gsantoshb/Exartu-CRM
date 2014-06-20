@@ -233,18 +233,18 @@
                                     <!-- /.table-item -->
                                     <!-- /ko -->
                                 <!-- /ko -->
-                                <!--ko ifnot: entities().length >0-->
-                                    <div class="v-wrapper">
-                                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                                            <i class="icon-briefcase text-large"></i>
-                                            <h1>You currently have no Jobs</h1>
-                                            <!--ko foreach: jobTypes-->
-                                                <a href="#" data-bind="attr: { href: '/jobAdd/'+name }, text: 'New ' + name + ' Job'"></a>
-                                                <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
-                                            <!-- /ko -->
-                                        </div><!-- /.v-wrapper-cell -->
-                                    </div>
-                                <!-- /ko -->
+                                <!--&lt;!&ndash;ko ifnot: entities().length >0&ndash;&gt;-->
+                                    <!--<div class="v-wrapper">-->
+                                        <!--<div class="v-wrapper-cell text-center text-muted" style="height: 678px;">-->
+                                            <!--<i class="icon-briefcase text-large"></i>-->
+                                            <!--<h1>You currently have no Jobs</h1>-->
+                                            <!--&lt;!&ndash;ko foreach: jobTypes&ndash;&gt;-->
+                                                <!--<a href="#" data-bind="attr: { href: '/jobAdd/'+name }, text: 'New ' + name + ' Job'"></a>-->
+                                                <!--<span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>-->
+                                            <!--&lt;!&ndash; /ko &ndash;&gt;-->
+                                        <!--</div>&lt;!&ndash; /.v-wrapper-cell &ndash;&gt;-->
+                                    <!--</div>-->
+                                <!--&lt;!&ndash; /ko &ndash;&gt;-->
                                 <!--infinite scroll-->
                                 <div data-bind="onScrollBottom: showMore"></div>
                             </div>
