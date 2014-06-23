@@ -51,10 +51,16 @@ Meteor.publish('resumes', function() {
 });
 
 ResumesFS.allow({
-  insert: function (userId, doc) {
+  insert: function (userId, file) {
     return true;
   },
-  update: function() {
+  update: function (userId, file, fields, modifier) {
+    return true;
+  },
+  remove: function (userId, file) {
+    return true;
+  },
+  download: function (userId, file) {
     return true;
   }
 });
@@ -139,6 +145,8 @@ Meteor.startup(function () {
                                 'metadata.employeeId' : result
                               }
                             });
+                            debugger;
+//                            ContactablesFS.insert()
                             cb(null, tempEmployee);
                           }else
                             cb(new Meteor.Error(500, "Error during employee creating"), null);

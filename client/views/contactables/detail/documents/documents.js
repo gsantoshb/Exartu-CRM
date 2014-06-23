@@ -139,6 +139,14 @@ Template.contactableDocumentsList.documents = function() {
   );
 };
 
+Template.contactableDocumentsList.isEmpty = function() {
+  return ResumesFS.find({'metadata.employeeId': this.entity._id}).count() + fileCollection.find({ 'metadata.entityId': this.entity._id }).count() == 0;
+};
+
+Template.contactableDocumentsList.resumes = function() {
+  return this.entity.Employee? ResumesFS.find({'metadata.employeeId': this.entity._id}): [];
+};
+
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
     searchString: {}
@@ -179,6 +187,10 @@ Template.contactableDocumentsList.events = {
   'click .delete': function(e) {
     var file = this;
     fileCollection.remove({_id: file._id});
+  },
+  'click .delete-resume': function(e) {
+    var file = this;
+    ResumesFS.remove({_id: file._id});
   },
   'click .resume': function(e) {
     var file = this;
