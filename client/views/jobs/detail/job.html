@@ -134,19 +134,21 @@
                                                 {{/objectProperty}}
                                             {{/if}}
                                         </td>
-                                        <td>
-                                            <i class="fa fa-dollar"></i>&nbsp;fee:
-                                            {{#objectProperty property=fee editable=editMode}}
-                                            <div class="form-group  {{hasError}}">
-                                                <input class="form-control" type="number" value="{{value}}">
-                                                <span>{{error}}</span>
-                                            </div><!-- /.form-group -->
-                                            {{else}}
-                                                <strong>
-                                                    {{value}}%
-                                                </strong>
-                                            {{/objectProperty}}
-                                        </td>
+                                        {{#if isType 'Direct Hire'}}
+                                            <td>
+                                                <i class="fa fa-dollar"></i>&nbsp;fee:
+                                                {{#objectProperty property=fee editable=editMode}}
+                                                <div class="form-group  {{hasError}}">
+                                                    <input class="form-control" type="number" value="{{value}}">
+                                                    <span>{{error}}</span>
+                                                </div><!-- /.form-group -->
+                                                {{else}}
+                                                    <strong>
+                                                        {{value}}%
+                                                    </strong>
+                                                {{/objectProperty}}
+                                            </td>
+                                        {{/if}}
                                     </tr>
                                     {{#if isType 'Temporary'}}
                                         <tr>
