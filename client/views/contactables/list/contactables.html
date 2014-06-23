@@ -10,12 +10,12 @@
 
                         {{#objectProperty property=objType}}
                             {{#if value}}
-                                <span> {{value}}s </span>
+                                <span> {{value}}(s) </span>
                             {{else}}
-                                members
+                                records
                             {{/if}}
                         {{/objectProperty}}
-                        in network
+
                     {{/with}}
                 </h1>
             </div>
@@ -114,30 +114,28 @@
         {{#each contactables}}
             {{> contactablesListItem }}
         {{else}}
-            {{#if info.isFiltering }}
+            {{#if info.isFiltering.value }}
                 <div class="v-wrapper">
                     <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                         <i class="icon-connection-1 text-large"></i>
-                        <!--<h1>No {{#if info.objName}} {{info.objName}} {{else}} records {{/if}}-->
-                            <!--Found-->
-                        <!--</h1>-->
+                        <h1>
+                            No records Found
+                        </h1>
                     </div><!-- /.v-wrapper-cell -->
                 </div>
             {{else}}
                 <div class="v-wrapper">
                     <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                         <i class="icon-connection-1 text-large"></i>
-                        <h1>You currently have no
-                            <!--ko text:name-->
-                            <!--/ko-->
-                        </h1>
-                        <!--ko if:name()=='contactable'-->
-                        <p class="lead">A contactable is an Employee, Customer or Contact.</p>
-                        <!-- /ko -->
-                        <!--ko foreach: contactableTypes-->
-                        <a href="#" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
-                        <span class="bullet-spacer" data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
-                        <!-- /ko -->
+                        <!--<h1>You currently have no members in your network-->
+
+                        <!--</h1>-->
+                        <!--<p class="lead">In your network you can have Employees, Customers or Contacts.</p>-->
+
+                        {{#each contactableTypes}}
+                            <a href="/contactableAdd/{{name}}" class="separatedLinks">Create {{name}}</a>
+                        {{/each}}
+
                     </div><!-- /.v-wrapper-cell -->
                 </div>
             {{/if}}
@@ -272,9 +270,9 @@
                         {{/each}}
                     </ul>
                 </div>
-                {{#subscriptionPlan plans=resumeParserRestrictions }}
+                <!--{{#subscriptionPlan plans=resumeParserRestrictions }}-->
                     <a class="btn btn-success pull-left suffix-10" href="/resumeparser"><i class="fa fa-cloud-download"></i> Import</a>
-                {{/subscriptionPlan}}
+                <!--{{/subscriptionPlan}}-->
                 <div class="input-group">
                     {{#objectProperty property=searchString}}
                         <input type="text" class="form-control" placeholder="" value="{{value}}">

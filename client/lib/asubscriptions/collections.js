@@ -66,6 +66,12 @@ Contactables = new Meteor.Collection("contactables", {
       var customer = Contactables.findOne({_id: contactable.Contact.customer });
       contactable.Contact.customerName = customer.displayName;
     }
+    if (contactable.Employee){
+      if (! contactable.Employee.recruiterStatus)
+        contactable.recruiterStatus=null;
+      var type=LookUps.findOne({_id: contactable.Employee.recruiterStatus});
+      contactable.Employee.recruiterStatusName= type? type.displayName : '';
+    }
 
     extendObject(contactable);
     return contactable;
@@ -144,7 +150,11 @@ Jobs = new Meteor.Collection("jobs", {
         job.categoryName = LookUps.findOne({ _id: job.category }).displayName;
         job.durationName = LookUps.findOne({ _id: job.duration }).displayName;
 //        job.statusName = LookUps.findOne({ _id: job.status }).displayName;
-      job.status=JobStatus.get(job);
+        job.status=JobStatus.get(job);
+        if (job.customer) {
+            var customer = Contactables.findOne({_id: job.customer });
+            job.customerName = customer.displayName;
+        }
 
     return job;
   }

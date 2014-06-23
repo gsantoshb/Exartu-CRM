@@ -164,6 +164,15 @@ newObjType({
     fields: [{
         name: 'description',
         displayName: 'Description'
+    },{
+        name: 'recruiterStatus',
+        displayName: 'Candidacy status',
+        fieldType: 'lookUp',
+        lookUpName: 'recruiterStatus',
+        lookUpCode: Enums.lookUpTypes.employee.recruiterStatus.code,
+        defaultValue: getFirst(Enums.lookUpTypes.employee.recruiterStatus),
+        showInAdd: false,
+        required: false,
     }]
 })
 newObjType({

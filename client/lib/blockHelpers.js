@@ -82,7 +82,7 @@ UI.registerHelper('objectProperty', function() {
 
 Template.object_property_lookup.events = {
   'change select': function(e, ctx) {
-    ctx.data.property.value = e.target.value;
+    ctx.data.property.value = e.target.value=='null'? null: e.target.value;
   }
 };
 

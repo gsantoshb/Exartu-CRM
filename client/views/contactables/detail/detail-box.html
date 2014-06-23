@@ -97,6 +97,26 @@
                                 {{/objectProperty}}
                             </td>
                         </tr>
+                        <tr>
+                            <td>Candidacy status</td>
+                            <td>
+                                {{#objectProperty property=status editable=editMode}}
+                                    <div class="form-group  {{hasError}}">
+                                        <select class="form-control input-lg">
+                                            <option value="null" selected="{{isSelected null value}}">--Select--</option>
+                                            {{#each options}}
+                                                <option value="{{_id}}" selected="{{isSelected _id ../value}}">{{displayName}}</option>
+                                            {{/each}}
+                                        </select>
+                                        <span>{{error}}</span>
+                                    </div><!-- /.form-group -->
+                                {{else}}
+                                    <strong>
+                                        <strong>{{displayName}}</strong>
+                                    </strong>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
                     {{/if}}
                     {{#if contact }}
                         <tr>

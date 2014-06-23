@@ -74,7 +74,7 @@ Meteor.startup(function () {
         console.dir(contactable);
       }
     },
-    createEmployeeFromResume: SubscriptionPlan.checkFunction([SubscriptionPlan.plansEnum.enterprise],
+    createEmployeeFromResume: //SubscriptionPlan.checkFunction([SubscriptionPlan.plansEnum.enterprise],
       function(resumeFileId) {
         FS.debug = true;
 
@@ -151,8 +151,8 @@ Meteor.startup(function () {
         ));
 
         return syncParse(stream, resumeFileId);
-      }
-    ),
+      },
+//    ),
     addContactableTag: function (contactableId, tag) {
       // TODO: validations
 
