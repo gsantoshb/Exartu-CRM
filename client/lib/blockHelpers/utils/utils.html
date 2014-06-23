@@ -1,0 +1,20 @@
+<template name="user_info_template">
+    {{> UI.contentBlock info }}
+</template>
+
+<template name="inputLocationTemplate">
+    <input class="form-control location">
+</template>
+
+<template name="dropzone_template">
+    <div class="upload-panel" style="padding: 10px">
+        {{> UI.contentBlock }}
+    </div>
+</template>
+
+<template name="fileProgress">
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%;">
+        </div>
+    </div>
+</template>

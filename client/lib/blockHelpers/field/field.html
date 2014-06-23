@@ -1,0 +1,52 @@
+<template name="typeInput">
+    {{#each fieldGroups}}
+    <div class="fieldGroup">
+        {{#each items}}
+        {{#displayProperty .}}
+
+        {{/displayProperty}}
+        {{/each}}
+    </div>
+    {{/each}}
+</template>
+
+<template name="fieldInput">
+    <span>{{displayName}} :</span>
+    <div class="form-group {{hasError}}">
+        <input class="form-control input-lg" type="text" placeholder="{{displayName}}" value="{{value}}">
+        <span>{{error}}</span>
+    </div><!-- /.form-group -->
+</template>
+
+<template name="lookUpFieldInput">
+    <span>{{displayName}} :</span>
+    <div class="form-group {{hasError}}">
+        <select class="form-control input-lg" type="text" placeholder="{{displayName}}">
+            <option value="null" selected="{{isSelected null value}}">--Select--</option>
+            {{#each options}}
+                <option value="{{_id}}" selected="{{isSelected _id ../value}}">{{displayName}}</option>
+            {{/each}}
+        </select>
+        <span>{{error}}</span>
+    </div><!-- /.form-group -->
+</template>
+<template name="dateFieldInput">
+    <span>{{displayName}} :</span>
+    <div class="form-group {{hasError}}">
+        {{>dateTimePickerTemp}}
+        <span>{{error}}</span>
+    </div><!-- /.form-group -->
+</template>
+
+<template name="relInput">
+    <span>{{displayName}} : </span>
+    <div class="form-group  {{hasError}}">
+        <select class="form-control input-lg" type="text" placeholder="{{displayName}}" disabled="{{isDisabled}}">
+            <option value="null" selected="{{isSelected null}}">--Select--</option>
+            {{#each options}}
+            <option value="{{_id}}" selected="{{isSelected ../value}}">{{displayName}}</option>
+            {{/each}}
+        </select>
+        <span>{{error}}</span>
+    </div><!-- /.form-group -->
+</template>

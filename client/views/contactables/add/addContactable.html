@@ -1,68 +1,37 @@
-<template name="addContactable">
-    <div class="modal fade" id="addContactableModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addContactableModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">×</a>
-                    <h4 data-bind="text: objTypeName() + ' add'"></h4>
-                </div>
-                <div class="modal-body " data-bind="if: $data.ready">
-                    <form role="form">
-                        <select class="form-control" data-bind="options: helper.getPersonTypes(), value: selectedType"></select>
-                        <!-- Show static fields -->
-                        <div data-bind="with: entity">
-                            {{>addPerson}} {{>addOrganization}}
-                        </div>
-                        <!-- Show dynamic fields and relations -->
-                        <div data-bind="template: { name: 'showDynamicObjectTemplate', data: {data: $data}}"></div>
-                        Location:
-                        <div class="input-group">
-                            <input type="text" class="form-control" data-bind="value: locationString" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button" data-bind="click:findLocation">
-                                    <i class="fa fa-search"></i>find
-                                </button>
-                            </span>
-                        </div>
-                        <!--ko if: location-->
-                        <div data-bind="map: location" style="width:500px;height:500px;margin:10px auto"></div>
-                        <!--/ko-->
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button data-bind="click: add, enable:canAdd" class="btn btn-success">Add</button>
-                    <a href="#" class="btn" data-dismiss="modal">Close</a>
-                </div>
-            </div>
-        </div>
-        <!-- Templates -->
-        {{>showDynamicObjectTemplate}}
-    </div>
-</template>
+<template name="addContactablePage">
+    <div id="content" class="content-gray">
+        <div class="container-fluid">
 
-<template name="addOrganization">
-    <div data-bind="if: $parent.selectedType()==Enums.personType.organization">
+            <div class="add-box">
+                <div class="add-box-head">
+                    <a class="btn btn-default pull-left goBack" href="#"><i class="fa fa-long-arrow-left"></i> Go Back</a>
+                    <div class="add-item-icon"><i class="icon-profile-bussiness-man"></i></div>
+                    <h1>+ Add {{objTypeName}}</h1>
+                </div><!-- /.add-box-head -->
 
-        <div data-bind="with: organization">
-            <fieldset>
-                <div data-bind="template: { name: 'inStringField', data: { data: { displayName: 'Organization name', value:$data.organizationName } } }"> </div>
-            </fieldset>
-        </div>
+                <div class="add-box-content">
+                        <div class="form-group">
+                            <select class="form-control input-lg" id="personType">
+                                <option value="organization" selected="{{selected 'organization'}}">Organization</option>
+                                <option value="person" selected="{{selected 'person'}}">Person</option>
+                            </select>
+                        </div><!-- /.form-group -->
+                        {{#with contactable}}
+                            {{#each subTypeArray}}
+                                {{> typeInput }}
+                            {{/each}}
+
+                            {{> typeInput }}
+
+                            <div class="form-group text-center top-30">
+                                <button class="btn btn-success btn-lg">Add {{objTypeName}}</button>
+                            </div><!-- /.form-group -->
+
+                        {{/with}}
+
+                </div><!-- /.add-box-content -->
+            </div><!-- /.add-box -->
+
+        </div><!-- /.container-fluid -->
     </div>
-</template>
-<template name="addPerson">
-    <!-- ko if: $parent.selectedType()==Enums.personType.human -->
-    <!-- ko with: person -->
-    <div class="form-group" data-bind="template: { name: 'inStringField', data: { data: {displayName: 'First name', value:$data.firstName} } }">
-    </div>
-    <div class="form-group" data-bind="template: { name: 'inStringField', data: { data: {displayName: 'Middle name', value:$data.middleName} } }">
-    </div>
-    <div class="form-group" data-bind="template: { name: 'inStringField', data: { data: {displayName: 'Last name', value:$data.lastName} } }">
-    </div>
-    <div class="form-group" data-bind="template: { name: 'inStringField', data: { data: {displayName: 'Salutation', value:$data.salutation} } }">
-    </div>
-    <div class="form-group" data-bind="template: { name: 'inStringField', data: { data: {displayName: 'Job title', value:$data.jobTitle} } }">
-    </div>
-    <!-- /ko -->
-    <!-- /ko -->
 </template>

@@ -1,55 +1,32 @@
-<template name="addJob">
-    <div class="modal fade" id="addJobModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addJobModal">
-        <div class="modal-dialog" style="width: 50%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">×</a>
-                    <h4 data-bind="text: objTypeName() + ' add'"></h4>
-                </div>
-                <div class="modal-body" data-bind="if: $data.ready">
-                    <form role="form">
-                        <!-- Show static fields -->
-                        <div data-bind="with: entity">
-                            <div data-bind="template: { name: 'inStringField', data: { data: {displayName: 'Public job title', value: $data.publicJobTitle } } }" > </div>
-                            <div class="row">
-                                <fieldset class="col-lg-6">
-                                    <div data-bind="template: { name: 'inDateField', data: { data: {displayName: 'StartDate', value: $data.startDate } } }"> </div>
-                                </fieldset>
-                                <fieldset class="col-lg-6">
-                                    <div data-bind="template: { name: 'inDateField', data: { data: {displayName: 'EndDate', value: $data.endDate } } }"> </div>
-                                </fieldset>
-                            </div>
-                            <div class="row">
-                                <fieldset class="col-lg-6">
-                                    <div data-bind="template: { name: 'inLookUpField', data: { data: {displayName: 'Industry', value: $data.industry, options: $root.industries, multiple: false }, filter: $root.filterSelectedValue } }" > </div>
-                                </fieldset>
-                                <fieldset class="col-lg-6">
-                                    <div data-bind="template: { name: 'inLookUpField', data: { data: {displayName: 'Category', value: $data.category, options: $root.categories, multiple: false }, filter: $root.filterSelectedValue } }" > </div>
-                                </fieldset>
-                            </div>
-                            <fieldset>
-                                <div data-bind="template: { name: 'inLookUpField', data: { data: {displayName: 'Duration', value: $data.duration, options: $root.durations,multiple: false} , filter: $root.filterSelectedValue } }" > </div>
-                            </fieldset>
-                            <fieldset>
-                                <div data-bind="template: { name: 'inLookUpField', data: { data: {displayName: 'Status', value: $data.status,options: $root.statuses, multiple: false}, filter: $root.filterSelectedValue } }" > </div>
-                            </fieldset>
-                            <fieldset>
-                                <div data-bind="template: { name: 'inLongStringField', data: { data: {displayName: 'Description', value: $data.description } } }" > </div>
-                            </fieldset>
-                        </div>
-                        <!-- Show dynamic fields and relations -->
-                        <div data-bind="template: { name: 'showDynamicObjectTemplate', data: { data: $data, filter: $root.filterSelectedValue} }"></div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <a data-bind="click: add, enable: canAdd" class="btn btn-success">Add</a>
-                    <a href="#" class="btn" data-dismiss="modal">Close</a>
-                </div>
-            </div>
-        </div>
-        <!-- Templates -->
-        {{>showDynamicObjectTemplate}}
+<template name="addJobPage">
+    <div id="content" class="content-gray">
+        <div class="container-fluid">
+
+            <div class="add-box">
+                <div class="add-box-head">
+                    <a class="btn btn-default pull-left goBack" href="#"><i class="fa fa-long-arrow-left"></i> Go Back</a>
+                    <div class="add-item-icon"><i class="icon-profile-bussiness-man"></i></div>
+                    <h1>+ Add {{objTypeName}}</h1>
+                </div><!-- /.add-box-head -->
+
+                <div class="add-box-content">
+                    {{#with model}}
+                        {{#each subTypeArray}}
+                            {{> typeInput }}
+                        {{/each}}
+
+                        {{> typeInput }}
+
+                        <div class="form-group text-center top-30">
+                            <button class="btn btn-success btn-lg">Add {{objTypeName}}</button>
+                        </div><!-- /.form-group -->
+
+                    {{/with}}
+
+                </div><!-- /.add-box-content -->
+            </div><!-- /.add-box -->
+
+
+        </div><!-- /.container-fluid -->
     </div>
 </template>
-
-
