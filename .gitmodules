@@ -1,0 +1,3 @@
+[submodule "packages/doccenter"]
+	path = packages/doccenter
+	url = git@github.com:Exartu/Exartu-DocCenter.git
