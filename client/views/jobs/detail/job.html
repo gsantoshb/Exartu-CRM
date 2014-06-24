@@ -29,6 +29,31 @@
                             <div class="box-content-lg">
                                 <table class="table custom-table text-normal" style="table-layout: fixed;">
                                     <tbody>
+
+                                    <tr>
+                                        <td>
+                                            <i class="fa fa-briefcase"></i>&nbsp;Job title:
+                                            {{#objectProperty property=publicJobTitle editable=editMode}}
+                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{else}}
+                                                <strong>{{value}}</strong>
+                                            {{/objectProperty}}
+                                        </td>
+                                        <td colspan="2">
+                                            <i class="fa fa-globe"></i>&nbsp;Location:
+                                            {{#if editMode}}
+                                                {{#inputLocation location}}
+                                                {{/inputLocation}}
+                                            {{else}}
+                                                {{#with location.value}}
+                                                    <strong>{{displayName}}</strong>
+                                                {{else}}
+                                                    <strong class="text-muted">Not set</strong>
+                                                {{/with}}
+                                            {{/if}}
+                                        </td>
+                                    </tr>
+
                                     <tr>
                                         <td>
                                             <i class="fa fa-calendar"></i>&nbsp;Start Name:
@@ -173,21 +198,6 @@
                                             </td>
                                         </tr>
                                     {{/if}}
-                                    <tr>
-                                        <td colspan="2">
-                                            <i class="fa fa-globe"></i>&nbsp;Location:
-                                            {{#if editMode}}
-                                                {{#inputLocation location}}
-                                                {{/inputLocation}}
-                                            {{else}}
-                                                {{#with location.value}}
-                                                    <strong>{{displayName}}</strong>
-                                                {{else}}
-                                                    <strong class="text-muted">Not set</strong>
-                                                {{/with}}
-                                            {{/if}}
-                                        </td>
-                                    </tr>
                                     <tr>
                                         <td colspan="2">Tags:
                                             {{#objectProperty property=tags}}

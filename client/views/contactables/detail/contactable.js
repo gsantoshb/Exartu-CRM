@@ -116,7 +116,7 @@ Template.contactable.helpers({
     return moment(this.createdAt).format('lll');
   },
   documentCount: function() {
-    return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count();
+    return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count() + ResumesFS.find({'metadata.employeeId': Session.get('entityId')}).count();
   },
   mainContactMethods: function() {
     var result = {};
