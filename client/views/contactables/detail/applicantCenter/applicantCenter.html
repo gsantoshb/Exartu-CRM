@@ -1,0 +1,16 @@
+<template name="applicantCenter">
+    {{#if isInvited}}
+        {{#if isRegistered}}
+            <h5>The employee has successfully registered</h5>
+
+        {{else}}
+            <h5>The employee has already been invited, but he has not registered yet</h5>
+            <input class="email" value="{{email}}" placeholder="Enter an email...">
+            <a class="invite" href="#">resend invitation</a>
+        {{/if}}
+    {{else}}
+        <h5>The employee has NOT been invited yet</h5>
+        <input class="email" value="{{email}}" placeholder="Enter an email...">
+        <a class="invite" href="#">Send invitation</a>
+    {{/if}}
+</template>

@@ -56,7 +56,12 @@
                     <div class="row">
                         <!-- Left Column -->
                         <div class="col-sm-8 col-lg-5 contactable-left-col">
-                            {{>customer_tabs contactable=. documentCount=documentCount}}
+                            {{#if Customer}}
+                                {{>customer_tabs contactable=. documentCount=documentCount}}
+                            {{/if}}
+                            {{#if Employee}}
+                                {{>employee_tabs contactable=. documentCount=documentCount}}
+                            {{/if}}
                         </div>
 
                         <!-- Right Column -->
@@ -268,6 +273,30 @@
             {{> contactableDocumentsAdd entity=contactable collection="ContactablesFS"}}
             {{> contactableDocumentsList entity=contactable collection="ContactablesFS"}}
         </div><!-- /.profile-documents -->
+    </div>
+</template>
+<template name="employee_tabs">
+    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.posts.length}}</span></a></li>
+        <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>
+        <li><a href="#profile-applicantCenter" data-toggle="tab">ApplicantCenter <!--<span class="custom-badge-2">{{documentCount}}</span>--></a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Notes Tab -->
+        <div class="tab-pane active" id="profile-notes">
+            {{> contactableNotesAdd entity=contactable}}
+            {{> contactableNotesList entity=contactable}}
+        </div>
+        <!-- Documents Tab -->
+        <div class="tab-pane" id="profile-documents">
+            {{> contactableDocumentsAdd entity=contactable collection="ContactablesFS"}}
+            {{> contactableDocumentsList entity=contactable collection="ContactablesFS"}}
+        </div><!-- /.profile-documents -->
+        <div class="tab-pane" id="profile-applicantCenter">
+           {{> applicantCenter entity=contactable}}
+        </div><!-- /.profile-documents -->
+
     </div>
 </template>
 
