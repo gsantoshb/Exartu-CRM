@@ -1,0 +1,348 @@
+﻿.xr2filler-container {
+    width: 980px;
+    min-height: 444px;
+    padding-left: 3px;
+    padding-bottom: 10px;
+    margin: auto;
+}
+
+/** Errors container section **/
+.xr2filler-container .errorContainer {
+    width: 974px;
+    margin-bottom: 10px;
+}
+.xr2filler-container .errorContainer  p{
+    margin-bottom: 0px;
+}
+.xr2filler-container .infoBox,
+.xr2filler-container .successBox,
+.xr2filler-container .warningBox,
+.xr2filler-container .errorBox,
+.xr2filler-container .validationBox,
+.xr2filler-container .approvedBox {
+  border: 1px solid;
+  margin: 10px 0px;
+  padding:15px 10px 15px 50px;
+  background-repeat: no-repeat;
+  background-position: 10px center;
+}
+.xr2filler-container .infoBox {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('/Content/xr2designer/images/info.png');
+}
+.xr2filler-container .successBox {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image:url('/Content/xr2designer/images/success.png');
+}
+.xr2filler-container .warningBox {
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('/Content/xr2designer/images/warning.png');
+}
+.xr2filler-container .errorBox {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('/Content/xr2designer/images/error.png');
+}
+.xr2filler-container .approvedBox {
+    color: #00529B;
+    background-color: #C8E6EB;
+    background-image: url('/Content/xr2designer/images/approved.png');
+}
+
+.xr2filler-container #documentFillPlace {
+    position: relative;
+    width: 970px;
+    min-height: 438px;
+    z-index: 0;
+    padding: 2px;
+
+    background-color: white;
+    box-shadow: 0 0 6px rgba(0, 0, 0, .25);
+    -moz-box-shadow: 0 0 6px rgba(0, 0, 0, .25);
+    -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, .25);
+    -ms-box-shadow: 0 0 6px rgba(0, 0, 0, .25);
+}
+
+
+
+
+.xr2filler-container .TTWForm {
+    width: 100%;
+}
+
+
+
+/** Designer field's style **/
+.xr2filler-container .TTWForm .field {
+    position: absolute;
+    padding: 8px 28px 8px 8px;
+    clear: both;
+    width: 160px;
+}
+.xr2filler-container .TTWForm .field.radio-group,
+.xr2filler-container .TTWForm .field.checkbox-group
+{
+    width: auto;
+}
+
+.xr2filler-container .TTWForm input,
+.xr2filler-container .TTWForm textarea,
+.xr2filler-container .TTWForm select,
+.xr2filler-container .TTWForm canvas
+{
+    width: 100%;
+    height: auto;
+    font-family: Helvetica Neue, "Arial", Helvetica, Verdana, sans-serif;
+    outline: none;
+    display: inline-block;
+    position: relative;
+    padding: 1px 0px;
+    margin: 2px 0px;
+    z-index: 2;
+    background: #E8F9F7;
+    border: 1px solid #CCC;
+    -moz-border-radius: 3px;
+}
+
+.xr2filler-container .TTWForm input[readonly] {
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.xr2filler-container .TTWForm input[type=radio],
+.xr2filler-container .TTWForm input[type=checkbox] 
+{
+    float: none;
+    position: relative;
+    top: 1px;
+    width: 12px;
+    margin: 8px 12px;
+}
+
+.xr2filler-container .TTWForm .option {  
+    padding: 3px;
+    width: 40px;
+}
+.xr2filler-container .TTWForm select {
+    width: 100%;
+}
+.xr2filler-container .TTWForm textarea {
+    overflow: hidden;
+}
+.xr2filler-container .TTWForm label {
+    display: block;
+    color: black;
+    text-align: left;
+    font: 16px/24px Helvetica Neue, "Arial", Helvetica, Verdana, sans-serif;
+    line-height: 100%;
+}
+.xr2filler-container .TTWForm canvas {
+    margin: 0px;
+    height: 100%;
+}
+.xr2filler-container .TTWForm canvas.pad {
+    cursor: url(/Content/xr2designer/images/pen.cur) 16 16, default;
+}
+.xr2filler-container .TTWForm div.field.sigPad .clearButton {
+    position: absolute;
+    z-index: 5;
+    width: 12px;
+    height: 12px;
+    padding: 2px;
+    display: block;
+    float: right;
+    cursor: pointer;
+    background-image: url(/Content/xr2designer/images/ui-icons_454545_256x240.png);
+    background-position: -32px -192px;
+    opacity: .8;
+}
+.xr2filler-container .TTWForm canvas.pad.disabled {
+    cursor: default;
+    background: transparent;
+    border: 1px solid transparent;
+}
+.xr2filler-container .TTWForm div.field.sigPad .clearButton:hover
+{
+    opacity: 1;
+}
+
+
+
+/* tooltip styling. by default the element to be styled is .tooltip  */
+.xr2filler-container .tooltip {
+    background-color:#000;
+    border:1px solid #fff;
+    padding:10px 15px;
+    width:200px;
+    display:none;
+    color:#fff;
+    text-align:left;
+    font-size:12px;
+    z-index: 15;
+    
+    -box-shadow: 0 0 10px #000;
+    -moz-box-shadow:0 0 10px #000;
+    -webkit-box-shadow:0 0 10px #000;
+    -ms-box-shadow: 0 0 10px #000;	
+}
+
+
+
+/** Error fields class **/
+.xr2filler-container .TTWForm div.field.errorField {
+    padding: 7px 27px 7px 7px;
+}
+.xr2filler-container .TTWForm div.field.checkbox-group.errorField .option,
+.xr2filler-container .TTWForm div.field.radio-group.errorField .option
+{  
+    padding-top: 4px;
+    padding-left: 4px;
+}
+
+.xr2filler-container div.field.errorField input,
+.xr2filler-container div.field.errorField select,
+.xr2filler-container div.field.errorField canvas
+{
+    border: 2px solid red !important;
+}
+.xr2filler-container div.field.radio-group.errorField span,
+.xr2filler-container div.field.checkbox-group.errorField span
+{
+    background-image: url(/Content/xr2designer/images/sprite-errors.png);
+}
+.xr2filler-container .invalid
+{
+    padding: 1px;
+    border: 1px solid red;
+}
+span > input.invalid
+{
+    padding: 1px;
+    border: 1px solid red;
+}
+
+
+
+/* tooltip styling. by default the element to be styled is .tooltip  */
+.tooltip {
+    background-color:#000;
+    border:1px solid #fff;
+    padding:10px 15px;
+    width:200px;
+    display:none;
+    color:#fff;
+    text-align:left;
+    font-size:12px;
+    z-index: 15;
+    
+    -box-shadow: 0 0 10px #000;
+    -moz-box-shadow:0 0 10px #000;
+    -webkit-box-shadow:0 0 10px #000;
+    -ms-box-shadow: 0 0 10px #000;	
+}
+
+
+
+/** Modal **/
+.modal-box, .ui-dialog
+{
+    display: block;
+    width: 560px;
+    position: absolute;
+    top: -310px;
+    left: 170px;
+    padding: 0;
+    background: #eee; /* old browsers */
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F7F7F7 3%, #ffffff 43%, #F2F2F2 99%); /* firefox */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FFFFFF), color-stop(3%, #F7F7F7), color-stop(43%, #ffffff), color-stop(99%, #F2F2F2)); /* webkit */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#FFFFFF', endColorstr = '#F2F2F2', GradientType = 0); /* ie */
+    box-shadow: 0px 0px 6px #666;
+    -moz-box-shadow: 0px 0px 6px #666;
+    -webkit-box-shadow: 0px 0px 6px #666;
+    -ms-box-shadow: 0px 0px 6px #666;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -ms-border-radius: 6px;
+}
+
+
+
+/*
+ * jQuery UI Datepicker 1.8.18
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Datepicker#theming
+ */
+ 
+.ui-datepicker .ui-widget-content { border: 1px solid #d4d4d4; background: #ffffff url(/Content/xr2designer/images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #222222; }
+.ui-datepicker .ui-state-default { border: 1px solid #ffffff; background: #ffffff url(/Content/xr2designer/images/ui-bg_flat_100_ffffff_40x100.png) 50% 50% repeat-x; font-weight: normal; color: #4d4d4d; }
+.ui-datepicker .ui-state-highlight { border: 1px solid #b7bbbe; background: #cde0f4 url(/Content/xr2designer/images/ui-bg_glass_55_cde0f4_1x400.png) 50% 50% repeat-x; color: #363636; }
+.ui-datepicker .ui-state-active { border: 1px solid #ffffff; background: #25a1da url(/Content/xr2designer/images/ui-bg_flat_100_25a1da_40x100.png) 50% 50% repeat-x; color: #ffffff; }
+
+.ui-datepicker { width: 17em; padding: .2em .2em 0; display: none; background: white;}
+.ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }
+.ui-datepicker thead th { background: #c3d9ff; }
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
+.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 1px; }
+.ui-datepicker .ui-datepicker-prev { left:2px; }
+.ui-datepicker .ui-datepicker-next { right:2px; }
+.ui-datepicker .ui-datepicker-prev-hover { left:1px; }
+.ui-datepicker .ui-datepicker-next-hover { right:1px; }
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -8px; top: 50%; margin-top: -8px;  }
+.ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; }
+.ui-datepicker .ui-datepicker-title select { font-size:1em; margin:1px 0; }
+.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
+.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-year { width: 49%;}
+.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
+.ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0;  }
+.ui-datepicker td { border: 0; padding: 1px; }
+.ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
+.ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
+.ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
+
+/* with multiple calendars */
+.ui-datepicker.ui-datepicker-multi { width:auto; }
+.ui-datepicker-multi .ui-datepicker-group { float:left; }
+.ui-datepicker-multi .ui-datepicker-group table { width:95%; margin:0 auto .4em; }
+.ui-datepicker-multi-2 .ui-datepicker-group { width:50%; }
+.ui-datepicker-multi-3 .ui-datepicker-group { width:33.3%; }
+.ui-datepicker-multi-4 .ui-datepicker-group { width:25%; }
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-buttonpane { clear:left; }
+.ui-datepicker-row-break { clear:both; width:100%; font-size:0em; }
+
+/* RTL support */
+.ui-datepicker-rtl { direction: rtl; }
+.ui-datepicker-rtl .ui-datepicker-prev { right: 2px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next { left: 2px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-prev:hover { right: 1px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next:hover { left: 1px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane { clear:right; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button { float: left; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+
+/* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
+.ui-datepicker-cover {
+    display: none; /*sorry for IE5*/
+    display/**/: block; /*sorry for IE5*/
+    position: absolute; /*must have*/
+    z-index: -1; /*must have*/
+    filter: mask(); /*must have*/
+    top: -4px; /*must have*/
+    left: -4px; /*must have*/
+    width: 200px; /*must have*/
+    height: 200px; /*must have*/
+}

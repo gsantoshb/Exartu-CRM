@@ -160,6 +160,15 @@ Router.map(function () {
     path: '/notfound',
     template: 'notFoundTemplate'
   })
+
+  this.route('designer', {
+    path: '/designer',
+    template: 'designerTemplate'
+  })
+  this.route('filler', {
+    path: '/filler',
+    template: 'fillerTemplate'
+  })
 });
 
 // handler for testing loading pages

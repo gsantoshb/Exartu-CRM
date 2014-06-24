@@ -1,0 +1,378 @@
+<!-- Page Field Templates -->
+<div id="form-elements">
+    <script id="form-elements-tmpl" type="text/x-jquery-tmpl">
+		{{if fieldType =='text-field'}}
+		<div id="${id}-container" class="field">
+			<input type="text" name="${name}" id="${id}" style="font-size: 15px;" />
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='label-field'}}
+		<div id="${id}-container" class="field">
+			<label name="${name}" id="${id}" style="font-size: 15px;" readonly="readonly">Text here</label>
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='email-field'}}
+		<div id="${id}-container" class="field">
+			<input type="email" name="${name}" id="${id}"/>
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='number-field'}}
+		<div id="${id}-container" class="field">
+			<input type="number" name="${name}" id="${id}"/>
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='password-field'}}
+		<div id="${id}-container" class="field">
+			<input type="password" name="${name}" id="${id}"/>
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='url-field'}}
+		<div id="${id}-container" class="field">
+			<input type="url" name="${name}" id="${id}"/>
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='date-field'}}
+		<div id="${id}-container" class="field">
+			<input type="datepicker" class="ttw-date" name="${name}" id="${id}" pattern="(^(?:(((0[13578])|(1[02]))\/(0[1-9]|[12][0-9]|3[01]))|(((0[469])|(11))\/(0[1-9]|[12][0-9]|30))|((02)\/(0[1-9]|[12][0-9])))\/([0-9][0-9]|1[89][0-9][0-9]|20[0-9][0-9])$)?" />
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='textarea-field'}}
+		<div id="${id}-container" class="field">
+			<textarea rows="5" cols="20" name="${name}" id="${id}"></textarea>
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='select-field'}}
+		<div id="${id}-container" class="field">
+			<select name="${name}" id="${id}" style="font-size: 12px;">
+				<option name="${name}" id="${id}-1" value="Value 1">Value 1</option>
+				<option name="${name}" id="${id}-2" value="Value 2">Value 2</option>
+				<option name="${name}" id="${id}-3" value="Value 3">Value 3</option>
+			</select>
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='radio-field'}}
+		<div id="${id}-container" class="field radio-group">
+			<div class="option clearfix"><input type="radio" name="${name}" id="${id}-1" value="Value 1"/><span class="option-title"></span></div>
+			<div class="option clearfix"><input type="radio" name="${name}" id="${id}-2" value="Value 2"/><span class="option-title"></span></div>
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='checkbox-field'}}
+		<div id="${id}-container" class="field checkbox-group">
+			<div class="option clearfix"><input type="checkbox" name="${name}" id="${id}-1" value="Value 1"/><span class="option-title"></span><br/></div>
+			<div class="option clearfix"><input type="checkbox" name="${name}" id="${id}-2" value="Value 2"/><span class="option-title"></span><br/></div>
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='checkbox-option' || fieldType == 'radio-option'}}
+		<div class="option clearfix">
+			<input type="${type}" name="${name}" id="${id}" value="${option}"/><span class="option-title"></span><br/>
+		</div>
+		{{/if}}
+
+		{{if fieldType =='select-option'}}
+		<option name="${name}" id="${id}" value="${option}"><span class="option-title">${option}</span></option>
+		{{/if}}
+
+		{{if fieldType == 'submit-field'}}
+		<div id="${id}" class="field ${fieldWidth} clearfix submit">
+			<input type="submit" value="Test submit"/>
+		</div>
+		{{/if}}
+
+		{{if fieldType =='signature-field'}}
+		<div id="${id}-container" class="field sigPad">
+			<span class="clearButton" title="Clear signature">&nbsp;</span>
+			<canvas class="pad"></canvas>
+			<input type="hidden" name="${name}" id="${id}" class="output" />
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+		{{if fieldType =='link-field'}}
+		<div id="${id}-container" class="field">
+			<a id="${id}" name="${name}" href="http://" target="_blank">Click here</a>
+			{{tmpl "#field-actions-tmpl"}}
+		</div>
+		{{/if}}
+
+
+	</script>
+
+    <script id="validation-setting-tmpl" type="text/x-jquery-tmpl">
+		{{if validationType == 'required'}}
+		<div>
+			<input type="checkbox" id="val-required">required
+		</div>
+		{{/if}}
+	</script>
+
+</div>
+
+
+<!-- Field Actions Template -->
+<div id="field-actions-template">
+    <script id="field-actions-tmpl" type="text/x-jquery-tmpl">
+        <div class="field-actions">
+            <span id="delete-${id}" class="delete-${actionsType}">&nbsp;</span>
+        </div>
+    </script>
+</div>
+
+
+<!-- Check/Radio Input Value Template -->
+<div id="input-settings-template">
+    <script id="input-settings-tmpl" type="text/x-jquery-tmpl">
+        <div id="${id}" class="inputValueSection clearfix">
+            <input type="text" name="option-title" class="option-title" />
+            <img alt="remove-value" title="Remove this value" class="remove-option" src="/Images/Metro/black/cancel.png" />
+        </div>
+    </script>
+</div>
+
+
+<!-- Dependency Definition Template -->
+<div id="dependency-settings-template">
+    <script id="dependency-tmpl" type="text/x-jquery-tmpl">
+        <div id="dep-sett-${count}" class="settingSection">
+            <div class="collapsible-header">
+                <span class="expand-collapse-button">&nbsp;</span>
+                <div class="settingName">Dependency ${count}</div>
+                <img data-depnumber="${count}" alt="remove-icon" title="Remove this dependency" class="delete-dependency" src="/Images/Metro/white/cancel.png" />
+            </div>
+
+            <div class="setting-content">
+                <!-- Conditions -->
+                <div>
+                    <div id="dep-conditions-${count}" />
+                    <div id="condition-operator-${count}" class="setting clearfix" style="margin-bottom: 7px;">
+                        <div class="settingName">Conditions that should be met:</div>
+                        <input type="radio" value="or" name="condition-operator-${count}" />Any
+                        <input type="radio" value="and" name="condition-operator-${count}" />All
+                    </div>
+                    <div class="setting">
+                        <div class="settingName" style="margin-left: 78px;">Add new condition</div>
+                        <img class="add-new-condition" data-depnumber="${count}" src="/Images/Metro/black/add.png" title="Add new condition" alt="Add icon" />
+                    </div>
+                </div>
+
+
+                <!-- Actions -->
+                <div>
+                    <div id="dep-actions-${count}" />
+                    <div class="setting">
+                        <div class="settingName" style="margin-left: 85px;">Add new action</div>
+                        <img class="add-new-action" data-depnumber="${count}" src="/Images/Metro/black/add.png" title="Add new action" alt="Add icon" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </script>
+</div>
+
+<!-- Dependency Condition Template -->
+<div id="dep-condition-template">
+    <script id="dep-condition-tmpl" type="text/x-jquery-tmpl">
+        <div data-condition="${index}" class="depCondition setting">
+            <img data-condition="${index}" alt="remove-icon" title="Remove this condition" class="delete-dep-condition" src="/Images/Metro/black/cancel.png" />
+            <label style="display: block; font-weight: bold; border-bottom: 1px solid black; padding-left: 5px; margin-bottom: 8px;">Condition ${index + 1}</label>
+
+            <div data-name="fieldName">
+                <div class="settingName">Field</div>
+                <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                <select data-property="fieldId" />
+            </div>
+            <div data-name="comparer">
+                <div class="settingName">Comparer</div>
+                <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                <select data-property="comparer" />
+            </div>
+            <div data-name="value">
+                <div class="settingName">Value</div>
+                <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                <input type="text" data-property="value" />
+            </div>
+            <div data-name="dropDownValue">
+                <div class="settingName">Value</div>
+                <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                <select data-property="value" />
+            </div>
+            <div data-name="numericValue">
+                <div class="settingName">Value</div>
+                <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                <input type="number" data-property="value" />
+            </div>
+            <div data-name="datepickerValue">
+                <div class="settingName">Value</div>
+                <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                <input type="datepicker" data-property="value" class="ttw-date" />
+            </div>
+        </div>
+    </script>
+</div>
+
+<!-- Dependency Action Template -->
+<div id="dep-action-template">
+    <script id="dep-action-tmpl" type="text/x-jquery-tmpl">
+        <div data-action="${index}" class="depAction setting">
+            <img data-action="${index}" alt="remove-icon" title="Remove this action" class="delete-dep-action" src="/Images/Metro/black/cancel.png" />
+            <label style="display: block; font-weight: bold; border-bottom: 1px solid black; padding-left: 5px; margin-bottom: 8px;">Action ${index + 1}</label>
+
+            <div data-name="type" class="setting">
+                <div class="settingName">Type of action:</div>
+                <br />
+                <input type="radio" value="basic" data-property="type" name="type-${depNumber}-${index}" />Basic
+                <input type="radio" value="manual" data-property="type" name="type-${depNumber}-${index}" />Advanced
+                <input type="radio" value="function" data-property="type" name="type-${depNumber}-${index}" />Function
+            </div>
+
+            <div data-action-type="basic">
+                <div data-name="selector">
+                    <div class="settingName">Selector</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <select data-property="selector" />
+                </div>
+                <div data-name="action">
+                    <div class="settingName">Action to perform</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <select data-property="basicName" />
+                </div>
+                <div data-name="value">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <input type="text" data-property="value" />
+                </div>
+                <div data-name="dropDownValue">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <select data-property="value" />
+                </div>
+                <div data-name="numericValue">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <input type="number" data-property="value" />
+                </div>
+                <div data-name="datepickerValue">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <input type="datepicker" data-property="value" class="ttw-date" />
+                </div>
+            </div>
+
+            <div data-action-type="manual">
+                <div data-name="selector">
+                    <div class="settingName">Selector</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <select data-property="selector" />
+                </div>
+                <div data-name="property">
+                    <div class="settingName">Property to modify</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <select data-property="manualName" />
+                </div>
+                <div data-name="value">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <input type="text" data-property="value" />
+                </div>
+                <div data-name="dropDownValue">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <select data-property="value" />
+                </div>
+                <div data-name="numericValue">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <input type="number" data-property="value" />
+                </div>
+                <div data-name="datepickerValue">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <input type="datepicker" data-property="value" class="ttw-date" />
+                </div>
+                <div data-name="evalOtherwise">
+                    <div class="settingName">In case the conditions are not met:</div>
+                    <br />
+                    <input type="radio" value="false" data-property="evalOtherwise" name="evalotherwise-${depNumber}-${index}" />Do nothing
+                            <input type="radio" value="true" data-property="evalOtherwise" name="evalotherwise-${depNumber}-${index}" />Modify
+                </div>
+                <div data-name="valueOtherwise">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <input type="text" data-property="otherwiseValue" />
+                </div>
+                <div data-name="dropDownOtherwise">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <select data-property="otherwiseValue" />
+                </div>
+                <div data-name="numericOtherwise">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <input type="number" data-property="otherwiseValue" />
+                </div>
+                <div data-name="datepickerOtherwise">
+                    <div class="settingName">To value</div>
+                    <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+                    <input type="datepicker" data-property="otherwiseValue" class="ttw-date" />
+                </div>
+            </div>
+
+            <div data-action-type="function">
+                <div class="settingName">Use this template to write your function.</div>
+                <div class="settingName">This field's value will be updated with the returning result.</div>
+                <textarea data-property="functionCode" rows="500" cols="100" style="width: 260px; height: 40px; resize: none;" disabled="disabled">function (){var res = "value"; return res;}</textarea>
+                <div class="editFunctionButton">Edit function</div>
+            </div>
+
+        </div>
+    </script>
+</div>
+
+
+<!-- Validation Template -->
+<div id="validation-settings-template">
+    <script id="validation-tmpl" type="text/x-jquery-tmpl">
+        <div id="custom-val-sett-${count}" class="settingSection">
+            <div class="collapsible-header">
+                <span class="expand-collapse-button">&nbsp;</span>
+                <div class="settingName">Custom validation ${count}</div>
+                <img id="delete-custom-val-${count}" alt="remove-icon" title="Remove this validation" class="delete-validation" src="/Images/Metro/white/cancel.png" />
+            </div>
+
+            <div class="setting-content">
+                <div class="setting clearfix">
+                    <div class="settingName">Display error message (optional)</div>
+                    <input type="text" data-property="customValidationMessage-${count}" />
+                </div>
+                <div class="setting clearfix">
+                    <div class="settingName">Use this template to write your function.</div>
+                    <div class="settingName">The element and the value are passed as parameters. The function must return true if the validation succeeds, false to indicate an error, or an error message wich will overwrite the specified <i>Display error message</i>.</div>
+                    <textarea data-property="customValidationFunction-${count}" rows="500" cols="100" style="width: 280px; height: 40px; resize: none;" disabled="disabled">function (element, value) { if (value === '1') {return true;} return false; }</textarea>
+                    <div class="editFunctionButton">Edit function</div>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>

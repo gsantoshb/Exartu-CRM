@@ -1,0 +1,114 @@
+<div class="val-settings-section setting">
+    <div data-name="required">
+        <div class="settingName">Is Required</div>
+        <img alt="help-icon" title="Required_Help" src="/Images/Metro/black/questionmark.png" />
+        <input type="checkbox" checked="checked" data-property="required" />
+    </div>
+</div>
+<div class="val-settings-section setting">
+    <div data-name="rangedate-min-current">
+        <div class="settingName">Minimum date</div>
+        <img alt="help-icon" title="MinDate_Help" src="/Images/Metro/black/questionmark.png" />
+        <input type="checkbox" id="min-date-current" data-property="rangedate-min-current" style="clear: both; float: none; top: 0; margin-left: 40px;" />
+        Use current date
+    </div>
+    <div data-name="rangedate-min">
+        <input type="datepicker" id="min-date-manual" data-property="rangedate-min" class="ttw-date" pattern="^(?:(((0[13578])|(1[02]))\/(0[1-9]|[12][0-9]|3[01]))|(((0[469])|(11))\/(0[1-9]|[12][0-9]|30))|((02)\/(0[1-9]|[12][0-9])))\/([0-9][0-9]|1[89][0-9][0-9]|20[0-9][0-9])$" />
+    </div>
+</div>
+<div class="val-settings-section setting">
+    <div data-name="rangedate-max-current">
+        <div class="settingName">Maximum date</div>
+        <img alt="help-icon" title="MaxDate_Help" src="/Images/Metro/black/questionmark.png" />
+        <input type="checkbox" id="max-date-current" data-property="rangedate-max-current" style="clear: both; float: none; top: 0; margin-left: 36px;" />
+        Use current date
+    </div>
+    <div data-name="rangedate-max">
+        <input type="datepicker" id="max-date-manual" data-property="rangedate-max" class="ttw-date" pattern="^(?:(((0[13578])|(1[02]))\/(0[1-9]|[12][0-9]|3[01]))|(((0[469])|(11))\/(0[1-9]|[12][0-9]|30))|((02)\/(0[1-9]|[12][0-9])))\/([0-9][0-9]|1[89][0-9][0-9]|20[0-9][0-9])$" />
+    </div>
+</div>
+<div class="val-settings-section setting">
+    <div data-name="minimumlength">
+        <div class="settingName">Minimum Length</div>
+        <img alt="help-icon" title="MinLength_Help" src="/Images/Metro/black/questionmark.png" />
+        <input type="number" data-property="minimumlength" min="0" />
+    </div>
+</div>
+<div class="val-settings-section setting">
+    <div data-name="maxlength">
+        <div class="settingName">Maximum Length</div>
+        <img alt="help-icon" title="MaxLength_Help" src="/Images/Metro/black/questionmark.png" />
+        <input type="number" data-property="maxlength" min="0" />
+    </div>
+</div>
+<div class="val-settings-section setting">
+    <div data-name="data-equals">
+        <div class="settingName">Equals To</div>
+        <img alt="help-icon" title="Equals_Help" src="/Images/Metro/black/questionmark.png" />
+        <input type="text" data-property="data-equals" />
+    </div>
+</div>
+<div class="val-settings-section setting">
+    <div data-name="min-selected">
+        <div class="settingName">Minimum Selected</div>
+        <img alt="help-icon" title="MinSelected_Help" src="/Images/Metro/black/questionmark.png" />
+        <input type="number" data-property="min-selected" min="0" />
+    </div>
+</div>
+<div class="val-settings-section setting">
+    <div data-name="min">
+        <div class="settingName">Minimum Number</div>
+        <img alt="help-icon" title="MinNumber_Help" src="/Images/Metro/black/questionmark.png" />
+        <input type="number" data-property="min" />
+    </div>
+</div>
+<div class="val-settings-section setting">
+    <div data-name="max">
+        <div class="settingName">Maximum Number</div>
+        <img alt="help-icon" title="MaxNumber_Help" src="/Images/Metro/black/questionmark.png" />
+        <input type="number" data-property="max" />
+    </div>
+</div>
+<div class="val-settings-section setting">
+    <div data-name="pattern">
+        <div class="settingName">Pattern</div>
+        <img alt="help-icon" title="Pattern_Help" src="/Images/Metro/black/questionmark.png" />
+        <select id="pattern-select" data-property="pattern">
+            <option value="">- Select a predefined pattern -</option>
+            <option value="([a-z A-Z])*" data-pattern="alpha">Alpha Only</option>
+            <option value="([a-z A-Z0-9])*" data-pattern="alpha-numeric">Alpha Numeric Only</option>
+            <option value="(\d)*" data-pattern="numeric">Numeric Only</option>
+            <option value="(^(?:\d+(\.\d{1,2})?)$)?" data-pattern="decimal">Decimal Number</option>
+            <option value="(^(?!000|666)(?:[0-7][0-9]{2}|800)(-(?!00)[0-9]{2}-|(?!00)[0-9]{2})(?!0000)[0-9]{4}$)?" data-pattern="ssn">Social Security Number</option>
+            <option value="(^[0-9]{5}((-[0-9]{4})|(-[0-9]{6}))?$)?" data-pattern="us-postal-code">US Postal Code</option>
+            <option value="(^\(?([2-9][0-8][0-9])\)?[-. ]?([2-9][0-9]{2})[-. ]?([0-9]{4})$)?" data-pattern="us-phone">US Phone Number</option>
+            <option value="(^\+(?:[0-9] ?){6,14}[0-9]$)?" data-pattern="international-phone">International Phone Number</option>
+            <option value="(^(?:(((0[13578])|(1[02]))\/(0[1-9]|[12][0-9]|3[01]))|(((0[469])|(11))\/(0[1-9]|[12][0-9]|30))|((02)\/(0[1-9]|[12][0-9])))\/([0-9][0-9]|1[89][0-9][0-9]|20[0-9][0-9])$)?" data-pattern="date">Date (mm/dd/yy or mm/dd/yyyy)</option>
+        </select>
+    </div>
+</div>
+<div class="val-settings-section setting">
+    <div data-name="custom-pattern">
+        <div class="settingName">Custom Pattern</div>
+        <img alt="help-icon" title="Pattern_Help" src="/Images/Metro/black/questionmark.png" />
+        <input type="text" data-property="pattern" />
+    </div>
+</div>
+<div class="val-settings-section setting" style="margin-bottom: 20px; padding-top: 10px;">
+    <div data-name="custom-validation">
+
+        <div class="settingName">Add new custom validation</div>
+        <img id="add-new-custom-val" src="/Images/Metro/black/add.png" title="Add new custom validation" alt="Add icon" />
+        <div id="custom-val-section">
+        </div>
+    </div>
+</div>
+
+<!-- Message for previously modified advanced properties -->
+<div id="validationMessage" class="advancedMessage">
+    Some validations previously modified are not being shown. Switch to advanced mode to change them.
+</div>
+<!-- Message for custom validations on basic mode -->
+<div id="customValidationMessage" class="advancedMessage">
+    Custom validations were set for this field. Switch to advanced mode to change them.
+</div>

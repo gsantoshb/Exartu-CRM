@@ -1,0 +1,117 @@
+<!-- Header section -->
+<div id="header">
+    <div id="headerTitle" data-bind="html: inPreviewMode() ? 'Preview Mode' : 'Design Mode'" />
+
+    <!-- Menu Buttons - Preview, Test submit -->
+    <div id="headerActionButtons">
+        <div data-bind="click: tooglePreview" title="Toggles between page preview and design mode">
+            <img alt="preview-icon" src="/Images/Metro/white/preview.png" />
+        </div>
+        <div data-bind="visible: inPreviewMode, click: testSubmit" title="Test submit the page">
+            <img alt="test-submit-icon" src="/Images/Metro/white/ff.png" />
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Fields and actions toolbox  -->
+<div id="toolbox" data-bind="fadeVisible: !inPreviewMode()">
+    <!-- load toolbox.html view -->
+</div>
+
+
+<!-- Toggle Designer Modes Buttons  -->
+<div id="toggleButtons" data-bind="fadeVisible: !inPreviewMode()">
+    <div id="toggleModeBasic" class="toggle-button" data-bind="click: switchToBasicMode, css: { selected: !inAdvancedMode() }">BASIC</div>
+    <div id="toggleModeAdvanced" class="toggle-button" data-bind="click: switchToAdvancedMode, css: { selected: inAdvancedMode() }">ADVANCED</div>
+</div>
+
+
+<!-- Property sections - Main, Validation, Dependency -->
+<div class="tabbable" id="fieldProperties">
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#main-settings" data-toggle="tab">Field</a></li>
+        <li><a href="#validation-settings" data-toggle="tab">Validation</a></li>
+        <li><a href="#dependency-settings" data-toggle="tab">Dependency</a></li>
+        <li><a href="#style-settings" data-toggle="tab">Style</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Main settings dialog -->
+        <div class="tab-pane active" id="main-settings">
+            <!-- load mainProperties.html view -->
+        </div>
+
+        <!-- Validation settings dialog -->
+        <div class="tab-pane" id="validation-settings">
+            <!-- load validationProperties.html view -->
+        </div>
+
+        <!-- Dependency settings dialog -->
+        <div class="tab-pane" id="dependency-settings">
+            <div class="setting">
+                <div class="settingName">Add new dependency</div>
+                <img id="add-new-dependency" src="/Images/Metro/black/add.png" title="Add new dependency" alt="Add icon" />
+            </div>
+
+            <div id="dependency-section" />
+
+            <!-- Message for previously modified advanced dependencies -->
+            <div id="dependencyMessage" class="advancedMessage">
+                Some dependencies previously defined are not being shown. Switch to advanced mode to change them.
+            </div>
+        </div>
+
+        <!-- Style settings dialog -->
+        <div class="tab-pane" id="style-settings">
+            <!-- load CSS_StyleProperties.html view -->
+        </div>
+    </div>
+</div>
+
+
+<!-- Actual page xr2designer area -->
+<div class="designerArea">
+
+    <!-- Errors container section -->
+    <div class="errorContainer">
+        <div id="formErrors" class="errorBox" style="display: none" />
+    </div>
+
+    <!-- Page design section -->
+    <div id="work-area">
+        <div id="form-builder" data-bind="css: { previewMode: inPreviewMode() }">
+            <div id="form-image" />
+            <form id="form-preview" action="#" class="TTWForm" method="post" novalidate="novalidate" data-bind="visible: !inPreviewMode()" />
+            <form id="preview-section" action="#" class="TTWForm" method="post" novalidate="novalidate" data-bind="visible: inPreviewMode()" />
+        </div>
+        <div id="notification" />
+    </div>
+
+</div>
+
+
+<!-- Application Modal Dialogs -->
+<div id="modalDialogs" style="display: none">
+    <!-- load modalDialogs.html view -->
+</div>
+
+
+<!-- jQuery Templates -->
+<div id="jQueryTemplates">
+    <!-- load jQueryTemplates.html view -->
+</div>
+
+
+<!-- Javascript editor -->
+<div id="jsEditor" style="display: none">
+    <textarea />
+</div>
+
+
+<!-- Loading page indicator -->
+<div data-bind="visible: loading">
+    <div class="loading-overlay">&nbsp;</div>
+    <div class="loading-content">Loading...</div>
+</div>
