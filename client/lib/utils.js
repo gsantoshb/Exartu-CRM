@@ -84,7 +84,7 @@ Utils.ObjectDefinition = function(definition) {
         break;
       default:
         prop.type = definition.reactiveProps[propName].type || Utils.ReactivePropertyTypes.string;
-        prop.val = definition.reactiveProps[propName].default || '';
+        prop.val = definition.reactiveProps[propName].default != undefined ? definition.reactiveProps[propName].default : '';
         Object.defineProperty(prop, "value", {
           get: function () {
             this.dep.depend();

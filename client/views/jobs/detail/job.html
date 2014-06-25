@@ -120,7 +120,7 @@
                                             {{#if isType 'Temporary'}}
                                                 <i class="fa fa-money"></i>&nbsp;pay:
                                                 {{#objectProperty property=pay editable=editMode}}
-                                                    <input class="form-control" type="number" value="{{value}}">
+                                                    <input class="form-control" type="number" min="0" value="{{value}}">
                                                 {{else}}
                                                     <strong>{{value}}</strong>
                                                 {{/objectProperty}}
@@ -128,7 +128,7 @@
                                             {{#if isType 'Direct Hire'}}
                                                 <i class="fa fa-money"></i>&nbsp;Salary:
                                                 {{#objectProperty property=salary editable=editMode}}
-                                                    <input class="form-control" type="number" value="{{value}}">
+                                                    <input class="form-control" type="number" min="0" value="{{value}}">
                                                 {{else}}
                                                     <strong>{{value}}</strong>
                                                 {{/objectProperty}}
@@ -138,7 +138,7 @@
                                             <i class="fa fa-dollar"></i>&nbsp;fee:
                                             {{#objectProperty property=fee editable=editMode}}
                                             <div class="form-group  {{hasError}}">
-                                                <input class="form-control" type="number" value="{{value}}">
+                                                <input class="form-control" type="number" min="0" value="{{value}}">
                                                 <span>{{error}}</span>
                                             </div><!-- /.form-group -->
                                             {{else}}

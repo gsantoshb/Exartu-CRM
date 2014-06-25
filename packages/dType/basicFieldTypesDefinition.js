@@ -25,7 +25,7 @@ dType.core.createFieldType({
     name: 'number',
     validate: function(value, fieldDefinition, error){
         var error=error||{};
-        if (fieldDefinition.required && !value){
+        if (fieldDefinition.required && (value != 0) && !value){
             error.message='this field is required';
             return false;
         }

@@ -68,7 +68,9 @@ newObjType({
     fields: [{
         name: 'fee',
         displayName: 'Fee (%)',
-        fieldType: 'number'
+        fieldType: 'number',
+        defaultValue: 0,
+        required: true
     },{
         name: 'publicJobTitle',
         displayName: 'Public job title',
@@ -182,7 +184,8 @@ newObjType({
     fields: [{
         name: 'salary',
         displayName: 'Salary',
-        fieldType: 'number'
+        fieldType: 'number',
+        required: true
       }, {
         name: 'jobTitle',
         displayName: 'Job title',
