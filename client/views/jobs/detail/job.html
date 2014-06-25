@@ -147,7 +147,7 @@
                                     <tr>
                                         <td>
                                             {{#if isType 'Temporary'}}
-                                                <i class="fa fa-money"></i>&nbsp;pay:
+                                                <i class="fa fa-money"></i>&nbsp;Pay:
                                                 {{#objectProperty property=pay editable=editMode}}
                                                     <input class="form-control" type="number" value="{{value}}">
                                                 {{else}}
@@ -165,7 +165,7 @@
                                         </td>
                                         {{#if isType 'Direct Hire'}}
                                             <td>
-                                                <i class="fa fa-dollar"></i>&nbsp;fee:
+                                                <i class="fa fa-dollar"></i>&nbsp;Fee:
                                                 {{#objectProperty property=fee editable=editMode}}
                                                 <div class="form-group  {{hasError}}">
                                                     <input class="form-control" type="number" value="{{value}}">
@@ -182,7 +182,7 @@
                                     {{#if isType 'Temporary'}}
                                         <tr>
                                             <td colspan="2">
-                                                <i class="fa fa-calendar-o"></i>&nbsp;frequency:
+                                                <i class="fa fa-calendar-o"></i>&nbsp;Frequency:
                                                 {{#objectProperty property=frequency editable=editMode}}
                                                     <div class="form-group  {{hasError}}">
                                                         <select class="form-control input-lg">

@@ -129,7 +129,7 @@ newObjType({
     services: [],
     fields: [{
         name: 'department',
-        displayName: 'Deparment',
+        displayName: 'Department',
         defaultValue: 'Primary'
     }, {
         name: 'description',

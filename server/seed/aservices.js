@@ -115,15 +115,15 @@ dType.constructor.service({
         var pay= (obj.Temporary.pay / frequency.inHours);
         var bill=pay+pay*(obj.fee/100);
 
-        var rateType = JobRateTypes.findOne({displayName:'Regular'});
+        var rateType = JobRateTypes.findOne({displayName:'RegularTime'});
         if (!_.findWhere(value, { type: rateType._id })){
           result.push({ type: rateType._id, pay: pay, bill: bill });
         }
-        rateType = JobRateTypes.findOne({displayName:'Over Time'});
+        rateType = JobRateTypes.findOne({displayName:'OverTime'});
         if (!_.findWhere(value, { type: rateType._id })){
           result.push({ type: rateType._id, pay: pay*1.5, bill: bill*1.5 });
         }
-        rateType = JobRateTypes.findOne({displayName:'Double Time'});
+        rateType = JobRateTypes.findOne({displayName:'DoubleTime'});
         if (!_.findWhere(value, { type: rateType._id })){
           result.push({ type: rateType._id, pay: pay*2, bill: bill*2 });
         }
