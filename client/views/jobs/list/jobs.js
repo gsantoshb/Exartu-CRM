@@ -159,7 +159,7 @@ Template.jobs.viewModel = function () {
 //    statusFilter
     _.each(self.status, function(item){
       if (item.isSelected()){
-        _.extend(q, JobStatus.getQuery(item.displayName));
+        _.extend(q, JobCalculatedStatus.getQuery(item.displayName));
       }
     })
 

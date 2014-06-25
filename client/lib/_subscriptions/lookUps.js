@@ -13,19 +13,17 @@ var getLookUpName = function (lookUpName, code) {
     return;
   return lookUpValue.displayName;
 }
-JobStatus= {
+JobCalculatedStatus= {
   get:function(job){
     var now=new Date;
     var start= _.isDate(job.startDate)? job.startDate: new Date(job.startDate)
     var end= _.isDate(job.endDate)? job.endDate: new Date(job.endDate)
-    if(now < start)
-      return Enums.jobStatus.open;
-    if(end < now)
-      return Enums.jobStatus.closed;
-    if(job.assignment)
-      return Enums.jobStatus.filled;
-    else
-      return Enums.jobStatus.unfilled;
+
+    var result={
+      open: (now < start),
+      filled: !! job.assignment
+    }
+    return result
   },
   getQuery: function(type){
     var now=new Date;
