@@ -89,8 +89,7 @@ newObjType({
         name: 'endDate',
         displayName: 'End date',
         fieldType: 'date',
-        defaultValue: null,
-        required: true
+        defaultValue: null
     },{
         name: 'duration',
         displayName: 'Duration',

@@ -52,14 +52,13 @@ dType.core.createFieldType({
             error.message='this field is required';
             return false;
         }
-        if (!_.isDate(value)){
+        if (value != null && !_.isDate(value)){
             error.message='invalid value';
             return false;
         }
         return true
-
     },
-    defaultValue: new Date()
+    defaultValue: null
 })
 dType.core.createFieldType({
     name: 'enum',

@@ -44,11 +44,15 @@
                                             {{#objectProperty property=endDate editable=editMode}}
                                                 {{#dateTimePicker value=value}}
                                                 {{/dateTimePicker}}
-                                                {{else}}
+                                            {{else}}
                                                 <strong>
-                                                    {{#formattedDate value=value format='MM.DD.YYYY'}}
-                                                    {{date}}
-                                                    {{/formattedDate}}
+                                                    {{#if value}}
+                                                        {{#formattedDate value=value format='MM.DD.YYYY'}}
+                                                        {{date}}
+                                                        {{/formattedDate}}
+                                                    {{else}}
+                                                        Not setted
+                                                    {{/if}}
                                                 </strong>
                                             {{/objectProperty}}
                                         </td>

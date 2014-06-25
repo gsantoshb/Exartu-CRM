@@ -592,3 +592,8 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .text-muted > a:hover{
     color: #427dff;
 }
+
+.disabled{
+    opacity: 0.4;
+    pointer-events: none;
+}

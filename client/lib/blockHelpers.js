@@ -214,14 +214,42 @@ UI.registerHelper('displayProperty', function(){
     if(this.type=="field"){
       var template=Template[this.fieldType + 'FieldInput'] || Template['fieldInput'];
 
+      if (this.fieldType == 'date') {
+        template.created = function() {
+          if(this.data.required && !this.data.value)
+            this.data.value = new Date();
+          this.data.depIsEditable = new Deps.Dependency;
+          this.data.isEditable = this.data.required;
+        };
+        template.isEditable = function() {
+          this.depIsEditable.depend();
+          return this.isEditable;
+        };
+        template.dateClass = function() {
+          this.depIsEditable.depend();
+          return this.isEditable? '' : 'disabled';
+        };
+
+        template.events({
+          'blur #date': function(e){
+            this.value=new Date(e.target.value);
+          },
+          'change .editable': function(e) {
+            this.isEditable = e.target.checked;
+            if(!this.isEditable)
+              this.value = null;
+            this.depIsEditable.changed();
+          }
+        });
+
+        return template;
+      };
+
       template.events({
         'blur input': function(e){
           switch (this.fieldType) {
             case 'number':
               this.value=Number.parseFloat(e.target.value);
-              break;
-            case 'date':
-              this.value=new Date(e.target.value);
               break;
             default:
               this.value=e.target.value;
@@ -233,7 +261,8 @@ UI.registerHelper('displayProperty', function(){
           dType.isValidField(this);
         }
       });
-      return template
+
+      return template;
     }
     else{
       Template['relInput'].events({
