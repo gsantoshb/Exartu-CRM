@@ -127,13 +127,13 @@
                 <div class="v-wrapper">
                     <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                         <i class="icon-connection-1 text-large"></i>
-                        <h1>You currently have no
-                            <!--ko text:name-->
-                            <!--/ko-->
-                        </h1>
-                        <!--ko if:name()=='contactable'-->
-                        <p class="lead">A contactable is an Employee, Customer or Contact.</p>
-                        <!-- /ko -->
+                        <!--<h1>You currently have no-->
+                            <!--&lt;!&ndash;ko text:name&ndash;&gt;-->
+                            <!--&lt;!&ndash;/ko&ndash;&gt;-->
+                        <!--</h1>-->
+                        <!--&lt;!&ndash;ko if:name()=='contactable'&ndash;&gt;-->
+                        <!--<p class="lead">A contactable is an Employee, Customer or Contact.</p>-->
+                        <!--&lt;!&ndash; /ko &ndash;&gt;-->
                         <!--ko foreach: contactableTypes-->
                         <a href="#" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
                         <span class="bullet-spacer" data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>

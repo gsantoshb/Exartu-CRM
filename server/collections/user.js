@@ -106,7 +106,7 @@ Accounts.emailTemplates.enrollAccount.text = function (user, url) {
 };
 
 /*
- * extending the user data that is sended to the client
+ * extending the user data that is sent to the client
  */
 Meteor.publish(null, function () {
   var user = Meteor.users.findOne({

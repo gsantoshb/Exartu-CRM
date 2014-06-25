@@ -3,9 +3,14 @@
         <div id="content">
             {{#with originalJob}}
                 <div id="content-header" class="mini">
-                    <h1>{{displayName}}</h1>
+                    <h1 class="profile-name">{{displayName}}
+                    <a class="pull-right" href="/contactable/{{customer}}">
+                        <i class="icon-buildings-1"></i>
+                        {{customerName}}
+                    </a>
+                    </h1>
                 </div>
-                <div id="breadcrumb" class="bradcrumb-top">
+                <div id="breadcrumb" class="breadcrumb-top">
                     <a href="/" title="Go to Home" class="tip-bottom">
                         <i class="fa fa-home"></i>Home</a>
                     <a href="/jobs" class="current">Jobs</a>
@@ -241,8 +246,9 @@
 
                     <div class="col-md-4 col-lg-4" data-bind="with: $parent.job">
                         {{>assignment}}
-                        {{>customerInfo}}
+
                         {{>jobRates}}
+                        {{>customerInfo}}
                     </div>
                     <!-- /.col-lg-4-->
                 </div>
