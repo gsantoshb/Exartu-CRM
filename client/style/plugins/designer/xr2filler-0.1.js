@@ -213,7 +213,7 @@
                     var fieldId = $(this).parent().attr('id');
                     var fieldValue = $(this).val();
                     if (fieldValue !== undefined) {
-                        values.push({ PageFieldId: xr2formsCommon.vars.fieldsDataStructure[fieldId].externalID, Value: fieldValue });
+                        values.push({ PageFieldId: fieldId, Value: fieldValue });
                     }
                 });
                 fieldContainers.find(xr2formsCommon.vars.SELECT_INPUT).each(function () {
@@ -221,14 +221,14 @@
                     var fieldValue = $(this).val();
                     if (fieldValue !== undefined) {
                         var value = JSON.stringify([{ Value: fieldValue }]);
-                        values.push({ PageFieldId: xr2formsCommon.vars.fieldsDataStructure[fieldId].externalID, Value: value });
+                        values.push({ PageFieldId: fieldId, Value: value });
                     }
                 });
                 fieldContainers.find(xr2formsCommon.vars.DATEPICKER_INPUT).each(function () {
                     var fieldId = $(this).parent().attr('id');
                     var fieldValue = $.datepicker.formatDate(xr2formsCommon.vars.DATE_FORMAT, $(this).datepicker("getDate"));
                     if (fieldValue !== undefined) {
-                        values.push({ PageFieldId: xr2formsCommon.vars.fieldsDataStructure[fieldId].externalID, Value: fieldValue });
+                        values.push({ PageFieldId: fieldId, Value: fieldValue });
                     }
                 });
                 fieldContainers.filter(xr2formsCommon.vars.RADIO_GROUP_CONTAINER).each(function () {
@@ -236,7 +236,7 @@
                     var fieldValue = $(this).find(xr2formsCommon.vars.CHECKED_INPUT).first();
                     if (fieldValue.length > 0) {
                         var value = JSON.stringify([{ Value: fieldValue.val() }]);
-                        values.push({ PageFieldId: xr2formsCommon.vars.fieldsDataStructure[fieldId].externalID, Value: value });
+                        values.push({ PageFieldId: fieldId, Value: value });
                     }
                 });
                 fieldContainers.filter(xr2formsCommon.vars.CHECKBOX_GROUP_CONTAINER).each(function () {
@@ -244,14 +244,14 @@
                     var fieldValue = $(this).find(xr2formsCommon.vars.CHECKED_INPUT);
                     if (fieldValue.length > 0) {
                         var value = JSON.stringify(fieldValue.map(function () { return { Value: $(this).val() }; }).toArray());
-                        values.push({ PageFieldId: xr2formsCommon.vars.fieldsDataStructure[fieldId].externalID, Value: value });
+                        values.push({ PageFieldId: fieldId, Value: value });
                     }
                 });
                 fieldContainers.filter('.' + xr2formsCommon.vars.SIGNATURE_PAD_CLASS).each(function () {
                     var fieldId = $(this).attr('id');
                     var fieldValue = $(this).find(xr2formsCommon.vars.input).val();
                     if (fieldValue !== undefined) {
-                        values.push({ PageFieldId: xr2formsCommon.vars.fieldsDataStructure[fieldId].externalID, Value: fieldValue });
+                        values.push({ PageFieldId: fieldId, Value: fieldValue });
                     }
                 });
 
