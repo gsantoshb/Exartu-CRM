@@ -108,7 +108,7 @@ newObjType({
       required: true,
       lookUpName: 'jobTitle',
       multiple: false,
-      defaultValue: null
+      defaultValue: getFirst(Enums.lookUpTypes.job.status.code)
     },
     {
       name: 'industry',
