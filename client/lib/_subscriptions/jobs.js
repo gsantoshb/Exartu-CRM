@@ -8,7 +8,7 @@ Jobs = new Meteor.Collection("jobs", {
     job.statusName = LookUps.findOne({ _id: job.status }).displayName;
 
 
-    job.calculatedstatus=JobCalculatedStatus.get(job);
+//    job.calculatedstatus=JobCalculatedStatus.get(job); no calculated status for now
     if (job.customer) {
       var customer = Contactables.findOne({_id: job.customer });
       job.customerName = customer.displayName;
