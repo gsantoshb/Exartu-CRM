@@ -21,6 +21,8 @@ Template.candidates.events({
     Composer.showModal( 'candidateAdd',Session.get('entityId'));
   },
   'click .assign': function(){
-    Composer.showModal('assignmentAdd', Session.get('entityId'), this._id);
+    Composer.showModal('assignmentAdd', {
+      employeeId: this._id
+    });
   }
 })

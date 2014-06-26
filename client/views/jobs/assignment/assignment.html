@@ -1,9 +1,9 @@
 <template name="assignment">
     <div class="box">
         <div class="box-header-2">
-            <a class="btn-action editAssign" href="#"><i class="fa fa-plus"></i></a>
+            <a class="btn-action editAssign" href="#"><i class="fa fa-pencil"></i></a>
             <div class="box-title">
-                Assignments
+                Assignment
             </div>
         </div>
 
@@ -20,19 +20,19 @@
                 <!-- /.box-content -->
             {{/with}}
 
-            <a class="pull-right showOld" style="padding-top: 5px;cursor: pointer">see
-                {{#if showOld}}
-                    less <i class="fa fa-caret-up"></i>
-                {{else}}
-                    more <i class="fa fa-caret-down"></i>
-                {{/if}}
-            </a>
-            <hr style="width: 67%"/>
-            {{#if showOld}}
-                {{#each oldAssignments}}
-                    {{>employeeInfo}}
-                {{/each}}
-            {{/if}}
+            <!--<a class="pull-right showOld" style="padding-top: 5px;cursor: pointer">see-->
+                <!--{{#if showOld}}-->
+                    <!--less <i class="fa fa-caret-up"></i>-->
+                <!--{{else}}-->
+                    <!--more <i class="fa fa-caret-down"></i>-->
+                <!--{{/if}}-->
+            <!--</a>-->
+            <!--<hr style="width: 67%"/>-->
+            <!--{{#if showOld}}-->
+                <!--{{#each oldAssignments}}-->
+                    <!--{{>employeeInfo}}-->
+                <!--{{/each}}-->
+            <!--{{/if}}-->
         </div>
     </div>
 </template>
