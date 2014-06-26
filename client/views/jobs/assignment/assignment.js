@@ -27,7 +27,14 @@ Template.assignment.helpers({
 })
 Template.assignment.events({
   'click .editAssign':function () {
-    Composer.showModal( 'assignmentAdd');
+    var options={};
+    var job=Jobs.findOne({
+      _id: Session.get('entityId')
+    });
+    if(job.assignment){
+      options.assignmentId=job.assignment;
+    }
+    Composer.showModal('assignmentAdd', options);
   },
   'click .showOld': function(){
     self.showOld=! self.showOld;

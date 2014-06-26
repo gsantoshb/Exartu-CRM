@@ -12,7 +12,12 @@ Assignment.allow({
 });
 
 //<editor-fold desc="************ update job and contactable ****************">
-
+Assignment.before.insert(function(userId, doc, fieldNames, modifier, options){
+  var user = Meteor.user();
+  doc.hierId = user.hierId;
+  doc.userId = user._id;
+  doc.createdAt = Date.now();
+});
 //after update the employee and job
 Assignment.after.insert(function(userId, doc, fieldNames, modifier, options){
     Contactables.update({

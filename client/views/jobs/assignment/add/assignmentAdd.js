@@ -8,9 +8,13 @@ Template.assignmentAdd.created=function(){
 }
 
 var init=function(options){
-  var options=options || {};
+  var options= options || {};
   if (options.assignmentId){
-    var assignment= Assignments.findOne({_id: assignment});
+    var assignment= Assignments.findOne({_id: options.assignmentId});
+    employeeId= assignment.employee;
+    employeeDependency.changed();
+
+    jobId= assignment.job
     return {
       start: assignment.start,
       end: assignment.end,

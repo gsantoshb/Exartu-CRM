@@ -102,5 +102,39 @@ Jobs.after.insert(function (userId, doc) {
 	});
 });
 
+
+//assignments
+Assignment.after.insert(function (userId, doc) {
+  var data = {};
+  data.createdAt = doc.createdAt;
+  data.job=doc.job;
+  data.employee=doc.employee;
+
+  Activities.insert({
+    userId: userId,
+    hierId: doc.hierId,
+    type: Enums.activitiesType.assignmentAdd,
+    entityId: doc.job,
+    data: data
+  })
+});
+Assignment.after.update(function (userId, doc) {
+  var data = {};
+  data.createdAt = doc.createdAt;
+  data.job= doc.job;
+  data.employee= doc.employee;
+  data.oldJob=this.previous.job
+  data.oldEmployee=this.previous.employee
+
+  Activities.insert({
+    userId: userId,
+    hierId: doc.hierId,
+    type: Enums.activitiesType.assignmentEdit,
+    entityId: doc.job,
+    data: data
+  })
+});
+
+
 // indexes
 Activities._ensureIndex({hierId: 1});
