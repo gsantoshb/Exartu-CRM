@@ -12,23 +12,9 @@ UI.registerHelper('formattedDate', function() {
 
 
 UI.registerHelper('dateTimePicker', function() {
-    return Template.dateTimePickerTemp;
+    return Template.dateTimePicker;
 });
 
-Template.dateTimePickerTemp.rendered= function(){
-  var options={
-    language: 'en',
-    defaultDate: this.data.value,
-    useSeconds: false
-  }
-  if (this.data.from){
-    options.startDate=this.data.from
-  }
-  if (this.data.from){
-    options.endDate=this.data.to
-  }
-  this.$('.dateTimePicker').datetimepicker(options)
-};
 
 
 UI.registerHelper('htmlEditor', function() {

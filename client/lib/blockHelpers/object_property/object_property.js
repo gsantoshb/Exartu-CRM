@@ -52,7 +52,8 @@ Template.object_property_lookup.events = {
 };
 
 Template.object_property_date.events = {
-  'change.dp .dateTimePicker': function(e, ctx) {
+  //todo: the dateTimePicker template accepts an onChange callback. We should pass it so we this doesn't depend on the event type
+  'dp.change .dateTimePicker': function(e, ctx) {
       if ($(e.target).hasClass('dateTimePicker')){
             ctx.data.property.value = $(e.target).data('DateTimePicker').date.toDate();
       }

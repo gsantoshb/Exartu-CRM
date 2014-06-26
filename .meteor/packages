@@ -24,7 +24,6 @@ npm
 document
 dType
 collectionFS
-bootstrap3-datetimepicker
 cfs-filesystem
 cfs-graphicsmagick
 subscription-plan
@@ -35,4 +34,4 @@ kadira
 accounts-ui
 GAnalytics
 ms-seo
-
+dateTimePicker

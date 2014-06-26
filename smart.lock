@@ -22,7 +22,6 @@
       "xml2js": {},
       "npm": {},
       "moment": {},
-      "bootstrap3-datetimepicker": {},
       "percolatestudio-migrations": {},
       "kadira": {},
       "GAnalytics": {},
@@ -99,11 +98,6 @@
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
       },
-      "bootstrap3-datetimepicker": {
-        "git": "https://github.com/tsega/meteor-bootstrap3-datetimepicker.git",
-        "tag": "v0.1.1",
-        "commit": "c202932d46b2f3fd21340c19df64143f99e736a0"
-      },
       "percolatestudio-migrations": {
         "git": "https://github.com/percolatestudio/meteor-migrations.git",
         "tag": "v0.6.0",
@@ -111,8 +105,8 @@
       },
       "kadira": {
         "git": "https://github.com/meteorhacks/kadira.git",
-        "tag": "v2.4.2",
-        "commit": "7ed8c6e080d7970e4c1e408e4bc16670a00e0b2a"
+        "tag": "v2.4.4",
+        "commit": "6073fa5bdfb36478165977804f922796b6fc82de"
       },
       "GAnalytics": {
         "git": "https://github.com/datariot/meteor-ganalytics.git",
@@ -176,8 +170,8 @@
       },
       "cfs-storage-adapter": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-storage-adapter.git",
-        "tag": "v0.0.26",
-        "commit": "cb9808ec519f8673d2cc4cc881b6eda9e56bdead"
+        "tag": "v0.0.27",
+        "commit": "cb9c89450762396418c09a14b5a48609b4e62fc8"
       },
       "http-methods": {
         "git": "https://github.com/CollectionFS/Meteor-http-methods.git",
@@ -231,8 +225,8 @@
       },
       "cfs-graphicsmagick": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-graphicsmagick.git",
-        "tag": "v0.0.12",
-        "commit": "3ab945c2018aad2316eabf85ac1814e76a8ed627"
+        "tag": "v0.0.13",
+        "commit": "9c107d5304e6cc0f7bc91a6d61b936b19b75ae01"
       },
       "cfs-ejson-file": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-ejson-file.git",

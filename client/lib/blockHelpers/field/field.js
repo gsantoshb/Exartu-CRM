@@ -9,9 +9,6 @@ UI.registerHelper('displayProperty', function(){
             case 'number':
               this.value=Number.parseFloat(e.target.value);
               break;
-            case 'date':
-              this.value=new Date(e.target.value);
-              break;
             default:
               this.value=e.target.value;
           }
@@ -20,6 +17,12 @@ UI.registerHelper('displayProperty', function(){
         'change select':function(e){
           this.value=e.target.value;
           dType.isValidField(this);
+        },
+        //todo: the dateTimePicker template accepts an onChange callback. We should pass it so we this doesn't depend on the event type or class
+        'dp.change .dateTimePicker': function(e){
+          if ($(e.target).hasClass('dateTimePicker')){
+            this.value = $(e.target).data('DateTimePicker').date.toDate();
+          }
         }
       });
       return template
