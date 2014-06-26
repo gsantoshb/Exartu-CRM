@@ -11,26 +11,14 @@
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading">
-                <select class="form-control" data-bind="options: lookUpTypes, optionsText: 'displayName', value: selectedLookUp" > </select>
+                {{> selectLookUpType }}
                 <br/>
                 <div class="row">
                     <span class="col-lg-4">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search" data-bind="value: searchString, valueUpdate: 'afterkeydown'" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fa fa-search"></i> Search</button>
-                            </span>
-                        </div>
+                        {{> searchLookUpItem }}
                     </span>
                     <span class="col-lg-offset-4 col-lg-4">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="New item" data-bind="value: newLookUpItem, valueUpdate: 'afterkeydown'" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button" data-bind="click: addNewLookupItem">
-                                    <i class="fa fa-plus"></i> Add</button>
-                            </span>
-                        </div>
+                        {{> addNewLookUpItem}}
                     </span>
                 </div>
             </div>
@@ -42,41 +30,80 @@
                         <th>Actions</th>
                     </tr>
                     </thead>
-                    <tbody data-bind="foreach: items">
-                        <tr>
-                            <!-- ko if: !$data.editMode || !$data.editMode() -->
-                            <td>
-                                <span data-bind="text: displayName"></span>
-                            </td>
-                            <!--<td>desc</td>-->
-                            <td>
-                                <span style="cursor: pointer" data-bind="click: $root.startEditing">
-                                    <i class="glyphicon glyphicon-edit" ></i>
-                                    Edit
-                                </span>
-                            </td>
-                            <!-- /ko -->
-                            <!-- ko if: $data.editMode -->
-                            <td>
-                                    <input class="form-control" type="text" placeholder="" data-bind="value: displayName" />
-                                    <span class="text-danger" data-bind="text: errMsg"></span>
-                            </td>
-                            <!--<td>desc</td>-->
-                            <td>
-                                <span style="cursor: pointer" data-bind="click: $root.edit">
-                                    <i class="glyphicon glyphicon-ok" ></i>
-                                    Save
-                                </span>
-                                <span style="cursor: pointer" data-bind="click: $root.cancelEdit">
-                                    <i class="glyphicon glyphicon-remove" ></i>
-                                    Cancel
-                                </span>
-                            </td>
-                            <!-- /ko -->
-                        </tr>
+                    <tbody>
+                        {{#each items}}
+                            <tr>
+                                <td>
+                                    <span>{{displayName}}</span>
+                                </td>
+                                <td>
+                                    {{#if isDefault}}
+                                        <span class="label label-success"> Default </span>
+                                    {{else}}
+                                        <span class="set-default" style="cursor: pointer">
+                                            Set as default
+                                        </span>
+                                    {{/if}}
+                                </td>
+                                <!--<td>-->
+                                        <!--<input class="form-control" type="text" placeholder="" data-bind="value: displayName" />-->
+                                        <!--<span class="text-danger" data-bind="text: errMsg"></span>-->
+                                <!--</td>-->
+                                <!--<td>-->
+                                    <!--<span style="cursor: pointer" data-bind="click: $root.edit">-->
+                                        <!--<i class="glyphicon glyphicon-ok" ></i>-->
+                                        <!--Save-->
+                                    <!--</span>-->
+                                    <!--<span style="cursor: pointer" data-bind="click: $root.cancelEdit">-->
+                                        <!--<i class="glyphicon glyphicon-remove" ></i>-->
+                                        <!--Cancel-->
+                                    <!--</span>-->
+
+                                    <!--&lt;!&ndash; ko if: !$data.isDefault() &ndash;&gt;-->
+                                    <!--<br/>-->
+                                    <!--<span style="cursor: pointer" data-bind="click: $root.setAsDefault">-->
+                                        <!--Set as default-->
+                                    <!--</span>-->
+                                    <!--&lt;!&ndash; /ko &ndash;&gt;-->
+                                <!--</td>-->
+                                <!--&lt;!&ndash; /ko &ndash;&gt;-->
+                            </tr>
+                        {{/each}}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+</template>
+
+<template name="searchLookUpItem">
+    <div class="input-group">
+        {{#objectProperty property=searchString}}
+            <input type="text" class="form-control" placeholder="Search" value="{{value}}" />
+        {{/objectProperty}}
+        <span class="input-group-btn">
+            <button class="btn btn-primary" type="button">
+                <i class="fa fa-search"></i> Search
+            </button>
+        </span>
+    </div>
+</template>
+
+<template name="selectLookUpType">
+    <select class="form-control input-lg" type="text" >
+        {{#each lookUpTypes}}
+            <option value="{{code}}" selected="{{isSelected code ../value}}">{{displayName}}</option>
+        {{/each}}
+    </select>
+</template>
+
+<template name="addNewLookUpItem">
+    <!--<div class="input-group">-->
+        <!--<input id="new-item" type="text" class="form-control" placeholder="New item"/>-->
+        <!--<span class="input-group-btn">-->
+            <!--<button id="add-item" class="btn btn-primary" type="button">-->
+                <!--<i class="fa fa-plus"></i> Add-->
+            <!--</button>-->
+        <!--</span>-->
+    <!--</div>-->
 </template>
