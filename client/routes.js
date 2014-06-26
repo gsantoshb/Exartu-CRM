@@ -111,7 +111,6 @@ Router.map(function () {
   this.route('tasks', {
     path: '/tasks',
     controller: 'TasksController',
-//    plans: [SubscriptionPlan.plansEnum.enterprise]
   })
 
   this.route('lookupManagement', {

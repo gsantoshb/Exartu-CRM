@@ -1,18 +1,18 @@
 _.forEach([
   {
-    displayName: 'hour',
+    displayName: 'Hourly',
     inHours: 1
   },
   {
-    displayName: 'day',
+    displayName: 'Daily',
     inHours: 8
   },
   {
-    displayName: 'week',
+    displayName: 'Weekly',
     inHours: 40
   },
   {
-    displayName: 'month',
+    displayName: 'Monthly',
     inHours: 120
   }
 ],

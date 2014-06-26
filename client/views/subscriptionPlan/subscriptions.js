@@ -40,6 +40,10 @@ Template.freePlanSubscription.usersCount = function() {
   return Meteor.users.find().count();
 };
 
+Template.freePlanSubscription.tasksCount = function() {
+  return Tasks.find().count();
+};
+
 Template.enterprisePlanSubscription.plan = function() {
   return SubscriptionPlan.getPlan(SubscriptionPlan.plansEnum.enterprise);
 };

@@ -3,13 +3,14 @@
         <div id="content">
             {{#with originalJob}}
                 <div id="content-header" class="mini">
-                    <h1>{{displayName}}
-                        <a class="pull-right" href="/contactable/{{customer}}">
+                    <h1 class="profile-name">{{displayName}}
+                    <a class="pull-right" href="/contactable/{{customer}}">
                         <i class="icon-buildings-1"></i>
                         {{customerName}}
-                    </a></h1>
+                    </a>
+                    </h1>
                 </div>
-                <div id="breadcrumb" class="bradcrumb-top">
+                <div id="breadcrumb" class="breadcrumb-top">
                     <a href="/" title="Go to Home" class="tip-bottom">
                         <i class="fa fa-home"></i>Home</a>
                     <a href="/jobs" class="current">Jobs</a>
@@ -73,11 +74,15 @@
                                             {{#objectProperty property=endDate editable=editMode}}
                                                 {{#dateTimePicker value=value}}
                                                 {{/dateTimePicker}}
-                                                {{else}}
+                                            {{else}}
                                                 <strong>
-                                                    {{#formattedDate value=value format='MM.DD.YYYY'}}
-                                                    {{date}}
-                                                    {{/formattedDate}}
+                                                    {{#if value}}
+                                                        {{#formattedDate value=value format='MM.DD.YYYY'}}
+                                                        {{date}}
+                                                        {{/formattedDate}}
+                                                    {{else}}
+                                                        Not setted
+                                                    {{/if}}
                                                 </strong>
                                             {{/objectProperty}}
                                         </td>
@@ -160,7 +165,7 @@
                                             {{#if isType 'Temporary'}}
                                                 <i class="fa fa-money"></i>&nbsp;Pay:
                                                 {{#objectProperty property=pay editable=editMode}}
-                                                    <input class="form-control" type="number" value="{{value}}">
+                                                    <input class="form-control" type="number" min="0" value="{{value}}">
                                                 {{else}}
                                                     <strong>{{value}}</strong>
                                                 {{/objectProperty}}
@@ -168,7 +173,7 @@
                                             {{#if isType 'Direct Hire'}}
                                                 <i class="fa fa-money"></i>&nbsp;Salary:
                                                 {{#objectProperty property=salary editable=editMode}}
-                                                    <input class="form-control" type="number" value="{{value}}">
+                                                    <input class="form-control" type="number" min="0" value="{{value}}">
                                                 {{else}}
                                                     <strong>{{value}}</strong>
                                                 {{/objectProperty}}
@@ -179,7 +184,7 @@
                                                 <i class="fa fa-dollar"></i>&nbsp;Fee:
                                                 {{#objectProperty property=fee editable=editMode}}
                                                 <div class="form-group  {{hasError}}">
-                                                    <input class="form-control" type="number" value="{{value}}">
+                                                <input class="form-control" type="number" min="0" value="{{value}}">
                                                     <span>{{error}}</span>
                                                 </div><!-- /.form-group -->
                                                 {{else}}
@@ -264,8 +269,9 @@
 
                     <div class="col-md-4 col-lg-4" data-bind="with: $parent.job">
                         {{>assignment}}
-                        {{>customerInfo}}
+
                         {{>jobRates}}
+                        {{>customerInfo}}
                     </div>
                     <!-- /.col-lg-4-->
                 </div>

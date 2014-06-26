@@ -111,8 +111,8 @@
       },
       "kadira": {
         "git": "https://github.com/meteorhacks/kadira.git",
-        "tag": "v2.4.3",
-        "commit": "6b8fd8cf89304fecef2c4a2fd3b390ab9c314a10"
+        "tag": "v2.4.2",
+        "commit": "7ed8c6e080d7970e4c1e408e4bc16670a00e0b2a"
       },
       "GAnalytics": {
         "git": "https://github.com/datariot/meteor-ganalytics.git",

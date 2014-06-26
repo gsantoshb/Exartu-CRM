@@ -119,14 +119,14 @@ dType.constructor.service({
         if (!_.findWhere(value, { type: rateType._id })){
           result.push({ type: rateType._id, pay: pay, bill: bill });
         }
-        rateType = JobRateTypes.findOne({displayName:'OverTime'});
-        if (!_.findWhere(value, { type: rateType._id })){
-          result.push({ type: rateType._id, pay: pay*1.5, bill: bill*1.5 });
-        }
-        rateType = JobRateTypes.findOne({displayName:'DoubleTime'});
-        if (!_.findWhere(value, { type: rateType._id })){
-          result.push({ type: rateType._id, pay: pay*2, bill: bill*2 });
-        }
+//        rateType = JobRateTypes.findOne({displayName:'Over Time'});
+//        if (!_.findWhere(value, { type: rateType._id })){
+//          result.push({ type: rateType._id, pay: pay*1.5, bill: bill*1.5 });
+//        }
+//        rateType = JobRateTypes.findOne({displayName:'Double Time'});
+//        if (!_.findWhere(value, { type: rateType._id })){
+//          result.push({ type: rateType._id, pay: pay*2, bill: bill*2 });
+//        }
 
       }else if (obj['Direct Hire']){
         rateType = JobRateTypes.findOne({displayName:'Salary'});

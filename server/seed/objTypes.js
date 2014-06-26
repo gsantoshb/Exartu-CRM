@@ -61,34 +61,35 @@ newObjType({
 });
 
 newObjType({
-  collection: Jobs,
-  name: 'job',
-  objGroupType: Enums.objGroupType.job,
-  services: ['messages', 'tasks', 'posts', 'tags', 'candidates', 'jobRates'],
-  fields: [
-    {
-      name: 'publicJobTitle',
-      displayName: 'Public job title',
-      required: true
-    },
-    {
-      name: 'description',
-      displayName: 'Description',
-      required: false
-    },
-    {
-      name: 'startDate',
-      displayName: 'Start date',
-      fieldType: 'date',
-      defaultValue: null,
-      required: true
-    },
-    {
-      name: 'endDate',
-      displayName: 'End date',
-      fieldType: 'date',
-      defaultValue: null,
-      required: true
+    collection: Jobs,
+    name: 'job',
+    objGroupType: Enums.objGroupType.job,
+    services: ['messages', 'tasks', 'posts', 'tags', 'candidates', 'jobRates'],
+    fields: [{
+        name: 'fee',
+        displayName: 'Fee (%)',
+        fieldType: 'number',
+        defaultValue: 0,
+        required: true
+    },{
+        name: 'publicJobTitle',
+        displayName: 'Public job title',
+        required: true
+    },{
+        name: 'description',
+        displayName: 'Description',
+        required: false
+    },{
+        name: 'startDate',
+        displayName: 'Start date',
+        fieldType: 'date',
+        defaultValue: null,
+        required: true
+    },{
+        name: 'endDate',
+        displayName: 'End date',
+        fieldType: 'date',
+        defaultValue: null
     },
     {
       name: 'duration',
@@ -214,7 +215,8 @@ newObjType({
     {
       name: 'salary',
       displayName: 'Salary',
-      fieldType: 'number'
+        fieldType: 'number',
+        required: true
     },
     {
       name: 'fee',
