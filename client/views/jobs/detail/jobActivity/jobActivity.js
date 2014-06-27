@@ -31,7 +31,10 @@ Template.jobActivityAssignmentAdd.helpers({
 })
 Template.jobActivityAssignmentEdit.helpers({
   userName: userName,
-  employeeName: employeeName
+  employeeName: employeeName,
+  employeeChanged:function(){
+    return this.data.employee != this.data.oldEmployee;
+  }
 })
 UI.registerHelper('activityType', function(){
   switch (this.type){
