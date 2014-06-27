@@ -1,16 +1,61 @@
 <template name="applicantCenter">
     {{#if isInvited}}
         {{#if isRegistered}}
-            <h5>The employee has successfully registered</h5>
-
+            <h3>Documents</h3>
+            <hr>
+            <ul class="list-3 stripped has-thumb">
+                {{#each documents}}
+                    <li class="list-3-item">
+                        <div class="list-thumb"><i class="icon-document-1"></i></div>
+                        <div class="list-3-content list-magic">
+                            <div class="list-3-content-wrap">
+                                <div class="list-3-item-meta-top">PDF</div>
+                                <h4 class="list-3-item-title"><a href="#">mihai's C.V</a></h4>
+                            </div><!-- /.list-3-content-wrap -->
+                        </div>
+                    </li>
+                {{else}}
+                    <div class="box-v-msg">
+                        <div class="box-v-msg-content">
+                            <br>
+                            <i class="icon-document-box-3"></i>
+                            <p>No documents sent to this employee</p>
+                        </div><!-- /.box-v-msg-content -->
+                    </div>
+                {{/each}}
+            </ul>
         {{else}}
-            <h5>The employee has already been invited, but he has not registered yet</h5>
-            <input class="email" value="{{email}}" placeholder="Enter an email...">
-            <a class="invite" href="#">resend invitation</a>
+            <div class="box-v-msg">
+                <div class="box-v-msg-content">
+                    <i class="icon-document-box-3"></i>
+                    <p>The employee has already been invited, but he has not registered yet<br>
+                        <strong href="#">Yoy can send him another invitation</strong>
+                    </p>
+                    <div class="input-group">
+                        <span class="input-group-addon">To</span>
+                        <input class="email form-control" value="{{email}}" placeholder="Enter an email...">
+                        <span class="input-group-btn">
+                            <button class="invite btn btn-info">Send</button>
+                        </span>
+                    </div>
+                </div><!-- /.box-v-msg-content -->
+            </div>
         {{/if}}
     {{else}}
-        <h5>The employee has NOT been invited yet</h5>
-        <input class="email" value="{{email}}" placeholder="Enter an email...">
-        <a class="invite" href="#">Send invitation</a>
+        <div class="box-v-msg">
+            <div class="box-v-msg-content">
+                <i class="icon-document-box-3"></i>
+                <p>The employee has NOT been invited yet<br>
+                    <strong href="#">Yoy can send him an invitation</strong>
+                </p>
+                <div class="input-group">
+                    <span class="input-group-addon">To</span>
+                    <input class="email form-control" value="{{email}}" placeholder="Enter an email...">
+                    <span class="input-group-btn">
+                        <button class="invite btn btn-info">Send</button>
+                    </span>
+                </div>
+            </div><!-- /.box-v-msg-content -->
+        </div>
     {{/if}}
 </template>
