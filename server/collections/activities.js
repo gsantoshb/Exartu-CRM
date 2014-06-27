@@ -120,7 +120,7 @@ Assignment.after.insert(function (userId, doc) {
 });
 Assignment.after.update(function (userId, doc) {
   var data = {};
-  data.createdAt = doc.createdAt;
+  data.createdAt = new Date();
   data.job= doc.job;
   data.employee= doc.employee;
   data.oldJob=this.previous.job

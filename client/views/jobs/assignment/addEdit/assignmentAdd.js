@@ -1,30 +1,34 @@
 var assignment=null;
-var employeeId=null;
-var jobId=null
 var assignmentDependency=new Deps.Dependency;
-var employeeDependency=new Deps.Dependency;
+
 Template.assignmentAdd.created=function(){
   assignment=null;
 }
 
 var init=function(options){
+  var employeeId;
+  var jobId;
   var options= options || {};
+
+  assignmentDependency.changed();
+
   if (options.assignmentId){
     var assignment= Assignments.findOne({_id: options.assignmentId});
     employeeId= assignment.employee;
-    employeeDependency.changed();
 
     jobId= assignment.job
     return {
       start: assignment.start,
       end: assignment.end,
-      rates: assignment.rates
+      rates: assignment.rates,
+      job: jobId,
+      employee: employeeId,
+      _id: options.assignmentId
     }
   }else{
     var employeeParameter= options.employeeId;
     if(employeeParameter){
       employeeId= employeeParameter;
-      employeeDependency.changed()
     }
 
     jobId= options.jobId || Session.get('entityId');
@@ -32,23 +36,27 @@ var init=function(options){
         _id: jobId
       });
 
-    return assignment= {
+    return {
         start: job.startDate,
         end: job.endDate,
-        rates: job.jobRates
+        rates: job.jobRates,
+        job: jobId,
+        employee: employeeId
       };
   }
 }
 Template.assignmentAdd.helpers({
   assignment:function(){
     var params=this[0];
+
     if(!assignment){
       assignment= init(params)
     }
-    console.dir(assignment);
+
     assignmentDependency.depend();
     return assignment;
   },
+
   employees:function(){
     return Contactables.find({
       Employee: {
@@ -56,46 +64,70 @@ Template.assignmentAdd.helpers({
       }
     });
   },
+
+  action: function(){
+    assignmentDependency.depend();
+    return (assignment && assignment._id) ? 'Edit' : 'Create';
+  },
+
   getType: function(typeId){
     return  JobRateTypes.findOne({ _id: typeId });
   },
+
   isSelected: function(id){
-    employeeDependency.depend();
-    return employeeId==id;
+    assignmentDependency.depend();
+    return assignment && (assignment.employee==id);
   },
+
   getJobStart: function(){
     var job=Jobs.findOne({
-      _id: jobId
+      _id: assignment.job
     });
-    return job.startDate;
+    return job && job.startDate;
   },
+
   getJobEnd: function(){
     var job=Jobs.findOne({
-      _id: jobId
+      _id: assignment.job
     });
-    return job.endDate;
+    return job && job.endDate;
   }
 })
 
 Template.assignmentAdd.events({
   'change .employeeSelect':function(e, ctx){
-    employeeId= e.target.value;
+    assignment.employee= e.target.value;
   },
-  'click .save':function(e, ctx){
-    if (!employeeId){
 
+  'click .save':function(e, ctx){
+    if (! assignment.employee){
       return;
     }
 
-    assignment.job= Session.get('entityId');
-    assignment.employee= employeeId;
-    Assignments.insert(assignment,function(err, result){
-      if(err){
-        console.log(err)
-      }else{
-        $('.modal-host').children().modal('toggle')
-      }
-    });
+    if (assignment._id){
+      Assignments.update({_id: assignment._id},{
+        $set:{
+          start: assignment.start,
+          end: assignment.end,
+          rates: assignment.rates,
+          employee: assignment.employee
+        }
+      },function(err, result){
+        if(err){
+          console.log(err)
+        }else{
+          $('.modal-host').children().modal('toggle')
+        }
+      });
+    }else{
+      Assignments.insert(assignment,function(err, result){
+        if(err){
+          console.log(err)
+        }else{
+          $('.modal-host').children().modal('toggle')
+        }
+      });
+    }
   },
 
   'change .hasEnded': function(e){
@@ -106,11 +138,13 @@ Template.assignmentAdd.events({
     }
     assignmentDependency.changed();
   },
+
   'change.dp .startDate > .dateTimePicker': function(e, ctx) {
     if ($(e.target).hasClass('dateTimePicker')){
       assignment.start = $(e.target).data('DateTimePicker').date.toDate();
     }
   },
+
   'change.dp .endDate > .dateTimePicker': function(e, ctx) {
     if ($(e.target).hasClass('dateTimePicker')){
       assignment.end = $(e.target).data('DateTimePicker').date.toDate();
