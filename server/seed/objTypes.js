@@ -66,12 +66,6 @@ newObjType({
     objGroupType: Enums.objGroupType.job,
     services: ['messages', 'tasks', 'posts', 'tags', 'candidates', 'jobRates'],
     fields: [{
-        name: 'fee',
-        displayName: 'Fee (%)',
-        fieldType: 'number',
-        defaultValue: 0,
-        required: true
-    },{
         name: 'publicJobTitle',
         displayName: 'Public job title',
         required: true
@@ -89,7 +83,8 @@ newObjType({
         name: 'endDate',
         displayName: 'End date',
         fieldType: 'date',
-        defaultValue: null
+        defaultValue: null,
+        required: false
     },
     {
       name: 'duration',

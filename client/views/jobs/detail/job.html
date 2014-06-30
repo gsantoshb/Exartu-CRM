@@ -4,10 +4,10 @@
             {{#with originalJob}}
                 <div id="content-header" class="mini">
                     <h1 class="profile-name">{{displayName}}
-                    <a class="pull-right" href="/contactable/{{customer}}">
-                        <i class="icon-buildings-1"></i>
-                        {{customerName}}
-                    </a>
+                    <!--<a class="pull-right" href="/contactable/{{customer}}">-->
+                        <!--<i class="icon-buildings-1"></i>-->
+                        <!--{{customerName}}-->
+                    <!--</a>-->
                     </h1>
                 </div>
                 <div id="breadcrumb" class="breadcrumb-top">
@@ -190,6 +190,23 @@
                                                 {{else}}
                                                     <strong>
                                                         {{value}}%
+                                                    </strong>
+                                                {{/objectProperty}}
+                                            </td>
+                                        {{/if}}
+
+
+                                        {{#if isType 'Temporary'}}
+                                            <td>
+                                                <i class="fa fa-dollar"></i>&nbsp;Bill:
+                                                {{#objectProperty property=bill editable=editMode}}
+                                                    <div class="form-group  {{hasError}}">
+                                                        <input class="form-control" type="number" min="0" value="{{value}}">
+                                                        <span>{{error}}</span>
+                                                    </div><!-- /.form-group -->
+                                                {{else}}
+                                                    <strong>
+                                                        {{value}}
                                                     </strong>
                                                 {{/objectProperty}}
                                             </td>

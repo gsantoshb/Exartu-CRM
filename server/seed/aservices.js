@@ -113,13 +113,15 @@ dType.constructor.service({
         if(! frequency) return;
 
         var pay= (obj.Temporary.pay / frequency.inHours);
-        var bill=pay+pay*(obj.fee/100);
+        var bill= (obj.Temporary.bill / frequency.inHours);
+//        var bill=pay+pay*(obj.fee/100);
 
         var rateType = JobRateTypes.findOne({displayName:'RegularTime'});
         if (!_.findWhere(value, { type: rateType._id })){
           result.push({ type: rateType._id, pay: pay, bill: bill });
         }
-//        rateType = JobRateTypes.findOne({displayName:'Over Time'});
+        //<editor-fold desc="other rates">
+        //        rateType = JobRateTypes.findOne({displayName:'Over Time'});
 //        if (!_.findWhere(value, { type: rateType._id })){
 //          result.push({ type: rateType._id, pay: pay*1.5, bill: bill*1.5 });
 //        }
@@ -127,12 +129,13 @@ dType.constructor.service({
 //        if (!_.findWhere(value, { type: rateType._id })){
 //          result.push({ type: rateType._id, pay: pay*2, bill: bill*2 });
 //        }
+        //</editor-fold>
 
       }else if (obj['Direct Hire']){
         rateType = JobRateTypes.findOne({displayName:'Salary'});
-        var pay= (obj['Direct Hire'].salary);
-        var bill=pay+pay*(obj.fee/100); //round 2 decimals
-        bill=Math.round(bill * 100) / 100; //round 2 decimals
+        var pay= obj['Direct Hire'].salary;
+        var bill= pay + pay*(obj['Direct Hire'].fee/100); //round 2 decimals
+        bill= Math.round(bill * 100) / 100; //round 2 decimals
         if (!_.findWhere(value, { type: rateType._id })){
           result.push({ type: rateType._id, pay: pay, bill: bill });
         }
