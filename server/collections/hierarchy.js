@@ -29,6 +29,9 @@ Meteor.startup(function () {
 
       hier.planCode = 0;
 
+      // List of default values for each lookup type
+      hier.defaultLookUpValues = [];
+
 			Hierarchies.insert(hier);
 
 			return hier._id;
@@ -78,7 +81,36 @@ Meteor.startup(function () {
 				email: email,
 				password: pass
 			});
-		}
+		},
+    setLookUpDefault: function(lookUpCode, valueId) {
+      var lookUpValue = LookUps.findOne({codeType: lookUpCode, _id: valueId});
+
+      if (!lookUpValue)
+        throw new Meteor.Error(500, 'There is no value with id ' + valueId + ' for lookup with code value: ' + lookUpCode);
+
+      // Remove old default value for this lookup type
+      Hierarchies.update({_id: Meteor.user().hierId},
+        {
+          $pull: {
+            defaultLookUpValues: {
+              codeType: lookUpCode,
+            }
+          }
+        }
+      );
+
+      // Add the new default value
+      Hierarchies.update({_id: Meteor.user().hierId},
+        {
+          $addToSet: {
+            defaultLookUpValues: {
+              codeType: lookUpCode,
+              valueId: valueId
+            }
+          }
+        }
+      );
+    }
 	});
 });
 
