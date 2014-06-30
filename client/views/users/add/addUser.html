@@ -13,7 +13,7 @@
                     <form role="form">
                         <div class="form-group" data-bind="css:{'has-error': newUserValidate().username.isModified() && ! newUserValidate().username.isValid()}">
                             <label for="username">Username</label>
-                            <input type="email" class="form-control" id="username" placeholder="Enter email" data-bind="value: newUserValidate().username">
+                            <input type="email" class="form-control" id="username" placeholder="Username" data-bind="value: newUserValidate().username">
                             <span class="text-danger" data-bind="validationMessage: newUserValidate().username"></span>
                         </div>
                         <div class="form-group" data-bind="css:{'has-error': newUserValidate().email.isModified() && ! newUserValidate().email.isValid()}">
