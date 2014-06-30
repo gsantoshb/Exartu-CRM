@@ -48,16 +48,20 @@ dType.core.createFieldType({
     name: 'date',
     validate: function(value, fieldDefinition, error){
         var error=error||{};
-        if (fieldDefinition.required && !value){
+        if (fieldDefinition.required){
+          if(!_.isDate(value)){
             error.message='this field is required';
             return false;
+          }
+        }else {
+            if (value !== null && !_.isDate(value)){
+              error.message='invalid value';
+              return false;
+            }
         }
-        if (value != null && !_.isDate(value)){
-            error.message='invalid value';
-            return false;
-        }
-        return true
+        return true;
     },
+
     defaultValue: null
 })
 dType.core.createFieldType({

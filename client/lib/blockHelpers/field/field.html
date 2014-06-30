@@ -33,8 +33,18 @@
 <template name="dateFieldInput">
     <span>{{displayName}} :</span>
     <div class="form-group {{hasError}}">
-        {{>dateTimePicker}}
+        <div id="date" class="{{dateClass}}">
+            {{>dateTimePicker}}
+        </div>
         <span>{{error}}</span>
+        {{#if required}}
+            {{else}}
+            <div class="checkbox">
+                <label>
+                    <input class="editable" type="checkbox"> Set {{displayName}}
+                </label>
+            </div>
+        {{/if}}
     </div><!-- /.form-group -->
 </template>
 

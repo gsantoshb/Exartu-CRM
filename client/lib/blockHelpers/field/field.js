@@ -3,6 +3,35 @@ UI.registerHelper('displayProperty', function(){
     if(this.type=="field"){
       var template=Template[this.fieldType + 'FieldInput'] || Template['fieldInput'];
 
+      if (this.fieldType == 'date') {
+        template.created = function() {
+          if(this.data.required && !this.data.value)
+            this.data.value = new Date();
+          this.data.depIsEditable = new Deps.Dependency;
+          this.data.isEditable = this.data.required;
+        };
+        template.isEditable = function() {
+          this.depIsEditable.depend();
+          return this.isEditable;
+        };
+        template.dateClass = function() {
+          this.depIsEditable.depend();
+          return this.isEditable? '' : 'disabled';
+        };
+        template.events({
+          //todo: the dateTimePicker template accepts an onChange callback. We should pass it so we this doesn't depend on the event type or class
+          'dp.change .dateTimePicker': getDate,
+          'blur input.date': getDate,
+          'change .editable': function(e) {
+            this.isEditable = e.target.checked;
+            if(!this.isEditable)
+              this.value = null;
+            this.depIsEditable.changed();
+          }
+        });
+        return template;
+      }
+
       template.events({
         'blur input': function(e){
           switch (this.fieldType) {
@@ -18,12 +47,7 @@ UI.registerHelper('displayProperty', function(){
           this.value=e.target.value;
           dType.isValidField(this);
         },
-        //todo: the dateTimePicker template accepts an onChange callback. We should pass it so we this doesn't depend on the event type or class
-        'dp.change .dateTimePicker': function(e){
-          if ($(e.target).hasClass('dateTimePicker')){
-            this.value = $(e.target).data('DateTimePicker').date.toDate();
-          }
-        }
+
       });
       return template
     }
@@ -38,6 +62,11 @@ UI.registerHelper('displayProperty', function(){
   }
   return null;
 });
+
+var getDate=function(e, ctx){
+  this.value = ctx.$('.dateTimePicker').data('DateTimePicker').date.toDate();
+  dType.isValidField(this);
+}
 
 Template.typeInput.helpers({
   isField: function (field) {
