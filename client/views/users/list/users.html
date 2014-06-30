@@ -25,7 +25,7 @@
                             <div class="table-item-cell" data-bind="foreach: $data.emails">
 
                                 <i class="fa fa-envelope-o"></i>&nbsp;
-                                <a data-bind="text: $data.address, attr:{ href:'mailto:'+ $data.address}"></a>
+                                <a data-bind="text: $data.address, attr:{ href:'mailto:'+ ko.utils.unwrapObservable($data.address)}"></a>
                             </div>
                             <!-- /.table-item-cell -->
                         </div>
