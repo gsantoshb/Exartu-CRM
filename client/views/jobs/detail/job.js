@@ -123,8 +123,10 @@ Template.job.helpers({
     },
     isType:function(typeName){
       return !! Jobs.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
+    },
+    isSelected:function(optionValue, currentValue){
+      return optionValue == currentValue;
     }
-
 })
 Template.job.events({
     'click .editJob':function(){
@@ -169,7 +171,7 @@ Template.job.events({
     },
     'click .remove-tag': function() {
       job.tags.remove(this.value);
-    },
+    }
 })
 
 
