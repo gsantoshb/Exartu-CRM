@@ -62,6 +62,9 @@
                             {{#if Employee}}
                                 {{>employee_tabs contactable=. documentCount=documentCount}}
                             {{/if}}
+                            {{#if Contact}}
+                                {{>contact_tabs contactable=.}}
+                            {{/if}}
                         </div>
 
                         <!-- Right Column -->
@@ -169,7 +172,7 @@
             <small>— {{person.jobTitle}}</small>
         {{/if}}
 
-        {{#if Contact.customerName}}
+        {{#if Contact.customer}}
             <a class="pull-right" href="/contactable/{{Contact.customer}}">
                 <i class="icon-buildings-1"></i>
                 {{Contact.customerName}}
@@ -299,6 +302,20 @@
            {{> applicantCenter entity=contactable}}
         </div><!-- /.profile-documents -->
 
+    </div>
+</template>
+
+<template name="contact_tabs">
+    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.posts.length}}</span></a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Notes Tab -->
+        <div class="tab-pane active" id="profile-notes">
+            {{> contactableNotesAdd entity=contactable}}
+            {{> contactableNotesList entity=contactable}}
+        </div>
     </div>
 </template>
 
