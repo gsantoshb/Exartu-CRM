@@ -77,7 +77,9 @@ Template.contactableLocationBox.events({
     else {
       data.location = Contactables.findOne({_id: Session.get('entityId')}).location;
       EditLocationMode.show();
+      Deps.flush()
       centerBox(ctx.$('.box')[0]);
+      ctx.$('input').focus();
     }
   },
   'click #save-location': function () {
