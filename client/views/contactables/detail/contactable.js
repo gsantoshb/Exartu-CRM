@@ -137,6 +137,9 @@ Template.contactable.helpers({
     });
 
     return result;
+  },
+  ContactablesCollection: function(){
+    return Contactables;
   }
 });
 

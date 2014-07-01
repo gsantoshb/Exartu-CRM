@@ -168,7 +168,7 @@ _.extend(dType.core,{
         var relations=[];
         _.each(types, function(type){
             var typeRelations= dType.core.getTypeRelations(type);
-            relations.concat(typeRelations);
+            relations=relations.concat(typeRelations);
         })
         return relations;
     },

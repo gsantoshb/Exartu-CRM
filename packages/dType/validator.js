@@ -12,10 +12,7 @@ dType.validator={
         })
     },
     validateUpdate: function(userId, doc, fieldNames, modifier, options){
-        if(modifier.__notRunHook){
-            delete modifier.__notRunHook;
-            return this._super.call(this.context,userId, doc, fieldNames, modifier, options)
-        }
+
         var baseTypes=dType.core.getObjBaseTypes(doc);
         return _.every(baseTypes, function(type){
             //todo: suport $push, $addToSet, etc
@@ -83,9 +80,9 @@ var completeObj= function(type, obj){
 // validates an updateObject (a mongo modifier object) transforming it in a nested object (see getFormatedModifier)
 // and then it proceeds as isValidObj but not checking the completeness
 var isValidObjUpdate= function(baseType, modifier){
-    var formatedModifier=getFormatedModifier(modifier);
-    return _.every(_.keys(formatedModifier), function(key){
-        return isValidProperty(baseType, formatedModifier, key, true);
+    var formattedModifier=getFormatedModifier(modifier);
+    return _.every(_.keys(formattedModifier), function(key){
+        return isValidProperty(baseType, formattedModifier, key, true);
     })
 }
 
