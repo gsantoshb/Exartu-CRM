@@ -2,8 +2,8 @@ Jobs = new Meteor.Collection("jobs", {
   transform: function (job) {
     //displayName for lookups
     job.displayName = job.publicJobTitle;
-    job.industryName = LookUps.findOne({ _id: job.industry }).displayName;
-    job.categoryName = LookUps.findOne({ _id: job.category }).displayName;
+//    job.industryName = LookUps.findOne({ _id: job.industry }).displayName;
+//    job.categoryName = LookUps.findOne({ _id: job.category }).displayName;
     job.durationName = LookUps.findOne({ _id: job.duration }).displayName;
     job.statusName = LookUps.findOne({ _id: job.status }).displayName;
 
