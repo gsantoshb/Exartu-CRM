@@ -284,11 +284,11 @@
                     </div>
                     <!-- /.col-lg-8-->
 
-                    <div class="col-md-4 col-lg-4" data-bind="with: $parent.job">
+                    <div class="col-md-4 col-lg-4">
                         {{>assignment}}
 
                         {{>jobRates}}
-                        {{>customerInfo}}
+                        {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
                         {{>jobActivity}}
                     </div>
                     <!-- /.col-lg-4-->

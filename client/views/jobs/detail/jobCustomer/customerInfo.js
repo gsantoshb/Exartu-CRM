@@ -1,11 +1,9 @@
 Template.customerInfo.helpers({
   customer:function(){
-    var job=Jobs.findOne({
-      _id: Session.get('entityId')
+    var CustomerId= this.customer;
+    return Contactables.findOne({
+      _id: CustomerId
     });
-    var q={};
-    q._id= job.customer ? job.customer : null;
-    return Contactables.findOne(q);
   },
   pictureUrl: function () {
     if (this.pictureFileId) {
@@ -18,7 +16,7 @@ Template.customerInfo.helpers({
   }
 })
 Template.customerInfo.events({
-  'click .addEdit':function(){
-    Composer.showModal( 'jobCustomerAddEdit', Session.get('entityId'));
+  'click .addEdit':function(e, ctx){
+    Composer.showModal( 'jobCustomerAddEdit', Session.get('entityId'), ctx.data.customer, ctx.data.path, ctx.data.collection);
   }
 });
