@@ -57,7 +57,7 @@
                         <!-- Left Column -->
                         <div class="col-sm-8 col-lg-5 contactable-left-col">
                             {{#if Customer}}
-                                {{>customer_tabs contactable=. documentCount=documentCount}}
+                                {{>customer_tabs contactable=. documentCount=documentCount jobCount=jobCount}}
                             {{/if}}
                             {{#if Employee}}
                                 {{>employee_tabs contactable=. documentCount=documentCount}}
@@ -88,8 +88,6 @@
                                     <!-- Assignments -->
                                     {{>contactableAssignmentsBox}}
 
-                                    <!--jobs-->
-                                    {{>customerJobs}}
 
                                     <!--Customer-->
                                     {{#if Contact}}
@@ -270,6 +268,7 @@
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
         <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.posts.length}}</span></a></li>
         <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>
+        <li><a href="#profile-jobs" data-toggle="tab">Jobs <span class="custom-badge-2">{{jobCount}}</span></a></li>
     </ul>
 
     <div class="tab-content">
@@ -282,6 +281,9 @@
         <div class="tab-pane" id="profile-documents">
             {{> contactableDocumentsAdd entity=contactable collection="ContactablesFS"}}
             {{> contactableDocumentsList entity=contactable collection="ContactablesFS"}}
+        </div><!-- /.profile-documents -->
+        <div class="tab-pane" id="profile-jobs">
+            {{>customerJobs}}
         </div><!-- /.profile-documents -->
     </div>
 </template>

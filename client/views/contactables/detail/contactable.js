@@ -118,6 +118,10 @@ Template.contactable.helpers({
   documentCount: function() {
     return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count() + ResumesFS.find({'metadata.employeeId': Session.get('entityId')}).count();
   },
+  jobCount: function() {
+      console.log('jobs',Jobs);
+      return Jobs.find({'customer': Session.get('entityId')}).count();
+    },
   mainContactMethods: function() {
     var result = {};
     var contactMethods = ContactMethods.find().fetch();
