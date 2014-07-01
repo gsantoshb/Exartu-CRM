@@ -2,8 +2,6 @@ Package.describe({
     summary: 'dynamic types'
 });
 
-//Npm.depends({
-//});
 var both = ["client", "server"];
 
 Package.on_use(function(api){
@@ -33,23 +31,5 @@ Package.on_test(function(api){
     api.add_files('test/test.js', ['server']);
     api.add_files('test/fieldTest.js', ['server']);
     api.add_files('test/serviceTest.js', ['server']);
+    api.add_files('test/relation.js', ['server']);
 })
-
-
-/////////////////////////////////////////////////////////////
-//var col = Meteor.isClient ? self : self._collection;
-//if (!col._dtypeId){
-//    if (!col._name)
-//        col._dtypeId='localCollection' + _.keys(__direct).length;
-//    else{
-//        col._dtypeId=col._name
-//    }
-//}
-//
-//if (!__direct[col._dtypeId]){
-//    __direct[col._dtypeId]={};
-//}
-//
-//__direct[col._dtypeId][method]=col[method];
-//__direct[col._dtypeId][method]=_.bind(__direct[col._dtypeId][method], col);
-////////////////////////////////////////////////////////////
