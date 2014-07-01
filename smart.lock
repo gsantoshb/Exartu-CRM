@@ -30,8 +30,8 @@
     "packages": {
       "bootstrap-3": {
         "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
-        "tag": "v3.1.1-1",
-        "commit": "63dd38968828bb8963636df93e9a1c45e2dfe67e"
+        "tag": "v3.2.0-1",
+        "commit": "17a63902fc6cf1096c5289d963c66cf28b474727"
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
@@ -105,8 +105,8 @@
       },
       "kadira": {
         "git": "https://github.com/meteorhacks/kadira.git",
-        "tag": "v2.4.4",
-        "commit": "6073fa5bdfb36478165977804f922796b6fc82de"
+        "tag": "v2.4.5",
+        "commit": "fa9a6446f6efb576953f99c01c03474f56f3852e"
       },
       "GAnalytics": {
         "git": "https://github.com/datariot/meteor-ganalytics.git",
@@ -130,8 +130,8 @@
       },
       "cfs-file": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-file.git",
-        "tag": "v0.1.5",
-        "commit": "02dbe5f51a9d1067c3891e3658c48d4fadb9dff6"
+        "tag": "v0.1.7",
+        "commit": "9fb8dcb9afd25c9f737497e102e266a2c81e481b"
       },
       "cfs-collection": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-collection.git",
@@ -170,8 +170,8 @@
       },
       "cfs-storage-adapter": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-storage-adapter.git",
-        "tag": "v0.0.27",
-        "commit": "cb9c89450762396418c09a14b5a48609b4e62fc8"
+        "tag": "v0.0.28",
+        "commit": "8e0513815501d79b3d531a64f80717b4e9a34a42"
       },
       "http-methods": {
         "git": "https://github.com/CollectionFS/Meteor-http-methods.git",
@@ -186,7 +186,7 @@
       "data-man": {
         "git": "https://github.com/CollectionFS/Meteor-data-man.git",
         "branch": "master",
-        "commit": "c42e97728b38c29522d59db58d290e928df831ba"
+        "commit": "b929af5d64113c23480d4e2432bef836346d0b46"
       },
       "cfs-upload-ddp": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-upload-ddp.git",
@@ -225,8 +225,8 @@
       },
       "cfs-graphicsmagick": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-graphicsmagick.git",
-        "tag": "v0.0.13",
-        "commit": "9c107d5304e6cc0f7bc91a6d61b936b19b75ae01"
+        "tag": "v0.0.14",
+        "commit": "a9178346f25b0556f1470c7b8e97925ab5f534a9"
       },
       "cfs-ejson-file": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-ejson-file.git",

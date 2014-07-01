@@ -4,10 +4,10 @@
             {{#with originalJob}}
                 <div id="content-header" class="mini">
                     <h1 class="profile-name">{{displayName}}
-                    <!--<a class="pull-right" href="/contactable/{{customer}}">-->
-                        <!--<i class="icon-buildings-1"></i>-->
-                        <!--{{customerName}}-->
-                    <!--</a>-->
+                    <a class="pull-right" href="/contactable/{{customer}}">
+                        <i class="icon-buildings-1"></i>
+                        {{customerName}}
+                    </a>
                     </h1>
                 </div>
                 <div id="breadcrumb" class="breadcrumb-top">
@@ -125,113 +125,7 @@
                                             {{/objectProperty}}
                                         </td>
                                     </tr>
-                                    <!--<tr>-->
-                                        <!--<td>-->
-                                            <!--<i class="fa fa-building-o"></i>&nbsp;Industry:-->
-                                            <!--{{#objectProperty property=industry editable=editMode}}-->
-                                            <!--<div class="form-group  {{hasError}}">-->
-                                                <!--<select class="form-control input-lg">-->
-                                                    <!--{{#each options}}-->
-                                                    <!--<option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>-->
-                                                    <!--{{/each}}-->
-                                                <!--</select>-->
-                                                <!--<span>{{error}}</span>-->
-                                            <!--</div>&lt;!&ndash; /.form-group &ndash;&gt;-->
-                                            <!--{{else}}-->
-                                            <!--<strong>-->
-                                                <!--<strong>{{displayName}}</strong>-->
-                                            <!--</strong>-->
-                                            <!--{{/objectProperty}}-->
-                                        <!--</td>-->
-                                        <!--<td>-->
-                                            <!--<i class="fa fa-folder-open"></i>&nbsp;Category:-->
-                                            <!--{{#objectProperty property=category editable=editMode}}-->
-                                            <!--<div class="form-group  {{hasError}}">-->
-                                                <!--<select class="form-control input-lg">-->
-                                                    <!--{{#each options}}-->
-                                                    <!--<option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>-->
-                                                    <!--{{/each}}-->
-                                                <!--</select>-->
-                                                <!--<span>{{error}}</span>-->
-                                            <!--</div>&lt;!&ndash; /.form-group &ndash;&gt;-->
-                                            <!--{{else}}-->
-                                            <!--<strong>-->
-                                                <!--<strong>{{displayName}}</strong>-->
-                                            <!--</strong>-->
-                                            <!--{{/objectProperty}}-->
-                                        <!--</td>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
-                                        <!--<td>-->
-                                            <!--{{#if isType 'Temporary'}}-->
-                                                <!--<i class="fa fa-money"></i>&nbsp;Pay:-->
-                                                <!--{{#objectProperty property=pay editable=editMode}}-->
-                                                    <!--<input class="form-control" type="number" min="0" value="{{value}}">-->
-                                                <!--{{else}}-->
-                                                    <!--<strong>{{value}}</strong>-->
-                                                <!--{{/objectProperty}}-->
-                                            <!--{{/if}}-->
-                                            <!--{{#if isType 'Direct Hire'}}-->
-                                                <!--<i class="fa fa-money"></i>&nbsp;Salary:-->
-                                                <!--{{#objectProperty property=salary editable=editMode}}-->
-                                                    <!--<input class="form-control" type="number" min="0" value="{{value}}">-->
-                                                <!--{{else}}-->
-                                                    <!--<strong>{{value}}</strong>-->
-                                                <!--{{/objectProperty}}-->
-                                            <!--{{/if}}-->
-                                        <!--</td>-->
-                                        <!--{{#if isType 'Direct Hire'}}-->
-                                            <!--<td>-->
-                                                <!--<i class="fa fa-dollar"></i>&nbsp;Fee:-->
-                                                <!--{{#objectProperty property=fee editable=editMode}}-->
-                                                <!--<div class="form-group  {{hasError}}">-->
-                                                <!--<input class="form-control" type="number" min="0" value="{{value}}">-->
-                                                    <!--<span>{{error}}</span>-->
-                                                <!--</div>&lt;!&ndash; /.form-group &ndash;&gt;-->
-                                                <!--{{else}}-->
-                                                    <!--<strong>-->
-                                                        <!--{{value}}%-->
-                                                    <!--</strong>-->
-                                                <!--{{/objectProperty}}-->
-                                            <!--</td>-->
-                                        <!--{{/if}}-->
 
-
-                                        <!--{{#if isType 'Temporary'}}-->
-                                            <!--<td>-->
-                                                <!--<i class="fa fa-dollar"></i>&nbsp;Bill:-->
-                                                <!--{{#objectProperty property=bill editable=editMode}}-->
-                                                    <!--<div class="form-group  {{hasError}}">-->
-                                                        <!--<input class="form-control" type="number" min="0" value="{{value}}">-->
-                                                        <!--<span>{{error}}</span>-->
-                                                    <!--</div>&lt;!&ndash; /.form-group &ndash;&gt;-->
-                                                <!--{{else}}-->
-                                                    <!--<strong>-->
-                                                        <!--{{value}}-->
-                                                    <!--</strong>-->
-                                                <!--{{/objectProperty}}-->
-                                            <!--</td>-->
-                                        <!--{{/if}}-->
-                                    <!--</tr>-->
-                                    <!--{{#if isType 'Temporary'}}-->
-                                        <!--<tr>-->
-                                            <!--<td colspan="2">-->
-                                                <!--<i class="fa fa-calendar-o"></i>&nbsp;Frequency:-->
-                                                <!--{{#objectProperty property=frequency editable=editMode}}-->
-                                                    <!--<div class="form-group  {{hasError}}">-->
-                                                        <!--<select class="form-control input-lg">-->
-                                                            <!--{{#each options}}-->
-                                                            <!--<option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>-->
-                                                            <!--{{/each}}-->
-                                                        <!--</select>-->
-                                                        <!--<span>{{error}}</span>-->
-                                                    <!--</div>&lt;!&ndash; /.form-group &ndash;&gt;-->
-                                                <!--{{else}}-->
-                                                    <!--<strong>{{displayName}}</strong>-->
-                                                <!--{{/objectProperty}}-->
-                                            <!--</td>-->
-                                        <!--</tr>-->
-                                    <!--{{/if}}-->
                                     <tr>
                                         <td colspan="2">Tags:
                                             {{#objectProperty property=tags}}
