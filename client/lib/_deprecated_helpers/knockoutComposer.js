@@ -80,6 +80,11 @@ Composer.showModal = function (templateName) {
     var parameters = Array.prototype.slice.call(arguments, 1);
 
     var template = Template[templateName];
+
+    //remove rendered callback because it causes the binding to re-run without arguments.
+    //todo: a way to preserve the unwrapped rendered callback so it may run plugins?
+    template.rendered= undefined
+
     UI.insert(UI.renderWithData(template, parameters), host[0])
     var modal = host.children();
 
