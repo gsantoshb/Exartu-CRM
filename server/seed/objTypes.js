@@ -105,29 +105,29 @@ newObjType({
       lookUpName: 'jobTitle',
       multiple: false,
       defaultValue: getFirst(Enums.lookUpTypes.job.status.code)
-    },
-    {
-      name: 'industry',
-      displayName: 'Industry',
-      fieldType: 'lookUp',
-      lookUpName: 'jobIndustry',
-      lookUpCode: Enums.lookUpTypes.job.industry.code,
-      required: true,
-      lookUpName: 'jobTitle',
-      multiple: false,
-      defaultValue: getFirst(Enums.lookUpTypes.job.industry.code)
-    },
-    {
-      name: 'category',
-      displayName: 'Category',
-      fieldType: 'lookUp',
-      lookUpName: 'jobCategory',
-      lookUpCode: Enums.lookUpTypes.job.category.code,
-      required: true,
-      lookUpName: 'jobTitle',
-      multiple: false,
-      defaultValue: getFirst(Enums.lookUpTypes.job.category.code)
     }
+//    {
+//      name: 'industry',
+//      displayName: 'Industry',
+//      fieldType: 'lookUp',
+//      lookUpName: 'jobIndustry',
+//      lookUpCode: Enums.lookUpTypes.job.industry.code,
+//      required: true,
+//      lookUpName: 'jobTitle',
+//      multiple: false,
+//      defaultValue: getFirst(Enums.lookUpTypes.job.industry.code)
+//    },
+//    {
+//      name: 'category',
+//      displayName: 'Category',
+//      fieldType: 'lookUp',
+//      lookUpName: 'jobCategory',
+//      lookUpCode: Enums.lookUpTypes.job.category.code,
+//      required: true,
+//      lookUpName: 'jobTitle',
+//      multiple: false,
+//      defaultValue: getFirst(Enums.lookUpTypes.job.category.code)
+//    }
   ]
 });
 
