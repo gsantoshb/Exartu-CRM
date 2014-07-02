@@ -483,6 +483,11 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     height: 40px;
     width: 40px;
 }
+.profile-content-header .profile-pic-icon {
+    font-size: 25px;
+    padding: 5px 0;
+}
+
 @media (max-width: 767px) {
     .profile-content-header .profile-pic {
         margin: 0 auto 10px auto;
