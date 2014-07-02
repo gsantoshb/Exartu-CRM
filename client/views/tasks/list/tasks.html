@@ -251,10 +251,10 @@
                             <i class="fa fa-check"></i>Complete</a>
                     </div>
                 </div>
-                <div id="showTaskDate" data-bind="bind:false" style="display: none">
-                    <div class="date">
+                <div id="showTaskDate" data-bind="bind:false " style="display: none">
+                    <div class="date" data-bind="visible:end()!=null">
                         <i class="fa fa-calendar" data-bind="css: helper.getTaskStateCSS($data.state())"></i>
-                        <span data-bind="visible: $data.state()==Enums.taskState.pending">
+                        <span data-bind="visible: $data.state()==Enums.taskState.pending ">
                             <span data-bind="css: helper.getTaskStateCSS($data.state())">Due Date:</span>
                             <span data-bind="text: moment(end()).format('MMM Do YYYY, h:mm:ss a')"></span>
                         </span>

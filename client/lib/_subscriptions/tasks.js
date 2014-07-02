@@ -18,7 +18,8 @@ Tasks = new Meteor.Collection("tasks", {
       if (task.completed) {
         task.state = Enums.taskState.completed;
       } else {
-        if (now.isBefore(task.end)) {
+        console.log('taskend',task.end);
+        if (now.isBefore(task.end ) || task.end==null) {
           task.state = Enums.taskState.pending;
         } else {
           task.state = Enums.taskState.closed;

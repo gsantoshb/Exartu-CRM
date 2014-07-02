@@ -20,9 +20,15 @@
                 </div>
             {{/with}}
             {{#with job}}
-                <div class="container-fluid">
+            <div class="container-fluid contactable-content">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-sm-8 col-lg-5 contactable-left-col">
+                        {{>job_tabs contactable=. documentCount=documentCount jobCount=jobCount}}
+                    </div>
 
-                    <div class="col-md-8 col-lg-8">
+                    <!-- Right Column -->
+                    <div class="col-sm-4 col-lg-7 contactable-right-col-custom has-tabs">
                         <div class="box">
                             <div class="box-header-2">
                                 <a class="btn-action editJob pull-right" href="#" style="color: {{colorEdit}}"><i class="fa fa-pencil"></i></a>
@@ -189,6 +195,7 @@
                     <!-- /.col-lg-4-->
                 </div>
                 <!-- /.container-fluid -->
+            </div>
             {{/with}}
         </div>
         <!-- /.content -->
@@ -203,5 +210,18 @@
         </div>
         <div class="see-more">See more <i class="fa fa-caret-down"></i></div>
         <div class="see-less">See less <i class="fa fa-caret-up"></i></div>
+    </div>
+</template>
+<template name="job_tabs">
+    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{job.posts.length}}</span></a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Notes Tab -->
+        <div class="tab-pane active" id="profile-notes">
+            {{> contactableNotesAdd entity=job}}
+            {{> contactableNotesList entity=job}}
+        </div>
     </div>
 </template>
