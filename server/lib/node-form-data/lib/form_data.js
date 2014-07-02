@@ -254,7 +254,7 @@ FormData.prototype.submit = function(params, cb) {
   var request
     , options
     , defaults = {
-        method : 'post',
+        method : 'note',
         headers: this.getHeaders()
     };
 

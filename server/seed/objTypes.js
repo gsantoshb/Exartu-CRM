@@ -17,7 +17,7 @@ newObjType({
   collection: Contactables,
   objGroupType: Enums.objGroupType.contactable,
   name: 'contactable',
-  services: ['messages', 'tasks', 'posts', 'tags', 'contactMethods']
+  services: ['messages', 'tasks', 'notes', 'tags', 'contactMethods']
 });
 
 newObjType({
@@ -64,7 +64,7 @@ newObjType({
     collection: Jobs,
     name: 'job',
     objGroupType: Enums.objGroupType.job,
-    services: ['messages', 'tasks', 'posts', 'tags', 'candidates', 'jobRates'],
+    services: ['messages', 'tasks', 'notes', 'tags', 'candidates', 'jobRates'],
     fields: [{
         name: 'publicJobTitle',
         displayName: 'Public job title',

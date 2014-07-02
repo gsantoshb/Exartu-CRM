@@ -61,15 +61,15 @@ Meteor.startup(function () {
                 }
             });
         },
-        addDealPost: function (dealId, post) {
+        addDealNote: function (dealId, note) {
             // TODO: validations
-            post.userId = Meteor.userId();
-            post.dateCreated = Date.now();
+            note.userId = Meteor.userId();
+            note.dateCreated = Date.now();
             Deals.update({
                 _id: dealId
             }, {
                 $addToSet: {
-                    posts: post
+                    notes: note
                 }
             });
         },

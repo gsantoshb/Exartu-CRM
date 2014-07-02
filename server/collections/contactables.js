@@ -194,19 +194,19 @@ Meteor.startup(function () {
         }
       });
     },
-    addContactablePost: function (contactableId, post) {
+    addContactableNote: function (contactableId, note) {
       // TODO: validations
-      post.userId = Meteor.userId();
-      post.dateCreated = Date.now();
+      note.userId = Meteor.userId();
+      note.dateCreated = Date.now();
 
-      console.log('New post ');
-      console.dir(post);
+      console.log('New note ');
+      console.dir(note);
 
       Contactables.update({
         _id: contactableId
       }, {
         $addToSet: {
-          posts: post
+          notes: note
         }
       });
     },

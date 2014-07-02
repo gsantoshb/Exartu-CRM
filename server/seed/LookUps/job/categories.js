@@ -331,7 +331,7 @@ _.forEach([
 		displayName: "Assembly/Assembly Line"
   },
   {
-		displayName: "Audio/Video Broadcast & Postproduction"
+		displayName: "Audio/Video Broadcast & Noteproduction"
   },
   {
 		displayName: "Equipment Operations"

@@ -13,8 +13,8 @@ DealController = RouteController.extend({
                 to: 'content'
             });
             break;
-        case 'posts':
-            this.render('dealPosts', {
+        case 'notes':
+            this.render('dealNotes', {
                 to: 'content'
             });
             break;

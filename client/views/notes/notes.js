@@ -10,7 +10,7 @@ Template.contactableNotesAdd.events({
         return;
       }
       console.log(Session.get('entityId'));
-      Meteor.call('addContactablePost', Session.get('entityId'), {
+      Meteor.call('addContactableNote', Session.get('entityId'), {
         content: e.currentTarget.value
       }, function (err, result) {
         if (!err) {
@@ -28,10 +28,10 @@ Template.contactableNotesAdd.events({
 });
 
 Template.contactableNotesList.notesCounts = function() {
-  return this.entity? this.entity.posts.length : 0;
+  return this.entity? this.entity.notes.length : 0;
 }
 
 Template.contactableNotesList.notes = function () {
-  var temp = _.clone(this.entity? this.entity.posts || [] : []);
+  var temp = _.clone(this.entity? this.entity.notes || [] : []);
   return temp.reverse();
 };

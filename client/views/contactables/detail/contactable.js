@@ -19,8 +19,8 @@ ContactableController = RouteController.extend({
           to: 'content'
         });
         break;
-      case 'posts':
-        this.render('contactablePosts', {
+      case 'notes':
+        this.render('contactableNotes', {
           to: 'content'
         });
         break;
