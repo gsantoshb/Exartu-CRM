@@ -6,7 +6,7 @@ Template.contactableNotesAdd.events({
       e.preventDefault();
 
       if (_.isEmpty(e.currentTarget.value)) {
-        $('#add-note-feedback').text("A note should not be empty, try again..");
+        $('#add-note-feedback').text("Please enter a note");
         return;
       }
 

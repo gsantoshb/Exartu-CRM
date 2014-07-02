@@ -11,49 +11,49 @@
                     </a>
                 </li>
 
-                <li class="btn dropdown" id="menu-messages">
-                    <a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
-                        <i class="fa fa-envelope-o"></i>
-                        <span class="text">Messages</span>
-                        {{#if UnreadMessagesCount}}
-                            <span class="notifications"> {{UnreadMessagesCount}}</span>
-                        {{/if}}
-                    </a>
-                    <ul class="dropdown-menu dropdown-msgs pull-right">
-                        <li class="clearfix">
-                            <span class="pull-left">
-                                <a href="/inbox">
-                                    <i class="fa fa-inbox"></i>Inbox</a>
-                            </span>
-                        </li>
-                        {{#if UnreadMessagesCount}}
-                        {{else}}
-                            <span>There are not new messages</span>
-                        {{/if}}
+                <!--<li class="btn dropdown" id="menu-messages">-->
+                    <!--<a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">-->
+                        <!--<i class="fa fa-envelope-o"></i>-->
+                        <!--<span class="text">Messages</span>-->
+                        <!--{{#if UnreadMessagesCount}}-->
+                            <!--<span class="notifications"> {{UnreadMessagesCount}}</span>-->
+                        <!--{{/if}}-->
+                    <!--</a>-->
+                    <!--<ul class="dropdown-menu dropdown-msgs pull-right">-->
+                        <!--<li class="clearfix">-->
+                            <!--<span class="pull-left">-->
+                                <!--<a href="/inbox">-->
+                                    <!--<i class="fa fa-inbox"></i>Inbox</a>-->
+                            <!--</span>-->
+                        <!--</li>-->
+                        <!--{{#if UnreadMessagesCount}}-->
+                        <!--{{else}}-->
+                            <!--<span>No new messages</span>-->
+                        <!--{{/if}}-->
 
-                        {{#each latestUnreadMessages }}
-                            <li class="{{unread .}}">
-                                <a class="msg" href="{{conversationURL .}}">
-                                    {{#with userInfo .}}
-                                        <span class="msg-pic">
-                                            <img style="max-height: 50px;max-width: 50px;" src="{{picture}}">
-                                        </span>
-                                        <span class="msg-author">{{username}}</span>
-                                    {{/with}}
-                                        <div class="msg-content" style="display: inline">{{content}}
-                                        </div>
-                                    {{#formattedDate value=createdAt format='fromNow'}}
-                                        <span class="msg-date">{{date}}</span>
-                                    {{/formattedDate}}
-                                </a>
-                            </li>
-                        {{/each}}
+                        <!--{{#each latestUnreadMessages }}-->
+                            <!--<li class="{{unread .}}">-->
+                                <!--<a class="msg" href="{{conversationURL .}}">-->
+                                    <!--{{#with userInfo .}}-->
+                                        <!--<span class="msg-pic">-->
+                                            <!--<img style="max-height: 50px;max-width: 50px;" src="{{picture}}">-->
+                                        <!--</span>-->
+                                        <!--<span class="msg-author">{{username}}</span>-->
+                                    <!--{{/with}}-->
+                                        <!--<div class="msg-content" style="display: inline">{{content}}-->
+                                        <!--</div>-->
+                                    <!--{{#formattedDate value=createdAt format='fromNow'}}-->
+                                        <!--<span class="msg-date">{{date}}</span>-->
+                                    <!--{{/formattedDate}}-->
+                                <!--</a>-->
+                            <!--</li>-->
+                        <!--{{/each}}-->
 
-                        <li class="more">
-                            <a href="/inbox">View all messages</a>
-                        </li>
-                    </ul>
-                </li>
+                        <!--<li class="more">-->
+                            <!--<a href="/inbox">View all messages</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</li>-->
 
 
 
