@@ -45,66 +45,66 @@
 </template>
 
 <template name="contactablesFilters">
-    <div class="box-2">
-        <h4 class="bottom-20"><strong>Filters</strong></h4>
-        <form role="form">
-            <div class="panel-group bottom-20">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a>
-                                <strong>Mode</strong>
-                            </a>
-                        </h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="checkbox">
-                            <label>
-                                {{#objectProperty property=query.inactives}}
-                                    <input type="checkbox" value="{{value}}"> Include inactives
-                                {{/objectProperty}}
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                {{#objectProperty property=query.onlyRecents}}
-                                    <input type="checkbox" value="{{value}}"> Only recent
-                                {{/objectProperty}}
-                            </label>
-                            <span><i class="icon-question-mark" title="Shows only the contacts that have been recently added. Select the timespan."></i></span>
-                            <div class="pull-right">
-                                <button type="button" class="{{recentOptionClass recentOptions.day}}" id="recent-day">day</button>
-                                <button type="button" class="{{recentOptionClass recentOptions.week}}" id="recent-week">week</button>
-                                <button type="button" class="{{recentOptionClass recentOptions.month}}" id="recent-month">month</button>
-                                <button type="button" class="{{recentOptionClass recentOptions.year}}" id="recent-year">year</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <strong>Tags</strong>
-                        </h4>
-                    </div>
-                    <div class="panel-body">
-                        {{#objectProperty property=tags}}
-                        <button type="button" class="tag btn btn-xs btn-primary">
-                            <span >{{value}}</span>
-                            <i class="remove-tag fa fa-times"></i>
-                        </button>
-                        {{/objectProperty}}
-                        <div class="input-group">
-                            <input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">
-                            <span class="input-group-btn">
-                              <button class="add-tag btn btn-success" type="button">Add</button>
-                            </span>
-                        </div><!-- /input-group -->
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+    <!--<div class="box-2">-->
+        <!--<h4 class="bottom-20"><strong>Filters</strong></h4>-->
+        <!--<form role="form">-->
+            <!--<div class="panel-group bottom-20">-->
+                <!--<div class="panel panel-default">-->
+                    <!--<div class="panel-heading">-->
+                        <!--<h4 class="panel-title">-->
+                            <!--<a>-->
+                                <!--<strong>Mode</strong>-->
+                            <!--</a>-->
+                        <!--</h4>-->
+                    <!--</div>-->
+                    <!--<div class="panel-body">-->
+                        <!--<div class="checkbox">-->
+                            <!--<label>-->
+                                <!--{{#objectProperty property=query.inactives}}-->
+                                    <!--<input type="checkbox" value="{{value}}"> Include inactives-->
+                                <!--{{/objectProperty}}-->
+                            <!--</label>-->
+                        <!--</div>-->
+                        <!--<div class="checkbox">-->
+                            <!--<label>-->
+                                <!--{{#objectProperty property=query.onlyRecents}}-->
+                                    <!--<input type="checkbox" value="{{value}}"> Only recent-->
+                                <!--{{/objectProperty}}-->
+                            <!--</label>-->
+                            <!--<span><i class="icon-question-mark" title="Shows only the contacts that have been recently added. Select the timespan."></i></span>-->
+                            <!--<div class="pull-right">-->
+                                <!--<button type="button" class="{{recentOptionClass recentOptions.day}}" id="recent-day">day</button>-->
+                                <!--<button type="button" class="{{recentOptionClass recentOptions.week}}" id="recent-week">week</button>-->
+                                <!--<button type="button" class="{{recentOptionClass recentOptions.month}}" id="recent-month">month</button>-->
+                                <!--<button type="button" class="{{recentOptionClass recentOptions.year}}" id="recent-year">year</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="panel panel-default">-->
+                    <!--<div class="panel-heading">-->
+                        <!--<h4 class="panel-title">-->
+                            <!--<strong>Tags</strong>-->
+                        <!--</h4>-->
+                    <!--</div>-->
+                    <!--<div class="panel-body">-->
+                        <!--{{#objectProperty property=tags}}-->
+                        <!--<button type="button" class="tag btn btn-xs btn-primary">-->
+                            <!--<span >{{value}}</span>-->
+                            <!--<i class="remove-tag fa fa-times"></i>-->
+                        <!--</button>-->
+                        <!--{{/objectProperty}}-->
+                        <!--<div class="input-group">-->
+                            <!--<input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">-->
+                            <!--<span class="input-group-btn">-->
+                              <!--<button class="add-tag btn btn-success" type="button">Add</button>-->
+                            <!--</span>-->
+                        <!--</div>&lt;!&ndash; /input-group &ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</form>-->
+    <!--</div>-->
 </template>
 
 <template name="contactablesList">

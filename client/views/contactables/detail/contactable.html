@@ -1,22 +1,22 @@
 <template name="contactable">
     <div class="contactable-page-details">
-        <div id="content">
+        <div id="content">{{displayObjType}}
             {{#with contactable}}
                 <div id="breadcrumb" class="breadcrumb-top">
                     <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-                    <a href="#" class="current">Contactables</a>
+                    <a href="#" class="current">{{displayObjType}}</a>
                 </div>
                 <div id="content-header" class="content-header-bottom">
                     <div class="profile-content-header">
-                        {{#if pictureFileId}}
-                            <div class="profile-pic">
-                                <div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">
-                                    <a href="#" id="edit-pic" title="Click to Edit">
-                                        <img class="" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
-                                    </a>
-                                </div>
-                            </div>
-                        {{/if}}
+                        <!--{{#if pictureFileId}}-->
+                            <!--<div class="profile-pic">-->
+                                <!--<div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">-->
+                                    <!--<a href="#" id="edit-pic" title="Click to Edit">-->
+                                        <!--<img class="" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">-->
+                                    <!--</a>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--{{/if}}-->
                         <input id="edit-picture" style="visibility:hidden; display: none" name="files" type="file" class="fileUploader"/>
 
                         {{#if Customer}}

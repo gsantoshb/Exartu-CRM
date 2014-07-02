@@ -96,13 +96,31 @@ Template.contactable.rendered = function () {
   }
   Meteor.autorun(asd);
 }
+Template.displayObjType = function() {
+    if (info.objType.value)
+        return '';
 
+    if (this.Customer)
+        return 'Customer';
+    if (this.Employee)
+        return 'Employee';
+    if (this.Contact)
+        return 'Contact';
+};
 Template.contactable.helpers({
+  displayObjType: function() {
+
+      if (this.Customer)
+          return 'Customer';
+      if (this.Employee)
+          return 'Employee';
+      if (this.Contact)
+          return 'Contact';
+  },
   contactable: function () {
     var contactable = Contactables.findOne({
       _id: Session.get('entityId')
     });
-
     Session.set('contactableDisplayName', contactable.displayName);
     return contactable;
   },
@@ -119,9 +137,9 @@ Template.contactable.helpers({
     return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count() + ResumesFS.find({'metadata.employeeId': Session.get('entityId')}).count();
   },
   jobCount: function() {
-      console.log('jobs',Jobs);
       return Jobs.find({'customer': Session.get('entityId')}).count();
     },
+
   mainContactMethods: function() {
     var result = {};
     var contactMethods = ContactMethods.find().fetch();
