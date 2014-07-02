@@ -476,6 +476,20 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     margin: 0 0 0 0!important;
 }
 
+
+
+/* Contactable screen */
+.profile-content-header .profile-pic {
+    height: 40px;
+    width: 40px;
+}
+@media (max-width: 767px) {
+    .profile-content-header .profile-pic {
+        margin: 0 auto 10px auto;
+    }
+}
+
+
 .contactable-content {
     background-color: #fafafa;
     -webkit-box-shadow: inset 0 -5px 6px rgba(0,0,0,0.25);

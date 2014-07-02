@@ -112,9 +112,10 @@ newObjType({
 //      fieldType: 'lookUp',
 //      lookUpName: 'jobIndustry',
 //      lookUpCode: Enums.lookUpTypes.job.industry.code,
-//      required: true,
+//      required: false,
 //      lookUpName: 'jobTitle',
 //      multiple: false,
+//      showInAdd: false,
 //      defaultValue: getFirst(Enums.lookUpTypes.job.industry.code)
 //    },
 //    {
@@ -123,9 +124,10 @@ newObjType({
 //      fieldType: 'lookUp',
 //      lookUpName: 'jobCategory',
 //      lookUpCode: Enums.lookUpTypes.job.category.code,
-//      required: true,
+//      required: false,
 //      lookUpName: 'jobTitle',
 //      multiple: false,
+//        showInAdd: false,
 //      defaultValue: getFirst(Enums.lookUpTypes.job.category.code)
 //    }
   ]

@@ -173,16 +173,19 @@ Template.contactable.events({
     var fsFile = new FS.File(e.target.files[0]),
       contactableId = Session.get('entityId');
 
-    fsFile.metadata = {
-      entityId: contactableId,
-      owner: Meteor.userId(),
-      name: fsFile.name()
-    };
+    if (fsFile != undefined) {
 
-    var file = ContactablesFS.insert(fsFile, function () {
-    });
+      fsFile.metadata = {
+        entityId: contactableId,
+        owner: Meteor.userId(),
+        name: fsFile.name()
+      };
 
-    Meteor.call('updateContactablePicture', contactableId, file._id);
+      var file = ContactablesFS.insert(fsFile, function () {
+      });
+
+      Meteor.call('updateContactablePicture', contactableId, file._id);
+    }
   },
   'click .send-message': function (e) {
     Composer.showModal('sendMessage', $data);
