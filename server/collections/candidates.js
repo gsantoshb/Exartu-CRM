@@ -1,11 +1,11 @@
-Meteor.publish('candidate', function () {
+Meteor.publish('candidates', function () {
 
     if (!this.userId)
         return false;
 
-    return Candidate.find();
+    return Candidates.find();
 });
-Candidate.allow({
+Candidates.allow({
   insert: function () {
     return true;
   },
@@ -14,7 +14,7 @@ Candidate.allow({
   }
 });
 
-Candidate.before.insert(function(userId, doc, fieldNames, modifier, options){
+Candidates.before.insert(function(userId, doc, fieldNames, modifier, options){
   var job= Jobs.findOne({ _id: doc.job });
   if (! job)
     return false;
@@ -29,7 +29,7 @@ Candidate.before.insert(function(userId, doc, fieldNames, modifier, options){
 });
 
 //<editor-fold desc="************ update job and contactable ****************">
-Candidate.after.insert(function(userId, doc, fieldNames, modifier, options){
+Candidates.after.insert(function(userId, doc, fieldNames, modifier, options){
     Contactables.update({
         _id: doc.employee
     }, {
@@ -46,7 +46,7 @@ Candidate.after.insert(function(userId, doc, fieldNames, modifier, options){
     });
 });
 
-Candidate.after.update(function(userId, doc, fieldNames, modifier, options){
+Candidates.after.update(function(userId, doc, fieldNames, modifier, options){
   if (doc.employee != this.previous.employee){
 
     Contactables.update({

@@ -63,13 +63,13 @@
     {{/if}}
 </template>
 
-<template name="jobActivityAssignmentEdit">
+<template name="jobActivityAssignmentsEdit">
     {{#if employeeChanged}}
         {{userName userId}} Assigned <a href="/contactables/{{data.employee}}">{{employeeName data.employee}}</a>
     {{else}}
         {{userName userId}} Edited the assignment
     {{/if}}
 </template>
-<template name="jobActivityAssignmentAdd">
+<template name="jobActivityAssignmentsAdd">
     {{userName userId}} Assigned <a href="/contactables/{{data.employee}}">{{employeeName data.employee}}</a>
 </template>

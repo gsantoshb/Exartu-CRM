@@ -45,7 +45,7 @@ Meteor.startup(function () {
               console.dir(Job);
           }
       },
-      updateCandidateNegotiation: function(data) {
+      updateCandidatesNegotiation: function(data) {
         Jobs.update(
           {
             _id: data.jobId,

@@ -104,7 +104,7 @@ Jobs.after.insert(function (userId, doc) {
 
 
 //assignments
-Assignment.after.insert(function (userId, doc) {
+Assignments.after.insert(function (userId, doc) {
   var data = {};
   data.dateCreated = doc.dateCreated;
   data.job=doc.job;
@@ -118,7 +118,7 @@ Assignment.after.insert(function (userId, doc) {
     data: data
   })
 });
-Assignment.after.update(function (userId, doc) {
+Assignments.after.update(function (userId, doc) {
   var data = {};
   data.dateCreated = new Date();
   data.job= doc.job;

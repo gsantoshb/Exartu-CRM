@@ -216,7 +216,7 @@ Meteor.startup(function () {
         $set: { pictureFileId: fileId}
       });
     },
-    createCandidate: function(candidate, jobId) {
+    createCandidates: function(candidate, jobId) {
           candidate.dateCreated = new Date();
           candidate.negotiation = '';
           Jobs.update({

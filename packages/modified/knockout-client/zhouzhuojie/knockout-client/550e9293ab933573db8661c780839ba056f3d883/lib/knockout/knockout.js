@@ -1571,7 +1571,7 @@
 
                 // Matches something that can be assigned to--either an isolated identifier or something ending with a property accessor
                 // This is designed to be simple and avoid false negatives, but could produce false positives (e.g., a+b.c).
-                var javaScriptAssignmentTarget = /^(?:[$_a-z][$\w]*|(.+)(\.\s*[$_a-z][$\w]*|\[.+\]))$/i;
+                var javaScriptAssignmentsTarget = /^(?:[$_a-z][$\w]*|(.+)(\.\s*[$_a-z][$\w]*|\[.+\]))$/i;
 
                 function restoreTokens(string, tokens) {
                     var prevValue = null;
@@ -1587,7 +1587,7 @@
                 function getWriteableValue(expression) {
                     if (ko.utils.arrayIndexOf(javaScriptReservedWords, ko.utils.stringTrim(expression).toLowerCase()) >= 0)
                         return false;
-                    var match = expression.match(javaScriptAssignmentTarget);
+                    var match = expression.match(javaScriptAssignmentsTarget);
                     return match === null ? false : match[1] ? ('Object(' + match[1] + ')' + match[2]) : expression;
                 }
 

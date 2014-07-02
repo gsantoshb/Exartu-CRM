@@ -1,2 +1,2 @@
-Candidates = new Meteor.Collection('candidate');
-extendedSubscribe('candidate', 'CandidatesHandler');
+Candidates = new Meteor.Collection('candidates');
+extendedSubscribe('candidates', 'CandidatesHandler');

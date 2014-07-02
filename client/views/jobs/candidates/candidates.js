@@ -30,7 +30,7 @@ Template.candidates.helpers({
 
 })
 Template.candidates.events({
-  'click .addEditCandidate':function () {
+  'click .addEditCandidates':function () {
     Composer.showModal( 'candidateAdd',Session.get('entityId'));
   },
   'click .assign': function(){

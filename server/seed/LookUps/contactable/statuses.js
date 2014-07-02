@@ -18,7 +18,7 @@ _.forEach([
 //employee status
 _.forEach([
   {
-    displayName:  "Candidate"
+    displayName:  "Candidates"
   },
   {
     displayName: "Interview"
@@ -44,7 +44,7 @@ _.forEach([
     displayName: "Submitted"
   },
   {
-    displayName: "WCandidate"
+    displayName: "WCandidates"
   },
   {
     displayName: "Accepted"
