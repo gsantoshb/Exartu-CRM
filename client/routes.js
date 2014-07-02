@@ -161,13 +161,20 @@ Router.map(function () {
     template: 'notFoundTemplate'
   })
 
+  DesignerController = DocCenter.DesignerController;
   this.route('designer', {
-    path: '/designer',
-    template: 'designerTemplate'
-  })
+    path: '/doccenter/designer/:_id',
+    controller: 'DesignerController'
+  });
+  FillerController = DocCenter.FillerController;
   this.route('filler', {
-    path: '/filler',
-    template: 'fillerTemplate'
+    path: '/doccenter/filler/:_id',
+    controller: 'FillerController'
+  });
+  DocCenterController = DocCenter.DocCenterController;
+  this.route('docCenter', {
+    path: '/doccenter/documents',
+    controller: 'DocCenterController'
   })
 });
 
