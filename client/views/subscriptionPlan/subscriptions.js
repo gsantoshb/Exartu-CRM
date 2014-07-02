@@ -52,7 +52,7 @@ Template.enterprisePlanSubscription.tasksCount = function() {
   var firstDayOfMonth = new Date;
   firstDayOfMonth.setDate(1);
   return Tasks.find({
-    createdAt: {
+    dateCreated: {
       $gt: firstDayOfMonth
     }
   }).count();

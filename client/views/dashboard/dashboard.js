@@ -37,7 +37,7 @@ Template.dashboard.viewModel = function () {
   var options = ko.computed(function () {
     return {limit: ko.toJS(filters().limit),
       sort: {
-        'data.createdAt': -1
+        'data.dateCreated': -1
       }
     };
   });
@@ -89,7 +89,7 @@ var getHistorical = function (collection, timeStamps, query) {
   var q = query || {};
   //    debugger;
   _.each(timeStamps, function (time) {
-    q.createdAt = {
+    q.dateCreated = {
       $lte: time
     }
     history.push(collection.find(q).count());

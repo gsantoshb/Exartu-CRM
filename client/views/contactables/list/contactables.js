@@ -152,7 +152,7 @@ Template.contactablesList.contactables = function() {
 
   if (query.onlyRecents.value) {
     var dateLimit = new Date();
-    searchQuery.createdAt = {
+    searchQuery.dateCreated = {
         $gte: dateLimit.getTime() - query.selectedLimit.value
     };
   }

@@ -25,7 +25,7 @@ Roles = new Meteor.Collection("roles");
 ContactMethods = new Meteor.Collection("contactMethods");
 
 Assignment = new Meteor.Collection("assignment");
-
+Candidate = new Meteor.Collection("candidate");
 JobRateTypes = new Meteor.Collection("jobRateTypes");
 
 Collections = {

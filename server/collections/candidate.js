@@ -1,11 +1,11 @@
-Meteor.publish('assignment', function () {
+Meteor.publish('candidate', function () {
 
     if (!this.userId)
         return false;
 
-    return Assignment.find();
+    return Candidate.find();
 });
-Assignment.allow({
+Candidate.allow({
   insert: function () {
     return true;
   },
@@ -14,12 +14,12 @@ Assignment.allow({
   }
 });
 
-Assignment.before.insert(function(userId, doc, fieldNames, modifier, options){
+Candidate.before.insert(function(userId, doc, fieldNames, modifier, options){
   var job= Jobs.findOne({ _id: doc.job });
   if (! job)
     return false;
 
-  if (job.assignment)
+  if (job.candidate)
     return false;
 
   var user = Meteor.user();
@@ -29,31 +29,31 @@ Assignment.before.insert(function(userId, doc, fieldNames, modifier, options){
 });
 
 //<editor-fold desc="************ update job and contactable ****************">
-Assignment.after.insert(function(userId, doc, fieldNames, modifier, options){
+Candidate.after.insert(function(userId, doc, fieldNames, modifier, options){
     Contactables.update({
         _id: doc.employee
     }, {
         $set: {
-            assignment: doc._id
+            candidate: doc._id
         }
     });
     Jobs.update({
         _id: doc.job
     }, {
         $set: {
-            assignment: doc._id
+            candidate: doc._id
         }
     });
 });
 
-Assignment.after.update(function(userId, doc, fieldNames, modifier, options){
+Candidate.after.update(function(userId, doc, fieldNames, modifier, options){
   if (doc.employee != this.previous.employee){
 
     Contactables.update({
       _id: this.previous.employee
     }, {
       $set: {
-        assignment: null
+        candidate: null
       }
     });
 
@@ -61,7 +61,7 @@ Assignment.after.update(function(userId, doc, fieldNames, modifier, options){
       _id: doc.employee
     }, {
       $set: {
-        assignment: doc._id
+        candidate: doc._id
       }
     });
   }

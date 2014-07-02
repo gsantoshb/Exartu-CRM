@@ -22,7 +22,7 @@ Meteor.publish('activities', function () {
 var mainTypes=['Employee','Contact','Customer']
 Contactables.after.insert(function (userId, doc) {
 	var data = {};
-	data.createdAt = doc.createdAt;
+	data.dateCreated = doc.dateCreated;
 	data.objTypeName = _.find(doc.objNameArray,function(item){
         return  mainTypes.indexOf(item)>=0
     });
@@ -53,7 +53,7 @@ Messages.after.insert(function (userId, doc) {
 			entityId: entity,
 			data: {
 				message: doc.message,
-				createdAt: doc.createdAt
+				dateCreated: doc.dateCreated
 			}
 		})
 	})
@@ -67,7 +67,7 @@ Tasks.after.insert(function (userId, doc) {
 		entityId: doc._id,
 		data: {
 			note: doc.note,
-			createdAt: doc.createdAt,
+			dateCreated: doc.dateCreated,
 			begin: doc.begin,
 			end: doc.end,
 			completed: doc.completed,
@@ -106,7 +106,7 @@ Jobs.after.insert(function (userId, doc) {
 //assignments
 Assignment.after.insert(function (userId, doc) {
   var data = {};
-  data.createdAt = doc.createdAt;
+  data.dateCreated = doc.dateCreated;
   data.job=doc.job;
   data.employee=doc.employee;
 
@@ -120,7 +120,7 @@ Assignment.after.insert(function (userId, doc) {
 });
 Assignment.after.update(function (userId, doc) {
   var data = {};
-  data.createdAt = new Date();
+  data.dateCreated = new Date();
   data.job= doc.job;
   data.employee= doc.employee;
   data.oldJob=this.previous.job

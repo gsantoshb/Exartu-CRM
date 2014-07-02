@@ -10,7 +10,7 @@ Template.jobActivity.helpers({
         entityId: Session.get('entityId'),
         type: {$in: [Enums.activitiesType.assignmentEdit, Enums.activitiesType.assignmentAdd]}
       },{sort: {
-        'data.createdAt': -1
+        'data.dateCreated': -1
       }})
   }
 });

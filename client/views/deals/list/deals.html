@@ -77,8 +77,8 @@
                             {{else}}
                             <div class="table-items-box" data-bind="foreach: entities ">
                                 <div class="table-item odd ">
-                                    <!-- ko if: $data.createdAt -->
-                                    <div class="date" data-bind="text: moment(createdAt()).fromNow()"></div>
+                                    <!-- ko if: $data.dateCreated -->
+                                    <div class="date" data-bind="text: moment(dateCreated()).fromNow()"></div>
                                     <!-- /ko -->
                                     <div class="row ">
                                         <div class="col-sm-6 col-md-6 col-lg-6 ">
