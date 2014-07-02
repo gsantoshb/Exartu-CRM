@@ -287,8 +287,8 @@
 	<i class="fa fa-share-square-o"></i>
 </a>
 -->
-                            <a class="btn btn-default tip-bottom" title="Assign Candidates" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $parent.entityId()); }">
-                                <i class="fa fa-anchor"></i>Assign Candidates</a>
+                            <a class="btn btn-default tip-bottom" title="Assign Candidates" data-bind="click: function(){$root.assign($parent.entityId())}">
+                                <i class="fa fa-user"></i>Assign Candidates</a>
                             <!--
 							<a class="btn btn-default tip-bottom" title="Email" href="#">
 								<i class="fa fa-envelope-o"></i>gregg@tempworks.com</a>
