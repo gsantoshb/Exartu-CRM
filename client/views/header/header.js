@@ -156,7 +156,6 @@ Template.header.rendered = function () {
     }
 }
 
-
 Template.sidebar.waitOn = ['UsersHandler', dType.ObjTypesHandler]
 Template.sidebar.viewModel=function(){
     var self = this;
