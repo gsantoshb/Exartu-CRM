@@ -21,7 +21,7 @@ Jobs.before.insert(function (userId, doc) {
     var user = Meteor.user();
     doc.hierId = user.hierId;
     doc.userId = user._id;
-    doc.createdAt = Date.now();
+    doc.dateCreated = Date.now();
 });
 
 Meteor.startup(function () {
@@ -45,7 +45,7 @@ Meteor.startup(function () {
               console.dir(Job);
           }
       },
-      updateCandidateNegotiation: function(data) {
+      updateCandidatesNegotiation: function(data) {
         Jobs.update(
           {
             _id: data.jobId,

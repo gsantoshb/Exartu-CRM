@@ -28,7 +28,7 @@ Contactables.before.insert(function (userId, doc) {
   var user = Meteor.user();
   doc.hierId = user.hierId;
   doc.userId = user._id;
-  doc.createdAt = Date.now();
+  doc.dateCreated = Date.now();
 
   var shortId = Meteor.require('shortid');
   var aux = shortId.generate();
@@ -197,7 +197,7 @@ Meteor.startup(function () {
     addContactablePost: function (contactableId, post) {
       // TODO: validations
       post.userId = Meteor.userId();
-      post.createdAt = Date.now();
+      post.dateCreated = Date.now();
 
       console.log('New post ');
       console.dir(post);
@@ -212,16 +212,12 @@ Meteor.startup(function () {
     },
     updateContactablePicture: function (contactableId, fileId) {
       console.log("contact picture updated");
-      Contactables.update({
-        _id: contactableId
-      }, {
-        $set: {
-          pictureFileId: fileId
-        }
+      Contactables.update({_id: contactableId}, {
+        $set: { pictureFileId: fileId}
       });
-        },
-        createCandidate: function(candidate, jobId) {
-          candidate.cratedAt = new Date();
+    },
+    createCandidates: function(candidate, jobId) {
+          candidate.dateCreated = new Date();
           candidate.negotiation = '';
           Jobs.update({
             _id: jobId

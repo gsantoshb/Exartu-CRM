@@ -96,7 +96,7 @@
             <div class="item-info">
                 <div class="time">
                     <i class="icon icon-clock-3"></i>
-                    <span data-bind="text: moment(data.createdAt()).fromNow()"></span>
+                    <span data-bind="text: moment(data.dateCreated()).fromNow()"></span>
                 </div>
                 <div class="type" data-bind="style: {background: helper.getActivityColor($data)}">
                     <i data-bind="css: 'icon ' + helper.getActivityIcon($data)"></i>
@@ -146,7 +146,7 @@
             <div class="item-info">
                 <div class="time">
                     <i class="icon icon-clock-3"></i>
-                    <span data-bind="text: moment(data.createdAt()).fromNow()"></span>
+                    <span data-bind="text: moment(data.dateCreated()).fromNow()"></span>
                 </div>
                 <div class="type" data-bind="style: {background: helper.getActivityColor($data)}">
                     <i data-bind="css: 'icon ' + helper.getActivityIcon($data)"></i>
@@ -197,7 +197,7 @@
             <div class="item-info">
                 <div class="time">
                     <i class="icon icon-clock-3"></i>
-                    <span data-bind="text: moment(data.createdAt()).fromNow()"></span>
+                    <span data-bind="text: moment(data.dateCreated()).fromNow()"></span>
                 </div>
                 <div class="type">
                     <i class="icon icon-clock-3"></i>
@@ -287,8 +287,8 @@
 	<i class="fa fa-share-square-o"></i>
 </a>
 -->
-                            <a class="btn btn-default tip-bottom" title="Assign Candidate" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $parent.entityId()); }">
-                                <i class="fa fa-anchor"></i>Assign Candidate</a>
+                            <a class="btn btn-default tip-bottom" title="Assign Candidates" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $parent.entityId()); }">
+                                <i class="fa fa-anchor"></i>Assign Candidates</a>
                             <!--
 							<a class="btn btn-default tip-bottom" title="Email" href="#">
 								<i class="fa fa-envelope-o"></i>gregg@tempworks.com</a>

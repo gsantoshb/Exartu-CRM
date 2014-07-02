@@ -1,11 +1,11 @@
-Meteor.publish('assignment', function () {
+Meteor.publish('assignments', function () {
 
     if (!this.userId)
         return false;
 
-    return Assignment.find();
+    return Assignments.find();
 });
-Assignment.allow({
+Assignments.allow({
   insert: function () {
     return true;
   },
@@ -14,7 +14,7 @@ Assignment.allow({
   }
 });
 
-Assignment.before.insert(function(userId, doc, fieldNames, modifier, options){
+Assignments.before.insert(function(userId, doc, fieldNames, modifier, options){
   var job= Jobs.findOne({ _id: doc.job });
   if (! job)
     return false;
@@ -25,11 +25,11 @@ Assignment.before.insert(function(userId, doc, fieldNames, modifier, options){
   var user = Meteor.user();
   doc.hierId = user.hierId;
   doc.userId = user._id;
-  doc.createdAt = Date.now();
+  doc.dateCreated = Date.now();
 });
 
 //<editor-fold desc="************ update job and contactable ****************">
-Assignment.after.insert(function(userId, doc, fieldNames, modifier, options){
+Assignments.after.insert(function(userId, doc, fieldNames, modifier, options){
     Contactables.update({
         _id: doc.employee
     }, {
@@ -46,7 +46,7 @@ Assignment.after.insert(function(userId, doc, fieldNames, modifier, options){
     });
 });
 
-Assignment.after.update(function(userId, doc, fieldNames, modifier, options){
+Assignments.after.update(function(userId, doc, fieldNames, modifier, options){
   if (doc.employee != this.previous.employee){
 
     Contactables.update({

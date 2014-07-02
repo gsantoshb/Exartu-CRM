@@ -2,7 +2,7 @@
  * A way to communicate with other system's users. It's private.
  *
  * Message:
- *  - createdAt: date created
+ *  - dateCreated: date created
  *  - begin: date beginning
  *  - end: date
  *  - completed: date completed
@@ -44,7 +44,7 @@ Tasks.before.insert(function (userId, doc) {
     doc.hierId = user.hierId;
     doc.userId = user._id;
 //  }
-    doc.createdAt = Date.now();
+    doc.dateCreated = Date.now();
 });
 Tasks.allow({
   update: function (userId, doc, fields, modifier) {

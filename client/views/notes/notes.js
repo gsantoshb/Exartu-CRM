@@ -9,7 +9,7 @@ Template.contactableNotesAdd.events({
         $('#add-note-feedback').text("Please enter a note");
         return;
       }
-
+      console.log(Session.get('entityId'));
       Meteor.call('addContactablePost', Session.get('entityId'), {
         content: e.currentTarget.value
       }, function (err, result) {

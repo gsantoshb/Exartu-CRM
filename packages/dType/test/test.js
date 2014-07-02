@@ -65,7 +65,7 @@ Tinytest.add('dType - simple Test', function(test){
         }
     });
     newRelation({
-        name: 'assignment',
+        name: 'assignments',
         obj1: 'employee',
         obj2: 'job',
         visibilityOn1: {

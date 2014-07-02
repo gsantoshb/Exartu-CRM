@@ -97,6 +97,7 @@ Template.contactable.rendered = function () {
   Meteor.autorun(asd);
 }
 Template.displayObjType = function() {
+
     if (info.objType.value)
         return '';
 
@@ -109,7 +110,7 @@ Template.displayObjType = function() {
 };
 Template.contactable.helpers({
   displayObjType: function() {
-
+      console.log('contactableobject',this);
       if (this.Customer)
           return 'Customer';
       if (this.Employee)
@@ -130,8 +131,8 @@ Template.contactable.helpers({
     }
     return "/assets/user-photo-placeholder.jpg";
   },
-  createdAtFormatted: function () {
-    return moment(this.createdAt).format('lll');
+  dateCreatedFormatted: function () {
+    return moment(this.dateCreated).format('lll');
   },
   documentCount: function() {
     return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count() + ResumesFS.find({'metadata.employeeId': Session.get('entityId')}).count();

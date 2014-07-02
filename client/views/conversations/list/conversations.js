@@ -37,7 +37,7 @@ Template.conversations.viewModel = function () {
     var options = ko.computed(function () {
         return {
             sort: {
-                'createdAt': (self.newest() ? -1 : 1)
+                'dateCreated': (self.newest() ? -1 : 1)
             }
         };
     });

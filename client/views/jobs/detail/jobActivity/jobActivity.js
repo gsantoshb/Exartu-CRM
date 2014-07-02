@@ -10,7 +10,7 @@ Template.jobActivity.helpers({
         entityId: Session.get('entityId'),
         type: {$in: [Enums.activitiesType.assignmentEdit, Enums.activitiesType.assignmentAdd]}
       },{sort: {
-        'data.createdAt': -1
+        'data.dateCreated': -1
       }})
   }
 });
@@ -25,11 +25,11 @@ var employeeName= function(employeeId){
   return emp && emp.displayName;
 }
 
-Template.jobActivityAssignmentAdd.helpers({
+Template.jobActivityAssignmentsAdd.helpers({
   userName: userName,
   employeeName: employeeName
 })
-Template.jobActivityAssignmentEdit.helpers({
+Template.jobActivityAssignmentsEdit.helpers({
   userName: userName,
   employeeName: employeeName,
   employeeChanged:function(){
@@ -39,8 +39,8 @@ Template.jobActivityAssignmentEdit.helpers({
 UI.registerHelper('activityType', function(){
   switch (this.type){
     case Enums.activitiesType.assignmentEdit:
-      return Template.jobActivityAssignmentEdit;
+      return Template.jobActivityAssignmentsEdit;
     case Enums.activitiesType.assignmentAdd:
-      return Template.jobActivityAssignmentAdd;
+      return Template.jobActivityAssignmentsAdd;
   }
 })
