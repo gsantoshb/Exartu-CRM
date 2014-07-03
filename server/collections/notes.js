@@ -11,12 +11,13 @@
  */
 
 Meteor.publish('notes', function () {
-  //    var user = Meteor.users.findOne({
-  //        _id: this.userId
-  //    });
+
 
   if (!this.userId)
     return false;
+  var user = Meteor.users.findOne({
+        _id: this.userId
+    });
   return Notes.find({
         $or: filterByHiers(user.hierId)
     });
