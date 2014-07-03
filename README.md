@@ -1,3 +1,5 @@
+[ ![Codeship Status for Exartu/Exartu-CRM](https://www.codeship.io/projects/21ffec80-e511-0131-1580-1a805ea42d09/status)](https://www.codeship.io/projects/25697)
+
 # Exartu automates sales and recruitment processes.  
 
 ***
