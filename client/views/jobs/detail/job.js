@@ -219,3 +219,8 @@ Template.jobDescription.rendered=function(){
   },200));
 
 }
+Template.job_tabs.helpers({
+  getType: function(){
+    return Enums.linkTypes.job;
+  }
+})

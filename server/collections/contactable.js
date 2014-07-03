@@ -194,22 +194,22 @@ Meteor.startup(function () {
         }
       });
     },
-    addContactablePost: function (contactableId, post) {
-      // TODO: validations
-      post.userId = Meteor.userId();
-      post.createdAt = Date.now();
-
-      console.log('New post ');
-      console.dir(post);
-
-      Contactables.update({
-        _id: contactableId
-      }, {
-        $addToSet: {
-          posts: post
-        }
-      });
-    },
+//    addContactablePost: function (contactableId, post) {
+//      // TODO: validations
+//      post.userId = Meteor.userId();
+//      post.createdAt = Date.now();
+//
+//      console.log('New post ');
+//      console.dir(post);
+//
+//      Contactables.update({
+//        _id: contactableId
+//      }, {
+//        $addToSet: {
+//          posts: post
+//        }
+//      });
+//    },
     updateContactablePicture: function (contactableId, fileId) {
       console.log("contact picture updated");
       Contactables.update({
