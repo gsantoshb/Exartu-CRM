@@ -1,28 +1,32 @@
 <template name="contactables">
     <div class="contactables-page">
         <div id="content">
-            <div id="content-header" class="mini">
-                <h1>
-                    {{#with information}}
-                        {{#objectProperty property=contactablesCount }}
-                            <strong> {{value}} </strong>
-                        {{/objectProperty}}
+            {{#with information}}
+                <div id="content-header" class="mini">
+                    <h1>
+                            {{#objectProperty property=contactablesCount }}
+                                <strong> {{value}} </strong>
+                            {{/objectProperty}}
 
-                        {{#objectProperty property=objType}}
-                            {{#if value}}
-                                <span> {{value}}(s) </span>
-                            {{else}}
-                                records
-                            {{/if}}
-                        {{/objectProperty}}
+                            {{#objectProperty property=objType}}
+                                {{#if value}}
+                                    <span> {{value}} </span>
+                                {{else}}
+                                    record(s)
+                                {{/if}}
+                            {{/objectProperty}}
 
-                    {{/with}}
-                </h1>
-            </div>
-            <div id="breadcrumb">
-                <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-                <a href="#" class="current">Contactables</a>
-            </div>
+
+                    </h1>
+                </div>
+                <div id="breadcrumb">
+                    <a href="#" title="Go to Home" class="tip-bottom">Home</a>
+                    <a href="#" class="current">
+                        {{#objectProperty property=objType }}
+                        <strong> {{value}} </strong>
+                        {{/objectProperty}}</a>
+                </div>
+            {{/with}}
 
             <div class="container-fluid">
                 <div class="row">

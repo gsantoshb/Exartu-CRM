@@ -148,7 +148,7 @@
             <li class="submenu contactables" data-bind="css:{active: activeRoute() == 'contactables'}">
                 <a href="/contactables">
                     <i class="icon icon-connection-1"></i>
-                    <span>My Network</span>
+                    <span>All Contacts</span>
                     <i class="arrow fa fa-chevron-right"></i>
                 </a>
                 <ul>
@@ -158,9 +158,9 @@
                         </a>
                     </li>
                     <!-- ko foreach: contactableObjTypes -->
-                    <li data-bind="css: { active: $parent.activeRoute() == 'contactables' && $parent.activeRouteType() == name().toLowerCase() }">
+                    <li data-bind="css: { active: $parent.activeRoute() == 'contactables' && $parent.activeRouteType() == name().toLowerCase()  }">
                         <a data-bind="attr: {href: '/contactables/' + name().toLowerCase()}">
-                            <span data-bind="text: name"></span>
+                            <span data-bind="text: name "></span>s
                         </a>
                     </li>
                     <!-- /ko -->
