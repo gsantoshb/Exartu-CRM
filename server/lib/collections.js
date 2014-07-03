@@ -13,7 +13,7 @@ Conversations = new Meteor.Collection("conversations");
 Messages = new Meteor.Collection("messages");
 
 Tasks = new Meteor.Collection("tasks");
-
+Notes = new Meteor.Collection("notes");
 ObjTypes = new Meteor.Collection("objTypes");
 
 Relations = new Meteor.Collection("relations");
@@ -24,8 +24,8 @@ Roles = new Meteor.Collection("roles");
 
 ContactMethods = new Meteor.Collection("contactMethods");
 
-Assignments = new Meteor.Collection("assignment");
-Candidates = new Meteor.Collection("candidate");
+Assignments = new Meteor.Collection("assignments");
+Candidates = new Meteor.Collection("candidates");
 JobRateTypes = new Meteor.Collection("jobRateTypes");
 
 Collections = {
@@ -39,5 +39,8 @@ Collections = {
   ObjTypes: ObjTypes,
   Relations: Relations,
   LookUps: LookUps,
-  Tasks: Tasks
+  Tasks: Tasks,
+    Notes: Notes,
+    Assignments: Assignments,
+    Candidates: Candidates
 }

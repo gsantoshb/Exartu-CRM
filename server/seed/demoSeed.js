@@ -1044,7 +1044,7 @@ var loadTasks = function (hierId, usermane, userId) {
             testData: true
         }
 
-        Meteor.call('crateTask', newTask, function (err, result) {
+        Meteor.call('createTask', newTask, function (err, result) {
             if (!err)
                 console.log("Task created for demo");
             else

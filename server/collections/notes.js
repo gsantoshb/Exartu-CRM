@@ -6,43 +6,33 @@
  *  - begin: date beginning
  *  - end: date
  *  - completed: date completed
- *  - assign: array of user's ids that are assigned to this task
+ *  - assign: array of user's ids that are assigned to this note
  *  - state (calculated in client's transform)
  */
 
-Meteor.publish('tasks', function () {
+Meteor.publish('notes', function () {
+  //    var user = Meteor.users.findOne({
+  //        _id: this.userId
+  //    });
+
   if (!this.userId)
     return false;
-  var user = Meteor.users.findOne({
-      _id: this.userId
-  });
-
-
-  return Tasks.find({
+  return Notes.find({
         $or: filterByHiers(user.hierId)
     });
 
-//  return Tasks.find({
-//    $or: [
-//      {
-//        userId: this.userId
-//      },
-//      {
-//        assign: this.userId
-//      }
-//    ]
-//  });
+
 })
 
 Meteor.startup(function () {
   Meteor.methods({
-    createTask: function (task) {
-      Tasks.insert(task);
+    createNote: function (note) {
+      Notes.insert(note);
     }
   });
 });
 
-Tasks.before.insert(function (userId, doc) {
+Notes.before.insert(function (userId, doc) {
 //  if (this.connection) {
     var user = Meteor.user();
     doc.hierId = user.hierId;
@@ -50,7 +40,7 @@ Tasks.before.insert(function (userId, doc) {
 //  }
     doc.dateCreated = Date.now();
 });
-Tasks.allow({
+Notes.allow({
   update: function (userId, doc, fields, modifier) {
     // todo: check hiers
     return true;
@@ -62,6 +52,6 @@ Tasks.allow({
 })
 
 // indexes
-Tasks._ensureIndex({hierId: 1});
-Tasks._ensureIndex({assign: 1});
-Tasks._ensureIndex({userId: 1});
+Notes._ensureIndex({hierId: 1});
+Notes._ensureIndex({assign: 1});
+Notes._ensureIndex({userId: 1});

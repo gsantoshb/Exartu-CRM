@@ -7,7 +7,7 @@ Meteor.publish('jobs', function () {
         return false;
 
     return Jobs.find({
-        hierId: user.hierId
+        $or: filterByHiers(user.hierId)
     });
 })
 

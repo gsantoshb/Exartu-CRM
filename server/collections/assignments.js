@@ -2,8 +2,13 @@ Meteor.publish('assignments', function () {
 
     if (!this.userId)
         return false;
+    var user = Meteor.users.findOne({
+        _id: this.userId
+    });
 
-    return Assignments.find();
+    return Assignments.find({
+        $or: filterByHiers(user.hierId)
+    });
 });
 Assignments.allow({
   insert: function () {
