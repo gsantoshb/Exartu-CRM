@@ -1,6 +1,16 @@
 Meteor.publish('notes', function () {
-  console.dir(Notes.findOne());
-  return Notes.find();
+
+
+  if (!this.userId)
+    return false;
+  var user = Meteor.users.findOne({
+        _id: this.userId
+    });
+  return Notes.find({
+        $or: filterByHiers(user.hierId)
+    });
+
+
 })
 
 Notes.allow({
@@ -13,9 +23,15 @@ Notes.before.insert(function(userId, doc){
   var user = Meteor.user();
   doc.hierId = user.hierId;
   doc.userId = user._id;
-  doc.createdAt = Date.now();
+  doc.dateCreated = Date.now();
 
   console.log('New post ');
   console.dir(doc);
   return doc;
 })
+
+// indexes
+Notes._ensureIndex({hierId: 1});
+Notes._ensureIndex({assign: 1});
+Notes._ensureIndex({userId: 1});
+Notes._ensureIndex({"links._id":1});

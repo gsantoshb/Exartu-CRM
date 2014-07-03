@@ -1,9 +1,19 @@
 Template.candidates.helpers({
-  candidates:function(){
-    var job=Jobs.findOne({
-      _id: Session.get('entityId')
-    });
-    return job.candidates
+  candidates:function(type,id){
+    switch (type) {
+        case 'all':
+        {
+            return Candidates.find();
+        }
+        case 'employee':
+        {
+            return Candidates.find({employee:id});
+        }
+        case 'job':
+        {
+            return Candidates.find({job:id});
+        }
+    }
   },
   pictureUrl: function () {
     if (this.pictureFileId) {
@@ -14,15 +24,23 @@ Template.candidates.helpers({
   employeeInfo:function(candidateObject){
     return Contactables.findOne({_id: candidateObject.employee});
   },
+  jobInfo:function(candidateObject){
+        return Jobs.findOne({_id: candidateObject.job});
+  }
 
 })
 Template.candidates.events({
-  'click .addEditCandidate':function () {
-    Composer.showModal( 'candidateAdd',Session.get('entityId'));
+  'click .addEditCandidates':function () {
+    Composer.showModal('candidateAdd', Session.get('entityId'));
   },
-  'click .assign': function(){
-    Composer.showModal('assignmentAdd', {
-      employeeId: this._id
-    });
+  'click .assign': function () {
+    var options={};
+    var job=Jobs.findOne({ _id: Session.get('entityId') });
+    if(job.assignment){
+      options.assignmentId=job.assignment;
+    }
+    options.employeeId = this._id;
+
+    Composer.showModal('assignmentAdd', options);
   }
 })

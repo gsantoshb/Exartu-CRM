@@ -126,7 +126,7 @@ Meteor.publish(null, function () {
       'services.email': 1,
       'profilePictureId': 1,
       "hierId": 1,
-      "createdAt": 1,
+      "dateCreated": 1,
       "roles": 1,
       "permissions": 1
     }
@@ -145,7 +145,7 @@ Meteor.users.allow({
       return false;
     if (!_.contains(user.roles, Enums.roleFunction.System_Administrator))
       return false;
-    if (_.any(['createdAt', 'hierId', 'services'], function (field) {
+    if (_.any(['dateCreated', 'hierId', 'services'], function (field) {
       return _.contains(fields, field);
     }))
       return false;

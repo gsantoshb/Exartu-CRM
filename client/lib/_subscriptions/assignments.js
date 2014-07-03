@@ -1,2 +1,2 @@
-Assignments = new Meteor.Collection('assignment');
-extendedSubscribe('assignment', 'AssignmentsHandler');
+Assignments = new Meteor.Collection('assignments');
+extendedSubscribe('assignments', 'AssignmentsHandler');

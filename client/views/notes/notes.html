@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div><!-- /.tab-pane-box -->
-    </div><!-- /#post -->
+    </div><!-- /#note -->
 </template>
 
 <template name="contactableNotesList">
@@ -62,7 +62,7 @@
                         <a href="#"><strong id="username"> {{username}} </strong></a>
                     {{/userInfo}}
                     <div class="text-muted">
-                        {{#formattedDate value=createdAt format="lll"}}
+                        {{#formattedDate value=dateCreated format="lll"}}
                             <span>{{date}}</span>
                         {{/formattedDate}}
                     </div>

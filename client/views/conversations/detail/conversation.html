@@ -40,8 +40,8 @@
                     <!--/ko -->
                 </h3>
                 <p class="text-muted">&nbsp; &nbsp; &nbsp; &nbsp;
-                    <span data-bind="text: moment($data.conversation.createdAt).format('MMM D')"></span>&nbsp; (
-                    <span data-bind="text: moment($data.conversation.createdAt).fromNow()"></span>)
+                    <span data-bind="text: moment($data.conversation.dateCreated).format('MMM D')"></span>&nbsp; (
+                    <span data-bind="text: moment($data.conversation.dateCreated).fromNow()"></span>)
                 </p>
                 <hr>
 
@@ -65,7 +65,7 @@
                                 <div data-bind="html: content">
                                 </div>
                             </div>
-                            <span class="msg-date" data-bind="text: moment(createdAt()).format('ll')"></span>
+                            <span class="msg-date" data-bind="text: moment(dateCreated()).format('ll')"></span>
                         </li>
                     </ul>
                 </div>

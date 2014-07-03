@@ -37,7 +37,7 @@ Template.dashboard.viewModel = function () {
   var options = ko.computed(function () {
     return {limit: ko.toJS(filters().limit),
       sort: {
-        'data.createdAt': -1
+        'data.dateCreated': -1
       }
     };
   });
@@ -82,6 +82,18 @@ Template.dashboard.viewModel = function () {
   self.customerCount = ko.observable(Contactables.find(customerQuery).count());
   //    self.jobGrowth = ko.observable();
 
+  self.assign=function(jobId){
+    var options={};
+    var job=Jobs.findOne({
+      _id: jobId
+    });
+    if(job.assignment){
+      options.assignmentId=job.assignment;
+    }else{
+      options.jobId=jobId;
+    }
+    Composer.showModal( 'assignmentAdd', options);
+  }
   return self;
 };
 var getHistorical = function (collection, timeStamps, query) {
@@ -89,7 +101,7 @@ var getHistorical = function (collection, timeStamps, query) {
   var q = query || {};
   //    debugger;
   _.each(timeStamps, function (time) {
-    q.createdAt = {
+    q.dateCreated = {
       $lte: time
     }
     history.push(collection.find(q).count());

@@ -39,8 +39,8 @@
                             <a href="#profile-details " data-toggle="tab ">Details</a>
                         </li>
                         <li>
-                            <a href="#profile-posts " data-toggle="tab ">Posts
-                                <span class="custom-badge-2 " data-bind="text: posts().length"></span>
+                            <a href="#profile-notes " data-toggle="tab ">Notes
+                                <span class="custom-badge-2 " data-bind="text: notes().length"></span>
                             </a>
                         </li>
                         <!--
@@ -165,7 +165,7 @@
                                                     <!-- /ko -->
                                                 </a>
                                                 <span class="pipe">|</span>
-                                                <span data-bind="text: moment($parent.createdAt()).format('LL')"></span>
+                                                <span data-bind="text: moment($parent.dateCreated()).format('LL')"></span>
                                             </div>
                                             <p data-bind="text: $parent.content">
                                             </p>
@@ -190,15 +190,15 @@
                             <div class="box-header-2 ">
                                 <div class="box-title ">
                                     <i class="icon icon-list-4 "></i>
-                                    Posts
+                                    Notes
 
-                                    <a class="btn btn-default btn-sm " data-toggle="modal " data-bind="click: function () { Composer.showModal( 'addPost', $data._id(),'addDealPost'); } ">
+                                    <a class="btn btn-default btn-sm " data-toggle="modal " data-bind="click: function () { Composer.showModal( 'addNote', $data._id(),'addDealNote'); } ">
                                         <i class=" fa fa-pencil "></i>
-                                        Write Post
+                                        Write Note
                                     </a>
                                 </div>
                             </div>
-                            <div class="box-content-md " data-bind="foreach: posts">
+                            <div class="box-content-md " data-bind="foreach: notes">
                                 <div class="comment " data-bind="with: helper.getUserInformation($data.userId())">
                                     <!-- ko if: $data.ready -->
                                     <!-- ko if: $data.picture -->
@@ -219,7 +219,7 @@
                                                     <!-- /ko -->
                                                 </a>
                                                 <span class="pipe">|</span>
-                                                <span data-bind="text: moment($parent.createdAt()).format('LL')"></span>
+                                                <span data-bind="text: moment($parent.dateCreated()).format('LL')"></span>
                                             </div>
                                             <p data-bind="text: $parent.content">
                                             </p>
@@ -230,7 +230,7 @@
                                 </div>
                                 <!-- /.comment -->
                                 <!--
-                                <a class="btn btn-default btn-block btn-md " href="# ">View All Posts
+                                <a class="btn btn-default btn-block btn-md " href="# ">View All Notes
                                 <span class="custom-badge-1 ">20</span>
                                 </a>
                                 -->

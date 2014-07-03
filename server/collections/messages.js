@@ -27,7 +27,7 @@ Messages.allow({
  *  - user1:
  *  - user2:
  *  - subject
- *  - createdAt: string
+ *  - dateCreated: string
  */
 
 Meteor.publish('conversations', function () {
@@ -111,11 +111,11 @@ Meteor.startup(function () {
 });
 
 Messages.before.insert(function (userId, doc) {
-    doc.createdAt = Date.now();
+    doc.dateCreated = Date.now();
 });
 
 Conversations.before.insert(function (userId, doc) {
-    doc.createdAt = Date.now();
+    doc.dateCreated = Date.now();
 });
 // indexes
 Messages._ensureIndex({conversationId: 1});

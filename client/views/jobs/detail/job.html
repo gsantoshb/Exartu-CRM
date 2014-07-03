@@ -1,5 +1,5 @@
 <template name="job">
-    <div class="jobs-page" name="jobVM">
+    <div class="contactable-page-details" name="jobVM">
         <div id="content">
             {{#with originalJob}}
                 <div id="content-header" class="mini">
@@ -24,18 +24,22 @@
                 <div class="row">
                     <!-- Left Column -->
                     <div class="col-sm-8 col-lg-5 contactable-left-col">
-                        {{>job_tabs contactable=. documentCount=documentCount jobCount=jobCount}}
+                        {{>job_tabs originalJob=. documentCount=documentCount  }}
                     </div>
 
+
+
+
+
                     <!-- Right Column -->
+
                     <div class="col-sm-4 col-lg-7 contactable-right-col-custom has-tabs">
                         <div class="box">
                             <div class="box-header-2">
                                 <a class="btn-action editJob pull-right" href="#" style="color: {{colorEdit}}"><i class="fa fa-pencil"></i></a>
                                 <div class="box-title">Job Details</div>
-                            </div>
-                            <div class="box-content-lg">
-                                <table class="table custom-table text-normal" style="table-layout: fixed;">
+
+                                    <table class="table custom-table text-normal" style="table-layout: fixed;">
                                     <tbody>
 
                                     <tr>
@@ -177,20 +181,23 @@
                                 </div>
                             {{/if}}
                         </div>
-                        <!-- /.box -->
-                        <div data-bind="with: $parent.job">
-                            {{>candidates}}
-                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <!-- /.box -->
+                                {{>assignment}}
 
+                                {{>jobRates}}
+                            </div>
+                            <div class="col-lg-6">
+                                {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
+                                {{>jobActivity}}
+                            </div>
+                        </div>
                     </div>
                     <!-- /.col-lg-8-->
 
                     <div class="col-md-4 col-lg-4">
-                        {{>assignment}}
 
-                        {{>jobRates}}
-                        {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
-                        {{>jobActivity}}
                     </div>
                     <!-- /.col-lg-4-->
                 </div>
@@ -214,7 +221,9 @@
 </template>
 <template name="job_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{job.posts.length}}</span></a></li>
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{job.notes.length}}</span></a></li>
+        <li ><a href="#profile-candidates" data-toggle="tab">Candidates <span class="custom-badge-2">0</span></a></li>
+
     </ul>
 
     <div class="tab-content">
@@ -223,5 +232,10 @@
             {{> contactableNotesAdd entity=job type=getType}}
             {{> contactableNotesList entity=job}}
         </div>
+
+        <div class="tab-pane " id="profile-candidates">
+            {{>candidates}}
+        </div>
     </div>
+
 </template>

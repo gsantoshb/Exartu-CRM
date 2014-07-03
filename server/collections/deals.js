@@ -24,7 +24,7 @@ Deals.before.insert(function (userId, doc) {
     var user = Meteor.user();
     doc.hierId = user.hierId;
     doc.userId = user._id;
-    doc.createdAt = Date.now();
+    doc.dateCreated = Date.now();
 });
 
 
@@ -61,22 +61,22 @@ Meteor.startup(function () {
                 }
             });
         },
-        addDealPost: function (dealId, post) {
+        addDealNote: function (dealId, note) {
             // TODO: validations
-            post.userId = Meteor.userId();
-            post.createdAt = Date.now();
+            note.userId = Meteor.userId();
+            note.dateCreated = Date.now();
             Deals.update({
                 _id: dealId
             }, {
                 $addToSet: {
-                    posts: post
+                    notes: note
                 }
             });
         },
         addDealQuote: function (dealId, quote) {
             // TODO: validations
             quote.userId = Meteor.userId();
-            quote.createdAt = Date.now();
+            quote.dateCreated = Date.now();
             Deals.update({
                 _id: dealId
             }, {

@@ -2,7 +2,7 @@ var self={}
 Utils.reactiveProp(self,'showOld', false);
 
 Template.assignment.helpers({
-  currentAssignment:function(assignment){
+  currentAssignments:function(assignment){
     var job=Jobs.findOne({
       _id: Session.get('entityId')
     });

@@ -30,7 +30,7 @@ Template.candidateAdd.viewModel = function (jobId) {
     if (!candidate.employee)
       return;
 
-    Meteor.call('createCandidate', candidate, jobId, function(err, result) {
+    Meteor.call('createCandidates', candidate, jobId, function(err, result) {
       if (!err)
         self.close();
     });

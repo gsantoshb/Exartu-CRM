@@ -17,7 +17,7 @@ newObjType({
   collection: Contactables,
   objGroupType: Enums.objGroupType.contactable,
   name: 'contactable',
-  services: ['messages', 'tasks', 'posts', 'tags', 'contactMethods']
+  services: ['messages', 'tasks', 'notes', 'tags', 'contactMethods']
 });
 
 newObjType({
@@ -64,7 +64,7 @@ newObjType({
     collection: Jobs,
     name: 'job',
     objGroupType: Enums.objGroupType.job,
-    services: ['messages', 'tasks', 'posts', 'tags', 'candidates', 'jobRates'],
+    services: ['messages', 'tasks', 'notes', 'tags', 'candidates', 'jobRates'],
     fields: [{
         name: 'publicJobTitle',
         displayName: 'Public job title',
@@ -112,9 +112,10 @@ newObjType({
 //      fieldType: 'lookUp',
 //      lookUpName: 'jobIndustry',
 //      lookUpCode: Enums.lookUpTypes.job.industry.code,
-//      required: true,
+//      required: false,
 //      lookUpName: 'jobTitle',
 //      multiple: false,
+//      showInAdd: false,
 //      defaultValue: getFirst(Enums.lookUpTypes.job.industry.code)
 //    },
 //    {
@@ -123,9 +124,10 @@ newObjType({
 //      fieldType: 'lookUp',
 //      lookUpName: 'jobCategory',
 //      lookUpCode: Enums.lookUpTypes.job.category.code,
-//      required: true,
+//      required: false,
 //      lookUpName: 'jobTitle',
 //      multiple: false,
+//        showInAdd: false,
 //      defaultValue: getFirst(Enums.lookUpTypes.job.category.code)
 //    }
   ]

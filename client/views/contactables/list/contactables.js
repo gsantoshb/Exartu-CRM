@@ -25,16 +25,17 @@ ContactablesController = RouteController.extend({
       return;
     }
     var type = this.params.hash || this.params.type;
+      console.log('type',type);
     if (type != undefined && type != 'all') {
       var re = new RegExp("^" + type + "$", "i");
       var objType = dType.ObjTypes.findOne({
         name: re
       });
       query.objType.value = objType.name;
-      info.objType.value = objType.name;
+      info.objType.value = objType.name+'s';
     } else {
       query.objType.value = undefined;
-      info.objType.value = undefined;
+      info.objType.value = 'record';
     }
     this.render('contactables');
   },
@@ -68,6 +69,7 @@ var info = new Utils.ObjectDefinition({
     isRecentDaySelected: {
       default: false
     },
+    objTypeDisplayName: {},
     isRecentWeekSelected: {
       default: false
     },
@@ -152,7 +154,7 @@ Template.contactablesList.contactables = function() {
 
   if (query.onlyRecents.value) {
     var dateLimit = new Date();
-    searchQuery.createdAt = {
+    searchQuery.dateCreated = {
         $gte: dateLimit.getTime() - query.selectedLimit.value
     };
   }
@@ -275,9 +277,6 @@ Template.contactablesListItem.contactableIcon = function() {
 };
 
 Template.contactablesListItem.displayObjType = function() {
-  if (info.objType.value)
-    return '';
-
   if (this.Customer)
     return 'Customer';
   if (this.Employee)

@@ -170,7 +170,7 @@ var validateField = function (value, field) {
 /*
  * Services available in the system
  */
-SystemServices = ['messages', 'documents', 'pastJobs', 'tags', 'education', 'tasks', 'posts'];
+SystemServices = ['messages', 'documents', 'pastJobs', 'tags', 'education', 'tasks', 'notes'];
 
 Meteor.startup(function () {
     Meteor.methods({

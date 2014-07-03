@@ -76,7 +76,7 @@ You can use node's http client interface:
 var http = require('http');
 
 var request = http.request({
-  method: 'post',
+  method: 'note',
   host: 'example.org',
   path: '/upload',
   headers: form.getHeaders()
@@ -137,7 +137,7 @@ someModule.stream(function(err, stdout, stderr) {
 });
 ```
 
-For edge cases, like POST request to URL with query string or to pass HTTP auth credentials, object can be passed to `form.submit()` as first parameter:
+For edge cases, like NOTE request to URL with query string or to pass HTTP auth credentials, object can be passed to `form.submit()` as first parameter:
 
 ``` javascript
 form.submit({

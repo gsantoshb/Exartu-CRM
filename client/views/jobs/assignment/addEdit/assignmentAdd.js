@@ -14,7 +14,7 @@ var init=function(options){
 
   if (options.assignmentId){
     var assignment= Assignments.findOne({_id: options.assignmentId});
-    employeeId= assignment.employee;
+    employeeId = options.employeeId || assignment.employee;
 
     jobId= assignment.job
     return {
