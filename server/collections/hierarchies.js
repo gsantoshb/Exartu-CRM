@@ -89,24 +89,19 @@ Meteor.startup(function () {
         throw new Meteor.Error(500, 'There is no value with id ' + valueId + ' for lookup with code value: ' + lookUpCode);
 
       // Remove old default value for this lookup type
-      Hierarchies.update({_id: Meteor.user().hierId},
+      LookUps.update({ isDefault: true,  codeType: lookUpCode},
         {
-          $pull: {
-            defaultLookUpValues: {
-              codeType: lookUpCode,
-            }
+          $set: {
+            isDefault: false
           }
-        }
+        },{ multi: true }
       );
 
       // Add the new default value
-      Hierarchies.update({_id: Meteor.user().hierId},
+      LookUps.update({_id: valueId},
         {
-          $addToSet: {
-            defaultLookUpValues: {
-              codeType: lookUpCode,
-              valueId: valueId
-            }
+          $set: {
+            isDefault: true
           }
         }
       );
@@ -127,3 +122,6 @@ var generateUniqueHierId = function (prefix) {
 		generateUniqueHierId(prefix);
 	}
 };
+Hierarchies.after.insert(function(userId, doc){
+  seedSystemLookUps(doc._id);
+})

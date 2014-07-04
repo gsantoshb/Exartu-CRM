@@ -82,7 +82,7 @@ Template.lookUpsManagement.items = function() {
         item.editMode = false;
         item.errMsg = '';
 
-        item.isDefault = !!_.findWhere(hier.defaultLookUpValues, { codeType: item.codeType, valueId: item._id});
+//        item.isDefault = !!_.findWhere(hier.defaultLookUpValues, { codeType: item.codeType, valueId: item._id});
 
         return item;
       }
@@ -97,7 +97,6 @@ Template.lookUpsManagement.events = {
     if (!newValue)
       return;
 
-    debugger;
     Meteor.call('addLookUpItem', { displayName: newValue, codeType: lookUpTypeCode },
       function(err, result) {
         if (!err)

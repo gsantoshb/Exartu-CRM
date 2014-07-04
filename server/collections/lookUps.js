@@ -1,5 +1,10 @@
 Meteor.publish('lookUps', function () {
-    return LookUps.find();
+  var user = Meteor.users.findOne({_id: this.userId});
+
+  if(!user)
+    return false;
+
+   return LookUps.find({hierId: user.hierId});
 });
 
 LookUps.allow({

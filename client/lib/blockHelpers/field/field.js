@@ -31,6 +31,13 @@ UI.registerHelper('displayProperty', function(){
         });
         return template;
       }
+      //hack
+      if (this.fieldType == 'lookUp'){
+        var defaultLookUp =LookUps.findOne({codeType: this.lookUpCode, isDefault: true})
+        if (defaultLookUp){
+          this.value= defaultLookUp._id;
+        }
+      }
 
       template.events({
         'blur input': function(e){
