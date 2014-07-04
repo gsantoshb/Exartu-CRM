@@ -88,6 +88,16 @@ Router.map(function () {
     path: '/job/:_id',
     controller: 'JobController'
   });
+    this.route('deals', {
+        path: '/deals/:type?',
+        controller: 'DealsController',
+        onRun: registerPageView
+    });
+
+    this.route('deal', {
+        path: '/deal/:_id',
+        controller: 'DealController'
+    });
 
   this.route('users', {
     path: '/users',

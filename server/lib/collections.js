@@ -28,8 +28,6 @@ Assignments = new Meteor.Collection("assignments");
 Candidates = new Meteor.Collection("candidates");
 JobRateTypes = new Meteor.Collection("jobRateTypes");
 
-Notes = new Meteor.Collection("notes");
-
 Collections = {
   Hierarchies: Hierarchies,
   Jobs: Jobs,

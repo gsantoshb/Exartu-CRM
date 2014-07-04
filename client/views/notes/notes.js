@@ -91,9 +91,9 @@ Template.contactableNotesAdd.events({
       // Read enter key press to add a note. Show a message if note is empty and hide it when
       // the user add a non-empty value.
       e.preventDefault();
-<<<<<<< HEAD
+
       addNote(e, ctx);
-=======
+
 
       if (_.isEmpty(e.currentTarget.value)) {
         $('#add-note-feedback').text("Please enter a note");
@@ -108,7 +108,6 @@ Template.contactableNotesAdd.events({
           GAnalytics.event("/contactable", "Add note");
         }
       });
->>>>>>> 99e8b7f0040a0640bfce149a000f053bf2497315
     }
     else  {
       // Hide warning message when user enter a non-empty value
@@ -150,12 +149,13 @@ Template.contactableNotesList.getUrl = function(link){
   }
 };
 
-<<<<<<< HEAD
+
 Template.contactableNotesList.getNotes = function () {
-  return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }});
-=======
+    return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }});
+}
+
 Template.contactableNotesList.notes = function () {
   var temp = _.clone(this.entity? this.entity.notes || [] : []);
   return temp.reverse();
->>>>>>> 99e8b7f0040a0640bfce149a000f053bf2497315
+
 };
