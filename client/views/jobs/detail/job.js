@@ -118,9 +118,10 @@ Template.job.created=function(){
 
 Template.job.helpers({
     job: function(){
-        job = generateReactiveObject(Jobs.findOne({ _id: Session.get('entityId') }));
-      Session.set('jobDisplayName', job.displayName);
-        return job;
+      var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
+      Session.set('jobDisplayName', originalJob.displayName);
+      job = generateReactiveObject(originalJob);
+      return job;
     },
     originalJob:function(){
       return Jobs.findOne({ _id: Session.get('entityId') });
