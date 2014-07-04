@@ -13,7 +13,7 @@ Conversations = new Meteor.Collection("conversations");
 Messages = new Meteor.Collection("messages");
 
 Tasks = new Meteor.Collection("tasks");
-Notes = new Meteor.Collection("notes");
+
 ObjTypes = new Meteor.Collection("objTypes");
 
 Relations = new Meteor.Collection("relations");
