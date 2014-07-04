@@ -97,7 +97,8 @@ Jobs.after.insert(function (userId, doc) {
 		data: {
 			publicJobTitle: doc.publicJobTitle,
 			customerName: customerName,
-			customer: customer
+			customer: customer,
+      dateCreated : doc.dateCreated
 		}
 	});
 });

@@ -264,7 +264,8 @@
         <div class="item item-job">
             <div class="item-info">
                 <div class="time">
-                    <i class="icon icon-clock-3"></i>3 HR</div>
+                    <i class="icon icon-clock-3"></i><span data-bind="text: moment(data.dateCreated()).fromNow()"></span>
+                    </div>
                 <div class="type">
                     <i class="icon icon-briefcase"></i>
                 </div>
