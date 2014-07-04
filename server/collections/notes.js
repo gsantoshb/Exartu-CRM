@@ -1,6 +1,4 @@
 Meteor.publish('notes', function () {
-
-
   if (!this.userId)
     return false;
   var user = Meteor.users.findOne({
@@ -25,8 +23,6 @@ Notes.before.insert(function(userId, doc){
   doc.userId = user._id;
   doc.dateCreated = Date.now();
 
-  console.log('New post ');
-  console.dir(doc);
   return doc;
 })
 
