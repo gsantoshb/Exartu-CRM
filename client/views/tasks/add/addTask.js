@@ -1,5 +1,8 @@
 var task;
 var Error={};
+
+
+//todo: the logic for the linked entities is almost the same in notes and taskAdd. We should do some template to use it in both places.
 var typeDep= new Deps.Dependency();
 var linkedDep= new Deps.Dependency();
 var link=function(link){
@@ -227,6 +230,12 @@ Template.addEditTask.events({
       type: type,
       id: entity
     });
+    linkedDep.changed();
+  },
+  'click .remove-link': function(){
+    var item=_(task.links).findWhere({id:this._id})
+
+    task.links= _(task.links).without(item);
     linkedDep.changed();
   }
 

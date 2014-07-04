@@ -3,7 +3,7 @@ var originalLinks=[];
 var typeDep= new Deps.Dependency();
 var linkedDep= new Deps.Dependency();
 
-
+//todo: the logic for the linked entities is almost the same in notes and taskAdd. We should do some template to use it in both places.
 //<editor-fold desc="helper functions">
 var getEntity= function(link){
   switch (link.type){
@@ -113,6 +113,12 @@ Template.contactableNotesAdd.events({
       type: type,
       id: entity
     });
+    linkedDep.changed();
+  },
+  'click .remove-link': function(){
+    var item=_(newNoteLinks).findWhere({id:this._id})
+
+    newNoteLinks= _(newNoteLinks).without(item);
     linkedDep.changed();
   }
 });
