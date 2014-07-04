@@ -239,3 +239,21 @@ Utils.getLocation = function (googleLocation) {
     lng: googleLocation.geometry.location.lng()
   }
 }
+
+Utils.getEntityFromLink=function(link){
+  switch (link.type){
+    case Enums.linkTypes.contactable.value:
+      return Contactables.findOne({_id: link.id});
+    case Enums.linkTypes.job.value:
+      return Jobs.findOne({_id: link.id});
+  }
+}
+
+Utils.getHrefFromLink=function(link){
+  switch (link.type){
+    case Enums.linkTypes.contactable.value:
+      return '/contactable/'+ link.id;
+    case Enums.linkTypes.job.value:
+      return '/job/'+ link.id;
+  }
+};

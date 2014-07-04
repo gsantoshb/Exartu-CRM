@@ -137,16 +137,6 @@ Template.tasks.viewModel = function () {
     self.edit = function (data) {
         Composer.showModal('addEditTask', ko.toJS(data));
     }
-    self.remove = function (data) {
-        var task = ko.toJS(data);
-        Tasks.update({
-            _id: task._id,
-        }, {
-            $set: {
-                inactive: true,
-            }
-        });
-    };
     self.complete = function (data) {
         var task = ko.toJS(data);
         Tasks.update({
@@ -157,6 +147,9 @@ Template.tasks.viewModel = function () {
             }
         });
     };
+
+  self.getEntity=Utils.getEntityFromLink;
+  self.getHref=Utils.getHrefFromLink;
 
     return self;
 };
