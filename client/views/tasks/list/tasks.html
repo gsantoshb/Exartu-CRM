@@ -200,8 +200,6 @@
                                                 <div class="table-item-cell-container magic-content text-small">
                                                     <a class="btn btn-xs btn-success text-small" href="#" data-bind="click: $parent.edit">
                                                         <i class="fa fa-pencil"></i>Edit</a>
-                                                    <a class="btn btn-xs btn-danger text-small " href="#" data-bind="click: $parent.remove, visible: ! $data.inactive || ! $data.inactive()">
-                                                        <i class="fa fa-times "></i>Archive</a>
                                                 </div>
                                                 <!-- /.table-item-cell-container -->
                                             </div>
@@ -219,6 +217,13 @@
                                                 <!-- /.table-item-cell -->
                                             </div>
                                             <!-- /.col-sm-3 -->
+                                            <div data-bind="foreach: links">
+                                                <a data-bind="attr:{href: $root.getHref(ko.toJS($data))}">
+                                                    <!--ko with: $root.getEntity(ko.toJS($data))-->
+                                                        <span class="badge" data-bind="text: displayName"></span>
+                                                    <!--/ko-->
+                                                </a>
+                                            </div>
                                         </div>
 
                                         <!-- /.col-lg-4 -->

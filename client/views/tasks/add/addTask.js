@@ -1,6 +1,15 @@
 var task;
 var Error={};
+var typeDep= new Deps.Dependency();
+var linkedDep= new Deps.Dependency();
+var link=function(link){
+  if (_.findWhere(task.links,{
+    id: link.id
+  }))
+    return;
 
+  task.links.push(link);
+}
 var taskDep=new Deps.Dependency;
 var errorDep=new Deps.Dependency;
 var createTask=function(task){
@@ -12,7 +21,9 @@ var createTask=function(task){
     end: task.end || null,
     assign: task.assign || [Meteor.userId()],
     note: task.note,
-    completed: task.completed
+    completed: task.completed,
+    inactive: task.inactive,
+    links: task.links || []
 //    reactiveProps: {}
   };
   if(task._id)
@@ -21,8 +32,10 @@ var createTask=function(task){
 //  return new Utils.ObjectDefinition(definition);
 }
 Template.addEditTask.helpers({
+  isEditing: function(){
+    return !! task._id;
+  },
   task:function(){
-
     if(!task){
       var param={};
       if(this){
@@ -46,7 +59,32 @@ Template.addEditTask.helpers({
   hasError:function(key){
     errorDep.depend();
     return Error[key] ? 'error': '';
-  }
+  },
+
+  types: function(){
+    return _.map(_.keys(Enums.linkTypes),function(key){
+      return Enums.linkTypes[key];
+    })
+  },
+  entities:function(){
+    typeDep.depend();
+    var selectedType= $('#typeSelect').val();
+    selectedType=parseInt(selectedType);
+    switch (selectedType){
+      case Enums.linkTypes.contactable.value:
+        return Contactables.find();
+      case Enums.linkTypes.job.value:
+        return Jobs.find();
+      default :
+        return [];
+    }
+  },
+  linkedEntities: function(){
+    console.log('linkedEntities')
+    linkedDep.depend();
+    return task.links;
+  },
+  getEntity: Utils.getEntityFromLink
 
 })
 var isValid= function(task, key){
@@ -90,7 +128,6 @@ var isValid= function(task, key){
 }
 Template.addEditTask.events({
   'click .accept':function(){
-    //todo: validation
     if (!isValid(task)) {
       return;
     }
@@ -104,7 +141,33 @@ Template.addEditTask.events({
           end: task.end,
           assign: task.assign,
           note: task.note,
-          completed: task.completed
+          completed: task.completed,
+          links: task.links
+        }
+      },function(){
+        $('.modal-host').children().modal('toggle')
+      })
+    } else {
+      Tasks.insert(task,function(){
+        $('.modal-host').children().modal('toggle')
+      })
+    }
+  },
+  'click .archive': function () {
+    if (!isValid(task)) {
+      return;
+    }
+    if (task._id){
+      Tasks.update({
+        _id: task._id
+      }, {
+        $set: {
+          inactive: ! task.inactive,
+          end: task.end,
+          assign: task.assign,
+          note: task.note,
+          completed: task.completed,
+          links: task.links
         }
       },function(){
         $('.modal-host').children().modal('toggle')
@@ -149,7 +212,24 @@ Template.addEditTask.events({
   },
   'blur .assign': function(){
     isValid(task, 'assign');
+  },
+
+  'change #typeSelect': function(){
+    typeDep.changed();
+  },
+  'click #linkEntity':function(){
+    var type= $('#typeSelect').val();
+    type= parseInt(type);
+    var entity= $('#entitySelect').val();
+    if (!_.isNumber(type) || ! entity) return;
+
+    link({
+      type: type,
+      id: entity
+    });
+    linkedDep.changed();
   }
+
 })
 
 Template.addEditTask.created=function(){
