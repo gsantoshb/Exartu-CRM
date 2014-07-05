@@ -142,12 +142,6 @@ Template.deals.viewModel = function () {
             };
             GAnalytics.event("/deals", "Search by string");
         }
-//    statusFilter
-        _.each(self.status, function(item){
-            if (item.isSelected()){
-                _.extend(q, DealCalculatedStatus.getQuery(item.displayName));
-            }
-        })
 
         return q;
     });

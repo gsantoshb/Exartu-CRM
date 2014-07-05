@@ -48,3 +48,28 @@ newRelation({
         }
     }
 });
+
+newRelation({
+    name: 'CustomerDeals',
+    obj1: 'Customer',
+    obj2: 'deal',
+    visibilityOn1: {
+        name: 'deals',
+        showInAdd: false,
+        displayName: 'Deals',
+        collection: 'Deals',
+        cardinality: {
+            min: 0,
+            max: Infinity
+        }
+    },
+    visibilityOn2: {
+        name: 'customer',
+        displayName: 'Customer',
+        collection: 'Contactables',
+        cardinality: {
+            min: 0,
+            max: 1
+        }
+    }
+});

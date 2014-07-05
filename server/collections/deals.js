@@ -94,7 +94,7 @@ Meteor.startup(function () {
 var beforeInsertOrUpdateDeal = function (deal) {
     var user = Meteor.user();
     if (user == null)
-        throw new Meteor.Error(401, "Please login");
+        throw new Meteor.Error(401, "Please sign in");
 
     if (!deal.objNameArray || !deal.objNameArray.length) {
         console.error('the deal must have at least one objName');

@@ -240,7 +240,7 @@ Meteor.startup(function () {
 var beforeInsertOrUpdateContactable = function (contactable) {
   var user = Meteor.user();
   if (user == null && !Meteor.settings.demo)
-    throw new Meteor.Error(401, "Please login");
+    throw new Meteor.Error(401, "Please sign in");
 
   if (!contactable.objNameArray || !contactable.objNameArray.length) {
     console.error('the contact must have at least one objName');

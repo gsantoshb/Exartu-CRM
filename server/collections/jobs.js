@@ -67,7 +67,7 @@ Meteor.startup(function () {
 var beforeInsertOrUpdateJob = function (job) {
     var user = Meteor.user();
     if (user == null && !Meteor.settings.demo)
-        throw new Meteor.Error(401, "Please login");
+        throw new Meteor.Error(401, "Please sign in");
 
     if (!job.objNameArray || !job.objNameArray.length) {
         console.error('the job must have at least one objName');

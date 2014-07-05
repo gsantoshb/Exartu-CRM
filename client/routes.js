@@ -97,7 +97,7 @@ Router.map(function () {
     });
 
     this.route('addDealPage', {
-        path: '/dealAdd/deal',
+        path: '/dealAdd/Deal',
         controller: 'DealAddController',
         waitOn: [dType.ObjTypesHandler]
     });

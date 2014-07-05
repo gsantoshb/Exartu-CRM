@@ -1,5 +1,6 @@
 DealAddController = RouteController.extend({
     data: function(){
+        console.log('obj',this.params.objType,this.params);
         Session.set('objType',this.params.objType);
     },
     action: function () {
@@ -27,6 +28,7 @@ DealAddController = RouteController.extend({
 var model;
 var subTypesDep=new Deps.Dependency;
 var createDeal= function(objTypeName){
+    console.log('deal',objTypeName,Session.get('objType'));
     var options= Session.get('addOptions');
     if (options){
         Session.set('addOptions', undefined);

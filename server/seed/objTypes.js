@@ -134,7 +134,7 @@ newObjType({
 });
 newObjType({
     collection: Deals,
-    name: 'deak',
+    name: 'deal',
     objGroupType: Enums.objGroupType.deal,
     services: ['messages', 'tasks', 'notes', 'tags'],
     fields: [{
