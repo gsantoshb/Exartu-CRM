@@ -292,6 +292,11 @@ newObjType({
     },
     services: [],
     fields: [
+        {
+            name: 'confidence',
+            displayName: 'Confidence',
+            fieldType: 'number'
+        },
     ]
 });
 
