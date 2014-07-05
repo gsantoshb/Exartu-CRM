@@ -88,10 +88,18 @@ Router.map(function () {
     path: '/job/:_id',
     controller: 'JobController'
   });
+
+
     this.route('deals', {
-        path: '/deals/:type?',
+        path: '/deals',
         controller: 'DealsController',
         onRun: registerPageView
+    });
+
+    this.route('addDealPage', {
+        path: '/dealAdd/deal',
+        controller: 'DealAddController',
+        waitOn: [dType.ObjTypesHandler]
     });
 
     this.route('deal', {

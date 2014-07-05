@@ -132,6 +132,28 @@ newObjType({
 //    }
   ]
 });
+newObjType({
+    collection: Deals,
+    name: 'deak',
+    objGroupType: Enums.objGroupType.deal,
+    services: ['messages', 'tasks', 'notes', 'tags'],
+    fields: [{
+        name: 'description',
+        displayName: 'Description',
+        required: false
+        },
+        { name: 'status',
+            displayName: 'Status',
+            fieldType: 'lookUp',
+            lookUpName: 'dealStatus',
+            lookUpCode: Enums.lookUpTypes.deal.status.code,
+            required: true,
+
+            multiple: false,
+            defaultValue: getFirst(Enums.lookUpTypes.deal.status.code)
+        }
+    ]
+});
 
 newObjType({
   objGroupType: Enums.objGroupType.contactable,
@@ -259,5 +281,17 @@ newObjType({
       fieldType: 'number'
     }
   ]
+});
+newObjType({
+    objGroupType: Enums.objGroupType.deal,
+    parent: 'deal',
+    name: 'Deal',
+    style: {
+        icon: 'briefcase',
+        color: 'yellow'
+    },
+    services: [],
+    fields: [
+    ]
 });
 

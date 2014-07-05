@@ -57,6 +57,16 @@ Template.deals.viewModel = function () {
 
     self.filesCollection = ContactablesFS;
 
+    // Filters
+    self.lookFilters = [
+
+    {
+      name: 'dealStatus'
+      , title: 'Statuses',
+      fieldName: 'status'
+    },
+
+    ];
 
     self.status=[]
     _.each(_.keys(Enums.dealStatus),function(key){
@@ -71,8 +81,18 @@ Template.deals.viewModel = function () {
     }
 
 
+    _.forEach(self.lookFilters, function(filter){
+        filter.items = LookUps.find({
+            codeType: Enums.lookUpTypes.deal[filter.fieldName].code
+        }).fetch();
+        filter.selectedItems = ko.observableArray();
+        filter.selectedItems.removeSelection = function(data) {
+            filter.selectedItems.remove(data);
+        }
+    });
+
     // TODO: search by customer name
-    var searchFields = [ 'statusName', 'publicDealTitle'];
+    var searchFields = ['durationName', 'statusName', 'publicDealTitle'];
     self.searchString = ko.observable();
 
     var extendLookupFilterQuery = function (query, filter, fieldName) {

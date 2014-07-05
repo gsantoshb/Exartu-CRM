@@ -24,13 +24,10 @@
             <div class="col-sm-8 col-md-7 col-lg-6">
                 <!-- Single button -->
                 <div class="btn-group pull-left suffix-5">
-                    <li><a href="#" data-bind="attr: { href: '/jobAdd/'+name }, text: 'Add ' + name ">Add</a></li>
+
                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                        <span class="fa fa-plus"></span> Add
+                        <a href="/dealAdd/deal" >Add</a>
                     </button>
-                    <ul class="dropdown-menu" role="menu" data-bind="foreach: dealTypes">
-                        <li><a href="#" data-bind="attr: { href: '/dealAdd/'+name }, text: 'Add ' + name "></a></li>
-                    </ul>
                 </div>
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search deal"  data-bind="value: searchString, valueUpdate: 'afterkeydown'">

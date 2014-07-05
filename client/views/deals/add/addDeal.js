@@ -1,82 +1,77 @@
-Template.addDeal.viewModel = function (objname) {
-    var self = this;
-
-    var objType = ObjTypes.findOne({
-        objName: objname
-    });
-    var aux = {
-        objNameArray: ko.observableArray([objType.objName])
-    };
-    self.deal = ko.validatedObservable(aux);
-    self.objTypeName = ko.observable(objType.objName);
-    self.ready = ko.observable(false);
-
-
-    _.forEach(objType.fields, function (item) {
-        _.extend(item, {
-            value: ko.observable().extend({
-                pattern: {
-                    message: 'invalid value',
-                    params: item.regex
-                }
-            })
-        });
-        if (item.fieldType == Enums.fieldType.lookUp) {
-            _.extend(item, {
-                value: item.multiple ? ko.observableArray(item.defaultValue) : ko.observable(item.defaultValue),
-                options: LookUps.findOne({
-                    name: item.lookUpName
-                }).items,
-            })
-        }
-    });
-    aux[objType.objName] = ko.observableArray(objType.fields)
-
-    self.relations = ko.observableArray([]);
-    Meteor.call('getShowInAddRelations', objType.objName, function (err, result) {
-        console.log('show in relations - deal');
-        _.each(result, function (r) {
-            self.relations.push({
-                relation: r,
-                data: ko.meteor.find(window[r.target.collection], r.target.query),
-                value: ko.observable(null)
-            });
-        })
-
-        self.ready(true);
-    });
-
-    self.addDeal = function () {
-        if (!self.deal.isValid()) {
-            self.deal.errors.showAllMessages();
+DealAddController = RouteController.extend({
+    data: function(){
+        Session.set('objType',this.params.objType);
+    },
+    action: function () {
+        if (!this.ready()) {
+            this.render('loadingContactable');
             return;
-        };
-        var relNames = _.map(self.relations(), function (r) {
-            return r.relation.name;
+        }
+        this.render('addDealPage');
+    },
+    onAfterAction: function() {
+        var title = 'Add ' + Session.get('objType'),
+            description = '';
+        SEO.set({
+            title: title,
+            meta: {
+                'description': description
+            },
+            og: {
+                'title': title,
+                'description': description
+            }
         });
-        var relValues = _.map(self.relations(), function (r) {
-            if (r.value()) return r.value()._id();
-        });
-        _.extend(self.deal(), _.object(relNames, relValues));
-
-        var fields = self.deal()[self.objTypeName()]();
-        delete self.deal()[self.objTypeName()];
-        self.deal()[self.objTypeName()] = {};
-        _.forEach(fields, function (field) {
-            self.deal()[self.objTypeName()][field.name] = field.value() == null ? field.defaultValue : field.value();
-        });
-        self.deal().displayName = self.deal()[self.objTypeName()].Deal_Name;
-        Meteor.call('addDeal', ko.toJS(self.deal), function (err, result) {
-            console.log(err);
-        });
-        $('#addDealModal').modal('hide');
-    }
-    return this;
-}
-
-Meteor.methods({
-    addDeal: function (deal) {
-        deal.hierId = Meteor.user().hierId;
-        Deals.insert(deal);
     }
 });
+var model;
+var subTypesDep=new Deps.Dependency;
+var createDeal= function(objTypeName){
+    var options= Session.get('addOptions');
+    if (options){
+        Session.set('addOptions', undefined);
+    }
+
+    model= new dType.objTypeInstance(Session.get('objType'), options);
+    return model
+}
+
+Template.addDealPage.helpers({
+    model: function(){
+        if (!model){
+            model=createDeal(Session.get('objType'));
+        }
+        return model;
+    },
+    subTypeArray: function(){
+        subTypesDep.depend();
+        return model.subTypes;
+    },
+    objTypeName: function(){
+        return Session.get('objType');
+    }
+})
+
+Template.addDealPage.events({
+    'click .btn-success': function(){
+        if (!dType.isValid(model)){
+            dType.displayAllMessages(model);
+            return;
+        }
+        var obj=dType.buildAddModel(model)
+        Meteor.call('addDeal', obj, function(err, result){
+            if(err){
+                console.dir(err)
+            }else{
+                history.back();
+            }
+        });
+    },
+    'click .goBack': function(){
+        history.back();
+    }
+})
+
+Template.addDealPage.destroyed=function(){
+    model=undefined;
+}
