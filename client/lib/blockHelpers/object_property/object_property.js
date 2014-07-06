@@ -1,6 +1,7 @@
 UI.registerHelper('objectProperty', function() {
   var self = this;
   var template = {};
+
   switch(self.property.type) {
     case Utils.ReactivePropertyTypes.array:
       template = Template.object_property_multiple;

@@ -137,12 +137,17 @@ newObjType({
     name: 'deal',
     objGroupType: Enums.objGroupType.deal,
     services: ['messages', 'tasks', 'notes', 'tags'],
-    fields: [{
-        name: 'description',
+    fields: [    {
+        name: 'displayName',
+        displayName: 'Deal Name',
+        required: true
+        },
+        {
+        name: 'dealDescription',
         displayName: 'Description',
         required: false
         },
-        { name: 'status',
+        { name: 'dealStatus',
             displayName: 'Status',
             fieldType: 'lookUp',
             lookUpName: 'dealStatus',
@@ -151,6 +156,26 @@ newObjType({
 
             multiple: false,
             defaultValue: getFirst(Enums.lookUpTypes.deal.status.code)
+        },
+        { name: 'dealCloseDate',
+            displayName: 'Close Date'
+        },
+        { name: 'dealEstimatedRevenue',
+            displayName: 'Revenue',
+            fieldType: 'number'
+        },
+        { name: 'dealRevenueFrequency',
+            displayName: 'Frequency',
+            fieldType: 'lookUp',
+            lookUpName: 'revenueFrequency',
+            lookUpCode: Enums.lookUpTypes.deal.revenueFrequency,
+            defaultValue: getFirst(Enums.lookUpTypes.deal.revenueFrequency),
+            showInAdd: false,
+            required: false,
+        },
+        { name: 'dealCloseConfidencePercentage',
+            displayName: 'Confidence',
+            fieldType: 'number'
         }
     ]
 });
@@ -293,9 +318,7 @@ newObjType({
     services: [],
     fields: [
         {
-            name: 'confidence',
-            displayName: 'Confidence',
-            fieldType: 'number'
+
         },
     ]
 });

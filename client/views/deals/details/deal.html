@@ -1,271 +1,172 @@
 <template name="deal">
-    <div name="dealVM">
-        <div class="deals-page" data-bind="with: deal">
-            <div id="content">
+<div class="contactable-page-details" name="dealVM">
+<div id="content">
+{{#with originalDeal}}
+<div id="content-header" class="mini">
+    <h1 class="profile-name">{{displayName}}
+        <a class="pull-right" href="/contactable/{{customer}}">
+            <i class="icon-buildings-1"></i>
+            {{customerName}}
+        </a>
+    </h1>
+</div>
+<div id="breadcrumb" class="breadcrumb-top">
+    <a href="/" title="Go to Home" class="tip-bottom">
+        <i class="fa fa-home"></i>Home</a>
+    <a href="/deals" class="current">Deals</a>
+</div>
+{{/with}}
+{{#with deal}}
+<div class="container-fluid contactable-content">
+    <div class="row">
+        <!-- Left Column -->
+        <div class="col-sm-8 col-lg-5 contactable-left-col">
+            {{>deal_tabs originalDeal=. documentCount=documentCount  }}
+        </div>
 
-                <div id="breadcrumb" class="breadcrumb-top ">
-                    <a href="# " title="Go to Home " class="tip-bottom ">Home</a>
-                    <a href="# " class="current ">Deals</a>
+
+
+
+
+        <!-- Right Column -->
+
+        <div class="col-sm-4 col-lg-7 contactable-right-col-custom has-tabs">
+            <div class="box">
+                <div class="box-header-2">
+                    <a class="btn-action editDeal pull-right" href="#" style="color: {{colorEdit}}"><i class="fa fa-pencil"></i></a>
+                    <div class="box-title">Deal Details</div>
+
+                    <table class="table custom-table text-normal" style="table-layout: fixed;">
+                        <tbody>
+
+                        <tr>
+                            <td>
+                                <i class="fa fa-briefcase"></i>&nbsp;Deal Name:
+                                {{#objectProperty property=displayName editable=editMode}}
+                                <input class="form-control" type="text" value="{{value}}">
+                                {{else}}
+                                <strong>{{value}}</strong>
+                                {{/objectProperty}}
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                <i class="fa fa-info-circle"></i>&nbsp;Status:
+
+                                {{#objectProperty property=status editable=editMode}}
+                                <div class="form-group  {{hasError}}">
+                                    <select class="form-control input-lg">
+                                        {{#each options}}
+                                        <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
+                                        {{/each}}
+                                    </select>
+                                    <span>{{error}}</span>
+                                </div><!-- /.form-group -->
+                                {{else}}
+                                <strong>
+                                    <strong>{{displayName}}</strong>
+                                </strong>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+
+                        <!--<tr>-->
+                            <!--<td colspan="2">Tags:-->
+                                <!--{{#objectProperty property=tags}}-->
+                                                <!--<span class="badge badge-primary"><i class="fa fa-tag"></i> {{value}}-->
+                                                    <!--{{#if editMode}}-->
+                                                        <!--<i class="remove-tag fa fa-times" style="padding-left: 7px;cursor: pointer;" title="Remove"></i>-->
+                                                    <!--{{/if}}-->
+                                                <!--</span>-->
+                                <!--{{/objectProperty}}-->
+                                <!--{{#if editMode}}-->
+                                <!--<div class="input-group">-->
+                                    <!--<input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">-->
+                                                    <!--<span class="input-group-btn">-->
+                                                      <!--<button class="add-tag btn btn-success" type="button">Add</button>-->
+                                                    <!--</span>-->
+                                <!--</div>&lt;!&ndash; /input-group &ndash;&gt;-->
+                                <!--{{/if}}-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        </tbody>
+                    </table>
+                    Description:
+                    {{#objectProperty property=description editable=editMode}}
+                    {{#htmlEditor}}
+                    {{/htmlEditor}}
+                    {{else}}
+                    {{>dealDescription}}
+
+                    {{/objectProperty}}
+                    <!-- /.description -->
                 </div>
-                <div id="content-header" class="content-header-bottom ">
-                    <div class="profile-content-header ">
-                        <div class="profile-pic ">
-                            <a href="# ">
-                                <img class="img-responsive " src="/assets/pic-284x284.jpg ">
-                            </a>
-                        </div>
-                        <h1 class="profile-name ">
-                            <strong data-bind="text: displayName"></strong>
-                        </h1>
-                        <div class="profile-btns ">
-                            <a class="btn btn-default btn-sm " data-toggle="modal " data-target="#messagesModal ">
-                                <i class="fa fa-envelope-o "></i>
-                                Send Message</a>
-
-                        </div>
-                        <!-- /.profile-btns -->
+                <!-- /.box-content-lg-->
+                {{#if editMode}}
+                <div class="box-header-2" style="height: 60px">
+                    <div class="pull-right">
+                                        <span class="btn btn-default cancelButton">
+                                            Cancel
+                                        </span>
+                                        <span class="btn btn-info saveButton">
+                                            Save
+                                        </span>
                     </div>
-                    <!-- /.profile-content-header -->
                 </div>
-                <!-- /.content-header -->
+                {{/if}}
+            </div>
+            <div class="row">
 
-                <div class="container-fluid row ">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-pills bottom-20 ">
-                        <li class="active ">
-                            <a href="#profile-home " data-toggle="tab ">All</a>
-                        </li>
-                        <li>
-                            <a href="#profile-details " data-toggle="tab ">Details</a>
-                        </li>
-                        <li>
-                            <a href="#profile-notes " data-toggle="tab ">Notes
-                                <span class="custom-badge-2 " data-bind="text: notes().length"></span>
-                            </a>
-                        </li>
-                        <!--
-                        <li>
-    <a href="#profile-tasks " data-toggle="tab ">Tasks
-        <span class="custom-badge-2 ">25</span>
-    </a>
-</li>
--->
-                    </ul>
-                    <div class="col-md-12 col-lg-12 ">
-                        <div class="tab-content ">
-                            {{> yield region='content'}}
-                        </div>
-                    </div>
+                <div class="col-lg-6">
+                    {{>customerInfo customer=getCustomer path='customer' collection=dealCollection}}
+                    {{>dealActivity}}
                 </div>
             </div>
         </div>
-    </div>
-</template>
+        <!-- /.col-lg-8-->
 
-<template name="dealHome ">
-    <!-- Profile Home Section -->
-    <div class="tab-pane active " id="profile-home">
-        <div class="row ">
-            <div class="col-md-4 col-lg-4 ">
-                <div class="box ">
-                    <div class="box-header-2 ">
-                        <div class="box-title ">
-                            <i class="icon icon-contact "></i>Details</div>
-                    </div>
-                    <div class="box-content-md ">
-                        <p>
-                            <strong>Summary</strong>
-                        </p>
-                        <p>Nimble. Bespoke. Describe me as you please. When digital experiences surprise, delight and simplify life for the end user, it's a beautiful thing.</p>
-                        <p>Let's build your digitally-driven business. What I bring to the table is a multidisciplinary mix of competencies: Product Design, Experience Design, Visual Design, Front-End Development.</p>
-                        <a class="btn btn-default btn-block btn-md " href="# ">Read more</a>
-                    </div>
-                    <!-- /.box-content-md -->
-                </div>
-                <!-- /.box -->
+        <div class="col-md-4 col-lg-4">
 
-                <!-- ko if: $data.contactMethodscontactMethods -->
-                <div class="box ">
-                    <div class="box-header-2 ">
-                        <div class="box-title ">
-                            <i class="icon icon-contact "></i>Contact</div>
-                    </div>
-                    <div class="box-content-md ">
-                        <ul class="list-1 " data-bind="foreach: deal().contactMethods ">
-                            <li>
-                                <strong data-bind="text: type "></strong>
-                                <br>
-                                <span data-bind="text: value "></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.box-content-md -->
-                </div>
-                <!-- /.box -->
-                <!-- /ko-->
-
-                <!-- ko if: $data.tags -->
-                <div class="box ">
-                    <div class="box-header-2 ">
-                        <div class="box-title ">
-                            <i class="icon  icon-tag-1 "></i>Tags</div>
-                    </div>
-                    <div class="box-content-md ">
-                        <div data-bind="foreach: tags ">
-                            <a class="btn btn-xs btn-primary " href="# " data-bind="text: $data "></a>
-                            <a style="margin-left: 4px; min-width: 7px; ">
-                                <i class="icon icon-close removeTag "></i>
-                            </a>
-                        </div>
-                        <hr>
-                        <div class="input-group ">
-                            <input type="text " class="form-control " placeholder="Enter tags here... " data-bind="value: $root.newTag ">
-                            <span class="input-group-btn ">
-                                <button class="btn btn-success " type="button " data-bind="click: $root.addTag ">Add</button>
-                            </span>
-                        </div>
-                        <!-- /input-group -->
-                    </div>
-                    <!-- /.box-content-md -->
-                </div>
-                <!-- /.box -->
-                <!-- /ko-->
-
-            </div>
-            <!-- /.col-lg-4 -->
-            <div class="col-md-8 col-lg-8 ">
-                <div class="row ">
-                    <div class="col-lg-12">
-                        <div class="box ">
-                            <div class="box-header-2 ">
-                                <div class="box-title ">
-                                    <i class="icon icon-list-4 "></i>
-                                    Price Quotations
-                                    <a class="btn btn-default btn-sm " data-toggle="modal " data-bind="click: function () { Composer.showModal( 'addQuote', 'addQuoteModal', $data._id(),'addDealQuote'); } ">
-                                        <i class=" fa fa-pencil "></i>
-                                        New Quote
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="box-content-md " data-bind="foreach: quotes">
-                                <div class="comment " data-bind="with: helper.getUserInformation($data.userId())">
-                                    <!-- ko if: $data.ready -->
-                                    <!-- ko if: $data.picture -->
-                                    <div class="comment-thumb">
-                                        <img height="70px" width="70px" data-bind="attr: {src: picture}" alt="gigi">
-                                    </div>
-                                    <!-- /ko -->
-                                    <div class="comment-content ">
-                                        <div class="comment-text ">
-                                            <div class="comment-info ">
-                                                <a href="# ">
-                                                    <!-- ko if: $data.username -->
-                                                    <strong data-bind="text: username">
-                                                    </strong>
-                                                    <!-- /ko -->
-                                                </a>
-                                                <span class="pipe">|</span>
-                                                <span data-bind="text: moment($parent.dateCreated()).format('LL')"></span>
-                                            </div>
-                                            <p data-bind="text: $parent.content">
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <!-- /.comment-content -->
-                                    <!-- /ko -->
-                                </div>
-
-                            </div>
-                            <!-- /.box-content-md -->
-                        </div>
-                        <!-- /.box -->
-                    </div>
-                </div>
-                <!-- /.row -->
-            </div>
-            <div class="col-md-8 col-lg-8 ">
-                <div class="row ">
-                    <div class="col-lg-12">
-                        <div class="box ">
-                            <div class="box-header-2 ">
-                                <div class="box-title ">
-                                    <i class="icon icon-list-4 "></i>
-                                    Notes
-
-                                    <a class="btn btn-default btn-sm " data-toggle="modal " data-bind="click: function () { Composer.showModal( 'addNote', $data._id(),'addDealNote'); } ">
-                                        <i class=" fa fa-pencil "></i>
-                                        Write Note
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="box-content-md " data-bind="foreach: notes">
-                                <div class="comment " data-bind="with: helper.getUserInformation($data.userId())">
-                                    <!-- ko if: $data.ready -->
-                                    <!-- ko if: $data.picture -->
-                                    <div class="comment-thumb">
-                                        <img height="70px" width="70px" data-bind="attr: {src: picture}" alt="gigi">
-                                    </div>
-                                    <!-- /ko -->
-                                    <div class="comment-content ">
-                                        <div class="comment-text ">
-                                            <div class="comment-info ">
-                                                <a href="# ">
-                                                    <!-- ko if: $data.username -->
-                                                    <strong data-bind="text: username">
-                                                    </strong>
-                                                    <!-- /ko -->
-                                                    <!-- ko if: !$data.username && $data.email -->
-                                                    <strong data-bind="text: email"></strong>
-                                                    <!-- /ko -->
-                                                </a>
-                                                <span class="pipe">|</span>
-                                                <span data-bind="text: moment($parent.dateCreated()).format('LL')"></span>
-                                            </div>
-                                            <p data-bind="text: $parent.content">
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <!-- /.comment-content -->
-                                    <!-- /ko -->
-                                </div>
-                                <!-- /.comment -->
-                                <!--
-                                <a class="btn btn-default btn-block btn-md " href="# ">View All Notes
-                                <span class="custom-badge-1 ">20</span>
-                                </a>
-                                -->
-                            </div>
-                            <!-- /.box-content-md -->
-                        </div>
-                        <!-- /.box -->
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <!--
-                    <div class="col-lg-6 ">
-                    <div class="box ">
-    -->
-                    <!--
-                                            <div class="box-header-2 ">
-                    <div class="box-title ">
-                        <i class="icon-check-list "></i>Tasks</div>
-                </div>
-                <div class="box-content-md ">
-                
-                </div>
-                -->
-                    <!-- /.box-content-md -->
-                    <!--						</div>-->
-                    <!-- /.box -->
-                    <!--					</div>-->
-                    <!-- /.col-lg-6 -->
-                </div>
-                <!-- /.row -->
-            </div>
-
-            <!-- /.col-lg-8 -->
         </div>
-        <!-- /.row -->
+        <!-- /.col-lg-4-->
     </div>
-    <!-- /#profile-home -->
+    <!-- /.container-fluid -->
+</div>
+{{/with}}
+</div>
+<!-- /.content -->
+</div>
 </template>
 
+<template name="dealDescription">
+    <div id="description" class="deal-description">
+        <div class="text">
+            {{#showAsHTML value=value}}
+            {{/showAsHTML}}
+        </div>
+        <div class="see-more">See more <i class="fa fa-caret-down"></i></div>
+        <div class="see-less">See less <i class="fa fa-caret-up"></i></div>
+    </div>
+</template>
+<template name="deal_tabs">
+    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{deal.notes.length}}</span></a></li>
+
+
+    </ul>
+
+    <div class="tab-content">
+        <!-- Notes Tab -->
+        <div class="tab-pane active" id="profile-notes">
+            {{> contactableNotesAdd entity=deal type=getType}}
+            {{> contactableNotesList entity=deal}}
+        </div>
+
+
+    </div>
+
+</template>
