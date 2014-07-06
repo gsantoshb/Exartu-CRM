@@ -92,7 +92,7 @@ Template.deals.viewModel = function () {
     });
 
     // TODO: search by customer name
-    var searchFields = ['durationName', 'statusName', 'publicDealTitle'];
+    var searchFields = [ 'statusName'];
     self.searchString = ko.observable();
 
     var extendLookupFilterQuery = function (query, filter, fieldName) {
@@ -147,7 +147,6 @@ Template.deals.viewModel = function () {
     });
     var options = ko.computed(function () {
         return {
-            sort: { 'publicDealTitle': 1 },
             limit: ko.toJS(filters().limit)
         }
     })

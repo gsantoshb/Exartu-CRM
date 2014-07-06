@@ -78,7 +78,7 @@ var beforeInsertOrUpdateJob = function (job) {
             $in: job.objNameArray
         }
     }).fetch();
-
+    console.log('jobsobj',objTypes,deal);
     if (objTypes.length != job.objNameArray.length) {
         console.error('the job objNameArray is suspicious');
         console.dir(job.objNameArray);

@@ -33,12 +33,9 @@ Deals.before.insert(function (userId, doc) {
 Meteor.startup(function () {
     Meteor.methods({
         addDeal: function (deal) {
-            if (beforeInsertOrUpdateDeal(deal)) {
+
                 Deals.insert(deal);
-            } else {
-                console.error('Deal not valid')
-                console.dir(deal);
-            }
+
         },
         updateDeal: function (deal) {
             if (beforeInsertOrUpdateDeal(deal)) {
@@ -105,6 +102,7 @@ var beforeInsertOrUpdateDeal = function (deal) {
             $in: deal.objNameArray
         }
     }).fetch();
+
 
     if (objTypes.length != deal.objNameArray.length) {
         console.error('the deal objNameArray is suspicious');
