@@ -57,7 +57,7 @@
                             <td>
                                 <i class="fa fa-info-circle"></i>&nbsp;Status:
 
-                                {{#objectProperty property=status editable=editMode}}
+                                {{#objectProperty property=dealStatus editable=editMode}}
                                 <div class="form-group  {{hasError}}">
                                     <select class="form-control input-lg">
                                         {{#each options}}
@@ -74,25 +74,25 @@
                             </td>
                         </tr>
 
-                        <!--<tr>-->
-                            <!--<td colspan="2">Tags:-->
-                                <!--{{#objectProperty property=tags}}-->
-                                                <!--<span class="badge badge-primary"><i class="fa fa-tag"></i> {{value}}-->
-                                                    <!--{{#if editMode}}-->
-                                                        <!--<i class="remove-tag fa fa-times" style="padding-left: 7px;cursor: pointer;" title="Remove"></i>-->
-                                                    <!--{{/if}}-->
-                                                <!--</span>-->
-                                <!--{{/objectProperty}}-->
-                                <!--{{#if editMode}}-->
-                                <!--<div class="input-group">-->
-                                    <!--<input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">-->
-                                                    <!--<span class="input-group-btn">-->
-                                                      <!--<button class="add-tag btn btn-success" type="button">Add</button>-->
-                                                    <!--</span>-->
-                                <!--</div>&lt;!&ndash; /input-group &ndash;&gt;-->
-                                <!--{{/if}}-->
-                            <!--</td>-->
-                        <!--</tr>-->
+                        <tr>
+                            <td colspan="2">Tags:
+                                {{#objectProperty property=tags}}
+                                                <span class="badge badge-primary"><i class="fa fa-tag"></i> {{value}}
+                                                    {{#if editMode}}
+                                                        <i class="remove-tag fa fa-times" style="padding-left: 7px;cursor: pointer;" title="Remove"></i>
+                                                    {{/if}}
+                                                </span>
+                                {{/objectProperty}}
+                                {{#if editMode}}
+                                <div class="input-group">
+                                    <input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">
+                                                    <span class="input-group-btn">
+                                                      <button class="add-tag btn btn-success" type="button">Add</button>
+                                                    </span>
+                                </div><!-- /input-group -->
+                                {{/if}}
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                     Description:
@@ -103,7 +103,7 @@
                     {{>dealDescription}}
 
                     {{/objectProperty}}
-                    <!-- /.description -->
+                     /.description
                 </div>
                 <!-- /.box-content-lg-->
                 {{#if editMode}}

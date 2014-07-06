@@ -1,4 +1,6 @@
+
 DealController = RouteController.extend({
+
     layoutTemplate: 'mainLayout',
     waitOn: function(){
         return [DealHandler, ObjTypesHandler, GoogleMapsHandler]
@@ -15,7 +17,8 @@ DealController = RouteController.extend({
     }
 });
 
-var getDefinitionFromField=function(field, obj, path){
+var getDealDefinitionFromField=function(field, obj, path){
+
     var type;
     switch (field.fieldType){
         case 'string':a
@@ -56,7 +59,7 @@ toReactiveObject=function(addModel, obj){
     _.each(addModel.fieldGroups,function(fieldGroup){
         _.each(fieldGroup.items,function(item){
             if(item.type=='field'){
-                props[item.name]=getDefinitionFromField(item, object, path);
+                props[item.name]=getDealDefinitionFromField(item, object, path);
 
             }
         })
@@ -67,7 +70,7 @@ toReactiveObject=function(addModel, obj){
         _.each(subType.fieldGroups,function(fieldGroup){
             _.each(fieldGroup.items,function(item){
                 if(item.type=='field'){
-                    props[item.name]=getDefinitionFromField(item, object, path);
+                    props[item.name]=getDealDefinitionFromField(item, object, path);
                 }
             })
         })
@@ -78,7 +81,6 @@ toReactiveObject=function(addModel, obj){
 }
 
 var generateReactiveObject = function(deal) {
-
     var type=deal.objNameArray[1-deal.objNameArray.indexOf('deal')];
     var definition= toReactiveObject(dType.objTypeInstance(type), deal);
     definition.reactiveProps.tags={

@@ -13,7 +13,7 @@ _.forEach([
   }
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.deal.revenueFrequency.code;
+    item.codeType = Enums.lookUpTypes.deal.dealRevenueFrequency.code;
     systemLookUps.push(item);
   }
 );
