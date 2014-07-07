@@ -11,6 +11,8 @@ var getEntity= function(link){
       return Contactables.findOne({_id: link.id});
     case Enums.linkTypes.job.value:
       return Jobs.findOne({_id: link.id});
+    case Enums.linkTypes.deal.value:
+          return Deals.findOne({_id: link.id});
   }
 }
 var link=function(link){
@@ -75,6 +77,8 @@ Template.contactableNotesAdd.helpers({
         return Contactables.find();
       case Enums.linkTypes.job.value:
         return Jobs.find();
+        case Enums.linkTypes.deal.value:
+            return Deals.find();
       default :
         return [];
     }
@@ -146,6 +150,8 @@ Template.contactableNotesList.getUrl = function(link){
       return '/contactable/'+ link.id;
     case Enums.linkTypes.job.value:
       return '/job/'+ link.id;
+    case Enums.linkTypes.deal.value:
+      return '/deal/'+ link.id;
   }
 };
 

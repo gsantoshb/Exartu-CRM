@@ -39,11 +39,6 @@ ContactableController = RouteController.extend({
           to: 'content'
         });
         break;
-      case 'documents':
-        this.render('documents', {
-          to: 'content'
-        });
-        break;
       case 'pastJobs':
         this.render('contactablePastJobs', {
           to: 'content'
@@ -136,6 +131,9 @@ Template.contactable.helpers({
   },
   documentCount: function() {
     return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count() + ResumesFS.find({'metadata.employeeId': Session.get('entityId')}).count();
+  },
+  noteCount: function() {
+      return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }}).count();
   },
   jobCount: function() {
       return Jobs.find({'customer': Session.get('entityId')}).count();

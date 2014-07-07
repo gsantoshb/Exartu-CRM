@@ -24,7 +24,7 @@
                 <div class="row">
                     <!-- Left Column -->
                     <div class="col-sm-8 col-lg-5 contactable-left-col">
-                        {{>job_tabs originalJob=. documentCount=documentCount  }}
+                        {{>job_tabs originalJob=. documentCount=documentCount noteCount=noteCount  }}
                     </div>
 
 
@@ -221,7 +221,7 @@
 </template>
 <template name="job_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{job.notes.length}}</span></a></li>
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
         <li ><a href="#profile-candidates" data-toggle="tab">Candidates <span class="custom-badge-2">0</span></a></li>
 
     </ul>

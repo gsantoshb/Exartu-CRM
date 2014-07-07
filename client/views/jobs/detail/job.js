@@ -123,6 +123,7 @@ Template.job.helpers({
       var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
       Session.set('jobDisplayName', originalJob.displayName);
       job = generateReactiveObject(originalJob);
+        console.log(job);
       return job;
     },
     originalJob:function(){
@@ -143,7 +144,10 @@ Template.job.helpers({
     getCustomer:function(){
       var j=Jobs.findOne({ _id: Session.get('entityId')});
       return j && j.customer;
-    }
+    },
+    noteCount: function() {
+        return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }}).count();
+    },
 
 })
 Template.job.events({

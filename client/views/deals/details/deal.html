@@ -21,7 +21,7 @@
     <div class="row">
         <!-- Left Column -->
         <div class="col-sm-8 col-lg-5 contactable-left-col">
-            {{>deal_tabs originalDeal=. documentCount=documentCount  }}
+            {{>deal_tabs originalDeal=. documentCount=documentCount noteCount=noteCount  }}
         </div>
 
 
@@ -154,7 +154,7 @@
 </template>
 <template name="deal_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{deal.notes.length}}</span></a></li>
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
 
 
     </ul>

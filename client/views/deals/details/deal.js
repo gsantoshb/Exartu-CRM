@@ -80,7 +80,7 @@ toReactiveObject=function(addModel, obj){
     return reactiveObj;
 }
 
-var generateReactiveObject = function(deal) {
+var generateDealReactiveObject = function(deal) {
     var type=deal.objNameArray[1-deal.objNameArray.indexOf('deal')];
     var definition= toReactiveObject(dType.objTypeInstance(type), deal);
     definition.reactiveProps.tags={
@@ -108,7 +108,7 @@ Template.deal.helpers({
     deal: function(){
         var originalDeal=Deals.findOne({ _id: Session.get('entityId') });
         Session.set('dealDisplayName', originalDeal.displayName);
-        deal = generateReactiveObject(originalDeal);
+        deal = generateDealReactiveObject(originalDeal);
         return deal;
     },
     originalDeal:function(){
@@ -129,7 +129,10 @@ Template.deal.helpers({
     getCustomer:function(){
         var j=Deals.findOne({ _id: Session.get('entityId')});
         return j && j.customer;
-    }
+    },
+    noteCount: function() {
+        return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }}).count();
+    },
 
 })
 Template.deal.events({
