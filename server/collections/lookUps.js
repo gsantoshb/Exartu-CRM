@@ -3,8 +3,8 @@ Meteor.publish('lookUps', function () {
 
   if(!user)
     return false;
-
-   return LookUps.find({hierId: user.hierId});
+    console.log(LookUps.find());
+   return LookUps.find({hierId: user.hierId},{sort: {displayName: 1}});
 });
 
 LookUps.allow({
