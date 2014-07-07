@@ -89,7 +89,7 @@ Template.fieldInput.helpers({
 
 Template.lookUpFieldInput.helpers({
   options: function(){
-    return LookUps.find({codeType: this.lookUpCode});
+    return LookUps.find({ codeType: this.lookUpCode, inactive: { $ne: true } });
   },
   hasError :function(){
     return this.isValid ? '': 'error';
