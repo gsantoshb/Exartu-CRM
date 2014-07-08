@@ -319,7 +319,10 @@ var getDefinitionFromField=function(field, obj, path){
     var lookup=LookUps.findOne({_id: obj[field.name]});
     if (displayName==null && lookup!=null)  displayName= LookUps.findOne({_id: obj[field.name]}).displayName;
     result.displayName=displayName;
-    result.options=LookUps.find({codeType: field.lookUpCode, inactive: {$ne: true}}, { sort: {displayName: 1} });
+    result.options=LookUps.find({$or: [
+                                        {codeType: field.lookUpCode, inactive: {$ne: true}},
+                                        {_id: obj[field.name] }
+                                ] }, { sort: {displayName: 1} });
   }
   return result;
 }
