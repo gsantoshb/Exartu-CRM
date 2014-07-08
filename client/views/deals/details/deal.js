@@ -17,72 +17,72 @@ DealController = RouteController.extend({
     }
 });
 
-var getDealDefinitionFromField=function(field, obj, path){
-
-    var type;
-    switch (field.fieldType){
-        case 'string':a
-            type=Utils.ReactivePropertyTypes.string;
-            break;
-        case 'date':
-            type=Utils.ReactivePropertyTypes.date;
-            break;
-        case 'number':
-            type=Utils.ReactivePropertyTypes.int;
-            break;
-        case 'lookUp':
-            type=Utils.ReactivePropertyTypes.lookUp;
-            break;
-
-    }
-
-    var result={
-        default: obj[field.name],
-        update: path+ field.name,
-        type: type
-    }
-    if(type==Utils.ReactivePropertyTypes.lookUp){
-        var displayName=obj[field.name+'Name']? obj[field.name+'Name']: LookUps.findOne({_id: obj[field.name]}).displayName;
-        result.displayName=displayName;
-        result.options=LookUps.find({codeType: field.lookUpCode});
-    }
-    return result;
-}
-toReactiveObject=function(addModel, obj){
-    var reactiveObj={
-        _id: obj._id,
-        reactiveProps: {}
-    }
-    var object=obj;
-    var path='';
-    var props={};
-    _.each(addModel.fieldGroups,function(fieldGroup){
-        _.each(fieldGroup.items,function(item){
-            if(item.type=='field'){
-                props[item.name]=getDealDefinitionFromField(item, object, path);
-
-            }
-        })
-    })
-    _.each(addModel.subTypes,function(subType){
-        path=subType.name + '.';
-        object=obj[subType.name];
-        _.each(subType.fieldGroups,function(fieldGroup){
-            _.each(fieldGroup.items,function(item){
-                if(item.type=='field'){
-                    props[item.name]=getDealDefinitionFromField(item, object, path);
-                }
-            })
-        })
-    })
-
-    _.extend(reactiveObj.reactiveProps, props);
-    return reactiveObj;
-}
+//var getDealDefinitionFromField=function(field, obj, path){
+//    var type;
+//    switch (field.fieldType){
+//        case 'string':a
+//            type=Utils.ReactivePropertyTypes.string;
+//            break;
+//        case 'date':
+//            type=Utils.ReactivePropertyTypes.date;
+//            break;
+//        case 'number':
+//            type=Utils.ReactivePropertyTypes.int;
+//            break;
+//        case 'lookUp':
+//            type=Utils.ReactivePropertyTypes.lookUp;
+//            break;
+//
+//    }
+//
+//    var result={
+//        default: obj[field.name],
+//        update: path+ field.name,
+//        type: type
+//    }
+//    if(type==Utils.ReactivePropertyTypes.lookUp){
+//
+//        var displayName=obj[field.name+'Name']? obj[field.name+'Name']: LookUps.findOne({_id: obj[field.name]}).displayName;
+//        result.displayName=displayName;
+//        result.options=LookUps.find({codeType: field.lookUpCode});
+//    }
+//    return result;
+//}
+//toReactiveObject=function(addModel, obj){
+//    var reactiveObj={
+//        _id: obj._id,
+//        reactiveProps: {}
+//    }
+//    var object=obj;
+//    var path='';
+//    var props={};
+//    _.each(addModel.fieldGroups,function(fieldGroup){
+//        _.each(fieldGroup.items,function(item){
+//            if(item.type=='field'){
+//                props[item.name]=getDealDefinitionFromField(item, object, path);
+//
+//            }
+//        })
+//    })
+//    _.each(addModel.subTypes,function(subType){
+//        path=subType.name + '.';
+//        object=obj[subType.name];
+//        _.each(subType.fieldGroups,function(fieldGroup){
+//            _.each(fieldGroup.items,function(item){
+//                if(item.type=='field'){
+//                    props[item.name]=getDealDefinitionFromField(item, object, path);
+//                }
+//            })
+//        })
+//    })
+//
+//    _.extend(reactiveObj.reactiveProps, props);
+//    return reactiveObj;
+//}
 
 var generateDealReactiveObject = function(deal) {
     var type=deal.objNameArray[1-deal.objNameArray.indexOf('deal')];
-    var definition= toReactiveObject(dType.objTypeInstance(type), deal);
+    var definition= Utils.toReactiveObject(dType.objTypeInstance(type), deal);
     definition.reactiveProps.tags={
         default: deal.tags,
         update: 'tags',

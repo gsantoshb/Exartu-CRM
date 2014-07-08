@@ -29,74 +29,13 @@ JobController = RouteController.extend({
   }
 });
 
-var getDefinitionFromField=function(field, obj, path){
-  var type;
-  switch (field.fieldType){
-    case 'string':
-      type=Utils.ReactivePropertyTypes.string;
-      break;
-    case 'date':
-      type=Utils.ReactivePropertyTypes.date;
-      break;
-    case 'number':
-      type=Utils.ReactivePropertyTypes.int;
-      break;
-    case 'lookUp':
-      type=Utils.ReactivePropertyTypes.lookUp;
-      break;
 
-  }
 
-  var result={
-    default: obj[field.name],
-    update: path+ field.name,
-    type: type
-  }
-  if(type==Utils.ReactivePropertyTypes.lookUp){
-    var displayName=obj[field.name+'Name'];
-    var lookup=LookUps.findOne({_id: obj[field.name]});
-    if (displayName==null && lookup!=null)  displayName= LookUps.findOne({_id: obj[field.name]}).displayName;
-    result.displayName=displayName;
-    result.options=LookUps.find({codeType: field.lookUpCode, inactive: {$ne: true}}, { sort: {displayName: 1} });
-  }
-  return result;
-}
-toReactiveObject=function(addModel, obj){
-    var reactiveObj={
-        _id: obj._id,
-        reactiveProps: {}
-    }
-    var object=obj;
-    var path='';
-    var props={};
-    _.each(addModel.fieldGroups,function(fieldGroup){
-        _.each(fieldGroup.items,function(item){
-            if(item.type=='field'){
-              props[item.name]=getDefinitionFromField(item, object, path);
-
-            }
-        })
-    })
-    _.each(addModel.subTypes,function(subType){
-        path=subType.name + '.';
-        object=obj[subType.name];
-        _.each(subType.fieldGroups,function(fieldGroup){
-            _.each(fieldGroup.items,function(item){
-                if(item.type=='field'){
-                  props[item.name]=getDefinitionFromField(item, object, path);
-                }
-            })
-        })
-    })
-
-    _.extend(reactiveObj.reactiveProps, props);
-    return reactiveObj;
-}
 
 var generateReactiveObject = function(job) {
 
   var type=job.objNameArray[1-job.objNameArray.indexOf('job')];
-  var definition= toReactiveObject(dType.objTypeInstance(type), job);
+  var definition= Utils.toReactiveObject(dType.objTypeInstance(type), job);
   definition.reactiveProps.tags={
     default: job.tags,
     update: 'tags',
