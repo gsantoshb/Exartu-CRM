@@ -40,6 +40,10 @@ Template.freePlanSubscription.usersCount = function() {
   return Meteor.users.find().count();
 };
 
+Template.freePlanSubscription.tasksCount = function() {
+  return Tasks.find().count();
+};
+
 Template.enterprisePlanSubscription.plan = function() {
   return SubscriptionPlan.getPlan(SubscriptionPlan.plansEnum.enterprise);
 };
@@ -48,7 +52,7 @@ Template.enterprisePlanSubscription.tasksCount = function() {
   var firstDayOfMonth = new Date;
   firstDayOfMonth.setDate(1);
   return Tasks.find({
-    createdAt: {
+    dateCreated: {
       $gt: firstDayOfMonth
     }
   }).count();

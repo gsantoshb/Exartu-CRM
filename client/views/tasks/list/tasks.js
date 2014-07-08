@@ -125,7 +125,7 @@ Template.tasks.viewModel = function () {
 
     var options = ko.computed(function () {
         return {
-            sort: { createdAt: -1 }
+            sort: { dateCreated: -1 }
         }
     })
 

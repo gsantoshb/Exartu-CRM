@@ -10,12 +10,12 @@
 
                         {{#objectProperty property=objType}}
                             {{#if value}}
-                                <span> {{value}}s </span>
+                                <span> {{value}}(s) </span>
                             {{else}}
-                                members
+                                records
                             {{/if}}
                         {{/objectProperty}}
-                        in network
+
                     {{/with}}
                 </h1>
             </div>
@@ -45,66 +45,66 @@
 </template>
 
 <template name="contactablesFilters">
-    <div class="box-2">
-        <h4 class="bottom-20"><strong>Filters</strong></h4>
-        <form role="form">
-            <div class="panel-group bottom-20">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a>
-                                <strong>Mode</strong>
-                            </a>
-                        </h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="checkbox">
-                            <label>
-                                {{#objectProperty property=query.inactives}}
-                                    <input type="checkbox" value="{{value}}"> Include inactives
-                                {{/objectProperty}}
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                {{#objectProperty property=query.onlyRecents}}
-                                    <input type="checkbox" value="{{value}}"> Only recent
-                                {{/objectProperty}}
-                            </label>
-                            <span><i class="icon-question-mark" title="Shows only the contacts that have been recently added. Select the timespan."></i></span>
-                            <div class="pull-right">
-                                <button type="button" class="{{recentOptionClass recentOptions.day}}" id="recent-day">day</button>
-                                <button type="button" class="{{recentOptionClass recentOptions.week}}" id="recent-week">week</button>
-                                <button type="button" class="{{recentOptionClass recentOptions.month}}" id="recent-month">month</button>
-                                <button type="button" class="{{recentOptionClass recentOptions.year}}" id="recent-year">year</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <strong>Tags</strong>
-                        </h4>
-                    </div>
-                    <div class="panel-body">
-                        {{#objectProperty property=tags}}
-                        <button type="button" class="tag btn btn-xs btn-primary">
-                            <span >{{value}}</span>
-                            <i class="remove-tag fa fa-times"></i>
-                        </button>
-                        {{/objectProperty}}
-                        <div class="input-group">
-                            <input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">
-                            <span class="input-group-btn">
-                              <button class="add-tag btn btn-success" type="button">Add</button>
-                            </span>
-                        </div><!-- /input-group -->
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+    <!--<div class="box-2">-->
+        <!--<h4 class="bottom-20"><strong>Filters</strong></h4>-->
+        <!--<form role="form">-->
+            <!--<div class="panel-group bottom-20">-->
+                <!--<div class="panel panel-default">-->
+                    <!--<div class="panel-heading">-->
+                        <!--<h4 class="panel-title">-->
+                            <!--<a>-->
+                                <!--<strong>Mode</strong>-->
+                            <!--</a>-->
+                        <!--</h4>-->
+                    <!--</div>-->
+                    <!--<div class="panel-body">-->
+                        <!--<div class="checkbox">-->
+                            <!--<label>-->
+                                <!--{{#objectProperty property=query.inactives}}-->
+                                    <!--<input type="checkbox" value="{{value}}"> Include inactives-->
+                                <!--{{/objectProperty}}-->
+                            <!--</label>-->
+                        <!--</div>-->
+                        <!--<div class="checkbox">-->
+                            <!--<label>-->
+                                <!--{{#objectProperty property=query.onlyRecents}}-->
+                                    <!--<input type="checkbox" value="{{value}}"> Only recent-->
+                                <!--{{/objectProperty}}-->
+                            <!--</label>-->
+                            <!--<span><i class="icon-question-mark" title="Shows only the contacts that have been recently added. Select the timespan."></i></span>-->
+                            <!--<div class="pull-right">-->
+                                <!--<button type="button" class="{{recentOptionClass recentOptions.day}}" id="recent-day">day</button>-->
+                                <!--<button type="button" class="{{recentOptionClass recentOptions.week}}" id="recent-week">week</button>-->
+                                <!--<button type="button" class="{{recentOptionClass recentOptions.month}}" id="recent-month">month</button>-->
+                                <!--<button type="button" class="{{recentOptionClass recentOptions.year}}" id="recent-year">year</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="panel panel-default">-->
+                    <!--<div class="panel-heading">-->
+                        <!--<h4 class="panel-title">-->
+                            <!--<strong>Tags</strong>-->
+                        <!--</h4>-->
+                    <!--</div>-->
+                    <!--<div class="panel-body">-->
+                        <!--{{#objectProperty property=tags}}-->
+                        <!--<button type="button" class="tag btn btn-xs btn-primary">-->
+                            <!--<span >{{value}}</span>-->
+                            <!--<i class="remove-tag fa fa-times"></i>-->
+                        <!--</button>-->
+                        <!--{{/objectProperty}}-->
+                        <!--<div class="input-group">-->
+                            <!--<input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">-->
+                            <!--<span class="input-group-btn">-->
+                              <!--<button class="add-tag btn btn-success" type="button">Add</button>-->
+                            <!--</span>-->
+                        <!--</div>&lt;!&ndash; /input-group &ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</form>-->
+    <!--</div>-->
 </template>
 
 <template name="contactablesList">
@@ -114,26 +114,26 @@
         {{#each contactables}}
             {{> contactablesListItem }}
         {{else}}
-            {{#if info.isFiltering }}
+            {{#if info.isFiltering.value }}
                 <div class="v-wrapper">
                     <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                         <i class="icon-connection-1 text-large"></i>
-                        <!--<h1>No {{#if info.objName}} {{info.objName}} {{else}} records {{/if}}-->
-                            <!--Found-->
-                        <!--</h1>-->
+                        <h1>
+                            No records Found
+                        </h1>
                     </div><!-- /.v-wrapper-cell -->
                 </div>
             {{else}}
                 <div class="v-wrapper">
                     <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                         <i class="icon-connection-1 text-large"></i>
-                        <h1>You currently have no
-                            <!--ko text:name-->
-                            <!--/ko-->
-                        </h1>
-                        <!--ko if:name()=='contactable'-->
-                        <p class="lead">A contactable is an Employee, Customer or Contact.</p>
-                        <!-- /ko -->
+                        <!--<h1>You currently have no-->
+                            <!--&lt;!&ndash;ko text:name&ndash;&gt;-->
+                            <!--&lt;!&ndash;/ko&ndash;&gt;-->
+                        <!--</h1>-->
+                        <!--&lt;!&ndash;ko if:name()=='contactable'&ndash;&gt;-->
+                        <!--<p class="lead">A contactable is an Employee, Customer or Contact.</p>-->
+                        <!--&lt;!&ndash; /ko &ndash;&gt;-->
                         <!--ko foreach: contactableTypes-->
                         <a href="#" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
                         <span class="bullet-spacer" data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
@@ -166,7 +166,7 @@
                                 {{/if}}
                                 {{#if person }}
                                     <a href="#" style="color: #707070; font-size: 27px">
-                                        <i class="icon-profile-bussiness-man" style="display: block; margin-top: 10px;"></i>
+                                        <i class="icon-profile-business-man" style="display: block; margin-top: 10px;"></i>
                                     </a>
                                 {{/if}}
                             {{/if}}
@@ -203,7 +203,7 @@
             <div class="col-sm-2">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container date">
-                        {{#formatted_date date=createdAt format='fromNow'}}
+                        {{#formatted_date date=dateCreated format='fromNow'}}
                             <span>{{value}}</span><br>
                         {{/formatted_date}}
                         {{#if searchKey }}
@@ -272,9 +272,9 @@
                         {{/each}}
                     </ul>
                 </div>
-                {{#subscriptionPlan plans=resumeParserRestrictions }}
+                <!--{{#subscriptionPlan plans=resumeParserRestrictions }}-->
                     <a class="btn btn-success pull-left suffix-10" href="/resumeparser"><i class="fa fa-cloud-download"></i> Import</a>
-                {{/subscriptionPlan}}
+                <!--{{/subscriptionPlan}}-->
                 <div class="input-group">
                     {{#objectProperty property=searchString}}
                         <input type="text" class="form-control" placeholder="" value="{{value}}">

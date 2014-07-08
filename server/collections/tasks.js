@@ -2,7 +2,7 @@
  * A way to communicate with other system's users. It's private.
  *
  * Message:
- *  - createdAt: date created
+ *  - dateCreated: date created
  *  - begin: date beginning
  *  - end: date
  *  - completed: date completed
@@ -32,11 +32,9 @@ Meteor.publish('tasks', function () {
 
 Meteor.startup(function () {
   Meteor.methods({
-    crateTask: SubscriptionPlan.checkFunction([SubscriptionPlan.plansEnum.enterprise],
-      function (task) {
-        Tasks.insert(task);
-      }
-    )
+    crateTask: function (task) {
+      Tasks.insert(task);
+    }
   });
 });
 
@@ -46,7 +44,7 @@ Tasks.before.insert(function (userId, doc) {
     doc.hierId = user.hierId;
     doc.userId = user._id;
 //  }
-    doc.createdAt = Date.now();
+    doc.dateCreated = Date.now();
 });
 Tasks.allow({
   update: function (userId, doc, fields, modifier) {

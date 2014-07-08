@@ -3,20 +3,36 @@
         <div id="content">
             {{#with originalJob}}
                 <div id="content-header" class="mini">
-                    <h1>{{displayName}}</h1>
+                    <h1 class="profile-name">{{displayName}}
+                    <a class="pull-right" href="/contactable/{{customer}}">
+                        <i class="icon-buildings-1"></i>
+                        {{customerName}}
+                    </a>
+                    </h1>
                 </div>
-                <div id="breadcrumb" class="bradcrumb-top">
+                <div id="breadcrumb" class="breadcrumb-top">
                     <a href="/" title="Go to Home" class="tip-bottom">
                         <i class="fa fa-home"></i>Home</a>
                     <a href="/jobs" class="current">Jobs</a>
-                    <a href="/jobs#industry={{industry}}">{{industryName}}</a>
-                    <a href="/jobs#category={{category}}">{{categoryName}}</a>
+
+                    <!--<a href="/jobs#industry={{industry}}">{{industryName}}</a>-->
+                    <!--<a href="/jobs#category={{category}}">{{categoryName}}</a>-->
                 </div>
             {{/with}}
             {{#with job}}
-                <div class="container-fluid">
+            <div class="container-fluid contactable-content">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-sm-8 col-lg-5 contactable-left-col">
+                        {{>job_tabs contactable=. documentCount=documentCount jobCount=jobCount}}
+                    </div>
 
-                    <div class="col-md-8 col-lg-8">
+
+
+
+
+                    <!-- Right Column -->
+                    <div class="col-sm-4 col-lg-7 contactable-right-col-custom has-tabs">
                         <div class="box">
                             <div class="box-header-2">
                                 <a class="btn-action editJob pull-right" href="#" style="color: {{colorEdit}}"><i class="fa fa-pencil"></i></a>
@@ -25,9 +41,34 @@
                             <div class="box-content-lg">
                                 <table class="table custom-table text-normal" style="table-layout: fixed;">
                                     <tbody>
+
                                     <tr>
                                         <td>
-                                            <i class="fa fa-calendar"></i>&nbsp;Start Name:
+                                            <i class="fa fa-briefcase"></i>&nbsp;Job title:
+                                            {{#objectProperty property=publicJobTitle editable=editMode}}
+                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{else}}
+                                                <strong>{{value}}</strong>
+                                            {{/objectProperty}}
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-globe"></i>&nbsp;Location:
+                                            {{#if editMode}}
+                                                {{#inputLocation location}}
+                                                {{/inputLocation}}
+                                            {{else}}
+                                                {{#with location.value}}
+                                                    <strong>{{displayName}}</strong>
+                                                {{else}}
+                                                    <strong class="text-muted">Not set</strong>
+                                                {{/with}}
+                                            {{/if}}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <i class="fa fa-calendar"></i>&nbsp;Start date:
                                             {{#objectProperty property=startDate editable=editMode}}
                                                     {{#dateTimePicker value=value}}
                                                     {{/dateTimePicker}}
@@ -44,11 +85,15 @@
                                             {{#objectProperty property=endDate editable=editMode}}
                                                 {{#dateTimePicker value=value}}
                                                 {{/dateTimePicker}}
-                                                {{else}}
+                                            {{else}}
                                                 <strong>
-                                                    {{#formattedDate value=value format='MM.DD.YYYY'}}
-                                                    {{date}}
-                                                    {{/formattedDate}}
+                                                    {{#if value}}
+                                                        {{#formattedDate value=value format='MM.DD.YYYY'}}
+                                                        {{date}}
+                                                        {{/formattedDate}}
+                                                    {{else}}
+                                                        Not set
+                                                    {{/if}}
                                                 </strong>
                                             {{/objectProperty}}
                                         </td>
@@ -74,114 +119,23 @@
                                         <td>
                                             <i class="fa fa-info-circle"></i>&nbsp;Status:
 
-                                            <strong>
-                                                <strong>{{status.value}}</strong>
-                                            </strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <i class="fa fa-building-o"></i>&nbsp;Industry:
-                                            {{#objectProperty property=industry editable=editMode}}
-                                            <div class="form-group  {{hasError}}">
-                                                <select class="form-control input-lg">
-                                                    {{#each options}}
-                                                    <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
-                                                    {{/each}}
-                                                </select>
-                                                <span>{{error}}</span>
-                                            </div><!-- /.form-group -->
-                                            {{else}}
-                                            <strong>
-                                                <strong>{{displayName}}</strong>
-                                            </strong>
-                                            {{/objectProperty}}
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-folder-open"></i>&nbsp;Category:
-                                            {{#objectProperty property=category editable=editMode}}
-                                            <div class="form-group  {{hasError}}">
-                                                <select class="form-control input-lg">
-                                                    {{#each options}}
-                                                    <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
-                                                    {{/each}}
-                                                </select>
-                                                <span>{{error}}</span>
-                                            </div><!-- /.form-group -->
-                                            {{else}}
-                                            <strong>
-                                                <strong>{{displayName}}</strong>
-                                            </strong>
-                                            {{/objectProperty}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{#if isType 'Temporary'}}
-                                                <i class="fa fa-money"></i>&nbsp;pay:
-                                                {{#objectProperty property=pay editable=editMode}}
-                                                    <input class="form-control" type="number" value="{{value}}">
-                                                {{else}}
-                                                    <strong>{{value}}</strong>
-                                                {{/objectProperty}}
-                                            {{/if}}
-                                            {{#if isType 'Direct Hire'}}
-                                                <i class="fa fa-money"></i>&nbsp;Salary:
-                                                {{#objectProperty property=salary editable=editMode}}
-                                                    <input class="form-control" type="number" value="{{value}}">
-                                                {{else}}
-                                                    <strong>{{value}}</strong>
-                                                {{/objectProperty}}
-                                            {{/if}}
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-dollar"></i>&nbsp;fee:
-                                            {{#objectProperty property=fee editable=editMode}}
-                                            <div class="form-group  {{hasError}}">
-                                                <input class="form-control" type="number" value="{{value}}">
-                                                <span>{{error}}</span>
-                                            </div><!-- /.form-group -->
+                                            {{#objectProperty property=status editable=editMode}}
+                                                <div class="form-group  {{hasError}}">
+                                                    <select class="form-control input-lg">
+                                                        {{#each options}}
+                                                        <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
+                                                        {{/each}}
+                                                    </select>
+                                                    <span>{{error}}</span>
+                                                </div><!-- /.form-group -->
                                             {{else}}
                                                 <strong>
-                                                    {{value}}%
+                                                    <strong>{{displayName}}</strong>
                                                 </strong>
                                             {{/objectProperty}}
                                         </td>
                                     </tr>
-                                    {{#if isType 'Temporary'}}
-                                        <tr>
-                                            <td colspan="2">
-                                                <i class="fa fa-calendar-o"></i>&nbsp;frequency:
-                                                {{#objectProperty property=frequency editable=editMode}}
-                                                    <div class="form-group  {{hasError}}">
-                                                        <select class="form-control input-lg">
-                                                            {{#each options}}
-                                                            <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
-                                                            {{/each}}
-                                                        </select>
-                                                        <span>{{error}}</span>
-                                                    </div><!-- /.form-group -->
-                                                {{else}}
-                                                    <strong>{{displayName}}</strong>
-                                                {{/objectProperty}}
-                                            </td>
-                                        </tr>
-                                    {{/if}}
-                                    <tr>
-                                        <td colspan="2">
-                                            <i class="fa fa-globe"></i>&nbsp;Location:
-                                            {{#if editMode}}
-                                                {{#inputLocation location}}
-                                                {{/inputLocation}}
-                                            {{else}}
-                                                {{#with location.value}}
-                                                    <strong>{{displayName}}</strong>
-                                                {{else}}
-                                                    <strong class="text-muted">Not set</strong>
-                                                {{/with}}
-                                            {{/if}}
-                                        </td>
-                                    </tr>
+
                                     <tr>
                                         <td colspan="2">Tags:
                                             {{#objectProperty property=tags}}
@@ -235,14 +189,17 @@
                     </div>
                     <!-- /.col-lg-8-->
 
-                    <div class="col-md-4 col-lg-4" data-bind="with: $parent.job">
+                    <div class="col-md-4 col-lg-4">
                         {{>assignment}}
-                        {{>customerInfo}}
+
                         {{>jobRates}}
+                        {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
+                        {{>jobActivity}}
                     </div>
                     <!-- /.col-lg-4-->
                 </div>
                 <!-- /.container-fluid -->
+            </div>
             {{/with}}
         </div>
         <!-- /.content -->
@@ -257,5 +214,18 @@
         </div>
         <div class="see-more">See more <i class="fa fa-caret-down"></i></div>
         <div class="see-less">See less <i class="fa fa-caret-up"></i></div>
+    </div>
+</template>
+<template name="job_tabs">
+    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{job.posts.length}}</span></a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Notes Tab -->
+        <div class="tab-pane active" id="profile-notes">
+            {{> contactableNotesAdd entity=job}}
+            {{> contactableNotesList entity=job}}
+        </div>
     </div>
 </template>

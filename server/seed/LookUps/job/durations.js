@@ -1,28 +1,19 @@
 _.forEach([
-  {
-		displayName: "Full-Time"
-  },
-  {
-		displayName: "Part-Time"
-  },
-  {
-		displayName: "Full-Time/Part-Time"
-  },
-  {
-		displayName: "Contractor"
-  },
-  {
-		displayName: "Intern"
-  },
-  {
-		displayName: "Seasonal/Temp"
-  },
-  {
-		displayName: "Per Diem"
-  },
-  {
-		displayName: "Franchises"
-  }
+        {
+            displayName: "Full-Time"
+        },
+        {
+            displayName: "Part-Time"
+        },
+        {
+            displayName: "Temporary"
+        },
+        {
+            displayName: "Per Diem"
+        },
+        {
+            displayName: "Temp-to-Perm"
+        }
 
 ],
   function (item) {

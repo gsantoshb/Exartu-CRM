@@ -1,9 +1,6 @@
 _.forEach([
   {
-    displayName: 'Open',
-  },
-  {
-    displayName: 'Close',
+    displayName: 'Inactive',
   },
   {
     displayName: 'Unfilled',

@@ -1,5 +1,6 @@
 var task;
 var Error={};
+
 var taskDep=new Deps.Dependency;
 var errorDep=new Deps.Dependency;
 var createTask=function(task){
@@ -8,8 +9,8 @@ var createTask=function(task){
 
   var definition = {
     begin: task.begin || new Date(),
-    end: task.end || new Date(),
-    assign: task.assign || [],
+    end: task.end || null,
+    assign: task.assign || [Meteor.userId()],
     note: task.note,
     completed: task.completed
 //    reactiveProps: {}

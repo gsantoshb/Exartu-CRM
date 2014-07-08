@@ -104,9 +104,6 @@ var generateReactiveObject = function(job) {
     default: job.location,
     update: 'location'
   }
-  definition.reactiveProps.status={
-    default: job.status
-  }
   return new Utils.ObjectDefinition(definition);
 };
 
@@ -136,6 +133,13 @@ Template.job.helpers({
     },
     isType:function(typeName){
       return !! Jobs.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
+    },
+    jobCollection: function(){
+      return Jobs;
+    },
+    getCustomer:function(){
+      var j=Jobs.findOne({ _id: Session.get('entityId')});
+      return j && j.customer;
     }
 
 })

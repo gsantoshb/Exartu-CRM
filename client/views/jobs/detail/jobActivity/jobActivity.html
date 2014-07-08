@@ -1,0 +1,75 @@
+<template name="jobActivity">
+    {{#if isAny}}
+        <div class="box">
+            <div class="box-header-2">
+                <div class="box-title">
+                    <a style="color: #777;">
+                        <span>Activity</span>
+                    </a>
+                </div>
+            </div>
+            <div class="box-v-msg">
+                <div class="box-v-msg-content">
+                <section class="timeline">
+                <div class="activity-container scroll-container">
+                    {{#each activities}}
+                        <div class="item item-customer">
+                            <div class="item-info">
+                                <div class="time" style="top: 26%; text-align: center; padding: 3px">
+                                    <i class="icon icon-clock-3" style="font-size: 20px;"></i>
+                                    <br>
+                                    <span>
+                                        {{#formattedDate value=data.dateCreated format='fromNow'}}
+                                            {{date}}
+                                        {{/formattedDate}}
+                                    </span>
+                                </div>
+                                <div class="type" style="background: #ffd42a; width: 35px ;height: 35px; margin-top: -22px; padding-top: 8px; left: 88px;">
+                                    <i class="icon icon-briefcase" style="font-size: 18px; color: #333"></i>
+                                </div>
+                            </div>
+                            <!-- /.item-info -->
+                            <div class="item-content">
+                                <div class="box">
+                                    <div class="box-content">
+                                        {{#activityType}}
+                                        {{/activityType}}
+                                        <!--{{#with data}}-->
+                                            <!--<h4 class="item-title">-->
+                                                <!--<span class="spacer"></span>-->
+                                                <!--<a href="/contactable/dcFh6KwmsfmQdjZ3C">-->
+                                                    <!--<strong>-->
+                                                        <!--<span></span>-->
+                                                    <!--</strong>-->
+                                                <!--</a>-->
+                                            <!--</h4>-->
+                                        <!--{{/with}}-->
+                                    </div>
+                                    <!-- /.box-content -->
+                                </div>
+                                <!-- /.box -->
+                            </div>
+                            <!-- /.item-content -->
+                    </div>
+                        <!-- /.item -->
+                    {{/each}}
+                </div>
+                <!--infinite scroll-->
+                <div data-bind="onScrollBottom: $root.showMore"></div>
+                </section>
+                </div><!-- /.box-v-msg-content -->
+            </div>
+        </div>
+    {{/if}}
+</template>
+
+<template name="jobActivityAssignmentsEdit">
+    {{#if employeeChanged}}
+        {{userName userId}} Assigned <a href="/contactables/{{data.employee}}">{{employeeName data.employee}}</a>
+    {{else}}
+        {{userName userId}} Edited the assignment
+    {{/if}}
+</template>
+<template name="jobActivityAssignmentsAdd">
+    {{userName userId}} Assigned <a href="/contactables/{{data.employee}}">{{employeeName data.employee}}</a>
+</template>

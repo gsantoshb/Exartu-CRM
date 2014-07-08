@@ -1,51 +1,77 @@
-Template.addJob.viewModel = function (objname, options) {
-    var self = this;
-    var options = {
-        self: self,
-        entityOptions: options,
-        extendEntity: function (self) {
-
-            _.extend(self.entity(), new koJob());
-            self.industries = LookUps.find({
-                codeType: Enums.lookUpTypes.job.industry.code
-            }).fetch();
-            self.categories = LookUps.find({
-                codeType: Enums.lookUpTypes.job.category.code
-            }).fetch();
-            self.statuses = LookUps.find({
-                codeType: Enums.lookUpTypes.job.status.code
-            }).fetch();
-            self.durations = LookUps.find({
-                codeType: Enums.lookUpTypes.job.duration.code
-            }).fetch();
-            self.canAdd = ko.observable(true);
-            self.filter=function(option){
-                return option._id;
-            }
-            return self;
-        },
-        name: objname,
-        addCallback: function (job) {
-            self.canAdd(false);
-            Meteor.call('addJob', ko.toJS(job), function (err, result) {
-                self.canAdd(true);
-                if (err)
-                    console.log(err);
-                else
-                    $('#addJobModal').modal('hide');
-            });
-
+JobAddController = RouteController.extend({
+    data: function(){
+        Session.set('objType',this.params.objType);
+    },
+    action: function () {
+        if (!this.ready()) {
+            this.render('loadingContactable');
+            return;
         }
+        this.render('addJobPage');
+    },
+  onAfterAction: function() {
+    var title = 'Add ' + Session.get('objType'),
+      description = '';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
+});
+var model;
+var subTypesDep=new Deps.Dependency;
+var createJob= function(objTypeName){
+    var options= Session.get('addOptions');
+    if (options){
+      Session.set('addOptions', undefined);
     }
 
-    helper.addExtend(options);
-
-    return this;
+    model= new dType.objTypeInstance(Session.get('objType'), options);
+    return model
 }
 
-Meteor.methods({
-    addJob: function (job) {
-        job.hierId = Meteor.user().hierId;
-        Jobs.insert(job);
+Template.addJobPage.helpers({
+    model: function(){
+        if (!model){
+            model=createJob(Session.get('objType'));
+        }
+        return model;
+    },
+    subTypeArray: function(){
+        subTypesDep.depend();
+        return model.subTypes;
+    },
+    objTypeName: function(){
+        return Session.get('objType');
     }
-});
+})
+
+Template.addJobPage.events({
+    'click .btn-success': function(){
+        if (!dType.isValid(model)){
+            dType.displayAllMessages(model);
+            return;
+        }
+        var obj=dType.buildAddModel(model)
+        Meteor.call('addJob', obj, function(err, result){
+            if(err){
+                console.dir(err)
+            }else{
+                history.back();
+            }
+        });
+    },
+    'click .goBack': function(){
+        history.back();
+    }
+})
+
+Template.addJobPage.destroyed=function(){
+    model=undefined;
+}

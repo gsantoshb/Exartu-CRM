@@ -1,0 +1,71 @@
+<template name="object_property_single">
+    <span class="prop-input">
+        {{> UI.contentBlock value=property.value}}
+        <span class="text text-danger">{{error}}</span>
+    </span>
+</template>
+
+<template name="object_property_date">
+    <span class="prop-input">
+         {{#if isEditable}}
+            {{> UI.contentBlock value=property.value}}
+            <span class="text text-danger">{{error}}</span>
+        {{else}}
+            {{> UI.elseBlock value=property.value}}
+        {{/if}}
+    </span>
+</template>
+
+<template name="object_property_single_editable">
+    <span class="prop-input">
+        {{#if isEditable}}
+            {{> UI.contentBlock value=property.value}}
+            <span class="text text-danger">{{error}}</span>
+        {{else}}
+            {{> UI.elseBlock value=property.value}}
+        {{/if}}
+    </span>
+</template>
+
+<template name="object_property_lookup">
+    <span class="prop-input">
+        {{#if isEditable}}
+            {{> UI.contentBlock value=property.value options=property.options isSelected=isSelected}}
+            <span class="text text-danger">{{error}}</span>
+        {{else}}
+            {{> UI.elseBlock value=property.value displayName=property.displayName}}
+        {{/if}}
+    </span>
+</template>
+
+<template name="object_property_checkbox">
+    <span class="prop-input">
+        {{> UI.contentBlock value=property.value}}
+        <span class="text text-danger">{{error}}</span>
+    </span>
+</template>
+
+<template name="object_property_multiple">
+    {{#each values}}
+        {{> UI.contentBlock value=.}}
+    {{/each}}
+    <span class="text text-danger">{{error}}</span>
+</template>
+
+<template name="object_property_multiple_editable">
+    {{#each values}}
+    {{> UI.elseBlock value=.}}
+    {{/each}}
+
+    {{#if isEditable}}
+        <div class="input-group">
+            <input type="text " class="form-control" placeholder="Enter tags here...">
+            <span class="input-group-btn ">
+                <button class="btn btn-success " type="button ">
+                    Add
+                </button>
+            </span>
+        </div>
+        <span class="text text-danger">{{error}}</span>
+    {{/if}}
+</template>

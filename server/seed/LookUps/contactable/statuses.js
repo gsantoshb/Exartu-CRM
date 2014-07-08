@@ -14,3 +14,56 @@ _.forEach([
     systemLookUps.push(item);
   }
 );
+
+//employee status
+_.forEach([
+  {
+    displayName:  "Candidates"
+  },
+  {
+    displayName: "Interview"
+  },
+  {
+    displayName: "Offered"
+  },
+  {
+    displayName: "Placed"
+  },
+  {
+    displayName: "Refused"
+  },
+  {
+    displayName: "Rejected"
+  },
+  {
+    displayName: "NA"
+  },{
+    displayName: "Sendout"
+  },
+  {
+    displayName: "Submitted"
+  },
+  {
+    displayName: "WCandidates"
+  },
+  {
+    displayName: "Accepted"
+  },
+  {
+    displayName: "Extend"
+  },
+  {
+    displayName: "Interview1"
+  },
+  {
+    displayName: "Interview2"
+  },
+  {
+    displayName: "Pending"
+  }
+],
+  function (item) {
+    item.codeType = Enums.lookUpTypes.employee.recruiterStatus.code;
+    systemLookUps.push(item);
+  }
+);

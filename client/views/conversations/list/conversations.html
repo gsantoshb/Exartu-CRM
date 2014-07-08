@@ -83,7 +83,7 @@
                             <!-- /.col-sm-8 -->
                             <div class="col-sm-3">
                                 <div class="msg-date">
-                                    <span data-bind="text: moment(createdAt()).format('ll')"></span>
+                                    <span data-bind="text: moment(dateCreated()).format('ll')"></span>
                                 </div>
                             </div>
                         </div>
@@ -96,8 +96,8 @@
                 <div class="v-wrapper">
                     <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                         <i class="icon-mail-2 text-large"></i>
-                        <h1>You currently have no Messages.</h1>
-                        <a href="#" data-bind="click: function () { Composer.showModal('addConversation'); }">New Message</a>
+                        <!--<h1>You currently have no Messages.</h1>-->
+                        <!--<a href="#" data-bind="click: function () { Composer.showModal('addConversation'); }">New Message</a>-->
                     </div><!-- /.v-wrapper-cell -->
                 </div>
             <!--/ko-->

@@ -9,7 +9,13 @@
                 <div class="modal-body">
                     <div>
                         {{#with task}}
-
+                        <fieldset>
+                            <div class="form-group {{hasError 'note'}}">
+                                <label class="control-label">Note:</label>
+                                <input class="form-control note" value="{{note}}"/>
+                                <span>{{error.note}}</span>
+                            </div>
+                        </fieldset>
                             <fieldset>
                                 <div class="form-group begin">
                                     <label class="control-label">Begin:</label>
@@ -22,17 +28,11 @@
                                 <div class="form-group end">
                                     <label class="control-label">End:</label>
                                     <br/>
-                                    {{#dateTimePicker value=end}}
+                                    {{#dateTimePicker }}
                                     {{/dateTimePicker}}
                                 </div>
                             </fieldset>
-                            <fieldset>
-                                <div class="form-group {{hasError 'note'}}">
-                                    <label class="control-label">Note:</label>
-                                    <input class="form-control note" value="{{note}}"/>
-                                    <span>{{error.note}}</span>
-                                </div>
-                            </fieldset>
+
                             <fieldset>
                                 <div class="form-group {{hasError 'assign'}}">
                                     <label class="control-label">Assign:</label>

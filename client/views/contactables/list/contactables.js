@@ -111,6 +111,7 @@ var query = new Utils.ObjectDefinition({
 
 Template.contactablesList.info = function() {
   info.isFiltering.value = Contactables.find().count() != 0;
+  console.dir(info)
   return info;
 };
 
@@ -151,7 +152,7 @@ Template.contactablesList.contactables = function() {
 
   if (query.onlyRecents.value) {
     var dateLimit = new Date();
-    searchQuery.createdAt = {
+    searchQuery.dateCreated = {
         $gte: dateLimit.getTime() - query.selectedLimit.value
     };
   }
@@ -193,7 +194,7 @@ Template.contactables.showMore = function() {
 
 // List search
 
-Template.contactablesListSearch.contactableTypes = function() {
+Template.contactablesList.contactableTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
 };
 

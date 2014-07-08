@@ -2,15 +2,15 @@ seedSystemJobRateTypes = function (){
   var systemJobRateTypes =
     [
       {
-        displayName: 'Regular',
+        displayName: 'RegularTime',
         description: ''
       },
       {
-        displayName: 'Over Time',
+        displayName: 'OverTime',
         description: ''
       },
       {
-        displayName: 'Double Time',
+        displayName: 'DoubleTime',
         description: ''
       }, {
         displayName: 'Salary',

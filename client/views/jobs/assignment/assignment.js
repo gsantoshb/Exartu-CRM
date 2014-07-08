@@ -2,7 +2,7 @@ var self={}
 Utils.reactiveProp(self,'showOld', false);
 
 Template.assignment.helpers({
-  currentAssignment:function(assignment){
+  currentAssignments:function(assignment){
     var job=Jobs.findOne({
       _id: Session.get('entityId')
     });
@@ -27,7 +27,14 @@ Template.assignment.helpers({
 })
 Template.assignment.events({
   'click .editAssign':function () {
-    Composer.showModal( 'assignmentAdd', Session.get('entityId'));
+    var options={};
+    var job=Jobs.findOne({
+      _id: Session.get('entityId')
+    });
+    if(job.assignment){
+      options.assignmentId=job.assignment;
+    }
+    Composer.showModal('assignmentAdd', options);
   },
   'click .showOld': function(){
     self.showOld=! self.showOld;

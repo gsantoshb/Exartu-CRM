@@ -1,22 +1,22 @@
 <template name="contactable">
     <div class="contactable-page-details">
-        <div id="content">
+        <div id="content">{{displayObjType}}
             {{#with contactable}}
                 <div id="breadcrumb" class="breadcrumb-top">
                     <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-                    <a href="#" class="current">Contactables</a>
+                    <a href="#" class="current">{{displayObjType}}</a>
                 </div>
                 <div id="content-header" class="content-header-bottom">
                     <div class="profile-content-header">
-                        {{#if pictureFileId}}
-                            <div class="profile-pic">
-                                <div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">
-                                    <a href="#" id="edit-pic" title="Click to Edit">
-                                        <img class="" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">
-                                    </a>
-                                </div>
-                            </div>
-                        {{/if}}
+                        <!--{{#if pictureFileId}}-->
+                            <!--<div class="profile-pic">-->
+                                <!--<div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">-->
+                                    <!--<a href="#" id="edit-pic" title="Click to Edit">-->
+                                        <!--<img class="" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">-->
+                                    <!--</a>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--{{/if}}-->
                         <input id="edit-picture" style="visibility:hidden; display: none" name="files" type="file" class="fileUploader"/>
 
                         {{#if Customer}}
@@ -56,7 +56,15 @@
                     <div class="row">
                         <!-- Left Column -->
                         <div class="col-sm-8 col-lg-5 contactable-left-col">
-                            {{>customer_tabs contactable=. documentCount=documentCount}}
+                            {{#if Customer}}
+                                {{>customer_tabs contactable=. documentCount=documentCount jobCount=jobCount}}
+                            {{/if}}
+                            {{#if Employee}}
+                                {{>employee_tabs contactable=. documentCount=documentCount}}
+                            {{/if}}
+                            {{#if Contact}}
+                                {{>contact_tabs contactable=. documentCount=documentCount}}
+                            {{/if}}
                         </div>
 
                         <!-- Right Column -->
@@ -80,8 +88,11 @@
                                     <!-- Assignments -->
                                     {{>contactableAssignmentsBox}}
 
-                                    <!--jobs-->
-                                    {{>customerJobs}}
+
+                                    <!--Customer-->
+                                    {{#if Contact}}
+                                        {{>customerInfo customer=Contact.customer path='Contact.customer' collection=ContactablesCollection}}
+                                    {{/if}}
                                 </div><!-- /.col-md-6 -->
                             </div><!-- /.row -->
                         </div><!-- /.contactable-right-col -->
@@ -103,7 +114,7 @@
         <div class="profile-pic">
             <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
                 {{#if person}}
-                    <i class="icon-profile-bussiness-man"></i>
+                    <i class="icon-profile-business-man"></i>
                 {{/if}}
                 {{#if organization}}
                     <i class="icon-buildings-1"></i>
@@ -121,9 +132,9 @@
         {{#if location}}
             <span>{{location.displayName}}</span>
         {{else}}
-            <a class="addLocation" href="#">
-                <em>Click here to add an address </em>
-            </a>
+            <!--<a class="addLocation" href="#">-->
+                <!--<em>Click here to add an address </em>-->
+            <!--</a>-->
         {{/if}}
     </p>
 
@@ -164,21 +175,21 @@
             <small>— {{person.jobTitle}}</small>
         {{/if}}
 
-        {{#if Contact.customerName}}
-            <a class="pull-right" href="/contactable/{{Contact.customer}}">
-                <i class="icon-buildings-1"></i>
-                {{Contact.customerName}}
-            </a>
-        {{else}}
-            <a class="pull-right editCustomer" href="#"> <i class="icon-buildings-1"></i></a>
-        {{/if}}
+        <!--{{#if Contact.customerName}}-->
+            <!--<a class="pull-right" href="/contactable/{{Contact.customer}}">-->
+                <!--<i class="icon-buildings-1"></i>-->
+                <!--{{Contact.customerName}}-->
+            <!--</a>-->
+        <!--{{else}}-->
+            <!--<a class="pull-right editCustomer" href="#"> <i class="icon-buildings-1"></i></a>-->
+        <!--{{/if}}-->
     </h1>
     <p class="profile-address">
         <i class="fa fa-map-marker"></i>
         {{#if location}}
             <span>{{location.displayName}}</span>
         {{else}}
-            <em> Click here to add an address </em>
+            <a class="addLocation" href="#"><em class="text-muted"> Click here to add an address </em></a>
         {{/if}}
     </p>
 
@@ -225,12 +236,14 @@
         {{/if}}
     </h1>
     <p class="profile-address">
-        <i class="fa fa-map-marker"></i>
+
         {{#if location}}
+            <i class="fa fa-map-marker"></i>
             <span>{{location.displayName}}</span>
         {{else}}
-            <em> Click here to add an address </em>
+            <!--<em> Click here to add an address </em>-->
         {{/if}}
+
     </p>
 
     <div class="profile-btns">
@@ -255,6 +268,7 @@
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
         <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.posts.length}}</span></a></li>
         <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>
+        <li><a href="#profile-jobs" data-toggle="tab">Jobs <span class="custom-badge-2">{{jobCount}}</span></a></li>
     </ul>
 
     <div class="tab-content">
@@ -268,6 +282,44 @@
             {{> contactableDocumentsAdd entity=contactable collection="ContactablesFS"}}
             {{> contactableDocumentsList entity=contactable collection="ContactablesFS"}}
         </div><!-- /.profile-documents -->
+        <div class="tab-pane" id="profile-jobs">
+            {{>customerJobs}}
+        </div><!-- /.profile-documents -->
+    </div>
+</template>
+<template name="employee_tabs">
+    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.posts.length}}</span></a></li>
+        <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Notes Tab -->
+        <div class="tab-pane active" id="profile-notes">
+            {{> contactableNotesAdd entity=contactable}}
+            {{> contactableNotesList entity=contactable}}
+        </div>
+        <!-- Documents Tab -->
+        <div class="tab-pane" id="profile-documents">
+            {{> contactableDocumentsAdd entity=contactable collection="ContactablesFS"}}
+            {{> contactableDocumentsList entity=contactable collection="ContactablesFS"}}
+        </div><!-- /.profile-documents -->
+
+
+    </div>
+</template>
+
+<template name="contact_tabs">
+    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.posts.length}}</span></a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Notes Tab -->
+        <div class="tab-pane active" id="profile-notes">
+            {{> contactableNotesAdd entity=contactable}}
+            {{> contactableNotesList entity=contactable}}
+        </div>
     </div>
 </template>
 

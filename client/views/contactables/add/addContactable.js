@@ -1,199 +1,95 @@
-Template.addContactable.viewModel = function (objname, options) {
-    var self = this;
-
-    var myPerson = new koPerson();
-    var myOrg = new koOrganization();
-//    debugger;
-    var options = {
-        self: self,
-        entityOptions: options,
-        extendEntity: function (self) {
-            // Extend contactable with person or organization, this can be changed by the user
-            var geocoder = new google.maps.Geocoder();
-
-            self.locationString = ko.observable();
-            self.findLocation = function () {
-                geocoder.geocode({
-                    address: self.locationString(),
-                }, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        self.location(results[0]);
-                    } else {
-                        self.location(null);
-                    }
-                })
-            };
-            self.location = ko.observable(null);
-            self.selectedType = ko.observable();
-            self.setSelectedType = function (val) {
-                switch (val) {
-                    case Enums.personType.human:
-                        _.extend(self.entity(), {
-                            person: myPerson
-                        });
-                        if (self.entity().organization) {
-                            self.entity().organization = null;
-                        }
-                        break;
-                    case Enums.personType.organization:
-                        _.extend(self.entity(), {
-                            organization: myOrg
-                        });
-                        if (self.entity().person) {
-                            self.entity().person = null;
-                        }
-                        break;
-                }
-            };
-            self.selectedType.subscribe(function (newval) {
-                self.setSelectedType(newval);
-            });
-            //            debugger;
-            self.selectedType(ObjTypes.findOne({
-                objName: self.objTypeName()
-            }).personType);
-            self.canAdd = ko.observable(true);
-            self.filter=function(option){
-                return option._id;
-            }
-
-            return self;
-        },
-        objname: objname,
-        addCallback: function (contactable) {
-            self.canAdd(false);
-            var cont = ko.toJS(contactable);
-            _.each(_.functions(cont),function(funcName){
-                delete cont[funcName];
-            })
-            if (self.location()){
-                cont.location = ko.toJS(self.location);
-                cont.location.coords = helper.getCoords(cont.location);
-            }
-//            debugger
-            Meteor.call('addContactable', cont, function (err, result) {
-                self.canAdd(true);
-                if (err)
-                    console.log(err);
-                else
-                    $('#addContactableModal').modal('hide');
-            });
+ContactableAddController = RouteController.extend({
+//    layoutTemplate: 'addContactablePage',
+    data: function(){
+        Session.set('objType',this.params.objType);
+    },
+    action: function () {
+        if (!this.ready()) {
+            this.render('loadingContactable');
+            return;
         }
-    }
-
-    helper.addExtend(options);
-
-    return self;
-
-    //    var myPerson = new koPerson();
-    //    var myOrg = new koOrganization();
-    //
-    //    var objType = ObjTypes.findOne({
-    //        objName: objname
-    //    });
-    //
-    //    self.objTypeName = objType.objName;
-    //    self.ready = ko.observable(false);
-    //
-    //    // Extend contactable with person or organization, this can be changed by the user
-    //    self.selectedType = ko.observable();
-    //    self.setSelectedType = function (val) {
-    //        switch (val) {
-    //        case Enums.personType.human:
-    //            _.extend(self.contactable(), {
-    //                person: myPerson
-    //            });
-    //            if (self.contactable().organization) {
-    //                self.contactable().organization = null;
-    //            }
-    //            break;
-    //        case Enums.personType.organization:
-    //            _.extend(self.contactable(), {
-    //                organization: myOrg
-    //            });
-    //            if (self.contactable().person) {
-    //                self.contactable().person = null;
-    //            }
-    //            break;
-    //        }
-    //    };
-    //    self.selectedType.subscribe(function (newval) {
-    //        self.setSelectedType(newval);
-    //    });
-    //    self.selectedType(objType.personType);
-    //
-    //    // GENERIC
-    //
-    //    // Extend objType fields with validations
-    //    _.forEach(objType.fields, function (item) {
-    //        _.extend(item, {
-    //            value: ko.observable().extend({
-    //                pattern: {
-    //                    message: 'invalid value',
-    //                    params: item.regex
-    //                }
-    //            })
-    //        });
-    //        if (item.fieldType == Enums.fieldType.lookUp) {
-    //            _.extend(item, {
-    //                value: item.multiple ? ko.observableArray(item.defaultValue) : ko.observable(item.defaultValue),
-    //                options: LookUps.findOne({
-    //                    name: item.lookUpName
-    //                }).items,
-    //            })
-    //        }
-    //    });
-    //
-    //    // Generate observableValidate with objType's fields.
-    //    var entityObj = {};
-    //    entityObj.objFields = ko.observableArray(objType.fields);
-    //    self.entity = ko.validatedObservable(entityObj);
-    //
-    //    // Get objType relations
-    //    self.relations = ko.observableArray([]);
-    //    Meteor.call('getShowInAddRelations', objType.objName, function (err, result) {
-    //        _.each(result, function (r) {
-    //            self.relations.push({
-    //                relation: r,
-    //                data: ko.meteor.find(window[r.target.collection], r.target.query),
-    //                value: ko.observable(null)
-    //            });
-    //        })
-    //
-    //        self.ready(true);
-    //    });
-    //
-    //    self.addContactable = function () {
-    //        if (!self.contactable.isValid()) {
-    //            self.contactable.errors.showAllMessages();
-    //            return;
-    //        };
-    //        var relNames = _.map(self.relations(), function (r) {
-    //            return r.relation.name;
-    //        });
-    //        var relValues = _.map(self.relations(), function (r) {
-    //            if (r.value()) return r.value()._id();
-    //        });
-    //        _.extend(self.contactable(), _.object(relNames, relValues));
-    //
-    //        var fields = self.contactable()[self.objTypeName()]();
-    //        delete self.contactable()[self.objTypeName()];
-    //        self.contactable()[self.objTypeName()] = {};
-    //        _.forEach(fields, function (field) {
-    //            self.contactable()[self.objTypeName()][field.name] = field.value() == null ? field.defaultValue : field.value();
-    //        });
-    //        Meteor.call('addContactable', ko.toJS(self.contactable), function (err, result) {
-    //            console.log(err);
-    //        });
-    //        $('#addContactableModal').modal('hide');
-    //    };
-    //
-    //    return this;
-}
-
-Meteor.methods({
-    addContactable: function (contactable) {
-        contactable.hierId = Meteor.user().hierId;
-        Contactables.insert(contactable);
-    }
+        this.render('addContactablePage');
+    },
+  onAfterAction: function() {
+    var title = 'Add ' + Session.get('objType'),
+      description = '';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
 });
+var contactable;
+var subTypesDep=new Deps.Dependency;
+var createContactable= function(objTypeName, options){
+    var type=dType.core.getObjType(objTypeName)
+    contactable= new dType.objTypeInstance(objTypeName, options);
+    setPersonType(type.defaultPersonType,contactable)
+    return contactable
+}
+var setPersonType= function(personType, contactable){
+    var personModel= new dType.objTypeInstance(personType)
+    contactable.subTypes=contactable.subTypes.filter(function(obj) {
+        return [Enums.personType.human, Enums.personType.organization].indexOf(obj.name) === -1;
+    });
+    contactable.subTypes.unshift(personModel);
+    subTypesDep.changed();
+}
+Template.addContactablePage.helpers({
+    contactable: function(){
+        if (!contactable){
+            var options=Session.get('options');
+            if (options){
+                Session.set('options',undefined);
+            }
+            contactable=createContactable(Session.get('objType'), options);
+        }
+        return contactable;
+    },
+    subTypeArray: function(){
+        subTypesDep.depend();
+        return contactable.subTypes;
+    },
+    objTypeName: function(){
+        return Session.get('objType');
+    },
+    selected:function(personType){
+        subTypesDep.depend();
+        return contactable && contactable.subTypes && !!_.findWhere(contactable.subTypes,{name: personType});
+    }
+})
+
+Template.addContactablePage.events({
+    'change #personType': function(e){
+        setPersonType(e.target.value, contactable)
+    },
+    'click .btn-success': function(){
+
+        if (!dType.isValid(this)){
+            dType.displayAllMessages(this);
+            return;
+        }
+        var cont=dType.buildAddModel(this)
+        Meteor.call('addContactable', cont, function(err, result){
+            if(err){
+                console.dir(err)
+            }else{
+                GAnalytics.event("/contactableAdd", Session.get('objType'));
+                history.back();
+            }
+        });
+    },
+    'click .goBack': function(){
+        history.back();
+    }
+})
+
+Template.addContactablePage.destroyed=function(){
+   contactable=undefined;
+};

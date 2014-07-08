@@ -18,7 +18,7 @@ Template.header.helpers({
             destination: Meteor.userId()
         }, {
             sort: {
-                createdAt: 1
+                dateCreated: 1
             }
         }).count();
     },
@@ -28,7 +28,7 @@ Template.header.helpers({
             destination: Meteor.userId()
         }, {
             sort: {
-                createdAt: 1
+                dateCreated: 1
             },
             limit: 4
         });
@@ -155,7 +155,6 @@ Template.header.rendered = function () {
         init = false;
     }
 }
-
 
 Template.sidebar.waitOn = ['UsersHandler', dType.ObjTypesHandler]
 Template.sidebar.viewModel=function(){

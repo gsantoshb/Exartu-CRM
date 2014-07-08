@@ -387,7 +387,7 @@ var loadContactables = function (hierId) {
                 organizationName: data.name
             },
             Customer: {
-                deparment: data.deparment
+                department: data.department
             },
             location: null,
             hierId: hierId,

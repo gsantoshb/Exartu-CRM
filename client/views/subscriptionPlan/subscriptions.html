@@ -27,7 +27,7 @@
 <template name="freePlanSubscription">
     {{#with plan}}
         <div class="panel panel-success">
-            <div class="panel-heading"><h3 class="text-center">FREE PLAN</h3></div>
+            <div class="panel-heading"><h3 class="text-center">UNSUPPORTED PLAN</h3></div>
             <div class="panel-body text-center">
                 <p class="lead" style="font-size:40px"><strong>FREE</strong></p>
             </div>
@@ -38,11 +38,12 @@
                             <strong> Users </strong>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            {{#if isFree}}
-                                {{usersCount}}/{{usersLimit}}
-                            {{else}}
-                                {{usersLimit}}
-                            {{/if}}
+                            <i class="icon-infinity"></i>
+                            <!--{{#if isFree}}-->
+                                <!--{{usersCount}}/{{usersLimit}}-->
+                            <!--{{else}}-->
+                                <!--{{usersLimit}}-->
+                            <!--{{/if}}-->
                         </div>
                     </div>
                 </li>
@@ -52,11 +53,12 @@
                             <strong> Contactables </strong>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            {{#if isFree}}
-                                {{contactablesCount}}/{{collections.Contactables.limit}}
-                            {{else}}
-                                {{collections.Contactables.limit}}
-                            {{/if}}
+                            <i class="icon-infinity"></i>
+                            <!--{{#if isFree}}-->
+                                <!--{{contactablesCount}}/{{collections.Contactables.limit}}-->
+                            <!--{{else}}-->
+                                <!--{{collections.Contactables.limit}}-->
+                            <!--{{/if}}-->
                         </div>
                     </div>
                 </li>
@@ -66,11 +68,12 @@
                             <strong> Jobs </strong>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            {{#if isFree}}
-                                {{jobsCount}}/{{collections.Jobs.limit}}
-                            {{else}}
-                                {{collections.Jobs.limit}}
-                            {{/if}}
+                            <i class="icon-infinity"></i>
+                            <!--{{#if isFree}}-->
+                                <!--{{jobsCount}}/{{collections.Jobs.limit}}-->
+                            <!--{{else}}-->
+                                <!--{{collections.Jobs.limit}}-->
+                            <!--{{/if}}-->
                         </div>
                     </div>
                 </li>
@@ -80,11 +83,12 @@
                             <strong> Messages </strong>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            {{#if isFree}}
-                                {{messagesCount}}/{{collections.Messages.limit}}
-                            {{else}}
-                                {{collections.Messages.limit}}
-                            {{/if}}
+                            <i class="icon-infinity"></i>
+                            <!--{{#if isFree}}-->
+                                <!--{{messagesCount}}/{{collections.Messages.limit}}-->
+                            <!--{{else}}-->
+                                <!--{{collections.Messages.limit}}-->
+                            <!--{{/if}}-->
                         </div>
                     </div>
                 </li>
@@ -94,11 +98,12 @@
                             <strong> Documents </strong>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            {{#if isFree}}
-                                {{getPercentageStorageUsed}}% ({{storageUsed}}/{{storageLimit}} MB)
-                            {{else}}
-                                {{storageLimit}}
-                            {{/if}}
+                            <i class="icon-infinity"></i>
+                            <!--{{#if isFree}}-->
+                                <!--{{getPercentageStorageUsed}}% ({{storageUsed}}/{{storageLimit}} MB)-->
+                            <!--{{else}}-->
+                                <!--{{storageLimit}}-->
+                            <!--{{/if}}-->
                         </div>
                     </div>
                 </li>
@@ -108,7 +113,11 @@
                             <strong> Tasks </strong>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            <i class="icon-cross-1"></i>
+                            {{#if isFree}}
+                                {{tasksCount}}/{{collections.Tasks.limit}}
+                            {{else}}
+                                {{collections.Tasks.limit}}
+                            {{/if}}
                         </div>
                     </div>
                 </li>
@@ -118,7 +127,8 @@
                             <strong> Resume parser </strong>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            <i class="icon-cross-1"></i>
+                            <i class="icon-check-1"></i>
+                            <!--<i class="icon-cross-1"></i>-->
                         </div>
                     </div>
                 </li>
@@ -127,6 +137,7 @@
                 {{#if isFree}}
                     {{> currentSubscription}}
                 {{/if}}
+
             </div>
         </div>
     {{/with}}
@@ -136,7 +147,7 @@
     <div class="panel panel-info">
         <div class="panel-heading"><h3 class="text-center">BASIC PLAN</h3></div>
         <div class="panel-body text-center">
-            <p class="lead" style="font-size:40px"><strong>$29 / month</strong></p>
+                <p class="lead" style="font-size:40px"><strong>$ {{price}} / month</strong></p>
         </div>
         <ul class="list-group list-group-flush text-center">
             <li class="list-group-item"><i class="icon-ok text-danger"></i>
@@ -235,7 +246,7 @@
 <template name="enterprisePlanSubscription">
     {{#with plan}}
         <div class="panel panel-info">
-            <div class="panel-heading"><h3 class="text-center">ENTERPRISE PLAN</h3></div>
+            <div class="panel-heading"><h3 class="text-center">SUPPORTED PLAN</h3></div>
             <div class="panel-body text-center">
                 <p class="lead" style="font-size:40px"><strong>$49 / month</strong></p>
             </div>
@@ -286,11 +297,12 @@
                             <strong> Documents </strong>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            {{#if isEnterprise}}
-                            {{getPercentageStorageUsed}}% ({{storageUsed}}/{{storageLimit}} MB)
-                            {{else}}
-                            {{storageLimit}} MB
-                            {{/if}}
+                            <i class="icon-infinity"></i>
+                            <!--{{#if isEnterprise}}-->
+                            <!--{{getPercentageStorageUsed}}% ({{storageUsed}}/{{storageLimit}} MB)-->
+                            <!--{{else}}-->
+                            <!--{{storageLimit}} MB-->
+                            <!--{{/if}}-->
                         </div>
                     </div>
                 </li>
@@ -300,12 +312,13 @@
                             <strong> Tasks </strong>
                         </div>
                         <div class="col-lg-6 col-md-6">
-                            {{#if isEnterprise}}
-                                {{tasksCount}}/{{collections.Tasks.limit}}
-                            {{else}}
-                                {{collections.Tasks.limit}}
-                            {{/if}}
-                            per month
+                            <i class="icon-infinity"></i>
+                            <!--{{#if isEnterprise}}-->
+                                <!--{{tasksCount}}/{{collections.Tasks.limit}}-->
+                            <!--{{else}}-->
+                                <!--{{collections.Tasks.limit}}-->
+                            <!--{{/if}}-->
+                            <!--per month-->
                         </div>
                     </div>
                 </li>
