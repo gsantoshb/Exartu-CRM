@@ -81,10 +81,9 @@ Template.lookUpsManagement.items = function() {
       transform: function(item) {
         Utils.reactiveProp(item,'editMode',false)
         item.errMsg = '';
-
-
         return item;
-      }
+      },
+      sort: {displayName: 1}
     }
   );
 };
