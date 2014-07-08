@@ -105,7 +105,7 @@
                                                 <div class="form-group  {{hasError}}">
                                                     <select class="form-control input-lg">
                                                         {{#each options}}
-                                                            <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
+                                                            <option value="{{_id}}" selected="{{isSelected _id ../value}}">{{displayName}}</option>
                                                         {{/each}}
                                                     </select>
                                                     <span>{{error}}</span>
@@ -123,7 +123,7 @@
                                                 <div class="form-group  {{hasError}}">
                                                     <select class="form-control input-lg">
                                                         {{#each options}}
-                                                        <option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>
+                                                    <option value="{{_id}}" selected="{{isSelected _id ../value}}">{{displayName}}</option>
                                                         {{/each}}
                                                     </select>
                                                     <span>{{error}}</span>

@@ -148,6 +148,9 @@ Template.job.helpers({
     noteCount: function() {
         return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }}).count();
     },
+ isSelected:function(optionValue, currentValue){
+      return optionValue == currentValue;
+    }
 
 })
 Template.job.events({
@@ -193,7 +196,7 @@ Template.job.events({
     },
     'click .remove-tag': function() {
       job.tags.remove(this.value);
-    },
+    }
 })
 
 
