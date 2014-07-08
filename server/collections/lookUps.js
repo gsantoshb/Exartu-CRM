@@ -4,7 +4,7 @@ Meteor.publish('lookUps', function () {
   if(!user)
     return false;
 
-   return LookUps.find({hierId: user.hierId});
+   return LookUps.find({hierId: user.hierId},{sort: {displayName: 1}});
 });
 
 LookUps.allow({
