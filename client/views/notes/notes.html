@@ -4,17 +4,57 @@
         <div class="box-5">
             <div class="add-note-form">
                 <textarea id="note-input" class="form-control add-note-txt input-lg" rows="3" placeholder="Add note here..."></textarea>
-                <button class="btn btn-primary pull-right add-note-btn" style="display:none;">Add Note</button>
+                <button class="btn btn-primary pull-right add-note-btn">Add Note</button>
                 <span id="add-note-feedback" class="label label-danger"></span>
+                <div style="margin: 5px;">
+                    <a data-toggle="collapse" href="#links"> <span style="color: gray;text-decoration: underline;cursor: pointer;" >Link to note</span></a>
+                </div>
+                <div id="links" class="panel-collapse collapse">
+                    <div style="padding: 11px 0px;">
+                        {{#each linkedEntities}}
+                            {{#with getEntity .}}
+                                <button type="button" class="tag btn btn-xs btn-primary">
+                                    <span>
+                                        {{displayName}}
+                                    </span>
+                                    <i class="remove-link fa fa-times"></i>
+                                </button>
+                            {{/with}}
+                        {{/each}}
+                    </div>
+                    <div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <select class="form-control" id="typeSelect" title="Select the type of entity that you want to link to the note">
+                                    <option value="">--type--</option>
+                                    {{#each types}}
+                                    <option value="{{value}}">{{displayName}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <select class="form-control" id="entitySelect" title="Select the entity that you want to link">
+                                    <option value="">--select--</option>
+                                    {{#each entities}}
+                                    <option value="{{_id}}">{{displayName}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button id="linkEntity" class="btn btn-sm btn-primary">Link</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div><!-- /.tab-pane-box -->
     </div><!-- /#note -->
 </template>
 
 <template name="contactableNotesList">
-    <h3>Notes <small>— {{notesCounts}}</small></h3>
+
     <ul class="list-2">
-        {{#each notes}}
+        {{#each getNotes}}
         <li>
             <div class="row">
                 <div class="col-sm-3">
@@ -31,6 +71,17 @@
                 <div class="col-sm-9">
                     <p class="note-title">{{content}}</p>
                 </div>
+                <div>
+                    {{#each links}}
+                        <a href="{{getUrl .}}">
+                            {{#with getEntity .}}
+                                    <span class="badge badge-primary">{{displayName}}</span>
+                            {{/with}}
+                        </a>
+                    {{/each}}
+                </div>
+
+
             </div>
             <!-- /.row -->
         </li>

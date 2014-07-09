@@ -57,13 +57,13 @@
                         <!-- Left Column -->
                         <div class="col-sm-8 col-lg-5 contactable-left-col">
                             {{#if Customer}}
-                                {{>customer_tabs contactable=. documentCount=documentCount jobCount=jobCount}}
+                                {{>customer_tabs contactable=. documentCount=documentCount jobCount=jobCount noteCount=noteCount}}
                             {{/if}}
                             {{#if Employee}}
-                                {{>employee_tabs contactable=. documentCount=documentCount}}
+                                {{>employee_tabs contactable=. documentCount=documentCount jobCount=jobCount noteCount=noteCount}}
                             {{/if}}
                             {{#if Contact}}
-                                {{>contact_tabs contactable=. documentCount=documentCount}}
+                                {{>contact_tabs contactable=. documentCount=documentCount noteCount=noteCount}}
                             {{/if}}
                         </div>
 
@@ -266,7 +266,7 @@
 
 <template name="customer_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.notes.length}}</span></a></li>
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
         <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>
         <li><a href="#profile-jobs" data-toggle="tab">Jobs <span class="custom-badge-2">{{jobCount}}</span></a></li>
     </ul>
@@ -274,7 +274,7 @@
     <div class="tab-content">
         <!-- Notes Tab -->
         <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=contactable}}
+            {{> contactableNotesAdd entity=contactable type=getLinkType}}
             {{> contactableNotesList entity=contactable}}
         </div>
         <!-- Documents Tab -->
@@ -289,14 +289,14 @@
 </template>
 <template name="employee_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.notes.length}}</span></a></li>
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
         <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>
     </ul>
 
     <div class="tab-content">
         <!-- Notes Tab -->
         <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=contactable}}
+            {{> contactableNotesAdd entity=contactable type=getLinkType}}
             {{> contactableNotesList entity=contactable}}
         </div>
         <!-- Documents Tab -->
@@ -311,13 +311,13 @@
 
 <template name="contact_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.notes.length}}</span></a></li>
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
     </ul>
 
     <div class="tab-content">
         <!-- Notes Tab -->
         <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=contactable}}
+            {{> contactableNotesAdd entity=contactable type=getLinkType}}
             {{> contactableNotesList entity=contactable}}
         </div>
     </div>

@@ -1,6 +1,12 @@
 UI.registerHelper('objectProperty', function() {
   var self = this;
   var template = {};
+
+  if (self.property==null)
+    {
+        console.log('unknown object passed to registerHelper.  did you spell the field name correctly',self);
+        return null;
+    }
   switch(self.property.type) {
     case Utils.ReactivePropertyTypes.array:
       template = Template.object_property_multiple;
