@@ -170,11 +170,18 @@ Router.map(function () {
     path: '/doccenter/filler/:_id',
     controller: 'FillerController'
   });
-  DocCenterController = DocCenter.DocCenterController;
-  this.route('docCenter', {
-    path: '/doccenter/documents',
-    controller: 'DocCenterController'
-  })
+});
+
+DocCenterController = DocCenter.DocCenterController;
+Meteor.call('isSystemHier', function(err, result) {
+  if (result) {
+    Router.route('docCenter', {
+      where: 'client',
+      path: '/doccenter/documents',
+      controller: 'DocCenterController'
+    });
+    Router.go('docCenter');
+  }
 });
 
 // handler for testing loading pages
