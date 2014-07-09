@@ -28,11 +28,7 @@ var send = function (to, from, subject, content, isHTML) {
     Email.send(email);
 };
 
-//var sendInvitation = function () {
-//
-//}
-//var sendNotification = function () {}
-//var sendActivation = function () {}
+
 
 Meteor.methods({
     sendEmail: function (to, subject, content, isHTML) {
@@ -45,4 +41,8 @@ Meteor.methods({
             subject = '';
         send(to, from, subject, content, isHTML);
     }
+
+
 })
+
+
