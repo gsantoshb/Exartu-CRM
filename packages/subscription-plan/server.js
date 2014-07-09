@@ -43,13 +43,13 @@ Meteor.startup(function() {
   };
 
   // Users restrictions
-  Meteor.users.before.insert(function() {
-    if (!Meteor.user())
-      return;
-    var plan = SubscriptionPlan.getUserPlan();
-    if (plan.usersLimit && Meteor.users.find({hierId: Meteor.user().hierId}).count() >= plan.usersLimit)
-      throw new Meteor.Error(500, 'Limit users reached');
-  });
+//  Meteor.users.before.insert(function() {
+//    if (!Meteor.user())
+//      return;
+//    var plan = SubscriptionPlan.getUserPlan();
+//    if (plan.usersLimit && Meteor.users.find({hierId: Meteor.user().hierId}).count() >= plan.usersLimit)
+//      throw new Meteor.Error(500, 'Limit users reached');
+//  });
 
   // Collection's restrictions
   _.forEach(_.keys(Collections), function(collectionName) {
