@@ -6,21 +6,14 @@ var linkedDep= new Deps.Dependency();
 
 //<editor-fold desc="helper functions">
 var getEntity= function(link){
-  switch (link.type){
-    case Enums.linkTypes.contactable.value:
-      return Contactables.findOne({_id: link.id});
-    case Enums.linkTypes.job.value:
-      return Jobs.findOne({_id: link.id});
-    case Enums.linkTypes.deal.value:
-          return Deals.findOne({_id: link.id});
-  }
+  return Utils.getEntityFromLink(link);
 }
 var link=function(link){
   if (_.findWhere(newNoteLinks,{
     id: link.id
   }))
     return;
-
+    console.log('pushlink',link);
   newNoteLinks.push(link);
 }
 
@@ -72,16 +65,7 @@ Template.contactableNotesAdd.helpers({
     typeDep.depend();
     var selectedType= $('#typeSelect').val();
     selectedType=parseInt(selectedType);
-    switch (selectedType){
-      case Enums.linkTypes.contactable.value:
-        return Contactables.find();
-      case Enums.linkTypes.job.value:
-        return Jobs.find();
-        case Enums.linkTypes.deal.value:
-            return Deals.find();
-      default :
-        return [];
-    }
+    return Utils.getEntitiesFromType(selectedType);
   },
   linkedEntities: function(){
     linkedDep.depend();
@@ -103,7 +87,7 @@ Template.contactableNotesAdd.events({
         $('#add-note-feedback').text("Please enter a note");
         return;
       }
-      console.log(Session.get('entityId'));
+
       Meteor.call('addContactableNote', Session.get('entityId'), {
         content: e.currentTarget.value
       }, function (err, result) {
@@ -145,14 +129,7 @@ Template.contactableNotesList.notesCounts = function() {
 }
 Template.contactableNotesList.getEntity = getEntity;
 Template.contactableNotesList.getUrl = function(link){
-  switch (link.type){
-    case Enums.linkTypes.contactable.value:
-      return '/contactable/'+ link.id;
-    case Enums.linkTypes.job.value:
-      return '/job/'+ link.id;
-    case Enums.linkTypes.deal.value:
-      return '/deal/'+ link.id;
-  }
+    return Utils.getHrefFromLink(link);
 };
 
 

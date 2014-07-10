@@ -9,7 +9,7 @@ _.forEach([
     displayName: 'Inactive', type:'Inactive'
   },
   {
-    displayName: 'Active', type:'Active'
+    displayName: 'Active', type:'Active',isDefault: true
   }
 ],
   function (item) {

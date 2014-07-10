@@ -240,13 +240,57 @@ Utils.getLocation = function (googleLocation) {
   }
 }
 
+Utils.getLinkTypeFromEntity=function(entity) {
+    var objNameArray=entity.objNameArray;
+    if (objNameArray && objNameArray.length>0)
+        return entity.objNameArray(objNameArray.length-1);
+    return null;
+}
+
+Utils.getHrefFromEntity=function(entity)
+{
+    console.log('gethref',entity);
+    var linktype=Utils.getLinkTypeFromEntity(entity);
+    if (linkType)
+    {
+        var link={};
+        link.type=linkType;
+        link.id=entity._id;
+        return Utils.getHrefFromLink(link);
+
+    }
+    return null;
+}
 Utils.getEntityFromLink=function(link){
   switch (link.type){
     case Enums.linkTypes.contactable.value:
       return Contactables.findOne({_id: link.id});
     case Enums.linkTypes.job.value:
       return Jobs.findOne({_id: link.id});
+    case Enums.linkTypes.deal.value:
+          return Deals.findOne({_id: link.id});
+      case Enums.linkTypes.assignment.value:
+          return Assignments.findOne({_id: link.id});
+      case Enums.linkTypes.candidate.value:
+          return Candidates.findOne({_id: link.id});
   }
+}
+
+Utils.getEntitiesFromType=function(type){
+    switch (type) {
+        case Enums.linkTypes.contactable.value:
+            return Contactables.find();
+        case Enums.linkTypes.job.value:
+            return Jobs.find();
+        case Enums.linkTypes.deal.value:
+            return Deals.find();
+        case Enums.linkTypes.assignment.value:
+            return Assignments.find();
+        case Enums.linkTypes.candidate.value:
+            return Candidates.find();
+        default :
+        return [];
+    }
 }
 
 Utils.getHrefFromLink=function(link){
@@ -255,6 +299,12 @@ Utils.getHrefFromLink=function(link){
       return '/contactable/'+ link.id;
     case Enums.linkTypes.job.value:
       return '/job/'+ link.id;
+      case Enums.linkTypes.deal.value:
+          return '/deal/'+ link.id;
+      case Enums.linkTypes.assignment.value:
+          return '/assignment/'+ link.id;
+      case Enums.linkTypes.candidate.value:
+          return '/candidate/'+ link.id;
   }
 };
 

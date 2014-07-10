@@ -96,14 +96,15 @@
                         </tbody>
                     </table>
                     Description:
-                    {{#objectProperty property=description editable=editMode}}
+                    {{#objectProperty property=dealDescription editable=editMode}}
+
                     {{#htmlEditor}}
                     {{/htmlEditor}}
                     {{else}}
                     {{>dealDescription}}
 
                     {{/objectProperty}}
-                     /.description
+                    <!-- /.description -->
                 </div>
                 <!-- /.box-content-lg-->
                 {{#if editMode}}
@@ -143,7 +144,7 @@
 </template>
 
 <template name="dealDescription">
-    <div id="description" class="deal-description">
+    <div id="dealDescription" class="job-description">
         <div class="text">
             {{#showAsHTML value=value}}
             {{/showAsHTML}}

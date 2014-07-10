@@ -1,10 +1,10 @@
 var contactable = {};
 var self={};
 Utils.reactiveProp(self, 'editMode', false);
-Template.contactableTagsBox.created=function(){
+Template.tagsBox.created=function(){
   self.editMode=false;
 }
-Template.contactableTagsBox.tags = function() {
+Template.tagsBox.tags = function() {
   contactable = new Utils.ObjectDefinition({
     reactiveProps: {
       tags: {
@@ -26,19 +26,19 @@ Template.contactableTagsBox.tags = function() {
   return contactable.tags;
 };
 
-Template.contactableTagsBox.editMode = function() {
+Template.tagsBox.editMode = function() {
   return self.editMode;
 };
 
-Template.contactableTagsBox.editModeColor = function() {
+Template.tagsBox.editModeColor = function() {
   return self.editMode? '#008DFC' : '';
 }
 
-Template.contactableTagsBox.hasTags = function() {
+Template.tagsBox.hasTags = function() {
   return _.isArray(this.tags);
 };
 
-Template.contactableTagsBox.isEmptyTags = function() {
+Template.tagsBox.isEmptyTags = function() {
   return _.isEmpty(contactable.tags.value);
 };
 
@@ -56,7 +56,7 @@ var addTag = function() {
   inputTag.focus();
 }
 
-Template.contactableTagsBox.events = {
+Template.tagsBox.events = {
   'click .add-tag': function() {
     addTag();
   },

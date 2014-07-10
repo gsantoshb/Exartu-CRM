@@ -58,6 +58,17 @@ Meteor.startup(function () {
                 }
             });
         },
+        removeDealTag: function (dealId, tag) {
+            // TODO: validations
+
+            Deals.update({
+                _id: dealId
+            }, {
+                $pull: {
+                    "tags": tag
+                }
+            });
+        },
         addDealNote: function (dealId, note) {
             // TODO: validations
             note.userId = Meteor.userId();

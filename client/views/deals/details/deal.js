@@ -133,6 +133,9 @@ Template.deal.helpers({
     noteCount: function() {
         return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }}).count();
     },
+    isSelected:function(optionValue, currentValue){
+        return optionValue == currentValue;
+    }
 
 })
 Template.deal.events({

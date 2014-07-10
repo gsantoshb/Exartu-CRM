@@ -1,6 +1,6 @@
 _.forEach([
   {
-    displayName: 'One-Time', recurring: false
+    displayName: 'One-Time', recurring: false,isDefault: true
   },
   {
     displayName: 'Weekly', recurring: true
