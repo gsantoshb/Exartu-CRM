@@ -1,6 +1,31 @@
 if (!dType){
     dType={};
 }
+
+var updateOtherSide=function(doc, obj, myVisibility, oppositeVisibility){
+  var collection= dType.core.getCollection(myVisibility.collection);
+  var update=  getUpdate(doc, oppositeVisibility, myVisibility.target);
+  var targetId= getTargetId(obj, myVisibility);
+
+  if (!_.isArray(targetId)){
+    collection.direct.update({ _id: targetId }, update, {},function(err, result){
+      if (err){
+        throw err
+      }else{
+        console.log(result);
+      }
+    })
+  }
+  if (_.isArray(targetId) && targetId.length > 0){
+    collection.direct.update({ _id: {$in:targetId } }, update, {}, function(err, result){
+      if (err){
+        throw err
+      }else{
+        console.log(result);
+      }
+    })
+  }
+}
 dType.updater={
     afterInsert:function(userId, doc){
         var types= dType.core.getObjTypes(doc);
@@ -12,19 +37,7 @@ dType.updater={
                 var oppositeVisibility= dType.core.getRelationOppositeVisivilityOnType(type, relation);
                 var myVisibility= dType.core.getRelationVisivilityOnType(type, relation);
                 if (oppositeVisibility){
-                    var collection= dType.core.getCollection(myVisibility.collection);
-                    var update=  getUpdate(doc, oppositeVisibility, myVisibility.target);
-                    var targetId= getTargetId(obj, myVisibility);
-
-                    if (targetId){
-                        collection.direct.update()({ _id: targetId }, update,function(err, result){
-                            if (err){
-                                throw err
-                            }else{
-                                console.log(result);
-                            }
-                        })
-                    }
+                  updateOtherSide(doc, obj, myVisibility, oppositeVisibility)
                 }
             })
         })
@@ -45,19 +58,7 @@ dType.updater={
           var myVisibility= dType.core.getRelationVisivilityOnType(type, relation);
           if (oldObj[myVisibility.name] !=  obj[myVisibility.name]){
             if (oppositeVisibility){
-              var collection= dType.core.getCollection(myVisibility.collection);
-              var update=  getUpdate(doc, oppositeVisibility, myVisibility.target);
-              var targetId= getTargetId(obj, myVisibility);
-
-              if (targetId){
-                collection.direct.update()({ _id: targetId }, update,function(err, result){
-                  if (err){
-                    throw err
-                  }else{
-                    console.log(result);
-                  }
-                })
-              }
+              updateOtherSide(doc, obj, myVisibility, oppositeVisibility)
 
               //update old
 
