@@ -56,12 +56,32 @@
 
                             <td>
                                 <i class="fa fa-info-circle"></i>&nbsp;Status:
-
                                 {{#objectProperty property=dealStatus editable=editMode}}
                                 <div class="form-group  {{hasError}}">
                                     <select class="form-control input-lg">
                                         {{#each options}}
-                                            <option value="{{_id}}" selected="{{isSelected _id}}" disabled="{{inactive}}">{{displayName}}</option>
+                                            <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
+                                        {{/each}}
+                                    </select>
+                                    <span>{{error}}</span>
+                                </div><!-- /.form-group -->
+                                {{else}}
+                                <strong>
+                                    <strong>{{displayName}}</strong>
+                                </strong>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td>
+                                <i class="fa fa-info-circle"></i>&nbsp;Revenue Frequency:
+
+                                {{#objectProperty property=dealRevenueFrequency editable=editMode}}
+                                <div class="form-group  {{hasError}}">
+                                    <select class="form-control input-lg">
+                                        {{#each options}}
+                                        <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
                                         {{/each}}
                                     </select>
                                     <span>{{error}}</span>

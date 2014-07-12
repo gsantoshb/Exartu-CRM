@@ -64,17 +64,26 @@ Template.deals.viewModel = function () {
       name: 'dealStatus'
       , title: 'Statuses',
       fieldName: 'status'
-    },
+    }
 
     ];
-
+    console.log(Enums.dealStatus,Enums.dealRevenueFrequency,'deal enums');
     self.status=[]
-    _.each(_.keys(Enums.dealStatus),function(key){
+    _.each(_.keys(Enums.dealStatus),function(key){            console.log('status',key);
         self.status.push({
             displayName: Enums.dealStatus[key],
             isSelected: ko.observable(false),
         })
     })
+
+    self.dealRevenueFrequency=[]
+    _.each(_.keys(Enums.dealRevenueFrequency),function(key){
+        self.dealRevenueFrequency.push({
+            displayName: Enums.dealRevenueFrequency[key],
+            isSelected: ko.observable(false),
+        })
+    })
+    console.log(self.dealRevenueFrequency,'freq');
 
     self.selectStatus=function(item){
         item.isSelected(!item.isSelected());

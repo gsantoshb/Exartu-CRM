@@ -77,18 +77,18 @@ Template.emailAccountTemplate.events = {
         }
        isCreatingAccount = true;
        isCreatingAccountDependency.changed();
-        Meteor.call('upsertEmailAccount',emailAccount.getObject(), function(err,res) {
-            isCreatingAccount= false;
-            isCreatingAccountDependency.changed();
-            if (err) {
-                emailAccount.errorMessage.value = err.reason;
-                emailAccount.successMessage.value = '';
-            }
-            else {
-                emailAccount.errorMessage.value = '';
-                emailAccount.successMessage.value = 'Information saved';
-            }
-        });
+//        Meteor.call('upsertEmailAccount',emailAccount.getObject(), function(err,res) {
+//            isCreatingAccount= false;
+//            isCreatingAccountDependency.changed();
+//            if (err) {
+//                emailAccount.errorMessage.value = err.reason;
+//                emailAccount.successMessage.value = '';
+//            }
+//            else {
+//                emailAccount.errorMessage.value = '';
+//                emailAccount.successMessage.value = 'Information saved';
+//            }
+//        });
 
 
 

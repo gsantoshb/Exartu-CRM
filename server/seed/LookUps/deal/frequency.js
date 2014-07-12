@@ -8,6 +8,11 @@ _.forEach([
   {
     displayName: 'Monthly', recurring: true
   },
+
+  {
+            displayName: 'Quarterly', recurring: true
+   },
+
   {
     displayName: 'Yearly', recurring: true
   }

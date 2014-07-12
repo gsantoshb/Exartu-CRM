@@ -104,6 +104,7 @@ Template.deal.created=function(){
     self.editMode=false;
 }
 
+
 Template.deal.helpers({
     deal: function(){
         var originalDeal=Deals.findOne({ _id: Session.get('entityId') });
