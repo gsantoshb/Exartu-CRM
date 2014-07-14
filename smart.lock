@@ -55,8 +55,8 @@
       },
       "collectionFS": {
         "git": "https://github.com/CollectionFS/Meteor-CollectionFS.git",
-        "tag": "v0.4.8",
-        "commit": "fea890b1e27799ccc9f71046748fb23a84330a16"
+        "branch": "devel",
+        "commit": "a85455242ccd57b48f839ab8165c62c4481cf351"
       },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
