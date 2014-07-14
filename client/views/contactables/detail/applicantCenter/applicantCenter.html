@@ -1,0 +1,84 @@
+<template name="applicantCenter">
+    {{#if isInvited}}
+        {{#if isRegistered}}
+            <h3>Documents</h3>
+            <hr>
+            <ul class="list-3 stripped has-thumb">
+                {{#each documents}}
+                    <li class="list-3-item">
+                        <div class="list-thumb"><i class="icon-document-1"></i></div>
+                        <div class="list-3-content list-magic">
+                            <div class="list-3-content-wrap">
+                                <div class="list-3-actions">
+                                    {{#with currentRevisionInstance}}<a href="/doccenter/filler/{{_id}}"> Review </a> {{/with}}
+                                    <span class="bullet-spacer">·</span>
+                                    <a class="send-document" hef="#">{{#if currentRevisionInstance}} Resend {{else}} Send {{/if}}</a>
+                                </div>
+                                <div class="list-3-item-meta-top">Document</div>
+                                <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
+                                <small>
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#{{_id}}">
+                                        Show all instances
+                                    </a>
+                                </small>
+                                <div id="{{_id}}" class="panel-collapse collapse ">
+                                    {{#each instances}}
+                                    <p style="font-size: 12px; color: #999; line-height: 24px; margin: 0;">
+                                        {{#formattedDate value=createdAt}}
+                                            Sent on <strong>{{date}}</strong>
+                                        {{/formattedDate}}
+                                        <a href="/doccenter/filler/{{_id}}" class="pull-right">
+                                            check
+                                        </a>
+                                    </p>
+                                    {{/each}}
+                                </div>
+                            </div><!-- /.list-3-content-wrap -->
+
+                        </div>
+                    </li>
+                {{else}}
+                    <div class="box-v-msg">
+                        <div class="box-v-msg-content">
+                            <br>
+                            <i class="icon-document-box-3"></i>
+                            <p>No documents sent to this employee</p>
+                        </div><!-- /.box-v-msg-content -->
+                    </div>
+                {{/each}}
+            </ul>
+        {{else}}
+            <div class="box-v-msg">
+                <div class="box-v-msg-content">
+                    <i class="icon-document-box-3"></i>
+                    <p>The employee has already been invited, but he has not registered yet<br>
+                        <strong href="#">Yoy can send him another invitation</strong>
+                    </p>
+                    <div class="input-group">
+                        <span class="input-group-addon">To</span>
+                        <input class="email form-control" value="{{email}}" placeholder="Enter an email...">
+                                <span class="input-group-btn">
+                                    <button class="invite btn btn-info">Send</button>
+                                </span>
+                    </div>
+                </div><!-- /.box-v-msg-content -->
+            </div>
+        {{/if}}
+    {{else}}
+        <div class="box-v-msg">
+            <div class="box-v-msg-content">
+                <i class="icon-document-box-3"></i>
+                <p>The employee has NOT been invited yet<br>
+                    <strong href="#">Yoy can send him an invitation</strong>
+                </p>
+                <div class="input-group">
+                    <span class="input-group-addon">To</span>
+                    <input class="email form-control" value="{{email}}" placeholder="Enter an email...">
+                        <span class="input-group-btn">
+                            <button class="invite btn btn-info">Send</button>
+                        </span>
+                </div>
+            </div><!-- /.box-v-msg-content -->
+        </div>
+    {{/if}}
+</template>
