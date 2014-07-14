@@ -203,6 +203,15 @@
                     <span>Tasks</span>
                 </a>
             </li>
+
+            {{#if isAdmin}}
+                <li class="tasks" data-bind="css:{active: activeRoute() == 'docCenter'}">
+                    <a href="/doccenter/documents">
+                        <i class="icon icon-files-6"></i>
+                        <span>DocCenter</span>
+                    </a>
+                </li>
+            {{/if}}
             <!--
 	<li class="assignments">
 	<a href="assignments.html">
