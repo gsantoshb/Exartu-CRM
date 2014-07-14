@@ -1,0 +1,102 @@
+<template name="docCenterDocuments">
+    <div id="content">
+        <div id="content-header" class="mini">
+            <h1>
+                Documents
+            </h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="#" title="Go to Home" class="tip-bottom">DocCenter</a>
+            <a href="#" class="current">Documents</a>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 col-lg-8">
+                    {{> docCenterDocumentList }}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="docCenterDocumentList">
+    <div>
+        {{> docCenterDocumentsListSearch }}
+        {{#each documents}}
+            {{> docCenterDocumentsListItem }}
+        {{/each}}
+    </div>
+</template>
+
+<template name="docCenterDocumentsListItem">
+    <div class="table-item magic">
+        <div class="row ">
+            <div class="col-sm-4">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container">
+                        <div class="table-item-title">
+                            <a href="/doccenter/designer/{{_id}}">{{name}}</a>
+                            <br/>
+                        </div>
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-3 -->
+            <div class="col-sm-6">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container text-muted">
+                        <a href="/doccenter/designer/{{_id}}"> {{description}} </a>
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-4 -->
+            <div class="col-sm-2">
+                <div class="table-item-cell">
+                    <a href="/doccenter/designer/{{_id}}" class="btn btn-success"> Edit </a>
+                    <!--<a class="btn btn-success" href="/doccenter/filler/{{_id}}"> filler </a>-->
+                    <div class="table-item-cell-container date">
+                        {{#formatted_date date=createdAt format='fromNow'}}
+                            <span>{{value}}</span><br>
+                        {{/formatted_date}}
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-3 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.table-item -->
+</template>
+
+<template name="docCenterDocumentsListSearch">
+    <div class="actions-head">
+        <div class="row">
+            <div class="col-sm-8 col-md-12 col-lg-8">
+                <!-- Single button -->
+                <div class="pull-left suffix-5">
+                    <a href="/doccenter/documents/add" class="btn btn-success">
+                        <span class="fa fa-plus"></span> Create document
+                    </a>
+                </div>
+                <!--<div class="input-group">-->
+                    <!--<input type="text" class="form-control" placeholder="" value="{{value}}">-->
+                    <!--&lt;!&ndash;{{#objectProperty property=searchString}}&ndash;&gt;-->
+                        <!--&lt;!&ndash;<input type="text" class="form-control" placeholder="" value="{{value}}">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{/objectProperty}}&ndash;&gt;-->
+                    <!--<span class="input-group-btn">-->
+                        <!--<button class="btn btn-primary" type="button">-->
+                            <!--<i class="fa fa-search"></i> Search-->
+                        <!--</button>-->
+                    <!--</span>-->
+                <!--</div>-->
+            </div><!-- /.col-lg-5 -->
+        </div><!-- /.row -->
+    </div>
+</template>
