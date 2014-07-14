@@ -41,7 +41,7 @@ Template.header.helpers({
     }
 });
 Template.header.events({
-    'click #logout': function(){
+    'click #signout': function(){
         Meteor.logout(function(){
             Router.go('/login');
         });

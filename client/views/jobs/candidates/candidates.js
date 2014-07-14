@@ -31,11 +31,16 @@ Template.candidates.helpers({
 })
 Template.candidates.events({
   'click .addEditCandidates':function () {
-    Composer.showModal( 'candidateAdd',Session.get('entityId'));
+    Composer.showModal('candidateAdd', Session.get('entityId'));
   },
-  'click .assign': function(){
-    Composer.showModal('assignmentAdd', {
-      employeeId: this._id
-    });
+  'click .assign': function () {
+    var options={};
+    var job=Jobs.findOne({ _id: Session.get('entityId') });
+    if(job.assignment){
+      options.assignmentId=job.assignment;
+    }
+    options.employeeId = this._id;
+
+    Composer.showModal('assignmentAdd', options);
   }
 })

@@ -16,8 +16,8 @@ Meteor.publish('activities', function () {
 		return false;
 
 	return Activities.find({
-		hierId: user.hierId
-	});
+        $or: filterByHiers(user.hierId)
+    });
 })
 var mainTypes=['Employee','Contact','Customer']
 Contactables.after.insert(function (userId, doc) {
@@ -97,7 +97,8 @@ Jobs.after.insert(function (userId, doc) {
 		data: {
 			publicJobTitle: doc.publicJobTitle,
 			customerName: customerName,
-			customer: customer
+			customer: customer,
+      dateCreated : doc.dateCreated
 		}
 	});
 });

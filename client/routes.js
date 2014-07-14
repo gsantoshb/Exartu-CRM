@@ -89,6 +89,24 @@ Router.map(function () {
     controller: 'JobController'
   });
 
+
+    this.route('deals', {
+        path: '/deals',
+        controller: 'DealsController',
+        onRun: registerPageView
+    });
+
+    this.route('addDealPage', {
+        path: '/dealAdd/:objType',
+        controller: 'DealAddController',
+        waitOn: [dType.ObjTypesHandler]
+    });
+
+    this.route('deal', {
+        path: '/deal/:_id',
+        controller: 'DealController'
+    });
+
   this.route('users', {
     path: '/users',
     controller: 'UsersController'
@@ -127,6 +145,14 @@ Router.map(function () {
   this.route('planLimitation', {
     path: '/planlimitation',
     template: 'planLimitation'
+  })
+  this.route('emails', {
+    path: '/emails',
+    template: 'emailListTemplate'
+  })
+  this.route('emailAccount', {
+    path: '/emailAccount',
+    controller: 'EmailAccountController'
   })
 
   this.route('subscriptionPlan', {

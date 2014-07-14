@@ -19,8 +19,8 @@ ContactableController = RouteController.extend({
           to: 'content'
         });
         break;
-      case 'posts':
-        this.render('contactablePosts', {
+      case 'notes':
+        this.render('contactableNotes', {
           to: 'content'
         });
         break;
@@ -39,11 +39,6 @@ ContactableController = RouteController.extend({
           to: 'content'
         });
         break;
-      case 'documents':
-        this.render('documents', {
-          to: 'content'
-        });
-        break;
       case 'pastJobs':
         this.render('contactablePastJobs', {
           to: 'content'
@@ -59,7 +54,7 @@ ContactableController = RouteController.extend({
     GAnalytics.event("contactables", "details");
   },
   onAfterAction: function() {
-    var title = 'My Network / ' + Session.get('contactableDisplayName'),
+    var title = 'All Contacts / ' + Session.get('contactableDisplayName'),
       description = 'Contact information';
     SEO.set({
       title: title,
@@ -137,6 +132,9 @@ Template.contactable.helpers({
   documentCount: function() {
     return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count() + ResumesFS.find({'metadata.employeeId': Session.get('entityId')}).count();
   },
+  noteCount: function() {
+      return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }}).count();
+  },
   jobCount: function() {
       return Jobs.find({'customer': Session.get('entityId')}).count();
     },
@@ -174,16 +172,19 @@ Template.contactable.events({
     var fsFile = new FS.File(e.target.files[0]),
       contactableId = Session.get('entityId');
 
-    fsFile.metadata = {
-      entityId: contactableId,
-      owner: Meteor.userId(),
-      name: fsFile.name()
-    };
+    if (fsFile != undefined) {
 
-    var file = ContactablesFS.insert(fsFile, function () {
-    });
+      fsFile.metadata = {
+        entityId: contactableId,
+        owner: Meteor.userId(),
+        name: fsFile.name()
+      };
 
-    Meteor.call('updateContactablePicture', contactableId, file._id);
+      var file = ContactablesFS.insert(fsFile, function () {
+      });
+
+      Meteor.call('updateContactablePicture', contactableId, file._id);
+    }
   },
   'click .send-message': function (e) {
     Composer.showModal('sendMessage', $data);
@@ -200,4 +201,16 @@ Template.contact_header.events({
   "click .editCustomer": function () {
     Composer.showModal('contactCustomerAddEdit', Session.get('entityId'));
   }
+})
+var getLinkType= function(){
+  return Enums.linkTypes.contactable;
+}
+Template.contact_tabs.helpers({
+  getLinkType: getLinkType,
+})
+Template.customer_tabs.helpers({
+  getLinkType: getLinkType,
+})
+Template.employee_tabs.helpers({
+  getLinkType: getLinkType,
 })

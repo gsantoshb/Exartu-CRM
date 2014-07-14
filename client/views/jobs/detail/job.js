@@ -29,72 +29,13 @@ JobController = RouteController.extend({
   }
 });
 
-var getDefinitionFromField=function(field, obj, path){
-  var type;
-  switch (field.fieldType){
-    case 'string':
-      type=Utils.ReactivePropertyTypes.string;
-      break;
-    case 'date':
-      type=Utils.ReactivePropertyTypes.date;
-      break;
-    case 'number':
-      type=Utils.ReactivePropertyTypes.int;
-      break;
-    case 'lookUp':
-      type=Utils.ReactivePropertyTypes.lookUp;
-      break;
 
-  }
 
-  var result={
-    default: obj[field.name],
-    update: path+ field.name,
-    type: type
-  }
-  if(type==Utils.ReactivePropertyTypes.lookUp){
-    var displayName=obj[field.name+'Name']? obj[field.name+'Name']: LookUps.findOne({_id: obj[field.name]}).displayName;
-    result.displayName=displayName;
-    result.options=LookUps.find({codeType: field.lookUpCode});
-  }
-  return result;
-}
-toReactiveObject=function(addModel, obj){
-    var reactiveObj={
-        _id: obj._id,
-        reactiveProps: {}
-    }
-    var object=obj;
-    var path='';
-    var props={};
-    _.each(addModel.fieldGroups,function(fieldGroup){
-        _.each(fieldGroup.items,function(item){
-            if(item.type=='field'){
-              props[item.name]=getDefinitionFromField(item, object, path);
-
-            }
-        })
-    })
-    _.each(addModel.subTypes,function(subType){
-        path=subType.name + '.';
-        object=obj[subType.name];
-        _.each(subType.fieldGroups,function(fieldGroup){
-            _.each(fieldGroup.items,function(item){
-                if(item.type=='field'){
-                  props[item.name]=getDefinitionFromField(item, object, path);
-                }
-            })
-        })
-    })
-
-    _.extend(reactiveObj.reactiveProps, props);
-    return reactiveObj;
-}
 
 var generateReactiveObject = function(job) {
 
   var type=job.objNameArray[1-job.objNameArray.indexOf('job')];
-  var definition= toReactiveObject(dType.objTypeInstance(type), job);
+  var definition= Utils.toReactiveObject(dType.objTypeInstance(type), job);
   definition.reactiveProps.tags={
     default: job.tags,
     update: 'tags',
@@ -118,9 +59,11 @@ Template.job.created=function(){
 
 Template.job.helpers({
     job: function(){
-        job = generateReactiveObject(Jobs.findOne({ _id: Session.get('entityId') }));
-      Session.set('jobDisplayName', job.displayName);
-        return job;
+      var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
+      Session.set('jobDisplayName', originalJob.displayName);
+      job = generateReactiveObject(originalJob);
+        console.log(job);
+      return job;
     },
     originalJob:function(){
       return Jobs.findOne({ _id: Session.get('entityId') });
@@ -140,6 +83,12 @@ Template.job.helpers({
     getCustomer:function(){
       var j=Jobs.findOne({ _id: Session.get('entityId')});
       return j && j.customer;
+    },
+    noteCount: function() {
+        return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }}).count();
+    },
+ isSelected:function(optionValue, currentValue){
+      return optionValue == currentValue;
     }
 
 })
@@ -186,7 +135,7 @@ Template.job.events({
     },
     'click .remove-tag': function() {
       job.tags.remove(this.value);
-    },
+    }
 })
 
 
@@ -219,3 +168,8 @@ Template.jobDescription.rendered=function(){
   },200));
 
 }
+Template.job_tabs.helpers({
+  getType: function(){
+    return Enums.linkTypes.job;
+  }
+})

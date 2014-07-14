@@ -1,0 +1,66 @@
+<template name="emailListTemplate">
+    <div id="content">
+        <div id="content-header" class="mini">
+            <h1>Emails</h1>
+        </div>
+        <!-- /.content-header -->
+
+        <div id="breadcrumb">
+            <a href="/" title="" class="tip-bottom" data-original-title="Go to Home">
+                <i class="fa fa-home"></i>Home</a>
+            <a href="#" class="current">Emails</a>
+        </div>
+
+        <div class="container-fluid">
+            <ul class="list-2">
+                {{#each emails}}
+                <li>
+                    <div class="row">
+                        <div class="col-sm-3">
+
+                            <a href="#"><strong id="username"> {{from.address}} </strong></a>
+
+                            <div class="text-muted">
+                                {{#formattedDate value=date format="lll"}}
+                                <span>{{date}}</span>
+                                {{/formattedDate}}
+                            </div>
+                        </div>
+
+                        <div class="col-sm-9">
+                            <p class="note-title">{{subject}}</p>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </li>
+                {{else}}
+                {{#if hasAccount }}
+                <li>
+                    <div class="box-v-msg">
+                        <div class="box-v-msg-content">
+                            <br>
+                            <i class="icon-check"></i>
+                            <p>Fetching Email</p>
+                        </div><!-- /.box-v-msg-content -->
+                    </div>
+                </li>
+                {{else}}
+                <li>
+                    <div class="box-v-msg">
+                        <div class="box-v-msg-content">
+                            <br>
+                            <p>No email account configured, please configure an account through the settings menu</p>
+                        </div><!-- /.box-v-msg-content -->
+                    </div>
+                </li>
+                {{/if}}
+                {{/each}}
+
+
+
+
+            </ul>
+
+        </div>
+    </div>
+</template>

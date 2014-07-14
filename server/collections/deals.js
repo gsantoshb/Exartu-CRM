@@ -33,12 +33,9 @@ Deals.before.insert(function (userId, doc) {
 Meteor.startup(function () {
     Meteor.methods({
         addDeal: function (deal) {
-            if (beforeInsertOrUpdateDeal(deal)) {
+
                 Deals.insert(deal);
-            } else {
-                console.error('Deal not valid')
-                console.dir(deal);
-            }
+
         },
         updateDeal: function (deal) {
             if (beforeInsertOrUpdateDeal(deal)) {
@@ -61,15 +58,26 @@ Meteor.startup(function () {
                 }
             });
         },
-        addDealPost: function (dealId, post) {
+        removeDealTag: function (dealId, tag) {
             // TODO: validations
-            post.userId = Meteor.userId();
-            post.dateCreated = Date.now();
+
+            Deals.update({
+                _id: dealId
+            }, {
+                $pull: {
+                    "tags": tag
+                }
+            });
+        },
+        addDealNote: function (dealId, note) {
+            // TODO: validations
+            note.userId = Meteor.userId();
+            note.dateCreated = Date.now();
             Deals.update({
                 _id: dealId
             }, {
                 $addToSet: {
-                    posts: post
+                    notes: note
                 }
             });
         },
@@ -94,7 +102,7 @@ Meteor.startup(function () {
 var beforeInsertOrUpdateDeal = function (deal) {
     var user = Meteor.user();
     if (user == null)
-        throw new Meteor.Error(401, "Please login");
+        throw new Meteor.Error(401, "Please sign in");
 
     if (!deal.objNameArray || !deal.objNameArray.length) {
         console.error('the deal must have at least one objName');
@@ -105,6 +113,7 @@ var beforeInsertOrUpdateDeal = function (deal) {
             $in: deal.objNameArray
         }
     }).fetch();
+
 
     if (objTypes.length != deal.objNameArray.length) {
         console.error('the deal objNameArray is suspicious');

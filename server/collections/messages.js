@@ -65,7 +65,7 @@ Meteor.startup(function () {
             // validations
             var user = Meteor.user();
             if (user == null)
-                throw new Meteor.Error(401, "Please login");
+                throw new Meteor.Error(401, "Please sign in");
 
             if (typeof message.content != typeof '' || message.content == '')
                 throw new Meteor.Error(400, "Invalid message content");

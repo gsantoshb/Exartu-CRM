@@ -194,29 +194,33 @@ Meteor.startup(function () {
         }
       });
     },
-    addContactablePost: function (contactableId, post) {
-      // TODO: validations
-      post.userId = Meteor.userId();
-      post.dateCreated = Date.now();
-
-      console.log('New post ');
-      console.dir(post);
-
+//    addContactablePost: function (contactableId, post) {
+//      // TODO: validations
+//      post.userId = Meteor.userId();
+//      note.dateCreated = Date.now()
+//
+//      console.log('New post ');
+//      console.dir(post);
+//
+//      Contactables.update({
+//        _id: contactableId
+//      }, {
+//        $addToSet: {
+//          posts: post
+//        }
+//      });
+//    },
+    updateContactablePicture: function (contactableId, fileId) {
+      console.log("contact picture updated");
       Contactables.update({
         _id: contactableId
       }, {
-        $addToSet: {
-          posts: post
+        $set: {
+          pictureFileId: fileId
         }
       });
-    },
-    updateContactablePicture: function (contactableId, fileId) {
-      console.log("contact picture updated");
-      Contactables.update({_id: contactableId}, {
-        $set: { pictureFileId: fileId}
-      });
-    },
-    createCandidates: function(candidate, jobId) {
+        },
+        createCandidate: function(candidate, jobId) {
           candidate.dateCreated = new Date();
           candidate.negotiation = '';
           Jobs.update({
@@ -236,7 +240,7 @@ Meteor.startup(function () {
 var beforeInsertOrUpdateContactable = function (contactable) {
   var user = Meteor.user();
   if (user == null && !Meteor.settings.demo)
-    throw new Meteor.Error(401, "Please login");
+    throw new Meteor.Error(401, "Please sign in");
 
   if (!contactable.objNameArray || !contactable.objNameArray.length) {
     console.error('the contact must have at least one objName');

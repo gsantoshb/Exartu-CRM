@@ -239,3 +239,140 @@ Utils.getLocation = function (googleLocation) {
     lng: googleLocation.geometry.location.lng()
   }
 }
+
+Utils.getLinkTypeFromEntity=function(entity) {
+    var objNameArray=entity.objNameArray;
+    if (objNameArray && objNameArray.length>0)
+        return entity.objNameArray(objNameArray.length-1);
+    return null;
+}
+
+Utils.getHrefFromEntity=function(entity)
+{
+    console.log('gethref',entity);
+    var linktype=Utils.getLinkTypeFromEntity(entity);
+    if (linkType)
+    {
+        var link={};
+        link.type=linkType;
+        link.id=entity._id;
+        return Utils.getHrefFromLink(link);
+
+    }
+    return null;
+}
+Utils.getEntityFromLink=function(link){
+  switch (link.type){
+    case Enums.linkTypes.contactable.value:
+      return Contactables.findOne({_id: link.id});
+    case Enums.linkTypes.job.value:
+      return Jobs.findOne({_id: link.id});
+    case Enums.linkTypes.deal.value:
+          return Deals.findOne({_id: link.id});
+      case Enums.linkTypes.assignment.value:
+          return Assignments.findOne({_id: link.id});
+      case Enums.linkTypes.candidate.value:
+          return Candidates.findOne({_id: link.id});
+  }
+}
+
+Utils.getEntitiesFromType=function(type){
+    switch (type) {
+        case Enums.linkTypes.contactable.value:
+            return Contactables.find();
+        case Enums.linkTypes.job.value:
+            return Jobs.find();
+        case Enums.linkTypes.deal.value:
+            return Deals.find();
+        case Enums.linkTypes.assignment.value:
+            return Assignments.find();
+        case Enums.linkTypes.candidate.value:
+            return Candidates.find();
+        default :
+        return [];
+    }
+}
+
+Utils.getHrefFromLink=function(link){
+  switch (link.type){
+    case Enums.linkTypes.contactable.value:
+      return '/contactable/'+ link.id;
+    case Enums.linkTypes.job.value:
+      return '/job/'+ link.id;
+      case Enums.linkTypes.deal.value:
+          return '/deal/'+ link.id;
+      case Enums.linkTypes.assignment.value:
+          return '/assignment/'+ link.id;
+      case Enums.linkTypes.candidate.value:
+          return '/candidate/'+ link.id;
+  }
+};
+
+
+Utils.toReactiveObject=function(addModel, obj){
+  var reactiveObj={
+    _id: obj._id,
+    reactiveProps: {}
+  }
+  var object=obj;
+  var path='';
+  var props={};
+  _.each(addModel.fieldGroups,function(fieldGroup){
+    _.each(fieldGroup.items,function(item){
+      if(item.type=='field'){
+        props[item.name]=getDefinitionFromField(item, object, path);
+
+      }
+    })
+  })
+  _.each(addModel.subTypes,function(subType){
+    path=subType.name + '.';
+    object=obj[subType.name];
+    _.each(subType.fieldGroups,function(fieldGroup){
+      _.each(fieldGroup.items,function(item){
+        if(item.type=='field'){
+          props[item.name]=getDefinitionFromField(item, object, path);
+        }
+      })
+    })
+  })
+
+  _.extend(reactiveObj.reactiveProps, props);
+  return reactiveObj;
+}
+
+var getDefinitionFromField=function(field, obj, path){
+  var type;
+  switch (field.fieldType){
+    case 'string':
+      type=Utils.ReactivePropertyTypes.string;
+      break;
+    case 'date':
+      type=Utils.ReactivePropertyTypes.date;
+      break;
+    case 'number':
+      type=Utils.ReactivePropertyTypes.int;
+      break;
+    case 'lookUp':
+      type=Utils.ReactivePropertyTypes.lookUp;
+      break;
+
+  }
+
+  var result={
+    default: obj[field.name],
+    update: path+ field.name,
+    type: type
+  }
+  if(type==Utils.ReactivePropertyTypes.lookUp){
+    var displayName=obj[field.name+'Name'];
+    var lookup=LookUps.findOne({_id: obj[field.name]});
+    if (displayName==null && lookup!=null)  displayName= LookUps.findOne({_id: obj[field.name]}).displayName;
+    result.displayName=displayName;
+    result.options=LookUps.find({$or: [
+                                        {codeType: field.lookUpCode, inactive: {$ne: true}},
+                                        {_id: obj[field.name] }
+                                ] }, { sort: {displayName: 1} });
+  }
+  return result;
+}

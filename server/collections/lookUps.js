@@ -1,9 +1,17 @@
 Meteor.publish('lookUps', function () {
-    return LookUps.find();
+  var user = Meteor.users.findOne({_id: this.userId});
+
+  if(!user)
+    return false;
+
+   return LookUps.find({hierId: user.hierId},{sort: {displayName: 1}});
 });
 
 LookUps.allow({
   update: function(userId, doc) {
+    return Meteor.user() && methods.getHierarchiesRelation(Meteor.user().hierId, doc.hierId) == -1;
+  },
+  insert: function(userId, doc) {
     return Meteor.user() && methods.getHierarchiesRelation(Meteor.user().hierId, doc.hierId) == -1;
   }
 });

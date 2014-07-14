@@ -4,34 +4,40 @@
             <h1>Dashboard</h1>
             <ul class="mini-stats box-3">
                 <li>
-                    <div class="left sparkline_bar_good">
-                        <span data-bind="sparkLine: jobHistory"></span>
-                        <span data-bind="text: jobHistory.growth"></span>
-                    </div>
-                    <div class="right">
-                        <strong data-bind="text: jobCount"></strong>
-                        Jobs
-                    </div>
+                    <a href="/jobs">
+                        <div class="left sparkline_bar_good">
+                            <span data-bind="sparkLine: jobHistory"></span>
+                            <span data-bind="text: jobHistory.growth"></span>
+                        </div>
+                        <div class="right">
+                            <strong data-bind="text: jobCount"></strong>
+                            Jobs
+                        </div>
+                    </a>
                 </li>
                 <li>
-                    <div class="left sparkline_bar_good">
-                        <span data-bind="sparkLine: customerHistory"></span>
-                        <span data-bind="text: customerHistory.growth"></span>
-                    </div>
-                    <div class="right">
-                        <strong data-bind="text: customerCount"></strong>
-                        Customers
-                    </div>
+                    <a href="/contactables/customer">
+                        <div class="left sparkline_bar_good">
+                            <span data-bind="sparkLine: customerHistory"></span>
+                            <span data-bind="text: customerHistory.growth"></span>
+                        </div>
+                        <div class="right">
+                            <strong data-bind="text: customerCount"></strong>
+                            Customers
+                        </div>
+                    </a>
                 </li>
                 <li>
-                    <div class="left sparkline_bar_good">
-                        <span data-bind="sparkLine: employeeHistory"></span>
-                        <span data-bind="text: employeeHistory.growth"></span>
-                    </div>
-                    <div class="right">
-                        <strong data-bind="text: employeeCount"></strong>
-                        Employees
-                    </div>
+                    <a href="/contactables/employee">
+                        <div class="left sparkline_bar_good">
+                            <span data-bind="sparkLine: employeeHistory"></span>
+                            <span data-bind="text: employeeHistory.growth"></span>
+                        </div>
+                        <div class="right">
+                            <strong data-bind="text: employeeCount"></strong>
+                            Employees
+                        </div>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -258,7 +264,8 @@
         <div class="item item-job">
             <div class="item-info">
                 <div class="time">
-                    <i class="icon icon-clock-3"></i>3 HR</div>
+                    <i class="icon icon-clock-3"></i><span data-bind="text: moment(data.dateCreated()).fromNow()"></span>
+                    </div>
                 <div class="type">
                     <i class="icon icon-briefcase"></i>
                 </div>
@@ -287,8 +294,8 @@
 	<i class="fa fa-share-square-o"></i>
 </a>
 -->
-                            <a class="btn btn-default tip-bottom" title="Assign Candidates" data-bind="click: function () { Composer.showModal( 'assignmentAdd', $parent.entityId()); }">
-                                <i class="fa fa-anchor"></i>Assign Candidates</a>
+                            <a class="btn btn-default tip-bottom" title="Assign Candidates" data-bind="click: function(){$root.assign($parent.entityId())}">
+                                <i class="fa fa-user"></i>Assign Candidates</a>
                             <!--
 							<a class="btn btn-default tip-bottom" title="Email" href="#">
 								<i class="fa fa-envelope-o"></i>gregg@tempworks.com</a>

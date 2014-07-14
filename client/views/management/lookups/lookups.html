@@ -24,49 +24,61 @@
             </div>
             <div class="panel-body">
                 <table class="table">
+                    <colgroup>
+                        <col span="1" style="width: 60%;">
+                        <col span="1" style="width: 10%;">
+                        <col span="1" style="width: 10%;">
+                        <col span="2" style="width: 15%;">
+                    </colgroup>
                     <thead>
                     <tr>
                         <th>Display name</th>
-                        <th>Actions</th>
+                        <th style="text-align: center">Is Default</th>
+                        <th style="text-align: center">Is Inactive</th>
+                        <th style="text-align: center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                         {{#each items}}
                             <tr>
                                 <td>
-                                    <span>{{displayName}}</span>
-                                </td>
-                                <td>
-                                    {{#if isDefault}}
-                                        <span class="label label-success"> Default </span>
+                                    {{#if editMode}}
+                                        <input class="form-control" id="{{_id}}" type="text" placeholder="" value="{{displayName}}"/>
+                                        <span class="text-danger">{{errMsg}}</span>
                                     {{else}}
-                                        <span class="set-default" style="cursor: pointer">
-                                            Set as default
-                                        </span>
+                                        <div style="padding: 7px 12px;">
+                                            <span>{{displayName}}</span>
+                                        </div>
                                     {{/if}}
                                 </td>
-                                <!--<td>-->
-                                        <!--<input class="form-control" type="text" placeholder="" data-bind="value: displayName" />-->
-                                        <!--<span class="text-danger" data-bind="text: errMsg"></span>-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                    <!--<span style="cursor: pointer" data-bind="click: $root.edit">-->
-                                        <!--<i class="glyphicon glyphicon-ok" ></i>-->
-                                        <!--Save-->
-                                    <!--</span>-->
-                                    <!--<span style="cursor: pointer" data-bind="click: $root.cancelEdit">-->
-                                        <!--<i class="glyphicon glyphicon-remove" ></i>-->
-                                        <!--Cancel-->
-                                    <!--</span>-->
+                                <td>
+                                    <div style="text-align: center; padding-top: 6px">
+                                        <input type="checkbox" checked="{{isDefault}}" class="set-default">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="text-align: center; padding-top: 6px">
+                                        <input type="checkbox" checked="{{inactive}}" class="inactive">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="text-align: center">
+                                        {{#if editMode}}
+                                             <span style="cursor: pointer" class="btn btn-sm btn-success save">
+                                                <i class="glyphicon glyphicon-ok" ></i>
+                                                <!--Save-->
+                                            </span>
+                                            <span style="cursor: pointer" class="btn btn-sm btn-danger cancel">
+                                                <i class="glyphicon glyphicon-remove" ></i>
+                                            </span>
+                                        {{else}}
+                                            <button style="cursor: pointer" class="btn btn-sm btn-info edit" title="Edit">
+                                                <i class="glyphicon glyphicon-pencil" ></i>
+                                            </button>
+                                        {{/if}}
+                                    </div>
 
-                                    <!--&lt;!&ndash; ko if: !$data.isDefault() &ndash;&gt;-->
-                                    <!--<br/>-->
-                                    <!--<span style="cursor: pointer" data-bind="click: $root.setAsDefault">-->
-                                        <!--Set as default-->
-                                    <!--</span>-->
-                                    <!--&lt;!&ndash; /ko &ndash;&gt;-->
-                                <!--</td>-->
-                                <!--&lt;!&ndash; /ko &ndash;&gt;-->
+                                </td>
                             </tr>
                         {{/each}}
                     </tbody>
@@ -98,12 +110,12 @@
 </template>
 
 <template name="addNewLookUpItem">
-    <!--<div class="input-group">-->
-        <!--<input id="new-item" type="text" class="form-control" placeholder="New item"/>-->
-        <!--<span class="input-group-btn">-->
-            <!--<button id="add-item" class="btn btn-primary" type="button">-->
-                <!--<i class="fa fa-plus"></i> Add-->
-            <!--</button>-->
-        <!--</span>-->
-    <!--</div>-->
+    <div class="input-group">
+        <input id="new-item" type="text" class="form-control" placeholder="New item"/>
+        <span class="input-group-btn">
+            <button id="add-item" class="btn btn-primary" type="button">
+                <i class="fa fa-plus"></i> Add
+            </button>
+        </span>
+    </div>
 </template>

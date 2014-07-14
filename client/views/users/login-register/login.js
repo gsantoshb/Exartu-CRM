@@ -114,7 +114,6 @@ Template.login.viewModel = function () {
     }
 
     Accounts.createUser(_.omit(ko.toJS(self.newAccount()), 'passwordVerification'), function (err, result) {
-      debugger;
       if (!err || err.error == 500) {
         self.seeding(false);
         self.accountCreated(true);

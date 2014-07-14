@@ -77,6 +77,9 @@
                             <a href="/users">Users</a>
                         </li>
                         <li>
+                            <a href="/emailAccount">Email Account</a>
+                        </li>
+                        <li>
                             <a href="/management/lookups">Lookups</a>
                         </li>
                         <li>
@@ -85,19 +88,13 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="/" id="logout">Logout</a>
+                            <a href="/" id="signout">Sign out</a>
                         </li>
                     </ul>
 
                 </li>
 
-                <li>
-                    <a  href="/subscriptionplan" style="display: inline-flex">
-                       <span class="btn btn-warning" style="margin-top: -11px; margin-right: -40px; height: 38px; border-radius: 0px">
-                           <i class="icon-upload-4"></i> Upgrade
-                       </span>
-                    </a>
-                </li>
+
 
             </ul>
         </div>
@@ -148,7 +145,7 @@
             <li class="submenu contactables" data-bind="css:{active: activeRoute() == 'contactables'}">
                 <a href="/contactables">
                     <i class="icon icon-connection-1"></i>
-                    <span>My Network</span>
+                    <span>All Contacts</span>
                     <i class="arrow fa fa-chevron-right"></i>
                 </a>
                 <ul>
@@ -158,9 +155,9 @@
                         </a>
                     </li>
                     <!-- ko foreach: contactableObjTypes -->
-                    <li data-bind="css: { active: $parent.activeRoute() == 'contactables' && $parent.activeRouteType() == name().toLowerCase() }">
+                    <li data-bind="css: { active: $parent.activeRoute() == 'contactables' && $parent.activeRouteType() == name().toLowerCase()  }">
                         <a data-bind="attr: {href: '/contactables/' + name().toLowerCase()}">
-                            <span data-bind="text: name"></span>
+                            <span data-bind="text: name "></span>s
                         </a>
                     </li>
                     <!-- /ko -->
@@ -201,6 +198,18 @@
                 <a href="/tasks">
                     <i class="icon icon-clock-3"></i>
                     <span>Tasks</span>
+                </a>
+            </li>
+            <li class="tasks" data-bind="css:{active: activeRoute() == 'emails'}">
+                <a href="/emails">
+                    <i class="icon icon-check"></i>
+                    <span>Emails</span>
+                </a>
+            </li>
+            <li class="deals" data-bind="css:{active: activeRoute() == 'deals'}">
+                <a href="/deals">
+                    <i class="icon icon-euro-currency-3"></i>
+                    <span>Deals</span>
                 </a>
             </li>
 

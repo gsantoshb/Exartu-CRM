@@ -2,8 +2,13 @@ Meteor.publish('candidates', function () {
 
     if (!this.userId)
         return false;
+    var user = Meteor.users.findOne({
+        _id: this.userId
+    });
 
-    return Candidates.find();
+    return Candidates.find({
+        $or: filterByHiers(user.hierId)
+    });
 });
 Candidates.allow({
   insert: function () {

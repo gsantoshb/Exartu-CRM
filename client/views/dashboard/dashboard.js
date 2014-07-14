@@ -82,6 +82,18 @@ Template.dashboard.viewModel = function () {
   self.customerCount = ko.observable(Contactables.find(customerQuery).count());
   //    self.jobGrowth = ko.observable();
 
+  self.assign=function(jobId){
+    var options={};
+    var job=Jobs.findOne({
+      _id: jobId
+    });
+    if(job.assignment){
+      options.assignmentId=job.assignment;
+    }else{
+      options.jobId=jobId;
+    }
+    Composer.showModal( 'assignmentAdd', options);
+  }
   return self;
 };
 var getHistorical = function (collection, timeStamps, query) {

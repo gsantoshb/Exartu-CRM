@@ -8,15 +8,15 @@
                 </div>
                 <div id="content-header" class="content-header-bottom">
                     <div class="profile-content-header">
-                        <!--{{#if pictureFileId}}-->
-                            <!--<div class="profile-pic">-->
-                                <!--<div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">-->
-                                    <!--<a href="#" id="edit-pic" title="Click to Edit">-->
-                                        <!--<img class="" src="{{pictureUrl}}" style="max-height: 80px;max-width: 80px;">-->
-                                    <!--</a>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--{{/if}}-->
+                        {{#if pictureFileId}}
+                            <div class="profile-pic">
+                                <div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">
+                                    <a href="#" id="edit-pic" title="Click to Edit">
+                                        <img class="" src="{{pictureUrl}}" style="max-height: 40px;max-width: 40px;">
+                                    </a>
+                                </div>
+                            </div>
+                        {{/if}}
                         <input id="edit-picture" style="visibility:hidden; display: none" name="files" type="file" class="fileUploader"/>
 
                         {{#if Customer}}
@@ -57,13 +57,13 @@
                         <!-- Left Column -->
                         <div class="col-sm-8 col-lg-5 contactable-left-col">
                             {{#if Customer}}
-                                {{>customer_tabs contactable=. documentCount=documentCount jobCount=jobCount}}
+                                {{>customer_tabs contactable=. documentCount=documentCount jobCount=jobCount noteCount=noteCount}}
                             {{/if}}
                             {{#if Employee}}
-                                {{>employee_tabs contactable=. documentCount=documentCount}}
+                                {{>employee_tabs contactable=. documentCount=documentCount jobCount=jobCount noteCount=noteCount}}
                             {{/if}}
                             {{#if Contact}}
-                                {{>contact_tabs contactable=. documentCount=documentCount}}
+                                {{>contact_tabs contactable=. documentCount=documentCount noteCount=noteCount}}
                             {{/if}}
                         </div>
 
@@ -83,7 +83,7 @@
                                     {{>contactableContactsBox}}
 
                                     <!-- Tags -->
-                                    {{>contactableTagsBox}}
+                                    {{>tagsBox}}
 
                                     <!-- Assignments -->
                                     {{>contactableAssignmentsBox}}
@@ -266,7 +266,7 @@
 
 <template name="customer_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.posts.length}}</span></a></li>
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
         <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>
         <li><a href="#profile-jobs" data-toggle="tab">Jobs <span class="custom-badge-2">{{jobCount}}</span></a></li>
     </ul>
@@ -274,7 +274,7 @@
     <div class="tab-content">
         <!-- Notes Tab -->
         <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=contactable}}
+            {{> contactableNotesAdd entity=contactable type=getLinkType}}
             {{> contactableNotesList entity=contactable}}
         </div>
         <!-- Documents Tab -->
@@ -289,7 +289,7 @@
 </template>
 <template name="employee_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.posts.length}}</span></a></li>
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
         <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>
         <li><a href="#profile-applicantCenter" data-toggle="tab">Applicant Center <!--<span class="custom-badge-2">{{documentCount}}</span>--></a></li>
     </ul>
@@ -297,7 +297,7 @@
     <div class="tab-content">
         <!-- Notes Tab -->
         <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=contactable}}
+            {{> contactableNotesAdd entity=contactable type=getLinkType}}
             {{> contactableNotesList entity=contactable}}
         </div>
         <!-- Documents Tab -->
@@ -313,13 +313,13 @@
 
 <template name="contact_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{contactable.posts.length}}</span></a></li>
+        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
     </ul>
 
     <div class="tab-content">
         <!-- Notes Tab -->
         <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=contactable}}
+            {{> contactableNotesAdd entity=contactable type=getLinkType}}
             {{> contactableNotesList entity=contactable}}
         </div>
     </div>

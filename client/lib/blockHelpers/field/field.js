@@ -31,6 +31,13 @@ UI.registerHelper('displayProperty', function(){
         });
         return template;
       }
+      //hack
+      if (this.fieldType == 'lookUp'){
+        var defaultLookUp =LookUps.findOne({codeType: this.lookUpCode, isDefault: true})
+        if (defaultLookUp){
+          this.value= defaultLookUp._id;
+        }
+      }
 
       template.events({
         'blur input': function(e){
@@ -82,7 +89,7 @@ Template.fieldInput.helpers({
 
 Template.lookUpFieldInput.helpers({
   options: function(){
-    return LookUps.find({codeType: this.lookUpCode});
+    return LookUps.find({ codeType: this.lookUpCode, inactive: { $ne: true } }, { sort: { displayName: 1 } });
   },
   hasError :function(){
     return this.isValid ? '': 'error';

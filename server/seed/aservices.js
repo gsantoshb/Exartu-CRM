@@ -38,9 +38,9 @@ dType.constructor.service({
     }
 })
 dType.constructor.service({
-    name: 'posts',
+    name: 'notes',
     getSettings: function(options){
-        return {name: 'posts'};
+        return {name: 'notes'};
     },
     isValid: function(value, serviceSettings){
         return _.isArray(value);

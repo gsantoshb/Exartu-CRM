@@ -413,7 +413,7 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     }
 }
 
-.postAdd textarea{
+.noteAdd textarea{
     max-width: 100%;
     margin-bottom:5px
 }
@@ -475,6 +475,25 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     border-bottom: none;
     margin: 0 0 0 0!important;
 }
+
+
+
+/* Contactable screen */
+.profile-content-header .profile-pic {
+    height: 40px;
+    width: 40px;
+}
+.profile-content-header .profile-pic-icon {
+    font-size: 25px;
+    padding: 5px 0;
+}
+
+@media (max-width: 767px) {
+    .profile-content-header .profile-pic {
+        margin: 0 auto 10px auto;
+    }
+}
+
 
 .contactable-content {
     background-color: #fafafa;

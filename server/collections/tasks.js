@@ -11,28 +11,32 @@
  */
 
 Meteor.publish('tasks', function () {
-  //    var user = Meteor.users.findOne({
-  //        _id: this.userId
-  //    });
-
   if (!this.userId)
     return false;
+  var user = Meteor.users.findOne({
+      _id: this.userId
+  });
+
 
   return Tasks.find({
-    $or: [
-      {
-        userId: this.userId
-      },
-      {
-        assign: this.userId
-      }
-    ]
-  });
+        $or: filterByHiers(user.hierId)
+    });
+
+//  return Tasks.find({
+//    $or: [
+//      {
+//        userId: this.userId
+//      },
+//      {
+//        assign: this.userId
+//      }
+//    ]
+//  });
 })
 
 Meteor.startup(function () {
   Meteor.methods({
-    crateTask: function (task) {
+    createTask: function (task) {
       Tasks.insert(task);
     }
   });
