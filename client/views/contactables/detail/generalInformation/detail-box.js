@@ -94,6 +94,7 @@ var generateReactiveObject = function(contactable) {
   else if (contactable.Employee) {
     updateBase = 'Employee.';
     var employee = contactable.Employee;
+    var status=LookUps.findOne({_id: employee.recruiterStatus});
     _.extend(definition.reactiveProps, {
       employee: {
         default: true
@@ -106,7 +107,7 @@ var generateReactiveObject = function(contactable) {
         default: employee.recruiterStatus,
         update: updateBase + 'recruiterStatus',
         type: Utils.ReactivePropertyTypes.lookUp,
-        displayName: employee.recruiterStatusName,
+        displayName: status ? status.displayName : '',
         options: LookUps.find({codeType: Enums.lookUpTypes.employee.recruiterStatus.code})
       }
     });
