@@ -84,9 +84,9 @@ var generateReactiveObject = function(contactable) {
         default: customer.department,
         update: updateBase + 'department'
       },
-      description: {
-        default: customer.description,
-        update: updateBase + 'description'
+      statusNote: {
+        default: customer.statusNote,
+        update: updateBase + 'statusNote'
       }
     });
   }
@@ -99,9 +99,9 @@ var generateReactiveObject = function(contactable) {
       employee: {
         default: true
       },
-      description: {
-        default: employee.description,
-        update: updateBase + 'description'
+      statusNote: {
+        default: employee.statusNote,
+        update: updateBase + 'statusNote'
       },
       status: {
         default: employee.recruiterStatus,
@@ -120,9 +120,9 @@ var generateReactiveObject = function(contactable) {
       contact: {
         default: true
       },
-      description: {
-        default: contact.description,
-        update: updateBase + 'description'
+      statusNote: {
+        default: contact.statusNote,
+        update: updateBase + 'statusNote'
       }
     });
   }

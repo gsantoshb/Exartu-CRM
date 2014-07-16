@@ -44,7 +44,9 @@ newObjType({
     },
     {
       name: 'salutation',
-      displayName: 'Salutation'
+      displayName: 'Salutation',
+        showInAdd: false,
+        required: false
     }
   ]
 });
@@ -68,10 +70,14 @@ newObjType({
     fields: [{
         name: 'publicJobTitle',
         displayName: 'Public job title',
-        required: true
+        required: false
     },{
-        name: 'description',
-        displayName: 'Description',
+        name: 'statusNote',
+        displayName: 'Status Note',
+        required: false
+    },{
+        name: 'jobDescription',
+        displayName: 'Job Description',
         required: false
     },{
         name: 'startDate',
@@ -139,9 +145,10 @@ newObjType({
     services: ['messages', 'tasks', 'notes', 'tags'],
     fields: [
         {
-        name: 'dealDescription',
-        displayName: 'Description',
-        required: false
+            name: 'statusNote',
+            displayName: 'Status note',
+            showInAdd: true,
+            required: false
         },
         { name: 'dealStatus',
             displayName: 'Status',
@@ -195,8 +202,8 @@ newObjType({
       defaultValue: 'Primary'
     },
     {
-      name: 'description',
-      displayName: 'Description'
+      name: 'statusNote',
+      displayName: 'Status note'
     }
   ]
 });
@@ -212,8 +219,10 @@ newObjType({
   services: [],
   fields: [
     {
-      name: 'description',
-      displayName: 'Description'
+      name: 'statusNote',
+      displayName: 'Status note',
+      showInAdd: true,
+      required: false
     }
   ]
 });
@@ -229,9 +238,12 @@ newObjType({
   services: ['pastJobs', 'educations'],
   fields: [
     {
-      name: 'description',
-      displayName: 'Description'
-    },
+        name: 'statusNote',
+        displayName: 'Status note',
+        showInAdd: true,
+        required: false
+    }
+      ,
     {
       name: 'recruiterStatus',
       displayName: 'Candidacy status',

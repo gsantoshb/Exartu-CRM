@@ -4,5 +4,7 @@ ExartuConfig = {
     SystemHierarchyId: "sys",
     // Insert your google information
     GoogleConfig_clientId: undefined,
-    GoogleConfig_clientSecret: undefined
+    GoogleConfig_clientSecret: undefined,
+    systemUserEmail: 'exartu.developer@gmail.com',
+    systemUserPassword: 'exartuasd'
 }
