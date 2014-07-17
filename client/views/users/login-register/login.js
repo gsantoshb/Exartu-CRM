@@ -100,6 +100,7 @@ Template.login.viewModel = function () {
   }, this);
 
   self.seeding = ko.observable(false);
+  self.accountCreated = ko.observable(false);
   self.createNewAccount = function () {
     if (self.isValidating())
       return;
@@ -110,9 +111,10 @@ Template.login.viewModel = function () {
     }
 
     Accounts.createUser(_.omit(ko.toJS(self.newAccount()), 'passwordVerification'), function (err, result) {
-      if (!err) {
+      debugger;
+      if (!err || err.error == 500) {
         self.seeding(false);
-        Router.go('/');
+        self.accountCreated(true);
       }
     });
   }
