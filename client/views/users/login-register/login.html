@@ -113,7 +113,7 @@
                                     <span class="text-danger" data-bind="validationMessage: newAccount().email"></span>
                                 </div>
                                 <div class="form-group">
-                                    <button class="btn btn-primary top-10 btn-lg" data-bind="css: {disabled:isValidating}, click: function() { createNewAccount() }">Create Account</button>
+                                    <button class="btn btn-primary top-10 btn-lg" data-bind="disable: loading(), click: function() { createNewAccount() }">Create Account</button>
                                 </div>
                             <!-- /ko -->
                             <!-- ko if: accountCreated() -->

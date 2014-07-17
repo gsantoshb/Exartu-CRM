@@ -16,6 +16,7 @@ Template.login.viewModel = function () {
   self.email = ko.observable();
   self.password = ko.observable();
   self.notVerified = ko.observable(false);
+  self.loading= ko.observable(false);
 
   self.loginWith = function (serviceName) {
     if (Meteor['loginWith' + serviceName])
@@ -28,9 +29,11 @@ Template.login.viewModel = function () {
   }
 
   self.loginWithPassword = function () {
+
     Meteor.loginWithPassword({
       email: self.email()
     }, self.password(), function (err, result) {
+
       if (err) {
         if(err.reason == 'Email not verified') {
           self.notVerified(true);
@@ -102,16 +105,17 @@ Template.login.viewModel = function () {
   self.seeding = ko.observable(false);
   self.accountCreated = ko.observable(false);
   self.createNewAccount = function () {
+    self.loading(true);
     if (self.isValidating())
       return;
-    self.seeding(true);
+
     if (!self.newAccount.isValid()){
       self.newAccount.errors.showAllMessages();
         return;
     }
-
+    self.loading(true);
     Accounts.createUser(_.omit(ko.toJS(self.newAccount()), 'passwordVerification'), function (err, result) {
-      debugger;
+      self.loading(false);
       if (!err || err.error == 500) {
         self.seeding(false);
         self.accountCreated(true);
