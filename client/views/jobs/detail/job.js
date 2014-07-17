@@ -152,18 +152,18 @@ var addTag = function() {
   inputTag.focus();
 };
 Template.jobDescription.rendered=function(){
-  var description=$('.job-description');
-  var container=description.find('.htmlContainer');
+  var jobDescription=$('.job-description');
+  var container=jobDescription.find('.htmlContainer');
   if(container.height()<=100){
-    description.addClass('none')
+    jobDescription.addClass('none')
   }
 
 
   container.on('resize', _.debounce(function(){
     if(container.height()<=100){
-      description.addClass('none')
+      jobDescription.addClass('none')
     }else{
-      description.removeClass('none')
+      jobDescription.removeClass('none')
     }
   },200));
 
