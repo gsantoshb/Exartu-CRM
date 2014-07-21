@@ -28,7 +28,7 @@ ContactableAddController = RouteController.extend({
 var contactable;
 var subTypesDep=new Deps.Dependency;
 var createContactable= function(objTypeName, options){
-    var type=dType.core.getObjType(objTypeName)
+    var type= dType.core.getObjType(objTypeName)
     contactable= new dType.objTypeInstance(objTypeName, options);
     setPersonType(type.defaultPersonType,contactable)
     return contactable

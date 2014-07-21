@@ -2,8 +2,172 @@ var getObjType=function(name){
     return  dType.ObjTypes.findOne({name: name});
 }
 
+dType.objInstance= function(obj, collection, grouped){
+  var self=this;
+  if (_.isString(obj)){
+    var obj=collection.findOne(obj);
+  }
 
-dType.objTypeInstance=function(ObjTypeName, options){
+  self._id=obj._id;
+  self.collection=collection;
+
+  var objTypes=dType.core.getObjTypes(obj);
+  if (grouped){
+    self.fieldGroups= {};
+  }
+
+  var addField=function(groups, groupName, item){
+    if (grouped){
+      addToFieldGroup2(groups, groupName, item)
+    }else{
+      self[item.name]=item;
+    }
+  }
+
+  _(objTypes).each(function(objType){
+    var object= objType.collection ? obj : obj[objType.name];
+    self[objType.name]=true;
+
+    _.each(objType.fields, function(field){
+      addField(self.fieldGroups, field.fieldGroup, new fieldInstance2(field, object[field.name], objType, !!objType.collection));
+    })
+
+    var visibilities= dType.core.getRelationsVisivilityOnType(objType);
+    _.each(visibilities, function(v){
+      addField(self.fieldGroups, v.fieldGroup, new relation2(v));
+    })
+
+  })
+}
+
+dType.objInstance.prototype.validate= function(allFields){
+  var items=this.toArray();
+  return _.every(items, function(item){
+    if (allFields || (item.value != item.savedValue)){
+      if (item.isField){
+        return item.validate();
+      }
+      if (item.isRelation){
+        return item.validate();
+      }
+    }
+    return true;
+  })
+}
+
+dType.objInstance.prototype.getObject= function(){
+  var obj={};
+  _.each(this.toArray(), function(item){
+    if (!item.path){
+      obj[item.name]=item.value;
+    }else{
+
+      if (!obj[item.path] ){
+        obj[item.path]={};
+      }
+      obj[item.path][item.name]=item.value;
+    }
+  })
+  return obj;
+}
+
+dType.objInstance.prototype.getUpdate= function(){
+  var upd={
+    $set: {}
+  };
+  _.each(this.toArray(), function(item){
+    if (item.value != item.savedValue){
+      var selector= item.path ? item.path + '.' + item.name: item.name;
+      upd.$set[selector]=item.value;
+    }
+  })
+  return upd;
+}
+dType.objInstance.prototype.save= function(cb){
+  this.collection.update({_id: this._id}, this.getUpdate(), cb)
+}
+dType.objInstance.prototype.showErrors=function(){
+  _.each(this.toArray(), function(item){
+    if (item.isField){
+      item.validate();
+    }
+    if (item.isRelation){
+      item.validate();
+    }
+  })
+}
+dType.objInstance.prototype.reset=function(){
+  var object=this.collection.findOne(this._id)
+  _.each(this.toArray(), function(item){
+    var savedValue= item.path ? object[item.path][item.name]: object[item.name];
+    item.savedValue=savedValue
+    item.value=savedValue;
+  })
+}
+dType.objInstance.prototype.toArray= function(){
+  var self=this;
+  var items=[];
+  if (self.fieldGroups){
+    _.each(_.keys(self.fieldGroups),function(groupName){
+      _.each(_.keys(self.fieldGroups[groupName]),function(itemName){
+        if (_.isObject(self.fieldGroups[groupName][itemName]))
+          items.push(self.fieldGroups[groupName][itemName]);
+      })
+    })
+  }else{
+    _.each(_.keys(self),function(itemName){
+      if (_.isObject(self[itemName]))
+        items.push(self[itemName]);
+    })
+  }
+  return items;
+}
+var fieldInstance2= function(field, value, type, isRoot){
+  var self=this;
+  _.extend(self, field);
+
+  self.isField=true;
+  self.savedValue= value;
+
+  reactiveProp(self, 'value', value);
+  reactiveProp(self, 'error', '');
+  reactiveProp(self, 'isValid', true);
+
+  self.path=isRoot ? '': type.name;
+}
+
+//autorun is valid on value changed?
+fieldInstance2.prototype.validate= function(){
+  var err={};
+  var result= dType.core.getFieldType(this.fieldType).validate(this.value, this, err);
+  this.error=err.message;
+  this.isValid=result;
+  return result;
+}
+
+var relation2= function(field, value, type){
+  var self=this;
+  _.extend(self, field);
+
+  self.isRelation=true;
+  self.savedValue= value;
+
+  reactiveProp(self, 'value', value);
+  reactiveProp(self, 'error', '');
+  reactiveProp(self, 'isValid', true);
+}
+
+var addToFieldGroup2= function(fieldGroups, fieldGroupName, item){
+  var fieldGroup=fieldGroupName || 'defaultGroup';
+
+  if (! fieldGroups[fieldGroup])
+    fieldGroups[fieldGroup]={};
+
+  fieldGroups[fieldGroup][item.name]=item;
+}
+
+
+dType.objTypeInstance= function(ObjTypeName, options){
     var objType=dType.core.getObjType(ObjTypeName);
     var model={};
 
@@ -29,7 +193,7 @@ dType.objTypeInstance=function(ObjTypeName, options){
 
     return model;
 }
-var applyOptions=function(model, options){
+var applyOptions= function(model, options){
     var keys= _.keys(options);
     _.each(model.subTypes, function(subType){
         if(_.contains(keys, subType.name)){
@@ -45,12 +209,12 @@ var applyOptions=function(model, options){
         });
     });
 }
-var makeReadOnly=function(item, value){
+var makeReadOnly= function(item, value){
     item._value=value;
     item.editable=false;
 }
 
-var addToFieldGroup=function(fieldGroups, fieldGroupName, item){
+var addToFieldGroup= function(fieldGroups, fieldGroupName, item){
     var fieldGroup=fieldGroupName || 'defaultGroup';
 
     if (!_.findWhere(fieldGroups,{fieldGroupName: fieldGroup}))
@@ -59,7 +223,7 @@ var addToFieldGroup=function(fieldGroups, fieldGroupName, item){
     _.findWhere(fieldGroups,{fieldGroupName: fieldGroup}).items.push(item)
 }
 
-var build=function(fieldGroups, object){
+var build= function(fieldGroups, object){
     var obj=object || {};
     _.each(fieldGroups, function(fieldGroup){
         _.each(fieldGroup.items, function(item){
@@ -69,7 +233,7 @@ var build=function(fieldGroups, object){
 
     return obj
 }
-dType.buildAddModel=function(addModel){
+dType.buildAddModel= function(addModel){
     var obj= {
         objNameArray:[]
     };
@@ -107,7 +271,7 @@ var relation= function(relation){
     return rel;
 }
 
-dType.isValid=function(model){
+dType.isValid= function(model){
     return _.every(model.fieldGroups,function(group){
         return _.every(group.items, function(field){
             if(field.type=='relation'){
@@ -122,7 +286,7 @@ dType.isValid=function(model){
     })
 }
 
-dType.isValidRelation=function(rel){
+dType.isValidRelation= function(rel){
     if (rel.required && !! rel.value){
         relation.error='this field is required';
         options.isValid=false;
@@ -158,9 +322,9 @@ dType.displayAllMessages=function(model){
     })
 }
 
-var reactiveProp=function(object, key, value){
-    var depName='_dep'+key
-    var valueName='_'+key
+var reactiveProp= function(object, key, value){
+    var depName='_dep'+ key
+    var valueName='_'+ key
     object[depName]= new Deps.Dependency;
     object[valueName]= value;
 

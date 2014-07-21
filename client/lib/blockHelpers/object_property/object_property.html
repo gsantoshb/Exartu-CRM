@@ -30,10 +30,10 @@
 <template name="object_property_lookup">
     <span class="prop-input">
         {{#if isEditable}}
-            {{> UI.contentBlock value=property.value options=property.options isSelected=isSelected}}
+            {{> UI.contentBlock value=property.value options=options isSelected=isSelected}}
             <span class="text text-danger">{{error}}</span>
         {{else}}
-            {{> UI.elseBlock value=property.value displayName=property.displayName}}
+            {{> UI.elseBlock value=property.value displayName=displayName}}
         {{/if}}
     </span>
 </template>

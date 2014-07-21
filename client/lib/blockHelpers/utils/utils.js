@@ -4,7 +4,6 @@ UI.registerHelper('inputLocation', function() {
     var getLocation = _.bind(function() {
       var place = autocomplete.getPlace();
       this.value=Utils.getLocation(place);
-      console.dir(this);
     },this.data);
 
     autocomplete = new google.maps.places.Autocomplete(element, { types: ['geocode'] });
