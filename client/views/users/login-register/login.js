@@ -5,11 +5,11 @@ Template.login.viewModel = function () {
     self.register=function(){
         self.login(false);
         self.errorMessage('')
-    }
+    };
     self.signin=function(){
         self.login(true);
         self.errorMessage('')
-    }
+    };
 
   self.errorMessage = ko.observable();
 
@@ -26,7 +26,7 @@ Template.login.viewModel = function () {
         else
           Router.go('/');
       });
-  }
+  };
 
   self.loginWithPassword = function () {
 
@@ -49,7 +49,7 @@ Template.login.viewModel = function () {
         Router.go('/');
       }
     });
-  }
+  };
 
   self.resendVerification = function() {
     Meteor.call('resendEmailVerification', self.email(), function(err) {
@@ -88,8 +88,8 @@ Template.login.viewModel = function () {
         },
         message: 'Email is already in use by another account'
       }
-    }),
-  })
+    })
+  });
 
   self.newAccount().passwordVerification.extend({
     areSame: {
@@ -106,14 +106,12 @@ Template.login.viewModel = function () {
   self.accountCreated = ko.observable(false);
   self.createNewAccount = function () {
     self.loading(true);
-    if (self.isValidating())
-      return;
 
     if (!self.newAccount.isValid()){
       self.newAccount.errors.showAllMessages();
         return;
     }
-    self.loading(true);
+
     Accounts.createUser(_.omit(ko.toJS(self.newAccount()), 'passwordVerification'), function (err, result) {
       self.loading(false);
       if (!err || err.error == 500) {
@@ -121,7 +119,7 @@ Template.login.viewModel = function () {
         self.accountCreated(true);
       }
     });
-  }
+  };
 
   return self;
 };

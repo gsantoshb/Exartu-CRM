@@ -94,6 +94,12 @@
                                     </div>
                                     <span class="text-danger" data-bind="validationMessage: newAccount().username"></span>
                                 </div>
+                                <div data-bind="css:{'has-error': newAccount().email.isModified() && ! newAccount().email.isValid()}">
+                                    <div class="form-group">
+                                        <input class="form-control input-lg" type="text" placeholder="Email" data-bind="value: newAccount().email">
+                                    </div>
+                                    <span class="text-danger" data-bind="validationMessage: newAccount().email"></span>
+                                </div>
                                 <div data-bind="css:{'has-error': newAccount().password.isModified() && ! newAccount().password.isValid()}">
                                     <div class="form-group">
                                         <input class="form-control input-lg" type="password" placeholder="Choose Password" data-bind="value: newAccount().password" />
@@ -106,14 +112,9 @@
                                     </div>
                                     <span class="text-danger" data-bind="validationMessage: newAccount().passwordVerification"></span>
                                 </div>
-                                <div data-bind="css:{'has-error': newAccount().email.isModified() && ! newAccount().email.isValid()}">
-                                    <div class="form-group">
-                                        <input class="form-control input-lg" type="text" placeholder="Email" data-bind="value: newAccount().email">
-                                    </div>
-                                    <span class="text-danger" data-bind="validationMessage: newAccount().email"></span>
-                                </div>
+
                                 <div class="form-group">
-                                    <button class="btn btn-primary top-10 btn-lg" data-bind="disable: loading(), click: function() { createNewAccount() }">Create Account</button>
+                                    <button class="btn btn-primary top-10 btn-lg" data-bind="disable: loading() || isValidating() , click: function() { createNewAccount() }">Create Account</button>
                                 </div>
                             <!-- /ko -->
                             <!-- ko if: accountCreated() -->
