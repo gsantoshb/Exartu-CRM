@@ -26,6 +26,9 @@ Template.candidates.helpers({
   },
   jobInfo:function(candidateObject){
         return Jobs.findOne({_id: candidateObject.job});
+  },
+  isApplicantType: function(candidate) {
+    return candidate.type == Enums.candidateType.applicant;
   }
 
 })

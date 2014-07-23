@@ -21,10 +21,8 @@ Candidates.allow({
 
 Candidates.before.insert(function(userId, doc, fieldNames, modifier, options){
   var job= Jobs.findOne({ _id: doc.job });
-  if (! job)
-    return false;
 
-  if (job.candidate)
+  if (!job)
     return false;
 
   var user = Meteor.user();
@@ -33,21 +31,20 @@ Candidates.before.insert(function(userId, doc, fieldNames, modifier, options){
   doc.dateCreated = Date.now();
 });
 
-//<editor-fold desc="************ update job and contactable ****************">
 Candidates.after.insert(function(userId, doc, fieldNames, modifier, options){
     Contactables.update({
         _id: doc.employee
     }, {
-        $set: {
-            candidate: doc._id
+        $addToSet: {
+            candidates: doc._id
         }
     });
     Jobs.update({
         _id: doc.job
     }, {
-        $set: {
-            candidate: doc._id
-        }
+      $addToSet: {
+        candidates: doc._id
+      }
     });
 });
 
@@ -57,19 +54,17 @@ Candidates.after.update(function(userId, doc, fieldNames, modifier, options){
     Contactables.update({
       _id: this.previous.employee
     }, {
-      $set: {
-        candidate: null
+      $pull: {
+        candidates: doc._id
       }
     });
 
     Contactables.update({
       _id: doc.employee
     }, {
-      $set: {
-        candidate: doc._id
+      $addToSet: {
+        candidates: doc._id
       }
     });
   }
-
 });
-//</editor-fold>

@@ -25,12 +25,13 @@ Template.candidateAdd.viewModel = function (jobId) {
       note: self.entity.note(),
       employee: self.entity.employee(),
       type: Enums.candidateType.recruiter,
+      job: jobId,
       userId: Meteor.userId()
     };
     if (!candidate.employee)
       return;
 
-    Meteor.call('createCandidates', candidate, jobId, function(err, result) {
+    Candidates.insert(candidate, function(err, result) {
       if (!err)
         self.close();
     });

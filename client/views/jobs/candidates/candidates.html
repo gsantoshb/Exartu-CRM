@@ -9,7 +9,7 @@
 
         <div class="box-content">
             <ul class="list-type-1 list-type-1-lg">
-                {{#each candidates}}
+                {{#each candidates 'job' job}}
                 <span id="outside"></span>
                     {{#with employeeInfo .}}
                         <li class="clearfix">
@@ -29,11 +29,15 @@
                                             <span>{{location.displayName}}</span>
                                             <br/>
                                         {{/if}}
-                                        <i class="fa fa-check"></i>&nbsp;Recommended by:
+                                        <i class="fa fa-check"></i>
                                         <strong>
-                                            {{#userInfo userId=../userId}}
-                                                <span> {{username}} <small>({{../../type}})</small></span>
-                                            {{/userInfo}}
+                                            {{#if isApplicantType ..}}
+                                                User application
+                                            {{else}}
+                                                {{#userInfo userId=../userId}}
+                                                    Recommended by: <span> {{username}} <small>({{../../type}})</small></span>
+                                                {{/userInfo}}
+                                            {{/if}}
                                         </strong>
                                     </div>
                                     <div class="bottom-10">
@@ -44,17 +48,6 @@
                                             <strong>{{.}}</strong>
                                         {{/each}}
                                     </div>
-
-                        <!--<a class="btn btn-link btn-sm pull-right" data-toggle="collapse" data-bind="attr: { href: '#' + _id() }">-->
-                            <!--Negotiation note-->
-                        <!--</a>-->
-
-                        <!--<div class="panel-collapse collapse" style="margin-top: 40px" data-bind="attr: { id: $data._id()}">-->
-                            <!--<textarea data-bind="htmlEditor: $parent.negotiation">-->
-
-                            <!--</textarea>-->
-                            <!--<span class="btn btn-success btn-sm pull-right" style="margin-right: 4%; margin-top: 10px;" data-bind="click: function() { $root.updateNegotiation($parent)}"> Save </span>-->
-                        <!--</div>-->
                             </div>
                         </li>
                     {{/with}}
@@ -62,10 +55,7 @@
                     <div class="box-v-msg">
                         <div class="box-v-msg-content">
                             <i class="icon-profile-man"></i>
-                            <!--<p><br>-->
-                                <!--<a href="#" class="addEditCandidates">Add candidate</a>-->
-                            <!--</p>-->
-                        </div><!-- /.box-v-msg-content -->
+                        </div>
                     </div>
                 {{/each}}
             </ul>
