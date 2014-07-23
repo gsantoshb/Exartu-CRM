@@ -32,13 +32,14 @@ Utils.reactiveProp=function(object, key, value){
     }
   })
 }
+
 Utils.ReactivePropertyTypes = {
-  string: 0,
-  int: 1,
-  array: 2,
-  date: 3,
-  boolean: 5,
-  lookUp: 4
+  string: 'string',
+  int: 'number',
+  array: 'array',
+  date: 'date',
+  boolean: 'boolean',
+  lookUp: 'lookUp'
 };
 
 Utils.ObjectDefinition = function(definition) {
@@ -108,6 +109,10 @@ Utils.ObjectDefinition = function(definition) {
         });
         break;
     };
+
+    if (!prop.fieldType){
+      prop.fieldType=definition.reactiveProps[propName].type;
+    }
 
     prop.error = {};
     prop.error.dep = new Deps.Dependency;

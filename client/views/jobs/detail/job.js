@@ -29,32 +29,46 @@ JobController = RouteController.extend({
   }
 });
 
-
-
-
 var generateReactiveObject = function(job) {
 
-  var type=job.objNameArray[1-job.objNameArray.indexOf('job')];
-  var definition= Utils.toReactiveObject(dType.objTypeInstance(type), job);
-  definition.reactiveProps.tags={
-    default: job.tags,
-    update: 'tags',
-    type: Utils.ReactivePropertyTypes.array
-  }
-  definition.reactiveProps.location={
-    default: job.location,
-    update: 'location'
-  }
-  return new Utils.ObjectDefinition(definition);
+  return new dType.objInstance(job, Jobs);
+//  var type=job.objNameArray[1-job.objNameArray.indexOf('job')];
+//  var definition= Utils.toReactiveObject(dType.objTypeInstance(type), job);
+//  definition.reactiveProps.tags={
+//    default: job.tags,
+//    update: 'tags',
+//    type: Utils.ReactivePropertyTypes.array
+//  }
+//  definition.reactiveProps.location={
+//    default: job.location,
+//    update: 'location'
+//  }
+//  return new Utils.ObjectDefinition(definition);
 };
 
 
 
 var self={};
 Utils.reactiveProp(self, 'editMode', false);
+var location={};
+Utils.reactiveProp(location, 'value', null);
+var services;
 
 Template.job.created=function(){
   self.editMode=false;
+  var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
+
+
+  var definition={
+    reactiveProps:{
+      tags:{
+        default: originalJob.tags,
+        update: 'tags',
+        type: Utils.ReactivePropertyTypes.array
+      }
+    }
+  };
+  services= Utils.ObjectDefinition(definition);
 }
 
 Template.job.helpers({
@@ -62,7 +76,6 @@ Template.job.helpers({
       var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
       Session.set('jobDisplayName', originalJob.displayName);
       job = generateReactiveObject(originalJob);
-        console.log(job);
       return job;
     },
     originalJob:function(){
@@ -89,7 +102,17 @@ Template.job.helpers({
     },
  isSelected:function(optionValue, currentValue){
       return optionValue == currentValue;
-    }
+    },
+  location: function(){
+    var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
+
+    location.value= originalJob && originalJob.location;
+    return location;
+  },
+  tags: function(){
+//    console.dir(tags.value);
+    return services.tags;
+  }
 
 })
 Template.job.events({
@@ -98,15 +121,24 @@ Template.job.events({
     },
     'click .saveButton':function(){
 
-      if (!job.isValid()) {
+      if (!job.validate()) {
           job.showErrors();
           return;
       }
-      console.dir(job.generateUpdate())
-      Jobs.update({_id: job._id}, job.generateUpdate(), function(err, result) {
+      var update=job.getUpdate();
+      var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
+      var oldLocation= originalJob.location;
+      var newLocation= location.value;
+
+      if ((newLocation && newLocation.displayName) != (oldLocation && oldLocation.displayName)){
+        update.$set= update.$set || {};
+        update.$set.location= newLocation;
+      }
+
+      Jobs.update({_id: job._id}, update, function(err, result) {
           if (!err) {
               self.editMode=false;
-              job.updateDefaults();
+              job.reset();
           }
       });
     },
@@ -134,7 +166,7 @@ Template.job.events({
       }
     },
     'click .remove-tag': function() {
-      job.tags.remove(this.value);
+      services.tags.remove(this.value);
     }
 })
 
@@ -145,25 +177,25 @@ var addTag = function() {
   if (!inputTag.value)
     return;
 
-  if (_.indexOf(job.tags.value, inputTag.value) != -1)
+  if (_.indexOf(services.tags.value, inputTag.value) != -1)
     return;
-  job.tags.insert(inputTag.value);
+  services.tags.insert(inputTag.value);
   inputTag.value = '';
   inputTag.focus();
 };
 Template.jobDescription.rendered=function(){
-  var description=$('.job-description');
-  var container=description.find('.htmlContainer');
+  var jobDescription=$('.job-description');
+  var container=jobDescription.find('.htmlContainer');
   if(container.height()<=100){
-    description.addClass('none')
+    jobDescription.addClass('none')
   }
 
 
   container.on('resize', _.debounce(function(){
     if(container.height()<=100){
-      description.addClass('none')
+      jobDescription.addClass('none')
     }else{
-      description.removeClass('none')
+      jobDescription.removeClass('none')
     }
   },200));
 

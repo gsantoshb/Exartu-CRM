@@ -62,7 +62,7 @@
                                 <!-- ko ifnot: $data.customer -->
                                 <a href="#" style="color: #707070; font-size: 27px" data-bind="attr:{href: '/deal/'+_id()}">
                                     <i class="icon icon-briefcase" style="display: block; margin-top: 10px;"></i>
-                                </a>
+                                </a>{{displayName}}xxx
                                 <!-- /ko -->
                             </div>
                             <div class="table-item-title">
@@ -71,7 +71,7 @@
                                     <span data-bind="text: $data.displayName"></span>
                                 </a>
                                 <!-- ko with: Contactables.findOne({_id: $data.customer()}) -->
-
+xxxx
                                 <strong class="text-normal text-muted">
                                     <a data-bind="attr: {href: '/contactable/' + _id }">
                                         at
@@ -81,7 +81,6 @@
                                 <!-- /ko -->
                                 <!--/ko-->
                                 <br/>
-                                <strong class="text text-muted text-small" data-bind="text: $data.Temporary ? 'Temporary': 'Direct Hire'"></strong>
                             </div>
 
                         </div>

@@ -75,28 +75,28 @@
                                 {{/objectProperty}}
                             </td>
                         </tr>
-                        <tr>
-                            <td>Description</td>
-                            <td>
-                                {{#objectProperty property=description editable=editMode}}
-                                    <input class="form-control" type="text" value="{{value}}">
-                                {{else}}
-                                    <span >{{value}}</span>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
+                        <!--<tr>-->
+                            <!--<td>Status note</td>-->
+                            <!--<td>-->
+                                <!--{{#objectProperty property=statusNote editable=editMode}}-->
+                                    <!--<input class="form-control" type="text" value="{{value}}">-->
+                                <!--{{else}}-->
+                                    <!--<span >{{value}}</span>-->
+                                <!--{{/objectProperty}}-->
+                            <!--</td>-->
+                        <!--</tr>-->
                     {{/if}}
                     {{#if employee }}
-                        <tr>
-                            <td>Description</td>
-                            <td>
-                                {{#objectProperty property=description editable=editMode}}
-                                    <input class="form-control" type="text" value="{{value}}">
-                                {{else}}
-                                    <span >{{value}}</span>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
+                        <!--<tr>-->
+                            <!--<td>Status note</td>-->
+                            <!--<td>-->
+                                <!--{{#objectProperty property=statusNote editable=editMode}}-->
+                                    <!--<input class="form-control" type="text" value="{{value}}">-->
+                                <!--{{else}}-->
+                                    <!--<span >{{value}}</span>-->
+                                <!--{{/objectProperty}}-->
+                            <!--</td>-->
+                        <!--</tr>-->
                         <tr>
                             <td>Candidacy status</td>
                             <td>
@@ -118,18 +118,18 @@
                             </td>
                         </tr>
                     {{/if}}
-                    {{#if contact }}
-                        <tr>
-                            <td>Description</td>
-                            <td>
-                                {{#objectProperty property=description editable=editMode}}
-                                    <input class="form-control" type="text" value="{{value}}">
-                                {{else}}
-                                    <span >{{value}}</span>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                    {{/if}}
+                    <!--{{#if contact }}-->
+                    <tr>
+                        <td>Status note</td>
+                        <td>
+                            {{#objectProperty property=statusNote editable=editMode}}
+                                <input class="form-control" type="text" value="{{value}}">
+                            {{else}}
+                                <span >{{value}}</span>
+                            {{/objectProperty}}
+                        </td>
+                    </tr>
+                    <!--{{/if}}-->
                 </table>
             {{/with}}
         </div><!-- /.box-content-md -->

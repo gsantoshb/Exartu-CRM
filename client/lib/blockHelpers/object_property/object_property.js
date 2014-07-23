@@ -1,13 +1,12 @@
 UI.registerHelper('objectProperty', function() {
   var self = this;
   var template = {};
-
   if (self.property==null)
     {
         console.log('unknown object passed to registerHelper.  did you spell the field name correctly',self);
         return null;
     }
-  switch(self.property.type) {
+  switch(self.property.fieldType) {
     case Utils.ReactivePropertyTypes.array:
       template = Template.object_property_multiple;
       template.values = function() {
@@ -43,8 +42,11 @@ UI.registerHelper('objectProperty', function() {
         template = Template.object_property_single;
       }
       template.error = function() {
-        this.property.error.dep.depend();
-        return this.property.error.hasError? this.property.error.message : '';
+        if (_.isObject(this.property.error)){
+          return this.property.error.hasError? this.property.error.message : ''
+        }else{
+          return this.property.error;
+        }
       };
   }
 
@@ -56,6 +58,16 @@ Template.object_property_lookup.events = {
     ctx.data.property.value = e.target.value=='null'? null: e.target.value;
   }
 };
+Template.object_property_lookup.helpers({
+  options: function(){
+
+    //todo: create helper in utils
+    return LookUps.find({codeType: this.property.lookUpCode});
+  },
+  displayName: function(){
+    return LookUps.findOne({_id: this.property.value}) ? LookUps.findOne({_id: this.property.value}).displayName : 'Unknown';
+  }
+})
 
 Template.object_property_date.events = {
   //todo: the dateTimePicker template accepts an onChange callback. We should pass it so we this doesn't depend on the event type
