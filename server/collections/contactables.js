@@ -25,9 +25,9 @@ Contactables.allow({
 })
 
 Contactables.before.insert(function (userId, doc) {
-  var user = Meteor.user();
-  doc.hierId = user.hierId;
-  doc.userId = user._id;
+  var user = Meteor.user() || {};
+  doc.hierId = user.hierId || doc.hierId;
+  doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();
 
   var shortId = Meteor.require('shortid');
