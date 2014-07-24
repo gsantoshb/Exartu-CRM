@@ -58,7 +58,6 @@ Template.freePlanSubscription.tasksCount = function() {
 
 Template.enterprisePlanSubscription.events({
   'click #stripeCheckout': function(e) {
-    debugger;
     stripeHandler.open({
       name: 'Exartu',
       description: 'Enterprise ($20.00)',

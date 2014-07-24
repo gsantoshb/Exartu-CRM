@@ -66,7 +66,7 @@ Router.map(function () {
     path: '/contactable/:_id',
     controller: 'ContactableController'
   });
-//    debugger;
+
   this.route('addContactablePage', {
     path: '/contactableAdd/:objType',
     controller: 'ContactableAddController',

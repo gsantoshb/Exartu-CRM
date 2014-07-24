@@ -9,7 +9,6 @@ UsersHandler = {
   },
   observers: [],
   wait: function (cb) {
-    //        debugger;
     if (UsersHandler.ready()) {
       cb('users');
     } else {
@@ -20,7 +19,6 @@ UsersHandler = {
     }
   },
   check: function () {
-    //        debugger;
     if (UsersHandler.ready()) {
       _.each(UsersHandler.observers, function (cb) {
         cb('users');

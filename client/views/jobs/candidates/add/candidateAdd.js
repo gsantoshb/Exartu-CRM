@@ -1,6 +1,5 @@
 Template.candidateAdd.viewModel = function (jobId) {
   var self = this;
-  //    debugger
   self.entity = ko.mapping.fromJS({
     note: '',
     employee: null,

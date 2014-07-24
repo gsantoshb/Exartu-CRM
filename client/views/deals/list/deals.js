@@ -19,7 +19,6 @@ DealsController = RouteController.extend({
         var type = this.params.hash || this.params.type;
         if (type != undefined && type != 'all') {
             var re = new RegExp("^" + type + "$", "i");
-//        debugger;
             filters().objType(dType.ObjTypes.findOne({
                 name: re
             }));
@@ -173,7 +172,6 @@ Template.deals.viewModel = function () {
         if (objType) {
             q.name = objType.name;
         };
-//      debugger
 
         return dType.ObjTypes.find(q).fetch();
     });
