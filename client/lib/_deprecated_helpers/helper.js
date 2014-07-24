@@ -223,7 +223,6 @@ _.extend(helper, {
     }).value;
   },
   getActivityColor: function (activity) {
-//      debugger;
     var style = dType.ObjTypes.findOne({
       name: activity.data.objTypeName()
     }).style;
@@ -368,7 +367,6 @@ getPictureAsync = function (colection, id, defaultUrl, cb, maxCallStack) {
     });
     if (!picture)
       return cb(defaultUrl);
-    //debugger;
     var url = picture.url({store: 'contactableFiles'});
 
     if (url)
@@ -463,7 +461,6 @@ _.extend(helper, {
     self.relations = ko.observableArray([]);
     Meteor.call('getShowInAddRelations', objType.name, objType.objGroupType, function (err, result) {
         _.each(result, function (r) {
-//            debugger;
             self.relations.push({
                 relation: r,
                 data: ko.meteor.find(window[r.target.collection], r.target.query),

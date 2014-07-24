@@ -99,7 +99,6 @@ Template.dashboard.viewModel = function () {
 var getHistorical = function (collection, timeStamps, query) {
   var history = [];
   var q = query || {};
-  //    debugger;
   _.each(timeStamps, function (time) {
     q.dateCreated = {
       $lte: time
@@ -107,7 +106,6 @@ var getHistorical = function (collection, timeStamps, query) {
     history.push(collection.find(q).count());
   })
   var last = history.length - 1;
-//    debugger;
   if (history[last] != 0) {
     var growth = Math.round(100 * (history[last] - history[last - 1]) / history[last]);
   } else {

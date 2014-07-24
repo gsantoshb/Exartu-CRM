@@ -139,7 +139,6 @@ Template.userProfile.events = {
       }
     }, function(err) {
       if (err) {
-        debugger;
         userInfo.errorMessage.value = err.reason;
         userInfo.successMessage.value = '';
       }

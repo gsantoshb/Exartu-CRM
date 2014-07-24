@@ -86,7 +86,6 @@ ko.bindingHandlers['switch'] = {
 
 ko.bindingHandlers.sparkLine = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        //        debugger;
         var value = ko.toJS(valueAccessor());
         var text = value.join();
 

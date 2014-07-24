@@ -145,7 +145,6 @@ Meteor.startup(function () {
                                 'metadata.employeeId' : result
                               }
                             });
-                            debugger;
 //                            ContactablesFS.insert()
                             cb(null, tempEmployee);
                           }else

@@ -3,9 +3,7 @@
   "dependencies": {
     "basePackages": {
       "bootstrap-3": {},
-      "iron-router": {
-        "version": "0.7.1"
-      },
+      "iron-router": {},
       "knockout-client": {
         "version": "0.0.2"
       },
@@ -26,7 +24,8 @@
       "kadira": {},
       "GAnalytics": {},
       "ms-seo": {},
-      "mail-listener2": {}
+      "mail-listener2": {},
+      "stripe": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -61,8 +60,8 @@
       },
       "spin": {
         "git": "https://github.com/SachaG/meteor-spin.git",
-        "tag": "v0.2.2",
-        "commit": "3f655f0016228e4195acc784c45d3e3a247dc39f"
+        "tag": "v2.0.3",
+        "commit": "23c1145472a710d5c93fa4beaca4e576caeb2f24"
       },
       "bootstrap3-wysihtml5": {
         "git": "https://github.com/andreioprisan/meteor-bootstrap3-wysihtml5.git",
@@ -106,8 +105,8 @@
       },
       "kadira": {
         "git": "https://github.com/meteorhacks/kadira.git",
-        "tag": "v2.4.8",
-        "commit": "5f4437af113537def34484c7b7a2a5e4d60847a9"
+        "tag": "v2.4.9",
+        "commit": "8bb902989917522822a0897117672ae858c23427"
       },
       "GAnalytics": {
         "git": "https://github.com/datariot/meteor-ganalytics.git",
@@ -123,6 +122,11 @@
         "git": "https://github.com/aroman/meteor-mail-listener2.git",
         "tag": "v0.1.3",
         "commit": "aac08e3b79c4adc0f2615db9047ddd49bae14533"
+      },
+      "stripe": {
+        "git": "https://github.com/appleifreak/stripe-meteor.git",
+        "tag": "v1.5.5",
+        "commit": "30874f53c864c31ae1f8818e21ee113ea5c99099"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
@@ -241,8 +245,8 @@
       },
       "cfs-filesystem": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-filesystem.git",
-        "tag": "v0.0.26",
-        "commit": "1ec938265d937d81ff1323f2a8c8dbd301b233df"
+        "tag": "v0.0.27",
+        "commit": "703be2e5f890c84366df39a90a209b7b2c95c967"
       },
       "reactive-property": {
         "git": "https://github.com/CollectionFS/Meteor-reactive-property.git",

@@ -142,6 +142,7 @@
         </div>
     {{/with}}
 </template>
+
 <template name="basicPlanSubscription">
     {{#with plan}}
     <div class="panel panel-info">
@@ -243,12 +244,13 @@
     </div>
     {{/with}}
 </template>
+
 <template name="enterprisePlanSubscription">
     {{#with plan}}
         <div class="panel panel-info">
             <div class="panel-heading"><h3 class="text-center">SUPPORTED PLAN</h3></div>
             <div class="panel-body text-center">
-                <p class="lead" style="font-size:40px"><strong>$49 / month</strong></p>
+                <p class="lead" style="font-size:40px"><strong>$20 / month</strong></p>
             </div>
             <ul class="list-group list-group-flush text-center">
                 <li class="list-group-item"><i class="icon-ok text-danger"></i>
@@ -338,8 +340,13 @@
                     {{> currentSubscription}}
                 {{else}}
                     <div style="text-align: center">
-                        {{#paypalButton}}
-                        {{/paypalButton}}
+                        Paypal
+                        {{#paypalButton}}{{/paypalButton}}
+
+                        <div style="margin: 13px 0 0 0;">Stripe</div>
+                        <button id="stripeCheckout" class="stripe-button-el">
+                            <span>Pay with Card</span>
+                        </button>
                     </div>
                 {{/if}}
             </div>

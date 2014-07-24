@@ -41,7 +41,6 @@ var handleError = function (err, viewName) {
     return false;
 }
 var executeBinding = function (vm, view) {
-//    debugger;
     var retries = Composer.numberOfRetries;
     var keepTring = true;
     while (retries > 0 && keepTring)
