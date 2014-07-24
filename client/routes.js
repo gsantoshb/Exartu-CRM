@@ -178,6 +178,9 @@ Router.map(function () {
           'description': description
         }
       });
+    },
+    waitOn: function () {
+      return SystemConfigsHandler;
     }
   })
 
