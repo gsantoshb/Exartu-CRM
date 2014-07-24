@@ -1,5 +1,4 @@
 extendedSubscribe = function (colectionName, handlerName) {
-  //    debugger;
   var handler = {};
   handler = Meteor.subscribe(colectionName, function () {
     _.forEach(handler.observers, function (cb) {

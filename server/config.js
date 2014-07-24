@@ -6,5 +6,7 @@ ExartuConfig = {
     GoogleConfig_clientId: undefined,
     GoogleConfig_clientSecret: undefined,
     systemUserEmail: 'exartu.developer@gmail.com',
-    systemUserPassword: 'exartuasd'
+    systemUserPassword: 'exartuasd',
+    stripePublishableKey: undefined,
+    stripeSecretKey: undefined
 }

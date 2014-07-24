@@ -1,15 +1,27 @@
-var plan = {};
+var stripeHandler = {};
 
 Template.subscriptionPlanTemplate.created = function() {
-  plan = SubscriptionPlan.getUserPlan();
+  var stripePublishableKey = SystemConfigs.findOne({ configName: 'stripePublishableKey' });
+  stripeHandler = StripeCheckout.configure({
+    key: stripePublishableKey.configValue,
+    image: '/assets/logo.png',
+    allowRememberMe: false,
+    token: function(token) {
+      Meteor.call('stripeCheckout', Meteor.user().hierId, token.id);
+    }
+  });
+};
+
+Template.subscriptionPlanTemplate.plan = function() {
+  return SubscriptionPlan.getUserPlan();
 };
 
 Template.freePlanSubscription.isFree = function () {
-  return plan.code == SubscriptionPlan.plansEnum.free;
+  return SubscriptionPlan.getUserPlan().code == SubscriptionPlan.plansEnum.free;
 };
 
 Template.enterprisePlanSubscription.isEnterprise = function () {
-  return plan.code == SubscriptionPlan.plansEnum.enterprise;
+  return SubscriptionPlan.getUserPlan().code == SubscriptionPlan.plansEnum.enterprise;
 };
 
 Template.freePlanSubscription.plan = function() {
@@ -43,6 +55,18 @@ Template.freePlanSubscription.usersCount = function() {
 Template.freePlanSubscription.tasksCount = function() {
   return Tasks.find().count();
 };
+
+Template.enterprisePlanSubscription.events({
+  'click #stripeCheckout': function(e) {
+    stripeHandler.open({
+      name: 'Exartu',
+      description: 'Enterprise ($20.00)',
+      amount: SubscriptionPlan.getPlan(SubscriptionPlan.plansEnum.enterprise).price * 100,
+      currency: 'USD'
+    });
+    e.preventDefault();
+  }
+});
 
 Template.enterprisePlanSubscription.plan = function() {
   return SubscriptionPlan.getPlan(SubscriptionPlan.plansEnum.enterprise);

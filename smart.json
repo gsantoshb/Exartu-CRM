@@ -1,7 +1,7 @@
 {
   "packages": {
     "bootstrap-3": {},
-    "iron-router": "0.7.1",
+    "iron-router": {},
     "knockout-client": "0.0.2",
     "collection-hooks": {},
     "googlemaps": {},
@@ -18,6 +18,7 @@
     "kadira": {},
     "GAnalytics": {},
     "ms-seo": {},
-    "mail-listener2": {}
+    "mail-listener2": {},
+    "stripe": {}
   }
 }

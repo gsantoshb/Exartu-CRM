@@ -1,6 +1,5 @@
 // Job statuses
 var getLookUpName = function (lookUpName, code) {
-  //    debugger;
   var lookUp = LookUps.findOne({
     name: lookUpName
   });

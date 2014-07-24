@@ -213,7 +213,7 @@ Utils.ObjectDefinition = function(definition) {
     var update = {
       $set: {}
     };
-//    debugger;
+
     _.forEach(_.keys(definition.reactiveProps), function(propName) {
         var propertyUpdatePath = definition.reactiveProps[propName].update;
         if (self[propName].value != definition.reactiveProps[propName].default && propertyUpdatePath)

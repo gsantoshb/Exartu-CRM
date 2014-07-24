@@ -55,7 +55,6 @@ Template.sendMessage.viewModel = function (contactable) {
         if (!self.email().to.isValid())
             return;
 
-        debugger;
         var type = ContactMethods.findOne({type: Enums.contactMethodTypes.email})
 
         Contactables.update({

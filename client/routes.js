@@ -66,7 +66,7 @@ Router.map(function () {
     path: '/contactable/:_id',
     controller: 'ContactableController'
   });
-//    debugger;
+
   this.route('addContactablePage', {
     path: '/contactableAdd/:objType',
     controller: 'ContactableAddController',
@@ -178,6 +178,9 @@ Router.map(function () {
           'description': description
         }
       });
+    },
+    waitOn: function () {
+      return SystemConfigsHandler;
     }
   })
 

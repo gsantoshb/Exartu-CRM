@@ -1,5 +1,6 @@
 var dbSeed = [
 //  seedSystemLookUps,
+  seedSystemConfigs,
   seedSystemRoles,
   seedSystemContactMethods,
   seedSystemJobRateTypes,
