@@ -16,6 +16,8 @@ TasksController = RouteController.extend({
     });
   }
 });
+
+//todo: improve queries to match with the state in the transform
 var states = [
     {
         name: 'Pending',
@@ -64,12 +66,98 @@ var states = [
         }
     }
 ];
-Template.tasks.config = {
-    singleton: true
-}
-Template.tasks.waitOn = ['TasksHandler'];
 
-Template.tasks.viewModel = function () {
+
+var query = new Utils.ObjectDefinition({
+  reactiveProps: {
+    searchString: {},
+    ownedByMe: { type: Utils.ReactivePropertyTypes.boolean,
+      default: false
+    },
+    inactives: {
+      type: Utils.ReactivePropertyTypes.boolean,
+      default: false
+    },
+    assigned: {
+      type: Utils.ReactivePropertyTypes.boolean,
+      default: false
+    },
+    assignedTo: {
+      default: Meteor.userId()
+    }
+  }
+});
+
+var status= null;
+var statusDep= new Deps.Dependency;
+
+Template.tasks.helpers({
+  taskCount: function(){
+    return Tasks.find().count();
+  },
+  users: function(){
+    return Meteor.users.find();
+  },
+  tasks: function(){
+    var queryObj = query.getObject();
+    var q = {};
+    if(! queryObj.inactives){
+      q.inactive = {
+        $ne: true
+      };
+    }
+    if (queryObj.ownedByMe) {
+      q.userId = Meteor.userId();
+    }
+
+    if (queryObj.assigned && queryObj.assignedTo) {
+      q.assign = queryObj.assignedTo
+    }
+
+    statusDep.depend();
+    if (status) {
+      _.extend(q, status.query());
+    }
+
+    if (queryObj.searchString) {
+      q.note = {
+        $regex: queryObj.searchString,
+        $options: 'i'
+      };
+    }
+    console.log(q)
+    return Tasks.find(q);
+  },
+  filters: function(){
+    return query
+  },
+  states: function(){
+    return states;
+  },
+  selectedClass: function(){
+    statusDep.depend();
+    return this == status ? 'btn-primary': 'btn-default';
+  }
+})
+Template.tasks.events({
+  'click .addTask': function(){
+    Composer.showModal('addEditTask');
+  },
+  'click .selectState': function(){
+    if (status == this){
+      status = null;
+    }else{
+      status = this;
+    }
+    statusDep.changed()
+  },
+  'click .clearState': function(){
+    status = null;
+    statusDep.changed()
+  }
+
+})
+Template.tasks.asd= function () {
     var self = {};
     self.searchString = ko.observable();
     self.selectedState = ko.observable();
@@ -85,11 +173,6 @@ Template.tasks.viewModel = function () {
         self.selectedState(false);
     }
 
-    self.ownedByMe = ko.observable(false);
-    self.assigned = ko.observable(false);
-    self.assignedTo = ko.observable(Meteor.userId());
-
-    self.includeInactives=ko.observable(false);
 
     self.users = ko.meteor.find(Meteor.users, {});
     var query = ko.computed(function () {
@@ -100,26 +183,6 @@ Template.tasks.viewModel = function () {
             _.extend(q, selectedState.query());
         }
 
-        if(!self.includeInactives()){
-            q.inactive = {
-                $ne: true
-            };
-        }
-
-        if (self.ownedByMe()) {
-            q.userId = Meteor.userId();
-        }
-
-        if (self.assigned() && self.assignedTo()) {
-            q.assign = self.assignedTo()
-        }
-
-        if (self.searchString()) {
-            q.note = {
-                $regex: self.searchString(),
-                $options: 'i'
-            };
-        }
         return q;
     });
 

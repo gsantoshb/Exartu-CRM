@@ -706,7 +706,8 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 @media (min-width: 992px){
     .filter .filter-list{
-        height: 0px;
+        position: absolute;
+        width: 100%;
     }
 }
 
