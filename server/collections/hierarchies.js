@@ -32,6 +32,10 @@ Meteor.startup(function () {
       // List of default values for each lookup type
       hier.defaultLookUpValues = [];
 
+      hier.configuration={
+        webName: hier.name,
+        title: hier.name,
+      }
 			Hierarchies.insert(hier);
 
 			return hier._id;
@@ -105,6 +109,15 @@ Meteor.startup(function () {
           }
         }
       );
+    },
+    saveConfiguration: function(options){
+      var user= Meteor.user();
+      if (!user)
+        return null
+      if (Hierarchies.findOne({'configuration.webName': options.webName, _id: { $ne: user.hierId } })){
+        throw new Meteor.Error(500, 'webName already exists');
+      }
+      Hierarchies.update({_id: user.hierId}, {$set: {configuration: options}})
     }
 	});
 });
