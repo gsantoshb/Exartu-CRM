@@ -105,7 +105,6 @@ Template.displayObjType = function() {
 };
 Template.contactable.helpers({
   displayObjType: function() {
-      console.log('contactableobject',this);
       if (this.Customer)
           return 'Customer';
       if (this.Employee)

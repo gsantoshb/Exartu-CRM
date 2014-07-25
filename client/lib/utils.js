@@ -254,7 +254,6 @@ Utils.getLinkTypeFromEntity=function(entity) {
 
 Utils.getHrefFromEntity=function(entity)
 {
-    console.log('gethref',entity);
     var linktype=Utils.getLinkTypeFromEntity(entity);
     if (linkType)
     {
