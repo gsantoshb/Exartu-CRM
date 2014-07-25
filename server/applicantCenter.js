@@ -49,5 +49,28 @@ Meteor.methods({
       }
     });
 
+  },
+  createContactableFromUser: function(userId){
+    //todo: validate appCenter server
+
+    var user = Meteor.users.findOne(userId);
+    if (!user){
+      throw new Meteor.Error(400, 'User not found')
+    }
+
+    return Contactables.insert({
+      objNameArray:['person', 'Employee', 'Contactable'],
+      hierId: user.hierId,
+      userId: user._id,
+      user: user._id,
+      person: {
+        "firstName" : user.username,
+        "lastName" : user.username
+      },
+      Employee:{
+
+      }
+    })
+
   }
 })
