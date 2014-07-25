@@ -35,10 +35,9 @@ var uploadFile = function(f) {
     owner: Meteor.userId()
   };
   ResumesFS.insert(fsFile, function (err) {
-    if (!err){
-    }
-    else
+    if (err) {
       console.log('File upload error');
+    }
   });
 }
 

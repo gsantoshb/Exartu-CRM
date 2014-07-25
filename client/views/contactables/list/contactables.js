@@ -25,7 +25,6 @@ ContactablesController = RouteController.extend({
       return;
     }
     var type = this.params.hash || this.params.type;
-      console.log('type',type);
     if (type != undefined && type != 'all') {
       var re = new RegExp("^" + type + "$", "i");
       var objType = dType.ObjTypes.findOne({
