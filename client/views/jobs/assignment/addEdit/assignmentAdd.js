@@ -3,7 +3,7 @@ var assignmentDependency=new Deps.Dependency;
 
 Template.assignmentAdd.created=function(){
   assignment=null;
-}
+};
 
 var init=function(options){
   var employeeId;
@@ -12,11 +12,12 @@ var init=function(options){
 
   assignmentDependency.changed();
 
-  if (options.assignmentId){
-    var assignment= Assignments.findOne({_id: options.assignmentId});
+  // Check for an existing assignment
+  if (options.assignmentId) {
+    var assignment = Assignments.findOne({_id: options.assignmentId});
     employeeId = options.employeeId || assignment.employee;
 
-    jobId= assignment.job
+    jobId = assignment.job;
     return {
       start: assignment.start,
       end: assignment.end,
@@ -25,26 +26,25 @@ var init=function(options){
       employee: employeeId,
       _id: options.assignmentId
     }
-  }else{
-    var employeeParameter= options.employeeId;
-    if(employeeParameter){
-      employeeId= employeeParameter;
+  } else {
+    var employeeParameter = options.employeeId;
+    if (employeeParameter) {
+      employeeId = employeeParameter;
     }
 
-    jobId= options.jobId || Session.get('entityId');
-    var job=Jobs.findOne({
-        _id: jobId
-      });
+    jobId = options.jobId || Session.get('entityId');
+    var job = Jobs.findOne({ _id: jobId });
 
     return {
-        start: job.startDate,
-        end: job.endDate,
-        rates: job.jobRates,
-        job: jobId,
-        employee: employeeId
-      };
+      start: job.startDate,
+      end: job.endDate,
+      rates: job.jobRates,
+      job: jobId,
+      employee: employeeId
+    };
   }
-}
+};
+
 Template.assignmentAdd.helpers({
   assignment:function(){
     var params=this[0];
@@ -92,38 +92,46 @@ Template.assignmentAdd.helpers({
     });
     return job && job.endDate;
   }
-})
+});
 
 Template.assignmentAdd.events({
-  'change .employeeSelect':function(e, ctx){
-    assignment.employee= e.target.value;
+  'change .employeeSelect': function (e, ctx) {
+    assignment.employee = e.target.value;
   },
 
-  'click .save':function(e, ctx){
-    if (! assignment.employee){
+  'click .save': function (e, ctx) {
+    if (!assignment.employee) {
       return;
     }
 
-    if (assignment._id){
-      Assignments.update({_id: assignment._id},{
-        $set:{
+    //Update candidates for this job
+    var newCandidate = Candidates.findOne({ job: assignment.job, employee: assignment.employee });
+    var currentCandidate = Candidates.findOne({ job: assignment.job, assigned: true });
+    if (currentCandidate && currentCandidate._id != newCandidate._id) {
+      Candidates.update({ _id: currentCandidate._id }, { $unset: { assigned: "" }});
+    }
+    Candidates.update({ _id: newCandidate._id }, { $set: { assigned: true }});
+
+    if (assignment._id) {
+      Assignments.update({_id: assignment._id}, {
+        $set: {
           start: assignment.start,
           end: assignment.end,
           rates: assignment.rates,
           employee: assignment.employee
         }
-      },function(err, result){
-        if(err){
+      }, function (err, result) {
+        if (err) {
           console.log(err)
-        }else{
+        } else {
           $('.modal-host').children().modal('toggle')
         }
       });
-    }else{
-      Assignments.insert(assignment,function(err, result){
-        if(err){
+    } else {
+      Assignments.insert(assignment, function (err, result) {
+        if (err) {
           console.log(err)
-        }else{
+        } else {
           $('.modal-host').children().modal('toggle')
         }
       });
