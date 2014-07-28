@@ -135,6 +135,9 @@ Template.job.events({
         update.$set.location= newLocation;
       }
 
+      if (services.tags.value.length > 0)
+        update.$set.tags = services.tags.value;
+
       Jobs.update({_id: job._id}, update, function(err, result) {
           if (!err) {
               self.editMode=false;
