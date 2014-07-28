@@ -1,5 +1,5 @@
 //todo hack
-var applicantCenterURL='http://localhost:3030/'
+var applicantCenterURL = process.env.HRCENTER_URL || 'http://localhost:3030/';
 
 Meteor.methods({
   'sendInvitation':function(employeeId, email){
@@ -33,7 +33,7 @@ Meteor.methods({
     var token= KeyToken.createToken(employee.hierId, {employee: employeeId});
 
     var html='<h2>You have been invited to join ours ApplicantCenter</h2>' +
-      '<a href="' + applicantCenterURL + 'register/' + employee.hierId + '/' + token + '">join</a>'
+      '<a href="' + applicantCenterURL + 'register/' + employee.hierId + '/' + token + '">Join</a>'
 
     if (employee.invitation){
       KeyToken.invalidate(employee.invitation);
