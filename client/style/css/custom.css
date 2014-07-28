@@ -503,13 +503,14 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 }
 
 .contactable-right-col-custom {
-    margin: 0px -40px -30px 25px;
+    margin: 15px 0px 0px 0px;
 }
 
 .contactable-left-col {
     background-color: #ffffff;
     box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     border-top: 1px solid #ddd;
+    margin: 15px 0px 0px 0px;
 }
 
 .contactable-nav-tabs-main{
