@@ -9,11 +9,8 @@ var getEntity= function(link){
   return Utils.getEntityFromLink(link);
 }
 var link=function(link){
-  if (_.findWhere(newNoteLinks,{
-    id: link.id
-  }))
+  if ( _.findWhere(newNoteLinks, { id: link.id }) )
     return;
-    console.log('pushlink',link);
   newNoteLinks.push(link);
 }
 
