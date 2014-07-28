@@ -35,11 +35,20 @@
                         <span>Background :</span>
                         <div class="form-group">
                             {{#objectProperty property=background editMode=true}}
+                                {{value}}
                                 <input class="" type="color" placeholder="title" value="{{value}}">
                             {{/objectProperty}}
                         </div><!-- /.form-group -->
                     </div>
+
+
                 {{/with}}
+                    <span>Logo :</span>
+
+                    <div id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                        <img class="img-responsive" style="display: inline; max-height:40px; cursor: pointer"  src="{{logo}}">
+                    </div>
+                    <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader" />
                 <button id="saveButton">Save</button>
             </div>
         </div>
