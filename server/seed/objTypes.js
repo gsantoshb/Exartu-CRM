@@ -99,7 +99,7 @@ newObjType({
       lookUpName: 'jobDuration',
       lookUpCode: Enums.lookUpTypes.job.duration.code,
       defaultValue: getFirst(Enums.lookUpTypes.job.duration.code),
-      required: true,
+      required: false,
       multiple: false
     },
     { name: 'status',
