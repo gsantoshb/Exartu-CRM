@@ -225,7 +225,11 @@
     <div class="box">
         <div class="box-header-2">
             <a class="btn-action editJobDescription pull-right" href="#" style="color: {{colorDescriptionEdit}}"><i class="fa fa-pencil"></i></a>
-            <div class="box-title">Description</div>
+            <div class="box-title">
+                    Description
+                    <a class="previewMode hidden-sm hidden-xs" href="#" title="Preview in mobile size" style="margin-left: 4px"><i class="fa fa-mobile-phone" style="float: inherit; margin-top: 2px; color: {{colorPreviewMode}}"></i></a>
+            </div>
+
         </div>
         <div class="box-body">
             <div style="margin-top: 10px; margin-left: 10px"> 
@@ -233,9 +237,9 @@
                         {{#htmlEditor}}
                         {{/htmlEditor}}
                 {{else}}
-                    <div id="description" style="max-height: 300px; min-height: 100px; overflow-y: auto;">
+                    <div id="description" style="max-height: 600px; min-height: 100px; overflow-y: auto;">
                         <div class="text">
-                            {{#showAsHTML value=value}}
+                            {{#showAsHTML value=value previewMode=previewMode}}
                             {{/showAsHTML}}
                         </div>
                     </div>
