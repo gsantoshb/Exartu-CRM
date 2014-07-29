@@ -24,7 +24,6 @@
       "kadira": {},
       "GAnalytics": {},
       "ms-seo": {},
-      "mail-listener2": {},
       "stripe": {}
     },
     "packages": {
@@ -118,11 +117,6 @@
         "tag": "v0.2.6",
         "commit": "1a4ba31a1f6f29009d3941e9dd883829ff4e4b8b"
       },
-      "mail-listener2": {
-        "git": "https://github.com/aroman/meteor-mail-listener2.git",
-        "tag": "v0.1.3",
-        "commit": "aac08e3b79c4adc0f2615db9047ddd49bae14533"
-      },
       "stripe": {
         "git": "https://github.com/appleifreak/stripe-meteor.git",
         "tag": "v1.5.5",
@@ -155,8 +149,8 @@
       },
       "cfs-access-point": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-access-point.git",
-        "tag": "v0.0.31",
-        "commit": "e2ccc9cdcfdf1a26d40acaeff3f3a6b5324e1ef6"
+        "tag": "v0.0.32",
+        "commit": "e8f51b804db5163cecda616d07b1286d239e8955"
       },
       "cfs-worker": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-worker.git",
@@ -220,8 +214,8 @@
       },
       "cfs-gridfs": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-gridfs.git",
-        "tag": "v0.0.22",
-        "commit": "2d008d4594e55d07006674b25a7e9cf8d25a3917"
+        "tag": "v0.0.23",
+        "commit": "c8c319b5cab50acfa79e95cea0dbc5548d78f361"
       },
       "power-queue": {
         "git": "https://github.com/CollectionFS/Meteor-power-queue.git",

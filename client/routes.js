@@ -150,14 +150,7 @@ Router.map(function () {
     path: '/planlimitation',
     template: 'planLimitation'
   })
-  this.route('emails', {
-    path: '/emails',
-    template: 'emailListTemplate'
-  })
-  this.route('emailAccount', {
-    path: '/emailAccount',
-    controller: 'EmailAccountController'
-  })
+
 
   this.route('subscriptionPlan', {
     path: '/subscriptionplan',
