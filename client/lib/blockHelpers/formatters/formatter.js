@@ -25,6 +25,7 @@ UI.registerHelper('htmlEditor', function() {
     editor.wysihtml5({
       "color": true,
       "size": 'xs',
+      'html': true,
       "events": {
         "change": _.bind(function () {
           editor.trigger('change',editor.val());
