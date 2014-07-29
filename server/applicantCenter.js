@@ -32,7 +32,7 @@ Meteor.methods({
 
     var token= KeyToken.createToken(employee.hierId, {employee: employeeId});
 
-    var html='<h2>You have been invited to join ours ApplicantCenter</h2>' +
+    var html='<h2>Welcome to ApplicantCenter</h2>' +
       '<a href="' + applicantCenterURL + 'register/' + employee.hierId + '/' + token + '">Join</a>'
 
     if (employee.invitation){
