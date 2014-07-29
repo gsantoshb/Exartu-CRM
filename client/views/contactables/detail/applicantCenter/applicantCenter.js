@@ -51,6 +51,11 @@ Template.applicantCenter.events({
     Meteor.call('sendInvitation', this.entity._id, email, function(err, result){
       if (err){
         console.dir(err);
+        alert(err);
+      }
+        else
+      {
+          alert('Invitation sent');
       }
     })
   },

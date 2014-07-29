@@ -630,3 +630,17 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 }
 
+
+
+/***************************** Mobile Specific CSS ***********************************/
+@media (max-width: 768px) {
+    /* Contactable navigation tabs */
+    .contactable-nav-tabs-main { padding: 0px; }
+    
+    /* Contactable boxes */
+    .contactable-right-col-custom { margin: 20px 0px 0px 0px; }
+}
+
+/********************************** End Mobile ***************************************/
+
+
