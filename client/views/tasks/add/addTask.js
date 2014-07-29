@@ -83,7 +83,6 @@ Template.addEditTask.helpers({
     }
   },
   linkedEntities: function(){
-    console.log('linkedEntities')
     linkedDep.depend();
     return task.links;
   },

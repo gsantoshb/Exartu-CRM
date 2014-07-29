@@ -57,7 +57,6 @@ ko.bindingHandlers['switch'] = {
 
     },
     update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-        //        console.log(this.asd);
         var falseElement,
             trueElement;
 

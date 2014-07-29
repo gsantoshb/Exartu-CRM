@@ -29,7 +29,6 @@ cfs-graphicsmagick
 subscription-plan
 paypal
 percolatestudio-migrations
-force-ssl
 kadira
 accounts-ui
 GAnalytics
@@ -39,3 +38,4 @@ mail-listener2
 doccenter
 keyToken
 stripe
+force-ssl

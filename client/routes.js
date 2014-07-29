@@ -135,6 +135,10 @@ Router.map(function () {
     path: '/management/lookups',
     controller: 'LookupsManagementController'
   })
+  this.route('hrCenterManagement', {
+    path: '/management/hrcenter',
+    controller: 'hrCenterManagementController'
+  })
 
   this.route('resumeParser', {
     path: '/resumeparser',

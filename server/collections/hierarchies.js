@@ -32,6 +32,10 @@ Meteor.startup(function () {
       // List of default values for each lookup type
       hier.defaultLookUpValues = [];
 
+      hier.configuration={
+        webName: hier.name,
+        title: hier.name,
+      }
 			Hierarchies.insert(hier);
 
 			return hier._id;
@@ -105,6 +109,29 @@ Meteor.startup(function () {
           }
         }
       );
+    },
+    saveConfiguration: function(options){
+      var user= Meteor.user();
+      if (!user)
+        return null
+      if (/\s/.test(options.webName))
+        throw new Meteor.Error(500, 'webName contains spaces');
+
+      if (Hierarchies.findOne({'configuration.webName': options.webName, _id: { $ne: user.hierId } })){
+        throw new Meteor.Error(500, 'webName already exists');
+      }
+
+      var hier=Hierarchies.findOne({_id: user.hierId});
+      var oldCong=hier.configuration || {};
+
+      var conf={
+        webName: options.webName || oldCong.webName,
+        title: _.isString(options.title)? options.title : oldCong.title,
+        background: options.background || oldCong.webName,
+        logo: options.logo || oldCong.logo
+      }
+
+      Hierarchies.update({_id: user.hierId}, {$set: {configuration: conf}})
     }
 	});
 });
@@ -125,3 +152,9 @@ var generateUniqueHierId = function (prefix) {
 Hierarchies.after.insert(function(userId, doc){
   seedSystemLookUps(doc._id);
 })
+
+// Users files
+HierarchiesFS = new Document.Collection({
+  collection: Hierarchies
+});
+HierarchiesFS.publish(); // Default publish and allow options

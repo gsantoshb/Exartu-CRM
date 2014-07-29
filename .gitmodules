@@ -3,4 +3,4 @@
 	url = git://github.com/Exartu/Exartu-DocCenter.git
 [submodule "packages/keyToken"]
 	path = packages/keyToken
-	url = git@github.com:Exartu/Exartu-KeyToken.git
+	url = git://github.com/Exartu/Exartu-KeyToken.git
