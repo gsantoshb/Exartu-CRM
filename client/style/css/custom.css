@@ -629,7 +629,6 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     pointer-events: none;
 }
 
-
 .separatedLinks{
     display: inline;
 }
@@ -640,7 +639,16 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     color: #333;
 
 }
+.upgrade {
+    margin-top: -11px;
+    margin-right: -40px;
+    height: 38px;
+    border-radius: 0px;
+}
 
+.upgrade > span {
+    display: inline-flex !important;
+}
 
 
 /***************************** Mobile Specific CSS ***********************************/
@@ -650,8 +658,21 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     
     /* Contactable boxes */
     .contactable-right-col-custom { margin: 20px 0px 0px 0px; }
+    
+    .upgrade {
+        margin-top: -11px;
+        height: 38px;
+        border-radius: 0px;
+        margin-right: 0px;
+    }
+
+    .upgrade span {
+        display: none !important;
+    }
 }
 
 /********************************** End Mobile ***************************************/
+
+
 
 

@@ -181,6 +181,13 @@ Router.map(function () {
     }
   })
 
+  this.route('emailVerification', {
+    path: '/emailVerification/:token',
+    action: function () {
+      this.redirect('/user');
+    }
+  });
+  
   this.route('notFound', {
     path: '/notfound',
     template: 'notFoundTemplate'
