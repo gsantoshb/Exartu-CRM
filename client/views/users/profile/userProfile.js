@@ -183,7 +183,7 @@ Template.userProfile.events({
 
     Meteor.call('updateEmailVerification', pendingEmail);
   }
-  }
+});
 
 //Template.userProfile.waitOn = ['UsersHandler'];
 
