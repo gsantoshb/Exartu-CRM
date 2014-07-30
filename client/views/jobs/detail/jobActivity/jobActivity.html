@@ -30,7 +30,7 @@
                             </div>
                             <!-- /.item-info -->
                             <div class="item-content">
-                                <div class="box">
+                                <div class="box" style="height: 100%">
                                     <div class="box-content">
                                         {{#activityType}}
                                         {{/activityType}}
@@ -65,11 +65,11 @@
 
 <template name="jobActivityAssignmentsEdit">
     {{#if employeeChanged}}
-        {{userName userId}} Assigned <a href="/contactables/{{data.employee}}">{{employeeName data.employee}}</a>
+        {{userName userId}} Assigned <a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
     {{else}}
         {{userName userId}} Edited the assignment
     {{/if}}
 </template>
 <template name="jobActivityAssignmentsAdd">
-    {{userName userId}} Assigned <a href="/contactables/{{data.employee}}">{{employeeName data.employee}}</a>
+    {{userName userId}} Assigned <a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
 </template>
