@@ -24,17 +24,13 @@
             <div class="col-sm-8 col-md-7 col-lg-6">
                 <!-- Single button -->
                 <div class="btn-group pull-left suffix-5">
-
-                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-
-                        <a href="/dealAdd/Deal" data-bind="attr: { href: '/dealAdd/Deal' } "  >Add</a>
-                    </button>
+                    <a class="btn btn-success dropdown-toggle" href="/dealAdd/Deal" data-bind="attr: { href: '/dealAdd/Deal' } "  >Add</a>
                 </div>
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search deal"  data-bind="value: searchString, valueUpdate: 'afterkeydown'">
-                                          <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button"><i class="fa fa-search"></i> Search</button>
-                                          </span>
+                      <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button"><i class="fa fa-search"></i> Search</button>
+                      </span>
                 </div>
             </div><!-- /.col-lg-5 -->
         </div><!-- /.row -->
