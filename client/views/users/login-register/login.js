@@ -5,17 +5,18 @@ Template.login.viewModel = function () {
     self.register=function(){
         self.login(false);
         self.errorMessage('')
-    }
+    };
     self.signin=function(){
         self.login(true);
         self.errorMessage('')
-    }
+    };
 
   self.errorMessage = ko.observable();
 
   self.email = ko.observable();
   self.password = ko.observable();
   self.notVerified = ko.observable(false);
+  self.loading= ko.observable(false);
 
   self.loginWith = function (serviceName) {
     if (Meteor['loginWith' + serviceName])
@@ -27,12 +28,14 @@ Template.login.viewModel = function () {
           GAnalytics.event("account","signin");
         }
       });
-  }
+  };
 
   self.loginWithPassword = function () {
+
     Meteor.loginWithPassword({
       email: self.email()
     }, self.password(), function (err, result) {
+
       if (err) {
         if(err.reason == 'Email not verified') {
           self.notVerified(true);
@@ -49,7 +52,7 @@ Template.login.viewModel = function () {
         GAnalytics.event("account","signin");
       }
     });
-  }
+  };
 
   self.resendVerification = function() {
     Meteor.call('resendEmailVerification', self.email(), function(err) {
@@ -88,8 +91,8 @@ Template.login.viewModel = function () {
         },
         message: 'Email is already in use by another account'
       }
-    }),
-  })
+    })
+  });
 
   self.newAccount().passwordVerification.extend({
     areSame: {
@@ -105,21 +108,21 @@ Template.login.viewModel = function () {
   self.seeding = ko.observable(false);
   self.accountCreated = ko.observable(false);
   self.createNewAccount = function () {
-    if (self.isValidating())
-      return;
-    self.seeding(true);
+    self.loading(true);
+
     if (!self.newAccount.isValid()){
       self.newAccount.errors.showAllMessages();
         return;
     }
 
     Accounts.createUser(_.omit(ko.toJS(self.newAccount()), 'passwordVerification'), function (err, result) {
+      self.loading(false);
       if (!err || err.error == 500) {
         self.seeding(false);
         self.accountCreated(true);
       }
     });
-  }
+  };
 
   return self;
 };

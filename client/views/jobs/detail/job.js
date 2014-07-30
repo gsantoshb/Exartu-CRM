@@ -167,6 +167,16 @@ Template.job_tabs.helpers({
 // Job description
 var jobDescriptionEditMode = false;
 var jobDescriptionEditModeDep = new Deps.Dependency;
+var descriptionSelf={}
+Utils.reactiveProp(descriptionSelf, 'previewMode', false);
+
+Template.jobDescription.colorPreviewMode= function(){
+  return descriptionSelf.previewMode ? '#008DFC' : '#ddd'
+}
+
+Template.jobDescription.previewMode= function(){
+  return descriptionSelf.previewMode;
+}
 
 Template.jobDescription.editMode = function() {
   jobDescriptionEditModeDep.depend();
@@ -202,5 +212,8 @@ Template.jobDescription.events = {
         job.jobDescription.defaultValue = job.jobDescription.value; // Reset jobDescription initial value
       }
     });
+  },
+  'click .previewMode': function(){
+    descriptionSelf.previewMode= ! descriptionSelf.previewMode;
   }
 };

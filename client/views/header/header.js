@@ -38,6 +38,12 @@ Template.header.helpers({
     },
     conversationURL: function(msg){
         return '/inbox/' + msg.conversationId;
+    },
+    hierInfo: function() {
+      return Hierarchies.findOne({_id: Meteor.user().hierId});
+    },
+    isFree: function(planCode) {
+      return planCode == SubscriptionPlan.plansEnum.free;
     }
 });
 Template.header.events({
@@ -47,11 +53,6 @@ Template.header.events({
         });
     }
 });
-
-Template.sidebar.isAdmin = function() {
-  isAdminDep.depend();
-  return isAdmin;
-};
 
 var init = true;
 Template.header.rendered = function () {

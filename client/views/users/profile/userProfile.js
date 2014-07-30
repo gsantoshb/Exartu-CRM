@@ -49,16 +49,18 @@ Template.userProfile.created = function() {
   changePassword = Utils.ObjectDefinition({
     reactiveProps: {
       oldPassword: {
-        validator: function() {
-          return this.value.length >= 6;
-        },
-        errorMessage: 'Insert a password longer than 5 characters'
+        validator: Utils.stringNotEmpty
+//        validator: function() {
+//          return this.value.length >= 6;
+//        },
+//        errorMessage: 'Insert a password longer than 5 characters'
       },
       newPassword: {
-        validator: function() {
-          return this.value.length >= 6;
-        },
-        errorMessage: 'Insert a password longer than 5 characters'
+        validator: Utils.stringNotEmpty
+//        validator: function() {
+//          return this.value.length >= 6;
+//        },
+//        errorMessage: 'Insert a password longer than 5 characters'
       },
       errorMessage: {},
       successMessage: {}
@@ -106,7 +108,7 @@ Template.userProfile.pendingEmail = function() {
   return pendingEmail;
 };
 
-Template.userProfile.events = {
+Template.userProfile.events({
   'click #edit-pic': function () {
     $('#edit-picture').trigger('click');
   },
@@ -127,17 +129,19 @@ Template.userProfile.events = {
       return;
     }
 
-    Meteor.users.update({_id: Meteor.userId()}, {
-      $addToSet: {
+    var upd={};
+    if (!_.findWhere(Meteor.user().emails, {address: userInfo.email.value})){
+      upd.$addToSet= {
         emails: {
           address: userInfo.email.value,
-          verified: false
+            verified: false
         }
-      },
-      $set: {
+      };
+    }
+    upd.$set= {
         username: userInfo.username.value
-      }
-    }, function(err) {
+    };
+    Meteor.users.update({_id: Meteor.userId()}, upd, function(err) {
       if (err) {
         userInfo.errorMessage.value = err.reason;
         userInfo.successMessage.value = '';
@@ -179,7 +183,7 @@ Template.userProfile.events = {
 
     Meteor.call('updateEmailVerification', pendingEmail);
   }
-}
+});
 
 //Template.userProfile.waitOn = ['UsersHandler'];
 
@@ -275,4 +279,5 @@ Template.userProfile.events = {
 //  });
 //
 //  return self;
+//}
 //}

@@ -47,3 +47,10 @@ UI.registerHelper('showAsHTML', function() {
   }
   return Template.showAsHTMLTemplate
 });
+
+Template.showAsHTMLTemplate.previewClass=function(){
+  if (this.previewMode){
+    return 'mobilePreview'
+  }
+  return ''
+}

@@ -77,9 +77,6 @@
                             <a href="/users">Users</a>
                         </li>
                         <li>
-                            <a href="/emailAccount">Email Account</a>
-                        </li>
-                        <li>
                             <a href="/management/lookups">Lookups</a>
                         </li>
                         <li>
@@ -203,12 +200,6 @@
                     <span>Tasks</span>
                 </a>
             </li>
-            <li class="tasks" data-bind="css:{active: activeRoute() == 'emails'}">
-                <a href="/emails">
-                    <i class="icon icon-check"></i>
-                    <span>Emails</span>
-                </a>
-            </li>
             <li class="deals" data-bind="css:{active: activeRoute() == 'deals'}">
                 <a href="/deals">
                     <i class="icon icon-euro-currency-3"></i>
@@ -216,14 +207,6 @@
                 </a>
             </li>
 
-            {{#if isAdmin}}
-                <li class="tasks" data-bind="css:{active: activeRoute() == 'docCenter'}">
-                    <a href="/doccenter/documents">
-                        <i class="icon icon-files-6"></i>
-                        <span>DocCenter</span>
-                    </a>
-                </li>
-            {{/if}}
             <!--
 	<li class="assignments">
 	<a href="assignments.html">

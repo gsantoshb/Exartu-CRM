@@ -32,7 +32,7 @@ seedSubscriptionPlans = function() {
 //        }
 //      },
 //      storageLimit: 2000,
-      price: 20
+      price: 19
     }
   };
 

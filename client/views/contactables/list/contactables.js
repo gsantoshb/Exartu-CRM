@@ -83,7 +83,6 @@ var info = new Utils.ObjectDefinition({
     }
   }
 });
-
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
     searchString: {},
@@ -100,7 +99,8 @@ var query = new Utils.ObjectDefinition({
       default: timeLimits.day
     },
     tags: {
-      type: Utils.ReactivePropertyTypes.array
+      type: Utils.ReactivePropertyTypes.array,
+      default: []
     },
     limit: {
       default: 15
