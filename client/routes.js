@@ -186,41 +186,8 @@ Router.map(function () {
     template: 'notFoundTemplate'
   })
 
-  DesignerController = DocCenter.DesignerController;
-  this.route('designer', {
-    path: '/doccenter/designer/:_id',
-    controller: 'DesignerController',
-  });
-  FillerController = DocCenter.FillerController;
-  this.route('filler', {
-    path: '/doccenter/filler/:_id',
-    controller: 'FillerController',
-  });
-
-  this.route('addDocCenterDocument', {
-    path: '/doccenter/documents/add',
-    template: 'addDocCenterDocument',
-  });
 });
 
-isAdmin = false;
-isAdminDep = new Deps.Dependency;
-DocCenterController = DocCenter.DocCenterController;
-
-Meteor.autorun(function() {
-  Accounts.connection._userIdDeps.depend();
-    Meteor.call('isSystemHier', function(err, result) {
-      isAdmin = result;
-      isAdminDep.changed();
-      if (isAdmin) {
-        Router.route('docCenter', {
-          where: 'client',
-          path: '/doccenter/documents',
-          controller: 'DocCenterController'
-        });
-      }
-    });
-});
 
 // handler for testing loading pages
 //foreverHandler={

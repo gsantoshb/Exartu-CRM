@@ -48,11 +48,6 @@ Template.header.events({
     }
 });
 
-Template.sidebar.isAdmin = function() {
-  isAdminDep.depend();
-  return isAdmin;
-};
-
 var init = true;
 Template.header.rendered = function () {
     $('body').addClass("flat");
