@@ -597,3 +597,27 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     opacity: 0.4;
     pointer-events: none;
 }
+
+.upgrade {
+    margin-top: -11px;
+    margin-right: -40px;
+    height: 38px;
+    border-radius: 0px;
+}
+
+.upgrade > span {
+    display: inline-flex !important;
+}
+
+@media (max-width: 768px) {
+    .upgrade {
+        margin-top: -11px;
+        height: 38px;
+        border-radius: 0px;
+        margin-right: 0px;
+    }
+
+    .upgrade span {
+        display: none !important;
+    }
+}

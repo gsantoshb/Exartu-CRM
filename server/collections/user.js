@@ -9,14 +9,14 @@ Accounts.validateLoginAttempt(function(attempt) {
 });
 
 Accounts.validateNewUser(function(user) {
-    if (user.services.google)
-    {
-        var oldUser = Meteor.users.findOne({
-            'emails.address': user.services.google.email
-        });
-        if (oldUser)
-            throw new Meteor.Error(403, user.services.google.email + " email is already in use");
-    }
+//    if (user.services.google)
+//    {
+//        var oldUser = Meteor.users.findOne({
+//            'emails.address': user.services.google.email
+//        });
+//        if (oldUser)
+//            throw new Meteor.Error(403, user.services.google.email + " email is already in use");
+//    }
 
     return true;
 });
@@ -123,6 +123,7 @@ Meteor.publish(null, function () {
       'username': 1,
       'emails': 1,
       'services.google.picture': 1,
+      'services.email': 1,
       'profilePictureId': 1,
       "hierId": 1,
       "createdAt": 1,
@@ -136,6 +137,10 @@ Meteor.users.allow({
     var user = Meteor.users.findOne({
       _id: userId
     });
+
+    if (userId == file._id)
+      return true;
+
     if (file.hierId != user.hierId)
       return false;
     if (!_.contains(user.roles, Enums.roleFunction.System_Administrator))
@@ -258,7 +263,79 @@ Meteor.methods({
       throw new Meteor.Error(500, 'User does not exist');
 
     Accounts.sendVerificationEmail(user._id);
+  },
+  updateEmailVerification: function(email) {
+    var shortId = Meteor.require('shortid');
+    var token = shortId.generate();
+    var url = Meteor.absoluteUrl('emailverification/' + token);
+    var html = 'Email verification, click in the link bellow to active your new email: <br/>' +
+                '<a href="' + url + '"> </a> '+ url + '<br/>' +
+                'Once you verified this email your previous email will be disabled';
+
+    Meteor.users.update({_id: Meteor.userId()},
+      {
+        $pull: {
+          emails: {
+            token: {
+              $exists: true
+            },
+            $not: {
+              token: null
+            }
+          }
+        }
+      }
+    );
+
+    Meteor.users.update({_id: Meteor.userId(), 'emails.address': email }, {$set: { 'emails.$.token': token }});
+
+    Meteor.call('sendEmail', email ,'TempWorks - Email verification', html, true);
   }
+});
+
+Router.map(function () {
+  this.route('emailVerification', {
+    where: 'server',
+    path: '/emailVerification/:token',
+    action: function () {
+      var token = this.params.token;
+      var user = Meteor.users.findOne({'emails.token': token});
+
+      if(!user ) {
+        this.response.writeHead(301,
+          {
+            Location: Meteor.absoluteUrl('notfound')
+          }
+        );
+        this.response.end();
+        return;
+      }
+
+      Meteor.users.update({'emails.token': token},
+        {
+          $pop: {
+            emails: -1
+          }
+        }
+      );
+
+      Meteor.users.update({'emails.token': token},
+        {
+          $set: {
+            'emails.$.verified': true,
+            'emails.$.token': null
+          }
+        }
+      );
+
+      this.response.writeHead(301,
+        {
+          Location: Meteor.absoluteUrl()
+        }
+      );
+      this.response.end();
+    }
+  });
 });
 
 // Users files

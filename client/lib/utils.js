@@ -56,7 +56,8 @@ Utils.ObjectDefinition = function(definition) {
     switch(definition.reactiveProps[propName].type) {
       case Utils.ReactivePropertyTypes.array:
         prop.type = Utils.ReactivePropertyTypes.array;
-        prop.val = _.clone(definition.reactiveProps[propName].default) || [];
+        prop.default  = _.clone(definition.reactiveProps[propName].default) || [];
+        prop.val =  _.clone(prop.default);
         Object.defineProperty(prop, "value", {
           get: function () {
             this.dep.depend();
@@ -95,6 +96,7 @@ Utils.ObjectDefinition = function(definition) {
 
         prop.type = definition.reactiveProps[propName].type || Utils.ReactivePropertyTypes.string;
         prop.val = defaultValue(prop);
+        prop.default  = definition.reactiveProps[propName].default || '';
         Object.defineProperty(prop, "value", {
           get: function () {
             this.dep.depend();

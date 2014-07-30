@@ -60,7 +60,8 @@ ContactableController = RouteController.extend({
 });
 
 var resizer = function() {
-  $(".contactable-left-col").css("height", $('.contactable-right-col-custom').height() - 30 + 'px');
+  if ($('.contactable-left-col').height() < $('.contactable-right-col-custom').height())
+    $(".contactable-left-col").css("height", $('.contactable-right-col-custom').height() - 30 + 'px');
 };
 
 Template.contactable.created = function() {
