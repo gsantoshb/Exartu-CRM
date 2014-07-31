@@ -22,7 +22,9 @@
     <span>{{displayName}} :</span>
     <div class="form-group {{hasError}}">
         <select class="form-control input-lg" type="text" placeholder="{{displayName}}">
-            <option value="null" selected="{{isSelected null value}}">--Select--</option>
+            {{#unless required}}
+                <option value="null" selected="{{isSelected null value}}">--Select--</option>
+            {{/unless}}
             {{#each options}}
                 <option value="{{_id}}" selected="{{isSelected _id ../value}}">{{displayName}}</option>
             {{/each}}

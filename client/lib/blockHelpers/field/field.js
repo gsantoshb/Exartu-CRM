@@ -51,7 +51,7 @@ UI.registerHelper('displayProperty', function(){
           dType.isValidField(this);
         },
         'change select':function(e){
-          this.value=e.target.value;
+          this.value = e.target.value == 'null' ? null : e.target.value;
           dType.isValidField(this);
         },
 
