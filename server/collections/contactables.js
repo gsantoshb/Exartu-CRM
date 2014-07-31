@@ -25,7 +25,12 @@ Contactables.allow({
 })
 
 Contactables.before.insert(function (userId, doc) {
-  var user = Meteor.user() || {};
+  try{
+    var user = Meteor.user() || {};
+  }catch (e){
+    //when the insert is trigger from the server
+    var user= { }
+  }
   doc.hierId = user.hierId || doc.hierId;
   doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();

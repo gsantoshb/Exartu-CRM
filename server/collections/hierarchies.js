@@ -29,9 +29,6 @@ Meteor.startup(function () {
 
       hier.planCode = 0;
 
-      // List of default values for each lookup type
-      hier.defaultLookUpValues = [];
-
       hier.configuration={
         webName: hier.name,
         title: hier.name,
@@ -149,7 +146,29 @@ var generateUniqueHierId = function (prefix) {
 		generateUniqueHierId(prefix);
 	}
 };
+
+createHouseAccount = function(hierarchy){
+  var customer={
+    objNameArray : [
+      "organization",
+      "Customer",
+      "contactable"
+    ],
+    houseAccount: true,
+    organization : {
+      organizationName : "House Account"
+    },
+    Customer:{
+
+    },
+    hierId: hierarchy._id,
+    userId: (hierarchy.user && hierarchy.user.length > 0)? hierarchy.user[0] : null
+  };
+  Contactables.insert(customer);
+};
+
 Hierarchies.after.insert(function(userId, doc){
+  createHouseAccount(doc);
   seedSystemLookUps(doc._id);
 })
 
