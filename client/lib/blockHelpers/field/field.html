@@ -54,7 +54,9 @@
     <span>{{displayName}} : </span>
     <div class="form-group  {{hasError}}">
         <select class="form-control input-lg" type="text" placeholder="{{displayName}}" disabled="{{isDisabled}}">
-            <option value="null" selected="{{isSelected null}}">--Select--</option>
+            {{#if notRequired}}
+                <option value="null" selected="{{isSelected null}}">--Select--</option>
+            {{/if}}
             {{#each options}}
             <option value="{{_id}}" selected="{{isSelected ../value}}">{{displayName}}</option>
             {{/each}}

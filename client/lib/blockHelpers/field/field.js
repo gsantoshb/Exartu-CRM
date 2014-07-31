@@ -127,5 +127,8 @@ Template.relInput.helpers({
   },
   isSelected: function(id){
     return (this.value || this._id) ==id;
+  },
+  notRequired: function(){
+    return this.cardinality.min == 0;
   }
 });

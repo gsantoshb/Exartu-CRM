@@ -43,7 +43,7 @@ newRelation({
         displayName: 'Customer',
         collection: 'Contactables',
         cardinality: {
-            min: 0,
+            min: 1,
             max: 1
         }
     }
