@@ -65,6 +65,9 @@ Template.object_property_lookup.helpers({
     return LookUps.find({codeType: this.property.lookUpCode});
   },
   displayName: function(){
+    if (this.property.value == null) 
+      return 'Not Set';
+    
     return LookUps.findOne({_id: this.property.value}) ? LookUps.findOne({_id: this.property.value}).displayName : 'Unknown';
   }
 })

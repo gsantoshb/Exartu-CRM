@@ -58,12 +58,22 @@ Template.addJobPage.events({
             dType.displayAllMessages(model);
             return;
         }
-        var obj=dType.buildAddModel(model)
+        var obj=dType.buildAddModel(model);
+        
+        // // hack to keep both titles the same
+        if (obj.jobTitle != null) {
+            obj.publicJobTitle = LookUps.findOne(obj.jobTitle).displayName;
+        }
+        
         Meteor.call('addJob', obj, function(err, result){
             if(err){
                 console.dir(err)
             }else{
-                history.back();
+              history.back();
+              Meteor.call('setLastCustomerUsed', obj.customer, function(){
+                if(err)
+                  console.dir(err)
+              });
             }
         });
     },

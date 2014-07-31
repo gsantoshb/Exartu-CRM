@@ -141,31 +141,38 @@ newObjType({
     objGroupType: Enums.objGroupType.job,
     services: ['messages', 'tasks', 'notes', 'tags', 'candidates', 'jobRates'],
     fields: [{
-        name: 'publicJobTitle',
-        displayName: 'Public job title',
-        required: false
-    },{
-        name: 'statusNote',
-        displayName: 'Status Note',
-        required: false
-    },{
-        name: 'jobDescription',
-        displayName: 'Job Description',
-        required: false
-    },{
-        name: 'startDate',
-        displayName: 'Start date',
-        fieldType: 'date',
-        defaultValue: null,
-        required: true
-    },{
-        name: 'endDate',
-        displayName: 'End date',
-        fieldType: 'date',
-        defaultValue: null,
-        required: false
-    },
-    {
+      name: 'jobTitle',
+      displayName: 'Job title',
+      fieldType: 'lookUp',
+      lookUpName: 'jobTitle',
+      lookUpCode: Enums.lookUpTypes.job.titles.code,
+      defaultValue: null
+    }, {
+      name: 'publicJobTitle',
+      displayName: 'Public job title',
+      required: false,
+      showInAdd: false
+    }, {
+      name: 'statusNote',
+      displayName: 'Status Note',
+      required: false
+    }, {
+      name: 'jobDescription',
+      displayName: 'Job Description',
+      required: false
+    }, {
+      name: 'startDate',
+      displayName: 'Start date',
+      fieldType: 'date',
+      defaultValue: null,
+      required: true
+    }, {
+      name: 'endDate',
+      displayName: 'End date',
+      fieldType: 'date',
+      defaultValue: null,
+      required: false
+    }, {
       name: 'duration',
       displayName: 'Duration',
       fieldType: 'lookUp',
@@ -174,17 +181,18 @@ newObjType({
       defaultValue: null,
       required: false,
       multiple: false,
-      //showInAdd: false
-    },
-    { name: 'status',
+      showInAdd: false
+    }, {
+      name: 'status',
       displayName: 'Status',
       fieldType: 'lookUp',
       lookUpName: 'jobStatus',
       lookUpCode: Enums.lookUpTypes.job.status.code,
-      required: true,
+      required: false,
       lookUpName: 'jobTitle',
       multiple: false,
-      defaultValue: null
+      defaultValue: null,
+      showInAdd: false
     }
 //    {
 //      name: 'industry',
@@ -232,14 +240,6 @@ newObjType({
       name: 'fee',
       displayName: 'Fee (%)',
       fieldType: 'number'
-    },
-    {
-      name: 'jobTitle',
-      displayName: 'Job title',
-      fieldType: 'lookUp',
-      lookUpName: 'jobTitle',
-      lookUpCode: Enums.lookUpTypes.job.titles.code,
-      defaultValue: null
     }
   ]
 })
