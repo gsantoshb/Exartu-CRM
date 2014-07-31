@@ -11,11 +11,11 @@
 
                 <div class="add-box-content">
                     {{#with model}}
+
+                        {{> typeInput }}
                         {{#each subTypeArray}}
                             {{> typeInput }}
                         {{/each}}
-
-                        {{> typeInput }}
 
                         <div class="form-group text-center top-30">
                             <button class="btn btn-success btn-lg">Add {{objTypeName}}</button>

@@ -173,12 +173,13 @@ dType.objTypeInstance= function(ObjTypeName, options){
 
     model.name=ObjTypeName;
     model.fieldGroups=[];
-    _.each(objType.fields, function(field){
-        addToFieldGroup(model.fieldGroups, field.fieldGroup, new fieldInstance(field));
-    })
     var visibilities= dType.core.getRelationsVisivilityOnType(objType);
     _.each(visibilities, function(v){
         addToFieldGroup(model.fieldGroups, v.fieldGroup, new relation(v));
+    })
+
+    _.each(objType.fields, function(field){
+        addToFieldGroup(model.fieldGroups, field.fieldGroup, new fieldInstance(field));
     })
     if (objType.parent){
         var child=model;
