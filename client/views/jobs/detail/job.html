@@ -30,10 +30,9 @@
                                 <div class="box-body">
                                     <table class="table custom-table text-normal" style="table-layout: fixed;">
                                         <tbody>
-
                                             <tr>
                                                 <td>
-                                                    <i class="fa fa-briefcase"></i>&nbsp;Job title:
+                                                    <i class="fa fa-briefcase"></i>&nbsp;Public job title:
                                                     {{#objectProperty property=publicJobTitle editable=editMode}}
                                                         <input class="form-control" type="text" value="{{value}}">
                                                     {{else}}
@@ -41,7 +40,7 @@
                                                     {{/objectProperty}}
                                                 </td>
                                                 <td>
-                                                    <i class="fa fa-globe"></i>&nbsp;Location:
+                                                   <i class="fa fa-globe"></i>&nbsp;Location:
                                                     {{#if editMode}}
                                                         {{#inputLocation location}}
                                                         {{/inputLocation}}
@@ -54,7 +53,25 @@
                                                     {{/if}}
                                                 </td>
                                             </tr>
-
+                                            <tr>
+                                                <td>
+                                                    <i class="fa fa-briefcase"></i>&nbsp;Job title:
+                                                    {{#objectProperty property=jobTitle editable=editMode}}
+                                                        <div class="form-group  {{hasError}}">
+                                                            <select class="form-control input-md">
+                                                                {{#each options}}
+                                                                    <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
+                                                                {{/each}}
+                                                            </select>
+                                                            <span>{{error}}</span>
+                                                        </div><!-- /.form-group -->
+                                                    {{else}}
+                                                        <strong>
+                                                            <strong>{{displayName}}</strong>
+                                                        </strong>
+                                                    {{/objectProperty}}
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td>
                                                     <i class="fa fa-calendar"></i>&nbsp;Start date:

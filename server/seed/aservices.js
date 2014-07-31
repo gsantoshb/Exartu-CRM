@@ -110,7 +110,7 @@ dType.constructor.service({
       var result=[];
       if (obj['Temporary']){
         var frequency = LookUps.findOne({ codeType: Enums.lookUpTypes.payRate.frequencies.code, _id: obj.Temporary.frequency });
-        if(! frequency) return;
+        if(! frequency) return [];
 
         var pay= (obj.Temporary.pay / frequency.inHours);
         var bill= (obj.Temporary.bill / frequency.inHours);
