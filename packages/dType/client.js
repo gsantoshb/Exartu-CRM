@@ -298,7 +298,6 @@ dType.isValidRelation= function(rel){
 dType.isValidField= function(options){
     var error={};
     var result= dType.core.getFieldType(options.fieldType).validate(options.value, options, error);
-//    debugger;
     options.error=error.message;
     options.isValid=result;
     return result
