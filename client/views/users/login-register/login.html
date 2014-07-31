@@ -86,7 +86,7 @@
                                     <!--<div class="col-md-6"><input class="form-control input-lg" type="text" placeholder="Last Name"></div>-->
                                 <!--</div>-->
                             <!--</div>-->
-                            <!-- ko if: !accountCreated() -->
+                            <!-- ko ifnot: accountCreated() -->
                                 <div data-bind="css:{'has-error': newAccount().username.isModified() && ! newAccount().username.isValid()}">
                                     <div class="form-group">
                                         <input class="form-control input-lg" type="text" placeholder="Choose your Exartu Username" data-bind="value: newAccount().username" />
@@ -112,11 +112,12 @@
                                     <span class="text-danger" data-bind="validationMessage: newAccount().passwordVerification"></span>
                                 </div>
 
-                                    <div class="form-group">
+                                <div class="form-group">
                                     <button class="btn btn-primary top-10 btn-lg" data-bind="disable: loading() || isValidating() , click: function() { createNewAccount() }">Create Account</button>
-                                    </div>
-                                    
-                                
+                                </div>
+                            <!-- /ko -->
+
+
 
                             <!-- ko if: accountCreated() -->
                                 <div class="col-md-8 text-center" style="margin-bottom: 150px">
