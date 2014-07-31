@@ -59,6 +59,13 @@ UI.registerHelper('displayProperty', function(){
       return template
     }
     else{
+      //hack
+      if (this.name=='customer'){
+        var houseAccount= Contactables.findOne({houseAccount: true});
+        if (houseAccount){
+          this.value=houseAccount._id;
+        }
+      }
       Template['relInput'].events({
         'change select':function(e){
           this.value=e.target.value;
@@ -120,5 +127,8 @@ Template.relInput.helpers({
   },
   isSelected: function(id){
     return (this.value || this._id) ==id;
+  },
+  notRequired: function(){
+    return this.cardinality.min == 0;
   }
 });

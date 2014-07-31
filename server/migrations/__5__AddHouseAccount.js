@@ -3,7 +3,6 @@ Migrations.add({
   version: 5,
   up: function() {
     var allHiers= Hierarchies.find({});
-    var oldHiers=[];
     allHiers.forEach(function(hier){
       if (hier._id != ExartuConfig.SystemHierarchyId){
         var houseAccount= Contactables.findOne({
@@ -16,6 +15,18 @@ Migrations.add({
         }
       }
     })
+
+    console.log('updating jobs..')
+    Jobs.find({customer: null}).forEach(function(job){
+      var houseAccount= Contactables.findOne({
+        hierId: job.hierId,
+        houseAccount: true
+      });
+      if (houseAccount){
+        Jobs.update({ _id: job._id }, { $set: {customer: houseAccount._id}});
+      }
+    })
+
 
   }
 });
