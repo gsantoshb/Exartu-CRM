@@ -93,6 +93,9 @@
                                                     {{#objectProperty property=duration editable=editMode}}
                                                         <div class="form-group  {{hasError}}">
                                                             <select class="form-control input-lg">
+                                                                {{#unless required}}
+                                                                    <option value="null" selected="{{isSelected null value}}">--Select--</option>
+                                                                {{/unless}}
                                                                 {{#each options}}
                                                                     <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
                                                                 {{/each}}
@@ -111,6 +114,9 @@
                                                     {{#objectProperty property=status editable=editMode}}
                                                         <div class="form-group  {{hasError}}">
                                                             <select class="form-control input-lg">
+                                                                {{#unless required}}
+                                                                    <option value="null" selected="{{isSelected null value}}">--Select--</option>
+                                                                {{/unless}}
                                                                 {{#each options}}
                                                                     <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
                                                                 {{/each}}
