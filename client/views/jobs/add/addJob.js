@@ -63,7 +63,11 @@ Template.addJobPage.events({
             if(err){
                 console.dir(err)
             }else{
-                history.back();
+              history.back();
+              Meteor.call('setLastCustomerUsed', obj.customer, function(){
+                if(err)
+                  console.dir(err)
+              });
             }
         });
     },

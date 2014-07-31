@@ -60,11 +60,11 @@ UI.registerHelper('displayProperty', function(){
     }
     else{
       //hack
-      if (this.name=='customer'){
+      if (this.name == 'customer'){
+
         var houseAccount= Contactables.findOne({houseAccount: true});
-        if (houseAccount){
-          this.value=houseAccount._id;
-        }
+        var user= Meteor.user();
+        this.value= (user && user.lastCustomerUsed) || (houseAccount && houseAccount._id);
       }
       Template['relInput'].events({
         'change select':function(e){

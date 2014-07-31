@@ -128,7 +128,8 @@ Meteor.publish(null, function () {
       "hierId": 1,
       "dateCreated": 1,
       "roles": 1,
-      "permissions": 1
+      "permissions": 1,
+      "lastCustomerUsed": 1
     }
   });
 });
@@ -290,6 +291,12 @@ Meteor.methods({
     Meteor.users.update({_id: Meteor.userId(), 'emails.address': email }, {$set: { 'emails.$.token': token }});
 
     Meteor.call('sendEmail', email ,'TempWorks - Email verification', html, true);
+  },
+  setLastCustomerUsed: function(id){
+    if (! Contactables.findOne({_id: id, Customer: {$exists: true}})){
+      throw new Meteor.Error(400,'Customer Not found')
+    }
+    Meteor.users.update({ _id: Meteor.userId() },{ $set: {lastCustomerUsed: id} });
   }
 });
 
