@@ -148,27 +148,31 @@ var generateUniqueHierId = function (prefix) {
 };
 
 createHouseAccount = function(hierarchy){
-  var customer={
-    objNameArray : [
-      "organization",
-      "Customer",
-      "contactable"
-    ],
-    houseAccount: true,
-    organization : {
-      organizationName : "House Account"
-    },
-    Customer:{
+  if (!Contactables.findOne({ hierId: hierarchy._id,  houseAccount: true})) {
+    var customer = {
+      objNameArray: [
+        "organization",
+        "Customer",
+        "contactable"
+      ],
+      houseAccount: true,
+      organization: {
+        organizationName: "House Account"
+      },
+      Customer: {
 
-    },
-    hierId: hierarchy._id,
-    userId: (hierarchy.user && hierarchy.user.length > 0)? hierarchy.user[0] : null
-  };
-  Contactables.insert(customer);
+      },
+      hierId: hierarchy._id,
+      userId: (hierarchy.user && hierarchy.user.length > 0) ? hierarchy.user[0] : null
+    };
+    Contactables.insert(customer);
+  }
 };
 
 Hierarchies.after.insert(function(userId, doc){
-  createHouseAccount(doc);
+  if (doc._id != ExartuConfig.SystemHierarchyId){
+    createHouseAccount(doc);
+  }
   seedSystemLookUps(doc._id);
 })
 
