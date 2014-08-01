@@ -31,11 +31,13 @@ newObjType({
     {
       name: 'department',
       displayName: 'Department',
-      defaultValue: 'Primary'
+      defaultValue: 'Primary',
+      required: false
     },
     {
       name: 'statusNote',
-      displayName: 'Status note'
+      displayName: 'Status note',
+      required: false
     }
   ]
 });
@@ -106,11 +108,13 @@ newObjType({
     },
     {
       name: 'middleName',
-      displayName: 'Middle name'
+      displayName: 'Middle name',
+      required: false
     },
     {
       name: 'jobTitle',
-      displayName: 'Job title'
+      displayName: 'Job title',
+      required: false
     },
     {
       name: 'salutation',
@@ -146,7 +150,8 @@ newObjType({
       fieldType: 'lookUp',
       lookUpName: 'jobTitle',
       lookUpCode: Enums.lookUpTypes.job.titles.code,
-      defaultValue: null
+      defaultValue: null,
+      required: true
     }, {
       name: 'publicJobTitle',
       displayName: 'Public job title',
@@ -239,7 +244,8 @@ newObjType({
     {
       name: 'fee',
       displayName: 'Fee (%)',
-      fieldType: 'number'
+      fieldType: 'number',
+      required: false
     }
   ]
 })
@@ -259,17 +265,20 @@ newObjType({
       fieldType: 'lookUp',
       lookUpName: 'payRateFrequency',
       lookUpCode: Enums.lookUpTypes.payRate.frequencies.code,
-      defaultValue: null
+      defaultValue: null,
+      required: false
     },
     {
       name: 'pay',
       displayName: 'Pay',
-      fieldType: 'number'
+      fieldType: 'number',
+      required: false
     },
     {
       name: 'bill',
       displayName: 'Bill',
-      fieldType: 'number'
+      fieldType: 'number',
+      required: false
     }
   ]
 });
@@ -316,7 +325,8 @@ newObjType({
         },
         { name: 'dealCloseConfidencePercentage',
             displayName: 'Confidence',
-            fieldType: 'number'
+            fieldType: 'number',
+            required: false
         }
     ]
 });
