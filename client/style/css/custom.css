@@ -653,6 +653,9 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 /***************************** Mobile Specific CSS ***********************************/
 @media (max-width: 768px) {
+    /* Login page */
+    #login-wrapper .login-card { width: auto; }
+    
     /* Contactable navigation tabs */
     .contactable-nav-tabs-main { padding: 0px; }
     
