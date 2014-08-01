@@ -70,7 +70,7 @@
 
 @-moz-keyframes slidein {
     from {
-        left:-200px;
+        left:-160px;
     }
     to {
         left:0%;
@@ -79,7 +79,7 @@
 
 @-webkit-keyframes slidein {
     from {
-        left:-200px;
+        left:-160px;
     }
     to {
         left:0%;
@@ -91,7 +91,7 @@
         left:0;
     }
     to {
-        left:-200px;
+        left:-160px;
     }
 }
 
@@ -100,7 +100,7 @@
         left:0;
     }
     to {
-        left:-200px;
+        left:-160px;
     }
 }
 @media (max-width: 768px) {
@@ -110,7 +110,7 @@
         left:0px
     }
     body.in{
-        left:200px
+        left:160px
     }
 
 
@@ -132,7 +132,7 @@
 
 @-moz-keyframes bodyslidein {
     from {
-        left:200px;
+        left:160px;
     }
     to {
         left:0;
@@ -141,7 +141,7 @@
 
 @-webkit-keyframes bodyslidein {
     from {
-        left:200px;
+        left:160px;
     }
     to {
         left:0;
@@ -153,7 +153,7 @@
         left:0;
     }
     to {
-        left:200px;
+        left:160px;
     }
 }
 
@@ -162,7 +162,7 @@
         left:0;
     }
     to {
-        left:200px
+        left:160px
     }
 }
 /*************** End ****************/
