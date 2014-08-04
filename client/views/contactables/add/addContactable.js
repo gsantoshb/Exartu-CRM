@@ -62,6 +62,11 @@ Template.addContactablePage.helpers({
     selected:function(personType){
         subTypesDep.depend();
         return contactable && contactable.subTypes && !!_.findWhere(contactable.subTypes,{name: personType});
+    },
+    getIcon: function(){
+      var current=Router.current();
+      if (!current) return ''
+      return helper.getIconForObjName(current.params.objType)
     }
 })
 

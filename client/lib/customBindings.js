@@ -133,7 +133,7 @@ ko.bindingHandlers.sidebar={
             trigger=$('#menu-trigger'),
             isOpen=false;
         var minimunWidth=768;
-
+        console.log('init sidebar')
         var hideIfClickOutside=function(e){
             if (!sidebar.is(e.target) && sidebar.has(e.target).length === 0
                 && !trigger.is(e.target) && trigger.has(e.target).length === 0) {
@@ -177,7 +177,8 @@ ko.bindingHandlers.sidebar={
             isOpen=false;
             trigger.unbind( "click" );
             trigger.click(function(){
-                if(isOpen){
+              console.log('click on trigger')
+              if(isOpen){
                     hide();
                 } else {
                     show();

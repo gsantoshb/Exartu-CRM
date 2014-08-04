@@ -79,14 +79,14 @@ Template.header.rendered = function () {
         var submenuLogic = function (e) {
             var submenu = $(this).siblings('ul');
             var li = $(this).parents('li');
-
+            var trigger = $(this).parents('#menu-trigger');
             var hideIfClickOutside=function(e){
-                if (!submenu.is(e.target) && submenu.has(e.target).length === 0
-                    && !li.is(e.target) && li.has(e.target).length === 0) {
-                    submenu.slideUp();
-                    li.removeClass('open');
-                    $('body').off('click',hideIfClickOutside);
-                }
+              if (! submenu.is(e.target) && submenu.has(e.target).length === 0
+              && ! li.is(e.target) && li.has(e.target).length === 0  ) {
+                submenu.slideUp();
+                li.removeClass('open');
+                $('#sidebar').off('click',hideIfClickOutside);
+              }
             }
             if ($(window).width() > 480) {
                 var submenus = $('#sidebar li.submenu ul');
@@ -107,7 +107,7 @@ Template.header.rendered = function () {
                 if (($(window).width() > 768) || ($(window).width() <= 480)) {
                     submenus.slideUp();
                     submenu.slideDown();
-                    $('body').on('click',hideIfClickOutside);
+                  $('#sidebar').on('click',hideIfClickOutside);
 
                 } else {
                     submenus.fadeOut(250);
@@ -162,24 +162,111 @@ Template.header.rendered = function () {
     }
 }
 
-Template.sidebar.waitOn = ['UsersHandler', dType.ObjTypesHandler]
-Template.sidebar.viewModel=function(){
-    var self = this;
+Template.sidebar.rendered=function(){
+  var sidebar=$('#sidebar'),
+    body=$('body'),
+    trigger=$('#menu-trigger'),
+    isOpen=false;
 
-    self.contactableObjTypes = ko.meteor.find(dType.ObjTypes, {
-        parent: Enums.objGroupType.contactable
+  var minimunWidth=768;
+
+  var hideIfClickOutside=function(e){
+    var submenuTrigger= $('.submenu>a');
+
+    var isInMenuTrigger = submenuTrigger.is(e.target) || submenuTrigger.has(e.target).length > 0;
+    var isInTrigger = trigger.is(e.target) || trigger.has(e.target).length > 0;
+    if (! isInMenuTrigger && ! isInTrigger) {
+      hide();
+      body.off('click',hideIfClickOutside);
+    }
+  }
+  var hide=function(){
+    body.removeClass('in');
+    body.addClass('animating');
+    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+      body.removeClass('animating');
     });
 
-    self.jobObjTypes = ko.meteor.find(dType.ObjTypes, {
-        parent: Enums.objGroupType.job
+    sidebar.removeClass('in');
+    sidebar.addClass('animating');
+    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+      sidebar.removeClass('animating');
+    });
+    body.off('click',hideIfClickOutside);
+    isOpen=false;
+  }
+  var show=function(){
+    sidebar.show();
+
+    body.addClass('in');
+    body.addClass('animating');
+    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+      body.removeClass('animating');
     });
 
-    self.activeRoute = ko.dep(function () {
-        return Router.current().route.name;
+
+    sidebar.addClass('in');
+    sidebar.addClass('animating');
+    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+      sidebar.removeClass('animating');
     });
-    self.activeRouteType = ko.dep(function () {
-        return Router.current().params.type;
-    });
-    return self;
+    isOpen=true;
+  }
+  var start=function(){
+    isOpen=false;
+    trigger.unbind( "click" );
+    trigger.click(function(){
+      if(isOpen){
+        hide();
+      } else {
+        show();
+        body.click(hideIfClickOutside);
+      }
+    })
+  }
+  var stop = function(){
+    sidebar.removeClass('in');
+    body.removeClass('in');
+    body.off('click', hideIfClickOutside);
+    trigger.unbind( "click" );
+  };
+
+  if ($(window).width() < minimunWidth){
+    start();
+  }
+  $(window).resize(_.debounce(function(){
+    if ($(window).width() < minimunWidth){
+      start();
+    }else{
+      stop();
+    }
+  },400));
+
 }
+Template.sidebar.helpers({
+  contactableObjTypes: function(){
+    return dType.ObjTypes.find({
+      parent: Enums.objGroupType.contactable
+    });
+  },
+  jobObjTypes: function() {
+    return dType.ObjTypes.find({
+      parent: Enums.objGroupType.job
+    });
+  },
+  getActiveClass: function(route, type){
+    var current= Router.current();
+    if (!current) return '';
+
+    var currentType = current.params.type;
+    var currentRoute = current.route.name;
+
+    if (currentRoute == route && (type == currentType)){
+      return 'active'
+    }
+    return ''
+  }
+
+});
+
 
