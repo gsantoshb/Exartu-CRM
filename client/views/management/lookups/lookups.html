@@ -1,91 +1,84 @@
 <template name="lookUpsManagement">
-    <div id="content">
-        <div id="content-header">
+    <div id="content" class="lookUps">
+        <div id="content-header" class="mini">
             <h1>Lookups management</h1>
         </div>
+        
         <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">Management</a>
             <a href="#" class="current">Lookups</a>
         </div>
 
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-                {{> selectLookUpType }}
-                <br/>
-                <div class="row">
-                    <span class="col-lg-4">
-                        {{> searchLookUpItem }}
-                    </span>
-                    <span class="col-lg-offset-4 col-lg-4">
-                        {{> addNewLookUpItem}}
-                    </span>
+        <div class="container-fluid">
+            <div class="panel panel-default">
+                <!-- Header -->
+                <div class="panel-heading">
+                    <div class="row show-grid">
+                        <div class="col-xs-12 col-lg-12">
+                            {{> selectLookUpType }}
+                        </div>
+                    </div>
+                    <div class="row show-grid">
+                        <div class="col-xs-12 col-sm-6">
+                            {{> searchLookUpItem }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            {{> addNewLookUpItem}}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Body -->
+                <div class="panel-body">
+                    <ul class="list-3 stripped">
+                        {{#each items}}
+                            <li>
+                                <!-- Name -->
+                                <div class="col-xs-12 col-sm-8 no-padding">
+                                    {{#if editMode}}
+                                        <div class="col-xs-9 no-padding">
+                                            <input class="form-control" id="{{_id}}" type="text" placeholder="Enter a name" value="{{displayName}}"/>
+                                        </div>
+                                        <div class="col-xs-3 no-padding" style="padding-left: 3px; top: 2px">
+                                            <div class="btn-group">
+                                                <span class="btn btn-sm btn-success save"><i class="fa fa-check"></i></span>
+                                                <span class="btn btn-sm btn-danger cancel"><i class="fa fa-times"></i></span>
+                                            </div>
+                                        </div>
+                                    {{else}}
+                                        <span class="label label-default pointer edit" title="Edit">Edit</span>
+                                        <span>{{displayName}}</span>
+                                    {{/if}}
+                                </div>
+                                
+                                <!-- Default -->
+                                <div class="col-xs-6 col-sm-2">
+                                    <span>Default: </span>
+                                    <input type="checkbox" checked="{{isDefault}}" class="set-default" />
+                                </div>
+                                
+                                <!-- Active -->
+                                <div class="col-xs-6 col-sm-2">
+                                    <span>Inactive: </span>
+                                    <input type="checkbox" checked="{{inactive}}" class="inactive" />
+                                </div>
+                            </li>
+                        {{/each}}
+                    </ul>
                 </div>
             </div>
-            <div class="panel-body">
-                <table class="table">
-                    <colgroup>
-                        <col span="1" style="width: 60%;">
-                        <col span="1" style="width: 10%;">
-                        <col span="1" style="width: 10%;">
-                        <col span="2" style="width: 15%;">
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th>Display name</th>
-                        <th style="text-align: center">Is Default</th>
-                        <th style="text-align: center">Is Inactive</th>
-                        <th style="text-align: center">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {{#each items}}
-                            <tr>
-                                <td>
-                                    {{#if editMode}}
-                                        <input class="form-control" id="{{_id}}" type="text" placeholder="" value="{{displayName}}"/>
-                                        <span class="text-danger">{{errMsg}}</span>
-                                    {{else}}
-                                        <div style="padding: 7px 12px;">
-                                            <span>{{displayName}}</span>
-                                        </div>
-                                    {{/if}}
-                                </td>
-                                <td>
-                                    <div style="text-align: center; padding-top: 6px">
-                                        <input type="checkbox" checked="{{isDefault}}" class="set-default">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="text-align: center; padding-top: 6px">
-                                        <input type="checkbox" checked="{{inactive}}" class="inactive">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="text-align: center">
-                                        {{#if editMode}}
-                                             <span style="cursor: pointer" class="btn btn-sm btn-success save">
-                                                <i class="glyphicon glyphicon-ok" ></i>
-                                                <!--Save-->
-                                            </span>
-                                            <span style="cursor: pointer" class="btn btn-sm btn-danger cancel">
-                                                <i class="glyphicon glyphicon-remove" ></i>
-                                            </span>
-                                        {{else}}
-                                            <button style="cursor: pointer" class="btn btn-sm btn-info edit" title="Edit">
-                                                <i class="glyphicon glyphicon-pencil" ></i>
-                                            </button>
-                                        {{/if}}
-                                    </div>
-
-                                </td>
-                            </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </div>
         </div>
+        
     </div>
+</template>
+
+
+<template name="selectLookUpType">
+    <select class="form-control input-lg" type="text" >
+        {{#each lookUpTypes}}
+            <option value="{{code}}" selected="{{isSelected code ../value}}">{{displayName}}</option>
+        {{/each}}
+    </select>
 </template>
 
 <template name="searchLookUpItem">
@@ -101,14 +94,6 @@
     </div>
 </template>
 
-<template name="selectLookUpType">
-    <select class="form-control input-lg" type="text" >
-        {{#each lookUpTypes}}
-            <option value="{{code}}" selected="{{isSelected code ../value}}">{{displayName}}</option>
-        {{/each}}
-    </select>
-</template>
-
 <template name="addNewLookUpItem">
     <div class="input-group">
         <input id="new-item" type="text" class="form-control" placeholder="New item"/>
@@ -119,3 +104,4 @@
         </span>
     </div>
 </template>
+
