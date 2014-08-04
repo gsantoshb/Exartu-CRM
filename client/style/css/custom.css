@@ -650,7 +650,23 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     display: inline-flex !important;
 }
 
+/*lists*/
+.actions-head{
+    border-bottom: none;
+}
+.actions-head + .table-item{
+    border-top: 1px solid #e7e7e7;
+}
+.actions-head {
+    margin-bottom: 0px;
+}
+.actions-head .btn-group{
+    margin-bottom: 0px;
+}
 
+.actions-head div[class*='col-']{
+    margin-bottom: 20px;
+}
 /***************************** Mobile Specific CSS ***********************************/
 @media (max-width: 768px) {
     /* Login page */
@@ -672,8 +688,6 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     .upgrade span {
         display: none !important;
     }
-
-
 }
 @media (max-width: 460px) {
     /* Timeline */
@@ -700,6 +714,8 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
         margin-bottom: 4px;
         padding-bottom: 0px;
     }
+
+
 }
 
 /********************************** End Mobile ***************************************/

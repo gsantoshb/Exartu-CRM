@@ -264,21 +264,24 @@
 <template name="contactablesListSearch">
     <div class="actions-head">
         <div class="row">
-            <div class="col-sm-8 col-md-12 col-lg-8">
+            <div class="col-md-4 col-lg-4">
                 <!-- Single button -->
-                <div class="btn-group pull-left suffix-5">
-                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                        <span class="fa fa-plus"></span> Add
-                    </button>
-                    <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
-                        {{#each contactableTypes}}
-                            <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
-                        {{/each}}
-                    </ul>
+                <div class="btn-group">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                            <span class="fa fa-plus"></span> Add
+                        </button>
+                        <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
+                            {{#each contactableTypes}}
+                                <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                    <button type="button" class="btn btn-default" href="/resumeparser"><i class="fa fa-cloud-download"></i> Import</button>
+
                 </div>
-                <!--{{#subscriptionPlan plans=resumeParserRestrictions }}-->
-                    <a class="btn btn-success pull-left suffix-10" href="/resumeparser"><i class="fa fa-cloud-download"></i> Import</a>
-                <!--{{/subscriptionPlan}}-->
+            </div>
+            <div class="col-md-8">
                 <div class="input-group">
                     {{#objectProperty property=searchString}}
                         <input type="text" class="form-control" placeholder="" value="{{value}}">
