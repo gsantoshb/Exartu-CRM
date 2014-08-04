@@ -162,24 +162,111 @@ Template.header.rendered = function () {
     }
 }
 
-Template.sidebar.waitOn = ['UsersHandler', dType.ObjTypesHandler]
-Template.sidebar.viewModel=function(){
-    var self = this;
+Template.sidebar.rendered=function(){
+  var sidebar=$('#sidebar'),
+    body=$('body'),
+    trigger=$('#menu-trigger'),
+    isOpen=false;
 
-    self.contactableObjTypes = ko.meteor.find(dType.ObjTypes, {
-        parent: Enums.objGroupType.contactable
+  var minimunWidth=768;
+
+  var hideIfClickOutside=function(e){
+    if (!sidebar.is(e.target) && sidebar.has(e.target).length === 0
+      && !trigger.is(e.target) && trigger.has(e.target).length === 0) {
+      hide();
+      body.off('click',hideIfClickOutside);
+    }
+  }
+  var hide=function(){
+    body.removeClass('in');
+    body.addClass('animating');
+    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+      body.removeClass('animating');
     });
 
-    self.jobObjTypes = ko.meteor.find(dType.ObjTypes, {
-        parent: Enums.objGroupType.job
+    sidebar.removeClass('in');
+    sidebar.addClass('animating');
+    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+      sidebar.removeClass('animating');
+    });
+    body.off('click',hideIfClickOutside);
+    isOpen=false;
+  }
+  var show=function(){
+    sidebar.show();
+
+    body.addClass('in');
+    body.addClass('animating');
+    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+      body.removeClass('animating');
     });
 
-    self.activeRoute = ko.dep(function () {
-        return Router.current().route.name;
+
+    sidebar.addClass('in');
+    sidebar.addClass('animating');
+    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
+      sidebar.removeClass('animating');
     });
-    self.activeRouteType = ko.dep(function () {
-        return Router.current().params.type;
-    });
-    return self;
+    isOpen=true;
+  }
+  var start=function(){
+    isOpen=false;
+    trigger.unbind( "click" );
+    trigger.click(function(){
+      if(isOpen){
+        hide();
+      } else {
+        show();
+        body.click(hideIfClickOutside);
+      }
+    })
+  }
+  var stop = function(){
+    sidebar.removeClass('in');
+    body.removeClass('in');
+    body.off('click', hideIfClickOutside);
+    trigger.unbind( "click" );
+  };
+
+  if ($(window).width() < minimunWidth){
+    start();
+  }
+  $(window).resize(_.debounce(function(){
+    if ($(window).width() < minimunWidth){
+      start();
+    }else{
+      stop();
+    }
+  },400));
+
 }
+Template.sidebar.helpers({
+  contactableObjTypes: function(){
+    return dType.ObjTypes.find({
+      parent: Enums.objGroupType.contactable
+    });
+  },
+  jobObjTypes: function(){
+    return dType.ObjTypes.find({
+      parent: Enums.objGroupType.job
+    });
+  },
+//  activeRoute: function () {
+//    return Router.current().route.name;
+//  },
+//  activeRouteType: function () {
+//    return Router.current().params.type;
+//  },
+  getActiveClass: function(route, type){
+    var currentType = Router.current().params.type;
+    var currentRoute = Router.current().route.name;
+
+    if (currentRoute == route && (type == currentType)){
+      return 'active'
+    }
+    return ''
+  }
+
+});
+
 
