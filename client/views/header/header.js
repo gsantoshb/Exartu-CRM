@@ -79,14 +79,14 @@ Template.header.rendered = function () {
         var submenuLogic = function (e) {
             var submenu = $(this).siblings('ul');
             var li = $(this).parents('li');
-
+            var trigger = $(this).parents('#menu-trigger');
             var hideIfClickOutside=function(e){
-                if (!submenu.is(e.target) && submenu.has(e.target).length === 0
-                    && !li.is(e.target) && li.has(e.target).length === 0) {
-                    submenu.slideUp();
-                    li.removeClass('open');
-                    $('body').off('click',hideIfClickOutside);
-                }
+              if (! submenu.is(e.target) && submenu.has(e.target).length === 0
+              && ! li.is(e.target) && li.has(e.target).length === 0  ) {
+                submenu.slideUp();
+                li.removeClass('open');
+                $('#sidebar').off('click',hideIfClickOutside);
+              }
             }
             if ($(window).width() > 480) {
                 var submenus = $('#sidebar li.submenu ul');
@@ -107,7 +107,7 @@ Template.header.rendered = function () {
                 if (($(window).width() > 768) || ($(window).width() <= 480)) {
                     submenus.slideUp();
                     submenu.slideDown();
-                    $('body').on('click',hideIfClickOutside);
+                  $('#sidebar').on('click',hideIfClickOutside);
 
                 } else {
                     submenus.fadeOut(250);
@@ -171,8 +171,11 @@ Template.sidebar.rendered=function(){
   var minimunWidth=768;
 
   var hideIfClickOutside=function(e){
-    if (!sidebar.is(e.target) && sidebar.has(e.target).length === 0
-      && !trigger.is(e.target) && trigger.has(e.target).length === 0) {
+    var submenuTrigger= $('.submenu>a');
+
+    var isInMenuTrigger = submenuTrigger.is(e.target) || submenuTrigger.has(e.target).length > 0;
+    var isInTrigger = trigger.is(e.target) || trigger.has(e.target).length > 0;
+    if (! isInMenuTrigger && ! isInTrigger) {
       hide();
       body.off('click',hideIfClickOutside);
     }
@@ -246,20 +249,17 @@ Template.sidebar.helpers({
       parent: Enums.objGroupType.contactable
     });
   },
-  jobObjTypes: function(){
+  jobObjTypes: function() {
     return dType.ObjTypes.find({
       parent: Enums.objGroupType.job
     });
   },
-//  activeRoute: function () {
-//    return Router.current().route.name;
-//  },
-//  activeRouteType: function () {
-//    return Router.current().params.type;
-//  },
   getActiveClass: function(route, type){
-    var currentType = Router.current().params.type;
-    var currentRoute = Router.current().route.name;
+    var current= Router.current();
+    if (!current) return '';
+
+    var currentType = current.params.type;
+    var currentRoute = current.route.name;
 
     if (currentRoute == route && (type == currentType)){
       return 'active'
