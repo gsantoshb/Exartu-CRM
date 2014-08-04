@@ -669,6 +669,34 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     .upgrade span {
         display: none !important;
     }
+
+
+}
+@media (max-width: 460px) {
+    /* Timeline */
+    .timeline .box {
+        background: rgba(255, 255, 255, 0.65);
+    }
+
+    .timeline .box-content {
+        text-align: center;
+    }
+
+    .timeline .item .item-info .time {
+        margin-left: 0px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.65);
+        padding-top: 6px;
+        color: rgba(0, 0, 0, 0.55);
+    }
+    .timeline .item{
+        border-bottom: 1px solid rgba(0, 0, 0, 0.58);
+        margin-bottom: 4px;
+        padding-bottom: 0px;
+    }
 }
 
 /********************************** End Mobile ***************************************/
