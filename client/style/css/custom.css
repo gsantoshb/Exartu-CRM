@@ -812,6 +812,29 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     }
 
 
+    /*boxes*/
+    .box-header-2{
+        padding: 5px 15px;
+    }
+    .box-content-md{
+        padding: 5px 15px;
+    }
+    .box-v-msg .box-v-msg-content{
+        height: 90px;
+    }
+    .tags-content{
+        padding: 5px 15px !important;
+    }
+    .box-table{
+        margin-top: 0px;
+    }
+
+    /*job header*/
+    .profile-name a{
+        font-size: 17px;
+        display: block;
+        float: none !important;
+    }
 }
 
 /********************************** End Mobile ***************************************/
