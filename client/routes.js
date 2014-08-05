@@ -196,6 +196,16 @@ Router.map(function () {
 });
 
 
+/* hack to scroll up on navigation */
+Deps.autorun(function () {
+  var current = Router.current();
+
+  Deps.afterFlush(function () {
+    $('.content-inner').scrollTop(0);
+    $(window).scrollTop(0);
+  });
+});
+
 // handler for testing loading pages
 //foreverHandler={
 //    wait: true,
