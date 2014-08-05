@@ -61,6 +61,27 @@
                                 </strong>
                                 {{/objectProperty}}
                             </td>
+                            <td>
+                                <i class="fa fa-info-circle"></i>&nbsp;Revenue frequency:
+
+                                {{#objectProperty property=dealRevenueFrequency editable=editMode}}
+                                <div class="form-group  {{hasError}}">
+                                    <select class="form-control input-lg">
+                                        {{#unless required}}
+                                        <option value="null" selected="{{isSelected null value}}">--Select--</option>
+                                        {{/unless}}
+                                        {{#each options}}
+                                        <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
+                                        {{/each}}
+                                    </select>
+                                    <span>{{error}}</span>
+                                </div><!-- /.form-group -->
+                                {{else}}
+                                <strong>
+                                    <strong>{{displayName}}</strong>
+                                </strong>
+                                {{/objectProperty}}
+                            </td>
                         </tr>
                         <tr>
 
@@ -83,6 +104,24 @@
                                 <strong>
                                     <strong>{{displayName}}</strong>
                                 </strong>
+                                {{/objectProperty}}
+                            </td>
+                            <td>
+                                <i class="fa fa-briefcase"></i>&nbsp;Estimated revenue:
+                                {{#objectProperty property=dealEstimatedRevenue editable=editMode}}
+                                <input class="form-control" type="number" value="{{value}}">
+                                {{else}}
+                                <strong>{{value}}</strong>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <i class="fa fa-briefcase"></i>&nbsp;Close Confidence %:
+                                {{#objectProperty property=dealCloseConfidencePercentage editable=editMode}}
+                                <input class="form-control" min="0" max="100" type="number" value="{{value}}">
+                                {{else}}
+                                <strong>{{value}}</strong>
                                 {{/objectProperty}}
                             </td>
                         </tr>
