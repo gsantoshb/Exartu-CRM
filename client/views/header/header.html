@@ -138,13 +138,13 @@
         <div id="sidebar" class="spanel-menu">
 
             <ul class="navbar navbar-inverse nav-stacked">
-                <li data-bind="css: {active: activeRoute() == 'dashboard'}">
+                <li class="dashboard {{getActiveClass 'dashboard' null}}">
                     <a href="/">
                         <i class="icon icon-house-2"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="submenu contactables" data-bind="css:{active: activeRoute() == 'contactables'}">
+                <li class="contactables {{getActiveClass 'contactables' null}}">
                     <a href="/contactables">
                         <i class="icon icon-connection-1"></i>
                         <span>Contacts</span>
@@ -166,7 +166,7 @@
                     <!--</ul>-->
                 </li>
 
-                <li class="submenu jobs" data-bind="css:{active: activeRoute() == 'jobs'}">
+                <li class="jobs {{getActiveClass 'jobs' null}}">
                     <a href="/jobs">
                         <i class="icon icon-briefcase"></i>
                         <span>Jobs</span>
