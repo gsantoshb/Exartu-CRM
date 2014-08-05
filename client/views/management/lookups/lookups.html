@@ -29,7 +29,7 @@
                 </div>
                 
                 <!-- Body -->
-                <div class="panel-body">
+                <div class="panel-body no-padding">
                     <ul class="list-3 stripped">
                         {{#each items}}
                             <li>
@@ -53,14 +53,20 @@
                                 
                                 <!-- Default -->
                                 <div class="col-xs-6 col-sm-2">
-                                    <span>Default: </span>
-                                    <input type="checkbox" checked="{{isDefault}}" class="set-default" />
+                                    <div class="checkbox">
+                                        <label>
+                                          <input type="checkbox" checked="{{isDefault}}" class="set-default" /> Default
+                                        </label>
+                                    </div>
                                 </div>
                                 
                                 <!-- Active -->
                                 <div class="col-xs-6 col-sm-2">
-                                    <span>Inactive: </span>
-                                    <input type="checkbox" checked="{{inactive}}" class="inactive" />
+                                    <div class="checkbox">
+                                        <label>
+                                          <input type="checkbox" checked="{{inactive}}" class="inactive" /> Inactive
+                                        </label>
+                                    </div>
                                 </div>
                             </li>
                         {{/each}}
