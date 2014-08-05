@@ -662,7 +662,7 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .actions-head{
     border-bottom: none;
 }
-.actions-head + .table-item{
+.table-item:first-child{
     border-top: 1px solid #e7e7e7;
 }
 .actions-head {
@@ -675,7 +675,89 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .actions-head div[class*='col-']{
     margin-bottom: 20px;
 }
+
+
+/*filters*/
+.filter{
+    text-align: center;
+}
+.filter .collapsing {
+    -webkit-transition: none;
+    transition: none;
+}
+.filter .filter-toggle{
+    color: black;
+    font-size: 20px;
+    margin-bottom: 20px;
+    pointer-events: none;
+    display: block;
+    margin-bottom: 15px;
+}
+.filter .filter-list{
+    display: block;
+}
+.filter .filter-list .filter-item .item-title{
+    border-bottom: solid 1px #E0E0E0;
+    margin-bottom: 3px;
+}
+@media (min-width: 992px){
+    .filter .filter-list{
+        height: 0px;
+    }
+}
 /***************************** Mobile Specific CSS ***********************************/
+@media (max-width: 992px) {
+    /* filters */
+    .filter{
+        text-align: right;
+    }
+
+    .filter .filter-toggle{
+
+        font-size: 20px;
+        margin-bottom: 0px;
+        pointer-events: auto;
+        display: block;
+        margin-top: -10px;
+
+        /*btn*/
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        /*btn-default*/
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc;
+
+        margin-bottom: 10px;
+
+    }
+
+    .filter .filter-list{
+        text-align: center;
+    }
+    .filter .filter-list:not(.in){
+        display: none;
+    }
+    .filter .filter-list .filter-item .item-title{
+        border-bottom: solid 1px #E0E0E0;
+        margin-bottom: 3px;
+    }
+}
 @media (max-width: 768px) {
     /* Login page */
     #login-wrapper .login-card { width: auto; }
