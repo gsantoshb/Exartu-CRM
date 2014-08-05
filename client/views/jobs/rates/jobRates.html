@@ -23,13 +23,13 @@
                         </thead>
                         <tbody>
                         {{#each rates}}
-                        <tr>
-                            {{#with getType type}}
-                            <td title="{{description}}">{{displayName}}</td>
-                            {{/with}}
-                            <td>{{round bill}}</td>
-                            <td>{{round pay}}</td>
-                        </tr>
+                            <tr>
+                                {{#with getType type}}
+                                    <td title="{{description}}">{{displayName}}</td>
+                                {{/with}}
+                                <td>{{round bill}}</td>
+                                <td>{{round pay}}</td>
+                            </tr>
                         {{/each}}
                         </tbody>
                     </table>
@@ -37,8 +37,8 @@
                     <div class="box-v-msg">
                         <div class="box-v-msg-content">
                             <i class="icon-money"></i>
-                            <p><br>
-                                <a href="#" class="addRate">add a Rate</a>
+                            <p>
+                                <a href="#" class="editRate">Add a Rate</a>
                             </p>
                         </div><!-- /.box-v-msg-content -->
                     </div>

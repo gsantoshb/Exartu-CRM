@@ -254,21 +254,35 @@
             </div>
 
         </div>
-        <div class="box-body">
-            <div style="margin-top: 10px; margin-left: 10px"> 
-                {{#objectProperty property=jobDescription editable=editMode}}
-                        {{#htmlEditor}}
-                        {{/htmlEditor}}
-                {{else}}
-                    <div id="description" style="max-height: 600px; min-height: 100px; overflow-y: auto;">
-                        <div class="text">
-                            {{#showAsHTML value=value previewMode=previewMode}}
-                            {{/showAsHTML}}
+        <div class="box-content">
+
+                <div style="margin-top: 10px; margin-left: 10px">
+                    {{#objectProperty property=jobDescription editable=editMode}}
+                            {{#htmlEditor}}
+                            {{/htmlEditor}}
+                    {{else}}
+                        <div id="description" style="max-height: 600px; min-height: 100px; overflow-y: auto;">
+                            {{#if value}}
+                                <div class="text">
+                                    {{#showAsHTML value=value previewMode=previewMode}}
+                                    {{/showAsHTML}}
+                                </div>
+                            {{else}}
+                                <div class="box-v-msg">
+                                    <div class="box-v-msg-content">
+                                        <i class="icon-text-wrapping-2"></i>
+                                        <p>
+                                            <a href="#" class="editJobDescription">Add description</a>
+                                        </p>
+                                    </div><!-- /.box-v-msg-content -->
+                                </div>
+                            {{/if}}
                         </div>
-                    </div>
-                {{/objectProperty}}
-                <!-- /.jobDescription -->
-            </div>
+                    {{/objectProperty}}
+                    <!-- /.jobDescription -->
+                </div>
+
+
         </div>
         {{#if editMode}}
             <div class="box-header-2" style="height: 60px">
