@@ -138,54 +138,54 @@
         <div id="sidebar" class="spanel-menu">
 
             <ul class="navbar navbar-inverse nav-stacked">
-                <li data-bind="css: {active: activeRoute() == 'dashboard'}">
+                <li class="dashboard {{getActiveClass 'dashboard' null}}">
                     <a href="/">
                         <i class="icon icon-house-2"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="submenu contactables" data-bind="css:{active: activeRoute() == 'contactables'}">
+                <li class="contactables {{getActiveClass 'contactables' null}}">
                     <a href="/contactables">
                         <i class="icon icon-connection-1"></i>
-                        <span>All Contacts</span>
-                        <i class="arrow fa fa-chevron-right"></i>
+                        <span>Contacts</span>
+                        <!--<i class="arrow fa fa-chevron-right"></i>-->
                     </a>
-                    <ul>
-                        <li class="{{getActiveClass 'contactables' null}}">
-                            <a href="/contactables">
-                                <span>All</span>
-                            </a>
-                        </li>
-                        {{#each contactableObjTypes}}
-                            <li class="{{getActiveClass 'contactables' name}}">
-                                <a href="/contactables/{{name}}">
-                                    <span>{{name}}</span>s
-                                </a>
-                            </li>
-                        {{/each}}
-                    </ul>
+                    <!--<ul>-->
+                        <!--<li class="{{getActiveClass 'contactables' null}}">-->
+                            <!--<a href="/contactables">-->
+                                <!--<span>All</span>-->
+                            <!--</a>-->
+                        <!--</li>-->
+                        <!--{{#each contactableObjTypes}}-->
+                            <!--<li class="{{getActiveClass 'contactables' name}}">-->
+                                <!--<a href="/contactables/{{name}}">-->
+                                    <!--<span>{{name}}</span>s-->
+                                <!--</a>-->
+                            <!--</li>-->
+                        <!--{{/each}}-->
+                    <!--</ul>-->
                 </li>
 
-                <li class="submenu jobs" data-bind="css:{active: activeRoute() == 'jobs'}">
+                <li class="jobs {{getActiveClass 'jobs' null}}">
                     <a href="/jobs">
                         <i class="icon icon-briefcase"></i>
                         <span>Jobs</span>
-                        <i class="arrow fa fa-chevron-right"></i>
+                        <!--<i class="arrow fa fa-chevron-right"></i>-->
                     </a>
-                    <ul>
-                        <li class="{{getActiveClass 'jobs' null}}">
-                            <a href="/jobs">
-                                <span>All</span>
-                            </a>
-                        </li>
-                        {{#each jobObjTypes}}
-                            <li class="{{getActiveClass 'jobs' name}}">
-                                <a  href="/jobs/{{name}}">
-                                    <span>{{name}}</span>
-                                </a>
-                            </li>
-                        {{/each}}
-                    </ul>
+                    <!--<ul>-->
+                        <!--<li class="{{getActiveClass 'jobs' null}}">-->
+                            <!--<a href="/jobs">-->
+                                <!--<span>All</span>-->
+                            <!--</a>-->
+                        <!--</li>-->
+                        <!--{{#each jobObjTypes}}-->
+                            <!--<li class="{{getActiveClass 'jobs' name}}">-->
+                                <!--<a  href="/jobs/{{name}}">-->
+                                    <!--<span>{{name}}</span>-->
+                                <!--</a>-->
+                            <!--</li>-->
+                        <!--{{/each}}-->
+                    <!--</ul>-->
                 </li>
 
                 <li class="tasks {{getActiveClass 'tasks' null}}">
