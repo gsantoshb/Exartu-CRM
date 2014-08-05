@@ -16,33 +16,24 @@
     <a href="/deals" class="current">Deals</a>
 </div>
 {{/with}}
+
 {{#with deal}}
 <div class="container-fluid contactable-content">
     <div class="row">
         <!-- Left Column -->
-        <div class="col-sm-8 col-lg-5 contactable-left-col">
-            {{>deal_tabs originalDeal=. documentCount=documentCount noteCount=noteCount  }}
-        </div>
-
-
-
-
-
-        <!-- Right Column -->
-
-        <div class="col-sm-4 col-lg-7 contactable-right-col-custom has-tabs">
+        <div class="col-sm-6 col-lg-8 contactable-right-col-custom has-tabs">
             <div class="box">
                 <div class="box-header-2">
                     <a class="btn-action editDeal pull-right" href="#" style="color: {{colorEdit}}"><i class="fa fa-pencil"></i></a>
                     <div class="box-title">Deal Details</div>
-
+                </div>
+                <div class="box-body">
                     <table class="table custom-table text-normal" style="table-layout: fixed;">
                         <tbody>
-
                         <tr>
                             <td>
-                                <i class="fa fa-briefcase"></i>&nbsp;Deal Name:
-                                {{#objectProperty property=displayName editable=editMode}}
+                                <i class="fa fa-briefcase"></i>&nbsp;Deal name:
+                                {{#objectProperty property=dealName editable=editMode}}
                                 <input class="form-control" type="text" value="{{value}}">
                                 {{else}}
                                 <strong>{{value}}</strong>
@@ -51,23 +42,22 @@
 
                         </tr>
 
-
                         <tr>
 
                             <td>
-                                <i class="fa fa-info-circle"></i>&nbsp;Status:
-                                {{#objectProperty property=dealStatus editable=editMode}}
-                                <div class="form-group  {{hasError}}">
-                                    <select class="form-control input-lg">
-                                        {{#each options}}
-                                            <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
-                                        {{/each}}
-                                    </select>
-                                    <span>{{error}}</span>
-                                </div><!-- /.form-group -->
+                                <i class="fa fa-calendar"></i>&nbsp;Close date:
+                                {{#objectProperty property=dealCloseDate editable=editMode}}
+                                {{#dateTimePicker value=value}}
+                                {{/dateTimePicker}}
                                 {{else}}
                                 <strong>
-                                    <strong>{{displayName}}</strong>
+                                    {{#if value}}
+                                    {{#formattedDate value=value format='MM.DD.YYYY'}}
+                                    {{date}}
+                                    {{/formattedDate}}
+                                    {{else}}
+                                    Not set
+                                    {{/if}}
                                 </strong>
                                 {{/objectProperty}}
                             </td>
@@ -75,11 +65,14 @@
                         <tr>
 
                             <td>
-                                <i class="fa fa-info-circle"></i>&nbsp;Revenue Frequency:
+                                <i class="fa fa-info-circle"></i>&nbsp;Status:
 
-                                {{#objectProperty property=dealRevenueFrequency editable=editMode}}
+                                {{#objectProperty property=dealStatus editable=editMode}}
                                 <div class="form-group  {{hasError}}">
                                     <select class="form-control input-lg">
+                                        {{#unless required}}
+                                        <option value="null" selected="{{isSelected null value}}">--Select--</option>
+                                        {{/unless}}
                                         {{#each options}}
                                         <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
                                         {{/each}}
@@ -97,58 +90,61 @@
                         <tr>
                             <td colspan="2">Tags:
                                 {{#objectProperty property=tags}}
-                                                <span class="badge badge-primary"><i class="fa fa-tag"></i> {{value}}
-                                                    {{#if editMode}}
-                                                        <i class="remove-tag fa fa-times" style="padding-left: 7px;cursor: pointer;" title="Remove"></i>
-                                                    {{/if}}
-                                                </span>
+                                                        <span class="badge badge-primary"><i class="fa fa-tag"></i> {{value}}
+                                                            {{#if editMode}}
+                                                                <i class="remove-tag fa fa-times" style="padding-left: 7px;cursor: pointer;" title="Remove"></i>
+                                                            {{/if}}
+                                                        </span>
                                 {{/objectProperty}}
                                 {{#if editMode}}
                                 <div class="input-group">
                                     <input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">
-                                                    <span class="input-group-btn">
-                                                      <button class="add-tag btn btn-success" type="button">Add</button>
-                                                    </span>
+                                                                <span class="input-group-btn">
+                                                                  <button class="add-tag btn btn-success" type="button">Add</button>
+                                                                </span>
                                 </div><!-- /input-group -->
                                 {{/if}}
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    Description:
-                    {{#objectProperty property=dealDescription editable=editMode}}
 
-                    {{#htmlEditor}}
-                    {{/htmlEditor}}
-                    {{else}}
-                    {{>dealDescription}}
-
-                    {{/objectProperty}}
-                    <!-- /.description -->
                 </div>
                 <!-- /.box-content-lg-->
+
                 {{#if editMode}}
                 <div class="box-header-2" style="height: 60px">
                     <div class="pull-right">
-                                        <span class="btn btn-default cancelButton">
-                                            Cancel
-                                        </span>
-                                        <span class="btn btn-info saveButton">
-                                            Save
-                                        </span>
+                                            <span class="btn btn-default cancelButton">
+                                                Cancel
+                                            </span>
+                                            <span class="btn btn-info saveButton">
+                                                Save
+                                            </span>
                     </div>
                 </div>
                 {{/if}}
             </div>
-            <div class="row">
 
+            {{> dealDescription}}
+
+            <div class="row">
                 <div class="col-lg-6">
-                    {{>customerInfo customer=getCustomer path='customer' collection=dealCollection}}
+                    <!-- /.box -->
+
+                </div>
+                <div class="col-lg-6">
+
                     {{>dealActivity}}
                 </div>
             </div>
         </div>
-        <!-- /.col-lg-8-->
+        <!-- /.col-lg-->
+
+        <!-- Right Column -->
+        <div class="col-sm-6 col-lg-4 contactable-left-col">
+            {{>deal_tabs originalDeal=. documentCount=documentCount noteCount=noteCount  }}
+        </div>
 
         <div class="col-md-4 col-lg-4">
 
@@ -163,16 +159,6 @@
 </div>
 </template>
 
-<template name="dealDescription">
-    <div id="dealDescription" class="job-description">
-        <div class="text">
-            {{#showAsHTML value=value}}
-            {{/showAsHTML}}
-        </div>
-        <div class="see-more">See more <i class="fa fa-caret-down"></i></div>
-        <div class="see-less">See less <i class="fa fa-caret-up"></i></div>
-    </div>
-</template>
 <template name="deal_tabs">
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
         <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
@@ -190,4 +176,46 @@
 
     </div>
 
+</template>
+
+
+<template name="dealDescription">
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action editDealDescription pull-right" href="#" style="color: {{colorDescriptionEdit}}"><i class="fa fa-pencil"></i></a>
+            <div class="box-title">
+                Description
+                <a class="previewMode hidden-sm hidden-xs" href="#" title="Preview in mobile size" style="margin-left: 4px"><i class="fa fa-mobile-phone" style="float: inherit; margin-top: 2px; color: {{colorPreviewMode}}"></i></a>
+            </div>
+
+        </div>
+        <div class="box-body">
+            <div style="margin-top: 10px; margin-left: 10px">
+                {{#objectProperty property=dealDescription editable=editMode}}
+                {{#htmlEditor}}
+                {{/htmlEditor}}
+                {{else}}
+                <div id="description" style="max-height: 600px; min-height: 100px; overflow-y: auto;">
+                    <div class="text">
+                        {{#showAsHTML value=value previewMode=previewMode}}
+                        {{/showAsHTML}}
+                    </div>
+                </div>
+                {{/objectProperty}}
+                <!-- /.dealDescription -->
+            </div>
+        </div>
+        {{#if editMode}}
+        <div class="box-header-2" style="height: 60px">
+            <div class="pull-right">
+                    <span id="cancelDealDescriptionEdit" class="btn btn-default">
+                        Cancel
+                    </span>
+                    <span id="saveDealDescriptionEdit" class="btn btn-info">
+                        Save
+                    </span>
+            </div>
+        </div>
+        {{/if}}
+    </div>
 </template>

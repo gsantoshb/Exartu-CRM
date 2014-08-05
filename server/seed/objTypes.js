@@ -291,6 +291,12 @@ newObjType({
     services: ['messages', 'tasks', 'notes', 'tags'],
     fields: [
         {
+            name: 'dealName',
+            displayName: 'Deal Name',
+            showInAdd: true,
+            required: true
+        },
+        {
             name: 'statusNote',
             displayName: 'Status note',
             showInAdd: true,
@@ -327,7 +333,13 @@ newObjType({
             displayName: 'Confidence',
             fieldType: 'number',
             required: false
-        }
+        },
+        {
+            name: 'dealDescription',
+            displayName: 'Deal Description',
+            false: false,
+            showInAdd: false
+        },
     ]
 });
 newObjType({
@@ -342,9 +354,10 @@ newObjType({
     fields: [
 
         {
-            name: 'displayName',
-            displayName: 'Deal Name',
-            required: true
+            name: 'unused',
+            displayName: 'unused deal field',
+            required: false,
+            showInAdd: false
         }
 
 
