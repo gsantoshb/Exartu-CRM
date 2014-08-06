@@ -158,7 +158,7 @@ var addTag = function() {
   inputTag.focus();
 };
 
-Template.job_tabs.helpers({
+Template.job.helpers({
   getType: function(){
     return Enums.linkTypes.job;
   }

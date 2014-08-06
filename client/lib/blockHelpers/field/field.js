@@ -60,7 +60,7 @@ UI.registerHelper('displayProperty', function(){
     }
     else{
       //hack
-      if (this.name == 'customer'){
+      if (this.name == 'customer' && ! this.value){
 
         var houseAccount= Contactables.findOne({houseAccount: true});
         var user= Meteor.user();

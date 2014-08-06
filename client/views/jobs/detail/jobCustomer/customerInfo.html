@@ -6,12 +6,15 @@
                 <div class="box-header-2">
                     <a class="btn-action addEdit" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
                     <div class="box-title">
-                        <a href="/contactable/{{_id}}" style="color: #777;">
+                        <a href="/contactable/{{_id}}" style="color: #777;" class="hidden-sm hidden-xs">
                             <span>{{displayName}}</span>
+                        </a>
+                        <a class="box-title visible-sm visible-xs" href="#customer-body" data-toggle="collapse" >
+                            Customer
                         </a>
                     </div>
                 </div>
-                <div class="box-content">
+                <div class="box-content-collapsible" id="customer-body">
                     <a data-bind="attr:{href:'/contactable/'+ $parent._id()}">
                         <p class="text-center">
                             <img style="max-heigth:40px; max-width:40px;" src="{{pictureUrl}}">

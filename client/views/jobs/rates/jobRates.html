@@ -2,12 +2,16 @@
     <div class="box">
         <div class="box-header-2">
             <a class="btn-action tip-top editRate" data-original-title="Add Job Rate" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
-            <div class="box-title">
+            <div class="box-title hidden-sm hidden-xs">
                 Job Rates
             </div>
+            <a class="box-title visible-sm visible-xs" href="#rate-body" data-toggle="collapse" >
+
+                Job Rates
+            </a>
         </div>
 
-        <div class="box-content">
+        <div class="box-content-collapsible" id="rate-body">
             {{#if editMode}}
                 {{#ratesEdit rates=rates}}
                 {{/ratesEdit}}

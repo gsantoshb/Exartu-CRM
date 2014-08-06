@@ -64,7 +64,7 @@
                             </td>
                         </tr>
                     {{/if}}
-                    {{#if customer }}
+                    {{#if Customer }}
                         <tr>
                             <td>Department</td>
                             <td>
@@ -86,7 +86,7 @@
                             <!--</td>-->
                         <!--</tr>-->
                     {{/if}}
-                    {{#if employee }}
+                    {{#if Employee }}
                         <!--<tr>-->
                             <!--<td>Status note</td>-->
                             <!--<td>-->
@@ -100,7 +100,7 @@
                         <tr>
                             <td>Candidacy status</td>
                             <td>
-                                {{#objectProperty property=status editable=editMode}}
+                                {{#objectProperty property=recruiterStatus editable=editMode}}
                                     <div class="form-group  {{hasError}}">
                                         <select class="form-control input-lg">
                                             <option value="null" selected="{{isSelected null value}}">--Select--</option>
