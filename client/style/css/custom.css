@@ -677,7 +677,9 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     height: 500px;
     overflow-y: auto;
 }
-
+.timeline .item .item-info .time i{
+    font-size: 14px;
+}
 /*filters*/
 .filter{
     text-align: center;
@@ -814,6 +816,7 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
         padding-top: 6px;
         color: rgba(0, 0, 0, 0.55);
     }
+
     .timeline .item{
         border-bottom: 1px solid rgba(0, 0, 0, 0.58);
         margin-bottom: 4px;
