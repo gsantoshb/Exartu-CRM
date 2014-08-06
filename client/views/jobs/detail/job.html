@@ -18,16 +18,17 @@
             {{/with}}
 
             {{#with job}}
-                <div class="container-fluid contactable-content">
+                <div class="container-fluid contactable-content job-details">
                     <div class="row">
                         <!-- Left Column -->
-                        <div class="col-sm-6 col-lg-8 contactable-right-col-custom has-tabs">
+                        <div class="col-sm-6 col-lg-8 margin-top-15 has-tabs">
                             <div class="box">
                                 <div class="box-header-2">
                                     <a class="btn-action editJob pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
                                     <div class="box-title">Job Details</div>
+                                    <!--<a class="visible-sm visible-xs box-title" href="#details-body" data-toggle="collapse">Job Details</a>-->
                                 </div>
-                                <div class="box-body">
+                                <div class="box-body" id="details-body">
                                     <table class="table custom-table text-normal" style="table-layout: fixed;">
                                         <tbody>
                                             <tr>
@@ -169,7 +170,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    
+
                                 </div>
                                 <!-- /.box-content-lg-->
 
@@ -205,8 +206,23 @@
                         <!-- /.col-lg-->
 
                         <!-- Right Column -->
-                        <div class="col-sm-6 col-lg-4 contactable-left-col">
-                            {{>job_tabs originalJob=. documentCount=documentCount noteCount=noteCount  }}
+                        <div class="col-sm-6 col-lg-4 margin-top-15">
+                            {{>candidates job=_id}}
+                            <div class="box">
+                                <div class="box-header-2">
+                                    <div class="box-title">
+                                        Notes
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    {{> contactableNotesAdd entity=job type=getType}}
+
+                                    <div class="mobil-no-scroll">
+                                        {{> contactableNotesList entity=job}}
+                                    </div>
+                                </div>
+                            </div>
+                            <!--{{>job_tabs originalJob=. documentCount=documentCount noteCount=noteCount  }}-->
                         </div>
 
                         <div class="col-md-4 col-lg-4">
@@ -248,13 +264,16 @@
     <div class="box">
         <div class="box-header-2">
             <a class="btn-action editJobDescription pull-right" href="#" style="color: {{colorDescriptionEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
-            <div class="box-title">
+            <div class="box-title hidden-sm hidden-xs">
                     Description
-                    <a class="previewMode hidden-sm hidden-xs" href="#" title="Preview in mobile size" style="margin-left: 4px"><i class="fa fa-mobile-phone" style="float: inherit; margin-top: 2px; color: {{colorPreviewMode}}"></i></a>
+                    <a class="previewMode" href="#" title="Preview in mobile size" style="margin-left: 4px"><i class="fa fa-mobile-phone" style="float: inherit; margin-top: 2px; color: {{colorPreviewMode}}"></i></a>
             </div>
+            <a class="box-title visible-sm visible-xs" href="#description-body" data-toggle="collapse" >
 
+                Description
+            </a>
         </div>
-        <div class="box-content">
+        <div class="box-content-collapsible" id="description-body">
 
                 <div style="margin-top: 10px; margin-left: 10px">
                     {{#objectProperty property=jobDescription editable=editMode}}
