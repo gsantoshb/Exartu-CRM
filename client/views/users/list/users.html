@@ -9,46 +9,52 @@
             <a href="#" class="current">Users</a>
         </div>
 
-        <button class="btn btn-link" data-bind="click: function () { Composer.showModal('addUser', 'addUserModal'); }">Add user</button>
+        <button class="btn btn-link addUser">Add user</button>
         <div class="container-fluid">
-            <div class="table-items-box" data-bind="foreach: users">
-                <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
+            <div class="table-items-box">
+                {{#each users}}
+                   <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
                     <div class="row">
                         <div class="col-sm-3">
                             <div class="table-item-cell">
-                                <strong data-bind="text: username"></strong>
+                                <strong>{{username}}</strong>
                             </div>
                             <!-- /.table-item-cell -->
                         </div>
                         <!-- /.col-md-2-->
                         <div class="col-sm-3">
-                            <div class="table-item-cell" data-bind="foreach: $data.emails">
 
-                                <i class="fa fa-envelope-o"></i>&nbsp;
-                                <a data-bind="text: $data.address, attr:{ href:'mailto:'+ ko.utils.unwrapObservable($data.address)}"></a>
+                            <div class="table-item-cell" data-bind="foreach: $data.emails">
+                                {{#each emails}}
+                                    <i class="fa fa-envelope-o"></i>&nbsp;
+                                    <a href="mailto:{{address}}">{{address}}</a>
+                                {{/each}}
                             </div>
                             <!-- /.table-item-cell -->
                         </div>
                         <!-- /.col-md-2-->
                         <div class="col-sm-3  text-small">
-                            Created: <div class="table-item-cell" data-bind="text: dateCreated ">
-
-                            </div>
+                            Created: <span class="table-item-cell">
+                            {{#formattedDate value=createdAt}}
+                                {{date}}
+                            {{/formattedDate}}
+                            </span>
                         </div>
                         <!-- /.col-md-4-->
-                        <div class="col-sm-3">
-                            <div class="table-item-cell" data-bind="foreach: $data.roles">
-                                <div class="btn btn-default btn-xs">
-                                    <span data-bind="text: $data "></span>
-                                    <a data-bind="click: function () {  $root.removeGroup($data,$parent);}">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        <!--<div class="col-sm-3">-->
+                            <!--<div class="table-item-cell" data-bind="foreach: $data.roles">-->
+                                <!--<div class="btn btn-default btn-xs">-->
+                                    <!--<span data-bind="text: $data "></span>-->
+                                    <!--<a data-bind="click: function () {  $root.removeGroup($data,$parent);}">-->
+                                        <!--<i class="fa fa-times"></i>-->
+                                    <!--</a>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                     <!-- /.row -->
                 </div>
+                {{/each}}
                 <!-- /.table-item -->
             </div>
             <!-- /.table-items-box -->

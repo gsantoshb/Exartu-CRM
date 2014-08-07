@@ -15,16 +15,16 @@ Template.addUser.viewModel = function () {
         password: ko.observable('').extend({
             required: true
         }),
-        roles: ko.observableArray([]).extend({
-            required: true
-        })
+//        roles: ko.observableArray([]).extend({
+//            required: true
+//        })
     };
     self.newUserValidate = ko.validatedObservable(newUser);
 
-    self.roles = [];
-    _.forEach(Roles.find().fetch(), function (rol) {
-        self.roles.push(rol.name);
-    });
+//    self.roles = [];
+//    _.forEach(Roles.find().fetch(), function (rol) {
+//        self.roles.push(rol.name);
+//    });
 
     self.addUser = function () {
         if (!self.newUserValidate.isValid()) {
