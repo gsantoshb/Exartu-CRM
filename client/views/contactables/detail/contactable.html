@@ -175,14 +175,14 @@
             <small>— {{person.jobTitle}}</small>
         {{/if}}
 
-        <!--{{#if Contact.customerName}}-->
-            <!--<a class="pull-right" href="/contactable/{{Contact.customer}}">-->
-                <!--<i class="icon-buildings-1"></i>-->
-                <!--{{Contact.customerName}}-->
-            <!--</a>-->
-        <!--{{else}}-->
-            <!--<a class="pull-right editCustomer" href="#"> <i class="icon-buildings-1"></i></a>-->
-        <!--{{/if}}-->
+        {{#if Contact.customerName}}
+            <a class="pull-right" href="/contactable/{{Contact.customer}}">
+                <i class="icon-buildings-1"></i>
+                {{Contact.customerName}}
+            </a>
+        {{else}}
+            <a class="pull-right editCustomer" href="#"> <i class="icon-buildings-1"></i></a>
+        {{/if}}
     </h1>
     <p class="profile-address">
         <i class="fa fa-map-marker"></i>
