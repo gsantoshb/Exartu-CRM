@@ -708,6 +708,14 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
         height: 0px;
     }
 }
+
+/*connection-banner*/
+#connection-lost-banner {
+     position: relative;
+     margin-top: 20px;
+     margin-bottom: -20px;
+}
+
 /***************************** Mobile Specific CSS ***********************************/
 @media (max-width: 992px) {
     /* filters */
@@ -760,6 +768,11 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
         border-bottom: solid 1px #E0E0E0;
         margin-bottom: 3px;
     }
+
+    /*connection-banner*/
+    #connection-lost-banner {
+        margin-top: 0px;
+    }
 }
 
 /*collapsable boxes*/
@@ -793,6 +806,10 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
         display: none !important;
     }
 
+    /*connection-banner*/
+    #connection-lost-banner {
+        margin-bottom: 0px;
+    }
 
 }
 
