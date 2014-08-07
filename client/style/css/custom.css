@@ -865,6 +865,10 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
         overflow-y: inherit;
     }
 
+    .nav-tabs > li > a {
+        padding: 10px 10px;
+    }
+
 }
 
 /********************************** End Mobile ***************************************/
