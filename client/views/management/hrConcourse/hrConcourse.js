@@ -1,11 +1,11 @@
-hrCenterManagementController = RouteController.extend({
+hrConcourseManagementController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
 //    return [];
   },
   action: function () {
     if (this.ready())
-      this.render('hrCenter');
+      this.render('hrConcourse');
     else
       this.render('loading');
   }
@@ -14,7 +14,7 @@ hrCenterManagementController = RouteController.extend({
 var options;
 var logo= null;
 var fsFile= null;
-Template.hrCenter.created= function(){
+Template.hrConcourse.created= function(){
   var hier= Hierarchies.findOne();
   var config= (hier && hier.configuration) ? hier.configuration : {};
   options=  new Utils.ObjectDefinition({
@@ -34,7 +34,7 @@ Template.hrCenter.created= function(){
     }
   })
 }
-Template.hrCenter.helpers({
+Template.hrConcourse.helpers({
   options: function(){
     return options;
   },
@@ -51,7 +51,7 @@ Template.hrCenter.helpers({
     return '/assets/user-photo-placeholder.jpg';
   }
 })
-Template.hrCenter.events({
+Template.hrConcourse.events({
   'click #saveButton': function(){
     var opt= options.getObject()
 
