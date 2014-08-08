@@ -129,12 +129,28 @@ Router.map(function () {
   this.route('tasks', {
     path: '/tasks',
     controller: 'TasksController',
-  })
+  });
+
+  this.route('notes', {
+    path: '/notes',
+    controller: 'NotesController',
+  });
+
+  this.route('assignments', {
+    path: '/assignments',
+    controller: 'AssignmentsController',
+  });
+
+   this.route('candidates', {
+    path: '/candidates',
+    controller: 'CandidatesController',
+  });
 
   this.route('lookupManagement', {
     path: '/management/lookups',
     controller: 'LookupsManagementController'
   })
+
   this.route('hrConcourseManagement', {
     path: '/management/hrconcourse',
     controller: 'hrConcourseManagementController'
