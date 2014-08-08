@@ -4,24 +4,22 @@
             {{#with information}}
                 <div id="content-header" class="mini">
                     <h1>
-                            {{#objectProperty property=contactablesCount }}
-                                <strong> {{value}} </strong>
-                            {{/objectProperty}}
+                        {{#objectProperty property=contactablesCount }}
+                            <strong> {{value}} </strong>
+                        {{/objectProperty}}
 
-                            {{#objectProperty property=objType}}
-                                {{#if value}}
-                                    <span> {{value}} </span>
-                                {{else}}
-                                    record(s)
-                                {{/if}}
-                            {{/objectProperty}}
-
-
+                        {{#objectProperty property=objType}}
+                            {{#if value}}
+                                <span> {{value}} </span>
+                            {{else}}
+                                record(s)
+                            {{/if}}
+                        {{/objectProperty}}
                     </h1>
                 </div>
                 <div id="breadcrumb">
-                    <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-                    <a href="#" class="current">
+                    <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+                    <a href="/contactables" class="current">
                         {{#objectProperty property=objType }}
                             <strong> {{value}} </strong>
                         {{/objectProperty}}</a>
@@ -277,7 +275,7 @@
                             {{/each}}
                         </ul>
                     </div>
-                    <button type="button" class="btn btn-default" href="/resumeparser"><i class="fa fa-cloud-download"></i> Import</button>
+                    <a type="button" class="btn btn-default" href="/resumeparser"><i class="fa fa-cloud-download"></i> Import</a>
 
                 </div>
             </div>
