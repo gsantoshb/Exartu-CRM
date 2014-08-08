@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "elastical": {
+      "version": "0.0.13",
+      "dependencies": {
+        "request": {
+          "version": "2.9.200"
+        },
+        "diff": {
+          "version": "1.0.3"
+        }
+      }
+    }
+  }
+}
