@@ -716,6 +716,10 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
      margin-top: 20px;
      margin-bottom: -20px;
 }
+/* tasks */
+.task-Pending .task-state{
+    color: rgba(183, 4, 48, 1);
+}
 
 /***************************** Mobile Specific CSS ***********************************/
 @media (max-width: 992px) {
