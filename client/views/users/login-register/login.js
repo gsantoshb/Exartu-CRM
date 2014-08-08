@@ -112,7 +112,8 @@ Template.login.viewModel = function () {
 
     if (!self.newAccount.isValid()){
       self.newAccount.errors.showAllMessages();
-        return;
+      self.loading(false);
+      return;
     }
 
     Accounts.createUser(_.omit(ko.toJS(self.newAccount()), 'passwordVerification'), function (err, result) {
@@ -123,7 +124,7 @@ Template.login.viewModel = function () {
       }
     });
   };
-
+  
   return self;
 };
 
