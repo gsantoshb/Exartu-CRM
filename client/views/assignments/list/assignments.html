@@ -1,0 +1,85 @@
+<template name="assignments">
+    <div id="content">
+        <div id="content-header" class="mini">
+            <h1>
+                <strong data-bind="text: tasks().length"></strong>
+                <span>Assignments</span>
+            </h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+            <a href="/tasks" class="current">assignments</a>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="actions-head col-md-7 col-lg-7">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-8">
+                                <div class="input-group">
+                                    <input id="search-string" type="text" class="form-control" placeholder="Search assignments">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div><!-- /.col-lg-5 -->
+
+                        </div><!-- /.row -->
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-lg-12">
+                    <div class="table-items-box">
+                        {{#each assignments}}
+                            <div class="table-item magic">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <div class="table-item-cell">
+                                            <div class="table-item-cell-container">
+                                                <div class="table-item-title">
+                                                    {{#with job}}
+                                                        <i class="icon icon-briefcase"> </i>
+                                                        <a href="/job/{{_id}}"> {{displayName}} </a>
+                                                    {{/with}}
+                                                    <i class="fa fa-arrows-h fa-x3"> </i>
+                                                    {{#with employee}}
+                                                        <i class="icon icon-profile-man"> </i>
+                                                        <a href="/contactable/{{_id}}"> {{displayName}} </a>
+                                                    {{/with}}
+                                                </div>
+                                                <div class="task-author">
+                                                    by
+                                                    {{#userInfo userId=userId}}
+                                                        <a href="#"><strong id="username"> {{username}} </strong></a>
+                                                    {{/userInfo}}
+                                                </div>
+                                            </div>
+                                            <!-- /.table-item-cell-container -->
+                                        </div>
+                                    </div>
+                                    <!-- /.table-item-cell -->
+                                    <div class="col-sm-3">
+                                        <div class="table-item-cell">
+                                            <div class="table-item-cell-container">
+                                                <div class="date">
+                                                    {{#formattedDate value=dateCreated format="fromNow"}}
+                                                        <span>{{date}}</span>
+                                                    {{/formattedDate}}
+                                                </div>
+                                            </div>
+                                            <!-- /.table-item-cell-container -->
+                                        </div>
+                                        <!-- /.table-item-cell -->
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
