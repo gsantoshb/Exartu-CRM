@@ -40,6 +40,10 @@ Template.notes.notes = function() {
   return Notes.find(searchQuery);
 };
 
+Template.notes.getCount = function(notes) {
+  return notes.count();
+}
+
 Template.notes.getEntity = function(link){
   return Utils.getEntityFromLink(link);
 };
