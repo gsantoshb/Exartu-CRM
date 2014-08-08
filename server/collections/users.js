@@ -126,7 +126,7 @@ Meteor.publish(null, function () {
       'services.email': 1,
       'profilePictureId': 1,
       "hierId": 1,
-      "dateCreated": 1,
+      "createdAt": 1,
       "roles": 1,
       "permissions": 1,
       "lastCustomerUsed": 1

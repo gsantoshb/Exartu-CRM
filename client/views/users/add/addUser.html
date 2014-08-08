@@ -26,11 +26,11 @@
                             <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" data-bind="value: newUserValidate().password">
                             <span class="text-danger" data-bind="validationMessage: newUserValidate().password"></span>
                         </div>
-                        <div class="form-group" data-bind="css:{'has-error': newUserValidate().roles.isModified() && ! newUserValidate().roles.isValid()}">
-                            <label for="exampleInputPassword1">Roles</label>
-                            <select class="form-control" data-bind="options: roles, selectedOptions: newUserValidate().roles, attr:{multiple: true}"></select>
-                            <span class="text-danger" data-bind="validationMessage: newUserValidate().roles"></span>
-                        </div>
+                        <!--<div class="form-group" data-bind="css:{'has-error': newUserValidate().roles.isModified() && ! newUserValidate().roles.isValid()}">-->
+                            <!--<label for="exampleInputPassword1">Roles</label>-->
+                            <!--<select class="form-control" data-bind="options: roles, selectedOptions: newUserValidate().roles, attr:{multiple: true}"></select>-->
+                            <!--<span class="text-danger" data-bind="validationMessage: newUserValidate().roles"></span>-->
+                        <!--</div>-->
 
                     </form>
                 </div>

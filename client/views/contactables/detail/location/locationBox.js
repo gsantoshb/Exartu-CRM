@@ -49,9 +49,21 @@ Template.contactableLocationBox.editLocation = function () {
 }
 
 var centerBox = function (box) {
-  $('html, body').animate({
-    scrollTop: $(box).offset().top
-  }, 2000);
+  var $box=$(box),
+    boxHeight= $box.outerHeight(),
+    boxTop= $box.offset().top,
+    boxBottom= boxTop + boxHeight,
+
+    $win= $(window),
+    winTop= $win.scrollTop(),
+    winHeight = $win.height(),
+    winBottom= winTop + winHeight;
+
+  if (winBottom < boxBottom){
+    $('html, body').animate({
+      scrollTop: winTop + (boxBottom - winBottom)
+    }, 800);
+  }
 }
 Template.contactableLocationBox.events({
   'click .findLocation': function (e, ctx) {
