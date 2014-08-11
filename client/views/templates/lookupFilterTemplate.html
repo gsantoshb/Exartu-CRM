@@ -1,26 +1,28 @@
 <template name="lookupFilterTemplate">
     <div id="lookupFilterTemplate" style="display: none" data-bind="bind: false">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" data-bind="attr: { href: '#' + title + filterGroupId}">
-                        <strong data-bind="text: title"></strong>
-                    </a>
-                </h4>
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse" style="height: auto;" data-bind="attr: {id: title + filterGroupId}">
-                <div class="panel-body">
-                    <input style="width: 100%" type='hidden' placeholder="Search" data-bind="select2: { options: items, selectedValues: selectedValues }"/>
-                    <hr/>
-                    <!-- ko foreach: selectedValues -->
-                        <span style="word-wrap: break-word">
-                            <span data-bind="text: text"></span>
-                            <i class="fa fa-times" style="cursor: pointer" data-bind="click: $parent.selectedValues.removeSelection"></i>
-                        </span>
-                        <br/>
-                    <!-- /ko -->
-                </div>
-            </div>
+        <!--<div class="panel panel-default">-->
+            <!--<div class="panel-heading">-->
+                <!--<h4 class="panel-title">-->
+                    <!--<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" data-bind="attr: { href: '#' + title + filterGroupId}">-->
+                        <!--<strong data-bind="text: title"></strong>-->
+                    <!--</a>-->
+                <!--</h4>-->
+            <!--</div>-->
+            <!--<div id="collapseOne" class="panel-collapse collapse" style="height: auto;" data-bind="attr: {id: title + filterGroupId}">-->
+                <!--<div class="panel-body">-->
+        <div>
+            <!-- ko foreach: selectedValues -->
+                <span style="word-wrap: break-word">
+                    <span data-bind="text: text"></span>
+                    <i class="fa fa-times" style="cursor: pointer" data-bind="click: $parent.selectedValues.removeSelection"></i>
+                </span>
+                <br/>
+            <!-- /ko -->
         </div>
+        <input style="width: 100%" type='hidden' placeholder="Search" data-bind="select2: { options: items, selectedValues: selectedValues }"/>
+
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </template>

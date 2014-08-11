@@ -58,26 +58,26 @@ Template.jobs.viewModel = function () {
 
   // Filters
   self.lookFilters = [
-    {
-      name: 'jobIndustry',
-      title: 'Industries',
-      fieldName: 'industry'
-    },
-    {
-      name: 'jobCategory',
-      title: 'Categories',
-      fieldName: 'category'
-    },
 //    {
-//      name: 'jobStatus'
-//      , title: 'Statuses',
-//      fieldName: 'status'
+//      name: 'jobIndustry',
+//      title: 'Industries',
+//      fieldName: 'industry'
+//    },
+//    {
+//      name: 'jobCategory',
+//      title: 'Categories',
+//      fieldName: 'category'
 //    },
     {
-      name:'jobDuration',
-      title: 'Durations',
-      fieldName: 'duration'
-    }
+      name: 'jobStatus'
+      , title: 'Statuses',
+      fieldName: 'status'
+    },
+//    {
+//      name:'jobDuration',
+//      title: 'Durations',
+//      fieldName: 'duration'
+//    }
   ];
 
   self.status=[]
