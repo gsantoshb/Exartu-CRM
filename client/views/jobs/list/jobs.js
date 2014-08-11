@@ -73,11 +73,11 @@ Template.jobs.viewModel = function () {
       , title: 'Statuses',
       fieldName: 'status'
     },
-//    {
-//      name:'jobDuration',
-//      title: 'Durations',
-//      fieldName: 'duration'
-//    }
+    {
+      name:'jobDuration',
+      title: 'Durations',
+      fieldName: 'duration'
+    }
   ];
 
   self.status=[]
