@@ -30,6 +30,7 @@ Meteor.startup(function () {
           job._id = new Meteor.Collection.ObjectID()._str;
 //            if (beforeInsertOrUpdateJob(job)) {
               Jobs.insert(job);
+              return job;
 //            } else {
 //                console.error('Job is not valid');
 //                console.dir(job);
