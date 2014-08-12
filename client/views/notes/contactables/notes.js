@@ -133,7 +133,16 @@ Template.contactableNotesList.getUrl = function(link){
 
 
 Template.contactableNotesList.getNotes = function () {
-    return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }});
+    return Notes.find(
+        {
+            links: { $elemMatch: { id: Session.get('entityId') } }
+        },
+        {
+            sort:
+            {
+                dateCreated: -1
+            }
+        });
 }
 
 Template.contactableNotesList.notes = function () {
