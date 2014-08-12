@@ -16,6 +16,8 @@ var link=function(link){
 
 var addNote=function (e, ctx) {
     var content=ctx.$('#note-input').val();
+
+    ctx.$('#note-input').val(null);
     if (_.isEmpty(content)) {
       $('#add-note-feedback').text("Please enter a note");
       return;

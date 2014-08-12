@@ -21,6 +21,12 @@ Candidates.allow({
 
 Candidates.before.insert(function(userId, doc, fieldNames, modifier, options){
   var job= Jobs.findOne({ _id: doc.job });
+  var cand=Candidates.findOne({employee: doc.employee,job: doc.job});
+  if (!_.isEmpty(cand))
+  {
+      return false;
+  }
+
 
   if (!job)
     return false;
