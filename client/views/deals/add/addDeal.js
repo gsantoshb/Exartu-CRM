@@ -56,9 +56,7 @@ Template.addDealPage.helpers({
 
 Template.addDealPage.events({
     'click .btn-success': function(){
-        console.log('dealadd',model);
         if (!dType.isValid(model)){
-            console.log('modelnot valid');
             dType.displayAllMessages(model);
             return;
         }
@@ -67,7 +65,7 @@ Template.addDealPage.events({
             if(err){
                 console.dir(err)
             }else{
-                history.back();
+                Router.go('/deal/' + result._id);
             }
         });
     },

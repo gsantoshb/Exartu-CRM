@@ -33,8 +33,9 @@ Deals.before.insert(function (userId, doc) {
 Meteor.startup(function () {
     Meteor.methods({
         addDeal: function (deal) {
-
-                Deals.insert(deal);
+            deal._id = new Meteor.Collection.ObjectID()._str;
+            Deals.insert(deal);
+            return deal;
 
         },
         updateDeal: function (deal) {

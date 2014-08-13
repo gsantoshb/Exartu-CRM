@@ -74,10 +74,8 @@ Template.addJobPage.events({
               Meteor.call('setLastCustomerUsed', obj.customer, function(){
                 if(err)
                   console.dir(err);
-
-                Router.go('/job/' + result._id);
-
               });
+              Router.go('/job/' + result._id);
             }
         });
     },
