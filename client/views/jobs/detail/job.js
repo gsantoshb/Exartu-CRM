@@ -55,12 +55,13 @@ Template.job.created=function(){
   };
   services= Utils.ObjectDefinition(definition);
 }
-
+var job;
 Template.job.helpers({
   job: function(){
     var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
     Session.set('jobDisplayName', originalJob.displayName);
-    job = generateReactiveObject(originalJob);
+    if (!job)
+      job = generateReactiveObject(originalJob);
     return job;
   },
   originalJob:function(){
