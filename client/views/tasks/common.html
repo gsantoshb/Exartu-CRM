@@ -1,0 +1,127 @@
+<template name="task">
+    <div class="table-item {{taskClass}}">
+        <a class="btn btn-xs btn-success text-small editTask" href="#" title="Edit" style="position: absolute; top: 4px; right: 4px; z-index: 10">
+            <i class="fa fa-pencil"></i>
+        </a>
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container">
+                        <div class="table-item-title">
+                            <span>{{note}}</span>
+                        </div>
+                        <div class="task-author">
+                            by
+                            <a href="#">
+                                <span>{{user.username}}</span>
+                            </a>
+                            to
+                            <i class="fa fa-long-arrow-right"></i>
+                            <span>
+                                {{#each assignedUsers}}
+                                    <a>
+                                        <span class="{{isMe}}">
+                                            {{username}}
+                                        </span>
+                                    </a>
+                                {{/each}}
+                            </span>
+                        </div>
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-3 -->
+            <div class="col-sm-4">
+                <div class="table-item-cell">
+                    {{>taskState}}
+                </div>
+            </div>
+
+            <!-- /.col-sm-4 -->
+            <div class="col-sm-3">
+                <div class="table-item-cell" style="margin-top: 13px">
+                    <div class="table-item-cell-container">
+                        {{>showTaskDate}}
+                        <!-- /.table-item-cell-container -->
+                    </div>
+                    <!-- /.table-item-cell -->
+                </div>
+                <!-- /.col-sm-3 -->
+            </div>
+            <div class="col-sm-12">
+                <div data-bind="foreach: links">
+                    {{#each links}}
+                    <a href="{{getHref}}">
+                        {{#with getEntity}}
+                        <span class="badge">{{displayName}}</span>
+                        {{/with}}
+                    </a>
+                    {{/each}}
+                </div>
+            </div>
+
+            <!-- /.col-lg-4 -->
+        </div>
+        <!-- /.row -->
+    </div>
+</template>
+
+<template name="taskState">
+    <div class="table-item-cell-container text-small task-state">
+        <span>
+            <i class="{{getStateIcon}}"></i>&nbsp;
+            <span>{{state}}</span>
+        </span>
+    </div>
+</template>
+<template name="showTaskDate">
+    {{#if end}}
+    <div class="date">
+        <i class="fa fa-calendar"></i>
+        {{#if statusIs 'pending'}}
+                <span>
+                    <span>Due Date:</span>
+                    <span>
+                        {{#formattedDate value=end format='fromNow'}}
+                            {{date}}
+                        {{/formattedDate}}
+                    </span>
+                </span>
+        {{/if}}
+        {{#if statusIs 'future'}}
+                <span>
+                    <span>Starts:</span>
+                    <span>
+                        {{#formattedDate value=begin format='fromNow'}}
+                            {{date}}
+                        {{/formattedDate}}
+                    </span>
+                </span>
+        {{/if}}
+        {{#if statusIs 'completed'}}
+                <span>
+                    <span>completed:</span>
+                    <!--ko if: completed-->
+                    <span>
+                        {{#formattedDate value=completed format='fromNow'}}
+                            {{date}}
+                        {{/formattedDate}}
+                    </span>
+                    <!--/ko-->
+                </span>
+        {{/if}}
+        {{#if statusIs 'closed'}}
+                <span>
+                    <span>Ended:</span>
+                    <span>
+                        {{#formattedDate value=end format='fromNow'}}
+                            {{date}}
+                        {{/formattedDate}}
+                    </span>
+                </span>
+        {{/if}}
+    </div>
+    {{/if}}
+</template>

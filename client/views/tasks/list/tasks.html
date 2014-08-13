@@ -2,7 +2,7 @@
     <div id="content">
         <div id="content-header" class="mini">
             <h1>
-                <strong data-bind="text: tasks().length"></strong>
+                <strong>{{taskCount}}</strong>
                 <span>Tasks</span>
             </h1>
         </div>
@@ -16,18 +16,21 @@
                 <div class="actions-head col-md-7 col-lg-7">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="pull-right visible-lg">
-                                <strong data-bind="text: tasks().length+' task'+ (tasks().length > 1 ? 's':'')"></strong>&nbsp;due date
-                            </div>
+                            <!--<div class="pull-right visible-lg">-->
+                                <!--<strong data-bind="text: tasks().length + ' task'+ (tasks().length > 1 ? 's':'')"></strong>&nbsp;due date-->
+                            <!--</div>-->
                             <div class="col-sm-12 col-md-12 col-lg-8">
                                 <!-- Single button -->
                                 <div class="btn-group pull-left suffix-5">
-                                    <button type="button" class="btn btn-success" data-bind="click:add" title="Add">
+                                    <button type="button" class="btn btn-success addTask" title="Add">
                                         <span class="fa fa-plus"></span>
                                     </button>
                                 </div>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search tasks" data-bind="value: searchString, valueUpdate: 'afterkeydown'">
+                                    {{#objectProperty property=filters.searchString editable=true}}
+                                        <input type="text" class="form-control" placeholder="Search tasks" value="{{value}}">
+                                    {{/objectProperty}}
+
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary" type="button">
                                             <i class="fa fa-search"></i>
@@ -51,9 +54,11 @@
                                 </div>
                                 <div class="item-body">
                                     <div data-bind="foreach: states">
-                                        <button type="button" class="btn btn-xs " data-bind="text:name, click:$parent.selectState, css:{'btn-primary':$parent.selectedState()==$data}"></button>
+                                        {{#each states}}
+                                            <button type="button" class="btn btn-xs selectState {{selectedClass}}" data-state="{{.}}">{{name}}</button>
+                                        {{/each}}
                                     </div>
-                                    <button type="button" class="btn btn-link " data-bind="click: clearState">clear</button>
+                                    <button type="button" class="btn btn-link clearState">clear</button>
                                 </div>
                             </div>
                             <div class="filter-item">
@@ -63,21 +68,34 @@
                                     <div class="item-body">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" data-bind="checked: includeInactives" />Archived
+                                                {{#objectProperty property=filters.inactives}}
+                                                    <input type="checkbox" checked="{{value}}" />Archived
+                                                {{/objectProperty}}
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" data-bind="checked: ownedByMe" />Owned by me
+                                                {{#objectProperty property=filters.ownedByMe}}
+                                                    <input type="checkbox" checked="{{value}}" />Owned by me
+                                                {{/objectProperty}}
                                             </label>
                                         </div>
                                         <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" data-bind="checked: assigned" />Assigned to
-                                                    <select class="form-control" data-bind="options:users,optionsText:'username', optionsValue:'_id', value:assignedTo" >
+                                            <label>
+                                                {{#objectProperty property=filters.assigned}}
+                                                    <input type="checkbox" checked="{{assigned}}" />Assigned to
+                                                {{/objectProperty}}
+
+                                                {{#objectProperty property=filters.assignedTo}}
+                                                    <select class="form-control">
+                                                        {{#each users}}
+                                                            <option value="{{_id}}">{{username}}</option>
+                                                        {{/each}}
                                                     </select>
-                                                </label>
-                                            </div>
+                                                {{/objectProperty}}
+
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                         </div>
@@ -88,129 +106,19 @@
 
                     <!-- Entities list -->
                     <div class="table-items-box">
-                        <!--ko if: tasks().length>0-->
-                            <!-- ko foreach: tasks -->
-                                <div class="table-item magic">
-                                    <div class="row">
-                                        <div class="col-sm-5">
-                                            <div class="table-item-cell">
-                                                <div class="table-item-cell-container">
-                                                    <div class="table-item-title">
-                                                        <a  href="#" data-bind="click: $parent.edit">
-                                                             <span data-bind="text: $data.note"></span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="task-author">
-                                                        by
-                                                        <a href="#">
-                                                            <span data-bind="text: user.username"></span>
-                                                        </a>
-                                                        to
-                                                        <i class="fa fa-long-arrow-right"></i>
-                                                        <span data-bind="foreach: assignedUsers">
-                                                            <a>
-                                                                <span data-bind="text: username, style: { color: _id()==Meteor.userId() ? '#FF1B1B' : 'inherit' }"></span>
-                                                            </a>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <!-- /.table-item-cell-container -->
-                                            </div>
-                                            <!-- /.table-item-cell -->
-                                        </div>
-                                        <!-- /.col-sm-3 -->
-                                        <div class="col-sm-2">
-                                            <div class="table-item-cell">
-                                                <div data-bind="template: {name: 'showTaskState', data: state}">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <div class="table-item-cell">
-                                                <div class="table-item-cell-container magic-content text-small">
-                                                    <a class="btn btn-xs btn-success text-small" href="#" data-bind="click: $parent.edit">
-                                                        <i class="fa fa-pencil"></i>Edit</a>
-                                                </div>
-                                                <!-- /.table-item-cell-container -->
-                                            </div>
-                                            <!-- /.table-item-cell -->
-                                        </div>
-                                        <!-- /.col-sm-4 -->
-                                        <div class="col-sm-3">
-                                            <div class="table-item-cell">
-                                                <div class="table-item-cell-container">
-                                                    <div data-bind="template:{name:'showTaskDate', data:{state:state,begin:begin,end:end,completed: $data.completed}}">
-
-                                                    </div>
-                                                    <!-- /.table-item-cell-container -->
-                                                </div>
-                                                <!-- /.table-item-cell -->
-                                            </div>
-                                            <!-- /.col-sm-3 -->
-                                            <div data-bind="foreach: links">
-                                                <a data-bind="attr:{href: $root.getHref(ko.toJS($data))}">
-                                                    <!--ko with: $root.getEntity(ko.toJS($data))-->
-                                                        <span class="badge" data-bind="text: displayName"></span>
-                                                    <!--/ko-->
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <!-- /.col-lg-4 -->
-                                    </div>
-                                    <!-- /.row -->
-                                </div>
-                                <!-- /.table-item -->
-                            <!-- /ko -->
-                        <!-- /ko -->
-
-                        <!--ko ifnot: tasks().length>0-->
+                        {{#each tasks}}
+                            {{>task}}
+                        {{else}}
                             <div class="v-wrapper">
-                            <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                                <i class="icon-clock-3 text-large"></i>
-                                <!--<h1>You currently have no Tasks.</h1>-->
-                                <!--<a href="#" data-bind="click:add">Add Task</a>-->
-                            </div><!-- /.v-wrapper-cell -->
-                        </div>
-                        <!-- /ko -->
+                                <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                                    <i class="icon-clock-3 text-large"></i>
+                                </div>
+                            </div>
+                        {{/each}}
                     </div>
 
                 </div>
-                <div id="showTaskState" data-bind="bind:false" style="display: none">
-                    <div class="table-item-cell-container text-small" data-bind="css: helper.getTaskStateCSS($data)">
-                        <span>
-                            <i data-bind="css: helper.getTaskStateIcon($data)"></i>&nbsp;
-                            <span data-bind="text: $data"></span>
-                        </span>
-                        <a class="btn btn-xs btn-primary text-small magic-content" href="#" data-bind="visible: $data==Enums.taskState.pending && _.contains($parent.assign(),Meteor.userId()), click: function(){$root.complete($parent);}">
-                            <i class="fa fa-check"></i>Complete</a>
-                    </div>
-                </div>
-                <div id="showTaskDate" data-bind="bind:false " style="display: none">
-                    <div class="date" data-bind="visible:end()!=null">
-                        <i class="fa fa-calendar" data-bind="css: helper.getTaskStateCSS($data.state())"></i>
-                        <span data-bind="visible: $data.state()==Enums.taskState.pending ">
-                            <span data-bind="css: helper.getTaskStateCSS($data.state())">Due Date:</span>
-                            <span data-bind="text: moment(end()).format('MMM Do YYYY, h:mm:ss a')"></span>
-                        </span>
-                        <span data-bind="visible: $data.state()==Enums.taskState.future">
-                            <span data-bind="css: helper.getTaskStateCSS($data.state())">Starts:</span>
-                            <span data-bind="text: moment(begin()).format('MMM Do YYYY, h:mm:ss a')"></span>
-                        </span>
-                        <span data-bind="visible: $data.state()==Enums.taskState.completed">
-                            <span data-bind="css: helper.getTaskStateCSS($data.state())">completed:</span>
-                            <!--ko if: completed-->
-                            <span data-bind="text: moment(completed()).format('MMM Do YYYY, h:mm:ss a')"></span>
-                            <!--/ko-->
-                        </span>
-                        <span data-bind="visible: $data.state()==Enums.taskState.closed">
-                            <span data-bind="css: helper.getTaskStateCSS($data.state())">Ended:</span>
-                            <span data-bind="text: moment(end()).format('MMM Do YYYY, h:mm:ss a')"></span>
 
-                        </span>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
