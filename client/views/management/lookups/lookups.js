@@ -34,6 +34,18 @@ var query = new Utils.ObjectDefinition({
 });
 var defaultUpdateDep = new Deps.Dependency;
 
+var injectTestData= function()
+    {
+        if (  Contactables.find().count()>10)
+        {
+            var msg1="It looks like you've already been creating data quite a bit of data in this tenancy, so I'm a bit afraid to ";
+            var msg1=msg1+ "do it here.  Have development do it for you with Meteor.call(\'loadDemoData\')";
+            alert(msg1);
+            return;
+        }
+        if (confirm('Inject test data into this tenancy node?'))
+        Meteor.call('loadDemoData');
+    };
 Template.selectLookUpType.lookUpTypes = function() {
   var lookUpTypes = [];
   _.forEach(Enums.lookUpTypes, function(subType){
@@ -89,7 +101,9 @@ Template.lookUpsManagement.items = function() {
 };
 
 Template.lookUpsManagement.events = {
-
+    'click .btn-injectTestData': function(){
+        injectTestData();
+    },
   'change .set-default': function(e) {
     var item = this;
     if (e.target.checked){
