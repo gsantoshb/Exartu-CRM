@@ -34,7 +34,7 @@ ContactablesController = RouteController.extend({
       info.objType.value = objType.name+'s';
     } else {
       query.objType.value = undefined;
-      info.objType.value = 'record';
+      info.objType.value = 'record(s)';
     }
     this.render('contactables');
   },
