@@ -64,15 +64,19 @@ Template.addJobPage.events({
         if (obj.jobTitle != null) {
             obj.publicJobTitle = LookUps.findOne(obj.jobTitle).displayName;
         }
-        
+
         Meteor.call('addJob', obj, function(err, result){
             if(err){
                 console.dir(err)
-            }else{
+            }
+            else{
               history.back();
               Meteor.call('setLastCustomerUsed', obj.customer, function(){
                 if(err)
-                  console.dir(err)
+                  console.dir(err);
+
+                Router.go('/job/' + result._id);
+
               });
             }
         });
