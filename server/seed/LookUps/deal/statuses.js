@@ -1,15 +1,15 @@
 _.forEach([
   {
-    displayName: 'Won', type: 'Won'
+    displayName: 'Won', lookupActions:['inactive','won']
   },
   {
-    displayName: 'Lost',type: 'Won'
+    displayName: 'Lost',lookupActions:['inactive']
   },
   {
-    displayName: 'Inactive', type:'Inactive'
+    displayName: 'Inactive', lookupActions:['inactive']
   },
   {
-    displayName: 'Active', type:'Active',isDefault: true
+    displayName: 'Active', lookupActions:['active'],isDefault: true
   }
 ],
   function (item) {

@@ -50,6 +50,7 @@
                                         <span>{{displayName}}</span>
                                     {{/if}}
                                 </div>
+                                <!-- lookupAction -->
                                 <div class="col-xs-12 col-sm-7 no-padding">
                                     {{#if editMode}}
                                     <div class="col-xs-9 no-padding">
@@ -59,15 +60,18 @@
                                                   <button class="add-tag btn btn-success save_lookupAction" type="button">Add</button>
                                             </span>
                                         </div>
-                                        <div class="box-content-md tags-content">
-                                            {{#objectProperty property=lookupActions}}
-                                            <button type="button" class="tag btn btn-xs btn-primary">
-                                                <span >{{value}}</span>
-                                                {{#if editMode}}
-                                                <i id="{{_id}}removeAction" class="remove-tag fa fa-times"></i>
-                                                {{/if}}
-                                            </button>
-                                            {{/objectProperty}}
+
+                                        <div class="box">
+                                            <div class="box-content-md tags-content">
+                                                {{#objectProperty property=lookupActions}}
+                                                <button type="button" class="tag btn btn-xs btn-primary">
+                                                    <span >{{value}}</span>
+                                                    {{#if editMode}}
+                                                    <i id="{{_id}}removeAction" class="remove-tag fa fa-times"></i>
+                                                    {{/if}}
+                                                </button>
+                                                {{/objectProperty}}
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xs-3 no-padding" style="padding-left: 3px; top: 2px">
