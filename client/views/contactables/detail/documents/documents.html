@@ -112,22 +112,6 @@
                 </div>
             </li>
         {{/each}}
-        {{#each resumes}}
-            <li class="list-3-item">
-                <div class="list-thumb"><i class="{{documentIcon type}}"></i></div>
-                <div class="list-3-content list-magic">
-                    <div class="list-3-content-wrap">
-                        <div class="list-3-actions">
-                            <a class="download" target="_blank" href="{{url}}" download="{{name}}"><i class="fa fa-download"></i> Download</a>
-                            <span class="bullet-spacer">·</span>
-                            <a class="delete-resume" href="#"><i class="fa fa-trash-o"></i> Delete</a>
-                        </div>
-                        <div class="list-3-item-meta-top">{{this.type}}</div>
-                        <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
-                    </div><!-- /.list-3-content-wrap -->
-                </div>
-            </li>
-        {{/each}}
         {{#if isEmpty}}
             <div class="box-v-msg">
                 <div class="box-v-msg-content">
@@ -139,4 +123,26 @@
             </div>
         {{/if}}
     </ul>
+
+    <div>
+        {{#with resumes}}
+            <strong> Resume </strong>
+            {{#each .}}
+                <li class="list-3-item">
+                    <div class="list-thumb"><i class="{{documentIcon type}}"></i></div>
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <div class="list-3-actions">
+                                <a class="download" target="_blank" href="{{url}}" download="{{name}}"><i class="fa fa-download"></i> Download</a>
+                                <span class="bullet-spacer">·</span>
+                                <a class="delete-resume" href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                            </div>
+                            <div class="list-3-item-meta-top">{{this.type}}</div>
+                            <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
+                        </div><!-- /.list-3-content-wrap -->
+                    </div>
+                </li>
+            {{/each}}
+        {{/with}}
+    </div>
 </template>
