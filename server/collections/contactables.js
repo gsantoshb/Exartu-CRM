@@ -52,7 +52,7 @@ ResumesFS = new FS.Collection("resumes", {
 });
 
 Meteor.publish('resumes', function() {
-  return ResumesFS.find({'metadata.owner': Meteor.userId});
+  return ResumesFS.find({'metadata.owner': this.userId});
 });
 
 ResumesFS.allow({
