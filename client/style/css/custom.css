@@ -7,6 +7,10 @@
 
 .margin-top-15 { margin-top: 15px;}
 
+.box-v-msg-content {
+    padding-bottom: 30px;
+}
+
 /* Iron router progresss */
 
 #iron-router-progress {
