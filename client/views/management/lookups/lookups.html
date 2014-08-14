@@ -34,7 +34,7 @@
                         {{#each items}}
                             <li>
                                 <!-- Name -->
-                                <div class="col-xs-12 col-sm-8 no-padding">
+                                <div class="col-xs-12 col-sm-3 no-padding">
                                     {{#if editMode}}
                                         <div class="col-xs-9 no-padding">
                                             <input class="form-control" id="{{_id}}" type="text" placeholder="Enter a name" value="{{displayName}}"/>
@@ -46,13 +46,44 @@
                                             </div>
                                         </div>
                                     {{else}}
-                                        <span class="label label-default pointer edit" title="Edit">Edit</span>
+                                        <span class="label label-default pointer edit" title="Edit">Edit name</span>
                                         <span>{{displayName}}</span>
+                                    {{/if}}
+                                </div>
+                                <div class="col-xs-12 col-sm-7 no-padding">
+                                    {{#if editMode}}
+                                    <div class="col-xs-9 no-padding">
+                                        <div class="input-group">
+                                            <input id="{{_id}}newlookupAction" type="text" class="form-control" placeholder="Add actions here...">
+                                                <span class="input-group-btn">
+                                                  <button class="add-tag btn btn-success save_lookupAction" type="button">Add</button>
+                                            </span>
+                                        </div>
+                                        <div class="box-content-md tags-content">
+                                            {{#objectProperty property=lookupActions}}
+                                            <button type="button" class="tag btn btn-xs btn-primary">
+                                                <span >{{value}}</span>
+                                                {{#if editMode}}
+                                                <i id="{{_id}}removeAction" class="remove-tag fa fa-times"></i>
+                                                {{/if}}
+                                            </button>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-3 no-padding" style="padding-left: 3px; top: 2px">
+                                        <div class="btn-group">
+                                            <span class="btn btn-sm btn-success save"><i class="fa fa-check"></i></span>
+                                            <span class="btn btn-sm btn-danger cancel"><i class="fa fa-times"></i></span>
+                                        </div>
+                                    </div>
+                                    {{else}}
+                                    <span class="label label-default pointer edit" title="Edit">Edit actions</span>
+                                    <span>{{lookupActions}}</span>
                                     {{/if}}
                                 </div>
                                 
                                 <!-- Default -->
-                                <div class="col-xs-6 col-sm-2">
+                                <div class="col-xs-6 col-sm-1">
                                     <div class="checkbox">
                                         <label>
                                           <input type="checkbox" checked="{{isDefault}}" class="set-default" /> Default
@@ -61,7 +92,7 @@
                                 </div>
                                 
                                 <!-- Active -->
-                                <div class="col-xs-6 col-sm-2">
+                                <div class="col-xs-6 col-sm-1">
                                     <div class="checkbox">
                                         <label>
                                           <input type="checkbox" checked="{{inactive}}" class="inactive" /> Inactive

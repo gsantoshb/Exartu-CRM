@@ -120,13 +120,18 @@ Template.lookUpsManagement.events = {
     this.editMode = false;
   },
   'click .save': function(e, ctx){
-
     var displayName= ctx.$('#' + this._id).val();
     if (!displayName) return;
-
     LookUps.update({_id: this._id},{ $set: { displayName: displayName } });
     this.editMode = false;
   },
+  'click .save_lookupAction': function(e, ctx){
+        var newlookupAction=ctx.$('#' + this._id+'newlookupAction').val();
+        LookUps.update({_id: this._id},{$addToSet: {lookupActions: newlookupAction}} );
+        console.log(LookUps.findOne({_id: this._id}));
+        this.editMode = false;
+  },
+
   'change .inactive': function(e){
     LookUps.update({ _id: this._id }, { $set: { inactive: e.target.checked } });
   }
