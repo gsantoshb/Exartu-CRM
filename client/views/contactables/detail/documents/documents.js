@@ -153,7 +153,7 @@ Template.contactableDocumentsList.isEmpty = function() {
 
 Template.contactableDocumentsList.resumes = function() {
   var resumes = this.entity.Employee? ResumesFS.find({'metadata.employeeId': this.entity._id}) : undefined;
-  return resumes.count() > 0? resumes: undefined;
+  return resumes && resumes.count() > 0? resumes: undefined;
 };
 
 var query = new Utils.ObjectDefinition({
