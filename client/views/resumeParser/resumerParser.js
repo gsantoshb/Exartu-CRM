@@ -107,8 +107,11 @@ Template.resumesList.events = {
     e.currentTarget.parentNode.style.display = 'none';
     e.currentTarget.parentNode.nextElementSibling.style.display = '';
     Meteor.call('createEmployeeFromResume', this._id, function(err, result) {
-      if (err)
+      if (err) {
         console.log(err.reason);
+        e.currentTarget.parentNode.style.display = '';
+        e.currentTarget.parentNode.nextElementSibling.style.display = 'none';
+      }
       else {
         e.currentTarget.parentNode.style.display = 'none';
         e.currentTarget.parentNode.nextElementSibling.style.display = 'none';
