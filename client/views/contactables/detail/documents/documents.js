@@ -119,8 +119,8 @@ Template.contactableDocumentsList.created = function() {
 Template.contactableDocumentsList.documents = function() {
   if (!this.entity)
     return;
-  return fileCollection.find(
-    {
+
+  documents = fileCollection.find({
       'metadata.entityId':
         this.entity._id,
       uploadedAt: {
@@ -137,14 +137,23 @@ Template.contactableDocumentsList.documents = function() {
       }
     }
   );
+
+  documentsCount = documents.count();
+  documentsDep.changed();
+
+  return documents;
 };
 
+var documentsDep = new Deps.Dependency;
+var documentsCount = 0;
 Template.contactableDocumentsList.isEmpty = function() {
-  return ResumesFS.find({'metadata.employeeId': this.entity._id}).count() + fileCollection.find({ 'metadata.entityId': this.entity._id }).count() == 0;
+  documentsDep.depend();
+  return documentsCount == 0;
 };
 
 Template.contactableDocumentsList.resumes = function() {
-  return this.entity.Employee? ResumesFS.find({'metadata.employeeId': this.entity._id}): [];
+  var resumes = this.entity.Employee? ResumesFS.find({'metadata.employeeId': this.entity._id}) : undefined;
+  return resumes.count() > 0? resumes: undefined;
 };
 
 var query = new Utils.ObjectDefinition({
@@ -165,7 +174,9 @@ Template.contactableDocumentsList.documentsUploading = function() {
       }
     }
   );
-}
+
+
+};
 
 Template.contactableDocumentsList.query = function() {
   return query;
