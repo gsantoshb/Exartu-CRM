@@ -200,7 +200,7 @@ FormData.prototype._generateBoundary = function() {
   this._boundary = boundary;
 };
 
-// Note: getLengthSync DOESN'T calculate streams length
+// POST: getLengthSync DOESN'T calculate streams length
 // As workaround one can calculate file size manually
 // and add it as knownLength option
 FormData.prototype.getLengthSync = function(debug) {
@@ -254,7 +254,7 @@ FormData.prototype.submit = function(params, cb) {
   var request
     , options
     , defaults = {
-        method : 'note',
+        method : 'POST',
         headers: this.getHeaders()
     };
 
