@@ -63,14 +63,14 @@
 
                                         <div class="box">
                                             <div class="box-content-md tags-content">
-                                                {{#objectProperty property=lookupActions}}
+                                                {{#each lookupActions}}
+
                                                 <button type="button" class="tag btn btn-xs btn-primary">
-                                                    <span >{{value}}</span>
-                                                    {{#if editMode}}
-                                                    <i id="{{_id}}removeAction" class="remove-tag fa fa-times"></i>
-                                                    {{/if}}
+                                                    {{.}}
+                                                    <i id="{{getId ..}}" lookupAction="{{.}}" class="remove-tag fa fa-times"></i>
                                                 </button>
-                                                {{/objectProperty}}
+                                                {{/each}}
+
                                             </div>
                                         </div>
                                     </div>

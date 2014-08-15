@@ -72,7 +72,10 @@ Template.selectLookUpType.events = {
 Template.searchLookUpItem.searchString = function() {
   return query.searchString;
 };
-
+Template.lookUpsManagement.getId= function(row)
+{
+    return row._id;
+}
 Template.lookUpsManagement.items = function() {
   defaultUpdateDep.depend();
 
@@ -128,26 +131,32 @@ Template.lookUpsManagement.events = {
   'click .save_lookupAction': function(e, ctx){
         var newlookupAction=ctx.$('#' + this._id+'newlookupAction').val();
         LookUps.update({_id: this._id},{$addToSet: {lookupActions: newlookupAction}} );
-        console.log(LookUps.findOne({_id: this._id}));
         this.editMode = false;
   },
 
   'change .inactive': function(e){
     LookUps.update({ _id: this._id }, { $set: { inactive: e.target.checked } });
+  },
+  'click .remove-tag': function(tag) {
+      var id=tag.target.id;
+      var action=this.toString();
+      var item=LookUps.findOne({_id:id});
+      var newActions=_.without(item.lookupActions, action) ;
+      LookUps.update({_id: id},{$set: {lookupActions: newActions}});
   }
 };
 
 Template.addNewLookUpItem.events({
   'click #add-item': function() {
-    var newValue = $('#new-item').val();
-    var lookUpTypeCode = query.codeType.value;
-    if (!newValue)
-      return;
+          var newValue = $('#new-item').val();
+          var lookUpTypeCode = query.codeType.value;
+          if (!newValue)
+              return;
 
-    LookUps.insert({
-      displayName: newValue,
-      codeType: lookUpTypeCode,
-      hierId: Meteor.user().hierId
-    })
+          LookUps.insert({
+              displayName: newValue,
+              codeType: lookUpTypeCode,
+              hierId: Meteor.user().hierId
+          });
   }
-})
+});
