@@ -1,6 +1,6 @@
 _.forEach([
   {
-    displayName: 'Won', lookupActions:['inactive','won']
+    displayName: 'Won', lookupActions:[Enums.lookUpActions.implied_status.inactive,Enums.lookUpActions.deal_status.won]
   },
   {
     displayName: 'Lost',lookupActions:['inactive']

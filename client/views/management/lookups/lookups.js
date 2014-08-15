@@ -55,8 +55,9 @@ Template.selectLookUpType.lookUpTypes = function() {
   });
 
   query.codeType.value = lookUpTypes[0].code;
+    console.log(lookUpTypes);
+  return _.sortBy(lookUpTypes,'displayName');
 
-  return lookUpTypes;
 };
 
 Template.selectLookUpType.isSelected = function(id){
@@ -152,11 +153,13 @@ Template.addNewLookUpItem.events({
           var lookUpTypeCode = query.codeType.value;
           if (!newValue)
               return;
-
-          LookUps.insert({
-              displayName: newValue,
-              codeType: lookUpTypeCode,
-              hierId: Meteor.user().hierId
-          });
+          if (confirm('Add new item ' + newValue)) {
+              LookUps.insert({
+                  displayName: newValue,
+                  codeType: lookUpTypeCode,
+                  hierId: Meteor.user().hierId
+              });
+              $('#new-item')[0].value=null;
+          };
   }
 });

@@ -134,6 +134,18 @@
         </span>
     </div>
 </template>
+<template name="searchLookUpActionItem">
+    <div class="input-group">
+        {{#objectProperty property=searchString}}
+        <input type="text" class="form-control" placeholder="Search" value="{{value}}" />
+        {{/objectProperty}}
+        <span class="input-group-btn">
+            <button class="btn btn-primary" type="button" title="Search">
+                <i class="fa fa-search"></i>
+            </button>
+        </span>
+    </div>
+</template>
 
 <template name="addNewLookUpItem">
     <div class="input-group">
