@@ -57,7 +57,7 @@
                 <div class="row">
                     <div class="col-sm-3">
                         {{#userInfo userId=userId}}
-                            <a href="#"><strong id="username"> {{username}} </strong></a>
+                            <strong id="username"> {{username}} </strong>
                         {{/userInfo}}
                         <div class="text-muted">
                             {{#formattedDate value=dateCreated format="lll"}}
@@ -78,8 +78,6 @@
                             </a>
                         {{/each}}
                     </div>
-
-
                 </div>
             </div>
             <!-- /.row -->
