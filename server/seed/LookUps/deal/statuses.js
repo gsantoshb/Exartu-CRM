@@ -1,15 +1,15 @@
 _.forEach([
   {
-    displayName: 'Won', lookupActions:[Enums.lookUpActions.implied_status.inactive,Enums.lookUpActions.deal_status.won]
+    displayName: 'Won', lookUpActions:[Enums.lookUpTypes.deal.status.Won]
   },
   {
-    displayName: 'Lost',lookupActions:['inactive']
+    displayName: 'Lost',lookUpActions:[Enums.lookUpTypes.deal.status.Won]
   },
   {
-    displayName: 'Inactive', lookupActions:['inactive']
+    displayName: 'Inactive', lookUpActions:[Enums.lookUpTypes.deal.status.Won]
   },
   {
-    displayName: 'Active', lookupActions:['active'],isDefault: true
+    displayName: 'Active', lookUpActions:[Enums.lookUpTypes.deal.status.Won],isDefault: true
   }
 ],
   function (item) {

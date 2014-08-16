@@ -50,24 +50,24 @@
                                         <span>{{displayName}}</span>
                                     {{/if}}
                                 </div>
-                                <!-- lookupAction -->
+                                <!-- lookUpAction -->
                                 <div class="col-xs-12 col-sm-7 no-padding">
                                     {{#if editMode}}
                                     <div class="col-xs-9 no-padding">
                                         <div class="input-group">
-                                            <input id="{{_id}}newlookupAction" type="text" class="form-control" placeholder="Add actions here...">
+                                            <input id="{{_id}}newLookUpAction" type="text" class="form-control" placeholder="Add actions here...">
                                                 <span class="input-group-btn">
-                                                  <button class="add-tag btn btn-success save_lookupAction" type="button">Add</button>
+                                                  <button class="add-tag btn btn-success save_lookUpAction" type="button">Add</button>
                                             </span>
                                         </div>
 
                                         <div class="box">
                                             <div class="box-content-md tags-content">
-                                                {{#each lookupActions}}
+                                                {{#each lookUpActions}}
 
                                                 <button type="button" class="tag btn btn-xs btn-primary">
                                                     {{.}}
-                                                    <i id="{{getId ..}}" lookupAction="{{.}}" class="remove-tag fa fa-times"></i>
+                                                    <i id="{{getId ..}}" lookUpAction="{{.}}" class="remove-tag fa fa-times"></i>
                                                 </button>
                                                 {{/each}}
 
@@ -82,7 +82,7 @@
                                     </div>
                                     {{else}}
                                     <span class="label label-default pointer edit" title="Edit">Edit actions</span>
-                                    <span>{{lookupActions}}</span>
+                                    {{#each lookUpActions}}{{.}} {{/each}}{{getLookUpActions ..}}
                                     {{/if}}
                                 </div>
                                 
@@ -134,7 +134,7 @@
         </span>
     </div>
 </template>
-<template name="searchLookUpActionItem">
+<template name="searchlookUpActionItem">
     <div class="input-group">
         {{#objectProperty property=searchString}}
         <input type="text" class="form-control" placeholder="Search" value="{{value}}" />

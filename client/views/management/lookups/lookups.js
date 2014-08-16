@@ -29,7 +29,8 @@ onAfterAction: function() {
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
    searchString: {},
-   codeType: {}
+   codeType: {},
+   lookUpActions: {}
   }
 });
 var defaultUpdateDep = new Deps.Dependency;
@@ -46,6 +47,8 @@ var injectTestData= function()
         if (confirm('Inject test data into this tenancy node?'))
         Meteor.call('loadDemoData');
     };
+
+
 Template.selectLookUpType.lookUpTypes = function() {
   var lookUpTypes = [];
   _.forEach(Enums.lookUpTypes, function(subType){
@@ -55,10 +58,13 @@ Template.selectLookUpType.lookUpTypes = function() {
   });
 
   query.codeType.value = lookUpTypes[0].code;
-    console.log(lookUpTypes);
+  query.lookUpActions=lookUpTypes[0].lookUpActions;
   return _.sortBy(lookUpTypes,'displayName');
 
 };
+
+
+
 
 Template.selectLookUpType.isSelected = function(id){
   return (this.value || this._id) ==id;
@@ -67,6 +73,16 @@ Template.selectLookUpType.isSelected = function(id){
 Template.selectLookUpType.events = {
   'change': function(e) {
     query.codeType.value = parseInt(e.currentTarget.value);
+    query.lookUpActions= [];
+    _.forEach(Enums.lookUpTypes, function(subType) {
+        _.forEach(subType, function(subTypeItem) {
+            if (subTypeItem.code == query.codeType.value) {
+                console.log('sub', subTypeItem);
+                query.lookUpActions = subTypeItem.lookUpActions;
+            }
+        });
+    });
+
   }
 };
 
@@ -77,9 +93,19 @@ Template.lookUpsManagement.getId= function(row)
 {
     return row._id;
 }
+Template.lookUpsManagement.getLookUpActions= function()
+{
+    return query.lookUpActions;
+}
+
+
+Template.selectLookUpType.lookUpActions=function()
+{
+    defaultUpdateDep.depend();
+}
+
 Template.lookUpsManagement.items = function() {
   defaultUpdateDep.depend();
-
   var q = { codeType: query.codeType.value};
   if (query.searchString.value)
     q.$or = [
@@ -129,9 +155,9 @@ Template.lookUpsManagement.events = {
     LookUps.update({_id: this._id},{ $set: { displayName: displayName } });
     this.editMode = false;
   },
-  'click .save_lookupAction': function(e, ctx){
-        var newlookupAction=ctx.$('#' + this._id+'newlookupAction').val();
-        LookUps.update({_id: this._id},{$addToSet: {lookupActions: newlookupAction}} );
+  'click .save_lookUpAction': function(e, ctx){
+        var newLookUpAction=ctx.$('#' + this._id+'newLookUpAction').val();
+        LookUps.update({_id: this._id},{$addToSet: {lookUpActions: newLookUpAction}} );
         this.editMode = false;
   },
 
@@ -142,8 +168,8 @@ Template.lookUpsManagement.events = {
       var id=tag.target.id;
       var action=this.toString();
       var item=LookUps.findOne({_id:id});
-      var newActions=_.without(item.lookupActions, action) ;
-      LookUps.update({_id: id},{$set: {lookupActions: newActions}});
+      var newActions=_.without(item.lookUpActions, action) ;
+      LookUps.update({_id: id},{$set: {lookUpActions: newActions}});
   }
 };
 
