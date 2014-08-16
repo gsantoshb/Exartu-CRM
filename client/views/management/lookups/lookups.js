@@ -56,8 +56,7 @@ Template.selectLookUpType.lookUpTypes = function() {
       lookUpTypes.push(item)
     })
   });
-
-  query.codeType.value = lookUpTypes[0].code;
+//  query.codeType.value = lookUpTypes[0].code;
   var items= Template.lookUpsManagement.items();
   return _.sortBy(lookUpTypes,'displayName');
 
@@ -77,7 +76,6 @@ Template.selectLookUpType.events = {
     _.forEach(Enums.lookUpTypes, function(subType) {
         _.forEach(subType, function(subTypeItem) {
             if (subTypeItem.code == query.codeType.value) {
-                console.log('sub', subTypeItem);
                 query.lookUpActions = subTypeItem.lookUpActions;
             }
         });
@@ -162,12 +160,14 @@ Template.lookUpsManagement.events = {
     if (!displayName) return;
     LookUps.update({_id: this._id},{ $set: { displayName: displayName } });
     this.editMode = false;
-      this.editActionMode=false;
   },
   'click .save_lookUpAction': function(e, ctx){
         var newLookUpAction=ctx.$('#' + this._id+'newLookUpAction').val();
-        LookUps.update({_id: this._id},{$addToSet: {lookUpActions: newLookUpAction}} );
-        this.editMode = false;
+        var lookup=LookUps.findOne({_id: this._id});
+        if (lookup.lookUpActions==null)  lookup.lookUpActions=[];
+        lookup.lookUpActions=_.without(lookup.lookUpActions, newLookUpAction) ;
+        lookup.lookUpActions.push(newLookUpAction);
+        LookUps.update({_id: this._id},{$set: {lookUpActions: lookup.lookUpActions}} );
         this.editActionMode=false;
   },
 

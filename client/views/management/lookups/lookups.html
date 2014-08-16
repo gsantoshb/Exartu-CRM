@@ -120,6 +120,7 @@
 
 <template name="selectLookUpType">
     <select class="form-control input-lg" type="text" >
+        <option disabled selected> -- select an option -- </option>
         {{#each lookUpTypes}}
             <option value="{{code}}" selected="{{isSelected code ../value}}">{{displayName}}</option>
         {{/each}}
