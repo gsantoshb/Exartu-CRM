@@ -1,19 +1,19 @@
 _.forEach([
   {
-    displayName: 'Won', lookUpActions:[Enums.lookUpTypes.deal.status.Won]
+    displayName: 'Won', lookUpActions:[Enums.lookUpAction.Won,Enums.lookUpAction.Implies_Inactive]
   },
   {
-    displayName: 'Lost',lookUpActions:[Enums.lookUpTypes.deal.status.Won]
+    displayName: 'Lost',lookUpActions:[Enums.lookUpAction.Lost,Enums.lookUpAction.Implies_Inactive]
   },
   {
-    displayName: 'Inactive', lookUpActions:[Enums.lookUpTypes.deal.status.Won]
+    displayName: 'Inactive', lookUpActions:[Enums.lookUpAction.Implies_Inactive]
   },
   {
-    displayName: 'Active', lookUpActions:[Enums.lookUpTypes.deal.status.Won],isDefault: true
+    displayName: 'Active', lookUpActions:[Enums.lookUpAction.Implies_Active],isDefault: true
   }
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.deal.status.code;
+    item.codeType = Enums.lookUpAction.code;
     systemLookUps.push(item);
   }
 );

@@ -381,4 +381,8 @@ var getDefinitionFromField=function(field, obj, path){
                                 ] }, { sort: {displayName: 1} });
   }
   return result;
-}
+};
+Utils.getLookUpsByCode=function(code)
+{
+    LookUps.find({codeType: code, inactive: {$ne: true}}, { sort: {displayName: 1} });
+};

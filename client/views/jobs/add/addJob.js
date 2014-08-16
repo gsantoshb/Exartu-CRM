@@ -70,7 +70,6 @@ Template.addJobPage.events({
                 console.dir(err)
             }
             else{
-              history.back();
               Meteor.call('setLastCustomerUsed', obj.customer, function(){
                 if(err)
                   console.dir(err);

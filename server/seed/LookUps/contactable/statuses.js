@@ -1,10 +1,10 @@
 _.forEach([
   {
-    displayName: 'Invited',
-    weight: 2,
+    displayName: 'Invited',lookUpActions:[Enums.lookUpAction.Implies_Active],
+    weight: 2
   },
   {
-    displayName: 'Recruited',
+    displayName: 'Recruited',lookUpActions:[Enums.lookUpAction.Implies_Active],
     weight: 3,
     dependencies: [0]
   }
