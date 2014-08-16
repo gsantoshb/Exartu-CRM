@@ -58,7 +58,7 @@ Template.selectLookUpType.lookUpTypes = function() {
   });
 
   query.codeType.value = lookUpTypes[0].code;
-  query.lookUpActions=lookUpTypes[0].lookUpActions;
+  var items= Template.lookUpsManagement.items();
   return _.sortBy(lookUpTypes,'displayName');
 
 };
@@ -121,7 +121,9 @@ Template.lookUpsManagement.items = function() {
   return LookUps.find(q,
     {
       transform: function(item) {
-        Utils.reactiveProp(item,'editMode',false)
+        Utils.reactiveProp(item,'editMode',false);
+          console.log('reac');
+        Utils.reactiveProp(item,'editActionMode',false);
         item.errMsg = '';
         return item;
       },
@@ -146,19 +148,27 @@ Template.lookUpsManagement.events = {
   'click .edit': function(){
     this.editMode = ! this.editMode;
   },
+    'click .editAction': function(){
+        this.editActionMode = ! this.editActionMode;
+    },
   'click .cancel': function(){
     this.editMode = false;
   },
+    'click .cancelAction': function(){
+        this.editActionMode = false;
+    },
   'click .save': function(e, ctx){
     var displayName= ctx.$('#' + this._id).val();
     if (!displayName) return;
     LookUps.update({_id: this._id},{ $set: { displayName: displayName } });
     this.editMode = false;
+      this.editActionMode=false;
   },
   'click .save_lookUpAction': function(e, ctx){
         var newLookUpAction=ctx.$('#' + this._id+'newLookUpAction').val();
         LookUps.update({_id: this._id},{$addToSet: {lookUpActions: newLookUpAction}} );
         this.editMode = false;
+        this.editActionMode=false;
   },
 
   'change .inactive': function(e){
