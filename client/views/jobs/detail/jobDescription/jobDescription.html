@@ -1,0 +1,58 @@
+
+<template name="jobDescription"> 
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action editJobDescription pull-right" href="#" style="color: {{colorDescriptionEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
+            <div class="box-title hidden-sm hidden-xs">
+                    Description
+                    <a class="previewMode" href="#" title="Preview in mobile size" style="margin-left: 4px"><i class="fa fa-mobile-phone" style="float: inherit; margin-top: 2px; color: {{colorPreviewMode}}"></i></a>
+            </div>
+            <a class="box-title visible-sm visible-xs" href="#description-body" data-toggle="collapse" >
+
+                Description
+            </a>
+        </div>
+        <div class="box-content-collapsible" id="description-body">
+
+                <div style="margin-top: 10px; margin-left: 10px">
+                    {{#objectProperty property=jobDescription editable=editMode}}
+                            {{#htmlEditor}}
+                            {{/htmlEditor}}
+                    {{else}}
+                        <div id="description" style="max-height: 600px; min-height: 100px; overflow-y: auto;">
+                            {{#if value}}
+                                <div class="text">
+                                    {{#showAsHTML value=value previewMode=previewMode}}
+                                    {{/showAsHTML}}
+                                </div>
+                            {{else}}
+                                <div class="box-v-msg">
+                                    <div class="box-v-msg-content">
+                                        <i class="icon-text-wrapping-2"></i>
+                                        <!--<p>-->
+                                        <!--    <a href="#" class="editJobDescription">Add description</a>-->
+                                        <!--</p>-->
+                                    </div><!-- /.box-v-msg-content -->
+                                </div>
+                            {{/if}}
+                        </div>
+                    {{/objectProperty}}
+                    <!-- /.jobDescription -->
+                </div>
+
+
+        </div>
+        {{#if editMode}}
+            <div class="box-header-2" style="height: 60px">
+                <div class="pull-right">
+                    <span id="cancelJobDescriptionEdit" class="btn btn-default">
+                        Cancel
+                    </span>
+                    <span id="saveJobDescriptionEdit" class="btn btn-info">
+                        Save
+                    </span>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</template>
