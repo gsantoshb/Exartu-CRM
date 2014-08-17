@@ -3,24 +3,10 @@ var generateReactiveObject = function(job) {
   return new dType.objInstance(job, Jobs);
 };
 
-Template.jobDescription.created=function(){
-  self.editMode=false;
-  var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
-
-
-  var definition={
-    reactiveProps:{
-      tags:{
-        default: originalJob.tags,
-        update: 'tags',
-        type: Utils.ReactivePropertyTypes.array
-      }
-    }
-  };
-  services= Utils.ObjectDefinition(definition);
-}
-var job;
-
+Template.jobDescription.created=function() {
+  self.editMode = false;
+  var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
+};
 
 Template.jobDescription.helpers({
   getType: function(){
@@ -61,22 +47,22 @@ Template.jobDescription.events = {
     jobDescriptionEditMode = false;
     jobDescriptionEditModeDep.changed();
   },
-  'click #saveJobDescriptionEdit':function() {
-    var update = job.getUpdate();
-    if (!update.$set || !update.$set.jobDescription) {
-      jobDescriptionEditMode = false;
-      jobDescriptionEditModeDep.changed();
-      return; // Nothing to update
-    }
-
-    Jobs.update({_id: job._id}, {$set: { jobDescription: update.$set.jobDescription }}, function(err, result) {
-      if (!err) {
-        jobDescriptionEditMode = false;
-        jobDescriptionEditModeDep.changed();
-        job.jobDescription.defaultValue = job.jobDescription.value; // Reset jobDescription initial value
-      }
-    });
-  },
+//  'click #saveJobDescriptionEdit':function() {
+//    var update = job.getUpdate();
+//    if (!update.$set || !update.$set.jobDescription) {
+//      jobDescriptionEditMode = false;
+//      jobDescriptionEditModeDep.changed();
+//      return; // Nothing to update
+//    }
+//    console.log('job',job);
+//    Jobs.update({_id: job._id}, {$set: { jobDescription: update.$set.jobDescription }}, function(err, result) {
+//      if (!err) {
+//        jobDescriptionEditMode = false;
+//        jobDescriptionEditModeDep.changed();
+//        job.jobDescription.defaultValue = job.jobDescription.value; // Reset jobDescription initial value
+//      }
+//    });
+//  },
   'click .previewMode': function(){
     descriptionSelf.previewMode= ! descriptionSelf.previewMode;
   }
