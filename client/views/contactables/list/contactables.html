@@ -38,7 +38,11 @@
                     <!-- /.col-lg-4 -->
 
                     <div class="col-md-8 col-md-pull-4 col-lg-8 col-lg-pull-4">
-                        {{> contactablesList }}
+                        {{#if isSearching}}
+                            searching
+                        {{else}}
+                            {{> contactablesList }}
+                        {{/if}}
                         {{#infinityScroll cb=showMore}} {{/infinityScroll}}
                     </div>
                 </div>
