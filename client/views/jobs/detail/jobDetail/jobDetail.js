@@ -14,16 +14,7 @@ Template.jobDetail.created=function(){
   var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
 
 
-  var definition={
-    reactiveProps:{
-      tags:{
-        default: originalJob.tags,
-        update: 'tags',
-        type: Utils.ReactivePropertyTypes.array
-      }
-    }
-  };
-  services= Utils.ObjectDefinition(definition);
+
 }
 var job;
 Template.jobDetail.helpers({
@@ -58,9 +49,6 @@ Template.jobDetail.helpers({
 
     location.value= originalJob && originalJob.location;
     return location;
-  },
-  tags: function(){
-    return services.tags;
   }
 });
 
@@ -83,45 +71,22 @@ Template.jobDetail.events({
       update.$set.location= newLocation;
     }
 
-    if (services.tags.value.length > 0)
-      update.$set.tags = services.tags.value;
-
     Jobs.update({_id: job._id}, update, function(err, result) {
       if (!err) {
         self.editMode=false;
         job.reset();
       }
+      else
+      {
+        alert(err);
+      }
     });
   },
   'click .cancelButton':function(){
     self.editMode=false;
-  },
-  'click .add-tag': function() {
-    addTag();
-  },
-  'keypress #new-tag': function(e) {
-    if (e.keyCode == 13) {
-      e.preventDefault();
-      addTag();
-    }
-  },
-  'click .remove-tag': function() {
-    services.tags.remove(this.value);
   }
 });
 
-var addTag = function() {
-  var inputTag = $('#new-tag')[0];
-
-  if (!inputTag.value)
-    return;
-
-  if (_.indexOf(services.tags.value, inputTag.value) != -1)
-    return;
-  services.tags.insert(inputTag.value);
-  inputTag.value = '';
-  inputTag.focus();
-};
 
 Template.jobDetail.helpers({
   getType: function(){

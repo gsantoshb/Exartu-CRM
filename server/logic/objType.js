@@ -29,7 +29,7 @@ validateObjType = function (obj, objType) {
         return v;
     });
     if (!v) {
-        console.error('invalid service');
+        console.error('invalid service',obj,objType);
         return false;
     }
 
