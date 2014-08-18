@@ -80,13 +80,12 @@ Template.jobs.viewModel = function () {
     }
   ];
 
-  self.status=[]
-  _.each(_.keys(Enums.jobStatus),function(key){
-    self.status.push({
-      displayName: Enums.jobStatus[key],
-      isSelected: ko.observable(false),
-    })
-  })
+  self.status=[];
+  _.each(Utils.getLookUpsByCode(Enums.lookUpTypes.job.status.code),function(lookup) {
+      self.status.push({
+          displayName: lookup
+      });
+  });
 
   self.selectStatus=function(item){
     item.isSelected(!item.isSelected());

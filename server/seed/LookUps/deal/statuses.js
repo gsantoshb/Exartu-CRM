@@ -1,19 +1,19 @@
 _.forEach([
   {
-    displayName: 'Won', type: 'Won'
+    displayName: 'Won', lookUpActions:[Enums.lookUpAction.Won,Enums.lookUpAction.Implies_Inactive]
   },
   {
-    displayName: 'Lost',type: 'Won'
+    displayName: 'Lost',lookUpActions:[Enums.lookUpAction.Lost,Enums.lookUpAction.Implies_Inactive]
   },
   {
-    displayName: 'Inactive', type:'Inactive'
+    displayName: 'Inactive', lookUpActions:[Enums.lookUpAction.Implies_Inactive]
   },
   {
-    displayName: 'Active', type:'Active',isDefault: true
+    displayName: 'Active', lookUpActions:[Enums.lookUpAction.Implies_Active],isDefault: true
   }
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.deal.status.code;
+    item.codeType = Enums.lookUpAction.code;
     systemLookUps.push(item);
   }
 );

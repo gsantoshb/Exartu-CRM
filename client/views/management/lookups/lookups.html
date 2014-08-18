@@ -50,35 +50,43 @@
                                         <span>{{displayName}}</span>
                                     {{/if}}
                                 </div>
+                                <!-- lookUpAction -->
                                 <div class="col-xs-12 col-sm-7 no-padding">
-                                    {{#if editMode}}
+                                    {{#if editActionMode}}
                                     <div class="col-xs-9 no-padding">
                                         <div class="input-group">
-                                            <input id="{{_id}}newlookupAction" type="text" class="form-control" placeholder="Add actions here...">
-                                                <span class="input-group-btn">
-                                                  <button class="add-tag btn btn-success save_lookupAction" type="button">Add</button>
+                                            <select id="{{_id}}newLookUpAction"  class="form-control input-lg" type="text" >
+                                                {{#each getLookUpActions ..}}
+                                                <option value="{{.}}" >{{.}}</option>
+                                                {{/each}}
+                                            </select>
+                                            <span class="input-group-btn">
+                                                  <button class="add-tag btn btn-success save_lookUpAction" type="button">Add</button>
                                             </span>
                                         </div>
-                                        <div class="box-content-md tags-content">
-                                            {{#objectProperty property=lookupActions}}
-                                            <button type="button" class="tag btn btn-xs btn-primary">
-                                                <span >{{value}}</span>
-                                                {{#if editMode}}
-                                                <i id="{{_id}}removeAction" class="remove-tag fa fa-times"></i>
-                                                {{/if}}
-                                            </button>
-                                            {{/objectProperty}}
+
+                                        <div class="box">
+                                            <div class="box-content-md tags-content">
+                                                {{#each lookUpActions}}
+
+                                                <button type="button" class="tag btn btn-xs btn-primary">
+                                                    {{.}}
+                                                    <i id="{{getId ..}}" lookUpAction="{{.}}" class="remove-tag fa fa-times"></i>
+                                                </button>
+                                                {{/each}}
+
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xs-3 no-padding" style="padding-left: 3px; top: 2px">
                                         <div class="btn-group">
                                             <span class="btn btn-sm btn-success save"><i class="fa fa-check"></i></span>
-                                            <span class="btn btn-sm btn-danger cancel"><i class="fa fa-times"></i></span>
+                                            <span class="btn btn-sm btn-danger cancelAction"><i class="fa fa-times"></i></span>
                                         </div>
                                     </div>
                                     {{else}}
-                                    <span class="label label-default pointer edit" title="Edit">Edit actions</span>
-                                    <span>{{lookupActions}}</span>
+                                    <span class="label label-default pointer editAction" title="Edit">Edit actions</span>
+                                    {{#each lookUpActions}}{{.}} {{/each}}
                                     {{/if}}
                                 </div>
                                 
@@ -112,16 +120,30 @@
 
 <template name="selectLookUpType">
     <select class="form-control input-lg" type="text" >
+        <option disabled selected> -- select an option -- </option>
         {{#each lookUpTypes}}
             <option value="{{code}}" selected="{{isSelected code ../value}}">{{displayName}}</option>
         {{/each}}
     </select>
 </template>
 
+
 <template name="searchLookUpItem">
     <div class="input-group">
         {{#objectProperty property=searchString}}
             <input type="text" class="form-control" placeholder="Search" value="{{value}}" />
+        {{/objectProperty}}
+        <span class="input-group-btn">
+            <button class="btn btn-primary" type="button" title="Search">
+                <i class="fa fa-search"></i>
+            </button>
+        </span>
+    </div>
+</template>
+<template name="searchlookUpActionItem">
+    <div class="input-group">
+        {{#objectProperty property=searchString}}
+        <input type="text" class="form-control" placeholder="Search" value="{{value}}" />
         {{/objectProperty}}
         <span class="input-group-btn">
             <button class="btn btn-primary" type="button" title="Search">

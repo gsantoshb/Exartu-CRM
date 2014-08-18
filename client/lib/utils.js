@@ -240,6 +240,7 @@ Utils.Validators.stringNotEmpty = function() {
 }
 
 Utils.getLocation = function (googleLocation) {
+  console.log(googleLocation);
   return {
     displayName: googleLocation.formatted_address,
     lat: googleLocation.geometry.location.lat(),
@@ -250,7 +251,7 @@ Utils.getLocation = function (googleLocation) {
 Utils.getLinkTypeFromEntity=function(entity) {
     var objNameArray=entity.objNameArray;
     if (objNameArray && objNameArray.length>0)
-        return entity.objNameArray(objNameArray.length-1);
+        return entity.objNameArray[objNameArray.length-1];
     return null;
 }
 
@@ -297,6 +298,45 @@ Utils.getEntitiesFromType=function(type){
         default :
         return [];
     }
+}
+Utils.getTypeFromTypeString=function (str)
+{
+  console.log(ObjTypes.find());
+  for (var k in Enums.linkTypes) {
+
+    var estr=Enums.linkTypes[k].displayName;
+    console.log(str,estr);
+    if (estr == str.toLowerCase() || estr == (str + 's').toLowerCase()) return k;
+  }
+  return null;
+}
+
+Utils.getCollectionFromEntity=function(entity) {
+  var strtype=Utils.getLinkTypeFromEntity(entity);
+  if ($.inArray(strtype, ['Employee','Contact','Customer'])!=-1) return Contactables;
+  if ($.inArray(strtype, ['job'])!=-1) return Jobs;
+  if ($.inArray(strtype, ['deal'])!=-1) return Deals;
+//  var type=Utils.getTypeFromTypeString(strtype);
+//  console.log('st',strtype,type);
+//  return Utils.getCollectionFromType(type);
+}
+
+Utils.getCollectionFromType=function(type){
+  console.log('type2',type,Enums.linkTypes.contactable);
+  switch (type) {
+    case Enums.linkTypes.contactable.value:
+      return ContactablesFS;
+    case Enums.linkTypes.job.value:
+      return Jobs;
+    case Enums.linkTypes.deal.value:
+      return Deals;
+    case Enums.linkTypes.assignment.value:
+      return Assignments;
+    case Enums.linkTypes.candidate.value:
+      return Candidates;
+    default :
+      return [];
+  }
 }
 
 Utils.getHrefFromLink=function(link){
@@ -381,4 +421,8 @@ var getDefinitionFromField=function(field, obj, path){
                                 ] }, { sort: {displayName: 1} });
   }
   return result;
-}
+};
+Utils.getLookUpsByCode=function(code)
+{
+    LookUps.find({codeType: code, inactive: {$ne: true}}, { sort: {displayName: 1} });
+};
