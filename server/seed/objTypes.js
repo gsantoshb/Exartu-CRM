@@ -86,7 +86,7 @@ newObjType({
       lookUpCode: Enums.lookUpTypes.employee.recruiterStatus.code,
       defaultValue: null,
       showInAdd: false,
-      required: false,
+      required: false
     }
   ]
 });
@@ -194,7 +194,6 @@ newObjType({
       lookUpName: 'jobStatus',
       lookUpCode: Enums.lookUpTypes.job.status.code,
       required: false,
-      lookUpName: 'jobTitle',
       multiple: false,
       defaultValue: null,
       showInAdd: false
@@ -248,7 +247,7 @@ newObjType({
       required: false
     }
   ]
-})
+});
 newObjType({
   objGroupType: Enums.objGroupType.job,
   parent: 'job',
@@ -290,57 +289,55 @@ newObjType({
     objGroupType: Enums.objGroupType.deal,
     services: ['messages', 'tasks', 'notes', 'tags'],
     fields: [
-        {
-            name: 'dealName',
-            displayName: 'Deal Name',
-            showInAdd: true,
-            required: true
-        },
-        {
-            name: 'statusNote',
-            displayName: 'Status note',
-            showInAdd: true,
-            required: false
-        },
-        { name: 'dealStatus',
-            displayName: 'Status',
-            fieldType: 'lookUp',
-            lookUpName: 'dealStatus',
-            lookUpCode: Enums.lookUpTypes.deal.status.code,
-            required: true,
-            multiple: false,
-            defaultValue: null
-        },
-        { name: 'dealCloseDate',
-            displayName: 'Close Date',
-            required: true,
-            fieldType: 'date'
-        },
-        { name: 'dealEstimatedRevenue',
-            displayName: 'Revenue',
-            fieldType: 'number'
-        },
-        { name: 'dealRevenueFrequency',
-            displayName: 'Frequency',
-            fieldType: 'lookUp',
-            lookUpName: 'dealRevenueFrequency',
-            lookUpCode: Enums.lookUpTypes.deal.dealRevenueFrequency.code,
-            defaultValue: null,
-            showInAdd: true,
-            required: true,
-        },
-        { name: 'dealCloseConfidencePercentage',
-            displayName: 'Confidence',
-            fieldType: 'number',
-            required: false
-        },
-        {
-            name: 'dealDescription',
-            displayName: 'Deal Description',
-            false: false,
-            showInAdd: false
-        },
-    ]
+      {
+        name: 'dealName',
+        displayName: 'Deal Name',
+        showInAdd: true,
+        required: true
+      }, {
+        name: 'statusNote',
+        displayName: 'Status note',
+        showInAdd: true,
+        required: false
+      }, {
+        name: 'dealStatus',
+        displayName: 'Status',
+        fieldType: 'lookUp',
+        lookUpName: 'dealStatus',
+        lookUpCode: Enums.lookUpTypes.deal.status.code,
+        required: true,
+        multiple: false,
+        defaultValue: null
+      }, {
+        name: 'dealCloseDate',
+        displayName: 'Close Date',
+        required: true,
+        fieldType: 'date'
+      }, {
+        name: 'dealEstimatedRevenue',
+        displayName: 'Revenue',
+        fieldType: 'number'
+      }, {
+        name: 'dealRevenueFrequency',
+        displayName: 'Frequency',
+        fieldType: 'lookUp',
+        lookUpName: 'dealRevenueFrequency',
+        lookUpCode: Enums.lookUpTypes.deal.dealRevenueFrequency.code,
+        defaultValue: null,
+        showInAdd: true,
+        required: true
+      }, {
+        name: 'dealCloseConfidencePercentage',
+        displayName: 'Confidence',
+        fieldType: 'number',
+        required: false
+      }, {
+        name: 'dealDescription',
+        displayName: 'Deal Description',
+        required: false,
+        showInAdd: false
+      }
+  ]
 });
 newObjType({
     objGroupType: Enums.objGroupType.deal,

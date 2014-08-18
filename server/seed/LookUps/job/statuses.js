@@ -1,12 +1,12 @@
 _.forEach([
   {
-    displayName: 'Inactive',
+    displayName: 'Inactive',lookUpActions:[Enums.lookUpAction.Implies_Inactive]
   },
   {
-    displayName: 'Unfilled',
+    displayName: 'Unfilled',lookUpActions:[Enums.lookUpAction.Implies_Active]
   },
   {
-    displayName: 'Filled',
+    displayName: 'Filled',lookUpActions:[Enums.lookUpAction.Implies_Active]
   }
 ],
   function (item) {

@@ -1,0 +1,44 @@
+<template name="taskBox">
+    <div class="box">
+        <div class="box-header-2 box-header-tasks">
+            <a class="btn-action tip-top addTask" title="Add Task" href="#"><i class="fa fa-plus"></i></a>
+            <div class="box-title hidden-sm hidden-xs">
+                <strong>{{taskCount}}</strong> Tasks
+            </div>
+            <a class="box-title visible-sm visible-xs" href="#task-body" data-toggle="collapse" >
+                <strong>{{taskCount}}</strong>
+                Tasks
+            </a>
+        </div>
+        <div class="box-content-collapsible" id="task-body">
+            {{#each tasks}}
+                {{>task}}
+            {{else}}
+                <div class="box-v-msg">
+                <div class="box-v-msg-content">
+                    <i class="icon-clock-3"></i>
+                </div><!-- /.box-v-msg-content -->
+            </div>
+            {{/each}}
+
+            <!--<ul class="list-3 stripped has-thumb">-->
+                <!--<li class="list-3-item">-->
+                    <!--<div class="list-thumb"><i class="icon-clock-3"></i></div>-->
+                    <!--<div class="list-3-content">-->
+                        <!--<div class="list-3-content-wrap">-->
+                            <!--<div class="list-3-actions">-->
+                                <!--<a href="#"><i class="fa fa-check"></i> Done</a>-->
+                            <!--</div>-->
+                            <!--<div class="list-3-item-meta-top">Today - 2:30 PM</div>-->
+                            <!--<h4 class="list-3-item-title">Send Email to Mihai with our proposal</h4>-->
+                            <!--<div class="list-3-item-meta-bottom"><i class="fa fa-long-arrow-right"></i> Gregg Dourgarian</div>-->
+                        <!--</div>&lt;!&ndash; /.list-3-content-wrap &ndash;&gt;-->
+                    <!--</div>-->
+                <!--</li>-->
+            <!--</ul>-->
+            <!--<div class="btn-container">-->
+                <!--<a class="btn btn-default btn-block top-10" href="/tasks">View all</a>-->
+            <!--</div>-->
+        </div><!-- /.box-content-md -->
+    </div>
+</template>

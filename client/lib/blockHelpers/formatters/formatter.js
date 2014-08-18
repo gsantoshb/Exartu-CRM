@@ -22,6 +22,7 @@ UI.registerHelper('htmlEditor', function() {
 
   template.rendered= function(){
     var editor=this.$('.editor');
+
     editor.wysihtml5({
       "color": true,
       "size": 'xs',
@@ -35,7 +36,12 @@ UI.registerHelper('htmlEditor', function() {
 
     editor.val(this.data.value);
     editor.width('90%');
-  };
+  }
+  template.destroyed = function() {
+    // Hide editor
+    $('.editor').data('wysihtml5').editor.composer.hide();
+    $('.editor').data('wysihtml5').editor.toolbar.hide();
+  }
 
   return template;
 });

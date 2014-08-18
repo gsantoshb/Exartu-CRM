@@ -7,6 +7,10 @@
 
 .margin-top-15 { margin-top: 15px;}
 
+.box-v-msg-content {
+    padding-bottom: 30px;
+}
+
 /* Iron router progresss */
 
 #iron-router-progress {
@@ -706,7 +710,8 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 @media (min-width: 992px){
     .filter .filter-list{
-        height: 0px;
+        position: absolute;
+        width: 100%;
     }
 }
 
@@ -715,6 +720,10 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
      position: relative;
      margin-top: 20px;
      margin-bottom: -20px;
+}
+/* tasks */
+.task-Pending .task-state{
+    color: rgba(183, 4, 48, 1);
 }
 
 /***************************** Mobile Specific CSS ***********************************/

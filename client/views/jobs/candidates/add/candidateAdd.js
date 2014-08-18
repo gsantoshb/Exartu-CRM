@@ -20,9 +20,12 @@ Template.candidateAdd.viewModel = function (jobId) {
     }
   });
   self.add = function () {
+    var employee=self.entity.employee();
+    self.entity.employee(null);
+    if (_.isEmpty(employee)) return;
     var candidate = {
       note: self.entity.note(),
-      employee: self.entity.employee(),
+      employee: employee,
       type: Enums.candidateType.recruiter,
       job: jobId,
       userId: Meteor.userId()

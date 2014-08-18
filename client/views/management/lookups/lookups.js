@@ -29,10 +29,25 @@ onAfterAction: function() {
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
    searchString: {},
-   codeType: {}
+   codeType: {},
+   lookUpActions: {}
   }
 });
 var defaultUpdateDep = new Deps.Dependency;
+
+var injectTestData= function()
+    {
+        if (  Contactables.find().count()>10)
+        {
+            var msg1="It looks like you've already been creating data quite a bit of data in this tenancy, so I'm a bit afraid to ";
+            var msg1=msg1+ "do it here.  Have development do it for you with Meteor.call(\'loadDemoData\')";
+            alert(msg1);
+            return;
+        }
+        if (confirm('Inject test data into this tenancy node?'))
+        Meteor.call('loadDemoData');
+    };
+
 
 Template.selectLookUpType.lookUpTypes = function() {
   var lookUpTypes = [];
@@ -41,11 +56,14 @@ Template.selectLookUpType.lookUpTypes = function() {
       lookUpTypes.push(item)
     })
   });
+//  query.codeType.value = lookUpTypes[0].code;
+  var items= Template.lookUpsManagement.items();
+  return _.sortBy(lookUpTypes,'displayName');
 
-  query.codeType.value = lookUpTypes[0].code;
-
-  return lookUpTypes;
 };
+
+
+
 
 Template.selectLookUpType.isSelected = function(id){
   return (this.value || this._id) ==id;
@@ -54,16 +72,38 @@ Template.selectLookUpType.isSelected = function(id){
 Template.selectLookUpType.events = {
   'change': function(e) {
     query.codeType.value = parseInt(e.currentTarget.value);
+    query.lookUpActions= [];
+    _.forEach(Enums.lookUpTypes, function(subType) {
+        _.forEach(subType, function(subTypeItem) {
+            if (subTypeItem.code == query.codeType.value) {
+                query.lookUpActions = subTypeItem.lookUpActions;
+            }
+        });
+    });
+
   }
 };
 
 Template.searchLookUpItem.searchString = function() {
   return query.searchString;
 };
+Template.lookUpsManagement.getId= function(row)
+{
+    return row._id;
+}
+Template.lookUpsManagement.getLookUpActions= function()
+{
+    return query.lookUpActions;
+}
+
+
+Template.selectLookUpType.lookUpActions=function()
+{
+    defaultUpdateDep.depend();
+}
 
 Template.lookUpsManagement.items = function() {
   defaultUpdateDep.depend();
-
   var q = { codeType: query.codeType.value};
   if (query.searchString.value)
     q.$or = [
@@ -79,7 +119,9 @@ Template.lookUpsManagement.items = function() {
   return LookUps.find(q,
     {
       transform: function(item) {
-        Utils.reactiveProp(item,'editMode',false)
+        Utils.reactiveProp(item,'editMode',false);
+          console.log('reac');
+        Utils.reactiveProp(item,'editActionMode',false);
         item.errMsg = '';
         return item;
       },
@@ -89,7 +131,9 @@ Template.lookUpsManagement.items = function() {
 };
 
 Template.lookUpsManagement.events = {
-
+    'click .btn-injectTestData': function(){
+        injectTestData();
+    },
   'change .set-default': function(e) {
     var item = this;
     if (e.target.checked){
@@ -102,33 +146,56 @@ Template.lookUpsManagement.events = {
   'click .edit': function(){
     this.editMode = ! this.editMode;
   },
+    'click .editAction': function(){
+        this.editActionMode = ! this.editActionMode;
+    },
   'click .cancel': function(){
     this.editMode = false;
   },
+    'click .cancelAction': function(){
+        this.editActionMode = false;
+    },
   'click .save': function(e, ctx){
-
     var displayName= ctx.$('#' + this._id).val();
     if (!displayName) return;
-
     LookUps.update({_id: this._id},{ $set: { displayName: displayName } });
     this.editMode = false;
   },
+  'click .save_lookUpAction': function(e, ctx){
+        var newLookUpAction=ctx.$('#' + this._id+'newLookUpAction').val();
+        var lookup=LookUps.findOne({_id: this._id});
+        if (lookup.lookUpActions==null)  lookup.lookUpActions=[];
+        lookup.lookUpActions=_.without(lookup.lookUpActions, newLookUpAction) ;
+        lookup.lookUpActions.push(newLookUpAction);
+        LookUps.update({_id: this._id},{$set: {lookUpActions: lookup.lookUpActions}} );
+        this.editActionMode=false;
+  },
+
   'change .inactive': function(e){
     LookUps.update({ _id: this._id }, { $set: { inactive: e.target.checked } });
+  },
+  'click .remove-tag': function(tag) {
+      var id=tag.target.id;
+      var action=this.toString();
+      var item=LookUps.findOne({_id:id});
+      var newActions=_.without(item.lookUpActions, action) ;
+      LookUps.update({_id: id},{$set: {lookUpActions: newActions}});
   }
 };
 
 Template.addNewLookUpItem.events({
   'click #add-item': function() {
-    var newValue = $('#new-item').val();
-    var lookUpTypeCode = query.codeType.value;
-    if (!newValue)
-      return;
-
-    LookUps.insert({
-      displayName: newValue,
-      codeType: lookUpTypeCode,
-      hierId: Meteor.user().hierId
-    })
+          var newValue = $('#new-item').val();
+          var lookUpTypeCode = query.codeType.value;
+          if (!newValue)
+              return;
+          if (confirm('Add new item ' + newValue)) {
+              LookUps.insert({
+                  displayName: newValue,
+                  codeType: lookUpTypeCode,
+                  hierId: Meteor.user().hierId
+              });
+              $('#new-item')[0].value=null;
+          };
   }
-})
+});

@@ -34,7 +34,7 @@ ContactablesController = RouteController.extend({
       info.objType.value = objType.name+'s';
     } else {
       query.objType.value = undefined;
-      info.objType.value = 'record';
+      info.objType.value = 'record(s)';
     }
     this.render('contactables');
   },
@@ -116,9 +116,10 @@ Template.contactablesList.info = function() {
   return info;
 };
 
-Template.contactablesListSearch.contactableTypes = function() {
+var contactableTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
 };
+Template.contactablesListSearch.contactableTypes = contactableTypes;
 
 Template.contactablesListSearch.resumeParserRestrictions = function() {
   return [SubscriptionPlan.plansEnum.enterprise];
@@ -224,9 +225,17 @@ Template.contactablesFilters.query = function () {
   return query;
 };
 
+Template.contactablesFilters.contactableTypes2 = contactableTypes;
+
 Template.contactablesFilters.recentOptions = function() {
   return timeLimits;
 };
+
+Template.contactablesFilters.typeOptionClass = function(option) {
+  return query.objType.value == option.name? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
+
+};
+
 
 Template.contactablesFilters.recentOptionClass = function(option) {
   return query.selectedLimit.value == option? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
@@ -277,6 +286,13 @@ Template.contactablesFilters.events = {
   },
   'click #recent-year': function(e) {
     query.selectedLimit.value = timeLimits.year;
+  },
+  'click .typeSelect': function(e) {
+    if (query.objType.value == this.name){
+      query.objType.value= null;
+    }else{
+      query.objType.value= this.name;
+    }
   }
 };
 

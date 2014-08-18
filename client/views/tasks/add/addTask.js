@@ -71,7 +71,7 @@ Template.addEditTask.helpers({
   },
   entities:function(){
     typeDep.depend();
-    var selectedType= $('#typeSelect').val();
+    var selectedType= $('#taskTypeSelect').val();
     selectedType=parseInt(selectedType);
     switch (selectedType){
       case Enums.linkTypes.contactable.value:
@@ -216,13 +216,13 @@ Template.addEditTask.events({
     isValid(task, 'assign');
   },
 
-  'change #typeSelect': function(){
+  'change #taskTypeSelect': function(){
     typeDep.changed();
   },
-  'click #linkEntity':function(){
-    var type= $('#typeSelect').val();
+  'click #taskLinkEntity':function(){
+    var type= $('#taskTypeSelect').val();
     type= parseInt(type);
-    var entity= $('#entitySelect').val();
+    var entity= $('#taskEntitySelect').val();
     if (!_.isNumber(type) || ! entity) return;
 
     link({

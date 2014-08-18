@@ -2,6 +2,11 @@ Accounts.validateLoginAttempt(function(attempt) {
   if (!attempt.allowed)
     return false;
 
+  // users from applicantCenter
+  if (attempt.user.origin){
+    throw new Meteor.Error(403, 'User not found');
+  }
+
   if (attempt.type == 'password' && !attempt.user.emails[0].verified)
     throw new Meteor.Error(500, 'Email not verified');
 

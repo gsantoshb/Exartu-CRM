@@ -73,6 +73,10 @@ Template.assignments.assignments = function() {
   );
 };
 
+Template.assignments.getCount = function(assignments) {
+  return assignments.count();
+}
+
 Template.assignments.events = {
   'keyup #search-string': function(e) {
     searchString = e.currentTarget.value;

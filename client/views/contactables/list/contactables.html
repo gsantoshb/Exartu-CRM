@@ -4,24 +4,22 @@
             {{#with information}}
                 <div id="content-header" class="mini">
                     <h1>
-                            {{#objectProperty property=contactablesCount }}
-                                <strong> {{value}} </strong>
-                            {{/objectProperty}}
+                        {{#objectProperty property=contactablesCount }}
+                            <strong> {{value}} </strong>
+                        {{/objectProperty}}
 
-                            {{#objectProperty property=objType}}
-                                {{#if value}}
-                                    <span> {{value}} </span>
-                                {{else}}
-                                    record(s)
-                                {{/if}}
-                            {{/objectProperty}}
-
-
+                        {{#objectProperty property=objType}}
+                            {{#if value}}
+                                <span> {{value}} </span>
+                            {{else}}
+                                record(s)
+                            {{/if}}
+                        {{/objectProperty}}
                     </h1>
                 </div>
                 <div id="breadcrumb">
-                    <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-                    <a href="#" class="current">
+                    <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+                    <a href="/contactables" class="current">
                         {{#objectProperty property=objType }}
                             <strong> {{value}} </strong>
                         {{/objectProperty}}</a>
@@ -30,14 +28,17 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-4 col-md-push-8 col-lg-push-8 col-lg-4">
+                    <div class="actions-head col-md-7 col-lg-7">
+                        {{>contactablesListSearch}}
+                    </div>
+                    <div class="col-md-4 col-md-push-1 col-lg-push-1 col-lg-4">
                         <sidebar>
                             {{> contactablesFilters }}
                         </sidebar>
                     </div>
                     <!-- /.col-lg-4 -->
 
-                    <div class="col-md-8 col-md-pull-4 col-lg-8 col-lg-pull-4">
+                    <div class="col-md-8 col-lg-8">
                         {{#if isSearching}}
                             searching
                         {{else}}
@@ -53,71 +54,75 @@
 </template>
 
 <template name="contactablesFilters">
-    <!--<div class="box-2">-->
-        <!--<h4 class="bottom-20"><strong>Filters</strong></h4>-->
-        <!--<form role="form">-->
-            <!--<div class="panel-group bottom-20">-->
-                <!--<div class="panel panel-default">-->
-                    <!--<div class="panel-heading">-->
-                        <!--<h4 class="panel-title">-->
-                            <!--<a>-->
-                                <!--<strong>Mode</strong>-->
-                            <!--</a>-->
-                        <!--</h4>-->
-                    <!--</div>-->
-                    <!--<div class="panel-body">-->
-                        <!--<div class="checkbox">-->
-                            <!--<label>-->
-                                <!--{{#objectProperty property=query.inactives}}-->
-                                    <!--<input type="checkbox" value="{{value}}"> Include inactives-->
-                                <!--{{/objectProperty}}-->
-                            <!--</label>-->
-                        <!--</div>-->
-                        <!--<div class="checkbox">-->
-                            <!--<label>-->
-                                <!--{{#objectProperty property=query.onlyRecents}}-->
-                                    <!--<input type="checkbox" value="{{value}}"> Only recent-->
-                                <!--{{/objectProperty}}-->
-                            <!--</label>-->
-                            <!--<span><i class="icon-question-mark" title="Shows only the contacts that have been recently added. Select the timespan."></i></span>-->
-                            <!--<div class="pull-right">-->
-                                <!--<button type="button" class="{{recentOptionClass recentOptions.day}}" id="recent-day">day</button>-->
-                                <!--<button type="button" class="{{recentOptionClass recentOptions.week}}" id="recent-week">week</button>-->
-                                <!--<button type="button" class="{{recentOptionClass recentOptions.month}}" id="recent-month">month</button>-->
-                                <!--<button type="button" class="{{recentOptionClass recentOptions.year}}" id="recent-year">year</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="panel panel-default">-->
-                    <!--<div class="panel-heading">-->
-                        <!--<h4 class="panel-title">-->
-                            <!--<strong>Tags</strong>-->
-                        <!--</h4>-->
-                    <!--</div>-->
-                    <!--<div class="panel-body">-->
-                        <!--{{#objectProperty property=tags}}-->
-                        <!--<button type="button" class="tag btn btn-xs btn-primary">-->
-                            <!--<span >{{value}}</span>-->
-                            <!--<i class="remove-tag fa fa-times"></i>-->
-                        <!--</button>-->
-                        <!--{{/objectProperty}}-->
-                        <!--<div class="input-group">-->
-                            <!--<input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">-->
-                            <!--<span class="input-group-btn">-->
-                              <!--<button class="add-tag btn btn-success" type="button">Add</button>-->
-                            <!--</span>-->
-                        <!--</div>&lt;!&ndash; /input-group &ndash;&gt;-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</form>-->
-    <!--</div>-->
+    <div class="filter">
+        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+            <strong>Filters</strong>
+        </a>
+        <div class="filter-list" id="filter-body">
+            <div class="filter-item">
+                <div class="item-title">
+                    <strong>Type</strong>
+                </div>
+                <div class="item-body">
+                    {{#each contactableTypes2}}
+                        <button type="button" class="typeSelect {{typeOptionClass .}}">{{name}}</button>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="filter-item">
+                <div class="item-title">
+                    <strong>Mode</strong>
+                </div>
+                <div class="item-body">
+                    <div class="checkbox">
+                        <label>
+                            {{#objectProperty property=query.inactives}}
+                                <input type="checkbox" value="{{value}}"> Include inactives
+                            {{/objectProperty}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            {{#objectProperty property=query.onlyRecents}}
+                                <input type="checkbox" value="{{value}}"> Only recent
+                            {{/objectProperty}}
+                        </label>
+                        <span><i class="icon-question-mark" title="Shows only the contacts that have been recently added. Select the timespan."></i></span>
+                        <div class="pull-right">
+                            <button type="button" class="{{recentOptionClass recentOptions.day}}" id="recent-day">day</button>
+                            <button type="button" class="{{recentOptionClass recentOptions.week}}" id="recent-week">week</button>
+                            <button type="button" class="{{recentOptionClass recentOptions.month}}" id="recent-month">month</button>
+                            <button type="button" class="{{recentOptionClass recentOptions.year}}" id="recent-year">year</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-item">
+                <div class="item-title">
+                    <strong>Tags</strong>
+                </div>
+                <div class="item-body">
+                    {{#objectProperty property=tags}}
+                    <button type="button" class="tag btn btn-xs btn-primary">
+                        <span >{{value}}</span>
+                        <i class="remove-tag fa fa-times"></i>
+                    </button>
+                    {{/objectProperty}}
+                    <div class="input-group">
+                        <input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">
+                            <span class="input-group-btn">
+                              <button class="add-tag btn btn-success" type="button">Add</button>
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <template name="contactablesList">
     <div>
-        {{> contactablesListSearch }}
+        <!--{{> contactablesListSearch }}-->
 
         {{#each contactables}}
             {{> contactablesListItem }}
@@ -136,12 +141,12 @@
                     <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                         <i class="icon-connection-1 text-large"></i>
                         <!--<h1>You currently have no-->
-                            <!--&lt;!&ndash;ko text:name&ndash;&gt;-->
-                            <!--&lt;!&ndash;/ko&ndash;&gt;-->
+                            <!--ko text:name-->
+                            <!--/ko-->
                         <!--</h1>-->
-                        <!--&lt;!&ndash;ko if:name()=='contactable'&ndash;&gt;-->
+                        <!--ko if:name()=='contactable'-->
                         <!--<p class="lead">A contactable is an Employee, Customer or Contact.</p>-->
-                        <!--&lt;!&ndash; /ko &ndash;&gt;-->
+                        <!-- /ko -->
                         <!--ko foreach: contactableTypes-->
                         <a href="#" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
                         <span class="bullet-spacer" data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
@@ -281,7 +286,7 @@
                             {{/each}}
                         </ul>
                     </div>
-                    <button type="button" class="btn btn-default" href="/resumeparser"><i class="fa fa-cloud-download"></i> Import</button>
+                    <a type="button" title="Create from resume" class="btn btn-default" href="/resumeparser"><i class="fa fa-cloud-upload"></i></a>
 
                 </div>
             </div>

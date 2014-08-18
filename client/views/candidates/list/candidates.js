@@ -73,6 +73,10 @@ Template.candidatesList.candidates = function() {
   );
 };
 
+Template.candidatesList.getCount = function(candidates) {
+  return candidates.count();
+}
+
 Template.candidatesList.applicationTypeTemplate = function() {
   if(this.type == 'applicant')
     return Template.candidateByApplicant;

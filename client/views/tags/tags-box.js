@@ -1,29 +1,32 @@
-var contactable = {};
+var objdef = {};
 var self={};
 Utils.reactiveProp(self, 'editMode', false);
 Template.tagsBox.created=function(){
   self.editMode=false;
 }
 Template.tagsBox.tags = function() {
-  contactable = new Utils.ObjectDefinition({
+  var coll=Utils.getCollectionFromEntity(this);
+  if (!_.isArray(this.tags)) this.tags=[];
+  objdef = new Utils.ObjectDefinition({
+
     reactiveProps: {
       tags: {
         type: Utils.ReactivePropertyTypes.array,
         default: this.tags,
         cb: {
           onInsert: function(newValue) {
-            Contactables.update({ _id: contactable._id}, {$addToSet: {tags: newValue}});
-            GAnalytics.event("/contactable", "tags", "add");
+            coll.update({ _id: objdef._id}, {$addToSet: {tags: newValue}});
+            GAnalytics.event("/objdef", "tags", "add");
           },
           onRemove: function(value) {
-            Contactables.update({ _id: contactable._id}, {$pull: {tags: value}});
+            coll.update({ _id: objdef._id}, {$pull: {tags: value}});
           }
         }
       }
     },
     _id: this._id
   });
-  return contactable.tags;
+  return objdef.tags;
 };
 
 Template.tagsBox.editMode = function() {
@@ -39,7 +42,7 @@ Template.tagsBox.hasTags = function() {
 };
 
 Template.tagsBox.isEmptyTags = function() {
-  return _.isEmpty(contactable.tags.value);
+  return _.isEmpty(objdef.tags.value);
 };
 
 var addTag = function() {
@@ -48,10 +51,10 @@ var addTag = function() {
   if (!inputTag.value)
     return;
 
-  if (_.indexOf(contactable.tags.value, inputTag.value) != -1)
+  if (_.indexOf(objdef.tags.value, inputTag.value) != -1)
     return;
 
-  contactable.tags.insert(inputTag.value);
+  objdef.tags.insert(inputTag.value);
   inputTag.value = '';
   inputTag.focus();
 }
@@ -67,7 +70,7 @@ Template.tagsBox.events = {
     }
   },
   'click .remove-tag': function() {
-    contactable.tags.remove(this.value);
+    objdef.tags.remove(this.value);
   },
   'click .focusAddTag': function(){
     $('#new-tag')[0].focus();

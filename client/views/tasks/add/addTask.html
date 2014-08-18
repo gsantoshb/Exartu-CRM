@@ -79,15 +79,15 @@
                                 <div>
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <select class="form-control" id="typeSelect" title="Select the type of entity that you want to link to the note">
+                                            <select class="form-control" id="taskTypeSelect" title="Select the type of entity that you want to link to the note">
                                                 <option value="">--type--</option>
                                                 {{#each types}}
-                                                <option value="{{value}}">{{displayName}}</option>
+                                                    <option value="{{value}}">{{displayName}}</option>
                                                 {{/each}}
                                             </select>
                                         </div>
                                         <div class="col-md-5">
-                                            <select class="form-control" id="entitySelect" title="Select the entity that you want to link">
+                                            <select class="form-control" id="taskEntitySelect" title="Select the entity that you want to link">
                                                 <option value="">--select--</option>
                                                 {{#each entities}}
                                                     <option value="{{_id}}">{{displayName}}</option>
@@ -95,7 +95,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-2">
-                                            <button id="linkEntity" class="btn btn-sm btn-primary">Link</button>
+                                            <button id="taskLinkEntity" class="btn btn-sm btn-primary">Link</button>
                                         </div>
                                     </div>
                                 </div>

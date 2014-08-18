@@ -8,113 +8,13 @@
                 </h1>
             </div>
             <div id="breadcrumb">
-                <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-                <a href="#" class="current">Jobs</a>
+                <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+                <a href="/jobs" class="current">Jobs</a>
             </div>
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-4 col-md-push-8">
-                        <!--<sidebar>-->
-                            <!--<div class="box-2 visible-lg visible-md">-->
-                                <!--<h4 class="bottom-20">-->
-                                    <!--<strong>Job Filters</strong>-->
-                                <!--</h4>-->
-                                <!--<form role="form">-->
-                                    <!--<div  class="panel panel-default">-->
-                                        <!--<div class="panel-heading">-->
-                                            <!--<h4 class="panel-title">-->
-                                                <!--<a data-toggle="collapse" data-parent="#accordion" href="#statusFilter">-->
-                                                    <!--<strong>Status</strong>-->
-                                                <!--</a>-->
-                                            <!--</h4>-->
-                                        <!--</div>-->
-                                        <!--<div id="statusFilter" class="panel-collapse collapse">-->
-                                            <!--<div data-bind="foreach: status" style="padding: 10px;">-->
-                                                <!--<button class="btn btn-xs" data-bind="text: displayName, css:{'btn-primary':isSelected(), 'btn-default': !isSelected()}, click: $parent.selectStatus"></button>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="panel-group bottom-20">-->
-                                        <!--&lt;!&ndash; ko foreach: lookFilters &ndash;&gt;-->
-                                        <!--&lt;!&ndash; ko template: { name: 'lookupFilterTemplate', data: {filterGroupId: 1, title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } &ndash;&gt;-->
-                                        <!--&lt;!&ndash; /ko &ndash;&gt;-->
-                                        <!--&lt;!&ndash; /ko &ndash;&gt;-->
-                                    <!--</div>-->
-                                    <!--<div class="panel panel-default">-->
-                                        <!--<div class="panel-heading">-->
-                                            <!--<h4 class="panel-title">-->
-                                                <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree1">-->
-                                                    <!--<strong>Tags</strong>-->
-                                                <!--</a>-->
-                                            <!--</h4>-->
-                                        <!--</div>-->
-                                        <!--<div id="collapseThree1" class="panel-collapse collapse">-->
-                                            <!--<div class="panel-body">-->
-                                                <!--<p>-->
-                                                    <!--&lt;!&ndash; ko foreach: tags &ndash;&gt;-->
-                                                    <!--<button type="button" class="btn btn-xs btn-primary">-->
-                                                        <!--<span data-bind="text: $data "></span>-->
-                                                        <!--<i class="fa fa-times" data-bind="click: $root.removeTag"></i>-->
-                                                    <!--</button>-->
-                                                    <!--&lt;!&ndash; /ko &ndash;&gt;-->
-                                                <!--</p>-->
-                                                <!--<div class="input-group">-->
-                                                    <!--<input id="tag-filter" type="text" class="form-control" placeholder="Enter tags here..." data-bind="value:tag, valueUpdate: 'afterkeydown'">-->
-                                                    <!--<span class="input-group-btn">-->
-                                                        <!--<button class="btn btn-primary" type="button" data-bind="click: addTag">Add</button>-->
-                                                    <!--</span>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</form>-->
-                            <!--</div>-->
-                            <!--&lt;!&ndash; /.box-2 &ndash;&gt;-->
-                            <!--<div class="box-2 hidden-lg hidden-md" style="margin-bottom: 0;padding:10px">-->
-                                <!--<a data-toggle="collapse" href="#filterBody">-->
-                                    <!--<h4>Filters</h4>-->
-                                <!--</a>-->
-                                <!--<div id="filterBody" class="panel-collapse collapse">-->
-                                    <!--<div class="panel-group bottom-20">-->
-                                        <!--&lt;!&ndash; ko foreach: lookFilters &ndash;&gt;-->
-                                        <!--&lt;!&ndash; ko template: { name: 'lookupFilterTemplate', data: {filterGroupId: 2, title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } &ndash;&gt;-->
-                                        <!--&lt;!&ndash; /ko &ndash;&gt;-->
-                                        <!--&lt;!&ndash; /ko &ndash;&gt;-->
-                                    <!--</div>-->
-                                    <!--<div class="panel panel-default">-->
-                                        <!--<div class="panel-heading">-->
-                                            <!--<h4 class="panel-title">-->
-                                                <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree1">-->
-                                                    <!--<strong>Tags</strong>-->
-                                                <!--</a>-->
-                                            <!--</h4>-->
-                                        <!--</div>-->
-                                        <!--<div id="collapseThree1" class="panel-collapse collapse">-->
-                                            <!--<div class="panel-body">-->
-                                                <!--<p>-->
-                                                    <!--&lt;!&ndash; ko foreach: tags &ndash;&gt;-->
-                                                    <!--<button type="button" class="btn btn-xs btn-primary">-->
-                                                        <!--<span data-bind="text: $data "></span>-->
-                                                        <!--<i class="fa fa-times" data-bind="click: $root.removeTag"></i>-->
-                                                    <!--</button>-->
-                                                    <!--&lt;!&ndash; /ko &ndash;&gt;-->
-                                                <!--</p>-->
-                                                <!--<div class="input-group">-->
-                                                    <!--<input type="text" class="form-control" placeholder="Enter tags here..." data-bind="value:tag">-->
-                                                    <!--<span class="input-group-btn">-->
-                                                        <!--<button class="btn btn-primary" type="button" data-bind="click: addTag">Add</button>-->
-                                                    <!--</span>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</sidebar>-->
-                    </div>
-                    <!-- /.col-lg-4 -->
-                    <div class="col-md-8 col-md-pull-4">
+                    <div class="col-md-7 col-lg-7">
                         <div class="actions-head">
                             <div class="row">
                                 <div class="col-sm-8 col-md-7 col-lg-6">
@@ -136,13 +36,59 @@
                                 </div><!-- /.col-lg-5 -->
                             </div><!-- /.row -->
                         </div>
-                        <!-- Entities list -->
-                        <div class="table-item">
-                                <!-- /.table-item -->
-                                <!--ko if: entities().length > 0-->
-                                    <!-- ko foreach: entities-->
-                                        <!--<div class="table-item magic">-->
-                                            <div class="row">
+                    </div>
+                    <div class="col-md-4 col-md-push-1 col-lg-push-1 col-lg-4">
+                        <div class="filter">
+                            <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+                                <strong>Filters</strong>
+                            </a>
+                            <div class="filter-list" id="filter-body">
+                                <div class="filter-item">
+                                    <!--<div class="item-title">-->
+                                        <!--<strong>Status</strong>-->
+                                    <!--</div>-->
+                                    <div class="item-body">
+                                        <!-- ko foreach: lookFilters -->
+                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {filterGroupId: 1, title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } -->
+                                        <!-- /ko -->
+                                        <!-- /ko -->
+                                        <!--<div data-bind="foreach: status" style="padding: 10px;">-->
+                                            <!--<button class="btn btn-xs" data-bind="text: displayName, css:{'btn-primary':isSelected(), 'btn-default': !isSelected()}, click: $parent.selectStatus"></button>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                                <div class="filter-item">
+                                    <div class="item-title">
+                                        <strong>Tags</strong>
+                                    </div>
+                                    <div class="item-body">
+                                        <div>
+                                            <p>
+                                                <!-- ko foreach: tags -->
+                                                <button type="button" class="btn btn-xs btn-primary">
+                                                    <span data-bind="text: $data "></span>
+                                                    <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+                                                </button>
+                                                <!-- /ko -->
+                                            </p>
+                                            <div class="input-group">
+                                                <input id="tag-filter" type="text" class="form-control" placeholder="Enter tags here..." data-bind="value:tag, valueUpdate: 'afterkeydown'">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary" type="button" data-bind="click: addTag">Add</button>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col-lg-4 -->
+                    <div class="col-md-8 col-lg-8">
+                        <!--ko if: entities().length > 0-->
+                            <!-- ko foreach: entities-->
+                                <div class="table-item">
+                                    <div class="row">
                                                 <div class="col-sm-6">
                                                     <div class="table-item-cell">
                                                         <div class="table-item-cell-container">
@@ -228,26 +174,23 @@
                                                 </div>
                                                 <!-- /.col-sm-3 -->
                                             </div>
-                                            <!-- /.row -->
-                                        <!--</div>-->
-                                    <!-- /.table-item -->
+                                </div>
+                            <!-- /ko -->
+                        <!-- /ko -->
+                        <!--ko ifnot: entities().length >0-->
+                            <div class="v-wrapper">
+                                <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                                    <i class="icon-briefcase text-large"></i>
+                                    <h1>You currently have no Jobs</h1>
+                                    <!--ko foreach: jobTypes-->
+                                        <a href="#" data-bind="attr: { href: '/jobAdd/'+name }, text: 'New ' + name + ' Job'"></a>
+                                        <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
                                     <!-- /ko -->
-                                <!-- /ko -->
-                                <!--&lt;!&ndash;ko ifnot: entities().length >0&ndash;&gt;-->
-                                    <!--<div class="v-wrapper">-->
-                                        <!--<div class="v-wrapper-cell text-center text-muted" style="height: 678px;">-->
-                                            <!--<i class="icon-briefcase text-large"></i>-->
-                                            <!--<h1>You currently have no Jobs</h1>-->
-                                            <!--&lt;!&ndash;ko foreach: jobTypes&ndash;&gt;-->
-                                                <!--<a href="#" data-bind="attr: { href: '/jobAdd/'+name }, text: 'New ' + name + ' Job'"></a>-->
-                                                <!--<span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>-->
-                                            <!--&lt;!&ndash; /ko &ndash;&gt;-->
-                                        <!--</div>&lt;!&ndash; /.v-wrapper-cell &ndash;&gt;-->
-                                    <!--</div>-->
-                                <!--&lt;!&ndash; /ko &ndash;&gt;-->
-                                <!--infinite scroll-->
-                                <div data-bind="onScrollBottom: showMore"></div>
+                                </div><!-- /.v-wrapper-cell -->
                             </div>
+                        <!-- /ko -->
+                        <!--infinite scroll-->
+                        <div data-bind="onScrollBottom: showMore"></div>
                     </div>
                     <!--/ko-->
                 </div>

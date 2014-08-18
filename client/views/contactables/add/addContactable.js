@@ -86,8 +86,10 @@ Template.addContactablePage.events({
                 console.dir(err)
             }else{
                 GAnalytics.event("/contactableAdd", Session.get('objType'));
-                history.back();
-            }
+                Router.go('/contactable/' + result);
+            };
+
+
         });
     },
     'click .goBack': function(){

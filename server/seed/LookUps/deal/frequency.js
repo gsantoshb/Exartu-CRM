@@ -1,20 +1,20 @@
 _.forEach([
   {
-    displayName: 'One-Time', recurring: false,isDefault: true
+    displayName: 'One-Time', lookUpActions:[''],isDefault: true
   },
   {
-    displayName: 'Weekly', recurring: true
+    displayName: 'Weekly', lookUpActions:['recurring']
   },
   {
-    displayName: 'Monthly', recurring: true
+    displayName: 'Monthly', lookUpActions:['recurring']
   },
 
   {
-            displayName: 'Quarterly', recurring: true
+    displayName: 'Quarterly', lookUpActions:['recurring']
    },
 
   {
-    displayName: 'Yearly', recurring: true
+    displayName: 'Yearly', lookUpActions:['recurring']
   }
 ],
   function (item) {

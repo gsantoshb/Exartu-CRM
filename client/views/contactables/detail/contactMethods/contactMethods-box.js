@@ -64,6 +64,18 @@ Template.contactableContactMethodsBox.selectedType = function() {
   dep.depend();
   return selectedType? selectedType.displayName: 'Select';
 };
+Template.contactableContactMethodsBox.typePrefix= function() {
+  switch(this.typeCode) {
+    case Enums.contactMethodTypes.phone:
+      return 'callto:';
+
+    case Enums.contactMethodTypes.email:
+      return 'mailto:';
+
+    case Enums.contactMethodTypes.other:
+      return '';
+  }
+};
 
 Template.contactableContactMethodsBox.contactMethods = function() {
   var result = [];
@@ -81,8 +93,9 @@ Template.contactableContactMethodsBox.contactMethods = function() {
 
 Template.contactableContactMethodsBox.events = {
   'click #add-contact-method': function() {
-    var newContactMethodValue = $('#new-contact-method-value');
-    if (_.isEmpty(newContactMethodValue) || _.isEmpty(selectedType))
+    var newContactMethodValue = $('#new-contact-method-value')
+    $('#new-contact-method-value').val=null;
+    if (_.isEmpty(newContactMethodValue.val()) || _.isEmpty(selectedType))
       return;
 
     if ( selectedType.type == Enums.contactMethodTypes.email && !helper.emailRE.test(newContactMethodValue.val())) {

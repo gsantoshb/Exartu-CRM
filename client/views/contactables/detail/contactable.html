@@ -1,13 +1,10 @@
 <template name="contactable">
     <div class="contactable-page-details">
-        <div id="content">{{displayObjType}}
+        <div id="content">
+            {{displayObjType}}
             {{#with contactable}}
-                <div id="breadcrumb" class="breadcrumb-top">
-                    <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-                    <a href="#" class="current">{{displayObjType}}</a>
-                </div>
-                <div id="content-header" class="content-header-bottom">
-                    <div class="profile-content-header">
+                <div id="content-header" class="mini">
+                    <div class="profile-content-header" style="padding: 15px 20px;">
                         {{#if pictureFileId}}
                             <div class="profile-pic">
                                 <div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">
@@ -50,8 +47,12 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- /.content-header -->
+
+                <div id="breadcrumb" style="margin-bottom: 0px;">
+                    <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+                    <a href="/contactables" class="current">{{displayObjType}}</a>
+                </div>
                 <div class="container-fluid contactable-content">
                     <div class="row">
                         <!-- Left Column -->
@@ -88,6 +89,7 @@
                                     <!-- Assignments -->
                                     {{>contactableAssignmentsBox}}
 
+                                    {{>taskBox}}
 
                                     <!--Customer-->
                                     {{#if Contact}}

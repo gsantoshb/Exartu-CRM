@@ -15,7 +15,8 @@
                     </div>
                 </div>
                 <div class="box-content-collapsible" id="customer-body">
-                    <a data-bind="attr:{href:'/contactable/'+ $parent._id()}">
+                    <a href="/contactable/{{_id}}">
+                        <h5 class="visible-sm visible-xs" style="text-align: center">{{displayName}}</h5>
                         <p class="text-center">
                             <img style="max-heigth:40px; max-width:40px;" src="{{pictureUrl}}">
                         </p>

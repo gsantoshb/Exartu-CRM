@@ -36,9 +36,19 @@ Template.notes.notes = function() {
     });
     searchQuery.$or =  searchStringQuery;
   }
-
-  return Notes.find(searchQuery);
+    console.log('notes search');
+  return Notes.find(searchQuery,
+      {
+          sort:
+            {
+              dateCreated: -1
+            }
+      });
 };
+
+Template.notes.getCount = function(notes) {
+  return notes.count();
+}
 
 Template.notes.getEntity = function(link){
   return Utils.getEntityFromLink(link);

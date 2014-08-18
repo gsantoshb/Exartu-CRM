@@ -83,7 +83,7 @@ ContactableController = RouteController.extend({
 
 Template.contactable.rendered = function () {
   $('body').scrollTop(0)
-  this.$('#content').css('background-color', 'transparent');
+//  this.$('#content').css('background-color', 'transparent');
   var asd = function () {
     var hash = Router.current().params.hash || 'home';
     $('.nav-pills>.active').removeClass('active');
