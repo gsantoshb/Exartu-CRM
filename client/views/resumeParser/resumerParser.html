@@ -1,64 +1,70 @@
 <template name="resumeParser">
-    <div id="content">
-
+    <div id="content" class="lookUps">
         <div id="content-header" class="mini">
             <h1>Resume parser</h1>
         </div>
-        <div id="breadcrumb" class="breadcrumb-top">
+        <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">Home</a>
             <a href="/resumeparser" class="current">Resume parser</a>
         </div>
 
-        {{>resumeAdd}}
-
-        <div style="margin-left: 10px">
-            {{>resumesList}}
+        <div id="resume-parser" class="container-fluid"> 
+            <div class="panel panel-default"> 
+                <div class="panel-heading">
+                    {{>resumeAdd}}
+                </div>
+                <div class="panel-body no-marging">
+                    {{>resumesList}}
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <template name="resumeAdd">
     <div class="tab-pane" id="document">
-        <div class="box-5">
-            {{#if addForm }}
-                {{>addDocumentForm}}
-            {{else}}
-                {{#dragAndDrop onDrop=uploadFile}}
-                    <h3 class="lead">Drop resumes here</h3>
-                    <p>or</p>
-                    <br>
-                    <span class="btn btn-default add-trigger"> Upload file </span>
-                    <input style="visibility: hidden" id="add-file" type="file">
-                {{/dragAndDrop}}
-            {{/if}}
-        </div><!-- /.box-5 -->
+        {{#if addForm }}
+            {{>addDocumentForm}}
+        {{else}}
+            {{#dragAndDrop onDrop=uploadFile}}
+                <h3 class="lead">Drop resumes here</h3>
+                <p>or</p>
+                <br>
+                <span class="btn btn-default add-trigger"> Upload file </span>
+                <input style="visibility: hidden" id="add-file" type="file">
+            {{/dragAndDrop}}
+        {{/if}}
     </div><!-- /#document -->
 </template>
 
 <template name="resumesList">
-    <strong> Uploading </strong>
-    <ul class="list-3 stripped has-thumb">
-        {{#each resumesUploading}}
-            <li class="list-3-item">
-                <div class="list-thumb"><i class="icon-file-upload"></i></div>
-                <div class="list-3-content list-magic">
-                    <div class="list-3-content-wrap">
-                        <div class="list-3-actions">
-                            <span class="bullet-spacer">·</span>
-                            <a class="cancel" href="#"><i class="fa fa-trash-o"></i> Cancel</a>
+    {{#with resumesUploading}}
+        {{#if count}}
+            <strong> Uploading </strong>
+            <ul class="list-3 stripped has-thumb">
+                {{#each .}}
+                    <li class="list-3-item">
+                        <div class="list-thumb"><i class="icon-file-upload"></i></div>
+                        <div class="list-3-content list-magic">
+                            <div class="list-3-content-wrap">
+                                <div class="list-3-actions">
+                                    <span class="bullet-spacer">·</span>
+                                    <a class="cancel" href="#"><i class="fa fa-trash-o"></i> Cancel</a>
+                                </div>
+                                <div class="list-3-item-meta-top">{{this.type}}</div>
+                                <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
+                                {{#unless this.isUploaded}}
+                                    {{> fileProgress .}}
+                                {{/unless}}
+                            </div><!-- /.list-3-content-wrap -->
                         </div>
-                        <div class="list-3-item-meta-top">{{this.type}}</div>
-                        <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
-                        {{#unless this.isUploaded}}
-                            {{> fileProgress .}}
-                        {{/unless}}
-                    </div><!-- /.list-3-content-wrap -->
-                </div>
-            </li>
-        {{/each}}
-    </ul>
-    <hr/>
-    <strong> Pending </strong>
+                    </li>
+                {{/each}}
+            </ul>
+            <hr/>
+        {{/if}}
+    {{/with}}
+    <strong> Uploaded </strong>
     <ul class="list-3 stripped has-thumb">
         {{#each resumes}}
             <li class="list-3-item">
@@ -66,12 +72,9 @@
                 <div class="list-3-content list-magic">
                     <div class="list-3-content-wrap">
                         <div id="pending" class="list-3-actions">
-                            <a class="parser"><i class="fa fa-cloud-upload"></i> Parse </a>
+                            <a class="parser pointer"><i class="fa fa-cloud-upload"></i> Parse </a>
                             <span class="bullet-spacer">·</span>
                             <a class="delete" href="#"><i class="fa fa-trash-o"></i> Delete</a>
-                        </div>
-                        <div id="parsing" class="list-3-actions" style="display: none; margin-right: 45px; margin-top: 10px;">
-                            {{>spinner}}
                         </div>
                         <div class="list-3-item-meta-top">{{this.type}}</div>
                         <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
@@ -84,37 +87,45 @@
                     <i class="icon-document-1"></i>
                     <p>No resumes pending<br>
                     </p>
-                    <a class="add-resume-trigger"> upload a resume </a>
+                    <a class="add-resume-trigger"> Upload a resume </a>
                 </div><!-- /.box-v-msg-content -->
             </div>
         {{/each}}
     </ul>
-    <hr/>
-    <strong> Completed </strong>
     <ul class="list-3 stripped has-thumb">
-        {{#each resumesCompleted}}
-            <li class="list-3-item">
-                <div class="list-thumb"><i class="icon-file-upload"></i></div>
-                <div class="list-3-content list-magic">
-                    <div class="list-3-content-wrap">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4">
-                                <div class="list-3-item-meta-top">{{this.type}}</div>
-                                <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
-                            </div>
-                            <div class="col-lg-1 col-md-1" style="margin-right: -40px; float: left; margin-right: 10px; width: 35px; color: #333; padding-top: 10px;">
-                                <i class="icon-profile-man" style="font-size: 25px"></i>
-                            </div>
-                            <div class="col-lg-7 col-md-6">
-                                {{#with completedInfo}}
-                                    <div class="list-3-item-meta-top">Created at {{#formatted_date value=dateCreated}}{{date}}{{/formatted_date}}</div>
-                                    <h4 class="list-3-item-title"><a href="/contactable/{{_id}}">{{displayName}}</a></h4>
-                                {{/with}}
-                            </div>
+        {{#with resumesCompleted}}
+            {{#if count}}
+                <hr/>
+                <strong> Completed </strong>
+                {{#each . }}
+                    <li class="list-3-item">
+                        <div class="list-thumb"><i class="icon-file-upload"></i></div>
+                        <div class="list-3-content list-magic">
+                            <div class="list-3-content-wrap">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="list-3-item-meta-top">{{this.type}}</div>
+                                        <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
+                                    </div>
+                                    <div class="col-lg-1 col-md-1" style="margin-right: -40px; float: left; margin-right: 10px; width: 35px; color: #333; padding-top: 10px;">
+                                        <i class="icon-profile-man" style="font-size: 25px"></i>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6">
+                                        {{#with completedInfo}}
+                                            <div class="list-3-item-meta-top">Created at {{#formatted_date value=dateCreated}}{{date}}{{/formatted_date}}</div>
+                                            <h4 class="list-3-item-title"><a href="/contactable/{{_id}}">{{displayName}}</a></h4>
+                                        {{/with}}
+                                    </div>
+                                </div>
+                            </div><!-- /.list-3-content-wrap -->
                         </div>
-                    </div><!-- /.list-3-content-wrap -->
-                </div>
-            </li>
-        {{/each}}
+                    </li>
+                {{/each}}
+            {{/if}}
+        {{/with}}
     </ul>
+
+    <div id="parsing" class="list-3-actions" style="display: none; margin-right: 45px; margin-top: 10px;">
+        {{>spinner}}
+    </div>
 </template>

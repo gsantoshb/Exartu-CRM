@@ -104,15 +104,17 @@ Template.assignmentAdd.events({
       return;
     }
 
+    //Update candidates for this job
     var newCandidate = Candidates.findOne({ job: assignment.job, employee: assignment.employee });
-    if (newCandidate!=null)
-    {
-      var currentCandidate = Candidates.findOne({ job: assignment.job, assigned: true });
-      if (currentCandidate && currentCandidate._id != newCandidate._id) {
-        Candidates.update({ _id: currentCandidate._id }, { $unset: { assigned: "" }});
-      }
+    if (newCandidate) {
       Candidates.update({ _id: newCandidate._id }, { $set: { assigned: true }});
     }
+
+    var currentCandidate = Candidates.findOne({ job: assignment.job, assigned: true });
+    if (currentCandidate && currentCandidate._id != newCandidate._id) {
+      Candidates.update({ _id: currentCandidate._id }, { $unset: { assigned: "" }});
+    }
+
     if (assignment._id) {
       Assignments.update({_id: assignment._id}, {
         $set: {

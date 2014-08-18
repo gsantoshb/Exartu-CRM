@@ -4,10 +4,14 @@
             {{#with originalJob}}
                 <div id="content-header" class="mini">
                     <h1 class="profile-name">{{displayName}}
-                    <a class="pull-right" href="/contactable/{{customer}}">
-                        <i class="icon-buildings-1"></i>
-                        {{customerName}}
-                    </a>
+                        <small> at 
+                            <a  href="/contactable/{{customer}}">
+                                <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
+                                    {{customerName}}
+                                    <i class="fa fa-external-link" style="font-size: 14px"></i>
+                                </strong>
+                            </a>
+                        </small>
                     </h1>
                 </div>
                 <div id="breadcrumb" class="breadcrumb-top">
