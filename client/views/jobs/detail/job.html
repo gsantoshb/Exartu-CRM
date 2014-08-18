@@ -39,7 +39,9 @@
 
                                     {{>taskBox}}
                                     <!-- Tags -->
-                                    {{>tagsBox . mytype='xxx'}}
+                                    {{#with originalJob}}
+                                    {{>tagsBox  }}
+                                    {{/with}}
                                 </div>
                             </div>
                         </div>

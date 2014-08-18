@@ -6,7 +6,9 @@ Template.tagsBox.created=function(){
 }
 Template.tagsBox.tags = function() {
   var coll=Utils.getCollectionFromEntity(this);
+  if (!_.isArray(this.tags)) this.tags=[];
   objdef = new Utils.ObjectDefinition({
+
     reactiveProps: {
       tags: {
         type: Utils.ReactivePropertyTypes.array,
