@@ -20,8 +20,8 @@
             {{#with job}}
                 <div class="container-fluid contactable-content job-details">
                     <div class="row">
-                        <!-- Left Column -->
-                        <div class="col-sm-6 col-lg-8 margin-top-15 has-tabs">
+                            <div class="col-sm-8 col-lg-5 contactable-left-col">
+                            {{>job_tabs job=. documentCount=documentCount jobCount=jobCount noteCount=noteCount}}
                             {{> jobDetail}}
 
                             {{> jobDescription}}
@@ -50,20 +50,6 @@
                         <!-- Right Column -->
                         <div class="col-sm-6 col-lg-4 margin-top-15">
                             {{>candidates job=_id}}
-                            <div class="box">
-                                <div class="box-header-2">
-                                    <div class="box-title">
-                                        Notes
-                                    </div>
-                                </div>
-                                <div class="box-body">
-                                    {{> contactableNotesAdd entity=job type=getType}}
-
-                                    <div class="mobil-no-scroll">
-                                        {{> contactableNotesList entity=job}}
-                                    </div>
-                                </div>
-                            </div>
                             <!--{{>job_tabs originalJob=. documentCount=documentCount noteCount=noteCount  }}-->
                         </div>
 
@@ -90,8 +76,10 @@
     <div class="tab-content">
         <!-- Notes Tab -->
         <div class="tab-pane active" id="profile-notes">
+            {{#with originalJob}}
             {{> contactableNotesAdd entity=job type=getType}}
             {{> contactableNotesList entity=job}}
+            {{/with}}
         </div>
 
         <div class="tab-pane " id="profile-candidates">
