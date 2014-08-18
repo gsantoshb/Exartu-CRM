@@ -122,7 +122,11 @@ Meteor.startup(function () {
                     body += chunk;
                   })
                     .on('end', Meteor.bindEnvironment(function () {
-                      var json = JSON.parse(body);
+                      try{
+                        var json = JSON.parse(body);
+                      }catch (e){
+                        cb(new Meteor.Error(500, "Error parsing resume"), null);
+                      }
                       //console.log(json);
                       xml2js.parseString(json, Meteor.bindEnvironment(function (err, result) {
                         if (err || !result || !result.StructuredXMLResume) {

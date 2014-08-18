@@ -98,21 +98,30 @@ Template.resumesList.completedInfo = function() {
   return Contactables.findOne({_id: this.metadata.employeeId});
 };
 
+var startParsing = function() {
+  $('#parsing')[0].style.display = 'block';
+  $('#resume-parser')[0].style['pointer-events'] = 'none';
+  $('#resume-parser')[0].style.opacity = '0.5';
+};
+
+var endParsing = function() {
+  $('#parsing')[0].style.display = 'none';
+  $('#resume-parser')[0].style['pointer-events'] = 'auto';
+  $('#resume-parser')[0].style.opacity = '1';
+};
+
 Template.resumesList.events = {
   'click .delete': function(e) {
     var file = this;
     ResumesFS.remove({_id: file._id});
   },
   'click .parser': function(e) {
-    e.currentTarget.parentNode.style.display = 'none';
-    e.currentTarget.parentNode.nextElementSibling.style.display = '';
+    startParsing();
     Meteor.call('createEmployeeFromResume', this._id, function(err, result) {
-      if (err)
+      if (err) {
         console.log(err.reason);
-      else {
-        e.currentTarget.parentNode.style.display = 'none';
-        e.currentTarget.parentNode.nextElementSibling.style.display = 'none';
       }
+      endParsing();
     });
   },
   'click .resume': function(e) {

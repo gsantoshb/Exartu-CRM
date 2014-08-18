@@ -82,12 +82,12 @@ Jobs.after.insert(function (userId, doc) {
 		_id: doc.customer
 	});
 	if (customer)
-		if (customer.person) {
-			customerName = customer.person.lastName + ', ' + customer.person.firstName + ' ' + customer.person.middleName;
-
-		} else {
-			customerName = customer.displayName = customer.organization.organizationName;
-		}
+//		if (customer.person) {
+//			customerName = customer.person.lastName + ', ' + customer.person.firstName + ' ' + customer.person.middleName;
+//
+//		} else {
+//			customerName = customer.displayName = customer.organization.organizationName;
+//		}
 
 	Activities.insert({
 		userId: userId,
@@ -96,8 +96,7 @@ Jobs.after.insert(function (userId, doc) {
 		entityId: doc._id,
 		data: {
 			publicJobTitle: doc.publicJobTitle,
-			customerName: customerName,
-			customer: customer,
+			customerId: doc.customer,
       dateCreated : doc.dateCreated
 		}
 	});
