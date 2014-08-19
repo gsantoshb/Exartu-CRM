@@ -24,45 +24,30 @@
             {{#with job}}
                 <div class="container-fluid contactable-content job-details">
                     <div class="row">
-                            <div class="col-sm-8 col-lg-5 contactable-left-col">
-                            {{>job_tabs job=. documentCount=documentCount jobCount=jobCount noteCount=noteCount}}
-                            {{> jobDetail}}
 
-                            {{> jobDescription}}
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <!-- /.box -->
-                                    {{>assignment}}
-
-                                    {{>jobRates}}
-                                </div>
-                                <div class="col-lg-6">
-                                    {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
-                                    {{>jobActivity}}
-
-                                    {{>taskBox}}
-                                    <!-- Tags -->
-                                    {{#with originalJob}}
-                                    {{>tagsBox  }}
-                                    {{/with}}
-                                </div>
-                            </div>
+                        <div class="col-sm-7 col-lg-9 margin-top-15 contactable-left-col">
+                        {{>job_tabs job=. documentCount=documentCount jobCount=jobCount noteCount=noteCount}}
                         </div>
+
                         <!-- /.col-lg-->
 
                         <!-- Right Column -->
-                        <div class="col-sm-6 col-lg-4 margin-top-15">
-                            {{>candidates job=_id}}
-                            <!--{{>job_tabs originalJob=. documentCount=documentCount noteCount=noteCount  }}-->
-                        </div>
+                        <div class="col-sm-4 col-lg-3 margin-top-15 has-tabs">
+                            <div >
+                                <!-- /.box -->
+                                {{>jobRates}}
+                                <!-- Tags -->
+                                {{#with originalJob}}
+                                {{>tagsBox  }}
+                                {{/with}}
+                                {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
 
-                        <div class="col-md-4 col-lg-4">
+
+                            </div>
 
                         </div>
-                        <!-- /.col-lg-4-->
-                    </div>
                     <!-- /.container-fluid -->
+                     </div>
                 </div>
             {{/with}}
         </div>
@@ -71,26 +56,27 @@
 </template>
 
 <template name="job_tabs">
+    {{#with job}}
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
-        <li ><a href="#profile-candidates" data-toggle="tab">Candidates <span class="custom-badge-2">0</span></a></li>
-
+        <li class="active"><a href="#profile-description" data-toggle="tab">Description</a></li>
+        <li ><a href="#profile-detail" data-toggle="tab">Detail</a></li>
+        <!--<li ><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>-->
+        <li ><a href="#profile-candidates" data-toggle="tab">Candidates</a></li>
+        <li ><a href="#profile-assignments" data-toggle="tab">Assignments</a></li>
+        <li ><a href="#profile-activity" data-toggle="tab">Job Activity</a></li>
+        <li ><a href="#profile-tasks" data-toggle="tab">Tasks</a></li>
     </ul>
 
     <div class="tab-content">
-        <!-- Notes Tab -->
-        <div class="tab-pane active" id="profile-notes">
-            {{#with originalJob}}
-            {{> contactableNotesAdd entity=job type=getType}}
-            {{> contactableNotesList entity=job}}
-            {{/with}}
-        </div>
+        <div class="tab-pane " id="profile-candidates">{{>candidates type='job' id=_id}}</div>
+        <div class="tab-pane " id="profile-assignments">{{>assignment type='job' id=_id}}</div>
+        <div class="tab-pane " id="profile-activity">{{>jobActivity}}</div>
+        <div class="tab-pane " id="profile-detail">{{> jobDetail}}</div>
+        <div class="tab-pane active" id="profile-description">{{> jobDescription}}</div>
+        <div class="tab-pane" id="profile-tasks">{{> taskBox}}</div>
 
-        <div class="tab-pane " id="profile-candidates">
-            {{>candidates job=originalJob._id}}
-        </div>
     </div>
-
+  {{/with}}
 </template>
 
 

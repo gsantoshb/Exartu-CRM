@@ -1,17 +1,19 @@
 Template.candidates.helpers({
-  candidates:function(type,id){
-    switch (type) {
+
+  candidates:function(){
+
+    switch (this.type) {
         case 'all':
         {
             return Candidates.find();
         }
         case 'employee':
         {
-            return Candidates.find({employee:id});
+            return Candidates.find({employee:this.id});
         }
         case 'job':
         {
-            return Candidates.find({job:id});
+            return Candidates.find({job:this.id});
         }
     }
   },
