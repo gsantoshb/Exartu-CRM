@@ -14,10 +14,10 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-7 col-lg-7">
+                    <div class="col-md-7 col-lg-8">
                         <div class="actions-head">
                             <div class="row">
-                                <div class="col-sm-8 col-md-7 col-lg-6">
+                                <div class="col-sm-8 col-md-7 col-lg-9">
                                     <!-- Single button -->
                                     <div class="btn-group pull-left suffix-5">
                                         <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" title="Add">
@@ -37,10 +37,10 @@
                             </div><!-- /.row -->
                         </div>
                     </div>
-                    <div class="col-md-4 col-md-push-1 col-lg-push-1 col-lg-4">
+                    <div class="col-md-4 col-md-push-1 col-lg-push-1 col-lg-3">
                         <div class="filter">
                             <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-                                <strong>Filters</strong>
+                                <strong>Filter</strong>
                             </a>
                             <div class="filter-list" id="filter-body">
                                 <div class="filter-item">
@@ -58,9 +58,6 @@
                                     </div>
                                 </div>
                                 <div class="filter-item">
-                                    <div class="item-title">
-                                        <strong>Tags</strong>
-                                    </div>
                                     <div class="item-body">
                                         <div>
                                             <p>
@@ -72,7 +69,7 @@
                                                 <!-- /ko -->
                                             </p>
                                             <div class="input-group">
-                                                <input id="tag-filter" type="text" class="form-control" placeholder="Enter tags here..." data-bind="value:tag, valueUpdate: 'afterkeydown'">
+                                                <input id="tag-filter" type="text" class="form-control" placeholder="Search tags..." data-bind="value:tag, valueUpdate: 'afterkeydown'">
                                                     <span class="input-group-btn">
                                                         <button class="btn btn-primary" type="button" data-bind="click: addTag">Add</button>
                                                     </span>
@@ -84,7 +81,7 @@
                         </div>
                     </div>
                     <!-- /.col-lg-4 -->
-                    <div class="col-md-8 col-lg-8">
+                    <div class="col-md-8 col-lg-9">
                         <!--ko if: entities().length > 0-->
                             <!-- ko foreach: entities-->
                                 <div class="table-item">
@@ -145,8 +142,8 @@
                                                                         <br>
                                                                         <a data-bind="attr: {href: '/contactable/' + _id}">
                                                                             <strong>
-                                                                                <span data-bind="text: displayName"></span>
-                                                                            </strong> Is assigned
+                                                                                -><span data-bind="text: displayName"></span>
+                                                                            </strong>
                                                                         </a>
                                                                     <!-- /ko -->
                                                                 <!-- /ko -->
