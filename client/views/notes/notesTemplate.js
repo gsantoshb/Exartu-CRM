@@ -1,4 +1,7 @@
-
+var entityId=null;
+Template.notesTemplate.created=function(id){
+  if (this.data) entityId=this.data._id;
+}
 
 var searchString, searchDep = new Deps.Dependency;
 Template.notesTemplate.notes = function() {
@@ -19,7 +22,11 @@ Template.notesTemplate.notes = function() {
     });
     searchQuery.$or =  searchStringQuery;
   }
-    console.log('notes search');
+  console.log('entityid',entityId)
+  if (entityId!= null)
+  {
+    searchQuery.links= { $elemMatch: { id: entityId} } ;
+  }
   return Notes.find(searchQuery,
       {
           sort:
@@ -45,5 +52,12 @@ Template.notesTemplate.events = {
   'change #search-string': function(e) {
     searchString = e.currentTarget.value;
     searchDep.changed();
+  },
+
+  'click .addNote': function(){
+    Composer.showModal('addEditNote', { links: [{
+      id: entityId
+    }] })
   }
 };
+
