@@ -140,10 +140,18 @@ Router.map(function () {
     path: '/assignments',
     controller: 'AssignmentsController',
   });
+  this.route('assignment', {
+    path: '/assignment/:_id',
+    controller: 'AssignmentController'
+  });
 
    this.route('candidates', {
     path: '/candidates',
     controller: 'CandidatesController',
+  });
+  this.route('candidate', {
+    path: '/candidate/:_id',
+    controller: 'CandidatesController'
   });
 
   this.route('lookupManagement', {

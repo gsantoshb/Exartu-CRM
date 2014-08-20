@@ -69,7 +69,6 @@ Template.notesTemplate.events = {
         }
       ] })
     }
-    searchDep.changed();
   }
 };
 

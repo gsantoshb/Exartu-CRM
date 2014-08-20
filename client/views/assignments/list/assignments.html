@@ -40,10 +40,9 @@
                                         <div class="table-item-cell">
                                             <div class="table-item-cell-container">
                                                 <div class="table-item-title">
-                                                    {{#with job}}
                                                         <i class="icon icon-briefcase"> </i>
-                                                        <a href="/job/{{_id}}"> {{displayName}} </a>
-                                                    {{/with}}
+                                                        <a href="/assignment/{{_id}}"> {{job.displayName}} </a>
+
                                                     <i class="fa fa-arrows-h fa-x3"> </i>
                                                     {{#with employee}}
                                                         <i class="icon icon-profile-man"> </i>
