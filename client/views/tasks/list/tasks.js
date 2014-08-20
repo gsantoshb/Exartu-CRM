@@ -125,7 +125,6 @@ Template.tasks.helpers({
         $options: 'i'
       };
     }
-    console.log(q)
     return Tasks.find(q);
   },
   filters: function(){

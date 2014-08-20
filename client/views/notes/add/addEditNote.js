@@ -79,7 +79,6 @@ Template.addEditNote.helpers({
   },
   linkedEntities: function(){
     linkedDep.depend();
-    console.log('note',note);
     return note.links;
   },
   getEntity: Utils.getEntityFromLink

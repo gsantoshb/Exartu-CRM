@@ -84,7 +84,6 @@ Template.addEditTask.helpers({
   },
   linkedEntities: function(){
     linkedDep.depend();
-    console.log('task',task);
     return task.links;
   },
   getEntity: Utils.getEntityFromLink

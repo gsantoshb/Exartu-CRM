@@ -56,7 +56,6 @@ Template.notesTemplate.events = {
   },
 
   'click .addNote': function(){
-    console.log('entityid note',entityId,entityType);
     if (entityId ==null) {
       Composer.showModal('addEditNote', { links: [
       ] })
