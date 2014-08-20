@@ -125,32 +125,50 @@ Template.contactablesListSearch.resumeParserRestrictions = function() {
   return [SubscriptionPlan.plansEnum.enterprise];
 };
 
+var searchDep = new Deps.Dependency;
+var isSearching = false;
+Template.contactables.isSearching = function() {
+  searchDep.depend();
+  return isSearching;
+}
+
+// Elasticsearch
+var esDep = new Deps.Dependency;
+var esResult = [];
+
+Meteor.autorun(function() {
+  if (_.isEmpty(query.searchString.value))
+    return;
+
+  query.searchString.dep.depend();
+  isSearching = true;
+  searchDep.changed();
+  Contactables.esSearch('.*' + query.searchString.value + '.*', function(err, result) {
+    if (!err) {
+      esResult = _.map(result.hits, function(hit) {
+        return Contactables._transform(hit._source);
+      });
+      esDep.changed();
+      isSearching = false;
+      searchDep.changed();
+    } else
+      console.log(err)
+  });
+});
+
 Template.contactablesList.contactables = function() {
   var searchQuery = {};
 
+  // Dependencies
+  esDep.depend();
+
+  // Elasitsearch
+  if (!_.isEmpty(query.searchString.value)) { 
+    return esResult;
+  }
+
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
-
-  if (!_.isEmpty(query.searchString.value)) {
-    var searchStringQuery = [];
-    _.each([
-      // organization
-      'organization.organizationName', 'organization.department',
-      // person
-      'person.firstName', 'person.lastName', 'person.jobTitle',
-      // contactable
-      'tags', 'searchKey'
-    ], function (field) {
-      var aux = {};
-      aux[field] = {
-          $regex: query.searchString.value,
-          $options: 'i'
-      };
-      searchStringQuery.push(aux);
-    });
-    searchQuery.$or =  searchStringQuery;
-    GAnalytics.event("/contactables", "Search by string");
-  }
 
   if (query.onlyRecents.value) {
     var dateLimit = new Date();

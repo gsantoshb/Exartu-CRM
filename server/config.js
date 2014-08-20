@@ -1,12 +1,19 @@
 ExartuConfig = {
-    // Insert mail server address
+    // Mail server
     MAIL_URL: undefined,
+    // Root
     SystemHierarchyId: "sys",
-    // Insert your google information
+    systemUserEmail: undefined,
+    systemUserPassword: undefined,
+    // Google
     GoogleConfig_clientId: undefined,
     GoogleConfig_clientSecret: undefined,
-    systemUserEmail: 'exartu.developer@gmail.com',
-    systemUserPassword: 'exartuasd',
+    // Strip
     stripePublishableKey: undefined,
-    stripeSecretKey: undefined
+    stripeSecretKey: undefined,
+    // Elasticsearch
+    ES_HOST: undefined,
+    ES_PROTOCOL: undefined,
+    ES_PORT: undefined,
+    ES_AUTH: undefined,
 }

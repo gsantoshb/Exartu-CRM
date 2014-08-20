@@ -4,3 +4,9 @@
 [submodule "packages/dType"]
 	path = packages/dType
 	url = https://github.com/Exartu/Exartu-DType.git
+[submodule "Exartu-Elasticsearch"]
+	path = Exartu-Elasticsearch
+	url = git@github.com:Exartu/Exartu-Elasticsearch.git
+[submodule "packages/es"]
+	path = packages/es
+	url = git@github.com:Exartu/Exartu-Elasticsearch.git
