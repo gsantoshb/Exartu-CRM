@@ -60,10 +60,11 @@ Meteor.startup(function () {
   Kadira.connect(appId, secret);
 
   // Elasticsearch
-  ES.connect({ 
-    host: ExartuConfig.ES_HOST,
-    protocol: ExartuConfig.ES_PROTOCOL,
-    port: ExartuConfig.ES_PORT,
-    auth: ExartuConfig.ES_AUTH
-  });
+  if (ExartuConfig.ES_HOST && ExartuConfig.ES_AUTH)
+    ES.connect({ 
+      host: ExartuConfig.ES_HOST,
+      protocol: ExartuConfig.ES_PROTOCOL,
+      port: ExartuConfig.ES_PORT,
+      auth: ExartuConfig.ES_AUTH
+    });
 });
