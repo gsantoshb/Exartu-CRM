@@ -45,26 +45,22 @@
                 <div class="col-md-4 col-md-push-1 col-lg-push-1 col-lg-4">
                     <div class="filter">
                         <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-                            <strong>Filters</strong>
+                            <strong>Filter</strong>
                         </a>
                         <div class="filter-list" id="filter-body">
                             <div class="filter-item">
-                                <div class="item-title">
-                                    <strong>Status</strong>
-                                </div>
                                 <div class="item-body">
                                     <div data-bind="foreach: states">
                                         {{#each states}}
                                             <button type="button" class="btn btn-xs selectState {{selectedClass}}">{{name}}</button>
                                         {{/each}}
                                     </div>
-                                    <button type="button" class="btn btn-link clearState">clear</button>
                                 </div>
                             </div>
                             <div class="filter-item">
-                                    <div class="item-title">
-                                        <strong>All Owners</strong>
-                                    </div>
+                                    <!--<div class="item-title">-->
+                                        <!--<strong>All Owners</strong>-->
+                                    <!--</div>-->
                                     <div class="item-body">
                                         <div class="checkbox">
                                             <label>

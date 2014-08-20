@@ -10,10 +10,10 @@
                     <div>
                         {{#with task}}
                             <fieldset>
-                                <div class="form-group {{hasError 'note'}}">
+                                <div class="form-group {{hasError 'msg'}}">
                                     <label class="control-label">Note:</label>
-                                    <input class="form-control note" value="{{note}}"/>
-                                    <span>{{error.note}}</span>
+                                    <input class="form-control msg" value="{{msg}}"/>
+                                    <span>{{error.msg}}</span>
                                 </div>
                             </fieldset>
                             <fieldset>
@@ -79,7 +79,7 @@
                                 <div>
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <select class="form-control" id="taskTypeSelect" title="Select the type of entity that you want to link to the note">
+                                            <select class="form-control" id="taskTypeSelect" title="Select the type of entity that you want to link to the msg">
                                                 <option value="">--type--</option>
                                                 {{#each types}}
                                                     <option value="{{value}}">{{displayName}}</option>

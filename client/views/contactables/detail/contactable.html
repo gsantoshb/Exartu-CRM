@@ -276,8 +276,7 @@
     <div class="tab-content">
         <!-- Notes Tab -->
         <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=contactable type=getLinkType}}
-            {{> contactableNotesList entity=contactable}}
+            {{> notesTemplate ..}}
         </div>
         <!-- Documents Tab -->
         <div class="tab-pane" id="profile-documents">
@@ -299,8 +298,9 @@
     <div class="tab-content">
         <!-- Notes Tab -->
         <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=contactable type=getLinkType}}
-            {{> contactableNotesList entity=contactable}}
+
+            {{> notesTemplate  .. }}
+
         </div>
         <!-- Documents Tab -->
         <div class="tab-pane" id="profile-documents">
@@ -321,8 +321,7 @@
     <div class="tab-content">
         <!-- Notes Tab -->
         <div class="tab-pane active" id="profile-notes">
-            {{> contactableNotesAdd entity=contactable type=getLinkType}}
-            {{> contactableNotesList entity=contactable}}
+            {{> notesTemplate ..}}
         </div>
     </div>
 </template>

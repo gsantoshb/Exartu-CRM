@@ -2,7 +2,7 @@ var task;
 var Error={};
 
 
-//todo: the logic for the linked entities is almost the same in notes and taskAdd. We should do some template to use it in both places.
+//todo: the logic for the linked entities is almost the same in msgs and taskAdd. We should do some template to use it in both places.
 var typeDep= new Deps.Dependency();
 var linkedDep= new Deps.Dependency();
 var link=function(link){
@@ -23,7 +23,7 @@ var createTask=function(task){
     begin: task.begin || new Date(),
     end: task.end || null,
     assign: task.assign || [Meteor.userId()],
-    note: task.note,
+    msg: task.msg,
     completed: task.completed,
     inactive: task.inactive,
     links: task.links || []
@@ -93,12 +93,12 @@ var isValid= function(task, key){
   var result= true;
 
   if (key){
-    if (key=='note'){
-      if (!task.note){
-        Error.note='This field is required';
+    if (key=='msg'){
+      if (!task.msg){
+        Error.msg='This field is required';
         result=false;
       }else{
-        Error.note='';
+        Error.msg='';
       }
     }
     if (key=='assign'){
@@ -111,11 +111,11 @@ var isValid= function(task, key){
     }
   }
   else{
-    if (!task.note){
-      Error.note='This field is required';
+    if (!task.msg){
+      Error.msg='This field is required';
       result=false;
     }else{
-      Error.note='';
+      Error.msg='';
     }
 
     if (!task.assign.length){
@@ -142,7 +142,7 @@ Template.addEditTask.events({
           begin: task.begin,
           end: task.end,
           assign: task.assign,
-          note: task.note,
+          msg: task.msg,
           completed: task.completed,
           links: task.links
         }
@@ -167,7 +167,7 @@ Template.addEditTask.events({
           inactive: ! task.inactive,
           end: task.end,
           assign: task.assign,
-          note: task.note,
+          msg: task.msg,
           completed: task.completed,
           links: task.links
         }
@@ -203,14 +203,14 @@ Template.addEditTask.events({
     }
     taskDep.changed();
   },
-  'change .note':function(e){
-    task.note= e.target.value;
+  'change .msg':function(e){
+    task.msg= e.target.value;
   },
   'change .assign': function(e){
     task.assign=$(e.target).val()
   },
-  'blur .note': function(){
-    isValid(task, 'note');
+  'blur .msg': function(){
+    isValid(task, 'msg');
   },
   'blur .assign': function(){
     isValid(task, 'assign');
@@ -241,5 +241,6 @@ Template.addEditTask.events({
 })
 
 Template.addEditTask.created=function(){
+  console.log('taskcreated',this,this._id);
   task=null;
 }

@@ -11,9 +11,7 @@
             <!--</div>-->
             <!--<div id="collapseOne" class="panel-collapse collapse" style="height: auto;" data-bind="attr: {id: title + filterGroupId}">-->
                 <!--<div class="panel-body">-->
-        <div class="item-title">
-            <strong data-bind="text: title"></strong>
-        </div>
+
         <div>
             <!-- ko foreach: selectedValues -->
                 <span style="word-wrap: break-word">
@@ -23,7 +21,7 @@
                 <br/>
             <!-- /ko -->
         </div>
-        <input style="width: 100%" type='hidden' placeholder="Search" data-bind="select2: { options: items, selectedValues: selectedValues }"/>
+        <input style="width: 100%" type='hidden' data-bind="placeholder: title,select2: { options: items, selectedValues: selectedValues }"/>
 
                 <!--</div>-->
             <!--</div>-->
