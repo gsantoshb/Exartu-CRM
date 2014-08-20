@@ -2,7 +2,7 @@ var note;
 var Error={};
 
 
-//todo: the logic for the linked entities is almost the same in msgs and noteAdd. We should do some template to use it in both places.
+//todo: the logic for the linked entities is almost the same in Tasks and Note. We should do some template to use it in both places.
 var typeDep= new Deps.Dependency();
 var linkedDep= new Deps.Dependency();
 var link=function(link){

@@ -436,5 +436,29 @@ Utils.getEntityTypeFromRouter=function()
     case 'job':
       return Enums.linkTypes.job.value;
       break;
+    case 'deal':
+      return Enums.linkTypes.deal.value;
+    case 'assignment':
+      return Enums.linkTypes.assignment.value;
+    case 'candidate':
+      return Enums.linkTypes.candidate.value;
+      break;
+  }
+}
+Utils.getEntitiesFromType=function(type)
+{
+  switch (selectedType){
+    case Enums.linkTypes.contactable.value:
+      return Contactables.find();
+    case Enums.linkTypes.job.value:
+      return Jobs.find();
+    case Enums.linkTypes.deal.value:
+      return Deals.find();
+    case Enums.linkTypes.assignment.value:
+      return Assignments.find();
+    case Enums.linkTypes.candidate.value:
+      return Candidates.find();
+    default :
+      return [];
   }
 }

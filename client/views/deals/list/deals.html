@@ -1,157 +1,175 @@
 <template name="deals">
-<div class="deals-page">
-<div id="content">
-<div id="content-header" class="mini">
-    <h1>
-        <strong data-bind="text: Deals.find().count()"></strong>
-        <span data-bind="text:objName"></span>
-    </h1>
-</div>
-<div id="breadcrumb">
-    <a href="/" title="Go to Home" class="tip-bottom">Home</a>
-    <a href="/deals" class="current">Deals</a>
-</div>
-
-<div class="container-fluid">
-<div class="row">
-<div class="col-md-4 col-md-push-8">
-
-</div>
-<!-- /.col-lg-4 -->
-<div class="col-md-8 col-md-pull-4">
-    <div class="actions-head">
-        <div class="row">
-            <div class="col-sm-8 col-md-7 col-lg-6">
-                <!-- Single button -->
-                <div class="btn-group pull-left suffix-5">
-                    <a class="btn btn-success dropdown-toggle" href="/dealAdd/Deal" data-bind="attr: { href: '/dealAdd/Deal' } " title="Add" ><span class="fa fa-plus"></span> </a>
-                </div>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search deal"  data-bind="value: searchString, valueUpdate: 'afterkeydown'">
-                      <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
-                      </span>
-                </div>
-            </div><!-- /.col-lg-5 -->
-        </div><!-- /.row -->
-    </div>
-    <!-- Entities list -->
-    <div class="table-items-box">
-        <!-- /.table-item -->
-        <!--ko if: entities().length > 0-->
-        <!-- ko foreach: entities-->
-        <div class="table-item magic">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container">
-                            <div class="thumb">
-                                <!-- ko if: $data.customer -->
-                                <!-- ko with: helper.getCustomerPictureUrl($data.customer())-->
-                                <!-- ko if: ready -->
-                                <a href="#" data-bind="attr:{href: '/deal/'+ $parent._id()}">
-                                    <img data-bind="attr: {src: picture }">
-                                </a>
-                                <!-- /ko -->
-                                <!-- /ko -->
-                                <!-- /ko -->
-                                <!-- ko ifnot: $data.customer -->
-                                <a href="#" style="color: #707070; font-size: 27px" data-bind="attr:{href: '/deal/'+_id()}">
-                                    <i class="icon icon-briefcase" style="display: block; margin-top: 10px;"></i>
-                                </a>{{displayName}}
-                                <!-- /ko -->
-                            </div>
-                            <div class="table-item-title">
-                                <!--ko if: $data.displayName-->
-                                <a href="#" data-bind="attr:{href: '/deal/'+_id()}">
-                                    <span data-bind="text: $data.displayName"></span>
-                                </a>
-                                <!-- ko with: Contactables.findOne({_id: $data.customer()}) -->
-                                <strong class="text-normal text-muted">
-                                    <a data-bind="attr: {href: '/contactable/' + _id }">
-                                        at
-                                        <span data-bind="text: displayName"></span>
-                                    </a>
-                                </strong>
-                                <!-- /ko -->
-                                <!--/ko-->
-                                <br/>
-                            </div>
-
-                        </div>
-                        <!-- /.table-item-cell-container -->
-                    </div>
-                    <!-- /.table-item-cell -->
-                </div>
-                <!-- /.col-sm-3 -->
-                <div class="col-sm-3">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container text-small">
-                            <!--<strong data-bind="text: status">-->
-
-                            <!--</strong>-->
-                            <!--ko if: $data.assignment -->
-                            <!--ko with: Assignments.findOne({_id: $data.assignment() })-->
-                            <!--ko with: Contactables.findOne({_id: $data.employee})-->
-                            <br>
-                            <a data-bind="attr: {href: '/contactable/' + _id}">
-                                <strong>
-                                    <span data-bind="text: displayName"></span>
-                                </strong> Is assigned
-                            </a>
-                            <!-- /ko -->
-                            <!-- /ko -->
-                            <!-- /ko -->
-
-                        </div>
-                        <!-- /.table-item-cell-container -->
-                    </div>
-                    <!-- /.table-item-cell -->
-                </div>
-                <!-- /.col-sm-4 -->
-                <div class="col-sm-3">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container">
-                            <!--                                                    <div class="location">Bankok, Thailand</div>-->
-                            <!--ko if: $data.dateCreated-->
-                            <div class="date">
-                                <span data-bind="text: moment(dateCreated()).fromNow()"></span>
-                            </div>
-                            <!-- /ko -->
-                        </div>
-                        <!-- /.table-item-cell-container -->
-                    </div>
-                    <!-- /.table-item-cell -->
-                </div>
-                <!-- /.col-sm-3 -->
+    <div class="deals-page">
+        <div id="content">
+            <div id="content-header" class="mini">
+                <h1>
+                    <strong data-bind="text: Deals.find().count()"></strong>
+                    <span data-bind="text:objName"></span>
+                </h1>
             </div>
-            <!-- /.row -->
+            <div id="breadcrumb">
+                <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+                <a href="/deals" class="current">Deals</a>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-7 col-lg-8">
+                        <div class="actions-head">
+                            <div class="row">
+                                <div class="col-sm-8 col-md-7 col-lg-9">
+                                    <!-- Single button -->
+                                    <div class="btn-group pull-left suffix-5">
+                                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" title="Add">
+                                            <span class="fa fa-plus"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu" data-bind="foreach: dealTypes">
+                                            <li><a href="#" data-bind="attr: { href: '/dealAdd/'+name }, text: 'Add ' + name "></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search deal"  data-bind="value: searchString, valueUpdate: 'afterkeydown'">
+                                          <span class="input-group-btn">
+                                            <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+                                          </span>
+                                    </div>
+                                </div><!-- /.col-lg-5 -->
+                            </div><!-- /.row -->
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-md-push-1 col-lg-push-1 col-lg-3">
+                        <div class="filter">
+                            <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+                                <strong>Filter</strong>
+                            </a>
+                            <div class="filter-list" id="filter-body">
+                                <div class="filter-item">
+                                    <!--<div class="item-title">-->
+                                    <!--<strong>Status</strong>-->
+                                    <!--</div>-->
+                                    <div class="item-body">
+                                        <!-- ko foreach: lookFilters -->
+                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {filterGroupId: 1, title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } -->
+                                        <!-- /ko -->
+                                        <!-- /ko -->
+                                        <!--<div data-bind="foreach: status" style="padding: 10px;">-->
+                                        <!--<button class="btn btn-xs" data-bind="text: displayName, css:{'btn-primary':isSelected(), 'btn-default': !isSelected()}, click: $parent.selectStatus"></button>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                                <div class="filter-item">
+                                    <div class="item-body">
+                                        <div>
+                                            <p>
+                                                <!-- ko foreach: tags -->
+                                                <button type="button" class="btn btn-xs btn-primary">
+                                                    <span data-bind="text: $data "></span>
+                                                    <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
+                                                </button>
+                                                <!-- /ko -->
+                                            </p>
+                                            <div class="input-group">
+                                                <input id="tag-filter" type="text" class="form-control" placeholder="Search tags..." data-bind="value:tag, valueUpdate: 'afterkeydown'">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary" type="button" data-bind="click: addTag">Add</button>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col-lg-4 -->
+                    <div class="col-md-8 col-lg-9">
+                        <!--ko if: entities().length > 0-->
+                        <!-- ko foreach: entities-->
+                        <div class="table-item">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="table-item-cell">
+                                        <div class="table-item-cell-container">
+                                            <div class="thumb">
+                                                <!-- ko if: $data.customer -->
+                                                <!-- ko with: helper.getCustomerPictureUrl($data.customer())-->
+                                                <!-- ko if: ready -->
+                                                <a href="#" data-bind="attr:{href: '/deal/'+ $parent._id()}">
+                                                    <img data-bind="attr: {src: picture }">
+                                                </a>
+                                                <!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- /ko -->
+                                                <!-- ko ifnot: $data.customer -->
+                                                <a href="#" style="color: #707070; font-size: 27px" data-bind="attr:{href: '/deal/'+_id()}">
+                                                    <i class="icon icon-briefcase" style="display: block; margin-top: 10px;"></i>
+                                                </a>
+                                                <!-- /ko -->
+                                            </div>
+                                            <div class="table-item-title">
+                                                <!--ko if: $data.displayName-->
+                                                <a href="#" data-bind="attr:{href: '/deal/'+_id()}">
+                                                    <span data-bind="text: $data.displayName"></span>
+                                                </a>
+                                                <!-- ko with: Contactables.findOne({_id: $data.customer()}) -->
+
+                                                <strong class="text-normal text-muted">
+                                                    <a data-bind="attr: {href: '/contactable/' + _id }">
+                                                        at
+                                                        <span data-bind="text: displayName"></span>
+                                                    </a>
+                                                </strong>
+                                                <!-- /ko -->
+                                                <!--/ko-->
+                                                <br/>
+                                            </div>
+
+                                        </div>
+                                        <!-- /.table-item-cell-container -->
+                                    </div>
+                                    <!-- /.table-item-cell -->
+                                </div>
+                                <!-- /.col-sm-3 -->
+                                <!-- /.col-sm-4 -->
+                                <div class="col-sm-3">
+                                    <div class="table-item-cell">
+                                        <div class="table-item-cell-container">
+                                            <!--                                                    <div class="location">Bankok, Thailand</div>-->
+                                            <!--ko if: $data.dateCreated-->
+                                            <div class="date">
+                                                <span data-bind="text: moment(dateCreated()).fromNow()"></span>
+                                            </div>
+                                            <!-- /ko -->
+                                        </div>
+                                        <!-- /.table-item-cell-container -->
+                                    </div>
+                                    <!-- /.table-item-cell -->
+                                </div>
+                                <!-- /.col-sm-3 -->
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <!--ko ifnot: entities().length >0-->
+                        <div class="v-wrapper">
+                            <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                                <i class="icon-briefcase text-large"></i>
+                                <h1>You currently have no Deals</h1>
+                                <!--ko foreach: dealTypes-->
+                                <a href="#" data-bind="attr: { href: '/dealAdd/'+name }, text: 'New ' + name + ' Deal'"></a>
+                                <span class="bullet-spacer" data-bind="visible: $index()< $parent.dealTypes().length-1">·</span>
+                                <!-- /ko -->
+                            </div><!-- /.v-wrapper-cell -->
+                        </div>
+                        <!-- /ko -->
+                        <!--infinite scroll-->
+                        <div data-bind="onScrollBottom: showMore"></div>
+                    </div>
+                    <!--/ko-->
+                </div>
+            </div>
         </div>
-        <!-- /.table-item -->
-        <!-- /ko -->
-        <!-- /ko -->
-        <!--&lt;!&ndash;ko ifnot: entities().length >0&ndash;&gt;-->
-        <!--<div class="v-wrapper">-->
-        <!--<div class="v-wrapper-cell text-center text-muted" style="height: 678px;">-->
-        <!--<i class="icon-briefcase text-large"></i>-->
-        <!--<h1>You currently have no Deals</h1>-->
-        <!--&lt;!&ndash;ko foreach: dealTypes&ndash;&gt;-->
-        <!--<a href="#" data-bind="attr: { href: '/dealAdd/'+name }, text: 'New ' + name + ' Deal'"></a>-->
-        <!--<span class="bullet-spacer" data-bind="visible: $index()< $parent.dealTypes().length-1">·</span>-->
-        <!--&lt;!&ndash; /ko &ndash;&gt;-->
-        <!--</div>&lt;!&ndash; /.v-wrapper-cell &ndash;&gt;-->
-        <!--</div>-->
-        <!--&lt;!&ndash; /ko &ndash;&gt;-->
-        <!--infinite scroll-->
-        <div data-bind="onScrollBottom: showMore"></div>
+        {{>lookupFilterTemplate}}
     </div>
-</div>
-<!--/ko-->
-</div>
-</div>
-</div>
-{{>lookupFilterTemplate}}
-</div>
 </template>
 
 <!--<template name="dealFilters">-->
