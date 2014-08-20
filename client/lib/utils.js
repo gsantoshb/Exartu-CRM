@@ -426,3 +426,15 @@ Utils.getLookUpsByCode=function(code)
 {
     LookUps.find({codeType: code, inactive: {$ne: true}}, { sort: {displayName: 1} });
 };
+
+Utils.getEntityTypeFromRouter=function()
+{
+  switch (Router.current().route.name) {
+    case 'contactable':
+      return Enums.linkTypes.contactable.value;
+      break;
+    case 'job':
+      return Enums.linkTypes.job.value;
+      break;
+  }
+}

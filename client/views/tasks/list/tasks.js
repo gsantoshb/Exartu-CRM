@@ -120,7 +120,7 @@ Template.tasks.helpers({
     }
 
     if (queryObj.searchString) {
-      q.note = {
+      q.msg = {
         $regex: queryObj.searchString,
         $options: 'i'
       };

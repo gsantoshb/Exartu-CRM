@@ -1,13 +1,6 @@
 var entityType=null;
 Template.taskBox.created=function(){
-  switch (Router.current().route.name){
-    case 'contactable':
-      entityType= Enums.linkTypes.contactable.value;
-      break;
-    case 'job':
-      entityType= Enums.linkTypes.job.value;
-      break;
-  }
+  entityType=Utils.getEntityTypeFromRouter();
 }
 
 Template.taskBox.helpers({

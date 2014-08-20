@@ -1,6 +1,8 @@
 var entityId=null;
+var entityType=null;
 Template.notesTemplate.created=function(id){
   if (this.data) entityId=this.data._id;
+  entityType=Utils.getEntityTypeFromRouter();
 }
 
 var searchString, searchDep = new Deps.Dependency;
@@ -11,7 +13,7 @@ Template.notesTemplate.notes = function() {
   if (!_.isEmpty(searchString)) {
     var searchStringQuery = [];
     _.each([
-      'content',
+      'msg',
     ], function (field) {
       var aux = {};
       aux[field] = {
@@ -22,7 +24,6 @@ Template.notesTemplate.notes = function() {
     });
     searchQuery.$or =  searchStringQuery;
   }
-  console.log('entityid',entityId)
   if (entityId!= null)
   {
     searchQuery.links= { $elemMatch: { id: entityId} } ;
@@ -55,9 +56,20 @@ Template.notesTemplate.events = {
   },
 
   'click .addNote': function(){
-    Composer.showModal('addEditNote', { links: [{
-      id: entityId
-    }] })
+    console.log('entityid note',entityId,entityType);
+    if (entityId ==null) {
+      Composer.showModal('addEditNote', { links: [
+      ] })
+    }
+    else
+    {
+      Composer.showModal('addEditNote', { links: [
+        {
+          id: entityId,
+          type: entityType
+        }
+      ] })
+    }
   }
 };
 

@@ -2,7 +2,7 @@ var note;
 var Error={};
 
 
-//todo: the logic for the linked entities is almost the same in notes and noteAdd. We should do some template to use it in both places.
+//todo: the logic for the linked entities is almost the same in msgs and noteAdd. We should do some template to use it in both places.
 var typeDep= new Deps.Dependency();
 var linkedDep= new Deps.Dependency();
 var link=function(link){
@@ -20,8 +20,7 @@ var createNote=function(note){
   var note=note || {};
 
   var definition = {
-    content: content,
-    userId: Meteor.userId(),
+    msg: note.msg,
     links: note.links || []
 //    reactiveProps: {}
   };
@@ -31,10 +30,8 @@ var createNote=function(note){
 //  return new Utils.ObjectDefinition(definition);
 }
 Template.addEditNote.helpers({
-  types: function(){
-    return _.map(_.keys(Enums.linkTypes),function(key){
-      return Enums.linkTypes[key];
-    })
+  isEditing: function(){
+    return !! note._id;
   },
   note:function(){
     if(!note){
@@ -50,13 +47,22 @@ Template.addEditNote.helpers({
   users :function(){
     return Meteor.users.find({});
   },
+  isSelected:function(){
+    return true;
+  },
   error: function(){
     errorDep.depend()
     return Error;
   },
-  hasError:function(key) {
+  hasError:function(key){
     errorDep.depend();
-    return Error[key] ? 'error' : '';
+    return Error[key] ? 'error': '';
+  },
+
+  types: function(){
+    return _.map(_.keys(Enums.linkTypes),function(key){
+      return Enums.linkTypes[key];
+    })
   },
   entities:function(){
     typeDep.depend();
@@ -70,44 +76,38 @@ Template.addEditNote.helpers({
       default :
         return [];
     }
-  }
+  },
+  linkedEntities: function(){
+    linkedDep.depend();
+    console.log('note',note);
+    return note.links;
+  },
+  getEntity: Utils.getEntityFromLink
 
 })
 var isValid= function(note, key){
   var result= true;
 
   if (key){
-    if (key=='note'){
-      if (!note.note){
-        Error.note='This field is required';
+    if (key=='msg'){
+      if (!note.msg){
+        Error.msg='This field is required';
         result=false;
       }else{
-        Error.note='';
+        Error.msg='';
       }
-    }
-    if (key=='assign'){
-      if (!note.assign || !note.assign.length){
-        Error.assign='This field is required';
-        result=false;
-      }else{
-        Error.assign='';
-      }
-    }
-  }
-  else{
-    if (!note.note){
-      Error.note='This field is required';
-      result=false;
-    }else{
-      Error.note='';
     }
 
-    if (!note.assign.length){
-      Error.assign='This field is required';
+  }
+  else{
+    if (!note.msg){
+      Error.msg='This field is required';
       result=false;
     }else{
-      Error.assign='';
+      Error.msg='';
     }
+
+
   }
   errorDep.changed();
   return result;
@@ -123,6 +123,7 @@ Template.addEditNote.events({
         _id: note._id
       }, {
         $set: {
+          msg: note.msg,
           links: note.links
         }
       },function(){
@@ -143,7 +144,7 @@ Template.addEditNote.events({
         _id: note._id
       }, {
         $set: {
-
+          msg: note.msg,
           links: note.links
         }
       },function(){
@@ -155,12 +156,40 @@ Template.addEditNote.events({
       })
     }
   },
-
-  'change .note':function(e){
-    note.note= e.target.value;
+  'change.dp .completed>.dateTimePicker': function(e, ctx) {
+    if ($(e.target).hasClass('dateTimePicker')){
+      note.completed = $(e.target).data('DateTimePicker').date.toDate();
+    }
   },
-  'blur .note': function(){
-    isValid(note, 'note');
+  'change.dp .begin>.dateTimePicker': function(e, ctx) {
+    if ($(e.target).hasClass('dateTimePicker')){
+      note.begin = $(e.target).data('DateTimePicker').date.toDate();
+    }
+  },
+  'change.dp .end>.dateTimePicker': function(e, ctx) {
+    if ($(e.target).hasClass('dateTimePicker')){
+      note.end = $(e.target).data('DateTimePicker').date.toDate();
+    }
+  },
+  'change .isCompleted': function(e){
+    if(e.target.checked){
+      note.completed=new Date;
+    }else{
+      note.completed=null;
+    }
+    noteDep.changed();
+  },
+  'change .msg':function(e){
+    note.msg= e.target.value;
+  },
+  'change .assign': function(e){
+    note.assign=$(e.target).val()
+  },
+  'blur .msg': function(){
+    isValid(note, 'msg');
+  },
+  'blur .assign': function(){
+    isValid(note, 'assign');
   },
 
   'change #noteTypeSelect': function(){
@@ -189,27 +218,4 @@ Template.addEditNote.events({
 
 Template.addEditNote.created=function(){
   note=null;
-}
-
-var addNote=function (e, ctx) {
-  var content=ctx.$('#note-input').val();
-
-  ctx.$('#note-input').val(null);
-  if (_.isEmpty(content)) {
-    $('#add-note-feedback').text("Please enter a note");
-    return;
-  }
-  Notes.insert({
-    content: content,
-    links: newNoteLinks,
-    userId: Meteor.userId()
-  }, function (err, result) {
-
-    newNoteLinks= _.clone(originalLinks);
-    linkedDep.changed();
-    if (!err) {
-      ctx.$('#note-input').val('');
-      GAnalytics.event("/contactable", "Add note");
-    }
-  });
 }

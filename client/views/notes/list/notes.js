@@ -25,7 +25,7 @@ Template.notes.notes = function() {
   if (!_.isEmpty(searchString)) {
     var searchStringQuery = [];
     _.each([
-      'content',
+      'msg',
     ], function (field) {
       var aux = {};
       aux[field] = {
@@ -36,7 +36,7 @@ Template.notes.notes = function() {
     });
     searchQuery.$or =  searchStringQuery;
   }
-    console.log('notes search');
+
   return Notes.find(searchQuery,
       {
           sort:
