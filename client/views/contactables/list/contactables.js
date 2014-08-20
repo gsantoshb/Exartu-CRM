@@ -132,6 +132,10 @@ Template.contactables.isSearching = function() {
   return isSearching;
 }
 
+Template.contactablesListItem.isESSearch = function() {
+  return !_.isEmpty(query.searchString.value);
+};
+
 // Elasticsearch
 var esDep = new Deps.Dependency;
 var esResult = [];
@@ -146,7 +150,14 @@ Meteor.autorun(function() {
   Contactables.esSearch('.*' + query.searchString.value + '.*', function(err, result) {
     if (!err) {
       esResult = _.map(result.hits, function(hit) {
-        return Contactables._transform(hit._source);
+        var contactable = Contactables._transform(hit._source);
+        contactable._match = {
+          score: (hit._score / result.max_score) * 100,
+          properties: _.map(hit.highlight, function(matchedProperty, propertyName) {
+            return propertyName;
+          })
+        }
+        return contactable;
       });
       esDep.changed();
       isSearching = false;
