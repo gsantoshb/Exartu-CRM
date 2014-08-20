@@ -144,12 +144,15 @@ Meteor.autorun(function() {
   isSearching = true;
   searchDep.changed();
   Contactables.esSearch('.*' + query.searchString.value + '.*', function(err, result) {
-    esResult = _.map(result.hits, function(hit) {
-      return Contactables._transform(hit._source);
-    });
-    esDep.changed();
-    isSearching = false;
-    searchDep.changed();
+    if (!err) {
+      esResult = _.map(result.hits, function(hit) {
+        return Contactables._transform(hit._source);
+      });
+      esDep.changed();
+      isSearching = false;
+      searchDep.changed();
+    } else
+      console.log(err)
   });
 });
 
