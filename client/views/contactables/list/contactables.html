@@ -229,6 +229,25 @@
                 <!-- /.table-item-cell -->
             </div>
             <!-- /.col-sm-3 -->
+            {{#if isESSearch}}
+                <div class="col-xs-12">
+                    <div class="col-xs-10">
+                        <small class="text-muted"> Properties matched </small>
+                        <div> 
+                            {{#each _match.properties}}
+                                <span class="label label-default" style="margin-right: 3px"> {{.}} </span>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <div class="col-xs-offset-10" >
+                        <small class="text-muted"> Score </small>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{_match.score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{_match.score}}%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
         </div>
         <!-- /.row -->
     </div>
