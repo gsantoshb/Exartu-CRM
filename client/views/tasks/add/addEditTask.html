@@ -28,7 +28,7 @@
                                 <div class="form-group end">
                                     <label class="control-label">End:</label>
                                     <br/>
-                                    {{#dateTimePicker }}
+                                    {{#dateTimePicker value=end}}
                                     {{/dateTimePicker}}
                                 </div>
                             </fieldset>
@@ -47,7 +47,7 @@
                             <fieldset>
                                 <div class="checkbox">
                                     <label>
-                                        <input class="isCompleted" type="checkbox" checked="{{isCompleted}}" />Completed
+                                        <input class="isCompleted" type="checkbox" checked="{{completed}}" />Completed
                                     </label>
                                 </div>
                             </fieldset>

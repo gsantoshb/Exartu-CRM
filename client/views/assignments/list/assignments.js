@@ -6,7 +6,7 @@ AssignmentsController = RouteController.extend({
   },
   onAfterAction: function() {
     var title = 'Assignments',
-    description = 'Manage your assignments here';
+    description = 'Manage your list here';
     SEO.set({
       title: title,
       meta: {

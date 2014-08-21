@@ -91,7 +91,7 @@ var beforeInsertOrUpdateJob = function (job) {
 };
 
 /*
- * extend a job with assignments, candidates and the services defined in objTypes
+ * extend a job with list, candidates and the services defined in objTypes
  * objTypes must be an array with the object's types that the job references
  */
 var extendJob = function (job, objTypes) {

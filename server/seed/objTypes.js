@@ -178,6 +178,12 @@ newObjType({
       defaultValue: null,
       required: false
     }, {
+      name: 'numberRequired',
+      displayName: 'Number required',
+      fieldType: 'number',
+      defaultValue: 1,
+      required: false
+    }, {
       name: 'duration',
       displayName: 'Duration',
       fieldType: 'lookUp',
