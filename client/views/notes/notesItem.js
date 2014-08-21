@@ -1,12 +1,12 @@
 var entityId=null;
 var entityType=null;
-Template.notesTemplate.created=function(id){
+Template.notesItem.created=function(id){
   if (this.data) entityId=this.data._id;
   entityType=Utils.getEntityTypeFromRouter();
 }
 
 var searchString, searchDep = new Deps.Dependency;
-Template.notesTemplate.notes = function() {
+Template.notesItem.notes = function() {
   searchDep.depend();
   searchQuery = {};
 
@@ -37,19 +37,19 @@ Template.notesTemplate.notes = function() {
       });
 };
 
-Template.notesTemplate.getCount = function(notes) {
+Template.notesItem.getCount = function(notes) {
   return notes.count();
 }
 
-Template.notesTemplate.getEntity = function(link){
+Template.notesItem.getEntity = function(link){
   return Utils.getEntityFromLink(link);
 };
 
-Template.notesTemplate.getUrl = function(link) {
+Template.notesItem.getUrl = function(link) {
   return Utils.getHrefFromLink(link);
 };
 
-Template.notesTemplate.events = {
+Template.notesItem.events = {
   'change #search-string': function(e) {
     searchString = e.currentTarget.value;
     searchDep.changed();

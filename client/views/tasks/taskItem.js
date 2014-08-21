@@ -1,4 +1,4 @@
-Template.task.helpers({
+Template.taskItem.helpers({
   taskClass: function(){
     return 'task-' + this.state;
   },
@@ -12,7 +12,7 @@ Template.task.helpers({
     return (Meteor.userId() == this._id) ? 'text-info' : '';
   }
 })
-Template.task.events({
+Template.taskItem.events({
   'click .editTask': function () {
     Composer.showModal('addEditTask', this)
   }

@@ -241,6 +241,5 @@ Template.addEditTask.events({
 })
 
 Template.addEditTask.created=function(){
-  console.log('taskcreated',this,this._id);
   task=null;
 }

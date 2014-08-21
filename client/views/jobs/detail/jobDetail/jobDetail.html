@@ -51,6 +51,17 @@
                         </strong>
                         {{/objectProperty}}
                     </td>
+
+                    <td>
+                        <i class="fa "></i>&nbsp;Number ppl required:
+                        {{#objectProperty property=numberRequired editable=editMode}}
+                            <input class="form-control" type="number" value="{{value}}">
+                        {{else}}
+                        <strong>
+                            {{value}}
+                        </strong>
+                        {{/objectProperty}}
+                    </td>
                 </tr>
                 <tr>
                     <td>
