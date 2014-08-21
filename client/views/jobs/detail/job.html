@@ -58,8 +58,9 @@
 <template name="job_tabs">
     {{#with job}}
     <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-description" data-toggle="tab">Job Description</a></li>
-        <li ><a href="#profile-detail" data-toggle="tab">Detail</a></li>
+        <li class="active"><a href="#profile-detail" data-toggle="tab">Detail</a></li>
+        <li ><a href="#profile-description" data-toggle="tab">Job Description</a></li>
+
         <!--<li ><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>-->
         <li ><a href="#profile-candidates" data-toggle="tab">Candidates</a></li>
         <li ><a href="#profile-assignments" data-toggle="tab">Assignments</a></li>
@@ -72,8 +73,8 @@
         <div class="tab-pane " id="profile-candidates">{{>candidates type='job' id=_id}}</div>
         <div class="tab-pane " id="profile-assignments">{{>jobAssignment type='job' id=_id}}</div>
         <div class="tab-pane " id="profile-activity">{{>jobActivity}}</div>
-        <div class="tab-pane " id="profile-detail">{{> jobDetail}}</div>
-        <div class="tab-pane active" id="profile-description">{{> jobDescription}}</div>
+        <div class="tab-pane active" id="profile-detail">{{> jobDetail}}</div>
+        <div class="tab-pane " id="profile-description">{{> jobDescription}}</div>
         <div class="tab-pane" id="profile-tasks">{{> taskBox}}</div>
         <div class="tab-pane" id="profile-notes">{{> notesTemplate}}</div>
 
