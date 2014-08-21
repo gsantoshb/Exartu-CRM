@@ -56,13 +56,10 @@
 <template name="contactablesFilters">
     <div class="filter">
         <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-            <strong>Filters</strong>
+            <strong>Filter</strong>
         </a>
         <div class="filter-list" id="filter-body">
             <div class="filter-item">
-                <div class="item-title">
-                    <strong>Type</strong>
-                </div>
                 <div class="item-body">
                     {{#each contactableTypes2}}
                         <button type="button" class="typeSelect {{typeOptionClass .}}">{{name}}</button>
@@ -70,9 +67,7 @@
                 </div>
             </div>
             <div class="filter-item">
-                <div class="item-title">
-                    <strong>Mode</strong>
-                </div>
+
                 <div class="item-body">
                     <div class="checkbox">
                         <label>
@@ -98,9 +93,9 @@
                 </div>
             </div>
             <div class="filter-item">
-                <div class="item-title">
-                    <strong>Tags</strong>
-                </div>
+                <!--<div class="item-title">-->
+                    <!--<strong>Tags</strong>-->
+                <!--</div>-->
                 <div class="item-body">
                     {{#objectProperty property=tags}}
                     <button type="button" class="tag btn btn-xs btn-primary">
