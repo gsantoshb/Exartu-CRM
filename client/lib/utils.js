@@ -443,6 +443,8 @@ Utils.getEntityTypeFromRouter=function()
     case 'candidate':
       return Enums.linkTypes.candidate.value;
       break;
+    default :
+      return null;
   }
 }
 Utils.getEntitiesFromType=function(type)

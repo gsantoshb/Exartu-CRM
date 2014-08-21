@@ -1,9 +1,9 @@
 var entityType=null;
 var isEntitySpecific=false;
-Template.tasksBetterBox.created=function(){
+Template.tasksBox.created=function(){
   entityType=Utils.getEntityTypeFromRouter();
+  isEntitySpecific=false;
   if (entityType!=null) isEntitySpecific=true
-  console.log('ent',entityType,isEntitySpecific);
 }
 //todo: improve queries to match with the state in the transform
 var states = [
@@ -79,7 +79,7 @@ var query = new Utils.ObjectDefinition({
 var status= null;
 var statusDep= new Deps.Dependency;
 
-Template.tasksBetterBox.helpers({
+Template.tasksBox.helpers({
   taskCount: function(){
     if (isEntitySpecific)
       return Tasks.find({ links: { $elemMatch: { id: Session.get('entityId') } } }).count();
@@ -118,7 +118,6 @@ Template.tasksBetterBox.helpers({
     }
     if (isEntitySpecific) {
       q.links = { $elemMatch: { id: Session.get('entityId') } };
-      console.log('quer', q);
     }
     return Tasks.find(q);
   },
@@ -133,7 +132,7 @@ Template.tasksBetterBox.helpers({
     return this == status ? 'btn-primary': 'btn-default';
   }
 })
-Template.tasksBetterBox.events({
+Template.tasksBox.events({
   'click .addTask': function(){
     if (!isEntitySpecific)
       Composer.showModal('addEditTask');
