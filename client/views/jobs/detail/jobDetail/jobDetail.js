@@ -7,19 +7,16 @@ var self={};
 Utils.reactiveProp(self, 'editMode', false);
 var location={};
 Utils.reactiveProp(location, 'value', null);
-var services;
 
 Template.jobDetail.created=function(){
   self.editMode=false;
-  var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
-
-
-
+//  var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
 }
 var job;
+
 Template.jobDetail.helpers({
   job: function(){
-    var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
+    var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
     Session.set('jobDisplayName', originalJob.displayName);
     if (!job)
       job = generateReactiveObject(originalJob);
@@ -45,7 +42,7 @@ Template.jobDetail.helpers({
     return optionValue == currentValue;
   },
   location: function(){
-    var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
+    var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
 
     location.value= originalJob && originalJob.location;
     return location;
@@ -56,7 +53,7 @@ Template.jobDetail.events({
   'click .editJob':function(){
     self.editMode= ! self.editMode;
   },
-  'click .saveButton':function(){
+  'click .saveDetailsButton':function(){
     if (!job.validate()) {
       job.showErrors();
       return;
@@ -67,8 +64,8 @@ Template.jobDetail.events({
     var newLocation= location.value;
 
     if ((newLocation && newLocation.displayName) != (oldLocation && oldLocation.displayName)){
-      update.$set= update.$set || {};
-      update.$set.location= newLocation;
+      update.$set = update.$set || {};
+      update.$set.location = newLocation;
     }
 
     Jobs.update({_id: job._id}, update, function(err, result) {

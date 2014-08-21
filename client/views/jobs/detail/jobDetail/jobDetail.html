@@ -22,14 +22,14 @@
                     <td>
                         <i class="fa fa-globe"></i>&nbsp;Location:
                         {{#if editMode}}
-                        {{#inputLocation location}}
-                        {{/inputLocation}}
+                            {{#inputLocation location}}
+                            {{/inputLocation}}
                         {{else}}
-                        {{#with location.value}}
-                        <strong>{{displayName}}</strong>
-                        {{else}}
-                        <strong class="text-muted">Not set</strong>
-                        {{/with}}
+                            {{#with location.value}}
+                                <strong>{{displayName}}</strong>
+                            {{else}}
+                                <strong class="text-muted">Not set</strong>
+                            {{/with}}
                         {{/if}}
                     </td>
                 </tr>
@@ -149,12 +149,12 @@
         {{#if editMode}}
         <div class="box-header-2" style="height: 60px">
             <div class="pull-right">
-                                            <span class="btn btn-default cancelButton">
-                                                Cancel
-                                            </span>
-                                            <span class="btn btn-info saveButton">
-                                                Save
-                                            </span>
+                <span class="btn btn-default cancelButton">
+                    Cancel
+                </span>
+                <span class="btn btn-info saveDetailsButton">
+                    Save
+                </span>
             </div>
         </div>
         {{/if}}
