@@ -1,5 +1,6 @@
 
 Template.contactableContactsBox.hasContacts = function() {
+
   return _.isObject(this.Customer);
 };
 
