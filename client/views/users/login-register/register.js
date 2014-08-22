@@ -44,23 +44,22 @@ Template.register.helpers({
 AutoForm.hooks({
   'registerForm': {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
-      // Remove confirmation password
-      var user= insertDoc;
-      delete user.confirmPassword;
-
-      // Create account
-      Accounts.createUser(user, _.bind(function (err, result) {
-        this.done();
-
+      var self = this;
+      Meteor.call('registerAccount', insertDoc, function (err, result) {
         if (err) {
           console.log(err);
           error = err.reason;
           errorDep.changed();
+        } else if(!result) {
+          error = err.reason;
+          errorDep.changed();
         } else {
-          this.resetForm();
-          Router.go('/');
+          self.resetForm();
+          isRegistering = false;
+          registeringDep.changed();
         }
-      }, this));
+        self.done();
+      });
 
       return false;
     }

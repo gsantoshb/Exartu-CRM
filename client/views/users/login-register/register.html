@@ -15,7 +15,7 @@
                 <h1>Sign Up</h1>
 
                 {{#if isRegistering}}
-                {{#autoForm schema="RegisterSchema" id="registerForm"}}
+                {{#autoForm schema="RegisterSchema" id="registerForm" validation="blur"}}
                     <fieldset>
                         <div class="form-group {{#if afFieldIsInvalid name='username'}}has-error{{/if}}">
                             {{> afFieldInput name='username' class="input-lg" placeholder="Choose your Exartu username"}}
@@ -51,7 +51,7 @@
                     </fieldset>
                 {{/autoForm}}
                 <div class="alert-box alert-danger" style="margin-top: 20px;">
-                    <!--{{error}}-->
+                    {{error}}
                 </div>
 
                 {{else}}
