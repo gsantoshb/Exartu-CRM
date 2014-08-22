@@ -42,8 +42,6 @@ var services;
 Template.assignment.created=function(){
   self.editMode=false;
   var originalAssignment=Assignments.findOne({ _id: Session.get('entityId') });
-
-
   var definition={
     reactiveProps:{
       tags:{
@@ -63,7 +61,11 @@ Template.assignment.helpers({
 
     var originalAssignment=Assignments.findOne({ _id: Session.get('entityId') });
     Session.set('assignmentDisplayName', originalAssignment.displayName);
-
+    if (originalAssignment.tags==null)
+    {
+      console.log('setnulls');
+      originalAssignment.tags=[];
+    }
     if (!assignment)
       assignment = new dType.objInstance(originalAssignment, Assignments);
     return assignment;
