@@ -120,7 +120,6 @@ Template.lookUpsManagement.items = function() {
     {
       transform: function(item) {
         Utils.reactiveProp(item,'editMode',false);
-          console.log('reac');
         Utils.reactiveProp(item,'editActionMode',false);
         item.errMsg = '';
         return item;

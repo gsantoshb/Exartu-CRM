@@ -23,7 +23,6 @@ Notes.before.insert(function(userId, doc){
   doc.hierId = user.hierId;
   doc.userId = user._id;
   doc.dateCreated = Date.now();
-  console.log('note inserted',doc);
   return doc;
 })
 

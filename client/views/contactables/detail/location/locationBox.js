@@ -46,7 +46,6 @@ Object.defineProperty(data, "location", {
 });
 
 Template.contactableLocationBox.editLocation = function () {
-  console.log('editLocation helper')
   return data.location;
 }
 

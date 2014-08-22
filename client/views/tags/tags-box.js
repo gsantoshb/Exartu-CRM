@@ -1,11 +1,12 @@
 var objdef = {};
 var self={};
+var coll=null;
 Utils.reactiveProp(self, 'editMode', false);
 Template.tagsBox.created=function(){
   self.editMode=false;
 }
 Template.tagsBox.tags = function() {
-  var coll=Utils.getCollectionFromEntity(this);
+  coll=Utils.getCollectionFromEntity(this);
   if (!_.isArray(this.tags)) this.tags=[];
   objdef = new Utils.ObjectDefinition({
 
