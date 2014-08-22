@@ -25,7 +25,7 @@
                 <div class="container-fluid contactable-content job-details">
                     <div class="row">
 
-                        <div class="col-sm-7 col-lg-9 margin-top-15 contactable-left-col">
+                        <div class="col-sm-7 col-lg-12 margin-top-15 contactable-left-col">
                         {{>job_tabs job=. documentCount=documentCount jobCount=jobCount noteCount=noteCount}}
                         </div>
 
@@ -34,14 +34,6 @@
                         <!-- Right Column -->
                         <div class="col-sm-4 col-lg-3 margin-top-15 has-tabs">
                             <div >
-                                <!-- /.box -->
-                                {{>jobRates}}
-                                <!-- Tags -->
-                                {{#with originalJob}}
-                                {{>tagsBox  }}
-                                {{/with}}
-                                {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
-
 
                             </div>
 
@@ -73,7 +65,16 @@
         <div class="tab-pane " id="profile-candidates">{{>candidates type='job' id=_id}}</div>
         <div class="tab-pane " id="profile-assignments">{{>jobAssignment type='job' id=_id}}</div>
         <div class="tab-pane " id="profile-activity">{{>jobActivity}}</div>
-        <div class="tab-pane active" id="profile-detail">{{> jobDetail}}</div>
+        <div class="tab-pane active" id="profile-detail">
+            {{> jobDetail}}
+            {{#with originalJob}}{{>tagsBox  }}{{/with}}
+            <!-- /.box -->
+            {{>jobRates ..}}
+            <!-- Tags -->
+
+            {{>customerInfo  customer=../getCustomer path='customer' collection=../jobCollection}}
+
+        </div>
         <div class="tab-pane " id="profile-description">{{> jobDescription}}</div>
         <div class="tab-pane" id="profile-tasks">{{> tasksBox}}</div>
         <div class="tab-pane" id="profile-notes">{{> notesItem}}</div>

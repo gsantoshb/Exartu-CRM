@@ -313,9 +313,10 @@ Utils.getTypeFromTypeString=function (str)
 
 Utils.getCollectionFromEntity=function(entity) {
   var strtype=Utils.getLinkTypeFromEntity(entity);
-  if ($.inArray(strtype, ['Employee','Contact','Customer'])!=-1) return Contactables;
-  if ($.inArray(strtype, ['job'])!=-1) return Jobs;
-  if ($.inArray(strtype, ['deal'])!=-1) return Deals;
+  console.log('strtype',strtype);
+  if ($.inArray(strtype, ['Employee','Contact','Customer','contactable'])!=-1) return Contactables;
+  if ($.inArray(strtype, ['Job','job'])!=-1) return Jobs;
+  if ($.inArray(strtype, ['Deal','deal'])!=-1) return Deals;
 //  var type=Utils.getTypeFromTypeString(strtype);
 //  console.log('st',strtype,type);
 //  return Utils.getCollectionFromType(type);
