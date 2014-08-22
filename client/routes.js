@@ -128,7 +128,7 @@ Router.map(function () {
 
   this.route('tasks', {
     path: '/tasks',
-    controller: 'TasksController',
+    controller: 'TasksController'
   });
 
   this.route('notes', {
@@ -138,7 +138,7 @@ Router.map(function () {
 
   this.route('assignments', {
     path: '/assignments',
-    controller: 'AssignmentsController',
+    controller: 'AssignmentsController'
   });
   this.route('assignment', {
     path: '/assignment/:_id',
