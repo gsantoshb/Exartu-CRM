@@ -1,13 +1,13 @@
 <template name="assignment">
     <div class="contactable-page-details" name="assignmentVM">
         <div id="content">
-            {{#with originalAssignment}}
+
                 <div id="content-header" class="mini">
-                    <h1 class="profile-name">{{displayName}}
+                    <h1 class="profile-name">{{originalEmployee.displayName}}
                         <small> at
                             <a  href="/contactable/{{customer}}">
                                 <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
-                                    {{customerName}}
+                                    {{originalJob.displayName}}
                                     <i class="fa fa-external-link" style="font-size: 14px"></i>
                                 </strong>
                             </a>
@@ -19,7 +19,7 @@
                         <i class="fa fa-home"></i>Home</a>
                     <a href="/assignments" class="current">Assignments</a>
                 </div>
-            {{/with}}
+
 
             <!--{{#with assignment}}-->
                 <!--<div class="container-fluid contactable-content assignment-details">-->

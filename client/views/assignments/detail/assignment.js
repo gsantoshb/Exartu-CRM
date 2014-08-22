@@ -56,6 +56,8 @@ Template.assignment.created=function(){
   services= Utils.ObjectDefinition(definition);
 }
 var assignment;
+var job;
+var employee;
 Template.assignment.helpers({
   assignment: function(){
 
@@ -63,7 +65,7 @@ Template.assignment.helpers({
     Session.set('assignmentDisplayName', originalAssignment.displayName);
 
     if (!assignment)
-      assignment = generateReactiveObject(originalAssignment);
+      assignment = new dType.objInstance(originalAssignment, Assignments);
     return assignment;
   },
   originalAssignment:function(){
@@ -75,6 +77,34 @@ Template.assignment.helpers({
   colorEdit:function(){
       return self.editMode ? '#008DFC' : '#ddd'
   },
+  job: function(){
+    var asg=Assignments.findOne({ _id: Session.get('entityId') });
+    var originalJob=Jobs.findOne({_id: asg.Job});
+    Session.set('jobDisplayName', originalAssignment.displayName);
+    if (!job)
+      job = new dType.objInstance(originalJob, Jobs);
+    return assignment;
+  },
+  originalJob:function(){
+
+    var asg=Assignments.findOne({ _id: Session.get('entityId') });
+    return Jobs.findOne({_id: asg.job});
+  },
+  employee: function(){
+    var asg=Assignments.findOne({ _id: Session.get('entityId') });
+    var originalemployee=Contactables.findOne({_id: asg.employee});
+    Session.set('employeeDisplayName', originalAssignment.displayName);
+    if (!employee)
+      employee = new dType.objInstance(originalemployee, Contactables);
+    return assignment;
+  },
+  originalEmployee:function(){
+    var asg=Assignments.findOne({ _id: Session.get('entityId') });
+
+
+    console.log('emp',asg);
+    return Contactables.findOne({_id: asg.employee});
+  }
 //  isType:function(typeName){
 //    return !! Assignments.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
 //  },
