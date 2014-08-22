@@ -1,0 +1,80 @@
+<template name="assignment">
+    <div class="contactable-page-details" name="assignmentVM">
+        <div id="content">
+            {{#with originalAssignment}}
+                <div id="content-header" class="mini">
+                    <h1 class="profile-name">{{displayName}}
+                        <small> at
+                            <a  href="/contactable/{{customer}}">
+                                <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
+                                    {{customerName}}
+                                    <i class="fa fa-external-link" style="font-size: 14px"></i>
+                                </strong>
+                            </a>
+                        </small>
+                    </h1>
+                </div>
+                <div id="breadcrumb" class="breadcrumb-top">
+                    <a href="/" title="Go to Home" class="tip-bottom">
+                        <i class="fa fa-home"></i>Home</a>
+                    <a href="/assignments" class="current">Assignments</a>
+                </div>
+            {{/with}}
+
+            <!--{{#with assignment}}-->
+                <!--<div class="container-fluid contactable-content assignment-details">-->
+                    <!--<div class="row">-->
+
+                        <!--<div class="col-sm-7 col-lg-9 margin-top-15 contactable-left-col">-->
+                        <!--{{>assignment_tabs assignment=. documentCount=documentCount assignmentCount=assignmentCount noteCount=noteCount}}-->
+                        <!--</div>-->
+
+                        <!--&lt;!&ndash; /.col-lg&ndash;&gt;-->
+
+                        <!--&lt;!&ndash; Right Column &ndash;&gt;-->
+                        <!--<div class="col-sm-4 col-lg-3 margin-top-15 has-tabs">-->
+                            <!--<div >-->
+                                <!--{{#with originalAssignment}}-->
+                                <!--{{>tagsBox  }}-->
+                                <!--{{/with}}-->
+
+
+                            <!--</div>-->
+
+                        <!--</div>-->
+                    <!--&lt;!&ndash; /.container-fluid &ndash;&gt;-->
+                     <!--</div>-->
+                <!--</div>-->
+            <!--{{/with}}-->
+        </div>
+        <!-- /.content -->
+    </div>
+</template>
+
+<template name="assignment_tabs">
+    {{#with assignment}}
+    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
+        <!--<li class="active"><a href="#profile-description" data-toggle="tab">Assignment Description</a></li>-->
+        <!--<li ><a href="#profile-detail" data-toggle="tab">Detail</a></li>-->
+        <!--&lt;!&ndash;<li ><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>&ndash;&gt;-->
+        <!--<li ><a href="#profile-candidates" data-toggle="tab">Candidates</a></li>-->
+        <!--<li ><a href="#profile-assignments" data-toggle="tab">Assignments</a></li>-->
+        <!--<li ><a href="#profile-activity" data-toggle="tab">Activity</a></li>-->
+        <!--<li ><a href="#profile-tasks" data-toggle="tab">Tasks</a></li>-->
+        <li ><a href="#profile-notes" data-toggle="tab">Notes</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <!--<div class="tab-pane " id="profile-candidates">{{>candidates type='assignment' id=_id}}</div>-->
+        <!--<div class="tab-pane " id="profile-assignments">{{>assignment type='assignment' id=_id}}</div>-->
+        <!--<div class="tab-pane " id="profile-activity">{{>assignmentActivity}}</div>-->
+        <!--<div class="tab-pane " id="profile-detail">{{> assignmentDetail}}</div>-->
+        <!--<div class="tab-pane active" id="profile-description">{{> assignmentDescription}}</div>-->
+        <!--<div class="tab-pane" id="profile-tasks">{{> tasksBox}}</div>-->
+        <div class="tab-pane" id="profile-notes">{{> notesItem}}</div>
+
+    </div>
+  {{/with}}
+</template>
+
+

@@ -1,6 +1,5 @@
 Deals = new Meteor.Collection("deals", {
     transform: function (deal) {
-        console.log('deal transform',deal);
         deal.displayName = deal.dealName;
 
 

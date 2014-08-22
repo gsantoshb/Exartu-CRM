@@ -1,7 +1,7 @@
 var self={}
 Utils.reactiveProp(self,'showOld', false);
 
-Template.assignment.helpers({
+Template.jobAssignment.helpers({
   currentAssignments:function(assignment){
     var job=Jobs.findOne({
       _id: Session.get('entityId')
@@ -25,7 +25,7 @@ Template.assignment.helpers({
     })
   }
 })
-Template.assignment.events({
+Template.jobAssignment.events({
   'click .editAssign':function () {
     var options={};
     var job=Jobs.findOne({

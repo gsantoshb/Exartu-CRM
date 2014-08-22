@@ -204,12 +204,4 @@ Template.contact_header.events({
 var getLinkType= function(){
   return Enums.linkTypes.contactable;
 }
-Template.contact_tabs.helpers({
-  getLinkType: getLinkType,
-})
-Template.customer_tabs.helpers({
-  getLinkType: getLinkType,
-})
-Template.employee_tabs.helpers({
-  getLinkType: getLinkType,
-})
+

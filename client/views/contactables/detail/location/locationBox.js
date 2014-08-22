@@ -44,6 +44,7 @@ Object.defineProperty(data, "location", {
     this._dep.changed();
   }
 });
+
 Template.contactableLocationBox.editLocation = function () {
   return data.location;
 }
@@ -104,6 +105,21 @@ Template.contactableLocationBox.events({
 
 Template.contactableLocationBox.created=function(){
   EditLocationMode.value=false;
+}
+
+var geocode= function(location){
+  var geocoder = new google.maps.Geocoder;
+  geocoder.geocode({
+    address: location.address + ', ' + location.postalCode
+  }, function (results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      GAnalytics.event("/contactable", "Set location success");
+      Contactables.update({_id: Session.get('entityId')}, {$set: { location: Utils.getLocation(results[0]) } });
+    } else {
+      GAnalytics.event("/contactable", "Set location fail");
+      data.location = null;
+    }
+  })
 }
 
 Template.contactableLocationBox.rendered = function () {
@@ -167,6 +183,18 @@ Template.contactableLocationBox.rendered = function () {
     }
   }
   Meteor.autorun(mapUpdate);
+
+  var loc;
+  if (EditLocationMode.value) {
+    loc = data.location;
+  } else {
+    loc = Contactables.findOne({_id: Session.get('entityId')}).location
+  }
+  if (loc && !loc.lat){
+    geocode(loc);
+  }
+
+
   $map.resize(_.debounce(function () {
     if (google && map)
       google.maps.event.trigger(map, 'resize');

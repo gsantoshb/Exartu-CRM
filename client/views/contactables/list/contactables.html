@@ -28,10 +28,10 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="actions-head col-md-7 col-lg-7">
+                    <div class="col-md-8 col-lg-8">
                         {{>contactablesListSearch}}
                     </div>
-                    <div class="col-md-4 col-md-push-1 col-lg-push-1 col-lg-4">
+                    <div class="col-md-4 col-lg-4">
                         <sidebar>
                             {{> contactablesFilters }}
                         </sidebar>
@@ -56,13 +56,10 @@
 <template name="contactablesFilters">
     <div class="filter">
         <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-            <strong>Filters</strong>
+            <strong>Filter</strong>
         </a>
         <div class="filter-list" id="filter-body">
             <div class="filter-item">
-                <div class="item-title">
-                    <strong>Type</strong>
-                </div>
                 <div class="item-body">
                     {{#each contactableTypes2}}
                         <button type="button" class="typeSelect {{typeOptionClass .}}">{{name}}</button>
@@ -70,9 +67,7 @@
                 </div>
             </div>
             <div class="filter-item">
-                <div class="item-title">
-                    <strong>Mode</strong>
-                </div>
+
                 <div class="item-body">
                     <div class="checkbox">
                         <label>
@@ -98,9 +93,9 @@
                 </div>
             </div>
             <div class="filter-item">
-                <div class="item-title">
-                    <strong>Tags</strong>
-                </div>
+                <!--<div class="item-title">-->
+                    <!--<strong>Tags</strong>-->
+                <!--</div>-->
                 <div class="item-body">
                     {{#objectProperty property=tags}}
                     <button type="button" class="tag btn btn-xs btn-primary">
@@ -229,6 +224,25 @@
                 <!-- /.table-item-cell -->
             </div>
             <!-- /.col-sm-3 -->
+            {{#if isESSearch}}
+                <div class="col-xs-12">
+                    <div class="col-xs-10">
+                        <small class="text-muted"> Properties matched </small>
+                        <div> 
+                            {{#each _match.properties}}
+                                <span class="label label-default" style="margin-right: 3px"> {{.}} </span>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <div class="col-xs-offset-10" >
+                        <small class="text-muted"> Score </small>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{_match.score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{_match.score}}%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
         </div>
         <!-- /.row -->
     </div>
@@ -273,35 +287,37 @@
 <template name="contactablesListSearch">
     <div class="actions-head">
         <div class="row">
-            <div class="col-md-4 col-lg-4">
-                <!-- Single button -->
-                <div class="btn-group">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" title="Add">
-                            <span class="fa fa-plus"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
-                            {{#each contactableTypes}}
-                                <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
-                            {{/each}}
-                        </ul>
-                    </div>
-                    <a type="button" title="Create from resume" class="btn btn-default" href="/resumeparser"><i class="fa fa-cloud-upload"></i></a>
+                <div class="col-sm-8 col-md-8 col-lg-8">
 
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="input-group">
-                    {{#objectProperty property=searchString}}
-                        <input type="text" class="form-control" placeholder="" value="{{value}}">
-                    {{/objectProperty}}
+                    <div class="pull-left suffix-5">
+                        <!-- Single button -->
+                        <div class="btn-group">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" title="Add">
+                                    <span class="fa fa-plus"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
+                                    {{#each contactableTypes}}
+                                    <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                            <a type="button" title="Create from resume" class="btn btn-default" href="/resumeparser"><i class="fa fa-cloud-upload"></i></a>
+
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        {{#objectProperty property=searchString}}
+                        <input type="text" class="form-control" placeholder="Search Contacts" value="{{value}}">
+                        {{/objectProperty}}
                     <span class="input-group-btn">
                         <button class="btn btn-primary" type="button">
                             <i class="fa fa-search"></i>
                         </button>
                     </span>
-                </div>
-            </div><!-- /.col-lg-5 -->
-        </div><!-- /.row -->
+                    </div>
+                </div><!-- /.col-lg-5 -->
+            </div><!-- /.row -->
     </div>
 </template>

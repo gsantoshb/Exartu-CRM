@@ -103,7 +103,7 @@ Jobs.after.insert(function (userId, doc) {
 });
 
 
-//assignments
+//list
 Assignments.after.insert(function (userId, doc) {
   var data = {};
   data.dateCreated = doc.dateCreated;

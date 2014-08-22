@@ -21,12 +21,12 @@
                 </div>
             {{/with}}
 
-            {{#with job}}
+
                 <div class="container-fluid contactable-content job-details">
                     <div class="row">
 
-                        <div class="col-sm-7 col-lg-9 margin-top-15 contactable-left-col">
-                        {{>job_tabs job=. documentCount=documentCount jobCount=jobCount noteCount=noteCount}}
+                        <div class="col-sm-7 col-lg-12 margin-top-15 contactable-left-col">
+                        {{>job_tabs job=job getCustomer=getCustomer jobCollection=jobCollection originalJob=originalJob documentCount=documentCount jobCount=jobCount noteCount=noteCount}}
                         </div>
 
                         <!-- /.col-lg-->
@@ -34,14 +34,6 @@
                         <!-- Right Column -->
                         <div class="col-sm-4 col-lg-3 margin-top-15 has-tabs">
                             <div >
-                                <!-- /.box -->
-                                {{>jobRates}}
-                                <!-- Tags -->
-                                {{#with originalJob}}
-                                {{>tagsBox  }}
-                                {{/with}}
-                                {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
-
 
                             </div>
 
@@ -49,17 +41,18 @@
                     <!-- /.container-fluid -->
                      </div>
                 </div>
-            {{/with}}
+
         </div>
         <!-- /.content -->
     </div>
 </template>
 
 <template name="job_tabs">
-    {{#with job}}
-    <ul class="nav nav-tabs  contactable-nav-tabs-main bottom-20">
-        <li class="active"><a href="#profile-description" data-toggle="tab">Job Description</a></li>
-        <li ><a href="#profile-detail" data-toggle="tab">Detail</a></li>
+
+    <ul class="nav nav-pills  contactable-nav-tabs-main bottom-20">
+        <li class="active"><a href="#profile-detail" data-toggle="tab">Detail</a></li>
+        <li ><a href="#profile-description" data-toggle="tab">Job Description</a></li>
+
         <!--<li ><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>-->
         <li ><a href="#profile-candidates" data-toggle="tab">Candidates</a></li>
         <li ><a href="#profile-assignments" data-toggle="tab">Assignments</a></li>
@@ -69,16 +62,22 @@
     </ul>
 
     <div class="tab-content">
+        {{#with job}}
         <div class="tab-pane " id="profile-candidates">{{>candidates type='job' id=_id}}</div>
-        <div class="tab-pane " id="profile-assignments">{{>assignment type='job' id=_id}}</div>
+        <div class="tab-pane " id="profile-assignments">{{>jobAssignment type='job' id=_id}}</div>
         <div class="tab-pane " id="profile-activity">{{>jobActivity}}</div>
-        <div class="tab-pane " id="profile-detail">{{> jobDetail}}</div>
-        <div class="tab-pane active" id="profile-description">{{> jobDescription}}</div>
-        <div class="tab-pane" id="profile-tasks">{{> taskBox}}</div>
-        <div class="tab-pane" id="profile-notes">{{> notesTemplate}}</div>
-
+        <div class="tab-pane " id="profile-description">{{> jobDescription}}</div>
+        <div class="tab-pane" id="profile-tasks">{{> tasksBox}}</div>
+        <div class="tab-pane" id="profile-notes">{{> notesItem}}</div>
+        {{/with}}
+        <div class="tab-pane active" id="profile-detail">
+            {{#with job}}  {{> jobDetail}}  {{/with}}
+            {{#with originalJob}}{{>tagsBox  }}{{/with}}
+            {{#with job}}{{>jobRates ..}}  {{/with}}
+            {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
+        </div>
     </div>
-  {{/with}}
+
 </template>
 
 

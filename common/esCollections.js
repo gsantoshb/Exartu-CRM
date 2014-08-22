@@ -2,13 +2,13 @@
 ES.syncCollection({
 	collection: Contactables,
 	fields: [
-		'person.firstName', 'person.lastName', 'person.middleName', 'person.jobTitle',
-		'organization.organizationName',
-		'Customer.department',
-		'Contact.statusNote',
-		'Employee.statusNote',
-		'Employee.recruiterStatus',
-		'tags', 'contactMethods.value', 'location.displayName', 'notes.value, resume.value'
+		{ name: 'person.firstName', label: 'First name'}, { name: 'person.lastName', label: 'Last name'}, { name: 'person.middleName', label: 'Middle name'}, { name: 'person.jobTitle', label: 'Job title'},
+		{ name: 'organization.organizationName', label: 'Organization name'},
+		{ name: 'Customer.department', label: 'Deparment'},
+		{ name: 'Contact.statusNote', label: 'Status note'},
+		{ name: 'Employee.statusNote', label: 'Status note'},
+		{ name: 'Employee.recruiterStatus', label: 'Recruiter status'},
+		{ name: 'tags', label: 'tags'}, { name: 'contactMethods.value', label: 'Contact method'}, { name: 'location.displayName', label: 'Location'}, { name: 'notes.value', label: 'Notes'}
 	],
 	// Retrive data related to items on this collections
 	// If idFiled is defined then its a "inverse relation"

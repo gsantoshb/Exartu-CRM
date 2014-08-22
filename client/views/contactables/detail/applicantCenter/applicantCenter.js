@@ -1,9 +1,11 @@
 Template.applicantCenter.helpers({
+
   isInvited: function(){
+    console.log('appcenter',this,this.entity)
     return !! this.entity.invitation;
   },
   isRegistered: function(){
-    return !! this.entity.user;
+    return !! this.entity.user;;
   },
   email: function(){
     var email= _.findWhere(this.entity.contactMethods, { typeEnum: Enums.contactMethodTypes.email } );

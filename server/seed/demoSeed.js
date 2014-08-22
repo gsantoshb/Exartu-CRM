@@ -1037,7 +1037,7 @@ var loadTasks = function (hierId, usermane, userId) {
             begin: today,
             end: tomorrow,
             assign: [userIds[Math.floor(Math.random() * userIds.length)]],
-            note: notes[Math.floor(Math.random() * notes.length)],
+            msg: notes[Math.floor(Math.random() * notes.length)],
             completed: null,
             hierId: hierId,
             userId: userId,

@@ -313,16 +313,15 @@ Utils.getTypeFromTypeString=function (str)
 
 Utils.getCollectionFromEntity=function(entity) {
   var strtype=Utils.getLinkTypeFromEntity(entity);
-  if ($.inArray(strtype, ['Employee','Contact','Customer'])!=-1) return Contactables;
-  if ($.inArray(strtype, ['job'])!=-1) return Jobs;
-  if ($.inArray(strtype, ['deal'])!=-1) return Deals;
+  if ($.inArray(strtype, ['Employee','Contact','Customer','contactable'])!=-1) return Contactables;
+  if ($.inArray(strtype, ['Job','job'])!=-1) return Jobs;
+  if ($.inArray(strtype, ['Deal','deal'])!=-1) return Deals;
 //  var type=Utils.getTypeFromTypeString(strtype);
 //  console.log('st',strtype,type);
 //  return Utils.getCollectionFromType(type);
 }
 
 Utils.getCollectionFromType=function(type){
-  console.log('type2',type,Enums.linkTypes.contactable);
   switch (type) {
     case Enums.linkTypes.contactable.value:
       return ContactablesFS;
@@ -436,5 +435,31 @@ Utils.getEntityTypeFromRouter=function()
     case 'job':
       return Enums.linkTypes.job.value;
       break;
+    case 'deal':
+      return Enums.linkTypes.deal.value;
+    case 'assignment':
+      return Enums.linkTypes.assignment.value;
+    case 'candidate':
+      return Enums.linkTypes.candidate.value;
+      break;
+    default :
+      return null;
+  }
+}
+Utils.getEntitiesFromType=function(type)
+{
+  switch (selectedType){
+    case Enums.linkTypes.contactable.value:
+      return Contactables.find();
+    case Enums.linkTypes.job.value:
+      return Jobs.find();
+    case Enums.linkTypes.deal.value:
+      return Deals.find();
+    case Enums.linkTypes.assignment.value:
+      return Assignments.find();
+    case Enums.linkTypes.candidate.value:
+      return Candidates.find();
+    default :
+      return [];
   }
 }

@@ -178,6 +178,12 @@ newObjType({
       defaultValue: null,
       required: false
     }, {
+      name: 'numberRequired',
+      displayName: 'Number required',
+      fieldType: 'number',
+      defaultValue: 1,
+      required: false
+    }, {
       name: 'duration',
       displayName: 'Duration',
       fieldType: 'lookUp',
@@ -287,6 +293,10 @@ newObjType({
     collection: Deals,
     name: 'deal',
     objGroupType: Enums.objGroupType.deal,
+    style: {
+      icon: 'briefcase',
+      color: 'yellow'
+    },
     services: ['messages', 'tasks', 'notes', 'tags'],
     fields: [
       {
@@ -339,25 +349,43 @@ newObjType({
       }
   ]
 });
+
+
 newObjType({
-    objGroupType: Enums.objGroupType.deal,
-    parent: 'deal',
-    name: 'Deal',
-    style: {
-        icon: 'briefcase',
-        color: 'yellow'
-    },
-    services: [],
-    fields: [
-
-        {
-            name: 'unused',
-            displayName: 'unused deal field',
-            required: false,
-            showInAdd: false
-        }
-
-
+  collection: Assignments,
+  name: 'assignment',
+  style: {
+    icon: 'briefcase',
+    color: 'blue'
+  },
+  objGroupType: Enums.objGroupType.assignment,
+  services: ['messages', 'tasks', 'notes', 'tags'],
+  fields: [
+    {
+      name: 'statusNote',
+      displayName: 'Status note',
+      showInAdd: true,
+      required: false
+    }
     ]
 });
 
+
+newObjType({
+  collection: Candidates,
+  name: 'candidate',
+  style: {
+    icon: 'briefcase',
+    color: 'blue'
+  },
+  objGroupType: Enums.objGroupType.candidate,
+  services: ['messages', 'tasks', 'notes', 'tags'],
+  fields: [
+    {
+      name: 'statusNote',
+      displayName: 'Status note',
+      showInAdd: true,
+      required: false
+    }
+  ]
+});
