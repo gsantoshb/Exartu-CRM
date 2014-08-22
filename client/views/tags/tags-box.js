@@ -7,7 +7,6 @@ Template.tagsBox.created=function(){
 }
 Template.tagsBox.tags = function() {
   coll=Utils.getCollectionFromEntity(this);
-  console.log('tags',this,coll);
   if (!_.isArray(this.tags)) this.tags=[];
   objdef = new Utils.ObjectDefinition({
 

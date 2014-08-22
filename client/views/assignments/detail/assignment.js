@@ -61,7 +61,7 @@ Template.assignment.helpers({
 
     var originalAssignment=Assignments.findOne({ _id: Session.get('entityId') });
     Session.set('assignmentDisplayName', originalAssignment.displayName);
-    console.log('id',Session.get('entityId') ,'orig',originalAssignment);
+
     if (!assignment)
       assignment = generateReactiveObject(originalAssignment);
     return assignment;

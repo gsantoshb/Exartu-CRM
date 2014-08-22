@@ -313,7 +313,6 @@ Utils.getTypeFromTypeString=function (str)
 
 Utils.getCollectionFromEntity=function(entity) {
   var strtype=Utils.getLinkTypeFromEntity(entity);
-  console.log('strtype',strtype);
   if ($.inArray(strtype, ['Employee','Contact','Customer','contactable'])!=-1) return Contactables;
   if ($.inArray(strtype, ['Job','job'])!=-1) return Jobs;
   if ($.inArray(strtype, ['Deal','deal'])!=-1) return Deals;
@@ -323,7 +322,6 @@ Utils.getCollectionFromEntity=function(entity) {
 }
 
 Utils.getCollectionFromType=function(type){
-  console.log('type2',type,Enums.linkTypes.contactable);
   switch (type) {
     case Enums.linkTypes.contactable.value:
       return ContactablesFS;

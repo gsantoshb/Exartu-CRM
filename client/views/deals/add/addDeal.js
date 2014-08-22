@@ -1,6 +1,5 @@
 DealAddController = RouteController.extend({
     data: function(){
-        console.log('obj',this.params.objType,this.params);
         Session.set('objType',this.params.objType);
     },
     action: function () {
