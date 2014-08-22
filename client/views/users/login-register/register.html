@@ -1,0 +1,81 @@
+<template name="register">
+    <div class="register-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="pull-right"><a class="btn btn-primary top-10" href="/login">Sign In</a></div>
+                    <a href="#"><img alt="Exartu" src="img/logo.png"></a>
+                </div>
+            </div>
+        </div><!-- /.container -->
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1>Sign Up</h1>
+
+                {{#if isRegistering}}
+                {{#autoForm schema="RegisterSchema" id="registerForm"}}
+                    <fieldset>
+                        <div class="form-group {{#if afFieldIsInvalid name='username'}}has-error{{/if}}">
+                            {{> afFieldInput name='username' class="input-lg" placeholder="Choose your Exartu username"}}
+                            {{#if afFieldIsInvalid name='username'}}
+                            <span class="help-block">{{afFieldMessage name='username'}}</span>
+                            {{/if}}
+                        </div>
+
+                        <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
+                            {{> afFieldInput name='email' class="input-lg" placeholder="Email"}}
+                            {{#if afFieldIsInvalid name='email'}}
+                            <span class="help-block">{{afFieldMessage name='email'}}</span>
+                            {{/if}}
+                        </div>
+
+                        <div class="form-group {{#if afFieldIsInvalid name='password'}}has-error{{/if}}">
+                            {{> afFieldInput name='password' class="input-lg" placeholder="Choose Password"  type="password"}}
+                            {{#if afFieldIsInvalid name='password'}}
+                            <span class="help-block">{{afFieldMessage name='password'}}</span>
+                            {{/if}}
+                        </div>
+
+                        <div class="form-group {{#if afFieldIsInvalid name='confirmPassword'}}has-error{{/if}}">
+                            {{> afFieldInput name='confirmPassword' class="input-lg" placeholder="Confirm Password"  type="password"}}
+                            {{#if afFieldIsInvalid name='confirmPassword'}}
+                            <span class="help-block">{{afFieldMessage name='confirmPassword'}}</span>
+                            {{/if}}
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-primary top-10 btn-lg">Create Account</button>
+                        </div>
+                    </fieldset>
+                {{/autoForm}}
+                <div class="alert-box alert-danger" style="margin-top: 20px;">
+                    <!--{{error}}-->
+                </div>
+
+                {{else}}
+                <div class="col-md-8 text-center" style="margin-bottom: 150px">
+                    <br><br>
+                    <h4>Congratulations, your account has been created</h4>
+                    <p>Before login you should verify your email account, check your inbox</p>
+                </div>
+                {{/if}}
+
+                <br><br><br><br>
+                <hr>
+                <div class="row">
+                    <div class="col-md-8 text-center">
+                        <br><br>
+                        <h4>Take Exartu with you.</h4>
+                        <p>Switch between devices, and pick up wherever you left off.</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <img alt="Exartu CRM mobile" src="img/exartu-mobile.jpg">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>

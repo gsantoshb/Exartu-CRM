@@ -9,7 +9,7 @@ Router.configure({
     return [HierarchiesHandler];
   },
   onBeforeAction: function () {
-    if (!Meteor.userId() && Router.current().route.name != 'login' && Router.current().route.name != 'notFound') {
+    if (!Meteor.userId() && Router.current().route.name != 'login' && Router.current().route.name != 'register' && Router.current().route.name != 'notFound') {
       this.redirect('login');
     }
   },
@@ -30,7 +30,7 @@ Router.map(function () {
       }
       GAnalytics.pageview();
       this.render();
-    },
+    }
   });
 
   this.route('login', {
@@ -57,9 +57,14 @@ Router.map(function () {
     }
   });
 
+  this.route('register', {
+    path: '/register',
+    controller: 'RegisterController'
+  });
+
   this.route('contactables', {
     path: '/contactables/:type?',
-    controller: 'ContactablesController',
+    controller: 'ContactablesController'
   });
 
   this.route('contactable', {
@@ -128,22 +133,22 @@ Router.map(function () {
 
   this.route('tasks', {
     path: '/tasks',
-    controller: 'TasksController',
+    controller: 'TasksController'
   });
 
   this.route('notes', {
     path: '/notes',
-    controller: 'NotesController',
+    controller: 'NotesController'
   });
 
   this.route('assignments', {
     path: '/assignments',
-    controller: 'AssignmentsController',
+    controller: 'AssignmentsController'
   });
 
    this.route('candidates', {
     path: '/candidates',
-    controller: 'CandidatesController',
+    controller: 'CandidatesController'
   });
 
   this.route('lookupManagement', {
@@ -158,7 +163,7 @@ Router.map(function () {
 
   this.route('resumeParser', {
     path: '/resumeparser',
-    controller: 'ResumeParserController',
+    controller: 'ResumeParserController'
 //    plans: [SubscriptionPlan.plansEnum.enterprise]
   })
 
