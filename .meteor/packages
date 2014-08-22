@@ -39,3 +39,6 @@ stripe
 force-ssl
 connection-banner
 es
+simple-schema
+autoform
+collection2
