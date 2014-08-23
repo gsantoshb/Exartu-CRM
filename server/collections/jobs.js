@@ -16,25 +16,30 @@ Jobs.allow({
         return true;
     }
 });
-
 Jobs.before.insert(function (userId, doc) {
-    var user = Meteor.user();
-    doc.hierId = user.hierId;
-    doc.userId = user._id;
-    doc.dateCreated = Date.now();
-});
+  try{
+    var user = Meteor.user() || {};
+  }catch (e){
+    //when the insert is trigger from the server
+    var user= { }
+  }
+  doc.hierId = user.hierId || doc.hierId;
+  doc.userId = user._id || doc.userId;
+  doc.dateCreated = Date.now();
 
+  var shortId = Meteor.require('shortid');
+  var aux = shortId.generate();
+  doc.searchKey = aux;
+  console.log('shortId: ' + aux);
+});
 Meteor.startup(function () {
     Meteor.methods({
       addJob: function (job) {
+        if (true) {
           job._id = new Meteor.Collection.ObjectID()._str;
-//            if (beforeInsertOrUpdateJob(job)) {
-              Jobs.insert(job);
-              return job;
-//            } else {
-//                console.error('Job is not valid');
-//                console.dir(job);
-//            }
+          Jobs.insert(job);
+          return job;
+        }
       },
       updateJob: function (job) {
           if (beforeInsertOrUpdateJob(job)) {
@@ -63,7 +68,7 @@ Meteor.startup(function () {
 });
 
 /*
- * extends and validate a job before inserting or updating
+ * extends and validate a job  inserting or updating
  */
 var beforeInsertOrUpdateJob = function (job) {
     var user = Meteor.user();
@@ -71,7 +76,7 @@ var beforeInsertOrUpdateJob = function (job) {
         throw new Meteor.Error(401, "Please sign in");
 
     if (!job.objNameArray || !job.objNameArray.length) {
-        console.error('the job must have at least one objName');
+        console.error('the job must have at least one objName',job);
         throw new Meteor.Error(401, "invalid contactable");
     }
     var objTypes = ObjTypes.find({
@@ -79,7 +84,6 @@ var beforeInsertOrUpdateJob = function (job) {
             $in: job.objNameArray
         }
     }).fetch();
-    console.log('jobsobj',objTypes,deal);
     if (objTypes.length != job.objNameArray.length) {
         console.error('the job objNameArray is suspicious');
         console.dir(job.objNameArray);

@@ -7,7 +7,7 @@ Template.assignmentsBox.created=function(){
 }
 
 Template.assignmentsBox.isJob=function() {
-  if (entityType==Enums.linkTypes.employee.value ) return true;
+  if (entityType==Enums.linkTypes.job.value) return true;
 };
 
 var generateFieldsSearch = function(fields) {
@@ -53,10 +53,10 @@ Template.assignmentsBox.assignments = function() {
   };
 
   if (isEntitySpecific) {
-    if (entityType==Enums.linkTypes.employee.value )
-      q.links = { $elemMatch: { employee: Session.get('entityId') } };
+//    if (entityType==Enums.linkTypes.employee.value )
+//      q.links = { $elemMatch: { employee: Session.get('entityId') } };
     if (entityType==Enums.linkTypes.job.value )
-      q.links = { $elemMatch: { job: Session.get('entityId') } };
+      searchQuery.links = { $elemMatch: { job: Session.get('entityId') } };
   };
   return Assignments.find(searchQuery, {
       transform: function(assignment) {
@@ -78,9 +78,9 @@ Template.assignmentsBox.events = {
     searchString = e.currentTarget.value;
     searchDep.changed();
   },
-  'click .addAssignment': function(){
+  'click .addAssignment': function(e){
       Session.set('addOptions', {job:  Session.get('entityId')});
-      Router.go('/assignmentAdd/' + this.name);
+      Router.go('/assignmentAdd/assignment' );
       e.preventDefault();
   }
 };

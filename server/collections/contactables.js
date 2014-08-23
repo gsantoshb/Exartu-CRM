@@ -476,7 +476,6 @@ var extendContactable = function (contactable, objTypes) {
  * objTypes must be an array with the object's types that the contactable references
  */
 var Validate = function (contactable, objTypes) {
-
   if (!validateContactable(contactable)) {
     return false;
   }

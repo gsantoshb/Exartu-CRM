@@ -82,7 +82,6 @@ Template.job.helpers({
   getCustomer:function(){
 
     var j=Jobs.findOne({ _id: Session.get('entityId')});
-    console.log('get customer',j && j.customer);
     return j && j.customer;
   },
   noteCount: function() {

@@ -160,11 +160,13 @@ newObjType({
     }, {
       name: 'statusNote',
       displayName: 'Status Note',
-      required: false
+      required: false,
+      showInAdd: false
     }, {
       name: 'jobDescription',
       displayName: 'Job Description',
-      required: false
+      required: false,
+      showInAdd: false
     }, {
       name: 'startDate',
       displayName: 'Start date',
@@ -182,7 +184,8 @@ newObjType({
       displayName: 'Number required',
       fieldType: 'number',
       defaultValue: 1,
-      required: false
+      required: false,
+      showInAdd: false
     }, {
       name: 'duration',
       displayName: 'Duration',
@@ -359,22 +362,26 @@ newObjType({
     color: 'blue'
   },
   objGroupType: Enums.objGroupType.assignment,
-  services: ['messages', 'tasks', 'notes', 'tags'],
+//  services: ['messages', 'tasks', 'notes', 'tags'],
+  services: [],
   fields: [
     {
       name: 'statusNote',
       displayName: 'Status Note',
+      showInAdd: false,
       required: false
     }, {
       name: 'startDate',
       displayName: 'Start date',
       fieldType: 'date',
+      showInAdd: false,
       defaultValue: null,
-      required: true
+      required: false
     }, {
       name: 'endDate',
       displayName: 'End date',
       fieldType: 'date',
+      showInAdd: false,
       defaultValue: null,
       required: false
     }
@@ -396,7 +403,7 @@ newObjType({
     {
       name: 'statusNote',
       displayName: 'Status note',
-      showInAdd: true,
+      showInAdd: false,
       required: false
     }
   ]

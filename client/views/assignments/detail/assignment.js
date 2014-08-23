@@ -63,7 +63,6 @@ Template.assignment.helpers({
     Session.set('assignmentDisplayName', originalAssignment.displayName);
     if (originalAssignment.tags==null)
     {
-      console.log('setnulls');
       originalAssignment.tags=[];
     }
     if (!assignment)
@@ -102,9 +101,6 @@ Template.assignment.helpers({
   },
   originalEmployee:function(){
     var asg=Assignments.findOne({ _id: Session.get('entityId') });
-
-
-    console.log('emp',asg);
     return Contactables.findOne({_id: asg.employee});
   }
 //  isType:function(typeName){

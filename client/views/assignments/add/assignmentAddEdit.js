@@ -1,4 +1,4 @@
-JobAddController = RouteController.extend({
+AssignmentAddController = RouteController.extend({
   data: function(){
     Session.set('objType',this.params.objType);
   },
@@ -60,6 +60,7 @@ Template.addAssignmentPage.events({
   'click .btn-success': function(){
     if (!dType.isValid(model)){
       dType.displayAllMessages(model);
+      console.log('assignment dtype invalid',model);
       return;
     }
     var obj=dType.buildAddModel(model);
@@ -70,6 +71,7 @@ Template.addAssignmentPage.events({
         console.dir(err)
       }
       else{
+        console.log('assignment result',result);
         Router.go('/assignment/' + result._id);
       }
     });

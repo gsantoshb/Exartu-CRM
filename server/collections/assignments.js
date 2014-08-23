@@ -10,6 +10,19 @@ Meteor.publish('assignments', function () {
         $or: filterByHiers(user.hierId)
     });
 });
+
+Meteor.startup(function () {
+  Meteor.methods({
+    addAssignment: function (asg) {
+      if (true) {
+        asg._id = new Meteor.Collection.ObjectID()._str;
+        Assignments.insert(asg);
+        return asg;
+      }
+    }
+  })
+});
+
 Assignments.allow({
   insert: function () {
     return true;
@@ -19,30 +32,21 @@ Assignments.allow({
   }
 });
 
-Assignments.before.insert(function(userId, doc, fieldNames, modifier, options){
-  var job= Jobs.findOne({ _id: doc.job });
-  if (! job)
-    return false;
-  var user = Meteor.user();
-  if (user == null)
-    throw new Meteor.Error(401, "Please sign in");
-
-  if (!doc.objNameArray || !doc.objNameArray.length) {
-    console.error('the assignment must have at least one objName');
-    throw new Meteor.Error(401, "invalid assignment");
+Assignments.before.insert(function (userId, doc) {
+  try{
+    var user = Meteor.user() || {};
+  }catch (e){
+    //when the insert is trigger from the server
+    var user= { }
   }
-  var objTypes = ObjTypes.find({
-    objName: {
-      $in: doc.objNameArray
-    }
-  }).fetch();
-  
-  var user = Meteor.user();
-  doc.hierId = user.hierId;
-  doc.userId = user._id;
+  doc.hierId = user.hierId || doc.hierId;
+  doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();
-  extendAssignment(doc, objTypes)
 
+  var shortId = Meteor.require('shortid');
+  var aux = shortId.generate();
+  doc.searchKey = aux;
+  console.log('shortId: ' + aux);
 });
 
 //<editor-fold desc="************ update job and contactable ****************">
