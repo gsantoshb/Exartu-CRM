@@ -149,6 +149,11 @@ Router.map(function () {
     path: '/assignment/:_id',
     controller: 'AssignmentController'
   });
+    this.route('addAssignmentPage', {
+        path: '/assignmentAdd/:objType',
+        controller: 'AssignmentAddController',
+        waitOn: [dType.ObjTypesHandler]
+    });
 
    this.route('candidates', {
     path: '/candidates',
