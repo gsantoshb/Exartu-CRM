@@ -363,10 +363,22 @@ newObjType({
   fields: [
     {
       name: 'statusNote',
-      displayName: 'Status note',
-      showInAdd: true,
+      displayName: 'Status Note',
+      required: false
+    }, {
+      name: 'startDate',
+      displayName: 'Start date',
+      fieldType: 'date',
+      defaultValue: null,
+      required: true
+    }, {
+      name: 'endDate',
+      displayName: 'End date',
+      fieldType: 'date',
+      defaultValue: null,
       required: false
     }
+
     ]
 });
 

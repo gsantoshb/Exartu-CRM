@@ -1,0 +1,64 @@
+<!--<template name="assignmentAdd">-->
+    <!--<div class="modal fade" id="addContactableModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" name="addContactableModal">-->
+        <!--<div class="modal-dialog">-->
+            <!--<div class="modal-content">-->
+
+                <!--<div class="modal-header">-->
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+                    <!--<h4 class="modal-title" id="myModalLabel">{{action}} Assignments-->
+
+                    <!--</h4>-->
+                <!--</div>-->
+
+                <!--<div class="modal-body">-->
+                    <!--<form role="form" class="form-horizontal">-->
+                        <!--<div class="form-group">-->
+                            <!--<label class="col-sm-2 control-label">Employee:</label>-->
+                            <!--<div class="col-sm-10">-->
+                                <!--<select class="form-control employeeSelect">-->
+                                    <!--<option value="null" selected="{{isSelected null}}">--select--</option>-->
+                                    <!--{{#each employees}}-->
+                                        <!--<option value="{{_id}}" selected="{{isSelected _id}}">{{displayName}}</option>-->
+                                    <!--{{/each}}-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--{{#with assignment}}-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-2 control-label">Start:</label>-->
+                                <!--<div class="col-sm-10 startDate">-->
+                                    <!--{{#dateTimePicker value=start from=getJobStart to=getJobEnd}}-->
+                                    <!--{{/dateTimePicker}}-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<div class="col-sm-2 control-label">-->
+                                    <!--<div class="checkbox" style="padding-top: 0">-->
+                                        <!--<label class="control-label"><input type="checkbox" class="hasEnded" checked="{{end}}"> End:</label>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="col-sm-10 endDate">-->
+                                    <!--{{#if end}}-->
+                                        <!--{{#dateTimePicker value=end from=getJobStart to=getJobEnd}}-->
+                                        <!--{{/dateTimePicker}}-->
+                                    <!--{{else}}-->
+                                        <!--<label class="text-muted" style="margin-top: 7px;">No end date specified</label>-->
+                                    <!--{{/if}}-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<hr/>-->
+                            <!--<h4 style="text-align: center">Hourly Rates</h4>-->
+                            <!--{{#ratesEdit rates=rates}}-->
+                            <!--{{/ratesEdit}}-->
+                        <!--{{/with}}-->
+                    <!--</form>-->
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                    <!--<a href="#" class="btn" data-dismiss="modal">Close</a>-->
+                    <!--<button class="btn btn-primary save">Save</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</template>-->
+

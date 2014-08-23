@@ -48,40 +48,6 @@ Meteor.startup(function () {
                 console.dir(deal);
             }
         },
-        addDealTag: function (dealId, tag) {
-            // TODO: validations
-
-            Deals.update({
-                _id: dealId
-            }, {
-                $addToSet: {
-                    tags: tag
-                }
-            });
-        },
-        removeDealTag: function (dealId, tag) {
-            // TODO: validations
-
-            Deals.update({
-                _id: dealId
-            }, {
-                $pull: {
-                    "tags": tag
-                }
-            });
-        },
-        addDealNote: function (dealId, note) {
-            // TODO: validations
-            note.userId = Meteor.userId();
-            note.dateCreated = Date.now();
-            Deals.update({
-                _id: dealId
-            }, {
-                $addToSet: {
-                    notes: note
-                }
-            });
-        },
         addDealQuote: function (dealId, quote) {
             // TODO: validations
             quote.userId = Meteor.userId();

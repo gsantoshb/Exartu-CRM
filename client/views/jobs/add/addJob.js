@@ -24,6 +24,7 @@ JobAddController = RouteController.extend({
     });
   }
 });
+
 var model;
 var subTypesDep=new Deps.Dependency;
 var createJob= function(objTypeName){
