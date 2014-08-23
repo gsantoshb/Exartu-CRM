@@ -1,15 +1,9 @@
 Template.login.viewModel = function () {
   var self = this;
 
-    self.login=ko.observable(true);
-    self.register=function(){
-        self.login(false);
-        self.errorMessage('')
-    };
-    self.signin=function(){
-        self.login(true);
-        self.errorMessage('')
-    };
+  self.signin=function() {
+      self.errorMessage('')
+  };
 
   self.errorMessage = ko.observable();
 

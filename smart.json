@@ -1,7 +1,7 @@
 {
   "packages": {
     "bootstrap-3": {},
-    "iron-router": {},
+    "iron-router": "0.8.2",
     "knockout-client": "0.0.2",
     "collection-hooks": {},
     "googlemaps": {},
@@ -19,6 +19,8 @@
     "GAnalytics": {},
     "ms-seo": {},
     "stripe": {},
-    "connection-banner": {}
+    "connection-banner": {},
+    "simple-schema": {},
+    "autoform": {}
   }
 }
