@@ -11,11 +11,9 @@
             <table class="table custom-table text-normal" style="table-layout: fixed;">
                 <tbody>
                 <tr>
-
                     <td>
                         <i class="fa fa-info-circle"></i>&nbsp;Status:
-
-                        {{#objectProperty property=status editable=editMode}}
+                        {{#objectProperty property=assignmentStatus editable=editMode}}
                         <div class="form-group  {{hasError}}">
                             <select class="form-control input-lg">
                                 {{#unless required}}
@@ -34,11 +32,8 @@
                         {{/objectProperty}}
                     </td>
                 </tr>
-
-
                 </tbody>
             </table>
-
         </div>
         <!-- /.box-content-lg-->
 

@@ -384,6 +384,15 @@ newObjType({
       showInAdd: false,
       defaultValue: null,
       required: false
+    }, {
+      name: 'assignmentStatus',
+      displayName: 'Status',
+      fieldType: 'lookUp',
+      lookUpName: 'assignmentStatus',
+      lookUpCode: Enums.lookUpTypes.assignment.status.code,
+      required: false,
+      multiple: false,
+      defaultValue: null
     }
 
     ]

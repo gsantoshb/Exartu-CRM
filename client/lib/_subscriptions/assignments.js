@@ -6,6 +6,7 @@ Assignments = new Meteor.Collection("assignments", {
         asg.jobDisplayName = job.displayName;
         asg.customerDisplayName = job.customerName;
         asg.customer = job.customer;
+        asg.displayName=asg.jobDisplayName + '@' + asg.customerDisplayName;
       }
     };
     if (asg.employee) {
