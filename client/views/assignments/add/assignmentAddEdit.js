@@ -27,8 +27,10 @@ AssignmentAddController = RouteController.extend({
 
 var model;
 var subTypesDep=new Deps.Dependency;
+var options;
+var employeeId;
 var createAssignment= function(objTypeName){
-  var options= Session.get('addOptions');
+  options= Session.get('addOptions');
   if (options){
     Session.set('addOptions', undefined);
   }
@@ -38,6 +40,9 @@ var createAssignment= function(objTypeName){
 }
 
 Template.addAssignmentPage.helpers({
+  employeeId: function () {
+  return employeeId;
+  },
   model: function(){
     if (!model){
       model=createAssignment(Session.get('objType'));
@@ -48,23 +53,35 @@ Template.addAssignmentPage.helpers({
     return Session.get('objType');
   },
   employees:function() {
+    console.log('meployees');
     return Contactables.find({
       Employee: {
         $exists: true
       }
     });
+  },
+  isSelected: function(id){
+    return employeeId==id;
+  },
+  log: function(){
+    console.log('this',this);
   }
 });
 
 Template.addAssignmentPage.events({
+    'change .employeeSelect': function (e, ctx) {
+
+      employeeId = e.target.value;
+    },
   'click .btn-success': function(){
     if (!dType.isValid(model)){
       dType.displayAllMessages(model);
-      console.log('assignment dtype invalid',model);
       return;
     }
     var obj=dType.buildAddModel(model);
 
+    if (options.job) obj.job=options.job;
+    obj.employee=employeeId;
 
     Meteor.call('addAssignment', obj, function(err, result){
       if(err){
