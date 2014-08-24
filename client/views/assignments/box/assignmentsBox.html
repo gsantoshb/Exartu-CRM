@@ -35,13 +35,12 @@
                                         <div class="table-item-cell">
                                             <div class="table-item-cell-container">
                                                 <div class="table-item-title">
-                                                        <i class="icon icon-briefcase"> </i>
-                                                        <a href="/assignment/{{_id}}"> {{job.displayName}} </a>
-
+                                                        <a href="/assignment/{{_id}}"> <i class="icon icon-check-list"></i></a>
+                                                    <a href="/job/{{job._id}}"> <i class="icon icon-briefcase"> </i>{{job.displayName}}</a>
                                                     <i class="fa fa-arrows-h fa-x3"> </i>
                                                     {{#with employee}}
-                                                        <i class="icon icon-profile-man"> </i>
-                                                        <a href="/contactable/{{_id}}"> {{displayName}} </a>
+
+                                                        <a href="/contactable/{{_id}}"><i class="icon icon-profile-man"> </i> {{displayName}} </a>
                                                     {{/with}}
                                                 </div>
                                                 <div class="task-author">

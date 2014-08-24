@@ -60,9 +60,10 @@ Template.assignmentsBox.assignments = function() {
   };
   return Assignments.find(searchQuery, {
       transform: function(assignment) {
+        console.log('asg1',assignment);
         assignment.job = Jobs.findOne(assignment.job);
         assignment.employee = Contactables.findOne(assignment.employee);
-
+        console.log('asg2',assignment);
         return assignment;
       }
     }
