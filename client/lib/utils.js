@@ -316,9 +316,8 @@ Utils.getCollectionFromEntity=function(entity) {
   if ($.inArray(strtype, ['Employee','Contact','Customer','contactable'])!=-1) return Contactables;
   if ($.inArray(strtype, ['Job','job'])!=-1) return Jobs;
   if ($.inArray(strtype, ['Deal','deal'])!=-1) return Deals;
-//  var type=Utils.getTypeFromTypeString(strtype);
-//  console.log('st',strtype,type);
-//  return Utils.getCollectionFromType(type);
+  if ($.inArray(strtype, ['Assignment','assignment'])!=-1) return Assignments;
+  if ($.inArray(strtype, ['Candidate','candidate'])!=-1) return Candidates;
 }
 
 Utils.getCollectionFromType=function(type){

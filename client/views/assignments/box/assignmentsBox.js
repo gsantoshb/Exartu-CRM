@@ -55,6 +55,8 @@ Template.assignmentsBox.assignments = function() {
   if (isEntitySpecific) {
     if (entityType==Enums.linkTypes.job.value )
       searchQuery.job = Session.get('entityId')  ;
+    if (entityType==Enums.linkTypes.contactable.value )
+      searchQuery.employee = Session.get('entityId')  ;
   };
   console.log('searchquery',searchQuery);
   return Assignments.find(searchQuery);
