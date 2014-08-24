@@ -51,11 +51,12 @@ Template.assignmentsBox.assignments = function() {
         }
       });
   };
-
+  console.log('assbox',isEntitySpecific,entityType,Session.get('entityId'));
   if (isEntitySpecific) {
     if (entityType==Enums.linkTypes.job.value )
-      searchQuery.links = { $elemMatch: { job: Session.get('entityId') } };
+      searchQuery.job = Session.get('entityId')  ;
   };
+  console.log('searchquery',searchQuery);
   return Assignments.find(searchQuery);
 };
 
