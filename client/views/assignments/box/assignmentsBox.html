@@ -36,12 +36,9 @@
                                             <div class="table-item-cell-container">
                                                 <div class="table-item-title">
                                                         <a href="/assignment/{{_id}}"> <i class="icon icon-check-list"></i></a>
-                                                    <a href="/job/{{job._id}}"> <i class="icon icon-briefcase"> </i>{{job.displayName}}</a>
+                                                    <a href="/job/{{job}}"> <i class="icon icon-briefcase"> </i>{{jobDisplayName}}{{customerDisplayName}}</a>
                                                     <i class="fa fa-arrows-h fa-x3"> </i>
-                                                    {{#with employee}}
-
-                                                        <a href="/contactable/{{_id}}"><i class="icon icon-profile-man"> </i> {{displayName}} </a>
-                                                    {{/with}}
+                                                        <a href="/contactable/{{employee}}"><i class="icon icon-profile-man"> </i> {{employeeDisplayName}} </a>
                                                 </div>
                                                 <div class="task-author">
                                                     by

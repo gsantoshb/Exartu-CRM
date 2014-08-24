@@ -2,7 +2,7 @@ AssignmentsController = RouteController.extend({
   template: 'assignments',
   layoutTemplate: 'mainLayout',
   waitOn: function() {
-    return [ Meteor.subscribe('jobs'), Meteor.subscribe('contactables')];
+    return [AssignmentHandler, Meteor.subscribe('jobs'), Meteor.subscribe('contactables')];
   },
   onAfterAction: function() {
     var title = 'Assignments',

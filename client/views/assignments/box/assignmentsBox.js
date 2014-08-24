@@ -53,21 +53,10 @@ Template.assignmentsBox.assignments = function() {
   };
 
   if (isEntitySpecific) {
-//    if (entityType==Enums.linkTypes.employee.value )
-//      q.links = { $elemMatch: { employee: Session.get('entityId') } };
     if (entityType==Enums.linkTypes.job.value )
       searchQuery.links = { $elemMatch: { job: Session.get('entityId') } };
   };
-  return Assignments.find(searchQuery, {
-      transform: function(assignment) {
-        console.log('asg1',assignment);
-        assignment.job = Jobs.findOne(assignment.job);
-        assignment.employee = Contactables.findOne(assignment.employee);
-        console.log('asg2',assignment);
-        return assignment;
-      }
-    }
-  );
+  return Assignments.find(searchQuery);
 };
 
 Template.assignmentsBox.getCount = function(assignments) {
