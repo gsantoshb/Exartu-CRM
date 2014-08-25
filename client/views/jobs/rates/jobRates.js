@@ -16,7 +16,6 @@ Template.jobRates.helpers({
     return self.rates
   },
   getType: function(typeId){
-    console.log('jobratetype',typeId,JobRateTypes.findOne({ _id: typeId }))
     return  JobRateTypes.findOne({ _id: typeId });
   },
   round: function(value){

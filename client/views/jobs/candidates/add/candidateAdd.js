@@ -30,12 +30,17 @@ Template.candidateAdd.viewModel = function (jobId) {
       job: jobId,
       userId: Meteor.userId()
     };
+    console.log('cand',candidate);
     if (!candidate.employee)
       return;
 
     Candidates.insert(candidate, function(err, result) {
       if (!err)
+      {
+        console.log('candidate err',err);
         self.close();
+      }
+
     });
   }
   return self;
