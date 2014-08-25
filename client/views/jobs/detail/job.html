@@ -52,7 +52,7 @@
     <ul class="nav nav-pills  contactable-nav-tabs-main bottom-20">
         <li class="active"><a href="#profile-detail" data-toggle="tab">Detail</a></li>
         <li ><a href="#profile-description" data-toggle="tab">Job Description</a></li>
-
+        <li ><a href="#profile-jobRates" data-toggle="tab">Rates</a></li>
         <!--<li ><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>-->
         <li ><a href="#profile-candidates" data-toggle="tab">Candidates</a></li>
         <li ><a href="#profile-assignments" data-toggle="tab">Assignments</a></li>
@@ -66,6 +66,7 @@
         <div class="tab-pane " id="profile-candidates">{{>candidates type='job' id=_id}}</div>
         <div class="tab-pane " id="profile-assignments">{{>assignmentsBox type='job' id=_id}}</div>
         <div class="tab-pane " id="profile-activity">{{>jobActivity}}</div>
+        <div class="tab-pane " id="profile-jobRates">{{>jobRates}}</div>
         <div class="tab-pane " id="profile-description">{{> jobDescription}}</div>
         <div class="tab-pane" id="profile-tasks">{{> tasksBox}}</div>
         <div class="tab-pane" id="profile-notes">{{> notesItem}}</div>
@@ -73,7 +74,6 @@
         <div class="tab-pane active" id="profile-detail">
             {{#with job}}  {{> jobDetail}}  {{/with}}
             {{#with originalJob}}{{>tagsBox  }}{{/with}}
-            {{#with job}}{{>jobRates ..}}  {{/with}}
             {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
         </div>
     </div>

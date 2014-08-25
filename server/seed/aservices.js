@@ -108,6 +108,9 @@ dType.constructor.service({
     },
     initValue: function(value, serviceSettings, type, obj){
       var result=[];
+      var similar_job=Jobs.findOne({customer:obj.customer , jobTitle: obj.jobTitle},{sort: { dateCreated: -1},limit:1});
+      if (similar_job  && similar_job.jobRates) return similar_job.jobRates;
+      return result;
       // this code commented out because is creating jobrates with bad typeid...using the text display name not reliable anyway
 //      if (obj['Temporary']){
 //        var frequency = LookUps.findOne({ codeType: Enums.lookUpTypes.payRate.frequencies.code, _id: obj.Temporary.frequency });
@@ -141,7 +144,7 @@ dType.constructor.service({
 //          result.push({ type: rateType._id, pay: pay, bill: bill });
 //        }
 //      }
-      return result;
+//
     }
 })
 

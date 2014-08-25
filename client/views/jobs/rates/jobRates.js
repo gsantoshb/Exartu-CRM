@@ -87,6 +87,7 @@ Template.ratesEditTemplate.events({
     if (_.findWhere(rates, { type: newRate.type })) return;
 
     rates.push(_.clone(newRate));
+    Jobs.update({ _id: Session.get('entityId') },{ $set: { jobRates: rates } });
     ratesDep.changed();
   },
   'click .removeRate': function(e, ctx){
