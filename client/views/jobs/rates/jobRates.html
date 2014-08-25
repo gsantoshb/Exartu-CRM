@@ -20,17 +20,19 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <td>Type</td>
-                            <td>Bill</td>
-                            <td>Pay</td>
+                            <th>Type</th>
+                            <th>Bill</th>
+                            <th>Pay</th>
                         </tr>
                         </thead>
                         <tbody>
                         {{#each rates}}
                             <tr>
+                                <td>
                                 {{#with getType type}}
-                                    <td title="{{description}}">{{displayName}}</td>
+                                    {{displayName}}
                                 {{/with}}
+                                </td>
                                 <td>{{round bill}}</td>
                                 <td>{{round pay}}</td>
                             </tr>
