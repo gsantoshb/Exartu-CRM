@@ -295,6 +295,7 @@ newObjType({
 newObjType({
     collection: Deals,
     name: 'deal',
+
     objGroupType: Enums.objGroupType.deal,
     style: {
       icon: 'briefcase',
@@ -389,6 +390,7 @@ newObjType({
       displayName: 'Status',
       fieldType: 'lookUp',
       lookUpName: 'assignmentStatus',
+      showInAdd: false,
       lookUpCode: Enums.lookUpTypes.assignment.status.code,
       required: false,
       multiple: false,
