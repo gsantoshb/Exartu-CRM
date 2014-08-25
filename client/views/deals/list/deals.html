@@ -40,7 +40,7 @@
                     <div class="col-md-4 col-lg-4">
                         <div class="filter">
                             <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-                                <strong>Filter</strong>
+                                <strong><i class="fa fa-filter"></i></strong>
                             </a>
                             <div class="filter-list" id="filter-body">
                                 <div class="filter-item">
@@ -69,7 +69,7 @@
                                                 <!-- /ko -->
                                             </p>
                                             <div class="input-group">
-                                                <input id="tag-filter" type="text" class="form-control" placeholder="Search tags..." data-bind="value:tag, valueUpdate: 'afterkeydown'">
+                                                <input id="tag-filter" type="text" class="form-control" data-bind="placeholder: Enums.stringConstants.SearchTags,value:tag, valueUpdate: 'afterkeydown'">
                                                     <span class="input-group-btn">
                                                         <button class="btn btn-primary" type="button" data-bind="click: addTag">Add</button>
                                                     </span>

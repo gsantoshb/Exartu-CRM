@@ -56,7 +56,7 @@
 <template name="contactablesFilters">
     <div class="filter">
         <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-            <strong>Filter</strong>
+            <strong><i class="fa fa-filter"></i></strong>
         </a>
         <div class="filter-list" id="filter-body">
             <div class="filter-item">
@@ -104,9 +104,9 @@
                     </button>
                     {{/objectProperty}}
                     <div class="input-group">
-                        <input id="new-tag" type="text" class="form-control" placeholder="Enter tags here...">
+                        <input id="new-tag" type="text" class="form-control" placeholder="Search tags...">
                             <span class="input-group-btn">
-                              <button class="add-tag btn btn-success" type="button">Add</button>
+                              <button class="add-tag btn btn-success" type="button"><span class="fa fa-plus"></span></button>
                             </span>
                     </div>
                 </div>
@@ -159,28 +159,30 @@
             <div class="col-sm-4">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container">
-                        <div class="thumb">
-                            {{#if pictureFileId }}
-                                {{#with pictureUrl pictureFileId}}
+
+                        <div class="table-item-title">
+                            <a href="/contactable/{{_id}}">
+                                <div class="thumb">
+                                    {{#if pictureFileId }}
+                                    {{#with pictureUrl pictureFileId}}
                                     <a href="#">
                                         <img src="{{.}}">
                                     </a>
-                                {{/with}}
-                            {{else}}
-                                {{#if organization }}
-                                    <a href="#" style="color: #707070; font-size: 27px">
+                                    {{/with}}
+                                    {{else}}
+                                    {{#if organization }}
+
                                         <i class="icon-buildings-1" style="display: block; margin-top: 10px;"></i>
-                                    </a>
-                                {{/if}}
-                                {{#if person }}
-                                    <a href="#" style="color: #707070; font-size: 27px">
+
+                                    {{/if}}
+                                    {{#if person }}
+
                                         <i class="icon-profile-business-man" style="display: block; margin-top: 10px;"></i>
-                                    </a>
-                                {{/if}}
-                            {{/if}}
-                        </div>
-                        <div class="table-item-title">
-                            <a href="/contactable/{{_id}}">{{displayName}}</a>
+
+                                    {{/if}}
+                                    {{/if}}
+                                </div>
+                                {{displayName}}</a>
                             <br/>
                             <strong class="text text-muted text-small">{{displayObjType}}</strong>
                         </div>
@@ -259,8 +261,8 @@
 <template name="employeeInformation">
     {{#if assignmentInfo}}
         {{#with assignmentInfo}}
-            <i class="icon-briefcase" style="color: forestgreen"></i>
-            Currently assigned as <strong> <a href="/job/{{job}}"> {{jobTitle}} </a></strong> {{#if customerName}} at <strong> <a href="/contactable/{{customer}}"> {{customerName}} </a></strong> {{/if}}
+            <i class="icon icon-check-list"></i>
+            <strong> <a href="/job/{{job}}"> {{jobTitle}} </a></strong> {{#if customerName}} at <strong> <a href="/contactable/{{customer}}"> {{customerName}} </a></strong> {{/if}}
     {{/with}}
     {{else}}
         {{#if person}}
