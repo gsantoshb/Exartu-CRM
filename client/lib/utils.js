@@ -462,3 +462,10 @@ Utils.getEntitiesFromType=function(type)
       return [];
   }
 }
+
+Utils.getContactableType = function(entity) {
+  if (entity.Customer)
+    return 'Customer';
+  if (entity.Employee)
+    return 'Employee';
+};
