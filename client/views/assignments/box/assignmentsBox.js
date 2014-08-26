@@ -15,7 +15,10 @@ Template.matchupsBox.created=function(){
     }
 
 }
-
+Template.matchupsBox.rendered=function()
+{
+  console.log('rendered assignment');
+}
 Template.matchupsBox.isJob=function() {
   if (entityType==Enums.linkTypes.job.value) return true;
 };
