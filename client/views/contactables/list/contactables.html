@@ -232,7 +232,11 @@
                         <small class="text-muted"> Properties matched </small>
                         <div> 
                             {{#each _match.properties}}
-                                <span class="label label-default" style="margin-right: 3px"> {{.}} </span>
+                                <span class="label label-default" style="margin-right: 3px"> {{.}}</span>
+                            {{/each}}
+                            <br>
+                            {{#each _match.contexts}}
+                                {{> esContextMatch}}
                             {{/each}}
                         </div>
                     </div>
@@ -249,6 +253,10 @@
         <!-- /.row -->
     </div>
     <!-- /.table-item -->
+</template>
+
+<template name="esContextMatch">
+    <span class="text-muted separatedLinks contextText"></span> 
 </template>
 
 <template name="customerInformation">
