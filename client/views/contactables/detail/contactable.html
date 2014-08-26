@@ -248,11 +248,19 @@
         <li class="active"><a href="#profile-details" data-toggle="tab">Detail</a></li>
         <li><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
         <li><a href="#profile-documents" data-toggle="tab">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>
-        <li><a href="#profile-jobs" data-toggle="tab">Jobs <span class="custom-badge-2">{{jobCount}}</span></a></li>
-        {{#if ../Customer}}<li><a href="#profile-customerContacts" data-toggle="tab">Contacts</a></li>{{/if}}
-
         <li><a href="#profile-tasks" data-toggle="tab">Tasks</a></li>
-        {{#if ../Employee}}<li><a href="#profile-hrConcourse" data-toggle="tab">HrConcourse</a></li>{{/if}}
+
+        {{#if ../Customer}}
+            <li><a href="#profile-jobs" data-toggle="tab">Jobs <span class="custom-badge-2">{{jobCount}}</span></a></li>
+            <li ><a href="#profile-matchups" data-toggle="tab">Matchups</a></li>
+            <li><a href="#profile-customerContacts" data-toggle="tab">Contacts</a></li>
+        {{/if}}
+
+
+        {{#if ../Employee}}
+            <li ><a href="#profile-matchups" data-toggle="tab">Matchups</a></li>
+            <li><a href="#profile-hrConcourse" data-toggle="tab">Onboarding</a></li>
+        {{/if}}
     </ul>
 
     <div class="tab-content">
@@ -296,6 +304,7 @@
             {{>contactableMatchupsBox ..}}
             {{/if}}
         </div><!-- /.profile-documents -->
+        <div class="tab-pane " id="profile-matchups">{{>matchupsBox }}</div>
     </div>
 </template>
 

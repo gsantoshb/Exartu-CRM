@@ -1,14 +1,25 @@
 var entityType=null;
 var isEntitySpecific=false;
+var contactable;
 Template.matchupsBox.created=function(){
     entityType=Utils.getEntityTypeFromRouter();
+  alert(entityType);
     isEntitySpecific=false;
-    if (entityType!=null) isEntitySpecific=true
+    if (entityType!=null)
+    {
+      isEntitySpecific=true;
+      if (entityType==Enums.linkTypes.contactable.value)
+      {
+        contactable=Contactables.findOne({_id:Session.get('entityId') });
+      }
+    }
+
 }
 
 Template.matchupsBox.isJob=function() {
   if (entityType==Enums.linkTypes.job.value) return true;
 };
+
 
 var generateFieldsSearch = function(fields) {
   var searchStringQuery = [];
@@ -54,8 +65,14 @@ Template.matchupsBox.matchups = function() {
   if (isEntitySpecific) {
     if (entityType==Enums.linkTypes.job.value )
       searchQuery.job = Session.get('entityId')  ;
-    if (entityType==Enums.linkTypes.contactable.value )
-      searchQuery.employee = Session.get('entityId')  ;
+    if (entityType==Enums.linkTypes.contactable.value  && contactable )
+    {
+      console.log('linktype',Utils.getLinkTypeFromEntity(contactable));
+      if (Utils.getLinkTypeFromEntity(contactable)=='Employee')
+        searchQuery.employee = Session.get('entityId');
+      if (Utils.getLinkTypeFromEntity(contactable)=='Customer')
+        searchQuery.customer = Session.get('entityId');
+    }
   };
   return Matchups.find(searchQuery);
 };
