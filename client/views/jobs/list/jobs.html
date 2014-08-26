@@ -135,8 +135,8 @@
                                                             <!--<strong data-bind="text: status">-->
 
                                                             <!--</strong>-->
-                                                            <!--ko if: $data.assignment -->
-                                                                <!--ko with: Assignments.findOne({_id: $data.assignment() })-->
+                                                            <!--ko if: $data.matchup -->
+                                                                <!--ko with: Matchups.findOne({_id: $data.matchup() })-->
                                                                     <!--ko with: Contactables.findOne({_id: $data.employee})-->
                                                                         <br>
                                                                         <a data-bind="attr: {href: '/contactable/' + _id}">

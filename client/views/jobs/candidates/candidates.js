@@ -41,11 +41,11 @@ Template.candidates.events({
   'click .assign': function () {
     var options={};
     var job=Jobs.findOne({ _id: Session.get('entityId') });
-    if(job.assignment){
-      options.assignmentId=job.assignment;
+    if(job.matchup){
+      options.matchupId=job.matchup;
     }
     options.employeeId = this._id;
 
-    Composer.showModal('assignmentAdd', options);
+    Composer.showModal('matchupAdd', options);
   }
 })

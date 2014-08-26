@@ -1,13 +1,16 @@
 _.forEach([
   {
-    displayName: 'Active', lookUpActions:[Enums.lookUpAction.Implies_Active]
+    displayName: 'Assigned', lookUpActions:[Enums.lookUpAction.Implies_Active,Enums.lookUpAction.Matchup_Assigned]
   },
   {
-    displayName: 'Inactive', lookUpActions:[Enums.lookUpAction.Implies_Inactive],isDefault: true
-  }
+    displayName: 'Candidate', lookUpActions:[Enums.lookUpAction.Implies_Inactive,Enums.lookUpAction.Matchup_Candidate],isDefault: true
+  },
+    {
+      displayName: 'Inactive', lookUpActions:[Enums.lookUpAction.Implies_Inactive]
+    }
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.assignment.status.code;
+    item.codeType = Enums.lookUpTypes.matchup.status.code;
     systemLookUps.push(item);
   }
 );

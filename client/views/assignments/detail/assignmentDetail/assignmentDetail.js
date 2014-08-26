@@ -1,6 +1,6 @@
 
-var generateReactiveObject = function(assignment) {
-  return new dType.objInstance(assignment, Assignments);
+var generateReactiveObject = function(matchup) {
+  return new dType.objInstance(matchup, Matchups);
 };
 
 var self={};
@@ -8,22 +8,22 @@ Utils.reactiveProp(self, 'editMode', false);
 var location={};
 Utils.reactiveProp(location, 'value', null);
 
-Template.assignmentDetail.created=function(){
+Template.matchupDetail.created=function(){
   self.editMode=false;
-//  var originalAssignment = Assignments.findOne({ _id: Session.get('entityId') });
+//  var originalMatchup = Matchups.findOne({ _id: Session.get('entityId') });
 }
-var assignment;
+var matchup;
 
-Template.assignmentDetail.helpers({
-  assignment: function(){
-    var originalAssignment = Assignments.findOne({ _id: Session.get('entityId') });
-    Session.set('assignmentDisplayName', originalAssignment.displayName);
-    if (!assignment)
-      assignment = generateReactiveObject(originalAssignment);
-    return assignment;
+Template.matchupDetail.helpers({
+  matchup: function(){
+    var originalMatchup = Matchups.findOne({ _id: Session.get('entityId') });
+    Session.set('matchupDisplayName', originalMatchup.displayName);
+    if (!matchup)
+      matchup = generateReactiveObject(originalMatchup);
+    return matchup;
   },
-  originalAssignment:function(){
-    return Assignments.findOne({ _id: Session.get('entityId') });
+  originalMatchup:function(){
+    return Matchups.findOne({ _id: Session.get('entityId') });
   },
   editMode:function(){
     return self.editMode;
@@ -32,35 +32,35 @@ Template.assignmentDetail.helpers({
     return self.editMode ? '#008DFC' : '#ddd'
   },
   isType:function(typeName){
-    return !! Assignments.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
+    return !! Matchups.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
   },
-  assignmentCollection: function(){
-    return Assignments;
+  matchupCollection: function(){
+    return Matchups;
   },
 
   isSelected:function(optionValue, currentValue){
     return optionValue == currentValue;
   },
   location: function(){
-    var originalAssignment = Assignments.findOne({ _id: Session.get('entityId') });
+    var originalMatchup = Matchups.findOne({ _id: Session.get('entityId') });
 
-    location.value= originalAssignment && originalAssignment.location;
+    location.value= originalMatchup && originalMatchup.location;
     return location;
   }
 });
 
-Template.assignmentDetail.events({
-  'click .editAssignment':function(){
+Template.matchupDetail.events({
+  'click .editMatchup':function(){
     self.editMode= ! self.editMode;
   },
   'click .saveDetailsButton':function(){
-    if (!assignment.validate()) {
-      assignment.showErrors();
+    if (!matchup.validate()) {
+      matchup.showErrors();
       return;
     }
-    var update=assignment.getUpdate();
-    var originalAssignment=Assignments.findOne({ _id: Session.get('entityId') });
-    var oldLocation= originalAssignment.location;
+    var update=matchup.getUpdate();
+    var originalMatchup=Matchups.findOne({ _id: Session.get('entityId') });
+    var oldLocation= originalMatchup.location;
     var newLocation= location.value;
 
     if ((newLocation && newLocation.displayName) != (oldLocation && oldLocation.displayName)){
@@ -68,10 +68,10 @@ Template.assignmentDetail.events({
       update.$set.location = newLocation;
     }
 
-    Assignments.update({_id: assignment._id}, update, function(err, result) {
+    Matchups.update({_id: matchup._id}, update, function(err, result) {
       if (!err) {
         self.editMode=false;
-        assignment.reset();
+        matchup.reset();
       }
       else
       {
@@ -85,9 +85,9 @@ Template.assignmentDetail.events({
 });
 
 
-Template.assignmentDetail.helpers({
+Template.matchupDetail.helpers({
   getType: function(){
-    return Enums.linkTypes.assignment;
+    return Enums.linkTypes.matchup;
   }
 });
 

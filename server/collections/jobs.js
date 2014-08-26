@@ -99,8 +99,8 @@ var beforeInsertOrUpdateJob = function (job) {
  * objTypes must be an array with the object's types that the job references
  */
 var extendJob = function (job, objTypes) {
-    if (!job.assignment)
-        job.assignment = null;
+    if (!job.matchup)
+        job.matchup = null;
     if (!job.candidates)
         job.candidates = [];
     _.forEach(objTypes, function (objType) {

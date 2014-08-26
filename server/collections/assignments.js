@@ -1,4 +1,4 @@
-Meteor.publish('assignments', function () {
+Meteor.publish('matchups', function () {
 
     if (!this.userId)
         return false;
@@ -6,24 +6,24 @@ Meteor.publish('assignments', function () {
         _id: this.userId
     });
 
-    return Assignments.find({
+    return Matchups.find({
         $or: filterByHiers(user.hierId)
     });
 });
 
 Meteor.startup(function () {
   Meteor.methods({
-    addAssignment: function (asg) {
+    addMatchup: function (asg) {
       if (true) {
         asg._id = new Meteor.Collection.ObjectID()._str;
-        Assignments.insert(asg);
+        Matchups.insert(asg);
         return asg;
       }
     }
   })
 });
 
-Assignments.allow({
+Matchups.allow({
   insert: function () {
     return true;
   },
@@ -32,7 +32,7 @@ Assignments.allow({
   }
 });
 
-Assignments.before.insert(function (userId, doc) {
+Matchups.before.insert(function (userId, doc) {
   try{
     var user = Meteor.user() || {};
   }catch (e){
@@ -50,31 +50,31 @@ Assignments.before.insert(function (userId, doc) {
 });
 
 //<editor-fold desc="************ update job and contactable ****************">
-Assignments.after.insert(function(userId, doc, fieldNames, modifier, options){
+Matchups.after.insert(function(userId, doc, fieldNames, modifier, options){
     Contactables.update({
         _id: doc.employee
     }, {
         $set: {
-            assignment: doc._id
+            matchup: doc._id
         }
     });
     Jobs.update({
         _id: doc.job
     }, {
         $set: {
-            assignment: doc._id
+            matchup: doc._id
         }
     });
 });
 
-Assignments.after.update(function(userId, doc, fieldNames, modifier, options){
+Matchups.after.update(function(userId, doc, fieldNames, modifier, options){
   if (doc.employee != this.previous.employee){
 
     Contactables.update({
       _id: this.previous.employee
     }, {
       $set: {
-        assignment: null
+        matchup: null
       }
     });
 
@@ -82,21 +82,21 @@ Assignments.after.update(function(userId, doc, fieldNames, modifier, options){
       _id: doc.employee
     }, {
       $set: {
-        assignment: doc._id
+        matchup: doc._id
       }
     });
   }
 
 });
-var extendAssignment = function (assignment, objTypes) {
-  if (!assignment.contactMethods)
-    assignment.contactMethods = [];
+var extendMatchup = function (matchup, objTypes) {
+  if (!matchup.contactMethods)
+    matchup.contactMethods = [];
 
   _.forEach(objTypes, function (objType) {
     if (objType) {
       _.forEach(objType.services, function (service) {
-        if (assignment[service] == undefined)
-          assignment[service] = [];
+        if (matchup[service] == undefined)
+          matchup[service] = [];
       });
     }
   })

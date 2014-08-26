@@ -87,12 +87,12 @@ Template.dashboard.viewModel = function () {
     var job=Jobs.findOne({
       _id: jobId
     });
-    if(job.assignment){
-      options.assignmentId=job.assignment;
+    if(job.matchup){
+      options.matchupId=job.matchup;
     }else{
       options.jobId=jobId;
     }
-    Composer.showModal( 'assignmentAdd', options);
+    Composer.showModal( 'matchupAdd', options);
   }
   return self;
 };

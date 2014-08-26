@@ -1,11 +1,11 @@
-AssignmentsController = RouteController.extend({
-  template: 'assignments',
+MatchupsController = RouteController.extend({
+  template: 'matchups',
   layoutTemplate: 'mainLayout',
   waitOn: function() {
-    return [AssignmentHandler, Meteor.subscribe('jobs'), Meteor.subscribe('contactables')];
+    return [MatchupHandler, Meteor.subscribe('jobs'), Meteor.subscribe('contactables')];
   },
   onAfterAction: function() {
-    var title = 'Assignments',
+    var title = 'Matchups',
     description = 'Manage your list here';
     SEO.set({
       title: title,

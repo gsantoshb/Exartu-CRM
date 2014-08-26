@@ -2,13 +2,13 @@ Template.jobActivity.helpers({
   isAny: function(){
     return Activities.find({
       entityId: Session.get('entityId'),
-      type: {$in: [Enums.activitiesType.assignmentEdit, Enums.activitiesType.assignmentAdd]}
+      type: {$in: [Enums.activitiesType.matchupEdit, Enums.activitiesType.matchupAdd]}
     }).count()>0;
   },
   activities: function(){
       return Activities.find({
         entityId: Session.get('entityId'),
-        type: {$in: [Enums.activitiesType.assignmentEdit, Enums.activitiesType.assignmentAdd]}
+        type: {$in: [Enums.activitiesType.matchupEdit, Enums.activitiesType.matchupAdd]}
       },{sort: {
         'data.dateCreated': -1
       }})
@@ -25,11 +25,11 @@ var employeeName= function(employeeId){
   return emp && emp.displayName;
 }
 
-Template.jobActivityAssignmentsAdd.helpers({
+Template.jobActivityMatchupsAdd.helpers({
   userName: userName,
   employeeName: employeeName
 })
-Template.jobActivityAssignmentsEdit.helpers({
+Template.jobActivityMatchupsEdit.helpers({
   userName: userName,
   employeeName: employeeName,
   employeeChanged:function(){
@@ -38,9 +38,9 @@ Template.jobActivityAssignmentsEdit.helpers({
 })
 UI.registerHelper('activityType', function(){
   switch (this.type){
-    case Enums.activitiesType.assignmentEdit:
-      return Template.jobActivityAssignmentsEdit;
-    case Enums.activitiesType.assignmentAdd:
-      return Template.jobActivityAssignmentsAdd;
+    case Enums.activitiesType.matchupEdit:
+      return Template.jobActivityMatchupsEdit;
+    case Enums.activitiesType.matchupAdd:
+      return Template.jobActivityMatchupsAdd;
   }
 })

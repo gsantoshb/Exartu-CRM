@@ -1,12 +1,12 @@
 var entityType=null;
 var isEntitySpecific=false;
-Template.assignmentsBox.created=function(){
+Template.matchupsBox.created=function(){
     entityType=Utils.getEntityTypeFromRouter();
     isEntitySpecific=false;
     if (entityType!=null) isEntitySpecific=true
 }
 
-Template.assignmentsBox.isJob=function() {
+Template.matchupsBox.isJob=function() {
   if (entityType==Enums.linkTypes.job.value) return true;
 };
 
@@ -24,7 +24,7 @@ var generateFieldsSearch = function(fields) {
 }
 
 var searchString, searchDep = new Deps.Dependency;
-Template.assignmentsBox.assignments = function() {
+Template.matchupsBox.matchups = function() {
   searchDep.depend();
   searchQuery = {};
 
@@ -57,21 +57,21 @@ Template.assignmentsBox.assignments = function() {
     if (entityType==Enums.linkTypes.contactable.value )
       searchQuery.employee = Session.get('entityId')  ;
   };
-  return Assignments.find(searchQuery);
+  return Matchups.find(searchQuery);
 };
 
-Template.assignmentsBox.getCount = function(assignments) {
-  return Template.assignmentsBox.assignments.count();
+Template.matchupsBox.getCount = function(matchups) {
+  return Template.matchupsBox.matchups.count();
 }
 
-Template.assignmentsBox.events = {
+Template.matchupsBox.events = {
   'keyup #search-string': function(e) {
     searchString = e.currentTarget.value;
     searchDep.changed();
   },
-  'click .addAssignment': function(e){
+  'click .addMatchup': function(e){
       Session.set('addOptions', {job:  Session.get('entityId')});
-      Router.go('/assignmentAdd/assignment' );
+      Router.go('/matchupAdd/matchup' );
       e.preventDefault();
   }
 };

@@ -259,8 +259,8 @@
 </template>
 
 <template name="employeeInformation">
-    {{#if assignmentInfo}}
-        {{#with assignmentInfo}}
+    {{#if matchupInfo}}
+        {{#with matchupInfo}}
             <i class="icon icon-check-list"></i>
             <strong> <a href="/job/{{job}}"> {{jobTitle}} </a></strong> {{#if customerName}} at <strong> <a href="/contactable/{{customer}}"> {{customerName}} </a></strong> {{/if}}
     {{/with}}

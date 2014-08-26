@@ -1,15 +1,15 @@
 _.forEach([
   {
-    displayName: 'Active', lookUpActions:[Enums.lookUpAction.Implies_Active]
+    displayName: 'Active', lookUpActions:[Enums.lookUpAction.Implies_Active],isDefault: true
   },
   {
-    displayName: 'Submittal',lookUpActions:[Enums.lookUpAction.Submittal,Enums.lookUpAction.Implies_Active]
+    displayName: 'Submittal',lookUpActions:[Enums.lookUpAction.Candidate_Submittal,Enums.lookUpAction.Implies_Active]
   },
   {
-    displayName: 'Sendout', lookUpActions:[Enums.lookUpAction.Sendout,Enums.lookUpAction.Implies_Active]
+    displayName: 'Sendout', lookUpActions:[Enums.lookUpAction.Candidate_Sendout,Enums.lookUpAction.Implies_Active]
   },
   {
-    displayName: 'Placed', lookUpActions:[Enums.lookUpAction.Placed,Enums.lookUpAction.Implies_Active],isDefault: true
+    displayName: 'Placed', lookUpActions:[Enums.lookUpAction.Candidate_Placed,Enums.lookUpAction.Implies_Active]
   },
   {
     displayName: 'Inactive', lookUpActions:[Enums.lookUpAction.Implies_Inactive],isDefault: true

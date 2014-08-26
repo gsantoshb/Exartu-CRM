@@ -24,7 +24,7 @@ Roles = new Meteor.Collection("roles");
 
 ContactMethods = new Meteor.Collection("contactMethods");
 
-Assignments = new Meteor.Collection("assignments");
+Matchups = new Meteor.Collection("matchups");
 Candidates = new Meteor.Collection("candidates");
 JobRateTypes = new Meteor.Collection("jobRateTypes");
 
@@ -43,7 +43,7 @@ Collections = {
   LookUps: LookUps,
   Tasks: Tasks,
   Notes: Notes,
-  Assignments: Assignments,
+  Matchups: Matchups,
   Candidates: Candidates,
   SystemConfigs: SystemConfigs
 }

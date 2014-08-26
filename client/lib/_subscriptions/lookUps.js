@@ -20,7 +20,7 @@ JobCalculatedStatus= {
 
     var result={
       open: (now < start),
-      filled: !! job.assignment
+      filled: !! job.matchup
     }
     return result
   },
@@ -39,15 +39,15 @@ JobCalculatedStatus= {
       case Enums.jobStatus.filled:
         return {
           $and:[
-            { assignment: { $ne: null } },
-            { assignment: { $exists: true} }
+            { matchup: { $ne: null } },
+            { matchup: { $exists: true} }
           ]
         }
       case Enums.jobStatus.unfilled:
         return {
           $or:[
-            { assignment: null },
-            { assignment: { $exists: false } }
+            { matchup: null },
+            { matchup: { $exists: false } }
           ]
         }
     }

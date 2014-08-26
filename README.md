@@ -2,7 +2,7 @@
 
 ***
 
-It allows sales professionals to efficiently manage prospects, and allows recruiters to manage their open jobs and related candidates and job assignments.  
+It allows sales professionals to efficiently manage prospects, and allows recruiters to manage their open jobs and related candidates and job matchups.
 This repository for the moment contains just the shell of a system that has been under development during the last year.
 
 We're currently migrating Exartu to MeteorJS.

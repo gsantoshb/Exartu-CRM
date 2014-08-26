@@ -141,17 +141,17 @@ Router.map(function () {
     controller: 'NotesController'
   });
 
-  this.route('assignments', {
-    path: '/assignments',
-    controller: 'AssignmentsController'
+  this.route('matchups', {
+    path: '/matchups',
+    controller: 'MatchupsController'
   });
-  this.route('assignment', {
-    path: '/assignment/:_id',
-    controller: 'AssignmentController'
+  this.route('matchup', {
+    path: '/matchup/:_id',
+    controller: 'MatchupController'
   });
-    this.route('addAssignmentPage', {
-        path: '/assignmentAdd/:objType',
-        controller: 'AssignmentAddController',
+    this.route('addMatchupPage', {
+        path: '/matchupAdd/:objType',
+        controller: 'MatchupAddController',
         waitOn: [dType.ObjTypesHandler]
     });
 

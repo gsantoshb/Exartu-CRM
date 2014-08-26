@@ -356,66 +356,41 @@ newObjType({
 
 
 newObjType({
-  collection: Assignments,
-  name: 'assignment',
+  collection: Matchups,
+  name: 'matchup',
   style: {
     icon: 'briefcase',
     color: 'blue'
   },
-  objGroupType: Enums.objGroupType.assignment,
+  objGroupType: Enums.objGroupType.matchup,
 //  services: ['messages', 'tasks', 'notes', 'tags'],
   services: [],
   fields: [
-    {
+  {
       name: 'statusNote',
       displayName: 'Status Note',
       showInAdd: false,
       required: false
     }, {
-      name: 'startDate',
-      displayName: 'Start date',
-      fieldType: 'date',
-      showInAdd: false,
-      defaultValue: null,
-      required: false
-    }, {
-      name: 'endDate',
-      displayName: 'End date',
-      fieldType: 'date',
-      showInAdd: false,
-      defaultValue: null,
-      required: false
-    }, {
-      name: 'assignmentStatus',
-      displayName: 'Status',
+      name: 'matchupStatus',
+      displayName: 'Matchup Status',
       fieldType: 'lookUp',
-      lookUpName: 'assignmentStatus',
-      showInAdd: false,
-      lookUpCode: Enums.lookUpTypes.assignment.status.code,
+      lookUpName: 'matchupStatus',
+      showInAdd: true,
+      lookUpCode: Enums.lookUpTypes.matchup.status.code,
+      required: true,
+      multiple: false
+    }, {
+      name: 'candidateStatus',
+      displayName: 'Candidate Status',
+      fieldType: 'lookUp',
+      lookUpName: 'candidateStatus',
+      lookUpCode: Enums.lookUpTypes.candidate.status.code,
       required: false,
-      multiple: false,
-      defaultValue: null
+      multiple: false
     }
 
     ]
 });
 
 
-newObjType({
-  collection: Candidates,
-  name: 'candidate',
-  style: {
-    icon: 'briefcase',
-    color: 'blue'
-  },
-  objGroupType: Enums.objGroupType.candidate,
-  services: ['messages', 'tasks', 'notes', 'tags'],
-  fields: [
-    {
-      name: 'statusNote',
-      displayName: 'Status note',
-      showInAdd: false,
-      required: false
-    }
-  ]
-});

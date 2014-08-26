@@ -12,7 +12,7 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ObjTypesHandler, ContactableHandler, AssignmentHandler];
+    return [ObjTypesHandler, ContactableHandler, MatchupHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -330,29 +330,29 @@ Template.contactablesListItem.displayObjType = function() {
 };
 
 // Employee item
-Template.employeeInformation.assignmentInfo = function () {
-  if (!this.assignment)
+Template.employeeInformation.matchupInfo = function () {
+  if (!this.matchup)
     return undefined;
 
-  var assignmentInfo = {};
-  var assignment = Assignments.findOne({_id: this.assignment});
+  var matchupInfo = {};
+  var matchup = Matchups.findOne({_id: this.matchup});
 
   var job = Jobs.findOne({
-    _id: assignment.job
+    _id: matchup.job
   }, {
     transform: null
   });
 
   var customer = Contactables.findOne({_id: job.customer}, {transform: null});
 
-  assignmentInfo.job = job._id;
-  assignmentInfo.jobTitle = job.publicJobTitle;
+  matchupInfo.job = job._id;
+  matchupInfo.jobTitle = job.publicJobTitle;
   if (customer) {
-    assignmentInfo.customerName = customer.organization.organizationName;
-    assignmentInfo.customer = customer._id;
+    matchupInfo.customerName = customer.organization.organizationName;
+    matchupInfo.customer = customer._id;
   }
 
-  return assignmentInfo;
+  return matchupInfo;
 }
 
 // Google analytic

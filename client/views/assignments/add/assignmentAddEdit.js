@@ -1,4 +1,4 @@
-AssignmentAddController = RouteController.extend({
+MatchupAddController = RouteController.extend({
   data: function(){
     Session.set('objType',this.params.objType);
   },
@@ -7,7 +7,7 @@ AssignmentAddController = RouteController.extend({
       this.render('loadingContactable');
       return;
     }
-    this.render('addAssignmentPage');
+    this.render('addMatchupPage');
   },
   onAfterAction: function() {
     var title = 'Add ' + Session.get('objType'),
@@ -29,7 +29,7 @@ var model;
 var subTypesDep=new Deps.Dependency;
 var options;
 var employeeId;
-var createAssignment= function(objTypeName){
+var createMatchup= function(objTypeName){
   options= Session.get('addOptions');
   if (options){
     Session.set('addOptions', undefined);
@@ -39,13 +39,13 @@ var createAssignment= function(objTypeName){
   return model
 }
 
-Template.addAssignmentPage.helpers({
+Template.addMatchupPage.helpers({
   employeeId: function () {
   return employeeId;
   },
   model: function(){
     if (!model){
-      model=createAssignment(Session.get('objType'));
+      model=createMatchup(Session.get('objType'));
     }
     return model;
   },
@@ -68,7 +68,7 @@ Template.addAssignmentPage.helpers({
   }
 });
 
-Template.addAssignmentPage.events({
+Template.addMatchupPage.events({
     'change .employeeSelect': function (e, ctx) {
 
       employeeId = e.target.value;
@@ -83,13 +83,13 @@ Template.addAssignmentPage.events({
     if (options.job) obj.job=options.job;
     obj.employee=employeeId;
 
-    Meteor.call('addAssignment', obj, function(err, result){
+    Meteor.call('addMatchup', obj, function(err, result){
       if(err){
         console.dir(err)
       }
       else{
-        console.log('assignment result',result);
-        Router.go('/assignment/' + result._id);
+        console.log('matchup result',result);
+        Router.go('/matchup/' + result._id);
       }
     });
   },
@@ -98,6 +98,6 @@ Template.addAssignmentPage.events({
   }
 })
 
-Template.addAssignmentPage.destroyed=function(){
+Template.addMatchupPage.destroyed=function(){
   model=undefined;
 }

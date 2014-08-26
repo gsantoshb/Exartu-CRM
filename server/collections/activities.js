@@ -104,7 +104,7 @@ Jobs.after.insert(function (userId, doc) {
 
 
 //list
-Assignments.after.insert(function (userId, doc) {
+Matchups.after.insert(function (userId, doc) {
   var data = {};
   data.dateCreated = doc.dateCreated;
   data.job=doc.job;
@@ -113,12 +113,12 @@ Assignments.after.insert(function (userId, doc) {
   Activities.insert({
     userId: userId,
     hierId: doc.hierId,
-    type: Enums.activitiesType.assignmentAdd,
+    type: Enums.activitiesType.matchupAdd,
     entityId: doc.job,
     data: data
   })
 });
-Assignments.after.update(function (userId, doc) {
+Matchups.after.update(function (userId, doc) {
   var data = {};
   data.dateCreated = new Date();
   data.job= doc.job;
@@ -129,7 +129,7 @@ Assignments.after.update(function (userId, doc) {
   Activities.insert({
     userId: userId,
     hierId: doc.hierId,
-    type: Enums.activitiesType.assignmentEdit,
+    type: Enums.activitiesType.matchupEdit,
     entityId: doc.job,
     data: data
   })

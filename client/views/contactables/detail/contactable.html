@@ -208,9 +208,9 @@
         {{#if person}}
             <small>— {{person.jobTitle}}</small>
         {{/if}}
-        {{#if assignmentInfo}}
-            <a class="pull-right" href="/job/{{assignmentInfo._id}}">
-                <i class="icon icon-briefcase"> <span>{{assignmentInfo.displayName}}</span></i>
+        {{#if matchupInfo}}
+            <a class="pull-right" href="/job/{{matchupInfo._id}}">
+                <i class="icon icon-briefcase"> <span>{{matchupInfo.displayName}}</span></i>
             </a>
         {{/if}}
     </h1>
@@ -292,8 +292,8 @@
         <div class="tab-pane" id="profile-hrConcourse">
             {{#if ../Employee}}
             {{>applicantCenter entity=contactable}}
-            <!-- Assignments -->
-            {{>contactableAssignmentsBox ..}}
+            <!-- Matchups -->
+            {{>contactableMatchupsBox ..}}
             {{/if}}
         </div><!-- /.profile-documents -->
     </div>

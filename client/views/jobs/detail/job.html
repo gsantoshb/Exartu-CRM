@@ -54,8 +54,8 @@
         <li ><a href="#profile-description" data-toggle="tab">Job Description</a></li>
         <li ><a href="#profile-jobRates" data-toggle="tab">Rates</a></li>
         <!--<li ><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>-->
-        <li ><a href="#profile-candidates" data-toggle="tab">Candidates</a></li>
-        <li ><a href="#profile-assignments" data-toggle="tab">Assignments</a></li>
+
+        <li ><a href="#profile-matchups" data-toggle="tab">Matchups</a></li>
         <li ><a href="#profile-activity" data-toggle="tab">Activity</a></li>
         <li ><a href="#profile-tasks" data-toggle="tab">Tasks</a></li>
         <li ><a href="#profile-notes" data-toggle="tab">Notes</a></li>
@@ -64,7 +64,7 @@
     <div class="tab-content">
         {{#with job}}
         <div class="tab-pane " id="profile-candidates">{{>candidates type='job' id=_id}}</div>
-        <div class="tab-pane " id="profile-assignments">{{>assignmentsBox type='job' id=_id}}</div>
+        <div class="tab-pane " id="profile-matchups">{{>matchupsBox type='job' id=_id}}</div>
         <div class="tab-pane " id="profile-activity">{{>jobActivity}}</div>
         <div class="tab-pane " id="profile-jobRates">{{>jobRates}}</div>
         <div class="tab-pane " id="profile-description">{{> jobDescription}}</div>

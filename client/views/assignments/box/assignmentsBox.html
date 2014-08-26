@@ -1,4 +1,4 @@
-<template name="assignmentsBox">
+<template name="matchupsBox">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8 col-lg-8">
@@ -7,13 +7,13 @@
                             <div class="col-sm-8 col-md-8 col-lg-8">
                                 {{#if isJob}}
                                 <div class="btn-group pull-left suffix-5">
-                                    <button type="button" class="btn btn-success addAssignment" title="Add">
+                                    <button type="button" class="btn btn-success addMatchup" title="Add">
                                         <span class="fa fa-plus"></span>
                                     </button>
                                 </div>
                                 {{/if}}
                                 <div class="input-group">
-                                    <input id="search-string" type="text" class="form-control" placeholder="Search assignments">
+                                    <input id="search-string" type="text" class="form-control" placeholder="Search matchups">
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary" type="button">
                                             <i class="fa fa-search"></i>
@@ -28,14 +28,14 @@
                 <div class="col-md-4 col-lg-4"></div>
                 <div class="col-md-8 col-lg-8">
                     <div class="table-items-box">
-                        {{#each assignments}}
+                        {{#each matchups}}
                             <div class="table-item magic">
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <div class="table-item-cell">
                                             <div class="table-item-cell-container">
                                                 <div class="table-item-title">
-                                                        <a href="/assignment/{{_id}}"> <i class="icon icon-check-list"></i></a>
+                                                        <a href="/matchup/{{_id}}"> <i class="icon icon-check-list"></i></a>
 
                                                     <a href="/contactable/{{employee}}"><i class="icon icon-profile-man"> </i> {{employeeDisplayName}} </a>
                                                     <i class="fa fa-arrows-h fa-x3"> </i>
