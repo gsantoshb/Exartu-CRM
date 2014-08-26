@@ -1,5 +1,3 @@
-
-
 DashboardController = RouteController.extend({
   layoutTemplate: 'mainLayout',
     waitOn: function () {
@@ -27,75 +25,160 @@ DashboardController = RouteController.extend({
     }
 });
 
-var filters = ko.observable(ko.mapping.fromJS({
-  limit: 10
-}));
-Template.dashboard.waitOn=['ObjTypesHandler', 'UsersHandler']
-Template.dashboard.viewModel = function () {
-  var self = this;
-
-  var options = ko.computed(function () {
-    return {limit: ko.toJS(filters().limit),
-      sort: {
-        'data.dateCreated': -1
-      }
-    };
-  });
-
-  self.showMore = function () {
-    filters().limit(filters().limit() + 10);
+var query ={
+  options: {
+    limit: 50
+  },
+  filter: {
+    searchString: ''
   }
+};
+var queryDep= new Deps.Dependency;
+var customerQuery = {
+  Customer: {
+    $exists: true
+  }
+};
+var employeeQuery = {
+  Employee: {
+    $exists: true
+  }
+};
+//Template.dashboard.waitOn=['ObjTypesHandler', 'UsersHandler']
+Template.dashboard.helpers({
+  activities: function(){
+    queryDep.depend();
 
-  self.activities = ko.meteor.find(Activities, {}, options);
+    var f={};
+    if (query.filter.searchString){
+      var regexObject={
+        $regex: query.filter.searchString,
+        $options : 'i'
+      };
 
-  self.activityVM = function (activity) {
-    switch (activity.type()) {
-      case 0:
-        return 'dashboardContactableActivity';
-      case 2:
-        return 'dashboardTaskActivity';
-      case 3:
-        return 'dashboardJobActivity';
-      default:
-        return 'dashboardEmptyActivity';
+      //contactable
+      var contQuery = { $or: [] };
+      var aux = {};
+      _.each(['person.firstName', 'person.lastName', 'person.jobTitle', 'organization.organizationName', 'organization.department'],function(name){
+        aux = {};
+        aux[name]=regexObject;
+        contQuery.$or.push(aux);
+      })
+      var contactables = _.map(Contactables.find(contQuery).fetch(), function(doc){ return doc._id});
+
+
+      //jobs
+      var jobQuery={ $or: [] };
+      _.each(['publicJobTitle'],function(name){
+        aux = {};
+        aux[name]=regexObject;
+        jobQuery.$or.push(aux);
+      })
+      var jobs = _.map(Jobs.find(jobQuery).fetch(), function(doc){ return doc._id});
+
+      //task
+      var taskQuery={ $or: [] };
+      _.each(['msg'],function(name){
+        aux = {};
+        aux[name]=regexObject;
+        taskQuery.$or.push(aux);
+      })
+      var task = _.map(Tasks.find(taskQuery).fetch(), function(doc){ return doc._id});
+
+      var ids = contactables.concat(jobs).concat(task);
+      f.entityId= { $in: ids };
     }
-  };
+    return Activities.find(f, query.options);
+  },
+  customerHistory: function(){
+
+    return getHistorical(Contactables, getDays(), customerQuery);
+  },
+  employeeHistory: function(){
+
+    return getHistorical(Contactables, getDays(), employeeQuery);
+  },
+  jobHistory: function(){
+    return getHistorical(Jobs, getDays());
+  },
+  jobCount: function(){
+    return Jobs.find().count();
+  },
+  customerCount: function(){
+    return Contactables.find(customerQuery).count();
+  },
+  employeeCount: function(){
+    return Contactables.find(employeeQuery).count();
+  }
+});
+
+var getDays = function(){
   var now = new Date();
   var timeInADay = 24 * 60 * 60 * 1000;
-  var days = [now.getTime() - (timeInADay) * 7, now.getTime() - (timeInADay) * 6, now.getTime() - (timeInADay) * 5, now.getTime() - (timeInADay) * 4, now.getTime() - (timeInADay) * 3, now.getTime() - (timeInADay) * 2, now.getTime() - (timeInADay) * 1, now.getTime() - (timeInADay) * 0];
-
-  var customerQuery = {
-    Customer: {
-      $exists: true
-    }
-  };
-  var employeeQuery = {
-    Employee: {
-      $exists: true
-    }
-  }
-  self.jobHistory = getHistorical(Jobs, days);
-  self.customerHistory = getHistorical(Contactables, days, customerQuery);
-  self.employeeHistory = getHistorical(Contactables, days, employeeQuery);
-  self.jobCount = ko.observable(Jobs.find().count());
-  self.employeeCount = ko.observable(Contactables.find(employeeQuery).count());
-  self.customerCount = ko.observable(Contactables.find(customerQuery).count());
-  //    self.jobGrowth = ko.observable();
-
-  self.assign=function(jobId){
-    var options={};
-    var job=Jobs.findOne({
-      _id: jobId
-    });
-    if(job.matchup){
-      options.matchupId=job.matchup;
-    }else{
-      options.jobId=jobId;
-    }
-    Composer.showModal( 'matchupAdd', options);
-  }
-  return self;
+  return [now.getTime() - (timeInADay) * 7, now.getTime() - (timeInADay) * 6, now.getTime() - (timeInADay) * 5, now.getTime() - (timeInADay) * 4, now.getTime() - (timeInADay) * 3, now.getTime() - (timeInADay) * 2, now.getTime() - (timeInADay) * 1, now.getTime() - (timeInADay) * 0];
 };
+
+Template.dashboard.events({
+  'keyup #searchString': _.debounce(function(e){
+    query.filter.searchString = e.target.value;
+    queryDep.changed();
+  },200)
+});
+
+
+
+Template.activity.helpers({
+  getTemplateForActivity: function(){
+    switch (this.type){
+      case Enums.activitiesType.contactableAdd:
+        return 'newContactableActivity';
+      case Enums.activitiesType.jobAdd:
+        return 'newJobActivity';
+      case Enums.activitiesType.taskAdd:
+        return 'newTaskActivity';
+    }
+  }
+});
+Template.newTaskActivity.getUserName = function(id){
+  var u = Meteor.users.findOne(id || this.toString());
+  return u && u.username;
+};
+
+
+Template.newContactableActivity.getActivityColor = function(){
+  return helper.getActivityColor(this);
+};
+Template.newContactableActivity.getActivityIcon = function(){
+  return helper.getActivityIcon(this);
+};
+
+Template.sparkline.text= function(){
+  return this.join();
+}
+Template.sparkline.rendered = function() {
+  this.$('span').sparkline("html", {
+    type: "bar",
+    fillColor: "#4cd964",
+    lineColor: "#4cd964",
+    width: "50",
+    height: "24"
+  });
+}
+
+
+//  self.assign=function(jobId){
+//    var options={};
+//    var job=Jobs.findOne({
+//      _id: jobId
+//    });
+//    if(job.matchup){
+//      options.matchupId=job.matchup;
+//    }else{
+//      options.jobId=jobId;
+//    }
+//    Composer.showModal( 'matchupAdd', options);
+//  }
+//  return self;
 var getHistorical = function (collection, timeStamps, query) {
   var history = [];
   var q = query || {};
@@ -111,7 +194,6 @@ var getHistorical = function (collection, timeStamps, query) {
   } else {
     var growth = 0;
   }
-  history = ko.observableArray(history);
 
   history.growth = (growth > 0 ? '+' : growth < 0 ? '-' : '') + growth + '%';
   return history;
@@ -132,60 +214,11 @@ var deepLog = function(obj, path) {
 };
 
 Template.dashboard.rendered = function () {
-  exartu = {
-    // === Peity charts === //
-    //        sparkline: function () {
-    //            $(".sparkline_line_good span").sparkline("html", {
-    //                type: "line",
-    //                fillColor: "#4cd964",
-    //                lineColor: "#4cd964",
-    //                width: "50",
-    //                height: "24"
-    //            });
-    //            $(".sparkline_line_bad span").sparkline("html", {
-    //                type: "line",
-    //                fillColor: "#de0a0a",
-    //                lineColor: "#de0a0a",
-    //                width: "50",
-    //                height: "24"
-    //            });
-    //            $(".sparkline_line_neutral span").sparkline("html", {
-    //                type: "line",
-    //                fillColor: "#CCCCCC",
-    //                lineColor: "#757575",
-    //                width: "50",
-    //                height: "24"
-    //            });
-    //
-    //            $(".sparkline_bar_good span").sparkline('html', {
-    //                type: "bar",
-    //                barColor: "#4cd964",
-    //                barWidth: "5",
-    //                height: "24"
-    //            });
-    //            $(".sparkline_bar_bad span").sparkline('html', {
-    //                type: "bar",
-    //                barColor: "#de0a0a",
-    //                barWidth: "5",
-    //                height: "24"
-    //            });
-    //            $(".sparkline_bar_neutral span").sparkline('html', {
-    //                type: "bar",
-    //                barColor: "#757575",
-    //                barWidth: "5",
-    //                height: "24"
-    //            });
-    //        },
-
-    // === Tooltip for flot charts === //
-    flot_tooltip: function (x, y, contents) {
-
-      $('<div id="tooltip">' + contents + '</div>').css({
-        top: y + 5,
-        left: x + 5
-      }).appendTo("body").fadeIn(200);
+  //infinite scroll
+  $(window).scroll(function() {
+    if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+      query.options.limit += 50;
+      queryDep.changed();
     }
-  }
-
-  //    exartu.sparkline();
+  });
 }

@@ -224,7 +224,7 @@ _.extend(helper, {
   },
   getActivityColor: function (activity) {
     var style = dType.ObjTypes.findOne({
-      name: activity.data.objTypeName()
+      name: _.isString(activity.data.objTypeName) ? activity.data.objTypeName : activity.data.objTypeName()
     }).style;
     return _.findWhere(colors, {
       name: style.color
@@ -233,7 +233,7 @@ _.extend(helper, {
   getActivityIcon: function (activity) {
 
     var style = dType.ObjTypes.findOne({
-      name: activity.data.objTypeName()
+      name: _.isString(activity.data.objTypeName)? activity.data.objTypeName : activity.data.objTypeName()
     }).style;
     return _.findWhere(icons, {
       name: style.icon

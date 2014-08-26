@@ -1,16 +1,16 @@
 <template name="dashboard">
-    <div id="content" name="dashboardVM">
+    <div id="content">
         <div id="content-header" class="mini">
             <h1>Dashboard</h1>
             <ul class="mini-stats box-3">
                 <li>
                     <a href="/jobs">
                         <div class="left sparkline_bar_good">
-                            <span data-bind="sparkLine: jobHistory"></span>
-                            <span data-bind="text: jobHistory.growth"></span>
+                            {{> sparkline jobHistory}}
+                            <span>{{jobHistory.growth}}</span>
                         </div>
                         <div class="right">
-                            <strong data-bind="text: jobCount"></strong>
+                            <strong>{{jobCount}}</strong>
                             Jobs
                         </div>
                     </a>
@@ -18,11 +18,11 @@
                 <li>
                     <a href="/contactables/customer">
                         <div class="left sparkline_bar_good">
-                            <span data-bind="sparkLine: customerHistory"></span>
-                            <span data-bind="text: customerHistory.growth"></span>
+                            {{> sparkline customerHistory}}
+                            <span>{{customerHistory.growth}}</span>
                         </div>
                         <div class="right">
-                            <strong data-bind="text: customerCount"></strong>
+                            <strong>{{customerCount}}</strong>
                             Customers
                         </div>
                     </a>
@@ -30,11 +30,11 @@
                 <li>
                     <a href="/contactables/employee">
                         <div class="left sparkline_bar_good">
-                            <span data-bind="sparkLine: employeeHistory"></span>
-                            <span data-bind="text: employeeHistory.growth"></span>
+                            {{> sparkline employeeHistory}}
+                            <span> {{employeeHistory.growth}}</span>
                         </div>
                         <div class="right">
-                            <strong data-bind="text: employeeCount"></strong>
+                            <strong>{{employeeCount}}</strong>
                             Employees
                         </div>
                     </a>
@@ -51,33 +51,22 @@
                 <div class="col-lg-12 col-md-12">
                     <section class="timeline">
                         <header class="box-header">
-                            <div class="btn-group pull-right" style="visibility: hidden">
-                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    Sort by: Most Recent
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="#">Most Recent</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Another action</a>
-                                    </li>
-
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="#">Separated link</a>
-                                    </li>
-                                </ul>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <h4 class="box-title">Recent activity</h4>
+                                </div>
+                                <div  class="col-lg-4 input-group">
+                                    <input id="searchString" class="form-control" placeholder="Search...">
+                                    <a class="input-group-addon btn btn-primary"><i class="fa fa-search"></i></a>
+                                </div>
                             </div>
-                            <h4 class="box-title">Recent activity</h4>
                         </header>
 
-                        <div class="activity-container scroll-container" data-bind="visible: activities().length > 0, foreach: activities">
-                            <div data-bind="template: { name: $root.activityVM($data), data: $data}"></div>
+                        <div class="activity-container scroll-container">
+                            {{#each activities}}
+                                {{> activity}}
+                            {{/each}}
                         </div>
-                        <!--infinite scroll-->
-                        <div data-bind="onScrollBottom: $root.showMore"></div>
                     </section>
                     <!-- /.timeline -->
                 </div>
@@ -87,227 +76,173 @@
         <!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+</template>
 
+<template name="activity">
+    {{> UI.dynamic template=getTemplateForActivity}}
+</template>
 
-
-    <!-- Activity templates -->
-
-    <!-- Hack: template for activities that doesn't have html yet -->
-    <div id="dashboardEmptyActivity" style="display: none">
-    </div>
-
-    <!-- New contactable activity -->
-    <div id="dashboardContactableActivity2" style="display: none">
-        <div class="item item-customer">
-            <div class="item-info">
-                <div class="time">
-                    <i class="icon icon-clock-3"></i>
-                    <span data-bind="text: moment(data.dateCreated()).fromNow()"></span>
-                </div>
-                <div class="type" data-bind="style: {background: helper.getActivityColor($data)}">
-                    <i data-bind="css: 'icon ' + helper.getActivityIcon($data)"></i>
-                </div>
+<!-- New contactable activity -->
+<template name="newContactableActivity">
+    <div class="item item-customer">
+        <div class="item-info">
+            <div class="time">
+                <i class="icon icon-clock-3"></i>
+                <span>
+                     {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
+                </span>
             </div>
-            <!-- /.item-info -->
-            <div class="item-content">
-                <div class="box">
-                    <div class="box-content" data-bind="with: data">
-                        <div class="thumb">
-                            <div class="user-avatar-container">
-                                <a class="user-avatar" href="#">
-                                    <img style="width: 64px; height: 64px; padding:0" src="img/avatar.jpg" alt="CNN">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="item-title">
+            <div class="type" style="background: {{getActivityColor}}">
+                <i class="icon {{getActivityIcon}}"></i>
+            </div>
+        </div>
+        <!-- /.item-info -->
+        <div class="item-content">
+            <div class="box">
+                <div class="box-content">
+                    <h4 class="item-title">
+                        <span>{{data.objTypeName}}</span>
+                        <span class="spacer">–</span>
+                        <a href="/contactable/{{entityId}}">
                             <strong>
-                                <a href="#" data-bind="text: displayName">
-                                </a>
+                                <span>{{data.displayName}}</span>
                             </strong>
-                            is now our
-                            <span data-bind="text: objTypeName"></span>
-                        </div>
-
-                        <!-- ko if: $data.person -->
-                        <h4 class="item-title" data-bind="text: person.jobTitle" ></h4>
-                        <!-- /ko -->
-                        <div class="item-actions">
-                            <a class="btn btn-xs btn-default" href="#">
-                                <i class="fa fa-envelope"></i>Send Message</a>
-                            <a class="btn btn-xs btn-default" href="#">Details</a>
-                        </div>
+                        </a>
+                    </h4>
+                    <div class="item-actions">
+                        <a class="btn btn-default tip-bottom" title="Send Message" data-bind="click: function () { Composer.showModal( 'sendMessage',$parent.entityId()); } ">
+                            <i class="fa fa-comment-o"></i>
+                        </a>
+                        <a class="btn btn-default tip-bottom" title="Customer Info" href="/contactable/{{entityId}}">
+                            <i class="fa fa-info"></i>
+                        </a>
                     </div>
-                    <!-- /.box-content -->
                 </div>
-                <!-- /.box -->
+                <!-- /.box-content -->
             </div>
-            <!-- /.item-content -->
+            <!-- /.box -->
         </div>
-        <!-- /.item -->
+        <!-- /.item-content -->
     </div>
+    <!-- /.item -->
+</template>
 
-    <!-- New contactable activity -->
-    <div id="dashboardContactableActivity" style="display: none">
-        <div class="item item-customer">
-            <div class="item-info">
-                <div class="time">
-                    <i class="icon icon-clock-3"></i>
-                    <span data-bind="text: moment(data.dateCreated()).fromNow()"></span>
-                </div>
-                <div class="type" data-bind="style: {background: helper.getActivityColor($data)}">
-                    <i data-bind="css: 'icon ' + helper.getActivityIcon($data)"></i>
-                </div>
+<!-- New task activity -->
+<template name="newTaskActivity">
+    <div class="item item-task">
+        <div class="item-info">
+            <div class="time">
+                <i class="icon icon-clock-3"></i>
+                <span>
+                    {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
+                </span>
             </div>
-            <!-- /.item-info -->
-            <div class="item-content">
-                <div class="box">
-                    <div class="box-content" data-bind="with: data">
-                        <h4 class="item-title">
-                            <span data-bind="text: objTypeName"></span>
-                            <span class="spacer">–</span>
-                            <a href="/" data-bind="attr: { href: '/contactable/' + $parent.entityId() }">
-                                <strong>
-                                    <span data-bind="text: displayName"></span>
-                                </strong>
-                            </a>
-                        </h4>
-                        <div class="item-actions">
-                            <a class="btn btn-default tip-bottom" title="Send Message" data-bind="click: function () { Composer.showModal( 'sendMessage',$parent.entityId()); } ">
-                                <i class="fa fa-comment-o"></i>
-                            </a>
-                            <a class="btn btn-default tip-bottom" title="Customer Info" data-bind="attr: {href: '/contactable/' +  $parent.entityId()}">
-                                <i class="fa fa-info"></i>
-                            </a>
-                            <!--
-							<a class="btn btn-default tip-bottom" title="Propose Deal" href="#">
-								<i class="fa fa-money"></i>Deal</a>
-							<a class="btn btn-default tip-bottom" title="Phone No." href="#">
-								<i class="fa fa-phone"></i>555.222.333</a>
-							<a class="btn btn-default tip-bottom" title="Email" href="#">
-								<i class="fa fa-envelope-o"></i>p.morgan@cnn.com</a>
--->
-                        </div>
-                    </div>
-                    <!-- /.box-content -->
-                </div>
-                <!-- /.box -->
+            <div class="type">
+                <i class="icon icon-clock-3"></i>
             </div>
-            <!-- /.item-content -->
         </div>
-        <!-- /.item -->
-    </div>
+        <!-- /.item-info -->
+        <div class="item-content">
+            <div class="box">
+                <div class="box-content">
+                    <h4 class="item-title">
+                        Task
+                        <span class="spacer">–</span>
+                        <a href="#">
+                            <strong>{{data.msg}}</strong>
+                        </a>
+                        Assigned to
+                        {{#each data.assign}}
+                            <a>{{getUserName}}</a>,
+                        {{/each}}
 
-    <!-- New task activity -->
-    <div id="dashboardTaskActivity" style="display: none">
-        <div class="item item-task">
-            <div class="item-info">
-                <div class="time">
-                    <i class="icon icon-clock-3"></i>
-                    <span data-bind="text: moment(data.dateCreated()).fromNow()"></span>
-                </div>
-                <div class="type">
-                    <i class="icon icon-clock-3"></i>
-                </div>
-            </div>
-            <!-- /.item-info -->
-            <div class="item-content" data-bind="with: data">
-                <div class="box">
-                    <div class="box-content">
-                        <h4 class="item-title">
-                            Task
-                            <span class="spacer">–</span>
-                            <a href="#">
-                                <strong data-bind="text: note"></strong>
-                            </a>
-                            Assigned to
-                            <!-- ko foreach: assign -->
-                            <!-- ko with: helper.getUserInformation($data) -->
-                            <!-- ko if: $data.ready -->
-                            <a data-bind="text: username"></a>,
-                            <!-- /ko -->
-                            <!-- /ko -->
-                            <!-- /ko -->
-                        </h4>
-                        <div class="item-actions">
-                            <a class="btn btn-default tip-bottom" title="Task Owner" href="#">by
-                                <i class="fa fa-user"></i>
-                                <!-- ko with: helper.getUserInformation($parent.userId()) -->
-                                <!-- ko if: $data.ready -->
-                                <span data-bind="text: username"></span>
-                                <!-- /ko -->
-                                <!-- /ko -->
-                            </a>
-                            <!--<a class="btn btn-default tip-bottom" title="Task Info" data-bind="click: function () { Composer.showModal( 'addEditTask',$parent.entityId()); }">-->
-                                <!--<i class="fa fa-info"></i>-->
-                            <!--</a>-->
-                            <a class="btn btn-default tip-bottom" title="Task Start Date" href="#">Start:
-                                <i class="fa fa-calendar"></i>
-                                <span data-bind="text: moment(begin()).format('lll')"></span>
-                            </a>
+                    </h4>
+                    <div class="item-actions">
+                        <a class="btn btn-default tip-bottom" title="Task Owner" href="#">by
+                            <i class="fa fa-user"></i>
+                            <span data-bind="text: username"> {{getUserName userId}} </span>
+                        </a>
+                        <a class="btn btn-default tip-bottom" title="Task Start Date" href="#">Start:
+                            <i class="fa fa-calendar"></i>
+                            <span>
+                                 {{#formattedDate value=data.begin format='lll'}}
+                                    {{date}}
+                                {{/formattedDate}}
+                            </span>
+                        </a>
+                        {{#if data.end}}
                             <a class="btn btn-default tip-bottom" title="Task Start Date" href="#">End:
                                 <i class="fa fa-calendar"></i>
-                                <span data-bind="text: moment(end()).format('lll')"></span>
+                                <span>
+                                    {{#formattedDate value=data.end format='lll'}}
+                                        {{date}}
+                                    {{/formattedDate}}
+                                </span>
                             </a>
-                        </div>
+                        {{/if}}
                     </div>
-                    <!-- /.box-content -->
                 </div>
-                <!-- /.box -->
+                <!-- /.box-content -->
             </div>
-            <!-- /.item-content -->
+            <!-- /.box -->
         </div>
-        <!-- /.item -->
+        <!-- /.item-content -->
     </div>
+    <!-- /.item -->
+</template>
 
-    <!-- New job activity -->
-    <div id="dashboardJobActivity" style="display: none">
-        <div class="item item-job">
-            <div class="item-info">
-                <div class="time">
-                    <i class="icon icon-clock-3"></i><span data-bind="text: moment(data.dateCreated()).fromNow()"></span>
-                    </div>
-                <div class="type">
-                    <i class="icon icon-briefcase"></i>
-                </div>
+<!-- New job activity -->
+<template name="newJobActivity">
+    <div class="item item-job">
+        <div class="item-info">
+            <div class="time">
+                <i class="icon icon-clock-3"></i><span>
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                    {{date}}
+                {{/formattedDate}}
+                </span>
             </div>
-            <!-- /.item-info -->
-            <div class="item-content">
-                <div class="box" data-bind="with: data">
-                    <div class="box-content">
-                        <h4 class="item-title">
-                            Job
-                            <span class="spacer">–</span>
-                            <a href="/" data-bind="attr: { href: '/job/' + $parent.entityId() }">
-                                <strong data-bind="text: publicJobTitle"></strong>
-                            </a>
-                            <!-- ko if: $data.customer -->
-                            @
-                            <a href="#" data-bind="text: customerName, attr: {href: '/contactable/' +  $data.customer._id()}"></a>
-                            <!-- /ko -->
-                        </h4>
-                        <div class="item-actions">
-                            <a class="btn btn-default tip-bottom" title="Job Details" data-bind="attr: {href: '/job/' +  $parent.entityId()}">
-                                <i class="fa fa-info"></i>
-                            </a>
-                            <!--
-<a class="btn btn-default tip-bottom" title="Share Job" href="#">
-	<i class="fa fa-share-square-o"></i>
-</a>
--->
-                            <a class="btn btn-default tip-bottom" title="Assign Candidates" data-bind="click: function(){$root.assign($parent.entityId())}">
-                                <i class="fa fa-user"></i>Assign Candidates</a>
-                            <!--
-							<a class="btn btn-default tip-bottom" title="Email" href="#">
-								<i class="fa fa-envelope-o"></i>gregg@tempworks.com</a>
--->
-                        </div>
-                    </div>
-                    <!-- /.box-content -->
-                </div>
-                <!-- /.box -->
+            <div class="type">
+                <i class="icon icon-briefcase"></i>
             </div>
-            <!-- /.item-content -->
         </div>
-        <!-- /.item -->
+        <!-- /.item-info -->
+        <div class="item-content">
+            <div class="box" data-bind="with: data">
+                <div class="box-content">
+                    <h4 class="item-title">
+                        Job
+                        <span class="spacer">–</span>
+                        <a href="/job/{{entityId}}">
+                            <strong>{{data.publicJobTitle}}</strong>
+                        </a>
+                        {{#if customer}}
+                            @ <a href="/contactable/{{customer._id}}">{{customerName}}</a>
+                        {{/if}}
+                    </h4>
+                    <div class="item-actions">
+                        <a class="btn btn-default tip-bottom" title="Job Details" href="/job/{{entityId}}">
+                            <i class="fa fa-info"></i>
+                        </a>
+                        <a class="btn btn-default tip-bottom" title="Assign Candidates" data-bind="click: function(){$root.assign($parent.entityId())}">
+                            <i class="fa fa-user"></i>Assign Candidates</a>
+                    </div>
+                </div>
+                <!-- /.box-content -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.item-content -->
     </div>
+    <!-- /.item -->
+</template>
+
+
+
+<template name="sparkline">
+    <span>{{text}}</span>
 </template>

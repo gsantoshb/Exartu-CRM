@@ -13,7 +13,7 @@ Activities = new Meteor.Collection("activities", {transform: function(doc){
         doc.data.begin =  task.begin;
         doc.data.completed = task.completed;
         doc.data.end =  task.end;
-        doc.data.note = task.note;
+        doc.data.msg = task.msg;
       }
       break;
     case   (Enums.activitiesType.jobAdd):
