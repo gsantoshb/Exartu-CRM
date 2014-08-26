@@ -12,8 +12,9 @@ Meteor.methods({
     if (Meteor.call('isUsernameAvailable', document.username) &&
         Meteor.call('isEmailAvailable', document.email)) {
 
-    // Create account
-      Accounts.createUser({ username: document.username, email: document.email, password: document.password });
+      // Create account
+      var userId = Accounts.createUser({ username: document.username, email: document.email, password: document.password });
+      Accounts.sendVerificationEmail(userId);
       return true;
     }
 

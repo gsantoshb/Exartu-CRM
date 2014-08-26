@@ -1,19 +1,20 @@
 var entityType=null;
 var isEntitySpecific=false;
 var contactable;
-Template.matchupsBox.created=function(){
+Template.matchupsBox.rendered = function(){
+  Meteor.autorun(function() {
+    var entityId = Session.get('entityId');
     entityType=Utils.getEntityTypeFromRouter();
-    console.log('entity-type-in-assignment-box',entityType);
     isEntitySpecific=false;
     if (entityType!=null)
     {
       isEntitySpecific=true;
       if (entityType==Enums.linkTypes.contactable.value)
       {
-        contactable=Contactables.findOne({_id:Session.get('entityId') });
+        contactable=Contactables.findOne({_id: entityId});
       }
     }
-
+  });
 }
 
 Template.matchupsBox.isJob=function() {
@@ -62,18 +63,22 @@ Template.matchupsBox.matchups = function() {
         }
       });
   };
+
   if (isEntitySpecific) {
     if (entityType==Enums.linkTypes.job.value )
       searchQuery.job = Session.get('entityId')  ;
     if (entityType==Enums.linkTypes.contactable.value  && contactable )
     {
-      console.log('linktype',Utils.getLinkTypeFromEntity(contactable));
-      if (Utils.getLinkTypeFromEntity(contactable)=='Employee')
+      if (Utils.getContactableType(contactable)=='Employee')
         searchQuery.employee = Session.get('entityId');
-      if (Utils.getLinkTypeFromEntity(contactable)=='Customer')
-        searchQuery.customer = Session.get('entityId');
+      if (Utils.getContactableType(contactable)=='Customer') {
+        var entityId = Session.get('entityId');
+        var customersJobs = Jobs.find({customer: entityId}).map(function(job){ return job._id});
+        searchQuery.job = { $in: customersJobs};
+      }
     }
   };
+
   return Matchups.find(searchQuery);
 };
 

@@ -38,9 +38,11 @@
                                     </div>
                                     <div class="task-author">
                                         by
-                                        {{#userInfo userId=userId}}
-                                        <a href="#"><strong id="username"> {{username}} </strong></a>
-                                        {{/userInfo}}
+                                        {{#if userId}}
+                                            {{#userInfo userId=userId}}
+                                                <a href="#"><strong id="username"> {{username}} </strong></a>
+                                            {{/userInfo}}
+                                        {{/if}}
                                         linked with
                                         <i class="fa fa-long-arrow-right"></i>
                                         {{#each links}}
@@ -60,9 +62,11 @@
                             <div class="table-item-cell">
                                 <div class="table-item-cell-container">
                                     <div class="date">
-                                        {{#formattedDate value=dateCreated format="fromNow"}}
-                                        <span>{{date}}</span>
-                                        {{/formattedDate}}
+                                        {{#if dateCreated}}
+                                            {{#formattedDate value=dateCreated format="fromNow"}}
+                                                <span>{{date}}</span>
+                                            {{/formattedDate}}
+                                        {{/if}}
                                     </div>
                                 </div>
                                 <!-- /.table-item-cell-container -->
