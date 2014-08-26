@@ -3,7 +3,7 @@ var isEntitySpecific=false;
 var contactable;
 Template.matchupsBox.created=function(){
     entityType=Utils.getEntityTypeFromRouter();
-  alert(entityType);
+    console.log('entity-type-in-assignment-box',entityType);
     isEntitySpecific=false;
     if (entityType!=null)
     {

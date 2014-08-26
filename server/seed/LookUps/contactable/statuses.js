@@ -17,50 +17,14 @@ _.forEach([
 
 //employee status
 _.forEach([
+
   {
-    displayName:  "Candidates"
+    displayName: "Active",lookUpActions:[Enums.lookUpAction.Implies_Active]
   },
   {
-    displayName: "Interview"
-  },
-  {
-    displayName: "Offered"
-  },
-  {
-    displayName: "Placed"
-  },
-  {
-    displayName: "Refused"
-  },
-  {
-    displayName: "Rejected"
-  },
-  {
-    displayName: "NA"
-  },{
-    displayName: "Sendout"
-  },
-  {
-    displayName: "Submitted"
-  },
-  {
-    displayName: "WCandidates"
-  },
-  {
-    displayName: "Accepted"
-  },
-  {
-    displayName: "Extend"
-  },
-  {
-    displayName: "Interview1"
-  },
-  {
-    displayName: "Interview2"
-  },
-  {
-    displayName: "Pending"
+    displayName: "Inactive",lookUpActions:[Enums.lookUpAction.Implies_Inactive]
   }
+
 ],
   function (item) {
     item.codeType = Enums.lookUpTypes.employee.recruiterStatus.code;

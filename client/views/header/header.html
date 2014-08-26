@@ -191,7 +191,12 @@
                         <!--{{/each}}-->
                     <!--</ul>-->
                 </li>
-
+                <li class="tasks {{getActiveClass 'matchups' null}}">
+                    <a href="/matchups">
+                        <i class="icon icon-check-list"></i>
+                        <span>Matchups</span>
+                    </a>
+                </li>
                 <li class="tasks {{getActiveClass 'tasks' null}}">
                     <a href="/tasks">
                         <i class="icon icon-clock-3"></i>
@@ -204,12 +209,7 @@
                         <!--<span>Deals</span>-->
                     <!--</a>-->
                 <!--</li>-->
-                <li class="tasks {{getActiveClass 'matchups' null}}">
-                    <a href="/matchups">
-                        <i class="icon icon-check-list"></i>
-                        <span>Matchups</span>
-                    </a>
-                </li>
+
                 <!--<li class="tasks {{getActiveClass 'candidates' null}}">-->
                     <!--<a href="/candidates">-->
                         <!--<i class="icon icon-profile-man"></i>-->
