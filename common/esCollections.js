@@ -15,7 +15,7 @@ ES.syncCollection({
 	relations: [{
 			idField: 'links.id',
 			fieldName: 'notes',
-			valuePath: 'content',
+			valuePath: 'msg',
 			collection:	Notes
 		}
 	]
