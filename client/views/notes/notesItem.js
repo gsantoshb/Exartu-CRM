@@ -62,12 +62,24 @@ Template.notesItem.events = {
     }
     else
     {
-      Composer.showModal('addEditNote', { links: [
+      var links = [
         {
           id: entityId,
           type: entityType
         }
-      ] })
+      ];
+
+      if (entityType == Enums.linkTypes.matchup.value) {
+        // Add its employee, customer and job as links
+        // Employee
+        links.push({id: this.employee, type: Enums.linkTypes.contactable.value});
+        // Customer
+        links.push({id: this.customer, type: Enums.linkTypes.contactable.value});
+        // Job
+        links.push({id: this.job, type: Enums.linkTypes.job.value});
+      }
+
+      Composer.showModal('addEditNote', { links: links})
     }
   }
 };
