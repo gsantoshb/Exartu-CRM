@@ -155,7 +155,10 @@ Meteor.autorun(function() {
           score: (hit._score / result.max_score) * 100,
           properties: _.map(hit.highlight, function(matchedProperty, propertyName) {
             return propertyName;
-          })
+          }),
+          contexts: _.flatten(_.map(hit.highlight, function(matchedProperty, propertyName) {
+            return matchedProperty;
+          })),
         }
         return contactable;
       });
@@ -368,3 +371,8 @@ _.forEach(['employeeInformation', 'contactInformation', 'customerInformation'],
     });
 });
 
+// Elasticsearch context match template
+Template.esContextMatch.rendered = function() {
+  var text = this.$('.contextText');
+  text[0].innerHTML = this.data;
+};
