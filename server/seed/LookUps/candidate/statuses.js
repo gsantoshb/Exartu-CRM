@@ -12,7 +12,7 @@ _.forEach([
     displayName: 'Placed', lookUpActions:[Enums.lookUpAction.Candidate_Placed,Enums.lookUpAction.Implies_Active]
   },
   {
-    displayName: 'Inactive', lookUpActions:[Enums.lookUpAction.Implies_Inactive],isDefault: true
+    displayName: 'Inactive', lookUpActions:[Enums.lookUpAction.Implies_Inactive]
   }
 ],
   function (item) {

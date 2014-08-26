@@ -1,4 +1,6 @@
 seedSystemLookUps = function (hierId) {
+  if (!hierId) hierId=Meteor.user().hierId;
+  console.log('lookup hierid',hierId);
     _.forEach(systemLookUps, function (item) {
 //        var oldItem = LookUps.findOne({
 //            'displayName': item.displayName,
@@ -6,6 +8,7 @@ seedSystemLookUps = function (hierId) {
 //        });
 //        if (oldItem == undefined) {
             item.hierId = hierId;
+            console.log('lookup item',item);
             LookUps.insert(item);
 //        } else {
 //            Relations.update({
