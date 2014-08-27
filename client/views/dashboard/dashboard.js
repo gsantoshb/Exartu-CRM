@@ -213,12 +213,11 @@ var deepLog = function(obj, path) {
   })
 };
 
-Template.dashboard.rendered = function () {
-  //infinite scroll
-  $(window).scroll(function() {
-    if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-      query.options.limit += 50;
-      queryDep.changed();
-    }
-  });
+//infinite scroll
+Template.dashboard.showMore= function() {
+  return function () {
+    console.log('scroller');
+    query.options.limit += 50;
+    queryDep.changed();
+  };
 }
