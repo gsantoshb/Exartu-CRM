@@ -44,6 +44,9 @@ var employeeQuery = {
     $exists: true
   }
 };
+Template.dashboard.created = function(){
+  query.options.limit = 50;
+};
 //Template.dashboard.waitOn=['ObjTypesHandler', 'UsersHandler']
 Template.dashboard.helpers({
   activities: function(){
