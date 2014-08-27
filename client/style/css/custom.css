@@ -753,6 +753,33 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 }
 /************ end  boxes inside tabs*******************/
 
+/************** select 2 ******************************/
+.select2-container .select2-choice{
+    border-radius: 4px;
+    background-image: none;
+    border-color: #ccc;
+    background-color: #fff;
+}
+.select2-container .select2-choice .select2-arrow{
+    border-radius: 0px;
+    background-image: none;
+    background-color: #E7E7E7;
+    background-color: #fff;
+    border: none;
+}
+
+.select2-container .select2-choice .select2-arrow b{
+    background-image: url('/packages/select2/lib/select2/select2.png');
+}
+
+.select2-dropdown-open .select2-choice{
+    border-radius: 4px 4px 0px 0px;
+    border-color: #5897fb;
+}
+/********** end select 2 ******************************/
+
+
+
 /***************************** Mobile Specific CSS ***********************************/
 @media (max-width: 992px) {
     /* filters */

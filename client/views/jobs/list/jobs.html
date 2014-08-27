@@ -49,8 +49,11 @@
                                     <!--</div>-->
                                     <div class="item-body">
                                         <!-- ko foreach: lookFilters -->
-                                        <!-- ko template: { name: 'lookupFilterTemplate', data: {filterGroupId: 1, title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } -->
-                                        <!-- /ko -->
+                                        <div style="margin-bottom: 10px;">
+                                            <!-- ko template: { name: 'lookupFilterTemplate', data: {filterGroupId: 1, title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } -->
+                                            <!-- /ko -->
+                                        </div>
+
                                         <!-- /ko -->
                                         <!--<div data-bind="foreach: status" style="padding: 10px;">-->
                                             <!--<button class="btn btn-xs" data-bind="text: displayName, css:{'btn-primary':isSelected(), 'btn-default': !isSelected()}, click: $parent.selectStatus"></button>-->
