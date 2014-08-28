@@ -108,6 +108,9 @@ var query = new Utils.ObjectDefinition({
   }
 });
 
+Template.contactables.created = function(){
+  query.limit.value = 20
+}
 // List
 
 Template.contactablesList.info = function() {
