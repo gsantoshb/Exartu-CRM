@@ -166,7 +166,6 @@ Template.jobs.viewModel = function () {
         _.extend(q, JobCalculatedStatus.getQuery(item.displayName));
       }
     })
-    console.log(q);
     return q;
   });
   var options = ko.computed(function () {
