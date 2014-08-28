@@ -103,8 +103,14 @@
     {{/if}}
 
     <h1 class="profile-name">
-        <strong>{{displayName}}</strong>
-        <small>{{Customer.department}}</small>
+        <strong>
+            {{displayName}}
+            {{#if Customer.department}}
+                <small>{{Customer.department}}</small>
+            {{/if}}
+        </strong>
+        <br/>
+        <small class="pull-right" style="max-width: 40%;"> {{Customer.statusNote}} </small>
     </h1>
     <p class="profile-address">
         {{#if location}}
@@ -149,19 +155,25 @@
     {{/if}}
 
     <h1 class="profile-name">
-        <strong>{{displayName}}</strong>
-        {{#if person}}
-            <small>— {{person.jobTitle}}</small>
-        {{/if}}
-
-        {{#if Contact.customerName}}
-            <a class="pull-right" href="/contactable/{{Contact.customer}}">
-                <i class="icon-buildings-1"></i>
-                {{Contact.customerName}}
-            </a>
-        {{else}}
-            <a class="pull-right editCustomer" href="#"> <i class="icon-buildings-1"></i></a>
-        {{/if}}
+        <strong>
+            {{displayName}}
+            {{#if person}}
+                {{#if person.jobTitle}}
+                    <small>— {{person.jobTitle}}</small>
+                {{/if}}
+            {{/if}}
+            <br/>
+            <small>
+                <a href="/contactable/{{Contact.customer}}">
+                    <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
+                        {{Contact.customerName}}
+                        <i class="fa fa-external-link" style="font-size: 14px"></i>
+                    </strong>
+                </a>
+            </small>
+        </strong>
+    
+        <small class="pull-right" style="max-width: 40%;"> {{Contact.statusNote}} </small>
     </h1>
     <p class="profile-address">
         <i class="fa fa-map-marker"></i>
@@ -204,15 +216,27 @@
     {{/if}}
 
     <h1 class="profile-name">
-        <strong>{{displayName}}</strong>
-        {{#if person}}
-            <small>— {{person.jobTitle}}</small>
-        {{/if}}
-        {{#if matchupInfo}}
-            <a class="pull-right" href="/job/{{matchupInfo._id}}">
-                <i class="icon icon-briefcase"> <span>{{matchupInfo.displayName}}</span></i>
-            </a>
-        {{/if}}
+        <strong>
+            {{displayName}}
+            {{#if person}}
+                {{#if person.jobTitle}}
+                    <small>— {{person.jobTitle}}</small>
+                {{/if}}
+            {{/if}}
+             <br/>
+            <small>
+                {{#if matchupInfo}}
+                    <a class="pull-right" href="/job/{{matchupInfo._id}}">
+                        <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
+                            <i class="icon icon-briefcase"></i>
+                            {{matchupInfo.displayName}}
+                        </strong>
+                    </a>
+                {{/if}}
+            </small>
+        </strong>
+
+        <small class="pull-right" style="max-width: 40%;"> {{Employee.statusNote}} </small>
     </h1>
     <p class="profile-address">
 
