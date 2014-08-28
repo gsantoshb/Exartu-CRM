@@ -123,12 +123,14 @@ var getDays = function(){
 
 Template.dashboard.events({
   'keyup #searchString': _.debounce(function(e){
-    query.filter.searchString = e.target.value;
-    queryDep.changed();
-  },200)
+      query.filter.searchString = e.target.value;
+      queryDep.changed();
+    },200),
+  'click .addMatchup': function(){
+    Session.set('addOptions', {job: this.entityId});
+    Router.go('/matchupAdd/matchup');
+  }
 });
-
-
 
 Template.activity.helpers({
   getTemplateForActivity: function(){
@@ -219,7 +221,6 @@ var deepLog = function(obj, path) {
 //infinite scroll
 Template.dashboard.showMore= function() {
   return function () {
-    console.log('scroller');
     query.options.limit += 50;
     queryDep.changed();
   };

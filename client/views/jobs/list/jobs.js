@@ -4,7 +4,8 @@ var filters = ko.observable(ko.mapping.fromJS({
   objType: '',
   tags: [],
   statuses: [],
-  limit: 20
+  limit: 20,
+  includeInactives: false
 }));
 
 JobsController = RouteController.extend({
@@ -106,6 +107,7 @@ Template.jobs.viewModel = function () {
   // TODO: search by customer name
   var searchFields = ['categoryName', 'industryName', 'durationName', 'statusName', 'publicJobTitle'];
   self.searchString = ko.observable();
+  self.includeInactives = ko.observable(false);
 
   var extendLookupFilterQuery = function (query, filter, fieldName) {
     if (filter().length > 0) {
@@ -130,6 +132,10 @@ Template.jobs.viewModel = function () {
         $in: f.tags
       };
       GAnalytics.event("/jobs", "Search by tags");
+    }
+
+    if (! self.includeInactives()){
+      q.inactive = {$ne: true};
     }
 
     // Lookups filter
@@ -160,7 +166,6 @@ Template.jobs.viewModel = function () {
         _.extend(q, JobCalculatedStatus.getQuery(item.displayName));
       }
     })
-
     return q;
   });
   var options = ko.computed(function () {
@@ -205,7 +210,6 @@ Template.jobs.viewModel = function () {
   self.removeTag = function (tag) {
     filters().tags.remove(tag);
   };
-
 
   self.ready(true);
 

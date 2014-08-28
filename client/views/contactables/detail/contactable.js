@@ -69,27 +69,8 @@ ContactableController = RouteController.extend({
   }
 });
 
-// var resizer = function() {
-//   $(".contactable-left-col").css("height", $('.contactable-right-col-custom').height() - 30 + 'px');
-// };
-
-// Template.contactable.created = function() {
-//   $(window).resize(resizer);
-// };
-
-// Template.contactable.destroyed = function() {
-//   $(window).off('resize', resizer);
-// };
-
 Template.contactable.rendered = function () {
   $('body').scrollTop(0)
-//  this.$('#content').css('background-color', 'transparent');
-  var asd = function () {
-    var hash = Router.current().params.hash || 'home';
-    $('.nav-pills>.active').removeClass('active');
-    $('.nav-pills-' + hash).addClass('active');
-  }
-  Meteor.autorun(asd);
 }
 Template.displayObjType = function() {
 

@@ -113,12 +113,11 @@
                         </a>
                     </h4>
                     <div class="item-actions">
-                        <a class="btn btn-default tip-bottom" title="Send Message" data-bind="click: function () { Composer.showModal( 'sendMessage',$parent.entityId()); } ">
-                            <i class="fa fa-comment-o"></i>
-                        </a>
-                        <a class="btn btn-default tip-bottom" title="Customer Info" href="/contactable/{{entityId}}">
-                            <i class="fa fa-info"></i>
-                        </a>
+                        {{#if data.contactableEmail}}
+                            <a class="btn btn-default tip-bottom" title="Send Message" href="mailto:{{data.contactableEmail}}">
+                                <i class="fa fa-envelop"></i> {{data.contactableEmail}}
+                            </a>
+                        {{/if}}
                     </div>
                 </div>
                 <!-- /.box-content -->
@@ -164,11 +163,11 @@
                     </h4>
                     <div class="item-actions">
                         <a class="btn btn-default tip-bottom" title="Task Owner" href="#">by
-                            <i class="fa fa-user"></i>
                             <span data-bind="text: username"> {{getUserName userId}} </span>
                         </a>
-                        <a class="btn btn-default tip-bottom" title="Task Start Date" href="#">Start:
+                        <a class="btn btn-default tip-bottom" title="Task Start Date" href="#">
                             <i class="fa fa-calendar"></i>
+                            Start:
                             <span>
                                  {{#formattedDate value=data.begin format='lll'}}
                                     {{date}}
@@ -176,8 +175,9 @@
                             </span>
                         </a>
                         {{#if data.end}}
-                            <a class="btn btn-default tip-bottom" title="Task Start Date" href="#">End:
+                            <a class="btn btn-default tip-bottom" title="Task Start Date" href="#">
                                 <i class="fa fa-calendar"></i>
+                                End:
                                 <span>
                                     {{#formattedDate value=data.end format='lll'}}
                                         {{date}}
@@ -226,11 +226,9 @@
                         {{/if}}
                     </h4>
                     <div class="item-actions">
-                        <a class="btn btn-default tip-bottom" title="Job Details" href="/job/{{entityId}}">
-                            <i class="fa fa-info"></i>
+                        <a class="btn btn-default tip-bottom addMatchup" title="Assign Candidates">
+                            <i class="icon icon-check-list"> </i> Add matchup
                         </a>
-                        <a class="btn btn-default tip-bottom" title="Assign Candidates" data-bind="click: function(){$root.assign($parent.entityId())}">
-                            <i class="fa fa-user"></i>Assign Candidates</a>
                     </div>
                 </div>
                 <!-- /.box-content -->
