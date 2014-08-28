@@ -221,7 +221,6 @@ var deepLog = function(obj, path) {
 //infinite scroll
 Template.dashboard.showMore= function() {
   return function () {
-    console.log('scroller');
     query.options.limit += 50;
     queryDep.changed();
   };
