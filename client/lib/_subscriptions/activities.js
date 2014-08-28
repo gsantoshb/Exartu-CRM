@@ -3,6 +3,21 @@ Activities = new Meteor.Collection("activities", {transform: function(doc){
     case   (Enums.activitiesType.contactableAdd):
       var cont = Contactables.findOne(doc.entityId);
       doc.data.displayName = (cont && cont.displayName) || doc.data.displayName;
+      
+      // Get contactable email
+      var contactMethods = ContactMethods.find().fetch();
+      _.some(cont.contactMethods, function(cm){
+        var type = _.findWhere(contactMethods, {_id: cm.type});
+        if (!type)
+          return false;
+        if (type.type == Enums.contactMethodTypes.email) {
+          doc.data.contactableEmail = cm.value;
+          return true;
+        }
+
+        return false;
+      });
+
       break;
     case   (Enums.activitiesType.messageAdd):
       break;
