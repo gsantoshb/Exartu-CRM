@@ -103,9 +103,13 @@ Template.addEditTask.helpers({
     selectedType=parseInt(selectedType);
     switch (selectedType){
       case Enums.linkTypes.contactable.value:
-        return Contactables.find();
+        return Contactables.find({},{sort: {
+          displayName: -1
+        }});
       case Enums.linkTypes.job.value:
-        return Jobs.find();
+        return Jobs.find({},{sort: {
+          'displayName': -1
+        }});
       case Enums.linkTypes.deal.value:
         return Deals.find();
       default :
