@@ -15,7 +15,15 @@ newObjType({
   collection: Contactables,
   objGroupType: Enums.objGroupType.contactable,
   name: 'contactable',
-  services: ['messages', 'tasks', 'notes', 'tags', 'contactMethods']
+  services: ['messages', 'tasks', 'notes', 'tags', 'contactMethods'],
+  fields: [
+    {
+      name: 'statusNote',
+      displayName: 'Status note',
+      showInAdd: true,
+      required: false
+    }
+  ]
 });
 newObjType({
   objGroupType: Enums.objGroupType.contactable,
@@ -35,8 +43,13 @@ newObjType({
       required: false
     },
     {
-      name: 'statusNote',
-      displayName: 'Status note',
+      name: 'status',
+      displayName: 'Status',
+      fieldType: 'lookUp',
+      lookUpName: 'status',
+      lookUpCode: Enums.lookUpTypes.customer.status.code,
+      defaultValue: null,
+      showInAdd: false,
       required: false
     }
   ]
@@ -53,9 +66,13 @@ newObjType({
   services: [],
   fields: [
     {
-      name: 'statusNote',
-      displayName: 'Status note',
-      showInAdd: true,
+      name: 'status',
+      displayName: 'Status',
+      fieldType: 'lookUp',
+      lookUpName: 'status',
+      lookUpCode: Enums.lookUpTypes.contact.status.code,
+      defaultValue: null,
+      showInAdd: false,
       required: false
     }
   ]
@@ -72,18 +89,11 @@ newObjType({
   services: ['pastJobs', 'educations'],
   fields: [
     {
-        name: 'statusNote',
-        displayName: 'Status note',
-        showInAdd: true,
-        required: false
-    }
-      ,
-    {
-      name: 'recruiterStatus',
-      displayName: 'Candidacy status',
+      name: 'status',
+      displayName: 'Status',
       fieldType: 'lookUp',
-      lookUpName: 'recruiterStatus',
-      lookUpCode: Enums.lookUpTypes.employee.recruiterStatus.code,
+      lookUpName: 'status',
+      lookUpCode: Enums.lookUpTypes.employee.status.code,
       defaultValue: null,
       showInAdd: false,
       required: false

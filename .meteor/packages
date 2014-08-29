@@ -33,7 +33,6 @@ kadira
 accounts-ui
 GAnalytics
 ms-seo
-dateTimePicker
 keyToken
 stripe
 force-ssl
@@ -42,3 +41,4 @@ es
 simple-schema
 autoform
 collection2
+bootstrap3-datetimepicker

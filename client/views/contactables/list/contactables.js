@@ -172,7 +172,16 @@ Meteor.autorun(function() {
       console.log(err)
   });
 });
-
+var getActiveStatuses = function(objName){
+  var status = Enums.lookUpTypes[objName.toLowerCase()];
+  status = status && status.status;
+  if (status){
+    var codeTypes = status.code,
+      implyActives = LookUps.find({codeType: codeTypes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
+    return _.map(implyActives,function(doc){ return doc._id});
+  }
+  return null;
+}
 Template.contactablesList.contactables = function() {
   var searchQuery = {};
 
@@ -194,10 +203,20 @@ Template.contactablesList.contactables = function() {
     };
   }
 
-  if (query.inactives.value) {
-    searchQuery.inactive = {
-        $ne: true
-    };
+  if (! query.inactives.value) {
+    searchQuery.$or=[];
+    var activeStatuses;
+    var aux;
+    _.each(['Employee', 'Contact', 'Customer'], function(objName){
+      activeStatuses = getActiveStatuses(objName);
+      if (_.isArray(activeStatuses) && activeStatuses.length > 0){
+        aux={};
+        aux[objName + '.status'] = {
+          $in: activeStatuses
+        };
+        searchQuery.$or.push(aux)
+      }
+    })
   }
 
   if (query.tags.value.length > 0) {

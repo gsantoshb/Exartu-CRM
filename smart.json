@@ -5,7 +5,7 @@
     "knockout-client": "0.0.2",
     "collection-hooks": {},
     "googlemaps": {},
-    "collectionFS": {},
+    "collectionFS": "0.4.8",
     "spin": {},
     "bootstrap3-wysihtml5": {},
     "jquery-color-animation": "1.6.0",
@@ -21,6 +21,7 @@
     "stripe": {},
     "connection-banner": {},
     "simple-schema": {},
-    "autoform": {}
+    "autoform": {},
+    "bootstrap3-datetimepicker": {}
   }
 }
