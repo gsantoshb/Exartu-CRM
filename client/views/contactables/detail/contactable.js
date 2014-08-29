@@ -100,12 +100,6 @@ Template.contactable.helpers({
     Session.set('contactableDisplayName', contactable.displayName);
     return contactable;
   },
-  pictureUrl: function () {
-    if (this.pictureFileId) {
-      return ContactablesFS.getThumbnailUrlForBlaze(this.pictureFileId);
-    }
-    return "/assets/user-photo-placeholder.jpg";
-  },
   dateCreatedFormatted: function () {
     return moment(this.dateCreated).format('lll');
   },
@@ -118,27 +112,6 @@ Template.contactable.helpers({
   jobCount: function() {
       return Jobs.find({'customer': Session.get('entityId')}).count();
     },
-
-  mainContactMethods: function() {
-    var result = {};
-    var contactMethods = ContactMethods.find().fetch();
-    _.some(this.contactMethods, function(cm){
-      var type = _.findWhere(contactMethods, {_id: cm.type});
-      if (!type)
-        return false;
-      if (type.type == Enums.contactMethodTypes.email)
-        result.email = cm;
-      if (type.type == Enums.contactMethodTypes.phone)
-        result.phone = cm;
-
-      if (!result.email || !result.phone)
-        return false;
-
-      return true;
-    });
-
-    return result;
-  },
   ContactablesCollection: function(){
     return Contactables;
   }
@@ -174,14 +147,67 @@ Template.contactable.events({
   },
   'click .sendMessage':function(){
     Composer.showModal('sendMessage', Session.get('entityId'));
+  },
+  'click #makeEmployee': function(){
+    //todo: make this in dType, checking required fields, defaultValues, etc
+    
+    Contactables.update({ _id: Session.get('entityId') }, {
+      $set: {
+        Employee : {
+
+        }
+      },
+      $push: {objNameArray: 'Employee'}
+    });
+  },
+  'click #makeContact': function(){
+    Contactables.update({ _id: Session.get('entityId') }, {
+      $set: {
+        Contact : {
+
+        }
+      },
+      $push: {objNameArray: 'Contact'}
+    });
   }
 });
+//
+//Template.contact_header.events({
+//  "click .editCustomer": function () {
+//    Composer.showModal('contactCustomerAddEdit', Session.get('entityId'));
+//  }
+//});
 
-Template.contact_header.events({
-  "click .editCustomer": function () {
-    Composer.showModal('contactCustomerAddEdit', Session.get('entityId'));
+Template.contactable_header.helpers({
+  mainContactMethods: function() {
+    var result = {};
+    var contactMethods = ContactMethods.find().fetch();
+    _.some(this.contactMethods, function(cm){
+      var type = _.findWhere(contactMethods, {_id: cm.type});
+      if (!type)
+        return false;
+      if (type.type == Enums.contactMethodTypes.email)
+        result.email = cm;
+      if (type.type == Enums.contactMethodTypes.phone)
+        result.phone = cm;
+
+      if (!result.email || !result.phone)
+        return false;
+
+      return true;
+    });
+
+    return result;
+  },
+  pictureUrl: function () {
+    if (this.pictureFileId) {
+      return ContactablesFS.getThumbnailUrlForBlaze(this.pictureFileId);
+    }
+    return "/assets/user-photo-placeholder.jpg";
   }
 })
+
+
 var getLinkType= function(){
   return Enums.linkTypes.contactable;
 }

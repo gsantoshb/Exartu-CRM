@@ -15,7 +15,15 @@ newObjType({
   collection: Contactables,
   objGroupType: Enums.objGroupType.contactable,
   name: 'contactable',
-  services: ['messages', 'tasks', 'notes', 'tags', 'contactMethods']
+  services: ['messages', 'tasks', 'notes', 'tags', 'contactMethods'],
+  fields: [
+    {
+      name: 'statusNote',
+      displayName: 'Status note',
+      showInAdd: true,
+      required: false
+    }
+  ]
 });
 newObjType({
   objGroupType: Enums.objGroupType.contactable,
@@ -32,11 +40,6 @@ newObjType({
       name: 'department',
       displayName: 'Department',
       defaultValue: 'Primary',
-      required: false
-    },
-    {
-      name: 'statusNote',
-      displayName: 'Status note',
       required: false
     },
     {
@@ -63,12 +66,6 @@ newObjType({
   services: [],
   fields: [
     {
-      name: 'statusNote',
-      displayName: 'Status note',
-      showInAdd: true,
-      required: false
-    },
-    {
       name: 'status',
       displayName: 'Status',
       fieldType: 'lookUp',
@@ -91,13 +88,6 @@ newObjType({
   defaultPersonType: Enums.personType.human,
   services: ['pastJobs', 'educations'],
   fields: [
-    {
-        name: 'statusNote',
-        displayName: 'Status note',
-        showInAdd: true,
-        required: false
-    }
-      ,
     {
       name: 'status',
       displayName: 'Status',
