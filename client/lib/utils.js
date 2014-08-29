@@ -469,3 +469,37 @@ Utils.getContactableType = function(entity) {
   if (entity.Employee)
     return 'Employee';
 };
+
+
+
+Utils.showModal = function (templateName) {
+  var body = $('body');
+  var host = body.find(".modal-host")[0];
+  if (!host) {
+    host = $('<div class="modal-host"> </div>').appendTo(body);
+  } else {
+    host = $(host);
+  }
+  _.each(host.children(), function (m) {
+    m = $(m);
+    m.modal('toggle');
+    m.remove();
+    $('.modal-backdrop').remove();
+  });
+
+  var parameters = Array.prototype.slice.call(arguments, 1);
+
+  var template = Template[templateName];
+
+  UI.insert(UI.renderWithData(template, parameters), host[0]);
+  var modal = host.children();
+
+  modal.modal('show');
+
+  modal.on('hidden.bs.modal', function (e) {
+    modal.remove();
+  });
+};
+Utils.dismissModal = function () {
+  $('.modal-host').children().modal('toggle');
+};
