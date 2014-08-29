@@ -4,16 +4,45 @@ Template.jobRates.created=function(){
   self.editMode=false;
   loadRates();
 }
+var ratesDep=new Deps.Dependency;
+UI.registerHelper('jobRates', function(){
+  rates=  this.rates;
+  return Template.jobRatesTemplate;
+})
+
+
+// Edit Rates
+
+var newRate={
+  type:null,
+  pay: 0,
+  bill: 0
+}
+var rates;
 var loadRates=function(){
   var job=Jobs.findOne({
     _id: Session.get('entityId')
   });
 
   self.rates=job.jobRates;
-}
+};
+var updateRates=function(){
+  Jobs.update({ _id: Session.get('entityId') },{ $set: { jobRates: self.rates } });
+};
 Template.jobRates.helpers({
   rates: function(){
+    ratesDep.depend();
     return self.rates
+  },
+  resetNewRate: function()
+  {
+    ratesDep.depend();
+    newRate.type=null;
+    newRate.pay=0;
+    newRate.bill=0;
+  },
+  newRate: function(){
+    return newRate;
   },
   getType: function(typeId){
     return  JobRateTypes.findOne({ _id: typeId });
@@ -23,6 +52,13 @@ Template.jobRates.helpers({
   },
   editMode: function(){
     return self.editMode;
+  },
+  getAvailableType: function() {
+    var rateTypes = JobRateTypes.find().fetch();
+    ratesDep.depend();
+    return _.filter(rateTypes, function (type) {
+      return !_.findWhere(self.rates, { type: type._id });
+    });
   }
 })
 Template.jobRates.events({
@@ -34,50 +70,9 @@ Template.jobRates.events({
     self.editMode=false;
   },
   'click .saveButtonRates': function(){
-    Jobs.update({ _id: Session.get('entityId') },{ $set: { jobRates: self.rates } });
+    updateRates();
     self.editMode=false;
-  }
-})
-
-
-
-// Edit Rates
-
-var newRate={
-  type:null,
-  pay: 0,
-  bill: 0
-}
-var rates;
-
-var ratesDep=new Deps.Dependency;
-UI.registerHelper('ratesEdit', function(){
-  rates=  this.rates;
-  return Template.ratesEditTemplate;
-})
-
-Template.ratesEditTemplate.helpers({
-  rates: function(){
-    ratesDep.depend();
-    return rates;
   },
-  getType: function(typeId){
-    return  JobRateTypes.findOne({ _id: typeId });
-  },
-  newRate: function(){
-    return newRate;
-  },
-  getAvailableType: function(){
-    var rateTypes=JobRateTypes.find().fetch();
-    ratesDep.depend();
-    return _.filter(rateTypes,function(type){
-      return ! _.findWhere(rates, { type: type._id });
-    });
-
-  }
-});
-
-Template.ratesEditTemplate.events({
   'click .addRate': function(e, ctx){
     newRate.type=ctx.$('.newRateType').val();
 
@@ -85,12 +80,14 @@ Template.ratesEditTemplate.events({
 
     if (_.findWhere(rates, { type: newRate.type })) return;
 
-    rates.push(_.clone(newRate));
-    Jobs.update({ _id: Session.get('entityId') },{ $set: { jobRates: rates } });
+    self.rates.push(_.clone(newRate));
+    updateRates();
     ratesDep.changed();
   },
   'click .removeRate': function(e, ctx){
-    rates.splice(rates.indexOf(this), 1)
+
+    self.rates.splice(self.rates.indexOf(this), 1);
+    updateRates();
     ratesDep.changed();
   },
 //  'change .newRateType': function(e, ctx){
@@ -102,4 +99,11 @@ Template.ratesEditTemplate.events({
   'change .billRateInput': function(e, ctx){
     this.bill= e.target.value;
   }
-});
+})
+
+
+
+
+
+
+

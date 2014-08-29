@@ -10,13 +10,6 @@ UI.registerHelper('formattedDate', function() {
   return Template.formatted_date;
 });
 
-
-UI.registerHelper('dateTimePicker', function() {
-    return Template.dateTimePicker;
-});
-
-
-
 UI.registerHelper('htmlEditor', function() {
   var template=Template.htmlEditorTemplate;
 
@@ -60,3 +53,30 @@ Template.showAsHTMLTemplate.previewClass=function(){
   }
   return ''
 }
+
+UI.registerHelper('dateTimePicker', function() {
+  return Template.dateTimePicker;
+});
+
+Template.dateTimePicker.rendered= function(){
+  var options={
+    language: 'en',
+    defaultDate: this.data.value,
+    useSeconds: false
+  }
+  if (this.data.from){
+    options.minDate= this.data.from
+  }
+  if (this.data.to){
+    options.maxDate= this.data.to
+  }
+  this.$('.dateTimePicker').datetimepicker(options);
+};
+
+Template.dateTimePicker.events({
+  'dp.change .datetimepicker':function (e, ctx) {
+    if (ctx.onChange && _.isFunction(ctx.onChange)){
+      ctx.onChange();
+    }
+  }
+})

@@ -48,6 +48,11 @@ Object.defineProperty(data, "location", {
 Template.contactableLocationBox.editLocation = function () {
   return data.location;
 }
+Template.contactableLocationBox.location_string = function () {
+  data._dep.depend();
+  if (data._location)
+  return data._location.displayName;
+}
 
 var centerBox = function (box) {
   var $box=$(box),
