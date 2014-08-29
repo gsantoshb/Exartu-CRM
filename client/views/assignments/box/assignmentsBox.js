@@ -1,29 +1,24 @@
 var entityType=null;
 var isEntitySpecific=false;
 var contactable;
-Template.matchupsBox.rendered = function(){
+
+Template.matchupsBox.created = function(){
   Meteor.autorun(function() {
     var entityId = Session.get('entityId');
-    entityType=Utils.getEntityTypeFromRouter();
-    isEntitySpecific=false;
-    if (entityType!=null)
-    {
-      isEntitySpecific=true;
-      if (entityType==Enums.linkTypes.contactable.value)
-      {
-        contactable=Contactables.findOne({_id: entityId});
+    entityType = Utils.getEntityTypeFromRouter();
+    isEntitySpecific = false;
+    if (entityType != null) {
+      isEntitySpecific = true;
+      if (entityType == Enums.linkTypes.contactable.value) {
+        contactable = Contactables.findOne({_id: entityId});
       }
     }
   });
 }
-Template.matchupsBox.rendered=function()
-{
-  console.log('rendered assignment');
-}
+
 Template.matchupsBox.isJob=function() {
   if (entityType==Enums.linkTypes.job.value) return true;
 };
-
 
 var generateFieldsSearch = function(fields) {
   var searchStringQuery = [];
