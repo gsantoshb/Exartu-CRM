@@ -13,8 +13,36 @@ var link=function(link){
 
   task.links.push(link);
 }
+
 var taskDep=new Deps.Dependency;
 var errorDep=new Deps.Dependency;
+
+var taskUpdate=function(cb)
+{
+  if(task._id)
+  {
+
+    Tasks.update({
+      _id: task._id
+    }, {
+      $set: {
+        begin: task.begin,
+        end: task.end,
+        assign: task.assign,
+        msg: task.msg,
+        completed: task.completed,
+        links: task.links
+      }
+    },
+      function() {
+        if (cb)
+          cb();
+      }
+    );
+  }
+}
+
+
 var createTask=function(task){
 
   var task=task || {};
@@ -78,6 +106,8 @@ Template.addEditTask.helpers({
         return Contactables.find();
       case Enums.linkTypes.job.value:
         return Jobs.find();
+      case Enums.linkTypes.deal.value:
+        return Deals.find();
       default :
         return [];
     }
@@ -135,20 +165,9 @@ Template.addEditTask.events({
     }
 
     if (task._id){
-      Tasks.update({
-        _id: task._id
-      }, {
-        $set: {
-          begin: task.begin,
-          end: task.end,
-          assign: task.assign,
-          msg: task.msg,
-          completed: task.completed,
-          links: task.links
-        }
-      },function(){
+      taskUpdate(function(){
         $('.modal-host').children().modal('toggle')
-      })
+      });
     } else {
       Tasks.insert(task,function(){
         $('.modal-host').children().modal('toggle')
@@ -160,20 +179,10 @@ Template.addEditTask.events({
       return;
     }
     if (task._id){
-      Tasks.update({
-        _id: task._id
-      }, {
-        $set: {
-          inactive: ! task.inactive,
-          end: task.end,
-          assign: task.assign,
-          msg: task.msg,
-          completed: task.completed,
-          links: task.links
-        }
-      },function(){
+      task.inactive=! task.inactive;
+      taskUpdate(function(){
         $('.modal-host').children().modal('toggle')
-      })
+      });
     } else {
       Tasks.insert(task,function(){
         $('.modal-host').children().modal('toggle')
@@ -184,16 +193,19 @@ Template.addEditTask.events({
     if ($(e.target).hasClass('dateTimePicker')){
       task.completed = $(e.target).data('DateTimePicker').date.toDate();
     }
+    taskUpdate();
   },
   'change.dp .begin>.dateTimePicker': function(e, ctx) {
     if ($(e.target).hasClass('dateTimePicker')){
       task.begin = $(e.target).data('DateTimePicker').date.toDate();
     }
+    taskUpdate();
   },
   'change.dp .end>.dateTimePicker': function(e, ctx) {
     if ($(e.target).hasClass('dateTimePicker')){
       task.end = $(e.target).data('DateTimePicker').date.toDate();
     }
+    taskUpdate();
   },
   'change .isCompleted': function(e){
     if(e.target.checked){
@@ -202,12 +214,15 @@ Template.addEditTask.events({
       task.completed=null;
     }
     taskDep.changed();
+    taskUpdate();
   },
   'change .msg':function(e){
     task.msg= e.target.value;
+    taskUpdate();
   },
   'change .assign': function(e){
-    task.assign=$(e.target).val()
+    task.assign=$(e.target).val();
+    taskUpdate();
   },
   'blur .msg': function(){
     isValid(task, 'msg');
@@ -230,12 +245,14 @@ Template.addEditTask.events({
       id: entity
     });
     linkedDep.changed();
+    taskUpdate();
   },
   'click .remove-link': function(){
     var item=_(task.links).findWhere({id:this._id})
 
     task.links= _(task.links).without(item);
     linkedDep.changed();
+    taskUpdate();
   }
 
 })
