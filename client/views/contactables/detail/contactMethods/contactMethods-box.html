@@ -23,7 +23,8 @@
                         </div>
                     </li>
                 {{else}}
-                    <div class="map-notFound">
+                    {{#if editMode }}
+                    {{else}}
                         <div class="box-v-msg">
                             <div class="box-v-msg-content">
                                 <i class="icon-address-1"></i>
@@ -33,7 +34,8 @@
                                 <!--</p>-->
                             </div><!-- /.box-v-msg-content -->
                         </div>
-                    </div>
+                    {{/if}}
+
                 {{/each}}
             </ul>
 
