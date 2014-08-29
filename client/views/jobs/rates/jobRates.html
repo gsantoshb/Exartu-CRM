@@ -13,7 +13,7 @@
 
         <div class="" id="rate-body">
                 {{#if rates}}
-                    <table class="table table-striped">
+                    <table class="table ">
                         <thead>
                         <tr>
                             <th>Type</th>
@@ -39,15 +39,31 @@
                                     </td>
                                 {{/if}}
                                 {{#if editMode}}
-                                    <input type="number" class="billRateInput form-control" value="{{bill}}">
+                                    <input type="number" class="billRateInput" value="{{bill}}">
                                 {{else}}
-                                    <td>{{round bill}}</td>
+                                    <td><span class="billRateInput">{{round bill}}</span></td>
                                 {{/if}}
-                                    <td>{{round pay}}</td>
+                                {{#if editMode}}
+                                <input type="number" class="payRateInput" value="{{pay}}">
+                                {{else}}
+                                <td>{{round pay}}</td>
+                                {{/if}}
                             </tr>
                         {{/each}}
                         </tbody>
                     </table>
+                    {{#if editMode}}
+                    <div class="box-header-2" style="height: 60px">
+                        <div class="pull-right">
+                            <span class="btn btn-default cancelButtonRates">
+                                Cancel
+                            </span>
+                            <span class="btn btn-info saveButtonRates">
+                                Save
+                            </span>
+                        </div>
+                    </div>
+                    {{/if}}
                 {{else}}
                     <div class="box-v-msg">
                         <div class="box-v-msg-content">
@@ -62,21 +78,21 @@
             <!-- New Job Rate -->
             {{#with newRate}}
             <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Bill</th>
-                    <th>Pay</th>
-                </tr>
-                </thead>
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th>Type</th>-->
+                    <!--<th>Bill</th>-->
+                    <!--<th>Pay</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
                 <tbody>
                 <tr>
                     <td>
 
                         <!-- Type -->
-                        <div class="col-xs-12 no-padding col-lg-4">
-                            <label class="col-xs-3 no-padding">Type: </label>
-                            <div class="col-xs-9 no-padding">
+                        <div class="col-xs-12 col-lg-8">
+                            <label class="col-xs-3  no-padding">Type: </label>
+                            <div class="col-xs-9  no-padding">
                                 <select class="form-control newRateType">
                                     <option value="">--select--</option>
                                     {{#each getAvailableType}}
@@ -88,7 +104,7 @@
                     </td>
                     <td>
                         <!-- Bill -->
-                        <div class="col-xs-12 no-padding col-lg-4">
+                        <div class="col-xs-12 no-padding col-lg-6">
                             <label class="col-xs-3 no-padding">Bill: </label>
                             <div class="col-xs-9 no-padding">
                                 <input type="number" class="billRateInput form-control" value="{{bill}}">
@@ -97,7 +113,7 @@
                     </td>
                     <td>
                         <!-- Pay -->
-                        <div class="col-xs-12 no-padding col-lg-4">
+                        <div class="col-xs-12 no-padding col-lg-6">
                             <label class="col-xs-3 no-padding">Pay: </label>
                             <div class="col-xs-9 no-padding">
                                 <input type="number" class="payRateInput form-control" value="{{pay}}">
@@ -105,7 +121,7 @@
                         </div>
                         <!-- Add button -->
                         <div>
-                            <span class="btn btn-primary addRate"><span class="fa fa-plus"></span></span>
+                            &nbsp;&nbsp;<span class="btn btn-primary addRate"><span class="fa fa-plus"></span></span>
                         </div>
                     </td>
                 </tr>
@@ -114,18 +130,7 @@
             {{/with}}
             {{/if}}
         </div>
-        {{#if editMode}}
-            <div class="box-header-2" style="height: 60px">
-                <div class="pull-right">
-                    <span class="btn btn-default cancelButtonRates">
-                        Cancel
-                    </span>
-                    <span class="btn btn-info saveButtonRates">
-                        Save
-                    </span>
-                </div>
-            </div>
-        {{/if}}
+
     </div>
 </template>
 
