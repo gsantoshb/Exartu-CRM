@@ -21,6 +21,7 @@
     "stripe": {},
     "connection-banner": {},
     "simple-schema": {},
-    "autoform": {}
+    "autoform": {},
+    "bootstrap3-datetimepicker": {}
   }
 }
