@@ -2,7 +2,9 @@ Migrations.add({
   version: 7,
   up: function() {
     console.log('updating employees');
-    Contactables.find({$or: [{
+    Contactables.find({
+      Employee:{$exists: true},
+      $or: [{
       'Employee.status': {$exists: false}
     },{
       'Employee.status': null
@@ -15,7 +17,9 @@ Migrations.add({
     })
 
     console.log('updating contacts');
-    Contactables.find({$or: [{
+    Contactables.find({
+      Contact:{$exists: true},
+      $or: [{
       'Contact.status': {$exists: false}
     },{
       'Contact.status': null
@@ -28,7 +32,9 @@ Migrations.add({
     })
 
     console.log('updating customers');
-    Contactables.find({$or: [{
+    Contactables.find({
+      Customer:{$exists: true},
+      $or: [{
       'Customer.status': {$exists: false}
     },{
       'Customer.status': null
