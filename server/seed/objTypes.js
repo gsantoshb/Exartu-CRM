@@ -38,6 +38,16 @@ newObjType({
       name: 'statusNote',
       displayName: 'Status note',
       required: false
+    },
+    {
+      name: 'status',
+      displayName: 'Status',
+      fieldType: 'lookUp',
+      lookUpName: 'status',
+      lookUpCode: Enums.lookUpTypes.customer.status.code,
+      defaultValue: null,
+      showInAdd: false,
+      required: false
     }
   ]
 });
@@ -56,6 +66,16 @@ newObjType({
       name: 'statusNote',
       displayName: 'Status note',
       showInAdd: true,
+      required: false
+    },
+    {
+      name: 'status',
+      displayName: 'Status',
+      fieldType: 'lookUp',
+      lookUpName: 'status',
+      lookUpCode: Enums.lookUpTypes.contact.status.code,
+      defaultValue: null,
+      showInAdd: false,
       required: false
     }
   ]
@@ -79,11 +99,11 @@ newObjType({
     }
       ,
     {
-      name: 'recruiterStatus',
-      displayName: 'Candidacy status',
+      name: 'status',
+      displayName: 'Status',
       fieldType: 'lookUp',
-      lookUpName: 'recruiterStatus',
-      lookUpCode: Enums.lookUpTypes.employee.recruiterStatus.code,
+      lookUpName: 'status',
+      lookUpCode: Enums.lookUpTypes.employee.status.code,
       defaultValue: null,
       showInAdd: false,
       required: false

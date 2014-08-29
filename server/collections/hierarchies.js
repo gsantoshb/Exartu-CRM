@@ -170,10 +170,10 @@ createHouseAccount = function(hierarchy){
 };
 
 Hierarchies.after.insert(function(userId, doc){
+  seedSystemLookUps(doc._id);
   if (doc._id != ExartuConfig.SystemHierarchyId){
     createHouseAccount(doc);
   }
-  seedSystemLookUps(doc._id);
 })
 
 // Users files

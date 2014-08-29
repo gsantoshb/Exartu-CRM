@@ -19,15 +19,50 @@ _.forEach([
 _.forEach([
 
   {
-    displayName: "Active",lookUpActions:[Enums.lookUpAction.Implies_Active]
+    displayName: "Active",lookUpActions: [Enums.lookUpAction.Implies_Active],
+    isDefault: true
   },
   {
-    displayName: "Inactive",lookUpActions:[Enums.lookUpAction.Implies_Inactive]
+    displayName: "Inactive",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
   }
 
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.employee.recruiterStatus.code;
+    item.codeType = Enums.lookUpTypes.employee.status.code;
+    systemLookUps.push(item);
+  }
+);
+//customer status
+_.forEach([
+
+  {
+    displayName: "Active",lookUpActions: [Enums.lookUpAction.Implies_Active],
+    isDefault: true
+  },
+  {
+    displayName: "Inactive",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
+  }
+
+],
+  function (item) {
+    item.codeType = Enums.lookUpTypes.customer.status.code;
+    systemLookUps.push(item);
+  }
+);
+//contact status
+_.forEach([
+
+  {
+    displayName: "Active",lookUpActions: [Enums.lookUpAction.Implies_Active],
+    isDefault: true
+  },
+  {
+    displayName: "Inactive",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
+  }
+
+],
+  function (item) {
+    item.codeType = Enums.lookUpTypes.contact.status.code;
     systemLookUps.push(item);
   }
 );

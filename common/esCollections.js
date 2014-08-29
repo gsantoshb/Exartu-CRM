@@ -7,7 +7,7 @@ ES.syncCollection({
 		{ name: 'Customer.department', label: 'Deparment'},
 		{ name: 'Contact.statusNote', label: 'Status note'},
 		{ name: 'Employee.statusNote', label: 'Status note'},
-		{ name: 'Employee.recruiterStatus', label: 'Recruiter status'},
+		{ name: 'Employee.status', label: 'status'},
 		{ name: 'tags', label: 'tags'}, { name: 'contactMethods.value', label: 'Contact method'}, { name: 'location.displayName', label: 'Location'}, { name: 'notes.value', label: 'Notes'}
 	],
 	// Retrive data related to items on this collections
