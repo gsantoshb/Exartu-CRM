@@ -12,10 +12,6 @@
         </div>
 
         <div class="" id="rate-body">
-            {{#if editMode}}
-                {{#ratesEdit rates=rates}}
-                {{/ratesEdit}}
-            {{else}}
                 {{#if rates}}
                     <table class="table table-striped">
                         <thead>
@@ -28,13 +24,26 @@
                         <tbody>
                         {{#each rates}}
                             <tr>
-                                <td>
-                                {{#with getType type}}
-                                    {{displayName}}
-                                {{/with}}
-                                </td>
-                                <td>{{round bill}}</td>
-                                <td>{{round pay}}</td>
+                                {{#if editMode}}
+                                    <td>
+                                        {{#with getType type}}
+                                        <span>{{displayName}}</span>
+                                        {{/with}}
+                                        <button class="btn btn-xs btn-default removeRate"><i class="fa fa-times"></i></button>
+                                    </td>
+                                {{else}}
+                                    <td>
+                                    {{#with getType type}}
+                                        {{displayName}}
+                                    {{/with}}
+                                    </td>
+                                {{/if}}
+                                {{#if editMode}}
+                                    <input type="number" class="billRateInput form-control" value="{{bill}}">
+                                {{else}}
+                                    <td>{{round bill}}</td>
+                                {{/if}}
+                                    <td>{{round pay}}</td>
                             </tr>
                         {{/each}}
                         </tbody>
@@ -49,6 +58,60 @@
                         </div><!-- /.box-v-msg-content -->
                     </div>
                 {{/if}}
+            {{#if editMode}}
+            <!-- New Job Rate -->
+            {{#with newRate}}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Bill</th>
+                    <th>Pay</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+
+                        <!-- Type -->
+                        <div class="col-xs-12 no-padding col-lg-4">
+                            <label class="col-xs-3 no-padding">Type: </label>
+                            <div class="col-xs-9 no-padding">
+                                <select class="form-control newRateType">
+                                    <option value="">--select--</option>
+                                    {{#each getAvailableType}}
+                                    <option value="{{_id}}">{{displayName}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <!-- Bill -->
+                        <div class="col-xs-12 no-padding col-lg-4">
+                            <label class="col-xs-3 no-padding">Bill: </label>
+                            <div class="col-xs-9 no-padding">
+                                <input type="number" class="billRateInput form-control" value="{{bill}}">
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <!-- Pay -->
+                        <div class="col-xs-12 no-padding col-lg-4">
+                            <label class="col-xs-3 no-padding">Pay: </label>
+                            <div class="col-xs-9 no-padding">
+                                <input type="number" class="payRateInput form-control" value="{{pay}}">
+                            </div>
+                        </div>
+                        <!-- Add button -->
+                        <div>
+                            <span class="btn btn-primary addRate"><span class="fa fa-plus"></span></span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+             </table>
+            {{/with}}
             {{/if}}
         </div>
         {{#if editMode}}
@@ -67,75 +130,3 @@
 </template>
 
 
-<template name="ratesEditTemplate">
-    <ul class="list-3 stripped">
-        {{#each rates}}
-        <li>
-            <!-- Type -->
-            <div class="col-xs-12 no-padding">
-                <label class="col-xs-3 no-padding">Type: </label>
-                <div class="col-xs-8 no-padding">
-                    {{#with getType type}}
-                    <span>{{displayName}}</span>
-                    {{/with}}
-                </div>
-                <!-- Remove -->
-                <div class="col-xs-1 no-padding">
-                    <button class="btn btn-xs btn-default removeRate"><i class="fa fa-times"></i></button>
-                </div>
-            </div>
-            <!-- Bill -->
-            <div class="col-xs-12 no-padding">
-                <label class="col-xs-3 no-padding">Bill: </label>
-                <div class="col-xs-9 no-padding">
-                    <input type="number" class="billRateInput form-control" value="{{bill}}">
-                </div>
-            </div>
-            <!-- Pay -->
-            <div class="col-xs-12 no-padding">
-                <label class="col-xs-3 no-padding">Pay: </label>
-                <div class="col-xs-9 no-padding">
-                    <input type="number" class="payRateInput form-control" value="{{pay}}">
-                </div>
-            </div>
-        </li>
-        {{/each}}
-        
-        <!-- New Job Rate -->
-        {{#with newRate}}
-        <li>
-            <!-- Type -->
-            <div class="col-xs-12 no-padding">
-                <label class="col-xs-3 no-padding">Type: </label>
-                <div class="col-xs-9 no-padding">
-                    <select class="form-control newRateType">
-                        <option value="">--select--</option>
-                        {{#each getAvailableType}}
-                        <option value="{{_id}}">{{displayName}}</option>
-                        {{/each}}
-                    </select>
-                </div>
-            </div>
-            <!-- Bill -->
-            <div class="col-xs-12 no-padding">
-                <label class="col-xs-3 no-padding">Bill: </label>
-                <div class="col-xs-9 no-padding">
-                    <input type="number" class="billRateInput form-control" value="{{bill}}">
-                </div>
-            </div>
-            <!-- Pay -->
-            <div class="col-xs-12 no-padding">
-                <label class="col-xs-3 no-padding">Pay: </label>
-                <div class="col-xs-9 no-padding">
-                    <input type="number" class="payRateInput form-control" value="{{pay}}">
-                </div>
-            </div>
-            <!-- Add button -->
-            <div>
-                <span class="btn btn-primary addRate"><span class="fa fa-plus"></span></span>
-            </div>
-        </li>
-        {{/with}}
-    </ul>
-
-</template>
