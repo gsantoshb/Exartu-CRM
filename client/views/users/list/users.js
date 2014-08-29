@@ -1,7 +1,7 @@
 UsersController = RouteController.extend({
-    template: 'users',
-    layoutTemplate: 'usersLayout',
-  onAfterAction: function() {
+  template: 'users',
+  layoutTemplate: 'usersLayout',
+  onAfterAction: function () {
     var title = 'Users',
       description = '';
     SEO.set({
@@ -18,13 +18,17 @@ UsersController = RouteController.extend({
 });
 
 Template.users.helpers({
-  users : function(){
+  users: function () {
     return Meteor.users.find();
   }
-})
+});
 Template.users.events({
-  "click .addUser": function () { Composer.showModal('addUser', 'addUserModal'); }
-})
+  "click .addUser": function () {
+    Utils.showModal('addUser');
+  }
+});
+
+
 //Template.users.viewModel = function () {
 //    var self = this;
 //
