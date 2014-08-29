@@ -123,9 +123,8 @@ var employees = [
 var loadContactables = function (hierId) {
     // Employees
     _.forEach(employees, function (data) {
-        var jobTitles = LookUps.find({codeType: Enums.lookUpTypes.job.titles.code}).fetch();
-        console.log('HierId:' + hierId);
-        console.log('jobTitles:' + jobTitles.length);
+        var jobTitles = LookUps.find({codeType: Enums.lookUpTypes.job.titles.code,hierId:hierId}).fetch();
+
         var randomJobTitle = jobTitles[Math.floor(Math.random() * jobTitles.length)];
         var newEmployee = {
             objNameArray: ["Employee"],
@@ -406,13 +405,13 @@ var loadContactables = function (hierId) {
 };
 
 var loadJobs = function (hierId) {
-    var customers = Contactables.find({objNameArray: 'Customer'}).fetch();
+    var customers = Contactables.find({objNameArray: 'Customer',hierId:hierId}).fetch();
     var jobTypes = dType.ObjTypes.find({parent: 'job'}).fetch()
-    var industries = LookUps.find({codeType: Enums.lookUpTypes.job.industry.code}).fetch();
-    var categories = LookUps.find({codeType: Enums.lookUpTypes.job.category.code}).fetch();
-    var durations = LookUps.find({codeType: Enums.lookUpTypes.job.duration.code}).fetch();
-    var jobTitles = LookUps.find({codeType: Enums.lookUpTypes.job.titles.code}).fetch();
-    var statuses = LookUps.find({codeType: Enums.lookUpTypes.job.titles.code}).fetch();
+    var industries = LookUps.find({codeType: Enums.lookUpTypes.job.industry.code,hierId:hierId}).fetch();
+    var categories = LookUps.find({codeType: Enums.lookUpTypes.job.category.code,hierId:hierId}).fetch();
+    var durations = LookUps.find({codeType: Enums.lookUpTypes.job.duration.code,hierId:hierId}).fetch();
+    var jobTitles = LookUps.find({codeType: Enums.lookUpTypes.job.titles.code,hierId:hierId}).fetch();
+    var statuses = LookUps.find({codeType: Enums.lookUpTypes.job.status.code,hierId:hierId}).fetch();
     var publicJobTitles = [
         ["QCI"  ],
         ["Production/sewing"  ],
@@ -462,36 +461,33 @@ var loadJobs = function (hierId) {
     var today = new Date();
     var tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
-    console.log('begin seed job loop');
 
-    for (var i = 0; i < 50; ++i) {
-        console.log('job#',i);
-        var randomJobType = jobTypes[Math.floor(Math.random() * jobTypes.length)];
+  for (var i = 0; i < 25; ++i) {
+
+        var randomJobType = 'Temporary'; //jobTypes[Math.floor(Math.random() * jobTypes.length)];
         var randomCustomer = customers[Math.floor(Math.random() * customers.length)];
         var randomJobTitle = jobTitles [Math.floor(Math.random() * jobTitles.length)];
         var randomPublicJobTitle = publicJobTitles [Math.floor(Math.random() * publicJobTitles.length)];
-        console.log('randomjobtitle',randomJobTitle);
+
+
         var newJob = {
             customer: randomCustomer._id,
-            objNameArray: ['job', randomJobType.name],
+            Temporary: {pay:0,bill:0,frequency:null},
+            objNameArray: ['job', 'Temporary'],
             hierId: hierId,
             industry: industries[Math.floor(Math.random() * industries.length)]._id,
             category: categories[Math.floor(Math.random() * categories.length)]._id,
             duration: durations[Math.floor(Math.random() * durations.length)]._id,
-            status: null, //statuses[Math.floor(Math.random() * statuses.length)]._id,
+            status: statuses[Math.floor(Math.random() * statuses.length)]._id,
             publicJobTitle: randomPublicJobTitle[0],
             jobTitle: randomJobTitle._id,
             startDate: today,
             endDate: tomorrow,
-            description: "",
+            description: "a job for all times",
             testData: true
         }
         // TODO: check objType's fields
-//        newJob[randomJobType.name] = {
-//            jobTitle: randomJobTitle._id
-//        };
 
-//    console.dir(newJob);
         Meteor.call('addJob', newJob, function (err, result) {
             if (!err)
                 console.log("Job created for demo")
