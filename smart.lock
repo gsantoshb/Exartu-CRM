@@ -11,7 +11,9 @@
       },
       "collection-hooks": {},
       "googlemaps": {},
-      "collectionFS": {},
+      "collectionFS": {
+        "version": "0.4.8"
+      },
       "spin": {},
       "bootstrap3-wysihtml5": {},
       "jquery-color-animation": {
