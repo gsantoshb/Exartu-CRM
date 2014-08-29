@@ -10,7 +10,7 @@ Migrations.add({
       var lookUp = LookUps.findOne({codeType: Enums.lookUpTypes.employee.status.code, isDefault: true, hierId: doc.hierId});
       if (lookUp){
         console.log('updating employee ' + doc._id + ' with status ' + lookUp._id);
-        return Contactables.update(doc._id,{ $set: { 'Employee.status': lookUp._id } });
+        return Contactables.direct.update({_id: doc._id},{ $set: { 'Employee.status': lookUp._id } }, {});
       }
     })
 
@@ -23,7 +23,7 @@ Migrations.add({
       var lookUp = LookUps.findOne({codeType: Enums.lookUpTypes.contact.status.code, isDefault: true, hierId: doc.hierId});
       if (lookUp){
         console.log('updating contact ' + doc._id + ' with status ' + lookUp._id);
-        return Contactables.update(doc._id,{ $set: { 'Contact.status': lookUp._id } });
+        return Contactables.direct.update({_id: doc._id},{ $set: { 'Contact.status': lookUp._id } }, {});
       }
     })
 
@@ -36,7 +36,7 @@ Migrations.add({
       var lookUp = LookUps.findOne({codeType: Enums.lookUpTypes.customer.status.code, isDefault: true, hierId: doc.hierId});
       if (lookUp){
         console.log('updating customer ' + doc._id + ' with status ' + lookUp._id);
-        return Contactables.update(doc._id,{ $set: { 'Customer.status': lookUp._id } });
+        return Contactables.direct.update({_id: doc._id},{ $set: { 'Customer.status': lookUp._id } }, {});
       }
     })
 
