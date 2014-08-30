@@ -346,12 +346,7 @@ Template.contactablesListItem.contactableIcon = function() {
 };
 
 Template.contactablesListItem.displayObjType = function() {
-  if (this.Customer)
-    return 'Customer';
-  if (this.Employee)
-    return 'Employee';
-  if (this.Contact)
-    return 'Contact';
+  return Utils.getContactableType(this);
 };
 
 // Employee item

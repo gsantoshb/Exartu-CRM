@@ -503,3 +503,13 @@ Utils.showModal = function (templateName) {
 Utils.dismissModal = function () {
   $('.modal-host').children().modal('toggle');
 };
+Utils.getContactableType= function(obj) {
+  if (obj.Customer)
+    return 'Customer';
+  if (obj.Employee && obj.Contact)
+    return 'Employee/Contact';
+  if (obj.Employee)
+    return 'Employee';
+  if (obj.Contact)
+    return 'Contact';
+};

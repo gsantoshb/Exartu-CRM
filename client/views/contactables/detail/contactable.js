@@ -73,25 +73,13 @@ Template.contactable.rendered = function () {
   $('body').scrollTop(0)
 }
 Template.displayObjType = function() {
-
-    if (info.objType.value)
-        return '';
-
-    if (this.Customer)
-        return 'Customer';
-    if (this.Employee)
-        return 'Employee';
-    if (this.Contact)
-        return 'Contact';
+  if (info.objType.value)
+    return '';
+  return Utils.getContactableType(this);
 };
 Template.contactable.helpers({
   displayObjType: function() {
-      if (this.Customer)
-          return 'Customer';
-      if (this.Employee)
-          return 'Employee';
-      if (this.Contact)
-          return 'Contact';
+    return Utils.getContactableType(this);
   },
   contactable: function () {
     var contactable = Contactables.findOne({
@@ -153,9 +141,7 @@ Template.contactable.events({
     
     Contactables.update({ _id: Session.get('entityId') }, {
       $set: {
-        Employee : {
-
-        }
+        Employee : {}
       },
       $push: {objNameArray: 'Employee'}
     });
@@ -163,9 +149,7 @@ Template.contactable.events({
   'click #makeContact': function(){
     Contactables.update({ _id: Session.get('entityId') }, {
       $set: {
-        Contact : {
-
-        }
+        Contact : {}
       },
       $push: {objNameArray: 'Contact'}
     });
