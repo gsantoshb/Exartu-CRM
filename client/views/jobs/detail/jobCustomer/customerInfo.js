@@ -12,6 +12,7 @@ Template.customerInfo.helpers({
     return "/assets/user-photo-placeholder.jpg";
   },
   contactMethod: function(index){
+    if (!this.contactMethods) return;
     return this.contactMethods[index];
   }
 })

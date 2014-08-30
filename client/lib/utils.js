@@ -513,3 +513,9 @@ Utils.getContactableType= function(obj) {
   if (obj.Contact)
     return 'Contact';
 };
+Utils.getDefaultJobStatus=function()
+{
+  var defaultStatus=LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,isDefault:true});
+  if (defaultStatus) defaultStatus=LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode});
+  if (defaultStatus) return defaultStatus._id; else return null;
+}

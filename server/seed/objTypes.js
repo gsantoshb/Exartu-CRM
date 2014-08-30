@@ -214,7 +214,7 @@ newObjType({
       lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,
       required: false,
       multiple: false,
-      defaultValue: null,
+      defaultValue: null, // LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,isDefault:true}),
       showInAdd: true
     }
 //    {
