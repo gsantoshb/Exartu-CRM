@@ -414,7 +414,7 @@ var getDefinitionFromField=function(field, obj, path){
     if (displayName==null && lookup!=null)  displayName= LookUps.findOne({_id: obj[field.name]}).displayName;
     result.displayName=displayName;
     result.options=LookUps.find({$or: [
-                                        {codeType: field.lookUpCode, inactive: {$ne: true}},
+                                        {lookUpCode: field.lookUpCode, inactive: {$ne: true}},
                                         {_id: obj[field.name] }
                                 ] }, { sort: {displayName: 1} });
   }
@@ -422,7 +422,7 @@ var getDefinitionFromField=function(field, obj, path){
 };
 Utils.getLookUpsByCode=function(code)
 {
-    LookUps.find({codeType: code, inactive: {$ne: true}}, { sort: {displayName: 1} });
+    LookUps.find({lookUpCode: code, inactive: {$ne: true}}, { sort: {displayName: 1} });
 };
 
 Utils.getEntityTypeFromRouter=function()

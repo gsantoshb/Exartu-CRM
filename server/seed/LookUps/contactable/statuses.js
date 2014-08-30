@@ -10,7 +10,7 @@ _.forEach([
   }
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.contactable.status.code;
+    item.lookUpCode = Enums.lookUpTypes.contactable.status.lookUpCode;
     systemLookUps.push(item);
   }
 );
@@ -28,7 +28,7 @@ _.forEach([
 
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.employee.status.code;
+    item.lookUpCode = Enums.lookUpTypes.employee.status.lookUpCode;
     systemLookUps.push(item);
   }
 );
@@ -45,7 +45,7 @@ _.forEach([
 
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.customer.status.code;
+    item.lookUpCode = Enums.lookUpTypes.customer.status.lookUpCode;
     systemLookUps.push(item);
   }
 );
@@ -62,7 +62,7 @@ _.forEach([
 
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.contact.status.code;
+    item.lookUpCode = Enums.lookUpTypes.contact.status.lookUpCode;
     systemLookUps.push(item);
   }
 );

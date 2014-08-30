@@ -17,7 +17,7 @@ _.forEach([
 
 ],
   function (item) {
-item.codeType = Enums.lookUpTypes.job.duration.code;
+item.lookUpCode = Enums.lookUpTypes.job.duration.lookUpCode;
 systemLookUps.push(item);
   }
 );

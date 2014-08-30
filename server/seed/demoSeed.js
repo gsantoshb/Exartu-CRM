@@ -123,7 +123,10 @@ var employees = [
 var loadContactables = function (hierId) {
     // Employees
     _.forEach(employees, function (data) {
-        var jobTitles = LookUps.find({codeType: Enums.lookUpTypes.job.titles.code,hierId:hierId}).fetch();
+      var status=LookUps.findOne({lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode,isDefault:true,hierId:hierId});
+      if (status==null) LookUps.findOne({lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode,hierId:hierId});
+      if (status==null) console.log("unable to find default status code for customer")
+        var jobTitles = LookUps.find({lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode,hierId:hierId}).fetch();
 
         var randomJobTitle = jobTitles[Math.floor(Math.random() * jobTitles.length)];
         var newEmployee = {
@@ -380,25 +383,33 @@ var loadContactables = function (hierId) {
     ]
 
     _.forEach(customers, function (data) {
-        var newCustomer = {
-            objNameArray: ["Customer"],
-            organization: {
-                organizationName: data.name
-            },
-            Customer: {
-                department: data.department
-            },
-            location: null,
-            hierId: hierId,
-            testData: true
-        }
+        var status=LookUps.findOne({lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode,isDefault:true,hierId:hierId});
+        if (status==null) LookUps.findOne({lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode,hierId:hierId});
+        if (status==null) console.log("unable to find default status code for customer")
+        else
+        {
+          var newCustomer = {
 
-        Meteor.call('addContactable', newCustomer, function (err, result) {
-            if (!err)
-                console.log("Customer created for demo")
-            else
-                console.log(err);
-        })
+              objNameArray: ["Customer"],
+              organization: {
+                  organizationName: data.name
+              },
+              Customer: {
+                  department: data.department,
+                  status: status._id
+              },
+              location: null,
+              hierId: hierId,
+              testData: true
+          }
+
+          Meteor.call('addContactable', newCustomer, function (err, result) {
+              if (!err)
+                  console.log("Customer created for demo")
+              else
+                  console.log(err);
+          });
+        }
     });
 
     // TODO: Contacts seed
@@ -407,11 +418,11 @@ var loadContactables = function (hierId) {
 var loadJobs = function (hierId) {
     var customers = Contactables.find({objNameArray: 'Customer',hierId:hierId}).fetch();
     var jobTypes = dType.ObjTypes.find({parent: 'job'}).fetch()
-    var industries = LookUps.find({codeType: Enums.lookUpTypes.job.industry.code,hierId:hierId}).fetch();
-    var categories = LookUps.find({codeType: Enums.lookUpTypes.job.category.code,hierId:hierId}).fetch();
-    var durations = LookUps.find({codeType: Enums.lookUpTypes.job.duration.code,hierId:hierId}).fetch();
-    var jobTitles = LookUps.find({codeType: Enums.lookUpTypes.job.titles.code,hierId:hierId}).fetch();
-    var statuses = LookUps.find({codeType: Enums.lookUpTypes.job.status.code,hierId:hierId}).fetch();
+    var industries = LookUps.find({lookUpCode: Enums.lookUpTypes.job.industry.lookUpCode,hierId:hierId}).fetch();
+    var categories = LookUps.find({lookUpCode: Enums.lookUpTypes.job.category.lookUpCode,hierId:hierId}).fetch();
+    var durations = LookUps.find({lookUpCode: Enums.lookUpTypes.job.duration.lookUpCode,hierId:hierId}).fetch();
+    var jobTitles = LookUps.find({lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode,hierId:hierId}).fetch();
+    var statuses = LookUps.find({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,hierId:hierId}).fetch();
     var publicJobTitles = [
         ["QCI"  ],
         ["Production/sewing"  ],
@@ -471,6 +482,8 @@ var loadJobs = function (hierId) {
 
 
         var newJob = {
+            tags:[],
+            jobRates:[],
             customer: randomCustomer._id,
             Temporary: {pay:0,bill:0,frequency:null},
             objNameArray: ['job', 'Temporary'],

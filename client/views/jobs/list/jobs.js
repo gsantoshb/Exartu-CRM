@@ -82,7 +82,7 @@ Template.jobs.viewModel = function () {
   ];
 
   self.status=[];
-  _.each(Utils.getLookUpsByCode(Enums.lookUpTypes.job.status.code),function(lookup) {
+  _.each(Utils.getLookUpsByCode(Enums.lookUpTypes.job.status.lookUpCode),function(lookup) {
       self.status.push({
           displayName: lookup
       });
@@ -96,7 +96,7 @@ Template.jobs.viewModel = function () {
   _.forEach(self.lookFilters, function(filter){
 
     filter.items = LookUps.find({
-      codeType: Enums.lookUpTypes.job[filter.fieldName].code
+      lookUpCode: Enums.lookUpTypes.job[filter.fieldName].lookUpCode
     }).fetch();
     filter.selectedItems = ko.observableArray();
     filter.selectedItems.removeSelection = function(data) {

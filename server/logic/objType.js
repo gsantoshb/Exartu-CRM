@@ -130,7 +130,7 @@ var validateField = function (value, field) {
                 var v = true;
                 _.every(value, function (val) {
                     var item = LookUps.findOne({
-                        codeType: field.lookUpCode,
+                        lookUpCode: field.lookUpCode,
                         _id: val
                     });
                     if (! item)
@@ -150,7 +150,7 @@ var validateField = function (value, field) {
             }
         } else {
             var item = LookUps.findOne({
-                codeType: field.lookUpCode,
+                lookUpCode: field.lookUpCode,
                 _id: value
             });
 //            var item = _.findWhere(lookUp.items, {

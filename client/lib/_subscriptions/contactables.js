@@ -1,9 +1,12 @@
 Contactables = new Meteor.Collection("contactables", {
   transform: function (contactable) {
+    console.log('hello contactable');
     if (contactable.person)
       contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
-    if (contactable.organization)
+    if (contactable.organization) {
+      console.log('contactable',contactable,contactable.organization)
       contactable.displayName = contactable.organization.organizationName;
+    }
     if (!contactable.pictureFileId) {
       contactable.pictureFileId = null;
     }

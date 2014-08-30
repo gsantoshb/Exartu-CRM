@@ -126,7 +126,7 @@
                     <!-- /ko -->
                     <span class="control-label pull-left" data-bind="text: data.name"></span>
                     <div class="col-lg-8">
-                        <select class="form-control col-lg-10" data-bind="options:ko.meteor.find(LookUps,{codeType:data.lookUpCode}), optionsText:'displayName', value: data.value, optionsValue:'_id'"> </select>
+                        <select class="form-control col-lg-10" data-bind="options:ko.meteor.find(LookUps,{lookUpCode:data.lookUpCode}), optionsText:'displayName', value: data.value, optionsValue:'_id'"> </select>
                     </div>
                 </div>
             </div>

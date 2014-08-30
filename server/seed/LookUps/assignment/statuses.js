@@ -10,7 +10,7 @@ _.forEach([
     }
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.matchup.status.code;
+    item.lookUpCode = Enums.lookUpTypes.matchup.status.lookUpCode;
     systemLookUps.push(item);
   }
 );

@@ -445,7 +445,7 @@ _.extend(helper, {
                 required: true
               }),
                 options: LookUps.find({
-                    codeType: item.lookUpCode
+                    lookUpCode: item.lookUpCode
                 }).fetch()
             })
         }
