@@ -5,7 +5,7 @@ Template.customerJobs.helpers({
     return !! contactable.Customer;
   },
   jobs: function(){
-    return Jobs.find({_id: { $in: contactable.Customer ? contactable.Customer.jobs || [] : []}});
+    return Jobs.find({customer: Session.get('entityId')});
   },
   jobTypes: function(){
     return dType.ObjTypes.find({parent: 'job'})

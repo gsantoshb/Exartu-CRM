@@ -10,18 +10,18 @@ Contactables = new Meteor.Collection("contactables", {
     }
 
     if (contactable.Customer) {
-      if (contactable.Customer.jobs) {
-        contactable.Customer.jobsInfo = Jobs.find(
-          {
-            _id: {
-              $in: contactable.Customer.jobs
-            }
-          },
-          {
-            transform: null
-          }
-        ).fetch();
-      }
+//      if (contactable.Customer.jobs) {
+//        contactable.Customer.jobsInfo = Jobs.find(
+//          {
+//            _id: {
+//              $in: contactable.Customer.jobs
+//            }
+//          },
+//          {
+//            transform: null
+//          }
+//        ).fetch();
+//      }
     }
 
     if (contactable.contactMethods) {
