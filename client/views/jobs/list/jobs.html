@@ -1,211 +1,245 @@
 <template name="jobs">
     <div class="jobs-page">
         <div id="content">
+            {{#with information}}
             <div id="content-header" class="mini">
                 <h1>
-                    <strong data-bind="text: Jobs.find().count()"></strong>
-                    <span data-bind="text:objName"></span>
+                    {{#objectProperty property=jobsCount }}
+                    <strong> {{value}} </strong>
+                    {{/objectProperty}}
+
+                    {{#objectProperty property=objType}}
+                    {{#if value}}
+                    <span> {{value}} </span>
+                    {{else}}
+                    record(s)
+                    {{/if}}
+                    {{/objectProperty}}
                 </h1>
             </div>
             <div id="breadcrumb">
                 <a href="/" title="Go to Home" class="tip-bottom">Home</a>
-                <a href="/jobs" class="current">Jobs</a>
+                <a href="/jobs" class="current">
+                    {{#objectProperty property=objType }}
+                    <strong> {{value}} </strong>
+                    {{/objectProperty}}</a>
             </div>
+            {{/with}}
 
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-8 col-lg-8">
-                        <div class="actions-head">
-                            <div class="row">
-                                <div class="col-sm-8 col-md-8 col-lg-8">
-                                    <!-- Single button -->
-                                    <div class="btn-group pull-left suffix-5">
-                                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" title="Add">
-                                            <span class="fa fa-plus"></span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu" data-bind="foreach: jobTypes">
-                                            <li><a href="#" data-bind="attr: { href: '/jobAdd/'+name }, text: 'Add ' + name "></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search job"  data-bind="value: searchString, valueUpdate: 'afterkeydown'">
-                                          <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
-                                          </span>
-                                    </div>
-                                </div><!-- /.col-lg-5 -->
-                            </div><!-- /.row -->
-                        </div>
+                        {{>jobsListSearch}}
                     </div>
                     <div class="col-md-4 col-lg-4">
-                        <div class="filter">
-                            <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-                                <strong><i class="fa fa-filter"></i></strong>
-                            </a>
-                            <div class="filter-list" id="filter-body">
-                                <div class="filter-item">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" data-bind="checked: includeInactives"> Include Inactives
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="filter-item">
-                                    <!--<div class="item-title">-->
-                                        <!--<strong>Status</strong>-->
-                                    <!--</div>-->
-                                    <div class="item-body">
-                                        <!-- ko foreach: lookFilters -->
-                                        <div style="margin-bottom: 10px;">
-                                            <!-- ko template: { name: 'lookupFilterTemplate', data: {filterGroupId: 1, title: $data.title, items: $data.items, selectedValues: $data.selectedItems } } -->
-                                            <!-- /ko -->
-                                        </div>
-
-                                        <!-- /ko -->
-                                        <!--<div data-bind="foreach: status" style="padding: 10px;">-->
-                                            <!--<button class="btn btn-xs" data-bind="text: displayName, css:{'btn-primary':isSelected(), 'btn-default': !isSelected()}, click: $parent.selectStatus"></button>-->
-                                        <!--</div>-->
-                                    </div>
-                                </div>
-                                <div class="filter-item">
-                                    <div class="item-body">
-                                        <div>
-                                            <p>
-                                                <!-- ko foreach: tags -->
-                                                <button type="button" class="btn btn-xs btn-primary">
-                                                    <span data-bind="text: $data "></span>
-                                                    <i class="fa fa-times" data-bind="click: $root.removeTag"></i>
-                                                </button>
-                                                <!-- /ko -->
-                                            </p>
-                                            <div class="input-group">
-                                                <input id="tag-filter" type="text" class="form-control" placeholder="Search tags..." data-bind="value:tag, valueUpdate: 'afterkeydown'">
-                                                    <span class="input-group-btn">
-                                                        <button class="btn btn-primary" type="button" data-bind="click: addTag"><span class="fa fa-plus"></span></button>
-                                                    </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <sidebar>
+                            {{> jobsFilters }}
+                        </sidebar>
                     </div>
                     <!-- /.col-lg-4 -->
+
                     <div class="col-md-8 col-lg-8">
-                        <!--ko if: entities().length > 0-->
-                            <!-- ko foreach: entities-->
-                                <div class="table-item">
-                                    <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="table-item-cell">
-                                                        <div class="table-item-cell-container">
-                                                            <div class="thumb">
-                                                                <!-- ko if: $data.customer -->
-                                                                    <!-- ko with: helper.getCustomerPictureUrl($data.customer())-->
-                                                                        <!-- ko if: ready -->
-                                                                            <a href="#" data-bind="attr:{href: '/job/'+ $parent._id()}">
-                                                                                <img data-bind="attr: {src: picture }">
-                                                                            </a>
-                                                                        <!-- /ko -->
-                                                                    <!-- /ko -->
-                                                                <!-- /ko -->
-                                                                <!-- ko ifnot: $data.customer -->
-                                                                    <a href="#" style="color: #707070; font-size: 27px" data-bind="attr:{href: '/job/'+_id()}">
-                                                                        <i class="icon icon-briefcase" style="display: block; margin-top: 10px;"></i>
-                                                                    </a>
-                                                                <!-- /ko -->
-                                                            </div>
-                                                            <div class="table-item-title">
-                                                                <!--ko if: $data.displayName-->
-                                                                <a href="#" data-bind="attr:{href: '/job/'+_id()}">
-                                                                    <span data-bind="text: $data.displayName"></span>
-                                                                </a>
-                                                                <!-- ko with: Contactables.findOne({_id: $data.customer()}) -->
-
-                                                                <strong class="text-normal text-muted">
-                                                                    <a data-bind="attr: {href: '/contactable/' + _id }">
-                                                                        at
-                                                                        <span data-bind="text: displayName"></span>
-                                                                    </a>
-                                                                </strong>
-                                                                <!-- /ko -->
-                                                                <!--/ko-->
-                                                                <br/>
-                                                            </div>
-
-                                                        </div>
-                                                        <!-- /.table-item-cell-container -->
-                                                    </div>
-                                                    <!-- /.table-item-cell -->
-                                                </div>
-                                                <!-- /.col-sm-3 -->
-                                                <div class="col-sm-3">
-                                                    <div class="table-item-cell">
-                                                        <div class="table-item-cell-container text-small">
-                                                            <!--<strong data-bind="text: status">-->
-
-                                                            <!--</strong>-->
-                                                            <!--ko if: $data.matchup -->
-                                                                <!--ko with: Matchups.findOne({_id: $data.matchup() })-->
-                                                                    <!--ko with: Contactables.findOne({_id: $data.employee})-->
-                                                                        <br>
-                                                                        <a data-bind="attr: {href: '/contactable/' + _id}">
-                                                                            <strong>
-                                                                                -><span data-bind="text: displayName"></span>
-                                                                            </strong>
-                                                                        </a>
-                                                                    <!-- /ko -->
-                                                                <!-- /ko -->
-                                                            <!-- /ko -->
-
-                                                        </div>
-                                                        <!-- /.table-item-cell-container -->
-                                                    </div>
-                                                    <!-- /.table-item-cell -->
-                                                </div>
-                                                <!-- /.col-sm-4 -->
-                                                <div class="col-sm-3">
-                                                    <div class="table-item-cell">
-                                                        <div class="table-item-cell-container">
-                                                            <!--                                                    <div class="location">Bankok, Thailand</div>-->
-                                                            <!--ko if: $data.dateCreated-->
-                                                            <div class="date">
-                                                                <span data-bind="text: moment(dateCreated()).fromNow()"></span>
-                                                            </div>
-                                                            <!-- /ko -->
-                                                        </div>
-                                                        <!-- /.table-item-cell-container -->
-                                                    </div>
-                                                    <!-- /.table-item-cell -->
-                                                </div>
-                                                <!-- /.col-sm-3 -->
-                                            </div>
-                                </div>
-                            <!-- /ko -->
-                        <!-- /ko -->
-                        <!--ko ifnot: entities().length >0-->
-                            <div class="v-wrapper">
-                                <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                                    <i class="icon-briefcase text-large"></i>
-                                    <h1>You currently have no Jobs</h1>
-                                    <!--ko foreach: jobTypes-->
-                                        <a href="#" data-bind="attr: { href: '/jobAdd/'+name }, text: 'New ' + name + ' Job'"></a>
-                                        <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
-                                    <!-- /ko -->
-                                </div><!-- /.v-wrapper-cell -->
-                            </div>
-                        <!-- /ko -->
-                        <!--infinite scroll-->
-                        <div data-bind="onScrollBottom: showMore"></div>
+                        {{#if isSearching}}
+                        searching
+                        {{else}}
+                        {{> jobsList }}
+                        {{/if}}
+                        {{#infinityScroll cb=showMore}} {{/infinityScroll}}
                     </div>
-                    <!--/ko-->
                 </div>
+                <!--/ko-->
             </div>
         </div>
-        {{>lookupFilterTemplate}}
     </div>
 </template>
 
-<!--<template name="jobFilters">-->
+<template name="jobsFilters">
+    <div class="filter">
+        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+            <strong><i class="fa fa-filter"></i></strong>
+        </a>
+        <div class="filter-list" id="filter-body">
+            <div class="filter-item">
+                <div class="item-body">
+                    {{#each jobTypes2}}
+                    <button type="button" class="typeSelect {{typeOptionClass .}}">{{name}}</button>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="filter-item">
 
-<!--</template>-->
+                <div class="item-body">
+                    <div class="checkbox">
+                        <label>
+                            {{#objectProperty property=query.inactives}}
+                            <input type="checkbox" value="{{value}}"> Include inactives
+                            {{/objectProperty}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            {{#objectProperty property=query.onlyRecents}}
+                            <input type="checkbox" value="{{value}}"> Only recent
+                            {{/objectProperty}}
+                        </label>
+                        <span><i class="icon-question-mark" title="Shows only the contacts that have been recently added. Select the timespan."></i></span>
+                        <div class="pull-right">
+                            <button type="button" class="{{recentOptionClass recentOptions.day}}" id="recent-day">day</button>
+                            <button type="button" class="{{recentOptionClass recentOptions.week}}" id="recent-week">week</button>
+                            <button type="button" class="{{recentOptionClass recentOptions.month}}" id="recent-month">month</button>
+                            <button type="button" class="{{recentOptionClass recentOptions.year}}" id="recent-year">year</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-item">
+                <!--<div class="item-title">-->
+                <!--<strong>Tags</strong>-->
+                <!--</div>-->
+                <div class="item-body">
+                    {{#objectProperty property=tags}}
+                    <button type="button" class="tag btn btn-xs btn-primary">
+                        <span >{{value}}</span>
+                        <i class="remove-tag fa fa-times"></i>
+                    </button>
+                    {{/objectProperty}}
+                    <div class="input-group">
+                        <input id="new-tag" type="text" class="form-control" placeholder="Search tags...">
+                            <span class="input-group-btn">
+                              <button class="add-tag btn btn-success" type="button"><span class="fa fa-plus"></span></button>
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="jobsList">
+    <div>
+        <!--{{> jobsListSearch }}-->
+
+        {{#each jobs}}
+        {{> jobsListItem }}
+        {{else}}
+        {{#if info.isFiltering.value }}
+        <div class="v-wrapper">
+            <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                <i class="icon-connection-1 text-large"></i>
+                <h1>
+                    No records Found
+                </h1>
+            </div><!-- /.v-wrapper-cell -->
+        </div>
+        {{else}}
+        <div class="v-wrapper">
+            <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                <i class="icon-connection-1 text-large"></i>
+                <a href="#" data-bind="attr: { href: '/jobAdd/'+name() }, text: 'New ' + name()"></a>
+                <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
+            </div><!-- /.v-wrapper-cell -->
+        </div>
+        {{/if}}
+        {{/each}}
+    </div>
+</template>
+
+<template name="jobsListItem">
+    <div class="table-item magic">
+        <div class="row ">
+            <div class="col-sm-4">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container">
+
+                        <div class="table-item-title">
+                            <a href="/job/{{_id}}">
+                                {{displayName}}</a>
+                            <br/>
+                        </div>
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-3 -->
+            <div class="col-sm-6">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container text-muted">
+
+                        {{> jobInformation }}
+
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-4 -->
+            <div class="col-sm-2">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container date">
+                        {{#formatted_date date=dateCreated format='fromNow'}}
+                        <span>{{value}}</span><br>
+                        {{/formatted_date}}
+                        {{#if searchKey }}
+                        <i class="glyphicon glyphicon-search"></i>
+                        {{searchKey}}
+                        {{/if}}
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.table-item -->
+</template>
+
+
+
+<template name="customerInformation">
+    {{#if location.displayName}}
+    <i class="icon-map-marker-1"></i>
+    {{location.displayName}}
+    {{/if}}
+</template>
+
+
+
+<template name="jobsListSearch">
+    <div class="actions-head">
+        <div class="row">
+            <div class="col-sm-8 col-md-8 col-lg-8">
+
+                <div class="pull-left suffix-5">
+                    <!-- Single button -->
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" title="Add">
+                                <span class="fa fa-plus"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" data-bind="foreach: jobTypes">
+                                {{#each jobTypes}}
+                                <li><a href="/jobAdd/{{name}}">Add {{name}}</a></li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                        <a type="button" title="Create from resume" class="btn btn-default" href="/resumeparser"><i class="fa fa-cloud-upload"></i></a>
+
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    {{#objectProperty property=searchString}}
+                    <input type="text" class="form-control" placeholder="Search Contacts" value="{{value}}">
+                    {{/objectProperty}}
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div><!-- /.col-lg-5 -->
+        </div><!-- /.row -->
+    </div>
+</template>
