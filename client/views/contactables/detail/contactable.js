@@ -12,44 +12,8 @@ ContactableController = RouteController.extend({
       return;
     }
     this.render('contactable')
-    // define which template to render in function of the url's hash
-    switch (this.params.hash) {
-      case 'details':
-        this.render('contactableDetails', {
-          to: 'content'
-        });
-        break;
-      case 'notes':
-        this.render('contactableNotes', {
-          to: 'content'
-        });
-        break;
-      case 'documents':
-        this.render('documents', {
-          to: 'content'
-        });
-        break;
-      case 'pastJobs':
-        this.render('contactablePastJobs', {
-          to: 'content'
-        });
-        break;
-      case 'educations':
-        this.render('contactableEducation', {
-          to: 'content'
-        });
-        break;
-      case 'pastJobs':
-        this.render('contactablePastJobs', {
-          to: 'content'
-        });
-        break;
-      default:
-        this.render('contactableHome', {
-          to: 'content'
-        });
-        break;
-    };
+
+    Session.set('activeTab',this.params.hash);
 
     GAnalytics.event("contactables", "details");
   },
@@ -70,13 +34,14 @@ ContactableController = RouteController.extend({
 });
 
 Template.contactable.rendered = function () {
-  $('body').scrollTop(0)
-}
+  $('body').scrollTop(0);
+};
 Template.displayObjType = function() {
   if (info.objType.value)
     return '';
   return Utils.getContactableType(this);
 };
+
 Template.contactable.helpers({
   displayObjType: function() {
     return Utils.getContactableType(this);
@@ -189,8 +154,14 @@ Template.contactable_header.helpers({
     }
     return "/assets/user-photo-placeholder.jpg";
   }
-})
+});
 
+Template.all_tabs.helpers({
+  isActive: function(name){
+    var activeTab = Session.get('activeTab') || 'details';
+    return (name == activeTab) ? 'active' : '';
+  }
+})
 
 var getLinkType= function(){
   return Enums.linkTypes.contactable;
