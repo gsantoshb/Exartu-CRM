@@ -519,3 +519,11 @@ Utils.getDefaultJobStatus=function()
   if (defaultStatus) defaultStatus=LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode});
   if (defaultStatus) return defaultStatus._id; else return null;
 }
+
+Utils.setDecimal= function(rate) {
+  var drate = parseFloat(rate).toFixed(2);
+  console.log('drate',drate);
+  if (drate==null || isNaN(drate)) drate=0;
+  return drate;
+}
+// Edit Rates

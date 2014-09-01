@@ -2,15 +2,18 @@ var self={};
 Utils.reactiveProp(self,'editMode',false);
 Template.jobRates.created=function(){
   self.editMode=false;
+  self.rates=[];
   loadRates();
 }
 var ratesDep=new Deps.Dependency;
 UI.registerHelper('jobRates', function(){
-  rates=  this.rates;
+  rates=  self.rates;
   return Template.jobRatesTemplate;
 })
 
-
+function setTwoNumberDecimal(event) {
+  this.value = parseFloat(this.value).toFixed(2);
+}
 // Edit Rates
 
 var newRate={
@@ -18,13 +21,13 @@ var newRate={
   pay: 0,
   bill: 0
 }
-var rates;
+
 var loadRates=function(){
   var job=Jobs.findOne({
     _id: Session.get('entityId')
   });
 
-  self.rates=job.jobRates;
+  if (job.jobRates) self.rates=job.jobRates;
 };
 var updateRates=function(){
   Jobs.update({ _id: Session.get('entityId') },{ $set: { jobRates: self.rates } });
@@ -77,11 +80,14 @@ Template.jobRates.events({
     newRate.type=ctx.$('.newRateType').val();
 
     if (! newRate.type) return;
+    newRate.pay=  Utils.setDecimal(newRate.pay);
+    newRate.bill=  Utils.setDecimal(newRate.bill);
 
-    if (_.findWhere(rates, { type: newRate.type })) return;
-
+    if (_.findWhere(self.rates, { type: newRate.type })) return;
     self.rates.push(_.clone(newRate));
     updateRates();
+    newRate.pay=  Utils.setDecimal(0);
+    newRate.bill=  Utils.setDecimal(0);
     ratesDep.changed();
   },
   'click .removeRate': function(e, ctx){
@@ -95,9 +101,11 @@ Template.jobRates.events({
 //  },
   'change .payRateInput': function(e, ctx){
     this.pay= e.target.value;
+    this.pay=  Utils.setDecimal(this.pay);
   },
   'change .billRateInput': function(e, ctx){
     this.bill= e.target.value;
+    this.bill=  Utils.setDecimal(this.bill);
   }
 })
 
