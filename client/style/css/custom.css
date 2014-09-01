@@ -692,6 +692,9 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .timeline .item .item-info .time i{
     font-size: 14px;
 }
+.timeline .item .item-info .time{
+    top: 20%;
+}
 /*filters*/
 .filter{
     text-align: center;
