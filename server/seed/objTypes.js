@@ -49,7 +49,7 @@ newObjType({
       lookUpName: 'status',
       lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode,
       defaultValue: null,
-      showInAdd: true,
+      showInAdd: false,
       required: false
     }
   ]
@@ -72,7 +72,7 @@ newObjType({
       lookUpName: 'status',
       lookUpCode: Enums.lookUpTypes.contact.status.lookUpCode,
       defaultValue: null,
-      showInAdd: true,
+      showInAdd: false,
       required: false
     }
   ]
@@ -95,7 +95,7 @@ newObjType({
       lookUpName: 'status',
       lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode,
       defaultValue: null,
-      showInAdd: true,
+      showInAdd: false,
       required: false
     }
   ]
