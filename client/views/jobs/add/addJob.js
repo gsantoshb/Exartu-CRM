@@ -34,6 +34,8 @@ var createJob= function(objTypeName){
     }
 
     model= new dType.objTypeInstance(Session.get('objType'), options);
+    var defaultStatus=LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,isDefault:true});
+    if (defaultStatus) model.status=defaultStatus._id;
     return model
 }
 
@@ -56,6 +58,7 @@ Template.addJobPage.helpers({
 Template.addJobPage.events({
     'click .btn-success': function(){
         if (!dType.isValid(model)){
+            console.log('job add model error',model);
             dType.displayAllMessages(model);
             return;
         }

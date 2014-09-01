@@ -2,25 +2,26 @@ Contactables = new Meteor.Collection("contactables", {
   transform: function (contactable) {
     if (contactable.person)
       contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
-    if (contactable.organization)
+    if (contactable.organization) {
       contactable.displayName = contactable.organization.organizationName;
+    }
     if (!contactable.pictureFileId) {
       contactable.pictureFileId = null;
     }
 
     if (contactable.Customer) {
-      if (contactable.Customer.jobs) {
-        contactable.Customer.jobsInfo = Jobs.find(
-          {
-            _id: {
-              $in: contactable.Customer.jobs
-            }
-          },
-          {
-            transform: null
-          }
-        ).fetch();
-      }
+//      if (contactable.Customer.jobs) {
+//        contactable.Customer.jobsInfo = Jobs.find(
+//          {
+//            _id: {
+//              $in: contactable.Customer.jobs
+//            }
+//          },
+//          {
+//            transform: null
+//          }
+//        ).fetch();
+//      }
     }
 
     if (contactable.contactMethods) {

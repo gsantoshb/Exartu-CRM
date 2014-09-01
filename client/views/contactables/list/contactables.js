@@ -115,7 +115,6 @@ Template.contactables.created = function(){
 
 Template.contactablesList.info = function() {
   info.isFiltering.value = Contactables.find().count() != 0;
-  console.dir(info)
   return info;
 };
 
@@ -176,8 +175,8 @@ var getActiveStatuses = function(objName){
   var status = Enums.lookUpTypes[objName.toLowerCase()];
   status = status && status.status;
   if (status){
-    var codeTypes = status.code,
-      implyActives = LookUps.find({codeType: codeTypes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
+    var lookUpCodes = status.lookUpCode,
+      implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
     return _.map(implyActives,function(doc){ return doc._id});
   }
   return null;
@@ -346,12 +345,7 @@ Template.contactablesListItem.contactableIcon = function() {
 };
 
 Template.contactablesListItem.displayObjType = function() {
-  if (this.Customer)
-    return 'Customer';
-  if (this.Employee)
-    return 'Employee';
-  if (this.Contact)
-    return 'Contact';
+  return Utils.getContactableType(this);
 };
 
 // Employee item

@@ -15,7 +15,7 @@ newObjType({
   collection: Contactables,
   objGroupType: Enums.objGroupType.contactable,
   name: 'contactable',
-  services: ['messages', 'tasks', 'notes', 'tags', 'contactMethods'],
+  services: [], //[ 'tags', 'contactMethods'],
   fields: [
     {
       name: 'statusNote',
@@ -47,9 +47,9 @@ newObjType({
       displayName: 'Status',
       fieldType: 'lookUp',
       lookUpName: 'status',
-      lookUpCode: Enums.lookUpTypes.customer.status.code,
+      lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode,
       defaultValue: null,
-      showInAdd: false,
+      showInAdd: true,
       required: false
     }
   ]
@@ -70,9 +70,9 @@ newObjType({
       displayName: 'Status',
       fieldType: 'lookUp',
       lookUpName: 'status',
-      lookUpCode: Enums.lookUpTypes.contact.status.code,
+      lookUpCode: Enums.lookUpTypes.contact.status.lookUpCode,
       defaultValue: null,
-      showInAdd: false,
+      showInAdd: true,
       required: false
     }
   ]
@@ -93,9 +93,9 @@ newObjType({
       displayName: 'Status',
       fieldType: 'lookUp',
       lookUpName: 'status',
-      lookUpCode: Enums.lookUpTypes.employee.status.code,
+      lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode,
       defaultValue: null,
-      showInAdd: false,
+      showInAdd: true,
       required: false
     }
   ]
@@ -153,13 +153,13 @@ newObjType({
     collection: Jobs,
     name: 'job',
     objGroupType: Enums.objGroupType.job,
-    services: ['messages', 'tasks', 'notes', 'tags', 'candidates', 'jobRates'],
+    services: [],
     fields: [{
       name: 'jobTitle',
       displayName: 'Job title',
       fieldType: 'lookUp',
       lookUpName: 'jobTitle',
-      lookUpCode: Enums.lookUpTypes.job.titles.code,
+      lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode,
       defaultValue: null,
       required: true
     }, {
@@ -201,21 +201,21 @@ newObjType({
       displayName: 'Duration',
       fieldType: 'lookUp',
       lookUpName: 'jobDuration',
-      lookUpCode: Enums.lookUpTypes.job.duration.code,
+      lookUpCode: Enums.lookUpTypes.job.duration.lookUpCode,
       defaultValue: null,
       required: false,
       multiple: false,
-      showInAdd: false
+      showInAdd: true
     }, {
       name: 'status',
       displayName: 'Status',
       fieldType: 'lookUp',
       lookUpName: 'jobStatus',
-      lookUpCode: Enums.lookUpTypes.job.status.code,
+      lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,
       required: false,
       multiple: false,
-      defaultValue: null,
-      showInAdd: false
+      defaultValue: null, // LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,isDefault:true}),
+      showInAdd: true
     }
 //    {
 //      name: 'industry',
@@ -253,18 +253,6 @@ newObjType({
   },
   services: [],
   fields: [
-    {
-      name: 'salary',
-      displayName: 'Salary',
-        fieldType: 'number',
-        required: true
-    },
-    {
-      name: 'fee',
-      displayName: 'Fee (%)',
-      fieldType: 'number',
-      required: false
-    }
   ]
 });
 newObjType({
@@ -277,27 +265,7 @@ newObjType({
   },
   services: [],
   fields: [
-    {
-      name: 'frequency',
-      displayName: 'Pay Frequency',
-      fieldType: 'lookUp',
-      lookUpName: 'payRateFrequency',
-      lookUpCode: Enums.lookUpTypes.payRate.frequencies.code,
-      defaultValue: null,
-      required: false
-    },
-    {
-      name: 'pay',
-      displayName: 'Pay',
-      fieldType: 'number',
-      required: false
-    },
-    {
-      name: 'bill',
-      displayName: 'Bill',
-      fieldType: 'number',
-      required: false
-    }
+
   ]
 });
 
@@ -328,7 +296,7 @@ newObjType({
         displayName: 'Status',
         fieldType: 'lookUp',
         lookUpName: 'dealStatus',
-        lookUpCode: Enums.lookUpTypes.deal.status.code,
+        lookUpCode: Enums.lookUpTypes.deal.status.lookUpCode,
         required: true,
         multiple: false,
         defaultValue: null
@@ -346,7 +314,7 @@ newObjType({
         displayName: 'Frequency',
         fieldType: 'lookUp',
         lookUpName: 'dealRevenueFrequency',
-        lookUpCode: Enums.lookUpTypes.deal.dealRevenueFrequency.code,
+        lookUpCode: Enums.lookUpTypes.deal.dealRevenueFrequency.lookUpCode,
         defaultValue: null,
         showInAdd: true,
         required: true
@@ -387,7 +355,7 @@ newObjType({
       fieldType: 'lookUp',
       lookUpName: 'matchupStatus',
       showInAdd: true,
-      lookUpCode: Enums.lookUpTypes.matchup.status.code,
+      lookUpCode: Enums.lookUpTypes.matchup.status.lookUpCode,
       required: true,
       multiple: false
     }, {
@@ -395,7 +363,7 @@ newObjType({
       displayName: 'Candidate Status',
       fieldType: 'lookUp',
       lookUpName: 'candidateStatus',
-      lookUpCode: Enums.lookUpTypes.candidate.status.code,
+      lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode,
       required: false,
       multiple: false
     }
