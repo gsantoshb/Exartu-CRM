@@ -5,7 +5,6 @@ Template.addQuote.viewModel = function (id, addcallname) {
 
     self.adding = ko.observable(false);
     self.addQuote = function () {
-        console.log('adding quote');
         self.adding(true);
         Meteor.call(addcallname, id, {
             content: self.newQuote()

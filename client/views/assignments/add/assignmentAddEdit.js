@@ -53,7 +53,7 @@ Template.addMatchupPage.helpers({
     return Session.get('objType');
   },
   employees:function() {
-    console.log('meployees');
+
     return Contactables.find({
       Employee: {
         $exists: true
@@ -88,7 +88,6 @@ Template.addMatchupPage.events({
         console.dir(err)
       }
       else{
-        console.log('matchup result',result);
         Router.go('/matchup/' + result._id);
       }
     });

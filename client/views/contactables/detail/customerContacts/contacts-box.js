@@ -5,7 +5,6 @@ Template.contactableContactsBox.hasContacts = function() {
 };
 
 Template.contactableContactsBox.contacts = function() {
-  console.log('ccont',this);
   return Contactables.find({ 'Contact.customer': this._id  });
 }
 
