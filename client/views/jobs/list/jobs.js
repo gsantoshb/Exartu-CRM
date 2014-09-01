@@ -133,11 +133,13 @@ Template.jobs.isSearching = function() {
 }
 
 var getActiveStatuses = function(objName){
-  var status = Enums.lookUpTypes[objName.toLowerCase()];
+  var status = Enums.lookUpTypes["job"];
+  console.log('activestat',status,objName);
   status = status && status.status;
   if (status){
-    var lookUpCodes = status.code,
-      implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
+    var lookUpCodes = status.lookUpCode;
+    var implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
+    console.log('lkp',lookUpCodes,implyActives);
     return _.map(implyActives,function(doc){ return doc._id});
   }
   return null;
@@ -179,13 +181,14 @@ Template.jobsList.jobs = function() {
     searchQuery.$or=[];
     var activeStatuses;
     var aux;
-    _.each(['Job', 'Temporary', 'Direct Hire'], function(objName){
+    _.each(['job'], function(objName){
       activeStatuses = getActiveStatuses(objName);
       if (_.isArray(activeStatuses) && activeStatuses.length > 0){
         aux={};
-        aux[objName + '.status'] = {
+        aux['status'] = {
           $in: activeStatuses
         };
+        console.log('aux',aux);
         searchQuery.$or.push(aux)
       }
     })
