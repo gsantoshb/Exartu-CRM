@@ -305,7 +305,7 @@ Utils.getTypeFromTypeString=function (str)
   for (var k in Enums.linkTypes) {
 
     var estr=Enums.linkTypes[k].displayName;
-    console.log(str,estr);
+
     if (estr == str.toLowerCase() || estr == (str + 's').toLowerCase()) return k;
   }
   return null;
@@ -522,7 +522,7 @@ Utils.getDefaultJobStatus=function()
 
 Utils.setDecimal= function(rate) {
   var drate = parseFloat(rate).toFixed(2);
-  console.log('drate',drate);
+
   if (drate==null || isNaN(drate)) drate=0;
   return drate;
 }

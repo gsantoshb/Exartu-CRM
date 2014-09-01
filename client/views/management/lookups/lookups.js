@@ -30,7 +30,7 @@ var query = new Utils.ObjectDefinition({
   reactiveProps: {
    searchString: {},
    lookUpCode: {},
-   lookUpActions: {}
+   lookUpActions: []
   }
 });
 var defaultUpdateDep = new Deps.Dependency;
@@ -57,7 +57,7 @@ Template.selectLookUpType.lookUpTypes = function() {
     })
   });
 //  query.lookUpCode.value = lookUpTypes[0].code;
-  var items= Template.lookUpsManagement.items();
+//  var items= Template.lookUpsManagement.items();
   return _.sortBy(lookUpTypes,'displayName');
 
 };
@@ -84,7 +84,22 @@ Template.lookUpsManagement.getId= function(row)
 }
 Template.lookUpsManagement.getLookUpActions= function()
 {
-    return query.lookUpActions;
+  defaultUpdateDep.depend();
+  var lookUpActions = [];
+  _.forEach(Enums.lookUpTypes, function(subType){
+    _.forEach(subType, function(item){
+
+        if (item.lookUpCode == query.lookUpCode.value)
+        {
+          lookUpActions = item.lookUpActions;
+        }
+    })
+  });
+
+  return lookUpActions;
+//
+//    console.log('lokupact',query);
+//    return query.lookUpActions;
 }
 
 

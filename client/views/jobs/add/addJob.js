@@ -58,7 +58,6 @@ Template.addJobPage.helpers({
 Template.addJobPage.events({
     'click .btn-success': function(){
         if (!dType.isValid(model)){
-            console.log('job add model error',model);
             dType.displayAllMessages(model);
             return;
         }
