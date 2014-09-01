@@ -71,16 +71,7 @@ Template.selectLookUpType.isSelected = function(id){
 
 Template.selectLookUpType.events = {
   'change': function(e) {
-    query.lookUpCode.value = parseInt(e.currentTarget.value);
-    query.lookUpActions= [];
-    _.forEach(Enums.lookUpTypes, function(subType) {
-        _.forEach(subType, function(subTypeItem) {
-            if (subTypeItem.code == query.lookUpCode.value) {
-                query.lookUpActions = subTypeItem.lookUpActions;
-            }
-        });
-    });
-
+      query.lookUpCode.value = parseInt(e.currentTarget.value);
   }
 };
 

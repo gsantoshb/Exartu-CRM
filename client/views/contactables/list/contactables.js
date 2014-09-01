@@ -175,7 +175,7 @@ var getActiveStatuses = function(objName){
   var status = Enums.lookUpTypes[objName.toLowerCase()];
   status = status && status.status;
   if (status){
-    var lookUpCodes = status.code,
+    var lookUpCodes = status.lookUpCode,
       implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
     return _.map(implyActives,function(doc){ return doc._id});
   }

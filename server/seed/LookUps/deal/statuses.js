@@ -13,7 +13,7 @@ _.forEach([
   }
 ],
   function (item) {
-    item.lookUpCode = Enums.lookUpAction.code;
+    item.lookUpCode = Enums.lookUpTypes.deal.status.lookUpCode;
     systemLookUps.push(item);
   }
 );
