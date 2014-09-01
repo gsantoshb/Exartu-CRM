@@ -1,108 +1,58 @@
 <template name="header">
     {{>connectionBanner}}
     <div name="headerVM" style="position: relative;">
-        <div id="user-nav" class="navbar-right pull-right">
-            <ul class="btn-group">
-                <li class="hidden-xs">
-                    <a href="/user" style="display: inline-flex">
+
+        <div id="header">
+            <div id="user-nav" class="navbar-right pull-right">
+                <ul class="btn-group">
+                    <li class="hidden-xs">
+                        <a href="/user" style="display: inline-flex">
                         <span class="user-menu-thumb">
                             <img class="img-responsive" style="max-height:26px; max-width:26px" src="{{userThumbnail}}">
                         </span>
-                        <span class="msg-author">{{user.username}}</span>
-                    </a>
-                </li>
+                            <span class="msg-author">{{user.username}}</span>
+                        </a>
+                    </li>
+                    <li class="btn dropdown" id="menu-settings">
+                        <a href="#" data-toggle="dropdown" data-target="#menu-settings" class="dropdown-toggle">
+                            <i class="fa fa-cog"></i>
+                            <span class="text">Settings</span>
+                        </a>
 
-                <!--<li class="btn dropdown" id="menu-messages">-->
-                    <!--<a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">-->
-                        <!--<i class="fa fa-envelope-o"></i>-->
-                        <!--<span class="text">Messages</span>-->
-                        <!--{{#if UnreadMessagesCount}}-->
-                            <!--<span class="notifications"> {{UnreadMessagesCount}}</span>-->
-                        <!--{{/if}}-->
-                    <!--</a>-->
-                    <!--<ul class="dropdown-menu dropdown-msgs pull-right">-->
-                        <!--<li class="clearfix">-->
-                            <!--<span class="pull-left">-->
-                                <!--<a href="/inbox">-->
-                                    <!--<i class="fa fa-inbox"></i>Inbox</a>-->
-                            <!--</span>-->
-                        <!--</li>-->
-                        <!--{{#if UnreadMessagesCount}}-->
-                        <!--{{else}}-->
-                            <!--<span>No new messages</span>-->
-                        <!--{{/if}}-->
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="/management/hrconcourse">HRConcourse</a>
+                            </li>
+                            <li>
+                                <a href="/management/lookups">Lookups</a>
+                            </li>
+                            <li>
+                                <a href="/user">
+                                    My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/subscriptionplan">Subscription</a>
+                            </li>
 
-                        <!--{{#each latestUnreadMessages }}-->
-                            <!--<li class="{{unread .}}">-->
-                                <!--<a class="msg" href="{{conversationURL .}}">-->
-                                    <!--{{#with userInfo .}}-->
-                                        <!--<span class="msg-pic">-->
-                                            <!--<img style="max-height: 50px;max-width: 50px;" src="{{picture}}">-->
-                                        <!--</span>-->
-                                        <!--<span class="msg-author">{{username}}</span>-->
-                                    <!--{{/with}}-->
-                                        <!--<div class="msg-content" style="display: inline">{{content}}-->
-                                        <!--</div>-->
-                                    <!--{{#formattedDate value=dateCreated format='fromNow'}}-->
-                                        <!--<span class="msg-date">{{date}}</span>-->
-                                    <!--{{/formattedDate}}-->
-                                <!--</a>-->
-                            <!--</li>-->
-                        <!--{{/each}}-->
+                            <li>
+                                {{>userVoice}}
 
-                        <!--<li class="more">-->
-                            <!--<a href="/inbox">View all messages</a>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</li>-->
+                            </li>
 
+                            <li>
+                                <a href="/users">Users</a>
+                            </li>
 
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/" id="signout">Sign out</a>
+                            </li>
+                        </ul>
 
-
-                <li class="btn dropdown" id="menu-settings">
-                    <a href="#" data-toggle="dropdown" data-target="#menu-settings" class="dropdown-toggle">
-                        <i class="fa fa-cog"></i>
-                        <span class="text">Settings</span>
-                    </a>
-
-                    <ul class="dropdown-menu pull-right">
-                        <li>
-                            <a href="/management/hrconcourse">HRConcourse</a>
-                        </li>
-                        <li>
-                            <a href="/management/lookups">Lookups</a>
-                        </li>
-                        <li>
-                            <a href="/user">
-                                My Profile
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/subscriptionplan">Subscription</a>
-                        </li>
-
-                        <li>
-                            {{>userVoice}}
-
-                        </li>
-
-                        <li>
-                            <a href="/users">Users</a>
-                        </li>
-
-                        <li class="divider"></li>
-                        <li>
-                            <a href="/" id="signout">Sign out</a>
-                        </li>
-                    </ul>
-
-                </li>
-
-
-
-            </ul>
-        </div>
-        <div id="header">
+                    </li>
+                </ul>
+            </div>
             <h1>
                 <a href="/">
                     <span class="hidden-phone">EXARTU</span>
@@ -110,24 +60,6 @@
             </h1>
 
         </div>
-
-
-
-        <!--
-        <div id="switcher">
-            <div id="switcher-inner">
-                <h3>Theme Options</h3>
-                <h4>Colors</h4>
-                <p id="color-style">
-                    <a data-color="dark" title="dark" class="button-square dark-switcher active" href="#"></a>
-                    <a data-color="light" title="light" class="button-square light-switcher" href="#"></a>
-                </p>
-            </div>
-            <div id="switcher-button">
-                <i class="fa fa-cogs"></i>
-            </div>
-        </div>
--->
 
         {{>sidebar}}
     </div>

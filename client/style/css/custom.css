@@ -941,6 +941,24 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
         padding: 10px 10px;
     }
 
+    /* main navBar fixed */
+    #header{
+        position: fixed;
+        top: 0;
+        z-index: 10;
+    }
+    #menu-trigger{
+        position: fixed;
+        top: 10px;
+        z-index: 11;
+    }
+    #sidebar{
+        top: 50px;
+    }
+    #wrapper{
+        height: 50px;
+    }
+
 }
 
 /********************************** End Mobile ***************************************/
