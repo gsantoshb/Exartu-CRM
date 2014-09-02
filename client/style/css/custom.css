@@ -958,6 +958,12 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     #wrapper{
         height: 50px;
     }
+    #user-nav{
+        position: fixed;
+        z-index: 11;
+        right: 0px;
+        left: inherit;
+    }
 
 }
 

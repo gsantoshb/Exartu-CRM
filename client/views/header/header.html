@@ -1,65 +1,65 @@
 <template name="header">
     {{>connectionBanner}}
     <div name="headerVM" style="position: relative;">
-
-        <div id="header">
-            <div id="user-nav" class="navbar-right pull-right">
-                <ul class="btn-group">
-                    <li class="hidden-xs">
-                        <a href="/user" style="display: inline-flex">
+        <div id="user-nav" class="navbar-right pull-right">
+            <ul class="btn-group">
+                <li class="hidden-xs">
+                    <a href="/user" style="display: inline-flex">
                         <span class="user-menu-thumb">
                             <img class="img-responsive" style="max-height:26px; max-width:26px" src="{{userThumbnail}}">
                         </span>
-                            <span class="msg-author">{{user.username}}</span>
-                        </a>
-                    </li>
-                    <li class="btn dropdown" id="menu-settings">
-                        <a href="#" data-toggle="dropdown" data-target="#menu-settings" class="dropdown-toggle">
-                            <i class="fa fa-cog"></i>
-                            <span class="text">Settings</span>
-                        </a>
+                        <span class="msg-author">{{user.username}}</span>
+                    </a>
+                </li>
+                <li class="btn dropdown" id="menu-settings">
+                    <a href="#" data-toggle="dropdown" data-target="#menu-settings" class="dropdown-toggle">
+                        <i class="fa fa-cog"></i>
+                        <span class="text">Settings</span>
+                    </a>
 
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="/management/hrconcourse">HRConcourse</a>
-                            </li>
-                            <li>
-                                <a href="/management/lookups">Lookups</a>
-                            </li>
-                            <li>
-                                <a href="/user">
-                                    My Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/subscriptionplan">Subscription</a>
-                            </li>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="/management/hrconcourse">HRConcourse</a>
+                        </li>
+                        <li>
+                            <a href="/management/lookups">Lookups</a>
+                        </li>
+                        <li>
+                            <a href="/user">
+                                My Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/subscriptionplan">Subscription</a>
+                        </li>
 
-                            <li>
-                                {{>userVoice}}
+                        <li>
+                            {{>userVoice}}
 
-                            </li>
+                        </li>
 
-                            <li>
-                                <a href="/users">Users</a>
-                            </li>
+                        <li>
+                            <a href="/users">Users</a>
+                        </li>
 
-                            <li class="divider"></li>
-                            <li>
-                                <a href="/" id="signout">Sign out</a>
-                            </li>
-                        </ul>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/" id="signout">Sign out</a>
+                        </li>
+                    </ul>
 
-                    </li>
-                </ul>
-            </div>
+                </li>
+            </ul>
+        </div>
+
+        <div id="header">
             <h1>
                 <a href="/">
                     <span class="hidden-phone">EXARTU</span>
                 </a>
             </h1>
-
         </div>
+
 
         {{>sidebar}}
     </div>
@@ -86,20 +86,6 @@
                         <span>Contacts</span>
                         <!--<i class="arrow fa fa-chevron-right"></i>-->
                     </a>
-                    <!--<ul>-->
-                        <!--<li class="{{getActiveClass 'contactables' null}}">-->
-                            <!--<a href="/contactables">-->
-                                <!--<span>All</span>-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--{{#each contactableObjTypes}}-->
-                            <!--<li class="{{getActiveClass 'contactables' name}}">-->
-                                <!--<a href="/contactables/{{name}}">-->
-                                    <!--<span>{{name}}</span>s-->
-                                <!--</a>-->
-                            <!--</li>-->
-                        <!--{{/each}}-->
-                    <!--</ul>-->
                 </li>
 
                 <li class="jobs {{getActiveClass 'jobs' null}}">
@@ -108,20 +94,6 @@
                         <span>Jobs</span>
                         <!--<i class="arrow fa fa-chevron-right"></i>-->
                     </a>
-                    <!--<ul>-->
-                        <!--<li class="{{getActiveClass 'jobs' null}}">-->
-                            <!--<a href="/jobs">-->
-                                <!--<span>All</span>-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--{{#each jobObjTypes}}-->
-                            <!--<li class="{{getActiveClass 'jobs' name}}">-->
-                                <!--<a  href="/jobs/{{name}}">-->
-                                    <!--<span>{{name}}</span>-->
-                                <!--</a>-->
-                            <!--</li>-->
-                        <!--{{/each}}-->
-                    <!--</ul>-->
                 </li>
                 <li class="tasks {{getActiveClass 'matchups' null}}">
                     <a href="/matchups">
@@ -135,19 +107,6 @@
                         <span>Tasks</span>
                     </a>
                 </li>
-                <!--<li class="deals {{getActiveClass 'deals' null}}">-->
-                    <!--<a href="/deals">-->
-                        <!--<i class="icon icon-euro-currency-3"></i>-->
-                        <!--<span>Deals</span>-->
-                    <!--</a>-->
-                <!--</li>-->
-
-                <!--<li class="tasks {{getActiveClass 'candidates' null}}">-->
-                    <!--<a href="/candidates">-->
-                        <!--<i class="icon icon-profile-man"></i>-->
-                        <!--<span>Candidates</span>-->
-                    <!--</a>-->
-                <!--</li>-->
                 <li class="tasks {{getActiveClass 'notes' null}}">
                     <a href="/notes">
                         <i class="icon icon-note-paper-1"></i>
