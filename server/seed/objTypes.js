@@ -72,7 +72,7 @@ newObjType({
       lookUpName: 'status',
       lookUpCode: Enums.lookUpTypes.contact.status.lookUpCode,
       defaultValue: null,
-      showInAdd: false,
+      showInAdd: true,
       required: false
     }
   ]

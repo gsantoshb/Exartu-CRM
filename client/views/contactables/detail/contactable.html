@@ -130,7 +130,7 @@
         <li class="{{isActive 'notes'}}"><a href="#notes">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>
         <li class="{{isActive 'documents'}}"><a href="#documents">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>
         <li class="{{isActive 'tasks'}}"><a href="#tasks">Tasks</a></li>
-
+        <li class="{{isActive 'location'}}"><a href="#location">Location</a></li>
         {{#if ../Customer}}
             <li class="{{isActive 'jobs'}}"><a href="#jobs">Jobs <span class="custom-badge-2">{{jobCount}}</span></a></li>
             <li class="{{isActive 'matchups'}}"><a href="#matchups">Matchups</a></li>
@@ -149,6 +149,9 @@
         <div class="tab-pane {{isActive 'notes'}}" id="profile-notes">
             {{> notesItem ..}}
         </div>
+        <div class="tab-pane {{isActive 'location'}}" id="profile-location">
+            {{>contactableLocationBox ..}}
+        </div>
         <!-- Documents Tab -->
         <div class="tab-pane {{isActive 'documents'}}" id="profile-documents">
             {{> contactableDocumentsAdd entity=contactable collection="ContactablesFS"}}
@@ -165,18 +168,23 @@
             {{>tasksBox}}
         </div><!-- /.profile-documents -->
         <div class="tab-pane {{isActive 'details'}}" id="profile-details">
-            {{>contactableDetailBox ..}}
+            <div class="col-md-6">
+                {{>contactableDetailBox ..}}
 
-            {{>contactableContactMethodsBox ..}}
+                {{>contactableContactMethodsBox ..}}
+            </div>
+            <div class="col-md-6">
 
-            {{>contactableLocationBox ..}}
 
-            <!-- Tags -->
-            {{>tagsBox ..}}
-            <!--Customer-->
-            {{#if Contact}}
-            {{>customerInfo .. customer=Contact.customer path='Contact.customer' collection=ContactablesCollection}}
-            {{/if}}
+                <!-- Tags -->
+                {{>tagsBox ..}}
+                <!--Customer-->
+                {{#if Contact}}
+                {{>customerInfo .. customer=Contact.customer path='Contact.customer' collection=ContactablesCollection}}
+                {{/if}}
+
+
+            </div>
         </div>
         <div class="tab-pane {{isActive 'hrconcourse'}}" id="profile-hrConcourse">
             {{#if ../Employee}}
