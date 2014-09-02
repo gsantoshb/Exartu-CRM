@@ -49,6 +49,7 @@ Template.contactableLocationBox.editLocation = function () {
   return data.location;
 }
 Template.contactableLocationBox.location_string = function () {
+
   data._dep.depend();
   if (data._location)
   return data._location.displayName;
@@ -156,6 +157,7 @@ Template.contactableLocationBox.rendered = function () {
       location = Contactables.findOne({_id: Session.get('entityId')}).location
     }
     if (location) {
+
       showMap(true)
       var LatLng = new google.maps.LatLng(location.lat, location.lng);
 
@@ -198,7 +200,6 @@ Template.contactableLocationBox.rendered = function () {
   if (loc && !loc.lat){
     geocode(loc);
   }
-
 
   $map.resize(_.debounce(function () {
     if (google && map)
