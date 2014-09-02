@@ -213,9 +213,9 @@
             <div class="col-sm-2">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container date">
-                        {{#formatted_date date=dateCreated format='fromNow'}}
-                            <span>{{value}}</span><br>
-                        {{/formatted_date}}
+                        {{#formattedDate value=dateCreated format='fromNow'}}
+                            <span>{{date}}</span><br>
+                        {{/formattedDate}}
                         {{#if searchKey }}
                             <i class="glyphicon glyphicon-search"></i>
                             {{searchKey}}
