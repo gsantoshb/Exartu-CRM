@@ -148,9 +148,49 @@ Meteor.autorun(function() {
     return;
 
   query.searchString.dep.depend();
+
+  // Process filters
+  var filters = {and: []};
+
+  // Contactable type
+  if (query.objType.value)
+    filters.and.push({term: {objNameArray: [query.objType.value.toLowerCase()]}});
+
+  // Tags
+  if (query.tags.value.length > 0) {
+    var tags = {or: []};
+    _.forEach(query.tags.value, function(tag) {
+      tags.or.push({term: {tags: tag}});
+    });
+    filters.and.push(tags);
+  }
+
+  // Only recent filters
+  if (query.onlyRecents.value) {
+    var now = new Date();
+    filters.and.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
+  }
+
+  // Include inactives
+  if (!query.inactives.value) {
+    var activeStatusFilter = {or: []}; 
+    var activeStatuses;
+    var aux;
+    _.each(['Employee', 'Contact', 'Customer'], function(objName){
+      activeStatuses = getActiveStatuses(objName);
+      debugger;
+      _.forEach(activeStatuses, function(activeStatus) {
+        var term = {};
+        term[objName + '.status'] = activeStatus; 
+        activeStatusFilter.or.push(term);
+      })
+    });
+  }
+
   isSearching = true;
   searchDep.changed();
-  Contactables.esSearch('.*' + query.searchString.value + '.*', function(err, result) {
+
+  Contactables.esSearch('.*' + query.searchString.value + '.*', filters,function(err, result) {
     if (!err) {
       esResult = _.map(result.hits, function(hit) {
         var contactable = Contactables._transform(hit._source);
@@ -172,6 +212,7 @@ Meteor.autorun(function() {
       console.log(err)
   });
 });
+
 var getActiveStatuses = function(objName){
   var status = Enums.lookUpTypes[objName.toLowerCase()];
   status = status && status.status;
@@ -182,6 +223,7 @@ var getActiveStatuses = function(objName){
   }
   return null;
 }
+
 Template.contactablesList.contactables = function() {
   var searchQuery = {};
 
