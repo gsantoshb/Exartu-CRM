@@ -231,9 +231,17 @@ Router.map(function () {
 
 
 /* hack to scroll up on navigation */
+var lastRoute=null;
+var lastParam=null;
 Deps.autorun(function () {
   var current = Router.current();
-
+  if (current){
+    if(lastRoute == current.route.name && lastParam == current.params._id){
+      return
+    }
+    lastRoute = current.route.name;
+    lastParam = current.params._id;
+  }
   Deps.afterFlush(function () {
     $('.content-inner').scrollTop(0);
     $(window).scrollTop(0);
