@@ -16,7 +16,7 @@ _.forEach([
   }
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.candidate.status.code;
+    item.lookUpCode = Enums.lookUpTypes.candidate.status.lookUpCode;
     systemLookUps.push(item);
   }
 );

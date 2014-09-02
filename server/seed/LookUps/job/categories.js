@@ -902,7 +902,7 @@ _.forEach([
   }
 ]
   , function (item) {
-    item.codeType = Enums.lookUpTypes.job.category.code;
+    item.lookUpCode = Enums.lookUpTypes.job.category.lookUpCode;
     systemLookUps.push(item);
   }
 );

@@ -1,17 +1,17 @@
 // Job statuses
-var getLookUpName = function (lookUpName, code) {
-  var lookUp = LookUps.findOne({
-    name: lookUpName
-  });
-  if (!lookUp)
-    return;
-  var lookUpValue = _.find(lookUp.items, function (item) {
-    return item.code == code;
-  });
-  if (!lookUpValue)
-    return;
-  return lookUpValue.displayName;
-}
+//var getLookUpName = function (lookUpName, code) {
+//  var lookUp = LookUps.findOne({
+//    name: lookUpName
+//  });
+//  if (!lookUp)
+//    return;
+//  var lookUpValue = _.find(lookUp.items, function (item) {
+//    return item.code == code;
+//  });
+//  if (!lookUpValue)
+//    return;
+//  return lookUpValue.displayName;
+//}
 JobCalculatedStatus= {
   get:function(job){
     var now=new Date;

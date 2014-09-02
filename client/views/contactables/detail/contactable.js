@@ -12,44 +12,8 @@ ContactableController = RouteController.extend({
       return;
     }
     this.render('contactable')
-    // define which template to render in function of the url's hash
-    switch (this.params.hash) {
-      case 'details':
-        this.render('contactableDetails', {
-          to: 'content'
-        });
-        break;
-      case 'notes':
-        this.render('contactableNotes', {
-          to: 'content'
-        });
-        break;
-      case 'documents':
-        this.render('documents', {
-          to: 'content'
-        });
-        break;
-      case 'pastJobs':
-        this.render('contactablePastJobs', {
-          to: 'content'
-        });
-        break;
-      case 'educations':
-        this.render('contactableEducation', {
-          to: 'content'
-        });
-        break;
-      case 'pastJobs':
-        this.render('contactablePastJobs', {
-          to: 'content'
-        });
-        break;
-      default:
-        this.render('contactableHome', {
-          to: 'content'
-        });
-        break;
-    };
+
+    Session.set('activeTab',this.params.hash);
 
     GAnalytics.event("contactables", "details");
   },
@@ -70,28 +34,17 @@ ContactableController = RouteController.extend({
 });
 
 Template.contactable.rendered = function () {
-  $('body').scrollTop(0)
-}
-Template.displayObjType = function() {
-
-    if (info.objType.value)
-        return '';
-
-    if (this.Customer)
-        return 'Customer';
-    if (this.Employee)
-        return 'Employee';
-    if (this.Contact)
-        return 'Contact';
+  $('body').scrollTop(0);
 };
+Template.displayObjType = function() {
+  if (info.objType.value)
+    return '';
+  return Utils.getContactableType(this);
+};
+
 Template.contactable.helpers({
   displayObjType: function() {
-      if (this.Customer)
-          return 'Customer';
-      if (this.Employee)
-          return 'Employee';
-      if (this.Contact)
-          return 'Contact';
+    return Utils.getContactableType(this);
   },
   contactable: function () {
     var contactable = Contactables.findOne({
@@ -99,12 +52,6 @@ Template.contactable.helpers({
     });
     Session.set('contactableDisplayName', contactable.displayName);
     return contactable;
-  },
-  pictureUrl: function () {
-    if (this.pictureFileId) {
-      return ContactablesFS.getThumbnailUrlForBlaze(this.pictureFileId);
-    }
-    return "/assets/user-photo-placeholder.jpg";
   },
   dateCreatedFormatted: function () {
     return moment(this.dateCreated).format('lll');
@@ -118,27 +65,6 @@ Template.contactable.helpers({
   jobCount: function() {
       return Jobs.find({'customer': Session.get('entityId')}).count();
     },
-
-  mainContactMethods: function() {
-    var result = {};
-    var contactMethods = ContactMethods.find().fetch();
-    _.some(this.contactMethods, function(cm){
-      var type = _.findWhere(contactMethods, {_id: cm.type});
-      if (!type)
-        return false;
-      if (type.type == Enums.contactMethodTypes.email)
-        result.email = cm;
-      if (type.type == Enums.contactMethodTypes.phone)
-        result.phone = cm;
-
-      if (!result.email || !result.phone)
-        return false;
-
-      return true;
-    });
-
-    return result;
-  },
   ContactablesCollection: function(){
     return Contactables;
   }
@@ -174,14 +100,69 @@ Template.contactable.events({
   },
   'click .sendMessage':function(){
     Composer.showModal('sendMessage', Session.get('entityId'));
+  },
+  'click #makeEmployee': function(){
+    //todo: make this in dType, checking required fields, defaultValues, etc
+    
+    Contactables.update({ _id: Session.get('entityId') }, {
+      $set: {
+        Employee : {}
+      },
+      $push: {objNameArray: 'Employee'}
+    });
+  },
+  'click #makeContact': function(){
+    Contactables.update({ _id: Session.get('entityId') }, {
+      $set: {
+        Contact : {}
+      },
+      $push: {objNameArray: 'Contact'}
+    });
+  }
+});
+//
+//Template.contact_header.events({
+//  "click .editCustomer": function () {
+//    Composer.showModal('contactCustomerAddEdit', Session.get('entityId'));
+//  }
+//});
+
+Template.contactable_header.helpers({
+  mainContactMethods: function() {
+    var result = {};
+    var contactMethods = ContactMethods.find().fetch();
+    _.some(this.contactMethods, function(cm){
+      var type = _.findWhere(contactMethods, {_id: cm.type});
+      if (!type)
+        return false;
+      if (type.type == Enums.contactMethodTypes.email)
+        result.email = cm;
+      if (type.type == Enums.contactMethodTypes.phone)
+        result.phone = cm;
+
+      if (!result.email || !result.phone)
+        return false;
+
+      return true;
+    });
+
+    return result;
+  },
+  pictureUrl: function () {
+    if (this.pictureFileId) {
+      return ContactablesFS.getThumbnailUrlForBlaze(this.pictureFileId);
+    }
+    return "/assets/user-photo-placeholder.jpg";
   }
 });
 
-Template.contact_header.events({
-  "click .editCustomer": function () {
-    Composer.showModal('contactCustomerAddEdit', Session.get('entityId'));
+Template.all_tabs.helpers({
+  isActive: function(name){
+    var activeTab = Session.get('activeTab') || 'details';
+    return (name == activeTab) ? 'active' : '';
   }
 })
+
 var getLinkType= function(){
   return Enums.linkTypes.contactable;
 }

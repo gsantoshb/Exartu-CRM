@@ -17,7 +17,7 @@ _.forEach([
   }
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.payRate.frequencies.code;
+    item.lookUpCode = Enums.lookUpTypes.payRate.frequencies.lookUpCode;
     systemLookUps.push(item);
   }
 );

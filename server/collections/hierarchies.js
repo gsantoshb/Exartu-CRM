@@ -84,13 +84,13 @@ Meteor.startup(function () {
 			});
 		},
     setLookUpDefault: function(lookUpCode, valueId) {
-      var lookUpValue = LookUps.findOne({codeType: lookUpCode, _id: valueId});
+      var lookUpValue = LookUps.findOne({lookUpCode: lookUpCode, _id: valueId});
 
       if (!lookUpValue)
         throw new Meteor.Error(500, 'There is no value with id ' + valueId + ' for lookup with code value: ' + lookUpCode);
 
       // Remove old default value for this lookup type
-      LookUps.update({ isDefault: true,  codeType: lookUpCode},
+      LookUps.update({ isDefault: true,  lookUpCode: lookUpCode},
         {
           $set: {
             isDefault: false

@@ -29,8 +29,8 @@ onAfterAction: function() {
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
    searchString: {},
-   codeType: {},
-   lookUpActions: {}
+   lookUpCode: {},
+   lookUpActions: []
   }
 });
 var defaultUpdateDep = new Deps.Dependency;
@@ -56,8 +56,8 @@ Template.selectLookUpType.lookUpTypes = function() {
       lookUpTypes.push(item)
     })
   });
-//  query.codeType.value = lookUpTypes[0].code;
-  var items= Template.lookUpsManagement.items();
+//  query.lookUpCode.value = lookUpTypes[0].code;
+//  var items= Template.lookUpsManagement.items();
   return _.sortBy(lookUpTypes,'displayName');
 
 };
@@ -71,16 +71,7 @@ Template.selectLookUpType.isSelected = function(id){
 
 Template.selectLookUpType.events = {
   'change': function(e) {
-    query.codeType.value = parseInt(e.currentTarget.value);
-    query.lookUpActions= [];
-    _.forEach(Enums.lookUpTypes, function(subType) {
-        _.forEach(subType, function(subTypeItem) {
-            if (subTypeItem.code == query.codeType.value) {
-                query.lookUpActions = subTypeItem.lookUpActions;
-            }
-        });
-    });
-
+      query.lookUpCode.value = parseInt(e.currentTarget.value);
   }
 };
 
@@ -93,7 +84,22 @@ Template.lookUpsManagement.getId= function(row)
 }
 Template.lookUpsManagement.getLookUpActions= function()
 {
-    return query.lookUpActions;
+  defaultUpdateDep.depend();
+  var lookUpActions = [];
+  _.forEach(Enums.lookUpTypes, function(subType){
+    _.forEach(subType, function(item){
+
+        if (item.lookUpCode == query.lookUpCode.value)
+        {
+          lookUpActions = item.lookUpActions;
+        }
+    })
+  });
+
+  return lookUpActions;
+//
+//    console.log('lokupact',query);
+//    return query.lookUpActions;
 }
 
 
@@ -104,7 +110,7 @@ Template.selectLookUpType.lookUpActions=function()
 
 Template.lookUpsManagement.items = function() {
   defaultUpdateDep.depend();
-  var q = { codeType: query.codeType.value};
+  var q = { lookUpCode: query.lookUpCode.value};
   if (query.searchString.value)
     q.$or = [
       {
@@ -136,7 +142,7 @@ Template.lookUpsManagement.events = {
   'change .set-default': function(e) {
     var item = this;
     if (e.target.checked){
-      Meteor.call('setLookUpDefault', item.codeType, item._id);
+      Meteor.call('setLookUpDefault', item.lookUpCode, item._id);
       defaultUpdateDep.changed();
     }else{
       $(e.target).prop('checked', true);
@@ -185,13 +191,13 @@ Template.lookUpsManagement.events = {
 Template.addNewLookUpItem.events({
   'click #add-item': function() {
           var newValue = $('#new-item').val();
-          var lookUpTypeCode = query.codeType.value;
+          var lookUpCode = query.lookUpCode.value;
           if (!newValue)
               return;
           if (confirm('Add new item ' + newValue)) {
               LookUps.insert({
                   displayName: newValue,
-                  codeType: lookUpTypeCode,
+                  lookUpCode: lookUpCode,
                   hierId: Meteor.user().hierId
               });
               $('#new-item')[0].value=null;

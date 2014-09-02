@@ -31,7 +31,8 @@ var taskUpdate=function(cb)
         assign: task.assign,
         msg: task.msg,
         completed: task.completed,
-        links: task.links
+        links: task.links,
+        inactive: task.inactive
       }
     },
       function() {
@@ -179,6 +180,7 @@ Template.addEditTask.events({
     }
   },
   'click .archive': function () {
+    debugger;
     if (!isValid(task)) {
       return;
     }

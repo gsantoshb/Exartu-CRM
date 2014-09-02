@@ -305,7 +305,7 @@ Utils.getTypeFromTypeString=function (str)
   for (var k in Enums.linkTypes) {
 
     var estr=Enums.linkTypes[k].displayName;
-    console.log(str,estr);
+
     if (estr == str.toLowerCase() || estr == (str + 's').toLowerCase()) return k;
   }
   return null;
@@ -414,7 +414,7 @@ var getDefinitionFromField=function(field, obj, path){
     if (displayName==null && lookup!=null)  displayName= LookUps.findOne({_id: obj[field.name]}).displayName;
     result.displayName=displayName;
     result.options=LookUps.find({$or: [
-                                        {codeType: field.lookUpCode, inactive: {$ne: true}},
+                                        {lookUpCode: field.lookUpCode, inactive: {$ne: true}},
                                         {_id: obj[field.name] }
                                 ] }, { sort: {displayName: 1} });
   }
@@ -422,7 +422,7 @@ var getDefinitionFromField=function(field, obj, path){
 };
 Utils.getLookUpsByCode=function(code)
 {
-    LookUps.find({codeType: code, inactive: {$ne: true}}, { sort: {displayName: 1} });
+    LookUps.find({lookUpCode: code, inactive: {$ne: true}}, { sort: {displayName: 1} });
 };
 
 Utils.getEntityTypeFromRouter=function()
@@ -469,3 +469,61 @@ Utils.getContactableType = function(entity) {
   if (entity.Employee)
     return 'Employee';
 };
+
+
+
+Utils.showModal = function (templateName) {
+  var body = $('body');
+  var host = body.find(".modal-host")[0];
+  if (!host) {
+    host = $('<div class="modal-host"> </div>').appendTo(body);
+  } else {
+    host = $(host);
+  }
+  _.each(host.children(), function (m) {
+    m = $(m);
+    m.modal('toggle');
+    m.remove();
+    $('.modal-backdrop').remove();
+  });
+
+  var parameters = Array.prototype.slice.call(arguments, 1);
+
+  var template = Template[templateName];
+
+  UI.insert(UI.renderWithData(template, parameters), host[0]);
+  var modal = host.children();
+
+  modal.modal('show');
+
+  modal.on('hidden.bs.modal', function (e) {
+    modal.remove();
+  });
+};
+Utils.dismissModal = function () {
+  $('.modal-host').children().modal('toggle');
+};
+Utils.getContactableType= function(obj) {
+  if (obj.Customer)
+    return 'Customer';
+  if (obj.Employee && obj.Contact)
+    return 'Employee/Contact';
+  if (obj.Employee)
+    return 'Employee';
+  if (obj.Contact)
+    return 'Contact';
+};
+Utils.getDefaultJobStatus=function()
+{
+  var defaultStatus=LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,isDefault:true});
+  if (defaultStatus) defaultStatus=LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode});
+  if (defaultStatus) return defaultStatus._id; else return null;
+}
+
+Utils.setDecimal= function(rate) {
+  var drate = parseFloat(rate).toFixed(2);
+
+  if (drate==null || isNaN(drate)) drate=0;
+  return drate;
+}
+// Edit Rates

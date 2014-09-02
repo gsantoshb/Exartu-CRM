@@ -1,13 +1,13 @@
 _.forEach([
   {
-    displayName: 'Developer',
+    displayName: 'Developer'
   },
   {
-    displayName: 'Designer',
+    displayName: 'Designer'
   }
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.job.titles.code;
+    item.lookUpCode = Enums.lookUpTypes.job.titles.lookUpCode;
     systemLookUps.push(item);
   }
 );

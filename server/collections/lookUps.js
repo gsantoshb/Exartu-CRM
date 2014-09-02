@@ -25,4 +25,4 @@ Meteor.methods({
 
 // indexes
 LookUps._ensureIndex({hierId: 1});
-LookUps._ensureIndex({codeType: 1});
+LookUps._ensureIndex({lookUpCode: 1});

@@ -11,54 +11,6 @@
                         <span class="msg-author">{{user.username}}</span>
                     </a>
                 </li>
-
-                <!--<li class="btn dropdown" id="menu-messages">-->
-                    <!--<a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">-->
-                        <!--<i class="fa fa-envelope-o"></i>-->
-                        <!--<span class="text">Messages</span>-->
-                        <!--{{#if UnreadMessagesCount}}-->
-                            <!--<span class="notifications"> {{UnreadMessagesCount}}</span>-->
-                        <!--{{/if}}-->
-                    <!--</a>-->
-                    <!--<ul class="dropdown-menu dropdown-msgs pull-right">-->
-                        <!--<li class="clearfix">-->
-                            <!--<span class="pull-left">-->
-                                <!--<a href="/inbox">-->
-                                    <!--<i class="fa fa-inbox"></i>Inbox</a>-->
-                            <!--</span>-->
-                        <!--</li>-->
-                        <!--{{#if UnreadMessagesCount}}-->
-                        <!--{{else}}-->
-                            <!--<span>No new messages</span>-->
-                        <!--{{/if}}-->
-
-                        <!--{{#each latestUnreadMessages }}-->
-                            <!--<li class="{{unread .}}">-->
-                                <!--<a class="msg" href="{{conversationURL .}}">-->
-                                    <!--{{#with userInfo .}}-->
-                                        <!--<span class="msg-pic">-->
-                                            <!--<img style="max-height: 50px;max-width: 50px;" src="{{picture}}">-->
-                                        <!--</span>-->
-                                        <!--<span class="msg-author">{{username}}</span>-->
-                                    <!--{{/with}}-->
-                                        <!--<div class="msg-content" style="display: inline">{{content}}-->
-                                        <!--</div>-->
-                                    <!--{{#formattedDate value=dateCreated format='fromNow'}}-->
-                                        <!--<span class="msg-date">{{date}}</span>-->
-                                    <!--{{/formattedDate}}-->
-                                <!--</a>-->
-                            <!--</li>-->
-                        <!--{{/each}}-->
-
-                        <!--<li class="more">-->
-                            <!--<a href="/inbox">View all messages</a>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</li>-->
-
-
-
-
                 <li class="btn dropdown" id="menu-settings">
                     <a href="#" data-toggle="dropdown" data-target="#menu-settings" class="dropdown-toggle">
                         <i class="fa fa-cog"></i>
@@ -97,37 +49,17 @@
                     </ul>
 
                 </li>
-
-
-
             </ul>
         </div>
+
         <div id="header">
             <h1>
                 <a href="/">
                     <span class="hidden-phone">EXARTU</span>
                 </a>
             </h1>
-
         </div>
 
-
-
-        <!--
-        <div id="switcher">
-            <div id="switcher-inner">
-                <h3>Theme Options</h3>
-                <h4>Colors</h4>
-                <p id="color-style">
-                    <a data-color="dark" title="dark" class="button-square dark-switcher active" href="#"></a>
-                    <a data-color="light" title="light" class="button-square light-switcher" href="#"></a>
-                </p>
-            </div>
-            <div id="switcher-button">
-                <i class="fa fa-cogs"></i>
-            </div>
-        </div>
--->
 
         {{>sidebar}}
     </div>
@@ -154,20 +86,6 @@
                         <span>Contacts</span>
                         <!--<i class="arrow fa fa-chevron-right"></i>-->
                     </a>
-                    <!--<ul>-->
-                        <!--<li class="{{getActiveClass 'contactables' null}}">-->
-                            <!--<a href="/contactables">-->
-                                <!--<span>All</span>-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--{{#each contactableObjTypes}}-->
-                            <!--<li class="{{getActiveClass 'contactables' name}}">-->
-                                <!--<a href="/contactables/{{name}}">-->
-                                    <!--<span>{{name}}</span>s-->
-                                <!--</a>-->
-                            <!--</li>-->
-                        <!--{{/each}}-->
-                    <!--</ul>-->
                 </li>
 
                 <li class="jobs {{getActiveClass 'jobs' null}}">
@@ -176,20 +94,6 @@
                         <span>Jobs</span>
                         <!--<i class="arrow fa fa-chevron-right"></i>-->
                     </a>
-                    <!--<ul>-->
-                        <!--<li class="{{getActiveClass 'jobs' null}}">-->
-                            <!--<a href="/jobs">-->
-                                <!--<span>All</span>-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--{{#each jobObjTypes}}-->
-                            <!--<li class="{{getActiveClass 'jobs' name}}">-->
-                                <!--<a  href="/jobs/{{name}}">-->
-                                    <!--<span>{{name}}</span>-->
-                                <!--</a>-->
-                            <!--</li>-->
-                        <!--{{/each}}-->
-                    <!--</ul>-->
                 </li>
                 <li class="tasks {{getActiveClass 'matchups' null}}">
                     <a href="/matchups">
@@ -203,19 +107,6 @@
                         <span>Tasks</span>
                     </a>
                 </li>
-                <!--<li class="deals {{getActiveClass 'deals' null}}">-->
-                    <!--<a href="/deals">-->
-                        <!--<i class="icon icon-euro-currency-3"></i>-->
-                        <!--<span>Deals</span>-->
-                    <!--</a>-->
-                <!--</li>-->
-
-                <!--<li class="tasks {{getActiveClass 'candidates' null}}">-->
-                    <!--<a href="/candidates">-->
-                        <!--<i class="icon icon-profile-man"></i>-->
-                        <!--<span>Candidates</span>-->
-                    <!--</a>-->
-                <!--</li>-->
                 <li class="tasks {{getActiveClass 'notes' null}}">
                     <a href="/notes">
                         <i class="icon icon-note-paper-1"></i>

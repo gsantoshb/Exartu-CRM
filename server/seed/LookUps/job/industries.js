@@ -166,7 +166,7 @@ _.forEach([
   }
 ],
   function (item) {
-    item.codeType = Enums.lookUpTypes.job.industry.code;
+    item.lookUpCode = Enums.lookUpTypes.job.industry.lookUpCode;
     systemLookUps.push(item);
   }
 );
