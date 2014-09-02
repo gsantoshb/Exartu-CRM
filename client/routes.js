@@ -236,6 +236,7 @@ var lastParam=null;
 Deps.autorun(function () {
   var current = Router.current();
   if (current){
+    // prevent scroll up when navigating with tabs
     if(lastRoute == current.route.name && lastParam == current.params._id){
       return
     }
