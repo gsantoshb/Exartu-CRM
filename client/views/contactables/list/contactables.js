@@ -149,11 +149,15 @@ Meteor.autorun(function() {
   query.searchString.dep.depend();
 
   // Process filters
-  var filters = {and: []};
+  var filters = {
+    bool: {
+      must: []
+    } 
+  };
 
   // Contactable type
   if (query.objType.value)
-    filters.and.push({term: {objNameArray: [query.objType.value.toLowerCase()]}});
+    filters.bool.must.push({term: {objNameArray: [query.objType.value.toLowerCase()]}});
 
   // Tags
   if (query.tags.value.length > 0) {
@@ -161,29 +165,28 @@ Meteor.autorun(function() {
     _.forEach(query.tags.value, function(tag) {
       tags.or.push({term: {tags: tag}});
     });
-    filters.and.push(tags);
+    filters.bool.must.push(tags);
   }
 
   // Only recent filters
   if (query.onlyRecents.value) {
     var now = new Date();
-    filters.and.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
+    filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
   }
 
   // Include inactives
   if (!query.inactives.value) {
     var activeStatusFilter = {or: []}; 
     var activeStatuses;
-    var aux;
-    _.each(['Employee', 'Contact', 'Customer'], function(objName){
+    _.each(['Employee','Contact', 'Customer'], function(objName){
       activeStatuses = getActiveStatuses(objName);
-      debugger;
       _.forEach(activeStatuses, function(activeStatus) {
-        var term = {};
-        term[objName + '.status'] = activeStatus; 
-        activeStatusFilter.or.push(term);
+        var statusFilter = {};
+        statusFilter[objName + '.status'] = activeStatus.toLowerCase();
+        activeStatusFilter.or.push({term: statusFilter});
       })
     });
+    filters.bool.must.push(activeStatusFilter);
   }
 
   isSearching = true;
