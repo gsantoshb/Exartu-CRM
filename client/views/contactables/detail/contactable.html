@@ -80,22 +80,22 @@
         </strong>
         <small class="pull-right" style="max-width: 40%;"> {{statusNote}} </small>
         <br>
-        <div style="margin-top: 28px;" class="pull-right">
-            {{#unless Employee}}
-                {{#if Contact}}
-                    <button id="makeEmployee" class="btn btn-sm btn-info">
-                        Make Employee
-                    </button>
-                {{/if}}
-            {{/unless}}
-            {{#unless Contact}}
-                {{#if Employee}}
-                    <button id="makeContact" class="btn btn-sm btn-info">
-                        Make Contact
-                    </button>
-                {{/if}}
-            {{/unless}}
-        </div>
+        <!--<div style="margin-top: 28px;" class="pull-right">-->
+            <!--{{#unless Employee}}-->
+                <!--{{#if Contact}}-->
+                    <!--<button id="makeEmployee" class="btn btn-sm btn-info">-->
+                        <!--Make Employee-->
+                    <!--</button>-->
+                <!--{{/if}}-->
+            <!--{{/unless}}-->
+            <!--{{#unless Contact}}-->
+                <!--{{#if Employee}}-->
+                    <!--<button id="makeContact" class="btn btn-sm btn-info">-->
+                        <!--Make Contact-->
+                    <!--</button>-->
+                <!--{{/if}}-->
+            <!--{{/unless}}-->
+        <!--</div>-->
     </h1>
     <p class="profile-address">
         <i class="fa fa-map-marker"></i>
@@ -142,6 +142,7 @@
             <li class="{{isActive 'matchups'}}"><a href="#matchups">Matchups</a></li>
             <li class="{{isActive 'hrconcourse'}}"><a href="#hrconcourse">Onboarding</a></li>
         {{/if}}
+        <li class="{{isActive 'actions'}}"><a href="#actions">Actions</a></li>
     </ul>
 
     <div class="tab-content">
@@ -194,6 +195,22 @@
             {{/if}}
         </div><!-- /.profile-documents -->
         <div class="tab-pane {{isActive 'matchups'}}" id="profile-matchups">{{>matchupsBox }}</div>
+        <div class="tab-pane {{isActive 'actions'}}" id="profile-actions">
+                {{#unless ../Employee}}
+                {{#if ../Contact}}
+                <button id="Employee" class="btn btn-sm btn-info">
+                    Make Employee
+                </button>
+                {{/if}}
+                {{/unless}}
+                {{#unless ../Contact}}
+                {{#if ../Employee}}
+                <button id="makeContact" class="btn btn-sm btn-info">
+                    Make Contact
+                </button>
+                {{/if}}
+                {{/unless}}
+        </div>
     </div>
 </template>
 
