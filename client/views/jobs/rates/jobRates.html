@@ -1,141 +1,147 @@
 <template name="jobRates">
     <div class="box">
         <div class="box-header-2">
-            <a class="btn-action tip-top editRate" data-original-title="Add Job Rate" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
+            <a class="btn-action tip-top editRate" data-original-title="Add Job Rate" href="#" title="Edit" style="color: {{colorJobRateEdit}}"><i class="fa fa-pencil"></i></a>
             <div class="box-title">
                 Job Rates
             </div>
-            <!--<a class="box-title visible-sm visible-xs" href="#rate-body" data-toggle="collapse" >-->
-
-                <!--Job Rates-->
-            <!--</a>-->
         </div>
 
-        <div class="col-xs-12 col-md-8" id="rate-body">
+        <div class="box-body">
+            {{#if editMode}}
+                <!-- Edit mode -->
                 {{#if rates}}
-                    <table class="table   ">
-                        <thead >
-                        <tr>
-                            <th class="col-xs-12 col-md-4">Type</th>
-                            <th class="col-xs-12 col-md-2">Bill</th>
-                            <th class="col-xs-12 col-md-2">Pay</th>
-                        </tr>
-                        </thead>
-                        <tbody >
-                        {{#each rates}}
-                            <tr>
-                                {{#if editMode}}
-                                    <td>
-                                        {{#with getType type}}
-                                        <span>{{displayName}}</span>
-                                        {{/with}}
-                                        <button class="btn btn-xs btn-default removeRate"><i class="fa fa-times"></i></button>
-                                    </td>
-                                {{else}}
-                                    <td>
-                                    {{#with getType type}}
-                                        {{displayName}}
-                                    {{/with}}
-                                    </td>
-                                {{/if}}
-                                <td>
-                                {{#if editMode}}
-                                    <input type="number"  step="any" class="billRateInput" value="{{bill}}">
-                                {{else}}
-                                    <td><span class="billRateInput">{{round bill}}</span></td>
-                                {{/if}}
-                                </td>
-                                <td>
-                                {{#if editMode}}
-                                <input type="number"  step="any" class="payRateInput" value="{{pay}}">
-                                {{else}}
-                                <td>{{round pay}}</td>
-                                {{/if}}
-                                </td>
-                            </tr>
-                        {{/each}}
-                        </tbody>
-                    </table>
-                    {{#if editMode}}
-                    <div class="box-header-2" style="height: 60px">
-                        <div class="pull-right">
-                            <span class="btn btn-default cancelButtonRates">
-                                Cancel
-                            </span>
-                            <span class="btn btn-info saveButtonRates">
-                                Save
-                            </span>
+                    <!-- Edit the existing job rates -->
+                    <div class="row">
+                        <div class="col-xs-12 col-md-8">
+                            <ul class="list-3 stripped ">
+                                {{#each rates}}
+                                <li class="row list-3-item">
+                                    <!-- Rate type -->
+                                    <div class="col-xs-12 col-md-4">
+                                        <label class="col-xs-4">Type:</label>
+                                        <div class="col-xs-8">
+                                            {{#with getType type}} {{displayName}} {{/with}}
+                                            <button class="btn btn-xs btn-default removeRate"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                    <!-- Bill amount -->
+                                    <div class="col-xs-12 col-md-4">
+                                        <label class="col-xs-4">Bill:</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" step="any" class="form-control billRateInput" value="{{bill}}">
+                                        </div>
+                                    </div>
+                                    <!-- Pay amount -->
+                                    <div class="col-xs-12 col-md-4">
+                                        <label class="col-xs-4">Pay:</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" step="any" class="form-control payRateInput" value="{{pay}}">
+                                        </div>
+                                    </div>
+                                </li>
+                                {{/each}}
+                            </ul>
+
+                            <!-- Save & cancel buttons -->
+                            <div class="row" style="margin: 10px 0">
+                                <div class="pull-right">
+                                    <span class="btn btn-default cancelButtonRates">Cancel</span>
+                                    <span class="btn btn-info saveButtonRates">Save</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    {{/if}}
+                {{/if}}
+
+            {{else}}
+                <!-- Display mode -->
+                {{#if rates}}
+                    <!-- Display the rates -->
+                    <div class="row">
+                        <div class="col-xs-12 col-md-8">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th class="col-xs-12 col-md-4">Type</th>
+                                    <th class="col-xs-12 col-md-2">Bill</th>
+                                    <th class="col-xs-12 col-md-2">Pay</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {{#each rates}}
+                                <tr>
+                                    <!-- Rate type -->
+                                    <td>
+                                        {{#with getType type}}
+                                        {{displayName}}
+                                        {{/with}}
+                                    </td>
+                                    <!-- Bill amount -->
+                                    <td><span class="billRateInput">{{round bill}}</span></td>
+                                    <!-- Pay amount -->
+                                    <td>{{round pay}}</td>
+                                </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 {{else}}
+                    <!-- Empty list -->
                     <div class="box-v-msg">
                         <div class="box-v-msg-content">
                             <i class="icon-money"></i>
-                            <p>
-                                <a href="#" class="editRate">Add a Rate</a>
-                            </p>
+                            <p><a href="#" class="editRate">Add a Rate</a></p>
                         </div><!-- /.box-v-msg-content -->
                     </div>
                 {{/if}}
-            {{#if editMode}}
-            <!-- New Job Rate -->
-            {{#with newRate}}
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th class="col-md-3">Type</th>
-                    <th class=" col-md-2">Bill</th>
-                    <th class=" col-md-2">Pay</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td  class="  col-md-3">
+            {{/if}}
 
-                        <!-- Type -->
-                        <div>
-                            <!--<label class="col-xs-3  no-padding">Type: </label>-->
-                            <div class="no-padding">
-                                <select class="form-control newRateType">
-                                    <option value="">--select--</option>
-                                    {{#each getAvailableType}}
-                                    <option value="{{_id}}">{{displayName}}</option>
-                                    {{/each}}
-                                </select>
+            <!-- New Job Rate -->
+            <div class="row margin-top-15">
+                <div class="col-xs-12 col-md-8">
+                    <div class="well">
+                        <div class="row">
+                            {{#with newRate}}
+                            <!-- Rate type -->
+                            <div class="col-xs-12 col-md-4">
+                                <label class="col-xs-3">Type</label>
+                                <div class="col-xs-9">
+                                    <select class="form-control newRateType">
+                                        <option value="">--select--</option>
+                                        {{#each getAvailableType}}
+                                        <option value="{{_id}}">{{displayName}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td class="  col-md-2">
-                        <!-- Bill -->
-                        <div class="no-padding">
-                            <!--<label class="col-xs-3 no-padding">Bill: </label>-->
-                            <div class=" no-padding">
-                                <input type="number" class="billRateInput form-control" value="{{bill}}">
+                            <!-- Bill amount -->
+                            <div class="col-xs-12 col-md-3">
+                                <label class="col-xs-3">Bill</label>
+                                <div class="col-xs-9">
+                                    <input type="number" step="any" class="form-control billRateInput" value="{{bill}}">
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td class="  col-md-2">
-                        <!-- Pay -->
-                        <div class="no-padding ">
-                            <!--<label class="col-xs-3 no-padding">Pay: </label>-->
-                            <div class="no-padding">
-                                <input type="number" class="payRateInput form-control" value="{{pay}}">
+                            <!-- Pay amount -->
+                            <div class="col-xs-12 col-md-3">
+                                <label class="col-xs-3">Pay</label>
+                                <div class="col-xs-9">
+                                    <input type="number" step="any" class="form-control payRateInput" value="{{pay}}">
+                                </div>
                             </div>
                             <!-- Add button -->
-                            <div>
-                                &nbsp;&nbsp;<span class="btn btn-primary addRate"><span class="fa fa-plus"></span></span>
+                            <div class="col-xs-1">
+                                <span class="btn btn-primary addRate"><i class="fa fa-plus"></i></span>
                             </div>
+                            {{/with}}
                         </div>
-
-                    </td>
-                </tr>
-                </tbody>
-             </table>
-            {{/with}}
-            {{/if}}
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
 </template>
 

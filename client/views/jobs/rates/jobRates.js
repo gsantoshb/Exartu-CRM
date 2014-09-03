@@ -37,8 +37,7 @@ Template.jobRates.helpers({
     ratesDep.depend();
     return self.rates
   },
-  resetNewRate: function()
-  {
+  resetNewRate: function() {
     ratesDep.depend();
     newRate.type=null;
     newRate.pay=0;
@@ -62,8 +61,11 @@ Template.jobRates.helpers({
     return _.filter(rateTypes, function (type) {
       return !_.findWhere(self.rates, { type: type._id });
     });
+  },
+  colorJobRateEdit: function() {
+    return self.editMode ? '#008DFC' : '#ddd';
   }
-})
+});
 Template.jobRates.events({
   'click .editRate': function(){
     self.editMode= ! self.editMode;
@@ -107,7 +109,7 @@ Template.jobRates.events({
     this.bill= e.target.value;
     this.bill=  Utils.setDecimal(this.bill);
   }
-})
+});
 
 
 
