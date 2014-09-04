@@ -69,7 +69,7 @@ Template.notesItem.events = {
         }
       ];
 
-      if (entityType == Enums.linkTypes.matchup.value) {
+      if (entityType == Enums.linkTypes.placement.value) {
         // Add its employee, customer and job as links
         // Employee
         links.push({id: this.employee, type: Enums.linkTypes.contactable.value});

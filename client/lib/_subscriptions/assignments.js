@@ -1,4 +1,4 @@
-Matchups = new Meteor.Collection("matchups", {
+Placements = new Meteor.Collection("placements", {
   transform: function (asg) {
     if (asg.job) {
       var job = Jobs.findOne({_id: asg.job });
@@ -19,4 +19,4 @@ Matchups = new Meteor.Collection("matchups", {
     return asg;
   }
 });
-extendedSubscribe('matchups', 'MatchupHandler');
+extendedSubscribe('placements', 'PlacementHandler');

@@ -8,11 +8,11 @@ var filters = ko.observable(ko.mapping.fromJS({
   limit: 20
 }));
 
-MatchupsController = RouteController.extend({
-  template: 'matchups',
+PlacementsController = RouteController.extend({
+  template: 'placements',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ObjTypesHandler, MatchupHandler, MatchupHandler];
+    return [ObjTypesHandler, PlacementHandler, PlacementHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -36,7 +36,7 @@ MatchupsController = RouteController.extend({
       query.objType.value = undefined;
       info.objType.value = 'record(s)';
     }
-    this.render('matchups');
+    this.render('placements');
   },
   onAfterAction: function() {
     var title = 'My Network',
@@ -64,7 +64,7 @@ var timeLimits = {
 
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
-    matchupsCount: {},
+    placementsCount: {},
     objType: {},
     isRecentDaySelected: {
       default: false
@@ -109,32 +109,32 @@ var query = new Utils.ObjectDefinition({
   }
 });
 
-Template.matchupsBox.created = function(){
+Template.placementsBox.created = function(){
   query.limit.value = 20
 }
 // List
 
-Template.matchupsList.info = function() {
-  info.isFiltering.value = Matchups.find().count() != 0;
+Template.placementsList.info = function() {
+  info.isFiltering.value = Placements.find().count() != 0;
   return info;
 };
 
-var matchupTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.matchup });
+var placementTypes = function() {
+  return dType.ObjTypes.find({ parent: Enums.objGroupType.placement });
 };
-Template.matchupsListSearch.matchupTypes = matchupTypes;
+Template.placementsListSearch.placementTypes = placementTypes;
 
 
 
 var searchDep = new Deps.Dependency;
 var isSearching = false;
-Template.matchupsBox.isSearching = function() {
+Template.placementsBox.isSearching = function() {
   searchDep.depend();
   return isSearching;
 }
 
 var getActiveStatuses = function(objName){
-  var status = Enums.lookUpTypes["matchup"];
+  var status = Enums.lookUpTypes["placement"];
 
   status = status && status.status;
   if (status){
@@ -145,7 +145,7 @@ var getActiveStatuses = function(objName){
   }
   return null;
 }
-Template.matchupsList.matchups = function() {
+Template.placementsList.placements = function() {
   var searchQuery = {};
   searchDep.depend();
 
@@ -182,7 +182,7 @@ Template.matchupsList.matchups = function() {
     searchQuery.$or=[];
     var activeStatuses;
     var aux;
-    _.each(['matchup'], function(objName){
+    _.each(['placement'], function(objName){
       activeStatuses = getActiveStatuses(objName);
       if (_.isArray(activeStatuses) && activeStatuses.length > 0){
         aux={};
@@ -201,62 +201,62 @@ Template.matchupsList.matchups = function() {
     };
   }
 
-  var matchups = Matchups.find(searchQuery, {limit: query.limit.value});
+  var placements = Placements.find(searchQuery, {limit: query.limit.value});
 
 
-  return matchups;
+  return placements;
 };
 
 // All
 
-Template.matchupsBox.information = function() {
+Template.placementsBox.information = function() {
   var searchQuery = {};
 
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
 
-  info.matchupsCount.value = Matchups.find(searchQuery).count();
+  info.placementsCount.value = Placements.find(searchQuery).count();
 
   return info;
 };
 
-Template.matchupsBox.showMore = function() {
+Template.placementsBox.showMore = function() {
   return function() { query.limit.value = query.limit.value + 15 };
 };
 
 // List search
 
-Template.matchupsList.matchupTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.matchup });
+Template.placementsList.placementTypes = function() {
+  return dType.ObjTypes.find({ parent: Enums.objGroupType.placement });
 };
 
-Template.matchupsListSearch.searchString = function() {
+Template.placementsListSearch.searchString = function() {
   return query.searchString;
 };
 
 // List filters
 
-Template.matchupsFilters.query = function () {
+Template.placementsFilters.query = function () {
   return query;
 };
 
-Template.matchupsFilters.matchupTypes2 = matchupTypes;
+Template.placementsFilters.placementTypes2 = placementTypes;
 
-Template.matchupsFilters.recentOptions = function() {
+Template.placementsFilters.recentOptions = function() {
   return timeLimits;
 };
 
-Template.matchupsFilters.typeOptionClass = function(option) {
+Template.placementsFilters.typeOptionClass = function(option) {
   return query.objType.value == option.name? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
 
 };
 
 
-Template.matchupsFilters.recentOptionClass = function(option) {
+Template.placementsFilters.recentOptionClass = function(option) {
   return query.selectedLimit.value == option? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
 };
 
-Template.matchupsFilters.tags = function() {
+Template.placementsFilters.tags = function() {
   return query.tags;
 };
 
@@ -274,7 +274,7 @@ var addTag = function() {
   inputTag.focus();
 };
 
-Template.matchupsFilters.events = {
+Template.placementsFilters.events = {
   'click .add-tag': function() {
     addTag();
   },
@@ -312,29 +312,29 @@ Template.matchupsFilters.events = {
 };
 
 // Item
-Template.matchupsListItem.pictureUrl = function(pictureFileId) {
-  var picture = MatchupsFS.findOne({_id: pictureFileId});
-  return picture? picture.url('MatchupsFSThumbs') : undefined;
+Template.placementsListItem.pictureUrl = function(pictureFileId) {
+  var picture = PlacementsFS.findOne({_id: pictureFileId});
+  return picture? picture.url('PlacementsFSThumbs') : undefined;
 };
 
-Template.matchupsListItem.matchupIcon = function() {
+Template.placementsListItem.placementIcon = function() {
   return helper.getEntityIcon(this);
 };
 
-Template.matchupsListItem.displayObjType = function() {
-  return Utils.getMatchupType(this);
+Template.placementsListItem.displayObjType = function() {
+  return Utils.getPlacementType(this);
 };
 
 
 // Google analytic
 
-_.forEach(['matchupInformation'],
+_.forEach(['placementInformation'],
   function(templateName){
     Template[templateName]._events = Template[templateName]._events || [];
     Template[templateName]._events.push({
       events: 'click',
       handler: function() {
-        GAnalytics.event("/matchups", "quickAccess", templateName);
+        GAnalytics.event("/placements", "quickAccess", templateName);
       }
     });
   });

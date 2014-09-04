@@ -1,29 +1,29 @@
 
-Template.contactableMatchupsBox.hasMatchups = function() {
+Template.contactablePlacementsBox.hasPlacements = function() {
   return _.isObject(this.Employee);
 };
 
-Template.contactableMatchupsBox.matchups = function() {
-  var matchups = Matchups.find({employee: this._id, inactive: {$ne: true}}).fetch();
+Template.contactablePlacementsBox.placements = function() {
+  var placements = Placements.find({employee: this._id, inactive: {$ne: true}}).fetch();
 
-  _.forEach(matchups, function(matchup) {
+  _.forEach(placements, function(placement) {
     var job = Jobs.findOne({
-      _id: matchup.job
+      _id: placement.job
     }, {
       transform: null
     });
 
     var customer = Contactables.findOne({_id: job.customer}, {transform: null});
 
-    matchup.job = job._id;
-    matchup.jobTitle = job.publicJobTitle;
+    placement.job = job._id;
+    placement.jobTitle = job.publicJobTitle;
     if (customer) {
-      matchup.customerName = customer.organization.organizationName;
-      matchup.customer = customer._id;
+      placement.customerName = customer.organization.organizationName;
+      placement.customer = customer._id;
     }
   });
 
-  return matchups;
+  return placements;
 };
 
 

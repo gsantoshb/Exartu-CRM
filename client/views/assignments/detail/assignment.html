@@ -1,7 +1,7 @@
-<template name="matchup">
-    <div class="contactable-page-details" name="matchupVM">
+<template name="placement">
+    <div class="contactable-page-details" name="placementVM">
         <div id="content">
-            {{#with originalMatchup}}
+            {{#with originalPlacement}}
             <div id="content-header" class="mini">
                 <h1 class="profile-name">
                         {{#if employee}}<a href="/contactable/{{employee}}"> {{employeeDisplayName}} </a>{{/if}}
@@ -14,16 +14,16 @@
             <div id="breadcrumb" class="breadcrumb-top">
                 <a href="/" title="Go to Home" class="tip-bottom">
                     <i class="fa fa-home"></i>Home</a>
-                <a href="/matchups" class="current">Matchups</a>
+                <a href="/placements" class="current">Placements</a>
             </div>
             {{/with}}
 
 
-            <div class="container-fluid contactable-content matchup-details">
+            <div class="container-fluid contactable-content placement-details">
                 <div class="row">
 
                     <div class="col-sm-12 col-lg-12 margin-top-15 contactable-left-col">
-                        {{>matchup_tabs matchup=matchup getCustomer=getCustomer matchupCollection=matchupCollection originalMatchup=originalMatchup documentCount=documentCount matchupCount=matchupCount noteCount=noteCount}}
+                        {{>placement_tabs placement=placement getCustomer=getCustomer placementCollection=placementCollection originalPlacement=originalPlacement documentCount=documentCount placementCount=placementCount noteCount=noteCount}}
                     </div>
 
                     <!-- /.col-lg-->
@@ -44,7 +44,7 @@
     </div>
 </template>
 
-<template name="matchup_tabs">
+<template name="placement_tabs">
 
     <ul class="nav nav-pills bottom-20">
         <li class="active"><a href="#profile-detail" data-toggle="tab">Detail</a></li>
@@ -54,16 +54,16 @@
     </ul>
 
     <div class="tab-content">
-        {{#with originalMatchup}}
-        <!--<div class="tab-pane " id="profile-activity">{{>matchupActivity}}</div>-->
+        {{#with originalPlacement}}
+        <!--<div class="tab-pane " id="profile-activity">{{>placementActivity}}</div>-->
         <div class="tab-pane" id="profile-tasks">{{> tasksBox}}</div>
         <div class="tab-pane" id="profile-notes">{{> notesItem}}</div>
         {{/with}}
         <div class="tab-pane active" id="profile-detail">
-            {{#with matchup}}  {{> matchupDetail}}  {{/with}}
-            {{#with originalMatchup}}{{>tagsBox  }}{{/with}}
-            <!--{{#with matchup}}{{>matchupRates ..}}  {{/with}}-->
-            <!--{{>customerInfo customer=getCustomer path='customer' collection=matchupCollection}}-->
+            {{#with placement}}  {{> placementDetail}}  {{/with}}
+            {{#with originalPlacement}}{{>tagsBox  }}{{/with}}
+            <!--{{#with placement}}{{>placementRates ..}}  {{/with}}-->
+            <!--{{>customerInfo customer=getCustomer path='customer' collection=placementCollection}}-->
         </div>
     </div>
 

@@ -1,4 +1,4 @@
-Meteor.publish('matchups', function () {
+Meteor.publish('placements', function () {
 
     if (!this.userId)
         return false;
@@ -6,24 +6,24 @@ Meteor.publish('matchups', function () {
         _id: this.userId
     });
 
-    return Matchups.find({
+    return Placements.find({
         $or: filterByHiers(user.hierId)
     });
 });
 
 Meteor.startup(function () {
   Meteor.methods({
-    addMatchup: function (asg) {
+    addPlacement: function (asg) {
       if (true) {
         asg._id = new Meteor.Collection.ObjectID()._str;
-        Matchups.insert(asg);
+        Placements.insert(asg);
         return asg;
       }
     }
   })
 });
 
-Matchups.allow({
+Placements.allow({
   insert: function () {
     return true;
   },
@@ -32,7 +32,7 @@ Matchups.allow({
   }
 });
 
-Matchups.before.insert(function (userId, doc) {
+Placements.before.insert(function (userId, doc) {
   try{
     var user = Meteor.user() || {};
   }catch (e){
@@ -50,31 +50,31 @@ Matchups.before.insert(function (userId, doc) {
 });
 
 //<editor-fold desc="************ update job and contactable ****************">
-Matchups.after.insert(function(userId, doc, fieldNames, modifier, options){
+Placements.after.insert(function(userId, doc, fieldNames, modifier, options){
     Contactables.update({
         _id: doc.employee
     }, {
         $set: {
-            matchup: doc._id
+            placement: doc._id
         }
     });
     Jobs.update({
         _id: doc.job
     }, {
         $set: {
-            matchup: doc._id
+            placement: doc._id
         }
     });
 });
 
-Matchups.after.update(function(userId, doc, fieldNames, modifier, options){
+Placements.after.update(function(userId, doc, fieldNames, modifier, options){
   if (doc.employee != this.previous.employee){
 
     Contactables.update({
       _id: this.previous.employee
     }, {
       $set: {
-        matchup: null
+        placement: null
       }
     });
 
@@ -82,21 +82,21 @@ Matchups.after.update(function(userId, doc, fieldNames, modifier, options){
       _id: doc.employee
     }, {
       $set: {
-        matchup: doc._id
+        placement: doc._id
       }
     });
   }
 
 });
-var extendMatchup = function (matchup, objTypes) {
-  if (!matchup.contactMethods)
-    matchup.contactMethods = [];
+var extendPlacement = function (placement, objTypes) {
+  if (!placement.contactMethods)
+    placement.contactMethods = [];
 
   _.forEach(objTypes, function (objType) {
     if (objType) {
       _.forEach(objType.services, function (service) {
-        if (matchup[service] == undefined)
-          matchup[service] = [];
+        if (placement[service] == undefined)
+          placement[service] = [];
       });
     }
   })

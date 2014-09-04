@@ -2,7 +2,7 @@
 //var isEntitySpecific=false;
 //var contactable;
 //
-//Template.matchupsBox.created = function(){
+//Template.placementsBox.created = function(){
 //  Meteor.autorun(function() {
 //    var entityId = Session.get('entityId');
 //    entityType = Utils.getEntityTypeFromRouter();
@@ -16,7 +16,7 @@
 //  });
 //}
 //
-//Template.matchupsBox.isJob=function() {
+//Template.placementsBox.isJob=function() {
 //  if (entityType==Enums.linkTypes.job.value) return true;
 //};
 //
@@ -34,7 +34,7 @@
 //}
 //
 //var searchString, searchDep = new Deps.Dependency;
-//Template.matchupsList.matchups = function() {
+//Template.placementsList.placements = function() {
 //  searchDep.depend();
 //  searchQuery = {};
 //
@@ -77,21 +77,21 @@
 //    }
 //  };
 //
-//  return Matchups.find(searchQuery);
+//  return Placements.find(searchQuery);
 //};
 //
-//Template.matchupsBox.getCount = function(matchups) {
-//  return Template.matchupsBox.matchups.count();
+//Template.placementsBox.getCount = function(placements) {
+//  return Template.placementsBox.placements.count();
 //}
 //
-//Template.matchupsBox.events = {
+//Template.placementsBox.events = {
 //  'keyup #search-string': function(e) {
 //    searchString = e.currentTarget.value;
 //    searchDep.changed();
 //  },
-//  'click .addMatchup': function(e){
+//  'click .addPlacement': function(e){
 //      Session.set('addOptions', {job:  Session.get('entityId')});
-//      Router.go('/matchupAdd/matchup' );
+//      Router.go('/placementAdd/placement' );
 //      e.preventDefault();
 //  }
 //};

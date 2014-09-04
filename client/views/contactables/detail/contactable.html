@@ -133,13 +133,13 @@
         <li class="{{isActive 'location'}}"><a href="#location">Location</a></li>
         {{#if ../Customer}}
             <li class="{{isActive 'jobs'}}"><a href="#jobs">Jobs <span class="custom-badge-2">{{jobCount}}</span></a></li>
-            <li class="{{isActive 'matchups'}}"><a href="#matchups">Matchups</a></li>
+            <li class="{{isActive 'placements'}}"><a href="#placements">Placements</a></li>
             <li class="{{isActive 'contacts'}}"><a href="#contacts">Contacts</a></li>
         {{/if}}
 
 
         {{#if ../Employee}}
-            <li class="{{isActive 'matchups'}}"><a href="#matchups">Matchups</a></li>
+            <li class="{{isActive 'placements'}}"><a href="#placements">Placements</a></li>
             <li class="{{isActive 'hrconcourse'}}"><a href="#hrconcourse">Onboarding</a></li>
         {{/if}}
         <li class="{{isActive 'actions'}}"><a href="#actions">Actions</a></li>
@@ -190,11 +190,11 @@
         <div class="tab-pane {{isActive 'hrconcourse'}}" id="profile-hrConcourse">
             {{#if ../Employee}}
             {{>applicantCenter entity=contactable}}
-            <!-- Matchups -->
-            {{>contactableMatchupsBox ..}}
+            <!-- Placements -->
+            {{>contactablePlacementsBox ..}}
             {{/if}}
         </div><!-- /.profile-documents -->
-        <div class="tab-pane {{isActive 'matchups'}}" id="profile-matchups">{{>matchupsBox }}</div>
+        <div class="tab-pane {{isActive 'placements'}}" id="profile-placements">{{>placementsBox }}</div>
         <div class="tab-pane {{isActive 'actions'}}" id="profile-actions">
                 {{#unless ../Employee}}
                 {{#if ../Contact}}

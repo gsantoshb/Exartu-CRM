@@ -334,13 +334,13 @@ newObjType({
 
 
 newObjType({
-  collection: Matchups,
-  name: 'matchup',
+  collection: Placements,
+  name: 'placement',
   style: {
     icon: 'briefcase',
     color: 'blue'
   },
-  objGroupType: Enums.objGroupType.matchup,
+  objGroupType: Enums.objGroupType.placement,
 //  services: ['messages', 'tasks', 'notes', 'tags'],
   services: [],
   fields: [
@@ -350,12 +350,12 @@ newObjType({
       showInAdd: false,
       required: false
     }, {
-      name: 'matchupStatus',
-      displayName: 'Matchup Status',
+      name: 'placementStatus',
+      displayName: 'Placement Status',
       fieldType: 'lookUp',
-      lookUpName: 'matchupStatus',
+      lookUpName: 'placementStatus',
       showInAdd: true,
-      lookUpCode: Enums.lookUpTypes.matchup.status.lookUpCode,
+      lookUpCode: Enums.lookUpTypes.placement.status.lookUpCode,
       required: true,
       multiple: false
     }, {
