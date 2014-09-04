@@ -1,3 +1,7 @@
+var entityType=null;
+var isEntitySpecific=false;
+var contactable;
+
 var objType = ko.observable();
 
 var filters = ko.observable(ko.mapping.fromJS({
@@ -110,7 +114,17 @@ var query = new Utils.ObjectDefinition({
 });
 
 Template.placementsBox.created = function(){
-  query.limit.value = 20
+  query.limit.value = 20;
+  console.log('placementsbox created', Utils.getEntityTypeFromRouter());
+  var entityId = Session.get('entityId');
+  entityType = Utils.getEntityTypeFromRouter();
+  isEntitySpecific = false;
+  if (entityType != null) {
+    isEntitySpecific = true;
+    if (entityType == Enums.linkTypes.contactable.value) {
+      contactable = Contactables.findOne({_id: entityId});
+    }
+  }
 }
 // List
 
@@ -122,8 +136,6 @@ Template.placementsList.info = function() {
 var placementTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.placement });
 };
-Template.placementsListSearch.placementTypes = placementTypes;
-
 
 
 var searchDep = new Deps.Dependency;
@@ -259,6 +271,18 @@ Template.placementsFilters.recentOptionClass = function(option) {
 Template.placementsFilters.tags = function() {
   return query.tags;
 };
+
+Template.placementsListSearch.isJob=function() {
+  console.log('isjob',entityType);
+  if (entityType==Enums.linkTypes.job.value) return true;
+};
+Template.placementsListSearch.events = {
+  'click .addPlacement': function (e) {
+    Session.set('addOptions', {job: Session.get('entityId')});
+    Router.go('/placementAdd/placement');
+    e.preventDefault();
+  }
+}
 
 var addTag = function() {
   var inputTag = $('#new-tag')[0];

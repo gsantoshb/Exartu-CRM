@@ -104,13 +104,7 @@
             </div><!-- /.v-wrapper-cell -->
         </div>
         {{else}}
-        <div class="v-wrapper">
-            <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                <i class="icon-connection-1 text-large"></i>
-                <a href="#" data-bind="attr: { href: '/placementAdd/'+name() }, text: 'New ' + name()"></a>
-                <span class="bullet-spacer" data-bind="visible: $index()< $parent.placementTypes().length-1">·</span>
-            </div><!-- /.v-wrapper-cell -->
-        </div>
+
         {{/if}}
         {{/each}}
     </div>
@@ -182,29 +176,21 @@
     <div class="actions-head">
         <div class="row">
             <div class="col-sm-8 col-md-8 col-lg-8">
-
                 <div class="pull-left suffix-5">
-                    <!-- Single button -->
-                    <div class="btn-group">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" title="Add">
-                                <span class="fa fa-plus"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu" data-bind="foreach: placementTypes">
-                                {{#each placementTypes}}
-                                <li><a href="/placementAdd/{{name}}">Add {{name}}</a></li>
-                                {{/each}}
-                            </ul>
-                        </div>
-                        <a type="button" title="Create from resume" class="btn btn-default" href="/resumeparser"><i class="fa fa-cloud-upload"></i></a>
-
-                    </div>
+                            {{#if isJob}}
+                            <div class="btn-group pull-left suffix-5">
+                                <button type="button" class="btn btn-success addPlacement" title="Add">
+                                    <span class="fa fa-plus"></span>
+                                </button>
+                            </div>
+                            {{/if}}
                 </div>
 
                 <div class="input-group">
                     {{#objectProperty property=searchString}}
-                    <input type="text" class="form-control" placeholder="Search Contacts" value="{{value}}">
+                    <input type="text" class="form-control" placeholder="Search placements" value="{{value}}">
                     {{/objectProperty}}
+
                     <span class="input-group-btn">
                         <button class="btn btn-primary" type="button">
                             <i class="fa fa-search"></i>
