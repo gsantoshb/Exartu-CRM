@@ -12,51 +12,6 @@ var filters = ko.observable(ko.mapping.fromJS({
   limit: 20
 }));
 
-PlacementsController = RouteController.extend({
-  template: 'placements',
-  layoutTemplate: 'mainLayout',
-  waitOn: function () {
-    return [ObjTypesHandler, PlacementHandler, PlacementHandler];
-  },
-  action: function () {
-    if (!this.ready()) {
-      this.render('loadingContactable');
-      return;
-    }
-
-    if (this.isFirstRun == false) {
-      this.render();
-      return;
-    }
-    var type = this.params.hash || this.params.type;
-    if (type != undefined && type != 'all') {
-      var re = new RegExp("^" + type + "$", "i");
-      var objType = dType.ObjTypes.findOne({
-        name: re
-      });
-      query.objType.value = objType.name;
-      info.objType.value = objType.name+'s';
-    } else {
-      query.objType.value = undefined;
-      info.objType.value = 'record(s)';
-    }
-    this.render('placements');
-  },
-  onAfterAction: function() {
-    var title = 'My Network',
-      description = 'All your contacts are here';
-    SEO.set({
-      title: title,
-      meta: {
-        'description': description
-      },
-      og: {
-        'title': title,
-        'description': description
-      }
-    });
-  }
-});
 var searchFields = ['jobDisplayName','employeeDisplayName','customerDisplayName'];
 
 var timeLimits = {
