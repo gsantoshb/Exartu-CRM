@@ -38,6 +38,7 @@ stripe
 force-ssl
 connection-banner
 es
+cfs-ejson-file
 simple-schema
 autoform
 collection2
