@@ -12,7 +12,7 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ObjTypesHandler, ContactableHandler, MatchupHandler];
+    return [ObjTypesHandler, ContactableHandler, PlacementHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -147,9 +147,52 @@ Meteor.autorun(function() {
     return;
 
   query.searchString.dep.depend();
+
+  // Process filters
+  var filters = {
+    bool: {
+      must: []
+    } 
+  };
+
+  // Contactable type
+  if (query.objType.value)
+    filters.bool.must.push({term: {objNameArray: [query.objType.value.toLowerCase()]}});
+
+  // Tags
+  if (query.tags.value.length > 0) {
+    var tags = {or: []};
+    _.forEach(query.tags.value, function(tag) {
+      tags.or.push({term: {tags: tag}});
+    });
+    filters.bool.must.push(tags);
+  }
+
+  // Only recent filters
+  if (query.onlyRecents.value) {
+    var now = new Date();
+    filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
+  }
+
+  // Include inactives
+  if (!query.inactives.value) {
+    var activeStatusFilter = {or: []}; 
+    var activeStatuses;
+    _.each(['Employee','Contact', 'Customer'], function(objName){
+      activeStatuses = getActiveStatuses(objName);
+      _.forEach(activeStatuses, function(activeStatus) {
+        var statusFilter = {};
+        statusFilter[objName + '.status'] = activeStatus.toLowerCase();
+        activeStatusFilter.or.push({term: statusFilter});
+      })
+    });
+    filters.bool.must.push(activeStatusFilter);
+  }
+
   isSearching = true;
   searchDep.changed();
-  Contactables.esSearch('.*' + query.searchString.value + '.*', function(err, result) {
+
+  Contactables.esSearch('.*' + query.searchString.value + '.*', filters,function(err, result) {
     if (!err) {
       esResult = _.map(result.hits, function(hit) {
         var contactable = Contactables._transform(hit._source);
@@ -171,6 +214,7 @@ Meteor.autorun(function() {
       console.log(err)
   });
 });
+
 var getActiveStatuses = function(objName){
   var status = Enums.lookUpTypes[objName.toLowerCase()];
   status = status && status.status;
@@ -181,6 +225,7 @@ var getActiveStatuses = function(objName){
   }
   return null;
 }
+
 Template.contactablesList.contactables = function() {
   var searchQuery = {};
 
@@ -349,29 +394,29 @@ Template.contactablesListItem.displayObjType = function() {
 };
 
 // Employee item
-Template.employeeInformation.matchupInfo = function () {
-  if (!this.matchup)
+Template.employeeInformation.placementInfo = function () {
+  if (!this.placement)
     return undefined;
 
-  var matchupInfo = {};
-  var matchup = Matchups.findOne({_id: this.matchup});
+  var placementInfo = {};
+  var placement = Placements.findOne({_id: this.placement});
 
   var job = Jobs.findOne({
-    _id: matchup.job
+    _id: placement.job
   }, {
     transform: null
   });
 
   var customer = Contactables.findOne({_id: job.customer}, {transform: null});
 
-  matchupInfo.job = job._id;
-  matchupInfo.jobTitle = job.publicJobTitle;
+  placementInfo.job = job._id;
+  placementInfo.jobTitle = job.publicJobTitle;
   if (customer) {
-    matchupInfo.customerName = customer.organization.organizationName;
-    matchupInfo.customer = customer._id;
+    placementInfo.customerName = customer.organization.organizationName;
+    placementInfo.customer = customer._id;
   }
 
-  return matchupInfo;
+  return placementInfo;
 }
 
 // Google analytic

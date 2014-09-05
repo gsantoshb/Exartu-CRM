@@ -1,77 +1,225 @@
-<template name="matchupsBox">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-8 col-lg-8">
-                    <div class="actions-head ">
-                        <div class="row">
-                            <div class="col-sm-8 col-md-8 col-lg-8">
-                                {{#if isJob}}
-                                <div class="btn-group pull-left suffix-5">
-                                    <button type="button" class="btn btn-success addMatchup" title="Add">
-                                        <span class="fa fa-plus"></span>
-                                    </button>
-                                </div>
-                                {{/if}}
-                                <div class="input-group">
-                                    <input id="search-string" type="text" class="form-control" placeholder="Search matchups">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div><!-- /.col-lg-5 -->
+<template name="placementsBox">
 
-                        </div><!-- /.row -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 col-lg-8">
+                {{>placementsListSearch}}
+            </div>
+            <div class="col-md-4 col-lg-4">
+                <sidebar>
+                    {{> placementsFilters }}
+                </sidebar>
+            </div>
+            <!-- /.col-lg-4 -->
+
+            <div class="col-md-8 col-lg-8">
+                {{#if isSearching}}
+                searching
+                {{else}}
+                {{> placementsList }}
+                {{/if}}
+                {{#infinityScroll cb=showMore}} {{/infinityScroll}}
+            </div>
+        </div>
+        <!--/ko-->
+    </div>
+</template>
+
+<template name="placementsFilters">
+    <div class="filter">
+        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+            <strong><i class="fa fa-filter"></i></strong>
+        </a>
+        <div class="filter-list" id="filter-body">
+            <div class="filter-item">
+                <div class="item-body">
+                    {{#each placementTypes2}}
+                    <button type="button" class="typeSelect {{typeOptionClass .}}">{{name}}</button>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="filter-item">
+
+                <div class="item-body">
+                    <div class="checkbox">
+                        <label>
+                            {{#objectProperty property=query.inactives}}
+                            <input type="checkbox" value="{{value}}"> Include inactives
+                            {{/objectProperty}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            {{#objectProperty property=query.onlyRecents}}
+                            <input type="checkbox" value="{{value}}"> Only recent
+                            {{/objectProperty}}
+                        </label>
+                        <span><i class="icon-question-mark" title="Shows only the contacts that have been recently added. Select the timespan."></i></span>
+                        <div class="pull-right">
+                            <button type="button" class="{{recentOptionClass recentOptions.day}}" id="recent-day">day</button>
+                            <button type="button" class="{{recentOptionClass recentOptions.week}}" id="recent-week">week</button>
+                            <button type="button" class="{{recentOptionClass recentOptions.month}}" id="recent-month">month</button>
+                            <button type="button" class="{{recentOptionClass recentOptions.year}}" id="recent-year">year</button>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-lg-4"></div>
-                <div class="col-md-8 col-lg-8">
-                    <div class="table-items-box">
-                        {{#each matchups}}
-                            <div class="table-item magic">
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <div class="table-item-cell">
-                                            <div class="table-item-cell-container">
-                                                <div class="table-item-title">
-                                                        <a href="/matchup/{{_id}}"> <i class="icon icon-check-list"></i></a>
-
-                                                    <a href="/contactable/{{employee}}"><i class="icon icon-profile-man"> </i> {{employeeDisplayName}} </a>
-                                                    <i class="fa fa-arrows-h fa-x3"> </i>
-                                                    <a href="/job/{{job}}"> <i class="icon icon-briefcase"> </i>{{jobDisplayName}} @ </a>
-                                                    <a href="/contactable/{{customer}}">{{customerDisplayName}}</a>
-
-                                                </div>
-                                                <div class="task-author">
-                                                    by
-                                                    {{#userInfo userId=userId}}
-                                                        <a href="#"><strong id="username"> {{username}} </strong></a>
-                                                    {{/userInfo}}
-                                                </div>
-                                            </div>
-                                            <!-- /.table-item-cell-container -->
-                                        </div>
-                                    </div>
-                                    <!-- /.table-item-cell -->
-                                    <div class="col-sm-3">
-                                        <div class="table-item-cell">
-                                            <div class="table-item-cell-container">
-                                                <div class="date">
-                                                    {{#formattedDate value=dateCreated format="fromNow"}}
-                                                        <span>{{date}}</span>
-                                                    {{/formattedDate}}
-                                                </div>
-                                            </div>
-                                            <!-- /.table-item-cell-container -->
-                                        </div>
-                                        <!-- /.table-item-cell -->
-                                    </div>
-                                </div>
-                            </div>
-                        {{/each}}
+            </div>
+            <div class="filter-item">
+                <!--<div class="item-title">-->
+                <!--<strong>Tags</strong>-->
+                <!--</div>-->
+                <div class="item-body">
+                    {{#objectProperty property=tags}}
+                    <button type="button" class="tag btn btn-xs btn-primary">
+                        <span >{{value}}</span>
+                        <i class="remove-tag fa fa-times"></i>
+                    </button>
+                    {{/objectProperty}}
+                    <div class="input-group">
+                        <input id="new-tag" type="text" class="form-control" placeholder="Search tags...">
+                            <span class="input-group-btn">
+                              <button class="add-tag btn btn-success" type="button"><span class="fa fa-plus"></span></button>
+                            </span>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</template>
+
+<template name="placementsList">
+    <div>
+        <!--{{> placementsListSearch }}-->
+        {{#each placements}}
+        {{> placementsListItem }}
+        {{else}}
+        {{#if info.isFiltering.value }}
+        <div class="v-wrapper">
+            <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                <i class="icon-connection-1 text-large"></i>
+                <h1>
+                    No records Found
+                </h1>
+            </div><!-- /.v-wrapper-cell -->
+        </div>
+        {{else}}
+
+        {{/if}}
+        {{/each}}
+    </div>
+</template>
+
+<template name="placementsListItem">
+    <div class="table-item magic">
+        <div class="row ">
+            <div class="col-sm-4">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container">
+
+                        <div class="table-item-title">
+                            <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
+                            <a href="/placement/{{_id}}">
+                                {{statusDisplayName}}:&nbsp;
+                            </a>
+                            </strong>
+
+                            <a  href="/employee/{{job}}">
+                                <!--<strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">-->
+                                    {{employeeDisplayName}}
+                                    <i class="fa fa-external-link" style="font-size: 14px"></i>
+                                <!--</strong>-->
+                            </a>
+                            <a  href="/job/{{job}}">
+                                <!--<strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">-->
+                                    {{jobDisplayName}}
+                                    <i class="fa fa-external-link" style="font-size: 14px"></i>
+                                <!--</strong>-->
+                            </a>
+                            <a  href="/contactable/{{customer}}">
+                                <!--<strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">-->
+                                    {{customerDisplayName}}
+                                    <i class="fa fa-external-link" style="font-size: 14px"></i>
+                                <!--</strong>-->
+                            </a>
+
+
+                        </div>
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-3 -->
+            <div class="col-sm-6">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container text-muted">
+
+                        {{> placementInformation }}
+
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-4 -->
+            <div class="col-sm-2">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container date">
+                        {{#formatted_date date=dateCreated format='fromNow'}}
+                        <span>{{value}}</span><br>
+                        {{/formatted_date}}
+                        {{#if searchKey }}
+                        <i class="glyphicon glyphicon-search"></i>
+                        {{searchKey}}
+                        {{/if}}
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.table-item -->
+</template>
+
+
+
+<template name="placementInformation">
+    {{#if location.displayName}}
+    <i class="icon-map-marker-1"></i>
+    {{location.displayName}}
+    {{/if}}
+</template>
+
+
+<template name="placementsListSearch">
+    <div class="actions-head">
+        <div class="row">
+            <div class="col-sm-8 col-md-8 col-lg-8">
+                <div class="pull-left suffix-5">
+                            {{#if isJob}}
+                            <div class="btn-group pull-left suffix-5">
+                                <button type="button" class="btn btn-success addPlacement" title="Add">
+                                    <span class="fa fa-plus"></span>
+                                </button>
+                            </div>
+                            {{/if}}
+                </div>
+
+                <div class="input-group">
+                    {{#objectProperty property=searchString}}
+                    <input type="text" class="form-control" placeholder="Search placements" value="{{value}}">
+                    {{/objectProperty}}
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div><!-- /.col-lg-5 -->
+        </div><!-- /.row -->
+    </div>
 </template>

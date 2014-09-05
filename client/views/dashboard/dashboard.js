@@ -126,9 +126,9 @@ Template.dashboard.events({
       query.filter.searchString = e.target.value;
       queryDep.changed();
     },200),
-  'click .addMatchup': function(){
+  'click .addPlacement': function(){
     Session.set('addOptions', {job: this.entityId});
-    Router.go('/matchupAdd/matchup');
+    Router.go('/placementAdd/placement');
   }
 });
 
@@ -176,12 +176,12 @@ Template.sparkline.rendered = function() {
 //    var job=Jobs.findOne({
 //      _id: jobId
 //    });
-//    if(job.matchup){
-//      options.matchupId=job.matchup;
+//    if(job.placement){
+//      options.placementId=job.placement;
 //    }else{
 //      options.jobId=jobId;
 //    }
-//    Composer.showModal( 'matchupAdd', options);
+//    Composer.showModal( 'placementAdd', options);
 //  }
 //  return self;
 var getHistorical = function (collection, timeStamps, query) {

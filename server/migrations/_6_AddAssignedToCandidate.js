@@ -1,8 +1,8 @@
 Migrations.add({
   version: 6,
   up: function () {
-    Matchups.find().forEach(function (matchup, index, cursor) {
-      Candidates.update({ job: matchup.job, employee: matchup.employee}, { $set: { assigned: true }});
+    Placements.find().forEach(function (placement, index, cursor) {
+      Candidates.update({ job: placement.job, employee: placement.employee}, { $set: { assigned: true }});
     })
   }
 });

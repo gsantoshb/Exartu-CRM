@@ -240,7 +240,7 @@ Utils.Validators.stringNotEmpty = function() {
 }
 
 Utils.getLocation = function (googleLocation) {
-  console.log(googleLocation);
+
   return {
     displayName: googleLocation.formatted_address,
     lat: googleLocation.geometry.location.lat(),
@@ -276,8 +276,8 @@ Utils.getEntityFromLink=function(link){
       return Jobs.findOne({_id: link.id});
     case Enums.linkTypes.deal.value:
           return Deals.findOne({_id: link.id});
-      case Enums.linkTypes.matchup.value:
-          return Matchups.findOne({_id: link.id});
+      case Enums.linkTypes.placement.value:
+          return Placements.findOne({_id: link.id});
       case Enums.linkTypes.candidate.value:
           return Candidates.findOne({_id: link.id});
   }
@@ -291,8 +291,8 @@ Utils.getEntitiesFromType=function(type){
             return Jobs.find();
         case Enums.linkTypes.deal.value:
             return Deals.find();
-        case Enums.linkTypes.matchup.value:
-            return Matchups.find();
+        case Enums.linkTypes.placement.value:
+            return Placements.find();
         case Enums.linkTypes.candidate.value:
             return Candidates.find();
         default :
@@ -301,7 +301,7 @@ Utils.getEntitiesFromType=function(type){
 }
 Utils.getTypeFromTypeString=function (str)
 {
-  console.log(ObjTypes.find());
+
   for (var k in Enums.linkTypes) {
 
     var estr=Enums.linkTypes[k].displayName;
@@ -316,7 +316,7 @@ Utils.getCollectionFromEntity=function(entity) {
   if ($.inArray(strtype, ['Employee','Contact','Customer','contactable'])!=-1) return Contactables;
   if ($.inArray(strtype, ['Job','job'])!=-1) return Jobs;
   if ($.inArray(strtype, ['Deal','deal'])!=-1) return Deals;
-  if ($.inArray(strtype, ['Matchup','matchup'])!=-1) return Matchups;
+  if ($.inArray(strtype, ['Placement','placement'])!=-1) return Placements;
   if ($.inArray(strtype, ['Candidate','candidate'])!=-1) return Candidates;
 }
 
@@ -328,8 +328,8 @@ Utils.getCollectionFromType=function(type){
       return Jobs;
     case Enums.linkTypes.deal.value:
       return Deals;
-    case Enums.linkTypes.matchup.value:
-      return Matchups;
+    case Enums.linkTypes.placement.value:
+      return Placements;
     case Enums.linkTypes.candidate.value:
       return Candidates;
     default :
@@ -345,8 +345,8 @@ Utils.getHrefFromLink=function(link){
       return '/job/'+ link.id;
       case Enums.linkTypes.deal.value:
           return '/deal/'+ link.id;
-      case Enums.linkTypes.matchup.value:
-          return '/matchup/'+ link.id;
+      case Enums.linkTypes.placement.value:
+          return '/placement/'+ link.id;
       case Enums.linkTypes.candidate.value:
           return '/candidate/'+ link.id;
   }
@@ -436,8 +436,8 @@ Utils.getEntityTypeFromRouter=function()
       break;
     case 'deal':
       return Enums.linkTypes.deal.value;
-    case 'matchup':
-      return Enums.linkTypes.matchup.value;
+    case 'placement':
+      return Enums.linkTypes.placement.value;
     case 'candidate':
       return Enums.linkTypes.candidate.value;
       break;
@@ -454,8 +454,8 @@ Utils.getEntitiesFromType=function(type)
       return Jobs.find();
     case Enums.linkTypes.deal.value:
       return Deals.find();
-    case Enums.linkTypes.matchup.value:
-      return Matchups.find();
+    case Enums.linkTypes.placement.value:
+      return Placements.find();
     case Enums.linkTypes.candidate.value:
       return Candidates.find();
     default :

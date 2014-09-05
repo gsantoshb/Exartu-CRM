@@ -8,6 +8,11 @@ Template.jobDescription.created=function() {
   var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
 };
 
+Template.jobDescription.rendered = function() {
+  $('.bsTooltip').tooltip();
+};
+
+
 Template.jobDescription.helpers({
   getType: function(){
     return Enums.linkTypes.job;

@@ -1,7 +1,7 @@
-MatchupController = RouteController.extend({
+PlacementController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function(){
-        return [MatchupHandler, ObjTypesHandler, GoogleMapsHandler]
+        return [PlacementHandler, ObjTypesHandler, GoogleMapsHandler]
     },
     data: function () {
         Session.set('entityId', this.params._id);
@@ -11,11 +11,11 @@ MatchupController = RouteController.extend({
             this.render('loadingContactable')
             return;
         }
-        this.render('matchup')
+        this.render('placement')
     },
   onAfterAction: function() {
-    var title = 'Matchups / ' + Session.get('matchupDisplayName'),
-      description = 'Matchup information';
+    var title = 'Placements / ' + Session.get('placementDisplayName'),
+      description = 'Placement information';
     SEO.set({
       title: title,
       meta: {
@@ -29,8 +29,8 @@ MatchupController = RouteController.extend({
   }
 });
 
-var generateReactiveObject = function(matchup) {
-  return new dType.objInstance(matchup, Matchups);
+var generateReactiveObject = function(placement) {
+  return new dType.objInstance(placement, Placements);
 };
 
 var self={};
@@ -39,13 +39,13 @@ var location={};
 Utils.reactiveProp(location, 'value', null);
 var services;
 
-Template.matchup.created=function(){
+Template.placement.created=function(){
   self.editMode=false;
-  var originalMatchup=Matchups.findOne({ _id: Session.get('entityId') });
+  var originalPlacement=Placements.findOne({ _id: Session.get('entityId') });
   var definition={
     reactiveProps:{
       tags:{
-        default: originalMatchup.tags,
+        default: originalPlacement.tags,
         update: 'tags',
         type: Utils.ReactivePropertyTypes.array
       }
@@ -53,24 +53,24 @@ Template.matchup.created=function(){
   };
   services= Utils.ObjectDefinition(definition);
 }
-var matchup;
+var placement;
 var job;
 var employee;
-Template.matchup.helpers({
-  matchup: function(){
+Template.placement.helpers({
+  placement: function(){
 
-    var originalMatchup=Matchups.findOne({ _id: Session.get('entityId') });
-    Session.set('matchupDisplayName', originalMatchup.displayName);
-    if (originalMatchup.tags==null)
+    var originalPlacement=Placements.findOne({ _id: Session.get('entityId') });
+    Session.set('placementDisplayName', originalPlacement.displayName);
+    if (originalPlacement.tags==null)
     {
-      originalMatchup.tags=[];
+      originalPlacement.tags=[];
     }
-    if (!matchup)
-      matchup = new dType.objInstance(originalMatchup, Matchups);
-    return matchup;
+    if (!placement)
+      placement = new dType.objInstance(originalPlacement, Placements);
+    return placement;
   },
-  originalMatchup:function(){
-    return Matchups.findOne({ _id: Session.get('entityId') });
+  originalPlacement:function(){
+    return Placements.findOne({ _id: Session.get('entityId') });
   },
   editMode:function(){
       return self.editMode;
@@ -79,38 +79,38 @@ Template.matchup.helpers({
       return self.editMode ? '#008DFC' : '#ddd'
   }
 //  job: function(){
-//    var asg=Matchups.findOne({ _id: Session.get('entityId') });
+//    var asg=Placements.findOne({ _id: Session.get('entityId') });
 //    var originalJob=Jobs.findOne({_id: asg.Job});
-//    Session.set('jobDisplayName', originalMatchup.displayName);
+//    Session.set('jobDisplayName', originalPlacement.displayName);
 //    if (!job)
 //      job = new dType.objInstance(originalJob, Jobs);
-//    return matchup;
+//    return placement;
 //  },
 //  originalJob:function(){
 //
-//    var asg=Matchups.findOne({ _id: Session.get('entityId') });
+//    var asg=Placements.findOne({ _id: Session.get('entityId') });
 //    return Jobs.findOne({_id: asg.job});
 //  }
 //  employee: function(){
-//    var asg=Matchups.findOne({ _id: Session.get('entityId') });
+//    var asg=Placements.findOne({ _id: Session.get('entityId') });
 //    var originalemployee=Contactables.findOne({_id: asg.employee});
-//    Session.set('employeeDisplayName', originalMatchup.displayName);
+//    Session.set('employeeDisplayName', originalPlacement.displayName);
 //    if (!employee)
 //      employee = new dType.objInstance(originalemployee, Contactables);
-//    return matchup;
+//    return placement;
 //  },
 //  originalEmployee:function(){
-//    var asg=Matchups.findOne({ _id: Session.get('entityId') });
+//    var asg=Placements.findOne({ _id: Session.get('entityId') });
 //    return Contactables.findOne({_id: asg.employee});
 //  }
 //  isType:function(typeName){
-//    return !! Matchups.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
+//    return !! Placements.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
 //  },
-//  matchupCollection: function(){
-//    return Matchups;
+//  placementCollection: function(){
+//    return Placements;
 //  },
 //  getCustomer:function(){
-//    var j=Matchups.findOne({ _id: Session.get('entityId')});
+//    var j=Placements.findOne({ _id: Session.get('entityId')});
 //    return j && j.customer;
 //  },
 //  noteCount: function() {
@@ -120,9 +120,9 @@ Template.matchup.helpers({
 //      return optionValue == currentValue;
 //    },
 //  location: function(){
-//    var originalMatchup=Matchups.findOne({ _id: Session.get('entityId') });
+//    var originalPlacement=Placements.findOne({ _id: Session.get('entityId') });
 //
-//    location.value= originalMatchup && originalMatchup.location;
+//    location.value= originalPlacement && originalPlacement.location;
 //    return location;
 //  },
 //  tags: function(){
@@ -130,18 +130,18 @@ Template.matchup.helpers({
 //  }
 });
 
-Template.matchup.events({
-  'click .editMatchup':function(){
+Template.placement.events({
+  'click .editPlacement':function(){
       self.editMode= ! self.editMode;
   },
   'click .saveButton':function(){
-    if (!matchup.validate()) {
-      matchup.showErrors();
+    if (!placement.validate()) {
+      placement.showErrors();
       return;
     }
-    var update=matchup.getUpdate();
-    var originalMatchup=Matchups.findOne({ _id: Session.get('entityId') });
-    var oldLocation= originalMatchup.location;
+    var update=placement.getUpdate();
+    var originalPlacement=Placements.findOne({ _id: Session.get('entityId') });
+    var oldLocation= originalPlacement.location;
     var newLocation= location.value;
 
     if ((newLocation && newLocation.displayName) != (oldLocation && oldLocation.displayName)){
@@ -152,10 +152,10 @@ Template.matchup.events({
     if (services.tags.value.length > 0)
       update.$set.tags = services.tags.value;
 
-    Matchups.update({_id: matchup._id}, update, function(err, result) {
+    Placements.update({_id: placement._id}, update, function(err, result) {
       if (!err) {
         self.editMode=false;
-        matchup.reset();
+        placement.reset();
       }
     });
   },
@@ -189,9 +189,9 @@ var addTag = function() {
   inputTag.focus();
 };
 
-Template.matchup.helpers({
+Template.placement.helpers({
 //  getType: function(){
-//    return Enums.linkTypes.matchup;
+//    return Enums.linkTypes.placement;
 //  }
 })
 

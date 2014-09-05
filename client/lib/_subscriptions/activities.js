@@ -38,9 +38,9 @@ Activities = new Meteor.Collection("activities", {transform: function(doc){
         doc.data.customerId = job.customerId;
       }
       break;
-    case   (Enums.activitiesType.matchupEdit):
+    case   (Enums.activitiesType.placementEdit):
       break;
-    case   (Enums.activitiesType.matchupAdd):
+    case   (Enums.activitiesType.placementAdd):
       break;
     case   (Enums.activitiesType.dealAdd):
       break;
