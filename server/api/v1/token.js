@@ -23,7 +23,7 @@ Router.map(function() {
 
 			switch(this.request.method) {
 				case 'POST':
-				 	var data = this.request.body;
+				 	var data = !_.isEmpty(this.request.body)? this.request.body : this.request.headers;
 				 	try {
 					 	if (!data.password)
 							throw new Meteor.Error(403, 'Password required for login');
