@@ -147,13 +147,12 @@ Template.placementsBox.isSearching = function() {
 
 var getActiveStatuses = function(objName){
   var status = Enums.lookUpTypes["placement"];
-
   status = status && status.status;
   if (status){
     var lookUpCodes = status.lookUpCode;
     var implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
-
-    return _.map(implyActives,function(doc){ return doc._id});
+    var ids= _.map(implyActives,function(doc){ return doc._id});
+    return ids;
   }
   return null;
 }
@@ -198,7 +197,7 @@ Template.placementsList.placements = function() {
       activeStatuses = getActiveStatuses(objName);
       if (_.isArray(activeStatuses) && activeStatuses.length > 0){
         aux={};
-        aux['status'] = {
+        aux['placementStatus'] = {
           $in: activeStatuses
         };
 
