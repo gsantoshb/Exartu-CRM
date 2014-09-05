@@ -31,11 +31,13 @@ Router.map(function() {
 				// 	 - salutation: string (optional)
 				// 	 - status: string (optional)
 				case 'POST':
-					var contactable = mapper.create(this.request.body);
+					var data = this.request.body;
+					var contactable = mapper.create(data);
 
 					try {
 						var employeeId = connection.call('addContactable', contactable);
-						response.end({employeeId: employeeId});
+						_.extend(data, {id: employeeId});
+						response.end(data);
 					} catch(err) {
 						console.log(err)
 						response.error(err);
