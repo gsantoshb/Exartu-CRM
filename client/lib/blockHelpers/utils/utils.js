@@ -87,3 +87,8 @@ Template.dropzone_template.events = {
       this.onDrop(files[0]);
   }
 };
+
+// Return current git tag
+UI.registerHelper('ExartuVersion', function() {
+  return __meteor_runtime_config__.git_branch == 'release'? __meteor_runtime_config__.git_tag : __meteor_runtime_config__.git_branch + ' - ' + __meteor_runtime_config__.git_tag;
+});

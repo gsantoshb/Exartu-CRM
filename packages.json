@@ -9,5 +9,6 @@
   "util": "0.10.3",
   "path": "0.4.9",
   "url": "0.7.9",
-  "multiparty": "3.3.2"
+  "multiparty": "3.3.2",
+  "git-rev": "0.2.1"
 }
