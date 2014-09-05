@@ -115,7 +115,7 @@ var query = new Utils.ObjectDefinition({
 
 Template.placementsBox.created = function(){
   query.limit.value = 20;
-  console.log('placementsbox created', Utils.getEntityTypeFromRouter());
+
   var entityId = Session.get('entityId');
   entityType = Utils.getEntityTypeFromRouter();
   isEntitySpecific = false;
@@ -272,7 +272,7 @@ Template.placementsFilters.tags = function() {
 };
 
 Template.placementsListSearch.isJob=function() {
-  console.log('isjob',entityType);
+
   if (entityType==Enums.linkTypes.job.value) return true;
 };
 Template.placementsListSearch.events = {
@@ -342,6 +342,12 @@ Template.placementsListItem.pictureUrl = function(pictureFileId) {
 
 Template.placementsListItem.placementIcon = function() {
   return helper.getEntityIcon(this);
+};
+Template.placementsListItem.statusDisplayName = function(item) {
+
+  var lookUp = LookUps.findOne({_id: this.placementStatus});
+
+  if (lookUp) return lookUp.displayName;
 };
 
 Template.placementsListItem.displayObjType = function() {

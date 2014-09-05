@@ -240,7 +240,7 @@ Utils.Validators.stringNotEmpty = function() {
 }
 
 Utils.getLocation = function (googleLocation) {
-  console.log(googleLocation);
+
   return {
     displayName: googleLocation.formatted_address,
     lat: googleLocation.geometry.location.lat(),
@@ -301,7 +301,7 @@ Utils.getEntitiesFromType=function(type){
 }
 Utils.getTypeFromTypeString=function (str)
 {
-  console.log(ObjTypes.find());
+
   for (var k in Enums.linkTypes) {
 
     var estr=Enums.linkTypes[k].displayName;

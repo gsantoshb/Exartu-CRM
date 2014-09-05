@@ -31,7 +31,7 @@ var options;
 var employeeId;
 var createPlacement= function(objTypeName){
   options= Session.get('addOptions');
-  console.log('addoptions',options);
+
   if (options){
     Session.set('addOptions', undefined);
   }
