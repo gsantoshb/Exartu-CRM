@@ -2,7 +2,7 @@ PlacementsController = RouteController.extend({
   template: 'placements',
   layoutTemplate: 'mainLayout',
   waitOn: function() {
-    return [PlacementHandler, Meteor.subscribe('jobs'), Meteor.subscribe('contactables')];
+    return [PlacementHandler, Meteor.subscribe('jobs'), Meteor.subscribe('contactables'), LookUpsHandler];
   },
   onAfterAction: function() {
     var title = 'Placements',
@@ -17,5 +17,8 @@ PlacementsController = RouteController.extend({
         'description': description
       }
     });
+  },
+  action: function(){
+    if (this.ready()) this.render();
   }
 });

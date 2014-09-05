@@ -4,14 +4,6 @@ var contactable;
 
 var objType = ko.observable();
 
-var filters = ko.observable(ko.mapping.fromJS({
-  objType: '',
-  tags: [],
-  statuses: [],
-  inactives: false,
-  limit: 20
-}));
-
 var searchFields = ['jobDisplayName','employeeDisplayName','customerDisplayName'];
 
 var timeLimits = {
@@ -46,7 +38,6 @@ var info = new Utils.ObjectDefinition({
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
     searchString: {},
-    objType: {},
     inactives: {
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
@@ -64,6 +55,10 @@ var query = new Utils.ObjectDefinition({
     },
     limit: {
       default: 15
+    },
+    statuses: {
+      type: Utils.ReactivePropertyTypes.array,
+      default: []
     }
   }
 });
@@ -115,10 +110,6 @@ Template.placementsList.placements = function() {
   var searchQuery = {};
   searchDep.depend();
 
-
-  if (query.objType.value)
-    searchQuery.objNameArray = query.objType.value;
-
   if (!_.isEmpty(query.searchString.value)) {
     var stringSearches=[];
     _.each(searchFields, function (field) {
@@ -167,9 +158,12 @@ Template.placementsList.placements = function() {
     };
   }
 
-  var placements = Placements.find(searchQuery, {limit: query.limit.value});
+  if (query.statuses.value.length){
+    searchQuery.candidateStatus = {$in: query.statuses.value};
+  }
 
-
+  console.log(searchQuery);
+  var placements = Placements.find(searchQuery, {});
   return placements;
 };
 
@@ -225,6 +219,11 @@ Template.placementsFilters.recentOptionClass = function(option) {
 Template.placementsFilters.tags = function() {
   return query.tags;
 };
+Template.placementsFilters.statusChanged = function(){
+  return function(selected){
+    query.statuses.value = selected;
+  }
+}
 
 Template.placementsListSearch.isJob=function() {
 
@@ -236,7 +235,8 @@ Template.placementsListSearch.events = {
     Router.go('/placementAdd/placement');
     e.preventDefault();
   }
-}
+};
+
 
 var addTag = function() {
   var inputTag = $('#new-tag')[0];

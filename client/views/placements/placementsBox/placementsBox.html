@@ -34,9 +34,7 @@
         <div class="filter-list" id="filter-body">
             <div class="filter-item">
                 <div class="item-body">
-                    {{#each placementTypes2}}
-                    <button type="button" class="typeSelect {{typeOptionClass .}}">{{name}}</button>
-                    {{/each}}
+                    {{>lookupFilterTemplate lookUpCode=10 callback=statusChanged}}
                 </div>
             </div>
             <div class="filter-item">
@@ -45,7 +43,7 @@
                     <div class="checkbox">
                         <label>
                             {{#objectProperty property=query.inactives}}
-                            <input type="checkbox" value="{{value}}"> Include inactives
+                                <input type="checkbox" value="{{value}}"> Include inactives
                             {{/objectProperty}}
                         </label>
                     </div>
@@ -63,6 +61,12 @@
                             <button type="button" class="{{recentOptionClass recentOptions.year}}" id="recent-year">year</button>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="filter-item">
+
+                <div class="item-body">
+                    <!--{{>lookupFilterTemplate}}-->
                 </div>
             </div>
             <div class="filter-item">
