@@ -46,6 +46,11 @@
                                 <input type="checkbox" value="{{value}}"> Include inactives
                             {{/objectProperty}}
                         </label>
+                        <label>
+                            {{#objectProperty property=query.mineOnly}}
+                            <input type="checkbox" value="{{value}}"> Mine only
+                            {{/objectProperty}}
+                        </label>
                     </div>
                     <div class="checkbox">
                         <label>
@@ -128,7 +133,7 @@
                             </a>
                             </strong>
 
-                            <a  href="/employee/{{job}}">
+                            <a  href="/employee/{{employee}}">
                                 <!--<strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">-->
                                     {{employeeDisplayName}}
                                     <i class="fa fa-external-link" style="font-size: 14px"></i>

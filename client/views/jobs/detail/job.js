@@ -144,6 +144,17 @@ Template.job.events({
   },
   'click .remove-tag': function() {
     services.tags.remove(this.value);
+  },
+  'click #copy-job': function() {
+    var result = confirm("Are you sure you want to copy this job?");
+    if (result)
+      Meteor.call('copyJob', Session.get('entityId'), function(err, result) {
+        if (!err) {
+          Router.go('/job/' +  result);
+        } else {
+          console.log(err);
+        }
+      });  
   }
 });
 
