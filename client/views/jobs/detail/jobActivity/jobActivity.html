@@ -73,3 +73,6 @@
 <template name="jobActivityPlacementsAdd">
     {{userName userId}} Assigned <a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
 </template>
+<template name="jobActivityJobAdd">
+    {{userName userId}} Created <a href="/job/{{entityId}}">{{data.publicJobTitle}}</a>
+</template>
