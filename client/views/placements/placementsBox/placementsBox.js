@@ -168,7 +168,6 @@ Template.placementsList.placements = function() {
     searchQuery.candidateStatus = {$in: query.statuses.value};
   }
 
-  console.log(searchQuery);
   var placements = Placements.find(searchQuery, {});
   return placements;
 };

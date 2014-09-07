@@ -73,9 +73,15 @@
         <div class="tab-pane" id="profile-notes">{{> notesItem}}</div>
         {{/with}}
         <div class="tab-pane active" id="profile-detail">
+            <div class="col-sm-6">
             {{#with job}}  {{> jobDetail}}  {{/with}}
+                </div>
+            <div class="col-sm-6">
             {{#with originalJob}}{{>tagsBox  }}{{/with}}
+            </div>
+            <div class="col-sm-4">
             {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
+            </div>
         </div>
     </div>
 
