@@ -109,6 +109,12 @@ var getActiveStatuses = function(objName){
 Template.placementsList.placements = function() {
   var searchQuery = {};
   searchDep.depend();
+  if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
+  if (entityType==Enums.linkTypes.contactable.value)
+  {
+    if (contactable.customer) searchQuery.customer=Session.get('entityId');
+    if (contactable.employee) searchQuery.employee=Session.get('entityId');
+  }
 
   if (!_.isEmpty(query.searchString.value)) {
     var stringSearches=[];

@@ -1,0 +1,16 @@
+<template name="lookupFilterActionTemplate">
+    <div>
+        {{#each selectedValues}}
+            <span style="word-wrap: break-word">
+                <span>{{text}}</span>
+                <i class="fa fa-times removeSelection pointer"></i>
+            </span>
+            <br/>
+        {{/each}}
+    </div>
+    {{>select2 options=getOptions onSelected=add}}
+</template>
+
+<template name="select2Action">
+    <input style="width: 100%" type='hidden' id="input"/>
+</template>
