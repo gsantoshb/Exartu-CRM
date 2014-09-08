@@ -527,3 +527,32 @@ Utils.setDecimal= function(rate) {
   return drate;
 }
 // Edit Rates
+
+
+// CONTACT METHODS
+
+Utils.contactMethodTypeIcon = function(type) {
+  switch(type) {
+    case Enums.contactMethodTypes.phone:
+      return 'icon-phone-3';
+      break;
+    case Enums.contactMethodTypes.email:
+      return 'icon-address-1';
+      break;
+    case Enums.contactMethodTypes.other:
+      return '';
+      break;
+  }
+};
+Utils.contactMethodTypePrefix = function(type) {
+  switch(type) {
+    case Enums.contactMethodTypes.phone:
+      return 'callto:';
+
+    case Enums.contactMethodTypes.email:
+      return 'mailto:';
+
+    case Enums.contactMethodTypes.other:
+      return '';
+  }
+};

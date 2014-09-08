@@ -220,6 +220,23 @@
                             <i class="glyphicon glyphicon-search"></i>
                             {{searchKey}}
                         {{/if}}
+                        {{#if contactMethods}}
+                            <div class="btn dropdown" id="contact-Methods-dropdown-{{_id}}">
+                                <a href="#" data-toggle="dropdown" data-target="#contact-Methods-dropdown-{{_id}}" class="dropdown-toggle">
+                                    <!--<i class="fa fa-mobile-phone"></i>-->
+                                    <span class="text"> Contact <i class="fa fa-caret-down"></i></span>
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    {{#each contactMethods}}
+                                        <li>
+                                            <a href="{{contactMethodTypePrefix typeEnum}}{{value}}"><i class="{{contactMethodTypeIcon typeEnum}}"></i> {{value}}</a>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+
+                            </div>
+                        {{/if}}
                     </div>
                     <!-- /.table-item-cell-container -->
                 </div>

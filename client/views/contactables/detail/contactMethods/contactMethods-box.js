@@ -46,35 +46,9 @@ Template.contactableContactMethodsBox.contactMethodsTypes = function() {
   return contactMethodsTypes;
 };
 
-Template.contactableContactMethodsBox.contactMethodTypeIcon = function() {
-  switch(this.typeCode) {
-    case Enums.contactMethodTypes.phone:
-      return 'icon-phone-3';
-      break;
-    case Enums.contactMethodTypes.email:
-      return 'icon-address-1';
-      break;
-    case Enums.contactMethodTypes.other:
-      return '';
-      break;
-  }
-};
-
 Template.contactableContactMethodsBox.selectedType = function() {
   dep.depend();
   return selectedType? selectedType.displayName: 'Select';
-};
-Template.contactableContactMethodsBox.typePrefix= function() {
-  switch(this.typeCode) {
-    case Enums.contactMethodTypes.phone:
-      return 'callto:';
-
-    case Enums.contactMethodTypes.email:
-      return 'mailto:';
-
-    case Enums.contactMethodTypes.other:
-      return '';
-  }
 };
 
 Template.contactableContactMethodsBox.contactMethods = function() {

@@ -99,3 +99,12 @@ UI.registerHelper('lookUpName', function(id) {
   var lu = LookUps.findOne(id);
   return lu && lu.displayName;
 });
+
+
+// CONTACT METHODS
+UI.registerHelper('contactMethodTypeIcon', function(type) {
+  return Utils.contactMethodTypeIcon(type);
+});
+UI.registerHelper('contactMethodTypePrefix', function(type) {
+  return Utils.contactMethodTypePrefix(type);
+});
