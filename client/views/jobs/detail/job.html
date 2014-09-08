@@ -51,36 +51,36 @@
 <template name="job_tabs">
 
     <ul class="nav nav-pills bottom-20">
-        <li class="active"><a href="#profile-detail" data-toggle="tab">Detail</a></li>
-        <li ><a href="#profile-description" data-toggle="tab">Job Description</a></li>
-        <li ><a href="#profile-jobRates" data-toggle="tab">Rates</a></li>
+        <li class="{{isActive 'details'}}"><a href="#details">Detail</a></li>
+        <li class="{{isActive 'description'}}"><a href="#description">Job Description</a></li>
+        <li class="{{isActive 'rates'}}"><a href="#rates">Rates</a></li>
         <!--<li ><a href="#profile-notes" data-toggle="tab">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>-->
 
-        <li ><a href="#profile-placements" data-toggle="tab">Placements</a></li>
-        <li ><a href="#profile-activity" data-toggle="tab">Activity</a></li>
-        <li ><a href="#profile-tasks" data-toggle="tab">Tasks</a></li>
-        <li ><a href="#profile-notes" data-toggle="tab">Notes</a></li>
+        <li class="{{isActive 'placements'}}"><a href="#placements">Placements</a></li>
+        <li class="{{isActive 'activity'}}"><a href="#activity">Activity</a></li>
+        <li class="{{isActive 'tasks'}}"><a href="#tasks">Tasks</a></li>
+        <li class="{{isActive 'notes'}}"><a href="#notes">Notes</a></li>
     </ul>
 
     <div class="tab-content">
         {{#with job}}
-        <div class="tab-pane " id="profile-candidates">{{>candidates type='job' id=_id}}</div>
-        <div class="tab-pane " id="profile-placements">{{>placementsBox }}</div>
-        <div class="tab-pane " id="profile-activity">{{>jobActivity}}</div>
-        <div class="tab-pane " id="profile-jobRates">{{>jobRates}}</div>
-        <div class="tab-pane " id="profile-description">{{> jobDescription}}</div>
-        <div class="tab-pane" id="profile-tasks">{{> tasksBox}}</div>
-        <div class="tab-pane" id="profile-notes">{{> notesItem}}</div>
+        <div class="tab-pane {{isActive 'details'}}" id="profile-candidates">{{>candidates type='job' id=_id}}</div>
+        <div class="tab-pane {{isActive 'placements'}}" id="profile-placements">{{>placementsBox }}</div>
+        <div class="tab-pane {{isActive 'activity'}}" id="profile-activity">{{>jobActivity}}</div>
+        <div class="tab-pane {{isActive 'rates'}}" id="profile-jobRates">{{>jobRates}}</div>
+        <div class="tab-pane {{isActive 'description'}}" id="profile-description">{{> jobDescription}}</div>
+        <div class="tab-pane {{isActive 'tasks'}}" id="profile-tasks">{{> tasksBox}}</div>
+        <div class="tab-pane {{isActive 'notes'}}" id="profile-notes">{{> notesItem}}</div>
         {{/with}}
-        <div class="tab-pane active" id="profile-detail">
+        <div class="tab-pane  {{isActive 'details'}}" id="profile-detail">
             <div class="col-sm-6">
-            {{#with job}}  {{> jobDetail}}  {{/with}}
-                </div>
+                {{#with job}}  {{> jobDetail}}  {{/with}}
+            </div>
             <div class="col-sm-6">
-            {{#with originalJob}}{{>tagsBox  }}{{/with}}
+                {{#with originalJob}}{{>tagsBox}}{{/with}}
             </div>
             <div class="col-sm-4">
-            {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
+                {{>customerInfo customer=getCustomer path='customer' collection=jobCollection}}
             </div>
         </div>
     </div>
