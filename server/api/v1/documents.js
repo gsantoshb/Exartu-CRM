@@ -35,13 +35,24 @@ Router.map(function() {
 
 					try {
 						var doc = connection.call('apiInsertDocument', data);
-						var responseMessage = {documentId: doc._id};
-	      		response.end(responseMessage);
+						doc.getFileRecord();
+	      		response.end(mapper.get(doc));
       		} catch(err) {
       			response.error('Oh no! Something has gone wrong');
       		}
 					break;
 
+				case 'GET': 
+					var data = this.params;
+
+					if (!data.entityId)
+						response.error('EntityId is required');
+					
+					var documents = ContactablesFS.find({'metadata.entityId': data.entityId}).map(mapper.get);
+					console.log(documents)
+					response.end(documents, {type: 'application/json'});
+
+					break;
 				default:
 					response.error('Method not supported');
 			}
@@ -63,3 +74,17 @@ Meteor.methods({
 		return ContactablesFS.insert(file);
 	}
 })
+
+var mapper = {
+	get: function(data) {
+		if (!data)
+			return {}
+		return {
+			id: data._id,
+			name: data.metadata.name,
+			description: data.metadata.description,
+			size: data.size(),
+			tags: data.metadata.tags,
+		}
+	}
+};
