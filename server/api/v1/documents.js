@@ -27,10 +27,19 @@ Router.map(function() {
 					_.extend(data, this.request.fields || this.request.body);
 					_.extend(data, this.request.files.file);
 
-					var doc = connection.call('apiInsertDocument', data);
-					var responseMessage = {documentId: doc._id};
+					if (!data.path)
+						response.error('File required');
 
-      		response.end(responseMessage);
+					if (!data.entityId)
+						response.error('EntityId required');						
+
+					try {
+						var doc = connection.call('apiInsertDocument', data);
+						var responseMessage = {documentId: doc._id};
+	      		response.end(responseMessage);
+      		} catch(err) {
+      			response.error('Oh no! Something has gone wrong');
+      		}
 					break;
 
 				default:
