@@ -208,6 +208,7 @@ Meteor.methods({
       // more information from user
     }
     var userId = Accounts.createUser(options);
+    Accounts.sendVerificationEmail(userId);
     //        var userPermissions = [];
     //        _.forEach(user.roles, function (role) {
     //            var dbrole = Roles.findOne({
