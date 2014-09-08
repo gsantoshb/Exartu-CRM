@@ -256,7 +256,7 @@
 </template>
 
 <template name="esContextMatch">
-    <span class="text-muted separatedLinks contextText"></span> 
+    <span class="text-muted separatedLinks contextText"></span>
 </template>
 
 <template name="customerInformation">
@@ -264,6 +264,9 @@
         <i class="icon-map-marker-1"></i>
         {{location.displayName}}
     {{/if}}
+    <span class="badge">
+        {{lookUpName Customer.status}}
+    </span>
 </template>
 
 <template name="employeeInformation">
@@ -283,6 +286,9 @@
         <i class="icon-map-marker-1"></i>
         {{location.displayName}}
     {{/if}}
+    <span class="badge">
+        {{lookUpName Employee.status}}
+    </span>
 </template>
 
 <template name="contactInformation">
@@ -292,6 +298,10 @@
             <strong>{{Contact.customerName}}</strong>
         </a>
     {{/if}}
+    <br/>
+    <span class="badge">
+        {{lookUpName Contact.status}}
+    </span>
 </template>
 
 <template name="contactablesListSearch">
