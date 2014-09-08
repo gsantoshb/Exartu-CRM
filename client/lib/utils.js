@@ -534,13 +534,13 @@ Utils.setDecimal= function(rate) {
 Utils.contactMethodTypeIcon = function(type) {
   switch(type) {
     case Enums.contactMethodTypes.phone:
-      return 'icon-phone-3';
+      return 'fa fa-phone';
       break;
     case Enums.contactMethodTypes.email:
-      return 'icon-address-1';
+      return 'fa fa-envelope-o';
       break;
     case Enums.contactMethodTypes.other:
-      return '';
+      return 'fa fa-comment-o';
       break;
   }
 };
