@@ -143,6 +143,7 @@
             <li class="{{isActive 'hrconcourse'}}"><a href="#hrconcourse">Onboarding</a></li>
         {{/if}}
         <li class="{{isActive 'actions'}}"><a href="#actions">Actions</a></li>
+        <li class="{{isActive 'activities'}}"><a href="#activities">Activities</a></li>
     </ul>
 
     <div class="tab-content">
@@ -211,6 +212,7 @@
                 {{/if}}
                 {{/unless}}
         </div>
+        <div class="tab-pane {{isActive 'activities'}}" id="profile-activities">{{>contactableActivity }}</div>
     </div>
 </template>
 

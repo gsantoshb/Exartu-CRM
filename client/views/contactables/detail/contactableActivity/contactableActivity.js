@@ -1,16 +1,17 @@
-var jobActivities=[Enums.activitiesType.placementEdit, Enums.activitiesType.placementAdd,Enums.activitiesType.jobAdd];
 
-  Template.jobActivity.helpers({
+var contactableActivities=[Enums.activitiesType.contactableAdd,Enums.activitiesType.placementEdit, Enums.activitiesType.placementAdd,Enums.activitiesType.jobAdd];
+
+  Template.contactableActivity.helpers({
   isAny: function(){
     return Activities.find({
       entityId: Session.get('entityId'),
-      type: {$in: jobActivities}
+      type: {$in: contactableActivities}
     }).count()>0;
   },
   activities: function(){
       return Activities.find({
         entityId: Session.get('entityId'),
-        type: {$in: jobActivities}
+        type: {$in: contactableActivities}
       },{sort: {
         'data.dateCreated': -1
       }})
@@ -42,14 +43,22 @@ Template.jobActivityPlacementsEdit.helpers({
 Template.jobActivityJobAdd.helpers({
   userName: userName
 });
-UI.registerHelper('activityType', function(){
+
+UI.registerHelper('contactableActivityType', function(){
+  console.log('act type',this,this.type);
   switch (this.type){
+
     case Enums.activitiesType.placementEdit:
       return Template.jobActivityPlacementsEdit;
     case Enums.activitiesType.placementAdd:
       return Template.jobActivityPlacementsAdd;
     case Enums.activitiesType.jobAdd:
       return Template.jobActivityJobAdd;
-  }
-
+    case Enums.activitiesType.contactableAdd:
+      return Template.newContactableActivity;
+    case Enums.activitiesType.jobAdd:
+      return Template.newJobActivity;
+    case Enums.activitiesType.taskAdd:
+      return Template.newTaskActivity;
+    }
 });
