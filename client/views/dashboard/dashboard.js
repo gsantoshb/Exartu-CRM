@@ -27,7 +27,8 @@ DashboardController = RouteController.extend({
 
 var query ={
   options: {
-    limit: 50
+    limit: 50,
+    sort: {'data.dateCreated':-1}
   },
   filter: {
     searchString: ''
@@ -91,6 +92,7 @@ Template.dashboard.helpers({
       var ids = contactables.concat(jobs).concat(task);
       f.entityId= { $in: ids };
     }
+    console.log('queryoptions',query.options);
     return Activities.find(f, query.options);
   },
   customerHistory: function(){
