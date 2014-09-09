@@ -15,6 +15,7 @@ var timeLimits = {
 
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
+    candidateActionOptions:{ default: ['submittals','sendouts','placed']},
     placementsCount: {},
     objType: {},
     isRecentDaySelected: {
@@ -38,6 +39,7 @@ var info = new Utils.ObjectDefinition({
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
     searchString: {},
+    candidateAction: {},
     inactives: {
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
@@ -67,6 +69,9 @@ var query = new Utils.ObjectDefinition({
   }
 });
 
+
+
+
 Template.placementsBox.created = function(){
   query.limit.value = 20;
 
@@ -86,7 +91,7 @@ Template.placementsList.info = function() {
   info.isFiltering.value = Placements.find().count() != 0;
   return info;
 };
-
+console.log('info1',info);
 var placementTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.placement });
 };
@@ -146,7 +151,9 @@ Template.placementsList.placements = function() {
   }
 
   if (query.mineOnly.value)
-  {}
+  {
+    searchQuery.userId=Meteor.userId();
+  }
 
   if (! query.inactives.value) {
     searchQuery.$or=[];
@@ -222,7 +229,10 @@ Template.placementsFilters.typeOptionClass = function(option) {
   return query.objType.value == option.name? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
 
 };
+Template.placementsFilters.candidateActionClass = function(option) {
+  return query.candidateAction.value == option ? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
 
+};
 
 Template.placementsFilters.recentOptionClass = function(option) {
   return query.selectedLimit.value == option? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
@@ -264,6 +274,12 @@ var addTag = function() {
   inputTag.focus();
 };
 
+Template.placementsFilters.candidateActionOptions= function()
+{
+  console.log('info',info,'val',info.candidateActionOptions.value);
+  return info.candidateActionOptions.value;
+}
+
 Template.placementsFilters.events = {
   'click .add-tag': function() {
     addTag();
@@ -293,10 +309,10 @@ Template.placementsFilters.events = {
     query.selectedLimit.value = timeLimits.year;
   },
   'click .typeSelect': function(e) {
-    if (query.objType.value == this.name){
+    if (query.candidateAction.value == this){
       query.objType.value= null;
     }else{
-      query.objType.value= this.name;
+      query.candidateAction.value= this;
     }
   }
 };

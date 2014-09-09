@@ -34,9 +34,16 @@
         <div class="filter-list" id="filter-body">
             <div class="filter-item">
                 <div class="item-body">
-                    {{>lookupFilterTemplate lookUpCode=10 callback=statusChanged}}
+                    {{#each candidateActionOptions}}
+                    <button type="button" class="typeSelect {{candidateActionClass .}}">{{.}}</button>
+                    {{/each}}
                 </div>
             </div>
+            <!--<div class="filter-item">-->
+                <!--<div class="item-body">-->
+                    <!--{{>lookupFilterTemplate lookUpCode=10 callback=statusChanged}}-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="filter-item">
 
                 <div class="item-body">
@@ -133,7 +140,7 @@
                             </a>
                             </strong>
 
-                            <a  href="/employee/{{employee}}">
+                            <a  href="/contactable/{{employee}}">
                                 <!--<strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">-->
                                     {{employeeDisplayName}}
                                     <i class="fa fa-external-link" style="font-size: 14px"></i>
