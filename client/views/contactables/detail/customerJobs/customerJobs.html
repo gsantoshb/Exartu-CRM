@@ -28,14 +28,8 @@
                                         <!--</div>-->
                                         <div class="pull-right">
                                             <div class="table-item magic">
-                                            <div class="table-item-cell">
-                                                <div class="table-item-cell-container date">
-                                                    {{>jobDate}}
-
-
+                                                        {{>jobDate}}
                                                 </div>
-                                            </div>
-                                            </div>
                                         </div>
                                         <div class="list-3-item-meta-top">{{lookUpName status}}</div>
                                         <h4 class="list-3-item-title"><a href="/job/{{_id}}">{{displayName}}</a></h4>
@@ -64,19 +58,23 @@
         </div>
     {{/if}}
 </template>
-        <template name="jobDate">
-            {{#formattedDate value=startDate}}
-            {{date}}
-            {{/formattedDate}}-
-            {{#if endDate}}
+<template name="jobDate">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container date">
+                        {{#formattedDate value=startDate}}
+                        {{date}}
+                        {{/formattedDate}}-
+                        {{#if endDate}}
 
-            {{#formattedDate value=endDate}}
-            {{date}}
-            {{/formattedDate}}
-            {{/if}}
-            {{#if searchKey }}
-            <br />
-            <i class="glyphicon glyphicon-search"></i>
-            {{searchKey}}
-            {{/if}}
+                        {{#formattedDate value=endDate}}
+                        {{date}}
+                        {{/formattedDate}}
+                        {{/if}}
+                        {{#if searchKey }}
+                        <br />
+                        <i class="glyphicon glyphicon-search"></i>
+                        {{searchKey}}
+                        {{/if}}
+                    </div>
+                </div>
 </template>
