@@ -4,7 +4,7 @@ UI.registerHelper('formattedDate', function() {
       this.date=moment(this.value).fromNow();
       break;
     default:
-      this.date = moment(this.value).format(this.format || 'lll');
+      this.date = moment(this.value).format(this.format || 'll');
 
   }
   return Template.formatted_date;

@@ -27,16 +27,15 @@
                                             <!--<a href="#"><i class="fa fa-trash-o"></i> Remove</a>-->
                                         <!--</div>-->
                                         <div class="pull-right">
-                                            From:
-                                            {{#formattedDate value=startDate}}
-                                                {{date}}
-                                            {{/formattedDate}}
-                                            {{#if endDate}}
-                                                <br>To:
-                                                {{#formattedDate value=endDate}}
-                                                    {{date}}
-                                                {{/formattedDate}}
-                                            {{/if}}
+                                            <div class="table-item magic">
+                                            <div class="table-item-cell">
+                                                <div class="table-item-cell-container date">
+                                                    {{>jobDate}}
+
+
+                                                </div>
+                                            </div>
+                                            </div>
                                         </div>
                                         <div class="list-3-item-meta-top">{{lookUpName status}}</div>
                                         <h4 class="list-3-item-title"><a href="/job/{{_id}}">{{displayName}}</a></h4>
@@ -64,4 +63,20 @@
             </div><!-- /.box-content-md -->
         </div>
     {{/if}}
+</template>
+        <template name="jobDate">
+            {{#formattedDate value=startDate}}
+            {{date}}
+            {{/formattedDate}}-
+            {{#if endDate}}
+
+            {{#formattedDate value=endDate}}
+            {{date}}
+            {{/formattedDate}}
+            {{/if}}
+            {{#if searchKey }}
+            <br />
+            <i class="glyphicon glyphicon-search"></i>
+            {{searchKey}}
+            {{/if}}
 </template>

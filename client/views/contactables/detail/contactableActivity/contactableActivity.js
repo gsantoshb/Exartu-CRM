@@ -1,5 +1,6 @@
 
-var contactableActivities=[Enums.activitiesType.contactableAdd,Enums.activitiesType.placementEdit, Enums.activitiesType.placementAdd,Enums.activitiesType.jobAdd];
+var contactableActivities=[Enums.activitiesType.contactableAdd,Enums.activitiesType.taskAdd,Enums.activitiesType.placementEdit,
+    Enums.activitiesType.placementAdd,Enums.activitiesType.jobAdd];
 
   Template.contactableActivity.helpers({
   isAny: function(){
