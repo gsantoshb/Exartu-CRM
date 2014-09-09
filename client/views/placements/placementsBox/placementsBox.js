@@ -46,6 +46,10 @@ var query = new Utils.ObjectDefinition({
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
     },
+    mineOnly: {
+      type: Utils.ReactivePropertyTypes.boolean,
+      default: false
+    },
     selectedLimit: {
       default: timeLimits.day
     },
@@ -140,6 +144,9 @@ Template.placementsList.placements = function() {
       $gte: dateLimit.getTime() - query.selectedLimit.value
     };
   }
+
+  if (query.mineOnly.value)
+  {}
 
   if (! query.inactives.value) {
     searchQuery.$or=[];

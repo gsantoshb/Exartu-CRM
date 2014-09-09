@@ -25,6 +25,14 @@ Template.placementDetail.helpers({
   originalPlacement:function(){
     return Placements.findOne({ _id: Session.get('entityId') });
   },
+  users :function(){
+    return Utils.users();
+  },
+  userName: function()
+  {
+    var placement=Placements.findOne({_id: this._id });
+    return Meteor.users.findOne({_id: placement.userId}).username;
+  },
   editMode:function(){
     return self.editMode;
   },
