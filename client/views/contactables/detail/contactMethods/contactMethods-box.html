@@ -1,8 +1,8 @@
 <template name="contactableContactMethodsBox">
     <div class="box">
         <div class="box-header-2">
-            <a class="btn-action" href="#" title="Edit"><i id="edit-contact-method-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>
-            <div class="box-title"><a href="#">Contact methods</a></div>
+            <a class="btn-action pointer" title="Edit"><i id="edit-contact-method-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>
+            <div class="box-title">Contact methods</div>
         </div>
         <div class="box-content-md">
             <ul class="list-3 stripped has-thumb">
@@ -12,7 +12,7 @@
                         <div class="list-3-content list-magic">
                             {{#if editMode }}
                                 <div class="list-3-actions">
-                                    <a class="delete" href="#"><i class="fa fa-trash-o"></i></a>
+                                    <a class="delete pointer"><i class="fa fa-trash-o"></i></a>
                                 </div>
                             {{/if}}
                             <div class="list-3-content-wrap">

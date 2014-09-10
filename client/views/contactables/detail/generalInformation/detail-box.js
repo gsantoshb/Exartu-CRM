@@ -57,7 +57,6 @@ Template.contactableDetailBox.events = {
       contactable.showErrors();
       return;
     }
-    console.dir(contactable.getUpdate());
     contactable.save(function(err, result) {
       if (!err) {
         EditMode.hide();
