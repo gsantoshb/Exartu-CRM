@@ -176,19 +176,7 @@
             </div>
             <!-- /.col-sm-4 -->
             <div class="col-sm-2">
-                <div class="table-item-cell">
-                    <div class="table-item-cell-container date">
-                        {{#formatted_date date=dateCreated format='fromNow'}}
-                        <span>{{value}}</span><br>
-                        {{/formatted_date}}
-                        {{#if searchKey }}
-                        <i class="glyphicon glyphicon-search"></i>
-                        {{searchKey}}
-                        {{/if}}
-                    </div>
-                    <!-- /.table-item-cell-container -->
-                </div>
-                <!-- /.table-item-cell -->
+                        {{>jobDate}}
             </div>
         </div>
         <!-- /.row -->
@@ -227,7 +215,7 @@
 
                 <div class="input-group">
                     {{#objectProperty property=searchString}}
-                    <input type="text" class="form-control" placeholder="Search Contacts" value="{{value}}">
+                    <input type="text" class="form-control" placeholder="Search Jobs" value="{{value}}">
                     {{/objectProperty}}
                     <span class="input-group-btn">
                         <button class="btn btn-primary" type="button">

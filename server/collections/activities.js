@@ -64,7 +64,7 @@ Tasks.after.insert(function (userId, doc) {
 		userId: doc.userId,
 		hierId: doc.hierId,
 		type: Enums.activitiesType.taskAdd,
-		entityId: doc._id,
+		entityId: doc.links[0].id, //doc._id,
 		data: {
 			note: doc.note,
 			dateCreated: doc.dateCreated,
