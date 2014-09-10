@@ -97,9 +97,7 @@ Template.lookUpsManagement.getLookUpActions= function()
   });
 
   return lookUpActions;
-//
-//    console.log('lokupact',query);
-//    return query.lookUpActions;
+
 }
 
 

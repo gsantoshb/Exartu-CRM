@@ -62,7 +62,7 @@
         <div class="tab-pane" id="profile-notes">{{> notesItem}}</div>
         {{/with}}
         <div class="tab-pane active" id="profile-detail">
-            {{#with placement}}  {{> placementDetail}}  {{/with}}
+            {{#with originalPlacement}}  {{> placementDetail}}  {{/with}}
             {{#with originalPlacement}}{{>tagsBox  }}{{/with}}
             <!--{{#with placement}}{{>placementRates ..}}  {{/with}}-->
             <!--{{>customerInfo customer=getCustomer path='customer' collection=placementCollection}}-->

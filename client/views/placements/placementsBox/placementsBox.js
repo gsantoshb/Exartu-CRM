@@ -199,7 +199,6 @@ Template.placementsList.placements = function() {
   if (query.statuses.value.length){
     searchQuery.candidateStatus = {$in: query.statuses.value};
   }
-  console.log('query',searchQuery);
   var placements = Placements.find(searchQuery, {});
   return placements;
 };
