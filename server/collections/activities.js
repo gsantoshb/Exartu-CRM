@@ -110,27 +110,40 @@ Placements.after.insert(function (userId, doc) {
   data.job=doc.job;
   data.employee=doc.employee;
 
+  var placementStatus = LookUps.findOne(doc.placementStatus);
+  var type = Enums.activitiesType.placementAdd;
+  console.log(placementStatus);
+
+  if (_.contains(placementStatus.lookUpActions, Enums.lookUpAction.Placement_Assigned)){
+    type = Enums.activitiesType.assignmentAdd;
+    console.log('assignmentAdd')
+  }else if(_.contains(placementStatus.lookUpActions, Enums.lookUpAction.Placement_Candidate)){
+    type = Enums.activitiesType.candidateAdd;
+    console.log('candidateAdd')
+
+  }
   Activities.insert({
     userId: userId,
     hierId: doc.hierId,
-    type: Enums.activitiesType.placementAdd,
-    entityId: doc.job,
+    type: type,
+    entityId: doc._id,
     data: data
   })
 });
 Placements.after.update(function (userId, doc) {
   var data = {};
   data.dateCreated = new Date();
-  data.job= doc.job;
-  data.employee= doc.employee;
-  data.oldJob=this.previous.job
-  data.oldEmployee=this.previous.employee
+  data.job = doc.job;
+  data.employee = doc.employee;
+  data.oldJob = this.previous.job;
+  data.oldEmployee = this.previous.employee;
+
 
   Activities.insert({
     userId: userId,
     hierId: doc.hierId,
     type: Enums.activitiesType.placementEdit,
-    entityId: doc.job,
+    entityId: doc._id,
     data: data
   })
 });
