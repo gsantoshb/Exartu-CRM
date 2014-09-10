@@ -1,5 +1,5 @@
 Router.map(function() {
-	this.route('apiDocuments', {
+	this.route('apiDocuments' + api_version, {
 		where: 'server',
 		path: '/api/' + api_version + '/documents',
 		action: function() {

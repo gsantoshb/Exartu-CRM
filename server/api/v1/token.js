@@ -11,7 +11,7 @@ var selectorFromUserQuery = function (user) {
 
 Router.map(function() {
 	// Get employees
-	this.route('apiAuth', {
+	this.route('apiAuth' + api_version, {
 		where: 'server',
 		path: '/api/' + api_version + '/auth/login',
 		action: function() {
