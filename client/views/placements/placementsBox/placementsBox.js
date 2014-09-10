@@ -119,7 +119,7 @@ var getActiveStatuses = function(objName){
 var getCandidateStatuses = function(objname){
   var code = Enums.lookUpTypes["candidate"].status.lookUpCode;
   var lkps= LookUps.find( { lookUpCode:code, lookUpActions: { $in: [ objname ] }}).fetch();
-  var ids= _.map(lkps,function(doc) { console.log('doc',doc); return doc._id;});
+  var ids= _.map(lkps,function(doc) {  return doc._id;});
   return ids;
 };
 
@@ -129,10 +129,9 @@ Template.placementsList.placements = function() {
   if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
   if (entityType==Enums.linkTypes.contactable.value)
   {
-    if (contactable.customer) searchQuery.customer=Session.get('entityId');
-    if (contactable.employee) searchQuery.employee=Session.get('entityId');
+    if (contactable.Customer) searchQuery.customer=Session.get('entityId');
+    if (contactable.Employee) searchQuery.employee=Session.get('entityId');
   }
-
   if (!_.isEmpty(query.searchString.value)) {
     var stringSearches=[];
     _.each(searchFields, function (field) {
@@ -164,30 +163,30 @@ Template.placementsList.placements = function() {
   }
 
   if (! query.inactives.value) {
-    searchQuery.$or=[];
+
     var activeStatuses;
     var aux;
       activeStatuses = getActiveStatuses('placement');
       if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-        aux={};
-        aux['placementStatus'] = {
+        searchQuery.placementStatus={
           $in: activeStatuses
         };
-        searchQuery.$or.push(aux)
       }
   }
 
-  if ( query.candidateAction.value!= '' ) {
-    var aux;
+  if ( !_.isEmpty(query.candidateAction.value) ) {
     var candidateStatuses = getCandidateStatuses(query.candidateAction.value.valueOf());
-      if (_.isArray(candidateStatuses) && candidateStatuses.length > 0){
-        aux={};
-        aux['candidateStatus'] = {
-          $in: candidateStatuses
-        };
-        if (!searchQuery.$or) searchQuery.$or=[];
-        searchQuery.$or.push(aux)
-      }
+    if (_.isArray(candidateStatuses) && candidateStatuses.length > 0){
+      searchQuery.candidateStatus={
+        $in: candidateStatuses
+      };
+
+    }
+    else
+    {
+      // if here then no candidate statuses match the desired one so must return no rows
+      searchQuery.candidateStatus={true:false};
+    }
   }
 
   if (query.tags.value.length > 0) {
