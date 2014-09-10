@@ -92,3 +92,19 @@ Template.dropzone_template.events = {
 UI.registerHelper('ExartuVersion', function() {
   return __meteor_runtime_config__.git_branch == 'release'? __meteor_runtime_config__.git_tag : __meteor_runtime_config__.git_branch + ' - ' + __meteor_runtime_config__.git_tag;
 });
+
+
+// returns Display name of any lookup
+UI.registerHelper('lookUpName', function(id) {
+  var lu = LookUps.findOne(id);
+  return lu && lu.displayName;
+});
+
+
+// CONTACT METHODS
+UI.registerHelper('contactMethodTypeIcon', function(type) {
+  return Utils.contactMethodTypeIcon(type);
+});
+UI.registerHelper('contactMethodTypePrefix', function(type) {
+  return Utils.contactMethodTypePrefix(type);
+});

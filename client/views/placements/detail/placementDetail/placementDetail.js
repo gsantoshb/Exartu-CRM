@@ -10,7 +10,6 @@ Utils.reactiveProp(location, 'value', null);
 
 Template.placementDetail.created=function(){
   self.editMode=false;
-//  var originalPlacement = Placements.findOne({ _id: Session.get('entityId') });
 }
 var placement;
 
@@ -18,12 +17,19 @@ Template.placementDetail.helpers({
   placement: function(){
     var originalPlacement = Placements.findOne({ _id: Session.get('entityId') });
     Session.set('placementDisplayName', originalPlacement.displayName);
-    if (!placement)
-      placement = generateReactiveObject(originalPlacement);
+    placement = generateReactiveObject(originalPlacement);
     return placement;
   },
   originalPlacement:function(){
     return Placements.findOne({ _id: Session.get('entityId') });
+  },
+  users :function(){
+    return Utils.users();
+  },
+  userName: function()
+  {
+    var placement=Placements.findOne({_id: this._id });
+    return Meteor.users.findOne({_id: placement.userId}).username;
   },
   editMode:function(){
     return self.editMode;
@@ -59,14 +65,6 @@ Template.placementDetail.events({
       return;
     }
     var update=placement.getUpdate();
-    var originalPlacement=Placements.findOne({ _id: Session.get('entityId') });
-    var oldLocation= originalPlacement.location;
-    var newLocation= location.value;
-
-    if ((newLocation && newLocation.displayName) != (oldLocation && oldLocation.displayName)){
-      update.$set = update.$set || {};
-      update.$set.location = newLocation;
-    }
 
     Placements.update({_id: placement._id}, update, function(err, result) {
       if (!err) {

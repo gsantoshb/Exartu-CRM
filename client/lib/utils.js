@@ -542,3 +542,35 @@ Utils.setDecimal= function(rate) {
   return drate;
 }
 // Edit Rates
+
+
+// CONTACT METHODS
+
+Utils.contactMethodTypeIcon = function(type) {
+  switch(type) {
+    case Enums.contactMethodTypes.phone:
+      return 'fa fa-phone';
+      break;
+    case Enums.contactMethodTypes.email:
+      return 'fa fa-envelope-o';
+      break;
+    case Enums.contactMethodTypes.other:
+      return 'fa fa-comment-o';
+      break;
+  }
+};
+Utils.contactMethodTypePrefix = function(type) {
+  switch(type) {
+    case Enums.contactMethodTypes.phone:
+      return 'callto:';
+
+    case Enums.contactMethodTypes.email:
+      return 'mailto:';
+
+    case Enums.contactMethodTypes.other:
+      return '';
+  }
+};
+Utils.users =function(){
+  return Meteor.users.find({});
+};

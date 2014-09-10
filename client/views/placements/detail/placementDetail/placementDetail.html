@@ -1,6 +1,5 @@
 
 <template name="placementDetail">
-{{#with placement}}
     <div class="box">
         <div class="box-header-2">
             <a class="btn-action editPlacement pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
@@ -11,6 +10,7 @@
             <table class="table custom-table text-normal" style="table-layout: fixed;">
                 <tbody>
                 <tr>
+                    {{#with placement}}
                     <td>
                         <i class="fa fa-info-circle"></i>&nbsp;Placement Status:
                         {{#objectProperty property=placementStatus editable=editMode}}
@@ -51,7 +51,27 @@
                         </strong>
                         {{/objectProperty}}
                     </td>
+                    {{/with}}
+                    {{#with originalPlacement}}
+                    <td>
+
+                        <div class="form-group ">
+                            <label class="control-label">User:</label>
+                            {{#if editMode}}
+                                <select class="form-control assign" >
+                                    {{#each users}}
+                                    <option value="{{_id}}" selected="{{_id }}">{{username}}</option>
+                                    {{/each}}
+                                </select>
+                            {{else}}
+                                {{userName}}
+                            {{/if}}
+                            {{userName}}
+                        </div>
+                    </td>
+                    {{/with}}
                 </tr>
+
                 </tbody>
             </table>
         </div>
@@ -70,5 +90,4 @@
         </div>
         {{/if}}
     </div>
-{{/with}}
 </template>

@@ -233,6 +233,23 @@
                             <i class="glyphicon glyphicon-search"></i>
                             {{searchKey}}
                         {{/if}}
+                        {{#if contactMethods}}
+                            <div class="btn dropdown" id="contact-Methods-dropdown-{{_id}}">
+                                <a href="#" data-toggle="dropdown" data-target="#contact-Methods-dropdown-{{_id}}" class="dropdown-toggle">
+                                    <!--<i class="fa fa-mobile-phone"></i>-->
+                                    <span class="text"> Contact <i class="fa fa-caret-down"></i></span>
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    {{#each contactMethods}}
+                                        <li>
+                                            <a href="{{contactMethodTypePrefix typeEnum}}{{value}}"><i class="{{contactMethodTypeIcon typeEnum}}"></i> {{value}}</a>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+
+                            </div>
+                        {{/if}}
                     </div>
                     <!-- /.table-item-cell-container -->
                 </div>
@@ -269,7 +286,7 @@
 </template>
 
 <template name="esContextMatch">
-    <span class="text-muted separatedLinks contextText"></span> 
+    <span class="text-muted separatedLinks contextText"></span>
 </template>
 
 <template name="customerInformation">
@@ -277,6 +294,9 @@
         <i class="icon-map-marker-1"></i>
         {{location.displayName}}
     {{/if}}
+    <span class="badge">
+        {{lookUpName Customer.status}}
+    </span>
 </template>
 
 <template name="employeeInformation">
@@ -296,6 +316,9 @@
         <i class="icon-map-marker-1"></i>
         {{location.displayName}}
     {{/if}}
+    <span class="badge">
+        {{lookUpName Employee.status}}
+    </span>
 </template>
 
 <template name="contactInformation">
@@ -305,6 +328,10 @@
             <strong>{{Contact.customerName}}</strong>
         </a>
     {{/if}}
+    <br/>
+    <span class="badge">
+        {{lookUpName Contact.status}}
+    </span>
 </template>
 
 <template name="contactablesListSearch">

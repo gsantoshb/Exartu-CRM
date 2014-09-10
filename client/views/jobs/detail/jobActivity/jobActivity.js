@@ -1,4 +1,5 @@
-var jobActivities=[Enums.activitiesType.placementEdit, Enums.activitiesType.placementAdd,Enums.activitiesType.jobAdd];
+var jobActivities=[Enums.activitiesType.placementEdit, Enums.activitiesType.placementAdd,
+  Enums.activitiesType.jobAdd, Enums.activitiesType.assignmentAdd, Enums.activitiesType.candidateAdd];
 
   Template.jobActivity.helpers({
   isAny: function(){
@@ -9,7 +10,12 @@ var jobActivities=[Enums.activitiesType.placementEdit, Enums.activitiesType.plac
   },
   activities: function(){
       return Activities.find({
-        entityId: Session.get('entityId'),
+        $or:[
+          {
+            'data.job': Session.get('entityId')
+          },{
+            entityId: Session.get('entityId')
+          }],
         type: {$in: jobActivities}
       },{sort: {
         'data.dateCreated': -1
@@ -17,30 +23,19 @@ var jobActivities=[Enums.activitiesType.placementEdit, Enums.activitiesType.plac
   }
 });
 
-
-var  userName= function(userId){
+UI.registerHelper('userName',function(userId){
   var user= Meteor.users.findOne({_id: userId});
   return user && user.username;
-};
-var employeeName= function(employeeId){
+});
+UI.registerHelper('employeeName',function(employeeId){
   var emp= Contactables.findOne({_id: employeeId});
   return emp && emp.displayName;
-};
-
-Template.jobActivityPlacementsAdd.helpers({
-  userName: userName,
-  employeeName: employeeName
 });
 
 Template.jobActivityPlacementsEdit.helpers({
-  userName: userName,
-  employeeName: employeeName,
   employeeChanged:function(){
     return this.data.employee != this.data.oldEmployee;
   }
-});
-Template.jobActivityJobAdd.helpers({
-  userName: userName
 });
 UI.registerHelper('activityType', function(){
   switch (this.type){
@@ -50,6 +45,10 @@ UI.registerHelper('activityType', function(){
       return Template.jobActivityPlacementsAdd;
     case Enums.activitiesType.jobAdd:
       return Template.jobActivityJobAdd;
+    case Enums.activitiesType.assignmentAdd:
+      return Template.jobActivityAssignmentAdd;
+    case Enums.activitiesType.candidateAdd:
+      return Template.jobActivityCandidateAdd;
   }
 
 });

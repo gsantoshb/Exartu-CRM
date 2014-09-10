@@ -1,4 +1,4 @@
-Template.lookupActionFilterTemplate.created= function(){
+Template.lookupFilterActionTemplate.created= function(){
   this.data.selectedDep = new Deps.Dependency;
   this.data.selected = [];
   if (this.data.callback){
@@ -8,7 +8,7 @@ Template.lookupActionFilterTemplate.created= function(){
     },this));
   }
 };
-Template.lookupActionFilterTemplate.getOptions = function(){
+Template.lookupFilterActionTemplate.getOptions = function(){
   return _.bind(function(){
     if (!this.options){
       this.options = _.map(LookUps.find({ lookUpCode: this.lookUpCode }).fetch(), function(lookup){
@@ -25,11 +25,11 @@ Template.lookupActionFilterTemplate.getOptions = function(){
     }, this);
   },this);
 };
-Template.lookupActionFilterTemplate.selectedValues = function(){
+Template.lookupFilterActionTemplate.selectedValues = function(){
   this.selectedDep.depend();
   return this.selected
 }
-Template.lookupActionFilterTemplate.add = function(){
+Template.lookupFilterActionTemplate.add = function(){
   return _.bind(function(value){
     if (this.options) {
       var option = _.findWhere(this.options, { id: value });
@@ -40,7 +40,7 @@ Template.lookupActionFilterTemplate.add = function(){
     }
   }, this);
 };
-Template.lookupActionFilterTemplate.events({
+Template.lookupFilterActionTemplate.events({
   'click .removeSelection':function(e, ctx){
     ctx.data.selectedDep.changed();
     ctx.data.selected.splice(ctx.data.selected.indexOf(this), 1);
