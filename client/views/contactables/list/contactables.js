@@ -104,7 +104,8 @@ var query = new Utils.ObjectDefinition({
     },
     limit: {
       default: 15
-    }
+    },
+    location: {},
   }
 });
 
@@ -138,6 +139,22 @@ Template.contactablesListItem.isESSearch = function() {
   return !_.isEmpty(query.searchString.value);
 };
 
+var locationFields = ['address', 'city', 'state', 'country'];
+
+var getLocationTagValue = function(locationField, locationFields) {
+  var regex = new RegExp('(?:'+ locationField + ':)((?!'+ locationFields.filter(function(field) {
+    return field != locationField;
+  }).map(function(field){
+    return field + ':';
+  }).join('|') +').)*', 'ig');
+  var match = regex.exec(query.location.value);
+  var value;
+  if (match) 
+    value = match[0].substring(locationField.length + 1).trim();
+
+  return value;
+};
+
 // Elasticsearch
 var esDep = new Deps.Dependency;
 var esResult = [];
@@ -151,8 +168,9 @@ Meteor.autorun(function() {
   // Process filters
   var filters = {
     bool: {
-      must: []
-    } 
+      must: [],
+      should: []
+    },
   };
 
   // Contactable type
@@ -187,6 +205,30 @@ Meteor.autorun(function() {
       })
     });
     filters.bool.must.push(activeStatusFilter);
+  }
+
+  // Location filter
+  var locationOperatorMatch = false;
+  if (query.location.value) {
+    _.forEach(locationFields, function(locationField) {
+      var value = getLocationTagValue(locationField, locationFields);
+
+      if (value) {
+        locationOperatorMatch = true;
+        var aux = { regexp: {}};
+        aux.regexp['location.' + locationField] = '.*' + value + '.*';
+        filters.bool.must.push(aux); 
+      }
+    });
+  }
+
+  // If not location operator match is used then search on each field
+  if (query.location.value && !locationOperatorMatch) {
+    _.forEach(locationFields, function(locationField) {
+      var aux = { regexp: {}};
+      aux.regexp['location.' + locationField] = '.*' + query.location.value + '.*';
+      filters.bool.should.push(aux); 
+    });
   }
 
   isSearching = true;
@@ -227,7 +269,9 @@ var getActiveStatuses = function(objName){
 }
 
 Template.contactablesList.contactables = function() {
-  var searchQuery = {};
+  var searchQuery = {
+    $and: [] // Push each $or operator here
+  };
 
   // Dependencies
   esDep.depend();
@@ -248,7 +292,9 @@ Template.contactablesList.contactables = function() {
   }
 
   if (! query.inactives.value) {
-    searchQuery.$or=[];
+    var inactiveStatusOR = {
+      $or: []
+    };
     var activeStatuses;
     var aux;
     _.each(['Employee', 'Contact', 'Customer'], function(objName){
@@ -258,16 +304,56 @@ Template.contactablesList.contactables = function() {
         aux[objName + '.status'] = {
           $in: activeStatuses
         };
-        searchQuery.$or.push(aux)
+        inactiveStatusOR.$or.push(aux)
       }
     })
+    searchQuery.$and.push(inactiveStatusOR);
   }
 
+  // Location filter
+  var locationOperatorMatch = false;
+  if (query.location.value) {
+    _.forEach(locationFields, function(locationField) {
+      var value = getLocationTagValue(locationField, locationFields);
+
+      if (value) {
+        locationOperatorMatch = true;
+        var aux = { term: {}};
+        searchQuery['location.' + locationField] = {
+          $regex: value,
+          $options: 'i'
+        };
+      }
+    });
+  }
+
+  // If not location operator match is used then search on each field
+  if (query.location.value && !locationOperatorMatch) {
+    var locationOR = {
+      $or: []
+    };
+    _.forEach(locationFields, function(locationField) {
+      var aux = {};
+      aux['location.' + locationField] = {
+        $regex: query.location.value,
+        $options: 'i'
+      };
+      locationOR.$or.push(aux);
+    });
+    searchQuery.$and.push(locationOR);
+  }
+
+  console.log(searchQuery.$and)
+
+  // Tags filter
   if (query.tags.value.length > 0) {
     searchQuery.tags = {
       $in: query.tags.value
     };
   }
+
+  if (searchQuery.$and.length == 0)
+    delete searchQuery.$and;
 
   var contactables = Contactables.find(searchQuery, {limit: query.limit.value});
 
