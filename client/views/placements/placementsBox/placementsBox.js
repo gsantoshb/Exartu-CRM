@@ -15,7 +15,7 @@ var timeLimits = {
 
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
-    candidateActionOptions:{ default: ['submittals','sendouts','placed']},
+    candidateActionOptions:{ default: ['Submittal','Sendout','Placed']},
     placementsCount: {},
     objType: {},
     isRecentDaySelected: {
@@ -91,7 +91,7 @@ Template.placementsList.info = function() {
   info.isFiltering.value = Placements.find().count() != 0;
   return info;
 };
-console.log('info1',info);
+
 var placementTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.placement });
 };
@@ -115,6 +115,14 @@ var getActiveStatuses = function(objName){
   }
   return null;
 }
+
+var getCandidateStatuses = function(objname){
+  var code = Enums.lookUpTypes["candidate"].status.lookUpCode;
+  var lkps= LookUps.find( { lookUpCode:code, lookUpActions: { $in: [ objname ] }}).fetch();
+  var ids= _.map(lkps,function(doc) { console.log('doc',doc); return doc._id;});
+  return ids;
+};
+
 Template.placementsList.placements = function() {
   var searchQuery = {};
   searchDep.depend();
@@ -159,17 +167,27 @@ Template.placementsList.placements = function() {
     searchQuery.$or=[];
     var activeStatuses;
     var aux;
-    _.each(['placement'], function(objName){
-      activeStatuses = getActiveStatuses(objName);
+      activeStatuses = getActiveStatuses('placement');
       if (_.isArray(activeStatuses) && activeStatuses.length > 0){
         aux={};
         aux['placementStatus'] = {
           $in: activeStatuses
         };
-
         searchQuery.$or.push(aux)
       }
-    })
+  }
+
+  if ( query.candidateAction.value!= '' ) {
+    var aux;
+    var candidateStatuses = getCandidateStatuses(query.candidateAction.value.valueOf());
+      if (_.isArray(candidateStatuses) && candidateStatuses.length > 0){
+        aux={};
+        aux['candidateStatus'] = {
+          $in: candidateStatuses
+        };
+        if (!searchQuery.$or) searchQuery.$or=[];
+        searchQuery.$or.push(aux)
+      }
   }
 
   if (query.tags.value.length > 0) {
@@ -181,7 +199,7 @@ Template.placementsList.placements = function() {
   if (query.statuses.value.length){
     searchQuery.candidateStatus = {$in: query.statuses.value};
   }
-
+  console.log('query',searchQuery);
   var placements = Placements.find(searchQuery, {});
   return placements;
 };
@@ -276,7 +294,6 @@ var addTag = function() {
 
 Template.placementsFilters.candidateActionOptions= function()
 {
-  console.log('info',info,'val',info.candidateActionOptions.value);
   return info.candidateActionOptions.value;
 }
 
@@ -309,8 +326,8 @@ Template.placementsFilters.events = {
     query.selectedLimit.value = timeLimits.year;
   },
   'click .typeSelect': function(e) {
-    if (query.candidateAction.value == this){
-      query.objType.value= null;
+    if (query.candidateAction.value.valueOf() == this.valueOf()){
+      query.candidateAction.value= {};
     }else{
       query.candidateAction.value= this;
     }
