@@ -49,6 +49,10 @@ Template.notesItem.getUrl = function(link) {
   return Utils.getHrefFromLink(link);
 };
 
+Template.notesItem.formatMsg = function(msg) {
+  return msg.replace(/\r?\n/g,'<br/>');
+};
+
 Template.notesItem.events = {
   'change #search-string': function(e) {
     searchString = e.currentTarget.value;
