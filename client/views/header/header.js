@@ -9,8 +9,11 @@ Template.header.helpers({
         }
         return '/assets/user-photo-placeholder.jpg';
     },
-    user: function(){
-        return Meteor.user();
+    userName: function(){
+        return Meteor.user().username;
+    },
+    userEmail: function(){
+      return Meteor.user().emails[0].address;
     },
     UnreadMessagesCount: function(){
         return Messages.find({

@@ -63,7 +63,7 @@ Template.jobRates.helpers({
     });
   },
   colorJobRateEdit: function() {
-    return self.editMode ? '#008DFC' : '#ddd';
+    return self.editMode ? '#008DFC' : '';
   }
 });
 Template.jobRates.events({

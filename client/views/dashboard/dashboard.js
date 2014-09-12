@@ -92,7 +92,6 @@ Template.dashboard.helpers({
       var ids = contactables.concat(jobs).concat(task);
       f.entityId= { $in: ids };
     }
-    console.log('queryoptions',query.options);
     return Activities.find(f, query.options);
   },
   customerHistory: function(){

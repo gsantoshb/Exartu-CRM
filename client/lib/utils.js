@@ -240,11 +240,26 @@ Utils.Validators.stringNotEmpty = function() {
 }
 
 Utils.getLocation = function (googleLocation) {
+  var address, city, state, country; 
+  _.forEach(googleLocation.address_components, function(component) {
+    if (_.findWhere(component.types, 'route'))
+      address = component.long_name;
+    if (_.findWhere(component.types, 'locality'))
+      city = component.long_name;
+    if (_.findWhere(component.types, 'administrative_area_level_1'))
+      state = component.long_name;
+    if (_.findWhere(component.types, 'country'))
+      country = component.long_name;
+  });
 
   return {
     displayName: googleLocation.formatted_address,
     lat: googleLocation.geometry.location.lat(),
-    lng: googleLocation.geometry.location.lng()
+    lng: googleLocation.geometry.location.lng(),
+    address: address,
+    city: city,
+    state: state,
+    country: country
   }
 }
 
@@ -534,13 +549,13 @@ Utils.setDecimal= function(rate) {
 Utils.contactMethodTypeIcon = function(type) {
   switch(type) {
     case Enums.contactMethodTypes.phone:
-      return 'icon-phone-3';
+      return 'fa fa-phone';
       break;
     case Enums.contactMethodTypes.email:
-      return 'icon-address-1';
+      return 'fa fa-envelope-o';
       break;
     case Enums.contactMethodTypes.other:
-      return '';
+      return 'fa fa-comment-o';
       break;
   }
 };
@@ -555,4 +570,7 @@ Utils.contactMethodTypePrefix = function(type) {
     case Enums.contactMethodTypes.other:
       return '';
   }
+};
+Utils.users =function(){
+  return Meteor.users.find({});
 };

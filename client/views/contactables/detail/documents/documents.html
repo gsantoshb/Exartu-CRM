@@ -81,10 +81,10 @@
                     <div class="list-3-content-wrap">
                         <div class="list-3-actions">
                             <span class="bullet-spacer">·</span>
-                            <a class="cancel" href="#"><i class="fa fa-trash-o"></i> Cancel</a>
+                            <a class="cancel pointer"><i class="fa fa-trash-o"></i> Cancel</a>
                         </div>
                         <div class="list-3-item-meta-top">{{this.type}}</div>
-                        <h4 class="list-3-item-title"><a href="#">{{metadata.name}}</a></h4>
+                        <h4 class="list-3-item-title"><a class="pointer">{{metadata.name}}</a></h4>
                         {{#unless this.isUploaded}}
                             {{> fileProgress .}}
                         {{/unless}}
@@ -104,7 +104,7 @@
                         <div class="list-3-actions">
                             <a class="download" target="_blank" href="{{url}}" download="{{metadata.name}}"><i class="fa fa-download"></i> Download</a>
                             <span class="bullet-spacer">·</span>
-                            <a class="delete" href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                            <a class="delete pointer"><i class="fa fa-trash-o"></i> Delete</a>
                         </div>
                         <div class="list-3-item-meta-top">{{this.type}}</div>
                         <h4 class="list-3-item-title"><a href="#">{{metadata.name}}</a></h4>

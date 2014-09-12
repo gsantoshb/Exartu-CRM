@@ -64,15 +64,17 @@
 </template>
 
 <template name="jobActivityPlacementsEdit">
-    {{#if employeeChanged}}
-        {{userName userId}} Assigned <a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
-    {{else}}
-        {{userName userId}} Edited the placement
-    {{/if}}
+    {{userName userId}} Edited the <a href="/placement/{{entityId}}"> placement </a>
 </template>
 <template name="jobActivityPlacementsAdd">
-    {{userName userId}} Assigned <a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
+    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">Added </a><a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
+</template>
+<template name="jobActivityAssignmentAdd">
+    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">Assigned </a><a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
+</template>
+<template name="jobActivityCandidateAdd">
+    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">Added as Candidate </a><a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
 </template>
 <template name="jobActivityJobAdd">
-    {{userName userId}} Created <a href="/job/{{entityId}}">{{data.publicJobTitle}}</a>
+    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">Created </a><a href="/job/{{entityId}}">{{data.publicJobTitle}}</a>
 </template>

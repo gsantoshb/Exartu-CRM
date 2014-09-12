@@ -32,7 +32,7 @@
     {{#if pictureFileId}}
         <div class="profile-pic">
             <div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">
-                <a href="#" id="edit-pic" title="Click to Edit">
+                <a id="edit-pic" title="Click to Edit" class="pointer">
                     <img class="" src="{{pictureUrl}}" style="max-height: 40px;max-width: 40px;">
                 </a>
             </div>
@@ -102,7 +102,7 @@
         {{#if location}}
             <span>{{location.displayName}}</span>
         {{else}}
-            <a class="addLocation" href="#"><em class="text-muted"> Click here to add an address </em></a>
+            <a class="addLocation pointer"><em class="text-muted"> Click here to add an address </em></a>
         {{/if}}
     </p>
 
@@ -223,7 +223,7 @@
             <h1>Loading</h1>
         </div>
         <div id="breadcrumb">
-            <a href="#" title="" class="tip-bottom" data-original-title="Go to Home"><i class="fa fa-home"></i> Home</a>
+            <a href="/" title="" class="tip-bottom" data-original-title="Go to Home"><i class="fa fa-home"></i> Home</a>
         </div>
         <div class="container-fluid">
 

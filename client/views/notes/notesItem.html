@@ -34,13 +34,13 @@
                             <div class="table-item-cell">
                                 <div class="table-item-cell-container">
                                     <div class="table-item-title">
-                                        <span class="text text-info"> {{msg}}</span>
+                                        <p class="text text-info"> {{{formatMsg msg}}}</p>
                                     </div>
                                     <div class="task-author">
                                         by
                                         {{#if userId}}
                                             {{#userInfo userId=userId}}
-                                                <a href="#"><strong id="username"> {{username}} </strong></a>
+                                                <a class="pointer"><strong id="username"> {{username}} </strong></a>
                                             {{/userInfo}}
                                         {{/if}}
                                         linked with

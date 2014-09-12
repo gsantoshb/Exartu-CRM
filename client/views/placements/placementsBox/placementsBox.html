@@ -34,9 +34,16 @@
         <div class="filter-list" id="filter-body">
             <div class="filter-item">
                 <div class="item-body">
-                    {{>lookupFilterTemplate lookUpCode=10 callback=statusChanged}}
+                    {{#each candidateActionOptions}}
+                    <button type="button" class="typeSelect {{candidateActionClass .}}">{{.}}</button>
+                    {{/each}}
                 </div>
             </div>
+            <!--<div class="filter-item">-->
+                <!--<div class="item-body">-->
+                    <!--{{>lookupFilterTemplate lookUpCode=10 callback=statusChanged}}-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="filter-item">
 
                 <div class="item-body">
