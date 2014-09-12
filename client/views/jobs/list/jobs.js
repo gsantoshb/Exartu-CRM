@@ -163,8 +163,18 @@ Template.jobsList.jobs = function() {
   var searchQuery = {
     $and: [] // Push each $or operator here
   };
+  var options = {limit: query.limit.value};
 
   searchDep.depend();
+  selectedSortDep.depend();
+
+  // Sort by
+  if (selectedSort) {
+    options.sort = {};
+    options.sort[selectedSort.field] = selectedSort.value;
+  } else {
+    delete options.sort;
+  }
 
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
@@ -256,7 +266,7 @@ Template.jobsList.jobs = function() {
   if (searchQuery.$and.length == 0)
     delete searchQuery.$and;
 
-  var jobs = Jobs.find(searchQuery, {limit: query.limit.value});
+  var jobs = Jobs.find(searchQuery, options);
 
   return jobs;
 };
@@ -276,6 +286,53 @@ Template.jobs.information = function() {
 
 Template.jobs.showMore = function() {
   return function() { query.limit.value = query.limit.value + 15 };
+};
+
+// List sorting
+
+var selectedSort;
+var selectedSortDep = new Deps.Dependency;
+var sortFields = [
+  {field: 'startDate', displayName: 'Start date'},
+  {field: 'endDate', displayName: 'End date'}
+];
+
+Template.jobsListSort.sortFields = function() {
+  return sortFields;
+};
+
+Template.jobsListSort.selectedSort = function() {
+  selectedSortDep.depend();
+  return selectedSort;
+};
+
+Template.jobsListSort.isFieldSelected = function(field) {
+  selectedSortDep.depend();
+  return selectedSort && selectedSort.field == field.field;
+};
+
+Template.jobsListSort.isAscSort = function(field) {
+  selectedSortDep.depend();
+  return field.value == 1;
+};
+
+var setSortField = function(field) {
+  if (selectedSort && selectedSort.field == field.field) {
+    if (selectedSort.value == 1)
+      selectedSort = undefined;
+    else
+      selectedSort.value = 1;
+  } else {
+    selectedSort = field;
+    selectedSort.value = -1;
+  }
+  selectedSortDep.changed();
+};
+
+Template.jobsListSort.events = {
+  'click .sort-field': function() {
+    setSortField(this);
+  }
 };
 
 // List search
