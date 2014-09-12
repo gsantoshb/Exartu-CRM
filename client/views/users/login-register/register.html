@@ -17,12 +17,12 @@
                 {{#if isRegistering}}
                 {{#autoForm schema="RegisterSchema" id="registerForm" validation="blur"}}
                     <fieldset>
-                        <div class="form-group {{#if afFieldIsInvalid name='username'}}has-error{{/if}}">
-                            {{> afFieldInput name='username' class="input-lg" placeholder="Choose your Exartu username"}}
-                            {{#if afFieldIsInvalid name='username'}}
-                            <span class="help-block">{{afFieldMessage name='username'}}</span>
-                            {{/if}}
-                        </div>
+                        <!--<div class="form-group {{#if afFieldIsInvalid name='username'}}has-error{{/if}}">-->
+                            <!--{{> afFieldInput name='username' class="input-lg" placeholder="Choose your Exartu username"}}-->
+                            <!--{{#if afFieldIsInvalid name='username'}}-->
+                            <!--<span class="help-block">{{afFieldMessage name='username'}}</span>-->
+                            <!--{{/if}}-->
+                        <!--</div>-->
 
                         <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
                             {{> afFieldInput name='email' class="input-lg" placeholder="Email"}}
