@@ -7,15 +7,21 @@ Meteor.methods({
     return Meteor.users.findOne({ emails: { $elemMatch: { address: email } } }) == null;
   },
 
-  registerAccount: function (document) {
+  registerAccount: function (document, skipEmailVerification) {
     // Check username and email
     if (Meteor.call('isUsernameAvailable', document.username) &&
         Meteor.call('isEmailAvailable', document.email)) {
 
       // Create account
       var userId = Accounts.createUser({ username: document.username, email: document.email, password: document.password });
-      Accounts.sendVerificationEmail(userId);
-      return true;
+
+      if (!skipEmailVerification) {
+        Accounts.sendVerificationEmail(userId);
+      } else {
+        Meteor.users.update({_id: userId, 'emails.address':  document.email}, {$set: { 'emails.$.verified':  true}});
+      }
+
+      return userId;
     }
 
     return false;
