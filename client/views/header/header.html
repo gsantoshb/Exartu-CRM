@@ -8,7 +8,12 @@
                         <span class="user-menu-thumb">
                             <img class="img-responsive" style="max-height:26px; max-width:26px" src="{{userThumbnail}}">
                         </span>
-                        <span class="msg-author">{{user.username}}</span>
+                        {{#if userName}}
+                            <span class="msg-author">{{userName}}</span>
+                        {{else}}
+                            <span class="msg-author">{{userEmail}}</span>
+                        {{/if}}
+
                     </a>
                 </li>
                 <li class="btn dropdown" id="menu-settings">

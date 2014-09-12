@@ -35,6 +35,8 @@ UI.registerHelper('displayProperty', function(){
       template.events({
         'blur input': function(e){
           switch (this.fieldType) {
+            case 'lookUp':
+              break; // Nothing to do here, the value is updated select2's callback onSelect
             case 'number':
               this.value=Number.parseFloat(e.target.value);
               break;
@@ -42,13 +44,9 @@ UI.registerHelper('displayProperty', function(){
               this.value=e.target.value;
           }
           dType.isValidField(this);
-        },
-        'change select':function(e){
-          this.value = e.target.value == 'null' ? null : e.target.value;
-          dType.isValidField(this);
-        },
-
+        }
       });
+
       return template
     }
     else{
@@ -89,13 +87,25 @@ Template.fieldInput.helpers({
 
 Template.lookUpFieldInput.helpers({
   options: function(){
-    return LookUps.find({ lookUpCode: this.lookUpCode, inactive: { $ne: true } }, { sort: { displayName: 1 } });
+    return LookUps.find({ lookUpCode: this.lookUpCode, inactive: { $ne: true } }, { sort: { displayName: 1 } }).map(function(option) {
+      return {
+        id: option._id,
+        text: option.displayName
+      }
+    });
   },
   hasError :function(){
     return this.isValid ? '': 'error';
   },
   isSelected: function(value, selected){
     return value==selected;
+  },
+  select: function() {
+    var self = this;
+    return function(value){
+      self.value = value;
+      dType.isValidField(self);
+    };
   }
 });
 

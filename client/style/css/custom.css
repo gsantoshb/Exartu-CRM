@@ -763,11 +763,14 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 /************ end  boxes inside tabs*******************/
 
 /************** select 2 ******************************/
+
 .select2-container .select2-choice{
     border-radius: 4px;
     background-image: none;
     border-color: #ccc;
     background-color: #fff;
+    height: 46px;
+    line-height: 46px;
 }
 .select2-container .select2-choice .select2-arrow{
     border-radius: 0px;
@@ -775,6 +778,14 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     background-color: #E7E7E7;
     background-color: #fff;
     border: none;
+}
+
+.select2-chosen {
+    height: 46px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 6px;
 }
 
 .select2-container .select2-choice .select2-arrow b{
