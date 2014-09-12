@@ -111,6 +111,18 @@
                     </div>
                 </div>
             </div>
+            <div class="filter-item">
+                <hr/>
+                <div class="input-group">
+                    {{#objectProperty property=query.location}}
+                        <input type="text" class="form-control" placeholder="Filter by location" value="{{value}}">
+                    {{/objectProperty}}
+                    <span class="input-group-btn">
+                      <button class="add-tag btn btn-success" type="button"><span class="fa fa-map-marker"></span></button>
+                    </span>
+                </div>
+                <small class="text-muted"> Search using tags, for example, city: San Francisco, or free text</small>
+            </div>
         </div>
     </div>
 </template>
