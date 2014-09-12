@@ -46,7 +46,7 @@ Template.jobActivityJobAdd.helpers({
 });
 
 UI.registerHelper('contactableActivityType', function(){
-//  console.log('act type',this,this.type);
+  //console.log('act type',this,this.type);
   switch (this.type){
 
     case Enums.activitiesType.placementEdit:

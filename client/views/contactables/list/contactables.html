@@ -66,6 +66,15 @@
                     {{/each}}
                 </div>
             </div>
+            {{#if isSelectedType 'Employee'}}
+                <hr>
+                <div class="filter-item">
+                    <div class="item-body">
+                        {{>lookupFilterTemplate lookUpCode=10 callback=candidateeStatusChanged multi=false}}
+                    </div>
+                </div>
+                <hr>
+            {{/if}}
             <div class="filter-item">
 
                 <div class="item-body">
