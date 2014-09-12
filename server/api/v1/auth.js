@@ -103,14 +103,11 @@ Router.map(function() {
           var data = this.request.body;
 
           try {
-            if (!data.username || !data.email)
-              throw new Meteor.Error(500, 'Email and username are required');
+            if (!data.email)
+              throw new Meteor.Error(500, 'Email is required');
 
             if (!data.password)
               throw new Meteor.Error(500, 'Password is required');
-
-            if (!isFieldValueUnique('username', data.username))
-              throw new Meteor.Error(500, 'Username already in use');
 
             if (!isFieldValueUnique('emails.address', data.email))
               throw new Meteor.Error(500, 'Email already in use');
