@@ -42,8 +42,8 @@
             </ul>
         </div>
         <div id="breadcrumb">
-            <a href="#" title="Go to Home" class="tip-bottom">Home</a>
-            <a href="#" class="current">Dashboard</a>
+            <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+            <a href="/" class="current">Dashboard</a>
         </div>
 
         <div class="container-fluid">
@@ -154,7 +154,7 @@
                     <h4 class="item-title">
                         Task
                         <span class="spacer">–</span>
-                        <a href="#">
+                        <a class="pointer">
                             <strong>{{data.msg}}</strong>
                         </a>
                         Assigned to
@@ -164,10 +164,10 @@
 
                     </h4>
                     <div class="item-actions">
-                        <a class="btn btn-default tip-bottom" title="Task Owner" href="#">by
+                        <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
                             <span data-bind="text: username"> {{getUserName userId}} </span>
                         </a>
-                        <a class="btn btn-default tip-bottom" title="Task Start Date" href="#">
+                        <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
                             <i class="fa fa-calendar"></i>
                             Start:
                             <span>
@@ -177,7 +177,7 @@
                             </span>
                         </a>
                         {{#if data.end}}
-                            <a class="btn btn-default tip-bottom" title="Task Start Date" href="#">
+                            <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
                                 <i class="fa fa-calendar"></i>
                                 End:
                                 <span>

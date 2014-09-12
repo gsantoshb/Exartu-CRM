@@ -1,5 +1,6 @@
 
-var contactableActivities=[Enums.activitiesType.contactableAdd,Enums.activitiesType.placementEdit, Enums.activitiesType.placementAdd,Enums.activitiesType.jobAdd];
+var contactableActivities=[Enums.activitiesType.contactableAdd,Enums.activitiesType.taskAdd,Enums.activitiesType.placementEdit,
+    Enums.activitiesType.placementAdd,Enums.activitiesType.jobAdd];
 
   Template.contactableActivity.helpers({
   isAny: function(){
@@ -45,7 +46,7 @@ Template.jobActivityJobAdd.helpers({
 });
 
 UI.registerHelper('contactableActivityType', function(){
-  console.log('act type',this,this.type);
+//  console.log('act type',this,this.type);
   switch (this.type){
 
     case Enums.activitiesType.placementEdit:

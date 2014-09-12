@@ -36,7 +36,7 @@
                             <fieldset>
                                 <div class="form-group {{hasError 'assign'}}">
                                     <label class="control-label">Assign:</label>
-                                    <select class="form-control assign" multiple>
+                                    <select class="form-control assign" >
                                         {{#each users}}
                                             <option value="{{_id}}" selected="{{isSelected}}">{{username}}</option>
                                         {{/each}}

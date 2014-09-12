@@ -63,9 +63,6 @@ Template.addPlacementPage.helpers({
   },
   isSelected: function(id){
     return employeeId==id;
-  },
-  log: function(){
-    console.log('this',this);
   }
 });
 

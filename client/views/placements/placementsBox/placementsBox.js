@@ -15,6 +15,7 @@ var timeLimits = {
 
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
+    candidateActionOptions:{ default: ['Submittal','Sendout','Placed']},
     placementsCount: {},
     objType: {},
     isRecentDaySelected: {
@@ -38,11 +39,16 @@ var info = new Utils.ObjectDefinition({
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
     searchString: {},
+    candidateAction: {},
     inactives: {
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
     },
     onlyRecents: {
+      type: Utils.ReactivePropertyTypes.boolean,
+      default: false
+    },
+    mineOnly: {
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
     },
@@ -62,6 +68,9 @@ var query = new Utils.ObjectDefinition({
     }
   }
 });
+
+
+
 
 Template.placementsBox.created = function(){
   query.limit.value = 20;
@@ -106,16 +115,23 @@ var getActiveStatuses = function(objName){
   }
   return null;
 }
+
+var getCandidateStatuses = function(objname){
+  var code = Enums.lookUpTypes["candidate"].status.lookUpCode;
+  var lkps= LookUps.find( { lookUpCode:code, lookUpActions: { $in: [ objname ] }}).fetch();
+  var ids= _.map(lkps,function(doc) {  return doc._id;});
+  return ids;
+};
+
 Template.placementsList.placements = function() {
   var searchQuery = {};
   searchDep.depend();
   if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
   if (entityType==Enums.linkTypes.contactable.value)
   {
-    if (contactable.customer) searchQuery.customer=Session.get('entityId');
-    if (contactable.employee) searchQuery.employee=Session.get('entityId');
+    if (contactable.Customer) searchQuery.customer=Session.get('entityId');
+    if (contactable.Employee) searchQuery.employee=Session.get('entityId');
   }
-
   if (!_.isEmpty(query.searchString.value)) {
     var stringSearches=[];
     _.each(searchFields, function (field) {
@@ -141,21 +157,36 @@ Template.placementsList.placements = function() {
     };
   }
 
+  if (query.mineOnly.value)
+  {
+    searchQuery.userId=Meteor.userId();
+  }
+
   if (! query.inactives.value) {
-    searchQuery.$or=[];
+
     var activeStatuses;
     var aux;
-    _.each(['placement'], function(objName){
-      activeStatuses = getActiveStatuses(objName);
+      activeStatuses = getActiveStatuses('placement');
       if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-        aux={};
-        aux['placementStatus'] = {
+        searchQuery.placementStatus={
           $in: activeStatuses
         };
-
-        searchQuery.$or.push(aux)
       }
-    })
+  }
+
+  if ( !_.isEmpty(query.candidateAction.value) ) {
+    var candidateStatuses = getCandidateStatuses(query.candidateAction.value.valueOf());
+    if (_.isArray(candidateStatuses) && candidateStatuses.length > 0){
+      searchQuery.candidateStatus={
+        $in: candidateStatuses
+      };
+
+    }
+    else
+    {
+      // if here then no candidate statuses match the desired one so must return no rows
+      searchQuery.candidateStatus={true:false};
+    }
   }
 
   if (query.tags.value.length > 0) {
@@ -167,7 +198,6 @@ Template.placementsList.placements = function() {
   if (query.statuses.value.length){
     searchQuery.candidateStatus = {$in: query.statuses.value};
   }
-
   var placements = Placements.find(searchQuery, {});
   return placements;
 };
@@ -215,7 +245,10 @@ Template.placementsFilters.typeOptionClass = function(option) {
   return query.objType.value == option.name? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
 
 };
+Template.placementsFilters.candidateActionClass = function(option) {
+  return query.candidateAction.value == option ? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
 
+};
 
 Template.placementsFilters.recentOptionClass = function(option) {
   return query.selectedLimit.value == option? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
@@ -257,6 +290,11 @@ var addTag = function() {
   inputTag.focus();
 };
 
+Template.placementsFilters.candidateActionOptions= function()
+{
+  return info.candidateActionOptions.value;
+}
+
 Template.placementsFilters.events = {
   'click .add-tag': function() {
     addTag();
@@ -286,10 +324,10 @@ Template.placementsFilters.events = {
     query.selectedLimit.value = timeLimits.year;
   },
   'click .typeSelect': function(e) {
-    if (query.objType.value == this.name){
-      query.objType.value= null;
+    if (query.candidateAction.value.valueOf() == this.valueOf()){
+      query.candidateAction.value= {};
     }else{
-      query.objType.value= this.name;
+      query.candidateAction.value= this;
     }
   }
 };

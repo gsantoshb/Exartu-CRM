@@ -29,7 +29,7 @@ Template.jobDetail.helpers({
     return self.editMode;
   },
   colorEdit:function(){
-    return self.editMode ? '#008DFC' : '#ddd'
+    return self.editMode ? '#008DFC' : ''
   },
   isType:function(typeName){
     return !! Jobs.findOne({ _id: Session.get('entityId'), objNameArray: typeName});

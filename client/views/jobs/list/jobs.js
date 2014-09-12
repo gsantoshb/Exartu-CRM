@@ -12,7 +12,7 @@ JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ObjTypesHandler, JobHandler, PlacementHandler];
+    return [ObjTypesHandler, JobHandler, PlacementHandler, LookUpsHandler];
   },
   action: function () {
     if (!this.ready()) {
