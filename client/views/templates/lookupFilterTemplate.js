@@ -1,57 +1,31 @@
-Template.lookupFilterTemplate.created= function(){
-  this.data.selectedDep = new Deps.Dependency;
-  this.data.selected = [];
-  if (this.data.callback){
-    Meteor.autorun(_.bind(function(){
-      this.data.selectedDep.depend();
-      this.data.callback(_.map(this.data.selected, function(option){ return option.id;}));
-    },this));
-  }
+Template.lookupFilterTemplate.templateName = function(){
+  return this.template || 'buttonGroup';
 };
-Template.lookupFilterTemplate.getOptions = function(){
-  return _.bind(function(){
-    if (!this.options){
-      this.options = _.map(LookUps.find({ lookUpCode: this.lookUpCode }).fetch(), function(lookup){
-        return {
-          id: lookup._id,
-          text: lookup.displayName
-        }
-      });
-    }
 
-    this.selectedDep.depend();
-    return _.reject(this.options, function(option){
-      return !!_.findWhere(this.selected,{id: option.id});
-    }, this);
-  },this);
-};
-Template.lookupFilterTemplate.selectedValues = function(){
-  this.selectedDep.depend();
-  return this.selected
-}
-Template.lookupFilterTemplate.add = function(){
-  return _.bind(function(value){
-    if (this.options) {
-      var option = _.findWhere(this.options, { id: value });
-      if (option) {
-        this.selected.push(option);
-        this.selectedDep.changed();
+Template.lookupFilterTemplate.templateContext = function(){
+  return {
+    options: _.map(LookUps.find({ lookUpCode: this.lookUpCode }).fetch(), function(lookup){
+      return {
+        id: lookup._id,
+        text: lookup.displayName
       }
-    }
-  }, this);
+    }),
+    onSelected: this.callback,
+    multi: this.multi,
+    title: this.title
+  };
 };
-Template.lookupFilterTemplate.events({
-  'click .removeSelection':function(e, ctx){
-    ctx.data.selectedDep.changed();
-    ctx.data.selected.splice(ctx.data.selected.indexOf(this), 1);
-  }
-});
+
+///////////////  select2 //////////////////////////////
 
 Template.select2.rendered = function(){
   if (this.data && _.isArray(this.data.options)){
     var options = this.data.options;
     this.$('#input').select2({
-      data: options
+      data: options,
+      multiple: this.data.multi,
+      allowClear: true,
+      placeholder: this.data.title
     });
   }
   if (this.data && _.isFunction(this.data.options)){
@@ -59,14 +33,62 @@ Template.select2.rendered = function(){
       var options = this.data.options();
       if (_.isArray(options)){
         this.$('#input').select2({
-          data: options
+          data: options,
+          allowClear: true
         });
       }
     }, this));
   }
-}
+};
+
+Template.select2.created=function(){
+  this.data.selected = this.data.multi ? [] : null;
+};
+
 Template.select2.events({
-  'select2-selected #input': function(e, ctx){
-    ctx.data && ctx.data.onSelected && ctx.data.onSelected(e.val);
+  'change #input': function(e, ctx){
+    ctx.data.selected = e.val;
+    ctx.data && ctx.data.onSelected && ctx.data.onSelected(ctx.data.selected);
+  }
+});
+
+
+///////////// button group //////////////////////////
+
+
+Template.buttonGroup.created = function(){
+  this.data.selected = this.data.multi ? [] : null;
+  this.data.selectedDep = new Deps.Dependency;
+};
+
+Template.buttonGroup.isSelectedClass = function(){
+  var templateCtx = UI._parentData(1);
+  templateCtx.selectedDep.depend();
+  if (templateCtx.multi){
+    return _.contains(templateCtx.selected, this.id) ? 'btn-primary' : 'btn-default';
+  }else{
+    return (templateCtx.selected == this.id) ? 'btn-primary' : 'btn-default';
+  }
+};
+
+Template.buttonGroup.events({
+  'click button': function(e, ctx){
+    var thisId = this.id;
+    if (ctx.data.multi){
+      var index = ctx.data.selected.indexOf(thisId);
+      if (index < 0){
+        ctx.data.selected.push(thisId);
+      }else{
+        ctx.data.selected.splice(index, 1);
+      }
+    }else{
+      if (ctx.data.selected == thisId){
+        ctx.data.selected = null
+      }else {
+        ctx.data.selected = thisId;
+      }
+    }
+    ctx.data.selectedDep.changed();
+    ctx.data && ctx.data.onSelected && ctx.data.onSelected(ctx.data.selected);
   }
 });

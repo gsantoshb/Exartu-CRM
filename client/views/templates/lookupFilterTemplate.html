@@ -1,16 +1,16 @@
 <template name="lookupFilterTemplate">
-    <div>
-        {{#each selectedValues}}
-            <span style="word-wrap: break-word">
-                <span>{{text}}</span>
-                <i class="fa fa-times removeSelection pointer"></i>
-            </span>
-            <br/>
-        {{/each}}
-    </div>
-    {{>select2 options=getOptions onSelected=add}}
+    {{> UI.dynamic template=templateName data=templateContext}}
 </template>
 
 <template name="select2">
     <input style="width: 100%" type='hidden' id="input"/>
+</template>
+
+<template name="buttonGroup">
+    <div>{{title}}</div>
+    {{#each options}}
+        <button class="btn btn-xs {{isSelectedClass}}">
+            {{text}}
+        </button>
+    {{/each}}
 </template>

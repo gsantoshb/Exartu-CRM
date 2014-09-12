@@ -785,6 +785,10 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     border-radius: 4px 4px 0px 0px;
     border-color: #5897fb;
 }
+
+.select2-container .select2-choice abbr, .select2-container .select2-choice .select2-arrow b, .select2-search input, .select2-search-choice-close{
+    background-image: url('/packages/select2/lib/select2/select2.png');
+}
 /********** end select 2 ******************************/
 
 
