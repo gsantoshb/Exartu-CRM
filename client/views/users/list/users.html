@@ -35,10 +35,17 @@
                         <!-- /.col-md-2-->
                         <div class="col-sm-3  text-small">
                             Created: <span class="table-item-cell">
-                            {{#formattedDate value=createdAt}}
+                            {{#formattedDate value=createdAt format='lll'}}
                                 {{date}}
                             {{/formattedDate}}
                             </span>
+                        </div>
+                        <div class="col-xs-6 col-sm-1">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" checked="{{isActive}}" class="inactive" /> Active
+                                </label>
+                            </div>
                         </div>
                         <!-- /.col-md-4-->
                         <!--<div class="col-sm-3">-->

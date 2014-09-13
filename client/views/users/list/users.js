@@ -25,31 +25,19 @@ Template.users.helpers({
 Template.users.events({
   "click .addUser": function () {
     Utils.showModal('addUser');
+  },
+  'change .inactive': function(e)
+  {
+    var upd={};
+    upd.$set= { isActive: e.target.checked };
+    console.log('upd',upd, e,this);
+    Meteor.users.update({_id: this._id}, upd, function(err) {
+      if (err) {
+        alert(err);
+      };
+    });
+
   }
 });
 
 
-//Template.users.viewModel = function () {
-//    var self = this;
-//
-//    self.removeGroup = function (role, user) {
-//        {
-//            var usr = ko.toJS(user);
-//            Meteor.users.update({
-//                _id: usr._id
-//            }, {
-//                $pull: {
-//                    roles: role
-//                }
-//            });
-//            Meteor.call('getHierUsers', function (err, result) {
-//                self.users(result);
-//            });
-//        }
-//    };
-//    Meteor.call('getHierUsers', function (err, result) {
-//        self.users(result);
-//    });
-//
-//    return self;
-//};

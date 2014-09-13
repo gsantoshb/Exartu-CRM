@@ -343,8 +343,6 @@ Template.contactablesList.contactables = function() {
     searchQuery.$and.push(locationOR);
   }
 
-  console.log(searchQuery.$and)
-
   // Tags filter
   if (query.tags.value.length > 0) {
     searchQuery.tags = {

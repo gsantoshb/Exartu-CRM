@@ -1,4 +1,5 @@
 Accounts.validateLoginAttempt(function(attempt) {
+  console.log('login attempt',attempt);
   if (!attempt.allowed)
     return false;
 
@@ -134,7 +135,8 @@ Meteor.publish(null, function () {
       "createdAt": 1,
       "roles": 1,
       "permissions": 1,
-      "lastCustomerUsed": 1
+      "lastCustomerUsed": 1,
+      "isActive":1
     }
   });
 });
@@ -202,9 +204,10 @@ Meteor.methods({
     options.email = user.email;
     options.password = user.password;
     options.roles = user.roles;
+    options.isActive=true;
 
     options.profile = {
-      hierId: hierId,
+      hierId: hierId
       // more information from user
     }
     var userId = Accounts.createUser(options);

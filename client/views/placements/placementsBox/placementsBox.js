@@ -163,9 +163,7 @@ Template.placementsList.placements = function() {
   }
 
   if (! query.inactives.value) {
-
     var activeStatuses;
-    var aux;
       activeStatuses = getActiveStatuses('placement');
       if (_.isArray(activeStatuses) && activeStatuses.length > 0){
         searchQuery.placementStatus={
