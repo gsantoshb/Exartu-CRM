@@ -8,21 +8,37 @@
             <a href="/" title="Go to Home" class="tip-bottom">Management</a>
             <a href="/users" class="current">Users</a>
         </div>
-        <div class="input-group col-sm-3">
-            {{#objectProperty property=filters.searchString editable=true}}
-            <input type="text" class="form-control" placeholder="Search users" value="{{value}}">
-            {{/objectProperty}}
 
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </span>
-        </div>
-        <button class="btn btn-link addUser">Add user</button>
         <div class="container-fluid">
+            <div class="actions-head">
+                <div class="row">
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+
+                        <div class="pull-left suffix-5">
+                            <!-- Single button -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success addUser dropdown-toggle" data-toggle="dropdown" title="Add">
+                                    <span class="fa fa-plus"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            {{#objectProperty property=filters.searchString}}
+                            <input type="text" class="form-control" placeholder="Search Users" value="{{value}}">
+                            {{/objectProperty}}
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div><!-- /.col-lg-5 -->
+                </div><!-- /.row -->
+            </div>
 
             <div class="table-items-box">
+
 
                 {{#each users}}
                    <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
