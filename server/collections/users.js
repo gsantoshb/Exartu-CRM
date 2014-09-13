@@ -136,7 +136,7 @@ Meteor.publish(null, function () {
       "roles": 1,
       "permissions": 1,
       "lastCustomerUsed": 1,
-      "isActive":1
+      "inactive":1
     }
   });
 });
@@ -204,7 +204,7 @@ Meteor.methods({
     options.email = user.email;
     options.password = user.password;
     options.roles = user.roles;
-    options.isActive=true;
+    options.inactive=false;
 
     options.profile = {
       hierId: hierId

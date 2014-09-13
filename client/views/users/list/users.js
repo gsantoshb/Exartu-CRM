@@ -19,6 +19,7 @@ UsersController = RouteController.extend({
 
 Template.users.helpers({
   users: function () {
+    console.log('users',Meteor.users.find().fetch());
     return Meteor.users.find();
   }
 });
@@ -29,8 +30,8 @@ Template.users.events({
   'change .inactive': function(e)
   {
     var upd={};
-    upd.$set= { isActive: e.target.checked };
-    console.log('upd',upd, e,this);
+    upd.$set= { inactive: e.target.checked };
+    console.log('upd',upd, e.target);
     Meteor.users.update({_id: this._id}, upd, function(err) {
       if (err) {
         alert(err);
