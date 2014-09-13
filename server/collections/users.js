@@ -2,7 +2,7 @@ Accounts.validateLoginAttempt(function(attempt) {
   console.log('login attempt',attempt);
   if (!attempt.allowed)
     return false;
-
+  if (attempt.user.inactive) return false;
   // users from applicantCenter
   if (attempt.user.origin){
     throw new Meteor.Error(403, 'User not found');
