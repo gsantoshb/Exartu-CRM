@@ -12,7 +12,7 @@ JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ObjTypesHandler, JobHandler, PlacementHandler];
+    return [ObjTypesHandler, JobHandler, PlacementHandler, LookUpsHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -104,7 +104,8 @@ var query = new Utils.ObjectDefinition({
     },
     limit: {
       default: 15
-    }
+    },
+    location: {},
   }
 });
 
@@ -123,7 +124,21 @@ var jobTypes = function() {
 };
 Template.jobsListSearch.jobTypes = jobTypes;
 
+var locationFields = ['address', 'city', 'state', 'country'];
 
+var getLocationTagValue = function(locationField, locationFields) {
+  var regex = new RegExp('(?:'+ locationField + ':)((?!'+ locationFields.filter(function(field) {
+    return field != locationField;
+  }).map(function(field){
+    return field + ':';
+  }).join('|') +').)*', 'ig');
+  var match = regex.exec(query.location.value);
+  var value;
+  if (match)
+    value = match[0].substring(locationField.length + 1).trim();
+
+  return value;
+};
 
 var searchDep = new Deps.Dependency;
 var isSearching = false;
@@ -145,9 +160,21 @@ var getActiveStatuses = function(objName){
   return null;
 }
 Template.jobsList.jobs = function() {
-  var searchQuery = {};
-  searchDep.depend();
+  var searchQuery = {
+    $and: [] // Push each $or operator here
+  };
+  var options = {limit: query.limit.value};
 
+  searchDep.depend();
+  selectedSortDep.depend();
+
+  // Sort by
+  if (selectedSort) {
+    options.sort = {};
+    options.sort[selectedSort.field] = selectedSort.value;
+  } else {
+    delete options.sort;
+  }
 
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
@@ -178,7 +205,9 @@ Template.jobsList.jobs = function() {
   }
 
   if (! query.inactives.value) {
-    searchQuery.$or=[];
+    var inactiveStatusOR = {
+      $or: []
+    };
     var activeStatuses;
     var aux;
     _.each(['job'], function(objName){
@@ -189,9 +218,10 @@ Template.jobsList.jobs = function() {
           $in: activeStatuses
         };
 
-        searchQuery.$or.push(aux)
+        inactiveStatusOR.$or.push(aux)
       }
     })
+    searchQuery.$and.push(inactiveStatusOR);
   }
 
   if (query.tags.value.length > 0) {
@@ -200,8 +230,43 @@ Template.jobsList.jobs = function() {
     };
   }
 
-  var jobs = Jobs.find(searchQuery, {limit: query.limit.value});
+  // Location filter
+  var locationOperatorMatch = false;
+  if (query.location.value) {
+    _.forEach(locationFields, function(locationField) {
+      var value = getLocationTagValue(locationField, locationFields);
 
+      if (value) {
+        locationOperatorMatch = true;
+        var aux = { term: {}};
+        searchQuery['location.' + locationField] = {
+          $regex: value,
+          $options: 'i'
+        };
+      }
+    });
+  }
+
+  // If not location operator match is used then search on each field
+  if (query.location.value && !locationOperatorMatch) {
+    var locationOR = {
+      $or: []
+    };
+    _.forEach(locationFields, function(locationField) {
+      var aux = {};
+      aux['location.' + locationField] = {
+        $regex: query.location.value,
+        $options: 'i'
+      };
+      locationOR.$or.push(aux);
+    });
+    searchQuery.$and.push(locationOR);
+  }
+
+  if (searchQuery.$and.length == 0)
+    delete searchQuery.$and;
+
+  var jobs = Jobs.find(searchQuery, options);
 
   return jobs;
 };
@@ -221,6 +286,53 @@ Template.jobs.information = function() {
 
 Template.jobs.showMore = function() {
   return function() { query.limit.value = query.limit.value + 15 };
+};
+
+// List sorting
+
+var selectedSort;
+var selectedSortDep = new Deps.Dependency;
+var sortFields = [
+  {field: 'startDate', displayName: 'Start date'},
+  {field: 'endDate', displayName: 'End date'}
+];
+
+Template.jobsListSort.sortFields = function() {
+  return sortFields;
+};
+
+Template.jobsListSort.selectedSort = function() {
+  selectedSortDep.depend();
+  return selectedSort;
+};
+
+Template.jobsListSort.isFieldSelected = function(field) {
+  selectedSortDep.depend();
+  return selectedSort && selectedSort.field == field.field;
+};
+
+Template.jobsListSort.isAscSort = function(field) {
+  selectedSortDep.depend();
+  return field.value == 1;
+};
+
+var setSortField = function(field) {
+  if (selectedSort && selectedSort.field == field.field) {
+    if (selectedSort.value == 1)
+      selectedSort = undefined;
+    else
+      selectedSort.value = 1;
+  } else {
+    selectedSort = field;
+    selectedSort.value = -1;
+  }
+  selectedSortDep.changed();
+};
+
+Template.jobsListSort.events = {
+  'click .sort-field': function() {
+    setSortField(this);
+  }
 };
 
 // List search

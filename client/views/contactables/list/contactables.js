@@ -106,6 +106,7 @@ var query = new Utils.ObjectDefinition({
       default: 15
     },
     location: {},
+    candidateStatus: {}
   }
 });
 
@@ -353,6 +354,10 @@ Template.contactablesList.contactables = function() {
   if (searchQuery.$and.length == 0)
     delete searchQuery.$and;
 
+  if (query.candidateStatus.value){
+    searchQuery._id = {$in:_.map(Placements.find({candidateStatus: query.candidateStatus.value }).fetch(), function(placement){return placement.employee})}
+  }
+
   var contactables = Contactables.find(searchQuery, {limit: query.limit.value});
 
 
@@ -397,6 +402,15 @@ Template.contactablesFilters.contactableTypes2 = contactableTypes;
 Template.contactablesFilters.recentOptions = function() {
   return timeLimits;
 };
+
+Template.contactablesFilters.isSelectedType = function(typeName){
+  return query.objType.value == typeName;
+}
+Template.contactablesFilters.candidateeStatusChanged = function(){
+  return function(lookUpId){
+    query.candidateStatus.value = lookUpId;
+  }
+}
 
 Template.contactablesFilters.typeOptionClass = function(option) {
   return query.objType.value == option.name? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';

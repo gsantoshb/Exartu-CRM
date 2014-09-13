@@ -1,7 +1,7 @@
 Template.applicantCenter.helpers({
 
   isInvited: function(){
-    console.log('appcenter',this,this.entity)
+    //console.log('appcenter',this,this.entity)
     return !! this.entity.invitation;
   },
   isRegistered: function(){
