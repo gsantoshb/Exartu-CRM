@@ -16,11 +16,25 @@ UsersController = RouteController.extend({
     });
   }
 });
-
+var query = new Utils.ObjectDefinition({
+  reactiveProps: {
+    searchString: {}
+  }
+});
 Template.users.helpers({
   users: function () {
-    console.log('users',Meteor.users.find().fetch());
-    return Meteor.users.find();
+    var queryObj = query.getObject();
+    var q = {};
+    if (queryObj.searchString) {
+      q.username = {
+        $regex: queryObj.searchString,
+        $options: 'i'
+      };
+    }
+    return Meteor.users.find(q);
+  },
+  filters: function(){
+      return query
   }
 });
 Template.users.events({
@@ -31,7 +45,6 @@ Template.users.events({
   {
     var upd={};
     upd.$set= { inactive: e.target.checked };
-    console.log('upd',upd, e.target);
     Meteor.users.update({_id: this._id}, upd, function(err) {
       if (err) {
         alert(err);

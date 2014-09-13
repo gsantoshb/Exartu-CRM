@@ -1,4 +1,4 @@
-<template name="users">
+<template name="users" xmlns="http://www.w3.org/1999/html">
     <div name="usersVM">
 
         <div id="content-header">
@@ -8,10 +8,22 @@
             <a href="/" title="Go to Home" class="tip-bottom">Management</a>
             <a href="/users" class="current">Users</a>
         </div>
+        <div class="input-group col-sm-3">
+            {{#objectProperty property=filters.searchString editable=true}}
+            <input type="text" class="form-control" placeholder="Search users" value="{{value}}">
+            {{/objectProperty}}
 
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+        </div>
         <button class="btn btn-link addUser">Add user</button>
         <div class="container-fluid">
+
             <div class="table-items-box">
+
                 {{#each users}}
                    <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
                     <div class="row">
