@@ -12,9 +12,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <h1>Sign Up</h1>
+
 
                 {{#if isRegistering}}
+                <h1>Sign Up</h1>
                 {{#autoForm schema="RegisterSchema" id="registerForm" validation="blur"}}
                     <fieldset>
                         <!--<div class="form-group {{#if afFieldIsInvalid name='username'}}has-error{{/if}}">-->
@@ -55,10 +56,11 @@
                 </div>
 
                 {{else}}
+                <h1>Thank you</h1>
                 <div class="col-md-8 text-center" style="margin-bottom: 150px">
                     <br><br>
-                    <h4>Congratulations, your account has been created</h4>
-                    <p>Before login you should verify your email account, check your inbox</p>
+                    <h4>Your registration is complete</h4>
+                    <p>Please verify your account via the email we just sent you.  </p>
                 </div>
                 {{/if}}
 
