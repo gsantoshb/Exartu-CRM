@@ -106,7 +106,7 @@ Jobs.after.insert(function (userId, doc) {
 //list
 Placements.after.insert(function (userId, doc) {
   var data = {};
-  data.dateCreated = doc.dateCreated;
+  data.dateCreated = new Date();
   data.job=doc.job;
   data.employee=doc.employee;
 
@@ -115,8 +115,8 @@ Placements.after.insert(function (userId, doc) {
   console.log(placementStatus);
 
   if (_.contains(placementStatus.lookUpActions, Enums.lookUpAction.Placement_Assigned)){
-    type = Enums.activitiesType.assignmentAdd;
-    console.log('assignmentAdd')
+    type = Enums.activitiesType.placementAdd;
+    console.log('placementAdd')
   }else if(_.contains(placementStatus.lookUpActions, Enums.lookUpAction.Placement_Candidate)){
     type = Enums.activitiesType.candidateAdd;
     console.log('candidateAdd')
@@ -150,14 +150,19 @@ Placements.after.update(function (userId, doc) {
 
 Meteor.startup(function () {
   Meteor.methods({
+
+
     userLoginActivity: function () {
+      var data={};
+      data.username=Meteor.user().username;
+      data.dateCreated=new Date();
       if (Meteor.user()) {
         Activities.insert({
           userId: Meteor.user()._id,
           hierId: Meteor.user().hierId,
           type: Enums.activitiesType.userLogin,
           entityId: Meteor.user()._id,
-          data: Meteor.user().username
+          data: data
         });
       }
     }

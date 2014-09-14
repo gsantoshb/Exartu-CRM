@@ -1,13 +1,7 @@
 var jobActivities=[Enums.activitiesType.placementEdit, Enums.activitiesType.placementAdd,
-  Enums.activitiesType.jobAdd, Enums.activitiesType.assignmentAdd, Enums.activitiesType.candidateAdd];
+  Enums.activitiesType.jobAdd, Enums.activitiesType.placementAdd, Enums.activitiesType.candidateAdd];
 
   Template.jobActivity.helpers({
-  isAny: function(){
-    return Activities.find({
-      entityId: Session.get('entityId'),
-      type: {$in: jobActivities}
-    }).count()>0;
-  },
   activities: function(){
       return Activities.find({
         $or:[
@@ -22,6 +16,7 @@ var jobActivities=[Enums.activitiesType.placementEdit, Enums.activitiesType.plac
       }})
   }
 });
+
 
 UI.registerHelper('userName',function(userId){
   var user= Meteor.users.findOne({_id: userId});
@@ -45,7 +40,7 @@ UI.registerHelper('activityType', function(){
       return Template.jobActivityPlacementsAdd;
     case Enums.activitiesType.jobAdd:
       return Template.jobActivityJobAdd;
-    case Enums.activitiesType.assignmentAdd:
+    case Enums.activitiesType.placementAdd:
       return Template.jobActivityAssignmentAdd;
     case Enums.activitiesType.candidateAdd:
       return Template.jobActivityCandidateAdd;
