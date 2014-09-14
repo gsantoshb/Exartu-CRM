@@ -18,6 +18,7 @@ Template.login.viewModel = function () {
         if(err)
             self.errorMessage(err.reason);
         else{
+          Meteor.call('userLoginActivity');
           Router.go('/');
           GAnalytics.event("account","signin");
         }
@@ -25,7 +26,7 @@ Template.login.viewModel = function () {
   };
 
   self.loginWithPassword = function () {
-
+    console.log('get here or not');
     Meteor.loginWithPassword({
       email: self.email()
     }, self.password(), function (err, result) {
@@ -41,6 +42,7 @@ Template.login.viewModel = function () {
         }
       }
       else {
+        Meteor.call('userLoginActivity');
         self.notVerified(false);
         Router.go('/');
         GAnalytics.event("account","signin");

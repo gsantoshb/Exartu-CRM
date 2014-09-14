@@ -148,6 +148,21 @@ Placements.after.update(function (userId, doc) {
   })
 });
 
+Meteor.startup(function () {
+  Meteor.methods({
+    userLoginActivity: function () {
+      if (Meteor.user()) {
+        Activities.insert({
+          userId: Meteor.user()._id,
+          hierId: Meteor.user().hierId,
+          type: Enums.activitiesType.userLogin,
+          entityId: Meteor.user()._id,
+          data: Meteor.user().username
+        });
+      }
+    }
+  })
+});
 
 // indexes
 Activities._ensureIndex({hierId: 1});

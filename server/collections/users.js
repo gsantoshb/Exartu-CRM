@@ -10,7 +10,6 @@ Accounts.validateLoginAttempt(function(attempt) {
 
   if (attempt.type == 'password' && !attempt.user.emails[0].verified)
     throw new Meteor.Error(500, 'Email not verified');
-
   return true;
 });
 
