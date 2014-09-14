@@ -98,11 +98,12 @@
         <!--</div>-->
     </h1>
     <p class="profile-address">
-        <i class="fa fa-map-marker"></i>
+
         {{#if location}}
+            <i class="fa fa-map-marker"></i>
             <span>{{location.displayName}}</span>
         {{else}}
-            <a class="addLocation pointer"><em class="text-muted"> Click here to add an address </em></a>
+            <!--<a class="addLocation pointer"><em class="text-muted"> Click here to add an address </em></a>-->
         {{/if}}
     </p>
 
