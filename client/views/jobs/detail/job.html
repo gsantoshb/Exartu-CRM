@@ -18,7 +18,7 @@
                     <a href="/" title="Go to Home" class="tip-bottom">
                         <i class="fa fa-home"></i>Home</a>
                     <a href="/jobs" class="current">Jobs</a>
-                    <span class="pull-right" style="margin-right: 10px"> <span id="copy-job" class="btn btn-info btn-xs">  Copy job </span></span>
+
                 </div>
             {{/with}}
 
@@ -60,6 +60,7 @@
         <li class="{{isActive 'activity'}}"><a href="#activity">Activity</a></li>
         <li class="{{isActive 'tasks'}}"><a href="#tasks">Tasks</a></li>
         <li class="{{isActive 'notes'}}"><a href="#notes">Notes</a></li>
+        <li class="{{isActive 'actions'}}"><a href="#actions">Actions</a></li>
     </ul>
 
     <div class="tab-content">
@@ -87,6 +88,10 @@
                     </div>
                 </div>
             </div>
+
+        </div>
+        <div class="tab-pane  {{isActive 'actions'}}" id="profile-actions">
+            <span  style="margin-right: 10px"> <span id="copy-job" class="btn btn-info btn-xs">  Copy job </span></span>
         </div>
     </div>
 

@@ -73,8 +73,8 @@ Meteor.startup(function () {
         var jobCopy = _.pick(job, 'objNameArray', 'customer', 'hierId', 'jobTitle', 'duration', 'numberRequired', 'publicJobTitle');
         // Default values
         jobCopy.startDate = new Date();
-        
-        return Jobs.insert(jobCopy);
+        var ret=Jobs.insert(jobCopy);
+        return ret;
       }
     });
 });

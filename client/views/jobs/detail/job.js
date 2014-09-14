@@ -151,6 +151,7 @@ Template.job.events({
     if (result)
       Meteor.call('copyJob', Session.get('entityId'), function (err, result) {
         if (!err) {
+          alert('Job copied, navigating to job id: ' + result);
           Router.go('/job/' + result);
         } else {
           console.log(err);
