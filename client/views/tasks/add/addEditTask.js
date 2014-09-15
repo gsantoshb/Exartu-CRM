@@ -180,7 +180,6 @@ Template.addEditTask.events({
     }
   },
   'click .archive': function () {
-    debugger;
     if (!isValid(task)) {
       return;
     }

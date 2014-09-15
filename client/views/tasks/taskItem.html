@@ -1,5 +1,5 @@
 <template name="taskItem">
-    <div class="table-item {{taskClass}}">
+    <div class="table-item task {{taskClass}}">
         <a class="btn btn-xs btn-success text-small editTask pointer" title="Edit" style="position: absolute; top: 4px; right: 4px; z-index: 10">
             <i class="fa fa-pencil"></i>
         </a>
@@ -7,7 +7,7 @@
             <div class="col-sm-5">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container">
-                        <div class="table-item-title">
+                        <div class="table-item-title note">
                             <span>{{msg}}</span>
                         </div>
                         <div class="task-author">
@@ -35,7 +35,12 @@
             <!-- /.col-sm-3 -->
             <div class="col-sm-4">
                 <div class="table-item-cell"  style="margin-top: 13px">
+                    {{#if inactive}}
+                        <span class="text-muted">Archived</span>
+                        <br>
+                    {{/if}}
                     {{>taskState}}
+
                 </div>
             </div>
 

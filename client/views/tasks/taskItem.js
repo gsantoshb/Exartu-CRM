@@ -1,6 +1,6 @@
 Template.taskItem.helpers({
   taskClass: function(){
-    return 'task-' + this.state;
+    return 'task-' + this.state + (this.inactive ? ' inactive' : '');
   },
   getHref: function(){
     return Utils.getHrefFromLink(this);
