@@ -25,6 +25,9 @@ Template.users.helpers({
 Template.users.events({
   "click .addUser": function () {
     Utils.showModal('addUser');
+  },
+  'click #resend-email': function() {
+    Meteor.call('resendUserVerificationEmail', this._id);
   }
 });
 
