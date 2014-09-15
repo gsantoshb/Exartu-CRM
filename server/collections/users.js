@@ -229,6 +229,17 @@ Meteor.methods({
     //        });
     return userId;
   },
+  resendUserVerificationEmail: function(userId) {
+    var user = Meteor.users.findOne(userId);
+    if (!user)
+      throw new Meteor.Error(500, 'User not found');
+
+    var address = (user.emails[0] || {}).address;
+    if (!address)
+      throw new Meteor.Error(500, 'Not email avialable');
+
+    Accounts.sendVerificationEmail(userId, address);
+  },
   getUserInformation: function (userId) {
     var user = Meteor.users.findOne({
       _id: userId

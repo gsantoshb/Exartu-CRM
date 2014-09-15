@@ -50,7 +50,9 @@ Template.users.events({
         alert(err);
       };
     });
-
+  },
+  'click #resend-email': function() {
+    Meteor.call('resendUserVerificationEmail', this._id);
   }
 });
 
