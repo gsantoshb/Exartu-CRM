@@ -56,6 +56,18 @@ Template.job.created = function () {
   };
   services = Utils.ObjectDefinition(definition);
 }
+
+var getPlacementStatuses = function(type, action){
+  var status = Enums.lookUpTypes[type];
+  status = status && status.status;
+  if (status){
+    var lookUpCodes = status.lookUpCode,
+      implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: action}).fetch();
+    return _.map(implyActives,function(doc){ return doc._id});
+  }
+  return null;
+};
+
 var job;
 Template.job.helpers({
   job: function () {
@@ -99,6 +111,16 @@ Template.job.helpers({
   },
   tags: function () {
     return services.tags;
+  },
+  assignment: function() {
+    var activeStatuses = getPlacementStatuses('placement', Enums.lookUpAction.Implies_Active);
+    var placedStatuses = getPlacementStatuses('candidate', Enums.lookUpAction.Candidate_Placed);
+    var placementsAssignment = Placements.findOne({job: this._id, placementStatus: {$in: activeStatuses}, candidateStatus: {$in: placedStatuses}});
+
+    if (!placementsAssignment)
+      return undefined;
+
+    return Contactables.findOne(placementsAssignment.employee);
   }
 });
 
