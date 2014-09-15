@@ -737,8 +737,19 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
      margin-bottom: -20px;
 }
 /* tasks */
-.task-Pending .task-state{
+.task.task-Pending .task-state{
     color: rgba(183, 4, 48, 1);
+}
+
+.task.inactive .task-state{
+    color: #8f8e8f;
+}
+.task.inactive .note{
+    color: #8f8e8f;
+}
+.task.inactive .editTask{
+    background-color: #8f8e8f;
+    border-color: #8f8e8f;
 }
 /*collapsable boxes*/
 .box-content-collapsible{
