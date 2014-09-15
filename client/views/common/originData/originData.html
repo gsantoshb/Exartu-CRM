@@ -1,0 +1,16 @@
+<template name="originData">
+    <div class="box">
+        <div class="box-header-2">
+            <div class="box-title">Record Origin</div>
+        </div>
+        <div class="box-body" id="details-body">
+            Id: {{_id}} <br />
+            UserId: {{userId}} <br />
+            HierId: {{hierId}} <br />
+            DateCreated:
+                {{#formattedDate value=dateCreated format='lll'}}
+                {{date}}
+                {{/formattedDate}}<br />
+        </div>
+    </div>
+</template>
