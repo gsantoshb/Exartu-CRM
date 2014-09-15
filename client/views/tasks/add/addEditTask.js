@@ -194,6 +194,13 @@ Template.addEditTask.events({
       })
     }
   },
+  'click .push-oneweek': function() {
+    task.end = task.end || new Date();
+    task.end.setDate(task.end.getDate() + 7);
+    taskUpdate(function(){
+      $('.modal-host').children().modal('toggle')
+    });
+  },
   'change.dp .completed>.dateTimePicker': function(e, ctx) {
     if ($(e.target).hasClass('dateTimePicker')){
       task.completed = $(e.target).data('DateTimePicker').date.toDate();
