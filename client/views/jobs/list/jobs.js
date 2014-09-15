@@ -106,6 +106,7 @@ var query = new Utils.ObjectDefinition({
       default: 15
     },
     location: {},
+    status: {}
   }
 });
 
@@ -263,6 +264,11 @@ Template.jobsList.jobs = function() {
     searchQuery.$and.push(locationOR);
   }
 
+  // Status filter
+  if (query.status.value){
+    searchQuery.status = query.status.value;
+  }
+
   if (searchQuery.$and.length == 0)
     delete searchQuery.$and;
 
@@ -362,13 +368,18 @@ Template.jobsFilters.typeOptionClass = function(option) {
 
 };
 
-
 Template.jobsFilters.recentOptionClass = function(option) {
   return query.selectedLimit.value == option? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
 };
 
 Template.jobsFilters.tags = function() {
   return query.tags;
+};
+
+Template.jobsFilters.statusChanged = function(){
+  return function(lookUpId){
+    query.status.value = lookUpId;
+  }
 };
 
 var addTag = function() {

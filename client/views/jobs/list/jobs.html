@@ -66,8 +66,16 @@
                     {{/each}}
                 </div>
             </div>
-            <div class="filter-item">
 
+            <hr>
+            <div class="filter-item">
+                <div class="item-body">
+                    {{>lookupFilterTemplate title="Status" lookUpCode=3 callback=statusChanged multi=false}}
+                </div>
+            </div>
+            <hr>
+
+            <div class="filter-item">
                 <div class="item-body">
                     <div class="checkbox">
                         <label>

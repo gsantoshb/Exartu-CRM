@@ -32,7 +32,7 @@ Template.jobActivityPlacementsEdit.helpers({
     return this.data.employee != this.data.oldEmployee;
   }
 });
-UI.registerHelper('activityType', function(){
+UI.registerHelper('jobActivityType', function(){
   switch (this.type){
     case Enums.activitiesType.placementEdit:
       return Template.jobActivityPlacementsEdit;
