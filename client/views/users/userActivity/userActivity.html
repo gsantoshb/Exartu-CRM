@@ -1,0 +1,29 @@
+<template name="userActivity">
+
+        <div class="box">
+            <div class="box-header-2">
+                <div class="box-title">
+                        <span>Activity</span>
+                </div>
+                <!--<a class="box-title visible-sm visible-xs" href="#activity-body" data-toggle="collapse" >-->
+                    <!--Activity-->
+                <!--</a>-->
+            </div>
+            <div class="" id="activity-body">
+                <div class="box-v-msg-content">
+                <section class="timeline">
+                <div class="activity-container scroll-container">
+                    {{#each activities}}
+                        {{>userLoginActivity}}
+                        <!-- /.item -->
+                    {{/each}}
+                </div>
+                <!--infinite scroll-->
+                <div data-bind="onScrollBottom: $root.showMore"></div>
+                </section>
+                </div><!-- /.box-v-msg-content -->
+            </div>
+        </div>
+
+</template>
+

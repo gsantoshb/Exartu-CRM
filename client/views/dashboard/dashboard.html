@@ -242,6 +242,34 @@
     <!-- /.item -->
 </template>
 
+<template name="userLoginActivity">
+    <div class="item item-job">
+        <div class="item-info">
+            <div class="time">
+                <i class="icon icon-clock-3"></i><span>
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                    {{date}}
+                {{/formattedDate}}
+                </span>
+            </div>
+
+        </div>
+        <!-- /.item-info -->
+        <div class="item-content">
+            <div class="box" data-bind="with: data">
+                <div class="box-content">
+                    <h4 class="item-title">
+                        {{userName}}
+                    </h4>
+                </div>
+                <!-- /.box-content -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.item-content -->
+    </div>
+    <!-- /.item -->
+</template>
 
 
 <template name="sparkline">

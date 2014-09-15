@@ -117,8 +117,12 @@ Router.map(function () {
     controller: 'UsersController'
   });
   this.route('userProfile', {
-    path: '/user/:_id?',
+    path: '/userProfile/:_id?',
     controller: 'UserProfileController'
+  });
+  this.route('user', {
+    path: '/user/:_id?',
+    controller: 'UserController'
   });
 
   this.route('inbox', {

@@ -1,0 +1,64 @@
+<template name="user">
+    <div class="contactable-page-details" name="userVM">
+        <div id="content">
+                <div id="content-header" class="mini">
+                    <h1 class="profile-name">{{displayName}}
+                        <small> at 
+                            <a  href="/contactable/{{customer}}">
+                                <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
+                                    {{username}}
+                                    <i class="fa fa-external-link" style="font-size: 14px"></i>
+                                </strong>
+                            </a>
+                        </small>
+                    </h1>
+                </div>
+                <div id="breadcrumb" class="breadcrumb-top">
+                    <a href="/" title="Go to Home" class="tip-bottom">
+                        <i class="fa fa-home"></i>Home</a>
+                    <a href="/users" class="current">Users</a>
+
+                </div>
+
+
+                <div class="container-fluid contactable-content job-details">
+                    <div class="row">
+
+                        <div class="col-sm-12 col-lg-12 margin-top-15 contactable-left-col">
+                            {{>user_tabs user=user }}
+                        </div>
+                     </div>
+                </div>
+
+        </div>
+        <!-- /.content -->
+    </div>
+</template>
+
+<template name="user_tabs">
+
+    <ul class="nav nav-pills bottom-20">
+        <li class="{{isActive 'details'}}"><a href="#details">Detail</a></li>
+        <li class="{{isActive 'actions'}}"><a href="#actions">Actions</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane  {{isActive 'details'}}" id="profile-detail">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                        {{#with user}}  {{> userActivity}}  {{/with}}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="tab-pane  {{isActive 'actions'}}" id="profile-actions">
+            no actions yet
+        </div>
+    </div>
+
+</template>
+
+
