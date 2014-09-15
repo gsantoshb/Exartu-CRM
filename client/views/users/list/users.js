@@ -53,6 +53,7 @@ Template.users.events({
   },
   'click #resend-email': function() {
     Meteor.call('resendUserVerificationEmail', this._id);
+    Utils.showModal('basicModal', { title: 'Invitation sent', message: 'A new invitation email has been sent to this user', buttons: [{ label: 'Okay', classes: 'btn-primary'}] });    
   }
 });
 
