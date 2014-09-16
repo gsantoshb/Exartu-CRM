@@ -233,7 +233,9 @@ Template.addEditTask.events({
     taskUpdate();
   },
   'change .assign': function(e){
-    task.assign=$(e.target).val();
+    var newassign=$(e.target).val();
+    if(!_.contains(task.assign,newassign))
+    task.assign.push(newassign);
     taskUpdate();
   },
   'blur .msg': function(){
