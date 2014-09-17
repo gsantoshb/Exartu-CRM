@@ -17,6 +17,6 @@ Meteor.publish('contactMethods', function () {
         return false;
 
     return ContactMethods.find({
-        $or: filterByHiers(user.hierId)
+        $or: filterByHiers(user.currentHierId)
     });
 })

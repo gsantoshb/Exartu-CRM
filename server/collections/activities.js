@@ -16,7 +16,7 @@ Meteor.publish('activities', function () {
 		return false;
 
 	return Activities.find({
-        $or: filterByHiers(user.hierId)
+        $or: filterByHiers(user.currentHierId)
     });
 })
 var mainTypes=['Employee','Contact','Customer']

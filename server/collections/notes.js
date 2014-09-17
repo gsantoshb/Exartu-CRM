@@ -5,7 +5,7 @@ Meteor.publish('notes', function () {
         _id: this.userId
     });
   return Notes.find({
-        $or: filterByHiers(user.hierId)
+        $or: filterByHiers(user.currentHierId)
     });
 
 
@@ -20,7 +20,7 @@ Notes.allow({
 
 Notes.before.insert(function(userId, doc){
   var user = Meteor.user();
-  doc.hierId = user.hierId;
+  doc.hierId = user.currentHierId;
   doc.userId = user._id;
   doc.dateCreated = Date.now();
   return doc;

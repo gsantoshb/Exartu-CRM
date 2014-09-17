@@ -7,6 +7,6 @@ Meteor.publish('jobRateTypes', function () {
     return false;
 
   return JobRateTypes.find({
-    $or: filterByHiers(user.hierId)
+    $or: filterByHiers(user.currentHierId)
   });
 })

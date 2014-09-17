@@ -1,5 +1,5 @@
 Accounts.validateLoginAttempt(function(attempt) {
-  console.log('login attempt',attempt);
+  //console.log('login attempt',attempt);
   if (!attempt.allowed)
     return false;
   if (attempt.user.inactive) return false;
@@ -85,6 +85,8 @@ Accounts.onCreateUser(function (options, user) {
   }
   user.roles = roles;
   user.hierId = hierId;
+  user.hierarchies = [hierId];
+  user.currentHierId = hierId;
 
   Hierarchies.update({
     _id: user.hierId
@@ -250,7 +252,7 @@ Meteor.methods({
       }
     }
 
-    console.dir(info);
+    //console.dir(info);
     return info;
   },
   checkUniqueness: function (query) {

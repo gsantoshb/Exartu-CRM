@@ -31,7 +31,7 @@ Contactables.before.insert(function (userId, doc) {
     //when the insert is trigger from the server
     var user= { }
   }
-  doc.hierId = user.currentHierId || doc.currentHierId;
+  doc.hierId = user.currentHierId || doc.hierId;
   doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();
 
