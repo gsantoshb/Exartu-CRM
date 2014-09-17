@@ -1,0 +1,28 @@
+<template name="inviteUser">
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Invite user</h4>
+                </div>
+                {{#autoForm schema="AddUserSchema" id="addUserForm" validation="blur"}}
+                <div class="modal-body">
+                    <fieldset>
+                        <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
+                            {{> afFieldInput name='email' class="input-lg" placeholder="Enter email"}}
+                            {{#if afFieldIsInvalid name='email'}}
+                            <span class="help-block">{{afFieldMessage name='email'}}</span>
+                            {{/if}}
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <span class="btn btn-default cancel">Cancel</span>
+                    <button type="submit" class="btn btn-primary addUser">Invite</button>
+                </div>
+                {{/autoForm}}
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</template>

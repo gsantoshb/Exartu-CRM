@@ -9,7 +9,7 @@ Router.configure({
     return [HierarchiesHandler];
   },
   onBeforeAction: function () {
-    if (!Meteor.userId() && Router.current().route.name != 'login' && Router.current().route.name != 'register' && Router.current().route.name != 'notFound') {
+    if (!Meteor.userId() && Router.current().route.name != 'login' && Router.current().route.name != 'register' && Router.current().route.name != 'addUser' && Router.current().route.name != 'notFound') {
       this.redirect('login');
     }
   },
@@ -35,26 +35,7 @@ Router.map(function () {
 
   this.route('login', {
     path: '/login',
-    template: 'login',
-    onBeforeAction: function () {
-      if (Meteor.user()) {
-        this.redirect('dashboard');
-      }
-    },
-    onAfterAction: function() {
-      var title = 'Login',
-        description = '';
-      SEO.set({
-        title: title,
-        meta: {
-          'description': description
-        },
-        og: {
-          'title': title,
-          'description': description
-        }
-      });
-    }
+    controller: 'LoginController'
   });
 
   this.route('register', {
@@ -225,12 +206,16 @@ Router.map(function () {
       this.redirect('/user');
     }
   });
-  
+
+  this.route('addUser', {
+    path: '/users/add',
+    controller: 'AddUserController'
+  });
+
   this.route('notFound', {
     path: '/notfound',
     template: 'notFoundTemplate'
   })
-
 
   this.route('hierarchyManagement', {
     path: '/hierarchyManagement',

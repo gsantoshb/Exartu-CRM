@@ -59,6 +59,9 @@ Accounts.onCreateUser(function (options, user) {
       name: userEmail.split('@')[0]
     });
 
+    //send email to sales
+    sendEmailToSales(user);
+
     user._id = Meteor.uuid();
 
     // Demo data
@@ -143,6 +146,19 @@ Meteor.publish(null, function () {
     }
   });
 });
+
+// Publish user invitations
+Meteor.publish('userInvitations', function() {
+  var user = Meteor.users.findOne({
+    _id: this.userId
+  });
+
+  if (!user)
+    return;
+
+  return UserInvitations.find({hierId: user.hierId}, {fields: {email: 1, sentBy: 1, createdAt: 1, used: 1}});
+});
+
 Meteor.users.allow({
   update: function (userId, file, fields, modifier) {
     var user = Meteor.users.findOne({
@@ -200,38 +216,16 @@ Meteor.methods({
       }
     });
   },
-  addHierUser: function (user, hierId) {
-    hierId = hierId || Meteor.user().hierId;
-    var options = {};
-    options.username = user.username;
-    options.email = user.email;
-    options.password = user.password;
-    options.roles = user.roles;
-    options.inactive=false;
+  resendUserVerificationEmail: function(userId) {
+    var user = Meteor.users.findOne(userId);
+    if (!user)
+      throw new Meteor.Error(500, 'User not found');
 
-    options.profile = {
-      hierId: hierId
-      // more information from user
-    }
-    var userId = Accounts.createUser(options);
-    Accounts.sendVerificationEmail(userId);
-    //        var userPermissions = [];
-    //        _.forEach(user.roles, function (role) {
-    //            var dbrole = Roles.findOne({
-    //                name: role
-    //            });
-    //            userPermissions = _.uniq(userPermissions.concat(dbrole.rolePermissions));
-    //        });
-    //
-    //        Meteor.users.update({
-    //            _id: userId
-    //        }, {
-    //            $set: {
-    //                roles: user.roles,
-    //                permissions: userPermissions
-    //            }
-    //        });
-    return userId;
+    var address = (user.emails[0] || {}).address;
+    if (!address)
+      throw new Meteor.Error(500, 'Not email avialable');
+
+    Accounts.sendVerificationEmail(userId, address);
   },
   getUserInformation: function (userId) {
     var user = Meteor.users.findOne({
@@ -383,3 +377,19 @@ UsersFS.publish(); // Default publish and allow options
 //      fileRecord: options.fileRecord
 //    };
 //  }
+
+var sendEmailToSales = function(user){
+  if (process.env.RELEASE){
+    var email = {
+      to: 'sales@exartu.com',
+      from: 'server@exartu.com',
+      subject: 'new user in Exartu',
+      text: 'A new user has registered on crm.exartu.com\n\n' +
+        'With email: ' + user.emails[0].address + '\n' +
+        'User name: ' + user.username + '\n' +
+        'Date: '+ user.createdAt
+    };
+
+    Email.send(email);
+  }
+}
