@@ -4,7 +4,7 @@ Meteor.publish('hierarchies', function() {
   if(!user)
     return false;
 
-  return Hierarchies.find({_id: user.hierId});
+  return Hierarchies.find({$or: filterByHiers(user.hierId, '_id') });
 });
 
 Meteor.startup(function () {
@@ -13,7 +13,6 @@ Meteor.startup(function () {
 			//TODO: Check options values
 
 			if (hier.parent != null) {
-				//console.log('New hier with parent');
 				var parentHier = Hierarchies.findOne({
 					_id: hier.parent
 				});
@@ -42,6 +41,11 @@ Meteor.startup(function () {
 				hierId: Meteor.user().hierId
 			}).fetch();
 		},
+    changeCurrentHierId: function(hierId){
+      var user = Meteor.user();
+      //todo:check if it's valid
+      return Meteor.users.update({_id: user._id}, { $set: { currentHierId: hierId } });
+    },
 		/*
 		 *  ---- Testing
 		 *
@@ -170,11 +174,13 @@ createHouseAccount = function(hierarchy){
 };
 
 Hierarchies.after.insert(function(userId, doc){
-  seedSystemLookUps(doc._id);
-  if (doc._id != ExartuConfig.SystemHierarchyId){
-    createHouseAccount(doc);
+  if (!doc.parent){
+    seedSystemLookUps(doc._id);
+    if (doc._id != ExartuConfig.SystemHierarchyId){
+      createHouseAccount(doc);
+    }
   }
-})
+});
 
 // Users files
 HierarchiesFS = new Document.Collection({

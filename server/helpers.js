@@ -18,22 +18,24 @@ parseJS = function (str) {
 	}
 }
 
-filterByHiers = function (hier) {
+filterByHiers = function (hier, key) {
 	var accumulated = '';
 	var ors = [];
+  var key = key || 'hierId';
+
 	_.each(hier.split('-'), function (part) {
 		accumulated = accumulated + (accumulated ? '-' : '') + part;
-		ors.push({
-			hierId: {
-				$regex: '^' + accumulated + '$'
-			}
-		})
-	})
-	ors.push({
-		hierId: {
-			$regex: '^' + hier + '.*'
-		}
+    var aux={};
+    aux[key] = {
+      $regex: '^' + accumulated + '$'
+    };
+		ors.push(aux)
 	});
+  var aux={};
+  aux[key] = {
+    $regex: '^' + hier + '.*'
+  };
+	ors.push(aux);
     //console.log('ors',ors);
     //console.log('accumulated', accumulated);
 

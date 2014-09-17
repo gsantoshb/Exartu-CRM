@@ -135,7 +135,9 @@ Meteor.publish(null, function () {
       "roles": 1,
       "permissions": 1,
       "lastCustomerUsed": 1,
-      "inactive":1
+      "inactive":1,
+      "hierarchies": 1,
+      "currentHierId": 1
     }
   });
 });

@@ -1,0 +1,62 @@
+<template name="hierarchiesManagement">
+    <div id="content" class="lookUps">
+        <div id="content-header" class="mini">
+            <h1>hierarchies management</h1>
+        </div>
+
+
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Management</a>
+            <a href="/hierarchyManagement" class="current">hierarchies</a>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    {{>showHierarchyTree hierarchies=hierarchies}}
+                </div>
+                <div class="col-md-8" style="border-left: solid 2px #979797; min-height: 300px;">
+                    {{#with selected}}
+                        <div style="margin-bottom: 50px;">
+                            <button id="addHier" class="btn btn-primary pull-right">Add Child</button>
+                            <h4>
+                                {{name}}
+                                {{#unless isCurrent}}
+                                    <a class="changeCurrent pointer">Set as the current</a>
+                                {{/unless}}
+                            </h4>
+                        </div>
+                        {{>quickForm schema=hierarchySchema id='hierarchyEdit' doc=. buttonContent="Save" autocomplete="off" }}
+                    {{else}}
+                        <div class="box-v-msg">
+                            <h3>Select a Hierarchy</h3>
+                        </div>
+                    {{/with}}
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</template>
+
+<template name="showHierarchyTree ">
+    {{#each hierarchies}}
+        <ul class="">
+            <li class="">
+                <a class="hierarchyItem pointer">
+                    {{name}}
+                    {{#if isCurrent}}
+                        <b>(current)</b>
+                    {{else}}
+                    {{/if}}
+                </a>
+
+                <div style="padding-left: 10px">
+                    {{>showHierarchyTree hierarchies=childHiers}}
+                </div>
+            </li>
+        </ul>
+    {{/each}}
+</template>
