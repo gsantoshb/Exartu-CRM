@@ -22,8 +22,6 @@ Meteor.methods({
       if (document.hierId)
         user.profile = {hierId: document.hierId};
 
-      console.log(user);
-
       var userId = Accounts.createUser(user);
       if (!skipEmailVerification) {
         Accounts.sendVerificationEmail(userId);
@@ -52,7 +50,7 @@ Meteor.methods({
     var shortId = Meteor.require('shortid');
     userInvitation.token = shortId.generate();
     // Send email
-     sendInvitation(user.email, userInvitation.token, hier.configuration.title);
+    sendInvitation(user.email, userInvitation.token, hier.configuration.title);
 
     UserInvitations.insert(userInvitation);
   },
@@ -87,7 +85,7 @@ var sendInvitation = function(address, token, hierName) {
 
 var markInvitationsAsUsed = function(userInvitation) {
   // Mark all user invitations with the same hierId and email as used
-  UserInvitations.update({hierId: userInvitation._id, email: userInvitation.email}, {$set: {used: true}});
+  UserInvitations.update({hierId: userInvitation.hierId, email: userInvitation.email}, {$set: {used: true}});
 };
 
 Router.map(function () {
