@@ -1,5 +1,5 @@
 Accounts.validateLoginAttempt(function(attempt) {
-  console.log('login attempt',attempt);
+  //console.log('login attempt',attempt);
   if (!attempt.allowed)
     return false;
   if (attempt.user.inactive) return false;
@@ -58,6 +58,9 @@ Accounts.onCreateUser(function (options, user) {
     hierId = Meteor.call('createHier', {
       name: userEmail.split('@')[0]
     });
+
+    //send email to sales
+    sendEmailToSales(user);
 
     user._id = Meteor.uuid();
 
@@ -372,3 +375,19 @@ UsersFS.publish(); // Default publish and allow options
 //      fileRecord: options.fileRecord
 //    };
 //  }
+
+var sendEmailToSales = function(user){
+  if (process.env.RELEASE){
+    var email = {
+      to: 'sales@exartu.com',
+      from: 'server@exartu.com',
+      subject: 'new user in Exartu',
+      text: 'A new user has registered on crm.exartu.com\n\n' +
+        'With email: ' + user.emails[0].address + '\n' +
+        'User name: ' + user.username + '\n' +
+        'Date: '+ user.createdAt
+    };
+
+    Email.send(email);
+  }
+}

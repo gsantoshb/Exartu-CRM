@@ -28,19 +28,19 @@ ContactableAddController = RouteController.extend({
 var contactable;
 var subTypesDep=new Deps.Dependency;
 var createContactable= function(objTypeName, options){
-    var type= dType.core.getObjType(objTypeName)
+    var type= dType.core.getObjType(objTypeName);
     contactable= new dType.objTypeInstance(objTypeName, options);
-    setPersonType(type.defaultPersonType,contactable)
+    setPersonType(type.defaultPersonType,contactable);
     return contactable
-}
+};
 var setPersonType= function(personType, contactable){
-    var personModel= new dType.objTypeInstance(personType)
+    var personModel= new dType.objTypeInstance(personType);
     contactable.subTypes=contactable.subTypes.filter(function(obj) {
         return [Enums.personType.human, Enums.personType.organization].indexOf(obj.name) === -1;
     });
     contactable.subTypes.unshift(personModel);
     subTypesDep.changed();
-}
+};
 Template.addContactablePage.helpers({
     contactable: function(){
         if (!contactable){
@@ -65,10 +65,10 @@ Template.addContactablePage.helpers({
     },
     getIcon: function(){
       var current=Router.current();
-      if (!current) return ''
+      if (!current) return '';
       return helper.getIconForObjName(current.params.objType)
     }
-})
+});
 
 Template.addContactablePage.events({
     'change #personType': function(e){
@@ -80,13 +80,13 @@ Template.addContactablePage.events({
             dType.displayAllMessages(this);
             return;
         }
-        var cont=dType.buildAddModel(this)
+        var cont=dType.buildAddModel(this);
         Meteor.call('addContactable', cont, function(err, result){
             if(err){
                 console.dir(err)
             }else{
                 GAnalytics.event("/contactableAdd", Session.get('objType'));
-                Router.go('/contactable/' + result);
+                Router.go('/contactable/' + result + '#tasks');
             };
 
 
@@ -95,7 +95,7 @@ Template.addContactablePage.events({
     'click .goBack': function(){
         history.back();
     }
-})
+});
 
 Template.addContactablePage.destroyed=function(){
    contactable=undefined;

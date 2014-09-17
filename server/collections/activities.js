@@ -60,11 +60,13 @@ Messages.after.insert(function (userId, doc) {
 });
 
 Tasks.after.insert(function (userId, doc) {
-	Activities.insert({
+  var linkid;
+  if (doc.links.length>0) linkid=links[0].id;
+  Activities.insert({
 		userId: doc.userId,
 		hierId: doc.hierId,
 		type: Enums.activitiesType.taskAdd,
-		entityId: doc.links[0].id, //doc._id,
+		entityId: linkid,
 		data: {
 			note: doc.note,
 			dateCreated: doc.dateCreated,
