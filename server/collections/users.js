@@ -85,6 +85,8 @@ Accounts.onCreateUser(function (options, user) {
   }
   user.roles = roles;
   user.hierId = hierId;
+  user.hierarchies = [hierId];
+  user.currentHierId = hierId;
 
   Hierarchies.update({
     _id: user.hierId
