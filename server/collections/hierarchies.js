@@ -181,9 +181,34 @@ Hierarchies.after.insert(function(userId, doc){
     }
   }
 });
+Hierarchies.allow({
+  update: function(userId, doc, fieldNames, modifier){
+    console.log('arguments', arguments)
+    //only allow to edit hier name
+    if (fieldNames.length == 1 && fieldNames[0] == 'name'){
+      var user = Meteor.users.findOne(userId);
+      console.log('user.hierarchies',user.hierarchies);
+      console.log('doc.hierId',doc.hierId);
 
+      //check if the user has permissions
+      return canEdit(user.hierarchies, doc._id);
+    }else{
+      return false;
+    }
+  }
+})
 // Users files
 HierarchiesFS = new Document.Collection({
   collection: Hierarchies
 });
 HierarchiesFS.publish(); // Default publish and allow options
+
+//returns true if one hierarchy in hierarchies is the same or a parent of hierId
+var canEdit = function (hierarchies, hierId) {
+  var result = false;
+  _.every(hierarchies, function(h){
+    result = methods.getHierarchiesRelation(hierId, h) == -1;
+    return ! result;
+  })
+  return result;
+};
