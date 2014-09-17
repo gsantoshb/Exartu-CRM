@@ -30,6 +30,8 @@ JobRateTypes = new Meteor.Collection("jobRateTypes");
 
 SystemConfigs = new Meteor.Collection("systemConfigs");
 
+UserInvitations = new Meteor.Collection("userInvitations");
+
 Collections = {
   Hierarchies: Hierarchies,
   Jobs: Jobs,

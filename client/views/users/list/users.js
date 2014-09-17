@@ -16,30 +16,28 @@ UsersController = RouteController.extend({
     });
   }
 });
+
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
     searchString: {}
   }
 });
-Template.users.helpers({
-  users: function () {
-    var queryObj = query.getObject();
-    var q = {};
-    if (queryObj.searchString) {
-      q.username = {
-        $regex: queryObj.searchString,
-        $options: 'i'
-      };
-    }
-    return Meteor.users.find(q);
-  },
-  filters: function(){
-      return query
-  }
-});
+
+Template.users.filters = function(){
+  return query;
+};
+
+var showInvitations = false;
+var showInvitationsDep = new Deps.Dependency;
+
+Template.users.showInvitations = function() {
+  showInvitationsDep.depend();
+  return showInvitations;
+};
+
 Template.users.events({
   "click .addUser": function () {
-    Utils.showModal('addUser');
+    Utils.showModal('inviteUser');
   },
   'change .inactive': function(e)
   {
@@ -51,9 +49,40 @@ Template.users.events({
       };
     });
   },
-  'click #resend-email': function() {
-    Meteor.call('resendUserVerificationEmail', this._id);
+  'click #switch-lists': function() {
+    showInvitations = !showInvitations;
+    showInvitationsDep.changed();
   }
 });
 
+// Users
+
+Template.usersList.users = function () {
+  var queryObj = query.getObject();
+  var q = {};
+  if (queryObj.searchString) {
+    q.username = {
+      $regex: queryObj.searchString,
+      $options: 'i'
+    };
+  }
+  return Meteor.users.find(q);
+};
+
+// Invitations
+
+Template.userInvitationsList.invitations = function() {
+  return UserInvitations.find({used: {$ne: true}});
+};
+
+Template.userInvitationsList.getUserDisplayName = function(userId) {
+  var user = Meteor.users.findOne(userId);
+  return user? user.emails[0].address : undefined;
+};
+
+Template.userInvitationsList.events = {
+  'click .resend-invitation': function() {
+    Meteor.call('resendUserInvitation', this._id);
+  }
+};
 

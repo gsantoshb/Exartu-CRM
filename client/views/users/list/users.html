@@ -1,104 +1,136 @@
 <template name="users" xmlns="http://www.w3.org/1999/html">
-    <div name="usersVM">
-
-        <div id="content-header">
-            <h1>User management</h1>
-        </div>
-        <div id="breadcrumb">
-            <a href="/" title="Go to Home" class="tip-bottom">Management</a>
-            <a href="/users" class="current">Users</a>
-        </div>
-
-        <div class="container-fluid">
-            <div class="actions-head">
-                <div class="row">
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-
-                        <div class="pull-left suffix-5">
-                            <!-- Single button -->
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-success addUser dropdown-toggle" data-toggle="dropdown" title="Add">
-                                    <span class="fa fa-plus"></span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            {{#objectProperty property=filters.searchString}}
-                            <input type="text" class="form-control" placeholder="Search Users" value="{{value}}">
-                            {{/objectProperty}}
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div><!-- /.col-lg-5 -->
-                </div><!-- /.row -->
-            </div>
-
-            <div class="table-items-box">
-
-
-                {{#each users}}
-                   <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="table-item-cell">
-                                <strong>{{username}}</strong>
-                            </div>
-                            <!-- /.table-item-cell -->
-                        </div>
-                        <!-- /.col-md-2-->
-                        <div class="col-sm-3">
-
-                            <div class="table-item-cell" data-bind="foreach: $data.emails">
-                                {{#each emails}}
-                                    <i class="fa fa-envelope-o"></i>&nbsp;
-                                    <a href="mailto:{{address}}">{{address}}</a>
-                                {{/each}}
-                            </div>
-                            <!-- /.table-item-cell -->
-                        </div>
-                        <!-- /.col-md-2-->
-                        <div class="col-sm-3  text-small">
-                            Created: <span class="table-item-cell">
-                            {{#formattedDate value=createdAt format='lll'}}
-                                {{date}}
-                            {{/formattedDate}}
-                            </span>
-                        </div>
-                        <div class="col-xs-6 col-sm-1">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" checked="{{inactive}}" class="inactive" /> Inactive
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-sm-1">
-                            <a href="/user/{{_id}}"> <div class="list-3-item-meta-top">Detail</div> </a>
-                            <a id="resend-email"> Resend email </a>
-                        </div>
-
-                        <!-- /.col-md-4-->
-                        <!--<div class="col-sm-3">-->
-                            <!--<div class="table-item-cell" data-bind="foreach: $data.roles">-->
-                                <!--<div class="btn btn-default btn-xs">-->
-                                    <!--<span data-bind="text: $data "></span>-->
-                                    <!--<a data-bind="click: function () {  $root.removeGroup($data,$parent);}">-->
-                                        <!--<i class="fa fa-times"></i>-->
-                                    <!--</a>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    </div>
-                    <!-- /.row -->
-                </div>
-                {{/each}}
-                <!-- /.table-item -->
-            </div>
-            <!-- /.table-items-box -->
-
-        </div>
+    <div id="content-header">
+        <h1>User management</h1>
     </div>
+    <div id="breadcrumb">
+        <a href="/" title="Go to Home" class="tip-bottom">Management</a>
+        <a href="/users" class="current">Users</a>
+    </div>
+
+    <div class="container-fluid">
+        <div class="actions-head">
+            <div class="row">
+                <div class="col-sm-8 col-md-8 col-lg-8">
+                    <div class="pull-left suffix-5">
+                        <!-- Single button -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success addUser dropdown-toggle" data-toggle="dropdown" title="Add">
+                                <span class="fa fa-plus"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        {{#objectProperty property=filters.searchString}}
+                            <input type="text" class="form-control" placeholder="Search Users" value="{{value}}">
+                        {{/objectProperty}}
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div><!-- /.col-lg-5 -->
+                <div class="pull-right">
+                    <span id="switch-lists" class="btn btn-info">
+                        {{#if showInvitations}}
+                            Show users
+                        {{else}}
+                            Show invitations
+                        {{/if}}
+                    </span>
+                </div>
+            </div><!-- /.row -->
+        </div>
+
+        <div class="table-items-box">
+            {{#if showInvitations}}
+                {{> userInvitationsList}}
+            {{else}}
+                {{> usersList}}
+            {{/if}}
+        </div>
+        <!-- /.table-items-box -->
+    </div>
+</template>
+
+<template name="usersList">
+    {{#each users}}
+        <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="table-item-cell" data-bind="foreach: $data.emails">
+                        {{#each emails}}
+                            <a href="mailto:{{address}}">
+                                <strong>{{address}}</strong>
+                            </a>
+                        {{/each}}
+                    </div>
+                </div>
+
+                <div class="col-xs-3">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" checked="{{inactive}}" class="inactive" /> Inactive
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-xs-3">
+                    <span class="table-item-cell">
+                        <a href="/user/{{_id}}"> <div class="list-3-item-meta-top">Profile</div> </a>
+                        <!--<a id="resend-email"> Resend email </a>-->
+                    </span>
+                </div>
+
+                <div class="col-xs-2">
+                    <span class="table-item-cell text-small">
+                        Created at
+                        {{#formattedDate value=createdAt format='lll'}}
+                            {{date}}
+                        {{/formattedDate}}
+                    </span>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+    {{/each}}
+</template>
+
+<template name="userInvitationsList">
+    {{#each invitations}}
+        <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="table-item-cell" data-bind="foreach: $data.emails">
+                        <a href="mailto:{{email}}">
+                            <strong>{{email}}</strong>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-xs-3">
+                    <span class="table-item-cell">
+                        <a href="#"> <div class="list-3-item-meta-top resend-invitation">Resend</div> </a>
+                    </span>
+                </div>
+
+                <div class="col-xs-5">
+                    <span class="table-item-cell text-small">
+                        {{#with getUserDisplayName sentBy}}
+                            Invited by <strong>{{.}}</strong>
+                            <br/>
+                        {{else}}
+                            Sent
+                        {{/with}}
+                         at
+                        {{#formattedDate value=createdAt format='lll'}}
+                            <strong>{{date}}</strong>
+                        {{/formattedDate}}
+                    </span>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+    {{/each}}
 </template>

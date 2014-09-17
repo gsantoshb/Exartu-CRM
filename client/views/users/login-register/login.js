@@ -1,3 +1,33 @@
+LoginController = RouteController.extend({
+  template: 'login',
+  layout: '',
+  onBeforeAction: function () {
+    if (Meteor.user()) {
+      this.redirect('dashboard');
+    }
+  },
+  data: function() {
+    email = this.params.email;
+    return this;
+  },
+  onAfterAction: function() {
+    var title = 'Login',
+      description = '';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
+});
+
+var email;
+
 Template.login.viewModel = function () {
   var self = this;
 
@@ -7,7 +37,7 @@ Template.login.viewModel = function () {
 
   self.errorMessage = ko.observable();
 
-  self.email = ko.observable();
+  self.email = ko.observable(email);
   self.password = ko.observable();
   self.notVerified = ko.observable(false);
   self.loading= ko.observable(false);
