@@ -10,8 +10,9 @@ PlacementAddController = RouteController.extend({
     this.render('addPlacementPage');
   },
   onAfterAction: function() {
-    var title = 'Add ' + Session.get('objType'),
-      description = '';
+    var title = 'Add ' + Session.get('objType');
+    var description = '';
+
     SEO.set({
       title: title,
       meta: {
@@ -26,7 +27,6 @@ PlacementAddController = RouteController.extend({
 });
 
 var model;
-var subTypesDep=new Deps.Dependency;
 var options;
 var employeeId;
 var createPlacement= function(objTypeName){
@@ -38,7 +38,7 @@ var createPlacement= function(objTypeName){
 
   model= new dType.objTypeInstance(Session.get('objType'), options);
   return model
-}
+};
 
 Template.addPlacementPage.helpers({
   employeeId: function () {
@@ -54,12 +54,16 @@ Template.addPlacementPage.helpers({
     return Session.get('objType');
   },
   employees:function() {
-
-    return Contactables.find({
-      Employee: {
-        $exists: true
-      }
+    var employees = [];
+      Contactables.find({ Employee: { $exists: true } }).forEach(function(doc) {
+      employees.push({ id: doc._id, text: doc.displayName});
     });
+    return employees;
+  },
+  selectEmployee: function () {
+    return function (selectedValue) {
+      employeeId = selectedValue;
+    }
   },
   isSelected: function(id){
     return employeeId==id;
@@ -67,10 +71,6 @@ Template.addPlacementPage.helpers({
 });
 
 Template.addPlacementPage.events({
-    'change .employeeSelect': function (e, ctx) {
-
-      employeeId = e.target.value;
-    },
   'click .btn-success': function(){
     if (!dType.isValid(model)){
       dType.displayAllMessages(model);
@@ -93,8 +93,8 @@ Template.addPlacementPage.events({
   'click .goBack': function(){
     history.back();
   }
-})
+});
 
 Template.addPlacementPage.destroyed=function(){
   model=undefined;
-}
+};

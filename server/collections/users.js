@@ -1,5 +1,5 @@
 Accounts.validateLoginAttempt(function(attempt) {
-  console.log('login attempt',attempt);
+  //console.log('login attempt',attempt);
   if (!attempt.allowed)
     return false;
   if (attempt.user.inactive) return false;
