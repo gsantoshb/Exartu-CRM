@@ -1,6 +1,73 @@
 <template name="tasksBox">
         <div class="container-fluid">
             <div class="row">
+                <div class="col-md-3 col-lg-3">
+                    <div class="filter">
+                        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+                            <strong><i class="fa fa-filter"></i></strong>
+                        </a>
+                        <div class="filter-list" id="filter-body">
+                            <div class="filter-item">
+                                <div class="filter-title">
+                                    Status
+                                </div>
+
+                                <div data-bind="foreach: states">
+                                    {{#each states}}
+                                        <button type="button" class="btn btn-sm selectState {{selectedClass}}">{{name}}</button>
+                                    {{/each}}
+                                </div>
+                            </div>
+
+                            <div class="filter-item">
+                                <div class="filter-title">
+                                    <i class="fa fa-eye"></i>
+                                    Visibility
+                                </div>
+
+                                <div class="checkbox">
+                                    <label>
+                                        {{#objectProperty property=filters.inactives}}
+                                            <input type="checkbox" checked="{{value}}" />Archived
+                                        {{/objectProperty}}
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        {{#objectProperty property=filters.ownedByMe}}
+                                            <input type="checkbox" checked="{{value}}" />Mine only
+                                        {{/objectProperty}}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter-item">
+                                <div class="filter-title">
+                                    <i class="fa fa-user"></i>
+                                    Owner
+                                </div>
+
+                                <div class="checkbox">
+                                    <label>
+                                        {{#objectProperty property=filters.assigned}}
+                                            <input type="checkbox" checked="{{assigned}}" />Assigned to:
+                                        {{/objectProperty}}
+
+                                        {{#objectProperty property=filters.assignedTo}}
+                                            <select class="form-control">
+                                                {{#each users}}
+                                                    <option value="{{_id}}">{{username}}</option>
+                                                {{/each}}
+                                            </select>
+                                        {{/objectProperty}}
+
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-md-8 col-lg-8">
                     <div class="actions-head">
                         <div class="row">
@@ -30,63 +97,8 @@
                         </div><!-- /.row -->
                     </div>
                 </div>
-                <div class="col-md-4 col-lg-4">
-                    <div class="filter">
-                        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-                            <strong><i class="fa fa-filter"></i></strong>
-                        </a>
-                        <div class="filter-list" id="filter-body">
-                            <div class="filter-item">
-                                <div class="item-body">
-                                    <div data-bind="foreach: states">
-                                        {{#each states}}
-                                            <button type="button" class="btn btn-xs selectState {{selectedClass}}">{{name}}</button>
-                                        {{/each}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="filter-item">
-                                    <!--<div class="item-title">-->
-                                        <!--<strong>All Owners</strong>-->
-                                    <!--</div>-->
-                                    <div class="item-body">
-                                        <div class="checkbox">
-                                            <label>
-                                                {{#objectProperty property=filters.inactives}}
-                                                    <input type="checkbox" checked="{{value}}" />Archived
-                                                {{/objectProperty}}
-                                            </label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                {{#objectProperty property=filters.ownedByMe}}
-                                                    <input type="checkbox" checked="{{value}}" />Mine only
-                                                {{/objectProperty}}
-                                            </label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                {{#objectProperty property=filters.assigned}}
-                                                    <input type="checkbox" checked="{{assigned}}" />Assigned to:
-                                                {{/objectProperty}}
 
-                                                {{#objectProperty property=filters.assignedTo}}
-                                                    <select class="form-control">
-                                                        {{#each users}}
-                                                            <option value="{{_id}}">{{username}}</option>
-                                                        {{/each}}
-                                                    </select>
-                                                {{/objectProperty}}
-
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-md-8 col-lg-8">
+                <div class="col-md-9 col-lg-9">
 
                     <!-- Entities list -->
                     <div class="table-items-box">
