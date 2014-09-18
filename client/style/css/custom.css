@@ -712,34 +712,25 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     top: 20%;
 }
 /*filters*/
-.filter{
-    text-align: center;
-}
-.filter .collapsing {
-    -webkit-transition: none;
-    transition: none;
-}
-.filter .filter-toggle{
-    color: black;
-    font-size: 20px;
-    margin-bottom: 20px;
-    pointer-events: none;
-    display: block;
-    margin-bottom: 15px;
-}
-.filter .filter-list{
-    display: block;
-}
-.filter .filter-list .filter-item .item-title{
-    border-bottom: solid 1px #E0E0E0;
-    margin-bottom: 3px;
-}
+
+.filter{ text-align: center; padding: 10px; background-color: #f6f6f6; border-radius: 7px; border: 1px solid #d6d6d6;}
+
+.filter .collapsing { -webkit-transition: none; transition: none;}
+
+.filter .filter-toggle{ color: black; font-size: 20px; margin-bottom: 20px; pointer-events: none; display: block; margin-bottom: 15px;}
+
+.filter .filter-list{ display: block; text-align: initial; position: initial}
+
+.filter .filter-list .filter-item{ border-top: 1px solid #eee; margin-bottom: 5px; padding-bottom: 5px; }
+
+.filter .filter-list .filter-item .filter-title{ margin-top: 10px; margin-bottom: 5px; color: grey; font-size: 15px; font-weight: bold}
 
 @media (min-width: 992px){
-    .filter .filter-list{
-        position: absolute;
-        width: 100%;
-    }
+    .filter .filter-list{ width: 100%;}
+}
+
+@media (max-width: 991px) {
+    .filter {background-color: #ffffff; border: none;}
 }
 
 /*connection-banner*/

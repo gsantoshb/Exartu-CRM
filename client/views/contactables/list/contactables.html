@@ -28,17 +28,17 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-8 col-lg-8">
-                        {{>contactablesListSearch}}
-                    </div>
-                    <div class="col-md-4 col-lg-4">
+                    <div class="col-md-3 col-lg-3">
                         <sidebar>
                             {{> contactablesFilters }}
                         </sidebar>
                     </div>
-                    <!-- /.col-lg-4 -->
 
                     <div class="col-md-8 col-lg-8">
+                        {{>contactablesListSearch}}
+                    </div>
+
+                    <div class="col-md-9 col-lg-9">
                         {{#if isSearching}}
                             searching
                         {{else}}
@@ -58,87 +58,94 @@
         <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
             <strong><i class="fa fa-filter"></i></strong>
         </a>
-        <div class="filter-list" id="filter-body">
-            <div class="filter-item">
-                <div class="item-body">
-                    {{#each contactableTypes2}}
-                        <button type="button" class="typeSelect {{typeOptionClass .}}">{{name}}</button>
-                    {{/each}}
-                </div>
-            </div>
-            {{#if isSelectedType 'Employee'}}
-                <hr>
-                <div class="filter-item">
-                    <div class="item-body">
-                        {{>lookupFilterTemplate lookUpCode=10 callback=candidateeStatusChanged multi=false}}
-                    </div>
-                </div>
-                <hr>
-            {{/if}}
-            <div class="filter-item">
 
-                <div class="item-body">
-                    <div class="checkbox">
-                        <label>
-                            {{#objectProperty property=query.inactives}}
-                                <input type="checkbox" value="{{value}}"> Include inactives
-                            {{/objectProperty}}
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            {{#objectProperty property=query.onlyRecents}}
-                                <input type="checkbox" value="{{value}}"> Only recent
-                            {{/objectProperty}}
-                        </label>
-                        <span><i class="icon-question-mark" title="Shows only the contacts that have been recently added. Select the timespan."></i></span>
-                        <div class="pull-right">
-                            <button type="button" class="{{recentOptionClass recentOptions.day}}" id="recent-day">day</button>
-                            <button type="button" class="{{recentOptionClass recentOptions.week}}" id="recent-week">week</button>
-                            <button type="button" class="{{recentOptionClass recentOptions.month}}" id="recent-month">month</button>
-                            <button type="button" class="{{recentOptionClass recentOptions.year}}" id="recent-year">year</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="filter-list" id="filter-body">
+
             <div class="filter-item">
-                <!--<div class="item-title">-->
-                    <!--<strong>Tags</strong>-->
-                <!--</div>-->
-                <div class="item-body">
-                    {{#objectProperty property=tags}}
-                    <button type="button" class="tag btn btn-xs btn-primary">
+                <div class="filter-title">
+                    <i class="fa fa-group"></i>
+                    Types
+                </div>
+
+                {{#each contactableTypes2}}
+                    <button type="button" class="typeSelect {{typeOptionClass .}}">{{name}}</button>
+                {{/each}}
+            </div>
+
+            {{#if isSelectedType 'Employee'}}
+                <div class="filter-item">
+                    <div class="filter-title">
+                        Status
+                    </div>
+
+                    {{>lookupFilterTemplate lookUpCode=10 callback=candidateeStatusChanged multi=false}}
+                </div>
+            {{/if}}
+
+            <div class="filter-item">
+                <div class="filter-title">
+                    <i class="fa fa-eye"></i>
+                    Visibility
+                </div>
+
+                <button id="show-inactives" type="button" class="{{showInactives}}">Inactives</button>
+            </div>
+
+            <div class="filter-item">
+                <div class="filter-title">
+                    <i class="fa fa-calendar"></i>
+                    Creation date
+                </div>
+
+                <button type="button" class="{{recentOptionClass recentOptions.day}}" style="margin-bottom: 3px" id="recent-day">Today</button>
+                <button type="button" class="{{recentOptionClass recentOptions.week}}" style="margin-bottom: 3px" id="recent-week">This week</button>
+                <button type="button" class="{{recentOptionClass recentOptions.month}}" style="margin-bottom: 3px" id="recent-month">This month</button>
+                <button type="button" class="{{recentOptionClass recentOptions.year}}" style="margin-bottom: 3px" id="recent-year">This year</button>
+            </div>
+
+            <div class="filter-item">
+                <div class="filter-title">
+                    <i class="fa fa-tags"></i>
+                    Tags
+                </div>
+
+                <div class="input-group" style="margin-bottom: 10px">
+                    <input id="new-tag" type="text" class="form-control" placeholder="E.g. javascript, sales">
+                    <span class="input-group-btn">
+                      <button class="add-tag btn btn-default" type="button"><span class="fa fa-plus"></span></button>
+                    </span>
+                </div>
+
+                {{#objectProperty property=tags}}
+                    <button type="button" class="tag btn btn-xs btn-info">
                         <span >{{value}}</span>
                         <i class="remove-tag fa fa-times"></i>
                     </button>
-                    {{/objectProperty}}
-                    <div class="input-group">
-                        <input id="new-tag" type="text" class="form-control" placeholder="Search tags...">
-                            <span class="input-group-btn">
-                              <button class="add-tag btn btn-success" type="button"><span class="fa fa-plus"></span></button>
-                            </span>
-                    </div>
-                </div>
+                {{/objectProperty}}
             </div>
+
             <div class="filter-item">
-                <hr/>
+                <div class="filter-title">
+                    <i class="fa fa-map-marker"></i>
+                    Location
+                </div>
+
                 <div class="input-group">
                     {{#objectProperty property=query.location}}
-                        <input type="text" class="form-control" placeholder="Filter by location" value="{{value}}">
+                        <input type="text" class="form-control" placeholder="E.g. city: San Francisco" value="{{value}}">
                     {{/objectProperty}}
                     <span class="input-group-btn">
-                      <button class="add-tag btn btn-success" type="button"><span class="fa fa-map-marker"></span></button>
+                      <button class="add-tag btn btn-default" type="button"><span class="fa fa-map-marker"></span></button>
                     </span>
                 </div>
-                <small class="text-muted"> Search using tags, for example, city: San Francisco, or free text</small>
             </div>
         </div>
-        
+
     </div>
 </template>
 
 <template name="contactablesList">
-    <div>
+    <div style="min-height: 550px">
         <!--{{> contactablesListSearch }}-->
 
         {{#each contactables}}
