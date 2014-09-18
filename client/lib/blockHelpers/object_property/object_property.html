@@ -1,7 +1,10 @@
 <template name="object_property_single">
     <span class="prop-input">
-        {{> UI.contentBlock value=property.value}}
-        <span class="text text-danger">{{error}}</span>
+        {{> UI.contentBlock value=property.value error=error hasError=hasError}}
+        {{#if hideErrors}}
+        {{else}}
+            <span class="text text-danger">{{error}}</span>
+        {{/if}}
     </span>
 </template>
 

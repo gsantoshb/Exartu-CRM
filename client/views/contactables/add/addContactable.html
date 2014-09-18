@@ -10,24 +10,40 @@
                 </div><!-- /.add-box-head -->
 
                 <div class="add-box-content">
-                        <div class="form-group" style="display: none;">
-                            <select class="form-control input-lg" id="personType">
-                                <option value="organization" selected="{{selected 'organization'}}">Organization</option>
-                                <option value="person" selected="{{selected 'person'}}">Person</option>
-                            </select>
-                        </div><!-- /.form-group -->
-                        {{#with contactable}}
-                            {{#each subTypeArray}}
-                                {{> typeInput }}
-                            {{/each}}
+                    <div class="form-group" style="display: none;">
+                        <select class="form-control input-lg" id="personType">
+                            <option value="organization" selected="{{selected 'organization'}}">Organization</option>
+                            <option value="person" selected="{{selected 'person'}}">Person</option>
+                        </select>
+                    </div><!-- /.form-group -->
 
+                    {{#with contactable}}
+                        {{#each subTypeArray}}
                             {{> typeInput }}
+                        {{/each}}
 
-                            <div class="form-group text-center top-30">
-                                <button class="btn btn-success btn-lg">Add {{objTypeName}}</button>
-                            </div><!-- /.form-group -->
+                        {{> typeInput }}
 
+                        {{#with  extraInformation}}
+                            {{#objectProperty property=email hideErrors=true}}
+                                <span>Email:</span>
+                                <div class="form-group {{hasError}}">
+                                    <input class="form-control input-lg" type="text" placeholder="Email" value="{{value}}">
+                                    <span>{{error}}</span>
+                                </div>
+                            {{/objectProperty}}
+                            {{#objectProperty property=phoneNumber}}
+                                <span>Phone number:</span>
+                                <div class="form-group">
+                                    <input class="form-control input-lg" type="text" placeholder="Phone number" value="{{value}}">
+                                </div>
+                            {{/objectProperty}}
                         {{/with}}
+
+                        <div class="form-group text-center top-30">
+                            <button class="btn btn-success btn-lg">Add {{objTypeName}}</button>
+                        </div><!-- /.form-group -->
+                    {{/with}}
 
                 </div><!-- /.add-box-content -->
             </div><!-- /.add-box -->

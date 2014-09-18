@@ -458,6 +458,18 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     color: #F00;
 }
 
+.prop-input > .object-property-error > input{
+    color: #F00;
+    border-color: #FF0000;
+}
+.prop-input > .object-property-error > select{
+    color: #F00;
+    border-color: #FF0000;
+}
+.prop-input > .object-property-error > span{
+    color: #F00;
+}
+
 .login-footer{
     width: 100%;
     margin-top: 40px;
