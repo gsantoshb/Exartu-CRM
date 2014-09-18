@@ -13,6 +13,9 @@
                         {{else}}
                             <span class="msg-author">{{userEmail}}</span>
                         {{/if}}
+                        {{#if currentHierName}}
+                            &nbsp;({{currentHierName}})
+                        {{/if}}
 
                     </a>
                 </li>
