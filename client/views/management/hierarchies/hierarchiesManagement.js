@@ -82,20 +82,34 @@ Template.hierarchiesManagement.events({
       if (err)
         console.error(err);
       else{
-        console.log(result);
         Meteor.disconnect();
         Meteor.reconnect();
       }
     })
-  },
+  }
 
 });
 
-Template.showHierarchyTree.helpers({
+var getChildrenQuery = function(hierId){
+  return {
+    _id: {
+      $regex: '^' + hierId + '-(\\w)*$'
+    }
+  };
+};
+
+Template.recursiveHierarchies.helpers({
   childHiers: function(){
-    return Hierarchies.find({ _id: { $regex: '^' + this._id + '-.*'} });
+    return Hierarchies.find(getChildrenQuery(this._id));
   },
   isCurrent: function(){
     return Meteor.user().currentHierId == this._id;
+  },
+  isSelectedClass: function(){
+    selectedHierDep.depend();
+    return ( this._id == (selectedHier && selectedHier._id ) )? 'active' : '';
+  },
+  hasChilds: function () {
+    return Hierarchies.find(getChildrenQuery(this._id)).count() > 0;
   }
 })
