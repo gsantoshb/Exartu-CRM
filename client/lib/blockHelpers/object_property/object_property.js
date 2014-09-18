@@ -48,6 +48,9 @@ UI.registerHelper('objectProperty', function() {
           return this.property.error;
         }
       };
+      template.hasError= function(){
+        return !this.property.error.hasError? '': 'object-property-error';
+      };
   }
 
   return template;
