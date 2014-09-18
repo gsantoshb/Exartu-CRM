@@ -216,6 +216,11 @@ Router.map(function () {
     path: '/notfound',
     template: 'notFoundTemplate'
   })
+
+  this.route('hierarchyManagement', {
+    path: '/hierarchyManagement',
+    controller: 'HierarchiesManagementController'
+  });
 });
 
 

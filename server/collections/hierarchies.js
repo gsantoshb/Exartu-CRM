@@ -4,7 +4,7 @@ Meteor.publish('hierarchies', function() {
   if(!user)
     return false;
 
-  return Hierarchies.find({_id: user.hierId});
+  return Hierarchies.find({$or: filterByHiers(user.hierId, '_id') });
 });
 
 Meteor.startup(function () {
@@ -13,7 +13,6 @@ Meteor.startup(function () {
 			//TODO: Check options values
 
 			if (hier.parent != null) {
-				//console.log('New hier with parent');
 				var parentHier = Hierarchies.findOne({
 					_id: hier.parent
 				});
@@ -42,6 +41,11 @@ Meteor.startup(function () {
 				hierId: Meteor.user().hierId
 			}).fetch();
 		},
+    changeCurrentHierId: function(hierId){
+      var user = Meteor.user();
+      //todo:check if it's valid
+      return Meteor.users.update({_id: user._id}, { $set: { currentHierId: hierId } });
+    },
 		/*
 		 *  ---- Testing
 		 *
@@ -170,14 +174,41 @@ createHouseAccount = function(hierarchy){
 };
 
 Hierarchies.after.insert(function(userId, doc){
-  seedSystemLookUps(doc._id);
-  if (doc._id != ExartuConfig.SystemHierarchyId){
-    createHouseAccount(doc);
+  if (!doc.parent){
+    seedSystemLookUps(doc._id);
+    if (doc._id != ExartuConfig.SystemHierarchyId){
+      createHouseAccount(doc);
+    }
+  }
+});
+Hierarchies.allow({
+  update: function(userId, doc, fieldNames, modifier){
+    console.log('arguments', arguments)
+    //only allow to edit hier name
+    if (fieldNames.length == 1 && fieldNames[0] == 'name'){
+      var user = Meteor.users.findOne(userId);
+      console.log('user.hierarchies',user.hierarchies);
+      console.log('doc.hierId',doc.hierId);
+
+      //check if the user has permissions
+      return canEdit(user.hierarchies, doc._id);
+    }else{
+      return false;
+    }
   }
 })
-
 // Users files
 HierarchiesFS = new Document.Collection({
   collection: Hierarchies
 });
 HierarchiesFS.publish(); // Default publish and allow options
+
+//returns true if one hierarchy in hierarchies is the same or a parent of hierId
+var canEdit = function (hierarchies, hierId) {
+  var result = false;
+  _.every(hierarchies, function(h){
+    result = methods.getHierarchiesRelation(hierId, h) == -1;
+    return ! result;
+  })
+  return result;
+};

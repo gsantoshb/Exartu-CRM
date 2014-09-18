@@ -823,7 +823,78 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 }
 /********** end select 2 ******************************/
 
+/********************* tree view ********************/
 
+.tree{
+    padding: 0px 10px;
+}
+.tree ul, li{
+    list-style: none;
+}
+.tree .tree-list{
+    padding-left: 0;
+}
+.tree .tree-child{
+    padding-left: 10px;
+    padding-top: 10px;
+    /*border-left: solid 1px #969696;*/
+    margin-left: 16px;
+}
+.tree .tree-item{
+    /*.btn*/
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+
+    /*.btn-default*/
+    border-color: #e7e7e7;
+    color: #333;
+    background-color: #fff;
+
+    margin-bottom: 3px;
+}
+.tree .tree-item:hover{
+    background-color: #F8F8F8;
+    border-color: #D9D9D9;
+}
+.tree .tree-item.active{
+    background-color: #0a7cde;
+    color: #f9f2f4;
+    border-color: #0864b2;
+}
+.tree .tree-collapse-trigger i{
+    /*.fa*/
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+.tree .tree-collapse-trigger i:before{
+    /*.fa-minus*/
+    content: "\f068";
+}
+.tree .tree-collapse-trigger.collapsed i:before{
+    /*.fa-plus*/
+    content: "\f067";
+}
+
+/********************* end tree *********************/
 
 /***************************** Mobile Specific CSS ***********************************/
 @media (max-width: 992px) {

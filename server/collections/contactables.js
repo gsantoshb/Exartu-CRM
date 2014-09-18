@@ -7,7 +7,7 @@ Meteor.publish('contactables', function () {
     return false;
 
   return Contactables.find({
-    $or: filterByHiers(user.hierId)
+    $or: filterByHiers(user.currentHierId)
   });
 });
 
@@ -31,7 +31,7 @@ Contactables.before.insert(function (userId, doc) {
     //when the insert is trigger from the server
     var user= { }
   }
-  doc.hierId = user.hierId || doc.hierId;
+  doc.hierId = user.currentHierId || doc.hierId;
   doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();
 

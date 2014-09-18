@@ -19,7 +19,7 @@ Meteor.publish('tasks', function () {
 
 
   return Tasks.find({
-        $or: filterByHiers(user.hierId)
+        $or: filterByHiers(user.currentHierId)
     });
 
 //  return Tasks.find({
@@ -45,7 +45,7 @@ Meteor.startup(function () {
 Tasks.before.insert(function (userId, doc) {
 //  if (this.connection) {
     var user = Meteor.user();
-    doc.hierId = user.hierId;
+    doc.hierId = user.currentHierId;
     doc.userId = user._id;
 //  }
     doc.dateCreated = Date.now();
