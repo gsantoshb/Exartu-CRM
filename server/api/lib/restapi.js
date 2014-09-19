@@ -1,7 +1,64 @@
 RESTAPI = {};
+var selectorFromUserQuery = function (user) {
+  if (user.id)
+    return {_id: user.id};
+  else if (user.username)
+    return {username: user.username};
+  else if (user.email)
+    return {"emails.address": user.email};
+
+  throw new Meteor.Error(403, "Missed information for login");
+};
+
+RESTAPI.generateLoginToken = function(userId) {
+  var stampedLoginToken = Accounts._generateStampedLoginToken();
+  Meteor.users.update(userId, {
+    $push: {'services.resume.loginTokens': stampedLoginToken}
+  });
+
+  return stampedLoginToken.token;
+};
 
 RESTAPI.getLoginToken = function(request) {
 	return request.params.loginToken || request.request.headers["login-token"];
+};
+
+RESTAPI.loginAction = function (data) {
+  if (!data.password)
+    throw new Meteor.Error(403, 'Password required for login');
+
+  var selector = selectorFromUserQuery(data);
+  var user = Meteor.users.findOne(selector);
+
+  if (!user)
+    throw new Meteor.Error(403, "There is something wrong with the username or password");
+
+  if (!user.services || !user.services.password)
+    throw new Meteor.Error(403, "User has no password set");
+
+  if (!user.services.password.srp) {
+    console.log('Checking password');
+    var resultOfInvocation = Accounts._checkPassword(user, data.password);
+
+    if (resultOfInvocation.error)
+      throw new Meteor.Error(403, "There is something wrong with the username or password");
+  }
+  else {
+    var verifier = user.services.password.srp;
+    var newVerifier = SRP.generateVerifier(data.password, {
+      identity: verifier.identity,
+      salt: verifier.salt
+    });
+
+    if (verifier.verifier !== newVerifier.verifier)
+      throw new Meteor.Error(403, "There is something wrong with the username or password");
+  }
+
+  var stampedLoginToken = RESTAPI.generateLoginToken(user._id);
+   return {
+     loginToken: stampedLoginToken,
+     userId: user._id
+   }
 };
 
 RESTAPI.getUserFromToken = function (loginToken) {

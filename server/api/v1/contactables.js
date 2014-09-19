@@ -15,6 +15,8 @@ Router.map(function() {
 		path: '/api/' + api_version + '/customers/:id?',
 		action: function() {
 			console.log('API v' + api_version + '/customers ' + this.request.method);
+			console.log(this.request);
+
 			contactablesAPIAction.call(this, 'Customer');
 		}
 	})
@@ -31,11 +33,34 @@ Router.map(function() {
 	})
 });
 
-var contactablesAPIAction = function(type) {
+Router.map(function() {
+	this.route('apiContactsAndLogin' + api_version, {
+		where: 'server',
+		path: '/api/' + api_version + '/twwpapi/:id?',
+		action: function() {
+			console.log('API v' + api_version + '/twwpapi ' + this.request.method);
+      console.log(this.request.body);
+
+      if (this.request.body){
+        var loginData = {
+          email : this.request.body.userEmail,
+          password : this.request.body.userPassword
+        };
+        var userData = RESTAPI.loginAction(loginData);
+
+        contactablesAPIAction.call(this, 'Contact', userData);
+      }
+		}
+	})
+});
+
+var contactablesAPIAction = function(type, userdata) {
+  var udata = userdata || {};
+
 	// Get login token from request
-	var loginToken = RESTAPI.getLoginToken(this);			 
-	// Return user associated to loginToken if it is valid.			
-	var user = RESTAPI.getUserFromToken(loginToken);			
+	var loginToken = udata.loginToken || RESTAPI.getLoginToken(this);
+	// Return user associated to loginToken if it is valid.
+	var user = udata.userId ? Meteor.users.findOne(udata.userId) : RESTAPI.getUserFromToken(loginToken);
 	// Create a DPP connection with server and attach user
 	var connection = new RESTAPI.connection(user);
 
@@ -102,6 +127,34 @@ var mapper = {
 			statusNote: data.status || ''
 		};
 
+    if(data.email){
+      var emailTypeId = ContactMethods.findOne({
+        hierId: ExartuConfig.SystemHierarchyId,
+        type: Enums.contactMethodTypes.email
+      });
+      if (emailTypeId){
+        emailTypeId = emailTypeId._id;
+        contactable.contactMethods = [{
+          type: emailTypeId,
+          value: data.email
+        }]
+      }
+    }
+    if(data.phoneNumber){
+      var phoneTypeId = ContactMethods.findOne({
+        hierId: ExartuConfig.SystemHierarchyId,
+        type: Enums.contactMethodTypes.phone
+      });
+
+      if (phoneTypeId){
+        phoneTypeId = phoneTypeId._id;
+        contactable.contactMethods = contactable.contactMethods || [];
+        contactable.contactMethods.push({
+          type: phoneTypeId,
+          value: data.phoneNumber
+        });
+      }
+    }
 		return contactable;
 	},
 	get: function(data, type) {
