@@ -95,16 +95,12 @@ var query = new Utils.ObjectDefinition({
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
     },
-    selectedLimit: {
-      default: timeLimits.day
-    },
+    selectedLimit: {},
     tags: {
       type: Utils.ReactivePropertyTypes.array,
       default: []
     },
-    limit: {
-      default: 15
-    },
+    limit: {},
     location: {},
     candidateStatus: {}
   }
@@ -188,7 +184,7 @@ Meteor.autorun(function() {
   }
 
   // Only recent filters
-  if (query.onlyRecents.value) {
+  if (query.selectedLimit.value) {
     var now = new Date();
     filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
   }
@@ -285,7 +281,7 @@ Template.contactablesList.contactables = function() {
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
 
-  if (query.onlyRecents.value) {
+  if (query.selectedLimit.value) {
     var dateLimit = new Date();
     searchQuery.dateCreated = {
         $gte: dateLimit.getTime() - query.selectedLimit.value
@@ -405,21 +401,25 @@ Template.contactablesFilters.recentOptions = function() {
 
 Template.contactablesFilters.isSelectedType = function(typeName){
   return query.objType.value == typeName;
-}
+};
+
 Template.contactablesFilters.candidateeStatusChanged = function(){
   return function(lookUpId){
     query.candidateStatus.value = lookUpId;
   }
-}
+};
 
 Template.contactablesFilters.typeOptionClass = function(option) {
-  return query.objType.value == option.name? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
+  return query.objType.value == option.name? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
 
 };
 
-
 Template.contactablesFilters.recentOptionClass = function(option) {
-  return query.selectedLimit.value == option? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
+  return query.selectedLimit.value == option? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+};
+
+Template.contactablesFilters.showInactives = function() {
+  return query.inactives.value? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
 };
 
 Template.contactablesFilters.tags = function() {
@@ -440,6 +440,13 @@ var addTag = function() {
   inputTag.focus();
 };
 
+var setDateCreatedFilter = function(value) {
+  if (query.selectedLimit.value == value)
+    query.selectedLimit.value = undefined;
+  else
+    query.selectedLimit.value = value;
+};
+
 Template.contactablesFilters.events = {
   'click .add-tag': function() {
     addTag();
@@ -456,19 +463,22 @@ Template.contactablesFilters.events = {
   'click .focusAddTag': function(){
     $('#new-tag')[0].focus();
   },
-  'click #recent-day': function(e) {
-    query.selectedLimit.value = timeLimits.day;
+  'click #recent-day': function() {
+    setDateCreatedFilter(timeLimits.day);
   },
-  'click #recent-week': function(e) {
-    query.selectedLimit.value = timeLimits.week;
+  'click #recent-week': function() {
+    setDateCreatedFilter(timeLimits.week);
   },
-  'click #recent-month': function(e) {
-    query.selectedLimit.value = timeLimits.month;
+  'click #recent-month': function() {
+    setDateCreatedFilter(timeLimits.month);
   },
-  'click #recent-year': function(e) {
-    query.selectedLimit.value = timeLimits.year;
+  'click #recent-year': function() {
+    setDateCreatedFilter(timeLimits.year);
   },
-  'click .typeSelect': function(e) {
+  'click #show-inactives': function() {
+    query.inactives.value = !query.inactives.value;
+  },
+  'click .typeSelect': function() {
     if (query.objType.value == this.name){
       query.objType.value= null;
     }else{

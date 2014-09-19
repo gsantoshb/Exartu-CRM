@@ -52,9 +52,7 @@ var query = new Utils.ObjectDefinition({
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
     },
-    selectedLimit: {
-      default: timeLimits.day
-    },
+    selectedLimit: {},
     tags: {
       type: Utils.ReactivePropertyTypes.array,
       default: []
@@ -150,7 +148,7 @@ Template.placementsList.placements = function() {
   }
 
 
-  if (query.onlyRecents.value) {
+  if (query.selectedLimit.value) {
     var dateLimit = new Date();
     searchQuery.dateCreated = {
       $gte: dateLimit.getTime() - query.selectedLimit.value
@@ -193,7 +191,7 @@ Template.placementsList.placements = function() {
     };
   }
 
-  if (query.statuses.value.length){
+  if (query.statuses.value && query.statuses.value.length){
     searchQuery.candidateStatus = {$in: query.statuses.value};
   }
   var placements = Placements.find(searchQuery, {});
@@ -252,6 +250,10 @@ Template.placementsFilters.recentOptionClass = function(option) {
   return query.selectedLimit.value == option? 'btn btn-xs btn-primary' : 'btn btn-xs btn-default';
 };
 
+Template.placementsFilters.showInactives = function() {
+  return query.inactives.value? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+};
+
 Template.placementsFilters.tags = function() {
   return query.tags;
 };
@@ -293,6 +295,13 @@ Template.placementsFilters.candidateActionOptions= function()
   return info.candidateActionOptions.value;
 }
 
+var setDateCreatedFilter = function(value) {
+  if (query.selectedLimit.value == value)
+    query.selectedLimit.value = undefined;
+  else
+    query.selectedLimit.value = value;
+};
+
 Template.placementsFilters.events = {
   'click .add-tag': function() {
     addTag();
@@ -309,17 +318,20 @@ Template.placementsFilters.events = {
   'click .focusAddTag': function(){
     $('#new-tag')[0].focus();
   },
-  'click #recent-day': function(e) {
-    query.selectedLimit.value = timeLimits.day;
+  'click #recent-day': function() {
+    setDateCreatedFilter(timeLimits.day);
   },
-  'click #recent-week': function(e) {
-    query.selectedLimit.value = timeLimits.week;
+  'click #recent-week': function() {
+    setDateCreatedFilter(timeLimits.week);
   },
-  'click #recent-month': function(e) {
-    query.selectedLimit.value = timeLimits.month;
+  'click #recent-month': function() {
+    setDateCreatedFilter(timeLimits.month);
   },
-  'click #recent-year': function(e) {
-    query.selectedLimit.value = timeLimits.year;
+  'click #recent-year': function() {
+    setDateCreatedFilter(timeLimits.year);
+  },
+  'click #show-inactives': function() {
+    query.inactives.value = !query.inactives.value;
   },
   'click .typeSelect': function(e) {
     if (query.candidateAction.value.valueOf() == this.valueOf()){
