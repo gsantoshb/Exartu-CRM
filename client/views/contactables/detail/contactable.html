@@ -124,24 +124,15 @@
     <div class="details-tabs-container">
         <ul class="nav nav-pills bottom-20 details-tabs">
             {{#each tabs}}
-                <li class="{{isActive id}} details-tab"><a href="#{{id}}">{{displayName}}</a></li>
+                <li class="{{isActive id}} details-tab">
+                    <a href="#{{id}}">
+                        {{displayName}}
+                        {{#if info}}
+                            <span class="custom-badge-2">{{execHelper info}}</span>
+                        {{/if}}
+                    </a>
+                </li>
             {{/each}}
-            <!--<li class="{{isActive 'details'}} details-tab"><a href="#details">Detail</a></li>-->
-            <!--<li class="{{isActive 'notes'}} details-tab"><a href="#notes">Notes <span class="custom-badge-2">{{noteCount}}</span></a></li>-->
-            <!--<li class="{{isActive 'documents'}} details-tab"><a href="#documents">Documents <span class="custom-badge-2">{{documentCount}}</span></a></li>-->
-            <!--<li class="{{isActive 'tasks'}} details-tab"><a href="#tasks">Tasks</a></li>-->
-            <!--<li class="{{isActive 'location'}} details-tab"><a href="#location">Location</a></li>-->
-            <!--{{#if ../Customer}}-->
-                <!--<li class="{{isActive 'jobs'}} details-tab"><a href="#jobs">Jobs <span class="custom-badge-2">{{jobCount}}</span></a></li>-->
-                <!--<li class="{{isActive 'placements'}} details-tab"><a href="#placements">Placements</a></li>-->
-                <!--<li class="{{isActive 'contacts'}} details-tab"><a href="#contacts">Contacts</a></li>-->
-            <!--{{/if}}-->
-            <!--{{#if ../Employee}}-->
-                <!--<li class="{{isActive 'placements'}} details-tab"><a href="#placements">Placements</a></li>-->
-                <!--<li class="{{isActive 'hrconcourse'}} details-tab"><a href="#hrconcourse">Onboarding</a></li>-->
-            <!--{{/if}}-->
-            <!--<li class="{{isActive 'actions'}} details-tab"><a href="#actions">Actions</a></li>-->
-            <!--<li class="{{isActive 'activities'}} details-tab"><a href="#activities">Activities</a></li>-->
         </ul>
     </div>
     <span id="back-tab" class="back-tab {{showMoveButtons}}"><i class="fa fa-arrow-left"></i></span>

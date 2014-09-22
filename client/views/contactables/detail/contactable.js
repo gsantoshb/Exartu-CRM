@@ -166,16 +166,33 @@ var selectedTabDep = new Deps.Dependency;
 Template.all_tabs.created = function() {
   tabs = [
     {id: 'details', displayName: 'Details'},
-    {id: 'notes', displayName: 'Notes'},
-    {id: 'documents', displayName: 'Documents'},
+    {id: 'notes', displayName: 'Notes', info: 'noteCount'},
+    {id: 'documents', displayName: 'Documents', info: 'documentCount'},
     {id: 'tasks', displayName: 'Tasks'},
     {id: 'location', displayName: 'Location'},
-    {id: 'activities', displayName: 'Activities'},
   ];
+
+  if (contactable.Customer) {
+    tabs.push({id: 'jobs', displayName: 'Jobs', info: 'jobCount'});
+    tabs.push({id: 'placements', displayName: 'Placements'});
+    tabs.push({id: 'contacts', displayName: 'Contacts'});
+  }
+
+  if (contactable.Employee) {
+    tabs.push({id: 'placements', displayName: 'Placements'});
+    tabs.push({id: 'hrconcourse', displayName: 'HRconcourse'});
+  }
+
+  tabs.push({id: 'actions', displayName: 'Actions'});
+  tabs.push({id: 'activities', displayName: 'Activities'});
 
   selectedTab = _.findWhere(tabs, {id: Session.get('activeTab')});
 };
 
+var template = 'contactable';
+Template.all_tabs.execHelper = function(helperName) {
+  return Template[template][helperName]();
+};
 
 var container, containerWidth, tabsWidth;
 var hasTabSroll = false;
