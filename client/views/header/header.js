@@ -47,6 +47,10 @@ Template.header.helpers({
     },
     isFree: function(planCode) {
       return planCode == SubscriptionPlan.plansEnum.free;
+    },
+    currentHierName: function(){
+      var hier = Hierarchies.findOne(Meteor.user().currentHierId);
+      return hier.name;
     }
 });
 Template.header.events({
