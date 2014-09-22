@@ -42,12 +42,14 @@ Template.displayObjType = function() {
   return Utils.getContactableType(this);
 };
 
+var contactable;
+
 Template.contactable.helpers({
   displayObjType: function() {
     return Utils.getContactableType(this);
   },
   contactable: function () {
-    var contactable = Contactables.findOne({
+    contactable = Contactables.findOne({
       _id: Session.get('entityId')
     });
     Session.set('contactableDisplayName', contactable.displayName);
@@ -156,12 +158,83 @@ Template.contactable_header.helpers({
   }
 });
 
-Template.all_tabs.helpers({
-  isActive: function(name){
-    var activeTab = Session.get('activeTab') || 'details';
-    return (name == activeTab) ? 'active' : '';
+// Tabs
+var tabs;
+var selectedTab;
+var selectedTabDep = new Deps.Dependency;
+
+Template.all_tabs.created = function() {
+  tabs = [
+    {id: 'details', displayName: 'Details'},
+    {id: 'notes', displayName: 'Notes'},
+    {id: 'documents', displayName: 'Documents'},
+    {id: 'tasks', displayName: 'Tasks'},
+    {id: 'location', displayName: 'Location'},
+    {id: 'activities', displayName: 'Activities'},
+  ];
+
+  selectedTab = _.findWhere(tabs, {id: Session.get('activeTab')});
+};
+
+
+var container, containerWidth, tabsWidth;
+var hasTabSroll = false;
+var resizeDep = new Deps.Dependency;
+
+var checkScroll = function() {
+  containerWidth = container.width();
+  tabsWidth = container.children().width();
+  hasTabSroll = container.get(0).scrollWidth > container.width();
+  resizeDep.changed();
+};
+
+Template.all_tabs.rendered = function() {
+  container = $('.details-tabs-container');
+  checkScroll();
+
+  container.resize(function(){
+    checkScroll();
+  });
+};
+
+Template.all_tabs.isActive = function(name){
+  selectedTabDep.depend();
+  return (name == selectedTab.id) ? 'active' : '';
+};
+
+Template.all_tabs.tabs = function() {
+  return tabs;
+};
+
+Template.all_tabs.showMoveButtons = function() {
+  resizeDep.depend();
+  return hasTabSroll? '': 'hide';
+};
+
+var currentOffset = 0;
+var moveOffset = 200;
+Template.all_tabs.events = {
+  'click #next-tab': function() {
+    if (containerWidth + currentOffset <= tabsWidth) {
+      currentOffset += moveOffset;
+      $('.details-tabs').stop().animate({
+        left: "-=" + moveOffset + 'px'
+      }, 100);
+    }
+  },
+  'click #back-tab': function() {
+    if (currentOffset - moveOffset >= 0) {
+      currentOffset -= moveOffset;
+      $('.details-tabs').stop().animate({
+        left: "+=" + moveOffset + 'px'
+      }, 100);
+    }
+  },
+  'click .details-tab': function() {
+    selectedTab = _.findWhere(tabs, {id: this.id});
+    selectedTabDep.changed();
   }
-})
+};
 
 var getLinkType= function(){
   return Enums.linkTypes.contactable;
