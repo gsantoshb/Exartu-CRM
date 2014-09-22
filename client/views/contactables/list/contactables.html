@@ -26,25 +26,27 @@
                 </div>
             {{/with}}
 
-            <div class="container-fluid">
+            <div class="">
                 <div class="row">
                     <div class="col-md-3 col-lg-3">
                         <sidebar>
                             {{> contactablesFilters }}
                         </sidebar>
                     </div>
-
-                    <div class="col-md-8 col-lg-8">
-                        {{>contactablesListSearch}}
-                    </div>
-
-                    <div class="col-md-9 col-lg-9">
-                        {{#if isSearching}}
-                            searching
-                        {{else}}
-                            {{> contactablesList }}
-                        {{/if}}
-                        {{#infinityScroll cb=showMore}} {{/infinityScroll}}
+                    <div class="col-md-9">
+                        <div class="row" id="list-body">
+                            <div class="col-md-12 col-lg-12">
+                                {{>contactablesListSearch}}
+                            </div>
+                            <div class="col-md-12 col-lg-12">
+                                {{#if isSearching}}
+                                    searching
+                                {{else}}
+                                    {{> contactablesList }}
+                                {{/if}}
+                                {{#infinityScroll cb=showMore}} {{/infinityScroll}}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!--/ko-->
