@@ -47,7 +47,7 @@ Meteor.methods({
 
     // Send invitation
     // Generate token
-    var shortId = Meteor.require('shortid');
+    var shortId = Meteor.npmRequire('shortid');
     userInvitation.token = shortId.generate();
     // Send email
     sendInvitation(user.email, userInvitation.token, hier.configuration.title);

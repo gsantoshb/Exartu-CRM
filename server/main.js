@@ -1,5 +1,5 @@
 // Get HEAD's hash commit
-var git = Meteor.require('git-rev');
+var git = Meteor.npmRequire('git-rev');
 git.branch(function (branch) {
   __meteor_runtime_config__.git_branch = branch.trim();
 });
