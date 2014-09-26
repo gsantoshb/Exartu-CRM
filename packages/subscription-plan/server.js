@@ -49,7 +49,8 @@ Meteor.startup(function() {
 //    var plan = SubscriptionPlan.getUserPlan();
 //    if (plan.usersLimit && Meteor.users.find({hierId: Meteor.user().hierId}).count() >= plan.usersLimit)
 //      throw new Meteor.Error(500, 'Limit users reached');
-//  });
+//  });cd ..
+
 
   // Collection's restrictions
   _.forEach(_.keys(Collections), function(collectionName) {
@@ -107,7 +108,7 @@ Meteor.startup(function() {
   // Storage restrictions
   _.forEach(Document.collections, function(documentCollection) {
     var collection = documentCollection.getCollection();
-    collection.before.insert(function() {
+    collection.before.insert(function(userId, doc) {
       SubscriptionPlan.checkStorage();
     });
   });
