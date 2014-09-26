@@ -6,7 +6,6 @@
 standard-app-packages
 accounts-password
 accounts-google
-bootstrap-3
 email
 service-configuration
 http
@@ -22,8 +21,6 @@ natestrauser:select2
 vjau:xml2js
 cfs:standard-packages
 percolatestudio:percolatestudio-migrations
-meteorhacks:kadira
-datariot:ganalytics
 manuelschoebel:ms-seo
 mrgalaxy:stripe
 natestrauser:connection-banner
@@ -41,4 +38,6 @@ document
 es
 paypal
 subscription-plan
+cfs:graphicsmagick
+mizzao:bootstrap-3
 
