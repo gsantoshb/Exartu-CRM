@@ -5,13 +5,13 @@ Package.describe({
 
 var both = ["client", "server"];
 
-Package.on_use(function(api){
+Package.onUse(function(api){
     api.use([
-        "iron-router",
+        "iron:router",
     ], 'server');
 
-    api.add_files('listener.js', ['server']);
+    api.addFiles('listener.js', ['server']);
 
-    api.export("paypal")
+    api.export("paypal", both)
 });
 

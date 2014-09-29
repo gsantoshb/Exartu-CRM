@@ -1,20 +1,22 @@
 Package.describe({
-  summary: "Exartu's documents system"
+  summary: "Exartu's documents system",
+  version: '0.0.1',
+  name: "document"
 });
 
 var both = ["client", "server"];
 
-Package.on_use(function(api){
-  api.use(['collectionFS', 'cfs-gridfs'], both);
-
-  api.add_files("common.js", both);
-  api.add_files("server.js", "server");
-  api.add_files(["client.js", "templates.html"], "client");
+Package.onUse(function(api){
+  api.use(['cfs:standard-packages', 'cfs:gridfs'], both);
+  api.versionsFrom('0.9.0')
+  api.addFiles("common.js", both);
+  api.addFiles("server.js", "server");
+  api.addFiles(["client.js", "templates.html"], "client");
 
   api.export("Document");
 });
 
-Package.on_test(function(api) {
+Package.onTest(function(api) {
   api.use([
     "document",
     "underscore",
@@ -23,5 +25,5 @@ Package.on_test(function(api) {
     "cfs-file"
   ], both);
 
-  api.add_files(["tests/constructor.js"], "server");
+  api.addFiles(["tests/constructor.js"], "server");
 })

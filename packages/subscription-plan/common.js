@@ -1,6 +1,6 @@
 SubscriptionPlan = {};
 
-SubscriptionPlans = new Meteor.Collection('subscriptionPlans');
+SubscriptionPlans = new Mongo.Collection('subscriptionPlans');
 
 SubscriptionPlan.plansEnum = {
   free: 0,

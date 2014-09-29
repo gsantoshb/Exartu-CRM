@@ -272,7 +272,7 @@ Meteor.methods({
     Accounts.sendVerificationEmail(user._id);
   },
   updateEmailVerification: function(email) {
-    var shortId = Meteor.require('shortid');
+    var shortId = Meteor.npmRequire('shortid');
     var token = shortId.generate();
     var url = Meteor.absoluteUrl('emailverification/' + token);
     var html = 'Email verification, click in the link bellow to active your new email: <br/>' +

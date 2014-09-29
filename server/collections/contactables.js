@@ -35,7 +35,7 @@ Contactables.before.insert(function (userId, doc) {
   doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();
 
-  var shortId = Meteor.require('shortid');
+  var shortId = Meteor.npmRequire('shortid');
   var aux = shortId.generate();
   doc.searchKey = aux;
   console.log('shortId: ' + aux);

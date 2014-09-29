@@ -1,12 +1,12 @@
-var CombinedStream = Meteor.require('combined-stream');
-var util = Meteor.require('util');
-var path = Meteor.require('path');
-var http = Meteor.require('http');
-var https = Meteor.require('https');
-var parseUrl = Meteor.require('url').parse;
-var fs = Meteor.require('fs');
-var mime = Meteor.require('mime');
-var async = Meteor.require('async');
+var CombinedStream = Meteor.npmRequire('combined-stream');
+var util = Meteor.npmRequire('util');
+var path = Meteor.npmRequire('path');
+var http = Meteor.npmRequire('http');
+var https = Meteor.npmRequire('https');
+var parseUrl = Meteor.npmRequire('url').parse;
+var fs = Meteor.npmRequire('fs');
+var mime = Meteor.npmRequire('mime');
+var async = Meteor.npmRequire('async');
 
 FormData = function() {
   this._overheadLength = 0;
