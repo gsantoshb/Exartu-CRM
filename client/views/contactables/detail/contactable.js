@@ -14,8 +14,6 @@ ContactableController = RouteController.extend({
     this.render('contactable')
 
     Session.set('activeTab',this.params.hash);
-
-    GAnalytics.event("contactables", "details");
   },
   onAfterAction: function() {
     var title = 'All Contacts / ' + Session.get('contactableDisplayName'),
@@ -36,16 +34,10 @@ ContactableController = RouteController.extend({
 Template.contactable.rendered = function () {
   $('body').scrollTop(0);
 };
-Template.displayObjType = function() {
-  if (info.objType.value)
-    return '';
-  return Utils.getContactableType(this);
-};
 
 var contactable;
-
 Template.contactable.helpers({
-  displayObjType: function() {
+  objTypeDisplayName: function() {
     return Utils.getContactableType(this);
   },
   contactable: function () {
@@ -55,9 +47,11 @@ Template.contactable.helpers({
     Session.set('contactableDisplayName', contactable.displayName);
     return contactable;
   },
-  dateCreatedFormatted: function () {
-    return moment(this.dateCreated).format('lll');
+  // Information to dynamic templates
+  collection: function(){
+    return Contactables;
   },
+  // Counters
   documentCount: function() {
     return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count() + ResumesFS.find({'metadata.employeeId': Session.get('entityId')}).count();
   },
@@ -66,13 +60,11 @@ Template.contactable.helpers({
   },
   jobCount: function() {
       return Jobs.find({'customer': Session.get('entityId')}).count();
-    },
-  ContactablesCollection: function(){
-    return Contactables;
-  }
+    }
 });
 
 Template.contactable.events({
+  // Picture edit
   'click #edit-pic': function () {
     $('#edit-picture').trigger('click');
   },
@@ -94,15 +86,7 @@ Template.contactable.events({
       Meteor.call('updateContactablePicture', contactableId, file._id);
     }
   },
-  'click .send-message': function (e) {
-    Composer.showModal('sendMessage', $data);
-  },
-  'click .addLocation': function () {
-    $('#edit-Location').trigger('click');
-  },
-  'click .sendMessage':function(){
-    Composer.showModal('sendMessage', Session.get('entityId'));
-  },
+  // Actions
   'click #makeEmployee': function(){
     //todo: make this in dType, checking required fields, defaultValues, etc
     
@@ -122,12 +106,8 @@ Template.contactable.events({
     });
   }
 });
-//
-//Template.contact_header.events({
-//  "click .editCustomer": function () {
-//    Composer.showModal('contactCustomerAddEdit', Session.get('entityId'));
-//  }
-//});
+
+// Header
 
 Template.contactable_header.helpers({
   mainContactMethods: function() {
@@ -159,101 +139,34 @@ Template.contactable_header.helpers({
 });
 
 // Tabs
-var tabs;
-var selectedTab;
-var selectedTabDep = new Deps.Dependency;
 
-Template.all_tabs.created = function() {
-  tabs = [
-    {id: 'details', displayName: 'Details'},
-    {id: 'notes', displayName: 'Notes', info: 'noteCount'},
-    {id: 'documents', displayName: 'Documents', info: 'documentCount'},
-    {id: 'tasks', displayName: 'Tasks'},
-    {id: 'location', displayName: 'Location'},
+var tabs;
+Template.contactable_tabs.tabs = function() {
+  var tabs = [
+    {id: 'details', displayName: 'Details', template: 'contactable_details'},
+    {id: 'notes', displayName: 'Notes', info: 'noteCount', template: 'contactable_notes'},
+    {id: 'documents', displayName: 'Documents', info: 'documentCount', template: 'contactable_documents'},
+    {id: 'tasks', displayName: 'Tasks', template: 'contactable_tasks'},
+    {id: 'location', displayName: 'Location', template: 'contactable_location'},
   ];
 
   if (contactable.Customer) {
-    tabs.push({id: 'jobs', displayName: 'Jobs', info: 'jobCount'});
-    tabs.push({id: 'placements', displayName: 'Placements'});
-    tabs.push({id: 'contacts', displayName: 'Contacts'});
+    tabs.push({id: 'jobs', displayName: 'Jobs', info: 'jobCount', template: 'contactable_jobs'});
+    tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements'});
+    tabs.push({id: 'contacts', displayName: 'Contacts', template: 'contactable_contacts'});
   }
 
   if (contactable.Employee) {
-    tabs.push({id: 'placements', displayName: 'Placements'});
-    tabs.push({id: 'hrconcourse', displayName: 'HRconcourse'});
+    tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements'});
+    tabs.push({id: 'hrconcourse', displayName: 'HRconcourse', template: 'contactable_HRConcourse'});
   }
 
-  tabs.push({id: 'actions', displayName: 'Actions'});
-  tabs.push({id: 'activities', displayName: 'Activities'});
+  tabs.push({id: 'actions', displayName: 'Actions', template: 'contactable_actions'});
+  tabs.push({id: 'activities', displayName: 'Activities', template: 'contactable_activities'});
 
-  selectedTab = _.findWhere(tabs, {id: Session.get('activeTab')});
-};
-
-var template = 'contactable';
-Template.all_tabs.execHelper = function(helperName) {
-  return Template[template][helperName]();
-};
-
-var container, containerWidth, tabsWidth;
-var hasTabSroll = false;
-var resizeDep = new Deps.Dependency;
-
-var checkScroll = function() {
-  containerWidth = container.width();
-  tabsWidth = container.children().width();
-  hasTabSroll = container.get(0).scrollWidth > container.width();
-  resizeDep.changed();
-};
-
-Template.all_tabs.rendered = function() {
-  container = $('.details-tabs-container');
-  checkScroll();
-
-  container.resize(function(){
-    checkScroll();
-  });
-};
-
-Template.all_tabs.isActive = function(name){
-  selectedTabDep.depend();
-  return (name == selectedTab.id) ? 'active' : '';
-};
-
-Template.all_tabs.tabs = function() {
   return tabs;
 };
 
-Template.all_tabs.showMoveButtons = function() {
-  resizeDep.depend();
-  return hasTabSroll? '': 'hide';
+Template.contactable_tabs.selectedTab = function() {
+  return _.findWhere(tabs, {id: Session.get('activeTab')});
 };
-
-var currentOffset = 0;
-var moveOffset = 200;
-Template.all_tabs.events = {
-  'click #next-tab': function() {
-    if (containerWidth + currentOffset <= tabsWidth) {
-      currentOffset += moveOffset;
-      $('.details-tabs').stop().animate({
-        left: "-=" + moveOffset + 'px'
-      }, 100);
-    }
-  },
-  'click #back-tab': function() {
-    if (currentOffset - moveOffset >= 0) {
-      currentOffset -= moveOffset;
-      $('.details-tabs').stop().animate({
-        left: "+=" + moveOffset + 'px'
-      }, 100);
-    }
-  },
-  'click .details-tab': function() {
-    selectedTab = _.findWhere(tabs, {id: this.id});
-    selectedTabDep.changed();
-  }
-};
-
-var getLinkType= function(){
-  return Enums.linkTypes.contactable;
-}
-

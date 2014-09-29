@@ -195,13 +195,35 @@ var addTag = function () {
   inputTag.focus();
 };
 
-Template.job.helpers({
-  getType: function () {
-    return Enums.linkTypes.job;
-  }
-});
+//Template.job.helpers({
+//  getType: function () {
+//    return Enums.linkTypes.job;
+//  }
+//});
 
-Template.job_tabs.isActive = function(name){
-  var activeTab = Session.get('activeTab') || 'details';
-  return (name == activeTab) ? 'active' : '';
-}
+//Template.job_tabs.isActive = function(name){
+//  var activeTab = Session.get('activeTab') || 'details';
+//  return (name == activeTab) ? 'active' : '';
+//};
+
+// Tabs
+
+var tabs;
+Template.job_tabs.tabs = function() {
+  var tabs = [
+    {id: 'details', displayName: 'Details', template: 'job_details'},
+    {id: 'notes', displayName: 'Notes', info: 'noteCount', template: 'job_notes'},
+    {id: 'description', displayName: 'Description', template: 'job_description'},
+    {id: 'tasks', displayName: 'Tasks', template: 'job_tasks'},
+    {id: 'rates', displayName: 'Rates', template: 'job_rates'},
+    {id: 'placements', displayName: 'Placements', template: 'job_placements'},
+    {id: 'activity', displayName: 'Activity', template: 'job_activity'},
+    {id: 'actions', displayName: 'Actions', template: 'job_actions'},
+  ];
+
+  return tabs;
+};
+
+Template.job_tabs.selectedTab = function() {
+  return _.findWhere(tabs, {id: Session.get('activeTab')});
+};

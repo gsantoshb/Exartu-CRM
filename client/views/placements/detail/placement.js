@@ -29,10 +29,6 @@ PlacementController = RouteController.extend({
   }
 });
 
-var generateReactiveObject = function(placement) {
-  return new dType.objInstance(placement, Placements);
-};
-
 var self={};
 Utils.reactiveProp(self, 'editMode', false);
 var location={};
@@ -52,13 +48,13 @@ Template.placement.created=function(){
     }
   };
   services= Utils.ObjectDefinition(definition);
-}
+};
+
 var placement;
 var job;
 var employee;
 Template.placement.helpers({
   placement: function(){
-
     var originalPlacement=Placements.findOne({ _id: Session.get('entityId') });
     Session.set('placementDisplayName', originalPlacement.displayName);
     if (originalPlacement.tags==null)
@@ -78,56 +74,6 @@ Template.placement.helpers({
   colorEdit:function(){
       return self.editMode ? '#008DFC' : '#ddd'
   }
-//  job: function(){
-//    var asg=Placements.findOne({ _id: Session.get('entityId') });
-//    var originalJob=Jobs.findOne({_id: asg.Job});
-//    Session.set('jobDisplayName', originalPlacement.displayName);
-//    if (!job)
-//      job = new dType.objInstance(originalJob, Jobs);
-//    return placement;
-//  },
-//  originalJob:function(){
-//
-//    var asg=Placements.findOne({ _id: Session.get('entityId') });
-//    return Jobs.findOne({_id: asg.job});
-//  }
-//  employee: function(){
-//    var asg=Placements.findOne({ _id: Session.get('entityId') });
-//    var originalemployee=Contactables.findOne({_id: asg.employee});
-//    Session.set('employeeDisplayName', originalPlacement.displayName);
-//    if (!employee)
-//      employee = new dType.objInstance(originalemployee, Contactables);
-//    return placement;
-//  },
-//  originalEmployee:function(){
-//    var asg=Placements.findOne({ _id: Session.get('entityId') });
-//    return Contactables.findOne({_id: asg.employee});
-//  }
-//  isType:function(typeName){
-//    return !! Placements.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
-//  },
-//  placementCollection: function(){
-//    return Placements;
-//  },
-//  getCustomer:function(){
-//    var j=Placements.findOne({ _id: Session.get('entityId')});
-//    return j && j.customer;
-//  },
-//  noteCount: function() {
-//      return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }}).count();
-//  },
-//  isSelected:function(optionValue, currentValue){
-//      return optionValue == currentValue;
-//    },
-//  location: function(){
-//    var originalPlacement=Placements.findOne({ _id: Session.get('entityId') });
-//
-//    location.value= originalPlacement && originalPlacement.location;
-//    return location;
-//  },
-//  tags: function(){
-//    return services.tags;
-//  }
 });
 
 Template.placement.events({
@@ -161,37 +107,23 @@ Template.placement.events({
   },
   'click .cancelButton':function(){
       self.editMode=false;
-  },
-  'click .add-tag': function() {
-    addTag();
-  },
-  'keypress #new-tag': function(e) {
-    if (e.keyCode == 13) {
-      e.preventDefault();
-      addTag();
-    }
-  },
-  'click .remove-tag': function() {
-    services.tags.remove(this.value);
   }
 });
 
-var addTag = function() {
-  var inputTag = $('#new-tag')[0];
+// Tabs
 
-  if (!inputTag.value)
-    return;
+var tabs;
+Template.placement_tabs.tabs = function() {
+  var tabs = [
+    {id: 'details', displayName: 'Details', template: 'placement_details'},
+    {id: 'notes', displayName: 'Notes', template: 'placement_notes'},
+    {id: 'tasks', displayName: 'Tasks', template: 'placement_tasks'},
+  ];
 
-  if (_.indexOf(services.tags.value, inputTag.value) != -1)
-    return;
-  services.tags.insert(inputTag.value);
-  inputTag.value = '';
-  inputTag.focus();
+  return tabs;
 };
 
-Template.placement.helpers({
-//  getType: function(){
-//    return Enums.linkTypes.placement;
-//  }
-})
+Template.placement_tabs.selectedTab = function() {
+  return _.findWhere(tabs, {id: Session.get('activeTab')});
+};
 

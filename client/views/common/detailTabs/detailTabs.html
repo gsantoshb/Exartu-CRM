@@ -1,0 +1,26 @@
+<template name="detailTabs">
+    <div class="details-tabs-container">
+        <ul class="nav nav-pills bottom-20 details-tabs">
+            {{#each tabs}}
+                <li class="{{isActive id}} details-tab">
+                    <a href="#{{id}}">
+                        {{displayName}}
+                        {{#if info}}
+                            <span class="custom-badge-2">{{execHelper info}}</span>
+                        {{/if}}
+                    </a>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+    <span id="back-tab" class="back-tab {{showMoveButtons}}"><i class="fa fa-arrow-left"></i></span>
+    <span id="next-tab" class="next-tab {{showMoveButtons}}"><i class="fa fa-arrow-right"></i></span>
+
+    <div class="tab-content details-tab-content">
+        {{#each tabs}}
+            <div class="tab-pane {{isActive id}}" id="profile-notes">
+                {{> UI.dynamic template=template data=../context }}
+            </div>
+        {{/each}}
+    </div>
+</template>

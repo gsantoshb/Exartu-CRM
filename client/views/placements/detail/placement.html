@@ -1,9 +1,9 @@
 <template name="placement">
-    <div class="contactable-page-details" name="placementVM">
-        <div id="content">
+    <div class="contactable-page-details">
+        <div id="content" class="details">
             {{#with originalPlacement}}
-            <div id="content-header" class="mini">
-                <h1 class="profile-name">
+                <div id="content-header" class="mini">
+                    <h1 class="profile-name">
                         {{#if employee}}<a href="/contactable/{{employee}}"> {{employeeDisplayName}} </a>{{/if}}
                         {{#if job}}
                             <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
@@ -11,71 +11,41 @@
                                 <a href="/contactable/{{customer}}">{{customerDisplayName}}</a>
                             </strong>
                         {{/if}}
-                </h1>
-            </div>
-            <div id="breadcrumb" class="breadcrumb-top">
-                <a href="/" title="Go to Home" class="tip-bottom">
-                    <i class="fa fa-home"></i>Home</a>
-                <a href="/placements" class="current">Placements</a>
-            </div>
+                    </h1>
+                </div>
+                <div id="breadcrumb" class="breadcrumb-top">
+                    <a href="/" title="Go to Home" class="tip-bottom">
+                        <i class="fa fa-home"></i> Home
+                    </a>
+                    <a href="/placements" class="current">Placements</a>
+                </div>
             {{/with}}
 
-
-            <div class="container-fluid contactable-content placement-details">
-                <div class="row">
-
-                    <div class="col-sm-12 col-lg-12 margin-top-15 contactable-left-col">
-                        {{>placement_tabs placement=placement getCustomer=getCustomer placementCollection=placementCollection originalPlacement=originalPlacement documentCount=documentCount placementCount=placementCount noteCount=noteCount}}
-                    </div>
-
-                    <!-- /.col-lg-->
-
-                    <!-- Right Column -->
-                    <!--<div class="col-sm-4 col-lg-3 margin-top-15 has-tabs">-->
-                        <!--<div >-->
-
-                        <!--</div>-->
-
-                    <!--</div>-->
-                    <!-- /.container-fluid -->
-                </div>
+            <div class="container-fluid details-body">
+                {{> placement_tabs placement=placement originalPlacement=originalPlacement}}
             </div>
-
         </div>
-        <!-- /.content -->
     </div>
 </template>
 
 <template name="placement_tabs">
-
-    <ul class="nav nav-pills bottom-20">
-        <li class="active"><a href="#profile-detail" data-toggle="tab">Detail</a></li>
-        <!--<li ><a href="#profile-activity" data-toggle="tab">Activity</a></li>-->
-        <li ><a href="#profile-tasks" data-toggle="tab">Tasks</a></li>
-        <li ><a href="#profile-notes" data-toggle="tab">Notes</a></li>
-    </ul>
-
-    <div class="tab-content">
-        {{#with originalPlacement}}
-        <!--<div class="tab-pane " id="profile-activity">{{>placementActivity}}</div>-->
-        <div class="tab-pane" id="profile-tasks">{{> tasksBox}}</div>
-        <div class="tab-pane" id="profile-notes">{{> notesItem}}</div>
-        {{/with}}
-        <div class="tab-pane active" id="profile-detail">
-        <div class="col-sm-6">
-            {{#with originalPlacement}}  {{> placementDetail}}  {{/with}}
-            {{#with originalPlacement}}  {{>originData}}{{/with}}
-        </div>
-        <div class="col-sm-6">
-            {{#with originalPlacement}}{{>tagsBox  }}{{/with}}
-        </div>
-
-
-            <!--{{#with placement}}{{>placementRates ..}}  {{/with}}-->
-            <!--{{>customerInfo customer=getCustomer path='customer' collection=placementCollection}}-->
-        </div>
-    </div>
-
+    {{> detailTabs tabs=tabs selected=selectedTab template="placement" context=.}}
 </template>
 
+<template name="placement_tasks">
+    {{> tasksBox}}
+</template>
 
+<template name="placement_notes">
+    {{> notesItem}}
+</template>
+
+<template name="placement_details">
+    <div class="col-sm-6">
+        {{#with originalPlacement}}  {{> placementDetail}}  {{/with}}
+        {{#with originalPlacement}}  {{>originData}} {{/with}}
+    </div>
+    <div class="col-sm-6">
+        {{#with originalPlacement}}{{>tagsBox  }}{{/with}}
+    </div>
+</template>

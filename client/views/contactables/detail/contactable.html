@@ -1,28 +1,29 @@
+<!-- Details view layout -->
 <template name="contactable">
     <div class="contactable-page-details">
         <div id="content" class="details">
-            {{displayObjType}}
             {{#with contactable}}
                 <div id="content-header" class="mini">
                     <div class="profile-content-header" style="padding: 15px 20px;">
                         {{>contactable_header}}
                     </div>
                 </div>
-                <!-- /.content-header -->
 
                 <div id="breadcrumb" style="margin-bottom: 0px;">
                     <a href="/" title="Go to Home" class="tip-bottom">Home</a>
-                    <a href="/contactables" class="current">{{displayObjType}}</a>
+                    <a href="/contactables" class="current">{{objTypeDisplayName}}</a>
                 </div>
+
                 <div class="container-fluid details-body">
-                    {{>all_tabs contactable=. documentCount=documentCount jobCount=jobCount noteCount=noteCount}}
-                </div><!-- /.container-fluid -->
+                    {{>contactable_tabs}}
+                </div>
             {{/with}}
-        </div><!-- /.content -->
+        </div>
     </div>
 </template>
 
 <!-- Headers -->
+
 <template name="contactable_header">
     {{#if pictureFileId}}
         <div class="profile-pic">
@@ -74,31 +75,12 @@
             {{/if}}
         </strong>
         <small class="pull-right" style="max-width: 40%;"> {{statusNote}} </small>
-        <br>
-        <!--<div style="margin-top: 28px;" class="pull-right">-->
-            <!--{{#unless Employee}}-->
-                <!--{{#if Contact}}-->
-                    <!--<button id="makeEmployee" class="btn btn-sm btn-info">-->
-                        <!--Make Employee-->
-                    <!--</button>-->
-                <!--{{/if}}-->
-            <!--{{/unless}}-->
-            <!--{{#unless Contact}}-->
-                <!--{{#if Employee}}-->
-                    <!--<button id="makeContact" class="btn btn-sm btn-info">-->
-                        <!--Make Contact-->
-                    <!--</button>-->
-                <!--{{/if}}-->
-            <!--{{/unless}}-->
-        <!--</div>-->
     </h1>
     <p class="profile-address">
 
         {{#if location}}
             <i class="fa fa-map-marker"></i>
             <span>{{location.displayName}}</span>
-        {{else}}
-            <!--<a class="addLocation pointer"><em class="text-muted"> Click here to add an address </em></a>-->
         {{/if}}
     </p>
 
@@ -120,99 +102,93 @@
     </div>
 </template>
 
-<template name="all_tabs">
-    <div class="details-tabs-container">
-        <ul class="nav nav-pills bottom-20 details-tabs">
-            {{#each tabs}}
-                <li class="{{isActive id}} details-tab">
-                    <a href="#{{id}}">
-                        {{displayName}}
-                        {{#if info}}
-                            <span class="custom-badge-2">{{execHelper info}}</span>
-                        {{/if}}
-                    </a>
-                </li>
-            {{/each}}
-        </ul>
+<!-- Tabs -->
+
+<template name="contactable_tabs">
+    {{> detailTabs tabs=tabs selected=selectedTab template="contactable" context=.}}
+</template>
+
+<template name="contactable_notes">
+    {{> notesItem}}
+</template>
+
+<template name="contactable_location">
+    {{> contactableLocationBox}}
+</template>
+
+<template name="contactable_documents">
+    {{> contactableDocumentsAdd entity=. collection="ContactablesFS"}}
+    {{> contactableDocumentsList entity=. collection="ContactablesFS"}}
+</template>
+
+<template name="contactable_jobs">
+    {{> customerJobs}}
+</template>
+
+<template name="contactable_contacts">
+    {{#if ../Customer}}{{> contactableContactsBox}}{{/if}}
+</template>
+
+<template name="contactable_tasks">
+    {{> tasksBox}}
+</template>
+
+<template name="contactable_details">
+    <div class="col-md-6">
+        {{> contactableDetailBox}}
+
+        {{> contactableContactMethodsBox}}
     </div>
-    <span id="back-tab" class="back-tab {{showMoveButtons}}"><i class="fa fa-arrow-left"></i></span>
-    <span id="next-tab" class="next-tab {{showMoveButtons}}"><i class="fa fa-arrow-right"></i></span>
+    <div class="col-md-6">
+        <!-- Tags -->
+        {{>tagsBox}}
 
-    <div class="tab-content details-tab-content">
-        <!-- Notes Tab -->
-        <div class="tab-pane {{isActive 'notes'}}" id="profile-notes">
-            {{> notesItem ..}}
+        <!--Customer-->
+        {{#if Contact}}
+            {{> customerInfo customer=Contact.customer path='Contact.customer' collection=collection}}
+        {{/if}}
+    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-12">
+            {{> originData}}
         </div>
-        <div class="tab-pane {{isActive 'location'}}" id="profile-location">
-            {{>contactableLocationBox ..}}
-        </div>
-        <!-- Documents Tab -->
-        <div class="tab-pane {{isActive 'documents'}}" id="profile-documents">
-            {{> contactableDocumentsAdd entity=contactable collection="ContactablesFS"}}
-            {{> contactableDocumentsList entity=contactable collection="ContactablesFS"}}
-        </div><!-- /.profile-documents -->
-        <div class="tab-pane {{isActive 'jobs'}}" id="profile-jobs">
-            {{>customerJobs}}
-        </div><!-- /.profile-documents -->
-        <div class="tab-pane {{isActive 'contacts'}}" id="profile-customerContacts">
-            <!-- Contacts -->
-            {{#if ../Customer}}{{>contactableContactsBox ..}}{{/if}}
-        </div>
-        <div class="tab-pane {{isActive 'tasks'}}" id="profile-tasks">
-            {{>tasksBox}}
-        </div><!-- /.profile-documents -->
-        <div class="tab-pane {{isActive 'details'}}" id="profile-details">
-            <div class="col-md-6">
-                {{>contactableDetailBox ..}}
-
-                {{>contactableContactMethodsBox ..}}
-            </div>
-            <div class="col-md-6">
-
-
-                <!-- Tags -->
-                {{>tagsBox ..}}
-                <!--Customer-->
-                {{#if Contact}}
-                {{>customerInfo .. customer=Contact.customer path='Contact.customer' collection=ContactablesCollection}}
-                {{/if}}
-
-
-            </div>
-            <div class="col-sm-12">
-                <div class="col-sm-12">
-                    {{#with contactable}}  {{>originData}}{{/with}}
-                </div>
-            </div>
-        </div>
-        <div class="tab-pane {{isActive 'hrconcourse'}}" id="profile-hrConcourse">
-            {{#if ../Employee}}
-            {{>applicantCenter entity=contactable}}
-            <!-- Placements -->
-            {{>contactablePlacementsBox ..}}
-            {{/if}}
-        </div><!-- /.profile-documents -->
-        <div class="tab-pane {{isActive 'placements'}}" id="profile-placements">{{>placementsBox }}</div>
-        <div class="tab-pane {{isActive 'actions'}}" id="profile-actions">
-                {{#unless ../Employee}}
-                {{#if ../Contact}}
-                <button id="Employee" class="btn btn-sm btn-info">
-                    Make Employee
-                </button>
-                {{/if}}
-                {{/unless}}
-                {{#unless ../Contact}}
-                {{#if ../Employee}}
-                <button id="makeContact" class="btn btn-sm btn-info">
-                    Make Contact
-                </button>
-                {{/if}}
-                {{/unless}}
-        </div>
-        <div class="tab-pane {{isActive 'activities'}}" id="profile-activities">{{>contactableActivity }}</div>
     </div>
 </template>
 
+<template name="contactable_HRConcourse">
+    {{#if ../Employee}}
+        {{>applicantCenter entity=.}}
+        <!-- Placements -->
+        {{>contactablePlacementsBox}}
+    {{/if}}
+</template>
+
+<template name="contactable_placements">
+    {{> placementsBox}}
+</template>
+
+<template name="contactable_actions">
+    {{#unless ../Employee}}
+        {{#if ../Contact}}
+            <button id="Employee" class="btn btn-sm btn-info">
+                Make Employee
+            </button>
+        {{/if}}
+    {{/unless}}
+    {{#unless ../Contact}}
+        {{#if ../Employee}}
+            <button id="makeContact" class="btn btn-sm btn-info">
+                Make Contact
+            </button>
+        {{/if}}
+    {{/unless}}
+</template>
+
+<template name="contactable_activities">
+    {{> contactableActivities}}
+</template>
+
+<!-- Loading screen -->
 
 <template name="loadingContactable">
     <div id="content">
@@ -223,12 +199,8 @@
             <a href="/" title="" class="tip-bottom" data-original-title="Go to Home"><i class="fa fa-home"></i> Home</a>
         </div>
         <div class="container-fluid">
-
             <div class="page-loader" style="height: 748px;">
-
-            </div><!-- /.page-loader -->
-
-        </div><!-- /.container-fluid -->
-
+            </div>
+        </div>
     </div>
 </template>
