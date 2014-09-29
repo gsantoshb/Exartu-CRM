@@ -1,53 +1,53 @@
 <template name="jobs">
-    <div class="jobs-page">
-        <div id="content">
-            {{#with information}}
+    <div id="content">
+        {{#with information}}
             <div id="content-header" class="mini">
                 <h1>
                     {{#objectProperty property=jobsCount }}
-                    <strong> {{value}} </strong>
+                        <strong> {{value}} </strong>
                     {{/objectProperty}}
 
                     {{#objectProperty property=objType}}
-                    {{#if value}}
-                    <span> {{value}} </span>
-                    {{else}}
-                    record(s)
-                    {{/if}}
+                        {{#if value}}
+                            <span> {{value}} </span>
+                        {{else}}
+                            record(s)
+                        {{/if}}
                     {{/objectProperty}}
                 </h1>
             </div>
+
             <div id="breadcrumb">
                 <a href="/" title="Go to Home" class="tip-bottom">Home</a>
                 <a href="/jobs" class="current">
                     {{#objectProperty property=objType }}
-                    <strong> {{value}} </strong>
-                    {{/objectProperty}}</a>
+                        <strong> {{value}} </strong>
+                    {{/objectProperty}}
+                </a>
             </div>
-            {{/with}}
+        {{/with}}
 
-            <div>
-                <div class="row">
-                    <div class="col-md-3 col-lg-3">
-                        <sidebar>
-                            {{> jobsFilters }}
-                        </sidebar>
-                    </div>
-
-                    <div class="col-md-8 col-lg-8">
-                        {{>jobsListSearch}}
-                    </div>
-
-                    <div class="col-md-9 col-lg-9">
-                        {{#if isSearching}}
-                        searching
-                        {{else}}
-                        {{> jobsList }}
-                        {{/if}}
-                        {{#infinityScroll cb=showMore}} {{/infinityScroll}}
-                    </div>
+        <div>
+            <div class="row">
+                <div class="col-md-3 col-lg-3">
+                    <sidebar>
+                        {{> jobsFilters }}
+                    </sidebar>
                 </div>
-                <!--/ko-->
+
+                <div class="col-md-8 col-lg-8">
+                    {{>jobsListSearch}}
+                </div>
+
+                <div class="col-md-9 col-lg-9">
+                    {{#if isSearching}}
+                        searching
+                    {{else}}
+                        {{> jobsList }}
+                    {{/if}}
+
+                    {{#infinityScroll cb=showMore}} {{/infinityScroll}}
+                </div>
             </div>
         </div>
     </div>
@@ -60,94 +60,25 @@
         </a>
 
         <div class="filter-list" id="filter-body">
+            {{> filter_entityType types=jobTypes selected=query.objType}}
 
-            <div class="filter-item">
-                <div class="filter-title">
-                    <i class="fa fa-group"></i>
-                    Types
-                </div>
+            {{> filter_lookUp code=3 lookUpValue=query.status multi=false}}
 
-                {{#each jobTypes2}}
-                    <button type="button" class="typeSelect {{typeOptionClass .}}">{{name}}</button>
-                {{/each}}
-            </div>
+            {{> filter_inactive showInactive=query.inactives}}
 
-            <div class="filter-item">
-                <div class="filter-title">
-                    Status
-                </div>
+            {{> filter_createdDate selectedLimit=query.selectedLimit}}
 
-                {{>lookupFilterTemplate lookUpCode=3 callback=statusChanged multi=false}}
-            </div>
+            {{> filter_tags tags=query.tags}}
 
-            <div class="filter-item">
-                <div class="filter-title">
-                    <i class="fa fa-eye"></i>
-                    Visibility
-                </div>
-
-                <button id="show-inactives" type="button" class="{{showInactives}}">Inactives</button>
-            </div>
-
-            <div class="filter-item">
-                <div class="filter-title">
-                    <i class="fa fa-calendar"></i>
-                    Creation date
-                </div>
-
-                <button type="button" class="{{recentOptionClass recentOptions.day}}" style="margin-bottom: 3px" id="recent-day">Today</button>
-                <button type="button" class="{{recentOptionClass recentOptions.week}}" style="margin-bottom: 3px" id="recent-week">This week</button>
-                <button type="button" class="{{recentOptionClass recentOptions.month}}" style="margin-bottom: 3px" id="recent-month">This month</button>
-                <button type="button" class="{{recentOptionClass recentOptions.year}}" style="margin-bottom: 3px" id="recent-year">This year</button>
-            </div>
-
-            <div class="filter-item">
-                <div class="filter-title">
-                    <i class="fa fa-tags"></i>
-                    Tags
-                </div>
-
-                <div class="input-group" style="margin-bottom: 10px">
-                    <input id="new-tag" type="text" class="form-control" placeholder="E.g. javascript, sales">
-                    <span class="input-group-btn">
-                      <button class="add-tag btn btn-default" type="button"><span class="fa fa-plus"></span></button>
-                    </span>
-                </div>
-
-                {{#objectProperty property=tags}}
-                    <button type="button" class="tag btn btn-xs btn-info">
-                        <span >{{value}}</span>
-                        <i class="remove-tag fa fa-times"></i>
-                    </button>
-                {{/objectProperty}}
-            </div>
-
-            <div class="filter-item">
-                <div class="filter-title">
-                    <i class="fa fa-map-marker"></i>
-                    Location
-                </div>
-
-                <div class="input-group">
-                    {{#objectProperty property=query.location}}
-                        <input type="text" class="form-control" placeholder="E.g. city: San Francisco" value="{{value}}">
-                    {{/objectProperty}}
-                    <span class="input-group-btn">
-                      <button class="add-tag btn btn-default" type="button"><span class="fa fa-map-marker"></span></button>
-                    </span>
-                </div>
-            </div>
+            {{> filter_location location=query.location}}
         </div>
     </div>
 </template>
 
 <template name="jobsList">
-    <div>
-        <!--{{> jobsListSearch }}-->
-
-        {{#each jobs}}
-        {{> jobsListItem }}
-        {{else}}
+    {{#each jobs}}
+      {{> jobsListItem }}
+    {{else}}
         {{#if info.isFiltering.value }}
         <div class="v-wrapper">
             <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
@@ -155,19 +86,18 @@
                 <h1>
                     No records Found
                 </h1>
-            </div><!-- /.v-wrapper-cell -->
+            </div>
         </div>
         {{else}}
-        <div class="v-wrapper">
-            <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                <i class="icon-connection-1 text-large"></i>
-                <a href="#" data-bind="attr: { href: '/jobAdd/'+name() }, text: 'New ' + name()"></a>
-                <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
-            </div><!-- /.v-wrapper-cell -->
-        </div>
+            <div class="v-wrapper">
+                <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                    <i class="icon-connection-1 text-large"></i>
+                    <a href="#" data-bind="attr: { href: '/jobAdd/'+name() }, text: 'New ' + name()"></a>
+                    <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
+                </div>
+            </div>
         {{/if}}
-        {{/each}}
-    </div>
+    {{/each}}
 </template>
 
 <template name="jobsListItem">
@@ -176,30 +106,23 @@
             <div class="col-sm-4">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container">
-
                         <div class="table-item-title">
                             <a href="/job/{{_id}}">
                                 {{displayName}}</a>
                             <br/>
                         </div>
                     </div>
-                    <!-- /.table-item-cell-container -->
                 </div>
-                <!-- /.table-item-cell -->
             </div>
-            <!-- /.col-sm-3 -->
+
             <div class="col-sm-5">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container text-muted">
-
                         {{> jobInformation }}
-
                     </div>
-                    <!-- /.table-item-cell-container -->
                 </div>
-                <!-- /.table-item-cell -->
             </div>
-            <!-- /.col-sm-4 -->
+
             <div class="col-sm-3">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container date">
@@ -215,12 +138,8 @@
                 </div>
             </div>
         </div>
-        <!-- /.row -->
     </div>
-    <!-- /.table-item -->
 </template>
-
-
 
 <template name="jobInformation">
     <i class="icon-building-2"></i>
@@ -255,9 +174,7 @@
     <div class="actions-head">
         <div class="row">
             <div class="col-sm-8 col-md-8 col-lg-8">
-
                 <div class="pull-left suffix-5">
-                    <!-- Single button -->
                     <div class="btn-group">
                         <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" title="Add">
                             <span class="fa fa-plus"></span>
@@ -280,11 +197,12 @@
                         </button>
                     </span>
                 </div>
-            </div><!-- /.col-lg-5 -->
+            </div>
+
             <div class="pull-right">
                 {{> jobsListSort}}
             </div>
-        </div><!-- /.row -->
+        </div>
     </div>
 </template>
 

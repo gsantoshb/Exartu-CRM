@@ -1,0 +1,88 @@
+<template name="filter_entityType">
+    <div class="filter-item">
+        <div class="filter-title">
+            <i class="fa fa-group"></i>
+            Types
+        </div>
+
+        {{#each types}}
+            <button type="button" class="typeSelect {{typeOptionClass .}}">{{name}}</button>
+        {{/each}}
+    </div>
+</template>
+
+<template name="filter_lookUp">
+    <div class="filter-item">
+        <div class="filter-title">
+            Status
+        </div>
+
+        {{>lookupFilterTemplate lookUpCode=code callback=cb multi=multi}}
+    </div>
+</template>
+
+<template name="filter_inactive">
+    <div class="filter-item">
+        <div class="filter-title">
+            <i class="fa fa-eye"></i>
+            Visibility
+        </div>
+
+        <button id="show-inactives" type="button" class="{{showInactive}}">Inactives</button>
+    </div>
+</template>
+
+<template name="filter_createdDate">
+    <div class="filter-item">
+        <div class="filter-title">
+            <i class="fa fa-calendar"></i>
+            Creation date
+        </div>
+
+        <button type="button" class="{{recentOptionClass recentOptions.day}}" style="margin-bottom: 3px" id="recent-day">Today</button>
+        <button type="button" class="{{recentOptionClass recentOptions.week}}" style="margin-bottom: 3px" id="recent-week">This week</button>
+        <button type="button" class="{{recentOptionClass recentOptions.month}}" style="margin-bottom: 3px" id="recent-month">This month</button>
+        <button type="button" class="{{recentOptionClass recentOptions.year}}" style="margin-bottom: 3px" id="recent-year">This year</button>
+    </div>
+</template>
+
+<template name="filter_tags">
+    <div class="filter-item">
+        <div class="filter-title">
+            <i class="fa fa-tags"></i>
+            Tags
+        </div>
+
+        <div class="input-group" style="margin-bottom: 10px">
+            <input id="new-tag" type="text" class="form-control" placeholder="E.g. javascript, sales">
+            <span class="input-group-btn">
+              <button class="add-tag btn btn-default" type="button"><span class="fa fa-plus"></span></button>
+            </span>
+        </div>
+
+        {{#objectProperty property=tags}}
+            <button type="button" class="tag btn btn-xs btn-info">
+                <span >{{value}}</span>
+                <i class="remove-tag fa fa-times"></i>
+            </button>
+        {{/objectProperty}}
+    </div>
+</template>
+
+<template name="filter_location">
+    <div class="filter-item">
+        <div class="filter-title">
+            <i class="fa fa-map-marker"></i>
+            Location
+        </div>
+
+        <div class="input-group">
+            {{#objectProperty property=location}}
+                <input type="text" class="form-control" placeholder="E.g. city: San Francisco" value="{{value}}">
+            {{/objectProperty}}
+            <span class="input-group-btn">
+              <button class="add-tag btn btn-default" type="button"><span class="fa fa-map-marker"></span></button>
+            </span>
+        </div>
+    </div>
+</template>

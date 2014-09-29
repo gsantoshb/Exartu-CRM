@@ -1,13 +1,3 @@
-var objType = ko.observable();
-
-var filters = ko.observable(ko.mapping.fromJS({
-  objType: '',
-  tags: [],
-  statuses: [],
-  inactives: false,
-  limit: 20
-}));
-
 ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
@@ -54,44 +44,21 @@ ContactablesController = RouteController.extend({
   }
 });
 
-var timeLimits = {
-  day: 24 * 60 * 60 * 1000,
-  week: 7 * 24 * 60 * 60 * 1000,
-  month: 30 * 24 * 60 * 60 * 1000,
-  year: 365 * 24 * 60 * 60 * 1000
-};
-
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
     contactablesCount: {},
     objType: {},
-    isRecentDaySelected: {
-      default: false
-    },
-    objTypeDisplayName: {},
-    isRecentWeekSelected: {
-      default: false
-    },
-    isRecentMonthSelected: {
-      default: false
-    },
-    isRecentYearSelected: {
-      default: false
-    },
     isFiltering: {
       default: false
     }
   }
 });
+
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
     searchString: {},
     objType: {},
     inactives: {
-      type: Utils.ReactivePropertyTypes.boolean,
-      default: false
-    },
-    onlyRecents: {
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
     },
@@ -106,23 +73,25 @@ var query = new Utils.ObjectDefinition({
   }
 });
 
-Template.contactables.created = function(){
-  query.limit.value = 20
-}
-// List
+// All
 
-Template.contactablesList.info = function() {
-  info.isFiltering.value = Contactables.find().count() != 0;
+Template.contactables.information = function() {
+  var searchQuery = {};
+
+  if (query.objType.value)
+    searchQuery.objNameArray = query.objType.value;
+
+  info.contactablesCount.value = Contactables.find(searchQuery).count();
+
   return info;
 };
 
-var contactableTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
+Template.contactables.showMore = function() {
+  return function() { query.limit.value = query.limit.value + 15 };
 };
-Template.contactablesListSearch.contactableTypes = contactableTypes;
 
-Template.contactablesListSearch.resumeParserRestrictions = function() {
-  return [SubscriptionPlan.plansEnum.enterprise];
+Template.contactables.created = function(){
+  query.limit.value = 20
 };
 
 var searchDep = new Deps.Dependency;
@@ -130,10 +99,23 @@ var isSearching = false;
 Template.contactables.isSearching = function() {
   searchDep.depend();
   return isSearching;
-}
+};
 
-Template.contactablesListItem.isESSearch = function() {
-  return !_.isEmpty(query.searchString.value);
+// List
+
+var contactableTypes = function() {
+  return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
+};
+
+var getActiveStatuses = function(objName){
+  var status = Enums.lookUpTypes[objName.toLowerCase()];
+  status = status && status.status;
+  if (status){
+    var lookUpCodes = status.lookUpCode,
+      implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
+    return _.map(implyActives,function(doc){ return doc._id});
+  }
+  return null;
 };
 
 var locationFields = ['address', 'city', 'state', 'country'];
@@ -146,13 +128,115 @@ var getLocationTagValue = function(locationField, locationFields) {
   }).join('|') +').)*', 'ig');
   var match = regex.exec(query.location.value);
   var value;
-  if (match) 
+  if (match)
     value = match[0].substring(locationField.length + 1).trim();
 
   return value;
 };
 
+Template.contactablesList.info = function() {
+  info.isFiltering.value = Contactables.find().count() != 0;
+  return info;
+};
+
+Template.contactablesList.contactables = function() {
+  var searchQuery = {
+    $and: [] // Push each $or operator here
+  };
+
+  // Dependencies
+  esDep.depend();
+
+  // Elasitsearch
+  if (!_.isEmpty(query.searchString.value)) {
+    return esResult;
+  }
+
+  if (query.objType.value)
+    searchQuery.objNameArray = query.objType.value;
+
+  if (query.selectedLimit.value) {
+    var dateLimit = new Date();
+    searchQuery.dateCreated = {
+      $gte: dateLimit.getTime() - query.selectedLimit.value
+    };
+  }
+
+  if (! query.inactives.value) {
+    var inactiveStatusOR = {
+      $or: []
+    };
+    var activeStatuses;
+    var aux;
+    _.each(['Employee', 'Contact', 'Customer'], function(objName){
+      activeStatuses = getActiveStatuses(objName);
+      if (_.isArray(activeStatuses) && activeStatuses.length > 0){
+        aux={};
+        aux[objName + '.status'] = {
+          $in: activeStatuses
+        };
+        inactiveStatusOR.$or.push(aux)
+      }
+    });
+    searchQuery.$and.push(inactiveStatusOR);
+  }
+
+  // Location filter
+  var locationOperatorMatch = false;
+  if (query.location.value) {
+    _.forEach(locationFields, function(locationField) {
+      var value = getLocationTagValue(locationField, locationFields);
+
+      if (value) {
+        locationOperatorMatch = true;
+        searchQuery['location.' + locationField] = {
+          $regex: value,
+          $options: 'i'
+        };
+      }
+    });
+  }
+
+  // If not location operator match is used then search on each field
+  if (query.location.value && !locationOperatorMatch) {
+    var locationOR = {
+      $or: []
+    };
+    _.forEach(locationFields, function(locationField) {
+      var aux = {};
+      aux['location.' + locationField] = {
+        $regex: query.location.value,
+        $options: 'i'
+      };
+      locationOR.$or.push(aux);
+    });
+    searchQuery.$and.push(locationOR);
+  }
+
+  // Tags filter
+  if (query.tags.value.length > 0) {
+    searchQuery.tags = {
+      $in: query.tags.value
+    };
+  }
+
+  if (searchQuery.$and.length == 0)
+    delete searchQuery.$and;
+
+  if (!_.isEmpty(query.candidateStatus.value)){
+    debugger;
+    searchQuery._id = {$in:_.map(Placements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
+  }
+
+  return Contactables.find(searchQuery, {limit: query.limit.value});
+};
+
+Template.contactablesList.contactableTypes = function() {
+  return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
+};
+
 // Elasticsearch
+
 var esDep = new Deps.Dependency;
 var esResult = [];
 
@@ -167,7 +251,7 @@ Meteor.autorun(function() {
     bool: {
       must: [],
       should: []
-    },
+    }
   };
 
   // Contactable type
@@ -254,134 +338,9 @@ Meteor.autorun(function() {
   });
 });
 
-var getActiveStatuses = function(objName){
-  var status = Enums.lookUpTypes[objName.toLowerCase()];
-  status = status && status.status;
-  if (status){
-    var lookUpCodes = status.lookUpCode,
-      implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
-    return _.map(implyActives,function(doc){ return doc._id});
-  }
-  return null;
-}
-
-Template.contactablesList.contactables = function() {
-  var searchQuery = {
-    $and: [] // Push each $or operator here
-  };
-
-  // Dependencies
-  esDep.depend();
-
-  // Elasitsearch
-  if (!_.isEmpty(query.searchString.value)) { 
-    return esResult;
-  }
-
-  if (query.objType.value)
-    searchQuery.objNameArray = query.objType.value;
-
-  if (query.selectedLimit.value) {
-    var dateLimit = new Date();
-    searchQuery.dateCreated = {
-        $gte: dateLimit.getTime() - query.selectedLimit.value
-    };
-  }
-
-  if (! query.inactives.value) {
-    var inactiveStatusOR = {
-      $or: []
-    };
-    var activeStatuses;
-    var aux;
-    _.each(['Employee', 'Contact', 'Customer'], function(objName){
-      activeStatuses = getActiveStatuses(objName);
-      if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-        aux={};
-        aux[objName + '.status'] = {
-          $in: activeStatuses
-        };
-        inactiveStatusOR.$or.push(aux)
-      }
-    })
-    searchQuery.$and.push(inactiveStatusOR);
-  }
-
-  // Location filter
-  var locationOperatorMatch = false;
-  if (query.location.value) {
-    _.forEach(locationFields, function(locationField) {
-      var value = getLocationTagValue(locationField, locationFields);
-
-      if (value) {
-        locationOperatorMatch = true;
-        var aux = { term: {}};
-        searchQuery['location.' + locationField] = {
-          $regex: value,
-          $options: 'i'
-        };
-      }
-    });
-  }
-
-  // If not location operator match is used then search on each field
-  if (query.location.value && !locationOperatorMatch) {
-    var locationOR = {
-      $or: []
-    };
-    _.forEach(locationFields, function(locationField) {
-      var aux = {};
-      aux['location.' + locationField] = {
-        $regex: query.location.value,
-        $options: 'i'
-      };
-      locationOR.$or.push(aux);
-    });
-    searchQuery.$and.push(locationOR);
-  }
-
-  // Tags filter
-  if (query.tags.value.length > 0) {
-    searchQuery.tags = {
-      $in: query.tags.value
-    };
-  }
-
-  if (searchQuery.$and.length == 0)
-    delete searchQuery.$and;
-
-  if (query.candidateStatus.value){
-    searchQuery._id = {$in:_.map(Placements.find({candidateStatus: query.candidateStatus.value }).fetch(), function(placement){return placement.employee})}
-  }
-
-  var contactables = Contactables.find(searchQuery, {limit: query.limit.value});
-
-
-  return contactables;
-};
-
-// All
-
-Template.contactables.information = function() {
-  var searchQuery = {};
-
-  if (query.objType.value)
-    searchQuery.objNameArray = query.objType.value;
-
-  info.contactablesCount.value = Contactables.find(searchQuery).count();
-
-  return info;
-};
-
-Template.contactables.showMore = function() {
-  return function() { query.limit.value = query.limit.value + 15 };
-};
-
 // List search
 
-Template.contactablesList.contactableTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
-};
+Template.contactablesListSearch.contactableTypes = contactableTypes;
 
 Template.contactablesListSearch.searchString = function() {
   return query.searchString;
@@ -393,101 +352,14 @@ Template.contactablesFilters.query = function () {
   return query;
 };
 
-Template.contactablesFilters.contactableTypes2 = contactableTypes;
-
-Template.contactablesFilters.recentOptions = function() {
-  return timeLimits;
-};
-
 Template.contactablesFilters.isSelectedType = function(typeName){
   return query.objType.value == typeName;
 };
 
-Template.contactablesFilters.candidateeStatusChanged = function(){
-  return function(lookUpId){
-    query.candidateStatus.value = lookUpId;
-  }
-};
-
-Template.contactablesFilters.typeOptionClass = function(option) {
-  return query.objType.value == option.name? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
-
-};
-
-Template.contactablesFilters.recentOptionClass = function(option) {
-  return query.selectedLimit.value == option? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
-};
-
-Template.contactablesFilters.showInactives = function() {
-  return query.inactives.value? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
-};
-
-Template.contactablesFilters.tags = function() {
-  return query.tags;
-};
-
-var addTag = function() {
-  var inputTag = $('#new-tag')[0];
-
-  if (!inputTag.value)
-    return;
-
-  if (_.indexOf(query.tags.value, inputTag.value) != -1)
-    return;
-
-  query.tags.insert(inputTag.value);
-  inputTag.value = '';
-  inputTag.focus();
-};
-
-var setDateCreatedFilter = function(value) {
-  if (query.selectedLimit.value == value)
-    query.selectedLimit.value = undefined;
-  else
-    query.selectedLimit.value = value;
-};
-
-Template.contactablesFilters.events = {
-  'click .add-tag': function() {
-    addTag();
-  },
-  'keypress #new-tag': function(e) {
-    if (e.keyCode == 13) {
-      e.preventDefault();
-      addTag();
-    }
-  },
-  'click .remove-tag': function() {
-    query.tags.remove(this.value);
-  },
-  'click .focusAddTag': function(){
-    $('#new-tag')[0].focus();
-  },
-  'click #recent-day': function() {
-    setDateCreatedFilter(timeLimits.day);
-  },
-  'click #recent-week': function() {
-    setDateCreatedFilter(timeLimits.week);
-  },
-  'click #recent-month': function() {
-    setDateCreatedFilter(timeLimits.month);
-  },
-  'click #recent-year': function() {
-    setDateCreatedFilter(timeLimits.year);
-  },
-  'click #show-inactives': function() {
-    query.inactives.value = !query.inactives.value;
-  },
-  'click .typeSelect': function() {
-    if (query.objType.value == this.name){
-      query.objType.value= null;
-    }else{
-      query.objType.value= this.name;
-    }
-  }
-};
+Template.contactablesFilters.contactableTypes = contactableTypes;
 
 // Item
+
 Template.contactablesListItem.pictureUrl = function(pictureFileId) {
   var picture = ContactablesFS.findOne({_id: pictureFileId});
   return picture? picture.url('ContactablesFSThumbs') : undefined;
@@ -501,7 +373,12 @@ Template.contactablesListItem.displayObjType = function() {
   return Utils.getContactableType(this);
 };
 
+Template.contactablesListItem.isESSearch = function() {
+  return !_.isEmpty(query.searchString.value);
+};
+
 // Employee item
+
 Template.employeeInformation.placementInfo = function () {
   if (!this.placement)
     return undefined;
@@ -525,22 +402,10 @@ Template.employeeInformation.placementInfo = function () {
   }
 
   return placementInfo;
-}
-
-// Google analytic
-
-_.forEach(['employeeInformation', 'contactInformation', 'customerInformation'],
-  function(templateName){
-    Template[templateName]._events = Template[templateName]._events || [];
-    Template[templateName]._events.push({
-      events: 'click',
-      handler: function() {
-        GAnalytics.event("/contactables", "quickAccess", templateName);
-      },
-    });
-});
+};
 
 // Elasticsearch context match template
+
 Template.esContextMatch.rendered = function() {
   var text = this.$('.contextText');
   text[0].innerHTML = this.data;

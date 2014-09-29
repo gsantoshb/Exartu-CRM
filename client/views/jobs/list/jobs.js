@@ -1,13 +1,3 @@
-var objType = ko.observable();
-
-var filters = ko.observable(ko.mapping.fromJS({
-  objType: '',
-  tags: [],
-  statuses: [],
-  inactives: false,
-  limit: 20
-}));
-
 JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
@@ -53,45 +43,23 @@ JobsController = RouteController.extend({
     });
   }
 });
-var searchFields = ['categoryName', 'industryName', 'durationName', 'statusName', 'publicJobTitle'];
-var timeLimits = {
-  day: 24 * 60 * 60 * 1000,
-  week: 7 * 24 * 60 * 60 * 1000,
-  month: 30 * 24 * 60 * 60 * 1000,
-  year: 365 * 24 * 60 * 60 * 1000
-};
 
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
     jobsCount: {},
     objType: {},
-    isRecentDaySelected: {
-      default: false
-    },
     objTypeDisplayName: {},
-    isRecentWeekSelected: {
-      default: false
-    },
-    isRecentMonthSelected: {
-      default: false
-    },
-    isRecentYearSelected: {
-      default: false
-    },
     isFiltering: {
       default: false
     }
   }
 });
+
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
     searchString: {},
     objType: {},
     inactives: {
-      type: Utils.ReactivePropertyTypes.boolean,
-      default: false
-    },
-    onlyRecents: {
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
     },
@@ -108,20 +76,33 @@ var query = new Utils.ObjectDefinition({
   }
 });
 
+// All
+
 Template.jobs.created = function(){
   query.limit.value = 20
-}
+};
+
+Template.jobs.information = function() {
+  var searchQuery = {};
+
+  if (query.objType.value)
+    searchQuery.objNameArray = query.objType.value;
+
+  info.jobsCount.value = Jobs.find(searchQuery).count();
+
+  return info;
+};
+
+Template.jobs.showMore = function() {
+  return function() { query.limit.value = query.limit.value + 15 };
+};
+
 // List
 
 Template.jobsList.info = function() {
   info.isFiltering.value = Jobs.find().count() != 0;
   return info;
 };
-
-var jobTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
-};
-Template.jobsListSearch.jobTypes = jobTypes;
 
 var locationFields = ['address', 'city', 'state', 'country'];
 
@@ -138,6 +119,12 @@ var getLocationTagValue = function(locationField, locationFields) {
 
   return value;
 };
+
+var jobTypes = function() {
+  return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
+};
+
+Template.jobsListSearch.jobTypes = jobTypes;
 
 var searchDep = new Deps.Dependency;
 var isSearching = false;
@@ -158,6 +145,9 @@ var getActiveStatuses = function(objName){
   }
   return null;
 }
+
+var searchFields = ['categoryName', 'industryName', 'durationName', 'statusName', 'publicJobTitle'];
+
 Template.jobsList.jobs = function() {
   var searchQuery = {
     $and: [] // Push each $or operator here
@@ -275,21 +265,14 @@ Template.jobsList.jobs = function() {
   return jobs;
 };
 
-// All
+// List search
 
-Template.jobs.information = function() {
-  var searchQuery = {};
-
-  if (query.objType.value)
-    searchQuery.objNameArray = query.objType.value;
-
-  info.jobsCount.value = Jobs.find(searchQuery).count();
-
-  return info;
+Template.jobsList.jobTypes = function() {
+  return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
 };
 
-Template.jobs.showMore = function() {
-  return function() { query.limit.value = query.limit.value + 15 };
+Template.jobsListSearch.searchString = function() {
+  return query.searchString;
 };
 
 // List sorting
@@ -339,113 +322,16 @@ Template.jobsListSort.events = {
   }
 };
 
-// List search
-
-Template.jobsList.jobTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
-};
-
-Template.jobsListSearch.searchString = function() {
-  return query.searchString;
-};
-
 // List filters
 
 Template.jobsFilters.query = function () {
   return query;
 };
 
-Template.jobsFilters.jobTypes2 = jobTypes;
-
-Template.jobsFilters.recentOptions = function() {
-  return timeLimits;
-};
-
-Template.jobsFilters.typeOptionClass = function(option) {
-  return query.objType.value == option.name? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
-
-};
-
-Template.jobsFilters.recentOptionClass = function(option) {
-  return query.selectedLimit.value == option? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
-};
-
-Template.jobsFilters.showInactives = function() {
-  return query.inactives.value? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
-};
-
-Template.jobsFilters.tags = function() {
-  return query.tags;
-};
-
-Template.jobsFilters.statusChanged = function(){
-  return function(lookUpId){
-    query.status.value = lookUpId;
-  }
-};
-
-var addTag = function() {
-  var inputTag = $('#new-tag')[0];
-
-  if (!inputTag.value)
-    return;
-
-  if (_.indexOf(query.tags.value, inputTag.value) != -1)
-    return;
-
-  query.tags.insert(inputTag.value);
-  inputTag.value = '';
-  inputTag.focus();
-};
-
-var setDateCreatedFilter = function(value) {
-  if (query.selectedLimit.value == value)
-    query.selectedLimit.value = undefined;
-  else
-    query.selectedLimit.value = value;
-};
-
-Template.jobsFilters.events = {
-  'click .add-tag': function() {
-    addTag();
-  },
-  'keypress #new-tag': function(e) {
-    if (e.keyCode == 13) {
-      e.preventDefault();
-      addTag();
-    }
-  },
-  'click .remove-tag': function() {
-    query.tags.remove(this.value);
-  },
-  'click .focusAddTag': function(){
-    $('#new-tag')[0].focus();
-  },
-  'click #recent-day': function() {
-    setDateCreatedFilter(timeLimits.day);
-  },
-  'click #recent-week': function() {
-    setDateCreatedFilter(timeLimits.week);
-  },
-  'click #recent-month': function() {
-    setDateCreatedFilter(timeLimits.month);
-  },
-  'click #recent-year': function() {
-    setDateCreatedFilter(timeLimits.year);
-  },
-  'click #show-inactives': function() {
-    query.inactives.value = !query.inactives.value;
-  },
-  'click .typeSelect': function(e) {
-    if (query.objType.value == this.name){
-      query.objType.value= null;
-    }else{
-      query.objType.value= this.name;
-    }
-  }
-};
+Template.jobsFilters.jobTypes = jobTypes;
 
 // Item
+
 Template.jobsListItem.pictureUrl = function(pictureFileId) {
   var picture = JobsFS.findOne({_id: pictureFileId});
   return picture? picture.url('JobsFSThumbs') : undefined;
@@ -457,24 +343,4 @@ Template.jobsListItem.jobIcon = function() {
 
 Template.jobsListItem.displayObjType = function() {
   return Utils.getJobType(this);
-};
-
-
-// Google analytic
-
-_.forEach(['jobInformation'],
-  function(templateName){
-    Template[templateName]._events = Template[templateName]._events || [];
-    Template[templateName]._events.push({
-      events: 'click',
-      handler: function() {
-        GAnalytics.event("/jobs", "quickAccess", templateName);
-      }
-    });
-  });
-
-// Elasticsearch context match template
-Template.esContextMatch.rendered = function() {
-  var text = this.$('.contextText');
-  text[0].innerHTML = this.data;
 };
