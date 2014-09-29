@@ -126,7 +126,7 @@
 </template>
 
 <template name="contactable_contacts">
-    {{#if ../Customer}}{{> contactableContactsBox}}{{/if}}
+    {{> contactableContactsBox}}
 </template>
 
 <template name="contactable_tasks">
@@ -156,11 +156,8 @@
 </template>
 
 <template name="contactable_HRConcourse">
-    {{#if ../Employee}}
-        {{>applicantCenter entity=.}}
-        <!-- Placements -->
-        {{>contactablePlacementsBox}}
-    {{/if}}
+    {{>applicantCenter entity=.}}
+    {{>contactablePlacementsBox}}
 </template>
 
 <template name="contactable_placements">
