@@ -17,64 +17,51 @@
                 <div class="box-title">Jobs</div>
             </div>
             <div class="box-content-md">
-                    <ul class="list-3 stripped has-thumb">
-                        {{#each jobs}}
-                            <li class="list-3-item">
-                                <div class="list-thumb"><i class="icon-briefcase"></i></div>
-                                <div class="list-3-content list-magic">
-                                    <div class="list-3-content-wrap">
-                                        <!--<div class="list-3-actions">-->
-                                            <!--<a href="#"><i class="fa fa-trash-o"></i> Remove</a>-->
-                                        <!--</div>-->
-                                        <div class="pull-right">
-                                            <div class="table-item magic">
-                                                        {{>jobDate}}
-                                                </div>
+                <ul class="list-3 stripped has-thumb">
+                    {{#each jobs}}
+                        <li class="list-3-item">
+                            <div class="list-thumb"><i class="icon-briefcase"></i></div>
+                            <div class="list-3-content list-magic">
+                                <div class="list-3-content-wrap">
+                                    <div class="pull-right">
+                                        <div class="table-item magic">
+                                            {{>jobDate}}
                                         </div>
-                                        <div class="list-3-item-meta-top">{{lookUpName status}}</div>
-                                        <h4 class="list-3-item-title"><a href="/job/{{_id}}">{{displayName}}</a></h4>
-                                    </div><!-- /.list-3-content-wrap -->
+                                    </div>
+                                    <div class="list-3-item-meta-top">{{lookUpName status}}</div>
+                                    <h4 class="list-3-item-title"><a href="/job/{{_id}}">{{displayName}}</a></h4>
                                 </div>
-                            </li>
-                        {{else}}
-                            <div class="box-v-msg">
-                                <div class="box-v-msg-content">
-
-                                    <i class="icon-briefcase"></i>
-                                    <p> <br>
-                                        <!--{{#each jobTypes}}-->
-                                            <!--<a href="#" class="addJob">New {{name}} Job</a>-->
-                                            <!--{{#if isNotLast}}-->
-                                                <!--<span class="bullet-spacer">·</span>-->
-                                            <!--{{/if}}-->
-                                        <!--{{/each}}-->
-                                    <!--</p>-->
-                                    </p>
-                                </div><!-- /.box-v-msg-content -->
                             </div>
-                        {{/each}}
-                    </ul>
-            </div><!-- /.box-content-md -->
+                        </li>
+                    {{else}}
+                        <div class="box-v-msg">
+                            <div class="box-v-msg-content">
+                                <i class="icon-briefcase"></i>
+                            </div>
+                        </div>
+                    {{/each}}
+                </ul>
+            </div>
         </div>
     {{/if}}
 </template>
-<template name="jobDate">
-                <div class="table-item-cell">
-                    <div class="table-item-cell-container date">
-                        {{#formattedDate value=startDate}}
-                        {{date}}
-                        {{/formattedDate}}-
-                        {{#if endDate}}
 
-                        {{#formattedDate value=endDate}}
-                        {{date}}
-                        {{/formattedDate}}
-                        {{/if}}
-                        {{#if searchKey }}
-                        <br />
-                        <i class="glyphicon glyphicon-search"></i>
-                        {{searchKey}}
-                        {{/if}}
-                    </div>
-                </div>
+<template name="jobDate">
+    <div class="table-item-cell">
+        <div class="table-item-cell-container date">
+            {{#formattedDate value=startDate}}
+                {{date}}
+            {{/formattedDate}}-
+
+            {{#if endDate}}
+                {{#formattedDate value=endDate}}
+                    {{date}}
+                {{/formattedDate}}
+            {{/if}}
+
+            {{#if searchKey }}
+                <br/><i class="glyphicon glyphicon-search"></i>{{searchKey}}
+            {{/if}}
+        </div>
+    </div>
 </template>

@@ -57,7 +57,7 @@ Template.contactableDetailBox.events = {
       contactable.showErrors();
       return;
     }
-    contactable.save(function(err, result) {
+    contactable.save(function(err) {
       if (!err) {
         EditMode.hide();
 //        contactable.reset();
@@ -69,4 +69,4 @@ Template.contactableDetailBox.events = {
     EditMode.hide();
     contactable.reset();
   }
-}
+};

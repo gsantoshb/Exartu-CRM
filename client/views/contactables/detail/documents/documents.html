@@ -12,8 +12,8 @@
                     <input style="visibility: hidden" id="add-file" type="file">
                 {{/dragAndDrop}}
             {{/if}}
-        </div><!-- /.box-5 -->
-    </div><!-- /#document -->
+        </div>
+    </div>
 </template>
 
 <template name="addDocumentForm">
@@ -21,43 +21,45 @@
         <div class="add-box-head" style="padding: 25px 10px">
             <div class="add-item-icon"><i class="icon-document-1"></i></div>
             <h1>Add document</h1>
-        </div><!-- /.add-box-head -->
+        </div>
         <div class="add-box-content" style="padding-bottom: 0px">
             {{#with newDocument}}
-            <form role="form">
-                <div class="form-group">
-                    <em>Original name</em>
-                    <strong class="text-center"> {{originalFileName}} </strong>
-                </div><!-- /.form-group -->
+                <form role="form">
+                    <div class="form-group">
+                        <em>Original name</em>
+                        <strong class="text-center"> {{originalFileName}} </strong>
+                    </div>
 
-                <div class="form-group">
-                    {{#objectProperty property=name}}
-                        <input class="form-control input-lg" type="text" placeholder="Name" value="{{value}}">
-                    {{/objectProperty}}
-                </div><!-- /.form-group -->
+                    <div class="form-group">
+                        {{#objectProperty property=name}}
+                            <input class="form-control input-lg" type="text" placeholder="Name" value="{{value}}">
+                        {{/objectProperty}}
+                    </div>
 
-                <div class="form-group">
-                    {{#objectProperty property=description}}
-                        <input class="form-control input-lg" type="text" placeholder="Description" value="{{value}}">
-                    {{/objectProperty}}
-                </div><!-- /.form-group -->
+                    <div class="form-group">
+                        {{#objectProperty property=description}}
+                            <input class="form-control input-lg" type="text" placeholder="Description" value="{{value}}">
+                        {{/objectProperty}}
+                    </div>
 
-                <div class="input-group">
-                    <input id="new-tag" type="text" class="form-control input-lg" data-bind="placeholder: Enums.stringConstants.SearchTags">
-                    <span class="input-group-btn">
-                      <button id="add-tag" class="btn btn-success btn-lg" type="button"><span class="fa fa-plus"></span></button>
-                    </span>
-                </div><!-- /input-group -->
-                <div class="tags-content">
-                    {{#objectProperty property=newDocument.tags}}
-                        <button type="button" class="btn btn-xs btn-primary">
-                            <span>{{value}}</span>
-                            <i id="remove-tag" class="fa fa-times" data-remove></i>
-                        </button>
-                    {{/objectProperty}}
-                </div><!-- /.box-content-md -->
-            </form>
+                    <div class="input-group">
+                        <input id="new-tag" type="text" class="form-control input-lg" data-bind="placeholder: Enums.stringConstants.SearchTags">
+                        <span class="input-group-btn">
+                          <button id="add-tag" class="btn btn-success btn-lg" type="button"><span class="fa fa-plus"></span></button>
+                        </span>
+                    </div>
+
+                    <div class="tags-content">
+                        {{#objectProperty property=newDocument.tags}}
+                            <button type="button" class="btn btn-xs btn-primary">
+                                <span>{{value}}</span>
+                                <i id="remove-tag" class="fa fa-times" data-remove></i>
+                            </button>
+                        {{/objectProperty}}
+                    </div>
+                </form>
             {{/with}}
+
             <button id="cancel-document" class="btn btn-default"> Cancel </button>
             <button id="save-document" class="btn btn-success pull-right"> Save </button>
         </div>

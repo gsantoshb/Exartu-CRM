@@ -14,7 +14,7 @@ Template.customerJobs.helpers({
     var type= dType.ObjTypes.find({parent: 'job'}).fetch();
     return this._id != type[type.length - 1]._id;
   }
-})
+});
 
 Template.customerJobs.events({
   'click .addJob': function(e){
@@ -22,4 +22,4 @@ Template.customerJobs.events({
     Router.go('/jobAdd/' + this.name);
     e.preventDefault();
   }
-})
+});

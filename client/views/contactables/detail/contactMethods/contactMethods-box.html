@@ -19,7 +19,6 @@
                                 <div class="list-3-item-meta-top">{{displayName}}</div>
                                 <h4 class="list-3-item-title"><a href="{{contactMethodTypePrefix typeEnum}}{{value}}">{{value}}</a></h4>
                             </div>
-                            <!-- /.list-3-content-wrap -->
                         </div>
                     </li>
                 {{else}}
@@ -28,19 +27,12 @@
                         <div class="box-v-msg">
                             <div class="box-v-msg-content">
                                 <i class="icon-address-1"></i>
-                                <!--<p>-->
-                                    <!--Contact Method Not Found<br>-->
-                                <!--    <a href="#" class="addContactMethod">Add contact method</a>-->
-                                <!--</p>-->
-                            </div><!-- /.box-v-msg-content -->
+                            </div>
                         </div>
                     {{/if}}
-
                 {{/each}}
             </ul>
-
         </div>
-        <!-- /.box-content-md -->
 
         {{#if editMode }}
             <div class="box-header-2">
@@ -52,9 +44,9 @@
                                 <li><a class="contact-method-type" href="#">{{displayName}}</a></li>
                             {{/each}}
                         </ul>
-                    </div><!-- /btn-group -->
+                    </div>
                     <input id="new-contact-method-value" type="text" class="form-control">
-                </div><!-- /input-group -->
+                </div>
                 <a id="cancel-contact-method" class="btn btn-default"> Cancel </a>
                 <span id="add-contact-method-error" class="label label-danger"></span>
                 <button id="add-contact-method"  type="button" class="btn btn-success" title="Add">

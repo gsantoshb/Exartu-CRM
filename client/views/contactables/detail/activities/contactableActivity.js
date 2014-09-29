@@ -1,8 +1,8 @@
 
-var contactableActivities=[Enums.activitiesType.contactableAdd,Enums.activitiesType.taskAdd,Enums.activitiesType.placementEdit,
+var contactableActivities = [Enums.activitiesType.contactableAdd,Enums.activitiesType.taskAdd,Enums.activitiesType.placementEdit,
     Enums.activitiesType.placementAdd,Enums.activitiesType.jobAdd];
 
-  Template.contactableActivity.helpers({
+Template.contactableActivities.helpers({
   isAny: function(){
     return Activities.find({
       entityId: Session.get('entityId'),
@@ -19,8 +19,7 @@ var contactableActivities=[Enums.activitiesType.contactableAdd,Enums.activitiesT
   }
 });
 
-
-var  userName= function(userId){
+var userName= function(userId){
   var user= Meteor.users.findOne({_id: userId});
   return user && user.username;
 };
@@ -41,6 +40,7 @@ Template.jobActivityPlacementsEdit.helpers({
     return this.data.employee != this.data.oldEmployee;
   }
 });
+
 Template.jobActivityJobAdd.helpers({
   userName: userName
 });

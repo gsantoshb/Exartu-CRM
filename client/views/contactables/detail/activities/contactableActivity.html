@@ -1,0 +1,29 @@
+<template name="contactableActivities">
+    {{#if isAny}}
+        <div class="box">
+            <div class="box-header-2">
+                <div class="box-title">
+                    <span>Activity</span>
+                </div>
+            </div>
+            <div class="" id="activity-body">
+                <div class="box-v-msg-content">
+                <section class="timeline">
+                    <div class="activity-container scroll-container">
+                        {{#each activities}}
+                            {{#contactableActivityType}}
+                            {{/contactableActivityType}}
+                        {{/each}}
+                    </div>
+
+                    <!--infinite scroll-->
+                    <div data-bind="onScrollBottom: $root.showMore"></div>
+                </section>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+</template>
+
+<template name="dummyEntry">
+</template>

@@ -1,4 +1,3 @@
-
 var generateReactiveObject = function(placement) {
   return new dType.objInstance(placement, Placements);
 };
@@ -10,7 +9,8 @@ Utils.reactiveProp(location, 'value', null);
 
 Template.placementDetail.created=function(){
   self.editMode=false;
-}
+};
+
 var placement;
 
 Template.placementDetail.helpers({
@@ -88,5 +88,3 @@ Template.placementDetail.helpers({
     return Enums.linkTypes.placement;
   }
 });
-
-

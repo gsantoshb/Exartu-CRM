@@ -1,11 +1,9 @@
-Template.applicantCenter.helpers({
-
+Template.HRConcourse.helpers({
   isInvited: function(){
-    //console.log('appcenter',this,this.entity)
-    return !! this.entity.invitation;
+    return !!this.entity.invitation;
   },
   isRegistered: function(){
-    return !! this.entity.user;;
+    return !!this.entity.user;;
   },
   email: function(){
     var email= _.findWhere(this.entity.contactMethods, { typeEnum: Enums.contactMethodTypes.email } );
@@ -41,23 +39,20 @@ Template.applicantCenter.helpers({
 });
 
 var contactableId;
-Template.applicantCenter.created = function() {
+Template.HRConcourse.created = function() {
   contactableId = this.data.entity._id;
 };
 
-Template.applicantCenter.events({
+Template.HRConcourse.events({
   'click .invite':function(e, ctx){
     var email=ctx.$('.email').val();
 
-
     Meteor.call('sendInvitation', this.entity._id, email, function(err, result){
-      if (err){
+      if (err) {
         console.dir(err);
         alert(err);
-      }
-        else
-      {
-          alert('Invitation sent');
+      } else {
+        alert('Invitation sent');
       }
     })
   },
@@ -65,4 +60,4 @@ Template.applicantCenter.events({
     var currentDocumentRevision = this.getCurrentRevision();
     var revInstance = new DocCenter.RevisionInstance({entityId: contactableId}, currentDocumentRevision);
   }
-})
+});

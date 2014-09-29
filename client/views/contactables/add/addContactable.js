@@ -25,14 +25,17 @@ ContactableAddController = RouteController.extend({
     });
   }
 });
+
 var contactable;
 var subTypesDep=new Deps.Dependency;
+
 var createContactable= function(objTypeName, options){
   var type= dType.core.getObjType(objTypeName);
   contactable= new dType.objTypeInstance(objTypeName, options);
   setPersonType(type.defaultPersonType,contactable);
   return contactable
 };
+
 var setPersonType= function(personType, contactable){
   var personModel= new dType.objTypeInstance(personType);
   contactable.subTypes=contactable.subTypes.filter(function(obj) {
@@ -41,7 +44,6 @@ var setPersonType= function(personType, contactable){
   contactable.subTypes.unshift(personModel);
   subTypesDep.changed();
 };
-
 
 var extraInformation = new Utils.ObjectDefinition({
   reactiveProps: {
@@ -83,7 +85,7 @@ Template.addContactablePage.helpers({
   },
   extraInformation: function() {
     return extraInformation;
-  },
+  }
 });
 
 Template.addContactablePage.events({
@@ -91,7 +93,6 @@ Template.addContactablePage.events({
     setPersonType(e.target.value, contactable)
   },
   'click .btn-success': function(){
-
     if (!dType.isValid(this)){
       dType.displayAllMessages(this);
       return;
@@ -139,5 +140,5 @@ Template.addContactablePage.events({
 });
 
 Template.addContactablePage.destroyed=function(){
-  contactable=undefined;
+  contactable = undefined;
 };

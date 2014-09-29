@@ -1,5 +1,4 @@
 <template name="contactableDetailBox">
-    <!-- Details -->
     <div class="box">
         <div class="box-header-2">
             <a class="btn-action pointer" title="Edit"><i id="edit-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>
@@ -10,6 +9,7 @@
         <div class="box-content-md">
             {{#with contactable }}
                 <table class="table box-table table-striped">
+
                     {{#if person }}
                         <tr>
                             <td>First Name</td>
@@ -52,6 +52,7 @@
                             </td>
                         </tr>
                     {{/if}}
+
                     {{#if organization }}
                         <tr>
                             <td>Organization</td>
@@ -64,6 +65,7 @@
                             </td>
                         </tr>
                     {{/if}}
+
                     {{#if Customer }}
                         <tr>
                             <td>Department</td>
@@ -75,30 +77,8 @@
                                 {{/objectProperty}}
                             </td>
                         </tr>
-                        <!--<tr>-->
-                            <!--<td>Status note</td>-->
-                            <!--<td>-->
-                                <!--{{#objectProperty property=statusNote editable=editMode}}-->
-                                    <!--<input class="form-control" type="text" value="{{value}}">-->
-                                <!--{{else}}-->
-                                    <!--<span >{{value}}</span>-->
-                                <!--{{/objectProperty}}-->
-                            <!--</td>-->
-                        <!--</tr>-->
                     {{/if}}
-                    {{#if Employee }}
-                        <!--<tr>-->
-                            <!--<td>Status note</td>-->
-                            <!--<td>-->
-                                <!--{{#objectProperty property=statusNote editable=editMode}}-->
-                                    <!--<input class="form-control" type="text" value="{{value}}">-->
-                                <!--{{else}}-->
-                                    <!--<span >{{value}}</span>-->
-                                <!--{{/objectProperty}}-->
-                            <!--</td>-->
-                        <!--</tr>-->
 
-                    {{/if}}
                     <tr>
                         <td>Status</td>
                         <td>
@@ -111,7 +91,7 @@
                                     {{/each}}
                                 </select>
                                 <span>{{error}}</span>
-                            </div><!-- /.form-group -->
+                            </div>
                             {{else}}
                             <strong>
                                 <strong>{{displayName}}</strong>
@@ -119,7 +99,6 @@
                             {{/objectProperty}}
                         </td>
                     </tr>
-                    <!--{{#if contact }}-->
                     <tr>
                         <td>Status note</td>
                         <td>
@@ -130,15 +109,14 @@
                             {{/objectProperty}}
                         </td>
                     </tr>
-                    <!--{{/if}}-->
                 </table>
             {{/with}}
-        </div><!-- /.box-content-md -->
+        </div>
         {{#if editMode }}
             <div class="box-header-2">
                 <a id="cancel-details" class="btn btn-default" > Cancel </a>
                 <a id="save-details" class="btn btn-success pull-right" > Save </a>
             </div>
         {{/if}}
-    </div><!-- /.box -->
+    </div>
 </template>
