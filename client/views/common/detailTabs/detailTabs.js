@@ -43,6 +43,11 @@ Template.detailTabs.isActive = function(name){
   return (name == selectedTab.id) ? 'active' : '';
 };
 
+Template.detailTabs.currentTemplate = function() {
+  selectedTabDep.depend();
+  return selectedTab.template;
+};
+
 Template.detailTabs.tabs = function() {
   Session.keyDeps.entityId.depend(); // Update tabs when entityId changes
   return this.tabs;
