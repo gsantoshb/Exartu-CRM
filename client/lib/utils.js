@@ -240,7 +240,9 @@ Utils.Validators.stringNotEmpty = function() {
 }
 
 Utils.getLocation = function (googleLocation) {
-  var address, city, state, country; 
+  if (!googleLocation || !googleLocation.address_components) return undefined;
+
+  var address, city, state, country, postalCode;
   _.forEach(googleLocation.address_components, function(component) {
     if (_.findWhere(component.types, 'route'))
       address = component.long_name;
@@ -250,6 +252,8 @@ Utils.getLocation = function (googleLocation) {
       state = component.long_name;
     if (_.findWhere(component.types, 'country'))
       country = component.long_name;
+    if (_.findWhere(component.types, 'postal_code'))
+      postalCode = component.long_name;
   });
 
   return {
@@ -259,7 +263,8 @@ Utils.getLocation = function (googleLocation) {
     address: address,
     city: city,
     state: state,
-    country: country
+    country: country,
+    postalCode: postalCode
   }
 }
 

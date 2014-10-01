@@ -146,7 +146,6 @@ Template.contactable_tabs.tabs = function() {
     {id: 'notes', displayName: 'Notes', info: 'noteCount', template: 'contactable_notes'},
     {id: 'documents', displayName: 'Documents', info: 'documentCount', template: 'contactable_documents'},
     {id: 'tasks', displayName: 'Tasks', template: 'contactable_tasks'},
-    {id: 'location', displayName: 'Location', template: 'contactable_location'},
   ];
 
   if (contactable.Customer) {

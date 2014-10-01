@@ -3,7 +3,7 @@ UI.registerHelper('inputLocation', function() {
     var placeSearch, autocomplete, element=this.$('.location')[0];
     var getLocation = _.bind(function() {
       var place = autocomplete.getPlace();
-      this.value=Utils.getLocation(place);
+      this.value=Utils.getLocation(place)
     },this.data);
 
     autocomplete = new google.maps.places.Autocomplete(element, { types: ['geocode'] });
@@ -11,8 +11,18 @@ UI.registerHelper('inputLocation', function() {
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
       getLocation();
     });
-  }
-  return Template.inputLocationTemplate
+  };
+
+  // Avoid navegation when press enter key
+  Template.inputLocationTemplate.events = {
+    'keypress .location': function(e){
+      if (e.which == 13) {
+        e.preventDefault();
+      }
+    }
+  };
+
+  return Template.inputLocationTemplate;
 });
 
 UI.registerHelper('infinityScroll', function() {
