@@ -139,10 +139,9 @@ Template.contactable_header.helpers({
 });
 
 // Tabs
-
 var tabs;
 Template.contactable_tabs.tabs = function() {
-  var tabs = [
+  tabs = [
     {id: 'details', displayName: 'Details', template: 'contactable_details'},
     {id: 'notes', displayName: 'Notes', info: 'noteCount', template: 'contactable_notes'},
     {id: 'documents', displayName: 'Documents', info: 'documentCount', template: 'contactable_documents'},
