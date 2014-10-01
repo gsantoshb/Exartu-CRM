@@ -1,7 +1,7 @@
 DashboardController = RouteController.extend({
   layoutTemplate: 'mainLayout',
     waitOn: function () {
-        return [ObjTypesHandler, UsersHandler];
+        return [UsersHandler];
     },
     action: function () {
         if (this.ready())

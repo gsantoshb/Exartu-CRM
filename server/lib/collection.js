@@ -13,19 +13,21 @@ Conversations = new Mongo.Collection("conversations");
 Messages = new Mongo.Collection("messages");
 
 Tasks = new Mongo.Collection("tasks");
+
 Notes = new Mongo.Collection("notes");
+
 ObjTypes = new Mongo.Collection("objTypes");
 
 Relations = new Mongo.Collection("relations");
 
 LookUps = new Mongo.Collection("lookUps");
 
-Roles = new Mongo.Collection("roles");
-
 ContactMethods = new Mongo.Collection("contactMethods");
 
 Placements = new Mongo.Collection("placements");
+
 Candidates = new Mongo.Collection("candidates");
+
 JobRateTypes = new Mongo.Collection("jobRateTypes");
 
 SystemConfigs = new Mongo.Collection("systemConfigs");

@@ -31,8 +31,6 @@ meteorhacks:npm
 cfs:filesystem
 cfs:gridfs
 
-
-npm-container
 dtype
 document
 es
@@ -41,3 +39,5 @@ subscription-plan
 cfs:graphicsmagick
 mizzao:bootstrap-3
 
+
+npm-container

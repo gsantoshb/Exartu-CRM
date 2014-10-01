@@ -35,7 +35,6 @@ cfs:upload-http@0.0.2
 cfs:worker@0.0.0
 check@1.0.0
 coffeescript@1.0.3
-collection-hooks@0.0.0
 connect@0.0.0
 ctl-helper@1.0.3
 ctl@1.0.1

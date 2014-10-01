@@ -1,7 +1,7 @@
 DealController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function(){
-        return [DealHandler, ObjTypesHandler, GoogleMapsHandler]
+        return [DealHandler, GoogleMapsHandler]
     },
     data: function () {
         Session.set('entityId', this.params._id);

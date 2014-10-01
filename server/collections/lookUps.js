@@ -1,10 +1,5 @@
 Meteor.publish('lookUps', function () {
-  var user = Meteor.users.findOne({_id: this.userId});
-
-  if(!user)
-    return false;
-
-   return LookUps.find({hierId: user.hierId},{sort: {displayName: 1}});
+  return Utils.filterCollectionByUserHier.call(this, LookUps.find({}, {sort: {displayName: 1}}));
 });
 
 LookUps.allow({
@@ -16,13 +11,7 @@ LookUps.allow({
   }
 });
 
-Meteor.methods({
-  addLookUpItem: function(item) {
-    item.hierId = Meteor.user().hierId;
-    LookUps.insert(item);
-  }
-})
+// Indexes
 
-// indexes
 LookUps._ensureIndex({hierId: 1});
 LookUps._ensureIndex({lookUpCode: 1});

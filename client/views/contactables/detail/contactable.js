@@ -1,7 +1,7 @@
 ContactableController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ObjTypesHandler, ContactableHandler, ContactMethodsHandler, GoogleMapsHandler]
+    return [ContactableHandler, ContactMethodsHandler, GoogleMapsHandler]
   },
   data: function () {
     Session.set('entityId', this.params._id);

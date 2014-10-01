@@ -6,7 +6,7 @@ Router.configure({
   disableProgressSpinner: true,
   notFoundTemplate: 'notFoundTemplate',
   waitOn: function() {
-    return [HierarchiesHandler];
+    return HierarchiesHandler;
   },
   onBeforeAction: function () {
     if (!Meteor.userId() && Router.current().route.name != 'login' && Router.current().route.name != 'register' && Router.current().route.name != 'addUser' && Router.current().route.name != 'notFound') {

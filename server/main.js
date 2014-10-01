@@ -78,10 +78,3 @@ Meteor.startup(function () {
       auth: ExartuConfig.ES_AUTH
     });
 });
-Meteor.startup(function () {
-  Meteor.methods({
-    reseedSystemLookUps: function () {
-      seedSystemLookUps.call();
-    }
-  })
-});

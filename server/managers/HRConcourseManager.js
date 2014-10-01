@@ -1,8 +1,8 @@
 //todo hack
 var applicantCenterURL = process.env.HRCENTER_URL || 'http://localhost:3030/';
 
-Meteor.methods({
-  'sendInvitation':function(employeeId, email){
+HRConcourseManager = {
+  sendInvitation: function(employeeId, email){
     console.log('sending invitation..')
     var employee= Contactables.findOne({ _id: employeeId }, {
       transform: function(e){
@@ -71,6 +71,5 @@ Meteor.methods({
 
       }
     })
-
   }
-})
+};

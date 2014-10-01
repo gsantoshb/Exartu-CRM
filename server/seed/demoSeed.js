@@ -519,14 +519,11 @@ var loadTasks = function (hierId, usermane, userId) {
 
     // Add users to hier
     var userIds = [];
-    var rol = Roles.findOne();
-//  console.dir(rol);
     for (var j = 0; j < 5; ++j) {
         var newUser = {
             username: usermane + j,
             email: usermane + j + '@' + usermane + j + '.com',
-            password: usermane + j,
-            roles: [rol]
+            password: usermane + j
         }
         var id = Meteor.call('addHierUser', newUser, hierId);
         userIds.push(id);

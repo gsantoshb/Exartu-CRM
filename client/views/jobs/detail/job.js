@@ -1,7 +1,7 @@
 JobController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [JobHandler, ObjTypesHandler, GoogleMapsHandler]
+    return [JobHandler, GoogleMapsHandler]
   },
   data: function () {
     Session.set('entityId', this.params._id);
