@@ -38,8 +38,6 @@ subscription-plan
 cfs:graphicsmagick
 mizzao:bootstrap-3
 
-
-npm-container
 meteorhacks:kadira
 meteorhacks:zones
 force-ssl
