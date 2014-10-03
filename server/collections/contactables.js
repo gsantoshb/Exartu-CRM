@@ -1,4 +1,4 @@
-Meteor.publish('contactables', function () {
+Meteor.paginatedPublish(Contactables, function () {
   var user = Meteor.users.findOne({
     _id: this.userId
   });
@@ -9,6 +9,8 @@ Meteor.publish('contactables', function () {
   return Contactables.find({
     $or: filterByHiers(user.currentHierId)
   });
+},{
+  pageSize: 20
 });
 
 Contactables.allow({

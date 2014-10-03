@@ -39,7 +39,10 @@
                         {{#if isSearching}}
                             searching
                         {{else}}
-                            {{> contactablesList }}
+                            <div>
+                                {{>fastPagination name="contactables"}}
+                            </div>
+                            {{>yield 'list'}}
                         {{/if}}
                         {{#infinityScroll cb=showMore}} {{/infinityScroll}}
                     </div>
@@ -72,7 +75,12 @@
         </div>
     </div>
 </template>
-
+<template name="loadingList">
+    <div style="min-height: 550px">
+        <div class="page-loader" style="height: 550px;">
+        </div>
+    </div>
+</template>
 <template name="contactablesList">
     <div style="min-height: 550px">
         {{#each contactables}}
