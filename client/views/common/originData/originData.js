@@ -4,7 +4,8 @@ Template.originData.helpers({
     return Utils.users();
   },
   userName: function () {
-    return Meteor.users.findOne({_id: this.userId}).username;
+    var user = Meteor.users.findOne({_id: this.userId});
+    return user ? user.username : 'System';
   },
   hierarchies: function () {
     return Hierarchies.find();
