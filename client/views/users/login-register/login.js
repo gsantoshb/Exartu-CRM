@@ -56,7 +56,6 @@ Template.login.viewModel = function () {
   };
 
   self.loginWithPassword = function () {
-    console.log('get here or not');
     Meteor.loginWithPassword({
       email: self.email()
     }, self.password(), function (err, result) {

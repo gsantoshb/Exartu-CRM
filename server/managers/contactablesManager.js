@@ -17,7 +17,7 @@ ContactableManager = {
     };
     tempEmployee.Employee = {};
 
-    var syncParse = Meteor._wrapAsync(
+    var syncParse = Meteor.wrapAsync(
       Meteor.bindEnvironment(function(stream, resumeFileId, cb) {
         form.append("file", stream);
         form.submit({
