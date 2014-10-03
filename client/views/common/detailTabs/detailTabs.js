@@ -5,8 +5,7 @@ var context;
 var selectedTabDep = new Deps.Dependency;
 
 Template.detailTabs.created = function() {
-  tabs = this.data.tabs;
-  selectedTab = this.data.selected || tabs[0];
+  selectedTab = this.data.selected || this.data.tabs[0];
   template = this.data.template;
   context = this.data.context;
 };
@@ -44,8 +43,14 @@ Template.detailTabs.isActive = function(name){
   return (name == selectedTab.id) ? 'active' : '';
 };
 
+Template.detailTabs.currentTemplate = function() {
+  selectedTabDep.depend();
+  return selectedTab.template;
+};
+
 Template.detailTabs.tabs = function() {
-  return tabs;
+  Session.keyDeps.entityId.depend(); // Update tabs when entityId changes
+  return this.tabs;
 };
 
 Template.detailTabs.showMoveButtons = function() {
@@ -73,7 +78,7 @@ Template.detailTabs.events = {
     }
   },
   'click .details-tab': function() {
-    selectedTab = _.findWhere(tabs, {id: this.id});
+    selectedTab = _.findWhere(UI._parentData(0).tabs, {id: this.id});
     selectedTabDep.changed();
   }
 };

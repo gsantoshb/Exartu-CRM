@@ -1,4 +1,4 @@
-Template.contactablePastJobs.waitOn = ['ObjTypesHandler', 'ContactableHandler', 'GoogleMaps', 'ContactMethodsHandler'];
+Template.contactablePastJobs.waitOn = ['ContactableHandler', 'GoogleMaps', 'ContactMethodsHandler'];
 Template.contactablePastJobs.viewModel = function () {
     var self={},
         contactableId=Session.get('entityId');

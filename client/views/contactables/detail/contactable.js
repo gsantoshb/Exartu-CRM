@@ -1,7 +1,7 @@
 ContactableController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ObjTypesHandler, ContactableHandler, ContactMethodsHandler, GoogleMapsHandler]
+    return [ContactableHandler, ContactMethodsHandler, GoogleMapsHandler]
   },
   data: function () {
     Session.set('entityId', this.params._id);
@@ -139,15 +139,13 @@ Template.contactable_header.helpers({
 });
 
 // Tabs
-
 var tabs;
 Template.contactable_tabs.tabs = function() {
-  var tabs = [
+  tabs = [
     {id: 'details', displayName: 'Details', template: 'contactable_details'},
     {id: 'notes', displayName: 'Notes', info: 'noteCount', template: 'contactable_notes'},
     {id: 'documents', displayName: 'Documents', info: 'documentCount', template: 'contactable_documents'},
     {id: 'tasks', displayName: 'Tasks', template: 'contactable_tasks'},
-    {id: 'location', displayName: 'Location', template: 'contactable_location'},
   ];
 
   if (contactable.Customer) {

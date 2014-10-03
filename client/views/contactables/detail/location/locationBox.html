@@ -3,28 +3,64 @@
         <div class="box-header-2">
             <a class="btn-action tip-top pointer" id="edit-Location" data-original-title="Add Contact" style="color: {{editModeColor}}" title="Edit">
                 <i class="fa fa-pencil"></i></a>
-            <div class="box-title">Location</div>
+            <div class="box-title">Address</div>
         </div>
 
-        {{location_string}}
+        {{#if editMode}}
+            <form class="box-content-form" role="form">
+                {{#inputLocation location}}
+                {{/inputLocation}}
+            </form>
+        {{/if}}
 
         <div class="box-content-md">
-            {{#if editMode}}
-                <div class="input-group">
-                    <input type="text" class="form-control" id="locationInput" placeholder="Enter location...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-success findLocation" type="button">find</button>
-                    </span>
-                </div>
-            {{/if}}
-            <div class="map"></div>
-            <div class="map-notFound">
-                <div class="box-v-msg">
-                    <div class="box-v-msg-content">
-                        <i class="icon-map-marker-3"></i>
+            {{#with location.value}}
+                <table class="table box-table">
+                    <tr>
+                        <td>Street address</td>
+                        <td>
+                            <strong>
+                                {{address}}
+                                -
+                                {{postalCode}}
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td>
+                            <strong>
+                                {{city}}
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>
+                            <strong>
+                                {{state}}
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Country</td>
+                        <td>
+                            <strong>
+                                {{country}}
+                            </strong>
+                        </td>
+                    </tr>
+                </table>
+            {{else}}
+                <div class="map-notFound">
+                    <div class="box-v-msg">
+                        <div class="box-v-msg-content">
+                            <i class="icon-map-marker-3"></i>
+                            Address not set
+                        </div>
                     </div>
                 </div>
-            </div>
+            {{/with}}
         </div>
 
         {{#if editMode }}

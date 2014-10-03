@@ -1,7 +1,7 @@
 UserController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function(){
-    return [ObjTypesHandler, GoogleMapsHandler]
+    return [GoogleMapsHandler]
   },
   data: function () {
     Session.set('entityId', this.params._id);

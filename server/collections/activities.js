@@ -1,25 +1,11 @@
-/* 
- * Activities:
- *  - userId
- *  - hierId
- *  - type
- *  - entityId
- *  - data
- */
-
 Meteor.publish('activities', function () {
-	var user = Meteor.users.findOne({
-		_id: this.userId
-	});
+  return Utils.filterCollectionByUserHier.call(this, Activities.find());
+});
 
-	if (!user)
-		return false;
+var mainTypes = ['Employee','Contact','Customer'];
 
-	return Activities.find({
-        $or: filterByHiers(user.currentHierId)
-    });
-})
-var mainTypes=['Employee','Contact','Customer']
+// Contactable
+
 Contactables.after.insert(function (userId, doc) {
 	var data = {};
 	data.dateCreated = doc.dateCreated;
@@ -40,9 +26,11 @@ Contactables.after.insert(function (userId, doc) {
 		hierId: doc.hierId,
 		type: Enums.activitiesType.contactableAdd,
 		entityId: doc._id,
-		data: data,
+		data: data
 	})
 });
+
+// Message
 
 Messages.after.insert(function (userId, doc) {
 	_.forEach(doc.entityIds, function (entity) {
@@ -58,6 +46,8 @@ Messages.after.insert(function (userId, doc) {
 		})
 	})
 });
+
+// Tasks
 
 Tasks.after.insert(function (userId, doc) {
   var linkid;
@@ -77,6 +67,8 @@ Tasks.after.insert(function (userId, doc) {
 		}
 	})
 });
+
+// Jobs
 
 Jobs.after.insert(function (userId, doc) {
 	var customerName = "";
@@ -104,8 +96,8 @@ Jobs.after.insert(function (userId, doc) {
 	});
 });
 
+//Placements
 
-//list
 Placements.after.insert(function (userId, doc) {
   var data = {};
   data.dateCreated = new Date();
@@ -150,10 +142,10 @@ Placements.after.update(function (userId, doc) {
   })
 });
 
+// Users
+
 Meteor.startup(function () {
   Meteor.methods({
-
-
     userLoginActivity: function () {
       var data={};
       data.username=Meteor.user().username;
@@ -171,5 +163,6 @@ Meteor.startup(function () {
   })
 });
 
-// indexes
+// Indexes
+
 Activities._ensureIndex({hierId: 1});

@@ -1,2 +1,2 @@
-ObjTypes = new Meteor.Collection("objTypes");
-extendedSubscribe('objTypes', 'ObjTypesHandler');
+//ObjTypes = new Meteor.Collection("objTypes");
+//extendedSubscribe('objTypes', 'ObjTypesHandler');

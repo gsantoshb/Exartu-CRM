@@ -30,8 +30,5 @@ UsersHandler = {
 
 }
 
-Roles = new Meteor.Collection("roles");
-Meteor.subscribe('roles');
-
 UserInvitations = new Meteor.Collection('userInvitations');
 Meteor.subscribe('userInvitations');

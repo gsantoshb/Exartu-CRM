@@ -17,10 +17,8 @@
     <span id="next-tab" class="next-tab {{showMoveButtons}}"><i class="fa fa-arrow-right"></i></span>
 
     <div class="tab-content details-tab-content">
-        {{#each tabs}}
-            <div class="tab-pane {{isActive id}}" id="profile-notes">
-                {{> UI.dynamic template=template data=../context }}
-            </div>
-        {{/each}}
+        <div class="tab-pane active">
+            {{> UI.dynamic template=currentTemplate  data=context }}
+        </div>
     </div>
 </template>

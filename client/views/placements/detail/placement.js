@@ -1,7 +1,7 @@
 PlacementController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function(){
-        return [PlacementHandler, ObjTypesHandler, GoogleMapsHandler]
+        return [PlacementHandler, GoogleMapsHandler]
     },
     data: function () {
         Session.set('entityId', this.params._id);

@@ -48,7 +48,7 @@ Template.deals.config = {
   singleton: true
 }
 
-Template.deals.waitOn = ['DealHandler', 'LookUpsHandler', 'ObjTypesHandler'];
+Template.deals.waitOn = ['DealHandler', 'LookUpsHandler'];
 
 Template.deals.viewModel = function () {
   var self = {};

@@ -42,3 +42,5 @@ meteorhacks:kadira
 meteorhacks:zones
 force-ssl
 
+
+npm-container

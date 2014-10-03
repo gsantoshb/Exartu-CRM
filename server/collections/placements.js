@@ -1,24 +1,11 @@
 Meteor.publish('placements', function () {
-
-    if (!this.userId)
-        return false;
-    var user = Meteor.users.findOne({
-        _id: this.userId
-    });
-
-    return Placements.find({
-        $or: filterByHiers(user.currentHierId)
-    });
+  return Utils.filterCollectionByUserHier.call(this, Placements.find());
 });
 
 Meteor.startup(function () {
   Meteor.methods({
-    addPlacement: function (asg) {
-      if (true) {
-        asg._id = new Meteor.Collection.ObjectID()._str;
-        Placements.insert(asg);
-        return asg;
-      }
+    addPlacement: function (placement) {
+      return Placements.insert(placement);
     }
   })
 });
@@ -49,8 +36,7 @@ Placements.before.insert(function (userId, doc) {
   console.log('shortId: ' + aux);
 });
 
-//<editor-fold desc="************ update job and contactable ****************">
-Placements.after.insert(function(userId, doc, fieldNames, modifier, options){
+Placements.after.insert(function(userId, doc){
     Contactables.update({
         _id: doc.employee
     }, {
@@ -67,7 +53,7 @@ Placements.after.insert(function(userId, doc, fieldNames, modifier, options){
     });
 });
 
-Placements.after.update(function(userId, doc, fieldNames, modifier, options){
+Placements.after.update(function(userId, doc){
   if (doc.employee != this.previous.employee){
 
     Contactables.update({
@@ -88,17 +74,3 @@ Placements.after.update(function(userId, doc, fieldNames, modifier, options){
   }
 
 });
-var extendPlacement = function (placement, objTypes) {
-  if (!placement.contactMethods)
-    placement.contactMethods = [];
-
-  _.forEach(objTypes, function (objType) {
-    if (objType) {
-      _.forEach(objType.services, function (service) {
-        if (placement[service] == undefined)
-          placement[service] = [];
-      });
-    }
-  })
-};
-//</editor-fold>
