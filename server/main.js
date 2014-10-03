@@ -65,8 +65,8 @@ Meteor.startup(function () {
     }
   }
 
-  var appId = process.env['APM_ID'] || '5RiToDN7BQAe8WG9X';
-  var secret = process.env['APM_SECRET'] || '0b92beaf-e743-4a4c-a122-69d74e8bc1df';
+  var appId = ExartuConfig.APM_ID || '5RiToDN7BQAe8WG9X';
+  var secret = ExartuConfig.APM_SECRET || '0b92beaf-e743-4a4c-a122-69d74e8bc1df';
   Kadira.connect(appId, secret);
 
   // Elasticsearch
