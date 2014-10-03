@@ -189,12 +189,7 @@ Accounts.onCreateUser(function (options, user) {
   if (!options.profile || !options.profile.hierId) {
     var userRoles = [];
     var userPermissions = [];
-    _.forEach(Roles.find().fetch(), function (role) {
-      userRoles.push(role.name);
-      userPermissions = userPermissions.concat(role.rolePermissions);
-    });
-    roles = userRoles;
-    user.permissions = _.uniq(userPermissions);
+
     hierId = Meteor.call('createHier', {
       name: userEmail.split('@')[0]
     });
@@ -203,18 +198,9 @@ Accounts.onCreateUser(function (options, user) {
     sendEmailToSales(user);
 
     user._id = Meteor.uuid();
-
-    // Demo data
-    // Seed database with all kind of data to make a demo faster and easier
-    // This seed is applied only if meteor server is executed with  Meteor.settings.demo on TRUE
-    if (Meteor.settings.demo)
-    {
-      _.forEach(demoSeed, function (seedFn) {
-        seedFn.apply(this, [hierId, user.username, user._id]);
-      });
-    }
-  } else
+  } else {
     hierId = options.profile.hierId;
+  }
 
   if (!user.permissions) {
     var userPermissions = [];

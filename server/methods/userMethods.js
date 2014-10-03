@@ -24,7 +24,7 @@ Meteor.methods({
     return UserManager.isEmailAvailable(email);
   },
   registerAccount: function (document, skipEmailVerification) {
-    return EmailManager.registerAccount(document, skipEmailVerification);
+    return UserManager.registerAccount(document, skipEmailVerification);
   },
   sendUserInvitation: function (user, hierId) {
     EmailManager.sendUserInvitation(user, hierId);
