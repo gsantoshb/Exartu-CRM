@@ -57,7 +57,6 @@ Template.user.events({
 
 Template.user_tabs.isActive = function(name){
   var activeTab = Session.get('activeTab') || 'details';
-  console.log('activetab',activeTab);
   return (name == activeTab) ? 'active' : '';
 }
 
