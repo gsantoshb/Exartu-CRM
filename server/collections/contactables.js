@@ -1,5 +1,7 @@
-Meteor.publish('contactables', function () {
+Meteor.paginatedPublish(Contactables, function () {
   return Utils.filterCollectionByUserHier.call(this, Contactables.find());
+},{
+  pageSize: 20
 });
 Contactables.allow({
   insert: function () {

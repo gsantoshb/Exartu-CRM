@@ -7,3 +7,9 @@
 [submodule "packages/es"]
 	path = packages/es
 	url = https://github.com/Exartu/Exartu-Elasticsearch.git
+[submodule "packages/pagination"]
+	path = packages/pagination
+	url = https://github.com/Exartu/Exartu-Pagination.git
+[submodule "packages/mongoView"]
+	path = packages/mongoView
+	url = https://github.com/Exartu/Exartu-MongoView.git

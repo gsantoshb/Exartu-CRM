@@ -43,6 +43,9 @@
                     {{#if isSearching}}
                         searching
                     {{else}}
+                        <div>
+                            {{>fastPagination name="jobsView"}}
+                        </div>
                         {{> jobsList }}
                     {{/if}}
 

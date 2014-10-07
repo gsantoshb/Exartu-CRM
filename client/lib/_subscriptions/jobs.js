@@ -1,4 +1,4 @@
-Jobs = new Meteor.Collection("jobs", {
+Jobs = new Meteor.Collection('jobsView', {
   transform: function (job) {
     job.displayName = job.publicJobTitle ;
 //    job.industryName = LookUps.findOne({ _id: job.industry }).displayName;
@@ -22,16 +22,18 @@ Jobs = new Meteor.Collection("jobs", {
       }
     }
 
-    
-    
+
+
 
 
 //    job.calculatedstatus=JobCalculatedStatus.get(job); no calculated status for now
-    if (job.customer) {
-      var customer = Contactables.findOne({_id: job.customer });
-      job.customerName = customer.displayName;
+    if (job.customerInfo) {
+      //var customer = Contactables.findOne({_id: job.customer });
+      job.customerName = job.customerInfo.displayName;
+    }else{
+      job.customerName = job.customer ? 'Error' : '';
     }
     return job;
   }
 });
-extendedSubscribe('jobs', 'JobHandler');
+JobHandler = Meteor.paginatedSubscribe('jobsView');

@@ -1,7 +1,39 @@
-Meteor.publish('jobs', function () {
-  return Utils.filterCollectionByUserHier.call(this, Jobs.find());
+JobView = new View('jobsView', {
+  collection: Jobs,
+  mapping: {
+    customerInfo: {
+      find: function(job) {
+        return Contactables.find(job.customer,{fields: {
+          'organization.organizationName': 1
+        }});
+      },
+      map: function (doc) {
+        if (! doc) return null;
+
+        return {
+          id: doc._id,
+          displayName: doc.organization.organizationName
+        };
+      }
+    }
+  }
+
 });
 
+Meteor.paginatedPublish(JobView, function(){
+  var user = Meteor.users.findOne({
+    _id: this.userId
+  });
+
+  if (!user)
+    return false;
+  var cursor =Utils.filterCollectionByUserHier.call(this, JobView.find());
+  //console.log('cursor',cursor);
+  return cursor
+}, {
+  pageSize: 10,
+  publicationName: 'jobsView'
+});
 Jobs.allow({
   update: function () {
     return true;

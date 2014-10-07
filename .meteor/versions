@@ -35,7 +35,6 @@ cfs:upload-http@0.0.2
 cfs:worker@0.0.0
 check@1.0.1
 coffeescript@1.0.3
-connect@0.0.0
 ctl-helper@1.0.3
 ctl@1.0.1
 ddp@1.0.9
@@ -80,6 +79,7 @@ mizzao:bootstrap-3@3.2.0_1
 mobile-status-bar@1.0.0
 mongo-livedata@1.0.5
 mongo@1.0.6
+mongoview@0.0.0
 mrgalaxy:stripe@1.5.6
 mrt:bootstrap3-wysihtml5@0.3.3
 mrt:googlemaps@0.0.2
@@ -93,6 +93,7 @@ oauth2@1.1.0
 oauth@1.1.0
 observe-sequence@1.0.2
 ordered-dict@1.0.0
+pagination@0.0.0
 paypal@0.0.0
 percolatestudio:percolatestudio-migrations@0.7.1
 raix:eventemitter@0.0.1
