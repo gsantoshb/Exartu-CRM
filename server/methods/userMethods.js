@@ -27,7 +27,7 @@ Meteor.methods({
     return UserManager.registerAccount(document, skipEmailVerification);
   },
   sendUserInvitation: function (user, hierId) {
-    EmailManager.sendUserInvitation(user, hierId);
+    UserManager.sendUserInvitation(user, hierId);
   },
   resendUserInvitation: function(userInvitationId) {
     EmailManager.resendUserInvitation(userInvitationId);
