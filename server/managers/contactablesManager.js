@@ -68,7 +68,7 @@ ContactableManager = {
       )
     );
 
-    return syncParse(stream, resumeFileId);
+    return syncParse(stream, file._id);
   },
   setPicture: function() {
     Contactables.update({
@@ -183,11 +183,12 @@ var extractInformation = function(parseResult, employee) {
 //};
 
   var structuredResult = parseResult.StructuredXMLResume;
-  var ContactInfo = parseResult.StructuredXMLResume.ContactInfo[0];
 
   //ContactInfo
 
   try {
+    var ContactInfo = parseResult.StructuredXMLResume.ContactInfo[0];
+
     employee.contactMethods = [];
     if (ContactInfo && ContactInfo && ContactInfo.ContactMethod) {
       var contactMethod = ContactInfo.ContactMethod;
