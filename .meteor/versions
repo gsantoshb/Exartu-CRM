@@ -75,6 +75,7 @@ mizzao:bootstrap-3@3.2.0_1
 mobile-status-bar@1.0.0
 mongo-livedata@1.0.5
 mongo@1.0.6
+mongoview@0.0.0
 mrgalaxy:stripe@1.5.6
 mrt:bootstrap3-wysihtml5@0.3.3
 mrt:googlemaps@0.0.2
