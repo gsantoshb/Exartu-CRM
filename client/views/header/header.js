@@ -50,7 +50,7 @@ Template.header.helpers({
     },
     currentHierName: function(){
       var hier = Hierarchies.findOne(Meteor.user().currentHierId);
-      return hier.name;
+      return hier ? hier.name : '';
     }
 });
 Template.header.events({

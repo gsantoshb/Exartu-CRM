@@ -1,418 +1,412 @@
 // Common data
+
+// 30 Employees
 var employees = [
-    {
-        firstName: "Doe",
-        lastName: "Andrew"},
-    {
-        firstName: "Gate",
-        lastName: "John"
-    },
-    {
-        firstName: "Smith",
-        lastName: "John"
-    },
-    {
-        firstName: "Campos",
-        lastName: "Wilson"
-    },
-    {
-        firstName: "Berneche", lastName: "Joe"
-    },
-    {
-        firstName: "Soto",
-        lastName: "Roger"
-    },
-    {
-        firstName: "Schrute",
-        lastName: "Anna"
-    },
-    {
-        firstName: "Paycardguy",
-        lastName: "Johnny"
-    },
-    {
-        firstName: "Pasarini",
-        lastName: "Fernando"
-    },
-    {
-        firstName: "Campos",
-        lastName: "Epay"
-    },
-    {
-        firstName: "Climer",
-        lastName: "Rae"
-    },
-    {
-        firstName: "Lewis",
-        lastName: "James"
-    },
-    {
-        firstName: "InstantPay",
-        lastName: "Jeff"
-    },
-    {
-        firstName: "Cardtest",
-        lastName: "EJpay"
-    },
-    {
-        firstName: "Hanna",
-        lastName: "Randy"
-    },
-    {
-        firstName: "Pasarini",
-        lastName: "Epay"
-    },
-    {
-        firstName: "Lee",
-        lastName: "Nestor"
-    },
-    {
-        firstName: "McKee",
-        lastName: "Geoffrey"
-    },
-    {
-        firstName: "Pennington",
-        lastName: "Charlene"
-    },
-    {
-        firstName: "Wayne",
-        lastName: "John"
-    },
-    {
-        firstName: "Norris",
-        lastName: "Aram"
-    },
-    {
-        firstName: "Bean",
-        lastName: "Mark"
-    },
-    {
-        firstName: "Cossey",
-        lastName: "Michael"
-    },
-    {
-        firstName: "Edwards",
-        lastName: "Robert"
-    },
-    {
-        firstName: "Fox",
-        lastName: "William"
-    },
-    {
-        firstName: "Crosby",
-        lastName: "Howard"
-    },
-    {
-        firstName: "Small",
-        lastName: "Jeff"
-    },
-    {
-        firstName: "Whitson",
-        lastName: "Charles"
-    },
-    {
-        firstName: "Hart",
-        lastName: "Pamela"
-    },
-    {
-        firstName: "Cossey",
-        lastName: "Zoe"
-    },
-]
+  {
+    firstName: "Doe",
+    lastName: "Andrew"
+  },
+  {
+    firstName: "Gate",
+    lastName: "John"
+  },
+  {
+    firstName: "Smith",
+    lastName: "John"
+  },
+  {
+    firstName: "Campos",
+    lastName: "Wilson"
+  },
+  {
+    firstName: "Berneche",
+    lastName: "Joe"
+  },
+  {
+    firstName: "Soto",
+    lastName: "Roger"
+  },
+  {
+    firstName: "Schrute",
+    lastName: "Anna"
+  },
+  {
+    firstName: "Paycardguy",
+    lastName: "Johnny"
+  },
+  {
+    firstName: "Pasarini",
+    lastName: "Fernando"
+  },
+  {
+    firstName: "Campos",
+    lastName: "Epay"
+  },
+  {
+    firstName: "Climer",
+    lastName: "Rae"
+  },
+  {
+    firstName: "Lewis",
+    lastName: "James"
+  },
+  {
+    firstName: "InstantPay",
+    lastName: "Jeff"
+  },
+  {
+    firstName: "Cardtest",
+    lastName: "EJpay"
+  },
+  {
+    firstName: "Hanna",
+    lastName: "Randy"
+  },
+  {
+    firstName: "Pasarini",
+    lastName: "Epay"
+  },
+  {
+    firstName: "Lee",
+    lastName: "Nestor"
+  },
+  {
+    firstName: "McKee",
+    lastName: "Geoffrey"
+  },
+  {
+    firstName: "Pennington",
+    lastName: "Charlene"
+  },
+  {
+    firstName: "Wayne",
+    lastName: "John"
+  },
+  {
+    firstName: "Norris",
+    lastName: "Aram"
+  },
+  {
+    firstName: "Bean",
+    lastName: "Mark"
+  },
+  {
+    firstName: "Cossey",
+    lastName: "Michael"
+  },
+  {
+    firstName: "Edwards",
+    lastName: "Robert"
+  },
+  {
+    firstName: "Fox",
+    lastName: "William"
+  },
+  {
+    firstName: "Crosby",
+    lastName: "Howard"
+  },
+  {
+    firstName: "Small",
+    lastName: "Jeff"
+  },
+  {
+    firstName: "Whitson",
+    lastName: "Charles"
+  },
+  {
+    firstName: "Hart",
+    lastName: "Pamela"
+  },
+  {
+    firstName: "Cossey",
+    lastName: "Zoe"
+  }
+];
+
+// 57 Customers
+var customers = [
+  {
+    "name": "Yahoo",
+    "department": "Shipping"
+  },
+  {
+    "name": "ABC Corporation",
+    "department": "Shipping"
+  },
+  {
+    "name": "Action Staffing Solutions",
+    "department": "Primary"
+  },
+  {
+    "name": "Seintco",
+    "department": "Labor Dispatch 1"
+  },
+  {
+    "name": "Aldi Inc",
+    "department": "Tap Room"
+  },
+  {
+    "name": "Ames Construction, Inc.",
+    "department": "Primary"
+  },
+  {
+    "name": "Aquafina",
+    "department": "Primary"
+  },
+  {
+    "name": "Atlanta Staffing Source Inc",
+    "department": "Sourcing"
+  },
+  {
+    "name": "ATS Staffing",
+    "department": "Primary"
+  },
+  {
+    "name": "Best Buy",
+    "department": "Store #456"
+  },
+  {
+    "name": "Birkshire Lighting",
+    "department": "Warehouse"
+  },
+  {
+    "name": "compusa",
+    "department": "Primary"
+  },
+  {
+    "name": "Crom Equipment",
+    "department": "Taxes"
+  },
+  {
+    "name": "Crom Equipment",
+    "department": "Warehouse"
+  },
+  {
+    "name": "Crom Equipment",
+    "department": "North Warehouse"
+  },
+  {
+    "name": "Crom Equipment",
+    "department": "Primary"
+  },
+  {
+    "name": "Crom Equipment",
+    "department": "Warehouse"
+  },
+  {
+    "name": "Crom Equipment",
+    "department": "Shipping"
+  },
+  {
+    "name": "Dees Diner",
+    "department": "Payroll"
+  },
+  {
+    "name": "Dover Staffing",
+    "department": "Primary"
+  },
+  {
+    "name": "Elephant Industries Inc.",
+    "department": "Human Resources"
+  },
+  {
+    "name": "Flavor Splash",
+    "department": "MIsc"
+  },
+  {
+    "name": "Green Thumb",
+    "department": "Warehouse"
+  },
+  {
+    "name": "Green Thumb",
+    "department": "Primary"
+  },
+  {
+    "name": "Harper Designs",
+    "department": "Warehouse"
+  },
+  {
+    "name": "Mel's Tree Service",
+    "department": "Primary"
+  },
+  {
+    "name": "Midwest Wireless",
+    "department": "Accountign"
+  },
+  {
+    "name": "Midwest Wireless",
+    "department": "Primary"
+  },
+  {
+    "name": "Ohio Health",
+    "department": "Warehouse"
+  },
+  {
+    "name": "Pencil Designs Inc",
+    "department": "Metal Bands"
+  },
+  {
+    "name": "Prestige Staffing",
+    "department": "Primary"
+  },
+  {
+    "name": "Sales Tax Test",
+    "department": "Primary"
+  },
+  {
+    "name": "Stoerzinger Supply Co",
+    "department": "Warehouse"
+  },
+  {
+    "name": "Test Jeff Customer",
+    "department": "Primary"
+  },
+  {
+    "name": "Uniform Snow Inc",
+    "department": "Warehouse"
+  },
+  {
+    "name": "Warcraft Players Association",
+    "department": "Primary"
+  },
+  {
+    "name": "Whiting and Associates",
+    "department": "Primary"
+  },
+  {
+    "name": "Google",
+    "department": "Primary"
+  },
+  {
+    "name": "atlas staffing",
+    "department": "Primary"
+  },
+  {
+    "name": "Best Buy",
+    "department": "Primary"
+  },
+  {
+    "name": "Cleaning inc",
+    "department": "Primary"
+  },
+  {
+    "name": "David's Bridal",
+    "department": "Primary"
+  },
+  {
+    "name": "Global Technologies, Inc",
+    "department": "Primary"
+  },
+  {
+    "name": "Global Technologies, Inc.",
+    "department": "Packline"
+  },
+  {
+    "name": "Jon",
+    "department": "Primary"
+  },
+  {
+    "name": "Largo Boats",
+    "department": "Primary"
+  },
+  {
+    "name": "Mari's Company",
+    "department": "Primary"
+  },
+  {
+    "name": "Mari's Company",
+    "department": "Picking"
+  },
+  {
+    "name": "Stanley Tools",
+    "department": "Primary"
+  },
+  {
+    "name": "Stanley Tools",
+    "department": "Primary"
+  },
+  {
+    "name": "Stanley Tools",
+    "department": "Primary"
+  },
+  {
+    "name": "Talbots",
+    "department": "Primary"
+  },
+  {
+    "name": "Vandy Enterprises",
+    "department": "Primary"
+  },
+  {
+    "name": "Walmart",
+    "department": "Primary"
+  },
+  {
+    "name": "XYZ Corp",
+    "department": "Primary"
+  },
+  {
+    "name": "Kyle's Zip Testers",
+    "department": "Primary"
+  }
+];
 
 var loadContactables = function (hierId) {
-    // Employees
-    _.forEach(employees, function (data) {
-      var status=LookUps.findOne({lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode,isDefault:true,hierId:hierId});
-      if (status==null) LookUps.findOne({lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode,hierId:hierId});
-      if (status==null) console.log("unable to find default status code for customer")
-        var jobTitles = LookUps.find({lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode,hierId:hierId}).fetch();
+  // Employees
+  _.forEach(employees, function (data) {
 
-        var randomJobTitle = jobTitles[Math.floor(Math.random() * jobTitles.length)];
-        var newEmployee = {
-            objNameArray: ["Employee"],
-            person: {
-                firstName: data.firstName,
-                middleName: '',
-                lastName: data.lastName,
-                jobTitle: randomJobTitle.displayName,
-                salutation: ''
-            },
-            Employee: {
-                description: "test"
-            },
-            location: null,
-            hierId: hierId,
-            testData: true
-        }
+    var status = LookUps.findOne({ lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode, isDefault: true, hierId: hierId });
+    if (status == null) LookUps.findOne({ lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode, hierId: hierId });
+    if (status == null) console.log("unable to find default status code for employee");
 
-        Meteor.call('addContactable', newEmployee, function (err, result) {
-            if (!err)
-                console.log("Employee created for demo")
-            else
-                console.log(err);
-        })
-    });
+    var jobTitles = LookUps.find({lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode, hierId: hierId}).fetch();
+    var randomJobTitle = jobTitles[Math.floor(Math.random() * jobTitles.length)];
 
-    // Customers
-    var customers = [
-        {
-            "name": "Yahoo",
-            "department": "Shipping"
-        },
-        {
-            "name": "ABC Corporation",
-            "department": "Shipping"
-        },
-        {
-            "name": "Action Staffing Solutions",
-            "department": "Primary"
-        },
-        {
-            "name": "Seintco",
-            "department": "Labor Dispatch 1"
-        },
-        {
-            "name": "Aldi Inc",
-            "department": "Tap Room"
-        },
-        {
-            "name": "Ames Construction, Inc.",
-            "department": "Primary"
-        },
-        {
-            "name": "Aquafina",
-            "department": "Primary"
-        },
-        {
-            "name": "Atlanta Staffing Source Inc",
-            "department": "Sourcing"
-        },
-        {
-            "name": "ATS Staffing",
-            "department": "Primary"
-        },
-        {
-            "name": "Best Buy",
-            "department": "Store #456"
-        },
-        {
-            "name": "Birkshire Lighting",
-            "department": "Warehouse"
-        },
-        {
-            "name": "compusa",
-            "department": "Primary"
-        },
-        {
-            "name": "Crom Equipment",
-            "department": "Taxes"
-        },
-        {
-            "name": "Crom Equipment",
-            "department": "Warehouse"
-        },
-        {
-            "name": "Crom Equipment",
-            "department": "North Warehouse"
-        },
-        {
-            "name": "Crom Equipment",
-            "department": "Primary"
-        },
-        {
-            "name": "Crom Equipment",
-            "department": "Warehouse"
-        },
-        {
-            "name": "Crom Equipment",
-            "department": "Shipping"
-        },
-        {
-            "name": "Dees Diner",
-            "department": "Payroll"
-        },
-        {
-            "name": "Dover Staffing",
-            "department": "Primary"
-        },
-        {
-            "name": "Elephant Industries Inc.",
-            "department": "Human Resources"
-        },
-        {
-            "name": "Flavor Splash",
-            "department": "MIsc"
-        },
-        {
-            "name": "Green Thumb",
-            "department": "Warehouse"
-        },
-        {
-            "name": "Green Thumb",
-            "department": "Primary"
-        },
-        {
-            "name": "Harper Designs",
-            "department": "Warehouse"
-        },
-        {
-            "name": "Mel's Tree Service",
-            "department": "Primary"
-        },
-        {
-            "name": "Midwest Wireless",
-            "department": "Accountign"
-        },
-        {
-            "name": "Midwest Wireless",
-            "department": "Primary"
-        },
-        {
-            "name": "Ohio Health",
-            "department": "Warehouse"
-        },
-        {
-            "name": "Pencil Designs Inc",
-            "department": "Metal Bands"
-        },
-        {
-            "name": "Prestige Staffing",
-            "department": "Primary"
-        },
-        {
-            "name": "Sales Tax Test",
-            "department": "Primary"
-        },
-        {
-            "name": "Stoerzinger Supply Co",
-            "department": "Warehouse"
-        },
-        {
-            "name": "Test Jeff Customer",
-            "department": "Primary"
-        },
-        {
-            "name": "Uniform Snow Inc",
-            "department": "Warehouse"
-        },
-        {
-            "name": "Warcraft Players Association",
-            "department": "Primary"
-        },
-        {
-            "name": "Whiting and Associates",
-            "department": "Primary"
-        },
-        {
-            "name": "Google",
-            "department": "Primary"
-        },
-        {
-            "name": "atlas staffing",
-            "department": "Primary"
-        },
-        {
-            "name": "Best Buy",
-            "department": "Primary"
-        },
-        {
-            "name": "Cleaning inc",
-            "department": "Primary"
-        },
-        {
-            "name": "David's Bridal",
-            "department": "Primary"
-        },
-        {
-            "name": "Global Technologies, Inc",
-            "department": "Primary"
-        },
-        {
-            "name": "Global Technologies, Inc.",
-            "department": "Packline"
-        },
-        {
-            "name": "Jon",
-            "department": "Primary"
-        },
-        {
-            "name": "Largo Boats",
-            "department": "Primary"
-        },
-        {
-            "name": "Mari's Company",
-            "department": "Primary"
-        },
-        {
-            "name": "Mari's Company",
-            "department": "Picking"
-        },
-        {
-            "name": "Stanley Tools",
-            "department": "Primary"
-        },
-        {
-            "name": "Stanley Tools",
-            "department": "Primary"
-        },
-        {
-            "name": "Stanley Tools",
-            "department": "Primary"
-        },
-        {
-            "name": "Talbots",
-            "department": "Primary"
-        },
-        {
-            "name": "Vandy Enterprises",
-            "department": "Primary"
-        },
-        {
-            "name": "Walmart",
-            "department": "Primary"
-        },
-        {
-            "name": "XYZ Corp",
-            "department": "Primary"
-        },
-        {
-            "name": "Kyle's Zip Testers",
-            "department": "Primary"
-        }
-    ]
+    var newEmployee = {
+      Employee: {
+        description: "test",
+        status: status ? status._id : null
+      },
+      objNameArray: ["person", "Employee", "contactable"],
+      person: {
+        firstName: data.firstName,
+        middleName: "",
+        lastName: data.lastName,
+        jobTitle: randomJobTitle.displayName,
+        salutation: ""
+      },
+      hierId: hierId,
+      testData: true
+    };
 
-    _.forEach(customers, function (data) {
-        var status=LookUps.findOne({lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode,isDefault:true,hierId:hierId});
-        if (status==null) LookUps.findOne({lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode,hierId:hierId});
-        if (status==null) console.log("unable to find default status code for customer")
-        else
-        {
-          var newCustomer = {
+    ContactableManager.create(newEmployee);
+  });
 
-              objNameArray: ["Customer"],
-              organization: {
-                  organizationName: data.name
-              },
-              Customer: {
-                  department: data.department,
-                  status: status._id
-              },
-              location: null,
-              hierId: hierId,
-              testData: true
-          }
+  // Customers
+  _.forEach(customers, function (data) {
 
-          Meteor.call('addContactable', newCustomer, function (err, result) {
-              if (!err)
-                  console.log("Customer created for demo")
-              else
-                  console.log(err);
-          });
-        }
-    });
+    var status = LookUps.findOne({ lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode, isDefault: true, hierId: hierId });
+    if (status == null) LookUps.findOne({lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode, hierId: hierId});
+    if (status == null) console.log("unable to find default status code for customer");
 
-    // TODO: Contacts seed
+    var newCustomer = {
+      Customer: {
+        department: data.department,
+        status: status ? status._id : null
+      },
+      objNameArray: ["organization", "Customer", "contactable"],
+      organization: {
+        organizationName: data.name
+      },
+      hierId: hierId,
+      testData: true
+    };
+
+    ContactableManager.create(newCustomer);
+  });
+
+  // TODO: Contacts seed
 };
 
 var loadJobs = function (hierId) {
@@ -557,20 +551,20 @@ var loadTasks = function (hierId, usermane, userId) {
 };
 
 demoSeed = {
-    loadContactables: loadContactables,
-    loadJobs: loadJobs,
-    loadTasks: loadTasks
-}
+  loadContactables: loadContactables,
+  loadJobs: loadJobs,
+  loadTasks: loadTasks
+};
 
 // For testing
 Meteor.methods({
-    loadDemoData: function () {
-        var user = Meteor.user();
-        if (!user)
-            return;
+  loadDemoData: function () {
+    var user = Meteor.user();
+    if (!user)
+      return;
 
-        loadContactables(user.hierId);
-        loadJobs(user.hierId);
-        loadTasks(user.hierId, user.username, user._id);
-    }
-})
+    loadContactables(user.hierId);
+    //loadJobs(user.hierId);
+    //loadTasks(user.hierId, user.username, user._id);
+  }
+});
