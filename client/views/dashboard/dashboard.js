@@ -92,7 +92,7 @@ Template.dashboard.helpers({
       var ids = contactables.concat(jobs).concat(task);
       f.entityId= { $in: ids };
     }
-    return Activities.find(f, query.options);
+    return Activities.find({}, {});
   },
   customerHistory: function(){
 
