@@ -38,60 +38,6 @@
 </template>
 
 <template name="resumesList">
-    {{#with resumesUploading}}
-        {{#if count}}
-            <strong> Uploading </strong>
-            <ul class="list-3 stripped has-thumb">
-                {{#each .}}
-                    <li class="list-3-item">
-                        <div class="list-thumb"><i class="icon-file-upload"></i></div>
-                        <div class="list-3-content list-magic">
-                            <div class="list-3-content-wrap">
-                                <div class="list-3-actions">
-                                    <span class="bullet-spacer">·</span>
-                                    <a class="cancel" href="#"><i class="fa fa-trash-o"></i> Cancel</a>
-                                </div>
-                                <div class="list-3-item-meta-top">{{this.type}}</div>
-                                <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
-                                {{#unless this.isUploaded}}
-                                    {{> fileProgress .}}
-                                {{/unless}}
-                            </div><!-- /.list-3-content-wrap -->
-                        </div>
-                    </li>
-                {{/each}}
-            </ul>
-            <hr/>
-        {{/if}}
-    {{/with}}
-    <strong> Uploaded </strong>
-    <ul class="list-3 stripped has-thumb">
-        {{#each resumes}}
-            <li class="list-3-item">
-                <div class="list-thumb"><i class="icon-file-search"></i></div>
-                <div class="list-3-content list-magic">
-                    <div class="list-3-content-wrap">
-                        <div id="pending" class="list-3-actions">
-                            <a class="parser pointer"><i class="fa fa-cloud-upload"></i> Parse </a>
-                            <span class="bullet-spacer">·</span>
-                            <a class="delete" href="#"><i class="fa fa-trash-o"></i> Delete</a>
-                        </div>
-                        <div class="list-3-item-meta-top">{{this.type}}</div>
-                        <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
-                    </div><!-- /.list-3-content-wrap -->
-                </div>
-            </li>
-        {{else}}
-            <div class="box-v-msg">
-                <div class="box-v-msg-content">
-                    <i class="icon-document-1"></i>
-                    <p>No resumes pending<br>
-                    </p>
-                    <a class="add-resume-trigger"> Upload a resume </a>
-                </div><!-- /.box-v-msg-content -->
-            </div>
-        {{/each}}
-    </ul>
     <ul class="list-3 stripped has-thumb">
         {{#with resumesCompleted}}
             {{#if count}}
@@ -103,19 +49,29 @@
                         <div class="list-3-content list-magic">
                             <div class="list-3-content-wrap">
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-4">
+                                    <div class="col-lg-4 col-md-4">
                                         <div class="list-3-item-meta-top">{{this.type}}</div>
                                         <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
                                     </div>
-                                    <div class="col-lg-1 col-md-1" style="margin-right: -40px; float: left; margin-right: 10px; width: 35px; color: #333; padding-top: 10px;">
-                                        <i class="icon-profile-man" style="font-size: 25px"></i>
-                                    </div>
-                                    <div class="col-lg-7 col-md-6">
-                                        {{#with completedInfo}}
-                                            <div class="list-3-item-meta-top">Created at {{#formatted_date value=dateCreated}}{{date}}{{/formatted_date}}</div>
+                                    {{#with completedInfo}}
+                                        <div class="col-lg-1 col-md-1" style="margin-right: -40px; float: left; margin-right: 10px; width: 35px; color: #333; padding-top: 10px;">
+                                            <i class="icon-profile-man" style="font-size: 25px"></i>
+                                        </div>
+                                        <div class="col-lg-5 col-md-5">
+                                            <div class="list-3-item-meta-top">Created at {{#formattedDate value=dateCreated}}{{date}}{{/formattedDate}}</div>
                                             <h4 class="list-3-item-title"><a href="/contactable/{{_id}}">{{displayName}}</a></h4>
-                                        {{/with}}
-                                    </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2" style="padding-top: 12px;">
+                                            <h5 class="list-3-item-title"><a href="/contactable/{{_id}}"> Go to details <i class="fa fa-arrow-right"></i></a></h5>
+                                        </div>
+                                    {{else}}
+                                        <div class="col-lg-1 col-md-1" style="margin-right: -40px; float: left; margin-right: 10px; width: 35px; color: #333; padding-top: 10px;">
+                                            <i class="icon-alert-1" style="font-size: 25px"></i>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6" style="padding-top: 12px;">
+                                            <h4 class="list-3-item-title"><strong class="text-muted"> Error parsing resume </strong></h4>
+                                        </div>
+                                    {{/with}}
                                 </div>
                             </div><!-- /.list-3-content-wrap -->
                         </div>

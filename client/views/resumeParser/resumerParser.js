@@ -34,12 +34,23 @@ var uploadFile = function(f) {
     completed: false,
     owner: Meteor.userId()
   };
-  ResumesFS.insert(fsFile, function (err) {
+  var file = ResumesFS.insert(fsFile, function (err) {
     if (err) {
       console.log('File upload error');
+    } else {
+      startParsing();
+      console.log(file._id);
+      Meteor.call('createEmployeeFromResume', file._id, function(err, result) {
+        if (err) {
+          console.log(err.reason);
+        }
+        endParsing();
+      });
     }
   });
-}
+
+
+};
 
 Template.resumeAdd.events = {
   'click .add-trigger': function() {
@@ -115,15 +126,15 @@ Template.resumesList.events = {
     var file = this;
     ResumesFS.remove({_id: file._id});
   },
-  'click .parser': function(e) {
-    startParsing();
-    Meteor.call('createEmployeeFromResume', this._id, function(err, result) {
-      if (err) {
-        console.log(err.reason);
-      }
-      endParsing();
-    });
-  },
+  //'click .parser': function(e) {
+  //  startParsing();
+  //  Meteor.call('createEmployeeFromResume', this._id, function(err, result) {
+  //    if (err) {
+  //      console.log(err.reason);
+  //    }
+  //    endParsing();
+  //  });
+  //},
   'click .resume': function(e) {
     var file = this;
     FS.HTTP.uploadQueue.resumeUploadingFile(file);
