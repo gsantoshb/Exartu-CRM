@@ -1,5 +1,5 @@
 Meteor.publish('lookUps', function () {
-  return Utils.filterCollectionByUserHier.call(this, LookUps.find({}, {sort: {displayName: 1}}));
+  return Utils.filterCollectionByUserHier.call(this, LookUps.find({hierId: {$ne:ExartuConfig.SystemHierarchyId}}, {sort: {displayName: 1}}));
 });
 
 LookUps.allow({
