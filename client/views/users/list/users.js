@@ -26,6 +26,12 @@ var query = new Utils.ObjectDefinition({
 Template.users.filters = function(){
   return query;
 };
+Template.users.usersCount = function(){
+  return Meteor.users.find().count();
+};
+Template.users.invitationsCount = function(){
+  return UserInvitations.find({used: {$ne: true}}).count();
+};
 
 var showInvitations = false;
 var showInvitationsDep = new Deps.Dependency;
@@ -49,9 +55,17 @@ Template.users.events({
       };
     });
   },
-  'click #switch-lists': function() {
-    showInvitations = !showInvitations;
-    showInvitationsDep.changed();
+  'click #showUsers': function() {
+    if (showInvitations !== false){
+      showInvitations = false;
+      showInvitationsDep.changed();
+    }
+  },
+  'click #showInvitations': function() {
+    if (showInvitations !== true){
+      showInvitations = true;
+      showInvitationsDep.changed();
+    }
   }
 });
 
@@ -61,9 +75,13 @@ Template.usersList.users = function () {
   var queryObj = query.getObject();
   var q = {};
   if (queryObj.searchString) {
-    q.username = {
-      $regex: queryObj.searchString,
-      $options: 'i'
+    q.emails = {
+      $elemMatch:{
+        address: {
+          $regex: queryObj.searchString,
+          $options: 'i'
+        }
+      }
     };
   }
   return Meteor.users.find(q);
@@ -72,7 +90,17 @@ Template.usersList.users = function () {
 // Invitations
 
 Template.userInvitationsList.invitations = function() {
-  return UserInvitations.find({used: {$ne: true}});
+  var queryObj = query.getObject();
+  var q = {
+    used: {$ne: true}
+  };
+  if (queryObj.searchString) {
+    q.email = {
+      $regex: queryObj.searchString,
+      $options: 'i'
+    };
+  }
+  return UserInvitations.find(q);
 };
 
 Template.userInvitationsList.getUserDisplayName = function(userId) {

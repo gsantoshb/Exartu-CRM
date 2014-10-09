@@ -28,8 +28,8 @@ var canEdit = function (hierarchies, hierId) {
 
 Hierarchies.after.insert(function(userId, doc){
   if (!doc.parent){
-    seedSystemLookUps(doc._id);
     if (doc._id != ExartuConfig.SystemHierarchyId){
+      seedSystemLookUps(doc._id);
       createHouseAccount(doc);
     }
   }

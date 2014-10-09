@@ -35,7 +35,6 @@ cfs:upload-http@0.0.2
 cfs:worker@0.0.0
 check@1.0.1
 coffeescript@1.0.3
-connect@0.0.0
 ctl-helper@1.0.3
 ctl@1.0.1
 ddp@1.0.9
@@ -70,8 +69,8 @@ meteor-platform@1.1.1
 meteor@1.1.1
 meteorhacks:async@1.0.0
 meteorhacks:inject-initial@1.0.0
-meteorhacks:kadira-binary-deps@1.0.0
-meteorhacks:kadira@2.5.2
+meteorhacks:kadira-binary-deps@1.2.0
+meteorhacks:kadira@2.11.6
 meteorhacks:npm@1.2.0
 meteorhacks:zones@1.3.1
 minifiers@1.1.0

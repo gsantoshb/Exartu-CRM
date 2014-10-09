@@ -1,6 +1,5 @@
 EmailManager = {
   sendEmail: function (to, subject, content, isHTML) {
-    this.unblock();
     var from = Meteor.user();
     if (!from.emails)
       return null;

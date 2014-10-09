@@ -31,25 +31,28 @@
                         </span>
                     </div>
                 </div><!-- /.col-lg-5 -->
-                <div class="pull-right">
-                    <span id="switch-lists" class="btn btn-info">
-                        {{#if showInvitations}}
-                            Show users
-                        {{else}}
-                            Show invitations
-                        {{/if}}
-                    </span>
-                </div>
             </div><!-- /.row -->
         </div>
 
         <div class="table-items-box">
-            {{#if showInvitations}}
-                {{> userInvitationsList}}
-            {{else}}
-                {{> usersList}}
-            {{/if}}
+            <ul class="nav nav-tabs">
+                <li class="{{#unless showInvitations}} active {{/unless}}">
+                    <a href="#" id="showUsers">Users ({{usersCount}})</a>
+                </li>
+                <li class="{{#if showInvitations}} active {{/if}}">
+                    <a href="#" id="showInvitations">Invitations ({{invitationsCount}})</a>
+                </li>
+            </ul>
+            <div class="tab-content" style="border-radius: 0 0 4px 4px; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">
+                <span></span>
+                {{#if showInvitations}}
+                    {{> userInvitationsList}}
+                {{else}}
+                    {{> usersList}}
+                {{/if}}
+            </div>
         </div>
+        <!-- /.table-items-box -->
         <!-- /.table-items-box -->
     </div>
 </template>

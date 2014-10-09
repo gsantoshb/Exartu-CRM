@@ -66,7 +66,7 @@ UserManager = {
 
     Meteor.users.update({_id: Meteor.userId(), 'emails.address': email }, {$set: { 'emails.$.token': token }});
 
-    Meteor.call('sendEmail', email ,'TempWorks - Email verification', html, true);
+    EmailManager.sendEmail(email, 'TempWorks - Email verification', html, true);
   },
   setLastCustomerUsed: function(id){
     if (! Contactables.findOne({_id: id, Customer: {$exists: true}})){
@@ -237,7 +237,7 @@ var sendInvitation = function(address, token, hierName) {
   var html = 'You have been invited to ' + hierName + ', click in the link bellow to accept the invitation: <br/>' +
     '<a href="' + url + '"> </a> '+ url + '<br/>';
 
-  Meteor.call('sendEmail', address ,'TempWorks - Invitation', html, true);
+  EmailManager.sendEmail(address, 'TempWorks - Invitation', html, true);
 };
 
 var sendEmailToSales = function(user){
