@@ -30,9 +30,9 @@ Meteor.methods({
     UserManager.sendUserInvitation(user, hierId);
   },
   resendUserInvitation: function(userInvitationId) {
-    EmailManager.resendUserInvitation(userInvitationId);
+    UserManager.resendUserInvitation(userInvitationId);
   },
   registerAccountFromInvitation: function(token, user) {
-    EmailManager.registerAccountFromInvitation(token, user);
+    UserManager.registerAccountFromInvitation(token, user);
   }
 });

@@ -26,7 +26,6 @@ AutoForm.hooks({
         if (err) {
           console.log(err);
           error = err.reason;
-          errorDep.changed();
         } else {
           self.resetForm();
           Meteor.loginWithPassword(user.email, user.password, function() {
