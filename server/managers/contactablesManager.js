@@ -74,7 +74,7 @@ ContactableManager = {
 
     return syncParse(resumeId, fsFile);
   },
-  setPicture: function () {
+  setPicture: function (contactableId, fileId) {
     Contactables.update({
       _id: contactableId
     }, {
