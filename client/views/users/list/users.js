@@ -61,9 +61,13 @@ Template.usersList.users = function () {
   var queryObj = query.getObject();
   var q = {};
   if (queryObj.searchString) {
-    q.username = {
-      $regex: queryObj.searchString,
-      $options: 'i'
+    q.emails = {
+      $elemMatch:{
+        address: {
+          $regex: queryObj.searchString,
+          $options: 'i'
+        }
+      }
     };
   }
   return Meteor.users.find(q);
@@ -72,7 +76,17 @@ Template.usersList.users = function () {
 // Invitations
 
 Template.userInvitationsList.invitations = function() {
-  return UserInvitations.find({used: {$ne: true}});
+  var queryObj = query.getObject();
+  var q = {
+    used: {$ne: true}
+  };
+  if (queryObj.searchString) {
+    q.email = {
+      $regex: queryObj.searchString,
+      $options: 'i'
+    };
+  }
+  return UserInvitations.find(q);
 };
 
 Template.userInvitationsList.getUserDisplayName = function(userId) {
