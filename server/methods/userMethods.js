@@ -33,6 +33,6 @@ Meteor.methods({
     EmailManager.resendUserInvitation(userInvitationId);
   },
   registerAccountFromInvitation: function(token, user) {
-    EmailManager.registerAccountFromInvitation(token, user);
+    UserManager.registerAccountFromInvitation(token, user);
   }
 });
