@@ -26,6 +26,12 @@ var query = new Utils.ObjectDefinition({
 Template.users.filters = function(){
   return query;
 };
+Template.users.usersCount = function(){
+  return Meteor.users.find().count();
+};
+Template.users.invitationsCount = function(){
+  return UserInvitations.find({used: {$ne: true}}).count();
+};
 
 var showInvitations = false;
 var showInvitationsDep = new Deps.Dependency;
@@ -49,9 +55,17 @@ Template.users.events({
       };
     });
   },
-  'click #switch-lists': function() {
-    showInvitations = !showInvitations;
-    showInvitationsDep.changed();
+  'click #showUsers': function() {
+    if (showInvitations !== false){
+      showInvitations = false;
+      showInvitationsDep.changed();
+    }
+  },
+  'click #showInvitations': function() {
+    if (showInvitations !== true){
+      showInvitations = true;
+      showInvitationsDep.changed();
+    }
   }
 });
 
