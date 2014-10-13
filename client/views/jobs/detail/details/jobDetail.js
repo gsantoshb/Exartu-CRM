@@ -1,6 +1,7 @@
+var jobCollections= Jobs;
 
 var generateReactiveObject = function(job) {
-  return new dType.objInstance(job, Jobs);
+  return new dType.objInstance(job, jobCollections);
 };
 
 var self={};
@@ -16,14 +17,14 @@ var job;
 
 Template.jobDetail.helpers({
   job: function(){
-    var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
+    var originalJob = jobCollections.findOne({ _id: Session.get('entityId') });
     Session.set('jobDisplayName', originalJob.displayName);
     if (!job)
       job = generateReactiveObject(originalJob);
     return job;
   },
   originalJob:function(){
-    return Jobs.findOne({ _id: Session.get('entityId') });
+    return jobCollections.findOne({ _id: Session.get('entityId') });
   },
   editMode:function(){
     return self.editMode;
@@ -32,17 +33,17 @@ Template.jobDetail.helpers({
     return self.editMode ? '#008DFC' : ''
   },
   isType:function(typeName){
-    return !! Jobs.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
+    return !! jobCollections.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
   },
   jobCollection: function(){
-    return Jobs;
+    return jobCollections;
   },
 
   isSelected:function(optionValue, currentValue){
     return optionValue == currentValue;
   },
   location: function(){
-    var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
+    var originalJob = jobCollections.findOne({ _id: Session.get('entityId') });
 
     location.value= originalJob && originalJob.location;
     return location;
@@ -58,8 +59,8 @@ Template.jobDetail.events({
       job.showErrors();
       return;
     }
-    var update=job.getUpdate();
-    var originalJob=Jobs.findOne({ _id: Session.get('entityId') });
+    var update= job.getUpdate();
+    var originalJob= jobCollections.findOne({ _id: Session.get('entityId') });
     var oldLocation= originalJob.location;
     var newLocation= location.value;
 
@@ -68,7 +69,7 @@ Template.jobDetail.events({
       update.$set.location = newLocation;
     }
 
-    Jobs.update({_id: job._id}, update, function(err, result) {
+    jobCollections.update({_id: job._id}, update, function(err, result) {
       if (!err) {
         self.editMode=false;
         job.reset();

@@ -1,3 +1,4 @@
+var jobCollection = jobList;
 JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
@@ -88,7 +89,7 @@ Template.jobs.information = function() {
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
 
-  info.jobsCount.value = Jobs.find(searchQuery).count();
+  info.jobsCount.value = jobCollection.find(searchQuery).count();
 
   return info;
 };
@@ -100,7 +101,7 @@ Template.jobs.showMore = function() {
 // List
 
 Template.jobsList.info = function() {
-  info.isFiltering.value = Jobs.find().count() != 0;
+  info.isFiltering.value = jobCollection.find().count() != 0;
   return info;
 };
 
@@ -149,118 +150,118 @@ var getActiveStatuses = function(objName){
 var searchFields = ['categoryName', 'industryName', 'durationName', 'statusName', 'publicJobTitle'];
 
 Template.jobsList.jobs = function() {
-  var searchQuery = {
-    $and: [] // Push each $or operator here
-  };
-  var options = {limit: query.limit.value};
+  //var searchQuery = {
+  //  $and: [] // Push each $or operator here
+  //};
+  //var options = {limit: query.limit.value};
+  //
+  //searchDep.depend();
+  //selectedSortDep.depend();
+  //
+  //// Sort by
+  //if (selectedSort) {
+  //  options.sort = {};
+  //  options.sort[selectedSort.field] = selectedSort.value;
+  //} else {
+  //  delete options.sort;
+  //}
+  //
+  //if (query.objType.value)
+  //  searchQuery.objNameArray = query.objType.value;
+  //
+  //if (!_.isEmpty(query.searchString.value)) {
+  //  var stringSearches=[];
+  //  _.each(searchFields, function (field) {
+  //    var aux = {};
+  //    aux[field] = {
+  //      $regex: query.searchString.value,
+  //      $options: 'i'
+  //    }
+  //    stringSearches.push(aux);
+  //  });
+  //  searchQuery = {
+  //    $and: [searchQuery, {
+  //      $or: stringSearches
+  //    }]
+  //  };
+  //}
+  //
+  //
+  //if (query.selectedLimit.value) {
+  //  var dateLimit = new Date();
+  //  searchQuery.dateCreated = {
+  //    $gte: dateLimit.getTime() - query.selectedLimit.value
+  //  };
+  //}
+  //
+  //if (! query.inactives.value) {
+  //  var inactiveStatusOR = {
+  //    $or: []
+  //  };
+  //  var activeStatuses;
+  //  var aux;
+  //  _.each(['job'], function(objName){
+  //    activeStatuses = getActiveStatuses(objName);
+  //    if (_.isArray(activeStatuses) && activeStatuses.length > 0){
+  //      aux={};
+  //      aux['status'] = {
+  //        $in: activeStatuses
+  //      };
+  //
+  //      inactiveStatusOR.$or.push(aux)
+  //    }
+  //  })
+  //  searchQuery.$and.push(inactiveStatusOR);
+  //}
+  //
+  //if (query.tags.value.length > 0) {
+  //  searchQuery.tags = {
+  //    $in: query.tags.value
+  //  };
+  //}
+  //
+  //// Location filter
+  //var locationOperatorMatch = false;
+  //if (query.location.value) {
+  //  _.forEach(locationFields, function(locationField) {
+  //    var value = getLocationTagValue(locationField, locationFields);
+  //
+  //    if (value) {
+  //      locationOperatorMatch = true;
+  //      var aux = { term: {}};
+  //      searchQuery['location.' + locationField] = {
+  //        $regex: value,
+  //        $options: 'i'
+  //      };
+  //    }
+  //  });
+  //}
+  //
+  //// If not location operator match is used then search on each field
+  //if (query.location.value && !locationOperatorMatch) {
+  //  var locationOR = {
+  //    $or: []
+  //  };
+  //  _.forEach(locationFields, function(locationField) {
+  //    var aux = {};
+  //    aux['location.' + locationField] = {
+  //      $regex: query.location.value,
+  //      $options: 'i'
+  //    };
+  //    locationOR.$or.push(aux);
+  //  });
+  //  searchQuery.$and.push(locationOR);
+  //}
+  //
+  //// Status filter
+  //if (query.status.value){
+  //  searchQuery.status = query.status.value;
+  //}
+  //
+  //if (searchQuery.$and.length == 0)
+  //  delete searchQuery.$and;
 
-  searchDep.depend();
-  selectedSortDep.depend();
-
-  // Sort by
-  if (selectedSort) {
-    options.sort = {};
-    options.sort[selectedSort.field] = selectedSort.value;
-  } else {
-    delete options.sort;
-  }
-
-  if (query.objType.value)
-    searchQuery.objNameArray = query.objType.value;
-
-  if (!_.isEmpty(query.searchString.value)) {
-    var stringSearches=[];
-    _.each(searchFields, function (field) {
-      var aux = {};
-      aux[field] = {
-        $regex: query.searchString.value,
-        $options: 'i'
-      }
-      stringSearches.push(aux);
-    });
-    searchQuery = {
-      $and: [searchQuery, {
-        $or: stringSearches
-      }]
-    };
-  }
-
-
-  if (query.selectedLimit.value) {
-    var dateLimit = new Date();
-    searchQuery.dateCreated = {
-      $gte: dateLimit.getTime() - query.selectedLimit.value
-    };
-  }
-
-  if (! query.inactives.value) {
-    var inactiveStatusOR = {
-      $or: []
-    };
-    var activeStatuses;
-    var aux;
-    _.each(['job'], function(objName){
-      activeStatuses = getActiveStatuses(objName);
-      if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-        aux={};
-        aux['status'] = {
-          $in: activeStatuses
-        };
-
-        inactiveStatusOR.$or.push(aux)
-      }
-    })
-    searchQuery.$and.push(inactiveStatusOR);
-  }
-
-  if (query.tags.value.length > 0) {
-    searchQuery.tags = {
-      $in: query.tags.value
-    };
-  }
-
-  // Location filter
-  var locationOperatorMatch = false;
-  if (query.location.value) {
-    _.forEach(locationFields, function(locationField) {
-      var value = getLocationTagValue(locationField, locationFields);
-
-      if (value) {
-        locationOperatorMatch = true;
-        var aux = { term: {}};
-        searchQuery['location.' + locationField] = {
-          $regex: value,
-          $options: 'i'
-        };
-      }
-    });
-  }
-
-  // If not location operator match is used then search on each field
-  if (query.location.value && !locationOperatorMatch) {
-    var locationOR = {
-      $or: []
-    };
-    _.forEach(locationFields, function(locationField) {
-      var aux = {};
-      aux['location.' + locationField] = {
-        $regex: query.location.value,
-        $options: 'i'
-      };
-      locationOR.$or.push(aux);
-    });
-    searchQuery.$and.push(locationOR);
-  }
-
-  // Status filter
-  if (query.status.value){
-    searchQuery.status = query.status.value;
-  }
-
-  if (searchQuery.$and.length == 0)
-    delete searchQuery.$and;
-
-  var jobs = Jobs.find(searchQuery, options);
+  var jobs = jobCollection.find({}, {});
 
   return jobs;
 };
