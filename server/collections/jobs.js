@@ -1,10 +1,26 @@
-Meteor.publish('singleJob', function (id) {
-  console.log(id);
-  return Utils.filterCollectionByUserHier.call(this, Jobs.find(id));
+
+JobList = new View('jobList', {
+  collection: Jobs,
+  mapping: {
+    customerInfo: {
+      find: function(job) {
+        return Contactables.find(job.customer,{fields: {
+          'organization.organizationName': 1
+        }});
+      },
+      map: function (doc) {
+        if (! doc) return null;
+
+        return {
+          id: doc._id,
+          displayName: doc.organization.organizationName
+        };
+      }
+    }
+  }
+
 });
-
-
-JobView = new View('jobsView', {
+JobView = new View('jobView', {
   collection: Jobs,
   mapping: {
     customerInfo: {
@@ -26,19 +42,33 @@ JobView = new View('jobsView', {
 
 });
 
-Meteor.paginatedPublish(JobView, function(){
+Meteor.publish('jobView', function (id) {
+  var cursor = Utils.filterCollectionByUserHier.call(this, JobView.find(id));
+  cursor.view.publishCursor(cursor, this, 'jobView');
+});
+
+
+
+Meteor.paginatedPublish(JobList, function(){
   var user = Meteor.users.findOne({
     _id: this.userId
   });
 
   if (!user)
     return false;
-  var cursor =Utils.filterCollectionByUserHier.call(this, JobView.find());
-  //console.log('cursor',cursor);
+  var cursor =Utils.filterCollectionByUserHier.call(this, JobList.find({},{
+    fields: {
+      customer: 1,
+      dateCreated: 1,
+      publicJobTitle: 1,
+      searchKey: 1,
+      dateCreated: 1
+    }
+  }));
   return cursor
 }, {
   pageSize: 10,
-  publicationName: 'jobsView'
+  publicationName: 'jobList'
 });
 Jobs.allow({
   update: function () {
@@ -67,27 +97,27 @@ Jobs.before.insert(function (userId, doc) {
 Jobs._ensureIndex({hierId: 1});
 Jobs._ensureIndex({objNameArray: 1});
 
-// View
-
-JobView = new Meteor.Collection('JobView', {
-  collection: Jobs,
-  mapping: {
-    customerInfo: {
-      find: function(job) {
-        return Contactables.find(job.customerId,{
-          fields: {
-            'organization.organizationName': 1
-          }
-        });
-      },
-      map: function (doc) {
-        if (! doc) return null;
-
-        return {
-          id: doc._id,
-          displayName: doc.organization.organizationName
-        };
-      }
-    }
-  }
-});
+//// View
+//
+//JobView = new Meteor.Collection('JobView', {
+//  collection: Jobs,
+//  mapping: {
+//    customerInfo: {
+//      find: function(job) {
+//        return Contactables.find(job.customerId,{
+//          fields: {
+//            'organization.organizationName': 1
+//          }
+//        });
+//      },
+//      map: function (doc) {
+//        if (! doc) return null;
+//
+//        return {
+//          id: doc._id,
+//          displayName: doc.organization.organizationName
+//        };
+//      }
+//    }
+//  }
+//});
