@@ -1,5 +1,5 @@
 JobManager = {
-  create: function() {
+  create: function(job) {
     return Jobs.insert(job);
   },
   copy: function(jobId) {

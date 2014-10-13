@@ -1,7 +1,7 @@
 JobController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [JobHandler, GoogleMapsHandler]
+    return [Meteor.subscribe('singleJob', this.params._id), GoogleMapsHandler]
   },
   data: function () {
     Session.set('entityId', this.params._id);
@@ -31,7 +31,7 @@ JobController = RouteController.extend({
 });
 
 var generateReactiveObject = function (job) {
-  return new dType.objInstance(job, Jobs);
+  return new dType.objInstance(job, JobDetails);
 };
 
 var self = {};
@@ -42,7 +42,7 @@ var services;
 
 Template.job.created = function () {
   self.editMode = false;
-  var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
+  var originalJob = JobDetails.findOne({ _id: Session.get('entityId') });
 
 
   var definition = {
@@ -71,14 +71,14 @@ var getPlacementStatuses = function(type, action){
 var job;
 Template.job.helpers({
   job: function () {
-    var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
+    var originalJob = JobDetails.findOne({ _id: Session.get('entityId') });
     Session.set('jobDisplayName', originalJob.displayName);
     if (!job)
       job = generateReactiveObject(originalJob);
     return job;
   },
   originalJob: function () {
-    return Jobs.findOne({ _id: Session.get('entityId') });
+    return JobDetails.findOne({ _id: Session.get('entityId') });
   },
   editMode: function () {
     return self.editMode;
@@ -87,10 +87,10 @@ Template.job.helpers({
     return self.editMode ? '#008DFC' : '#ddd'
   },
   isType: function (typeName) {
-    return !!Jobs.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
+    return !!JobDetails.findOne({ _id: Session.get('entityId'), objNameArray: typeName});
   },
   jobCollection: function () {
-    return Jobs;
+    return JobDetails;
   },
   getCustomer: function () {
 
@@ -104,7 +104,7 @@ Template.job.helpers({
     return optionValue == currentValue;
   },
   location: function () {
-    var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
+    var originalJob = JobDetails.findOne({ _id: Session.get('entityId') });
 
     location.value = originalJob && originalJob.location;
     return location;
@@ -134,7 +134,7 @@ Template.job.events({
       return;
     }
     var update = job.getUpdate();
-    var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
+    var originalJob = JobDetails.findOne({ _id: Session.get('entityId') });
     var oldLocation = originalJob.location;
     var newLocation = location.value;
 
@@ -146,7 +146,7 @@ Template.job.events({
     if (services.tags.value.length > 0)
       update.$set.tags = services.tags.value;
 
-    Jobs.update({_id: job._id}, update, function (err, result) {
+    JobDetails.update({_id: job._id}, update, function (err, result) {
       if (!err) {
         self.editMode = false;
         job.reset();

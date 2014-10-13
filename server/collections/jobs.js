@@ -1,3 +1,9 @@
+Meteor.publish('singleJob', function (id) {
+  console.log(id);
+  return Utils.filterCollectionByUserHier.call(this, Jobs.find(id));
+});
+
+
 JobView = new View('jobsView', {
   collection: Jobs,
   mapping: {
