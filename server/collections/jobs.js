@@ -20,31 +20,10 @@ JobList = new View('jobList', {
   }
 
 });
-JobView = new View('jobView', {
-  collection: Jobs,
-  mapping: {
-    customerInfo: {
-      find: function(job) {
-        return Contactables.find(job.customer,{fields: {
-          'organization.organizationName': 1
-        }});
-      },
-      map: function (doc) {
-        if (! doc) return null;
 
-        return {
-          id: doc._id,
-          displayName: doc.organization.organizationName
-        };
-      }
-    }
-  }
 
-});
-
-Meteor.publish('jobView', function (id) {
-  var cursor = Utils.filterCollectionByUserHier.call(this, JobView.find(id));
-  cursor.view.publishCursor(cursor, this, 'jobView');
+Meteor.publish('jobDetails', function (id) {
+  return Utils.filterCollectionByUserHier.call(this, Jobs.find(id));
 });
 
 

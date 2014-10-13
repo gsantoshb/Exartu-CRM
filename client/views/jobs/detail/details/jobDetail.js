@@ -1,4 +1,4 @@
-var jobCollections= JobView;
+var jobCollections= Jobs;
 
 var generateReactiveObject = function(job) {
   return new dType.objInstance(job, jobCollections);
@@ -69,7 +69,7 @@ Template.jobDetail.events({
       update.$set.location = newLocation;
     }
 
-    Jobs.update({_id: job._id}, update, function(err, result) {
+    jobCollections.update({_id: job._id}, update, function(err, result) {
       if (!err) {
         self.editMode=false;
         job.reset();

@@ -1,3 +1,4 @@
+var jobCollection = jobList;
 JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
@@ -88,7 +89,7 @@ Template.jobs.information = function() {
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
 
-  info.jobsCount.value = Jobs.find(searchQuery).count();
+  info.jobsCount.value = jobCollection.find(searchQuery).count();
 
   return info;
 };
@@ -100,7 +101,7 @@ Template.jobs.showMore = function() {
 // List
 
 Template.jobsList.info = function() {
-  info.isFiltering.value = Jobs.find().count() != 0;
+  info.isFiltering.value = jobCollection.find().count() != 0;
   return info;
 };
 
@@ -260,7 +261,7 @@ Template.jobsList.jobs = function() {
   //if (searchQuery.$and.length == 0)
   //  delete searchQuery.$and;
 
-  var jobs = Jobs.find({}, {});
+  var jobs = jobCollection.find({}, {});
 
   return jobs;
 };

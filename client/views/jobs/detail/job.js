@@ -1,9 +1,9 @@
-var jobCollections= JobView;
+var jobCollections= Jobs;
 
 JobController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [Meteor.subscribe('jobView', this.params._id), GoogleMapsHandler]
+    return [Meteor.subscribe('jobDetails', this.params._id), GoogleMapsHandler]
   },
   data: function () {
     Session.set('entityId', this.params._id);
