@@ -56,4 +56,5 @@ var addDisplayName = function (contactable) {
   if (contactable.organization)
     contactable.displayName = contactable.organization.organizationName;
 }
-ContactableHandler = Meteor.paginatedSubscribe('contactables');
+
+ContactablesHandler = Meteor.paginatedSubscribe('contactablesList');

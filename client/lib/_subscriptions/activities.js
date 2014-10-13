@@ -1,2 +1,2 @@
-Activities = new Meteor.Collection("activitiesView");
-ActivityHandler = Meteor.paginatedSubscribe('activitiesView');
+Activities = new Meteor.Collection("activitiesList");
+ActivitiesHandler = Meteor.paginatedSubscribe('activitiesList');

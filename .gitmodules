@@ -10,6 +10,7 @@
 [submodule "packages/pagination"]
 	path = packages/pagination
 	url = https://github.com/Exartu/Exartu-Pagination.git
-[submodule "packages/mongoView"]
-	path = packages/mongoView
+	branch = meteor-0.9
+[submodule "packages/mongo-view"]
+	path = packages/mongo-view
 	url = https://github.com/Exartu/Exartu-MongoView.git

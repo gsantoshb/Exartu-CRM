@@ -1,8 +1,8 @@
 ContactablesController = RouteController.extend({
-  //template: 'contactables',
-  layoutTemplate: 'contactables',
+  template: 'contactables',
+  layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [PlacementHandler, ContactableHandler];
+    return [ContactablesHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -80,9 +80,8 @@ Template.contactables.information = function() {
 
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
-  Meteor.autorun(function(){
-    info.contactablesCount.value = ContactableHandler.totalCount();
-  });
+
+  info.contactablesCount.value = ContactablesHandler.totalCount();
 
   return info;
 };
@@ -103,6 +102,7 @@ Template.contactables.isSearching = function() {
 };
 
 // List
+
 var contactableTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
 };
@@ -139,22 +139,8 @@ Template.contactablesList.info = function() {
   return info;
 };
 
-Template.contactablesList.contactables = function() {
-  // Dependencies
-  esDep.depend();
-  // Elasitsearch
-  if (!_.isEmpty(query.searchString.value)) {
-    return esResult;
-  }
-
-  return Contactables.find({}, {});
-};
-
-Template.contactablesList.contactableTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
-};
-Template.contactablesList.created = function(){
-  Meteor.autorun(function(){
+Template.contactablesList.created = function() {
+  Meteor.autorun(function() {
     var searchQuery = {
       $and: [] // Push each $or operator here
     };
@@ -231,11 +217,29 @@ Template.contactablesList.created = function(){
       delete searchQuery.$and;
 
     if (!_.isEmpty(query.candidateStatus.value)){
+      debugger;
       searchQuery._id = {$in:_.map(Placements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
     }
-    //ContactableHandler.setFilter(searchQuery);
-  })
-}
+
+    ContactablesHandler.setFilter(searchQuery);
+  });
+};
+
+Template.contactablesList.contactables = function() {
+  // Dependencies
+  esDep.depend();
+
+  // Elasitsearch
+  if (!_.isEmpty(query.searchString.value)) {
+    return esResult;
+  }
+
+  return Contactables.find();
+};
+
+Template.contactablesList.contactableTypes = function() {
+  return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
+};
 
 // Elasticsearch
 

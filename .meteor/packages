@@ -42,4 +42,6 @@ meteorhacks:kadira
 meteorhacks:zones
 
 force-ssl
+pagination
+mongoview
 

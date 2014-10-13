@@ -1,8 +1,24 @@
-Meteor.paginatedPublish(Contactables, function () {
-  return Utils.filterCollectionByUserHier.call(this, Contactables.find());
-},{
-  pageSize: 20
+Meteor.publish('singleContactable', function (id) {
+  return Utils.filterCollectionByUserHier.call(this, Contactables.find(id));
 });
+
+Meteor.paginatedPublish(Contactables, function () {
+  if (!this.userId)
+    return false;
+
+  return Utils.filterCollectionByUserHier.call(this, Contactables.find({
+      userId: this.userId
+    },
+    {
+      fields: {
+        // Only fields displayed on list
+      }
+    }));
+},{
+  pageSize: 5,
+  publicationName: 'contactablesList'
+});
+
 Contactables.allow({
   insert: function () {
     return false;

@@ -52,10 +52,13 @@ UI.registerHelper('displayProperty', function(){
     else{
       //hack
       if (this.name == 'customer' && ! this.value){
-
         var houseAccount= Contactables.findOne({houseAccount: true});
         var user= Meteor.user();
-        this.value= (user && user.lastCustomerUsed) || (houseAccount && houseAccount._id);
+        if (user && user.lastCustomerUsed) {
+          this.value = user.lastCustomerUsed;
+        } else if (houseAccount && houseAccount._id) {
+          this.value = houseAccount._id;
+        }
       }
       Template['relInput'].events({
         'change select':function(e){

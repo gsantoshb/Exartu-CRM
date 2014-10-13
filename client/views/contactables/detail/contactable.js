@@ -1,7 +1,7 @@
 ContactableController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ContactableHandler, ContactMethodsHandler, GoogleMapsHandler]
+    return [Meteor.subscribe('singleContactable', this.params._id), GoogleMapsHandler]
   },
   data: function () {
     Session.set('entityId', this.params._id);

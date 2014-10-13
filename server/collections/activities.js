@@ -1,5 +1,87 @@
-Meteor.publish('activities', function () {
-  return Utils.filterCollectionByUserHier.call(this, Activities.find());
+ActivityViews = new View('activitiesList', {
+  collection: Activities,
+  map: {
+    options: {
+      find: function (activity) {
+        switch (activity.type) {
+          case   (Enums.activitiesType.contactableAdd):
+            return Contactables.find(activity.entityId);
+            break;
+          case   (Enums.activitiesType.messageAdd):
+            break;
+          case   (Enums.activitiesType.taskAdd):
+            return Tasks.find(activity.entityId);
+            break;
+          case   (Enums.activitiesType.jobAdd):
+            return Jobs.find(activity.entityId);
+            break;
+          case   (Enums.activitiesType.placementEdit):
+            break;
+          case   (Enums.activitiesType.placementAdd):
+            break;
+          case   (Enums.activitiesType.dealAdd):
+            break;
+        }
+      },
+      map: function (entity, activity) {
+        var data = activity.data;
+        switch (activity.type) {
+          case   (Enums.activitiesType.contactableAdd):
+            var cont = entity;
+            data.displayName = (cont && cont.displayName) || data.displayName;
+
+            // Get contactable email
+            var contactMethods = ContactMethods.find().fetch();
+            _.some(cont.contactMethods, function (cm) {
+              var type = _.findWhere(contactMethods, {_id: cm.type});
+              if (!type)
+                return false;
+              if (type.type == Enums.contactMethodTypes.email) {
+                data.contactableEmail = cm.value;
+                return true;
+              }
+
+              return false;
+            });
+
+            break;
+          case   (Enums.activitiesType.messageAdd):
+            break;
+          case   (Enums.activitiesType.taskAdd):
+            var task = entity;
+            if (task) {
+              data.assign = task.assign;
+              data.begin = task.begin;
+              data.completed = task.completed;
+              data.end = task.end;
+              data.msg = task.msg;
+            }
+            break;
+          case   (Enums.activitiesType.jobAdd):
+            var job = entity;
+            if (job) {
+              data.publicJobTitle = job.displayName;
+              data.customerId = job.customerId;
+            }
+            break;
+          case   (Enums.activitiesType.placementEdit):
+            break;
+          case   (Enums.activitiesType.placementAdd):
+            break;
+          case   (Enums.activitiesType.dealAdd):
+            break;
+        }
+        return data;
+      }
+    }
+  }
+});
+
+Meteor.paginatedPublish(ActivityViews, function () {
+  return Utils.filterCollectionByUserHier.call(this, ActivityViews.find());
+},{
+  infiniteScroll: true,
+  pageSize: 20
 });
 
 var mainTypes = ['Employee','Contact','Customer'];

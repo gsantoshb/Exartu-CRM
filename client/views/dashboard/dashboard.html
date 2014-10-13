@@ -69,7 +69,7 @@
                             {{#each activities}}
                                 {{> activity}}
                             {{/each}}
-                            {{#infinityScroll cb=showMore}} {{/infinityScroll}}
+                            {{>fastPagination name="activitiesList" loadingTemplate='loadingActivities'}}
                         </div>
                     </section>
                     <!-- /.timeline -->
@@ -80,6 +80,12 @@
         <!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+</template>
+
+<template name="loadingActivities">
+    <div style="text-align: center;font-weight: bolder;font-size: large;">
+        loading...
+    </div>
 </template>
 
 <template name="activity">
