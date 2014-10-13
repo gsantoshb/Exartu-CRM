@@ -1,12 +1,10 @@
 ContactableManager = {
-  create: function(contactable) {
+  create: function (contactable) {
     return Contactables.insert(contactable);
   },
-  createFromResume: function(resumeId) {
-    var file = ResumesFS.findOne({_id: resumeId});
-    var fsFile = new FS.File(file);
-    var stream = fsFile.createReadStream('contactablesFS');
-    var form = new FormData();
+  createFromResume: function (resumeId) {
+    var fsFile = ResumesFS.findOne({_id: resumeId});
+    //var fsFile = new FS.File(file);
 
     var tempEmployee = {};
     tempEmployee.objNameArray = ['person', 'Employee', 'contactable'];
@@ -18,59 +16,65 @@ ContactableManager = {
     tempEmployee.Employee = {};
 
     var syncParse = Meteor.wrapAsync(
-      Meteor.bindEnvironment(function(stream, resumeFileId, cb) {
-        form.append("file", stream);
-        form.submit({
-            host: "xr2demo.tempworks.com",
-            path: "/resumeparser/api/Parser/Parse",
-            headers: _.extend(form.getHeaders(), {
-              'Accept-Encoding': 'gzip,deflate',
-              'Accept': 'application/json'
-            })
-          },
-          Meteor.bindEnvironment(function(err, res){
-            var body = "";
-            res.setEncoding('utf8');
-            res.on('data', function (chunk) {
-              body += chunk;
-            })
-            .on('end', Meteor.bindEnvironment(function () {
-              try{
-                var json = JSON.parse(body);
-              }catch (e){
-                cb(new Meteor.Error(500, "Error parsing resume"), null);
-              }
-              xml2js.parseString(json, Meteor.bindEnvironment(function (err, result) {
-                if (err || !result || !result.StructuredXMLResume) {
-                  cb(new Meteor.Error(500, "Error parsing resume"), null);
-                  return;
-                }
-
-                extractInformation(result, tempEmployee)
-
-                Meteor.call('addContactable', tempEmployee, function(err, result) {
-                  if (!err) {
-                    ResumesFS.update({_id: resumeId}, {
-                      $set: {
-                        'metadata.completed' : true,
-                        'metadata.employeeId' : result
+      Meteor.bindEnvironment(function (resumeFileId, f, cb) {
+          f.once('stored', Meteor.bindEnvironment(function () {
+              var stream = fsFile.createReadStream('contactablesFS');
+              var form = new FormData();
+              form.append("file", stream);
+              form.submit({
+                  host: "xr2demo.tempworks.com",
+                  path: "/resumeparser/api/Parser/Parse",
+                  headers: _.extend(form.getHeaders(), {
+                    'Accept-Encoding': 'gzip,deflate',
+                    'Accept': 'application/json'
+                  })
+                },
+                Meteor.bindEnvironment(function (err, res) {
+                  var body = "";
+                  res.setEncoding('utf8');
+                  res.on('data', function (chunk) {
+                    body += chunk;
+                  })
+                    .on('end', Meteor.bindEnvironment(function () {
+                      try {
+                        var json = JSON.parse(body);
+                      } catch (e) {
+                        cb(new Meteor.Error(500, "Error parsing resume"), null);
+                        return;
                       }
-                    });
+                      xml2js.parseString(json, Meteor.bindEnvironment(function (err, result) {
+                        if (err || !result || !result.StructuredXMLResume) {
+                          cb(new Meteor.Error(500, "Error parsing resume"), null);
+                          return;
+                        }
 
-                    cb(null, tempEmployee);
-                  } else
-                    cb(new Meteor.Error(500, "Error during employee creating"), null);
-                });
-              }));
-            }));
-          }));
+                        extractInformation(result, tempEmployee);
+
+                        var employee = ContactableManager.create(tempEmployee);
+                        if (result) {
+                          ResumesFS.update({_id: resumeFileId}, {
+                            $set: {
+                              'metadata.completed': true,
+                              'metadata.employeeId': employee
+                            }
+                          });
+
+                          cb(null, tempEmployee);
+                        } else
+                          cb(new Meteor.Error(500, "Error during employee creating"), null);
+                      }));
+                    }));
+                  res.resume();
+                }));
+            }
+          ));
         }
       )
     );
 
-    return syncParse(stream, file._id);
+    return syncParse(resumeId, fsFile);
   },
-  setPicture: function() {
+  setPicture: function (contactableId, fileId) {
     Contactables.update({
       _id: contactableId
     }, {
@@ -81,7 +85,7 @@ ContactableManager = {
   }
 };
 
-var extractInformation = function(parseResult, employee) {
+var extractInformation = function (parseResult, employee) {
 //var example = {
 //  StructuredXMLResume: {
 //    ContactInfo: [
@@ -221,50 +225,53 @@ var extractInformation = function(parseResult, employee) {
           });
         }
         if (cm.PostalAddress) {
-          var loc=cm.PostalAddress[0];
-          employee.location= {
-            country: loc.CountryCode ? loc.CountryCode[0]: '',
-            address: (loc.DeliveryAddress && loc.DeliveryAddress[0].AddressLine) ? loc.DeliveryAddress[0].AddressLine[0]: '',
-            postalCode: loc.PostalCode ? loc.PostalCode[0]: ''
+          var loc = cm.PostalAddress[0];
+          employee.location = {
+            country: loc.CountryCode ? loc.CountryCode[0] : '',
+            address: (loc.DeliveryAddress && loc.DeliveryAddress[0].AddressLine) ? loc.DeliveryAddress[0].AddressLine[0] : '',
+            postalCode: loc.PostalCode ? loc.PostalCode[0] : ''
           };
         }
       });
     }
-  } catch (err){
+  } catch (err) {
     console.log('Error while parsing ContactInfo');
     console.log(err)
-  };
+  }
+  ;
 
   // Person names
   try {
     if (ContactInfo.PersonName && ContactInfo.PersonName[0]) {
       var personName = ContactInfo.PersonName[0];
       employee.person = {};
-      employee.person.firstName = personName.GivenName ? personName.GivenName.join(' '): 'GivenName';
+      employee.person.firstName = personName.GivenName ? personName.GivenName.join(' ') : 'GivenName';
       employee.person.middleName = personName.MiddleName ? personName.MiddleName.join(' ') : '';
-      employee.person.lastName = personName.FamilyName ? personName.FamilyName.join(' '): 'FamilyName';
-    }else{
+      employee.person.lastName = personName.FamilyName ? personName.FamilyName.join(' ') : 'FamilyName';
+    } else {
       employee.person.firstName = 'Parsed'
       employee.person.lastName = 'Employee'
     }
-  } catch (err){
+  } catch (err) {
     console.log('Error while parsing person names');
     console.log(err)
-  };
+  }
+  ;
 
   // Tags
   try {
-    employee.tags=[];
-    if (structuredResult.Qualifications){
-      _.each(structuredResult.Qualifications, function(qual){
-        _.each(qual.Competency, function(q){
+    employee.tags = [];
+    if (structuredResult.Qualifications) {
+      _.each(structuredResult.Qualifications, function (qual) {
+        _.each(qual.Competency, function (q) {
           if (q.$ && q.$.name)
             employee.tags.push(q.$.name);
         })
       })
     }
-  } catch (err){
+  } catch (err) {
     console.log('Error while parsing tags');
     console.log(err)
-  };
+  }
+  ;
 };

@@ -37,11 +37,9 @@ paypal
 subscription-plan
 cfs:graphicsmagick
 mizzao:bootstrap-3
-pagination
-mongoview
 
 meteorhacks:kadira
 meteorhacks:zones
+
 force-ssl
-npm-container
 
