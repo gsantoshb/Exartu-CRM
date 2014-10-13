@@ -1,5 +1,4 @@
 // Entity type
-
 Template.filter_entityType.typeOptionClass = function(option) {
   var selectedType = UI._parentData(1).selected;
   return selectedType.value == option.name? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
@@ -17,8 +16,8 @@ Template.filter_entityType.events = {
   }
 };
 
-// LookUp
 
+// LookUp
 Template.filter_lookUp.cb = function(){
   var self = this;
   return function(lookUpId){
@@ -26,10 +25,10 @@ Template.filter_lookUp.cb = function(){
   }
 };
 
-// Inactive
 
+// Inactive
 Template.filter_inactive.showInactive = function() {
-  return this.showInactive.value? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  return this.showInactive.value ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
 };
 
 Template.filter_inactive.events = {
@@ -39,14 +38,12 @@ Template.filter_inactive.events = {
 };
 
 // CreatedDate
-
 var timeLimits = {
   day: 24 * 60 * 60 * 1000,
   week: 7 * 24 * 60 * 60 * 1000,
   month: 30 * 24 * 60 * 60 * 1000,
   year: 365 * 24 * 60 * 60 * 1000
 };
-
 var setDateCreatedFilter = function(value) {
   if (this.selectedLimit.value == value)
     this.selectedLimit.value = undefined;
@@ -77,8 +74,8 @@ Template.filter_createdDate.events = {
   }
 };
 
-// Tags
 
+// Tags
 var addTag = function() {
   var inputTag = $('#new-tag')[0];
 
@@ -92,7 +89,6 @@ var addTag = function() {
   inputTag.value = '';
   inputTag.focus();
 };
-
 Template.filter_tags.events = {
   'click .add-tag': function() {
     addTag.call(this);
@@ -109,5 +105,17 @@ Template.filter_tags.events = {
   },
   'click .focusAddTag': function(){
     $('#new-tag')[0].focus();
+  }
+};
+
+
+// Created By
+Template.filter_createdBy.showMineOnly = function() {
+  return this.showMineOnly.value ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+};
+
+Template.filter_createdBy.events = {
+  'click #show-mineOnly': function() {
+    this.showMineOnly.value = !this.showMineOnly.value;
   }
 };

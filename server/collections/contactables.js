@@ -3,21 +3,23 @@ Meteor.publish('singleContactable', function (id) {
 });
 
 Meteor.paginatedPublish(Contactables, function () {
-  if (!this.userId)
-    return false;
+    if (!this.userId)
+      return false;
 
-  return Utils.filterCollectionByUserHier.call(this, Contactables.find({
-      userId: this.userId
-    },
-    {
-      fields: {
-        // Only fields displayed on list
-      }
-    }));
-},{
-  pageSize: 5,
-  publicationName: 'contactablesList'
-});
+    return Utils.filterCollectionByUserHier.call(this, Contactables.find(
+      {},
+      {
+        fields: {
+          // Only fields displayed on list
+        }
+      })
+    );
+  },
+  {
+    pageSize: 5,
+    publicationName: 'contactablesList'
+  }
+);
 
 Contactables.allow({
   insert: function () {
