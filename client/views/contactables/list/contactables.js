@@ -2,7 +2,7 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ContactableHandler, PlacementHandler];
+    return [ContactablesHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -81,7 +81,7 @@ Template.contactables.information = function() {
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
 
-  info.contactablesCount.value = Contactables.find(searchQuery).count();
+  info.contactablesCount.value = ContactablesHandler.totalCount();
 
   return info;
 };
@@ -139,11 +139,93 @@ Template.contactablesList.info = function() {
   return info;
 };
 
-Template.contactablesList.contactables = function() {
-  var searchQuery = {
-    $and: [] // Push each $or operator here
-  };
+Template.contactablesList.created = function() {
+  Meteor.autorun(function() {
+    var searchQuery = {
+      $and: [] // Push each $or operator here
+    };
 
+    if (query.objType.value)
+      searchQuery.objNameArray = query.objType.value;
+
+    if (query.selectedLimit.value) {
+      var dateLimit = new Date();
+      searchQuery.dateCreated = {
+        $gte: dateLimit.getTime() - query.selectedLimit.value
+      };
+    }
+
+    if (! query.inactives.value) {
+      var inactiveStatusOR = {
+        $or: []
+      };
+      var activeStatuses;
+      var aux;
+      _.each(['Employee', 'Contact', 'Customer'], function(objName){
+        activeStatuses = getActiveStatuses(objName);
+        if (_.isArray(activeStatuses) && activeStatuses.length > 0){
+          aux={};
+          aux[objName + '.status'] = {
+            $in: activeStatuses
+          };
+          inactiveStatusOR.$or.push(aux)
+        }
+      });
+      searchQuery.$and.push(inactiveStatusOR);
+    }
+
+    // Location filter
+    var locationOperatorMatch = false;
+    if (query.location.value) {
+      _.forEach(locationFields, function(locationField) {
+        var value = getLocationTagValue(locationField, locationFields);
+
+        if (value) {
+          locationOperatorMatch = true;
+          searchQuery['location.' + locationField] = {
+            $regex: value,
+            $options: 'i'
+          };
+        }
+      });
+    }
+
+    // If not location operator match is used then search on each field
+    if (query.location.value && !locationOperatorMatch) {
+      var locationOR = {
+        $or: []
+      };
+      _.forEach(locationFields, function(locationField) {
+        var aux = {};
+        aux['location.' + locationField] = {
+          $regex: query.location.value,
+          $options: 'i'
+        };
+        locationOR.$or.push(aux);
+      });
+      searchQuery.$and.push(locationOR);
+    }
+
+    // Tags filter
+    if (query.tags.value.length > 0) {
+      searchQuery.tags = {
+        $in: query.tags.value
+      };
+    }
+
+    if (searchQuery.$and.length == 0)
+      delete searchQuery.$and;
+
+    if (!_.isEmpty(query.candidateStatus.value)){
+      debugger;
+      searchQuery._id = {$in:_.map(Placements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
+    }
+
+    ContactablesHandler.setFilter(searchQuery);
+  });
+};
+
+Template.contactablesList.contactables = function() {
   // Dependencies
   esDep.depend();
 
@@ -152,83 +234,7 @@ Template.contactablesList.contactables = function() {
     return esResult;
   }
 
-  if (query.objType.value)
-    searchQuery.objNameArray = query.objType.value;
-
-  if (query.selectedLimit.value) {
-    var dateLimit = new Date();
-    searchQuery.dateCreated = {
-      $gte: dateLimit.getTime() - query.selectedLimit.value
-    };
-  }
-
-  if (! query.inactives.value) {
-    var inactiveStatusOR = {
-      $or: []
-    };
-    var activeStatuses;
-    var aux;
-    _.each(['Employee', 'Contact', 'Customer'], function(objName){
-      activeStatuses = getActiveStatuses(objName);
-      if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-        aux={};
-        aux[objName + '.status'] = {
-          $in: activeStatuses
-        };
-        inactiveStatusOR.$or.push(aux)
-      }
-    });
-    searchQuery.$and.push(inactiveStatusOR);
-  }
-
-  // Location filter
-  var locationOperatorMatch = false;
-  if (query.location.value) {
-    _.forEach(locationFields, function(locationField) {
-      var value = getLocationTagValue(locationField, locationFields);
-
-      if (value) {
-        locationOperatorMatch = true;
-        searchQuery['location.' + locationField] = {
-          $regex: value,
-          $options: 'i'
-        };
-      }
-    });
-  }
-
-  // If not location operator match is used then search on each field
-  if (query.location.value && !locationOperatorMatch) {
-    var locationOR = {
-      $or: []
-    };
-    _.forEach(locationFields, function(locationField) {
-      var aux = {};
-      aux['location.' + locationField] = {
-        $regex: query.location.value,
-        $options: 'i'
-      };
-      locationOR.$or.push(aux);
-    });
-    searchQuery.$and.push(locationOR);
-  }
-
-  // Tags filter
-  if (query.tags.value.length > 0) {
-    searchQuery.tags = {
-      $in: query.tags.value
-    };
-  }
-
-  if (searchQuery.$and.length == 0)
-    delete searchQuery.$and;
-
-  if (!_.isEmpty(query.candidateStatus.value)){
-    debugger;
-    searchQuery._id = {$in:_.map(Placements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
-  }
-
-  return Contactables.find(searchQuery, {limit: query.limit.value});
+  return Contactables.find();
 };
 
 Template.contactablesList.contactableTypes = function() {

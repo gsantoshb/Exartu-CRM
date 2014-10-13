@@ -39,6 +39,7 @@
                         {{#if isSearching}}
                             searching
                         {{else}}
+                            {{> fastPagination name="contactablesList"}}
                             {{> contactablesList }}
                         {{/if}}
                         {{#infinityScroll cb=showMore}} {{/infinityScroll}}
