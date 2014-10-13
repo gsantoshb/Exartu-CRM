@@ -1,7 +1,7 @@
 DashboardController = RouteController.extend({
   layoutTemplate: 'mainLayout',
     waitOn: function () {
-        return [UsersHandler];
+        return [UsersHandler, ActivitiesHandler];
     },
     action: function () {
         if (this.ready())
@@ -46,11 +46,7 @@ var employeeQuery = {
   }
 };
 Template.dashboard.created = function(){
-  query.options.limit = 50;
-};
-//Template.dashboard.waitOn=['ObjTypesHandler', 'UsersHandler']
-Template.dashboard.helpers({
-  activities: function(){
+  Meteor.autorun(function() {
     queryDep.depend();
 
     var f={};
@@ -92,7 +88,14 @@ Template.dashboard.helpers({
       var ids = contactables.concat(jobs).concat(task);
       f.entityId= { $in: ids };
     }
-    return Activities.find(f, query.options);
+
+    //ActivitiesHandler.setFilter(f);
+  });
+};
+//Template.dashboard.waitOn=['ObjTypesHandler', 'UsersHandler']
+Template.dashboard.helpers({
+  activities: function(){
+    return Activities.find();
   },
   customerHistory: function(){
 
