@@ -7,3 +7,10 @@
 [submodule "packages/es"]
 	path = packages/es
 	url = https://github.com/Exartu/Exartu-Elasticsearch.git
+[submodule "packages/pagination"]
+	path = packages/pagination
+	url = https://github.com/Exartu/Exartu-Pagination.git
+	branch = meteor-0.9
+[submodule "packages/mongo-view"]
+	path = packages/mongo-view
+	url = https://github.com/Exartu/Exartu-MongoView.git
