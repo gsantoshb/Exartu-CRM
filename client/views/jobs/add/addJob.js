@@ -77,7 +77,7 @@ Template.addJobPage.events({
                 if(err)
                   console.dir(err);
               });
-              Router.go('/job/' + result._id);
+              Router.go('/job/' + result);
             }
         });
     },

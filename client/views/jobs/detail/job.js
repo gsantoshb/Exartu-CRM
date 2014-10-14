@@ -4,6 +4,7 @@ JobController = RouteController.extend({
     return [JobHandler, GoogleMapsHandler]
   },
   data: function () {
+    debugger
     Session.set('entityId', this.params._id);
   },
   action: function () {
@@ -42,8 +43,8 @@ var services;
 
 Template.job.created = function () {
   self.editMode = false;
-  var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
 
+  var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
 
   var definition = {
     reactiveProps: {
@@ -55,7 +56,7 @@ Template.job.created = function () {
     }
   };
   services = Utils.ObjectDefinition(definition);
-}
+};
 
 var getPlacementStatuses = function(type, action){
   var status = Enums.lookUpTypes[type];
