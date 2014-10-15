@@ -35,18 +35,17 @@ Meteor.paginatedPublish(JobList, function(){
 
   if (!user)
     return false;
-  var cursor =Utils.filterCollectionByUserHier.call(this, JobList.find({},{
-    fields: {
-      customer: 1,
-      dateCreated: 1,
-      publicJobTitle: 1,
-      searchKey: 1,
-      dateCreated: 1
-    }
+  return Utils.filterCollectionByUserHier.call(this, JobList.find({},{
+    //fields: {
+    //  customer: 1,
+    //  dateCreated: 1,
+    //  publicJobTitle: 1,
+    //  searchKey: 1,
+    //  dateCreated: 1
+    //}
   }));
-  return cursor
 }, {
-  pageSize: 10,
+  pageSize: 3,
   publicationName: 'jobList'
 });
 Jobs.allow({
