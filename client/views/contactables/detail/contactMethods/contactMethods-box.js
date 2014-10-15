@@ -65,32 +65,44 @@ Template.contactableContactMethodsBox.contactMethods = function() {
   return result;
 };
 
+
+var addNewContactMethod = function() {
+  var newContactMethodValue = $('#new-contact-method-value')
+  $('#new-contact-method-value').val=null;
+  if (_.isEmpty(newContactMethodValue.val()) || _.isEmpty(selectedType))
+    return;
+
+  if ( selectedType.type == Enums.contactMethodTypes.email && !helper.emailRE.test(newContactMethodValue.val())) {
+    $('#add-contact-method-error').text('Invalid email format');
+    return;
+  }
+
+  var newContactMethod = {
+    type: selectedType._id,
+    value: newContactMethodValue.val()
+  };
+
+  Contactables.update({_id: Session.get('entityId')}, {$addToSet: {contactMethods: newContactMethod}}, function(err, result) {
+    if (!err) {
+      newContactMethodValue.val('');
+      GAnalytics.event("/contactable", "Add contact method");
+    }
+  });
+};
+
+
 Template.contactableContactMethodsBox.events = {
   'click #add-contact-method': function() {
-    var newContactMethodValue = $('#new-contact-method-value')
-    $('#new-contact-method-value').val=null;
-    if (_.isEmpty(newContactMethodValue.val()) || _.isEmpty(selectedType))
-      return;
-
-    if ( selectedType.type == Enums.contactMethodTypes.email && !helper.emailRE.test(newContactMethodValue.val())) {
-      $('#add-contact-method-error').text('Invalid email format');
-      return;
-    }
-
-    var newContactMethod = {
-      type: selectedType._id,
-      value: newContactMethodValue.val()
-    };
-
-    Contactables.update({_id: Session.get('entityId')}, {$addToSet: {contactMethods: newContactMethod}}, function(err, result) {
-      if (!err) {
-        newContactMethodValue.val('');
-        GAnalytics.event("/contactable", "Add contact method");
-      }
-    });
+    addNewContactMethod();
   },
-  'keypress #new-contact-method-value': function() {
+
+  'keyup #new-contact-method-value': function(e) {
     $('#add-contact-method-error').text('');
+
+    // Detect Enter
+    if (e.keyCode === 13) {
+      addNewContactMethod();
+    }
   },
   'click #cancel-contact-method': function() {
     EditContactMethodsMode.hide();

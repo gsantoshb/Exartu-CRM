@@ -62,6 +62,10 @@ var query = new Utils.ObjectDefinition({
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
     },
+    mineOnly: {
+      type: Utils.ReactivePropertyTypes.boolean,
+      default: false
+    },
     selectedLimit: {},
     tags: {
       type: Utils.ReactivePropertyTypes.array,
@@ -145,9 +149,11 @@ Template.contactablesList.created = function() {
       $and: [] // Push each $or operator here
     };
 
+    // Type
     if (query.objType.value)
       searchQuery.objNameArray = query.objType.value;
 
+    // Creation date
     if (query.selectedLimit.value) {
       var dateLimit = new Date();
       searchQuery.dateCreated = {
@@ -155,6 +161,7 @@ Template.contactablesList.created = function() {
       };
     }
 
+    // Status / Inactive
     if (! query.inactives.value) {
       var inactiveStatusOR = {
         $or: []
@@ -172,6 +179,11 @@ Template.contactablesList.created = function() {
         }
       });
       searchQuery.$and.push(inactiveStatusOR);
+    }
+
+    // Created by
+    if (query.mineOnly.value) {
+      searchQuery.userId = Meteor.userId();
     }
 
     // Location filter
@@ -292,6 +304,11 @@ Meteor.autorun(function() {
       })
     });
     filters.bool.must.push(activeStatusFilter);
+  }
+
+  // Created by
+  if (query.mineOnly.value) {
+    filters.bool.must.push({term: {userId: Meteor.userId()}});
   }
 
   // Location filter
