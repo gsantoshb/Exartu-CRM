@@ -1,22 +1,15 @@
 Placements = new Meteor.Collection("placements", {
-  transform: function (asg) {
-    if (asg.job) {
-      var job = Jobs.findOne({_id: asg.job });
-      if (job) {
-        asg.jobDisplayName = job.displayName;
-        asg.customerDisplayName = job.customerName;
-        asg.customer = job.customer;
-        asg.displayName=asg.jobDisplayName + '@' + asg.customerDisplayName;
-      }
+  transform: function (placement) {
+    if (placement.jobInfo) {
+      _.extend(placement, placement.jobInfo);
     };
-    if (asg.employee) {
-      var employee = Contactables.findOne({_id: asg.employee });
-      if (employee) asg.employeeDisplayName=employee.displayName;
+    if (placement.employeeInfo) {
+      _.extend(placement, placement.employeeInfo);
     }
-    if (asg.status != null) {
-      asg.statusName = LookUps.findOne({ _id: asg.status }).displayName;
+    if (placement.status != null) {
+      placement.statusName = LookUps.findOne({ _id: placement.status }).displayName;
     }
-    return asg;
+    return placement;
   }
 });
 extendedSubscribe('placements', 'PlacementHandler');
