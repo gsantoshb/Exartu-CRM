@@ -1,4 +1,4 @@
-jobList = new Meteor.Collection('jobList', {
+JobList = new Meteor.Collection('jobList', {
   transform: function (job) {
     job.displayName = job.publicJobTitle ;
 //    job.industryName = LookUps.findOne({ _id: job.industry }).displayName;
