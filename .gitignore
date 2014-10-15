@@ -15,5 +15,3 @@ WindowsInstall.bat
 /.idea/codeStyleSettings.xml
 /config.sh
 dump/
-/packages/pagination
-/packages/mongoView
