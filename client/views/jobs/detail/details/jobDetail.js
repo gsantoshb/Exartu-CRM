@@ -14,6 +14,9 @@ Template.jobDetail.created=function(){
 //  var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
 }
 var job;
+Template.jobDetail.destroyed = function(){
+  job=null;
+}
 
 Template.jobDetail.helpers({
   job: function(){
