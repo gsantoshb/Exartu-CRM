@@ -100,7 +100,12 @@ Template.resumesList.resumesUploading = function() {
 Template.resumesList.resumesCompleted = function() {
   return ResumesFS.find(
     {
+      uploadedAt: { $exists: true },
       'metadata.completed': true
+    },
+    {
+      sort: { uploadedAt: -1 },
+      limit: 5
     }
   );
 };
