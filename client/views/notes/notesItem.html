@@ -27,55 +27,64 @@
         <div class="col-md-12 col-lg-12">
             <div class="table-items-box">
                 {{> fastPagination name="notes"}}
-                {{#each notes}}
-                    <div class="table-item magic">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <div class="table-item-cell">
-                                <div class="table-item-cell-container">
-                                    <div class="table-item-title">
-                                        <p class="text text-info"> {{{formatMsg msg}}}</p>
-                                    </div>
-                                    <div class="task-author">
-                                        by
-                                        {{#if userId}}
-                                            {{#userInfo userId=userId}}
-                                                <a class="pointer"><strong id="username"> {{username}} </strong></a>
-                                            {{/userInfo}}
-                                        {{/if}}
-                                        linked with
-                                        <i class="fa fa-long-arrow-right"></i>
-                                        {{#each links}}
-                                        <a href="{{getUrl .}}">
-                                            {{#with getEntity .}}
-                                            <span class="badge badge-primary">{{displayName}}</span>
-                                            {{/with}}
-                                        </a>
-                                        {{/each}}
-                                    </div>
-                                </div>
-                                <!-- /.table-item-cell-container -->
-                            </div>
-                        </div>
-                        <!-- /.table-item-cell -->
-                        <div class="col-sm-3">
-                            <div class="table-item-cell">
-                                <div class="table-item-cell-container">
-                                    <div class="date">
-                                        {{#if dateCreated}}
-                                            {{#formattedDate value=dateCreated format="fromNow"}}
-                                                <span>{{date}}</span>
-                                            {{/formattedDate}}
-                                        {{/if}}
-                                    </div>
-                                </div>
-                                <!-- /.table-item-cell-container -->
-                            </div>
-                            <!-- /.table-item-cell -->
-                        </div>
+
+                {{#if isLoading}}
+                    <div style="height: 748px;">
                     </div>
-                </div>
-                {{/each}}
+                {{else}}
+                    <div class="fade-in">
+                        {{#each notes}}
+                            <div class="table-item magic">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <div class="table-item-cell">
+                                            <div class="table-item-cell-container">
+                                                <div class="table-item-title">
+                                                    <p class="text text-info"> {{{formatMsg msg}}}</p>
+                                                </div>
+                                                <div class="task-author">
+                                                    by
+                                                    {{#if userId}}
+                                                        {{#userInfo userId=userId}}
+                                                            <a class="pointer"><strong id="username"> {{username}} </strong></a>
+                                                        {{/userInfo}}
+                                                    {{/if}}
+                                                    linked with
+                                                    <i class="fa fa-long-arrow-right"></i>
+                                                    {{#each links}}
+                                                        <a href="{{getUrl .}}">
+                                                            {{#with getEntity .}}
+                                                                <span class="badge badge-primary">{{displayName}}</span>
+                                                            {{/with}}
+                                                        </a>
+                                                    {{/each}}
+                                                </div>
+                                            </div>
+                                            <!-- /.table-item-cell-container -->
+                                        </div>
+                                    </div>
+                                    <!-- /.table-item-cell -->
+                                    <div class="col-sm-3">
+                                        <div class="table-item-cell">
+                                            <div class="table-item-cell-container">
+                                                <div class="date">
+                                                    {{#if dateCreated}}
+                                                        {{#formattedDate value=dateCreated format="fromNow"}}
+                                                            <span>{{date}}</span>
+                                                        {{/formattedDate}}
+                                                    {{/if}}
+                                                </div>
+                                            </div>
+                                            <!-- /.table-item-cell-container -->
+                                        </div>
+                                        <!-- /.table-item-cell -->
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                {{/if}}
+
             </div>
         </div>
     </div>
