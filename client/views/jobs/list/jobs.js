@@ -64,6 +64,10 @@ var query = new Utils.ObjectDefinition({
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
     },
+    mineOnly: {
+      type: Utils.ReactivePropertyTypes.boolean,
+      default: false
+    },
     selectedLimit: {},
     tags: {
       type: Utils.ReactivePropertyTypes.array,
@@ -120,6 +124,7 @@ Template.jobsList.created= function () {
       delete options.sort;
     }
 
+    // Type
     if (query.objType.value)
       searchQuery.objNameArray = query.objType.value;
 
@@ -140,7 +145,7 @@ Template.jobsList.created= function () {
       };
     }
 
-
+    // Creation date
     if (query.selectedLimit.value) {
       var dateLimit = new Date();
       searchQuery.dateCreated = {
@@ -148,6 +153,7 @@ Template.jobsList.created= function () {
       };
     }
 
+    // Status / Inactive
     if (! query.inactives.value) {
       var inactiveStatusOR = {
         $or: []
@@ -168,6 +174,12 @@ Template.jobsList.created= function () {
       searchQuery.$and.push(inactiveStatusOR);
     }
 
+    // Created by
+    if (query.mineOnly.value) {
+      searchQuery.userId = Meteor.userId();
+    }
+
+    // Tags
     if (query.tags.value.length > 0) {
       searchQuery.tags = {
         $in: query.tags.value

@@ -14,3 +14,4 @@
 [submodule "packages/mongo-view"]
 	path = packages/mongo-view
 	url = https://github.com/Exartu/Exartu-MongoView.git
+	branch = main
