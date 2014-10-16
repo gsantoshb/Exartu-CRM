@@ -17,10 +17,8 @@ var link=function(link){
 var taskDep=new Deps.Dependency;
 var errorDep=new Deps.Dependency;
 
-var taskUpdate=function(cb)
-{
-  if(task._id)
-  {
+var taskUpdate=function(cb){
+  if(task._id)  {
 
     Tasks.update({
       _id: task._id

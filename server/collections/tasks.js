@@ -1,5 +1,7 @@
-Meteor.publish('tasks', function () {
+Meteor.paginatedPublish(Tasks, function () {
   return Utils.filterCollectionByUserHier.call(this, Tasks.find());
+},{
+  pageSize: 20
 });
 
 Tasks.allow({
