@@ -1,4 +1,4 @@
-Meteor.publish('notes', function () {
+Meteor.paginatedPublish(Notes, function () {
   return Utils.filterCollectionByUserHier.call(this, Notes.find());
 });
 

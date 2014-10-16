@@ -1,2 +1,2 @@
 Notes = new Meteor.Collection("notes");
-NotesHandler = Meteor.subscribe('notes');
+NotesHandler = Meteor.paginatedSubscribe('notes');
