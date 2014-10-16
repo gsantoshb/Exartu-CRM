@@ -1,4 +1,4 @@
-Placements = new Meteor.Collection("placements", {
+PlacementList = new Meteor.Collection("placementList", {
   transform: function (placement) {
     if (placement.jobInfo) {
       _.extend(placement, placement.jobInfo);
@@ -12,4 +12,14 @@ Placements = new Meteor.Collection("placements", {
     return placement;
   }
 });
-extendedSubscribe('placements', 'PlacementHandler');
+
+Placements = new Meteor.Collection('placements', {
+  transform: function (placement) {
+    if (placement.status != null) {
+      placement.statusName = LookUps.findOne({ _id: placement.status }).displayName;
+    }
+    return placement;
+  }
+});
+
+PlacementHandler = Meteor.paginatedSubscribe('placementList');

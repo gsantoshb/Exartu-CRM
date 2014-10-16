@@ -1,4 +1,4 @@
-PlacemetList = new View('placementList', {
+PlacementList = new View('placementList', {
   collection: Placements,
   mapping: {
     jobInfo: {
@@ -32,11 +32,21 @@ PlacemetList = new View('placementList', {
   }
 
 });
+Meteor.paginatedPublish(PlacementList, function(){
+  var user = Meteor.users.findOne({
+    _id: this.userId
+  });
 
+  if (!user)
+    return false;
+  return Utils.filterCollectionByUserHier.call(this, PlacementList.find());
+}, {
+  pageSize: 3,
+  publicationName: 'placementList'
+});
 
-
-Meteor.publish('placements', function () {
-  PlacemetList.publishCursor(PlacemetList.find(), this, 'placements');
+Meteor.publish('placementDetails', function (id) {
+  return Placements.find(id);
 });
 
 Meteor.startup(function () {

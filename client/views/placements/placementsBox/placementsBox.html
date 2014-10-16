@@ -38,6 +38,7 @@
 
 <template name="placementsList">
     <div>
+        {{>fastPagination name='placementList'}}
         {{#each placements}}
             {{> placementsListItem }}
         {{else}}

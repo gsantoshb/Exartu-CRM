@@ -3,6 +3,7 @@ var isEntitySpecific = false;
 var contactable;
 var searchFields = ['jobDisplayName','employeeDisplayName','customerDisplayName'];
 
+var placementCollection = PlacementList;
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
     candidateActionOptions:{ default: ['Submittal','Sendout','Placed']},
@@ -71,7 +72,7 @@ Template.placementsBox.information = function() {
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
 
-  info.placementsCount.value = Placements.find(searchQuery).count();
+  info.placementsCount.value = PlacementHandler.totalCount();
 
   return info;
 };
@@ -90,7 +91,7 @@ Template.placementsBox.isSearching = function() {
 // List
 
 Template.placementsList.info = function() {
-  info.isFiltering.value = Placements.find().count() != 0;
+  info.isFiltering.value = PlacementHandler.totalCount() != 0;
   return info;
 };
 
@@ -184,7 +185,7 @@ Template.placementsList.placements = function() {
     searchQuery.candidateStatus = {$in: query.statuses.value};
   }
 
-  var placements = Placements.find(searchQuery, {});
+  var placements = placementCollection.find(searchQuery, {});
   return placements;
 };
 
