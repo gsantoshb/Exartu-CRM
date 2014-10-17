@@ -105,6 +105,14 @@ Template.contactables.isSearching = function() {
   return isSearching;
 };
 
+Template.contactables.events({
+  'click .parseText': function () {
+    Utils.showModal('textParser');
+  }
+});
+
+
+
 // List
 
 var contactableTypes = function() {

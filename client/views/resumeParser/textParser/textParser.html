@@ -1,0 +1,36 @@
+<template name="textParser">
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close {{#if isParsing}}disabled{{/if}}" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Create employee from text</h4>
+                </div>
+
+                {{#autoForm schema=parserSchema id="textParserForm" validation="blur"}}
+                    <div class="modal-body">
+                        <fieldset>
+                            <div class="form-group {{#if afFieldIsInvalid name='text'}}has-error{{/if}}">
+                                <label class="control-label" for="text">Insert the text you want to parse in order to create an employee</label>
+                                {{> afFieldInput name='text' class="input-lg" rows=8 placeholder="Enter your text here"}}
+                                {{#if afFieldIsInvalid name='text'}}
+                                    <span class="help-block">{{afFieldMessage name='text'}}</span>
+                                {{/if}}
+                            </div>
+                        </fieldset>
+
+                        {{#if error}}
+                        <div class="alert alert-danger" role="alert" style="margin: 0;">
+                            <strong>{{error}}</strong> Change a few things up and try again.
+                        </div>
+                        {{/if}}
+                    </div>
+                    <div class="modal-footer">
+                        <span class="btn btn-default dismiss {{#if isParsing}}disabled{{/if}}">Cancel</span>
+                        <button class="btn btn-primary {{#if isParsing}}disabled{{/if}}">{{#if isParsing}}Parsing text...{{else}}Parse{{/if}}</button>
+                    </div>
+                {{/autoForm}}
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</template>
