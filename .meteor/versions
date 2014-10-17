@@ -70,7 +70,8 @@ meteor@1.1.1
 meteorhacks:async@1.0.0
 meteorhacks:inject-initial@1.0.0
 meteorhacks:kadira-binary-deps@1.2.0
-meteorhacks:kadira@2.11.11
+meteorhacks:kadira@2.11.13
+meteorhacks:meteorx@1.2.0
 meteorhacks:npm@1.2.0
 meteorhacks:zones@1.3.2
 minifiers@1.1.0
@@ -86,7 +87,7 @@ mrt:googlemaps@0.0.2
 mrt:knockout-client@0.1.1
 mrt:moment@2.6.0
 natestrauser:connection-banner@0.4.3
-natestrauser:select2@3.4.9
+natestrauser:select2@3.5.1
 npm-bcrypt@0.7.7
 oauth2@1.1.0
 oauth@1.1.0
