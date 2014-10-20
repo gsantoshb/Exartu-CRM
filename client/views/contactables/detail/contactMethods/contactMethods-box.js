@@ -77,13 +77,10 @@ var addNewContactMethod = function() {
     return;
   }
 
-  var newContactMethod = {
-    type: selectedType._id,
-    value: newContactMethodValue.val()
-  };
-
-  Contactables.update({_id: Session.get('entityId')}, {$addToSet: {contactMethods: newContactMethod}}, function(err, result) {
-    if (!err) {
+  Meteor.call('addContactMethod', Session.get('entityId'), selectedType.type, newContactMethodValue.val(), function(err, result) {
+    if (err) {
+      $('#add-contact-method-error').text('There was an error inserting the contact method. Please try again.');
+    } else {
       newContactMethodValue.val('');
       GAnalytics.event("/contactable", "Add contact method");
     }
