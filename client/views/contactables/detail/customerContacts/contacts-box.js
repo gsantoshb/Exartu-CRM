@@ -1,9 +1,12 @@
+Template.contactableContactsBox.created = function () {
+ ContactablesHandler.setFilter({ 'Contact.customer': this.data._id  });
+}
 Template.contactableContactsBox.hasContacts = function() {
   return _.isObject(this.Customer);
 };
 
 Template.contactableContactsBox.contacts = function() {
-  return Contactables.find({ 'Contact.customer': this._id  });
+  return Contactables.find();
 };
 
 Template.contactableContactsBox.events = {

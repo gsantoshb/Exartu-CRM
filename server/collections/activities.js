@@ -78,7 +78,7 @@ ActivityViews = new View('activitiesList', {
 });
 
 Meteor.paginatedPublish(ActivityViews, function () {
-  return Utils.filterCollectionByUserHier.call(this, ActivityViews.find());
+  return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({},{sort: {dateCreated:-1}}));
 },{
   infiniteScroll: true,
   pageSize: 20

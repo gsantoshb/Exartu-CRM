@@ -40,7 +40,14 @@
                             searching
                         {{else}}
                             {{> fastPagination name="contactablesList"}}
-                            {{> contactablesList }}
+                            {{#if isLoading}}
+                                <div style="height: 505px;">
+                                </div>
+                            {{else}}
+                                <div class="fade-in">
+                                    {{> contactablesList }}
+                                </div>
+                            {{/if}}
                         {{/if}}
                         {{#infinityScroll cb=showMore}} {{/infinityScroll}}
                     </div>

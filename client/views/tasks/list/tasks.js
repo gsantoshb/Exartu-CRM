@@ -17,3 +17,9 @@ TasksController = RouteController.extend({
     });
   }
 });
+
+Template.tasks.helpers({
+  taskCount: function(){
+    return TasksHandler.totalCount();
+  }
+});

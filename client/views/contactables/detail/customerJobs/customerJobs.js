@@ -1,11 +1,14 @@
 var contactable=null
+Template.customerJobs.created = function () {
+  JobHandler.setFilter({customer: Session.get('entityId')});
+}
 Template.customerJobs.helpers({
   isCustomer: function(){
     contactable= Contactables.findOne({_id: Session.get('entityId')});
     return !! contactable.Customer;
   },
   jobs: function(){
-    return Jobs.find({customer: Session.get('entityId')});
+    return JobList.find();
   },
   jobTypes: function(){
     return dType.ObjTypes.find({parent: 'job'})
