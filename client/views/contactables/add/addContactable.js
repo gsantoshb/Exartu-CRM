@@ -1,7 +1,14 @@
 ContactableAddController = RouteController.extend({
 //    layoutTemplate: 'addContactablePage',
+  waitOn: function () {
+    //hack
+    if (this.params.objType == 'Contact'){
+      return  Meteor.subscribe('allContactables',{ Customer: { $exists: true } })
+    }
+  },
   data: function(){
     Session.set('objType',this.params.objType);
+
   },
   action: function () {
     if (!this.ready()) {
