@@ -81,10 +81,7 @@ var statusDep= new Deps.Dependency;
 
 Template.tasksBox.helpers({
   taskCount: function(){
-    if (isEntitySpecific)
-      return Tasks.find({ links: { $elemMatch: { id: Session.get('entityId') } } }).count();
-    else
-      return Tasks.find().count();
+    TasksHandler.totalCount();
   },
   users: function(){
     return Meteor.users.find();
