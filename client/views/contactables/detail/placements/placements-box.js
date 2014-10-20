@@ -1,10 +1,15 @@
+Template.contactablePlacementsBox.created = function () {
+  debugger;
+  PlacementHandler.setFilter({employee: this._id, inactive: {$ne: true}});
+}
 
 Template.contactablePlacementsBox.hasPlacements = function() {
   return _.isObject(this.Employee);
 };
 
+
 Template.contactablePlacementsBox.placements = function() {
-  var placements = Placements.find({employee: this._id, inactive: {$ne: true}}).fetch();
+  var placements = Placements.find().fetch();
 
   _.forEach(placements, function(placement) {
     var job = Jobs.findOne({
