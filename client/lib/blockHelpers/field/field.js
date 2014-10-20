@@ -121,7 +121,7 @@ Template.dateFieldInput.helpers({
 Template.relInput.helpers({
   options: function(){
     var q={};
-    q[this.target]={ $exists: true };
+    //q[this.target]={ $exists: true };
     //todo: get collection from this.collection
     return Contactables.find(q);
   },
