@@ -1,7 +1,9 @@
+
 ContactableManager = {
   create: function (contactable) {
     return Contactables.insert(contactable);
   },
+
   createFromResume: function (resumeId) {
     var fsFile = ResumesFS.findOne({_id: resumeId});
     //var fsFile = new FS.File(file);
@@ -74,6 +76,48 @@ ContactableManager = {
 
     return syncParse(resumeId, fsFile);
   },
+  createFromPlainResume: function (text) {
+    var future = new Future();
+
+    HTTP.post(
+      'http://xr2demo.tempworks.com/resumeparser/api/Parser/ParseFromString',
+      {
+        data: text
+      },
+      function (error, result) {
+        if (error)
+          future.throw(error);
+        else {
+          // Generate a temp Employee to insert
+          var tempEmployee = {};
+          tempEmployee.objNameArray = ['person', 'Employee', 'contactable'];
+          tempEmployee.person = {
+            firstName: '',
+            middleName: '',
+            lastName: ''
+          };
+          tempEmployee.Employee = {};
+
+          // Parse the result
+          var json = EJSON.parse(result.content);
+          xml2js.parseString(json, Meteor.bindEnvironment(function (error, result) {
+            if (error)
+              future.throw(error);
+            else {
+
+              // Create new Employee
+              extractInformation(result, tempEmployee);
+              var employeeId = ContactableManager.create(tempEmployee);
+              future.return(employeeId);
+            }
+          }));
+        }
+      }
+    );
+
+    return future.wait();
+  },
+
   setPicture: function (contactableId, fileId) {
     Contactables.update({
       _id: contactableId
@@ -189,7 +233,6 @@ var extractInformation = function (parseResult, employee) {
   var structuredResult = parseResult.StructuredXMLResume;
 
   //ContactInfo
-
   try {
     var ContactInfo = parseResult.StructuredXMLResume.ContactInfo[0];
 
@@ -238,7 +281,6 @@ var extractInformation = function (parseResult, employee) {
     console.log('Error while parsing ContactInfo');
     console.log(err)
   }
-  ;
 
   // Person names
   try {
@@ -256,7 +298,6 @@ var extractInformation = function (parseResult, employee) {
     console.log('Error while parsing person names');
     console.log(err)
   }
-  ;
 
   // Tags
   try {
@@ -273,5 +314,4 @@ var extractInformation = function (parseResult, employee) {
     console.log('Error while parsing tags');
     console.log(err)
   }
-  ;
 };

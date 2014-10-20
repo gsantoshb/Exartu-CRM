@@ -6,6 +6,7 @@ JobController = RouteController.extend({
     return [Meteor.subscribe('jobDetails', this.params._id), GoogleMapsHandler]
   },
   data: function () {
+    debugger
     Session.set('entityId', this.params._id);
   },
   action: function () {
@@ -46,7 +47,6 @@ Template.job.created = function () {
   self.editMode = false;
   var originalJob = jobCollections.findOne({ _id: Session.get('entityId') });
 
-
   var definition = {
     reactiveProps: {
       tags: {
@@ -57,7 +57,7 @@ Template.job.created = function () {
     }
   };
   services = Utils.ObjectDefinition(definition);
-}
+};
 
 var getPlacementStatuses = function(type, action){
   var status = Enums.lookUpTypes[type];
