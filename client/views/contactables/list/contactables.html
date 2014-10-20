@@ -39,7 +39,7 @@
                         {{#if isSearching}}
                             searching
                         {{else}}
-                            {{> fastPagination name="contactablesList"}}
+                            {{> fastPagination name="contactablesList" useKeys='true'}}
                             {{#if isLoading}}
                                 <div style="height: 505px;">
                                 </div>
@@ -49,7 +49,6 @@
                                 </div>
                             {{/if}}
                         {{/if}}
-                        {{#infinityScroll cb=showMore}} {{/infinityScroll}}
                     </div>
                 </div>
             </div>

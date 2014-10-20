@@ -2,7 +2,7 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ContactablesHandler];
+    return [];
   },
   action: function () {
     if (!this.ready()) {
