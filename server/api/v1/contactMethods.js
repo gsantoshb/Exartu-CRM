@@ -16,6 +16,21 @@ Router.map(function() {
       var response = new RESTAPI.response(this.response);
 
       switch(this.request.method) {
+        // Get contact methods by contactable ID
+        // Parameters:
+        //  - contactableId: string
+        case 'GET':
+          var contactableId = this.params.contactableId;
+          try {
+            var res = ContactableManager.getContactMethodsForApi(contactableId);
+            response.end(res);
+          } catch(err) {
+            console.log(err);
+            response.error(err.message);
+          }
+          break;
+
+
         // Create new contact method
         // Body:
         //  - contactableId: string
