@@ -21,6 +21,16 @@ Meteor.paginatedPublish(Contactables, function () {
   }
 );
 
+Meteor.publish('allContactables', function (filter) {
+  console.log('allContactables',filter);
+  return Contactables.find(filter, {
+    fields:{
+      'organization.organizationName': 1,
+      houseAccount: 1
+    }
+  });
+});
+
 Contactables.allow({
   insert: function () {
     return false;
