@@ -6,7 +6,7 @@ Template.contactableContactsBox.hasContacts = function() {
 };
 
 Template.contactableContactsBox.contacts = function() {
-  return Contactables.find();
+  return Contactables.find({Contact: {$exists: true}});
 };
 
 Template.contactableContactsBox.events = {
