@@ -4,7 +4,7 @@ accounts-oauth@1.1.1
 accounts-password@1.0.2
 accounts-ui-unstyled@1.1.2
 accounts-ui@1.1.1
-aldeed:autoform@3.1.0
+aldeed:autoform@3.2.0
 aldeed:simple-schema@1.0.3
 application-configuration@1.0.2
 autoupdate@1.1.1
@@ -18,7 +18,7 @@ cfs:access-point@0.0.0
 cfs:base-package@0.0.0
 cfs:collection-filters@0.0.0
 cfs:collection@0.0.0
-cfs:data-man@0.0.0
+cfs:data-man@0.0.1
 cfs:file@0.0.0
 cfs:filesystem@0.0.0
 cfs:graphicsmagick@0.0.1
@@ -28,6 +28,7 @@ cfs:http-publish@0.0.0
 cfs:power-queue@0.0.1
 cfs:reactive-list@0.0.0
 cfs:reactive-property@0.0.0
+cfs:s3@0.0.0
 cfs:standard-packages@0.0.2
 cfs:storage-adapter@0.0.0
 cfs:tempstore@0.0.2
@@ -44,7 +45,9 @@ dtype@0.0.0
 ejson@1.0.3
 email@1.0.3
 es@0.0.0
+external-storage@0.0.0
 fastclick@1.0.0
+file-uploader@0.0.0
 follower-livedata@1.0.1
 force-ssl@1.0.1
 geojson-utils@1.0.0
@@ -70,9 +73,10 @@ meteor@1.1.1
 meteorhacks:async@1.0.0
 meteorhacks:inject-initial@1.0.0
 meteorhacks:kadira-binary-deps@1.2.0
-meteorhacks:kadira@2.11.6
+meteorhacks:kadira@2.11.13
+meteorhacks:meteorx@1.2.0
 meteorhacks:npm@1.2.0
-meteorhacks:zones@1.3.1
+meteorhacks:zones@1.3.2
 minifiers@1.1.0
 minimongo@1.0.3
 mizzao:bootstrap-3@3.2.0_1

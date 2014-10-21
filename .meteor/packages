@@ -28,20 +28,28 @@ aldeed:autoform
 tsega:bootstrap3-datetimepicker
 meteorhacks:npm
 cfs:filesystem
-cfs:gridfs
 
 dtype
 document
 es
+external-storage
 paypal
 subscription-plan
 cfs:graphicsmagick
 mizzao:bootstrap-3
 
-meteorhacks:kadira
 meteorhacks:zones
 
 force-ssl
 pagination
+
+
+npm-container
 mongoview
+reactive-var
+cfs:data-man
+cfs:gridfs
+cfs:s3
+file-uploader
+meteorhacks:kadira
 
