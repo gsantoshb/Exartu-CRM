@@ -1,7 +1,8 @@
 DashboardController = RouteController.extend({
   layoutTemplate: 'mainLayout',
     waitOn: function () {
-        return [UsersHandler, ActivitiesHandler];
+      ActivitiesHandler = Meteor.subscribe('activities');
+      return [ActivitiesHandler];
     },
     action: function () {
         if (this.ready())

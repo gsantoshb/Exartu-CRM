@@ -1,10 +1,11 @@
-var jobCollection = JobList;
+var jobCollection = Jobs;
 
 JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [JobHandler, PlacementHandler, LookUpsHandler];
+    JobHandler = Meteor.paginatedSubscribe('jobs');
+    return [JobHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -358,3 +359,8 @@ Template.jobsListItem.jobIcon = function() {
 Template.jobsListItem.displayObjType = function() {
   return Utils.getJobType(this);
 };
+
+Template.jobInformation.customerName = function () {
+  var customer =  Contactables.findOne(this.customer);
+  return customer && customer.displayName;
+}

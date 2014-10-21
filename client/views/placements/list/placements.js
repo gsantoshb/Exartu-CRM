@@ -2,6 +2,7 @@ PlacementsController = RouteController.extend({
   template: 'placements',
   layoutTemplate: 'mainLayout',
   waitOn: function() {
+    PlacementHandler = Meteor.paginatedSubscribe('placements');
     return [PlacementHandler, LookUpsHandler];
   },
   onAfterAction: function() {
