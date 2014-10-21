@@ -102,6 +102,7 @@
 
                     <!-- Entities list -->
                     <div class="table-items-box">
+                        {{> fastPagination name="tasks"}}
                         {{#each tasks}}
                             {{>taskItem}}
                         {{else}}

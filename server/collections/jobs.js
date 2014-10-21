@@ -1,7 +1,53 @@
-Meteor.publish('jobs', function () {
-  return Utils.filterCollectionByUserHier.call(this, Jobs.find());
+
+JobList = new View('jobList', {
+  collection: Jobs,
+  mapping: {
+    customerInfo: {
+      find: function(job) {
+        return Contactables.find(job.customer,{fields: {
+          'organization.organizationName': 1
+        }});
+      },
+      map: function (doc) {
+        if (! doc) return null;
+
+        return {
+          id: doc._id,
+          displayName: doc.organization.organizationName
+        };
+      }
+    }
+  }
+
 });
 
+
+Meteor.publish('jobDetails', function (id) {
+  return Utils.filterCollectionByUserHier.call(this, Jobs.find(id));
+});
+
+
+
+Meteor.paginatedPublish(JobList, function(){
+  var user = Meteor.users.findOne({
+    _id: this.userId
+  });
+
+  if (!user)
+    return false;
+  return Utils.filterCollectionByUserHier.call(this, JobList.find({},{
+    //fields: {
+    //  customer: 1,
+    //  dateCreated: 1,
+    //  publicJobTitle: 1,
+    //  searchKey: 1,
+    //  dateCreated: 1
+    //}
+  }));
+}, {
+  pageSize: 3,
+  publicationName: 'jobList'
+});
 Jobs.allow({
   update: function () {
     return true;
@@ -29,27 +75,27 @@ Jobs.before.insert(function (userId, doc) {
 Jobs._ensureIndex({hierId: 1});
 Jobs._ensureIndex({objNameArray: 1});
 
-// View
-
-JobView = new Meteor.Collection('JobView', {
-  collection: Jobs,
-  mapping: {
-    customerInfo: {
-      find: function(job) {
-        return Contactables.find(job.customerId,{
-          fields: {
-            'organization.organizationName': 1
-          }
-        });
-      },
-      map: function (doc) {
-        if (! doc) return null;
-
-        return {
-          id: doc._id,
-          displayName: doc.organization.organizationName
-        };
-      }
-    }
-  }
-});
+//// View
+//
+//JobView = new Meteor.Collection('JobView', {
+//  collection: Jobs,
+//  mapping: {
+//    customerInfo: {
+//      find: function(job) {
+//        return Contactables.find(job.customerId,{
+//          fields: {
+//            'organization.organizationName': 1
+//          }
+//        });
+//      },
+//      map: function (doc) {
+//        if (! doc) return null;
+//
+//        return {
+//          id: doc._id,
+//          displayName: doc.organization.organizationName
+//        };
+//      }
+//    }
+//  }
+//});

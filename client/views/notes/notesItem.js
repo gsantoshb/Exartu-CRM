@@ -1,40 +1,44 @@
-var entityId=null;
-var entityType=null;
-Template.notesItem.created=function(id){
+var entityId = null;
+var entityType = null;
+//var tracker = null;
+Template.notesItem.created = function(id){
   if (this.data) entityId=this.data._id;
   entityType=Utils.getEntityTypeFromRouter();
+
+  Meteor.autorun(function () {
+    searchDep.depend();
+    var searchQuery = {};
+
+    if (!_.isEmpty(searchString)) {
+      var searchStringQuery = [];
+      _.each([
+        'msg',
+      ], function (field) {
+        var aux = {};
+        aux[field] = {
+          $regex: searchString,
+          $options: 'i'
+        };
+        searchStringQuery.push(aux);
+      });
+      searchQuery.$or =  searchStringQuery;
+    }
+
+    if (entityId!= null) {
+      searchQuery.links= { $elemMatch: { id: entityId} } ;
+    }
+    NotesHandler.setFilter(searchQuery);
+  });
+}
+
+Template.notesItem.destroyed = function () {
+  entityId = null;
+  //tracker && tracker.invalidate();
 }
 
 var searchString, searchDep = new Deps.Dependency;
 Template.notesItem.notes = function() {
-  searchDep.depend();
-  searchQuery = {};
-
-  if (!_.isEmpty(searchString)) {
-    var searchStringQuery = [];
-    _.each([
-      'msg',
-    ], function (field) {
-      var aux = {};
-      aux[field] = {
-          $regex: searchString,
-          $options: 'i'
-      };
-      searchStringQuery.push(aux);
-    });
-    searchQuery.$or =  searchStringQuery;
-  }
-  if (entityId!= null)
-  {
-    searchQuery.links= { $elemMatch: { id: entityId} } ;
-  }
-  return Notes.find(searchQuery,
-      {
-          sort:
-            {
-              dateCreated: -1
-            }
-      });
+  return Notes.find({},{});
 };
 
 Template.notesItem.getCount = function(notes) {
@@ -52,6 +56,10 @@ Template.notesItem.getUrl = function(link) {
 Template.notesItem.formatMsg = function(msg) {
   return msg.replace(/\r?\n/g,'<br/>');
 };
+
+Template.notesItem.isLoading = function () {
+  return NotesHandler.isLoading();
+}
 
 Template.notesItem.events = {
   'change #search-string': function(e) {

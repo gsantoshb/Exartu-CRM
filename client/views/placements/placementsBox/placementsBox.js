@@ -3,6 +3,7 @@ var isEntitySpecific = false;
 var contactable;
 var searchFields = ['jobDisplayName','employeeDisplayName','customerDisplayName'];
 
+var placementCollection = PlacementList;
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
     candidateActionOptions:{ default: ['Submittal','Sendout','Placed']},
@@ -39,9 +40,6 @@ var query = new Utils.ObjectDefinition({
       type: Utils.ReactivePropertyTypes.array,
       default: []
     },
-    limit: {
-      default: 15
-    },
     statuses: {
       type: Utils.ReactivePropertyTypes.array,
       default: []
@@ -52,8 +50,6 @@ var query = new Utils.ObjectDefinition({
 // All
 
 Template.placementsBox.created = function(){
-  query.limit.value = 20;
-
   var entityId = Session.get('entityId');
   entityType = Utils.getEntityTypeFromRouter();
   isEntitySpecific = false;
@@ -71,13 +67,9 @@ Template.placementsBox.information = function() {
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
 
-  info.placementsCount.value = Placements.find(searchQuery).count();
+  info.placementsCount.value = PlacementHandler.totalCount();
 
   return info;
-};
-
-Template.placementsBox.showMore = function() {
-  return function() { query.limit.value = query.limit.value + 15 };
 };
 
 var searchDep = new Deps.Dependency;
@@ -88,39 +80,15 @@ Template.placementsBox.isSearching = function() {
 };
 
 // List
+Template.placementsList.created = function () {
+Meteor.autorun(function () {
 
-Template.placementsList.info = function() {
-  info.isFiltering.value = Placements.find().count() != 0;
-  return info;
-};
-
-var getActiveStatuses = function(objName){
-  var status = Enums.lookUpTypes["placement"];
-  status = status && status.status;
-  if (status){
-    var lookUpCodes = status.lookUpCode;
-    var implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
-    var ids= _.map(implyActives,function(doc){ return doc._id});
-    return ids;
-  }
-  return null;
-};
-
-var getCandidateStatuses = function(objname){
-  var code = Enums.lookUpTypes["candidate"].status.lookUpCode;
-  var lkps= LookUps.find( { lookUpCode:code, lookUpActions: { $in: [ objname ] }}).fetch();
-  var ids= _.map(lkps,function(doc) {  return doc._id;});
-  return ids;
-};
-
-Template.placementsList.placements = function() {
   var searchQuery = {};
   searchDep.depend();
 
   if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
 
-  if (entityType==Enums.linkTypes.contactable.value)
-  {
+  if (entityType==Enums.linkTypes.contactable.value) {
     if (contactable.Customer) searchQuery.customer=Session.get('entityId');
     if (contactable.Employee) searchQuery.employee=Session.get('entityId');
   }
@@ -151,12 +119,12 @@ Template.placementsList.placements = function() {
 
   if (! query.inactives.value) {
     var activeStatuses;
-      activeStatuses = getActiveStatuses('placement');
-      if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-        searchQuery.placementStatus={
-          $in: activeStatuses
-        };
-      }
+    activeStatuses = getActiveStatuses('placement');
+    if (_.isArray(activeStatuses) && activeStatuses.length > 0){
+      searchQuery.placementStatus={
+        $in: activeStatuses
+      };
+    }
   }
 
   if (!_.isEmpty(query.candidateAction.value) ) {
@@ -183,9 +151,35 @@ Template.placementsList.placements = function() {
   if (query.statuses.value && query.statuses.value.length){
     searchQuery.candidateStatus = {$in: query.statuses.value};
   }
+  PlacementHandler.setFilter(searchQuery);
+})
+}
+Template.placementsList.info = function() {
+  info.isFiltering.value = PlacementHandler.totalCount() != 0;
+  return info;
+};
 
-  var placements = Placements.find(searchQuery, {});
-  return placements;
+var getActiveStatuses = function(objName){
+  var status = Enums.lookUpTypes["placement"];
+  status = status && status.status;
+  if (status){
+    var lookUpCodes = status.lookUpCode;
+    var implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
+    var ids= _.map(implyActives,function(doc){ return doc._id});
+    return ids;
+  }
+  return null;
+};
+
+var getCandidateStatuses = function(objname){
+  var code = Enums.lookUpTypes["candidate"].status.lookUpCode;
+  var lkps= LookUps.find( { lookUpCode:code, lookUpActions: { $in: [ objname ] }}).fetch();
+  var ids= _.map(lkps,function(doc) {  return doc._id;});
+  return ids;
+};
+
+Template.placementsList.placements = function() {
+  return placementCollection.find();
 };
 
 Template.placementsList.placementTypes = function() {

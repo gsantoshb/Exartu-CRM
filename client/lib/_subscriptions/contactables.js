@@ -5,24 +5,6 @@ Contactables = new Meteor.Collection("contactables", {
     if (contactable.organization) {
       contactable.displayName = contactable.organization.organizationName;
     }
-    if (!contactable.pictureFileId) {
-      contactable.pictureFileId = null;
-    }
-
-    if (contactable.Customer) {
-//      if (contactable.Customer.jobs) {
-//        contactable.Customer.jobsInfo = Jobs.find(
-//          {
-//            _id: {
-//              $in: contactable.Customer.jobs
-//            }
-//          },
-//          {
-//            transform: null
-//          }
-//        ).fetch();
-//      }
-    }
 
     if (contactable.contactMethods) {
       _.each(contactable.contactMethods, function (cm) {
@@ -36,9 +18,6 @@ Contactables = new Meteor.Collection("contactables", {
         }
 
       })
-    }
-    if (contactable.location == undefined) {
-      contactable.location = null;
     }
 
     if (contactable.Contact && contactable.Contact.customer) {

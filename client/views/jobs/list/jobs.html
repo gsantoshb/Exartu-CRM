@@ -43,6 +43,9 @@
                     {{#if isSearching}}
                         searching
                     {{else}}
+                        <div>
+                            {{>fastPagination name="jobList"}}
+                        </div>
                         {{> jobsList }}
                     {{/if}}
 
@@ -65,6 +68,8 @@
             {{> filter_lookUp code=3 lookUpValue=query.status multi=false}}
 
             {{> filter_inactive showInactive=query.inactives}}
+
+            {{> filter_createdBy showMineOnly=query.mineOnly}}
 
             {{> filter_createdDate selectedLimit=query.selectedLimit}}
 

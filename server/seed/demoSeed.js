@@ -513,15 +513,15 @@ var loadTasks = function (hierId, usermane, userId) {
 
     // Add users to hier
     var userIds = [];
-    for (var j = 0; j < 5; ++j) {
-        var newUser = {
-            username: usermane + j,
-            email: usermane + j + '@' + usermane + j + '.com',
-            password: usermane + j
-        }
-        var id = Meteor.call('addHierUser', newUser, hierId);
-        userIds.push(id);
-    }
+    //for (var j = 0; j < 5; ++j) {
+    //    var newUser = {
+    //        username: usermane + j,
+    //        email: usermane + j + '@' + usermane + j + '.com',
+    //        password: usermane + j
+    //    }
+    //    var id = Meteor.call('addHierUser', newUser, hierId);
+    //    userIds.push(id);
+    //}
     if (userId)
         userIds.push(userId);
 
@@ -538,10 +538,11 @@ var loadTasks = function (hierId, usermane, userId) {
             completed: null,
             hierId: hierId,
             userId: userId,
-            testData: true
+            testData: true,
+            links: []
         }
 
-        Meteor.call('createTask', newTask, function (err, result) {
+        Tasks.insert(newTask, function (err, result) {
             if (!err)
                 console.log("Task created for demo");
             else
@@ -564,7 +565,7 @@ Meteor.methods({
       return;
 
     loadContactables(user.hierId);
-    //loadJobs(user.hierId);
-    //loadTasks(user.hierId, user.username, user._id);
+    loadJobs(user.hierId);
+    loadTasks(user.hierId, user.username, user._id);
   }
 });

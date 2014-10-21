@@ -5,8 +5,19 @@ Meteor.methods({
   createEmployeeFromResume: function(stream) {
     return ContactableManager.createFromResume(stream);
   },
+  createEmployeeFromPlainText: function(text) {
+    this.unblock();
+    try {
+      return ContactableManager.createFromPlainResume(text);
+    } catch (error) {
+      throw new Meteor.Error('The text could not be parsed', error);
+    }
+  },
   updateContactablePicture: function (contactableId, fileId) {
     ContactableManager.setPicture(contactableId, fileId);
+  },
+  addContactMethod: function (contactableId, type, value) {
+    ContactableManager.addContactMethod(contactableId, type, value);
   }
 });
 

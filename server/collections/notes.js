@@ -1,5 +1,5 @@
-Meteor.publish('notes', function () {
-  return Utils.filterCollectionByUserHier.call(this, Notes.find());
+Meteor.paginatedPublish(Notes, function () {
+  return Utils.filterCollectionByUserHier.call(this, Notes.find({},{ sort: { dateCreated: -1 } }));
 });
 
 Notes.allow({

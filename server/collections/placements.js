@@ -1,5 +1,52 @@
-Meteor.publish('placements', function () {
-  return Utils.filterCollectionByUserHier.call(this, Placements.find());
+PlacementList = new View('placementList', {
+  collection: Placements,
+  mapping: {
+    jobInfo: {
+      find: function(placement) {
+        return Jobs.find({_id: placement.job });
+      },
+      map: function (job) {
+        //todo: helper to get display name of contactables in server side?
+        if (!job) return;
+        var customer = Contactables.findOne(job.customer);
+        var customerName = customer.organization ? customer.organization.organizationName: '';
+        return {
+            jobDisplayName: job.publicJobTitle,
+            customerDisplayName: customerName,
+            customer: job.customer,
+            displayName: job.publicJobTitle + '@' + customerName
+        };
+      }
+    },
+    employeeInfo: {
+      find: function(placement) {
+        return Contactables.find({_id: placement.employee });
+      },
+      map: function (employee) {
+        if (!employee || ! employee.person) return;
+        return {
+          employeeDisplayName: employee.person.firstName + employee.person.lastName
+        };
+      }
+    }
+  }
+
+});
+Meteor.paginatedPublish(PlacementList, function(){
+  var user = Meteor.users.findOne({
+    _id: this.userId
+  });
+
+  if (!user)
+    return false;
+  return Utils.filterCollectionByUserHier.call(this, PlacementList.find());
+}, {
+  pageSize: 3,
+  publicationName: 'placementList'
+});
+
+Meteor.publish('placementDetails', function (id) {
+  return Placements.find(id);
 });
 
 Meteor.startup(function () {

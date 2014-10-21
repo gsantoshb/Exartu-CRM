@@ -39,10 +39,16 @@
                         {{#if isSearching}}
                             searching
                         {{else}}
-                            {{> fastPagination name="contactablesList"}}
-                            {{> contactablesList }}
+                            {{> fastPagination name="contactablesList" useKeys='true'}}
+                            {{#if isLoading}}
+                                <div style="height: 505px;">
+                                </div>
+                            {{else}}
+                                <div class="fade-in">
+                                    {{> contactablesList }}
+                                </div>
+                            {{/if}}
                         {{/if}}
-                        {{#infinityScroll cb=showMore}} {{/infinityScroll}}
                     </div>
                 </div>
             </div>
@@ -66,6 +72,8 @@
             {{> filter_inactive showInactive=query.inactives}}
 
             {{> filter_createdDate selectedLimit=query.selectedLimit}}
+
+            {{> filter_createdBy showMineOnly=query.mineOnly}}
 
             {{> filter_tags tags=query.tags}}
 
@@ -272,7 +280,8 @@
                                     {{/each}}
                                 </ul>
                             </div>
-                            <a type="button" title="Create from resume" class="btn btn-default" href="/resumeparser"><i class="fa fa-cloud-upload"></i></a>
+                            <a type="button" title="Create employee from resume" class="btn btn-default" href="/resumeparser"><i class="fa fa-cloud-upload"></i></a>
+                            <span class="btn btn-default parseText" title="Create employee from plain text"><i class="fa fa-clipboard"></i></span>
                         </div>
                     </div>
 

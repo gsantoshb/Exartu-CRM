@@ -53,6 +53,11 @@ Template.resumesList.resumes = function() {
   return Resumes.find();
 };
 
+      uploadedAt: { $exists: true },
+    },
+    {
+      sort: { uploadedAt: -1 },
+      limit: 5
 Template.resumesList.completedInfo = function() {
   Meteor.subscribe('singleContactable', this.employeeId);
   return Contactables.findOne({_id: this.employeeId});

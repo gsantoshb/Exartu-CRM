@@ -14,6 +14,12 @@
 .bold{ font-weight: bold }
 .black{ color: #000000; }
 
+.fade-in {
+    -moz-animation-duration: 0.3s;
+    -webkit-animation-duration: 0.3s;
+    -moz-animation-name: fadeIn;
+    -webkit-animation-name: fadeIn;
+}
 
 
 #header h1{

@@ -1,7 +1,9 @@
+var placementCollection = Placements;
+
 PlacementController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function(){
-        return [PlacementHandler, GoogleMapsHandler]
+        return [Meteor.subscribe('placementDetails', this.params._id), GoogleMapsHandler]
     },
     data: function () {
         Session.set('entityId', this.params._id);
@@ -36,8 +38,8 @@ Utils.reactiveProp(location, 'value', null);
 var services;
 
 Template.placement.created=function(){
-  self.editMode=false;
-  var originalPlacement=Placements.findOne({ _id: Session.get('entityId') });
+  self.editMode = false;
+  var originalPlacement=placementCollection.findOne({ _id: Session.get('entityId') });
   var definition={
     reactiveProps:{
       tags:{
@@ -55,7 +57,7 @@ var job;
 var employee;
 Template.placement.helpers({
   placement: function(){
-    var originalPlacement=Placements.findOne({ _id: Session.get('entityId') });
+    var originalPlacement=placementCollection.findOne({ _id: Session.get('entityId') });
     Session.set('placementDisplayName', originalPlacement.displayName);
     if (originalPlacement.tags==null)
     {
@@ -66,7 +68,7 @@ Template.placement.helpers({
     return placement;
   },
   originalPlacement:function(){
-    return Placements.findOne({ _id: Session.get('entityId') });
+    return placementCollection.findOne({ _id: Session.get('entityId') });
   },
   editMode:function(){
       return self.editMode;
@@ -86,7 +88,7 @@ Template.placement.events({
       return;
     }
     var update=placement.getUpdate();
-    var originalPlacement=Placements.findOne({ _id: Session.get('entityId') });
+    var originalPlacement=placementCollection.findOne({ _id: Session.get('entityId') });
     var oldLocation= originalPlacement.location;
     var newLocation= location.value;
 
@@ -98,7 +100,7 @@ Template.placement.events({
     if (services.tags.value.length > 0)
       update.$set.tags = services.tags.value;
 
-    Placements.update({_id: placement._id}, update, function(err, result) {
+    placementCollection.update({_id: placement._id}, update, function(err, result) {
       if (!err) {
         self.editMode=false;
         placement.reset();

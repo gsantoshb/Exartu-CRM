@@ -47,7 +47,7 @@ Template.notes.notes = function() {
 };
 
 Template.notes.getCount = function(notes) {
-  return notes.count();
+  return NotesHandler.totalCount();
 }
 
 Template.notes.getEntity = function(link){

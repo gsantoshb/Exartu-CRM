@@ -4,6 +4,39 @@ Template.tasksBox.created=function(){
   entityType=Utils.getEntityTypeFromRouter();
   isEntitySpecific=false;
   if (entityType!=null) isEntitySpecific=true
+
+  Meteor.autorun(function () {
+    var queryObj = query.getObject();
+    var q = {};
+    if(! queryObj.inactives){
+      q.inactive = {
+        $ne: true
+      };
+    }
+    if (queryObj.ownedByMe) {
+      q.userId = Meteor.userId();
+    }
+
+    if (queryObj.assigned && queryObj.assignedTo) {
+      q.assign = queryObj.assignedTo
+    }
+
+    statusDep.depend();
+    if (status) {
+      _.extend(q, status.query());
+    }
+
+    if (queryObj.searchString) {
+      q.msg = {
+        $regex: queryObj.searchString,
+        $options: 'i'
+      };
+    }
+    if (isEntitySpecific) {
+      q.links = { $elemMatch: { id: Session.get('entityId') } };
+    }
+    TasksHandler.setFilter(q);
+  })
 }
 //todo: improve queries to match with the state in the transform
 var states = [
@@ -81,45 +114,14 @@ var statusDep= new Deps.Dependency;
 
 Template.tasksBox.helpers({
   taskCount: function(){
-    if (isEntitySpecific)
-      return Tasks.find({ links: { $elemMatch: { id: Session.get('entityId') } } }).count();
-    else
-      return Tasks.find().count();
+    TasksHandler.totalCount();
   },
   users: function(){
     return Meteor.users.find();
   },
   tasks: function(){
-    var queryObj = query.getObject();
-    var q = {};
-    if(! queryObj.inactives){
-      q.inactive = {
-        $ne: true
-      };
-    }
-    if (queryObj.ownedByMe) {
-      q.userId = Meteor.userId();
-    }
 
-    if (queryObj.assigned && queryObj.assignedTo) {
-      q.assign = queryObj.assignedTo
-    }
-
-    statusDep.depend();
-    if (status) {
-      _.extend(q, status.query());
-    }
-
-    if (queryObj.searchString) {
-      q.msg = {
-        $regex: queryObj.searchString,
-        $options: 'i'
-      };
-    }
-    if (isEntitySpecific) {
-      q.links = { $elemMatch: { id: Session.get('entityId') } };
-    }
-    return Tasks.find(q);
+    return Tasks.find();
   },
   filters: function(){
     return query

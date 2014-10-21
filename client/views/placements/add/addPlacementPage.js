@@ -86,7 +86,7 @@ Template.addPlacementPage.events({
         console.dir(err)
       }
       else{
-        Router.go('/placement/' + result._id);
+        Router.go('/placement/' + result);
       }
     });
   },

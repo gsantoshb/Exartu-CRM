@@ -2,7 +2,7 @@ PlacementsController = RouteController.extend({
   template: 'placements',
   layoutTemplate: 'mainLayout',
   waitOn: function() {
-    return [PlacementHandler, Meteor.subscribe('jobs'), Meteor.subscribe('contactables'), LookUpsHandler];
+    return [PlacementHandler, LookUpsHandler];
   },
   onAfterAction: function() {
     var title = 'Placements',
@@ -19,6 +19,16 @@ PlacementsController = RouteController.extend({
     });
   },
   action: function(){
-    if (this.ready()) this.render();
+    if (this.ready())
+      this.render();
+    else
+      this.render('loadingContactable');
+
+  }
+});
+
+Template.placements.helpers({
+  placementCount: function(){
+    return TasksHandler.totalCount();
   }
 });

@@ -2,7 +2,7 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ContactablesHandler];
+    return [];
   },
   action: function () {
     if (!this.ready()) {
@@ -62,6 +62,10 @@ var query = new Utils.ObjectDefinition({
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
     },
+    mineOnly: {
+      type: Utils.ReactivePropertyTypes.boolean,
+      default: false
+    },
     selectedLimit: {},
     tags: {
       type: Utils.ReactivePropertyTypes.array,
@@ -94,12 +98,24 @@ Template.contactables.created = function(){
   query.limit.value = 20
 };
 
+Template.contactables.isLoading = function () {
+  return ContactablesHandler.isLoading();
+}
+
 var searchDep = new Deps.Dependency;
 var isSearching = false;
 Template.contactables.isSearching = function() {
   searchDep.depend();
   return isSearching;
 };
+
+Template.contactables.events({
+  'click .parseText': function () {
+    Utils.showModal('textParser');
+  }
+});
+
+
 
 // List
 
@@ -145,9 +161,11 @@ Template.contactablesList.created = function() {
       $and: [] // Push each $or operator here
     };
 
+    // Type
     if (query.objType.value)
       searchQuery.objNameArray = query.objType.value;
 
+    // Creation date
     if (query.selectedLimit.value) {
       var dateLimit = new Date();
       searchQuery.dateCreated = {
@@ -155,6 +173,7 @@ Template.contactablesList.created = function() {
       };
     }
 
+    // Status / Inactive
     if (! query.inactives.value) {
       var inactiveStatusOR = {
         $or: []
@@ -172,6 +191,11 @@ Template.contactablesList.created = function() {
         }
       });
       searchQuery.$and.push(inactiveStatusOR);
+    }
+
+    // Created by
+    if (query.mineOnly.value) {
+      searchQuery.userId = Meteor.userId();
     }
 
     // Location filter
@@ -217,10 +241,8 @@ Template.contactablesList.created = function() {
       delete searchQuery.$and;
 
     if (!_.isEmpty(query.candidateStatus.value)){
-      debugger;
       searchQuery._id = {$in:_.map(Placements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
     }
-
     ContactablesHandler.setFilter(searchQuery);
   });
 };
@@ -292,6 +314,11 @@ Meteor.autorun(function() {
       })
     });
     filters.bool.must.push(activeStatusFilter);
+  }
+
+  // Created by
+  if (query.mineOnly.value) {
+    filters.bool.must.push({term: {userId: Meteor.userId()}});
   }
 
   // Location filter

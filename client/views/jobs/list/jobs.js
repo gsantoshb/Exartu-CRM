@@ -1,3 +1,5 @@
+var jobCollection = JobList;
+
 JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
@@ -63,13 +65,14 @@ var query = new Utils.ObjectDefinition({
       type: Utils.ReactivePropertyTypes.boolean,
       default: false
     },
+    mineOnly: {
+      type: Utils.ReactivePropertyTypes.boolean,
+      default: false
+    },
     selectedLimit: {},
     tags: {
       type: Utils.ReactivePropertyTypes.array,
       default: []
-    },
-    limit: {
-      default: 15
     },
     location: {},
     status: {}
@@ -77,10 +80,10 @@ var query = new Utils.ObjectDefinition({
 });
 
 // All
-
-Template.jobs.created = function(){
-  query.limit.value = 20
-};
+//
+//Template.jobs.created = function(){
+//  query.limit.value = 20
+//};
 
 Template.jobs.information = function() {
   var searchQuery = {};
@@ -88,19 +91,143 @@ Template.jobs.information = function() {
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
 
-  info.jobsCount.value = Jobs.find(searchQuery).count();
+  info.jobsCount.value = JobHandler.totalCount();
 
   return info;
 };
-
-Template.jobs.showMore = function() {
-  return function() { query.limit.value = query.limit.value + 15 };
-};
+//
+//Template.jobs.showMore = function() {
+//  return function() { query.limit.value = query.limit.value + 15 };
+//};
 
 // List
+Template.jobsList.created= function () {
+  Meteor.autorun(function () {
+    var searchQuery = {
+      $and: [] // Push each $or operator here
+    };
+    var options = {};
+
+    searchDep.depend();
+    selectedSortDep.depend();
+
+    // Sort by
+    if (selectedSort) {
+      options.sort = {};
+      options.sort[selectedSort.field] = selectedSort.value;
+    } else {
+      delete options.sort;
+    }
+
+    // Type
+    if (query.objType.value)
+      searchQuery.objNameArray = query.objType.value;
+
+    if (!_.isEmpty(query.searchString.value)) {
+      var stringSearches=[];
+      _.each(searchFields, function (field) {
+        var aux = {};
+        aux[field] = {
+          $regex: query.searchString.value,
+          $options: 'i'
+        }
+        stringSearches.push(aux);
+      });
+      searchQuery = {
+        $and: [searchQuery, {
+          $or: stringSearches
+        }]
+      };
+    }
+
+    // Creation date
+    if (query.selectedLimit.value) {
+      var dateLimit = new Date();
+      searchQuery.dateCreated = {
+        $gte: dateLimit.getTime() - query.selectedLimit.value
+      };
+    }
+
+    //Status / Inactive
+    if (! query.inactives.value) {
+      var inactiveStatusOR = {
+        $or: []
+      };
+      var activeStatuses;
+      var aux;
+      _.each(['job'], function(objName){
+        activeStatuses = getActiveStatuses(objName);
+        if (_.isArray(activeStatuses) && activeStatuses.length > 0){
+          aux={};
+          aux['status'] = {
+            $in: activeStatuses
+          };
+
+          inactiveStatusOR.$or.push(aux)
+        }
+      })
+      searchQuery.$and.push(inactiveStatusOR);
+    }
+
+    //Created by
+    if (query.mineOnly.value) {
+      searchQuery.userId = Meteor.userId();
+    }
+
+    // Tags
+    if (query.tags.value.length > 0) {
+      searchQuery.tags = {
+        $in: query.tags.value
+      };
+    }
+
+    // Location filter
+    var locationOperatorMatch = false;
+    if (query.location.value) {
+      _.forEach(locationFields, function(locationField) {
+        var value = getLocationTagValue(locationField, locationFields);
+
+        if (value) {
+          locationOperatorMatch = true;
+          var aux = { term: {}};
+          searchQuery['location.' + locationField] = {
+            $regex: value,
+            $options: 'i'
+          };
+        }
+      });
+    }
+
+    // If not location operator match is used then search on each field
+    if (query.location.value && !locationOperatorMatch) {
+      var locationOR = {
+        $or: []
+      };
+      _.forEach(locationFields, function(locationField) {
+        var aux = {};
+        aux['location.' + locationField] = {
+          $regex: query.location.value,
+          $options: 'i'
+        };
+        locationOR.$or.push(aux);
+      });
+      searchQuery.$and.push(locationOR);
+    }
+
+    // Status filter
+    if (query.status.value){
+      searchQuery.status = query.status.value;
+    }
+
+    if (searchQuery.$and.length == 0)
+      delete searchQuery.$and;
+
+    JobHandler.setFilter(searchQuery);
+  })
+}
 
 Template.jobsList.info = function() {
-  info.isFiltering.value = Jobs.find().count() != 0;
+  info.isFiltering.value = jobCollection.find().count() != 0;
   return info;
 };
 
@@ -133,7 +260,7 @@ Template.jobs.isSearching = function() {
   return isSearching;
 }
 
-var getActiveStatuses = function(objName){
+getActiveStatuses = function(objName){
   var status = Enums.lookUpTypes["job"];
 
   status = status && status.status;
@@ -149,120 +276,7 @@ var getActiveStatuses = function(objName){
 var searchFields = ['categoryName', 'industryName', 'durationName', 'statusName', 'publicJobTitle'];
 
 Template.jobsList.jobs = function() {
-  var searchQuery = {
-    $and: [] // Push each $or operator here
-  };
-  var options = {limit: query.limit.value};
-
-  searchDep.depend();
-  selectedSortDep.depend();
-
-  // Sort by
-  if (selectedSort) {
-    options.sort = {};
-    options.sort[selectedSort.field] = selectedSort.value;
-  } else {
-    delete options.sort;
-  }
-
-  if (query.objType.value)
-    searchQuery.objNameArray = query.objType.value;
-
-  if (!_.isEmpty(query.searchString.value)) {
-    var stringSearches=[];
-    _.each(searchFields, function (field) {
-      var aux = {};
-      aux[field] = {
-        $regex: query.searchString.value,
-        $options: 'i'
-      }
-      stringSearches.push(aux);
-    });
-    searchQuery = {
-      $and: [searchQuery, {
-        $or: stringSearches
-      }]
-    };
-  }
-
-
-  if (query.selectedLimit.value) {
-    var dateLimit = new Date();
-    searchQuery.dateCreated = {
-      $gte: dateLimit.getTime() - query.selectedLimit.value
-    };
-  }
-
-  if (! query.inactives.value) {
-    var inactiveStatusOR = {
-      $or: []
-    };
-    var activeStatuses;
-    var aux;
-    _.each(['job'], function(objName){
-      activeStatuses = getActiveStatuses(objName);
-      if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-        aux={};
-        aux['status'] = {
-          $in: activeStatuses
-        };
-
-        inactiveStatusOR.$or.push(aux)
-      }
-    })
-    searchQuery.$and.push(inactiveStatusOR);
-  }
-
-  if (query.tags.value.length > 0) {
-    searchQuery.tags = {
-      $in: query.tags.value
-    };
-  }
-
-  // Location filter
-  var locationOperatorMatch = false;
-  if (query.location.value) {
-    _.forEach(locationFields, function(locationField) {
-      var value = getLocationTagValue(locationField, locationFields);
-
-      if (value) {
-        locationOperatorMatch = true;
-        var aux = { term: {}};
-        searchQuery['location.' + locationField] = {
-          $regex: value,
-          $options: 'i'
-        };
-      }
-    });
-  }
-
-  // If not location operator match is used then search on each field
-  if (query.location.value && !locationOperatorMatch) {
-    var locationOR = {
-      $or: []
-    };
-    _.forEach(locationFields, function(locationField) {
-      var aux = {};
-      aux['location.' + locationField] = {
-        $regex: query.location.value,
-        $options: 'i'
-      };
-      locationOR.$or.push(aux);
-    });
-    searchQuery.$and.push(locationOR);
-  }
-
-  // Status filter
-  if (query.status.value){
-    searchQuery.status = query.status.value;
-  }
-
-  if (searchQuery.$and.length == 0)
-    delete searchQuery.$and;
-
-  var jobs = Jobs.find(searchQuery, options);
-
-  return jobs;
+  return jobCollection.find();
 };
 
 // List search
