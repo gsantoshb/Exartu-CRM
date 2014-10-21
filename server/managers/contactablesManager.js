@@ -152,6 +152,7 @@ ContactableManager = {
 
     // Transform the contact method types before returning
     _.each(contactable.contactMethods, function (cm) {
+      cm.contactableId = contactableId;
       cm.type = _.find(contactMethods, function (method) { return method._id === cm.type; }).type;
     });
 
