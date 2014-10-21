@@ -89,6 +89,10 @@ Template.login.viewModel = function () {
     });
   };
 
+  self.recoverPassword = function () {
+    Utils.showModal('recoverPassword');
+  };
+
   self.newAccount = ko.validatedObservable({
     username: ko.observable().extend({
       required: true,

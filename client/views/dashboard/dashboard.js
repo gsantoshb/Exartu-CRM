@@ -98,6 +98,9 @@ Template.dashboard.helpers({
   activities: function(){
     return Activities.find();
   },
+  log: function(data){
+    console.log('dat',this,data);
+  },
   customerHistory: function(){
 
     return getHistorical(Contactables, getDays(), customerQuery);
@@ -117,6 +120,10 @@ Template.dashboard.helpers({
   },
   employeeCount: function(){
     return Contactables.find(employeeQuery).count();
+  },
+  getUserName: function(id) {
+    var u = Meteor.users.findOne(id || this.toString());
+    return u && u.username;
   }
 });
 
@@ -149,17 +156,22 @@ Template.activity.helpers({
     }
   }
 });
-Template.newTaskActivity.getUserName = function(id){
-  var u = Meteor.users.findOne(id || this.toString());
-  return u && u.username;
+Template.newTaskActivity.getUserName = function(){
+  return this.userName;
 };
 
 
 Template.newContactableActivity.getActivityColor = function(){
   return helper.getActivityColor(this);
 };
+Template.newContactableActivity.log=function() {
+  console.log('nca',this);
+}
 Template.newContactableActivity.getActivityIcon = function(){
   return helper.getActivityIcon(this);
+};
+Template.newContactableActivity.getUserName = function(){
+  return this.userName;
 };
 
 Template.sparkline.text= function(){

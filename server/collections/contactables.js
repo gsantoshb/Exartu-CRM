@@ -85,26 +85,26 @@ ContactablesFS = new Document.Collection({
 });
 ContactablesFS.publish();
 
-// Employee resumes
+ContactablesFiles = new Mongo.Collection('contactablesFiles');
+Meteor.publish('contactablesFiles', function () {
+  return ContactablesFiles.find();
+});
 
-ResumesFS = new FS.Collection("resumes", {
-  stores: [new FS.Store.FileSystem("resumes", {path: "~/resumes"})]
-});
+// Employee resumes
+Resumes = new Mongo.Collection('resumes');
 Meteor.publish('resumes', function() {
-  return ResumesFS.find({'metadata.owner': this.userId});
+  return Resumes.find({userId: this.userId});
 });
-ResumesFS.allow({
+
+Resumes.allow({
   insert: function (userId, file) {
-    return true;
+    return false;
   },
   update: function (userId, file, fields, modifier) {
-    return true;
+    return false;
   },
   remove: function (userId, file) {
-    return true;
-  },
-  download: function (userId, file) {
-    return true;
+    return false;
   }
 });
 

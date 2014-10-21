@@ -65,7 +65,9 @@
                         </header>
 
                         <div class="activity-container scroll-container">
+                            {{log}}
                             {{#each activities}}
+                            {{log}}
                                 {{> activity}}
                             {{/each}}
                             <!--{{>fastPagination name="activities" loadingTemplate='loadingActivities' container='body' content='#content'}}-->
@@ -119,6 +121,7 @@
                                 <span>{{data.displayName}}</span>
                             </strong>
                         </a>
+                        <div class="time">{{getUserName}}...{{this.userName}}xx</div>
                     </h4>
                     <div class="item-actions">
                         {{#if data.contactableEmail}}
@@ -126,7 +129,9 @@
                                 <i class="fa fa-envelop"></i> {{data.contactableEmail}}
                             </a>
                         {{/if}}
+
                     </div>
+
                 </div>
                 <!-- /.box-content -->
             </div>

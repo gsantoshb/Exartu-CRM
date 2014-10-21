@@ -39,7 +39,7 @@
 
 <template name="resumesList">
     <ul class="list-3 stripped has-thumb">
-        {{#with resumesCompleted}}
+        {{#with resumes}}
             {{#if count}}
                 <hr/>
                 <strong>Last Completed</strong>
@@ -50,7 +50,7 @@
                             <div class="list-3-content-wrap">
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4">
-                                        <div class="list-3-item-meta-top">{{this.type}}</div>
+                                        <div class="list-3-item-meta-top">{{type}}</div>
                                         <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
                                     </div>
                                     {{#with completedInfo}}

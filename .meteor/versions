@@ -18,7 +18,7 @@ cfs:access-point@0.0.0
 cfs:base-package@0.0.0
 cfs:collection-filters@0.0.0
 cfs:collection@0.0.0
-cfs:data-man@0.0.0
+cfs:data-man@0.0.1
 cfs:file@0.0.0
 cfs:filesystem@0.0.0
 cfs:graphicsmagick@0.0.1
@@ -28,6 +28,7 @@ cfs:http-publish@0.0.0
 cfs:power-queue@0.0.1
 cfs:reactive-list@0.0.0
 cfs:reactive-property@0.0.0
+cfs:s3@0.0.0
 cfs:standard-packages@0.0.2
 cfs:storage-adapter@0.0.0
 cfs:tempstore@0.0.2
@@ -44,7 +45,9 @@ dtype@0.0.0
 ejson@1.0.3
 email@1.0.3
 es@0.0.0
+external-storage@0.0.0
 fastclick@1.0.0
+file-uploader@0.0.0
 follower-livedata@1.0.1
 force-ssl@1.0.1
 geojson-utils@1.0.0

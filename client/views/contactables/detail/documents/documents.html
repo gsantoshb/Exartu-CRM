@@ -74,28 +74,6 @@
         </span>
         {{/objectProperty}}
     </h3>
-
-    <ul class="list-3 stripped has-thumb">
-        {{#each documentsUploading}}
-            <li class="list-3-item">
-                <div class="list-thumb"><i class="icon-file-upload"></i></div>
-                <div class="list-3-content list-magic">
-                    <div class="list-3-content-wrap">
-                        <div class="list-3-actions">
-                            <span class="bullet-spacer">·</span>
-                            <a class="cancel pointer"><i class="fa fa-trash-o"></i> Cancel</a>
-                        </div>
-                        <div class="list-3-item-meta-top">{{this.type}}</div>
-                        <h4 class="list-3-item-title"><a class="pointer">{{metadata.name}}</a></h4>
-                        {{#unless this.isUploaded}}
-                            {{> fileProgress .}}
-                        {{/unless}}
-                    </div><!-- /.list-3-content-wrap -->
-                </div>
-            </li>
-        {{/each}}
-
-    </ul>
     <hr/>
     <ul class="list-3 stripped has-thumb">
         {{#each documents}}
@@ -104,12 +82,12 @@
                 <div class="list-3-content list-magic">
                     <div class="list-3-content-wrap">
                         <div class="list-3-actions">
-                            <a class="download" target="_blank" href="{{url}}" download="{{metadata.name}}"><i class="fa fa-download"></i> Download</a>
+                            <a class="download" target="_blank" href="{{url}}" download="{{name}}"><i class="fa fa-download"></i> Download</a>
                             <span class="bullet-spacer">·</span>
                             <a class="delete pointer"><i class="fa fa-trash-o"></i> Delete</a>
                         </div>
-                        <div class="list-3-item-meta-top">{{this.type}}</div>
-                        <h4 class="list-3-item-title"><a href="#">{{metadata.name}}</a></h4>
+                        <div class="list-3-item-meta-top">{{type}}</div>
+                        <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
                     </div><!-- /.list-3-content-wrap -->
                 </div>
             </li>
@@ -135,16 +113,20 @@
                     <div class="list-3-content list-magic">
                         <div class="list-3-content-wrap">
                             <div class="list-3-actions">
-                                <a class="download" target="_blank" href="{{url}}" download="{{name}}"><i class="fa fa-download"></i> Download</a>
+                                <a class="download" target="_blank" href="{{resumeUrl}}" download="{{name}}"><i class="fa fa-download"></i> Download</a>
                                 <span class="bullet-spacer">·</span>
                                 <a class="delete-resume" href="#"><i class="fa fa-trash-o"></i> Delete</a>
                             </div>
-                            <div class="list-3-item-meta-top">{{this.type}}</div>
+                            <div class="list-3-item-meta-top">{{type}}</div>
                             <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
                         </div><!-- /.list-3-content-wrap -->
                     </div>
                 </li>
             {{/each}}
         {{/with}}
+    </div>
+
+    <div id="parsing" class="list-3-actions" style="display: none; margin-right: 45px; margin-top: 10px;">
+        {{>spinner}}
     </div>
 </template>
