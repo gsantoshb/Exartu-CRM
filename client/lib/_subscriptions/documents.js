@@ -3,11 +3,11 @@ ContactablesFS = new Document.Collection({
 });
 Meteor.subscribe(ContactablesFS.collectionName);
 
-ResumesFS = new FS.Collection("resumes", {
-  stores: [new FS.Store.FileSystem("resumes", {path: "~/resumes"})]
-});
-
+Resumes = new Mongo.Collection('resumes');
 Meteor.subscribe('resumes');
+
+ContactablesFiles = new Mongo.Collection('contactablesFiles');
+Meteor.subscribe('contactablesFiles');
 
 UsersFS = new Document.Collection({
   collection: Meteor.users

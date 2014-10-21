@@ -17,5 +17,10 @@ ExartuConfig = {
   ES_PORT: undefined,
   ES_AUTH: undefined,
   APM_ID: undefined,
-  APM_SECRET: undefined
+  APM_SECRET: undefined,
+  // AWS
+  AWS_accessKeyId: undefined,
+  AWS_secretAccessKey: undefined,
+  AWS_S3_region: undefined,
+  AWS_S3_bucket: undefined
 };

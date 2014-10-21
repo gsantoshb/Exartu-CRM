@@ -2,10 +2,65 @@ Meteor.methods({
   addContactable: function (contactable) {
     return ContactableManager.create(contactable);
   },
-  createEmployeeFromResume: function(resumeFileId) {
-    return ContactableManager.createFromResume(resumeFileId);
+  createEmployeeFromResume: function(stream) {
+    return ContactableManager.createFromResume(stream);
   },
   updateContactablePicture: function (contactableId, fileId) {
     ContactableManager.setPicture(contactableId, fileId);
+  }
+});
+
+FileUploader.createEndpoint('uploadResume', {
+  onUpload: function (stream, metadata) {
+    var employee = ContactableManager.createFromResume(stream);
+
+    if (employee) {
+      stream = fs.createReadStream(stream.path);
+      var resumeId = S3Storage.upload(stream);
+
+      if (!resumeId) {
+        return new Meteor.Error(500, "Error uploading resume to S3");
+      }
+
+      var resume = {
+        employeeId: employee,
+        resumeId: resumeId,
+        userId: Meteor.userId(),
+        name: metadata.name,
+        type: metadata.type,
+        dateCreated: new Date()
+      };
+      return Resumes.insert(resume);
+    } else {
+      return new Meteor.Error(500, "Error during employee creation");
+    }
+  },
+  onDownload: function(fileId) {
+    return S3Storage.download(fileId);
+  }
+});
+
+FileUploader.createEndpoint('uploadContactablesFiles', {
+  onUpload: function (stream, metadata) {
+    var fileId = S3Storage.upload(stream);
+
+    if (!fileId) {
+      return new Meteor.Error(500, "Error uploading resume to S3");
+    }
+
+    var file = {
+      entityId: metadata.entityId,
+      name: metadata.name,
+      type: metadata.type,
+      description: metadata.description,
+      tags: metadata.tags,
+      userId: Meteor.userId(),
+      fileId: fileId
+    };
+
+    return ContactablesFiles.insert(file);
+  },
+  onDownload: function(fileId) {
+    return S3Storage.download(fileId);
   }
 });

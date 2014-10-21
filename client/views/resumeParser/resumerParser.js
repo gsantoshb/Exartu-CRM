@@ -24,32 +24,14 @@ ResumeParserController = RouteController.extend({
   }
 });
 
-
 // Add resume panel
 
-var uploadFile = function(f) {
-  var fsFile = new FS.File(f);
-
-  fsFile.metadata = {
-    completed: false,
-    owner: Meteor.userId()
-  };
-  var file = ResumesFS.insert(fsFile, function (err) {
-    if (err) {
-      console.log('File upload error');
-    } else {
-      startParsing();
-      console.log(file._id);
-      Meteor.call('createEmployeeFromResume', file._id, function(err, result) {
-        if (err) {
-          console.log(err.reason);
-        }
-        endParsing();
-      });
-    }
+var uploadFile = function(file) {
+  startParsing();
+  FileUploader.post('uploadResume', file, {name: file.name, type: file.type}, function(err, result) {
+    endParsing();
+    console.log(err, result);
   });
-
-
 };
 
 Template.resumeAdd.events = {
@@ -68,45 +50,12 @@ Template.resumeAdd.uploadFile = function() {
 // List resumes
 
 Template.resumesList.resumes = function() {
-  return ResumesFS.find();
-};
-
-Template.resumesList.resumes = function() {
-  return ResumesFS.find(
-    {
-      uploadedAt: {
-        $exists: true
-      },
-      'metadata.completed': false
-    },
-    {
-      sort: {
-        uploadedAt: -1
-      }
-    }
-  );
-};
-
-Template.resumesList.resumesUploading = function() {
-  return ResumesFS.find(
-    {
-      uploadedAt: {
-        $exists: false
-      }
-    }
-  );
-};
-
-Template.resumesList.resumesCompleted = function() {
-  return ResumesFS.find(
-    {
-      'metadata.completed': true
-    }
-  );
+  return Resumes.find();
 };
 
 Template.resumesList.completedInfo = function() {
-  return Contactables.findOne({_id: this.metadata.employeeId});
+  Meteor.subscribe('singleContactable', this.employeeId);
+  return Contactables.findOne({_id: this.employeeId});
 };
 
 var startParsing = function() {
@@ -126,15 +75,6 @@ Template.resumesList.events = {
     var file = this;
     ResumesFS.remove({_id: file._id});
   },
-  //'click .parser': function(e) {
-  //  startParsing();
-  //  Meteor.call('createEmployeeFromResume', this._id, function(err, result) {
-  //    if (err) {
-  //      console.log(err.reason);
-  //    }
-  //    endParsing();
-  //  });
-  //},
   'click .resume': function(e) {
     var file = this;
     FS.HTTP.uploadQueue.resumeUploadingFile(file);
