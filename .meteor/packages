@@ -43,8 +43,6 @@ meteorhacks:zones
 force-ssl
 pagination
 
-
-npm-container
 mongoview
 reactive-var
 cfs:data-man
