@@ -45,3 +45,5 @@ force-ssl
 pagination
 mongoview
 
+
+npm-container
