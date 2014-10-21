@@ -1,4 +1,4 @@
-var fs = Meteor.npmRequire('fs');
+var fs = Npm.require('fs');
 
 FileUploader.createEndpoint = function(route, options) {
   var endpointMethod = {};
