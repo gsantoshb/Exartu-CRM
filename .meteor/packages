@@ -44,6 +44,3 @@ meteorhacks:zones
 force-ssl
 pagination
 mongoview
-
-
-npm-container
