@@ -7,6 +7,8 @@
 methods = {};
 _.extend(methods, {
     getHierarchiesRelation: function (hier1, hier2) {
+      if (!hier1) return null;
+
         var block = 0,
             minLength,
             result;

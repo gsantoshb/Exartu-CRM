@@ -1,4 +1,5 @@
 var jobCollection = JobList;
+
 JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
@@ -73,19 +74,16 @@ var query = new Utils.ObjectDefinition({
       type: Utils.ReactivePropertyTypes.array,
       default: []
     },
-    limit: {
-      default: 15
-    },
     location: {},
     status: {}
   }
 });
 
 // All
-
-Template.jobs.created = function(){
-  query.limit.value = 20
-};
+//
+//Template.jobs.created = function(){
+//  query.limit.value = 20
+//};
 
 Template.jobs.information = function() {
   var searchQuery = {};
@@ -97,21 +95,18 @@ Template.jobs.information = function() {
 
   return info;
 };
-
-Template.jobs.showMore = function() {
-  return function() { query.limit.value = query.limit.value + 15 };
-};
+//
+//Template.jobs.showMore = function() {
+//  return function() { query.limit.value = query.limit.value + 15 };
+//};
 
 // List
 Template.jobsList.created= function () {
-  console.log('created')
   Meteor.autorun(function () {
-    console.log('autorun')
-
     var searchQuery = {
       $and: [] // Push each $or operator here
     };
-    var options = {limit: query.limit.value};
+    var options = {};
 
     searchDep.depend();
     selectedSortDep.depend();
@@ -153,7 +148,7 @@ Template.jobsList.created= function () {
       };
     }
 
-    // Status / Inactive
+    //Status / Inactive
     if (! query.inactives.value) {
       var inactiveStatusOR = {
         $or: []
@@ -174,7 +169,7 @@ Template.jobsList.created= function () {
       searchQuery.$and.push(inactiveStatusOR);
     }
 
-    // Created by
+    //Created by
     if (query.mineOnly.value) {
       searchQuery.userId = Meteor.userId();
     }
@@ -265,7 +260,7 @@ Template.jobs.isSearching = function() {
   return isSearching;
 }
 
-var getActiveStatuses = function(objName){
+getActiveStatuses = function(objName){
   var status = Enums.lookUpTypes["job"];
 
   status = status && status.status;

@@ -2,7 +2,7 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [ContactablesHandler];
+    return [];
   },
   action: function () {
     if (!this.ready()) {
@@ -97,6 +97,10 @@ Template.contactables.showMore = function() {
 Template.contactables.created = function(){
   query.limit.value = 20
 };
+
+Template.contactables.isLoading = function () {
+  return ContactablesHandler.isLoading();
+}
 
 var searchDep = new Deps.Dependency;
 var isSearching = false;
@@ -237,10 +241,8 @@ Template.contactablesList.created = function() {
       delete searchQuery.$and;
 
     if (!_.isEmpty(query.candidateStatus.value)){
-      debugger;
       searchQuery._id = {$in:_.map(Placements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
     }
-
     ContactablesHandler.setFilter(searchQuery);
   });
 };

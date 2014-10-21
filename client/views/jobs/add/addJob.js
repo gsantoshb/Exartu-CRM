@@ -3,7 +3,7 @@ JobAddController = RouteController.extend({
     Session.set('objType', this.params.objType);
   },
   waitOn: function () {
-    return Meteor.subscribe('singleContactable', {houseAccount: true});
+    return [Meteor.subscribe('allContactables',{Customer: {$exists: true}})];
   },
   action: function () {
     if (!this.ready()) {
