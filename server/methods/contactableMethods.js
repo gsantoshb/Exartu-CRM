@@ -1,3 +1,5 @@
+var fs = Meteor.npmRequire('fs');
+
 Meteor.methods({
   addContactable: function (contactable) {
     return ContactableManager.create(contactable);

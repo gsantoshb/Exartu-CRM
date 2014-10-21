@@ -1,5 +1,3 @@
-var fs = Meteor.npmRequire('fs');
-
 ContactableManager = {
   create: function (contactable) {
     return Contactables.insert(contactable);

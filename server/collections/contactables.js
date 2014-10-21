@@ -75,23 +75,6 @@ Meteor.publish('contactablesFiles', function () {
 
 // Employee resumes
 Resumes = new Mongo.Collection('resumes');
-
-//S3Store = new FS.Store.S3("resumes",{
-//  region: "sa-east-1",
-//  accessKeyId: "AKIAIB76L4YEQOBMNNBA",
-//  secretAccessKey: "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",
-//  bucket: "exartu-bucket-0001"
-//});
-//
-//ResumesFS = new FS.Collection("resumes", {
-//  stores: [S3Store]
-//});
-//FS.debug = true;
-//ResumesFS.on('stored', Meteor.bindEnvironment(function(fileObj){
-//  console.dir(fileObj)
-//  ContactableManager.createFromResume("resumes", fileObj);
-//}));
-
 Meteor.publish('resumes', function() {
   return Resumes.find({userId: this.userId});
 });
