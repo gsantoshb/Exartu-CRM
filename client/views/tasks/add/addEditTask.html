@@ -38,7 +38,7 @@
                                     <label class="control-label">Assign:</label>
                                     <select class="form-control assign" >
                                         {{#each users}}
-                                            <option value="{{_id}}" selected="{{isSelected}}">{{username}}</option>
+                                            <option value="{{_id}}" selected="{{isSelected}}">{{displayUserName}}</option>
                                         {{/each}}
                                     </select>
                                     <span>{{error.assign}}</span>
