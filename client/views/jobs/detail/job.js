@@ -122,6 +122,10 @@ Template.job.helpers({
       return undefined;
 
     return Contactables.findOne(placementsAssignment.employee);
+  },
+  customerName: function () {
+    var customer = Contactables.findOne(this.customer);
+    return customer && customer.displayName;
   }
 });
 
