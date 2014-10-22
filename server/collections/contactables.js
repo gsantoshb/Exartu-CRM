@@ -49,8 +49,9 @@ Meteor.paginatedPublish(ContactablesList, function () {
 Meteor.publish('allContactables', function (filter) {
   console.log('allContactables',filter);
   return Contactables.find(filter, {
-    fields:{
+    fields: {
       'organization.organizationName': 1,
+      person: 1,
       houseAccount: 1
     }
   });
