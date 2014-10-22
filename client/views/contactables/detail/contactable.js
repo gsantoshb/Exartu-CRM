@@ -53,7 +53,7 @@ Template.contactable.helpers({
   },
   // Counters
   documentCount: function() {
-    return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count() + ResumesFS.find({'metadata.employeeId': Session.get('entityId')}).count();
+    return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count() + Resumes.find({employeeId: Session.get('entityId')}).count()
   },
   noteCount: function() {
       return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }}).count();

@@ -1,6 +1,9 @@
 JobView = new View('jobs', {
   collection: Jobs,
   mapping: function(job) {
+    console.log(job._id);
+    console.log(job.customer);
+
     return Contactables.find(job.customer);
   }
 });
@@ -19,7 +22,7 @@ Meteor.paginatedPublish(JobView, function(){
 });
 
 Meteor.publish('jobDetails', function (id) {
-  return Utils.filterCollectionByUserHier.call(this, Jobs.find(id));
+  return Utils.filterCollectionByUserHier.call(this, JobView.find(id));
 });
 
 

@@ -89,5 +89,12 @@ ContactableManager = {
     });
 
     return contactable ? contactable.contactMethods : [];
+  },
+
+  addAddress: function (contactableId, addressInfo) {
+    // Validation
+    if (! contactableId) { throw new Error('Contactable ID is required'); }
+
+
   }
 };
