@@ -6,7 +6,6 @@ JobController = RouteController.extend({
     return [Meteor.subscribe('jobDetails', this.params._id), GoogleMapsHandler]
   },
   data: function () {
-    debugger
     Session.set('entityId', this.params._id);
   },
   action: function () {
