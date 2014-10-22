@@ -82,78 +82,81 @@ Template.placementsBox.isSearching = function() {
 
 // List
 Template.placementsList.created = function () {
-Meteor.autorun(function () {
-
-  var searchQuery = {};
-  searchDep.depend();
-
-  if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
-
-  if (entityType==Enums.linkTypes.contactable.value) {
-    if (contactable.Customer) searchQuery.customer=Session.get('entityId');
-    if (contactable.Employee) searchQuery.employee=Session.get('entityId');
+  if (!window.PlacementHandler){
+    PlacementHandler = Meteor.paginatedSubscribe('placements');
   }
+  Meteor.autorun(function () {
 
-  if (!_.isEmpty(query.searchString.value)) {
-    var stringSearches=[];
-    _.each(searchFields, function (field) {
-      var aux = {};
-      aux[field] = {
-        $regex: query.searchString.value,
-        $options: 'i'
+    var searchQuery = {};
+    searchDep.depend();
+
+    if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
+
+    if (entityType==Enums.linkTypes.contactable.value) {
+      if (contactable.Customer) searchQuery.customer=Session.get('entityId');
+      if (contactable.Employee) searchQuery.employee=Session.get('entityId');
+    }
+
+    if (!_.isEmpty(query.searchString.value)) {
+      var stringSearches=[];
+      _.each(searchFields, function (field) {
+        var aux = {};
+        aux[field] = {
+          $regex: query.searchString.value,
+          $options: 'i'
+        }
+        stringSearches.push(aux);
+      });
+      searchQuery = {
+        $and: [searchQuery, {
+          $or: stringSearches
+        }]
+      };
+    }
+
+    if (query.selectedLimit.value) {
+      var dateLimit = new Date();
+      searchQuery.dateCreated = {
+        $gte: dateLimit.getTime() - query.selectedLimit.value
+      };
+    }
+
+    if (! query.inactives.value) {
+      var activeStatuses;
+      activeStatuses = getActiveStatuses('placement');
+      if (_.isArray(activeStatuses) && activeStatuses.length > 0){
+        searchQuery.placementStatus={
+          $in: activeStatuses
+        };
       }
-      stringSearches.push(aux);
-    });
-    searchQuery = {
-      $and: [searchQuery, {
-        $or: stringSearches
-      }]
-    };
-  }
+    }
 
-  if (query.selectedLimit.value) {
-    var dateLimit = new Date();
-    searchQuery.dateCreated = {
-      $gte: dateLimit.getTime() - query.selectedLimit.value
-    };
-  }
+    if (!_.isEmpty(query.candidateAction.value) ) {
+      var candidateStatuses = getCandidateStatuses(query.candidateAction.value.valueOf());
+      if (_.isArray(candidateStatuses) && candidateStatuses.length > 0){
+        searchQuery.candidateStatus={
+          $in: candidateStatuses
+        };
 
-  if (! query.inactives.value) {
-    var activeStatuses;
-    activeStatuses = getActiveStatuses('placement');
-    if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-      searchQuery.placementStatus={
-        $in: activeStatuses
+      }
+      else
+      {
+        // if here then no candidate statuses match the desired one so must return no rows
+        searchQuery.candidateStatus={true:false};
+      }
+    }
+
+    if (query.tags.value.length > 0) {
+      searchQuery.tags = {
+        $in: query.tags.value
       };
     }
-  }
 
-  if (!_.isEmpty(query.candidateAction.value) ) {
-    var candidateStatuses = getCandidateStatuses(query.candidateAction.value.valueOf());
-    if (_.isArray(candidateStatuses) && candidateStatuses.length > 0){
-      searchQuery.candidateStatus={
-        $in: candidateStatuses
-      };
-
+    if (query.statuses.value && query.statuses.value.length){
+      searchQuery.candidateStatus = {$in: query.statuses.value};
     }
-    else
-    {
-      // if here then no candidate statuses match the desired one so must return no rows
-      searchQuery.candidateStatus={true:false};
-    }
-  }
-
-  if (query.tags.value.length > 0) {
-    searchQuery.tags = {
-      $in: query.tags.value
-    };
-  }
-
-  if (query.statuses.value && query.statuses.value.length){
-    searchQuery.candidateStatus = {$in: query.statuses.value};
-  }
-  PlacementHandler.setFilter(searchQuery);
-})
+    PlacementHandler.setFilter(searchQuery);
+  })
 }
 Template.placementsList.info = function() {
   info.isFiltering.value = PlacementHandler.totalCount() != 0;

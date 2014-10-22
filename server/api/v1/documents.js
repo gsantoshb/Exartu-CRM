@@ -49,7 +49,7 @@ Router.map(function() {
 					if (!data.entityId)
 						response.error('EntityId is required');
 					
-					var documents = ContactablesFS.find({'metadata.entityId': data.entityId}).map(mapper.get);
+					var documents = ContactablesFiles.find({entityId: data.entityId}).map(mapper.get);
 					response.end(documents, {type: 'application/json'});
 					break;
 				default:

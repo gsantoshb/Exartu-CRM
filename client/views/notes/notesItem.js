@@ -1,12 +1,17 @@
-var entityId = null;
-var entityType = null;
 //var tracker = null;
 Template.notesItem.created = function(id){
-  if (this.data) entityId=this.data._id;
-  entityType=Utils.getEntityTypeFromRouter();
+  var self = this;
+  if (!window.NotesHandler){
+    NotesHandler = Meteor.paginatedSubscribe('notes');
+  }
 
   Meteor.autorun(function () {
+    var entityId = null;
+
+    if (self.data) entityId = self.data._id;
+
     searchDep.depend();
+
     var searchQuery = {};
 
     if (!_.isEmpty(searchString)) {
@@ -38,7 +43,7 @@ Template.notesItem.destroyed = function () {
 
 var searchString, searchDep = new Deps.Dependency;
 Template.notesItem.notes = function() {
-  return Notes.find({},{});
+  return Notes.find();
 };
 
 Template.notesItem.getCount = function(notes) {
