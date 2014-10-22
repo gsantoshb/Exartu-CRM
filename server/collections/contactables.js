@@ -2,11 +2,11 @@ Meteor.publish('singleContactable', function (id) {
   return Utils.filterCollectionByUserHier.call(this, Contactables.find(id));
 });
 
-ContactablesView = new View('contactables',{
+ContactablesList = new View('contactables',{
   collection: Contactables,
   mapping: function (contactable) {
-    var result = [Placements.findOne({_id: contactable.placement})];
-    if (contactable.Contact && contactable.Contact.customer){
+    var result = [Placements.find({_id: contactable.placement})];
+    if (contactable.Contact && contactable.Contact.customer) {
       result.push(Contactables.find(contactable.Contact.customer, {
         fields: {
           'organization.organizationName' : 1
@@ -15,13 +15,13 @@ ContactablesView = new View('contactables',{
     }
     return result;
   }
-})
+});
 
-Meteor.paginatedPublish(ContactablesView, function () {
+Meteor.paginatedPublish(ContactablesList, function () {
     if (!this.userId)
       return false;
 
-    return Utils.filterCollectionByUserHier.call(this, ContactablesView.find({},
+    return Utils.filterCollectionByUserHier.call(this, ContactablesList.find({},
       {
         fields: {
           // Only fields displayed on list
