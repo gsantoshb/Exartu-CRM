@@ -76,18 +76,11 @@ ContactableManager = {
       return result;
     });
   },
-  getContactMethodsForApi: function (contactableId) {
+  getContactMethods: function (contactableId) {
     // Validation
     if (! contactableId) { throw new Error('Contactable ID is required'); }
 
-    var contactMethods = ContactMethods.find().fetch();
     var contactable = Contactables.findOne({ _id: contactableId }, { fields: { contactMethods: 1 } });
-
-    // Transform the contact method types before returning
-    _.each(contactable.contactMethods, function (cm) {
-      cm.contactableId = contactableId;
-      cm.type = _.find(contactMethods, function (method) { return method._id === cm.type; }).type;
-    });
 
     return contactable ? contactable.contactMethods : [];
   },

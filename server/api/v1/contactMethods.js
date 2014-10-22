@@ -22,7 +22,15 @@ Router.map(function() {
         case 'GET':
           var contactableId = this.params.contactableId;
           try {
-            var res = ContactableManager.getContactMethodsForApi(contactableId);
+            var res = ContactableManager.getContactMethods(contactableId);
+
+            // Transform the response before sending it back
+            var contactMethods = ContactMethods.find().fetch();
+            _.each(res, function (cm) {
+              cm.contactableId = contactableId;
+              cm.type = _.find(contactMethods, function (method) { return method._id === cm.type; }).type;
+            });
+
             response.end(res);
           } catch(err) {
             console.log(err);
