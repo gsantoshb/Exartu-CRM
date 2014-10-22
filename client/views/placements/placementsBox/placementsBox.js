@@ -3,7 +3,8 @@ var isEntitySpecific = false;
 var contactable;
 var searchFields = ['jobDisplayName','employeeDisplayName','customerDisplayName'];
 
-var placementCollection = PlacementList;
+var placementCollection = Placements;
+
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
     candidateActionOptions:{ default: ['Submittal','Sendout','Placed']},
@@ -210,6 +211,10 @@ Template.placementsListSearch.searchString = function() {
   return query.searchString;
 };
 
+Template.placementsListSearch.isLoading = function () {
+  return PlacementHandler.isLoading();
+}
+
 Template.placementsListSearch.events = {
   'click .addPlacement': function (e) {
     Session.set('addOptions', {job: Session.get('entityId')});
@@ -219,6 +224,20 @@ Template.placementsListSearch.events = {
 };
 
 // Item
+
+Template.placementsListItem.employeeDisplayName = function () {
+  var employee = Contactables.findOne(this.employee);
+  return employee && employee.displayName;
+}
+Template.placementsListItem.jobDisplayName = function () {
+  var job = Jobs.findOne(this.job);
+  return job && job.displayName;
+}
+Template.placementsListItem.customerDisplayName = function () {
+  var job = Jobs.findOne(this.job);
+  var customer = job && Contactables.findOne(job.customer);
+  return customer && customer.displayName;
+}
 
 Template.placementsListItem.pictureUrl = function(pictureFileId) {
   var picture = PlacementsFS.findOne({_id: pictureFileId});

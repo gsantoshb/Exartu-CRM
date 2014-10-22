@@ -65,12 +65,10 @@
                         </header>
 
                         <div class="activity-container scroll-container">
-                            {{log}}
                             {{#each activities}}
-                            {{log}}
                                 {{> activity}}
                             {{/each}}
-                            {{>fastPagination name="activitiesList" loadingTemplate='loadingActivities' container='body' content='#content'}}
+                            {{>fastPagination name="activities" loadingTemplate='loadingActivities' container='body' content='#content'}}
                         </div>
                     </section>
                     <!-- /.timeline -->

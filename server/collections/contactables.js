@@ -2,22 +2,39 @@ Meteor.publish('singleContactable', function (id) {
   return Utils.filterCollectionByUserHier.call(this, Contactables.find(id));
 });
 
-Meteor.paginatedPublish(Contactables, function () {
+ContactablesView = new View('contactables',{
+  collection: Contactables,
+  mapping: function (contactable) {
+    var result = [Placements.findOne({_id: contactable.placement})];
+    if (contactable.Contact && contactable.Contact.customer){
+      result.push(Contactables.find(contactable.Contact.customer, {
+        fields: {
+          'organization.organizationName' : 1
+        }
+      }));
+    }
+    return result;
+  }
+})
+
+Meteor.paginatedPublish(ContactablesView, function () {
     if (!this.userId)
       return false;
 
-    return Utils.filterCollectionByUserHier.call(this, Contactables.find(
-      {},
+    return Utils.filterCollectionByUserHier.call(this, ContactablesView.find({},
       {
         fields: {
           // Only fields displayed on list
+        },
+        sort: {
+          dateCreated: -1
         }
       })
     );
   },
   {
     pageSize: 5,
-    publicationName: 'contactablesList'
+    publicationName: 'contactables'
   }
 );
 

@@ -1,26 +1,22 @@
-
-JobList = new View('jobList', {
+JobView = new View('jobs', {
   collection: Jobs,
-  mapping: {
-    customerInfo: {
-      find: function(job) {
-        return Contactables.find(job.customer,{fields: {
-          'organization.organizationName': 1
-        }});
-      },
-      map: function (doc) {
-        if (! doc) return null;
-
-        return {
-          id: doc._id,
-          displayName: doc.organization.organizationName
-        };
-      }
-    }
+  mapping: function(job) {
+    return Contactables.find(job.customer);
   }
-
 });
 
+Meteor.paginatedPublish(JobView, function(){
+  var user = Meteor.users.findOne({
+    _id: this.userId
+  });
+
+  if (!user)
+    return false;
+  return JobView.find();
+}, {
+  pageSize: 3,
+  publicationName: 'jobs'
+});
 
 Meteor.publish('jobDetails', function (id) {
   return Utils.filterCollectionByUserHier.call(this, Jobs.find(id));
@@ -28,26 +24,7 @@ Meteor.publish('jobDetails', function (id) {
 
 
 
-Meteor.paginatedPublish(JobList, function(){
-  var user = Meteor.users.findOne({
-    _id: this.userId
-  });
 
-  if (!user)
-    return false;
-  return Utils.filterCollectionByUserHier.call(this, JobList.find({},{
-    //fields: {
-    //  customer: 1,
-    //  dateCreated: 1,
-    //  publicJobTitle: 1,
-    //  searchKey: 1,
-    //  dateCreated: 1
-    //}
-  }));
-}, {
-  pageSize: 3,
-  publicationName: 'jobList'
-});
 Jobs.allow({
   update: function () {
     return true;

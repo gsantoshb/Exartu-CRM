@@ -262,7 +262,6 @@ var markInvitationsAsUsed = function(userInvitation) {
 };
 
 // Email validation template
-
 Accounts.emailTemplates.siteName = "Exartu ";
 Accounts.emailTemplates.from = "Exartu team<exartu.developer@gmail.com>";
 Accounts.emailTemplates.enrollAccount.subject = function (user) {
@@ -274,8 +273,22 @@ Accounts.emailTemplates.enrollAccount.text = function (user, url) {
   + url;
 };
 
-// Endpoints
+// Email reset password template
+Accounts.emailTemplates.resetPassword.subject = function (user) {
+  return "Confirm your password reset request";
+};
+Accounts.emailTemplates.resetPassword.text = function (user, url) {
+  return "Dear user,\n\n"
+    + "We have received a request to reset the password for your Exartu account.\n"
+    + "Please click the link below to set your new password. Alternatively, copy the link into your browser.\n\n"
+    + url + "\n\n"
+    + "If you have not requested it, please dismiss this email.\n\n"
+    + "Thank you,\n"
+    + "Exartu team";
+};
 
+
+// Endpoints
 Router.map(function () {
   this.route('emailVerification', {
     where: 'server',

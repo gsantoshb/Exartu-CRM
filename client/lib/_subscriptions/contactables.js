@@ -22,7 +22,7 @@ Contactables = new Meteor.Collection("contactables", {
 
     if (contactable.Contact && contactable.Contact.customer) {
       var customer = Contactables.findOne({_id: contactable.Contact.customer });
-      contactable.Contact.customerName = customer.displayName;
+      contactable.Contact.customerName = customer && customer.displayName;
     }
 
     extendObject(contactable);
@@ -36,4 +36,4 @@ var addDisplayName = function (contactable) {
     contactable.displayName = contactable.organization.organizationName;
 }
 
-ContactablesHandler = Meteor.paginatedSubscribe('contactablesList');
+AuxContactables = new Meteor.Collection("auxContactables");

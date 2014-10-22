@@ -29,4 +29,3 @@ Tasks = new Meteor.Collection("tasks", {
     return task;
   }
 });
-TasksHandler = Meteor.paginatedSubscribe("tasks");

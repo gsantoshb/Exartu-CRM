@@ -2,7 +2,8 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [];
+    ContactablesHandler = Meteor.paginatedSubscribe('contactables');
+    return [ContactablesHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -256,7 +257,13 @@ Template.contactablesList.contactables = function() {
     return esResult;
   }
 
-  return Contactables.find();
+  // Hack: in the contactables collection coexists the regular contactables and the contact's customer
+  // which I loaded using the contactables view in the server.
+  // The problem is that those customer should not be listed since they do not belong to this page
+  // to fix that I toke advantage of the fact that those customer 'have less fields',
+  // that's wy I'm filtering out the one that don't have hierId.
+  // A possible solution could be to use 2 collections in the client
+  return Contactables.find({hierId: {$exists: true}});
 };
 
 Template.contactablesList.contactableTypes = function() {
