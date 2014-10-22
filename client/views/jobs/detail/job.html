@@ -46,7 +46,7 @@
 <!-- Tabs -->
 
 <template name="job_tabs">
-    {{> detailTabs tabs=tabs selected=selectedTab template="job" context=job}}
+    {{> detailTabs tabs=tabs selected=selectedTab template="job" context=.}}
 </template>
 
 <template name="job_placements">
@@ -70,7 +70,7 @@
 </template>
 
 <template name="job_notes">
-    {{> notesItem}}
+    {{> notesItem job}}
 </template>
 
 <template name="job_details">
