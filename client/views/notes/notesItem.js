@@ -1,12 +1,15 @@
 //var tracker = null;
+var entityId = null;
+var entityType = null;
 Template.notesItem.created = function(id){
   var self = this;
   if (!window.NotesHandler){
     NotesHandler = Meteor.paginatedSubscribe('notes');
   }
+  entityType=Utils.getEntityTypeFromRouter();
 
   Meteor.autorun(function () {
-    var entityId = null;
+    entityId = null;
 
     if (self.data) entityId = self.data._id;
 

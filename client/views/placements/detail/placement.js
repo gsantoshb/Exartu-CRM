@@ -75,6 +75,19 @@ Template.placement.helpers({
   },
   colorEdit:function(){
       return self.editMode ? '#008DFC' : '#ddd'
+  },
+  employeeDisplayName: function () {
+    var employee =  Contactables.findOne(this.employee);
+    return employee && employee.displayName;
+  },
+  jobDisplayName: function () {
+    var job =  Jobs.findOne(this.job);
+    return job && job.displayName;
+  },
+  customerDisplayName: function () {
+    var job =  Jobs.findOne(this.job);
+    var customer = job && Contactables.findOne(job.customer);
+    return customer && customer.displayName;
   }
 });
 
