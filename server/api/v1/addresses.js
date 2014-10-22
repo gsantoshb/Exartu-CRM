@@ -22,7 +22,11 @@ Router.map(function() {
         case 'GET':
           var contactableId = this.params.contactableId;
           try {
-            var res = ContactableManager.getContactMethodsForApi(contactableId);
+            var res = ContactableManager.getAddress(contactableId);
+
+            // Transform the response before sending it back
+            res.contactableId = contactableId;
+
             response.end(res);
           } catch(err) {
             console.log(err);
@@ -31,16 +35,27 @@ Router.map(function() {
           break;
 
 
-        // Create new contact method
+        // Set the address for a contactable
         // Body:
         //  - contactableId: string
-        //  - type: string (int)
-        //  - value: string
+        //  - address: string
+        //  - address2: string
+        //  - city: string
+        //  - state: string
+        //  - country: string
+        //  - zip: string (int)
         case 'POST':
           var data = this.request.body;
           try {
-            var intType = parseInt(data.type);
-            ContactableManager.addContactMethod(data.contactableId, intType, data.value);
+            var addressInfo = {
+              address: data.address,
+              address2: data.address2,
+              city: data.city,
+              state: data.state,
+              country: data.country,
+              postalCode: data.zip
+            };
+            ContactableManager.setAddress(data.contactableId, addressInfo);
             response.end(data);
           } catch(err) {
             console.log(err);
