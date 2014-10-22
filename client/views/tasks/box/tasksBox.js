@@ -132,6 +132,9 @@ Template.tasksBox.helpers({
   selectedClass: function(){
     statusDep.depend();
     return this == status ? 'btn-primary': 'btn-default';
+  },
+  isLoading: function () {
+    return TasksHandler.isLoading();
   }
 })
 Template.tasksBox.events({

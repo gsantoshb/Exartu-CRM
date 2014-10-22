@@ -30,6 +30,6 @@ PlacementsController = RouteController.extend({
 
 Template.placements.helpers({
   placementCount: function(){
-    return TasksHandler.totalCount();
+    return PlacementHandler.totalCount();
   }
 });

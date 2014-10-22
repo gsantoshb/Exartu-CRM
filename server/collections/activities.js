@@ -1,4 +1,4 @@
-ActivityViews = new View('activitiesView', {
+ActivityViews = new View('activities', {
   collection: Activities,
   mapping: function (activity) {
       switch (activity.type) {
@@ -26,7 +26,7 @@ ActivityViews = new View('activitiesView', {
     }
 });
 
-Meteor.publish('', function () {
+Meteor.paginatedPublish(ActivityViews, function () {
   return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({},{sort: {dateCreated:-1}}));
 },{
   infiniteScroll: true,

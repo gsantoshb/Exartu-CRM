@@ -211,6 +211,10 @@ Template.placementsListSearch.searchString = function() {
   return query.searchString;
 };
 
+Template.placementsListSearch.isLoading = function () {
+  return PlacementHandler.isLoading();
+}
+
 Template.placementsListSearch.events = {
   'click .addPlacement': function (e) {
     Session.set('addOptions', {job: Session.get('entityId')});

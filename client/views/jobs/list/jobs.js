@@ -96,6 +96,10 @@ Template.jobs.information = function() {
 
   return info;
 };
+
+Template.jobs.isLoading = function () {
+  return JobHandler.isLoading();
+}
 //
 //Template.jobs.showMore = function() {
 //  return function() { query.limit.value = query.limit.value + 15 };
