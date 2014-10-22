@@ -28,6 +28,16 @@ Meteor.publish('placementDetails', function (id) {
   return Utils.filterCollectionByUserHier.call(this, PlacementView.find(id));
 });
 
+Meteor.publish('allPlacements', function () {
+  return Utils.filterCollectionByUserHier.call(this, PlacementView.find({},{
+    fields: {
+      status: 1,
+      employee: 1,
+      job: 1
+    }
+}));
+});
+
 Meteor.startup(function () {
   Meteor.methods({
     addPlacement: function (placement) {

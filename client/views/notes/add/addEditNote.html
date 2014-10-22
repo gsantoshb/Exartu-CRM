@@ -22,14 +22,14 @@
                             <div style="padding: 11px 0px;">
                                 Linked Entities:
                                 {{#each linkedEntities}}
-                                {{#with getEntity .}}
-                                <button type="button" class="tag btn btn-xs btn-primary">
-                                            <span>
-                                                {{displayName}}
-                                            </span>
-                                    <i class="remove-link fa fa-times"></i>
-                                </button>
-                                {{/with}}
+                                    {{#with getEntity .}}
+                                        <button type="button" class="tag btn btn-xs btn-primary">
+                                                    <span>
+                                                        {{displayName}}
+                                                    </span>
+                                            <i class="remove-link fa fa-times"></i>
+                                        </button>
+                                    {{/with}}
                                 {{/each}}
                             </div>
                             <div>

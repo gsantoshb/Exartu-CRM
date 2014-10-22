@@ -1,10 +1,11 @@
 JobView = new View('jobs', {
   collection: Jobs,
   mapping: function(job) {
-    console.log(job._id);
-    console.log(job.customer);
-
-    return Contactables.find(job.customer);
+    return Contactables.find(job.customer, {
+      fields: {
+        'organization.organizationName' : 1
+      }
+    });
   }
 });
 
@@ -26,7 +27,13 @@ Meteor.publish('jobDetails', function (id) {
 });
 
 
-
+Meteor.publish('allJobs', function (id) {
+  return Utils.filterCollectionByUserHier.call(this, Jobs.find({},{
+    fields:{
+      publicJobTitle: 1
+    }
+  }));
+});
 
 Jobs.allow({
   update: function () {
