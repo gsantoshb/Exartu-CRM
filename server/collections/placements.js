@@ -1,8 +1,14 @@
 PlacementView = new View('placements', {
   collection: Placements,
   mapping: function(placement) {
-        return [Jobs.find({_id: placement.job }),
-          Contactables.find({_id: placement.employee })];
+    var job = Jobs.find({_id: placement.job }),
+      result = [job, Contactables.find({_id: placement.employee })];
+
+    job.forEach(function(job){
+      if (job.customer)
+        result.push(Contactables.find(job.customer))
+    });
+    return result;
   }
 });
 Meteor.paginatedPublish(PlacementView, function(){
@@ -19,7 +25,7 @@ Meteor.paginatedPublish(PlacementView, function(){
 });
 
 Meteor.publish('placementDetails', function (id) {
-  return Placements.find(id);
+  return Utils.filterCollectionByUserHier.call(this, PlacementView.find(id));
 });
 
 Meteor.startup(function () {
