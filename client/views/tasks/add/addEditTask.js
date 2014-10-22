@@ -79,6 +79,9 @@ Template.addEditTask.helpers({
   users :function(){
     return Meteor.users.find({});
   },
+  displayUserName: function () {
+    return this.userName ? this.userName : this.emails[0].address;
+  },
   isSelected:function(){
     return _.contains(task.assign,this._id);
   },
