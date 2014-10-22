@@ -5,7 +5,15 @@ Meteor.publish('singleContactable', function (id) {
 ContactablesList = new View('contactables',{
   collection: Contactables,
   mapping: function (contactable) {
-    var result = [Placements.find({_id: contactable.placement})];
+    var placement = Placements.find({_id: contactable.placement});
+    var result = [placement];
+
+    placement.forEach(function(placement){
+      if (placement.job){
+        result.push(Jobs.find(placement.job))
+      }
+    });
+
     if (contactable.Contact && contactable.Contact.customer) {
       result.push(Contactables.find(contactable.Contact.customer, {
         fields: {
