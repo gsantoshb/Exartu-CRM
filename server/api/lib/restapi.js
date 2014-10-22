@@ -12,9 +12,7 @@ var selectorFromUserQuery = function (user) {
 
 RESTAPI.generateLoginToken = function(userId) {
   var stampedLoginToken = Accounts._generateStampedLoginToken();
-  Meteor.users.update(userId, {
-    $push: {'services.resume.loginTokens': stampedLoginToken}
-  });
+	Accounts._insertHashedLoginToken(userId, stampedLoginToken);
 
   return stampedLoginToken.token;
 };
