@@ -20,6 +20,9 @@ Meteor.methods({
   },
   addContactMethod: function (contactableId, type, value) {
     ContactableManager.addContactMethod(contactableId, type, value);
+  },
+  setContactableAddress: function (contactableId, address) {
+    ContactableManager.setAddress(contactableId, address);
   }
 });
 

@@ -1,8 +1,10 @@
+var oldValue;
 EditLocationMode = {
   val: false,
   dep: new Deps.Dependency,
   show: function () {
     this.val = true;
+    oldValue = location.value;
     this.dep.changed();
   },
   hide: function () {
@@ -18,6 +20,55 @@ Object.defineProperty(EditLocationMode, "value", {
   set: function (newValue) {
     this.val = newValue;
     this.dep.changed();
+  }
+});
+
+LocationSchema = new SimpleSchema({
+  address: {
+    type: String,
+    label: 'Address line 1',
+    optional: true
+  },
+  address2: {
+    type: String,
+    label: 'Address line 2',
+    optional: true
+  },
+  city: {
+    type: String,
+    label: 'City',
+    optional: true
+  },
+  state: {
+    type: String,
+    label: 'State',
+    optional: true
+  },
+  country: {
+    type: String,
+    label: 'Country',
+    optional: true
+  },
+  postalCode: {
+    type: Number,
+    label: 'Zip code',
+    optional: true
+  }
+});
+
+AutoForm.hooks({
+  SetLocation: {
+    onSubmit: function(address) {
+      var id = UI._parentData(1)._id;
+      Meteor.call('setContactableAddress', id, address, function() {
+        location.value = address;
+        EditLocationMode.hide();
+      });
+
+      this.done();
+      this.resetForm();
+      return false;
+    }
   }
 });
 
@@ -55,6 +106,7 @@ Template.contactableLocationBox.events = {
     EditLocationMode.value = false;
   },
   'click #cancel-location': function () {
+    location.value = oldValue;
     EditLocationMode.value = false;
   }
 };
