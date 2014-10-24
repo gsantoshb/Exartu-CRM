@@ -1,10 +1,11 @@
+
 Jobs = new Meteor.Collection('jobs', {
   transform: function (job) {
     job.displayName = job.publicJobTitle ;
 
     if (job.duration != null) {
       var dur=LookUps.findOne({ _id: job.duration });
-      if (dur) job.durationName = dur.displayName
+      if (dur) job.durationName = dur.displayName;
       else
       {
         console.log('corrupt job duration setting ',job);

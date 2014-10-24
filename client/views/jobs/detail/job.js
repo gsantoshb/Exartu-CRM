@@ -3,14 +3,14 @@ var jobCollections= Jobs;
 JobController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [Meteor.subscribe('jobDetails', this.params._id), GoogleMapsHandler]
+    return [Meteor.subscribe('singleJob', this.params._id), GoogleMapsHandler]
   },
   data: function () {
     Session.set('entityId', this.params._id);
   },
   action: function () {
     if (!this.ready()) {
-      this.render('loadingContactable')
+      this.render('loadingContactable');
       return;
     }
     Session.set('activeTab', this.params.hash);
@@ -215,7 +215,7 @@ var addTag = function () {
 
 var tabs;
 Template.job_tabs.tabs = function() {
-  var tabs = [
+  return [
     {id: 'details', displayName: 'Details', template: 'job_details'},
     {id: 'notes', displayName: 'Notes', info: 'noteCount', template: 'job_notes'},
     {id: 'description', displayName: 'Description', template: 'job_description'},
@@ -223,10 +223,8 @@ Template.job_tabs.tabs = function() {
     {id: 'rates', displayName: 'Rates', template: 'job_rates'},
     {id: 'placements', displayName: 'Placements', template: 'job_placements'},
     {id: 'activity', displayName: 'Activity', template: 'job_activity'},
-    {id: 'actions', displayName: 'Actions', template: 'job_actions'},
+    {id: 'actions', displayName: 'Actions', template: 'job_actions'}
   ];
-
-  return tabs;
 };
 
 Template.job_tabs.selectedTab = function() {

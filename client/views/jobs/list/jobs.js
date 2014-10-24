@@ -367,4 +367,4 @@ Template.jobsListItem.displayObjType = function() {
 Template.jobInformation.customerName = function () {
   var customer =  Contactables.findOne(this.customer);
   return customer && customer.displayName;
-}
+};
