@@ -151,6 +151,10 @@ Template.employeeEducationEditItem.helpers({
   endDateClass: function() {
     var ctx = Template.parentData(2);
     return ctx.toPresent.get()? 'disabled' : '';
+  },
+  checked: function() {
+    var ctx = Template.parentData(2);
+    return ctx.toPresent.get()? 'checked' : undefined;
   }
 });
 

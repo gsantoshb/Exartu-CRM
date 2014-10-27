@@ -1,12 +1,12 @@
 <template name="employeeEduction">
-    <div class="education">
+    <div class="record">
         {{> employeeEducationAdd}}
         {{> employeeEducationList}}
     </div>
 </template>
 
 <template name="employeeEducationAdd">
-    <div class="education-add row">
+    <div class="record-add row">
         <div class="add-box-head col-xs-12 col-md-3">
             <div class="add-item-icon"><i class="icon-books-3"></i></div>
             <h2>Education</h2>
@@ -43,7 +43,7 @@
 </template>
 
 <template name="employeeEducationList">
-    <ul class="education-list list-3 stripped has-thumb">
+    <ul class="record-list list-3 stripped has-thumb">
         {{#each items}}
             {{> employeeEducationItem}}
         {{/each}}
@@ -51,7 +51,7 @@
 </template>
 
 <template name="employeeEducationItem">
-    <li class="education-record list-3-item">
+    <li class="record-record list-3-item">
         <div class="list-thumb"><i class="icon-profile-graduate"></i></div>
         <div class="list-3-content list-magic">
             <div class="list-3-content-wrap">
@@ -101,7 +101,7 @@
 
                 <div class="checkbox">
                     <label>
-                        <input id="to-present" class="editable" type="checkbox"> To present
+                        <input id="to-present" class="editable" type="checkbox" {{checked}}> To present
                     </label>
                 </div>
             </div>

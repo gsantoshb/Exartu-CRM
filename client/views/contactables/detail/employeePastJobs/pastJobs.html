@@ -1,12 +1,12 @@
 <template name="employeePastJobs">
-    <div class="education">
+    <div class="record">
         {{> employeePastJobAdd}}
         {{> employeePastJobsList}}
     </div>
 </template>
 
 <template name="employeePastJobAdd">
-    <div class="education-add row">
+    <div class="record-add row">
         <div class="add-box-head col-xs-12 col-md-3">
             <div class="add-item-icon"><i class="icon-profile-business-man"></i></div>
             <h2>Past Jobs</h2>
@@ -43,7 +43,7 @@
 </template>
 
 <template name="employeePastJobsList">
-    <ul class="education-list list-3 stripped has-thumb">
+    <ul class="record-list list-3 stripped has-thumb">
         {{#each items}}
             {{> employeePastJobItem}}
         {{/each}}
@@ -51,7 +51,7 @@
 </template>
 
 <template name="employeePastJobItem">
-    <li class="education-record list-3-item">
+    <li class="record-record list-3-item">
         <div class="list-thumb"><i class="icon-briefcase"></i></div>
         <div class="list-3-content list-magic">
             <div class="list-3-content-wrap">
@@ -101,7 +101,7 @@
 
                 <div class="checkbox">
                     <label>
-                        <input id="to-present" class="editable" type="checkbox"> To present
+                        <input id="to-present" class="editable" type="checkbox" {{checked}}> To present
                     </label>
                 </div>
             </div>
