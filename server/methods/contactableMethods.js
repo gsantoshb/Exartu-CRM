@@ -23,6 +23,9 @@ Meteor.methods({
   },
   setContactableAddress: function (contactableId, address) {
     ContactableManager.setAddress(contactableId, address);
+  },
+  getAddress: function (contactableId) {
+    return ContactableManager.getAddress(contactableId);
   }
 });
 
