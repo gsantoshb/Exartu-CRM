@@ -38,7 +38,6 @@ Router.map(function() {
           }
           break;
 
-
         // Create new contact method
         // Body:
         //  - contactableId: string
@@ -59,6 +58,8 @@ Router.map(function() {
         default:
           response.error('Method not supported');
       }
+
+      connection.close();
     }
   })
 });

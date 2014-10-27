@@ -52,6 +52,8 @@ Router.map(function() {
 				default:
 					response.error('Method not supported');
 			}
+
+			connection.close();
 		}
 	})
 });
