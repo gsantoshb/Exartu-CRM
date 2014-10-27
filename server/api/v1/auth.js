@@ -83,3 +83,15 @@ Router.map(function() {
     }
   })
 });
+
+Router.map(function() {
+  this.route('apiTest' + api_version, {
+    where: 'server',
+    path: '/api/' + api_version + '/test',
+    action: function() {
+      console.log('API v' + api_version + '/test' + this.request.method);
+      var response = new RESTAPI.response(this.response);
+      response.end('hello');
+    }
+  })
+});
