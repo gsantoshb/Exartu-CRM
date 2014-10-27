@@ -118,3 +118,12 @@ UI.registerHelper('contactMethodTypeIcon', function(type) {
 UI.registerHelper('contactMethodTypePrefix', function(type) {
   return Utils.contactMethodTypePrefix(type);
 });
+
+
+// User name display
+UI.registerHelper('displayUserName', function (id) {
+  var user = Meteor.users.findOne({ _id: id });
+  if (!user) return '';
+
+  return user.userName ? user.userName : user.emails[0].address;
+});
