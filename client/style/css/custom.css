@@ -203,6 +203,7 @@
 }
 
 /* Header */
+
 @media (max-width: 768px) {
     body[data-color="enterprise-dark"] #header h1{
         height: 30px;
@@ -766,6 +767,19 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     .filter {background-color: #ffffff; border: none; margin-top: -10px}
 }
 
+/* Education tab */
+.education {}
+
+.education .education-list { margin-top: 20px; padding: 0px 10px 10px 10px}
+
+.education .education-record { } /*border-bottom: 1px solid #e7e7e7;*/
+
+.education .education-record .education-record-action { display: none;}
+
+.education .education-record:hover .education-record-action { display: block; float: right;}
+
+.education .education-add { padding: 10px 5px 10px 5px; margin: 0px; background-color: #f5f5f5; border: 1px solid #e7e7e7; border-radius: 2px;}
+
 /*connection-banner*/
 #connection-lost-banner {
      position: relative;
@@ -1054,7 +1068,6 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     .box-table{
         margin-top: 0px;
     }
-
 
     /*job header*/
     .profile-name a{
