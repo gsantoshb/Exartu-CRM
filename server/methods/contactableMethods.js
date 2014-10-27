@@ -29,6 +29,17 @@ Meteor.methods({
 
   setContactableAddress: function (contactableId, address) {
     ContactableManager.setAddress(contactableId, address);
+  },
+
+  // Education record
+  addEducationRecord: function (contactableId, educationInfo) {
+    ContactableManager.addEducationRecord(contactableId, educationInfo);
+  },
+  editEducationRecord: function (contactableId, oldEducationInfo, newEducationInfo) {
+    ContactableManager.editEducationRecord(contactableId, oldEducationInfo, newEducationInfo);
+  },
+  deleteEducationRecord: function (contactableId, educationInfo) {
+    ContactableManager.deleteEducationRecord(contactableId, educationInfo);
   }
 });
 
