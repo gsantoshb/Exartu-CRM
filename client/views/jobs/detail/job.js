@@ -6,7 +6,6 @@ JobController = RouteController.extend({
     return [Meteor.subscribe('jobDetails', this.params._id), GoogleMapsHandler]
   },
   data: function () {
-    debugger
     Session.set('entityId', this.params._id);
   },
   action: function () {
@@ -123,6 +122,10 @@ Template.job.helpers({
       return undefined;
 
     return Contactables.findOne(placementsAssignment.employee);
+  },
+  customerName: function () {
+    var customer = Contactables.findOne(this.customer);
+    return customer && customer.displayName;
   }
 });
 

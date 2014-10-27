@@ -1,3 +1,5 @@
+var fs = Meteor.npmRequire('fs');
+
 Router.map(function() {
 	this.route('apiDocuments' + api_version, {
 		where: 'server',
@@ -35,7 +37,6 @@ Router.map(function() {
 
 					try {
 						var doc = connection.call('apiInsertDocument', data);
-						doc.getFileRecord();
 	      		response.end(mapper.get(doc));
       		} catch(err) {
       			response.error('Oh no! Something has gone wrong');
@@ -48,10 +49,8 @@ Router.map(function() {
 					if (!data.entityId)
 						response.error('EntityId is required');
 					
-					var documents = ContactablesFS.find({'metadata.entityId': data.entityId}).map(mapper.get);
-					console.log(documents)
+					var documents = ContactablesFiles.find({entityId: data.entityId}).map(mapper.get);
 					response.end(documents, {type: 'application/json'});
-
 					break;
 				default:
 					response.error('Method not supported');
@@ -62,18 +61,26 @@ Router.map(function() {
 
 Meteor.methods({
 	apiInsertDocument: function(data) {
-		var file = new FS.File(data.path);
-		file.metadata = {
+    var stream = fs.createReadStream(data.path);
+		var res = Meteor.wrapAsync(stream.once, stream)('readable');
+		var streamSize = stream._readableState.length;
+
+    var fileId = S3Storage.upload(stream);
+		var file = {
+      fileId: fileId,
 			owner: Meteor.userId(),
 			entityId: data.entityId,
 			tags: data.tags || [],
 			hierId: Meteor.user().hierId,
 			name: data.name,
-			description: data.description
+			description: data.description,
+			size: streamSize
 		};
-		return ContactablesFS.insert(file);
+
+		var docId = ContactablesFiles.insert(file);
+		return ContactablesFiles.findOne(docId);
 	}
-})
+});
 
 var mapper = {
 	get: function(data) {
@@ -81,10 +88,10 @@ var mapper = {
 			return {}
 		return {
 			id: data._id,
-			name: data.metadata.name,
-			description: data.metadata.description,
-			size: data.size(),
-			tags: data.metadata.tags,
+			name: data.name,
+			description: data.description,
+			size: data.size,
+			tags: data.tags
 		}
 	}
 };

@@ -44,9 +44,16 @@
                         searching
                     {{else}}
                         <div>
-                            {{>fastPagination name="jobList"}}
+                            {{>fastPagination name="jobs"}}
                         </div>
-                        {{> jobsList }}
+                        {{#if isLoading}}
+                                <div style="height: 280px;">
+                                </div>
+                        {{else}}
+                            <div class="fade-in">
+                                {{> jobsList }}
+                            </div>
+                        {{/if}}
                     {{/if}}
 
                     {{#infinityScroll cb=showMore}} {{/infinityScroll}}

@@ -1,4 +1,4 @@
-Activities = new Meteor.Collection("activitiesList" , {
+Activities = new Meteor.Collection("activities" , {
   transform: function (act) {
     var u =     Meteor.users.findOne({_id : act.userId});
 
@@ -11,4 +11,3 @@ Activities = new Meteor.Collection("activitiesList" , {
     return act;
   }
 });
-ActivitiesHandler = Meteor.paginatedSubscribe('activitiesList');

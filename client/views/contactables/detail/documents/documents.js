@@ -2,8 +2,8 @@ AddForm = {
   val: false,
   dep: new Deps.Dependency,
   show: function (file) {
-    document.file = new FS.File(file);
-    document.originalFileName = document.file.original.name;
+    document.file = file;
+    document.originalFileName = document.file.name;
     this.val = true;
     this.dep.changed();
   },
@@ -19,6 +19,19 @@ Object.defineProperty(AddForm, "value", {
     return this.val;
   }
 });
+
+var startParsing = function() {
+  $('#parsing')[0].style.display = 'block';
+  $('.add-box')[0].style['pointer-events'] = 'none';
+  $('.add-box')[0].style.opacity = '0.5';
+};
+
+var endParsing = function() {
+  $('#parsing')[0].style.display = 'none';
+  $('.add-box')[0].style['pointer-events'] = 'auto';
+  $('.add-box')[0].style.opacity = '1';
+};
+
 
 // Add document panel
 
@@ -84,22 +97,24 @@ Template.addDocumentForm.events = {
     }
 
     var newDocument = document.getObject();
-    newDocument.file.metadata = {
+    var metadata = {
       entityId: Session.get('entityId'),
       name: newDocument.name,
+      type: newDocument.file.type,
       description: newDocument.description,
       tags: newDocument.tags,
       owner: Meteor.userId()
     };
 
-    ContactablesFS.insert(newDocument.file, function (err) {
-      if (!err){
-        AddForm.hide();
-        document.reset();
-        GAnalytics.event("/contactable", "Add document", newDocument.file.type());
-      }
-      else
-        console.log('File upload error');
+    startParsing();
+    FileUploader.post('uploadContactablesFiles', newDocument.file, metadata, function(err, result) {
+        if (!err){
+          endParsing();
+          AddForm.hide();
+          document.reset();
+        }
+        else
+          console.log('File upload error');
     });
   },
   'click #cancel-document': function() {
@@ -110,30 +125,15 @@ Template.addDocumentForm.events = {
 
 // List documents
 
-var fileCollection = {};
-
-Template.contactableDocumentsList.created = function() {
-  fileCollection = window[this.data.collection];
-}
-
 Template.contactableDocumentsList.documents = function() {
   if (!this.entity)
     return;
 
-  documents = fileCollection.find({
-      'metadata.entityId':
-        this.entity._id,
-      uploadedAt: {
-        $exists: true
-      },
-      'metadata.name': {
+  documents = ContactablesFiles.find({
+      entityId: this.entity._id,
+      name: {
         $regex: query.searchString.value,
         $options: 'i'
-      }
-    },
-    {
-      sort: {
-        uploadedAt: -1
       }
     }
   );
@@ -152,8 +152,8 @@ Template.contactableDocumentsList.isEmpty = function() {
 };
 
 Template.contactableDocumentsList.resumes = function() {
-  var resumes = this.entity.Employee? ResumesFS.find({'metadata.employeeId': this.entity._id}) : undefined;
-  return resumes && resumes.count() > 0? resumes: undefined;
+  var resumes = Resumes.find({employeeId: this.entity._id});
+  return resumes && resumes.count() > 0? resumes : undefined;
 };
 
 var query = new Utils.ObjectDefinition({
@@ -162,25 +162,17 @@ var query = new Utils.ObjectDefinition({
   }
 });
 
-Template.contactableDocumentsList.documentsUploading = function() {
-  if (!this.entity)
-    return;
-
-  return fileCollection.find(
-    {
-      'metadata.entityId': this.entity._id,
-      uploadedAt: {
-        $exists: false
-      }
-    }
-  );
-
-
-};
-
 Template.contactableDocumentsList.query = function() {
   return query;
-}
+};
+
+Template.contactableDocumentsList.url = function() {
+  return FileUploader.getUrl('uploadContactablesFiles', this.fileId);
+};
+
+Template.contactableDocumentsList.resumeUrl = function() {
+  return FileUploader.getUrl('uploadResume', this.resumeId);
+};
 
 Template.contactableDocumentsList.documentIcon = function(type) {
   switch(true) {
@@ -197,11 +189,7 @@ Template.contactableDocumentsList.documentIcon = function(type) {
 Template.contactableDocumentsList.events = {
   'click .delete': function(e) {
     var file = this;
-    fileCollection.remove({_id: file._id});
-  },
-  'click .delete-resume': function(e) {
-    var file = this;
-    ResumesFS.remove({_id: file._id});
+    ContactablesFiles.remove({_id: file._id});
   },
   'click .resume': function(e) {
     var file = this;
@@ -209,8 +197,7 @@ Template.contactableDocumentsList.events = {
   },
   'click .cancel': function(e) {
     var file = this;
-    FS.HTTP.uploadQueue.cancel(file);
-    fileCollection.remove({_id: file._id});
+    ContactablesFiles.remove({_id: file._id});
   },
   'click .add-document-trigger': function() {
     $('#add-file').trigger('click');

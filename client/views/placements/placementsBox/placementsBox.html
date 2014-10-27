@@ -37,21 +37,28 @@
 
 <template name="placementsList">
     <div>
-        {{>fastPagination name='placementList'}}
-        {{#each placements}}
-            {{> placementsListItem }}
+        {{>fastPagination name='placements'}}
+        {{#if isLoading}}
+            <div style="height: 280px;">
+            </div>
         {{else}}
-            {{#if info.isFiltering.value }}
-                <div class="v-wrapper">
-                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                        <i class="icon-connection-1 text-large"></i>
-                        <h1>
-                            No records Found
-                        </h1>
-                    </div>
-                </div>
-            {{/if}}
-        {{/each}}
+            <div class="fade-in">
+                {{#each placements}}
+                    {{> placementsListItem }}
+                {{else}}
+                    {{#if info.isFiltering.value }}
+                        <div class="v-wrapper">
+                            <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                                <i class="icon-connection-1 text-large"></i>
+                                <h1>
+                                    No records Found
+                                </h1>
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/each}}
+            </div>
+        {{/if}}
     </div>
 </template>
 

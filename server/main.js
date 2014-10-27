@@ -77,4 +77,12 @@ Meteor.startup(function () {
       port: ExartuConfig.ES_PORT,
       auth: ExartuConfig.ES_AUTH
     });
+
+  // Connect with AWS S3
+  S3Storage = new ExternalStorage.Storage({
+    accessKeyId: ExartuConfig.AWS_accessKeyId,
+    secretAccessKey: ExartuConfig.AWS_secretAccessKey,
+    region: ExartuConfig.AWS_S3_region,
+    bucket: ExartuConfig.AWS_S3_bucket
+  });
 });

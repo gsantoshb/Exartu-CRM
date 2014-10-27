@@ -2,6 +2,7 @@ PlacementsController = RouteController.extend({
   template: 'placements',
   layoutTemplate: 'mainLayout',
   waitOn: function() {
+    PlacementHandler = Meteor.paginatedSubscribe('placements');
     return [PlacementHandler, LookUpsHandler];
   },
   onAfterAction: function() {
@@ -29,6 +30,6 @@ PlacementsController = RouteController.extend({
 
 Template.placements.helpers({
   placementCount: function(){
-    return TasksHandler.totalCount();
+    return PlacementHandler.totalCount();
   }
 });

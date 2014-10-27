@@ -62,8 +62,14 @@ Template.dateTimePicker.rendered= function(){
   var options={
     language: 'en',
     defaultDate: this.data.value,
-    useSeconds: false
+    useSeconds: false,
+
+  };
+
+  if (!this.data.pickTime) {
+    options.pickTime = false;
   }
+
   if (this.data.from){
     options.minDate= this.data.from
   }

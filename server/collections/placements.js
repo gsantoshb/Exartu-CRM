@@ -1,52 +1,41 @@
-PlacementList = new View('placementList', {
+PlacementView = new View('placements', {
   collection: Placements,
-  mapping: {
-    jobInfo: {
-      find: function(placement) {
-        return Jobs.find({_id: placement.job });
-      },
-      map: function (job) {
-        //todo: helper to get display name of contactables in server side?
-        if (!job) return;
-        var customer = Contactables.findOne(job.customer);
-        var customerName = customer.organization ? customer.organization.organizationName: '';
-        return {
-            jobDisplayName: job.publicJobTitle,
-            customerDisplayName: customerName,
-            customer: job.customer,
-            displayName: job.publicJobTitle + '@' + customerName
-        };
-      }
-    },
-    employeeInfo: {
-      find: function(placement) {
-        return Contactables.find({_id: placement.employee });
-      },
-      map: function (employee) {
-        if (!employee || ! employee.person) return;
-        return {
-          employeeDisplayName: employee.person.firstName + employee.person.lastName
-        };
-      }
-    }
-  }
+  mapping: function(placement) {
+    var job = Jobs.find({_id: placement.job }),
+      result = [job, Contactables.find({_id: placement.employee })];
 
+    job.forEach(function(job){
+      if (job.customer)
+        result.push(Contactables.find(job.customer))
+    });
+    return result;
+  }
 });
-Meteor.paginatedPublish(PlacementList, function(){
+Meteor.paginatedPublish(PlacementView, function(){
   var user = Meteor.users.findOne({
     _id: this.userId
   });
 
   if (!user)
     return false;
-  return Utils.filterCollectionByUserHier.call(this, PlacementList.find());
+  return Utils.filterCollectionByUserHier.call(this, PlacementView.find());
 }, {
   pageSize: 3,
-  publicationName: 'placementList'
+  publicationName: 'placements'
 });
 
 Meteor.publish('placementDetails', function (id) {
-  return Placements.find(id);
+  return Utils.filterCollectionByUserHier.call(this, PlacementView.find(id));
+});
+
+Meteor.publish('allPlacements', function () {
+  return Utils.filterCollectionByUserHier.call(this, PlacementView.find({},{
+    fields: {
+      status: 1,
+      employee: 1,
+      job: 1
+    }
+}));
 });
 
 Meteor.startup(function () {

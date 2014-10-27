@@ -70,9 +70,15 @@ Template.addEditNote.helpers({
     selectedType=parseInt(selectedType);
     switch (selectedType){
       case Enums.linkTypes.contactable.value:
+        Meteor.subscribe('allContactables',{ Customer: { $exists: true } });
         return Contactables.find();
       case Enums.linkTypes.job.value:
+        Meteor.subscribe('allJobs');
         return Jobs.find();
+     case Enums.linkTypes.placement.value:
+        var handler = Meteor.subscribe('allPlacements');
+        handler.ready();
+        return Placements.find();
       default :
         return [];
     }

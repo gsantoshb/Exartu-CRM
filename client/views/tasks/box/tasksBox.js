@@ -1,11 +1,16 @@
 var entityType=null;
 var isEntitySpecific=false;
 Template.tasksBox.created=function(){
-  entityType=Utils.getEntityTypeFromRouter();
-  isEntitySpecific=false;
-  if (entityType!=null) isEntitySpecific=true
+  if (! window.TasksHandler) {
+    TasksHandler = Meteor.paginatedSubscribe("tasks");
+  }
 
   Meteor.autorun(function () {
+    entityType = Utils.getEntityTypeFromRouter();
+    isEntitySpecific = false;
+    if (entityType != null) isEntitySpecific = true;
+
+
     var queryObj = query.getObject();
     var q = {};
     if(! queryObj.inactives){
@@ -132,6 +137,9 @@ Template.tasksBox.helpers({
   selectedClass: function(){
     statusDep.depend();
     return this == status ? 'btn-primary': 'btn-default';
+  },
+  isLoading: function () {
+    return TasksHandler.isLoading();
   }
 })
 Template.tasksBox.events({

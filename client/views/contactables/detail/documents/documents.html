@@ -67,69 +67,17 @@
 </template>
 
 <template name="contactableDocumentsList">
-    <h3 class="top-0">Documents
-        {{#objectProperty property=query.searchString}}
-        <span class="pull-right">
-            <input class="form-control input-sm " type="text" placeholder="Search" value="{{value}}" >
-        </span>
-        {{/objectProperty}}
-    </h3>
-
-    <ul class="list-3 stripped has-thumb">
-        {{#each documentsUploading}}
-            <li class="list-3-item">
-                <div class="list-thumb"><i class="icon-file-upload"></i></div>
-                <div class="list-3-content list-magic">
-                    <div class="list-3-content-wrap">
-                        <div class="list-3-actions">
-                            <span class="bullet-spacer">·</span>
-                            <a class="cancel pointer"><i class="fa fa-trash-o"></i> Cancel</a>
-                        </div>
-                        <div class="list-3-item-meta-top">{{this.type}}</div>
-                        <h4 class="list-3-item-title"><a class="pointer">{{metadata.name}}</a></h4>
-                        {{#unless this.isUploaded}}
-                            {{> fileProgress .}}
-                        {{/unless}}
-                    </div><!-- /.list-3-content-wrap -->
-                </div>
-            </li>
-        {{/each}}
-
-    </ul>
-    <hr/>
-    <ul class="list-3 stripped has-thumb">
-        {{#each documents}}
-            <li class="list-3-item">
-                <div class="list-thumb"><i class="{{documentIcon type}}"></i></div>
-                <div class="list-3-content list-magic">
-                    <div class="list-3-content-wrap">
-                        <div class="list-3-actions">
-                            <a class="download" target="_blank" href="{{url}}" download="{{metadata.name}}"><i class="fa fa-download"></i> Download</a>
-                            <span class="bullet-spacer">·</span>
-                            <a class="delete pointer"><i class="fa fa-trash-o"></i> Delete</a>
-                        </div>
-                        <div class="list-3-item-meta-top">{{this.type}}</div>
-                        <h4 class="list-3-item-title"><a href="#">{{metadata.name}}</a></h4>
-                    </div><!-- /.list-3-content-wrap -->
-                </div>
-            </li>
-        {{/each}}
-        {{#if isEmpty}}
-            <div class="box-v-msg">
-                <div class="box-v-msg-content">
-                    <i class="icon-document-1"></i>
-                    <!--<p>No document added yet<br>-->
-                        <!--<a href="#" class="add-document-trigger">Add new document</a>-->
-                    <!--</p>-->
-                </div><!-- /.box-v-msg-content -->
-            </div>
-        {{/if}}
-    </ul>
-
-    <div>
-        {{#with resumes}}
-            <strong> Resume </strong>
-            {{#each .}}
+    <div style="padding: 5px">
+        <h3 class="top-0">Documents
+            {{#objectProperty property=query.searchString}}
+            <span class="pull-right">
+                <input class="form-control input-sm " type="text" placeholder="Search" value="{{value}}" >
+            </span>
+            {{/objectProperty}}
+        </h3>
+        <hr/>
+        <ul class="list-3 stripped has-thumb">
+            {{#each documents}}
                 <li class="list-3-item">
                     <div class="list-thumb"><i class="{{documentIcon type}}"></i></div>
                     <div class="list-3-content list-magic">
@@ -137,14 +85,52 @@
                             <div class="list-3-actions">
                                 <a class="download" target="_blank" href="{{url}}" download="{{name}}"><i class="fa fa-download"></i> Download</a>
                                 <span class="bullet-spacer">·</span>
-                                <a class="delete-resume" href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                                <a class="delete pointer"><i class="fa fa-trash-o"></i> Delete</a>
                             </div>
-                            <div class="list-3-item-meta-top">{{this.type}}</div>
+                            <div class="list-3-item-meta-top">{{type}}</div>
                             <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
                         </div><!-- /.list-3-content-wrap -->
                     </div>
                 </li>
             {{/each}}
-        {{/with}}
+            {{#if isEmpty}}
+                <div class="box-v-msg">
+                    <div class="box-v-msg-content">
+                        <i class="icon-document-1"></i>
+                        <!--<p>No document added yet<br>-->
+                            <!--<a href="#" class="add-document-trigger">Add new document</a>-->
+                        <!--</p>-->
+                    </div><!-- /.box-v-msg-content -->
+                </div>
+            {{/if}}
+        </ul>
+
+        <div>
+            {{#with resumes}}
+                <strong> Resume </strong>
+                <ul class="list-3 stripped has-thumb">
+                    {{#each .}}
+                        <li class="list-3-item">
+                            <div class="list-thumb"><i class="{{documentIcon type}}"></i></div>
+                            <div class="list-3-content list-magic">
+                                <div class="list-3-content-wrap">
+                                    <div class="list-3-actions">
+                                        <a class="download" target="_blank" href="{{resumeUrl}}" download="{{name}}"><i class="fa fa-download"></i> Download</a>
+                                        <span class="bullet-spacer">·</span>
+                                        <a class="delete-resume" href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                                    </div>
+                                    <div class="list-3-item-meta-top">{{type}}</div>
+                                    <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
+                                </div><!-- /.list-3-content-wrap -->
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{/with}}
+        </div>
+
+        <div id="parsing" class="list-3-actions" style="display: none; margin-right: 45px; margin-top: 10px;">
+            {{>spinner}}
+        </div>
     </div>
 </template>

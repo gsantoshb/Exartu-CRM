@@ -102,16 +102,23 @@
 
                     <!-- Entities list -->
                     <div class="table-items-box">
-                        {{> fastPagination name="tasks"}}
-                        {{#each tasks}}
-                            {{>taskItem}}
-                        {{else}}
-                            <div class="v-wrapper">
-                                <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                                    <i class="icon-clock-3 text-large"></i>
-                                </div>
+                        <!--{{> fastPagination name="tasks"}}-->
+                        {{#if isLoading}}
+                            <div style="height: 678px;">
                             </div>
-                        {{/each}}
+                        {{else}}
+                            <div class="fade-in">
+                                {{#each tasks}}
+                                    {{>taskItem}}
+                                {{else}}
+                                    <div class="v-wrapper">
+                                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                                            <i class="icon-clock-3 text-large"></i>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                            </div>
+                        {{/if}}
                     </div>
 
                 </div>

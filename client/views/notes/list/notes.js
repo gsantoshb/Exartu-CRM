@@ -1,6 +1,12 @@
 NotesController = RouteController.extend({
   template: 'notes',
   layoutTemplate: 'mainLayout',
+  waitOn: function () {
+    if (!window.NotesHandler){
+      NotesHandler = Meteor.paginatedSubscribe('notes');
+    }
+    return NotesHandler;
+  },
   onAfterAction: function() {
     var title = 'Notes',
     description = 'Manage your notes here';

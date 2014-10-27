@@ -17,7 +17,7 @@ Meteor.methods({
   setLastCustomerUsed: function(id){
     UserManager.setLastCustomerUsed(id);
   },
-  isUsernameAvailable: function (username) {
+  isUsernameAvailable: function (userName) {
     return UserManager.isUsernameAvailable(userName);
   },
   isEmailAvailable: function (email) {
