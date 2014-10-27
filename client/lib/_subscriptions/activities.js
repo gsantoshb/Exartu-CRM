@@ -2,6 +2,7 @@ Activities = new Meteor.Collection("activities" , {
   transform: function (act) {
     var u =     Meteor.users.findOne({_id : act.userId});
 
+
     act.userName = "";
     if (u)
     {
