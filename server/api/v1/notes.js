@@ -48,6 +48,8 @@ Router.map(function() {
 				default:
 					response.error('Method not supported');
 			}
+
+			connection.close();
 		}
 	})
 });
@@ -56,7 +58,7 @@ Meteor.methods({
 	apiInsertNote: function(note) {
 		return Notes.insert(note);
 	}
-})
+});
 
 var mapper = {
 	create: function(data) {

@@ -101,6 +101,8 @@ var contactablesAPIAction = function(type, userdata) {
 		default:
 			response.error('Method not supported');
 	}
+
+	connection.close();
 };
 
 var mapper = {

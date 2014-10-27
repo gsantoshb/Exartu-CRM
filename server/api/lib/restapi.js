@@ -82,21 +82,25 @@ RESTAPI.connection = function(user) {
 	self.connection.setUserId(user._id);
 };
 
-RESTAPI.connection.prototype.call = function(method, params) {
+RESTAPI.connection.prototype.call = function(method) {
 	var self = this;
+	var params = _.rest(_.values(arguments), 1);
 	return self.connection.call('apiCallWrapper', self.userId, method, params)
 };
 
+RESTAPI.connection.prototype.close = function () {
+	this.connection.disconnect();
+};
+
 Meteor.methods({
-	'apiCallWrapper': function(userId, method) {
-		var params = _.rest(_.values(arguments), 1);
+	'apiCallWrapper': function(userId, method, params) {
 		this.setUserId(userId);
 		if (_.isFunction(method))
 			return method.apply({}, params);
 		else
 			return Meteor.call.apply({}, _.union(method, params));
 	}
-})
+});
 
 // Response
 
