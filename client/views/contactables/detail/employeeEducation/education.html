@@ -1,0 +1,115 @@
+<template name="employeeEduction">
+    <div class="education">
+        {{> employeeEducationAdd}}
+        {{> employeeEducationList}}
+    </div>
+</template>
+
+<template name="employeeEducationAdd">
+    <div class="education-add row">
+        <div class="add-box-head col-xs-12 col-md-3">
+            <div class="add-item-icon"><i class="icon-books-3"></i></div>
+            <h2>Education</h2>
+        </div>
+
+        <div class="add-box-content col-xs-12 col-md-9">
+            {{#autoForm id="AddEducationRecord" schema="EducationSchema"}}
+                {{> afQuickField name='institution'}}
+                {{> afQuickField name='description'}}
+
+                <div class="row">
+                    <div class="form-group col-xs-6">
+                        <span> Start date </span>
+                        {{> dateTimePickerAutoForm name="start" format="MM yyyy" startView=4 minView=3 autoclose=true}}
+                    </div>
+                    <div class="form-group col-xs-6">
+                        <span> End date </span>
+                        <div class="{{endDateClass}}">
+                            {{> dateTimePickerAutoForm name="end" format="MM yyyy" startView=4 minView=3 autoclose=true}}
+                        </div>
+
+                        <div class="checkbox">
+                            <label>
+                                <input id="to-present" class="editable" type="checkbox"> To present
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-success pull-right"> Save </button>
+            {{/autoForm}}
+        </div>
+    </div>
+</template>
+
+<template name="employeeEducationList">
+    <ul class="education-list list-3 stripped has-thumb">
+        {{#each items}}
+            {{> employeeEducationItem}}
+        {{/each}}
+    </ul>
+</template>
+
+<template name="employeeEducationItem">
+    <li class="education-record list-3-item">
+        <div class="list-thumb"><i class="icon-profile-graduate"></i></div>
+        <div class="list-3-content list-magic">
+            <div class="list-3-content-wrap">
+                {{#with getCtx}}
+                    {{#if isEditing}}
+                        {{> employeeEducationEditItem doc=educationRecord}}
+                    {{else}}
+                        <div class="list-3-actions">
+                            <a class="editEducationRecord pointer"><i class="fa fa-edit"></i> Edit</a>
+                            <span class="bullet-spacer">·</span>
+                            <a class="deleteEducationRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
+                        </div>
+                        <div class="list-3-item-meta-top">{{educationRecord.institution}}</div>
+                        <h4 class="list-3-item-title"><a href="#">{{educationRecord.description}}</a></h4>
+                        <small class="text-muted">
+                            <i class="fa fa-calendar"></i>
+                            Start: {{#formattedDate value=educationRecord.start format="MMMM YYYY"}} {{date}}{{/formattedDate}}
+                            -
+                            {{#if educationRecord.end}}
+                                End: {{#formattedDate value=educationRecord.end format="MMMM YYYY"}} {{date}}{{/formattedDate}}
+                            {{else}}
+                                to present
+                            {{/if}}
+                        </small>
+                    {{/if}}
+                {{/with}}
+            </div>
+        </div>
+    </li>
+</template>
+
+<template name="employeeEducationEditItem">
+    {{#autoForm id=formId schema="EducationSchema" doc=doc}}
+        {{> afQuickField name='institution'}}
+        {{> afQuickField name='description'}}
+
+        <div class="row">
+            <div class="form-group col-xs-6">
+                <span> Start date </span>
+                {{> dateTimePickerAutoForm name="start" value=doc.start format="MM yyyy" startView=4 minView=3 autoclose=true}}
+            </div>
+            <div class="form-group col-xs-6">
+                <span> End date </span>
+                <div class="{{endDateClass}}">
+                    {{> dateTimePickerAutoForm name="end" value=doc.end format="MM yyyy" startView=4 minView=3 autoclose=true}}
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input id="to-present" class="editable" type="checkbox"> To present
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="pull-right">
+            <span class="btn btn-default cancelEducationRecordChanges"> Cancel </span>
+            <button class="btn btn-success"> Save </button>
+        </div>
+    {{/autoForm}}
+</template>
