@@ -140,4 +140,41 @@ ContactableManager = {
       }
     });
   },
+
+  // Past jobs record
+  addPastJobRecord: function (contactableId, pastJobInfo) {
+    // TODO: Validate
+    Contactables.update({_id: contactableId},
+      {
+        $addToSet: {
+          pastJobs: {
+            company: pastJobInfo.company,
+            position: pastJobInfo.position,
+            start: pastJobInfo.start,
+            end: pastJobInfo.end
+          }
+        }
+      }
+    );
+  },
+  editPastJobRecord: function (contactableId, oldPastJobInfo, newPastJobInfo) {
+    // TODO: Validate
+    Contactables.update({
+        _id: contactableId,
+        pastJobs: oldPastJobInfo
+      }, {
+        $set: {
+          'pastJobs.$': newPastJobInfo
+        }
+      }
+    );
+  },
+  deletePastJobRecord: function (contactableId, pastJobInfo) {
+    // TODO: Validate
+    Contactables.update({_id: contactableId}, {
+      $pull: {
+        'pastJobs': pastJobInfo
+      }
+    });
+  }
 };

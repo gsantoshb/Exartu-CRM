@@ -33,6 +33,8 @@ Meteor.methods({
   getAddress: function (contactableId) {
     return ContactableManager.getAddress(contactableId);
   },
+
+  // Education
   addEducationRecord: function (contactableId, educationInfo) {
     ContactableManager.addEducationRecord(contactableId, educationInfo);
   },
@@ -41,6 +43,17 @@ Meteor.methods({
   },
   deleteEducationRecord: function (contactableId, educationInfo) {
     ContactableManager.deleteEducationRecord(contactableId, educationInfo);
+  },
+
+  // Past jobs
+  addPastJobRecord: function (contactableId, pastJobInfo) {
+    ContactableManager.addPastJobRecord(contactableId, pastJobInfo);
+  },
+  editPastJobRecord: function (contactableId, oldPastJobInfo, newPastJobInfo) {
+    ContactableManager.editPastJobRecord(contactableId, oldPastJobInfo, newPastJobInfo);
+  },
+  deletePastJobRecord: function (contactableId, pastJobInfo) {
+    ContactableManager.deletePastJobRecord(contactableId, pastJobInfo);
   }
 });
 
