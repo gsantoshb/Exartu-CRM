@@ -25,7 +25,6 @@ mrgalaxy:stripe
 natestrauser:connection-banner
 aldeed:simple-schema
 aldeed:autoform
-tsega:bootstrap3-datetimepicker
 meteorhacks:npm
 cfs:filesystem
 
@@ -50,3 +49,6 @@ cfs:gridfs
 cfs:s3
 file-uploader
 meteorhacks:kadira
+
+date-time-picker
+
