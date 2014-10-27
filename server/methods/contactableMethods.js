@@ -30,8 +30,9 @@ Meteor.methods({
   setContactableAddress: function (contactableId, address) {
     ContactableManager.setAddress(contactableId, address);
   },
-
-  // Education record
+  getAddress: function (contactableId) {
+    return ContactableManager.getAddress(contactableId);
+  },
   addEducationRecord: function (contactableId, educationInfo) {
     ContactableManager.addEducationRecord(contactableId, educationInfo);
   },

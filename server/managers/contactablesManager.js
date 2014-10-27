@@ -102,5 +102,42 @@ ContactableManager = {
 
     var contactable = Contactables.findOne({ _id: contactableId }, { fields: { location: 1 } });
     return contactable ? contactable.location : {};
-  }
+  },
+
+  // Education record
+  addEducationRecord: function (contactableId, educationInfo) {
+    // TODO: Validate
+    Contactables.update({_id: contactableId},
+      {
+        $addToSet: {
+          education: {
+            institution: educationInfo.institution,
+            description: educationInfo.description,
+            start: educationInfo.start,
+            end: educationInfo.end
+          }
+        }
+      }
+    );
+  },
+  editEducationRecord: function (contactableId, oldEducationInfo, newEducationInfo) {
+    // TODO: Validate
+    Contactables.update({
+        _id: contactableId,
+        education: oldEducationInfo
+      }, {
+        $set: {
+          'education.$': newEducationInfo
+        }
+      }
+    );
+  },
+  deleteEducationRecord: function (contactableId, educationInfo) {
+    // TODO: Validate
+    Contactables.update({_id: contactableId}, {
+      $pull: {
+        'education': educationInfo
+      }
+    });
+  },
 };

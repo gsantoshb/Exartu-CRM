@@ -1,14 +1,32 @@
+
 PlacementView = new View('placements', {
   collection: Placements,
-  mapping: function(placement) {
-    var job = Jobs.find({_id: placement.job }),
-      result = [job, Contactables.find({_id: placement.employee })];
-
-    job.forEach(function(job){
-      if (job.customer)
-        result.push(Contactables.find(job.customer))
+  cursors: function (placement) {
+    // Job with Customer
+    this.publish({
+      cursor: function (placement) {
+        if (placement.job)
+          return JobView.find(placement.job);
+      },
+      to: 'jobs',
+      observedProperties: ['job'],
+      onChange: function (changedProps, oldSelector) {
+        return JobView.find(changedProps.job);
+      }
     });
-    return result;
+
+    // Employee
+    this.publish({
+      cursor: function (placement) {
+        if (placement.employee)
+          return Contactables.find(placement.employee);
+      },
+      to: 'contactables',
+      observedProperties: ['employee'],
+      onChange: function (changedProps, oldSelector) {
+        return Contactables.find(changedProps.employee);
+      }
+    });
   }
 });
 Meteor.paginatedPublish(PlacementView, function(){

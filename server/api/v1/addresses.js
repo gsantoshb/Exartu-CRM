@@ -22,8 +22,10 @@ Router.map(function() {
         case 'GET':
           var contactableId = this.params.contactableId;
           try {
+            var res = connection.call('getAddress', contactableId);
+
             // Transform the response before sending it back
-            var res = mapper.get(ContactableManager.getAddress(contactableId), contactableId);
+            res = mapper.get(res, contactableId);
             response.end(res);
           } catch(err) {
             console.log(err);
@@ -45,7 +47,7 @@ Router.map(function() {
           var data = this.request.body;
           try {
             var addressInfo = mapper.create(data);
-            ContactableManager.setAddress(data.contactableId, addressInfo);
+            connection.call('setContactableAddress', data.contactableId, addressInfo);
             response.end(data);
           } catch(err) {
             console.log(err);
