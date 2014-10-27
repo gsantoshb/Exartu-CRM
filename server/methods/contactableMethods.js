@@ -18,9 +18,15 @@ Meteor.methods({
   updateContactablePicture: function (contactableId, fileId) {
     ContactableManager.setPicture(contactableId, fileId);
   },
+
+  // Contact methods
   addContactMethod: function (contactableId, type, value) {
     ContactableManager.addContactMethod(contactableId, type, value);
   },
+  getContactMethods: function (contactableId) {
+    return ContactableManager.getContactMethods(contactableId);
+  },
+
   setContactableAddress: function (contactableId, address) {
     ContactableManager.setAddress(contactableId, address);
   }

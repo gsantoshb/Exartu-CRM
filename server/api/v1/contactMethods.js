@@ -22,7 +22,7 @@ Router.map(function() {
         case 'GET':
           var contactableId = this.params.contactableId;
           try {
-            var res = ContactableManager.getContactMethods(contactableId);
+            var res = connection.call('getContactMethods', contactableId);
 
             // Transform the response before sending it back
             var contactMethods = ContactMethods.find().fetch();
@@ -47,7 +47,7 @@ Router.map(function() {
           var data = this.request.body;
           try {
             var intType = parseInt(data.type);
-            ContactableManager.addContactMethod(data.contactableId, intType, data.value);
+            connection.call('addContactMethod', data.contactableId, intType, data.value);
             response.end(data);
           } catch(err) {
             console.log(err);
