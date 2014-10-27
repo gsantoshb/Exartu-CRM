@@ -18,3 +18,13 @@
         </div>
     </div>
 </template>
+
+<template name="dateTimePickerAutoForm">
+    <div data-schema-key="{{name}}" id="date-value" class="{{name}} {{#if afFieldIsInvalid name=name}}has-error{{/if}}">
+        {{#dateTimePicker pickTime=false value=this.value options=.}}
+        {{/dateTimePicker}}
+        {{#if afFieldIsInvalid name=name}}
+            <span class="help-block">{{afFieldMessage name=name}}</span>
+        {{/if}}
+    </div>
+</template>
