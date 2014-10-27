@@ -157,6 +157,8 @@ Template.contactable_tabs.tabs = function() {
   if (contactable.Employee) {
     tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements'});
     tabs.push({id: 'hrconcourse', displayName: 'HRconcourse', template: 'contactable_HRConcourse'});
+    tabs.push({id: 'education', displayName: 'Education', template: 'employeeEduction'});
+    tabs.push({id: 'pastJobs', displayName: 'Past Jobs', template: 'employeePastJobs'});
   }
 
   tabs.push({id: 'actions', displayName: 'Actions', template: 'contactable_actions'});

@@ -102,5 +102,79 @@ ContactableManager = {
 
     var contactable = Contactables.findOne({ _id: contactableId }, { fields: { location: 1 } });
     return contactable ? contactable.location : {};
+  },
+
+  // Education record
+  addEducationRecord: function (contactableId, educationInfo) {
+    // TODO: Validate
+    Contactables.update({_id: contactableId},
+      {
+        $addToSet: {
+          education: {
+            institution: educationInfo.institution,
+            description: educationInfo.description,
+            start: educationInfo.start,
+            end: educationInfo.end
+          }
+        }
+      }
+    );
+  },
+  editEducationRecord: function (contactableId, oldEducationInfo, newEducationInfo) {
+    // TODO: Validate
+    Contactables.update({
+        _id: contactableId,
+        education: oldEducationInfo
+      }, {
+        $set: {
+          'education.$': newEducationInfo
+        }
+      }
+    );
+  },
+  deleteEducationRecord: function (contactableId, educationInfo) {
+    // TODO: Validate
+    Contactables.update({_id: contactableId}, {
+      $pull: {
+        'education': educationInfo
+      }
+    });
+  },
+
+  // Past jobs record
+  addPastJobRecord: function (contactableId, pastJobInfo) {
+    // TODO: Validate
+    Contactables.update({_id: contactableId},
+      {
+        $addToSet: {
+          pastJobs: {
+            company: pastJobInfo.company,
+            position: pastJobInfo.position,
+            start: pastJobInfo.start,
+            end: pastJobInfo.end
+          }
+        }
+      }
+    );
+  },
+  editPastJobRecord: function (contactableId, oldPastJobInfo, newPastJobInfo) {
+    // TODO: Validate
+    Contactables.update({
+        _id: contactableId,
+        pastJobs: oldPastJobInfo
+      }, {
+        $set: {
+          'pastJobs.$': newPastJobInfo
+        }
+      }
+    );
+  },
+  deletePastJobRecord: function (contactableId, pastJobInfo) {
+    // TODO: Validate
+    Contactables.update({_id: contactableId}, {
+      $pull: {
+        'pastJobs': pastJobInfo
+      }
+    });
   }
 };

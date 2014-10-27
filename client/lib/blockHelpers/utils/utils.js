@@ -119,6 +119,14 @@ UI.registerHelper('contactMethodTypePrefix', function(type) {
   return Utils.contactMethodTypePrefix(type);
 });
 
+// Custom AutoForm dateTimePicker
+AutoForm.inputValueHandlers({
+  '#date-value': function () {
+    var key = this.data().schemaKey;
+    var formId = UI.currentView.parentView.dataVar.curValue.id;
+    return $('#' + formId + ' .' + key + ' .date').data('datetimepicker').date;
+  }
+});
 
 // User name display
 UI.registerHelper('displayUserName', function (id) {

@@ -517,6 +517,7 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 .list-3-actions {
     display: block;
+    margin-top: 25px;
 }
 
 .content-header-bottom {
@@ -774,17 +775,17 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 }
 
 /* Education tab */
-.education {}
+.record {}
 
-.education .education-list { margin-top: 20px; padding: 0px 10px 10px 10px}
+.record .record-list { margin-top: 20px; padding: 0px 10px 10px 10px}
 
-.education .education-record { } /*border-bottom: 1px solid #e7e7e7;*/
+.record .record-record { } /*border-bottom: 1px solid #e7e7e7;*/
 
-.education .education-record .education-record-action { display: none;}
+.record .record-record .record-record-action { display: none;}
 
-.education .education-record:hover .education-record-action { display: block; float: right;}
+.record .record-record:hover .record-record-action { display: block; float: right;}
 
-.education .education-add { padding: 10px 5px 10px 5px; margin: 0px; background-color: #f5f5f5; border: 1px solid #e7e7e7; border-radius: 2px;}
+.record .record-add { padding: 10px 5px 10px 5px; margin: 0px; background-color: #f5f5f5; border: 1px solid #e7e7e7; border-radius: 2px;}
 
 /*connection-banner*/
 #connection-lost-banner {
