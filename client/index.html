@@ -6,20 +6,13 @@
 </head>
 
 <body>
-    <span class="notRemove">
-    </span>
     <div id="wrapper">
         {{#if currentUser }} {{> header}} {{> fieldTemplatesDefinition}} {{> relationTemplatesDefinition}} {{/if}}
         <!-- Here is where layouts are rendered	-->
         {{renderRouter}}
-        <!--<div class="row">-->
-            <!--<div id="footer" class="col-xs-12">-->
-                <!--&copy; 2014 TempWorks Software, Inc.-->
-            <!--</div>-->
-        <!--</div>-->
     </div>
 
     <div class="footer navbar-fixed-bottom">
-        <span class="pull-right" style="color: #B8B8B8; margin-right: 10px;"> {{ExartuVersion}} </span>
+        <span class="pull-right" style="color: #B8B8B8; margin-right: 10px;">&copy; 2014 TempWorks Software, Inc. {{#if ExartuVersion}} | {{ExartuVersion}} {{/if}}</span>
     </div>
 </body>
