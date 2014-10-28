@@ -18,8 +18,42 @@ Meteor.methods({
   updateContactablePicture: function (contactableId, fileId) {
     ContactableManager.setPicture(contactableId, fileId);
   },
+
+  // Contact methods
   addContactMethod: function (contactableId, type, value) {
     ContactableManager.addContactMethod(contactableId, type, value);
+  },
+  getContactMethods: function (contactableId) {
+    return ContactableManager.getContactMethods(contactableId);
+  },
+
+  setContactableAddress: function (contactableId, address) {
+    ContactableManager.setAddress(contactableId, address);
+  },
+  getAddress: function (contactableId) {
+    return ContactableManager.getAddress(contactableId);
+  },
+
+  // Education
+  addEducationRecord: function (contactableId, educationInfo) {
+    ContactableManager.addEducationRecord(contactableId, educationInfo);
+  },
+  editEducationRecord: function (contactableId, oldEducationInfo, newEducationInfo) {
+    ContactableManager.editEducationRecord(contactableId, oldEducationInfo, newEducationInfo);
+  },
+  deleteEducationRecord: function (contactableId, educationInfo) {
+    ContactableManager.deleteEducationRecord(contactableId, educationInfo);
+  },
+
+  // Past jobs
+  addPastJobRecord: function (contactableId, pastJobInfo) {
+    ContactableManager.addPastJobRecord(contactableId, pastJobInfo);
+  },
+  editPastJobRecord: function (contactableId, oldPastJobInfo, newPastJobInfo) {
+    ContactableManager.editPastJobRecord(contactableId, oldPastJobInfo, newPastJobInfo);
+  },
+  deletePastJobRecord: function (contactableId, pastJobInfo) {
+    ContactableManager.deletePastJobRecord(contactableId, pastJobInfo);
   }
 });
 

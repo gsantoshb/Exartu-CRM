@@ -1,9 +1,18 @@
+
 JobView = new View('jobs', {
   collection: Jobs,
-  mapping: function(job) {
-    return Contactables.find(job.customer, {
-      fields: {
-        'organization.organizationName' : 1
+  cursors: function (job) {
+    // Customer
+    this.publish({
+      cursor: function (job) {
+        if (job.customer)
+          return Contactables.find(job.customer, { fields: { 'organization.organizationName' : 1 } });
+      },
+      to: 'contactables',
+      observedProperties: ['customer'],
+      onChange: function (changedProps, oldSelector) {
+        oldSelector._id = changedProps.customer;
+        return Contactables.find(oldSelector, { fields: { 'organization.organizationName': 1 } });
       }
     });
   }
@@ -22,10 +31,9 @@ Meteor.paginatedPublish(JobView, function(){
   publicationName: 'jobs'
 });
 
-Meteor.publish('jobDetails', function (id) {
-  return Utils.filterCollectionByUserHier.call(this, JobView.find(id));
+Meteor.publish('singleJob', function (id) {
+  return Utils.filterCollectionByUserHier.call(this, Jobs.find(id));
 });
-
 
 Meteor.publish('allJobs', function (id) {
   return Utils.filterCollectionByUserHier.call(this, Jobs.find({},{
@@ -34,6 +42,7 @@ Meteor.publish('allJobs', function (id) {
     }
   }));
 });
+
 
 Jobs.allow({
   update: function () {

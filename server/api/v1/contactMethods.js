@@ -22,14 +22,21 @@ Router.map(function() {
         case 'GET':
           var contactableId = this.params.contactableId;
           try {
-            var res = ContactableManager.getContactMethodsForApi(contactableId);
+            var res = connection.call('getContactMethods', contactableId);
+
+            // Transform the response before sending it back
+            var contactMethods = ContactMethods.find().fetch();
+            _.each(res, function (cm) {
+              cm.contactableId = contactableId;
+              cm.type = _.find(contactMethods, function (method) { return method._id === cm.type; }).type;
+            });
+
             response.end(res);
           } catch(err) {
             console.log(err);
             response.error(err.message);
           }
           break;
-
 
         // Create new contact method
         // Body:
@@ -40,7 +47,7 @@ Router.map(function() {
           var data = this.request.body;
           try {
             var intType = parseInt(data.type);
-            ContactableManager.addContactMethod(data.contactableId, intType, data.value);
+            connection.call('addContactMethod', data.contactableId, intType, data.value);
             response.end(data);
           } catch(err) {
             console.log(err);
@@ -51,6 +58,8 @@ Router.map(function() {
         default:
           response.error('Method not supported');
       }
+
+      connection.close();
     }
   })
 });

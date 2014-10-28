@@ -61,16 +61,26 @@ UI.registerHelper('dateTimePicker', function() {
 Template.dateTimePicker.rendered= function(){
   var options={
     language: 'en',
-    defaultDate: this.data.value,
-    useSeconds: false
+    initialDate: this.data.value,
+    useSeconds: false,
+    format: this.data.options.format,
+    startView: this.data.options.startView,
+    minView: this.data.options.minView,
+    autoclose: this.data.options.autoclose
+  };
+
+  if (!this.data.pickTime) {
+    options.pickTime = false;
   }
+
   if (this.data.from){
     options.minDate= this.data.from
   }
   if (this.data.to){
     options.maxDate= this.data.to
   }
-  this.$('.dateTimePicker').datetimepicker(options);
+
+  this.$('.date').datetimepicker(options);
 };
 
 Template.dateTimePicker.events({

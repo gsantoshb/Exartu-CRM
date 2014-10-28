@@ -22,11 +22,10 @@ Router.map(function() {
         case 'GET':
           var contactableId = this.params.contactableId;
           try {
-            var res = ContactableManager.getAddress(contactableId);
+            var res = connection.call('getAddress', contactableId);
 
             // Transform the response before sending it back
-            res.contactableId = contactableId;
-
+            res = mapper.get(res, contactableId);
             response.end(res);
           } catch(err) {
             console.log(err);
@@ -38,8 +37,8 @@ Router.map(function() {
         // Set the address for a contactable
         // Body:
         //  - contactableId: string
-        //  - address: string
-        //  - address2: string
+        //  - addressLine1: string
+        //  - addressLine2: string
         //  - city: string
         //  - state: string
         //  - country: string
@@ -47,15 +46,8 @@ Router.map(function() {
         case 'POST':
           var data = this.request.body;
           try {
-            var addressInfo = {
-              address: data.address,
-              address2: data.address2,
-              city: data.city,
-              state: data.state,
-              country: data.country,
-              postalCode: data.zip
-            };
-            ContactableManager.setAddress(data.contactableId, addressInfo);
+            var addressInfo = mapper.create(data);
+            connection.call('setContactableAddress', data.contactableId, addressInfo);
             response.end(data);
           } catch(err) {
             console.log(err);
@@ -66,6 +58,36 @@ Router.map(function() {
         default:
           response.error('Method not supported');
       }
+
+      connection.close();
     }
   })
 });
+
+
+var mapper = {
+  create: function(data) {
+    return {
+      address: data.addressLine1,
+      address2: data.addressLine2,
+      city: data.city,
+      state: data.state,
+      country: data.country,
+      postalCode: data.zip
+    };
+  },
+  get: function(data, contactableId) {
+    if (!data) return {};
+
+    return {
+      contactableId: contactableId,
+      addressLine1: data.address,
+      addressLine2: data.address2,
+      city: data.city,
+      state: data.state,
+      country: data.country,
+      zip: data.postalCode
+    };
+
+  }
+};

@@ -45,9 +45,7 @@
                                                 <div class="task-author">
                                                     by
                                                     {{#if userId}}
-                                                        {{#userInfo userId=userId}}
-                                                            <a class="pointer"><strong id="username"> {{username}} </strong></a>
-                                                        {{/userInfo}}
+                                                        <a class="pointer"><strong id="username">{{displayUserName userId}}</strong></a>
                                                     {{/if}}
                                                     linked with
                                                     <i class="fa fa-long-arrow-right"></i>

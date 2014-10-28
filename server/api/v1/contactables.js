@@ -101,6 +101,8 @@ var contactablesAPIAction = function(type, userdata) {
 		default:
 			response.error('Method not supported');
 	}
+
+	connection.close();
 };
 
 var mapper = {
@@ -155,6 +157,12 @@ var mapper = {
         });
       }
     }
+
+		if (type == 'Contact') {
+			if (data.customerId)
+				contactable.customerId = data.customerId;
+		}
+
 		return contactable;
 	},
 	get: function(data, type) {
@@ -174,6 +182,11 @@ var mapper = {
 		if (data.organization) {
 			contactable.organizationName = data.organization.organizationName;
 			contactable.department = data.organization.department;
+		}
+
+		if (type == 'Contact') {
+			if (data.customerId)
+				contactable.customerId = data.customerId;
 		}
 
 		return contactable;

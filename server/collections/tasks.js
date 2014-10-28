@@ -1,49 +1,74 @@
 TaskView = new View('tasks', {
   collection: Tasks,
-  mapping: function(task) {
-    var contactablesIds = [];
-    var jobsIds = [];
-    var dealsIds = [];
-    var placementsIds = [];
+  cursors: function (task) {
 
-    _.forEach(task.links, function(link){
-      switch (link.type){
-        case Enums.linkTypes.contactable.value:
-          return contactablesIds.push(link.id);
-        case Enums.linkTypes.job.value:
-          return jobsIds.push(link.id);
-        case Enums.linkTypes.deal.value:
-          return dealsIds.push(link.id);
-        case Enums.linkTypes.placement.value:
-          return placementsIds.push(link.id);
-        case Enums.linkTypes.candidate.value:
-          return placementsIds.push(link.id);
+    // Contactables
+    this.publish({
+      cursor: function (task) {
+        var contactablesIds = _.pluck(_.where(task.links, { type: Enums.linkTypes.contactable.value }), 'id');
+        return Contactables.find({ _id: { $in: contactablesIds } });
+      },
+      to: 'contactables',
+      observedProperties: ['links'],
+      onChange: function (changedProps, oldSelector) {
+        var contactablesIds = _.pluck(_.where(changedProps, { type: Enums.linkTypes.contactable.value }), 'id');
+        return Contactables.find({ _id: { $in: contactablesIds } });
       }
     });
 
-    var cursors = [];
-    if (! _.isEmpty(contactablesIds)){
-      cursors.push(Contactables.find({_id: {$in: contactablesIds}}));
-    }
-    if (! _.isEmpty(jobsIds)){
-      cursors.push(Jobs.find({_id: {$in: jobsIds}}));
-    }
-    if (! _.isEmpty(dealsIds)){
-      cursors.push(Deals.find({_id: {$in: dealsIds}}));
-    }
-    if (! _.isEmpty(placementsIds)){
-      cursors.push(Placements.find({_id: {$in: placementsIds}}));
-    }
-    return cursors;
+    // Jobs
+    this.publish({
+      cursor: function (task) {
+        var jobsIds = _.pluck(_.where(task.links, { type: Enums.linkTypes.job.value }), 'id');
+        return Jobs.find({ _id: { $in: jobsIds } });
+      },
+      to: 'jobs',
+      observedProperties: ['links'],
+      onChange: function (changedProps, oldSelector) {
+        var jobsIds = _.pluck(_.where(changedProps, { type: Enums.linkTypes.job.value }), 'id');
+        return Jobs.find({ _id: { $in: jobsIds } });
+      }
+    });
+
+    // Deals
+    this.publish({
+      cursor: function (task) {
+        var dealsIds = _.pluck(_.where(task.links, { type: Enums.linkTypes.deal.value }), 'id');
+        return Deals.find({ _id: { $in: dealsIds } });
+      },
+      to: 'jobs',
+      observedProperties: ['links'],
+      onChange: function (changedProps, oldSelector) {
+        var dealsIds = _.pluck(_.where(changedProps, { type: Enums.linkTypes.deal.value }), 'id');
+        return Deals.find({ _id: { $in: dealsIds } });
+      }
+    });
+
+    // Placements
+    this.publish({
+      cursor: function (task) {
+        var placementsIds = _.pluck(_.filter(task.links, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
+        return Placements.find({ _id: { $in: placementsIds } });
+      },
+      to: 'jobs',
+      observedProperties: ['links'],
+      onChange: function (changedProps, oldSelector) {
+        var placementsIds = _.pluck(_.filter(changedProps, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
+        return Placements.find({ _id: { $in: placementsIds } });
+      }
+    });
   }
 });
 
 Meteor.paginatedPublish(TaskView, function () {
-  return Utils.filterCollectionByUserHier.call(this, TaskView.find({},{
-    sort: { dateCreated: -1 }
-  }));
+  var user = Meteor.users.findOne({ _id: this.userId });
+  if (!user)
+    return false;
+
+  return Utils.filterCollectionByUserHier.call(this, TaskView.find({}, { sort: { dateCreated: -1 } }));
 },{
-  pageSize: 20
+  pageSize: 5,
+  publicationName: 'tasks'
 });
 
 Tasks.allow({
