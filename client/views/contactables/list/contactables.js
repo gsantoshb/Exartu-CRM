@@ -2,8 +2,10 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    ContactablesHandler = Meteor.paginatedSubscribe('contactables');
-    return [ContactablesHandler];
+    if (!window.AuxContactablesHandler){
+      AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+    }
+    return [AuxContactablesHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -86,7 +88,7 @@ Template.contactables.information = function() {
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
 
-  info.contactablesCount.value = ContactablesHandler.totalCount();
+  info.contactablesCount.value = AuxContactablesHandler.totalCount();
 
   return info;
 };
@@ -100,8 +102,8 @@ Template.contactables.created = function(){
 };
 
 Template.contactables.isLoading = function () {
-  return ContactablesHandler.isLoading();
-}
+  return AuxContactablesHandler.isLoading();
+};
 
 var searchDep = new Deps.Dependency;
 var isSearching = false;
@@ -152,7 +154,7 @@ var getLocationTagValue = function(locationField, locationFields) {
 };
 
 Template.contactablesList.info = function() {
-  info.isFiltering.value = Contactables.find().count() != 0;
+  info.isFiltering.value = AuxContactables.find().count() != 0;
   return info;
 };
 
@@ -244,7 +246,7 @@ Template.contactablesList.created = function() {
     if (!_.isEmpty(query.candidateStatus.value)){
       searchQuery._id = {$in:_.map(Placements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
     }
-    ContactablesHandler.setFilter(searchQuery);
+    AuxContactablesHandler.setFilter(searchQuery);
   });
 };
 
@@ -263,7 +265,9 @@ Template.contactablesList.contactables = function() {
   // to fix that I toke advantage of the fact that those customer 'have less fields',
   // that's wy I'm filtering out the one that don't have hierId.
   // A possible solution could be to use 2 collections in the client
-  return Contactables.find({hierId: {$exists: true}});
+  //return Contactables.find({hierId: {$exists: true}});
+
+  return AuxContactables.find();
 };
 
 Template.contactablesList.contactableTypes = function() {

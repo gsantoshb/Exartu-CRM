@@ -2,26 +2,41 @@ Meteor.publish('singleContactable', function (id) {
   return Utils.filterCollectionByUserHier.call(this, Contactables.find(id));
 });
 
-ContactablesList = new View('contactables',{
+ContactablesList = new View('auxContactables',{
   collection: Contactables,
-  mapping: function (contactable) {
-    var placement = Placements.find({_id: contactable.placement});
-    var result = [placement];
+  cursors: function (contactable) {
 
-    placement.forEach(function(placement){
-      if (placement.job){
-        result.push(Jobs.find(placement.job))
+    // Placements
+    this.publish({
+      cursor: function (contactable) {
+        if (contactable.placement !== undefined) {
+          return PlacementView.find({ _id: contactable.placement });
+        }
+      },
+      to: 'placements',
+      observedProperties: ['placement'],
+      onChange: function (changedProps, oldSelector) {
+        if (changedProps.placement !== undefined) {
+          return PlacementView.find({ _id: changedProps.placement });
+        }
       }
     });
 
-    if (contactable.Contact && contactable.Contact.customer) {
-      result.push(Contactables.find(contactable.Contact.customer, {
-        fields: {
-          'organization.organizationName' : 1
+    // Customers
+    this.publish({
+      cursor: function (contactable) {
+        if (contactable.Contact && contactable.Contact.customer) {
+          return Contactables.find(contactable.Contact.customer, { fields: { 'organization.organizationName': 1 } });
         }
-      }));
-    }
-    return result;
+      },
+      to: 'contactables',
+      observedProperties: ['Contact'],
+      onChange: function (changedProps, oldSelector) {
+        if (changedProps.Contact.customer) {
+          return Contactables.find(changedProps.Contact.customer, { fields: { 'organization.organizationName': 1 } });
+        }
+      }
+    });
   }
 });
 
@@ -42,7 +57,7 @@ Meteor.paginatedPublish(ContactablesList, function () {
   },
   {
     pageSize: 5,
-    publicationName: 'contactables'
+    publicationName: 'auxContactables'
   }
 );
 
