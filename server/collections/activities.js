@@ -1,36 +1,62 @@
 ActivityViews = new View('activities', {
   collection: Activities,
-  mapping: function (activity) {
-      switch (activity.type) {
-        case   (Enums.activitiesType.contactableAdd):
-          return {
-            cursor:  Contactables.find(activity.entityId),
-            name: 'contactables'
-          };
-          break;
-        case   (Enums.activitiesType.messageAdd):
-          break;
-        case   (Enums.activitiesType.taskAdd):
-          return Tasks.find(activity.entityId);
-          break;
-        case   (Enums.activitiesType.jobAdd):
-          return Jobs.find(activity.entityId);
-          break;
-        case   (Enums.activitiesType.placementEdit):
-          break;
-        case   (Enums.activitiesType.placementAdd):
-          break;
-        case   (Enums.activitiesType.dealAdd):
-          break;
+  cursors: function (activity) {
+
+    // Contactables
+    this.publish({
+      cursor: function (activity) {
+        if (activity.type === Enums.activitiesType.contactableAdd) {
+          return Contactables.find({ _id: activity.entityId, auxType: { $ne: Enums.activitiesType.contactableAdd } }); // hack to obtain the type in the onChange event
+        }
+      },
+      to: 'contactables',
+      observedProperties: ['entityId'],
+      onChange: function (changedProps, oldSelector) {
+        if (oldSelector.auxType.$ne === Enums.activitiesType.contactableAdd) {
+          return Contactables.find({ _id: changedProps, auxType: { $ne: Enums.activitiesType.contactableAdd } }); // hack to obtain the type in the onChange event
+        }
       }
-    }
+    });
+
+    // Tasks
+    this.publish({
+      cursor: function (activity) {
+        if (activity.type === Enums.activitiesType.taskAdd) {
+          return Tasks.find({ _id: activity.entityId, auxType: { $ne: Enums.activitiesType.taskAdd } }); // hack to obtain the type in the onChange event
+        }
+      },
+      to: 'tasks',
+      observedProperties: ['entityId'],
+      onChange: function (changedProps, oldSelector) {
+        if (oldSelector.auxType.$ne === Enums.activitiesType.taskAdd) {
+          return Tasks.find({ _id: changedProps, auxType: { $ne: Enums.activitiesType.taskAdd } }); // hack to obtain the type in the onChange event
+        }
+      }
+    });
+
+    // Jobs
+    this.publish({
+      cursor: function (activity) {
+        if (activity.type === Enums.activitiesType.jobAdd) {
+          return Jobs.find({ _id: activity.entityId, auxType: { $ne: Enums.activitiesType.jobAdd } }); // hack to obtain the type in the onChange event
+        }
+      },
+      to: 'jobs',
+      observedProperties: ['entityId'],
+      onChange: function (changedProps, oldSelector) {
+        if (oldSelector.auxType.$ne === Enums.activitiesType.jobAdd) {
+          return Jobs.find({ _id: changedProps, auxType: { $ne: Enums.activitiesType.jobAdd } }); // hack to obtain the type in the onChange event
+        }
+      }
+    });
+  }
 });
 
 Meteor.paginatedPublish(ActivityViews, function () {
   return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({},{sort: {dateCreated:-1}}));
 },{
-  infiniteScroll: true,
-  pageSize: 20,
+  //infiniteScroll: true,
+  pageSize: 5,
   publicationName: 'activities'
 });
 

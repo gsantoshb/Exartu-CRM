@@ -49,26 +49,28 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12 col-md-12">
-                    <section class="timeline">
-                        <header class="box-header">
-                            <div class="container-fluid" style="padding-bottom: 0">
-                                <div class="row">
-                                    <div class="col-xs-4">
-                                        <h4 class="box-title">Recent activity</h4>
-                                    </div>
-                                    <div  class="col-xs-8 input-group">
-                                        <input id="searchString" class="form-control" placeholder="Search...">
-                                        <a class="input-group-addon btn btn-primary"><i class="fa fa-search"></i></a>
-                                    </div>
+
+                    <header class="box-header">
+                        <div class="container-fluid" style="padding-bottom: 0">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <h4 class="box-title">Recent activity</h4>
+                                </div>
+                                <div  class="col-xs-8 input-group">
+                                    <input id="searchString" class="form-control" placeholder="Search...">
+                                    <a class="input-group-addon btn btn-primary"><i class="fa fa-search"></i></a>
                                 </div>
                             </div>
-                        </header>
+                        </div>
+                    </header>
 
+                    {{>fastPagination name="activities" loadingTemplate='loadingActivities' container='body' content='#content'}}
+
+                    <section class="timeline">
                         <div class="activity-container scroll-container">
                             {{#each activities}}
                                 {{> activity}}
                             {{/each}}
-                            {{>fastPagination name="activities" loadingTemplate='loadingActivities' container='body' content='#content'}}
                         </div>
                     </section>
                     <!-- /.timeline -->
