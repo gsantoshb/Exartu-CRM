@@ -11,7 +11,7 @@ NoteView = new View('notes', {
       to: 'contactables',
       observedProperties: ['links'],
       onChange: function (changedProps, oldSelector) {
-        var contactablesIds = _.pluck(_.where(changedProps, { type: Enums.linkTypes.contactable.value }), 'id');
+        var contactablesIds = _.pluck(_.where(changedProps.links, { type: Enums.linkTypes.contactable.value }), 'id');
         return Contactables.find({ _id: { $in: contactablesIds } });
       }
     });
@@ -25,7 +25,7 @@ NoteView = new View('notes', {
       to: 'jobs',
       observedProperties: ['links'],
       onChange: function (changedProps, oldSelector) {
-        var jobsIds = _.pluck(_.where(changedProps, { type: Enums.linkTypes.job.value }), 'id');
+        var jobsIds = _.pluck(_.where(changedProps.links, { type: Enums.linkTypes.job.value }), 'id');
         return Jobs.find({ _id: { $in: jobsIds } });
       }
     });
@@ -39,7 +39,7 @@ NoteView = new View('notes', {
       to: 'jobs',
       observedProperties: ['links'],
       onChange: function (changedProps, oldSelector) {
-        var dealsIds = _.pluck(_.where(changedProps, { type: Enums.linkTypes.deal.value }), 'id');
+        var dealsIds = _.pluck(_.where(changedProps.links, { type: Enums.linkTypes.deal.value }), 'id');
         return Deals.find({ _id: { $in: dealsIds } });
       }
     });
@@ -53,7 +53,7 @@ NoteView = new View('notes', {
       to: 'jobs',
       observedProperties: ['links'],
       onChange: function (changedProps, oldSelector) {
-        var placementsIds = _.pluck(_.filter(changedProps, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
+        var placementsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
         return Placements.find({ _id: { $in: placementsIds } });
       }
     });
