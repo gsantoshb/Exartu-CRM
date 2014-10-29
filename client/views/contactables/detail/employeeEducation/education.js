@@ -22,11 +22,14 @@ EducationSchema = new SimpleSchema({
         }
 
         if (!this.value) {
-          EducationSchema.namedContext('AddEducationRecord').addInvalidKeys([{name: 'end', type: 'notUnique'}]);
+          return "Required"; //"End date not set";
         } else if (this.field('start').value > this.value){
-          EducationSchema.namedContext('AddEducationRecord').addInvalidKeys([{name: 'end', type: 'minDate', value: 'End date should be grater than start date'}]);
+          //EducationSchema.namedContext('AddEducationRecord').addInvalidKeys([{name: 'end', type: 'minDate', value: 'End date should be grater than start date'}]);
+          return "End date should be greater than start date";
         }
       }
+
+      return true;
     }
   }
 });
