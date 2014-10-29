@@ -97,10 +97,18 @@ Template.addDocumentForm.events = {
     }
 
     var newDocument = document.getObject();
+
+    // Get extension
+    var extension;
+    var splittedName = document.file.name.split('.');
+    if (splittedName.length > 1)
+      extension = splittedName[splittedName.length - 1];
+
     var metadata = {
       entityId: Session.get('entityId'),
       name: newDocument.name,
       type: newDocument.file.type,
+      extension: extension,
       description: newDocument.description,
       tags: newDocument.tags,
       owner: Meteor.userId()
