@@ -48,13 +48,13 @@ NoteView = new View('notes', {
     this.publish({
       cursor: function (note) {
         var placementsIds = _.pluck(_.filter(note.links, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
-        return Placements.find({ _id: { $in: placementsIds } });
+        return PlacementView.find({ _id: { $in: placementsIds } });
       },
-      to: 'jobs',
+      to: 'placements',
       observedProperties: ['links'],
       onChange: function (changedProps, oldSelector) {
         var placementsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
-        return Placements.find({ _id: { $in: placementsIds } });
+        return PlacementView.find({ _id: { $in: placementsIds } });
       }
     });
   }
