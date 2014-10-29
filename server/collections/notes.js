@@ -69,7 +69,13 @@ Meteor.paginatedPublish(NoteView, function () {
 
 Notes.allow({
   insert: function () {
-    return true
+    return true;
+  },
+  update: function () {
+    return true; // TODO: Only allow to edit if note belongs to user's hierarchy
+  },
+  remove: function () {
+    return true; // TODO: Only allow to edit if note belongs to user's hierarchy
   }
 });
 

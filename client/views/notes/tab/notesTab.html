@@ -1,0 +1,121 @@
+<template name="notesTab">
+    <div class="record">
+        {{> notesTabAdd}}
+        {{> notesTabList}}
+    </div>
+</template>
+
+<template name="notesTabAdd">
+    <div class="record-add row">
+        <div class="add-box-head col-xs-12 col-md-3">
+            <div class="add-item-icon"><i class="icon-note-paper-1"></i></div>
+            <h2>Notes</h2>
+        </div>
+
+        <div class="add-box-content col-xs-12 col-md-9">
+            {{#autoForm id="AddNoteRecord" schema="NoteSchema" collection="Notes" type="insert" resetOnSuccess=true}}
+                {{> afQuickField name='msg' rows=3}}
+                {{> linksAutoForm name='links'}}
+
+                <br/>
+
+                <button class="btn btn-success pull-right"> Save </button>
+            {{/autoForm}}
+        </div>
+    </div>
+</template>
+
+<template name="notesTabList">
+    <div class="record-list-pagination">
+        {{> fastPagination name="notes"}}
+    </div>
+    <ul class="record-list list-3 stripped has-thumb">
+        {{#each items}}
+            {{> notesTabItem}}
+        {{/each}}
+    </ul>
+</template>
+
+<template name="notesTabItem">
+    <li class="record-record list-3-item">
+        <div class="list-thumb"><i class="icon-note-paper-2"></i></div>
+        <div class="list-3-content list-magic">
+            <div class="list-3-content-wrap">
+                {{#with getCtx}}
+                    {{#if isEditing}}
+                        {{> notesTabEditItem doc=noteRecord}}
+                    {{else}}
+                        <div class="list-3-actions">
+                            <a class="editNoteRecord pointer"><i class="fa fa-edit"></i> Edit</a>
+                            <span class="bullet-spacer">·</span>
+                            <a class="deleteNoteRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
+                        </div>
+                        <div class="list-3-item-title">{{noteRecord.msg}}</div>
+
+                        {{#each noteRecord.links}}
+                            <a href="{{getUrl .}}">
+                                {{#with getEntity .}}
+                                    <span class="badge badge-primary">{{displayName}}</span>
+                                {{/with}}
+                            </a>
+                        {{/each}}
+                    {{/if}}
+                {{/with}}
+            </div>
+        </div>
+    </li>
+</template>
+
+<template name="notesTabEditItem">
+    {{#autoForm id=formId schema="NoteSchema" doc=doc collection="Notes" type="update"}}
+        {{> afQuickField name='msg' rows=3}}
+        {{> linksAutoForm name='links' value=doc.links}}
+
+        <br/>
+
+        <div class="pull-right">
+            <span class="btn btn-default cancelNoteRecordChanges"> Cancel </span>
+            <button class="btn btn-success"> Save </button>
+        </div>
+    {{/autoForm}}
+</template>
+
+<template name="linksAutoForm">
+    <div data-schema-key="{{name}}" id="links-value" class="{{name}} {{#if afFieldIsInvalid name=name}}has-error{{/if}}">
+        <div class="row">
+            <div class="col-md-5">
+                <select class="form-control" id="noteTypeSelect" title="Select the type of entity that you want to link to the msg">
+                    <option value="">--type--</option>
+                    {{#each types}}
+                        <option value="{{value}}">{{displayName}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="col-md-5">
+                <select class="form-control" id="noteEntitySelect" title="Select the entity that you want to link">
+                    <option value="">--select--</option>
+                    {{#each entities}}
+                        <option value="{{_id}}">{{displayName}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <span id="noteLinkEntity" class="btn btn-md btn-default pull-right">Link</span>
+            </div>
+        </div>
+        <br/>
+
+        {{#each links}}
+            <button type="button" class="tag btn btn-xs btn-primary">
+                {{#with getEntity .}}
+                    <span> {{displayName}} </span>
+                {{/with}}
+                <i class="remove-link fa fa-times"></i>
+            </button>
+        {{/each}}
+
+        {{#if afFieldIsInvalid name=name}}
+            <span class="help-block">{{afFieldMessage name=name}}</span>
+        {{/if}}
+    </div>
+</template>

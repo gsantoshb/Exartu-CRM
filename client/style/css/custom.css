@@ -547,12 +547,14 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 .details .details-body .back-tab { color: grey; margin-top: -51px; float: left; text-align: center; border: 1px solid #d6d6d6; padding-top: 10px; height: 42px; width: 30px}
 
-.details .details-body .details-tab-content {margin-top: 20px}
+.details .details-body .details-tab-content {margin-top: -10px}
 
 .details .details-body .next-tab .hide { display: none;}
 
 .details .details-body .back-tab .hide { display: none;}
 
+/* HACK for list filters when they are inside a tab */
+.details .details-body .details-tab-content .filter {margin-top: -10px}
 
 /* Contactable screen */
 .profile-content-header .profile-pic {
@@ -779,6 +781,10 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 .record .record-list { margin-top: 20px; padding: 0px 10px 10px 10px}
 
+.record .record-list-pagination { font-size: 10px; color: black; margin-top: -2px; margin-bottom: 30px;}
+
+.record .record-list-pagination .pagination { margin: 5px 2px !important; float: right}
+
 .record .record-record { } /*border-bottom: 1px solid #e7e7e7;*/
 
 .record .record-record .record-record-action { display: none;}
@@ -786,6 +792,8 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .record .record-record:hover .record-record-action { display: block; float: right;}
 
 .record .record-add { padding: 10px 5px 10px 5px; margin: 0px; background-color: #f5f5f5; border: 1px solid #e7e7e7; border-radius: 2px;}
+
+.record .add-box-content { padding-bottom: 0px !important;}
 
 /*connection-banner*/
 #connection-lost-banner {
