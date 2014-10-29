@@ -32,7 +32,7 @@ Meteor.paginatedPublish(JobView, function(){
 });
 
 Meteor.publish('singleJob', function (id) {
-  return Utils.filterCollectionByUserHier.call(this, Jobs.find(id));
+  return Utils.filterCollectionByUserHier.call(this, JobView.find(id));
 });
 
 Meteor.publish('allJobs', function (id) {
