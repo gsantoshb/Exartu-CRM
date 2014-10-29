@@ -80,7 +80,7 @@ Template.addDocumentForm.newDocument = function() {
 Template.addDocumentForm.events = {
   'click #add-tag': function(e) {
     var inputTag = $('#new-tag')[0];
-    if (_.indexOf(document.tags.value, inputTag.value) != -1)
+    if (!inputTag.value || _.indexOf(document.tags.value, inputTag.value) != -1)
       return;
 
     document.tags.insert(inputTag.value);
