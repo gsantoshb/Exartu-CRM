@@ -233,16 +233,21 @@ Template.placementsListSearch.events = {
 Template.placementsListItem.employeeDisplayName = function () {
   var employee = Contactables.findOne(this.employee);
   return employee && employee.displayName;
-}
+};
 Template.placementsListItem.jobDisplayName = function () {
   var job = Jobs.findOne(this.job);
   return job && job.displayName;
-}
+};
+Template.placementsListItem.customerId = function () {
+  var job = Jobs.findOne(this.job);
+  var customer = job && Contactables.findOne(job.customer);
+  return customer && customer._id;
+};
 Template.placementsListItem.customerDisplayName = function () {
   var job = Jobs.findOne(this.job);
   var customer = job && Contactables.findOne(job.customer);
   return customer && customer.displayName;
-}
+};
 
 Template.placementsListItem.pictureUrl = function(pictureFileId) {
   var picture = PlacementsFS.findOne({_id: pictureFileId});
