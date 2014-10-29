@@ -4,6 +4,7 @@ AddForm = {
   show: function (file) {
     document.file = file;
     document.originalFileName = document.file.name;
+    document.name.value = document.file.name;
     this.val = true;
     this.dep.changed();
   },
