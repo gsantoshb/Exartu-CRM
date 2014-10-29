@@ -39,7 +39,9 @@
                         {{#if isSearching}}
                             searching
                         {{else}}
-                            {{> fastPagination name="auxContactables" useKeys='true'}}
+                            {{#unless isESSearch}}
+                                {{> fastPagination name="auxContactables" useKeys='true'}}
+                            {{/unless}}
                             {{#if isLoading}}
                                 <div style="height: 505px;">
                                 </div>

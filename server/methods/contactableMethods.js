@@ -75,6 +75,7 @@ FileUploader.createEndpoint('uploadResume', {
         userId: Meteor.userId(),
         name: metadata.name,
         type: metadata.type,
+        extension: metadata.extension,
         dateCreated: new Date()
       };
       return Resumes.insert(resume);
@@ -99,6 +100,7 @@ FileUploader.createEndpoint('uploadContactablesFiles', {
       entityId: metadata.entityId,
       name: metadata.name,
       type: metadata.type,
+      extension: metadata.extension,
       description: metadata.description,
       tags: metadata.tags,
       userId: Meteor.userId(),

@@ -62,7 +62,8 @@ Template.dateTimePicker.rendered= function() {
   var options = {
     language: 'en',
     initialDate: this.data.value,
-    useSeconds: false
+    useSeconds: false,
+    autoclose: true
   };
 
   _.extend(options, this.data.options);

@@ -27,8 +27,14 @@ ResumeParserController = RouteController.extend({
 // Add resume panel
 
 var uploadFile = function(file) {
+  // Get extension
+  var extension;
+  var splittedName = file.name.split('.');
+  if (splittedName.length > 1)
+    extension = splittedName[splittedName.length - 1];
+
   startParsing();
-  FileUploader.post('uploadResume', file, {name: file.name, type: file.type}, function(err, result) {
+  FileUploader.post('uploadResume', file, {name: file.name, type: file.type, extension: extension}, function(err, result) {
     endParsing();
     console.log(err, result);
   });
