@@ -4,6 +4,7 @@ var contactable;
 var searchFields = ['jobDisplayName','employeeDisplayName','customerDisplayName'];
 
 var placementCollection = Placements;
+var PlacementHandler;
 
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
@@ -82,9 +83,10 @@ Template.placementsBox.isSearching = function() {
 
 // List
 Template.placementsList.created = function () {
-  if (!window.PlacementHandler){
-    PlacementHandler = Meteor.paginatedSubscribe('placements');
+  if (!SubscriptionHandlers.PlacementHandler){
+    SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
   }
+  PlacementHandler = SubscriptionHandlers.PlacementHandler;
   Meteor.autorun(function () {
 
     var searchQuery = {};

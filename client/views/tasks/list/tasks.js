@@ -1,9 +1,11 @@
 var entityType=null;
+var TasksHandler;
+
 TasksController = RouteController.extend({
   template: 'tasks',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return TasksHandler = Meteor.paginatedSubscribe("tasks");
+    return SubscriptionHandlers.TasksHandler = TasksHandler = Meteor.paginatedSubscribe("tasks");
   },
   onAfterAction: function() {
     var title = 'Tasks',

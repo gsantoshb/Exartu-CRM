@@ -1,9 +1,11 @@
 var entityType=null;
 var isEntitySpecific=false;
+var TasksHandler;
 Template.tasksBox.created=function(){
-  if (! window.TasksHandler) {
-    TasksHandler = Meteor.paginatedSubscribe("tasks");
+  if (! SubscriptionHandlers.TasksHandler) {
+    SubscriptionHandlers.TasksHandler = Meteor.paginatedSubscribe("tasks");
   }
+  TasksHandler = SubscriptionHandlers.TasksHandler;
 
   Meteor.autorun(function () {
     entityType = Utils.getEntityTypeFromRouter();
