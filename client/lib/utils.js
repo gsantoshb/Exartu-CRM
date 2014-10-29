@@ -302,6 +302,20 @@ Utils.getEntityFromLink=function(link){
           return Candidates.findOne({_id: link.id});
   }
 }
+Utils.getEntityFromLinkForAdd=function(link){
+  switch (link.type){
+    case Enums.linkTypes.contactable.value:
+      return AllContactables.findOne({_id: link.id});
+    case Enums.linkTypes.job.value:
+      return AllJobs.findOne({_id: link.id});
+    case Enums.linkTypes.deal.value:
+          return Deals.findOne({_id: link.id});
+      case Enums.linkTypes.placement.value:
+          return AllPlacements.findOne({_id: link.id});
+      case Enums.linkTypes.candidate.value:
+          return AllPlacements.findOne({_id: link.id});
+  }
+}
 
 Utils.getEntitiesFromType=function(type){
     switch (type) {

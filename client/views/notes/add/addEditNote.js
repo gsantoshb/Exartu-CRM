@@ -28,7 +28,8 @@ var createNote=function(note){
     definition._id= note._id;
   return definition;
 //  return new Utils.ObjectDefinition(definition);
-}
+};
+
 Template.addEditNote.helpers({
   isEditing: function(){
     return !! note._id;
@@ -60,9 +61,11 @@ Template.addEditNote.helpers({
   },
 
   types: function(){
-    return _.map(_.keys(Enums.linkTypes),function(key){
-      return Enums.linkTypes[key];
-    })
+    return _.map( _.filter(_.keys(Enums.linkTypes), function(key){
+      return !_.contains(['deal', 'candidate'], key);
+    }),function(key){
+        return Enums.linkTypes[key];
+    });
   },
   entities:function(){
     typeDep.depend();
@@ -70,15 +73,11 @@ Template.addEditNote.helpers({
     selectedType=parseInt(selectedType);
     switch (selectedType){
       case Enums.linkTypes.contactable.value:
-        Meteor.subscribe('allContactables',{ Customer: { $exists: true } });
-        return Contactables.find();
+        return AllContactables.find();
       case Enums.linkTypes.job.value:
-        Meteor.subscribe('allJobs');
-        return Jobs.find();
+        return AllJobs.find();
      case Enums.linkTypes.placement.value:
-        var handler = Meteor.subscribe('allPlacements');
-        handler.ready();
-        return Placements.find();
+        return AllPlacements.find();
       default :
         return [];
     }
@@ -87,9 +86,8 @@ Template.addEditNote.helpers({
     linkedDep.depend();
     return note.links;
   },
-  getEntity: Utils.getEntityFromLink
-
-})
+  getEntity: Utils.getEntityFromLinkForAdd
+});
 var isValid= function(note, key){
   var result= true;
 
@@ -222,5 +220,8 @@ Template.addEditNote.events({
 })
 
 Template.addEditNote.created=function(){
+  Meteor.subscribe('allContactables');
+  Meteor.subscribe('allJobs');
+  Meteor.subscribe('allPlacements');
   note=null;
 }

@@ -63,23 +63,35 @@ Meteor.paginatedPublish(ContactablesList, function () {
 
 Meteor.publish('allCustomers', function () {
   var sub = this;
-  Meteor.Collection._publishCursor(Contactables.find({ Customer: { $exists: true } }, {
+  Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Contactables.find({ Customer: { $exists: true } }, {
     fields: {
       'organization.organizationName': 1,
       houseAccount: 1
     }
-  }), sub, 'allCustomers');
+  })), sub, 'allCustomers');
   sub.ready();
 });
 Meteor.publish('allEmployees', function () {
   var sub = this;
-  Meteor.Collection._publishCursor(Contactables.find({ Employee: { $exists: true } }, {
+  Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Contactables.find({ Employee: { $exists: true } }, {
     fields: {
       'person.lastName': 1,
       'person.middleName': 1,
       'person.firstName': 1
     }
-  }), sub, 'allEmployees');
+  })), sub, 'allEmployees');
+  sub.ready();
+});
+Meteor.publish('allContactables', function () {
+  var sub = this;
+  Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Contactables.find({},{
+    fields: {
+      'person.lastName': 1,
+      'person.middleName': 1,
+      'person.firstName': 1,
+      'organization.organizationName': 1
+    }
+  })), sub, 'allContactables');
   sub.ready();
 });
 
