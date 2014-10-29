@@ -1,10 +1,13 @@
+
+var AuxContactablesHandler;
 ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    if (!window.AuxContactablesHandler){
-      AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+    if (!SubscriptionHandlers.AuxContactablesHandler) {
+      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
     }
+    AuxContactablesHandler = SubscriptionHandlers.AuxContactablesHandler;
     return [AuxContactablesHandler];
   },
   action: function () {
@@ -370,8 +373,8 @@ Meteor.autorun(function() {
           }),
           contexts: _.flatten(_.map(hit.highlight, function(matchedProperty, propertyName) {
             return matchedProperty;
-          })),
-        }
+          }))
+        };
         return contactable;
       });
       esDep.changed();

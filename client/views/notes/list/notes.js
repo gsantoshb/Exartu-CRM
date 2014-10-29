@@ -1,10 +1,13 @@
+
+var NotesHandler;
 NotesController = RouteController.extend({
   template: 'notes',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    if (!window.NotesHandler){
-      NotesHandler = Meteor.paginatedSubscribe('notes');
+    if (!SubscriptionHandlers.NotesHandler) {
+      SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes');
     }
+    NotesHandler = SubscriptionHandlers.NotesHandler;
     return NotesHandler;
   },
   onAfterAction: function() {
