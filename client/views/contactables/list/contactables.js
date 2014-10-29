@@ -121,6 +121,9 @@ Template.contactables.events({
   }
 });
 
+Template.contactables.isESSearch = function() {
+  return !_.isEmpty(query.searchString.value);
+};
 
 
 // List

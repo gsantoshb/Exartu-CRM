@@ -73,3 +73,9 @@ AllEmployees  = new Meteor.Collection('allEmployees', {
     return contactable;
   }
 });
+AllContactables  = new Meteor.Collection('allContactables', {
+  transform: function (contactable) {
+    addDisplayName(contactable);
+    return contactable;
+  }
+});

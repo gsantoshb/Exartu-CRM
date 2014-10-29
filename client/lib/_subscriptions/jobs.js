@@ -24,3 +24,9 @@ Jobs = new Meteor.Collection('jobs', {
     return job;
   }
 });
+AllJobs = new Meteor.Collection('allJobs', {
+  transform: function (job) {
+    job.displayName = job.publicJobTitle ;
+    return job;
+  }
+});

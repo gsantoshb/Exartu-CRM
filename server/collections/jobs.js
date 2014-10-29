@@ -32,17 +32,18 @@ Meteor.paginatedPublish(JobView, function(){
 });
 
 Meteor.publish('singleJob', function (id) {
-  return Utils.filterCollectionByUserHier.call(this, Jobs.find(id));
+  return Utils.filterCollectionByUserHier.call(this, JobView.find(id));
 });
 
-Meteor.publish('allJobs', function (id) {
-  return Utils.filterCollectionByUserHier.call(this, Jobs.find({},{
+Meteor.publish('allJobs', function () {
+  var sub = this;
+  Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Jobs.find({},{
     fields:{
       publicJobTitle: 1
     }
-  }));
+  })), sub, 'allJobs');
+  sub.ready();
 });
-
 
 Jobs.allow({
   update: function () {
