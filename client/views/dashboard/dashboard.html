@@ -121,7 +121,7 @@
                                 <span>{{data.displayName}}</span>
                             </strong>
                         </a>
-                        <div class="time">{{getUserName}}...{{this.userName}}xx</div>
+                        <div class="time">{{displayUserName this.userId}}</div>
                     </h4>
                     <div class="item-actions">
                         {{#if data.contactableEmail}}
@@ -170,13 +170,13 @@
                         </a>
                         Assigned to
                         {{#each data.assign}}
-                            <a>{{getUserName}}</a>,
+                            <a>{{displayUserName .}}</a>,
                         {{/each}}
 
                     </h4>
                     <div class="item-actions">
                         <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
-                            <span data-bind="text: username"> {{getUserName userId}} </span>
+                            <span> {{displayUserName this.userId}} </span>
                         </a>
                         <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
                             <i class="fa fa-calendar"></i>

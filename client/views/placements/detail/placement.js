@@ -84,6 +84,11 @@ Template.placement.helpers({
     var job =  Jobs.findOne(this.job);
     return job && job.displayName;
   },
+  customerId: function () {
+    var job =  Jobs.findOne(this.job);
+    var customer = job && Contactables.findOne(job.customer);
+    return customer && customer._id;
+  },
   customerDisplayName: function () {
     var job =  Jobs.findOne(this.job);
     var customer = job && Contactables.findOne(job.customer);

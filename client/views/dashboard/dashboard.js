@@ -98,9 +98,6 @@ Template.dashboard.helpers({
   activities: function(){
     return Activities.find();
   },
-  log: function(data){
-    console.log('dat',this,data);
-  },
   customerHistory: function(){
 
     return getHistorical(Contactables, getDays(), customerQuery);
@@ -120,10 +117,6 @@ Template.dashboard.helpers({
   },
   employeeCount: function(){
     return Contactables.find(employeeQuery).count();
-  },
-  getUserName: function(id) {
-    var u = Meteor.users.findOne(id || this.toString());
-    return u && u.username;
   }
 });
 
@@ -156,22 +149,12 @@ Template.activity.helpers({
     }
   }
 });
-Template.newTaskActivity.getUserName = function(){
-  return this.userName;
-};
-
 
 Template.newContactableActivity.getActivityColor = function(){
   return helper.getActivityColor(this);
 };
-Template.newContactableActivity.log=function() {
-  console.log('nca',this);
-}
 Template.newContactableActivity.getActivityIcon = function(){
   return helper.getActivityIcon(this);
-};
-Template.newContactableActivity.getUserName = function(){
-  return this.userName;
 };
 
 Template.sparkline.text= function(){
@@ -187,20 +170,6 @@ Template.sparkline.rendered = function() {
   });
 }
 
-
-//  self.assign=function(jobId){
-//    var options={};
-//    var job=Jobs.findOne({
-//      _id: jobId
-//    });
-//    if(job.placement){
-//      options.placementId=job.placement;
-//    }else{
-//      options.jobId=jobId;
-//    }
-//    Composer.showModal( 'placementAdd', options);
-//  }
-//  return self;
 var getHistorical = function (collection, timeStamps, query) {
   var history = [];
   var q = query || {};
@@ -219,26 +188,4 @@ var getHistorical = function (collection, timeStamps, query) {
 
   history.growth = (growth > 0 ? '+' : growth < 0 ? '-' : '') + growth + '%';
   return history;
-}
-
-var deepLog = function(obj, path) {
-  if (path == undefined)
-    path = "";
-  _.forEach(_.keys(obj), function(key) {
-    if(_.isObject(key))
-      deepLog(key,  path + ' > ' + key);
-    else {
-      console.log('-----------------------------------------------------');
-      path += ' > ' + key;
-      console.log(path + ': ' + obj[key]);
-    }
-  })
-};
-
-//infinite scroll
-Template.dashboard.showMore= function() {
-  return function () {
-    query.options.limit += 50;
-    queryDep.changed();
-  };
 }
