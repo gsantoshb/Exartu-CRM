@@ -17,13 +17,14 @@ NoteSchema = new SimpleSchema({
 });
 
 // List
-
+var NotesHandler;
 Template.notesTabList.helpers({
   created: function () {
     var self = this;
-    if (!window.NotesHandler){
-      NotesHandler = Meteor.paginatedSubscribe('notes');
+    if (!SubscriptionHandlers.NotesHandler){
+      SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes');
     }
+    NotesHandler = SubscriptionHandlers.NotesHandler;
 
     Meteor.autorun(function () {
       var searchQuery = {

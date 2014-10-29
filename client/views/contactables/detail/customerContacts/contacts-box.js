@@ -1,9 +1,12 @@
+
+var ContactablesHandler;
 Template.contactableContactsBox.created = function () {
-  if (!window.ContactablesHandler){
-    ContactablesHandler = Meteor.paginatedSubscribe('contactables');
+  if (!SubscriptionHandlers.ContactablesHandler){
+    SubscriptionHandlers.ContactablesHandler = Meteor.paginatedSubscribe('contactables');
   }
- ContactablesHandler.setFilter({ 'Contact.customer': this.data._id  });
-}
+  ContactablesHandler = SubscriptionHandlers.ContactablesHandler;
+  ContactablesHandler.setFilter({ 'Contact.customer': this.data._id  });
+};
 Template.contactableContactsBox.hasContacts = function() {
   return _.isObject(this.Customer);
 };

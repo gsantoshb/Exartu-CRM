@@ -1,9 +1,12 @@
+
 var contactable = null;
+var JobHandler;
 
 Template.customerJobs.created = function () {
-  if (!window.JobHandler){
-    JobHandler = Meteor.paginatedSubscribe('jobs');
+  if (!SubscriptionHandlers.JobHandler){
+    SubscriptionHandlers.JobHandler = Meteor.paginatedSubscribe('jobs');
   }
+  JobHandler = SubscriptionHandlers.JobHandler;
   JobHandler.setFilter({customer: Session.get('entityId')});
 };
 
