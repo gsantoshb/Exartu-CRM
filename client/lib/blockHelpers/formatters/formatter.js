@@ -58,16 +58,14 @@ UI.registerHelper('dateTimePicker', function() {
   return Template.dateTimePicker;
 });
 
-Template.dateTimePicker.rendered= function(){
-  var options={
+Template.dateTimePicker.rendered= function() {
+  var options = {
     language: 'en',
     initialDate: this.data.value,
-    useSeconds: false,
-    format: this.data.options.format,
-    startView: this.data.options.startView,
-    minView: this.data.options.minView,
-    autoclose: this.data.options.autoclose
+    useSeconds: false
   };
+
+  _.extend(options, this.data.options);
 
   if (!this.data.pickTime) {
     options.pickTime = false;
@@ -83,10 +81,17 @@ Template.dateTimePicker.rendered= function(){
   this.$('.date').datetimepicker(options);
 };
 
+Template.dateTimePicker.getInitialValue = function () {
+  if (!this.value)
+    return;
+
+  return this.options && this.options["moment-format"]? moment(this.value || new Date()).format(this.options["moment-format"].toUpperCase()) : this.value
+};
+
 Template.dateTimePicker.events({
   'dp.change .datetimepicker':function (e, ctx) {
     if (ctx.onChange && _.isFunction(ctx.onChange)){
       ctx.onChange();
     }
   }
-})
+});

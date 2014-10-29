@@ -200,19 +200,19 @@ Template.addEditTask.events({
     });
   },
   'change.dp .completed>.dateTimePicker': function(e, ctx) {
-    if ($(e.target).hasClass('dateTimePicker')){
+    if ($(e.target).hasClass('date')){
       task.completed = $(e.target).data('DateTimePicker').date.toDate();
     }
     taskUpdate();
   },
   'change.dp .begin>.dateTimePicker': function(e, ctx) {
-    if ($(e.target).hasClass('dateTimePicker')){
+    if ($(e.target).hasClass('date')){
       task.begin = $(e.target).data('DateTimePicker').date.toDate();
     }
     taskUpdate();
   },
   'change.dp .end>.dateTimePicker': function(e, ctx) {
-    if ($(e.target).hasClass('dateTimePicker')){
+    if ($(e.target).hasClass('date')){
       task.end = $(e.target).data('DateTimePicker').date.toDate();
     }
     taskUpdate();
