@@ -122,6 +122,10 @@ Template.linksAutoForm.helpers({
     self.data.typeDep = new Tracker.Dependency();
     self.data.linkedDep = new Tracker.Dependency();
 
+    Meteor.subscribe('allContactables');
+    Meteor.subscribe('allJobs');
+    Meteor.subscribe('allPlacements');
+
     // TODO: Find another way to reset links when form is submitted
     var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
     formTemplate.template.events({
@@ -136,9 +140,11 @@ Template.linksAutoForm.helpers({
     return this.links;
   },
   types: function(){
-    return _.map(_.keys(Enums.linkTypes),function(key){
+    return _.map( _.filter(_.keys(Enums.linkTypes), function(key){
+      return !_.contains(['deal', 'candidate'], key);
+    }),function(key){
       return Enums.linkTypes[key];
-    })
+    });
   },
   entities: function(){
     this.typeDep.depend();
@@ -147,23 +153,19 @@ Template.linksAutoForm.helpers({
       return;
 
     var selectedType = DOM.$('#noteTypeSelect').val();
-    selectedType=parseInt(selectedType);
+    selectedType = parseInt(selectedType);
     switch (selectedType){
       case Enums.linkTypes.contactable.value:
-        Meteor.subscribe('allContactables',{ Customer: { $exists: true } });
-        return Contactables.find();
+        return AllContactables.find();
       case Enums.linkTypes.job.value:
-        Meteor.subscribe('allJobs');
-        return Jobs.find();
+        return AllJobs.find();
       case Enums.linkTypes.placement.value:
-        var handler = Meteor.subscribe('allPlacements');
-        handler.ready();
-        return Placements.find();
+        return AllPlacements.find();
       default :
         return [];
     }
   },
-  getEntity: Utils.getEntityFromLink
+  getEntity: Utils.getEntityFromLinkForAdd
 });
 
 var link = function(ctx, link){
