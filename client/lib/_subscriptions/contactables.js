@@ -1,10 +1,6 @@
 Contactables = new Meteor.Collection("contactables", {
   transform: function (contactable) {
-    if (contactable.person)
-      contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
-    if (contactable.organization) {
-      contactable.displayName = contactable.organization.organizationName;
-    }
+    addDisplayName(contactable);
 
     if (contactable.contactMethods) {
       _.each(contactable.contactMethods, function (cm) {
@@ -38,11 +34,8 @@ var addDisplayName = function (contactable) {
 
 AuxContactables = new Meteor.Collection("auxContactables", {
   transform: function (contactable) {
-    if (contactable.person)
-      contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
-    if (contactable.organization) {
-      contactable.displayName = contactable.organization.organizationName;
-    }
+    addDisplayName(contactable);
+
 
     if (contactable.contactMethods) {
       _.each(contactable.contactMethods, function (cm) {
@@ -64,6 +57,19 @@ AuxContactables = new Meteor.Collection("auxContactables", {
     }
 
     extendObject(contactable);
+    return contactable;
+  }
+});
+
+AllCustomers  = new Meteor.Collection('allCustomers', {
+  transform: function (contactable) {
+    addDisplayName(contactable);
+    return contactable;
+  }
+});
+AllEmployees  = new Meteor.Collection('allEmployees', {
+  transform: function (contactable) {
+    addDisplayName(contactable);
     return contactable;
   }
 });

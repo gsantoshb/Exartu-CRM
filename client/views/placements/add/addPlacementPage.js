@@ -1,6 +1,6 @@
 PlacementAddController = RouteController.extend({
   waitOn: function () {
-    return [Meteor.subscribe('allContactables', { Employee: { $exists: true } })];
+    return [Meteor.subscribe('allEmployees')];
   },
   data: function(){
     Session.set('objType',this.params.objType);
@@ -58,10 +58,9 @@ Template.addPlacementPage.helpers({
   },
   employees:function() {
     var employees = [];
-      Contactables.find().forEach(function(doc) {
+    AllEmployees.find().forEach(function(doc) {
       employees.push({ id: doc._id, text: doc.displayName});
     });
-    console.log(employees);
     return employees;
   },
   selectEmployee: function () {

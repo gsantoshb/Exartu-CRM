@@ -122,8 +122,10 @@ Template.relInput.helpers({
   options: function(){
     var q={};
     //q[this.target]={ $exists: true };
-    //todo: get collection from this.collection
-    return Contactables.find(q);
+
+    //hack todo: calculate the collection
+
+    return AllCustomers.find(q);
   },
   hasError :function(){
     return this.isValid? '': 'error';
