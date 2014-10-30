@@ -56,7 +56,7 @@ Meteor.paginatedPublish(ContactablesList, function () {
     );
   },
   {
-    pageSize: 5,
+    pageSize: 15,
     publicationName: 'auxContactables'
   }
 );

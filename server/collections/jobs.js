@@ -27,7 +27,7 @@ Meteor.paginatedPublish(JobView, function(){
     return false;
   return JobView.find();
 }, {
-  pageSize: 3,
+  pageSize: 15,
   publicationName: 'jobs'
 });
 
