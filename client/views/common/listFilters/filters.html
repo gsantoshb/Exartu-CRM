@@ -14,7 +14,11 @@
 <template name="filter_lookUp">
     <div class="filter-item">
         <div class="filter-title">
-            Status
+            {{#if title}}
+                {{title}}
+            {{else}}
+                Status
+            {{/if}}
         </div>
 
         {{>lookupFilterTemplate lookUpCode=code callback=cb multi=multi}}
