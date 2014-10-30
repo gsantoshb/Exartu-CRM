@@ -39,7 +39,7 @@ Meteor.paginatedPublish(PlacementView, function(){
     return false;
   return Utils.filterCollectionByUserHier.call(this, PlacementView.find());
 }, {
-  pageSize: 3,
+  pageSize: 15,
   publicationName: 'placements'
 });
 
@@ -53,7 +53,8 @@ Meteor.publish('allPlacements', function () {
     fields: {
       status: 1,
       employee: 1,
-      job: 1
+      job: 1,
+      candidateStatus: 1
     }
   })), sub, 'allPlacements');
   sub.ready();

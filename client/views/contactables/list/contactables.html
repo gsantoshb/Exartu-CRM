@@ -68,7 +68,7 @@
             {{> filter_entityType types=contactableTypes selected=query.objType}}
 
             {{#if isSelectedType 'Employee'}}
-                {{> filter_lookUp code=10 lookUpValue=query.candidateStatus multi=true}}
+                {{> filter_lookUp title="Placement status" code=10 lookUpValue=query.candidateStatus multi=true}}
             {{/if}}
 
             {{> filter_inactive showInactive=query.inactives}}

@@ -42,7 +42,7 @@ HierarchyManager = {
       throw new Meteor.Error(500, 'There is no value with id ' + valueId + ' for lookup with code value: ' + lookUpCode);
 
     // Remove old default value for this lookup type
-    LookUps.update({ isDefault: true,  lookUpCode: lookUpCode},
+    LookUps.update({ isDefault: true,  lookUpCode: lookUpCode, hierId: Meteor.user().currentHierId},
       {
         $set: {
           isDefault: false
