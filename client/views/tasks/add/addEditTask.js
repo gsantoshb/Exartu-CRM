@@ -90,11 +90,12 @@ Template.addEditTask.helpers({
     errorDep.depend();
     return Error[key] ? 'error': '';
   },
-
   types: function(){
-    return _.map(_.keys(Enums.linkTypes),function(key){
+    return _.map( _.filter(_.keys(Enums.linkTypes), function(key) {
+      return !_.contains(['deal', 'candidate'], key);
+    }), function(key) {
       return Enums.linkTypes[key];
-    })
+    });
   },
   entities:function(){
     typeDep.depend();
@@ -102,15 +103,15 @@ Template.addEditTask.helpers({
     selectedType=parseInt(selectedType);
     switch (selectedType){
       case Enums.linkTypes.contactable.value:
-        return Contactables.find({},{sort: {
+        return AllContactables.find({},{sort: {
           displayName: -1
         }});
       case Enums.linkTypes.job.value:
-        return Jobs.find({},{sort: {
+        return AllJobs.find({},{sort: {
           'displayName': -1
         }});
-      case Enums.linkTypes.deal.value:
-        return Deals.find();
+      case Enums.linkTypes.placement.value:
+        return AllPlacements.find();
       default :
         return [];
     }
@@ -119,9 +120,8 @@ Template.addEditTask.helpers({
     linkedDep.depend();
     return task.links;
   },
-  getEntity: Utils.getEntityFromLink
-
-})
+  getEntity: Utils.getEntityFromLinkForAdd
+});
 var isValid= function(task, key){
   var result= true;
 
@@ -270,5 +270,8 @@ Template.addEditTask.events({
 })
 
 Template.addEditTask.created=function(){
+  Meteor.subscribe('allContactables');
+  Meteor.subscribe('allJobs');
+  Meteor.subscribe('allPlacements');
   task=null;
-}
+};

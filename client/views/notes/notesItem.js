@@ -1,11 +1,14 @@
+
 //var tracker = null;
 var entityId = null;
 var entityType = null;
+var NotesHandler;
 Template.notesItem.created = function(id){
   var self = this;
-  if (!window.NotesHandler){
-    NotesHandler = Meteor.paginatedSubscribe('notes');
+  if (!SubscriptionHandlers.NotesHandler){
+    SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes');
   }
+  NotesHandler = SubscriptionHandlers.NotesHandler;
   entityType=Utils.getEntityTypeFromRouter();
 
   Meteor.autorun(function () {
@@ -37,21 +40,21 @@ Template.notesItem.created = function(id){
     }
     NotesHandler.setFilter(searchQuery);
   });
-}
+};
 
 Template.notesItem.destroyed = function () {
   entityId = null;
   //tracker && tracker.invalidate();
-}
+};
 
-var searchString, searchDep = new Deps.Dependency;
+var searchString, searchDep = new Tracker.Dependency;
 Template.notesItem.notes = function() {
   return Notes.find();
 };
 
 Template.notesItem.getCount = function(notes) {
   return notes.count();
-}
+};
 
 Template.notesItem.getEntity = function(link){
   return Utils.getEntityFromLink(link);
@@ -67,7 +70,7 @@ Template.notesItem.formatMsg = function(msg) {
 
 Template.notesItem.isLoading = function () {
   return NotesHandler.isLoading();
-}
+};
 
 Template.notesItem.events = {
   'change #search-string': function(e) {

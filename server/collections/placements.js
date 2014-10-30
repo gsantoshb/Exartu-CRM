@@ -18,8 +18,9 @@ PlacementView = new View('placements', {
     // Employee
     this.publish({
       cursor: function (placement) {
-        if (placement.employee)
+        if (placement.employee){
           return Contactables.find(placement.employee);
+        }
       },
       to: 'contactables',
       observedProperties: ['employee'],
@@ -47,13 +48,15 @@ Meteor.publish('placementDetails', function (id) {
 });
 
 Meteor.publish('allPlacements', function () {
-  return Utils.filterCollectionByUserHier.call(this, PlacementView.find({},{
+  var sub = this;
+  PlacementView.publishCursor(Utils.filterCollectionByUserHier.call(this, PlacementView.find({},{
     fields: {
       status: 1,
       employee: 1,
       job: 1
     }
-}));
+  })), sub, 'allPlacements');
+  sub.ready();
 });
 
 Meteor.startup(function () {

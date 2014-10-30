@@ -143,8 +143,8 @@ var tabs;
 Template.contactable_tabs.tabs = function() {
   tabs = [
     {id: 'details', displayName: 'Details', template: 'contactable_details'},
-    {id: 'notes', displayName: 'Notes', info: 'noteCount', template: 'contactable_notes'},
-    {id: 'documents', displayName: 'Documents', info: 'documentCount', template: 'contactable_documents'},
+    {id: 'notes', displayName: 'Notes', template: 'contactable_notes'},
+    {id: 'documents', displayName: 'Documents', template: 'contactable_documents'},
     {id: 'tasks', displayName: 'Tasks', template: 'contactable_tasks'},
   ];
 
@@ -156,13 +156,13 @@ Template.contactable_tabs.tabs = function() {
 
   if (contactable.Employee) {
     tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements'});
-    tabs.push({id: 'hrconcourse', displayName: 'HRconcourse', template: 'contactable_HRConcourse'});
+    //tabs.push({id: 'hrconcourse', displayName: 'HRconcourse', template: 'contactable_HRConcourse'});
     tabs.push({id: 'education', displayName: 'Education', template: 'employeeEduction'});
     tabs.push({id: 'pastJobs', displayName: 'Past Jobs', template: 'employeePastJobs'});
   }
 
-  tabs.push({id: 'actions', displayName: 'Actions', template: 'contactable_actions'});
-  tabs.push({id: 'activities', displayName: 'Activities', template: 'contactable_activities'});
+  //tabs.push({id: 'actions', displayName: 'Actions', template: 'contactable_actions'});
+  //tabs.push({id: 'activities', displayName: 'Activities', template: 'contactable_activities'});
 
   return tabs;
 };

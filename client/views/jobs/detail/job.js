@@ -217,13 +217,13 @@ var tabs;
 Template.job_tabs.tabs = function() {
   return [
     {id: 'details', displayName: 'Details', template: 'job_details'},
-    {id: 'notes', displayName: 'Notes', info: 'noteCount', template: 'job_notes'},
+    {id: 'notes', displayName: 'Notes', template: 'job_notes'},
     {id: 'description', displayName: 'Description', template: 'job_description'},
     {id: 'tasks', displayName: 'Tasks', template: 'job_tasks'},
     {id: 'rates', displayName: 'Rates', template: 'job_rates'},
     {id: 'placements', displayName: 'Placements', template: 'job_placements'},
-    {id: 'activity', displayName: 'Activity', template: 'job_activity'},
-    {id: 'actions', displayName: 'Actions', template: 'job_actions'}
+    //{id: 'activity', displayName: 'Activity', template: 'job_activity'},
+    //{id: 'actions', displayName: 'Actions', template: 'job_actions'}
   ];
 };
 

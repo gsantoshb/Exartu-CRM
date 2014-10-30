@@ -1,10 +1,12 @@
+
 var jobCollection = Jobs;
+var JobHandler;
 
 JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    JobHandler = Meteor.paginatedSubscribe('jobs');
+    SubscriptionHandlers.JobHandler = JobHandler = Meteor.paginatedSubscribe('jobs');
     return [JobHandler];
   },
   action: function () {
