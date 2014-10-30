@@ -39,7 +39,7 @@ Template.notesTabList.helpers({
     });
   },
   items: function() {
-    return Notes.find();
+    return Notes.find({},{ sort: { dateCreated: -1 } });
   }
 });
 
