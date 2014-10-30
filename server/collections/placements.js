@@ -53,7 +53,8 @@ Meteor.publish('allPlacements', function () {
     fields: {
       status: 1,
       employee: 1,
-      job: 1
+      job: 1,
+      candidateStatus: 1
     }
   })), sub, 'allPlacements');
   sub.ready();
