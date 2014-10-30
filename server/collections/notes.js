@@ -63,7 +63,7 @@ NoteView = new View('notes', {
 Meteor.paginatedPublish(NoteView, function () {
   return Utils.filterCollectionByUserHier.call(this, NoteView.find({}, { sort: { dateCreated: -1 } }));
 },{
-  pageSize: 5,
+  pageSize: 15,
   publishName: 'notes'
 });
 

@@ -39,7 +39,7 @@ Meteor.paginatedPublish(PlacementView, function(){
     return false;
   return Utils.filterCollectionByUserHier.call(this, PlacementView.find());
 }, {
-  pageSize: 3,
+  pageSize: 15,
   publicationName: 'placements'
 });
 
