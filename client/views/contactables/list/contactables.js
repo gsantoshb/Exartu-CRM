@@ -8,7 +8,7 @@ ContactablesController = RouteController.extend({
       SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
     }
     AuxContactablesHandler = SubscriptionHandlers.AuxContactablesHandler;
-    return [AuxContactablesHandler];
+    return [AuxContactablesHandler, Meteor.subscribe('allPlacements')];
   },
   action: function () {
     if (!this.ready()) {
@@ -250,8 +250,9 @@ Template.contactablesList.created = function() {
       delete searchQuery.$and;
 
     if (!_.isEmpty(query.candidateStatus.value)){
-      searchQuery._id = {$in:_.map(Placements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
+      searchQuery._id = {$in:_.map(AllPlacements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
     }
+
     AuxContactablesHandler.setFilter(searchQuery);
   });
 };
