@@ -56,6 +56,9 @@ AuxContactables = new Meteor.Collection("auxContactables", {
       contactable.Contact.customerName = customer && customer.displayName;
     }
 
+    if (contactable.location)
+      contactable.location.displayName = Utils.getLocationDisplayName(contactable.location);
+
     extendObject(contactable);
     return contactable;
   }
