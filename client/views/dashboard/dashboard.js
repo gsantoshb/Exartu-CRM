@@ -53,6 +53,7 @@ Template.dashboard.created = function(){
     queryDep.depend();
 
     var f={};
+    console.log('search1',query.filter.searchString)
     if (query.filter.searchString){
       var regexObject={
         $regex: query.filter.searchString,
@@ -98,7 +99,16 @@ Template.dashboard.created = function(){
 //Template.dashboard.waitOn=['ObjTypesHandler', 'UsersHandler']
 Template.dashboard.helpers({
   activities: function(){
-    return Activities.find();
+    queryDep.depend();
+    var q={};
+    if (query.filter.searchString) {
+      var regexObject = {
+        $regex: query.filter.searchString,
+        $options: 'i'
+      };
+      q['data.displayName']=regexObject;
+    };
+    return Activities.find(q);
   },
   customerHistory: function(){
 
