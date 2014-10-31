@@ -53,7 +53,6 @@ Template.dashboard.created = function(){
     queryDep.depend();
 
     var f={};
-    console.log('search1',query.filter.searchString)
     if (query.filter.searchString){
       var regexObject={
         $regex: query.filter.searchString,
