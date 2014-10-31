@@ -128,7 +128,7 @@ Template.jobsList.created= function () {
 
     // Type
     if (query.objType.value)
-      searchQuery.objNameArray = query.objType.value;
+      searchQuery.$and.push({objNameArray: query.objType.value});
 
     if (!_.isEmpty(query.searchString.value)) {
       var stringSearches=[];
@@ -140,19 +140,18 @@ Template.jobsList.created= function () {
         }
         stringSearches.push(aux);
       });
-      searchQuery = {
-        $and: [searchQuery, {
+      searchQuery.$and.push({
           $or: stringSearches
-        }]
-      };
-    }
+        })
+    };
 
     // Creation date
     if (query.selectedLimit.value) {
       var dateLimit = new Date();
-      searchQuery.dateCreated = {
+      searchQuery.$and.push({
+        dateCreated: {
         $gte: dateLimit.getTime() - query.selectedLimit.value
-      };
+      }});
     }
 
     //Status / Inactive
@@ -178,14 +177,14 @@ Template.jobsList.created= function () {
 
     //Created by
     if (query.mineOnly.value) {
-      searchQuery.userId = Meteor.userId();
+      searchQuery.$and.push({userId: Meteor.userId()});
     }
 
     // Tags
     if (query.tags.value.length > 0) {
-      searchQuery.tags = {
+      searchQuery.$and.push({tags: {
         $in: query.tags.value
-      };
+      }});
     }
 
     // Location filter
@@ -223,7 +222,7 @@ Template.jobsList.created= function () {
 
     // Status filter
     if (query.status.value){
-      searchQuery.status = query.status.value;
+      searchQuery.$and.push({status: query.status.value});
     }
 
     if (searchQuery.$and.length == 0)
