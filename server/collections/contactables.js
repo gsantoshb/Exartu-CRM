@@ -1,5 +1,7 @@
 Meteor.publish('singleContactable', function (id) {
-  return Utils.filterCollectionByUserHier.call(this, Contactables.find(id));
+  var sub = this;
+  ContactablesList.publishCursor(Utils.filterCollectionByUserHier.call(this, ContactablesList.find({_id: id})), sub, 'contactables');
+  sub.ready();
 });
 
 ContactablesList = new View('auxContactables',{

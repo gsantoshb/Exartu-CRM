@@ -4,5 +4,8 @@ Meteor.methods({
   },
   'copyJob': function (jobId) {
     return JobManager.copy(jobId);
+  },
+  setJobAddress: function (jobId, addressInfo) {
+    return JobManager.setAddress(jobId, addressInfo);
   }
 });

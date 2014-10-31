@@ -76,16 +76,21 @@
 <template name="job_details">
     <div class="row">
         <div class="col-sm-6">
-            <div class="col-sm-12">
-                {{#with job}}
+            {{#with job}}
+                <div class="col-sm-12">
                     {{> jobDetail}}
-                {{/with}}
-            </div>
-            <div class="col-sm-12">
-                {{> customerInfo customer=getCustomer path='customer' collection=jobCollection}}
-            </div>
+                </div>
+                <div class="col-sm-12">
+                    {{> customerInfo customer=getCustomer path='customer' collection=jobCollection}}
+                </div>
+            {{/with}}
         </div>
         <div class="col-sm-6">
+            <div class="col-sm-12">
+                {{#with originalJob}}
+                    {{> locationBox callback=setNewAddress location=location}}
+                {{/with}}
+            </div>
             <div class="col-sm-12">
                 {{#with originalJob}}
                     {{>tagsBox}}

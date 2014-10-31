@@ -266,7 +266,16 @@ Utils.getLocation = function (googleLocation) {
     country: country,
     postalCode: postalCode
   }
-}
+};
+
+Utils.getLocationDisplayName = function (location) {
+  return !location ? '' : (
+  (location.address  || '' ) + ' '  +
+  (location.address1 || '' ) + ', ' +
+  (location.city     || '' ) + ', ' +
+  (location.state    || '' ) + ', ' +
+  (location.country  || '' ));
+};
 
 Utils.getLinkTypeFromEntity=function(entity) {
     var objNameArray=entity.objNameArray;

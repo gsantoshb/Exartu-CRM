@@ -13,9 +13,9 @@ ContactableController = RouteController.extend({
     }
     this.render('contactable')
 
-    Session.set('activeTab',this.params.hash);
+    Session.set('activeTab', this.params.hash);
   },
-  onAfterAction: function() {
+  onAfterAction: function () {
     var title = 'All Contacts / ' + Session.get('contactableDisplayName'),
       description = 'Contact information';
     SEO.set({
@@ -37,7 +37,7 @@ Template.contactable.rendered = function () {
 
 var contactable;
 Template.contactable.helpers({
-  objTypeDisplayName: function() {
+  objTypeDisplayName: function () {
     return Utils.getContactableType(this);
   },
   contactable: function () {
@@ -48,19 +48,19 @@ Template.contactable.helpers({
     return contactable;
   },
   // Information to dynamic templates
-  collection: function(){
+  collection: function () {
     return Contactables;
   },
   // Counters
-  documentCount: function() {
+  documentCount: function () {
     return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count() + Resumes.find({employeeId: Session.get('entityId')}).count()
   },
-  noteCount: function() {
-      return Notes.find({links: { $elemMatch: { id: Session.get('entityId') } }}).count();
+  noteCount: function () {
+    return Notes.find({links: {$elemMatch: {id: Session.get('entityId')}}}).count();
   },
-  jobCount: function() {
-      return Jobs.find({'customer': Session.get('entityId')}).count();
-    }
+  jobCount: function () {
+    return Jobs.find({'customer': Session.get('entityId')}).count();
+  }
 });
 
 Template.contactable.events({
@@ -87,20 +87,20 @@ Template.contactable.events({
     }
   },
   // Actions
-  'click #makeEmployee': function(){
+  'click #makeEmployee': function () {
     //todo: make this in dType, checking required fields, defaultValues, etc
-    
-    Contactables.update({ _id: Session.get('entityId') }, {
+
+    Contactables.update({_id: Session.get('entityId')}, {
       $set: {
-        Employee : {}
+        Employee: {}
       },
       $push: {objNameArray: 'Employee'}
     });
   },
-  'click #makeContact': function(){
-    Contactables.update({ _id: Session.get('entityId') }, {
+  'click #makeContact': function () {
+    Contactables.update({_id: Session.get('entityId')}, {
       $set: {
-        Contact : {}
+        Contact: {}
       },
       $push: {objNameArray: 'Contact'}
     });
@@ -108,12 +108,11 @@ Template.contactable.events({
 });
 
 // Header
-
 Template.contactable_header.helpers({
-  mainContactMethods: function() {
+  mainContactMethods: function () {
     var result = {};
     var contactMethods = ContactMethods.find().fetch();
-    _.some(this.contactMethods, function(cm){
+    _.some(this.contactMethods, function (cm) {
       var type = _.findWhere(contactMethods, {_id: cm.type});
       if (!type)
         return false;
@@ -138,9 +137,25 @@ Template.contactable_header.helpers({
   }
 });
 
+// Details
+
+Template.contactable_details.setNewAddress = function () {
+  var self = this;
+  return function (newAddress) {
+    Meteor.call('setContactableAddress', self._id, newAddress);
+  }
+};
+
+// Detail
+Template.contactable_details.helpers({
+  collection: function () {
+    return Contactables;
+  }
+});
+
 // Tabs
 var tabs;
-Template.contactable_tabs.tabs = function() {
+Template.contactable_tabs.tabs = function () {
   tabs = [
     {id: 'details', displayName: 'Details', template: 'contactable_details'},
     {id: 'notes', displayName: 'Notes', template: 'contactable_notes'},
@@ -167,6 +182,6 @@ Template.contactable_tabs.tabs = function() {
   return tabs;
 };
 
-Template.contactable_tabs.selectedTab = function() {
+Template.contactable_tabs.selectedTab = function () {
   return _.findWhere(tabs, {id: Session.get('activeTab')});
 };

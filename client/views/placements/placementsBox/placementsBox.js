@@ -238,6 +238,10 @@ Template.placementsListItem.jobDisplayName = function () {
   var job = Jobs.findOne(this.job);
   return job && job.displayName;
 };
+Template.placementInformation.jobLocationDisplayName= function () {
+  var job = Jobs.findOne(this.job);
+  return job && Utils.getLocationDisplayName(job.location);
+};
 Template.placementsListItem.customerId = function () {
   var job = Jobs.findOne(this.job);
   var customer = job && Contactables.findOne(job.customer);

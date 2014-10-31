@@ -129,6 +129,15 @@ Template.job.helpers({
   }
 });
 
+Template.job_details.helpers({
+  setNewAddress: function () {
+    var self = this;
+    return function (newAddress) {
+      Meteor.call('setJobAddress', self._id, newAddress);
+    }
+  }
+});
+
 Template.job.events({
   'click .editJob': function () {
     self.editMode = !self.editMode;

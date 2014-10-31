@@ -56,42 +56,41 @@ LocationSchema = new SimpleSchema({
   }
 });
 
-AutoForm.hooks({
-  SetLocation: {
-    onSubmit: function(address) {
-      var id = UI._parentData(1)._id;
-      Meteor.call('setContactableAddress', id, address, function() {
-        location.value = address;
-        EditLocationMode.hide();
-      });
-
-      this.done();
-      this.resetForm();
-      return false;
-    }
-  }
-});
-
-Template.contactableLocationBox.editMode = function () {
-  return EditLocationMode.value;
-};
-
-Template.contactableLocationBox.editModeColor = function () {
-  return EditLocationMode.value ? '#008DFC' : '';
-};
-
 var location = {};
 Utils.reactiveProp(location, 'value', null);
 
-Template.contactableLocationBox.created = function() {
-  location.value = this.data.location;
-};
+Template.locationBox.helpers({
+  created: function () {
+    var self = this;
+    location.value = self.data.location;
 
-Template.contactableLocationBox.location = function() {
-  return location;
-};
+    AutoForm.hooks({
+      SetLocation: {
+        onSubmit: function(newAddress) {
+          self.data.callback && self.data.callback(newAddress);
 
-Template.contactableLocationBox.events = {
+          location.value = newAddress;
+          EditLocationMode.hide();
+
+          this.done();
+          this.resetForm();
+          return false;
+        }
+      }
+    });
+  },
+  location: function() {
+    return location;
+  },
+  editMode: function () {
+    return EditLocationMode.value;
+  },
+  editModeColor: function () {
+    return EditLocationMode.value ? '#008DFC' : '';
+  }
+});
+
+Template.locationBox.events = {
   'click #edit-Location': function (e, ctx) {
     if (EditLocationMode.value) {
       EditLocationMode.hide();
@@ -102,8 +101,8 @@ Template.contactableLocationBox.events = {
     }
   },
   'click #save-location': function () {
-    Contactables.update({ _id: this._id }, { $set: { location: location.value } });
-    EditLocationMode.value = false;
+    //Contactables.update({ _id: this._id }, { $set: { location: location.value } });
+    //EditLocationMode.value = false;
   },
   'click #cancel-location': function () {
     location.value = oldValue;

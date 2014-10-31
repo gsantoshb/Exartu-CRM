@@ -260,6 +260,10 @@
         </a>
     {{/if}}
     <br/>
+    {{#if location.displayName}}
+        <i class="icon-map-marker-1"></i>
+        {{location.displayName}}
+    {{/if}}
     <span class="badge">
         {{lookUpName Contact.status}}
     </span>
