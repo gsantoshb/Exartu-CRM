@@ -367,7 +367,24 @@ Template.jobsListItem.displayObjType = function() {
   return Utils.getJobType(this);
 };
 
+Template.jobsListItem.placements = function () {
+  return Placements.find({job: this._id}, { limit: 3});
+};
+
+Template.jobsListItem.getEmployeeDisplayName = function () {
+  var employee = Contactables.findOne(this.employee);
+  return employee ? employee.displayName : 'Employee information not found!';
+};
+
 Template.jobInformation.customerName = function () {
   var customer =  Contactables.findOne(this.customer);
   return customer && customer.displayName;
+};
+
+Template.jobsListItem.countPlacements = function () {
+  return Placements.find({job: this._id}).count();
+};
+
+Template.jobsListItem.morePlacements = function () {
+  return Placements.find({job: this._id}).count() > 3;
 };
