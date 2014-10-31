@@ -59,7 +59,7 @@
             {{/if}}
 
             {{#if Contact.customerName}}
-                <br>
+                <!--<br>-->
                 <small>
                     <a href="/contactable/{{Contact.customer}}">
                         <strong class="text text-muted" style="font-size: 25px; color: #A29E9E">
@@ -80,7 +80,7 @@
 
         {{#if location}}
             <i class="fa fa-map-marker"></i>
-            <span>{{location.displayName}}</span>
+            <span>{{locationDisplayName}}</span>
         {{/if}}
     </p>
 
