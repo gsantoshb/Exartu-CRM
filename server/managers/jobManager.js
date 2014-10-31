@@ -15,5 +15,16 @@ JobManager = {
     var ret = Jobs.insert(jobCopy);
 
     return ret;
+  },
+  setAddress: function (jobId, addressInfo) {
+    // Validation
+    if (! jobId) { throw new Error('Job ID is required'); }
+    if (! addressInfo) { throw new Error('Address information is required'); }
+
+    // Job method insertion
+    Jobs.update({ _id: jobId }, { $set: { location: addressInfo } }, function (err, result) {
+      if (err) { throw err; }
+      return result;
+    });
   }
 };
