@@ -361,7 +361,7 @@ Router.map(function () {
         this.response.end();
       } else {
         // If there is a user then just add it to the hierarchy specified in user invitation
-        Meteor.users.update({_id: user._id}, {$addToSet: { hierarchies: userInvitation.hierId}, $set: {currentHierId: userInvitation.hierId}});
+        Meteor.users.update({_id: user._id}, {$addToSet: { hierarchies: userInvitation.hierId}, $set: {currentHierId: userInvitation.hierId, hierId: userInvitation.hierId}});
 
         // Mark invitation as used
         markInvitationsAsUsed(userInvitation);
