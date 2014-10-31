@@ -54,6 +54,14 @@ Meteor.methods({
   },
   deletePastJobRecord: function (contactableId, pastJobInfo) {
     ContactableManager.deletePastJobRecord(contactableId, pastJobInfo);
+  },
+  findCustomer: function (query) {
+    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Contactables.find({
+      'organization.organizationName': {
+        $regex: query,
+        $options: 'i'
+      }
+    }, { fields: { 'organization.organizationName': 1 } })).fetch();
   }
 });
 
