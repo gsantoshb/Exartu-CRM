@@ -118,6 +118,10 @@ Template.dateFieldInput.helpers({
   }
 });
 
+Template.relInput.rendered = function () {
+  this.$('select').select2();
+}
+
 Template.relInput.helpers({
   options: function(){
     var q={};
