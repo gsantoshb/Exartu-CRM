@@ -553,8 +553,9 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 .details .details-body .back-tab .hide { display: none;}
 
-/* HACK for list filters when they are inside a tab */
-.details .details-body .details-tab-content .filter {margin-top: -10px}
+/* HACK for list when they are inside a tab */
+.details .details-body .details-tab-content .filter {margin-top: 0px; margin-left: 29px; }
+.details .details-body .details-tab-content .search-list {margin-top: 5px;}
 
 /* Contactable screen */
 .profile-content-header .profile-pic {

@@ -134,6 +134,9 @@ Template.contactable_header.helpers({
       return ContactablesFS.getThumbnailUrlForBlaze(this.pictureFileId);
     }
     return "/assets/user-photo-placeholder.jpg";
+  },
+  locationDisplayName: function () {
+    return Utils.getLocationDisplayName(this.location);
   }
 });
 
