@@ -27,7 +27,7 @@
                         {{#if location}}
                             <tr>
                                 <td>Location</td>
-                                <td>{{location.displayName}}</td>
+                                <td>{{location.address}}{{#if location.address2}}, {{location.address2}}{{/if}}, {{location.city}}</td>
                             </tr>
                         {{/if}}
                         {{#with contactMethod 0}}
