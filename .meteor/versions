@@ -93,7 +93,6 @@ mrt:moment@2.8.1
 natestrauser:connection-banner@0.4.3
 natestrauser:select2@3.5.1
 npm-bcrypt@0.7.7
-npm-container@1.0.0
 oauth2@1.1.0
 oauth@1.1.0
 observe-sequence@1.0.2
