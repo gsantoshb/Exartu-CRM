@@ -60,7 +60,7 @@ Template.contactable.helpers({
   },
   jobCount: function() {
       return Jobs.find({'customer': Session.get('entityId')}).count();
-    }
+  }
 });
 
 Template.contactable.events({
@@ -137,6 +137,15 @@ Template.contactable_header.helpers({
     return "/assets/user-photo-placeholder.jpg";
   }
 });
+
+// Details
+
+Template.contactable_details.setNewAddress = function () {
+  var self = this;
+  return function (newAddress) {
+    Meteor.call('setContactableAddress', self._id, newAddress);
+  }
+};
 
 // Tabs
 var tabs;
