@@ -1,5 +1,9 @@
 Meteor.publish('hierarchies', function() {
-  return Utils.filterCollectionByUserHier.call(this, Hierarchies.find(), {hierIdKeyName: '_id'});
+  var user = Meteor.users.findOne(this.userId);
+  if (!user)
+    throw new Meteor.Error('User is required');
+
+  return Hierarchies.find({_id: { $in: user.hierarchies}});
 });
 
 Hierarchies.allow({

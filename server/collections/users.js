@@ -1,7 +1,7 @@
 // Extending the user data that is sent to the client
 Meteor.publish(null, function () {
   return Meteor.users.find({
-    hierId: Utils.getUserHierId(this.userId)
+    hierarchies: Utils.getUserHierId(this.userId)
   }, {
     fields: {
       'username': 1,
@@ -47,11 +47,11 @@ Meteor.users.allow({
   }
 });
 
-Meteor.publish("users", function () {
-  return Meteor.users.find({
-    hierId: Utils.getUserHierId(this.userId)
-  });
-});
+//Meteor.publish("users", function () {
+//  return Meteor.users.find({
+//    hierId: Utils.getUserHierId(this.userId)
+//  });
+//});
 
 // Users files
 

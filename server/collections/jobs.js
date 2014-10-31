@@ -15,6 +15,26 @@ JobView = new View('jobs', {
         return Contactables.find(oldSelector, { fields: { 'organization.organizationName': 1 } });
       }
     });
+
+    // Publish the three most recent placements
+    var placements = Placements.find({job: job._id}, { fields: { 'employee' : 1, 'job': 1 }, sort: { dateCreated: -1 }});
+    var employeeIds = placements.fetch().map(function (p) {return p.employee;});
+
+    this.publish({
+      cursor: function () {
+        return placements;
+      },
+      to: 'placements'
+    });
+
+    // Employees
+    this.publish({
+      cursor: function () {
+        return Contactables.find({_id: { $in: employeeIds}});
+      },
+      to: 'contactables'
+    });
+
   }
 });
 

@@ -120,8 +120,20 @@
                     <div class="table-item-cell-container">
                         <div class="table-item-title">
                             <a href="/job/{{_id}}">
-                                {{displayName}}</a>
+                                {{displayName}}
+                            </a>
                             <br/>
+                            <small class="text-muted text-normal">
+                                {{countPlacements}} placements
+                                {{#each placements}}
+                                    <a href="/contactable/{{employee}}">
+                                        <span class="badge badge-primary">{{getEmployeeDisplayName}}</span>
+                                    </a>
+                                {{/each}}
+                                {{#if morePlacements}}
+                                    <a href="/job/{{_id}}#placements"> show all..</a>
+                                {{/if}}
+                            </small>
                         </div>
                     </div>
                 </div>

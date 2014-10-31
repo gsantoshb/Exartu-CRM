@@ -199,7 +199,8 @@ Template.contactablesList.created = function() {
           inactiveStatusOR.$or.push(aux)
         }
       });
-      searchQuery.$and.push(inactiveStatusOR);
+      if (inactiveStatusOR.$or.length > 0)
+        searchQuery.$and.push(inactiveStatusOR);
     }
 
     // Created by
@@ -236,7 +237,8 @@ Template.contactablesList.created = function() {
         };
         locationOR.$or.push(aux);
       });
-      searchQuery.$and.push(locationOR);
+      if (locationOR.$or.length > 0)
+        searchQuery.$and.push(locationOR);
     }
 
     // Tags filter

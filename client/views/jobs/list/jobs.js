@@ -171,8 +171,9 @@ Template.jobsList.created= function () {
 
           inactiveStatusOR.$or.push(aux)
         }
-      })
-      searchQuery.$and.push(inactiveStatusOR);
+      });
+      if (inactiveStatusOR.$or.length > 0)
+        searchQuery.$and.push(inactiveStatusOR);
     }
 
     //Created by
@@ -217,7 +218,8 @@ Template.jobsList.created= function () {
         };
         locationOR.$or.push(aux);
       });
-      searchQuery.$and.push(locationOR);
+      if (locationOR.$or.length > 0)
+        searchQuery.$and.push(locationOR);
     }
 
     // Status filter
@@ -365,7 +367,24 @@ Template.jobsListItem.displayObjType = function() {
   return Utils.getJobType(this);
 };
 
+Template.jobsListItem.placements = function () {
+  return Placements.find({job: this._id}, { limit: 3});
+};
+
+Template.jobsListItem.getEmployeeDisplayName = function () {
+  var employee = Contactables.findOne(this.employee);
+  return employee ? employee.displayName : 'Employee information not found!';
+};
+
 Template.jobInformation.customerName = function () {
   var customer =  Contactables.findOne(this.customer);
   return customer && customer.displayName;
+};
+
+Template.jobsListItem.countPlacements = function () {
+  return Placements.find({job: this._id}).count();
+};
+
+Template.jobsListItem.morePlacements = function () {
+  return Placements.find({job: this._id}).count() > 3;
 };
