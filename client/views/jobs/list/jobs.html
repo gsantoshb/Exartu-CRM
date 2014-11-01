@@ -182,16 +182,19 @@
         {{/if}}
     </small>
 
-    {{#if location.displayName}}
-        <br/>
-        <i class="icon-map-marker-1"></i>
-        {{location.displayName}}
-    {{/if}}
 
     <br/>
+    <div class="task-author">
+        {{#if location.displayName}}
+        <i class="icon-map-marker-1"></i>
+        {{location.displayName}}
+        {{/if}}
     <span class="badge">
         {{lookUpName status}}
     </span>
+
+        {{displayUserName userId}}
+    </div>
 </template>
 
 <template name="jobsListSearch">
