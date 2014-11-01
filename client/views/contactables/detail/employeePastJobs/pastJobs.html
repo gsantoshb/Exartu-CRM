@@ -1,7 +1,11 @@
 <template name="employeePastJobs">
     <div class="record">
-        {{> employeePastJobAdd}}
-        {{> employeePastJobsList}}
+        <div class="col-md-6">
+            {{> employeePastJobAdd}}
+        </div>
+        <div class="col-md-6">
+            {{> employeePastJobsList}}
+        </div>
     </div>
 </template>
 
@@ -15,7 +19,9 @@
         <div class="add-box-content col-xs-12 col-md-9">
             {{#autoForm id="AddPastJobRecord" schema="PastJobSchema"}}
                 {{> afQuickField name='company'}}
-                {{> afQuickField name='position'}}
+            {{> afQuickField name='position'}}
+            {{> afQuickField name='supervisor'}}
+            {{> afQuickField name='location'}}
 
                 <div class="row">
                     <div class="form-group col-xs-6">
@@ -67,6 +73,8 @@
                         <div class="list-3-item-meta-top">{{pastJobRecord.company}}</div>
                         <h4 class="list-3-item-title"><a href="#">{{pastJobRecord.position}}</a></h4>
                         <small class="text-muted">
+                            {{pastJobRecord.supervisor}}
+                            {{pastJobRecord.location}}
                             <i class="fa fa-calendar"></i>
                             Start: {{#formattedDate value=pastJobRecord.start format="MMMM YYYY"}} {{date}}{{/formattedDate}}
                             -
@@ -87,7 +95,8 @@
     {{#autoForm id=formId schema="PastJobSchema" doc=doc}}
         {{> afQuickField name='company'}}
         {{> afQuickField name='position'}}
-
+        {{> afQuickField name='supervisor'}}
+        {{> afQuickField name='location'}}
         <div class="row">
             <div class="form-group col-xs-6">
                 <span> Start date </span>
