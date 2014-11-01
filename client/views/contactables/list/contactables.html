@@ -150,7 +150,7 @@
                 <div class="table-item-cell">
                     <div class="table-item-cell-container text-muted">
                         {{#if Customer}}
-                            {{> customerInformation }}
+                            {{> contactableInformation contactable=. status=Customer.status }}
                         {{/if}}
                         {{#if Employee}}
                             {{> employeeInformation }}
@@ -165,6 +165,7 @@
             <div class="col-sm-2">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container date">
+                        {{displayUserName userId}}
                         {{#formattedDate value=dateCreated format='fromNow'}}
                             <span>{{date}}</span><br>
                         {{/formattedDate}}
@@ -172,6 +173,7 @@
                             <i class="glyphicon glyphicon-search"></i>
                             {{searchKey}}
                         {{/if}}
+
                         {{#if contactMethods}}
                             <div class="btn dropdown" id="contact-Methods-dropdown-{{_id}}">
                                 <a href="#" data-toggle="dropdown" data-target="#contact-Methods-dropdown-{{_id}}" class="dropdown-toggle">
@@ -219,15 +221,21 @@
 <template name="esContextMatch">
     <span class="text-muted separatedLinks contextText"></span>
 </template>
-
-<template name="customerInformation">
-    {{#if location.displayName}}
+<template name="contactableInformation">
+    <div class="task-author">
+        {{#if contactable.location.displayName}}
         <i class="icon-map-marker-1"></i>
-        {{location.displayName}}
-    {{/if}}
+        {{contactable.location.displayName}}
+        {{/if}}
     <span class="badge">
-        {{lookUpName Customer.status}}
+        {{lookUpName status}}
     </span>
+
+        <a class="pointer"><strong id="username">{{displayUserName contactable.userId}}</strong></a>
+    </div>
+</template>
+<template name="customerInformation">
+    {{>contactableInformation contactable=. status=Customer.status}}
 </template>
 
 <template name="employeeInformation">
@@ -238,18 +246,14 @@
     {{/with}}
     {{else}}
         {{#if person}}
-            <i class="icon-briefcase"></i>
-            {{person.jobTitle}}
+            {{#if person.jobTitle}}
+                <i class="icon-briefcase"></i>
+                {{person.jobTitle}}
+            {{/if}}
         {{/if}}
     {{/if}}
     <br/>
-    {{#if location.displayName}}
-        <i class="icon-map-marker-1"></i>
-        {{location.displayName}}
-    {{/if}}
-    <span class="badge">
-        {{lookUpName Employee.status}}
-    </span>
+    {{>contactableInformation contactable=. status=Employee.status}}
 </template>
 
 <template name="contactInformation">
@@ -260,13 +264,7 @@
         </a>
     {{/if}}
     <br/>
-    {{#if location.displayName}}
-        <i class="icon-map-marker-1"></i>
-        {{location.displayName}}
-    {{/if}}
-    <span class="badge">
-        {{lookUpName Contact.status}}
-    </span>
+    {{>contactableInformation contactable=. status=Employee.status}}
 </template>
 
 <template name="contactablesListSearch">
