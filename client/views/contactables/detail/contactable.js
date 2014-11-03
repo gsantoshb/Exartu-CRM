@@ -188,3 +188,7 @@ Template.contactable_tabs.tabs = function () {
 Template.contactable_tabs.selectedTab = function () {
   return _.findWhere(tabs, {id: Session.get('activeTab')});
 };
+
+Template.contactable_header.resumeURL = function() {
+  return FileUploader.getUrl('generateResume', this._id);
+};
