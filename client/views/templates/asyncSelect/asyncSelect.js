@@ -17,11 +17,22 @@ Template.asyncSelect.rendered = function () {
   var placeholder = self.data.placeholder || "Search";
   var minimumInputLength = self.data.minimumInputLength || 1;
 
-  if (! this.data.query || ! _.isFunction(self.data.query)) throw new Error('Template asyncSelect needs a function as query parameter');
-  if ( this.data.onChange && ! _.isFunction(self.data.onChange)) throw new Error('Argument onChange of asyncSelect must be a function');
+  if (! self.data.query || ! _.isFunction(self.data.query)) throw new Error('Template asyncSelect needs a function as query parameter');
+  if ( self.data.onChange && ! _.isFunction(self.data.onChange)) throw new Error('Argument onChange of asyncSelect must be a function');
 
-  this.$('#input').select2({
+  self.$('#input').select2({
     minimumInputLength: minimumInputLength,
+    initSelection: function (element, callback) {
+      if (_.isFunction(self.data.defaultValue)) {
+        self.data.defaultValue(function (err, result) {
+          if (!err) {
+            callback(result);
+          }
+        });
+      }else{
+        //todo:
+      }
+    },
     placeholder: placeholder,
     query: function (query) {
       var res = self.data.query.call({
@@ -33,12 +44,17 @@ Template.asyncSelect.rendered = function () {
 
       if (res){
         query.callback({
-          results: res
+          results: res,
+          more: true
         });
       }
     }
   });
 };
+
+Template.asyncSelect.helpers({
+  defaultValue: 'asd'
+});
 
 Template.asyncSelect.events({
   'change #input': function(e, ctx) {
