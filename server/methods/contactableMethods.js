@@ -125,7 +125,7 @@ FileUploader.createEndpoint('uploadContactablesFiles', {
 // Resume generator
 
 FileUploader.createEndpoint('generateResume', {
-  onDownload: function(employeeId, writeStream) {
+  onDownload: function(employeeId, options, writeStream) {
     var employee = Contactables.findOne(employeeId);
     if (!employee || employee.objNameArray.indexOf('Employee') == -1)
       throw new Meteor.Error(404, 'Employee not found');
@@ -140,7 +140,7 @@ FileUploader.createEndpoint('generateResume', {
       resume.entry('Address', Utils.getLocationDisplayName(employee.location));
 
     // Contact method
-    if (employee.contactMethods) {
+    if (options.showContactInfo == 'true' && employee.contactMethods) {
       resume.title("Contact methods");
       _.forEach(employee.contactMethods, function (contactMethod) {
         resume.contactMethodEntry(contactMethod);
@@ -177,16 +177,11 @@ FileUploader.createEndpoint('generateResume', {
 });
 
 var PDFDocument = Meteor.npmRequire('pdfkit');
-var tmp = Meteor.npmRequire('tmp');
 
 var Resume = function (writeStream) {
   var self = this;
 
   self.doc = new PDFDocument();
-
-  var temporalPDFPath = Meteor.wrapAsync(tmp.tmpName)();
-  console.log('temporalPDFPath', temporalPDFPath);
-
   self.doc.pipe(writeStream);
 };
 
@@ -208,7 +203,7 @@ Resume.prototype.entry = function (label, value) {
   var self = this;
 
   self.doc.fontSize(12).text(label + ': ' + value);
-};
+};/**/
 
 Resume.prototype.contactMethodEntry = function (contactMethod) {
   var self = this;
