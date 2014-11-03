@@ -56,12 +56,21 @@ Meteor.methods({
     ContactableManager.deletePastJobRecord(contactableId, pastJobInfo);
   },
   findCustomer: function (query) {
+
     return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Contactables.find({
       'organization.organizationName': {
         $regex: query,
         $options: 'i'
       }
     }, { fields: { 'organization.organizationName': 1 } })).fetch();
+  },
+  getLastCustomer: function () {
+    var user = Meteor.user();
+    if (user.lastCustomerUsed) {
+      return Contactables.findOne({ _id: user.lastCustomerUsed }, { fields: { 'organization.organizationName': 1 } });
+    } else {
+      return Contactables.findOne({ houseAccount: true, hierId: user.hierId }, { fields: { 'organization.organizationName': 1 } });
+    }
   }
 });
 
