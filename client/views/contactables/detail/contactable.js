@@ -167,7 +167,7 @@ Template.contactable_tabs.tabs = function () {
   ];
 
   if (contactable.Customer) {
-    tabs.push({id: 'jobs', displayName: 'Jobs', info: 'jobCount', template: 'contactable_jobs'});
+    tabs.push({id: 'jobs', displayName: 'Jobs', template: 'contactable_jobs'});
     tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements'});
     tabs.push({id: 'contacts', displayName: 'Contacts', template: 'contactable_contacts'});
   }

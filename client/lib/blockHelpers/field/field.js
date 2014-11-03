@@ -52,7 +52,7 @@ UI.registerHelper('displayProperty', function(){
     else{
       //hack
       if (this.name == 'customer' && ! this.value){
-        var houseAccount= Contactables.findOne({houseAccount: true});
+        var houseAccount= AllCustomers.findOne({houseAccount: true});
         var user= Meteor.user();
         if (user && user.lastCustomerUsed) {
           this.value = user.lastCustomerUsed;
@@ -117,6 +117,10 @@ Template.dateFieldInput.helpers({
     return this.isValid ? '': 'error';
   }
 });
+
+Template.relInput.rendered = function () {
+  this.$('select').select2();
+}
 
 Template.relInput.helpers({
   options: function(){

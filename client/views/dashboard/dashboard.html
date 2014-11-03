@@ -121,7 +121,9 @@
                                 <span>{{data.displayName}}</span>
                             </strong>
                         </a>
-                        <div class="time">{{displayUserName this.userId}}</div>
+                        <div class="task-author">
+                            {{displayUserName userId}}
+                        </div>
                     </h4>
                     <div class="item-actions">
                         {{#if data.contactableEmail}}

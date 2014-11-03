@@ -7,6 +7,14 @@ PastJobSchema = new SimpleSchema({
     type: String,
     label: 'Position'
   },
+  supervisor: {
+    type: String,
+    label: 'Supervisor'
+  },
+  location: {
+    type: String,
+    label: 'Location'
+  },
   start: {
     type: Date,
     label: 'Start date'

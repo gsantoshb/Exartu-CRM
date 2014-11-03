@@ -1,14 +1,12 @@
-Template.jobCustomerAddEdit.created = function () {
-  Meteor.subscribe('allCustomers');
-};
-
+var customer = ko.observable();
 Template.jobCustomerAddEdit.viewModel = function (entityId, value, path, collection, callback) {
   if (!entityId) {
     return;
   }
 
   var self = this;
-  self.customer = ko.observable(value);
+  customer(value);
+  self.customer = customer;
   self.addOrEdit = value ? 'edit' : 'add';
   self.customers = ko.meteor.find(AllCustomers, {});
 
@@ -35,3 +33,25 @@ Template.jobCustomerAddEdit.viewModel = function (entityId, value, path, collect
   };
   return self;
 };
+
+Template.jobCustomerAddEdit.getCustomer = function () {
+  return function (string) {
+    var self = this;
+
+    Meteor.call('findCustomer', string, function (err, result) {
+      if (err)
+        return console.log(err);
+
+      self.ready(_.map(result, function (r) {
+          return { id: r._id, text: r.organization.organizationName };
+        })
+      );
+    });
+  };
+};
+
+Template.jobCustomerAddEdit.customerChanged = function () {
+  return function (value) {
+    customer(value);
+  }
+}

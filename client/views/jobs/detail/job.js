@@ -94,7 +94,6 @@ Template.job.helpers({
     return jobCollections;
   },
   getCustomer: function () {
-
     var j = jobCollections.findOne({ _id: Session.get('entityId')});
     return j && j.customer;
   },
@@ -135,6 +134,12 @@ Template.job_details.helpers({
     return function (newAddress) {
       Meteor.call('setJobAddress', self._id, newAddress);
     }
+  },
+  getCustomer: function () {
+    return this.customer;
+  },
+  customerCollection: function () {
+    return Contactables;
   }
 });
 
