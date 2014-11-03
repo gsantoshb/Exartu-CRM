@@ -110,12 +110,7 @@ ContactableManager = {
     Contactables.update({_id: contactableId},
       {
         $addToSet: {
-          education: {
-            institution: educationInfo.institution,
-            description: educationInfo.description,
-            start: educationInfo.start,
-            end: educationInfo.end
-          }
+          education: educationInfo
         }
       }
     );

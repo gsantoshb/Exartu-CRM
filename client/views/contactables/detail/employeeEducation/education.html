@@ -16,6 +16,7 @@
             {{#autoForm id="AddEducationRecord" schema="EducationSchema"}}
                 {{> afQuickField name='institution'}}
                 {{> afQuickField name='description'}}
+                {{> afQuickField name='degreeAwarded'}}
 
                 <div class="row">
                     <div class="form-group col-xs-6">
@@ -65,7 +66,12 @@
                             <a class="deleteEducationRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
                         </div>
                         <div class="list-3-item-meta-top">{{educationRecord.institution}}</div>
-                        <h4 class="list-3-item-title"><a href="#">{{educationRecord.description}}</a></h4>
+                        <h4 class="list-3-item-title">
+                            {{#if educationRecord.degreeAwarded}}
+                                {{educationRecord.degreeAwarded}} -
+                            {{/if}}
+                            {{educationRecord.description}}
+                        </h4>
                         <small class="text-muted">
                             <i class="fa fa-calendar"></i>
                             Start: {{#formattedDate value=educationRecord.start format="MMMM YYYY"}} {{date}}{{/formattedDate}}
@@ -87,6 +93,7 @@
     {{#autoForm id=formId schema="EducationSchema" doc=doc}}
         {{> afQuickField name='institution'}}
         {{> afQuickField name='description'}}
+        {{> afQuickField name='degreeAwarded'}}
 
         <div class="row">
             <div class="form-group col-xs-6">
