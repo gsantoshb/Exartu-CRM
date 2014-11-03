@@ -100,6 +100,10 @@
             {{/if}}
         {{/with}}
     </div>
+
+    {{#if Employee}}
+        <a target="_blank" href="{{resumeURL}}" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf"> Auto generate resume </a>
+    {{/if}}
 </template>
 
 <!-- Tabs -->
