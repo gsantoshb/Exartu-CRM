@@ -21,6 +21,19 @@ FileUploader.post = function(endpoint, file, metadata) {
   });
 };
 
-FileUploader.getUrl = function (endpoint, fileId) {
-  return Meteor.absoluteUrl(endpoint + '/download/' + fileId);
+FileUploader.getUrl = function (endpoint, fileId, params) {
+  return Meteor.absoluteUrl(endpoint + '/download/' + fileId + _parseExtraParameters(params));
+};
+
+var _parseExtraParameters = function (parameters) {
+  if (! parameters) return '';
+
+  var queryParams = '?';
+  _.forEach(parameters, function (value, fieldName) {
+    if (!queryParams == '?')
+      queryParams +=  '&';
+    queryParams +=  fieldName + '=' + value;
+  });
+
+  return queryParams;
 };
