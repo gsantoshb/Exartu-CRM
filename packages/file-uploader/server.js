@@ -69,7 +69,9 @@ FileUploader.createEndpoint = function(route, options) {
             if (!options|| !options.onDownload)
               throw new Meteor.Error(500, 'onDownload hook is required');
 
-            var stream = options.onDownload(this.params.id);
+            var stream = options.onDownload(this.params.id, this.response);
+            if (!stream) return;
+
             // todo: check if its a readable stream
             stream.pipe(this.response);
             break;
