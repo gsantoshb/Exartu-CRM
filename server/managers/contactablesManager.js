@@ -142,12 +142,7 @@ ContactableManager = {
     Contactables.update({_id: contactableId},
       {
         $addToSet: {
-          pastJobs: {
-            company: pastJobInfo.company,
-            position: pastJobInfo.position,
-            start: pastJobInfo.start,
-            end: pastJobInfo.end
-          }
+          pastJobs: pastJobInfo
         }
       }
     );
