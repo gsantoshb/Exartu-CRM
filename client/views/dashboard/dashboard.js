@@ -1,16 +1,17 @@
-
 var ActivitiesHandler;
 DashboardController = RouteController.extend({
   layoutTemplate: 'mainLayout',
     waitOn: function () {
       SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities');
-      return [ActivitiesHandler];
+      return [HierarchiesHandler, ActivitiesHandler];
     },
     action: function () {
-        if (this.ready())
-            this.render('dashboard');
-        else
-            this.render('loading');
+      if (!this.ready()) {
+        this.render('loadingContactable');
+        return;
+      }
+      GAnalytics.pageview();
+      this.render();
     },
     onAfterAction: function() {
       var title = 'Dashboard',

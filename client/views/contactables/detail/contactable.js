@@ -104,6 +104,21 @@ Template.contactable.events({
       },
       $push: {objNameArray: 'Contact'}
     });
+  },
+  'click #generate-resume': function() {
+    var employeeId = this._id;
+    var downloadLink = $('#download-generated-resume');
+    Utils.showModal('basicModal', {
+      title: 'Generate Employee Resume',
+      message: 'Would you like to generate employee resume with contact information or without it?',
+      buttons: [{label: 'Cancel', classes: 'btn-default', value: -1}, {label: 'Hide', classes: 'btn-info', value: false}, {label: 'Show', classes: 'btn-success', value: true}],
+      callback: function (result) {
+        if (result == -1) return;
+
+        downloadLink.attr('href', FileUploader.getUrl('generateResume', employeeId, { showContactInfo: result}));
+        downloadLink[0].click();
+      }
+    });
   }
 });
 

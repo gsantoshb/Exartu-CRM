@@ -7,6 +7,26 @@ PastJobSchema = new SimpleSchema({
     type: String,
     label: 'Position'
   },
+  reasonForLeaving: {
+    type: String,
+    label: 'Reason for Leaving',
+    optional: true
+  },
+  ok2Contact: {
+    type: Boolean,
+    label: 'Ok to contact',
+    optional: true
+  },
+  payRate: {
+    type: Number,
+    label: 'Pay rate',
+    optional: true
+  },
+  duties: {
+    type: String,
+    label: 'Duties',
+    optional: true
+  },
   supervisor: {
     type: String,
     label: 'Supervisor'

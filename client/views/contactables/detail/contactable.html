@@ -99,6 +99,29 @@
                 </a>
             {{/if}}
         {{/with}}
+        {{#unless Employee}}
+            {{#if Contact}}
+                <a id="makeEmployee" class="btn btn-default btn-custom-with-circle">
+                    <span class="btn-round"><i class="fa fa-exchange"></i></span>
+                    Make Employee
+                </a>
+            {{/if}}
+        {{/unless}}
+        {{#unless Contact}}
+            {{#if Employee}}
+                <a id="makeContact" class="btn btn-default btn-custom-with-circle">
+                    <span class="btn-round"><i class="fa fa-exchange"></i></span>
+                    Make Contact
+                </a>
+            {{/if}}
+        {{/unless}}
+        {{#if Employee}}
+            <a id="generate-resume" class="btn btn-default btn-custom-with-circle">
+                <span class="btn-round"><i class="fa fa-file"></i></span>
+                Generate resume
+                <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
+            </a>
+        {{/if}}
     </div>
 </template>
 

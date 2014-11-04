@@ -102,7 +102,7 @@ Contactables.allow({
     return false;
   },
   update: function (userId, doc) {
-    return Meteor.user() && methods.getHierarchiesRelation(Meteor.user().hierId, doc.hierId) == -1;
+    return Meteor.user() && methods.getHierarchiesRelation(Meteor.user().currentHierId, doc.hierId) == -1;
   },
   remove: function () {
     return false;

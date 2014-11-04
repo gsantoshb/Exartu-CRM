@@ -1,6 +1,8 @@
 systemLookUps = [];
 
-Utils = {
+Utils = {};
+
+_.extend( Utils, {
   getUserHierId: function(userId) {
     if (!userId)
       return undefined;
@@ -59,5 +61,13 @@ Utils = {
     }
 
     return c;
+  },
+  getLocationDisplayName: function (location) {
+    return !location ? '' : (
+    (location.address  || '' ) + ' '  +
+    (location.address1 || '' ) + ', ' +
+    (location.city     || '' ) + ', ' +
+    (location.state    || '' ) + ', ' +
+    (location.country  || '' ));
   }
-};
+});

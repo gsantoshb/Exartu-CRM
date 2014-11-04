@@ -19,18 +19,7 @@ Router.configure({
 Router.map(function () {
   this.route('dashboard', {
     path: '/',
-    controller: 'DashboardController',
-    waitOn: function() {
-      return [HierarchiesHandler];
-    },
-    action: function() {
-      if (!this.ready()) {
-        this.render('loadingContactable');
-        return;
-      }
-      GAnalytics.pageview();
-      this.render();
-    }
+    controller: 'DashboardController'
   });
 
   this.route('login', {

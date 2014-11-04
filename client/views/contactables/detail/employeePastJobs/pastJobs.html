@@ -11,18 +11,22 @@
 
 <template name="employeePastJobAdd">
     <div class="record-add row">
-        <div class="add-box-head col-xs-12 col-md-3">
+        <div class="add-box-head col-xs-12 col-md-12 col-lg-3">
             <div class="add-item-icon"><i class="icon-profile-business-man"></i></div>
             <h2>Past Jobs</h2>
         </div>
 
-        <div class="add-box-content col-xs-12 col-md-9">
+        <div class="add-box-content col-xs-12 col-md-12 col-lg-9">
             {{#autoForm id="AddPastJobRecord" schema="PastJobSchema"}}
                 <fieldset>
                     {{> afQuickField name='company'}}
                     {{> afQuickField name='position'}}
                     {{> afQuickField name='supervisor'}}
                     {{> afQuickField name='location'}}
+                    {{> afQuickField name='duties' rows=2}}
+                    {{> afQuickField name='ok2Contact'}}
+                    {{> afQuickField name='payRate'}}
+                    {{> afQuickField name='reasonForLeaving' rows=2}}
 
                     <div class="row">
                         <!-- Start Date -->
@@ -70,14 +74,18 @@
                         {{> employeePastJobEditItem doc=pastJobRecord}}
                     {{else}}
                         <div class="list-3-actions">
-                            <a class="editPastJobRecord pointer"><i class="fa fa-edit"></i> Edit</a>
+                            <a class="editPastJobRecord pointer"><i class="fa fa-edit"></i> Details</a>
                             <span class="bullet-spacer">·</span>
                             <a class="deletePastJobRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
                         </div>
-                        <div class="list-3-item-meta-top">{{pastJobRecord.company}}</div>
-                        <h4 class="list-3-item-title"><a href="#">{{pastJobRecord.position}}</a></h4>
+                        <div class="list-3-item-meta-top">
+                            {{pastJobRecord.company}}
+                            {{#if pastJobRecord.supervisor}}
+                                - Supervised by {{pastJobRecord.supervisor}}
+                            {{/if}}
+                        </div>
+                        <h4 class="list-3-item-title">{{pastJobRecord.position}}</h4>
                         <small class="text-muted">
-                            {{pastJobRecord.supervisor}}
                             {{pastJobRecord.location}}
                             <i class="fa fa-calendar"></i>
                             Start: {{#formattedDate value=pastJobRecord.start format="MMMM YYYY"}} {{date}}{{/formattedDate}}
@@ -101,6 +109,11 @@
         {{> afQuickField name='position'}}
         {{> afQuickField name='supervisor'}}
         {{> afQuickField name='location'}}
+        {{> afQuickField name='duties' rows=2}}
+        {{> afQuickField name='ok2Contact'}}
+        {{> afQuickField name='payRate'}}
+        {{> afQuickField name='reasonForLeaving' rows=2}}
+
         <div class="row">
             <div class="form-group col-xs-6">
                 <span> Start date </span>

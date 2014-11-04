@@ -2,9 +2,6 @@ JobAddController = RouteController.extend({
   data: function () {
     Session.set('objType', this.params.objType);
   },
-  waitOn: function () {
-    return [Meteor.subscribe('allCustomers')];
-  },
   action: function () {
     if (!this.ready()) {
       this.render('loadingContactable');

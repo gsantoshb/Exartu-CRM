@@ -48,14 +48,7 @@
 <template name="relInput">
     <span>{{displayName}} : </span>
     <div class="form-group  {{hasError}}">
-        <select class="form-control" type="text" placeholder="{{displayName}}" disabled="{{isDisabled}}">
-            {{#if notRequired}}
-                <option value="null" selected="{{isSelected null}}">--Select--</option>
-            {{/if}}
-            {{#each options}}
-            <option value="{{_id}}" selected="{{isSelected ../value}}">{{displayName}}</option>
-            {{/each}}
-        </select>
+        {{>asyncSelect query=getCustomer placeholder="Search customer" onChange=customerChanged width='100%' defaultValue=defaultValue}}
         <span>{{error}}</span>
     </div><!-- /.form-group -->
 </template>
