@@ -24,26 +24,26 @@ UI.registerHelper('htmlEditor', function() {
         "change": _.bind(function () {
           editor.trigger('change',editor.val());
         },this)
-      },
+      }
     });
 
     editor.val(this.data.value);
     editor.width('90%');
-  }
+  };
   template.destroyed = function() {
     // Hide editor
     $('.editor').data('wysihtml5').editor.composer.hide();
     $('.editor').data('wysihtml5').editor.toolbar.hide();
-  }
+  };
 
   return template;
 });
 
 UI.registerHelper('showAsHTML', function() {
   Template.showAsHTMLTemplate.rendered=function(){
-    var container=this.$('div')
+    var container=this.$('div');
     container[0].innerHTML=this.data.value;
-  }
+  };
   return Template.showAsHTMLTemplate
 });
 
@@ -52,20 +52,19 @@ Template.showAsHTMLTemplate.previewClass=function(){
     return 'mobilePreview'
   }
   return ''
-}
+};
 
 UI.registerHelper('dateTimePicker', function() {
   return Template.dateTimePicker;
 });
 
-Template.dateTimePicker.rendered= function() {
+Template.dateTimePicker.rendered = function() {
   var options = {
     language: 'en',
     initialDate: this.data.value,
     useSeconds: false,
     autoclose: true
   };
-
   _.extend(options, this.data.options);
 
   if (!this.data.pickTime) {
@@ -82,12 +81,17 @@ Template.dateTimePicker.rendered= function() {
   this.$('.date').datetimepicker(options);
 };
 
-Template.dateTimePicker.getInitialValue = function () {
-  if (!this.value)
-    return;
+Template.dateTimePicker.helpers({
+  dataSchemaKey: function () {
+    return this.dataSchemaKey;
+  },
+  getInitialValue: function () {
+    if (!this.value)
+      return;
 
-  return this.options && this.options["moment-format"]? moment(this.value || new Date()).format(this.options["moment-format"].toUpperCase()) : this.value
-};
+    return this.options && this.options["moment-format"]? moment(this.value || new Date()).format(this.options["moment-format"].toUpperCase()) : this.value
+  }
+});
 
 Template.dateTimePicker.events({
   'dp.change .datetimepicker':function (e, ctx) {
