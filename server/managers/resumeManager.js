@@ -243,5 +243,52 @@ var extractInformation = function (parseResult) {
     console.log(err)
   };
 
+  var educations = [];
+  try{
+    if (structuredResult.EducationHistory){
+      _.each(structuredResult.EducationHistory[0].SchoolOrInstitution, function (schoolOrInstitution) {
+
+        var schoolName = schoolOrInstitution.School ? schoolOrInstitution.School[0].SchoolName[0] : '';
+
+        var degree = schoolOrInstitution.Degree[0];
+
+        var description = degree.Comments[0];
+
+        var dates = degree.DatesOfAttendance[0];
+
+        var startDate = dates.StartDate[0].AnyDate[0];
+        startDate = new Date(startDate);
+
+          var endDate = dates.EndDate[0].AnyDate[0];
+        endDate = new Date(endDate);
+
+        //var degreeDate = degree.DegreeDate[0].AnyDate[0];
+        //degreeDate = new Date(degreeDate);
+
+        var degreeAwarded = (degree.DegreeName && degree.DegreeName[0]) || (degree.DegreeMajor && degree.DegreeMajor[0].Name[0]) || '';
+
+        if (_.isNaN(startDate.getDate())){
+          startDate = null;
+        }
+        if (_.isNaN(endDate.getDate())){
+          endDate = null;
+        }
+        educations.push({
+          institution: schoolName,
+          description: description,
+          degreeAwarded: degreeAwarded,
+          start: startDate,
+          end: endDate
+        })
+
+      });
+
+    }
+  } catch (err){
+    console.log('Error while parsing educations');
+    console.log(err);
+  }
+  employee.education = educations
+
   return employee;
 };
