@@ -102,7 +102,8 @@
     </div>
 
     {{#if Employee}}
-        <a target="_blank" href="{{resumeURL}}" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf"> Auto generate resume </a>
+        <span id="generate-resume" class="btn btn-info"> Generate resume </span>
+        <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
     {{/if}}
 </template>
 

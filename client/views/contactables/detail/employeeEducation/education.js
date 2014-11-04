@@ -7,6 +7,11 @@ EducationSchema = new SimpleSchema({
     type: String,
     label: 'Description'
   },
+  degreeAwarded: {
+    type: String,
+    label: 'Degree Awarded',
+    optional: true
+  },
   start: {
     type: Date,
     label: 'Start date'
