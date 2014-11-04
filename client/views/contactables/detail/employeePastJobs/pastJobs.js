@@ -25,19 +25,17 @@ PastJobSchema = new SimpleSchema({
     optional: true,
     custom: function () {
       if (Meteor.isClient && this.isSet) {
-        if (toPresent.get()) {
-          return true;
-        }
-
-        if (!this.value) {
-          PastJobSchema.namedContext('AddPastJobRecord').addInvalidKeys([{name: 'end', type: 'notUnique'}]);
-        } else if (this.field('start').value > this.value){
-          PastJobSchema.namedContext('AddPastJobRecord').addInvalidKeys([{name: 'end', type: 'minDate', value: 'End date should be grater than start date'}]);
+        if (this.field('start').value > this.value){
+          return 'endGreaterThanStart';
         }
       }
     }
   }
 });
+PastJobSchema.messages({
+  endGreaterThanStart: 'End date should be grater than start date'
+});
+
 
 var toPresent = ReactiveVar(false);
 
@@ -62,21 +60,20 @@ AutoForm.hooks({
 });
 
 // Add
-
 Template.employeePastJobAdd.helpers({
-  endDateClass: function() {
-    return toPresent.get()? 'disabled' : '';
+  endDateClass: function () {
+    return toPresent.get() ? 'disabled' : '';
   }
 });
 
 Template.employeePastJobAdd.events({
-  'change #to-present': function() {
+  'change .toPresent': function (event, template) {
     toPresent.set(!toPresent.get());
+    $(template.find('[data-schema-key=end]')).val("");
   }
 });
 
 // List
-
 Template.employeePastJobsList.helpers({
   items: function() {
     if (this.pastJobs && this.pastJobs.length > 1)
@@ -89,7 +86,6 @@ Template.employeePastJobsList.helpers({
 });
 
 // Record
-
 Template.employeePastJobItem.helpers({
   getCtx: function () {
     var self = this;
@@ -127,7 +123,6 @@ Template.employeePastJobItem.events({
 });
 
 // Edit record
-
 Template.employeePastJobEditItem.helpers({
   created: function () {
     var self = this;

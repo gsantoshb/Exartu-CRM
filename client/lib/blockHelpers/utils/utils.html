@@ -28,3 +28,11 @@
         {{/if}}
     </div>
 </template>
+
+<template name="tempAfDateTimePicker">
+    <label class="control-label">{{afFieldLabelText name=name}}</label>
+    {{#dateTimePicker dataSchemaKey=name pickTime=false value=this.value options=.}}{{/dateTimePicker}}
+    {{#if afFieldIsInvalid name=name}}
+        <span class="help-block">{{afFieldMessage name=name}}</span>
+    {{/if}}
+</template>
