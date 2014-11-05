@@ -31,13 +31,13 @@
                     <div class="row">
                         <!-- Start Date -->
                         <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='start'}}has-error{{/if}}">
-                            {{> tempAfDateTimePicker name='start' format="MM yyyy" minViewMode="months" startView="decade" }}
+                            {{> afB3DatePicker name='start' format="MM yyyy" minViewMode="months" startView="decade" }}
                         </div>
 
                         <!-- End Date -->
                         <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='end'}}has-error{{/if}}">
                             <div class="{{endDateClass}}">
-                                {{> tempAfDateTimePicker name='end' format="MM yyyy" minViewMode="months" startView="decade" }}
+                                {{> afB3DatePicker name='end' format="MM yyyy" minViewMode="months" startView="decade" }}
                             </div>
 
                             <!-- To present -->
@@ -118,13 +118,13 @@
             <div class="row">
                 <!-- Start Date -->
                 <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='start'}}has-error{{/if}}">
-                    {{> tempAfDateTimePicker name='start' value=doc.start format="MM yyyy" minViewMode="months" startView="decade" }}
+                    {{> afB3DatePicker name='start' value=doc.start format="MM yyyy" minViewMode="months" startView="decade" }}
                 </div>
 
                 <div class="form-group col-xs-6 {{#if afFieldIsInvalid name='end'}}has-error{{/if}}">
                     <!-- End Date -->
                     <div class="{{endDateClass}}">
-                        {{> tempAfDateTimePicker name='end' value=doc.end format="MM yyyy" minViewMode="months" startView="decade" }}
+                        {{> afB3DatePicker name='end' value=doc.end format="MM yyyy" minViewMode="months" startView="decade" }}
                     </div>
 
                     <!-- To present -->
