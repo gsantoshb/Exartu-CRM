@@ -45,19 +45,17 @@ PastJobSchema = new SimpleSchema({
     optional: true,
     custom: function () {
       if (Meteor.isClient && this.isSet) {
-        if (toPresent.get()) {
-          return true;
-        }
-
-        if (!this.value) {
-          PastJobSchema.namedContext('AddPastJobRecord').addInvalidKeys([{name: 'end', type: 'notUnique'}]);
-        } else if (this.field('start').value > this.value){
-          PastJobSchema.namedContext('AddPastJobRecord').addInvalidKeys([{name: 'end', type: 'minDate', value: 'End date should be grater than start date'}]);
+        if (this.field('start').value > this.value){
+          return 'endGreaterThanStart';
         }
       }
     }
   }
 });
+PastJobSchema.messages({
+  endGreaterThanStart: 'End date should be grater than start date'
+});
+
 
 var toPresent = ReactiveVar(false);
 
@@ -65,13 +63,14 @@ AutoForm.hooks({
   AddPastJobRecord: {
     onSubmit: function(pastJobRecord) {
       var self = this;
-      var id = Template.parentData(1)._id;
+
+      // Get contactableId
+      var contactableId = Session.get('entityId');
 
       if (toPresent.get())
         pastJobRecord.end = undefined;
 
-      Meteor.call('addPastJobRecord', id, pastJobRecord, function () {
-        toPresent.set(false);
+      Meteor.call('addPastJobRecord', contactableId, pastJobRecord, function () {
         self.done();
         self.resetForm();
       });
@@ -82,21 +81,23 @@ AutoForm.hooks({
 });
 
 // Add
-
 Template.employeePastJobAdd.helpers({
-  endDateClass: function() {
-    return toPresent.get()? 'disabled' : '';
+  endDateClass: function () {
+    return toPresent.get() ? 'disabled' : '';
   }
 });
 
 Template.employeePastJobAdd.events({
-  'change #to-present': function() {
+  'change .toPresent': function (event, template) {
     toPresent.set(!toPresent.get());
+    $(template.find('[data-schema-key=end]')).val("");
+  },
+  'reset form': function () {
+    toPresent.set(false);
   }
 });
 
 // List
-
 Template.employeePastJobsList.helpers({
   items: function() {
     if (this.pastJobs && this.pastJobs.length > 1)
@@ -109,7 +110,6 @@ Template.employeePastJobsList.helpers({
 });
 
 // Record
-
 Template.employeePastJobItem.helpers({
   getCtx: function () {
     var self = this;
@@ -126,7 +126,8 @@ Template.employeePastJobItem.helpers({
 
 Template.employeePastJobItem.events({
   'click .deletePastJobRecord': function () {
-    var id = Template.parentData(1)._id;
+    // Get contactableId
+    var contactableId = Session.get('entityId');
     var pastJobRecord = this.pastJobRecord;
 
     Utils.showModal('basicModal', {
@@ -135,7 +136,7 @@ Template.employeePastJobItem.events({
       buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {label: 'Delete', classes: 'btn-danger', value: true}],
       callback: function (result) {
         if (result) {
-          Meteor.call('deletePastJobRecord', id, pastJobRecord);
+          Meteor.call('deletePastJobRecord', contactableId, pastJobRecord);
         }
       }
     });
@@ -147,7 +148,6 @@ Template.employeePastJobItem.events({
 });
 
 // Edit record
-
 Template.employeePastJobEditItem.helpers({
   created: function () {
     var self = this;
@@ -155,9 +155,8 @@ Template.employeePastJobEditItem.helpers({
     // Get contactableId
     var contactableId = Session.get('entityId');
 
-    self.data.formId = Random.hexString(10);
-
-    // Create a AutoForm hook for each record form
+    // Generate an AutoForm ID and create a hook for each record form
+    self.data.formId = 'editPastJob_' + Random.hexString(10);
     AutoForm.addHooks(self.data.formId, {
       onSubmit: function(pastJobRecord, setSelector, oldRecord) {
         var self = this;
@@ -178,16 +177,16 @@ Template.employeePastJobEditItem.helpers({
   },
   endDateClass: function() {
     var ctx = Template.parentData(2);
-    return ctx.toPresent.get()? 'disabled' : '';
+    return ctx.toPresent.get() ? 'disabled' : '';
   },
   checked: function() {
     var ctx = Template.parentData(2);
-    return ctx.toPresent.get()? 'checked' : undefined;
+    return ctx.toPresent.get() ? 'checked' : undefined;
   }
 });
 
 Template.employeePastJobEditItem.events({
-  'change #to-present': function() {
+  'change .toPresent': function() {
     var ctx = Template.parentData(1);
     ctx.toPresent.set(!ctx.toPresent.get());
   },

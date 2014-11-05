@@ -12,8 +12,15 @@
 </template>
 
 <template name="dateTimePicker">
-    <div class="input-group date form_datetime">
-        <input class="form-control" type="text" placeholder="{{getInitialValue}}"/>
+    <div class="input-group date form_datetime" >
+        <input class="form-control afDateTimePicker" type="text" placeholder="{{getInitialValue}}" data-schema-key="{{dataSchemaKey}}" />
+        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+    </div>
+</template>
+
+<template name="bootstrap3DatePicker">
+    <div class="input-group date">
+        <input type="text" class="form-control afDateTimePicker" data-schema-key="{{dataSchemaKey}}" />
         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
     </div>
 </template>
