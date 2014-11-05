@@ -1,5 +1,7 @@
-
 var AuxContactablesHandler;
+
+var query = {};
+
 ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
@@ -20,18 +22,90 @@ ContactablesController = RouteController.extend({
       this.render();
       return;
     }
+
+    var objTypeQuery = {};
     var type = this.params.hash || this.params.type;
     if (type != undefined && type != 'all') {
       var re = new RegExp("^" + type + "$", "i");
       var objType = dType.ObjTypes.findOne({
         name: re
       });
-      query.objType.value = objType.name;
+      objTypeQuery.default = objType.name;
       info.objType.value = objType.name+'s';
     } else {
-      query.objType.value = undefined;
+      objTypeQuery.default  = undefined;
       info.objType.value = 'record(s)';
     }
+
+    // Search string
+    var searchStringQuery = {};
+    if (this.params.search) {
+      searchStringQuery.default = this.params.search;
+    }
+
+    // CreationDate
+    var creationDateQuery = {};
+    if (this.params.creationDate) {
+      creationDateQuery.default = this.params.creationDate;
+    }
+
+    // Status
+    var statusQuery = { type: Utils.ReactivePropertyTypes.boolean };
+    if (this.params.inactives) {
+      statusQuery.default = !! this.params.inactives;
+    }
+
+    // Mine only
+    var mineQuery = { type: Utils.ReactivePropertyTypes.boolean };
+    if (this.params.mine) {
+      mineQuery.default = !! this.params.mine;
+    }
+
+    // Tags
+    var tagsQuery = { type: Utils.ReactivePropertyTypes.array };
+    if (this.params.tags) {
+      tagsQuery.default = this.params.tags.split(',');
+    }
+
+    // Location
+    var locationQuery =  {};
+    if (this.params.address) {
+      locationQuery.default = ' address: ' + this.params.address;
+    }
+    if (this.params.city) {
+      locationQuery.default = locationQuery.default || '';
+      locationQuery.default += ' city: ' + this.params.city;
+    }
+    if (this.params.state) {
+      locationQuery.default = locationQuery.default || '';
+      locationQuery.default += ' state: ' + this.params.state;
+    }
+    if (this.params.country) {
+      locationQuery.default = locationQuery.default || '';
+      locationQuery.default += ' country: ' + this.params.country;
+    }
+
+    // Employee's placements status
+    var placementStatusQuery = {};
+    if (type == 'Employee' && this.params.placementStatus) {
+      placementStatusQuery.default = this.params.placementStatus.split(',');
+    }
+
+    query = new Utils.ObjectDefinition({
+      reactiveProps: {
+        objType: objTypeQuery,
+        searchString: searchStringQuery,
+        selectedLimit: creationDateQuery,
+        inactives: statusQuery,
+        mineOnly: mineQuery,
+        tags: tagsQuery,
+        location: locationQuery,
+        candidateStatus: placementStatusQuery
+      }
+    });
+
+    runESComputation();
+
     this.render('contactables');
   },
   onAfterAction: function() {
@@ -60,29 +134,6 @@ var info = new Utils.ObjectDefinition({
   }
 });
 
-var query = new Utils.ObjectDefinition({
-  reactiveProps: {
-    searchString: {},
-    objType: {},
-    inactives: {
-      type: Utils.ReactivePropertyTypes.boolean,
-      default: false
-    },
-    mineOnly: {
-      type: Utils.ReactivePropertyTypes.boolean,
-      default: false
-    },
-    selectedLimit: {},
-    tags: {
-      type: Utils.ReactivePropertyTypes.array,
-      default: []
-    },
-    limit: {},
-    location: {},
-    candidateStatus: {}
-  }
-});
-
 // All
 
 Template.contactables.information = function() {
@@ -94,14 +145,6 @@ Template.contactables.information = function() {
   info.contactablesCount.value = AuxContactablesHandler.totalCount();
 
   return info;
-};
-
-Template.contactables.showMore = function() {
-  return function() { query.limit.value = query.limit.value + 15 };
-};
-
-Template.contactables.created = function(){
-  query.limit.value = 20
 };
 
 Template.contactables.isLoading = function () {
@@ -165,14 +208,22 @@ Template.contactablesList.info = function() {
 };
 
 Template.contactablesList.created = function() {
-  Meteor.autorun(function() {
+  Meteor.autorun(function(c) {
+    var urlQuery = new URLQuery();
     var searchQuery = {
       $and: [] // Push each $or operator here
     };
 
+    // Search string
+    if (query.searchString.value) {
+      urlQuery.addParam('search', query.searchString.value);
+    }
+
     // Type
-    if (query.objType.value)
+    if (query.objType.value) {
       searchQuery.objNameArray = query.objType.value;
+      urlQuery.addParam('type', query.objType.value);
+    }
 
     // Creation date
     if (query.selectedLimit.value) {
@@ -180,6 +231,7 @@ Template.contactablesList.created = function() {
       searchQuery.dateCreated = {
         $gte: dateLimit.getTime() - query.selectedLimit.value
       };
+      urlQuery.addParam('creationDate', query.selectedLimit.value);
     }
 
     // Status / Inactive
@@ -203,9 +255,14 @@ Template.contactablesList.created = function() {
         searchQuery.$and.push(inactiveStatusOR);
     }
 
+    if (query.inactives.value) {
+      urlQuery.addParam('inactives', true);
+    }
+
     // Created by
     if (query.mineOnly.value) {
       searchQuery.userId = Meteor.userId();
+      urlQuery.addParam('mine', true);
     }
 
     // Location filter
@@ -220,6 +277,7 @@ Template.contactablesList.created = function() {
             $regex: value,
             $options: 'i'
           };
+          urlQuery.addParam(locationField, value);
         }
       });
     }
@@ -246,6 +304,7 @@ Template.contactablesList.created = function() {
       searchQuery.tags = {
         $in: query.tags.value
       };
+      urlQuery.addParam('tags', query.tags.value);
     }
 
     if (searchQuery.$and.length == 0)
@@ -253,7 +312,14 @@ Template.contactablesList.created = function() {
 
     if (!_.isEmpty(query.candidateStatus.value)){
       searchQuery._id = {$in:_.map(AllPlacements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
+      urlQuery.addParam('placementStatus', query.candidateStatus.value);
     }
+
+    // Set url query
+    urlQuery.apply();
+
+    // HACK: Elasticsearch is used when searching with string, so is not necessary to set a new filter
+    if (query.searchString.value) return;
 
     AuxContactablesHandler.setFilter(searchQuery);
   });
@@ -265,6 +331,7 @@ Template.contactablesList.contactables = function() {
 
   // Elasitsearch
   if (!_.isEmpty(query.searchString.value)) {
+    //urlQuery.push('type=' + query.objType.value);
     return esResult;
   }
 
@@ -288,108 +355,110 @@ Template.contactablesList.contactableTypes = function() {
 var esDep = new Deps.Dependency;
 var esResult = [];
 
-Meteor.autorun(function() {
-  if (_.isEmpty(query.searchString.value))
-    return;
+var runESComputation = function () {
+  Meteor.autorun(function() {
+    if (_.isEmpty(query.searchString.value))
+      return;
 
-  query.searchString.dep.depend();
+    query.searchString.dep.depend();
 
-  // Process filters
-  var filters = {
-    bool: {
-      must: [],
-      should: []
-    }
-  };
-
-  // Contactable type
-  if (query.objType.value)
-    filters.bool.must.push({term: {objNameArray: [query.objType.value.toLowerCase()]}});
-
-  // Tags
-  if (query.tags.value.length > 0) {
-    var tags = {or: []};
-    _.forEach(query.tags.value, function(tag) {
-      tags.or.push({term: {tags: tag}});
-    });
-    filters.bool.must.push(tags);
-  }
-
-  // Only recent filters
-  if (query.selectedLimit.value) {
-    var now = new Date();
-    filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
-  }
-
-  // Include inactives
-  if (!query.inactives.value) {
-    var activeStatusFilter = {or: []}; 
-    var activeStatuses;
-    _.each(['Employee','Contact', 'Customer'], function(objName){
-      activeStatuses = getActiveStatuses(objName);
-      _.forEach(activeStatuses, function(activeStatus) {
-        var statusFilter = {};
-        statusFilter[objName + '.status'] = activeStatus.toLowerCase();
-        activeStatusFilter.or.push({term: statusFilter});
-      })
-    });
-    filters.bool.must.push(activeStatusFilter);
-  }
-
-  // Created by
-  if (query.mineOnly.value) {
-    filters.bool.must.push({term: {userId: Meteor.userId()}});
-  }
-
-  // Location filter
-  var locationOperatorMatch = false;
-  if (query.location.value) {
-    _.forEach(locationFields, function(locationField) {
-      var value = getLocationTagValue(locationField, locationFields);
-
-      if (value) {
-        locationOperatorMatch = true;
-        var aux = { regexp: {}};
-        aux.regexp['location.' + locationField] = '.*' + value + '.*';
-        filters.bool.must.push(aux); 
+    // Process filters
+    var filters = {
+      bool: {
+        must: [],
+        should: []
       }
-    });
-  }
+    };
 
-  // If not location operator match is used then search on each field
-  if (query.location.value && !locationOperatorMatch) {
-    _.forEach(locationFields, function(locationField) {
-      var aux = { regexp: {}};
-      aux.regexp['location.' + locationField] = '.*' + query.location.value + '.*';
-      filters.bool.should.push(aux); 
-    });
-  }
+    // Contactable type
+    if (query.objType.value)
+      filters.bool.must.push({term: {objNameArray: [query.objType.value.toLowerCase()]}});
 
-  isSearching = true;
-  searchDep.changed();
-
-  Contactables.esSearch('.*' + query.searchString.value + '.*', filters,function(err, result) {
-    if (!err) {
-      esResult = _.map(result.hits, function(hit) {
-        var contactable = Contactables._transform(hit._source);
-        contactable._match = {
-          score: (hit._score / result.max_score) * 100,
-          properties: _.map(hit.highlight, function(matchedProperty, propertyName) {
-            return propertyName;
-          }),
-          contexts: _.flatten(_.map(hit.highlight, function(matchedProperty, propertyName) {
-            return matchedProperty;
-          }))
-        };
-        return contactable;
+    // Tags
+    if (query.tags.value.length > 0) {
+      var tags = {or: []};
+      _.forEach(query.tags.value, function(tag) {
+        tags.or.push({term: {tags: tag}});
       });
-      esDep.changed();
-      isSearching = false;
-      searchDep.changed();
-    } else
-      console.log(err)
+      filters.bool.must.push(tags);
+    }
+
+    // Only recent filters
+    if (query.selectedLimit.value) {
+      var now = new Date();
+      filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
+    }
+
+    // Include inactives
+    if (!query.inactives.value) {
+      var activeStatusFilter = {or: []};
+      var activeStatuses;
+      _.each(['Employee','Contact', 'Customer'], function(objName){
+        activeStatuses = getActiveStatuses(objName);
+        _.forEach(activeStatuses, function(activeStatus) {
+          var statusFilter = {};
+          statusFilter[objName + '.status'] = activeStatus.toLowerCase();
+          activeStatusFilter.or.push({term: statusFilter});
+        })
+      });
+      filters.bool.must.push(activeStatusFilter);
+    }
+
+    // Created by
+    if (query.mineOnly.value) {
+      filters.bool.must.push({term: {userId: Meteor.userId()}});
+    }
+
+    // Location filter
+    var locationOperatorMatch = false;
+    if (query.location.value) {
+      _.forEach(locationFields, function(locationField) {
+        var value = getLocationTagValue(locationField, locationFields);
+
+        if (value) {
+          locationOperatorMatch = true;
+          var aux = { regexp: {}};
+          aux.regexp['location.' + locationField] = '.*' + value + '.*';
+          filters.bool.must.push(aux);
+        }
+      });
+    }
+
+    // If not location operator match is used then search on each field
+    if (query.location.value && !locationOperatorMatch) {
+      _.forEach(locationFields, function(locationField) {
+        var aux = { regexp: {}};
+        aux.regexp['location.' + locationField] = '.*' + query.location.value + '.*';
+        filters.bool.should.push(aux);
+      });
+    }
+
+    isSearching = true;
+    searchDep.changed();
+
+    Contactables.esSearch('.*' + query.searchString.value + '.*', filters,function(err, result) {
+      if (!err) {
+        esResult = _.map(result.hits, function(hit) {
+          var contactable = Contactables._transform(hit._source);
+          contactable._match = {
+            score: (hit._score / result.max_score) * 100,
+            properties: _.map(hit.highlight, function(matchedProperty, propertyName) {
+              return propertyName;
+            }),
+            contexts: _.flatten(_.map(hit.highlight, function(matchedProperty, propertyName) {
+              return matchedProperty;
+            }))
+          };
+          return contactable;
+        });
+        esDep.changed();
+        isSearching = false;
+        searchDep.changed();
+      } else
+        console.log(err)
+    });
   });
-});
+};
 
 // List search
 
