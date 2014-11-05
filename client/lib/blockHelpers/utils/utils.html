@@ -31,7 +31,7 @@
 
 <template name="tempAfDateTimePicker">
     <label class="control-label">{{afFieldLabelText name=name}}</label>
-    {{#dateTimePicker dataSchemaKey=name pickTime=false value=this.value options=.}}{{/dateTimePicker}}
+    {{#bootstrap3DatePicker dataSchemaKey=name value=this.value options=.}}{{/bootstrap3DatePicker}}
     {{#if afFieldIsInvalid name=name}}
         <span class="help-block">{{afFieldMessage name=name}}</span>
     {{/if}}

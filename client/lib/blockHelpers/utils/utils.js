@@ -129,7 +129,7 @@ AutoForm.inputValueHandlers({
 
   '.afDateTimePicker': function () {
     if (this.val()) {
-      return $(this).parent().data().datetimepicker.date;
+      return $(this).parent().datepicker('getDate');
     }
   }
 });
