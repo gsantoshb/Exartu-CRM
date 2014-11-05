@@ -100,3 +100,30 @@ Template.dateTimePicker.events({
     }
   }
 });
+
+
+
+// Bootstrap 3 datepicker
+UI.registerHelper('bootstrap3DatePicker', function() {
+  return Template.bootstrap3DatePicker;
+});
+Template.bootstrap3DatePicker.rendered = function () {
+  // Default options
+  var options = {
+    autoclose: true,
+    clearBtn: true
+  };
+  // Override with custom options
+  _.extend(options, this.data.options);
+
+  // Start the plugin
+  this.$('.date').datepicker(options);
+  // Set the initial date when specified
+  this.$('.date').datepicker('update', this.data.value);
+};
+Template.bootstrap3DatePicker.helpers({
+  dataSchemaKey: function () {
+    return this.dataSchemaKey;
+  }
+});
+
