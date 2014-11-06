@@ -234,10 +234,14 @@ Accounts.onCreateUser(function (options, user) {
 
 var sendInvitation = function(address, token, hierName) {
   var url = Meteor.absoluteUrl('invitation/' + token);
-  var html = 'You have been invited to ' + hierName + ', click in the link bellow to accept the invitation: <br/>' +
-    '<a href="' + url + '"> </a> '+ url + '<br/>';
+  var text = "Dear user,\n\n"
+    + "You have been invited to the hierarchy '" + hierName + "'.\n"
+    + "Please click the link below to accept the invitation. Alternatively, copy the link into your browser.\n\n"
+    + url + "\n\n"
+    + "Thank you,\n"
+    + "Exartu team";
 
-  EmailManager.sendEmail(address, 'TempWorks - Invitation', html, true);
+  EmailManager.sendEmail(address, 'TempWorks - Invitation', text, false);
 };
 
 var sendEmailToSales = function(user){
