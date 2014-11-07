@@ -34,5 +34,8 @@ Meteor.methods({
   },
   registerAccountFromInvitation: function(token, user) {
     UserManager.registerAccountFromInvitation(token, user);
+  },
+  acceptUserInvitation: function(token) {
+    UserManager.acceptUserInvitation(token, Meteor.user());
   }
 });

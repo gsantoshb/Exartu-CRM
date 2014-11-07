@@ -219,6 +219,11 @@ Router.map(function () {
     path: '/hierarchyManagement',
     controller: 'HierarchiesManagementController'
   });
+
+  this.route('invitationVerification', {
+    path: '/invitationVerification/:token',
+    controller: 'InvitationController'
+  });
 });
 
 
