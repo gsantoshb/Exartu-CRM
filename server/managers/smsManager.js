@@ -138,7 +138,7 @@ var _requestNumber = function () {
         phoneNumber: result.availablePhoneNumbers[0].phoneNumber,
         areaCode: '651',
         smsMethod: "POST",
-        smsUrl: 'http://61ffe103.ngrok.com/sms/reply' //Meteor.absoluteUrl('sms/reply')
+        smsUrl: Meteor.absoluteUrl('sms/reply')
       });
 
     } else {
