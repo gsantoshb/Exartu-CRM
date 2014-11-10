@@ -4,10 +4,12 @@ var JobHandler;
 
 Template.customerJobs.created = function () {
   if (!SubscriptionHandlers.JobHandler){
-    SubscriptionHandlers.JobHandler = Meteor.paginatedSubscribe('jobs');
+    SubscriptionHandlers.JobHandler = Meteor.paginatedSubscribe('jobs', {filter: {customer: Session.get('entityId')}});
+  }else{
+    SubscriptionHandlers.JobHandler.setFilter({customer: Session.get('entityId')});
+
   }
   JobHandler = SubscriptionHandlers.JobHandler;
-  JobHandler.setFilter({customer: Session.get('entityId')});
 };
 
 Template.customerJobs.helpers({
