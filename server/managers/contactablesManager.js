@@ -104,6 +104,17 @@ ContactableManager = {
     return contactable ? contactable.location : {};
   },
 
+  // Notes
+  addNote: function (note) {
+    if ( note.sendAsSMS) {
+      // Send SMS
+      SMSManager.sendSMSToContactable(note.contactableId, note.userNumber, note.contactableNumber, note.msg);
+    }
+
+    // Save note
+    Notes.insert(note);
+  },
+
   // Education record
   addEducationRecord: function (contactableId, educationInfo) {
     // TODO: Validate

@@ -3,7 +3,13 @@ Meteor.publish('hierarchies', function() {
   if (!user)
     return false;
 
-  return Hierarchies.find({_id: { $in: user.hierarchies}});
+  var userHierarchies = [];
+  _.forEach( user.hierarchies, function (hierarchy) {
+    var $or = Utils.filterByHiers(hierarchy, '_id');
+    userHierarchies = userHierarchies.concat($or);
+  });
+
+  return Hierarchies.find({$or: userHierarchies});
 });
 
 Hierarchies.allow({

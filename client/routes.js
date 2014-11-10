@@ -157,6 +157,11 @@ Router.map(function () {
     controller: 'hrConcourseManagementController'
   });
 
+  this.route('twilioManagement', {
+    path: '/management/twilioManagement',
+    controller: 'TwilioManagementController'
+  });
+
   this.route('resumeParser', {
     path: '/resumeparser',
     controller: 'ResumeParserController'
