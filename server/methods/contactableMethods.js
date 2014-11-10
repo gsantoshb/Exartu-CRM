@@ -19,6 +19,11 @@ Meteor.methods({
     ContactableManager.setPicture(contactableId, fileId);
   },
 
+  // Notes
+  addContactableNote: function (note) {
+    ContactableManager.addNote(note);
+  },
+
   // Contact methods
   addContactMethod: function (contactableId, type, value) {
     ContactableManager.addContactMethod(contactableId, type, value);
@@ -71,6 +76,11 @@ Meteor.methods({
     } else {
       return Contactables.findOne({ houseAccount: true, hierId: user.hierId }, { fields: { 'organization.organizationName': 1 } });
     }
+  },
+
+  // Communication
+  sendSMSToContactable: function (contactableId, from, to, text) {
+   return SMSManager.sendSMSToContactable(contactableId, from, to, text);
   }
 });
 

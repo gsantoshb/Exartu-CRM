@@ -141,12 +141,17 @@ Router.map(function () {
   this.route('lookupManagement', {
     path: '/management/lookups',
     controller: 'LookupsManagementController'
-  })
+  });
 
   this.route('hrConcourseManagement', {
     path: '/management/hrconcourse',
     controller: 'hrConcourseManagementController'
-  })
+  });
+
+  this.route('twilioManagement', {
+    path: '/management/twilioManagement',
+    controller: 'TwilioManagementController'
+  });
 
   this.route('resumeParser', {
     path: '/resumeparser',

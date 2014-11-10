@@ -22,5 +22,8 @@ ExartuConfig = {
   AWS_accessKeyId: undefined,
   AWS_secretAccessKey: undefined,
   AWS_S3_region: undefined,
-  AWS_S3_bucket: undefined
+  AWS_S3_bucket: undefined,
+  // Twilio
+  TW_accountSID: undefined,
+  TW_authToken: undefined
 };

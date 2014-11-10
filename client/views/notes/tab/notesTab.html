@@ -13,13 +13,28 @@
         </div>
 
         <div class="add-box-content col-xs-12 col-md-9">
-            {{#autoForm id="AddNoteRecord" schema="NoteSchema" collection="Notes" type="insert" resetOnSuccess=true}}
+            {{#autoForm id="AddNoteRecord" schema="NoteSchema" meteormethod="addContactableNote" type="method" resetOnSuccess=true}}
                 {{> afQuickField name='msg' rows=3}}
                 {{> linksAutoForm name='links'}}
 
                 <br/>
 
-                <button class="btn btn-success pull-right"> Save </button>
+                {{#unless userNumbers}}
+                    <small class="text-muted"> You have no numbers available to send note as SMS, <a href="/hierarchyManagement"> go to your hierarchies </a> settings to request a number </small>
+                {{else}}
+                    {{#unless contactableNumbers}}
+                        <small class="text-muted"> This contactable has no phone number as a contact method, go to details to add one </small>
+                    {{else}}
+                        {{> afQuickField name="sendAsSMS"}}
+
+                        {{#if afFieldValueIs name='sendAsSMS' value=true}}
+                            {{> afFormGroup name="userNumber" options=userNumbers}}
+                            {{> afFormGroup name="contactableNumber" options=contactableNumbers}}
+                        {{/if}}
+                    {{/unless}}
+                {{/unless}}
+
+                <button type="submit" class="btn btn-success pull-right"> Save </button>
             {{/autoForm}}
         </div>
     </div>
@@ -59,6 +74,22 @@
                                 {{/with}}
                             </a>
                         {{/each}}
+
+                        {{#if noteRecord.sendAsSMS}}
+                            <hr/>
+                            <div class="text-muted">
+                                {{#if noteRecord.isReply}}
+                                    <i class="icon-inbox-4"></i>
+                                {{else}}
+                                    <i class="icon-plane-paper-1"></i>
+                                {{/if}}
+                                <strong> SMS </strong>
+
+                                <span class="bullet-spacer">·</span>
+                                <span> From {{getPhoneNumberDisplayName noteRecord.userNumber}}</span>
+                                <span> To {{getPhoneNumberDisplayName noteRecord.contactableNumber}}</span>
+                            </div>
+                        {{/if}}
                     {{/if}}
                 {{/with}}
             </div>

@@ -604,6 +604,14 @@ Utils.users =function(){
   return Meteor.users.find({});
 };
 
+Utils.getPhoneNumberDisplayName = function (phoneNumber) {
+  return  '(' + phoneNumber.slice(1, 4) + ') ' + phoneNumber.slice(5, 8) + '-' + phoneNumber.slice(8, 12);
+};
+
+Template.registerHelper('getPhoneNumberDisplayName', function(phoneNumber) {
+  return Utils.getPhoneNumberDisplayName(phoneNumber);
+});
+
 // URLQuery
 
 URLQuery = function () {

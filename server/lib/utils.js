@@ -3,6 +3,15 @@ systemLookUps = [];
 Utils = {};
 
 _.extend( Utils, {
+  getUserHiers: function () {
+    var userHierarchies = [];
+    _.forEach( Meteor.user().hierarchies, function (hierarchy) {
+      var $or = Utils.filterByHiers(hierarchy, '_id');
+      userHierarchies = userHierarchies.concat($or);
+    });
+
+    return Hierarchies.find({$or: userHierarchies}).fetch();
+  },
   getUserHierId: function(userId) {
     if (!userId)
       return undefined;

@@ -17,15 +17,33 @@
                 </div>
                 <div class="col-md-4" style="border-left: solid 2px #979797; min-height: 300px;">
                     {{#with selected}}
-                        <div style="margin-bottom: 50px;">
+                        <div style="min-height: 20px;">
                             <button id="addHier" class="btn btn-primary pull-right">Add Child</button>
-                            <h4>
-                                <!--{{name}}-->
-                                {{#unless isCurrent}}
-                                    <a class="changeCurrent pointer">Set as the current</a>
-                                {{/unless}}
-                            </h4>
+
+                            {{#unless isCurrent}}
+                                <a class="changeCurrent pointer">Set as the current</a>
+                            {{/unless}}
+
+                            {{#unless phoneNumber}}
+                                <br/>
+                                <a id="require-number" class="pointer"> Request phone number </a>
+                            {{/unless}}
                         </div>
+
+                        {{#if phoneNumber}}
+                            <hr/>
+
+                            <strong> Phone number </strong>
+                            <br/>
+                            <span> {{phoneNumber.displayName}} </span>
+                            <br>
+                            SMS sent: {{phoneNumber.smsCount}} / {{maxSMSAvailable}}
+
+                            <hr/>
+                        {{else}}
+                            <hr/>
+                        {{/if}}
+
                         {{>quickForm schema=hierarchySchema id='hierarchyEdit' doc=. buttonContent="Save" autocomplete="off" }}
                     {{else}}
                         <div class="box-v-msg">
@@ -36,8 +54,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </template>
 
