@@ -1,6 +1,15 @@
 <template name="contactableDocumentsAdd">
-    <div class="tab-pane" id="document">
-        <div class="box-5">
+    <div class="tab-pane record" id="document">
+        <div class="record-header" style="">
+            <div class="top-0">Documents
+                {{#objectProperty property=query.searchString}}
+                    <span class="pull-right">
+                        <input class="form-control input-sm " type="text" placeholder="Search" value="{{value}}" >
+                    </span>
+                {{/objectProperty}}
+            </div>
+        </div>
+        <div class="box-5 record-add">
             {{#if addForm }}
                 {{>addDocumentForm}}
             {{else}}
@@ -68,14 +77,6 @@
 
 <template name="contactableDocumentsList">
     <div style="padding: 5px">
-        <h3 class="top-0">Documents
-            {{#objectProperty property=query.searchString}}
-            <span class="pull-right">
-                <input class="form-control input-sm " type="text" placeholder="Search" value="{{value}}" >
-            </span>
-            {{/objectProperty}}
-        </h3>
-        <hr/>
         <ul class="list-3 stripped has-thumb">
             {{#each documents}}
                 <li class="list-3-item">

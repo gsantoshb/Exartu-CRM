@@ -1,0 +1,300 @@
+<!-- Details view layout -->
+<template name="contactable">
+    <div id="content" class="details">
+        {{#with contactable}}
+            <div id="content-header" class="mini">
+                <div class="profile-content-header" style="padding: 15px 20px;">
+                    {{>contactable_header}}
+                </div>
+            </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="details-menu col-md-2">
+                    {{>contactable_nav}}
+                    {{>contactable_actions}}
+                </div>
+                <div class="details-view col-md-10">
+                    <div class="details-view-content clearfix">
+                        <div class="tab-pane active">
+                            {{> UI.dynamic template=currentTemplate  data=. }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {{/with}}
+    </div>
+</template>
+
+<!-- Headers -->
+
+<template name="contactable_header">
+    {{#if pictureFileId}}
+        <div class="profile-pic">
+            <div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">
+                <a id="edit-pic" title="Click to Edit" class="pointer">
+                    <img class="" src="{{pictureUrl}}" style="max-height: 40px;max-width: 40px;">
+                </a>
+            </div>
+        </div>
+    {{else}}
+        <div class="profile-pic">
+            <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
+                {{#if person}}
+                    <i class="icon-profile-business-man"></i>
+                {{/if}}
+                {{#if organization}}
+                    <i class="icon-buildings-1"></i>
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
+    <input id="edit-picture" style="visibility:hidden; display: none" name="files" type="file" class="fileUploader"/>
+
+
+    <h1 class="profile-name">
+        <strong>
+            {{displayName}}
+
+            {{#if person}}
+                {{#if person.jobTitle}}
+                    <small>— {{person.jobTitle}}</small>
+                {{/if}}
+            {{/if}}
+
+            {{#if Contact.customerName}}
+                <!--<br>-->
+                <small>
+                    <a href="/contactable/{{Contact.customer}}">
+                        <strong class="text text-muted" style="font-size: 25px; color: #A29E9E">
+                            {{Contact.customerName}}
+                            <i class="fa fa-external-link" style="font-size: 14px"></i>
+                        </strong>
+                    </a>
+                </small>
+            {{/if}}
+
+            {{#if Customer.department}}
+                <small>{{Customer.department}}</small>
+            {{/if}}
+        </strong>
+        <small class="pull-right" style="max-width: 40%;"> {{statusNote}} </small>
+    </h1>
+    <p class="profile-address">
+
+        {{#if location}}
+            <i class="fa fa-map-marker"></i>
+            <span>{{locationDisplayName}}</span>
+        {{/if}}
+    </p>
+
+    <div class="profile-btns">
+        {{#with mainContactMethods}}
+            {{#if phone.value}}
+                <a class="btn btn-default btn-custom-with-circle" href="callto:{{phone.value}}">
+                    <span class="btn-round"><i class="fa fa-phone"></i></span>
+                    {{phone.value}}
+                </a>
+            {{/if}}
+            {{#if email.value}}
+                <a class="btn btn-default btn-custom-with-circle" href="mailto:{{email.value}}">
+                    <span class="btn-round"><i class="fa fa-envelope"></i></span>
+                    {{email.value}}
+                </a>
+            {{/if}}
+        {{/with}}
+    </div>
+</template>
+
+<!-- Tabs -->
+
+<template name="contactable_tabs">
+    <!--{{> detailTabs2 tabs=tabs selected=selectedTab template="contactable" context=.}}-->
+</template>
+
+<template name="contactable_notes">
+    {{> notesTab}}
+</template>
+
+<template name="contactable_documents">
+    {{> contactableDocumentsAdd entity=. collection="ContactablesFS"}}
+    {{> contactableDocumentsList entity=. collection="ContactablesFS"}}
+</template>
+
+<template name="contactable_jobs">
+    {{> customerJobs}}
+</template>
+
+<template name="contactable_contacts">
+    {{> contactableContactsBox}}
+</template>
+
+<template name="contactable_tasks">
+    {{> tasksBox}}
+</template>
+
+<template name="contactable_details">
+    <div class="col-md-6">
+        {{> contactableDetailBox}}
+
+        {{> contactableContactMethodsBox}}
+
+        {{#if Contact}}
+            {{> customerInfo customer=Contact.customer path='Contact.customer' collection=collection}}
+        {{/if}}
+    </div>
+    <div class="col-md-6">
+        {{> locationBox callback=setNewAddress location=location}}
+
+        {{>tagsBox}}
+    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-12">
+            {{> originData}}
+        </div>
+    </div>
+</template>
+
+<template name="contactable_HRConcourse">
+    {{>HRConcourse entity=.}}
+    {{>contactablePlacementsBox}}
+</template>
+
+<template name="contactable_placements">
+    {{> placementsBox}}
+</template>
+<template name="contactable_actions_list">
+
+</template>
+<template name="contactable_actions">
+    <div class="hidden-xs hidden-sm">
+
+        <div class="details-actions">
+            <ul class="no-padding">
+                <li>
+                    <a id="makeEmployee" class="btn btn-default btn-custom-with-circle action-btn">
+                        <span class="btn-round"><i class="fa fa-exchange"></i></span>
+                        Make Employee
+                    </a>
+                </li>
+                <li>
+                    <a id="makeContact" class="btn btn-default btn-custom-with-circle action-btn">
+                        <span class="btn-round"><i class="fa fa-exchange"></i></span>
+                        Make Contact
+                    </a>
+                </li>
+                <li>
+                    <a id="generate-resume" class="btn btn-default btn-custom-with-circle action-btn">
+                        <span class="btn-round"><i class="fa fa-file"></i></span>
+                        Generate resume
+                        <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="visible-xs visible-sm pull-right">
+        <div class="details-actions">
+            <div class="btn-group nav-item">
+                <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                    Actions
+                    <!--<span class="caret"></span>-->
+                </a>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li>
+                        <a id="makeEmployee">
+                            <span><i class="fa fa-exchange"></i></span>
+                            Make Employee
+                        </a>
+                    </li>
+                    <li>
+                        <a id="makeContact">
+                            <span><i class="fa fa-exchange"></i></span>
+                            Make Contact
+                        </a>
+                    </li>
+                    <li>
+                        <a id="generate-resume">
+                            <span><i class="fa fa-file"></i></span>
+                            Generate resume
+                            <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="contactable_activities">
+    {{> contactableActivities}}
+</template>
+
+<!-- Loading screen -->
+
+<template name="loadingContactable">
+    <div id="content">
+        <div id="content-header" class="mini">
+            <div class="profile-content-header">
+                <h1>Loading</h1>
+            </div>
+        </div>
+        <!--<div id="breadcrumb">-->
+            <!--<a href="/" title="" class="tip-bottom" data-original-title="Go to Home"><i class="fa fa-home"></i> Home</a>-->
+        <!--</div>-->
+        <div class="container-fluid" style="background-color: #F6F6F6;">
+            <div class="page-loader" style="height: 748px; background-color: #FFF;border: solid 1px #DFDFDF;">
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<template name="contactable_nav">
+    <div class="details-nav">
+        <div class="row hidden-xs hidden-sm">
+            {{#each tabs}}
+                <div class="{{isActive id}} col-xs-4 col-sm-2 col-md-12 details-tab nav-item" style="padding-top: 3px;padding-bottom: 3px;">
+
+                    <a href="#{{id}}">
+                        {{displayName}}
+                    </a>
+                </div>
+            {{/each}}
+        </div>
+        <div class="visible-xs visible-sm">
+            {{#each mobileTabs}}
+                <div class="{{isActive id}} details-tab nav-item ">
+
+                    <a class="btn" href="#{{id}}">
+                        {{displayName}}
+                    </a>
+                </div>
+            {{/each}}
+
+            <div class="btn-group nav-item">
+                <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                    ...
+                    <!--<span class="caret"></span>-->
+                </a>
+                <div class="dropdown-menu" role="menu">
+                    {{#each otherTabs}}
+                        <div class="{{isActive id}} col-xs-12 col-sm-12 col-md-12 details-tab">
+
+                            <a href="#{{id}}">
+                                {{displayName}}
+                            </a>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</template>
+
+<template name="link">
+
+</template>

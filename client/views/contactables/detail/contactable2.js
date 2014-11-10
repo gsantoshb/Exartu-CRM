@@ -8,12 +8,12 @@ ContactableController = RouteController.extend({
   },
   action: function () {
     if (!this.ready()) {
-      this.render('loadingContactable')
+      this.render('loadingContactable');
       return;
     }
-    this.render('contactable')
+    this.render('contactable');
 
-    Session.set('activeTab', this.params.hash);
+    Session.set('activeTab', this.params.hash || 'details');
   },
   onAfterAction: function () {
     var title = 'All Contacts / ' + Session.get('contactableDisplayName'),
@@ -172,34 +172,55 @@ Template.contactable_details.helpers({
 });
 
 // Tabs
+
+Template.contactable_nav.helpers({
+  isActive: function (id) {
+    return (id == Session.get('activeTab'))? 'active' : '';
+  }
+})
 var tabs;
-Template.contactable_tabs.tabs = function () {
-  tabs = [
-    {id: 'details', displayName: 'Details', template: 'contactable_details'},
-    {id: 'notes', displayName: 'Notes', template: 'contactable_notes'},
-    {id: 'documents', displayName: 'Documents', template: 'contactable_documents'},
-    {id: 'tasks', displayName: 'Tasks', template: 'contactable_tasks'},
-  ];
 
-  if (contactable.Customer) {
-    tabs.push({id: 'jobs', displayName: 'Jobs', template: 'contactable_jobs'});
-    tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements'});
-    tabs.push({id: 'contacts', displayName: 'Contacts', template: 'contactable_contacts'});
-  }
 
-  if (contactable.Employee) {
-    tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements'});
-    //tabs.push({id: 'hrconcourse', displayName: 'HRconcourse', template: 'contactable_HRConcourse'});
-    tabs.push({id: 'education', displayName: 'Education', template: 'employeeEduction'});
-    tabs.push({id: 'pastJobs', displayName: 'Past Jobs', template: 'employeePastJobs'});
+Template.contactable_nav.helpers({
+  tabs: function () {
+    tabs = [
+      {id: 'details', displayName: 'Details', template: 'contactable_details'},
+      {id: 'notes', displayName: 'Notes', template: 'contactable_notes', icon : 'icon-note-paper-1'},
+      {id: 'documents', displayName: 'Documents', template: 'contactable_documents', icon : 'icon-document-1'},
+      {id: 'tasks', displayName: 'Tasks', template: 'contactable_tasks', icon : 'icon-note-paper-1'},
+    ];
+
+    if (contactable.Customer) {
+      tabs.push({id: 'jobs', displayName: 'Jobs', template: 'contactable_jobs'});
+      tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements'});
+      tabs.push({id: 'contacts', displayName: 'Contacts', template: 'contactable_contacts'});
+    }
+
+    if (contactable.Employee) {
+      tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements'});
+      //tabs.push({id: 'hrconcourse', displayName: 'HRconcourse', template: 'contactable_HRConcourse'});
+      tabs.push({id: 'education', displayName: 'Education', template: 'employeeEduction'});
+      tabs.push({id: 'pastJobs', displayName: 'Past Jobs', template: 'employeePastJobs'});
+    }
+    return tabs;
+  },
+  mobileTabs: function () {
+    return tabs.slice(0, 3);
+  },
+  otherTabs: function () {
+    return tabs.slice(3, tabs.length);
   }
+});
+Template.contactable.currentTemplate = function () {
+
 
   //tabs.push({id: 'actions', displayName: 'Actions', template: 'contactable_actions'});
   //tabs.push({id: 'activities', displayName: 'Activities', template: 'contactable_activities'});
 
-  return tabs;
+  var selected = _.findWhere(tabs ,{id: Session.get('activeTab')});
+  return selected && selected.template;
 };
-
-Template.contactable_tabs.selectedTab = function () {
-  return _.findWhere(tabs, {id: Session.get('activeTab')});
-};
+//
+//Template.contactable_tabs2.selectedTab = function () {
+//  return _.findWhere(tabs, {id: Session.get('activeTab')});
+//};

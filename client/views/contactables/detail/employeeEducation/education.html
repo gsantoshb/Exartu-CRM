@@ -6,39 +6,45 @@
 </template>
 
 <template name="employeeEducationAdd">
-    <div class="record-add row">
-        <div class="add-box-head col-xs-12 col-md-3">
-            <div class="add-item-icon"><i class="icon-books-3"></i></div>
-            <h2>Education</h2>
-        </div>
+    <div style="padding: 30px 0px 0px 15px;">
+        <a data-toggle="collapse" href="#add-form"><span class="btn btn-sm btn-default"><i class="fa fa-plus"></i> Add</span></a>
+        <!--<a data-toggle="collapse" href="#add-form" class="btn btn-success btn-lg pull-right">Add</a>-->
+    </div>
+    <div id="add-form" class="collapse">
+        <div class="record-add row">
+            <div class="add-box-head hidden-xs col-md-3">
+                <div class="add-item-icon"><i class="icon-books-3"></i></div>
+                <h2>Education</h2>
+            </div>
 
-        <div class="add-box-content col-xs-12 col-md-9">
-            {{#autoForm id="AddEducationRecord" schema="EducationSchema"}}
-                {{> afQuickField name='institution'}}
-                {{> afQuickField name='description'}}
-                {{> afQuickField name='degreeAwarded'}}
+            <div class="col-md-9">
+                {{#autoForm id="AddEducationRecord" schema="EducationSchema"}}
+                    {{> afQuickField name='institution'}}
+                    {{> afQuickField name='description'}}
+                    {{> afQuickField name='degreeAwarded'}}
 
-                <div class="row">
-                    <div class="form-group col-xs-6">
-                        <span> Start date </span>
-                        {{> dateTimePickerAutoForm name="start" format="MM yyyy" startView=4 minView=3 autoclose=true}}
-                    </div>
-                    <div class="form-group col-xs-6">
-                        <span> End date </span>
-                        <div class="{{endDateClass}}">
-                            {{> dateTimePickerAutoForm name="end" format="MM yyyy" startView=4 minView=3 autoclose=true}}
+                    <div class="row">
+                        <div class="form-group col-xs-6">
+                            <span> Start date </span>
+                            {{> dateTimePickerAutoForm name="start" format="MM yyyy" startView=4 minView=3 autoclose=true}}
                         </div>
+                        <div class="form-group col-xs-6">
+                            <span> End date </span>
+                            <div class="{{endDateClass}}">
+                                {{> dateTimePickerAutoForm name="end" format="MM yyyy" startView=4 minView=3 autoclose=true}}
+                            </div>
 
-                        <div class="checkbox">
-                            <label>
-                                <input id="to-present" class="editable" type="checkbox"> To present
-                            </label>
+                            <div class="checkbox">
+                                <label>
+                                    <input id="to-present" class="editable" type="checkbox"> To present
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <button class="btn btn-success pull-right"> Save </button>
-            {{/autoForm}}
+                    <button class="btn btn-success pull-right"> Save </button>
+                {{/autoForm}}
+            </div>
         </div>
     </div>
 </template>

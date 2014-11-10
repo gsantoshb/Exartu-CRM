@@ -165,7 +165,10 @@ Template.contactablesList.info = function() {
 };
 
 Template.contactablesList.created = function() {
+  console.log('created');
+
   Meteor.autorun(function() {
+    console.log('autorun');
     var searchQuery = {
       $and: [] // Push each $or operator here
     };
