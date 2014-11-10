@@ -125,6 +125,12 @@ AutoForm.inputValueHandlers({
     var key = this.data().schemaKey;
     var formId = UI.currentView.parentView.dataVar.curValue.id;
     return $('#' + formId + ' .' + key + ' .date').data('datetimepicker').date;
+  },
+
+  '.afDateTimePicker': function () {
+    if (this.val()) {
+      return $(this).parent().datepicker('getDate');
+    }
   }
 });
 
@@ -135,3 +141,4 @@ UI.registerHelper('displayUserName', function (id) {
 
   return user.userName ? user.userName : user.emails[0].address;
 });
+

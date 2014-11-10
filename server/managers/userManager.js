@@ -138,7 +138,7 @@ UserManager = {
     var userInvitation = UserInvitations.findOne({token: token, used: {$ne: false}});
 
     if (!userInvitation)
-      throw new Meteor.Error(500, 'Invalid user invitation');
+      throw Error(500, 'Invalid user invitation');
 
     // Set hierId equal to the user's who send the invitation
     user.hierId = userInvitation.hierId;
@@ -146,6 +146,23 @@ UserManager = {
     // Register user avoiding email verification
     Meteor.call('registerAccount', user, true);
 
+    markInvitationsAsUsed(userInvitation);
+  },
+  acceptUserInvitation: function (token, user) {
+    // Validate token
+    var userInvitation = UserInvitations.findOne({token: token, used: {$ne: false}});
+    if (!userInvitation)
+      throw new Error('Invalid user invitation');
+
+    // Validate user
+    var invitedUser = Meteor.users.findOne({'emails.address': userInvitation.email});
+    if (user._id != invitedUser._id)
+      throw new Error('Invalid user invitation');
+
+    // Add the hierarchy specified in user invitation to the user
+    Meteor.users.update({_id: user._id}, { $addToSet: { hierarchies: userInvitation.hierId } });
+
+    // Mark invitation as used
     markInvitationsAsUsed(userInvitation);
   }
 };
@@ -234,10 +251,14 @@ Accounts.onCreateUser(function (options, user) {
 
 var sendInvitation = function(address, token, hierName) {
   var url = Meteor.absoluteUrl('invitation/' + token);
-  var html = 'You have been invited to ' + hierName + ', click in the link bellow to accept the invitation: <br/>' +
-    '<a href="' + url + '"> </a> '+ url + '<br/>';
+  var text = "Dear user,\n\n"
+    + "You have been invited to the hierarchy '" + hierName + "'.\n"
+    + "Please click the link below to accept the invitation. Alternatively, copy the link into your browser.\n\n"
+    + url + "\n\n"
+    + "Thank you,\n"
+    + "Exartu team";
 
-  EmailManager.sendEmail(address, 'TempWorks - Invitation', html, true);
+  EmailManager.sendEmail(address, 'TempWorks - Invitation', text, false);
 };
 
 var sendEmailToSales = function(user){
@@ -360,15 +381,9 @@ Router.map(function () {
         });
         this.response.end();
       } else {
-        // If there is a user then just add it to the hierarchy specified in user invitation
-        Meteor.users.update({_id: user._id}, {$addToSet: { hierarchies: userInvitation.hierId}, $set: {currentHierId: userInvitation.hierId}});
-
-        // Mark invitation as used
-        markInvitationsAsUsed(userInvitation);
-
-        // Redirect user to login
+        // Redirect the user to the invitation verification in order for the user to log in first
         this.response.writeHead(301,{
-          Location: Meteor.absoluteUrl('login?email=' + userInvitation.email)
+          Location: Meteor.absoluteUrl('invitationVerification/' + token)
         });
         this.response.end();
       }

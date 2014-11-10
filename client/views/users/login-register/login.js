@@ -73,8 +73,10 @@ Template.login.viewModel = function () {
       else {
         Meteor.call('userLoginActivity');
         self.notVerified(false);
-        Router.go('/');
         GAnalytics.event("account","signin");
+        if (Router.current().route.name === 'login') {
+          return Router.go('/');
+        }
       }
     });
   };
