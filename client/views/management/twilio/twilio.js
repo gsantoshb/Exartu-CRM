@@ -32,7 +32,6 @@ Template.twilioManagement.helpers({
 Template.twilioManagement.events({
   'click #require-number': function () {
     var self = this;
-    debugger;
     Utils.showModal('basicModal', {
       title: 'Require phone number for hierarchy' +  this.name,
       message: 'Are you sure you want to request a phone number for this hierarchy?',
