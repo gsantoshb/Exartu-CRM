@@ -47,7 +47,7 @@ Template.hierarchiesManagement.created = function(){
 
 Template.hierarchiesManagement.helpers({
   hierarchies: function(){
-    return Hierarchies.find();
+    return Hierarchies.find({_id: {$in: Meteor.user().hierarchies}});
   },
   selected: function(){
     selectedHierDep.depend();
