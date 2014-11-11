@@ -110,7 +110,7 @@ UserManager = {
     return false;
   },
   sendUserInvitation: function (user, hierId) {
-    var hier = Hierarchies.findOne(hierId || Meteor.user().hierId);
+    var hier = Hierarchies.findOne(hierId || Meteor.user().currentHierId);
 
     var userInvitation = {
       hierId: hier._id,
