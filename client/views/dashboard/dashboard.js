@@ -56,47 +56,13 @@ Template.dashboard.created = function(){
   Meteor.autorun(function() {
     queryDep.depend();
 
-    var f={};
     if (query.filter.searchString){
-      var regexObject={
-        $regex: query.filter.searchString,
-        $options : 'i'
-      };
-
-      //contactable
-      var contQuery = { $or: [] };
-      var aux = {};
-      _.each(['person.firstName', 'person.lastName', 'person.jobTitle', 'organization.organizationName', 'organization.department'],function(name){
-        aux = {};
-        aux[name]=regexObject;
-        contQuery.$or.push(aux);
-      })
-      var contactables = _.map(Contactables.find(contQuery).fetch(), function(doc){ return doc._id});
-
-
-      //jobs
-      var jobQuery={ $or: [] };
-      _.each(['publicJobTitle'],function(name){
-        aux = {};
-        aux[name]=regexObject;
-        jobQuery.$or.push(aux);
-      })
-      var jobs = _.map(Jobs.find(jobQuery).fetch(), function(doc){ return doc._id});
-
-      //task
-      var taskQuery={ $or: [] };
-      _.each(['msg'],function(name){
-        aux = {};
-        aux[name]=regexObject;
-        taskQuery.$or.push(aux);
-      })
-      var task = _.map(Tasks.find(taskQuery).fetch(), function(doc){ return doc._id});
-
-      var ids = contactables.concat(jobs).concat(task);
-      f.entityId= { $in: ids };
+      Meteor.call('searchActivities', query.filter.searchString, function (err, result) {
+        ActivitiesHandler.setFilter({entityId: { $in: result }});
+      });
+    } else {
+      ActivitiesHandler.setFilter({});
     }
-
-    //ActivitiesHandler.setFilter(f);
   });
 };
 //Template.dashboard.waitOn=['ObjTypesHandler', 'UsersHandler']
