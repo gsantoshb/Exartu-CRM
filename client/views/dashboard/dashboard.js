@@ -49,6 +49,9 @@ var employeeQuery = {
     $exists: true
   }
 };
+
+var listViewMode = new ReactiveVar(false);
+
 Template.dashboard.created = function(){
   Meteor.autorun(function() {
     queryDep.depend();
@@ -129,6 +132,9 @@ Template.dashboard.helpers({
   },
   employeeCount: function(){
     return Contactables.find(employeeQuery).count();
+  },
+  listViewMode: function () {
+    return listViewMode.get();
   }
 });
 
@@ -146,6 +152,12 @@ Template.dashboard.events({
   'click .addPlacement': function(){
     Session.set('addOptions', {job: this.entityId});
     Router.go('/placementAdd/placement');
+  },
+  'click #list-view': function () {
+    listViewMode.set(true);
+  },
+  'click #detail-view': function () {
+    listViewMode.set(false);
   }
 });
 
@@ -160,6 +172,10 @@ Template.activity.helpers({
         return 'newTaskActivity';
     }
   }
+});
+
+Template.registerHelper('listViewMode', function () {
+  return listViewMode.get();
 });
 
 Template.newContactableActivity.getActivityColor = function(){
