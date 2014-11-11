@@ -13,7 +13,7 @@ JobController = RouteController.extend({
       this.render('loadingContactable');
       return;
     }
-    Session.set('activeTab', this.params.hash);
+    Session.set('activeTab', this.params.hash || 'details');
     this.render('job')
   },
   onAfterAction: function () {
