@@ -24,6 +24,9 @@ Template.invitation.rendered = function() {
         time: 2000
       });
 
+      // Update hierarchies subscription
+      HierarchiesHandler = Meteor.subscribe('hierarchies');
+
       // Redirect the user to the dashboard
       Router.go('/');
     }

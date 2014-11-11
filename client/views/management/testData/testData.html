@@ -1,0 +1,25 @@
+<template name="testData">
+    <div id="content">
+        <div id="content-header" class="mini">
+            <h1>
+                <span class="prop-input">
+                    <span> Test Data </span>
+                </span>
+            </h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Management</a>
+            <a href="/management/testData" class="current">DemoData</a>
+        </div>
+
+        <div class="container-fluid">
+            <button class="btn btn-lg btn-primary injectData" disabled="{{isLoading}}">
+                Inject Test data
+            </button>
+            <hr/>
+            <button class="btn btn-lg btn-danger removeData" disabled="{{isLoading}}">
+                Remove Test data
+            </button>
+        </div>
+    </div>
+</template>
