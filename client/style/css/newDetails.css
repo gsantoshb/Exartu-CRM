@@ -1,0 +1,127 @@
+/***  details header ***/
+#content.details{ background-color: #F6F6F6 !important; }
+
+.profile-content-header{
+    background-color: #fff !important;
+    background-image: none !important;
+    border-bottom: solid 1px #ddd;
+    padding: 15px 20px !important;
+}
+
+/***  details body ***/
+
+.details .details-body{
+    margin-top: 0;
+    padding: 5px;
+}
+
+.details .details-view .details-view-content{
+    background: #FFF;
+    border: solid 1px #DFDFDF;
+}
+
+@media (min-width: 992px) {
+    .profile-content-header { margin-bottom: 15px }
+    .details .details-view { padding-left: 40px; }
+}
+
+/*** details-menu ***/
+
+.details-actions .action-btn{
+    margin-bottom: 5px;
+    width: 100%;
+    min-width: 150px;
+}
+.details-nav .nav-item{
+    border-bottom: solid 1px #E0DDDD;
+}
+
+
+.nav-item a, .nav-item button{
+    color: #8D8D8D;
+    font-weight: bold;
+}
+
+
+.details-nav .nav-item.active{
+    border-bottom-color: #389BF5;
+}
+.details-nav .nav-item.active a{
+    color: #389BF5;
+}
+
+@media (max-width: 758px) {
+    .details-menu, .details-view{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}
+@media (min-width: 992px) {
+    .details-actions {
+        margin-top: 50px
+    }
+}
+@media (max-width: 992px) {
+    .details-nav, .details-actions, .nav-item, .visible-sm{
+        float: left;
+    }
+    .details-menu{
+        margin-top: -1px;
+        margin-bottom: -1px;
+        height: 48px;
+    }
+
+    .nav-item > a, .nav-item button{
+        border: solid 1px #E0DDDD;
+        background-color: #fff;
+        margin-right: -1px;
+        height: 48px;
+        width: 100px;
+        padding-top: 13px;
+        border-radius: 0;
+    }
+    .details-nav .nav-item{
+
+
+    }
+    .details-actions .btn-group, .details-nav .btn-group{
+        vertical-align: baseline;
+
+    }
+}
+
+@media (max-width: 500px) {
+    .nav-item > a, .nav-item button {
+        width: 64px;
+        font-size: 11px;
+        padding-left: 1px;
+        padding-right: 1px;
+        font-weight: normal;
+    }
+}
+
+/*** make record-add transparent and only border in the bottom ***/
+.record .record-add {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #e7e7e7;
+    border-radius: 0;
+}
+
+.record .record-header{
+    padding: 20px 10px;
+    border-bottom: solid 1px #E7E7E7;
+    font-weight: bold;
+    font-size: x-large;
+    color: #828282;
+}
+
+/*** change filter inside details ***/
+
+.details .filter{
+    border: none;
+    border-right: 1px solid #d6d6d6;
+    background-color: transparent;
+    margin-top: 0px;
+}
+
