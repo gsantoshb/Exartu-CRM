@@ -118,7 +118,7 @@
         {{#if Employee}}
             <a id="generate-resume" class="btn btn-default btn-custom-with-circle">
                 <span class="btn-round"><i class="fa fa-file"></i></span>
-                Generate resume
+                Generate resume/cv
                 <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
             </a>
         {{/if}}
@@ -166,11 +166,6 @@
         {{> locationBox callback=setNewAddress location=location}}
 
         {{>tagsBox}}
-    </div>
-    <div class="col-sm-12">
-        <div class="col-sm-12">
-            {{> originData}}
-        </div>
     </div>
 </template>
 

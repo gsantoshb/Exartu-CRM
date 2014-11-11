@@ -109,12 +109,10 @@ Template.contactable.events({
     var employeeId = this._id;
     var downloadLink = $('#download-generated-resume');
     Utils.showModal('basicModal', {
-      title: 'Generate Employee Resume',
-      message: 'Would you like to generate employee resume with contact information or without it?',
-      buttons: [{label: 'Cancel', classes: 'btn-default', value: -1}, {label: 'Hide', classes: 'btn-info', value: false}, {label: 'Show', classes: 'btn-success', value: true}],
+      title: 'Generate Employee Resume/CV',
+      message: 'Do you want to Hide or Show the employee’s contact information in the resume/cv?',
+      buttons: [{label: 'Hide', classes: 'btn-info', value: false}, {label: 'Show', classes: 'btn-success', value: true}],
       callback: function (result) {
-        if (result == -1) return;
-
         downloadLink.attr('href', FileUploader.getUrl('generateResume', employeeId, { showContactInfo: result}));
         downloadLink[0].click();
       }
