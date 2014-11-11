@@ -56,7 +56,7 @@
                                         {{#objectProperty property=filters.assignedTo}}
                                             <select class="form-control">
                                                 {{#each users}}
-                                                    <option value="{{_id}}">{{username}}</option>
+                                                    <option value="{{_id}}">{{displayUserName _id}}</option>
                                                 {{/each}}
                                             </select>
                                         {{/objectProperty}}
