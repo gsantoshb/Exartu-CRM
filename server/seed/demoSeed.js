@@ -567,5 +567,14 @@ Meteor.methods({
     loadContactables(user.hierId);
     loadJobs(user.hierId);
     loadTasks(user.hierId, user.username, user._id);
+  },
+  removeDemoData: function () {
+    var user = Meteor.user();
+    if (!user)
+      return;
+
+    _.each([Contactables, Jobs, Tasks], function (collection) {
+      collection.direct.remove({ hierId: user.hierId, testData: true });
+    });
   }
 });

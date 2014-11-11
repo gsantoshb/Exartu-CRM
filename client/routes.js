@@ -224,6 +224,10 @@ Router.map(function () {
     path: '/hierarchyManagement',
     controller: 'HierarchiesManagementController'
   });
+  this.route('testData', {
+    path: '/management/testData',
+    controller: 'TestDataController'
+  });
 
   this.route('invitationVerification', {
     path: '/invitationVerification/:token',
