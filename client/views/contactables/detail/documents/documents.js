@@ -148,6 +148,7 @@ Template.contactableDocumentsList.documents = function() {
   );
 
   documentsCount = documents.count();
+  documentsCount += Resumes.find({employeeId: this.entity._id}).count();
   documentsDep.changed();
 
   return documents;
@@ -171,7 +172,7 @@ var query = new Utils.ObjectDefinition({
   }
 });
 
-Template.contactableDocumentsList.query = function() {
+Template.contactableDocumentsAdd.query = function() {
   return query;
 };
 

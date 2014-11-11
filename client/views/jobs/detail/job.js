@@ -13,7 +13,7 @@ JobController = RouteController.extend({
       this.render('loadingContactable');
       return;
     }
-    Session.set('activeTab', this.params.hash);
+    Session.set('activeTab', this.params.hash || 'details');
     this.render('job')
   },
   onAfterAction: function () {
@@ -129,6 +129,12 @@ Template.job.helpers({
 });
 
 Template.job_details.helpers({
+  created: function () {
+    console.log('data', this.data);
+  },
+  originalJob: function () {
+    return jobCollections.findOne({ _id: Session.get('entityId') });
+  },
   setNewAddress: function () {
     var self = this;
     return function (newAddress) {
@@ -224,23 +230,59 @@ var addTag = function () {
 //  var activeTab = Session.get('activeTab') || 'details';
 //  return (name == activeTab) ? 'active' : '';
 //};
-
+//
+//// Tabs
+//
+//var tabs;
+//Template.job_tabs.tabs = function() {
+//  return [
+//    {id: 'details', displayName: 'Details', template: 'job_details'},
+//    {id: 'notes', displayName: 'Notes', template: 'job_notes'},
+//    {id: 'description', displayName: 'Description', template: 'job_description'},
+//    {id: 'tasks', displayName: 'Tasks', template: 'job_tasks'},
+//    {id: 'rates', displayName: 'Rates', template: 'job_rates'},
+//    {id: 'placements', displayName: 'Placements', template: 'job_placements'},
+//    //{id: 'activity', displayName: 'Activity', template: 'job_activity'},
+//    //{id: 'actions', displayName: 'Actions', template: 'job_actions'}
+//  ];
+//};
+//
+//Template.job_tabs.selectedTab = function() {
+//  return _.findWhere(tabs, {id: Session.get('activeTab')});
+//};
 // Tabs
 
+Template.job_nav.helpers({
+  isActive: function (id) {
+    return (id == Session.get('activeTab'))? 'active' : '';
+  }
+})
 var tabs;
-Template.job_tabs.tabs = function() {
-  return [
-    {id: 'details', displayName: 'Details', template: 'job_details'},
-    {id: 'notes', displayName: 'Notes', template: 'job_notes'},
-    {id: 'description', displayName: 'Description', template: 'job_description'},
-    {id: 'tasks', displayName: 'Tasks', template: 'job_tasks'},
-    {id: 'rates', displayName: 'Rates', template: 'job_rates'},
-    {id: 'placements', displayName: 'Placements', template: 'job_placements'},
-    //{id: 'activity', displayName: 'Activity', template: 'job_activity'},
-    //{id: 'actions', displayName: 'Actions', template: 'job_actions'}
-  ];
-};
 
-Template.job_tabs.selectedTab = function() {
-  return _.findWhere(tabs, {id: Session.get('activeTab')});
+
+Template.job_nav.helpers({
+  tabs: function () {
+    tabs = [
+      {id: 'details', displayName: 'Details', template: 'job_details'},
+      {id: 'notes', displayName: 'Notes', template: 'job_notes'},
+      {id: 'description', displayName: 'Description', template: 'job_description'},
+      {id: 'tasks', displayName: 'Tasks', template: 'job_tasks'},
+      {id: 'rates', displayName: 'Rates', template: 'job_rates'},
+      {id: 'placements', displayName: 'Placements', template: 'job_placements'},
+      //{id: 'activity', displayName: 'Activity', template: 'job_activity'},
+      //{id: 'actions', displayName: 'Actions', template: 'job_actions'}
+    ];
+    return tabs;
+  },
+  mobileTabs: function () {
+    return tabs.slice(0, 3);
+  },
+  otherTabs: function () {
+    return tabs.slice(3, tabs.length);
+  }
+});
+
+Template.job.currentTemplate = function () {
+  var selected = _.findWhere(tabs ,{id: Session.get('activeTab')});
+  return selected && selected.template;
 };
