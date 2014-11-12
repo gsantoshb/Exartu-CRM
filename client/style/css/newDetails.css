@@ -133,6 +133,10 @@
     line-height: 1.1;
 }
 
+.record-add .add-box-content{
+    max-width: none;
+}
+
 @media (max-width: 992px) {
     .record .record-add{
         padding: 0;
@@ -145,7 +149,7 @@
     }
     .add-box-head.add-box-responsive{
         padding: 20px 10px;
-        border-bottom: solid 1px #E7E7E7;
+        /*border-bottom: solid 1px #E7E7E7;*/
         text-align: left;
     }
     .add-box-responsive .add-item-icon{
