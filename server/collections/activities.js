@@ -109,21 +109,23 @@ Messages.after.insert(function (userId, doc) {
 
 Tasks.after.insert(function (userId, doc) {
   var linkid;
-  if (doc.links && doc.links.length>0) linkid=links[0].id;
-    Activities.insert({
-      userId: doc.userId,
-      hierId: doc.hierId,
-      type: Enums.activitiesType.taskAdd,
-      entityId: linkid,
-      data: {
-        note: doc.note,
-        dateCreated: doc.dateCreated,
-        begin: doc.begin,
-        end: doc.end,
-        completed: doc.completed,
-        assign: doc.assign
-      }
-	  })
+  if (doc.links && doc.links.length>0)
+    linkid = doc.links[0].id;
+
+  Activities.insert({
+    userId: doc.userId,
+    hierId: doc.hierId,
+    type: Enums.activitiesType.taskAdd,
+    entityId: linkid,
+    data: {
+      note: doc.note,
+      dateCreated: doc.dateCreated,
+      begin: doc.begin,
+      end: doc.end,
+      completed: doc.completed,
+      assign: doc.assign
+    }
+  });
 });
 
 // Jobs
