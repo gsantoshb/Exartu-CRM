@@ -159,28 +159,37 @@
 </template>
 <template name="contactable_actions">
     <div class="hidden-xs hidden-sm">
-
         <div class="details-actions">
             <ul class="no-padding">
-                <li>
-                    <a id="makeEmployee" class="btn btn-default btn-custom-with-circle action-btn">
-                        <span class="btn-round"><i class="fa fa-exchange"></i></span>
-                        Make Employee
-                    </a>
-                </li>
-                <li>
-                    <a id="makeContact" class="btn btn-default btn-custom-with-circle action-btn">
-                        <span class="btn-round"><i class="fa fa-exchange"></i></span>
-                        Make Contact
-                    </a>
-                </li>
-                <li>
-                    <a id="generate-resume" class="btn btn-default btn-custom-with-circle action-btn">
-                        <span class="btn-round"><i class="fa fa-file"></i></span>
-                        Generate resume/cv
-                        <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
-                    </a>
-                </li>
+                {{#unless Employee}}
+                    {{#if Contact}}
+                        <li>
+                            <a id="makeEmployee" class="btn btn-default btn-custom-with-circle action-btn">
+                                <span class="btn-round"><i class="fa fa-exchange"></i></span>
+                                Make Employee
+                            </a>
+                        </li>
+                    {{/if}}
+                {{/unless}}
+                {{#unless Contact}}
+                    {{#if Employee}}
+                        <li>
+                            <a id="makeContact" class="btn btn-default btn-custom-with-circle action-btn">
+                                <span class="btn-round"><i class="fa fa-exchange"></i></span>
+                                Make Contact
+                            </a>
+                        </li>
+                    {{/if}}
+                {{/unless}}
+                {{#if Employee}}
+                    <li>
+                        <a id="generate-resume" class="btn btn-default btn-custom-with-circle action-btn">
+                            <span class="btn-round"><i class="fa fa-file"></i></span>
+                            Generate resume/cv
+                            <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
+                        </a>
+                    </li>
+                {{/if}}
             </ul>
         </div>
     </div>
@@ -189,28 +198,37 @@
             <div class="btn-group nav-item">
                 <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
                     Actions
-                    <!--<span class="caret"></span>-->
                 </a>
                 <ul class="dropdown-menu pull-right" role="menu">
-                    <li>
-                        <a id="makeEmployee">
-                            <span><i class="fa fa-exchange"></i></span>
-                            Make Employee
-                        </a>
-                    </li>
-                    <li>
-                        <a id="makeContact">
-                            <span><i class="fa fa-exchange"></i></span>
-                            Make Contact
-                        </a>
-                    </li>
-                    <li>
-                        <a id="generate-resume">
-                            <span><i class="fa fa-file"></i></span>
-                            Generate resume
-                            <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
-                        </a>
-                    </li>
+                    {{#unless Employee}}
+                        {{#if Contact}}
+                            <li>
+                                <a id="makeEmployee">
+                                    <span><i class="fa fa-exchange"></i></span>
+                                    Make Employee
+                                </a>
+                            </li>
+                        {{/if}}
+                    {{/unless}}
+                    {{#unless Contact}}
+                        {{#if Employee}}
+                            <li>
+                                <a id="makeContact">
+                                    <span><i class="fa fa-exchange"></i></span>
+                                    Make Contact
+                                </a>
+                            </li>
+                        {{/if}}
+                    {{/unless}}
+                    {{#if Employee}}
+                        <li>
+                            <a id="generate-resume">
+                                <span><i class="fa fa-file"></i></span>
+                                Generate resume
+                                <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
+                            </a>
+                        </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
