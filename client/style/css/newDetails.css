@@ -125,3 +125,30 @@
     margin-top: 0px;
 }
 
+.add-box-head .add-item-title{
+    font-size: 30px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    line-height: 1.1;
+}
+
+@media (max-width: 992px) {
+    .record .record-add{
+        padding: 0;
+    }
+    .add-box-head .add-item-title {
+        font-weight: bold;
+        color: #828282;
+        font-size: x-large;
+        margin: 0;
+    }
+    .add-box-head.add-box-responsive{
+        padding: 20px 10px;
+        border-bottom: solid 1px #E7E7E7;
+        text-align: left;
+    }
+    .add-box-responsive .add-item-icon{
+        display: none;
+    }
+}
