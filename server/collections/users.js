@@ -1,8 +1,6 @@
 // Extending the user data that is sent to the client
 Meteor.publish(null, function () {
-  return Meteor.users.find({
-    hierarchies: Utils.getUserHierId(this.userId)
-  }, {
+  return Utils.filterCollectionByUserHier.call(this, Meteor.users.find({}, {
     fields: {
       'username': 1,
       'emails': 1,
@@ -18,7 +16,7 @@ Meteor.publish(null, function () {
       "hierarchies": 1,
       "currentHierId": 1
     }
-  });
+  }));
 });
 
 // Publish user invitations
