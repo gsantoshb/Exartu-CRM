@@ -201,12 +201,6 @@ Template.contactable_nav.helpers({
       tabs.push({id: 'pastJobs', displayName: 'Past Jobs', template: 'employeePastJobs'});
     }
     return tabs;
-  },
-  mobileTabs: function () {
-    return tabs.slice(0, 3);
-  },
-  otherTabs: function () {
-    return tabs.slice(3, tabs.length);
   }
 });
 Template.contactable.currentTemplate = function () {
