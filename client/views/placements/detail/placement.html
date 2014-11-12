@@ -1,8 +1,8 @@
 <template name="placement">
-    <div class="contactable-page-details">
-        <div id="content" class="details">
-            {{#with originalPlacement}}
-                <div id="content-header" class="mini">
+    <div id="content" class="details">
+        {{#with originalPlacement}}
+            <div id="content-header" class="mini">
+                <div class="profile-content-header">
                     <h1 class="profile-name">
                         {{#if employee}}<a href="/contactable/{{employee}}"> {{employeeDisplayName}} </a>{{/if}}
                         {{#if job}}
@@ -13,23 +13,29 @@
                         {{/if}}
                     </h1>
                 </div>
-                <div id="breadcrumb" class="breadcrumb-top">
-                    <a href="/" title="Go to Home" class="tip-bottom">
-                        <i class="fa fa-home"></i> Home
-                    </a>
-                    <a href="/placements" class="current">Placements</a>
-                </div>
-            {{/with}}
+            </div>
+        {{/with}}
 
-            <div class="container-fluid details-body">
-                {{> placement_tabs placement=placement originalPlacement=originalPlacement}}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="details-menu col-md-2">
+                    {{>placement_nav}}
+                </div>
+                <div class="details-view col-md-10">
+                    <div class="details-view-content clearfix">
+                        <div class="tab-pane active">
+                            {{> UI.dynamic template=currentTemplate  data=placement }}
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
 </template>
 
-<template name="placement_tabs">
-    {{> detailTabs tabs=tabs selected=selectedTab template="placement" context=.}}
+<template name="placement_nav">
+    {{> detailNav tabs=tabs}}
 </template>
 
 <template name="placement_tasks">
