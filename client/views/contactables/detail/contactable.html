@@ -7,22 +7,22 @@
                     {{>contactable_header}}
                 </div>
             </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="details-menu col-md-2">
-                    {{>contactable_nav}}
-                    {{>contactable_actions}}
-                </div>
-                <div class="details-view col-md-10">
-                    <div class="details-view-content clearfix">
-                        <div class="tab-pane active">
-                            {{> UI.dynamic template=currentTemplate  data=. }}
-                        </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="details-menu col-md-2">
+                        {{>contactable_nav}}
+                        {{>contactable_actions}}
                     </div>
+                    <div class="details-view col-md-10">
+                        <div class="details-view-content clearfix">
+                            <div class="tab-pane active">
+                                {{> UI.dynamic template=currentTemplate  data=. }}
+                            </div>
+                        </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
 
         {{/with}}
     </div>
@@ -106,12 +106,6 @@
             {{/if}}
         {{/with}}
     </div>
-</template>
-
-<!-- Tabs -->
-
-<template name="contactable_tabs">
-    <!--{{> detailTabs2 tabs=tabs selected=selectedTab template="contactable" context=.}}-->
 </template>
 
 <template name="contactable_notes">
