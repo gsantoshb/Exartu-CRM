@@ -139,7 +139,7 @@ Template.job_details.helpers({
     }
   },
   getCustomer: function () {
-    return this.customer;
+    return Template.parentData(1).originalJob().customer;
   },
   customerCollection: function () {
     return Contactables;

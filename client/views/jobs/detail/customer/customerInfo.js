@@ -6,8 +6,7 @@ Template.customerInfo.helpers({
     collection = this.data.collection;
   },
   customer: function () {
-    var customerId = this.customer;
-    return Contactables.findOne({_id: customerId});
+    return Contactables.findOne({_id: this.customer});
   },
   pictureUrl: function () {
     if (this.pictureFileId) {
