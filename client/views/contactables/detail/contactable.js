@@ -201,24 +201,9 @@ Template.contactable_nav.helpers({
       tabs.push({id: 'pastJobs', displayName: 'Past Jobs', template: 'employeePastJobs'});
     }
     return tabs;
-  },
-  mobileTabs: function () {
-    return tabs.slice(0, 3);
-  },
-  otherTabs: function () {
-    return tabs.slice(3, tabs.length);
   }
 });
 Template.contactable.currentTemplate = function () {
-
-
-  //tabs.push({id: 'actions', displayName: 'Actions', template: 'contactable_actions'});
-  //tabs.push({id: 'activities', displayName: 'Activities', template: 'contactable_activities'});
-
-  var selected = _.findWhere(tabs ,{id: Session.get('activeTab')});
+var selected = _.findWhere(tabs ,{id: Session.get('activeTab')});
   return selected && selected.template;
 };
-//
-//Template.contactable_tabs2.selectedTab = function () {
-//  return _.findWhere(tabs, {id: Session.get('activeTab')});
-//};

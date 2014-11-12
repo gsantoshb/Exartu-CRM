@@ -7,22 +7,22 @@
                     {{>contactable_header}}
                 </div>
             </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="details-menu col-md-2">
-                    {{>contactable_nav}}
-                    {{>contactable_actions}}
-                </div>
-                <div class="details-view col-md-10">
-                    <div class="details-view-content clearfix">
-                        <div class="tab-pane active">
-                            {{> UI.dynamic template=currentTemplate  data=. }}
-                        </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="details-menu col-md-2">
+                        {{>contactable_nav}}
+                        {{>contactable_actions}}
                     </div>
+                    <div class="details-view col-md-10">
+                        <div class="details-view-content clearfix">
+                            <div class="tab-pane active">
+                                {{> UI.dynamic template=currentTemplate  data=. }}
+                            </div>
+                        </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
 
         {{/with}}
     </div>
@@ -80,7 +80,7 @@
                 <small>{{Customer.department}}</small>
             {{/if}}
         </strong>
-        <small class="pull-right" style="max-width: 40%;"> {{statusNote}} </small>
+        <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
     </h1>
     <p class="profile-address">
 
@@ -106,12 +106,6 @@
             {{/if}}
         {{/with}}
     </div>
-</template>
-
-<!-- Tabs -->
-
-<template name="contactable_tabs">
-    <!--{{> detailTabs2 tabs=tabs selected=selectedTab template="contactable" context=.}}-->
 </template>
 
 <template name="contactable_notes">
@@ -165,28 +159,37 @@
 </template>
 <template name="contactable_actions">
     <div class="hidden-xs hidden-sm">
-
         <div class="details-actions">
             <ul class="no-padding">
-                <li>
-                    <a id="makeEmployee" class="btn btn-default btn-custom-with-circle action-btn">
-                        <span class="btn-round"><i class="fa fa-exchange"></i></span>
-                        Make Employee
-                    </a>
-                </li>
-                <li>
-                    <a id="makeContact" class="btn btn-default btn-custom-with-circle action-btn">
-                        <span class="btn-round"><i class="fa fa-exchange"></i></span>
-                        Make Contact
-                    </a>
-                </li>
-                <li>
-                    <a id="generate-resume" class="btn btn-default btn-custom-with-circle action-btn">
-                        <span class="btn-round"><i class="fa fa-file"></i></span>
-                        Generate resume/cv
-                        <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
-                    </a>
-                </li>
+                {{#unless Employee}}
+                    {{#if Contact}}
+                        <li>
+                            <a id="makeEmployee" class="btn btn-default btn-custom-with-circle action-btn">
+                                <span class="btn-round"><i class="fa fa-exchange"></i></span>
+                                Make Employee
+                            </a>
+                        </li>
+                    {{/if}}
+                {{/unless}}
+                {{#unless Contact}}
+                    {{#if Employee}}
+                        <li>
+                            <a id="makeContact" class="btn btn-default btn-custom-with-circle action-btn">
+                                <span class="btn-round"><i class="fa fa-exchange"></i></span>
+                                Make Contact
+                            </a>
+                        </li>
+                    {{/if}}
+                {{/unless}}
+                {{#if Employee}}
+                    <li>
+                        <a id="generate-resume" class="btn btn-default btn-custom-with-circle action-btn">
+                            <span class="btn-round"><i class="fa fa-file"></i></span>
+                            Generate resume/cv
+                            <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
+                        </a>
+                    </li>
+                {{/if}}
             </ul>
         </div>
     </div>
@@ -195,28 +198,37 @@
             <div class="btn-group nav-item">
                 <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
                     Actions
-                    <!--<span class="caret"></span>-->
                 </a>
                 <ul class="dropdown-menu pull-right" role="menu">
-                    <li>
-                        <a id="makeEmployee">
-                            <span><i class="fa fa-exchange"></i></span>
-                            Make Employee
-                        </a>
-                    </li>
-                    <li>
-                        <a id="makeContact">
-                            <span><i class="fa fa-exchange"></i></span>
-                            Make Contact
-                        </a>
-                    </li>
-                    <li>
-                        <a id="generate-resume">
-                            <span><i class="fa fa-file"></i></span>
-                            Generate resume
-                            <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
-                        </a>
-                    </li>
+                    {{#unless Employee}}
+                        {{#if Contact}}
+                            <li>
+                                <a id="makeEmployee">
+                                    <span><i class="fa fa-exchange"></i></span>
+                                    Make Employee
+                                </a>
+                            </li>
+                        {{/if}}
+                    {{/unless}}
+                    {{#unless Contact}}
+                        {{#if Employee}}
+                            <li>
+                                <a id="makeContact">
+                                    <span><i class="fa fa-exchange"></i></span>
+                                    Make Contact
+                                </a>
+                            </li>
+                        {{/if}}
+                    {{/unless}}
+                    {{#if Employee}}
+                        <li>
+                            <a id="generate-resume">
+                                <span><i class="fa fa-file"></i></span>
+                                Generate resume
+                                <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
+                            </a>
+                        </li>
+                    {{/if}}
                 </ul>
             </div>
         </div>
@@ -248,46 +260,7 @@
 
 
 <template name="contactable_nav">
-    <div class="details-nav">
-        <div class="row hidden-xs hidden-sm">
-            {{#each tabs}}
-                <div class="{{isActive id}} col-xs-4 col-sm-2 col-md-12 details-tab nav-item" style="padding-top: 3px;padding-bottom: 3px;">
-
-                    <a href="#{{id}}">
-                        {{displayName}}
-                    </a>
-                </div>
-            {{/each}}
-        </div>
-        <div class="visible-xs visible-sm">
-            {{#each mobileTabs}}
-                <div class="{{isActive id}} details-tab nav-item ">
-
-                    <a class="btn" href="#{{id}}">
-                        {{displayName}}
-                    </a>
-                </div>
-            {{/each}}
-
-            <div class="btn-group nav-item">
-                <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                    ...
-                    <!--<span class="caret"></span>-->
-                </a>
-                <div class="dropdown-menu" role="menu">
-                    {{#each otherTabs}}
-                        <div class="{{isActive id}} col-xs-12 col-sm-12 col-md-12 details-tab">
-
-                            <a href="#{{id}}">
-                                {{displayName}}
-                            </a>
-                        </div>
-                    {{/each}}
-                </div>
-            </div>
-
-        </div>
-    </div>
+    {{> detailNav tabs=tabs}}
 </template>
 
 <template name="link">

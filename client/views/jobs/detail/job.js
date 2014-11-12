@@ -129,9 +129,6 @@ Template.job.helpers({
 });
 
 Template.job_details.helpers({
-  created: function () {
-    console.log('data', this.data);
-  },
   originalJob: function () {
     return jobCollections.findOne({ _id: Session.get('entityId') });
   },
@@ -142,7 +139,7 @@ Template.job_details.helpers({
     }
   },
   getCustomer: function () {
-    return this.customer;
+    return Template.parentData(1).originalJob().customer;
   },
   customerCollection: function () {
     return Contactables;
@@ -194,16 +191,22 @@ Template.job.events({
     services.tags.remove(this.value);
   },
   'click #copy-job': function () {
-    var result = confirm("Are you sure you want to copy this job?");
-    if (result)
-      Meteor.call('copyJob', Session.get('entityId'), function (err, result) {
-        if (!err) {
-          alert('Job copied, navigating to job id: ' + result);
-          Router.go('/job/' + result);
-        } else {
-          console.log(err);
+    Utils.showModal('basicModal', {
+      title: 'Job copy',
+      message: 'Are you sure you want to copy this job?',
+      buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {label: 'Copy', classes: 'btn-success', value: true}],
+      callback: function (result) {
+        if (result) {
+          Meteor.call('copyJob', Session.get('entityId'), function (err, result) {
+            if (!err) {
+              Router.go('/job/' + result);
+            } else {
+              console.log(err);
+            }
+          });
         }
-      });
+      }
+    });
   }
 });
 
@@ -219,39 +222,6 @@ var addTag = function () {
   inputTag.value = '';
   inputTag.focus();
 };
-
-//Template.job.helpers({
-//  getType: function () {
-//    return Enums.linkTypes.job;
-//  }
-//});
-
-//Template.job_tabs.isActive = function(name){
-//  var activeTab = Session.get('activeTab') || 'details';
-//  return (name == activeTab) ? 'active' : '';
-//};
-//
-//// Tabs
-//
-//var tabs;
-//Template.job_tabs.tabs = function() {
-//  return [
-//    {id: 'details', displayName: 'Details', template: 'job_details'},
-//    {id: 'notes', displayName: 'Notes', template: 'job_notes'},
-//    {id: 'description', displayName: 'Description', template: 'job_description'},
-//    {id: 'tasks', displayName: 'Tasks', template: 'job_tasks'},
-//    {id: 'rates', displayName: 'Rates', template: 'job_rates'},
-//    {id: 'placements', displayName: 'Placements', template: 'job_placements'},
-//    //{id: 'activity', displayName: 'Activity', template: 'job_activity'},
-//    //{id: 'actions', displayName: 'Actions', template: 'job_actions'}
-//  ];
-//};
-//
-//Template.job_tabs.selectedTab = function() {
-//  return _.findWhere(tabs, {id: Session.get('activeTab')});
-//};
-// Tabs
-
 Template.job_nav.helpers({
   isActive: function (id) {
     return (id == Session.get('activeTab'))? 'active' : '';
@@ -268,17 +238,9 @@ Template.job_nav.helpers({
       {id: 'description', displayName: 'Description', template: 'job_description'},
       {id: 'tasks', displayName: 'Tasks', template: 'job_tasks'},
       {id: 'rates', displayName: 'Rates', template: 'job_rates'},
-      {id: 'placements', displayName: 'Placements', template: 'job_placements'},
-      //{id: 'activity', displayName: 'Activity', template: 'job_activity'},
-      //{id: 'actions', displayName: 'Actions', template: 'job_actions'}
+      {id: 'placements', displayName: 'Placements', template: 'job_placements'}
     ];
     return tabs;
-  },
-  mobileTabs: function () {
-    return tabs.slice(0, 3);
-  },
-  otherTabs: function () {
-    return tabs.slice(3, tabs.length);
   }
 });
 
