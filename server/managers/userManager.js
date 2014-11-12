@@ -110,7 +110,7 @@ UserManager = {
     return false;
   },
   sendUserInvitation: function (user, hierId) {
-    var hier = Hierarchies.findOne(hierId || Meteor.user().hierId);
+    var hier = Hierarchies.findOne(hierId || Meteor.user().currentHierId);
 
     var userInvitation = {
       hierId: hier._id,
@@ -135,7 +135,7 @@ UserManager = {
   },
   registerAccountFromInvitation: function(token, user) {
     // Validate token
-    var userInvitation = UserInvitations.findOne({token: token, used: {$ne: false}});
+    var userInvitation = UserInvitations.findOne({token: token, used: {$ne: true}});
 
     if (!userInvitation)
       throw Error(500, 'Invalid user invitation');
@@ -150,7 +150,7 @@ UserManager = {
   },
   acceptUserInvitation: function (token, user) {
     // Validate token
-    var userInvitation = UserInvitations.findOne({token: token, used: {$ne: false}});
+    var userInvitation = UserInvitations.findOne({token: token, used: {$ne: true}});
     if (!userInvitation)
       throw new Error('Invalid user invitation');
 
