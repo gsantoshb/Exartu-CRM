@@ -242,46 +242,7 @@
 
 
 <template name="contactable_nav">
-    <div class="details-nav">
-        <div class="row hidden-xs hidden-sm">
-            {{#each tabs}}
-                <div class="{{isActive id}} col-xs-4 col-sm-2 col-md-12 details-tab nav-item" style="padding-top: 3px;padding-bottom: 3px;">
-
-                    <a href="#{{id}}">
-                        {{displayName}}
-                    </a>
-                </div>
-            {{/each}}
-        </div>
-        <div class="visible-xs visible-sm">
-            {{#each mobileTabs}}
-                <div class="{{isActive id}} details-tab nav-item ">
-
-                    <a class="btn" href="#{{id}}">
-                        {{displayName}}
-                    </a>
-                </div>
-            {{/each}}
-
-            <div class="btn-group nav-item">
-                <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                    ...
-                    <!--<span class="caret"></span>-->
-                </a>
-                <div class="dropdown-menu" role="menu">
-                    {{#each otherTabs}}
-                        <div class="{{isActive id}} col-xs-12 col-sm-12 col-md-12 details-tab">
-
-                            <a href="#{{id}}">
-                                {{displayName}}
-                            </a>
-                        </div>
-                    {{/each}}
-                </div>
-            </div>
-
-        </div>
-    </div>
+    {{> detailNav tabs=tabs}}
 </template>
 
 <template name="link">
