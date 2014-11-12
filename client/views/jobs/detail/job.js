@@ -129,9 +129,6 @@ Template.job.helpers({
 });
 
 Template.job_details.helpers({
-  created: function () {
-    console.log('data', this.data);
-  },
   originalJob: function () {
     return jobCollections.findOne({ _id: Session.get('entityId') });
   },
@@ -142,7 +139,7 @@ Template.job_details.helpers({
     }
   },
   getCustomer: function () {
-    return this.customer;
+    return Template.parentData(1).originalJob().customer;
   },
   customerCollection: function () {
     return Contactables;

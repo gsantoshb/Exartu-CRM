@@ -178,6 +178,9 @@ Template.linksAutoForm.helpers({
     Meteor.subscribe('allJobs');
     Meteor.subscribe('allPlacements');
 
+    if (self.data.value)
+      return; // Don't reset form on edit mode
+
     // TODO: Find another way to reset links when form is submitted
     var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
     formTemplate.template.events({

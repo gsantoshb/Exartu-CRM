@@ -520,6 +520,12 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     margin-top: 25px;
 }
 
+.list-3 .list-3-item-title {
+    font-weight: bold;
+    opacity: 0.9;
+    font-size: 14px;
+}
+
 .content-header-bottom {
     border-bottom: none;
     margin: 0 0 0 0!important;
