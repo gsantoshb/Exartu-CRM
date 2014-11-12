@@ -129,9 +129,6 @@ Template.job.helpers({
 });
 
 Template.job_details.helpers({
-  created: function () {
-    console.log('data', this.data);
-  },
   originalJob: function () {
     return jobCollections.findOne({ _id: Session.get('entityId') });
   },
