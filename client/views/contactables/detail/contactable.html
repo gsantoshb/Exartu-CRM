@@ -159,14 +159,14 @@
 </template>
 <template name="contactable_actions">
     <div class="hidden-xs hidden-sm">
-        <div class="details-actions">
+        <div class="details-actions row">
             <ul class="no-padding">
                 {{#unless Employee}}
                     {{#if Contact}}
                         <li>
                             <a id="makeEmployee" class="btn btn-default btn-custom-with-circle action-btn">
                                 <span class="btn-round"><i class="fa fa-exchange"></i></span>
-                                Make Employee
+                                <span style="white-space: normal;"> Add also as an employee</span>
                             </a>
                         </li>
                     {{/if}}
@@ -176,7 +176,7 @@
                         <li>
                             <a id="makeContact" class="btn btn-default btn-custom-with-circle action-btn">
                                 <span class="btn-round"><i class="fa fa-exchange"></i></span>
-                                Make Contact
+                                <span style="white-space: normal;">Add also as a contact</span>
                             </a>
                         </li>
                     {{/if}}
