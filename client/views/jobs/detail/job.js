@@ -191,16 +191,22 @@ Template.job.events({
     services.tags.remove(this.value);
   },
   'click #copy-job': function () {
-    var result = confirm("Are you sure you want to copy this job?");
-    if (result)
-      Meteor.call('copyJob', Session.get('entityId'), function (err, result) {
-        if (!err) {
-          alert('Job copied, navigating to job id: ' + result);
-          Router.go('/job/' + result);
-        } else {
-          console.log(err);
+    Utils.showModal('basicModal', {
+      title: 'Job copy',
+      message: 'Are you sure you want to copy this job?',
+      buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {label: 'Copy', classes: 'btn-success', value: true}],
+      callback: function (result) {
+        if (result) {
+          Meteor.call('copyJob', Session.get('entityId'), function (err, result) {
+            if (!err) {
+              Router.go('/job/' + result);
+            } else {
+              console.log(err);
+            }
+          });
         }
-      });
+      }
+    });
   }
 });
 
