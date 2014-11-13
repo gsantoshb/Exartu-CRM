@@ -26,5 +26,20 @@ JobManager = {
       if (err) { throw err; }
       return result;
     });
+  },
+
+  getJobTitles: function () {
+    var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
+    return LookUps.find({ hierId: rootHier, lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode }).fetch();
+  },
+
+  getJobDurations: function () {
+    var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
+    return LookUps.find({ hierId: rootHier, lookUpCode: Enums.lookUpTypes.job.duration.lookUpCode }).fetch();
+  },
+
+  getJobStatus: function () {
+    var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
+    return LookUps.find({ hierId: rootHier, lookUpCode: Enums.lookUpTypes.job.status.lookUpCode }).fetch();
   }
 };
