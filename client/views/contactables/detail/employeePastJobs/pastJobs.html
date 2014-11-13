@@ -11,36 +11,44 @@
 
 <template name="employeePastJobAdd">
     <div class="record-add row">
-        <div class="add-box-head col-xs-12 col-md-3">
+        <div class="add-box-head col-xs-12 col-md-12 col-lg-3">
             <div class="add-item-icon"><i class="icon-profile-business-man"></i></div>
             <h2>Past Jobs</h2>
         </div>
 
-        <div class="add-box-content col-xs-12 col-md-9">
+        <div class="add-box-content col-xs-12 col-md-12 col-lg-9">
             {{#autoForm id="AddPastJobRecord" schema="PastJobSchema"}}
-                {{> afQuickField name='company'}}
-            {{> afQuickField name='position'}}
-            {{> afQuickField name='supervisor'}}
-            {{> afQuickField name='location'}}
+                <fieldset>
+                    {{> afQuickField name='company'}}
+                    {{> afQuickField name='position'}}
+                    {{> afQuickField name='supervisor'}}
+                    {{> afQuickField name='location'}}
+                    {{> afQuickField name='duties' rows=2}}
+                    {{> afQuickField name='ok2Contact'}}
+                    {{> afQuickField name='payRate'}}
+                    {{> afQuickField name='reasonForLeaving' rows=2}}
 
-                <div class="row">
-                    <div class="form-group col-xs-6">
-                        <span> Start date </span>
-                        {{> dateTimePickerAutoForm name="start" format="MM yyyy" startView=4 minView=3 autoclose=true}}
-                    </div>
-                    <div class="form-group col-xs-6">
-                        <span> End date </span>
-                        <div class="{{endDateClass}}">
-                            {{> dateTimePickerAutoForm name="end" format="MM yyyy" startView=4 minView=3 autoclose=true}}
+                    <div class="row">
+                        <!-- Start Date -->
+                        <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='start'}}has-error{{/if}}">
+                            {{> afB3DatePicker name='start' format="MM yyyy" minViewMode="months" startView="decade" }}
                         </div>
 
-                        <div class="checkbox">
-                            <label>
-                                <input id="to-present" class="editable" type="checkbox"> To present
-                            </label>
+                        <!-- End Date -->
+                        <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='end'}}has-error{{/if}}">
+                            <div class="{{endDateClass}}">
+                                {{> afB3DatePicker name='end' format="MM yyyy" minViewMode="months" startView="decade" }}
+                            </div>
+
+                            <!-- To present -->
+                            <div class="checkbox">
+                                <label>
+                                    <input class="editable toPresent" type="checkbox"> To present
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </fieldset>
 
                 <button class="btn btn-success pull-right"> Save </button>
             {{/autoForm}}
@@ -66,14 +74,18 @@
                         {{> employeePastJobEditItem doc=pastJobRecord}}
                     {{else}}
                         <div class="list-3-actions">
-                            <a class="editPastJobRecord pointer"><i class="fa fa-edit"></i> Edit</a>
+                            <a class="editPastJobRecord pointer"><i class="fa fa-edit"></i> Details</a>
                             <span class="bullet-spacer">·</span>
                             <a class="deletePastJobRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
                         </div>
-                        <div class="list-3-item-meta-top">{{pastJobRecord.company}}</div>
-                        <h4 class="list-3-item-title"><a href="#">{{pastJobRecord.position}}</a></h4>
+                        <div class="list-3-item-meta-top">
+                            {{pastJobRecord.company}}
+                            {{#if pastJobRecord.supervisor}}
+                                - Supervised by {{pastJobRecord.supervisor}}
+                            {{/if}}
+                        </div>
+                        <h4 class="list-3-item-title">{{pastJobRecord.position}}</h4>
                         <small class="text-muted">
-                            {{pastJobRecord.supervisor}}
                             {{pastJobRecord.location}}
                             <i class="fa fa-calendar"></i>
                             Start: {{#formattedDate value=pastJobRecord.start format="MMMM YYYY"}} {{date}}{{/formattedDate}}
@@ -93,28 +105,37 @@
 
 <template name="employeePastJobEditItem">
     {{#autoForm id=formId schema="PastJobSchema" doc=doc}}
-        {{> afQuickField name='company'}}
-        {{> afQuickField name='position'}}
-        {{> afQuickField name='supervisor'}}
-        {{> afQuickField name='location'}}
-        <div class="row">
-            <div class="form-group col-xs-6">
-                <span> Start date </span>
-                {{> dateTimePickerAutoForm name="start" value=doc.start format="MM yyyy" moment-format="MMMM YYYY" startView=4 minView=3 autoclose=true}}
-            </div>
-            <div class="form-group col-xs-6">
-                <span> End date </span>
-                <div class="{{endDateClass}}">
-                    {{> dateTimePickerAutoForm name="end" value=doc.end format="MM yyyy" moment-format="MMMM YYYY" startView=4 minView=3 autoclose=true}}
+        <fieldset>
+            {{> afQuickField name='company'}}
+            {{> afQuickField name='position'}}
+            {{> afQuickField name='supervisor'}}
+            {{> afQuickField name='location'}}
+            {{> afQuickField name='duties' rows=2}}
+            {{> afQuickField name='ok2Contact'}}
+            {{> afQuickField name='payRate'}}
+            {{> afQuickField name='reasonForLeaving' rows=2}}
+
+            <div class="row">
+                <!-- Start Date -->
+                <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='start'}}has-error{{/if}}">
+                    {{> afB3DatePicker name='start' value=doc.start format="MM yyyy" minViewMode="months" startView="decade" }}
                 </div>
 
-                <div class="checkbox">
-                    <label>
-                        <input id="to-present" class="editable" type="checkbox" {{checked}}> To present
-                    </label>
+                <div class="form-group col-xs-6 {{#if afFieldIsInvalid name='end'}}has-error{{/if}}">
+                    <!-- End Date -->
+                    <div class="{{endDateClass}}">
+                        {{> afB3DatePicker name='end' value=doc.end format="MM yyyy" minViewMode="months" startView="decade" }}
+                    </div>
+
+                    <!-- To present -->
+                    <div class="checkbox">
+                        <label>
+                            <input class="editable toPresent" type="checkbox" {{checked}}> To present
+                        </label>
+                    </div>
                 </div>
             </div>
-        </div>
+        </fieldset>
 
         <div class="pull-right">
             <span class="btn btn-default cancelPastJobRecordChanges"> Cancel </span>

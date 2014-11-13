@@ -104,18 +104,24 @@ ContactableManager = {
     return contactable ? contactable.location : {};
   },
 
+  // Notes
+  addNote: function (note) {
+    if ( note.sendAsSMS) {
+      // Send SMS
+      SMSManager.sendSMSToContactable(note.contactableId, note.userNumber, note.contactableNumber, note.msg);
+    }
+
+    // Save note
+    Notes.insert(note);
+  },
+
   // Education record
   addEducationRecord: function (contactableId, educationInfo) {
     // TODO: Validate
     Contactables.update({_id: contactableId},
       {
         $addToSet: {
-          education: {
-            institution: educationInfo.institution,
-            description: educationInfo.description,
-            start: educationInfo.start,
-            end: educationInfo.end
-          }
+          education: educationInfo
         }
       }
     );
@@ -147,12 +153,7 @@ ContactableManager = {
     Contactables.update({_id: contactableId},
       {
         $addToSet: {
-          pastJobs: {
-            company: pastJobInfo.company,
-            position: pastJobInfo.position,
-            start: pastJobInfo.start,
-            end: pastJobInfo.end
-          }
+          pastJobs: pastJobInfo
         }
       }
     );

@@ -82,3 +82,18 @@ Template.detailTabs.events = {
     selectedTabDep.changed();
   }
 };
+
+Template.detailNav.created = function () {
+  //console.log(this.data)
+};
+Template.detailNav.helpers({
+  mobileTabs: function () {
+    return this.tabs.slice(0, 3);
+  },
+  otherTabs: function () {
+    return this.tabs.slice(3, this.tabs.length);
+  },
+  isActive: function (id) {
+    return (id == Session.get('activeTab')) ? 'active' : '';
+  }
+});

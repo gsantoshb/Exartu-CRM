@@ -104,6 +104,7 @@ Utils.ObjectDefinition = function(definition) {
             return this.val;
           },
           set: function (newValue) {
+            if (this.val == newValue) return;
             this.val = newValue;
             this.dep.changed();
             this.error.hasError = !prop.validator();
@@ -601,4 +602,35 @@ Utils.contactMethodTypePrefix = function(type) {
 };
 Utils.users =function(){
   return Meteor.users.find({});
+};
+
+Utils.getPhoneNumberDisplayName = function (phoneNumber) {
+  return  '(' + phoneNumber.slice(1, 4) + ') ' + phoneNumber.slice(5, 8) + '-' + phoneNumber.slice(8, 12);
+};
+
+Template.registerHelper('getPhoneNumberDisplayName', function(phoneNumber) {
+  return Utils.getPhoneNumberDisplayName(phoneNumber);
+});
+
+// URLQuery
+
+URLQuery = function () {
+  var self = this;
+  self.params = {};
+};
+
+URLQuery.prototype.addParam = function (paramName, paramValue) {
+  var self = this;
+  self.params[paramName] = EJSON.clone(paramValue);
+};
+
+URLQuery.prototype.apply = function () {
+  var self = this;
+
+  var url = '';
+  _.forEach(self.params, function (value, name) {
+    url += (!url ? '?' : '&') + name + '=' + value;
+  });
+
+  history.replaceState(null, null, location.pathname + url);
 };

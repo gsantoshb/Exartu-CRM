@@ -49,7 +49,7 @@ Template.header.helpers({
       return planCode == SubscriptionPlan.plansEnum.free;
     },
     currentHierName: function(){
-      var hier = Hierarchies.findOne(Meteor.user().currentHierId);
+      var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
       return hier ? hier.name : '';
     }
 });

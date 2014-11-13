@@ -1,11 +1,4 @@
 ContactableAddController = RouteController.extend({
-//    layoutTemplate: 'addContactablePage',
-  waitOn: function () {
-    //hack
-    if (this.params.objType == 'Contact'){
-      return  Meteor.subscribe('allCustomers');
-    }
-  },
   data: function(){
     Session.set('objType',this.params.objType);
   },
@@ -133,7 +126,7 @@ Template.addContactablePage.events({
 
     Meteor.call('addContactable', cont, function(err, result){
       if(err){
-        console.dir(err)
+        console.dir(err);
       }else{
         GAnalytics.event("/contactableAdd", Session.get('objType'));
         Router.go('/contactable/' + result + '#tasks');

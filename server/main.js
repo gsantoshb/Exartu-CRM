@@ -85,4 +85,9 @@ Meteor.startup(function () {
     region: ExartuConfig.AWS_S3_region,
     bucket: ExartuConfig.AWS_S3_bucket
   });
+
+  // Twilio
+  twilio = ExartuConfig.TW_accountSID && ExartuConfig.TW_authToken ?
+    Twilio(ExartuConfig.TW_accountSID, ExartuConfig.TW_authToken)
+    : undefined;
 });

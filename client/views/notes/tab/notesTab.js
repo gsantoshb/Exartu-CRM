@@ -13,6 +13,58 @@ NoteSchema = new SimpleSchema({
   'links.$.type': {
     type: Number,
     allowedValues: _.map(Enums.linkTypes, function (type) { return type.value; })
+  },
+  sendAsSMS: {
+    type: Boolean,
+    label: 'Send to contactable as SMS',
+    optional: true
+  },
+  userNumber: {
+    type: String,
+    optional: true,
+    label: 'Your numbers'
+  },
+  contactableNumber: {
+    type: String,
+    optional: true,
+    label: 'Contactable numbers'
+  },
+});
+
+AutoForm.hooks({
+  AddNoteRecord: {
+    before: {
+      addContactableNote: function (doc) {
+        doc.contactableId = Session.get('entityId');
+        return doc;
+      }
+    }
+  }
+});
+
+// Add
+Template.notesTabAdd.helpers({
+  contactableNumbers: function () {
+    var contactable = Contactables.findOne(this._id);
+    var phoneTypes = _.map(ContactMethods.find({ type: Enums.contactMethodTypes.phone}).fetch(), function (phoneType) { return phoneType._id;});
+    var numbers = [];
+
+    _.forEach(contactable.contactMethods, function (contactMethod) {
+      if (phoneTypes.indexOf(contactMethod.type) != -1)
+        numbers.push({value: contactMethod.value, label: Utils.getPhoneNumberDisplayName(contactMethod.value)});
+    });
+
+    return numbers;
+  },
+  userNumbers: function () {
+    return Hierarchies.find({phoneNumber: {$exists: true}}).map(function (userHier) {
+      var result = {
+        label: userHier.phoneNumber.displayName + ' - ' + userHier.name,
+        value: userHier.phoneNumber.value
+      };
+
+      return result;
+    });
   }
 });
 
@@ -125,6 +177,9 @@ Template.linksAutoForm.helpers({
     Meteor.subscribe('allContactables');
     Meteor.subscribe('allJobs');
     Meteor.subscribe('allPlacements');
+
+    if (self.data.value)
+      return; // Don't reset form on edit mode
 
     // TODO: Find another way to reset links when form is submitted
     var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;

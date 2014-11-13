@@ -53,7 +53,7 @@ ActivityViews = new View('activities', {
 });
 
 Meteor.paginatedPublish(ActivityViews, function () {
-  return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({},{sort: {dateCreated:-1}}));
+  return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({ type: { $ne: Enums.activitiesType.userLogin } },{ sort: { 'data.dateCreated': -1 } }));
 },{
   //infiniteScroll: true,
   pageSize: 15,
@@ -109,21 +109,23 @@ Messages.after.insert(function (userId, doc) {
 
 Tasks.after.insert(function (userId, doc) {
   var linkid;
-  if (doc.links && doc.links.length>0) linkid=links[0].id;
-    Activities.insert({
-      userId: doc.userId,
-      hierId: doc.hierId,
-      type: Enums.activitiesType.taskAdd,
-      entityId: linkid,
-      data: {
-        note: doc.note,
-        dateCreated: doc.dateCreated,
-        begin: doc.begin,
-        end: doc.end,
-        completed: doc.completed,
-        assign: doc.assign
-      }
-	  })
+  if (doc.links && doc.links.length>0)
+    linkid = doc.links[0].id;
+
+  Activities.insert({
+    userId: doc.userId,
+    hierId: doc.hierId,
+    type: Enums.activitiesType.taskAdd,
+    entityId: linkid,
+    data: {
+      note: doc.note,
+      dateCreated: doc.dateCreated,
+      begin: doc.begin,
+      end: doc.end,
+      completed: doc.completed,
+      assign: doc.assign
+    }
+  });
 });
 
 // Jobs

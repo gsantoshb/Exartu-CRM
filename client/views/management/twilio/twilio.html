@@ -1,0 +1,42 @@
+<template name="twilioManagement">
+    <div id="content" class="lookUps">
+        <div id="content-header" class="mini">
+            <h1>Twilio management</h1>
+        </div>
+
+
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Management</a>
+            <a href="/twilio" class="current">Twilio</a>
+        </div>
+
+        <div class="container-fluid">
+            <div class="panel panel-default">
+                <!-- Header -->
+                {{#with hierarchy}}
+                    <div class="panel-heading">
+                        {{#unless phoneNumber}}
+                            <h5>
+                                <strong>
+                                    Current hierarchy {{name}} has no Twilio number yet
+                                </strong>
+                                <span id="require-number" class="btn btn-default"> Request One </span>
+                            </h5>
+
+                            <small class="text-muted">
+                                Requesting a Twilio number allows you and your partners to send notes as SMS to your contactables.
+                            </small>
+                        {{else}}
+                            <h5>
+                                Current hierarchy number:
+                                {{phoneNumber.displayName}}
+                                <br/>
+                                SMS used: {{phoneNumber.smsCount}} / 50
+                            </h5>
+                        {{/unless}}
+                    </div>
+                {{/with}}
+            </div>
+        </div>
+    </div>
+</template>

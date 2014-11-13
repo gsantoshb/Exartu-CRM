@@ -1,24 +1,30 @@
 <!-- Details view layout -->
 <template name="contactable">
-    <div class="contactable-page-details">
-        <div id="content" class="details">
-            {{#with contactable}}
-                <div id="content-header" class="mini">
-                    <div class="profile-content-header" style="padding: 15px 20px;">
-                        {{>contactable_header}}
+    <div id="content" class="details">
+        {{#with contactable}}
+            <div id="content-header" class="mini">
+                <div class="profile-content-header">
+                    {{>contactable_header}}
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="details-menu col-md-2">
+                        {{>contactable_nav}}
+                        {{>contactable_actions}}
+                    </div>
+                    <div class="details-view col-md-10">
+                        <div class="details-view-content clearfix">
+                            <div class="tab-pane active">
+                                {{> UI.dynamic template=currentTemplate  data=. }}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+            </div>
 
-                <div id="breadcrumb" style="margin-bottom: 0px;">
-                    <a href="/" title="Go to Home" class="tip-bottom">Home</a>
-                    <a href="/contactables" class="current">{{objTypeDisplayName}}</a>
-                </div>
-
-                <div class="container-fluid details-body">
-                    {{>contactable_tabs}}
-                </div>
-            {{/with}}
-        </div>
+        {{/with}}
     </div>
 </template>
 
@@ -74,7 +80,7 @@
                 <small>{{Customer.department}}</small>
             {{/if}}
         </strong>
-        <small class="pull-right" style="max-width: 40%;"> {{statusNote}} </small>
+        <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
     </h1>
     <p class="profile-address">
 
@@ -100,12 +106,6 @@
             {{/if}}
         {{/with}}
     </div>
-</template>
-
-<!-- Tabs -->
-
-<template name="contactable_tabs">
-    {{> detailTabs tabs=tabs selected=selectedTab template="contactable" context=.}}
 </template>
 
 <template name="contactable_notes">
@@ -144,11 +144,6 @@
 
         {{>tagsBox}}
     </div>
-    <div class="col-sm-12">
-        <div class="col-sm-12">
-            {{> originData}}
-        </div>
-    </div>
 </template>
 
 <template name="contactable_HRConcourse">
@@ -159,22 +154,85 @@
 <template name="contactable_placements">
     {{> placementsBox}}
 </template>
+<template name="contactable_actions_list">
 
+</template>
 <template name="contactable_actions">
-    {{#unless ../Employee}}
-        {{#if ../Contact}}
-            <button id="Employee" class="btn btn-sm btn-info">
-                Make Employee
-            </button>
-        {{/if}}
-    {{/unless}}
-    {{#unless ../Contact}}
-        {{#if ../Employee}}
-            <button id="makeContact" class="btn btn-sm btn-info">
-                Make Contact
-            </button>
-        {{/if}}
-    {{/unless}}
+    <div class="hidden-xs hidden-sm">
+        <div class="details-actions row">
+            <ul class="no-padding">
+                {{#unless Employee}}
+                    {{#if Contact}}
+                        <li>
+                            <a id="makeEmployee" class="btn btn-default btn-custom-with-circle action-btn">
+                                <span class="btn-round"><i class="fa fa-exchange"></i></span>
+                                <span style="white-space: normal;"> Add also as an employee</span>
+                            </a>
+                        </li>
+                    {{/if}}
+                {{/unless}}
+                {{#unless Contact}}
+                    {{#if Employee}}
+                        <li>
+                            <a id="makeContact" class="btn btn-default btn-custom-with-circle action-btn">
+                                <span class="btn-round"><i class="fa fa-exchange"></i></span>
+                                <span style="white-space: normal;">Add also as a contact</span>
+                            </a>
+                        </li>
+                    {{/if}}
+                {{/unless}}
+                {{#if Employee}}
+                    <li>
+                        <a id="generate-resume" class="btn btn-default btn-custom-with-circle action-btn">
+                            <span class="btn-round"><i class="fa fa-file"></i></span>
+                            Generate resume/cv
+                            <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
+                        </a>
+                    </li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+    <div class="visible-xs visible-sm pull-right">
+        <div class="details-actions">
+            <div class="btn-group nav-item">
+                <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                    Actions
+                </a>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    {{#unless Employee}}
+                        {{#if Contact}}
+                            <li>
+                                <a id="makeEmployee">
+                                    <span><i class="fa fa-exchange"></i></span>
+                                    Make Employee
+                                </a>
+                            </li>
+                        {{/if}}
+                    {{/unless}}
+                    {{#unless Contact}}
+                        {{#if Employee}}
+                            <li>
+                                <a id="makeContact">
+                                    <span><i class="fa fa-exchange"></i></span>
+                                    Make Contact
+                                </a>
+                            </li>
+                        {{/if}}
+                    {{/unless}}
+                    {{#if Employee}}
+                        <li>
+                            <a id="generate-resume">
+                                <span><i class="fa fa-file"></i></span>
+                                Generate resume
+                                <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
+                            </a>
+                        </li>
+                    {{/if}}
+                </ul>
+            </div>
+        </div>
+    </div>
 </template>
 
 <template name="contactable_activities">
@@ -186,14 +244,25 @@
 <template name="loadingContactable">
     <div id="content">
         <div id="content-header" class="mini">
-            <h1>Loading</h1>
+            <div class="profile-content-header">
+                <h1>Loading</h1>
+            </div>
         </div>
-        <div id="breadcrumb">
-            <a href="/" title="" class="tip-bottom" data-original-title="Go to Home"><i class="fa fa-home"></i> Home</a>
-        </div>
-        <div class="container-fluid">
-            <div class="page-loader" style="height: 748px;">
+        <!--<div id="breadcrumb">-->
+            <!--<a href="/" title="" class="tip-bottom" data-original-title="Go to Home"><i class="fa fa-home"></i> Home</a>-->
+        <!--</div>-->
+        <div class="container-fluid" style="background-color: #F6F6F6;">
+            <div class="page-loader" style="height: 748px; background-color: #FFF;border: solid 1px #DFDFDF;">
             </div>
         </div>
     </div>
+</template>
+
+
+<template name="contactable_nav">
+    {{> detailNav tabs=tabs}}
+</template>
+
+<template name="link">
+
 </template>

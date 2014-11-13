@@ -7,6 +7,11 @@ EducationSchema = new SimpleSchema({
     type: String,
     label: 'Description'
   },
+  degreeAwarded: {
+    type: String,
+    label: 'Degree Awarded',
+    optional: true
+  },
   start: {
     type: Date,
     label: 'Start date'
@@ -17,21 +22,15 @@ EducationSchema = new SimpleSchema({
     optional: true,
     custom: function () {
       if (Meteor.isClient && this.isSet) {
-        if (toPresent.get()) {
-          return true;
-        }
-
-        if (!this.value) {
-          return "Required"; //"End date not set";
-        } else if (this.field('start').value > this.value){
-          //EducationSchema.namedContext('AddEducationRecord').addInvalidKeys([{name: 'end', type: 'minDate', value: 'End date should be grater than start date'}]);
-          return "End date should be greater than start date";
+        if (this.field('start').value > this.value){
+          return 'endGreaterThanStart';
         }
       }
-
-      return true;
     }
   }
+});
+EducationSchema.messages({
+  endGreaterThanStart: 'End date should be grater than start date'
 });
 
 var toPresent = ReactiveVar(false);
@@ -40,13 +39,14 @@ AutoForm.hooks({
   AddEducationRecord: {
     onSubmit: function(educationRecord) {
       var self = this;
-      var id = Template.parentData(1)._id;
+
+      // Get contactableId
+      var contactableId = Session.get('entityId');
 
       if (toPresent.get())
         educationRecord.end = undefined;
 
-      Meteor.call('addEducationRecord', id, educationRecord, function () {
-        toPresent.set(false);
+      Meteor.call('addEducationRecord', contactableId, educationRecord, function () {
         self.done();
         self.resetForm();
       });
@@ -57,21 +57,23 @@ AutoForm.hooks({
 });
 
 // Add
-
 Template.employeeEducationAdd.helpers({
   endDateClass: function() {
-    return toPresent.get()? 'disabled' : '';
+    return toPresent.get() ? 'disabled' : '';
   }
 });
 
 Template.employeeEducationAdd.events({
-  'change #to-present': function() {
+  'change .toPresent': function() {
     toPresent.set(!toPresent.get());
+  },
+  'reset form': function () {
+    toPresent.set(false);
   }
 });
 
-// List
 
+// List
 Template.employeeEducationList.helpers({
   items: function() {
     if (this.education && this.education.length > 1)
@@ -84,7 +86,6 @@ Template.employeeEducationList.helpers({
 });
 
 // Record
-
 Template.employeeEducationItem.helpers({
   getCtx: function () {
     var self = this;
@@ -101,7 +102,8 @@ Template.employeeEducationItem.helpers({
 
 Template.employeeEducationItem.events({
   'click .deleteEducationRecord': function () {
-    var id = Template.parentData(1)._id;
+    // Get contactableId
+    var contactableId = Session.get('entityId');
     var educationRecord = this.educationRecord;
 
     Utils.showModal('basicModal', {
@@ -110,7 +112,7 @@ Template.employeeEducationItem.events({
       buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {label: 'Delete', classes: 'btn-danger', value: true}],
       callback: function (result) {
         if (result) {
-          Meteor.call('deleteEducationRecord', id, educationRecord);
+          Meteor.call('deleteEducationRecord', contactableId, educationRecord);
         }
       }
     });
@@ -122,7 +124,6 @@ Template.employeeEducationItem.events({
 });
 
 // Edit record
-
 Template.employeeEducationEditItem.helpers({
   created: function () {
     var self = this;
@@ -130,9 +131,8 @@ Template.employeeEducationEditItem.helpers({
     // Get contactableId
     var contactableId = Session.get('entityId');
 
-    self.data.formId = Random.hexString(10);
-
-    // Create a AutoForm hook for each record form
+    // Generate an AutoForm ID and create a hook for each record form
+    self.data.formId = 'editEducation_' + Random.hexString(10);
     AutoForm.addHooks(self.data.formId, {
       onSubmit: function(educationRecord, setSelector, oldRecord) {
         var self = this;
@@ -153,16 +153,16 @@ Template.employeeEducationEditItem.helpers({
   },
   endDateClass: function() {
     var ctx = Template.parentData(2);
-    return ctx.toPresent.get()? 'disabled' : '';
+    return ctx.toPresent.get() ? 'disabled' : '';
   },
   checked: function() {
     var ctx = Template.parentData(2);
-    return ctx.toPresent.get()? 'checked' : undefined;
+    return ctx.toPresent.get() ? 'checked' : undefined;
   }
 });
 
 Template.employeeEducationEditItem.events({
-  'change #to-present': function() {
+  'change .toPresent': function() {
     var ctx = Template.parentData(1);
     ctx.toPresent.set(!ctx.toPresent.get());
   },

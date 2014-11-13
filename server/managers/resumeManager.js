@@ -243,5 +243,105 @@ var extractInformation = function (parseResult) {
     console.log(err)
   };
 
+  // educations
+  var educations = [];
+  try{
+    if (structuredResult.EducationHistory){
+      _.each(structuredResult.EducationHistory[0].SchoolOrInstitution, function (schoolOrInstitution) {
+
+        var schoolName = schoolOrInstitution.School ? schoolOrInstitution.School[0].SchoolName[0] : '';
+
+        var degree = schoolOrInstitution.Degree[0];
+
+        var description = degree.Comments[0];
+
+        if ( degree.DatesOfAttendance){
+          var dates = degree.DatesOfAttendance[0];
+
+          var startDate = dates.StartDate[0].AnyDate[0];
+          startDate = new Date(startDate);
+
+          var endDate = dates.EndDate[0].AnyDate[0];
+          endDate = new Date(endDate);
+
+          if (_.isNaN(startDate.getDate())){
+            startDate = null;
+          }
+          if (_.isNaN(endDate.getDate())){
+            endDate = null;
+          }
+        }else{
+          var startDate = null;
+          var endDate = null;
+        }
+
+
+        //var degreeDate = degree.DegreeDate[0].AnyDate[0];
+        //degreeDate = new Date(degreeDate);
+
+        var degreeAwarded = (degree.DegreeName && degree.DegreeName[0]) || (degree.DegreeMajor && degree.DegreeMajor[0].Name[0]) || '';
+
+
+        educations.push({
+          institution: schoolName,
+          description: description,
+          degreeAwarded: degreeAwarded,
+          start: startDate,
+          end: endDate
+        })
+
+      });
+
+    }
+  } catch (err){
+    console.log('Error while parsing educations');
+    console.log(err);
+  }
+  employee.education = educations;
+
+  //past jobs
+  var pastJobs = [];
+  try{
+    debugger;
+    if (structuredResult.EmploymentHistory){
+      _.each(structuredResult.EmploymentHistory[0].EmployerOrg, function (employerOrg) {
+        var employerName = employerOrg.EmployerOrgName && employerOrg.EmployerOrgName[0];
+
+        _.each(employerOrg.PositionHistory, function (position) {
+
+          var endDate = position.EndDate[0].AnyDate[0];
+          endDate = new Date(endDate);
+          if (_.isNaN(endDate.getDate())){
+            endDate = null;
+          }
+
+          var startDate = position.StartDate[0].AnyDate[0];
+          startDate = new Date(startDate);
+          if (_.isNaN(startDate.getDate())){
+            startDate = null;
+          }
+
+          var description = position.Description && position.Description[0];
+
+          var title = position.Title && position.Title[0];
+
+          pastJobs.push({
+            company: employerName,
+            position: title,
+            duties: description,
+            start: startDate,
+            end: endDate
+          })
+        });
+
+      });
+
+    }
+  } catch (err){
+    console.log('Error while parsing pastJobs');
+    console.log(err);
+  }
+  employee.pastJobs = pastJobs;
+
   return employee;
 };

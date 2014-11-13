@@ -1,24 +1,81 @@
 <template name="detailTabs">
-    <div class="details-tabs-container">
-        <ul class="nav nav-pills bottom-20 details-tabs">
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="details-tabs-container">
+                <div class="row">
+                    {{#each tabs}}
+                        <div class="{{isActive id}} col-xs-4 col-sm-2 col-md-12 details-tab" style="padding-top: 3px;padding-bottom: 3px;">
+                            <a href="#{{id}}">
+                                {{displayName}}
+                                {{#if info}}
+                                    <span class="custom-badge-2">{{execHelper info}}</span>
+                                {{/if}}
+                            </a>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="container-fluid details-body">
+                <div class="tab-content details-tab-content" style="margin-top:0">
+                    <div class="tab-pane active">
+                        {{> UI.dynamic template=currentTemplate  data=context }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!--<span id="back-tab" class="back-tab {{showMoveButtons}}"><i class="fa fa-arrow-left"></i></span>-->
+    <!--<span id="next-tab" class="next-tab {{showMoveButtons}}"><i class="fa fa-arrow-right"></i></span>-->
+
+
+</template>
+
+<template name="detailNav">
+    <div class="details-nav">
+        <div class="row hidden-xs hidden-sm">
             {{#each tabs}}
-                <li class="{{isActive id}} details-tab">
+                <div class="{{isActive id}} col-xs-4 col-sm-2 col-md-12 details-tab nav-item" style="padding-top: 3px;padding-bottom: 3px;">
+
                     <a href="#{{id}}">
                         {{displayName}}
-                        {{#if info}}
-                            <span class="custom-badge-2">{{execHelper info}}</span>
-                        {{/if}}
                     </a>
-                </li>
+                </div>
             {{/each}}
-        </ul>
-    </div>
-    <span id="back-tab" class="back-tab {{showMoveButtons}}"><i class="fa fa-arrow-left"></i></span>
-    <span id="next-tab" class="next-tab {{showMoveButtons}}"><i class="fa fa-arrow-right"></i></span>
+        </div>
+        <div class="visible-xs visible-sm">
+            {{#each mobileTabs}}
+                <div class="{{isActive id}} details-tab nav-item ">
 
-    <div class="tab-content details-tab-content">
-        <div class="tab-pane active">
-            {{> UI.dynamic template=currentTemplate  data=context }}
+                    <a class="btn" href="#{{id}}">
+                        {{displayName}}
+                    </a>
+                </div>
+            {{/each}}
+
+            <div class="btn-group nav-item">
+                <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                    ...
+                    <!--<span class="caret"></span>-->
+                </a>
+                <div class="dropdown-menu" role="menu">
+                    {{#each otherTabs}}
+                        <div class="{{isActive id}} col-xs-12 col-sm-12 col-md-12 details-tab">
+
+                            <a href="#{{id}}">
+                                {{displayName}}
+                            </a>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+
         </div>
     </div>
 </template>

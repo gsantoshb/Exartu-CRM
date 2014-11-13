@@ -1,6 +1,6 @@
 var registerPageView = function() {
 //  GAnalytics.pageview(this.path);
-}
+};
 
 Router.configure({
   disableProgressSpinner: true,
@@ -8,29 +8,27 @@ Router.configure({
   waitOn: function() {
     return HierarchiesHandler;
   },
-  onBeforeAction: function () {
-    if (!Meteor.userId() && Router.current().route.name != 'login' && Router.current().route.name != 'register' && Router.current().route.name != 'addUser' && Router.current().route.name != 'notFound') {
-      this.redirect('login');
-    }
-  },
   autoRender: true
 });
+
+var OnBeforeActions = {
+  loginRequired: function(pause) {
+    if (!Meteor.userId()) {
+      this.render('login');
+      return pause();
+    }
+  }
+};
+
+Router.onBeforeAction(OnBeforeActions.loginRequired, {
+  except: ['login', 'register', 'addUser', 'notFound']
+});
+
 
 Router.map(function () {
   this.route('dashboard', {
     path: '/',
-    controller: 'DashboardController',
-    waitOn: function() {
-      return [HierarchiesHandler];
-    },
-    action: function() {
-      if (!this.ready()) {
-        this.render('loadingContactable');
-        return;
-      }
-      GAnalytics.pageview();
-      this.render();
-    }
+    controller: 'DashboardController'
   });
 
   this.route('login', {
@@ -152,23 +150,28 @@ Router.map(function () {
   this.route('lookupManagement', {
     path: '/management/lookups',
     controller: 'LookupsManagementController'
-  })
+  });
 
   this.route('hrConcourseManagement', {
     path: '/management/hrconcourse',
     controller: 'hrConcourseManagementController'
-  })
+  });
+
+  this.route('twilioManagement', {
+    path: '/management/twilioManagement',
+    controller: 'TwilioManagementController'
+  });
 
   this.route('resumeParser', {
     path: '/resumeparser',
     controller: 'ResumeParserController'
 //    plans: [SubscriptionPlan.plansEnum.enterprise]
-  })
+  });
 
   this.route('planLimitation', {
     path: '/planlimitation',
     template: 'planLimitation'
-  })
+  });
 
 
   this.route('subscriptionPlan', {
@@ -198,7 +201,7 @@ Router.map(function () {
     waitOn: function () {
       return SystemConfigsHandler;
     }
-  })
+  });
 
   this.route('emailVerification', {
     path: '/emailVerification/:token',
@@ -215,11 +218,20 @@ Router.map(function () {
   this.route('notFound', {
     path: '/notfound',
     template: 'notFoundTemplate'
-  })
+  });
 
   this.route('hierarchyManagement', {
     path: '/hierarchyManagement',
     controller: 'HierarchiesManagementController'
+  });
+  this.route('testData', {
+    path: '/management/testData',
+    controller: 'TestDataController'
+  });
+
+  this.route('invitationVerification', {
+    path: '/invitationVerification/:token',
+    controller: 'InvitationController'
   });
 });
 

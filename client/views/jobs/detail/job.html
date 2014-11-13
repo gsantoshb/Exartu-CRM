@@ -1,11 +1,11 @@
 <!-- Details view layout -->
 <template name="job">
-    <div class="contactable-page-details">
-        <div id="content" class="details">
+    <div id="content" class="details">
+        <div id="content-header" class="mini">
             {{#with originalJob}}
-                <div id="content-header" class="mini">
+                <div  class="profile-content-header">
                     <h1 class="profile-name">{{displayName}}
-                        <small> at 
+                        <small> at
                             <a  href="/contactable/{{customer}}">
                                 <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
                                     {{customerName}}
@@ -13,40 +13,48 @@
                                 </strong>
                             </a>
                         </small>
-                        <span class="pull-right" style="margin-right: 5px">
-                            {{#with assignment}}
-                                <small> Assigned to
-                                    <a href="/contactable/{{_id}}">
-                                        <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'" >
-                                            {{displayName}}
-                                            <i class="fa fa-external-link" style="font-size: 14px"></i>
-                                        </strong>
-                                    </a>
-                                </small>
-                            {{/with}}
-                        </span>
+                    <span class="pull-right" style="margin-right: 5px">
+                        {{#with assignment}}
+                            <small> Assigned to
+                                <a href="/contactable/{{_id}}">
+                                    <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'" >
+                                        {{displayName}}
+                                        <i class="fa fa-external-link" style="font-size: 14px"></i>
+                                    </strong>
+                                </a>
+                            </small>
+                        {{/with}}
+                    </span>
                     </h1>
                 </div>
-
-                <div id="breadcrumb" class="breadcrumb-top">
-                    <a href="/" title="Go to Home" class="tip-bottom">
-                        <i class="fa fa-home"></i>Home</a>
-                    <a href="/jobs" class="current">Jobs</a>
-                </div>
-
-                <div class="container-fluid details-body">
-                    {{>job_tabs job=. getCustomer=getCustomer jobCollection=jobCollection originalJob=originalJob documentCount=documentCount noteCount=noteCount}}
-                    <!--job=. getCustomer=getCustomer jobCollection=jobCollection originalJob=originalJob documentCount=documentCount noteCount=noteCount-->
-                </div>
             {{/with}}
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="details-menu col-md-2">
+                    {{>job_nav}}
+                    {{>job_actions}}
+                </div>
+                <div class="details-view col-md-10">
+                    <div class="details-view-content clearfix">
+                        <div class="tab-pane active">
+                            {{> UI.dynamic template=currentTemplate  data=job }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--{{>job_tabs job=. getCustomer=getCustomer jobCollection=jobCollection originalJob=originalJob documentCount=documentCount noteCount=noteCount}}-->
+            <!--job=. getCustomer=getCustomer jobCollection=jobCollection originalJob=originalJob documentCount=documentCount noteCount=noteCount-->
         </div>
     </div>
 </template>
 
 <!-- Tabs -->
 
-<template name="job_tabs">
-    {{> detailTabs tabs=tabs selected=selectedTab template="job" context=.}}
+<template name="job_nav">
+    {{> detailNav tabs=tabs}}
 </template>
 
 <template name="job_placements">
@@ -70,20 +78,18 @@
 </template>
 
 <template name="job_notes">
-    {{> notesItem job}}
+    {{> notesItem}}
 </template>
 
 <template name="job_details">
     <div class="row">
         <div class="col-sm-6">
-            {{#with job}}
-                <div class="col-sm-12">
-                    {{> jobDetail}}
-                </div>
-                <div class="col-sm-12">
-                    {{> customerInfo customer=getCustomer path='customer' collection=customerCollection}}
-                </div>
-            {{/with}}
+            <div class="col-sm-12">
+                {{> jobDetail}}
+            </div>
+            <div class="col-sm-12">
+                {{> customerInfo customer=getCustomer path='customer' collection=customerCollection}}
+            </div>
         </div>
         <div class="col-sm-6">
             <div class="col-sm-12">
@@ -97,16 +103,38 @@
                 {{/with}}
             </div>
         </div>
-        <div class="col-sm-12">
-            <div class="col-sm-12">
-                {{#with originalJob}}
-                    {{>originData}}
-                {{/with}}
-            </div>
-        </div>
     </div>
 </template>
 
 <template name="job_actions">
-    <span  style="margin-right: 10px"> <span id="copy-job" class="btn btn-info btn-xs">  Copy job </span></span>
+    <div class="hidden-xs hidden-sm">
+        <div class="details-actions">
+            <ul class="no-padding">
+                <li>
+                    <a>
+                        <span id="copy-job" class="btn btn-default action-btn">
+                            <i class="fa fa-copy"></i>
+                            Copy job
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="visible-xs visible-sm pull-right">
+        <div class="details-actions">
+            <div class="btn-group nav-item">
+                <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                    Actions
+                    <!--<span class="caret"></span>-->
+                </a>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li>
+                        <a> <span id="copy-job" class="btn btn-info btn-xs">  Copy job </span></a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </template>

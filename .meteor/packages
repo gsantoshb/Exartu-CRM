@@ -37,8 +37,6 @@ subscription-plan
 cfs:graphicsmagick
 mizzao:bootstrap-3
 
-meteorhacks:zones
-
 force-ssl
 pagination
 
@@ -51,7 +49,6 @@ file-uploader
 meteorhacks:kadira
 
 date-time-picker
+rajit:bootstrap3-datepicker
 
-
-
-npm-container
+mrt:twilio-meteor

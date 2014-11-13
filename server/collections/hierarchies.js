@@ -1,9 +1,15 @@
 Meteor.publish('hierarchies', function() {
   var user = Meteor.users.findOne(this.userId);
   if (!user)
-    throw new Meteor.Error('User is required');
+    return false;
 
-  return Hierarchies.find({_id: { $in: user.hierarchies}});
+  var userHierarchies = [];
+  _.forEach( user.hierarchies, function (hierarchy) {
+    var $or = Utils.filterByHiers(hierarchy, '_id');
+    userHierarchies = userHierarchies.concat($or);
+  });
+
+  return Hierarchies.find({$or: userHierarchies});
 });
 
 Hierarchies.allow({

@@ -1,17 +1,30 @@
 <template name="contactableDocumentsAdd">
-    <div class="tab-pane" id="document">
-        <div class="box-5">
-            {{#if addForm }}
-                {{>addDocumentForm}}
-            {{else}}
-                {{#dragAndDrop onDrop=showAddForm}}
-                    <h3 class="lead">Drop files here</h3>
-                    <p>or</p>
-                    <br>
-                    <span class="btn btn-default add-trigger"> Upload file </span>
-                    <input style="visibility: hidden" id="add-file" type="file">
-                {{/dragAndDrop}}
-            {{/if}}
+    <div class="tab-pane record" id="document">
+        <div class="record-add row">
+
+            <div class="add-box-head add-box-responsive col-xs-12 col-md-3">
+                <div class="add-item-icon"><i class="icon-document-1"></i></div>
+                <div class="add-item-title">Documents
+                    {{#objectProperty property=query.searchString}}
+                        <span class="pull-right">
+                            <input class="form-control input-sm " type="text" placeholder="Search" value="{{value}}" >
+                        </span>
+                    {{/objectProperty}}
+                </div>
+            </div>
+            <div class="box-5 record-add add-box-content col-sm-12 col-md-9">
+                {{#if addForm }}
+                    {{>addDocumentForm}}
+                {{else}}
+                    {{#dragAndDrop onDrop=showAddForm}}
+                        <h3 class="lead">Drop files here</h3>
+                        <p>or</p>
+                        <br>
+                        <span class="btn btn-default add-trigger"> Upload file </span>
+                        <input style="visibility: hidden" id="add-file" type="file">
+                    {{/dragAndDrop}}
+                {{/if}}
+            </div>
         </div>
     </div>
 </template>
@@ -68,14 +81,6 @@
 
 <template name="contactableDocumentsList">
     <div style="padding: 5px">
-        <h3 class="top-0">Documents
-            {{#objectProperty property=query.searchString}}
-            <span class="pull-right">
-                <input class="form-control input-sm " type="text" placeholder="Search" value="{{value}}" >
-            </span>
-            {{/objectProperty}}
-        </h3>
-        <hr/>
         <ul class="list-3 stripped has-thumb">
             {{#each documents}}
                 <li class="list-3-item">

@@ -50,21 +50,11 @@ UI.registerHelper('displayProperty', function(){
       return template
     }
     else{
-      //hack
-      if (this.name == 'customer' && ! this.value){
-        var houseAccount= AllCustomers.findOne({houseAccount: true});
-        var user= Meteor.user();
-        if (user && user.lastCustomerUsed) {
-          this.value = user.lastCustomerUsed;
-        } else if (houseAccount && houseAccount._id) {
-          this.value = houseAccount._id;
-        }
-      }
       Template['relInput'].events({
         'change select':function(e){
           this.value=e.target.value;
         }
-      })
+      });
       return Template['relInput']
     }
   }
@@ -123,13 +113,38 @@ Template.relInput.rendered = function () {
 }
 
 Template.relInput.helpers({
-  options: function(){
-    var q={};
-    //q[this.target]={ $exists: true };
+  getCustomer: function () {
+    return function (string) {
+      var self = this;
 
-    //hack todo: calculate the collection
+      //todo: calculate method
+      Meteor.call('findCustomer', string, function (err, result) {
+        if (err)
+          return console.log(err);
 
-    return AllCustomers.find(q);
+        self.ready(_.map(result, function (r) {
+            return { id: r._id, text: r.organization.organizationName };
+          })
+        );
+      });
+    };
+  },
+  customerChanged: function () {
+    var self= this;
+    return function (value) {
+      self.value = value;
+    }
+  },
+  defaultValue: function () {
+    return function (cb) {
+      Meteor.call('getLastCustomer', function (err, result) {
+        if (!err){
+          cb(null, { id: result._id, text: result.organization.organizationName });
+        }else{
+          cb(err);
+        }
+      });
+    };
   },
   hasError :function(){
     return this.isValid? '': 'error';

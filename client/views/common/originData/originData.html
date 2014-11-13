@@ -1,14 +1,14 @@
 <template name="originData">
-    <div class="text-muted pull-right">
-        <strong>Created</strong>
+    <div class="text-muted">
+        <span>Created</span>
         {{#with userName}}
-            <strong> by </strong>{{.}}
+            <span> by </span> <strong> {{.}} </strong>
         {{/with}}
-        <strong> in hierarchy </strong>
-        {{hierName}}
-        <strong>at </strong>
+        <span> in hierarchy </span>
+        <strong> {{hierName}} </strong>
+        <span> at </span>
         {{#formattedDate value=dateCreated format='lll'}}
-            {{date}}
+            <strong> {{date}} </strong>
         {{/formattedDate}}
     </div>
 </template>

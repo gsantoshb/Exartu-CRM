@@ -1,6 +1,17 @@
 systemLookUps = [];
 
-Utils = {
+Utils = {};
+
+_.extend( Utils, {
+  getUserHiers: function () {
+    var userHierarchies = [];
+    _.forEach( Meteor.user().hierarchies, function (hierarchy) {
+      var $or = Utils.filterByHiers(hierarchy, '_id');
+      userHierarchies = userHierarchies.concat($or);
+    });
+
+    return Hierarchies.find({$or: userHierarchies}).fetch();
+  },
   getUserHierId: function(userId) {
     if (!userId)
       return undefined;
@@ -59,5 +70,13 @@ Utils = {
     }
 
     return c;
+  },
+  getLocationDisplayName: function (location) {
+    return !location ? '' : (
+    (location.address  || '' ) + ' '  +
+    (location.address1 || '' ) + ', ' +
+    (location.city     || '' ) + ', ' +
+    (location.state    || '' ) + ', ' +
+    (location.country  || '' ));
   }
-};
+});

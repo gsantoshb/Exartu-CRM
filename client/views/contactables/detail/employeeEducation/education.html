@@ -7,34 +7,39 @@
 
 <template name="employeeEducationAdd">
     <div class="record-add row">
-        <div class="add-box-head col-xs-12 col-md-3">
+        <div class="add-box-head add-box-responsive col-xs-12 col-md-3">
             <div class="add-item-icon"><i class="icon-books-3"></i></div>
-            <h2>Education</h2>
+            <div class="add-item-title">Education</div>
         </div>
 
         <div class="add-box-content col-xs-12 col-md-9">
             {{#autoForm id="AddEducationRecord" schema="EducationSchema"}}
-                {{> afQuickField name='institution'}}
-                {{> afQuickField name='description'}}
+                <fieldset>
+                    {{> afQuickField name='institution'}}
+                    {{> afQuickField name='description'}}
+                    {{> afQuickField name='degreeAwarded'}}
 
-                <div class="row">
-                    <div class="form-group col-xs-6">
-                        <span> Start date </span>
-                        {{> dateTimePickerAutoForm name="start" format="MM yyyy" startView=4 minView=3 autoclose=true}}
-                    </div>
-                    <div class="form-group col-xs-6">
-                        <span> End date </span>
-                        <div class="{{endDateClass}}">
-                            {{> dateTimePickerAutoForm name="end" format="MM yyyy" startView=4 minView=3 autoclose=true}}
+                    <div class="row">
+                        <!-- Start Date -->
+                        <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='start'}}has-error{{/if}}">
+                            {{> afB3DatePicker name='start' format="MM yyyy" minViewMode="months" startView="decade" }}
                         </div>
 
-                        <div class="checkbox">
-                            <label>
-                                <input id="to-present" class="editable" type="checkbox"> To present
-                            </label>
+                        <!-- End Date -->
+                        <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='end'}}has-error{{/if}}">
+                            <div class="{{endDateClass}}">
+                                {{> afB3DatePicker name='end' format="MM yyyy" minViewMode="months" startView="decade" }}
+                            </div>
+
+                            <!-- To present -->
+                            <div class="checkbox">
+                                <label>
+                                    <input class="editable toPresent" type="checkbox"> To present
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </fieldset>
 
                 <button class="btn btn-success pull-right"> Save </button>
             {{/autoForm}}
@@ -65,7 +70,12 @@
                             <a class="deleteEducationRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
                         </div>
                         <div class="list-3-item-meta-top">{{educationRecord.institution}}</div>
-                        <h4 class="list-3-item-title"><a href="#">{{educationRecord.description}}</a></h4>
+                        <h4 class="list-3-item-title">
+                            {{#if educationRecord.degreeAwarded}}
+                                {{educationRecord.degreeAwarded}} -
+                            {{/if}}
+                            {{educationRecord.description}}
+                        </h4>
                         <small class="text-muted">
                             <i class="fa fa-calendar"></i>
                             Start: {{#formattedDate value=educationRecord.start format="MMMM YYYY"}} {{date}}{{/formattedDate}}
@@ -85,27 +95,32 @@
 
 <template name="employeeEducationEditItem">
     {{#autoForm id=formId schema="EducationSchema" doc=doc}}
-        {{> afQuickField name='institution'}}
-        {{> afQuickField name='description'}}
+        <fieldset>
+            {{> afQuickField name='institution'}}
+            {{> afQuickField name='description'}}
+            {{> afQuickField name='degreeAwarded'}}
 
-        <div class="row">
-            <div class="form-group col-xs-6">
-                <span> Start date </span>
-                {{> dateTimePickerAutoForm name="start" value=doc.start format="MM yyyy" moment-format="MMMM YYYY" startView=4 minView=3 autoclose=true}}
-            </div>
-            <div class="form-group col-xs-6">
-                <span> End date </span>
-                <div class="{{endDateClass}}">
-                    {{> dateTimePickerAutoForm name="end" value=doc.end format="MM yyyy" moment-format="MMMM YYYY" startView=4 minView=3 autoclose=true}}
+            <div class="row">
+                <!-- Start Date -->
+                <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='start'}}has-error{{/if}}">
+                    {{> afB3DatePicker name='start' value=doc.start format="MM yyyy" minViewMode="months" startView="decade" }}
                 </div>
 
-                <div class="checkbox">
-                    <label>
-                        <input id="to-present" class="editable" type="checkbox" {{checked}}> To present
-                    </label>
+                <!-- End Date -->
+                <div class="form-group col-xs-6 {{#if afFieldIsInvalid name='end'}}has-error{{/if}}">
+                    <div class="{{endDateClass}}">
+                        {{> afB3DatePicker name='end' value=doc.end format="MM yyyy" minViewMode="months" startView="decade" }}
+                    </div>
+
+                    <!-- To present -->
+                    <div class="checkbox">
+                        <label>
+                            <input class="editable toPresent" type="checkbox" {{checked}}> To present
+                        </label>
+                    </div>
                 </div>
             </div>
-        </div>
+        </fieldset>
 
         <div class="pull-right">
             <span class="btn btn-default cancelEducationRecordChanges"> Cancel </span>

@@ -311,8 +311,7 @@
 	content: "~";
 }
 .icon-dropper-3:before {
-	content: "\";
-
+	content: "\\";
 }
 .icon-glue:before {
 	content: "\e000";

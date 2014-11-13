@@ -53,12 +53,27 @@
                     <header class="box-header">
                         <div class="container-fluid" style="padding-bottom: 0">
                             <div class="row">
-                                <div class="col-xs-4">
-                                    <h4 class="box-title">Recent activity</h4>
+                                <div class="col-xs-3">
+                                    <h4 class="box-title">
+                                        Recent activity
+                                    </h4>
                                 </div>
-                                <div  class="col-xs-8 input-group">
-                                    <input id="searchString" class="form-control" placeholder="Search...">
-                                    <a class="input-group-addon btn btn-primary"><i class="fa fa-search"></i></a>
+                                <div  class="col-xs-7">
+                                    <div class="input-group">
+                                        <input id="searchString" class="form-control" placeholder="Search...">
+                                        <a class="input-group-addon btn btn-primary"><i class="fa fa-search"></i></a>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <span class="pointer" style="font-size: 20px;">
+                                        {{#if listViewMode}}
+                                            <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4" ></i>
+                                            <i class="fa fa-bars"></i>
+                                        {{else}}
+                                            <i class="fa fa-th-large"></i>
+                                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4" ></i>
+                                        {{/if}}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -66,13 +81,23 @@
 
                     {{>fastPagination name="activities" loadingTemplate='loadingActivities' container='body' content='#content'}}
 
-                    <section class="timeline">
-                        <div class="activity-container scroll-container">
-                            {{#each activities}}
-                                {{> activity}}
-                            {{/each}}
-                        </div>
-                    </section>
+                    {{#if listViewMode}}
+                        <table class="table table-striped">
+                            <tbody>
+                                {{#each activities}}
+                                    {{> activity . listViewMode=listViewMode}}
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    {{else}}
+                        <section class="timeline">
+                            <div class="activity-container scroll-container">
+                                {{#each activities}}
+                                    {{> activity . listViewMode=listViewMode}}
+                                {{/each}}
+                            </div>
+                        </section>
+                    {{/if}}
                     <!-- /.timeline -->
                 </div>
             </div>
@@ -95,164 +120,247 @@
 
 <!-- New contactable activity -->
 <template name="newContactableActivity">
-    <div class="item item-customer">
-        <div class="item-info">
-            <div class="time">
-                <i class="icon icon-clock-3"></i>
-                <span>
-                     {{#formattedDate value=data.dateCreated format='fromNow'}}
+    {{#if listViewMode}}
+        <tr>
+            <td>
+                <i class="icon {{getActivityIcon}}"></i>
+
+                New <span>{{data.objTypeName}}</span>
+                <a href="/contactable/{{entityId}}">
+                    <strong>
+                        <span>{{data.displayName}}</span>
+                    </strong>
+                </a>
+
+                created by
+
+                <strong> {{displayUserName userId}} </strong>
+
+                {{#if data.contactableEmail}}
+                    <a class="tip-bottom" title="Send Message" href="mailto:{{data.contactableEmail}}">
+                        <i class="fa fa-envelop"></i> {{data.contactableEmail}}
+                    </a>
+                {{/if}}
+
+                <div class="pull-right">
+                    {{#formattedDate value=data.dateCreated format='fromNow'}}
                         {{date}}
                     {{/formattedDate}}
-                </span>
+                </div>
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-customer">
+            <div class="item-info">
+                <div class="time">
+                    <i class="icon icon-clock-3"></i>
+                    <span>
+                         {{#formattedDate value=data.dateCreated format='fromNow'}}
+                            {{date}}
+                        {{/formattedDate}}
+                    </span>
+                </div>
+                <div class="type" style="background: {{getActivityColor}}">
+                    <i class="icon {{getActivityIcon}}"></i>
+                </div>
             </div>
-            <div class="type" style="background: {{getActivityColor}}">
-                <i class="icon {{getActivityIcon}}"></i>
-            </div>
-        </div>
-        <!-- /.item-info -->
-        <div class="item-content">
-            <div class="box">
-                <div class="box-content">
-                    <h4 class="item-title">
-                        <span>{{data.objTypeName}}</span>
-                        <span class="spacer">–</span>
-                        <a href="/contactable/{{entityId}}">
-                            <strong>
-                                <span>{{data.displayName}}</span>
-                            </strong>
-                        </a>
-                        <div class="task-author">
-                            {{displayUserName userId}}
-                        </div>
-                    </h4>
-                    <div class="item-actions">
-                        {{#if data.contactableEmail}}
-                            <a class="btn btn-default tip-bottom" title="Send Message" href="mailto:{{data.contactableEmail}}">
-                                <i class="fa fa-envelop"></i> {{data.contactableEmail}}
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            <span>{{data.objTypeName}}</span>
+                            <span class="spacer">–</span>
+                            <a href="/contactable/{{entityId}}">
+                                <strong>
+                                    <span>{{data.displayName}}</span>
+                                </strong>
                             </a>
-                        {{/if}}
+                            <div class="task-author">
+                                {{displayUserName userId}}
+                            </div>
+                        </h4>
+                        <div class="item-actions">
+                            {{#if data.contactableEmail}}
+                                <a class="btn btn-default tip-bottom" title="Send Message" href="mailto:{{data.contactableEmail}}">
+                                    <i class="fa fa-envelop"></i> {{data.contactableEmail}}
+                                </a>
+                            {{/if}}
+
+                        </div>
 
                     </div>
-
+                    <!-- /.box-content -->
                 </div>
-                <!-- /.box-content -->
+                <!-- /.box -->
             </div>
-            <!-- /.box -->
+            <!-- /.item-content -->
         </div>
-        <!-- /.item-content -->
-    </div>
-    <!-- /.item -->
+        <!-- /.item -->
+    {{/if}}
 </template>
 
 <!-- New task activity -->
 <template name="newTaskActivity">
-    <div class="item item-task">
-        <div class="item-info">
-            <div class="time">
+    {{#if listViewMode}}
+        <tr>
+            <td>
                 <i class="icon icon-clock-3"></i>
-                <span>
+
+                New task created by
+                <strong> {{displayUserName this.userId}} </strong>
+
+                was assigned to
+                {{#each data.assign}}
+                    <strong>{{displayUserName .}}</strong>,
+                {{/each}}
+
+                -
+
+                <strong>{{data.msg}}</strong>
+
+                <div class="pull-right">
                     {{#formattedDate value=data.dateCreated format='fromNow'}}
                         {{date}}
                     {{/formattedDate}}
-                </span>
+                </div>
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-task">
+            <div class="item-info">
+                <div class="time">
+                    <i class="icon icon-clock-3"></i>
+                    <span>
+                        {{#formattedDate value=data.dateCreated format='fromNow'}}
+                            {{date}}
+                        {{/formattedDate}}
+                    </span>
+                </div>
+                <div class="type">
+                    <i class="icon icon-clock-3"></i>
+                </div>
             </div>
-            <div class="type">
-                <i class="icon icon-clock-3"></i>
-            </div>
-        </div>
-        <!-- /.item-info -->
-        <div class="item-content">
-            <div class="box">
-                <div class="box-content">
-                    <h4 class="item-title">
-                        Task
-                        <span class="spacer">–</span>
-                        <a class="pointer">
-                            <strong>{{data.msg}}</strong>
-                        </a>
-                        Assigned to
-                        {{#each data.assign}}
-                            <a>{{displayUserName .}}</a>,
-                        {{/each}}
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            Task
+                            <span class="spacer">–</span>
+                            <a class="pointer">
+                                <strong>{{data.msg}}</strong>
+                            </a>
+                            Assigned to
+                            {{#each data.assign}}
+                                <a>{{displayUserName .}}</a>,
+                            {{/each}}
 
-                    </h4>
-                    <div class="item-actions">
-                        <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
-                            <span> {{displayUserName this.userId}} </span>
-                        </a>
-                        <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
-                            <i class="fa fa-calendar"></i>
-                            Start:
-                            <span>
-                                 {{#formattedDate value=data.begin format='lll'}}
-                                    {{date}}
-                                {{/formattedDate}}
-                            </span>
-                        </a>
-                        {{#if data.end}}
+                        </h4>
+                        <div class="item-actions">
+                            <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
+                                <span> {{displayUserName this.userId}} </span>
+                            </a>
                             <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
                                 <i class="fa fa-calendar"></i>
-                                End:
+                                Start:
                                 <span>
-                                    {{#formattedDate value=data.end format='lll'}}
+                                     {{#formattedDate value=data.begin format='lll'}}
                                         {{date}}
                                     {{/formattedDate}}
                                 </span>
                             </a>
-                        {{/if}}
+                            {{#if data.end}}
+                                <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
+                                    <i class="fa fa-calendar"></i>
+                                    End:
+                                    <span>
+                                        {{#formattedDate value=data.end format='lll'}}
+                                            {{date}}
+                                        {{/formattedDate}}
+                                    </span>
+                                </a>
+                            {{/if}}
+                        </div>
                     </div>
+                    <!-- /.box-content -->
                 </div>
-                <!-- /.box-content -->
+                <!-- /.box -->
             </div>
-            <!-- /.box -->
+            <!-- /.item-content -->
         </div>
-        <!-- /.item-content -->
-    </div>
-    <!-- /.item -->
+        <!-- /.item -->
+    {{/if}}
 </template>
 
 <!-- New job activity -->
 <template name="newJobActivity">
-    <div class="item item-job">
-        <div class="item-info">
-            <div class="time">
-                <i class="icon icon-clock-3"></i><span>
-                {{#formattedDate value=data.dateCreated format='fromNow'}}
-                    {{date}}
-                {{/formattedDate}}
-                </span>
-            </div>
-            <div class="type">
+    {{#if listViewMode}}
+        <tr>
+            <td>
                 <i class="icon icon-briefcase"></i>
-            </div>
-        </div>
-        <!-- /.item-info -->
-        <div class="item-content">
-            <div class="box" data-bind="with: data">
-                <div class="box-content">
-                    <h4 class="item-title">
-                        Job
-                        <span class="spacer">–</span>
-                        <a href="/job/{{entityId}}">
-                            <strong>{{data.publicJobTitle}}</strong>
-                        </a>
-                        {{#if customer}}
-                            @ <a href="/contactable/{{customer._id}}">{{customerName}}</a>
-                        {{/if}}
-                    </h4>
-                    <div class="item-actions">
-                        <a class="btn btn-default tip-bottom addPlacement" title="Assign Candidates">
-                            <i class="icon icon-check-list"> </i> Add placement
-                        </a>
-                    </div>
+
+                New job
+
+                <a href="/job/{{entityId}}">
+                    <strong>{{data.publicJobTitle}}</strong>
+                </a>
+
+                {{#if customer}}
+                    @ <a href="/contactable/{{customer._id}}">{{customerName}}</a>
+                {{/if}}
+
+                created by <strong> {{displayUserName this.userId}} </strong>
+
+                <div class="pull-right">
+                    {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
                 </div>
-                <!-- /.box-content -->
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-job">
+            <div class="item-info">
+                <div class="time">
+                    <i class="icon icon-clock-3"></i><span>
+                    {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
+                    </span>
+                </div>
+                <div class="type">
+                    <i class="icon icon-briefcase"></i>
+                </div>
             </div>
-            <!-- /.box -->
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box" data-bind="with: data">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            Job
+                            <span class="spacer">–</span>
+                            <a href="/job/{{entityId}}">
+                                <strong>{{data.publicJobTitle}}</strong>
+                            </a>
+                            {{#if customer}}
+                                @ <a href="/contactable/{{customer._id}}">{{customerName}}</a>
+                            {{/if}}
+                        </h4>
+                        <div class="item-actions">
+                            <a class="btn btn-default tip-bottom addPlacement" title="Assign Candidates">
+                                <i class="icon icon-check-list"> </i> Add placement
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
         </div>
-        <!-- /.item-content -->
-    </div>
-    <!-- /.item -->
+        <!-- /.item -->
+    {{/if}}
 </template>
 
 <template name="userLoginActivity">

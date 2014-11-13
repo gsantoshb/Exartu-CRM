@@ -9,11 +9,12 @@ PlacementController = RouteController.extend({
         Session.set('entityId', this.params._id);
     },
     action:function(){
-        if (!this.ready()) {
-            this.render('loadingContactable')
-            return;
-        }
-        this.render('placement')
+      if (!this.ready()) {
+          this.render('loadingContactable');
+          return;
+      }
+      this.render('placement');
+      Session.set('activeTab', this.params.hash || 'details');
     },
   onAfterAction: function() {
     var title = 'Placements / ' + Session.get('placementDisplayName'),
@@ -131,19 +132,26 @@ Template.placement.events({
 });
 
 // Tabs
-
 var tabs;
-Template.placement_tabs.tabs = function() {
-  var tabs = [
-    {id: 'details', displayName: 'Details', template: 'placement_details'},
-    {id: 'notes', displayName: 'Notes', template: 'placement_notes'},
-    {id: 'tasks', displayName: 'Tasks', template: 'placement_tasks'},
-  ];
+Template.placement_nav.helpers({
+  tabs: function() {
+    tabs = [
+      {id: 'details', displayName: 'Details', template: 'placement_details'},
+      {id: 'notes', displayName: 'Notes', template: 'placement_notes'},
+      {id: 'tasks', displayName: 'Tasks', template: 'placement_tasks'},
+    ];
 
-  return tabs;
+    return tabs;
+  }
+});
+
+Template.placement_details.helpers({
+  originalPlacement: function () {
+    return placementCollection.findOne({_id: Session.get('entityId')});
+  }
+});
+
+Template.placement.currentTemplate = function () {
+  var selected = _.findWhere(tabs ,{id: Session.get('activeTab')});
+  return selected && selected.template;
 };
-
-Template.placement_tabs.selectedTab = function() {
-  return _.findWhere(tabs, {id: Session.get('activeTab')});
-};
-
