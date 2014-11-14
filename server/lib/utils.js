@@ -25,6 +25,16 @@ _.extend( Utils, {
 
     return user.currentHierId;
   },
+  getHierTreeRoot: function (hier) {
+    var parts = hier.split('-');
+    var root = parts[0];
+    var index = 1;
+    while( root === ExartuConfig.SystemHierarchyId) {
+      root += '-' + parts[index];
+      index++;
+    }
+    return root;
+  },
   filterByHiers: function (hier, key) {
     var accumulated = '';
     var ors = [];
