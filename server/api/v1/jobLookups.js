@@ -124,7 +124,7 @@ var mapper = {
     var result = [];
     _.each(data, function (item) {
       var res = {
-        _id: item._id,
+        id: item._id,
         displayName: item.displayName
       };
       if (item.lookUpActions) {
