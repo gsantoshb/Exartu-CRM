@@ -29,6 +29,21 @@ Router.map(function() {
           }
           break;
 
+        // Create new job title
+        // Body:
+        //  - displayName: string
+        case 'POST':
+          var data = this.request.body;
+          try {
+            var jobTitleId = connection.call('addJobTitle', data.displayName);
+            _.extend(data, { id: jobTitleId });
+            response.end(data);
+          } catch(err) {
+            console.log(err);
+            response.error(err.message);
+          }
+          break;
+
         default:
           response.error('Method not supported');
       }

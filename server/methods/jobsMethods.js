@@ -1,6 +1,10 @@
 Meteor.methods({
   addJob: function (job) {
-    return JobManager.create(job);
+    try {
+      return JobManager.create(job);
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
   },
   'copyJob': function (jobId) {
     return JobManager.copy(jobId);
@@ -10,17 +14,40 @@ Meteor.methods({
   },
 
   getJobs: function(customerId) {
-    return JobManager.getJobs(customerId);
+    try {
+      return JobManager.getJobs(customerId);
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
   },
 
   // Job Lookups
+  addJobTitle: function (displayName) {
+    try {
+      return JobManager.addJobTitle(displayName);
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
+  },
   getJobTitles: function () {
-    return JobManager.getJobTitles();
+    try {
+      return JobManager.getJobTitles();
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
   },
   getJobDurations: function () {
-    return JobManager.getJobDurations();
+    try {
+      return JobManager.getJobDurations();
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
   },
   getJobStatus: function () {
-    return JobManager.getJobStatus();
+    try {
+      return JobManager.getJobStatus();
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
   }
 });
