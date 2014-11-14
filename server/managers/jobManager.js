@@ -1,5 +1,14 @@
 JobManager = {
   create: function(job) {
+    // Validation
+    if (! job.customer) { throw new Error('Customer is required'); }
+    if (! job.jobTitle) { throw new Error('Job title is required'); }
+    if (! job.startDate) { throw new Error('Start date is required'); }
+
+    // Hack to keep both titles the same
+    var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
+    job.publicJobTitle = LookUps.findOne({ _id: job.jobTitle, hierId: rootHier, lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode }).displayName;
+
     return Jobs.insert(job);
   },
   copy: function(jobId) {
@@ -28,6 +37,11 @@ JobManager = {
     });
   },
 
+  getJobs: function (customerId) {
+    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Jobs.find({ customer: customerId }, { sort: { 'dateCreated': -1 } })).fetch();
+  },
+
+  // Job Lookups
   getJobTitles: function () {
     var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
     return LookUps.find({ hierId: rootHier, lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode }).fetch();

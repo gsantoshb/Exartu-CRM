@@ -9,6 +9,11 @@ Meteor.methods({
     return JobManager.setAddress(jobId, addressInfo);
   },
 
+  getJobs: function(customerId) {
+    return JobManager.getJobs(customerId);
+  },
+
+  // Job Lookups
   getJobTitles: function () {
     return JobManager.getJobTitles();
   },
