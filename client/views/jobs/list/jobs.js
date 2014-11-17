@@ -130,20 +130,6 @@ Template.jobsList.created= function () {
     if (query.objType.value)
       searchQuery.$and.push({objNameArray: query.objType.value});
 
-    if (!_.isEmpty(query.searchString.value)) {
-      var stringSearches=[];
-      _.each(searchFields, function (field) {
-        var aux = {};
-        aux[field] = {
-          $regex: query.searchString.value,
-          $options: 'i'
-        }
-        stringSearches.push(aux);
-      });
-      searchQuery.$and.push({
-          $or: stringSearches
-        })
-    };
 
     // Creation date
     if (query.selectedLimit.value) {
@@ -230,9 +216,41 @@ Template.jobsList.created= function () {
     if (searchQuery.$and.length == 0)
       delete searchQuery.$and;
 
-    JobHandler.setFilter(searchQuery);
+    // String search
+    if (query.searchString.value) {
+      var stringSearches=[];
+      _.each(searchFields, function (field) {
+        var aux = {};
+        aux[field] = {
+          $regex: query.searchString.value,
+          $options: 'i'
+        };
+        stringSearches.push(aux);
+      });
+
+      // Search customer using search string in server side and return customers' ids
+      // TODO: find another way to do this kind of search to avoid nasted calls
+      Meteor.call('findCustomer', query.searchString.value, function (err, result) {
+        if (!err)
+          stringSearches.push({
+            customer: {
+              $in: _.map(result, function (customer) {
+                return customer._id;
+              })
+            }
+          });
+
+        searchQuery.$and.push({
+          $or: stringSearches
+        });
+
+        JobHandler.setFilter(searchQuery);
+      });
+    } else {
+      JobHandler.setFilter(searchQuery);
+    }
   })
-}
+};
 
 Template.jobsList.info = function() {
   info.isFiltering.value = jobCollection.find().count() != 0;
