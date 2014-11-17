@@ -64,11 +64,6 @@ Template.addJobPage.events({
     }
     var obj = dType.buildAddModel(model);
 
-    // // hack to keep both titles the same
-    if (obj.jobTitle != null) {
-      obj.publicJobTitle = LookUps.findOne(obj.jobTitle).displayName;
-    }
-
     Meteor.call('addJob', obj, function (err, result) {
       if (err) {
         console.dir(err)
