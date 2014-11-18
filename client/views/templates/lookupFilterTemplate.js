@@ -12,7 +12,8 @@ Template.lookupFilterTemplate.templateContext = function(){
     }),
     onSelected: this.callback,
     multi: this.multi,
-    title: this.title
+    title: this.title,
+    value: this.value.val // Use val instead of value to avoid reactivity
   };
 };
 
@@ -57,7 +58,7 @@ Template.select2.events({
 
 
 Template.buttonGroup.created = function(){
-  this.data.selected = this.data.multi ? [] : null;
+  this.data.selected = this.data.multi ? (this.data.value? [this.data.value] : [] ): this.data.value || null;
   this.data.selectedDep = new Deps.Dependency;
 };
 
