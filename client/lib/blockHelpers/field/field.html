@@ -31,7 +31,7 @@
     <span>{{displayName}} :</span>
     <div class="form-group {{hasError}}">
         <div id="date" class="{{dateClass}}">
-            {{>dateTimePicker}}
+            {{>bootstrap3DatePicker value=value options=options}}
         </div>
         <span>{{error}}</span>
         {{#if required}}
