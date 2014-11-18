@@ -1,9 +1,11 @@
 <template name="originData">
     <div class="text-muted">
-        <span>Created</span>
-        {{#with userName}}
-            <span> by </span> <strong> {{.}} </strong>
-        {{/with}}
+        <span>Created by </span>
+        {{#if displayUserName userId}}
+            <strong> {{displayUserName userId}} </strong>
+        {{else}}
+            <strong> System </strong>
+        {{/if}}
         <span> in hierarchy </span>
         <strong> {{hierName}} </strong>
         <span> at </span>

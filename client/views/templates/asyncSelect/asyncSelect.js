@@ -27,6 +27,7 @@ Template.asyncSelect.rendered = function () {
         self.data.defaultValue(function (err, result) {
           if (!err) {
             callback(result);
+            self.data.onChange(result.id);
           }
         });
       }else{
