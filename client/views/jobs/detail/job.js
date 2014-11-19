@@ -13,7 +13,7 @@ JobController = RouteController.extend({
       this.render('loadingContactable');
       return;
     }
-    Session.set('activeTab', this.params.hash || 'details');
+    Session.set('activeTab', this.params.tab || 'details');
     this.render('job')
   },
   onAfterAction: function () {
@@ -241,6 +241,9 @@ Template.job_nav.helpers({
       {id: 'placements', displayName: 'Placements', template: 'job_placements'}
     ];
     return tabs;
+  },
+  getEntityId: function () {
+    return Session.get('entityId');
   }
 });
 
