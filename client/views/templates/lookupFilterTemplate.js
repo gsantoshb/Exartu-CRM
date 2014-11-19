@@ -58,7 +58,7 @@ Template.select2.events({
 
 
 Template.buttonGroup.created = function(){
-  this.data.selected = this.data.multi ? (this.data.value? [this.data.value] : [] ): this.data.value || null;
+  this.data.selected = this.data.multi ? (this.data.value? this.data.value : [] ): this.data.value || null;
   this.data.selectedDep = new Deps.Dependency;
 };
 

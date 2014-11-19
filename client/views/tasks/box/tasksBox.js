@@ -1,26 +1,66 @@
 var entityType=null;
 var isEntitySpecific=false;
-var TasksHandler, query, status;
+var TasksHandler, taskQuery , status;
 var statusDep = new Deps.Dependency;
 
+var loadTaskQueryFromURL = function (params) {
+  // Search string
+  var searchStringQuery = {};
+  if (params.search) {
+    searchStringQuery.default = params.search;
+  }
+
+  // Status
+  if (params.status) {
+    status = _.findWhere(states, {name: params.status});
+  }
+
+  // Owned by me
+  var ownedByMeQuery = {};
+  if (params.owned) {
+    ownedByMeQuery.default = params.owned ? Meteor.userId() : undefined;
+  }
+
+  // Inactive
+  var inactiveQuery = { type: Utils.ReactivePropertyTypes.boolean };
+  if (params.inactives) {
+    inactiveQuery.default = !! params.inactives;
+  }
+
+  // Assigned to
+  var assignedToQuery = {};
+  if (params.assignedTo) {
+    assignedToQuery.default = params.assignedTo;
+  }
+
+  return new Utils.ObjectDefinition({
+    reactiveProps: {
+      searchString: searchStringQuery,
+      ownedByMe: ownedByMeQuery,
+      inactives: inactiveQuery,
+      assignedTo: assignedToQuery
+    }
+  });
+};
 
 Template.tasksBox.created = function() {
-  query = this.data.query;
-  status = _.findWhere(states, {name: this.data.statusName});
+  taskQuery = taskQuery || loadTaskQueryFromURL(Router.current().params);
+
+  var entityId =  Session.get('entityId');
 
   if (! SubscriptionHandlers.TasksHandler) {
     SubscriptionHandlers.TasksHandler = Meteor.paginatedSubscribe("tasks");
   }
   TasksHandler = SubscriptionHandlers.TasksHandler;
 
+  entityType = Utils.getEntityTypeFromRouter();
+  isEntitySpecific = false;
+  if (entityType != null) isEntitySpecific = true;
+
   Meteor.autorun(function () {
     var urlQuery = new URLQuery();
 
-    entityType = Utils.getEntityTypeFromRouter();
-    isEntitySpecific = false;
-    if (entityType != null) isEntitySpecific = true;
-
-    var queryObj = query.getObject();
+    var queryObj = taskQuery.getObject();
     var q = {};
 
     if(! queryObj.inactives){
@@ -58,7 +98,7 @@ Template.tasksBox.created = function() {
     }
 
     if (isEntitySpecific) {
-      q.links = { $elemMatch: { id: Session.get('entityId') } };
+      q.links = { $elemMatch: { id: entityId} };
     }
 
     urlQuery.apply();
@@ -75,11 +115,16 @@ var states = [
           return {
             completed: null,
             begin: {
-                $lte: new Date(),
+                $lte: new Date()
             },
-            end: {
-                $gte: new Date(),
-            }
+            $or: [
+              {
+                end: { $gte: new Date() }
+              },
+              {
+                end: { $exists: false }
+              }
+            ]
           }
         }
     }, {
@@ -88,10 +133,10 @@ var states = [
           return {
             completed: null,
             begin: {
-                $lt: new Date(),
+                $lt: new Date()
             },
             end: {
-                $lt: new Date(),
+                $lt: new Date()
             }
           }
         }
@@ -129,7 +174,7 @@ Template.tasksBox.helpers({
     return Tasks.find();
   },
   filters: function(){
-    return query
+    return taskQuery;
   },
   states: function(){
     return states;
