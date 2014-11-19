@@ -69,7 +69,7 @@ Router.map(function () {
   });
 
   this.route('job', {
-    path: '/job/:_id',
+    path: '/job/:_id/:tab?',
     controller: 'JobController'
   });
 
