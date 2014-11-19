@@ -12,11 +12,11 @@ Utils.reactiveProp(location, 'value', null);
 Template.jobDetail.created=function(){
   self.editMode=false;
 //  var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
-}
+};
 var job;
 Template.jobDetail.destroyed = function(){
   job=null;
-}
+};
 
 Template.jobDetail.helpers({
   job: function(){
@@ -50,6 +50,13 @@ Template.jobDetail.helpers({
 
     location.value= originalJob && originalJob.location;
     return location;
+  },
+  datePickerOptions: function () {
+    return {
+      format: "D, MM dd, yyyy",
+      minViewMode: "days",
+      startView: "months"
+    }
   }
 });
 
