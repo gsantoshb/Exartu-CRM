@@ -143,14 +143,23 @@ Template.relInput.helpers({
     }
   },
   defaultValue: function () {
+    var self = this;
     return function (cb) {
-      Meteor.call('getLastCustomer', function (err, result) {
-        if (!err){
-          cb(null, { id: result._id, text: result.organization.organizationName });
-        }else{
-          cb(err);
-        }
-      });
+      // Check for preset customer value
+      var customer = Contactables.findOne({ _id: self.value });
+
+      if (customer) {
+        cb(null, { id: customer._id, text: customer.organization.organizationName });
+      } else {
+        // Try to get the last customer used
+        Meteor.call('getLastCustomer', function (err, result) {
+          if (!err){
+            cb(null, { id: result._id, text: result.organization.organizationName });
+          }else{
+            cb(err);
+          }
+        });
+      }
     };
   },
   hasError :function(){

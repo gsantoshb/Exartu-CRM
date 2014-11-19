@@ -20,9 +20,6 @@ Template.customerJobs.helpers({
   jobs: function(){
     return Jobs.find();
   },
-  jobTypes: function(){
-    return dType.ObjTypes.find({parent: 'job'})
-  },
   isNotLast: function(){
     var type = dType.ObjTypes.find({parent: 'job'}).fetch();
     return this._id != type[type.length - 1]._id;
@@ -31,8 +28,8 @@ Template.customerJobs.helpers({
 
 Template.customerJobs.events({
   'click .addJob': function(e){
-    Session.set('addOptions', {customer: contactable._id});
-    Router.go('/jobAdd/' + this.name);
+    Session.set('addOptions', { customer: contactable._id });
+    Router.go('/jobAdd/Temporary');
     e.preventDefault();
   }
 });
