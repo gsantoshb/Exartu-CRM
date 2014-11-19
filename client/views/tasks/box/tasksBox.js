@@ -115,11 +115,16 @@ var states = [
           return {
             completed: null,
             begin: {
-                $lte: new Date(),
+                $lte: new Date()
             },
-            end: {
-                $gte: new Date(),
-            }
+            $or: [
+              {
+                end: { $gte: new Date() }
+              },
+              {
+                end: { $exists: false }
+              }
+            ]
           }
         }
     }, {
@@ -128,10 +133,10 @@ var states = [
           return {
             completed: null,
             begin: {
-                $lt: new Date(),
+                $lt: new Date()
             },
             end: {
-                $lt: new Date(),
+                $lt: new Date()
             }
           }
         }
