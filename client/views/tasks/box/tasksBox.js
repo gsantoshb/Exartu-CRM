@@ -46,6 +46,7 @@ var loadTaskQueryFromURL = function (params) {
 Template.tasksBox.created = function() {
   taskQuery = taskQuery || loadTaskQueryFromURL(Router.current().params);
 
+  var entityId =  Session.get('entityId');
 
   if (! SubscriptionHandlers.TasksHandler) {
     SubscriptionHandlers.TasksHandler = Meteor.paginatedSubscribe("tasks");
@@ -97,7 +98,7 @@ Template.tasksBox.created = function() {
     }
 
     if (isEntitySpecific) {
-      q.links = { $elemMatch: { id: Session.get('entityId') } };
+      q.links = { $elemMatch: { id: entityId} };
     }
 
     urlQuery.apply();
