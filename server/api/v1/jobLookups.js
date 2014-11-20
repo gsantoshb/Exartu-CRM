@@ -29,6 +29,21 @@ Router.map(function() {
           }
           break;
 
+        // Create new job title
+        // Body:
+        //  - displayName: string
+        case 'POST':
+          var data = this.request.body;
+          try {
+            var jobTitleId = connection.call('addJobTitle', data.displayName);
+            _.extend(data, { id: jobTitleId });
+            response.end(data);
+          } catch(err) {
+            console.log(err);
+            response.error(err.message);
+          }
+          break;
+
         default:
           response.error('Method not supported');
       }
@@ -76,11 +91,11 @@ Router.map(function() {
   });
 
   // Job Status
-  this.route('apiLookups_JobStatus' + api_version, {
+  this.route('apiLookups_JobStatuses' + api_version, {
     where: 'server',
-    path: '/api/' + api_version + '/lookups/jobStatus',
+    path: '/api/' + api_version + '/lookups/jobStatuses',
     action: function() {
-      console.log('API v' + api_version + '/lookups/jobStatus ' + this.request.method);
+      console.log('API v' + api_version + '/lookups/jobStatuses ' + this.request.method);
 
       // Get login token from request
       var loginToken = RESTAPI.getLoginToken(this);
@@ -124,7 +139,7 @@ var mapper = {
     var result = [];
     _.each(data, function (item) {
       var res = {
-        _id: item._id,
+        id: item._id,
         displayName: item.displayName
       };
       if (item.lookUpActions) {

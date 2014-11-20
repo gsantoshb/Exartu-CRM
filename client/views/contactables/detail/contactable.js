@@ -12,8 +12,7 @@ ContactableController = RouteController.extend({
       return;
     }
     this.render('contactable');
-
-    Session.set('activeTab', this.params.hash || 'details');
+    Session.set('activeTab', this.params.tab || 'details');
   },
   onAfterAction: function () {
     var title = 'All Contacts / ' + Session.get('contactableDisplayName'),

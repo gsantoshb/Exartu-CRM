@@ -72,28 +72,28 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td colspan="2">
                         <i class="fa fa-calendar"></i>&nbsp;Start date:
                         {{#objectProperty property=startDate editable=editMode}}
-                        {{#dateTimePicker value=value}}
-                        {{/dateTimePicker}}
+                            {{>bootstrap3DatePicker value=value options=datePickerOptions}}
                         {{else}}
                         <strong>
-                            {{#formattedDate value=value format='MM.DD.YYYY'}}
+                            {{#formattedDate value=value format='ddd, MMMM DD, YYYY'}}
                             {{date}}
                             {{/formattedDate}}
                         </strong>
                         {{/objectProperty}}
                     </td>
-                    <td>
+                </tr>
+                <tr>
+                    <td colspan="2">
                         <i class="fa fa-calendar"></i>&nbsp;End date:
                         {{#objectProperty property=endDate editable=editMode}}
-                        {{#dateTimePicker value=value}}
-                        {{/dateTimePicker}}
+                            {{>bootstrap3DatePicker value=value options=datePickerOptions}}
                         {{else}}
                         <strong>
                             {{#if value}}
-                            {{#formattedDate value=value format='MM.DD.YYYY'}}
+                            {{#formattedDate value=value format='ddd, MMMM DD, YYYY'}}
                             {{date}}
                             {{/formattedDate}}
                             {{else}}
@@ -132,7 +132,7 @@
                 </tbody>
             </table>
 
-            {{>originData}}
+            {{>originData originalJob}}
 
         </div>
         <!-- /.box-content-lg-->

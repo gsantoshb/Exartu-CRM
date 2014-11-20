@@ -1,11 +1,18 @@
-var entityType=null;
-var TasksHandler;
+var TasksHandler, query, statusName;
 
 TasksController = RouteController.extend({
   template: 'tasks',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
     return SubscriptionHandlers.TasksHandler = TasksHandler = Meteor.paginatedSubscribe("tasks");
+  },
+  action: function () {
+    if (!this.ready()) {
+      this.render('loadingContactable');
+      return;
+    }
+
+    this.render('tasks');
   },
   onAfterAction: function() {
     var title = 'Tasks',
@@ -26,5 +33,5 @@ TasksController = RouteController.extend({
 Template.tasks.helpers({
   taskCount: function(){
     return TasksHandler.totalCount();
-  }
+  },
 });

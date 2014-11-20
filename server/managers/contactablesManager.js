@@ -90,7 +90,7 @@ ContactableManager = {
     if (! contactableId) { throw new Error('Contactable ID is required'); }
     if (! addressInfo) { throw new Error('Address information is required'); }
 
-    // Conctact method insertion
+    // Contact address insertion
     Contactables.update({ _id: contactableId }, { $set: { location: addressInfo } }, function (err, result) {
       if (err) { throw err; }
       return result;

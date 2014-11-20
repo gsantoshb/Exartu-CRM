@@ -47,7 +47,7 @@ Router.map(function () {
   });
 
   this.route('contactable', {
-    path: '/contactable/:_id',
+    path: '/contactable/:_id/:tab?',
     controller: 'ContactableController'
   });
 
@@ -69,7 +69,7 @@ Router.map(function () {
   });
 
   this.route('job', {
-    path: '/job/:_id',
+    path: '/job/:_id/:tab?',
     controller: 'JobController'
   });
 

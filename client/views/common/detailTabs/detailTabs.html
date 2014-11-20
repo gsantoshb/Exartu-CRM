@@ -6,7 +6,7 @@
                 <div class="row">
                     {{#each tabs}}
                         <div class="{{isActive id}} col-xs-4 col-sm-2 col-md-12 details-tab" style="padding-top: 3px;padding-bottom: 3px;">
-                            <a href="#{{id}}">
+                            <a href="/{{../route}}/{{../entityId}}/{{id}}">
                                 {{displayName}}
                                 {{#if info}}
                                     <span class="custom-badge-2">{{execHelper info}}</span>
@@ -43,7 +43,7 @@
             {{#each tabs}}
                 <div class="{{isActive id}} col-xs-4 col-sm-2 col-md-12 details-tab nav-item" style="padding-top: 3px;padding-bottom: 3px;">
 
-                    <a href="#{{id}}">
+                    <a href="/{{../route}}/{{../entityId}}/{{id}}">
                         {{displayName}}
                     </a>
                 </div>
@@ -53,7 +53,7 @@
             {{#each mobileTabs}}
                 <div class="{{isActive id}} details-tab nav-item ">
 
-                    <a class="btn" href="#{{id}}">
+                    <a class="btn" href="/{{../route}}/{{../entityId}}/{{id}}">
                         {{displayName}}
                     </a>
                 </div>
@@ -68,7 +68,7 @@
                     {{#each otherTabs}}
                         <div class="{{isActive id}} col-xs-12 col-sm-12 col-md-12 details-tab">
 
-                            <a href="#{{id}}">
+                            <a href="/{{../route}}/{{../entityId}}/{{id}}">
                                 {{displayName}}
                             </a>
                         </div>

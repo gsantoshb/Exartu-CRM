@@ -1,6 +1,7 @@
 
 var jobCollection = Jobs;
 var JobHandler;
+var query;
 
 JobsController = RouteController.extend({
   template: 'jobs',
@@ -19,18 +20,88 @@ JobsController = RouteController.extend({
       this.render();
       return;
     }
+
+    var objTypeQuery = {};
     var type = this.params.hash || this.params.type;
     if (type != undefined && type != 'all') {
       var re = new RegExp("^" + type + "$", "i");
       var objType = dType.ObjTypes.findOne({
         name: re
       });
-      query.objType.value = objType.name;
+      objTypeQuery.default = objType.name;
       info.objType.value = objType.name+'s';
     } else {
-      query.objType.value = undefined;
+      objTypeQuery.default  = undefined;
       info.objType.value = 'record(s)';
     }
+
+    // Search string
+    var searchStringQuery = {};
+    if (this.params.search) {
+      searchStringQuery.default = this.params.search;
+    }
+
+    // CreationDate
+    var creationDateQuery = {};
+    if (this.params.creationDate) {
+      creationDateQuery.default = this.params.creationDate;
+    }
+
+    // Inactive
+    var inactiveQuery = { type: Utils.ReactivePropertyTypes.boolean };
+    if (this.params.inactives) {
+      inactiveQuery.default = !! this.params.inactives;
+    }
+
+    // Mine only
+    var mineQuery = { type: Utils.ReactivePropertyTypes.boolean };
+    if (this.params.mine) {
+      mineQuery.default = !! this.params.mine;
+    }
+
+    // Tags
+    var tagsQuery = { type: Utils.ReactivePropertyTypes.array };
+    if (this.params.tags) {
+      tagsQuery.default = this.params.tags.split(',');
+    }
+
+    // Location
+    var locationQuery =  {};
+    if (this.params.address) {
+      locationQuery.default = ' address: ' + this.params.address;
+    }
+    if (this.params.city) {
+      locationQuery.default = locationQuery.default || '';
+      locationQuery.default += ' city: ' + this.params.city;
+    }
+    if (this.params.state) {
+      locationQuery.default = locationQuery.default || '';
+      locationQuery.default += ' state: ' + this.params.state;
+    }
+    if (this.params.country) {
+      locationQuery.default = locationQuery.default || '';
+      locationQuery.default += ' country: ' + this.params.country;
+    }
+
+    // Status
+    var statusQuery = {};
+    if (this.params.status) {
+      statusQuery.default = this.params.status;
+    }
+
+    query = new Utils.ObjectDefinition({
+      reactiveProps: {
+        objType: objTypeQuery,
+        searchString: searchStringQuery,
+        selectedLimit: creationDateQuery,
+        inactives: inactiveQuery,
+        mineOnly: mineQuery,
+        tags: tagsQuery,
+        location: locationQuery,
+        status: statusQuery
+      }
+    });
+
     this.render('jobs');
   },
   onAfterAction: function() {
@@ -60,34 +131,6 @@ var info = new Utils.ObjectDefinition({
   }
 });
 
-var query = new Utils.ObjectDefinition({
-  reactiveProps: {
-    searchString: {},
-    objType: {},
-    inactives: {
-      type: Utils.ReactivePropertyTypes.boolean,
-      default: false
-    },
-    mineOnly: {
-      type: Utils.ReactivePropertyTypes.boolean,
-      default: false
-    },
-    selectedLimit: {},
-    tags: {
-      type: Utils.ReactivePropertyTypes.array,
-      default: []
-    },
-    location: {},
-    status: {}
-  }
-});
-
-// All
-//
-//Template.jobs.created = function(){
-//  query.limit.value = 20
-//};
-
 Template.jobs.information = function() {
   var searchQuery = {};
 
@@ -102,10 +145,6 @@ Template.jobs.information = function() {
 Template.jobs.isLoading = function () {
   return JobHandler.isLoading();
 }
-//
-//Template.jobs.showMore = function() {
-//  return function() { query.limit.value = query.limit.value + 15 };
-//};
 
 // List
 Template.jobsList.created= function () {
@@ -114,8 +153,8 @@ Template.jobsList.created= function () {
       $and: [] // Push each $or operator here
     };
     var options = {};
+    var urlQuery = new URLQuery();
 
-    searchDep.depend();
     selectedSortDep.depend();
 
     // Sort by
@@ -127,23 +166,10 @@ Template.jobsList.created= function () {
     }
 
     // Type
-    if (query.objType.value)
+    if (query.objType.value) {
       searchQuery.$and.push({objNameArray: query.objType.value});
-
-    if (!_.isEmpty(query.searchString.value)) {
-      var stringSearches=[];
-      _.each(searchFields, function (field) {
-        var aux = {};
-        aux[field] = {
-          $regex: query.searchString.value,
-          $options: 'i'
-        }
-        stringSearches.push(aux);
-      });
-      searchQuery.$and.push({
-          $or: stringSearches
-        })
-    };
+      urlQuery.addParam('type', query.objType.value);
+    }
 
     // Creation date
     if (query.selectedLimit.value) {
@@ -152,6 +178,7 @@ Template.jobsList.created= function () {
         dateCreated: {
         $gte: dateLimit.getTime() - query.selectedLimit.value
       }});
+      urlQuery.addParam('creationDate', query.selectedLimit.value);
     }
 
     //Status / Inactive
@@ -176,9 +203,14 @@ Template.jobsList.created= function () {
         searchQuery.$and.push(inactiveStatusOR);
     }
 
+    if (query.inactives.value) {
+      urlQuery.addParam('inactives', true);
+    }
+
     //Created by
     if (query.mineOnly.value) {
       searchQuery.$and.push({userId: Meteor.userId()});
+      urlQuery.addParam('mine', true);
     }
 
     // Tags
@@ -186,6 +218,7 @@ Template.jobsList.created= function () {
       searchQuery.$and.push({tags: {
         $in: query.tags.value
       }});
+      urlQuery.addParam('tags', query.tags.value);
     }
 
     // Location filter
@@ -196,11 +229,11 @@ Template.jobsList.created= function () {
 
         if (value) {
           locationOperatorMatch = true;
-          var aux = { term: {}};
           searchQuery['location.' + locationField] = {
             $regex: value,
             $options: 'i'
           };
+          urlQuery.addParam(locationField, value);
         }
       });
     }
@@ -225,14 +258,52 @@ Template.jobsList.created= function () {
     // Status filter
     if (query.status.value){
       searchQuery.$and.push({status: query.status.value});
+      urlQuery.addParam('status', query.status.value);
     }
 
     if (searchQuery.$and.length == 0)
       delete searchQuery.$and;
 
-    JobHandler.setFilter(searchQuery);
+    // String search
+    if (query.searchString.value) {
+      var stringSearches=[];
+      _.each(searchFields, function (field) {
+        var aux = {};
+        aux[field] = {
+          $regex: query.searchString.value,
+          $options: 'i'
+        };
+        stringSearches.push(aux);
+      });
+
+      urlQuery.addParam('search', query.searchString.value);
+
+      // Search customer using search string in server side and return customers' ids
+      // TODO: find another way to do this kind of search to avoid nasted calls
+      Meteor.call('findCustomer', query.searchString.value, function (err, result) {
+        if (!err)
+          stringSearches.push({
+            customer: {
+              $in: _.map(result, function (customer) {
+                return customer._id;
+              })
+            }
+          });
+
+        searchQuery.$and.push({
+          $or: stringSearches
+        });
+
+        JobHandler.setFilter(searchQuery);
+      });
+    } else {
+      JobHandler.setFilter(searchQuery);
+    }
+
+    // Set url query
+    urlQuery.apply();
   })
-}
+};
 
 Template.jobsList.info = function() {
   info.isFiltering.value = jobCollection.find().count() != 0;
@@ -260,13 +331,6 @@ var jobTypes = function() {
 };
 
 Template.jobsListSearch.jobTypes = jobTypes;
-
-var searchDep = new Deps.Dependency;
-var isSearching = false;
-Template.jobs.isSearching = function() {
-  searchDep.depend();
-  return isSearching;
-}
 
 getActiveStatuses = function(objName){
   var status = Enums.lookUpTypes["job"];
