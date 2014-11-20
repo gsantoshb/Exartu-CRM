@@ -67,7 +67,7 @@ Template.contactableContactMethodsBox.contactMethods = function() {
 
 
 var addNewContactMethod = function() {
-  var newContactMethodValue = $('#new-contact-method-value')
+  var newContactMethodValue = $('#new-contact-method-value');
   $('#new-contact-method-value').val=null;
   if (_.isEmpty(newContactMethodValue.val()) || _.isEmpty(selectedType))
     return;
