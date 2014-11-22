@@ -368,6 +368,7 @@ var loadContactables = function (hierId) {
         description: "test",
         status: status ? status._id : null
       },
+      statusNote: 'looks to be making a decision soon',
       objNameArray: ["person", "Employee", "contactable"],
       person: {
         firstName: data.firstName,
@@ -395,6 +396,7 @@ var loadContactables = function (hierId) {
         department: data.department,
         status: status ? status._id : null
       },
+      statusNote: 'looks to be making a decision soon',
       objNameArray: ["organization", "Customer", "contactable"],
       organization: {
         organizationName: data.name
@@ -490,6 +492,7 @@ var loadJobs = function (hierId) {
             jobTitle: randomJobTitle._id,
             startDate: today,
             endDate: tomorrow,
+            statusNote: 'looks to be making a decision soon',
             description: "a job for all times",
             testData: true
         }
