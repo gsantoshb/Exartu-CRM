@@ -45,14 +45,15 @@ Meteor.paginatedPublish(JobView, function(){
 
   if (!user)
     return false;
-  return JobView.find();
+
+  return Utils.filterCollectionByUserHier.call(this, JobView.find());
 }, {
   pageSize: 15,
   publicationName: 'jobs'
 });
 
 Meteor.publish('singleJob', function (id) {
-  return Utils.filterCollectionByUserHier.call(this, JobView.find(id));
+  return Utils.filterCollectionByUserHier.call(this, JobView.find({_id: id}));
 });
 
 Meteor.publish('allJobs', function () {
