@@ -47,7 +47,7 @@ Template.placementRates.helpers({
     return newRate;
   },
   getType: function(typeId){
-    return  PlacementRateTypes.findOne({ _id: typeId });
+    return LookUps.findOne({lookUpCode: Enums.lookUpTypes.placement.rate.lookUpCode,_id:typeId});
   },
   round: function(value){
     return Math.round(value * 100) / 100;
@@ -56,7 +56,7 @@ Template.placementRates.helpers({
     return self.editMode;
   },
   getAvailableType: function() {
-    var rateTypes = PlacementRateTypes.find().fetch();
+    var rateTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.placement.rate.lookUpCode}).fetch();
     ratesDep.depend();
     return _.filter(rateTypes, function (type) {
       return !_.findWhere(self.rates, { type: type._id });
