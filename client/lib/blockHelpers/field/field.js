@@ -130,7 +130,10 @@ Template.relInput.helpers({
           return console.log(err);
 
         self.ready(_.map(result, function (r) {
-            return { id: r._id, text: r.organization.organizationName };
+            var text=r.organization.organizationName;
+            if (r.Customer) text= text + '/' + r.Customer.department;
+            text=text + '/' + r._id;
+            return { id: r._id, text: text};
           })
         );
       });

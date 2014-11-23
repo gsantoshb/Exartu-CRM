@@ -82,7 +82,7 @@ Meteor.methods({
         $regex: '.*' +  query + '.*',
         $options: 'i'
       }
-    }, { fields: { 'organization.organizationName': 1 } })).fetch();
+    }, { fields: { 'organization.organizationName': 1, 'Customer.department':1 } })).fetch();
   },
   getLastCustomer: function () {
     var user = Meteor.user();

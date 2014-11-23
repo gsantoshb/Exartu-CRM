@@ -51,6 +51,7 @@ Template.jobCustomerAddEdit.getCustomer = function () {
 };
 
 Template.jobCustomerAddEdit.customerChanged = function () {
+
   return function (value) {
     customer(value);
   }
