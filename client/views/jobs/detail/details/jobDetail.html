@@ -11,6 +11,26 @@
             <table class="table custom-table text-normal" style="table-layout: fixed;">
                 <tbody>
                 <tr>
+                    <td>Rate Quote:</td>
+                    <td>
+                        {{#objectProperty property=rateQuote editable=editMode}}
+                        <input class="form-control" type="text" value="{{value}}">
+                        {{else}}
+                        <span >{{value}}</span>
+                        {{/objectProperty}}
+                    </td>
+                    </tr>
+                <tr>
+                    <td>Status note:</td>
+                    <td>
+                        {{#objectProperty property=statusNote editable=editMode}}
+                        <input class="form-control" type="text" value="{{value}}">
+                        {{else}}
+                        <span >{{value}}</span>
+                        {{/objectProperty}}
+                    </td>
+                </tr>
+                <tr>
                     <td>
                         <i class="fa fa-briefcase"></i>&nbsp;Public job title:
                         {{#objectProperty property=publicJobTitle editable=editMode}}
@@ -19,6 +39,8 @@
                         <strong>{{value}}</strong>
                         {{/objectProperty}}
                     </td>
+                </tr>
+                <tr>
                     <td>
                         <i class="fa fa-info-circle"></i>&nbsp;Status:
 

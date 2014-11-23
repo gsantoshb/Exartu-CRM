@@ -168,15 +168,21 @@ newObjType({
       required: false,
       showInAdd: false
     }, {
-      name: 'statusNote',
-      displayName: 'Status Note',
+      name: 'rateQuote',
+      displayName: 'Rate quote',
       required: false,
-      showInAdd: false
+      showInAdd: true
     }, {
-      name: 'jobDescription',
-      displayName: 'Job Description',
+      name: 'statusNote',
+      displayName: 'Status note',
       required: false,
-      showInAdd: false
+      showInAdd: true
+    }, {
+
+      name: 'jobDescription',
+      displayName: 'Job description',
+      required: false,
+      showInAdd: true
     }, {
       name: 'startDate',
       displayName: 'Start date',
@@ -205,7 +211,7 @@ newObjType({
       defaultValue: null,
       required: false,
       multiple: false,
-      showInAdd: true
+      showInAdd: false
     }, {
       name: 'status',
       displayName: 'Status',
@@ -215,7 +221,7 @@ newObjType({
       required: false,
       multiple: false,
       defaultValue: null, // LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,isDefault:true}),
-      showInAdd: true
+      showInAdd: false
     }
 //    {
 //      name: 'industry',
