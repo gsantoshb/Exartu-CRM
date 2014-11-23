@@ -58,8 +58,8 @@ Template.addPlacementPage.helpers({
   },
   employees:function() {
     var employees = [];
-    AllEmployees.find().forEach(function(doc) {
-      employees.push({ id: doc._id, text: doc.displayName});
+    AllEmployees.find({},{ sort: { 'person.lastName' : 1 }}).forEach(function(doc) {
+      employees.push({ id: doc._id, text: doc.displayName + '      ['+ doc._id  + ']'  });
     });
     return employees;
   },
