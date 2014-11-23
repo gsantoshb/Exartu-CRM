@@ -40,6 +40,8 @@ var createPlacement= function(objTypeName){
   }
 
   model= new dType.objTypeInstance(Session.get('objType'), options);
+  var defaultStatus = LookUps.findOne({lookUpCode: Enums.lookUpTypes.placement.status.lookUpCode, isDefault: true});
+  if (defaultStatus) model.status = defaultStatus._id;
   return model
 };
 
