@@ -143,6 +143,9 @@ Template.placement_nav.helpers({
     ];
 
     return tabs;
+  },
+  getEntityId: function () {
+    return Session.get('entityId');
   }
 });
 

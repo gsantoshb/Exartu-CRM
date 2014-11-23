@@ -138,6 +138,11 @@ Router.map(function () {
         waitOn: [dType.ObjTypesHandler]
     });
 
+  this.route('placement', {
+    path: '/placement/:_id/:tab?',
+    controller: 'PlacementController'
+  });
+
    this.route('candidates', {
     path: '/candidates',
     controller: 'CandidatesController'
