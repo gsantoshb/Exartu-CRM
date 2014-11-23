@@ -54,9 +54,6 @@ JobCalculatedStatus= {
   }
 };
 
-// Job rates
-JobRateTypes= new Meteor.Collection('jobRateTypes');
-JobRateTypesHandler= Meteor.subscribe('jobRateTypes');
 
 // General lookups
 LookUps = new Meteor.Collection("lookUps");

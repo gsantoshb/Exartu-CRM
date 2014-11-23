@@ -1,14 +1,14 @@
 var self={};
 Utils.reactiveProp(self,'editMode',false);
-Template.jobRates.created=function(){
+Template.placementRates.created=function(){
   self.editMode=false;
   self.rates=[];
   loadRates();
 }
 var ratesDep=new Deps.Dependency;
-UI.registerHelper('jobRates', function(){
+UI.registerHelper('placementRates', function(){
   rates=  self.rates;
-  return Template.jobRatesTemplate;
+  return Template.placementRatesTemplate;
 })
 
 function setTwoNumberDecimal(event) {
@@ -23,16 +23,16 @@ var newRate={
 }
 
 var loadRates=function(){
-  var job=Jobs.findOne({
+  var placement=Placements.findOne({
     _id: Session.get('entityId')
   });
 
-  if (job.jobRates) self.rates=job.jobRates;
+  if (placement.placementRates) self.rates=placement.placementRates;
 };
 var updateRates=function(){
-  Jobs.update({ _id: Session.get('entityId') },{ $set: { jobRates: self.rates } });
+  Placements.update({ _id: Session.get('entityId') },{ $set: { placementRates: self.rates } });
 };
-Template.jobRates.helpers({
+Template.placementRates.helpers({
   rates: function(){
     ratesDep.depend();
     return self.rates
@@ -47,7 +47,7 @@ Template.jobRates.helpers({
     return newRate;
   },
   getType: function(typeId){
-    return  JobRateTypes.findOne({ _id: typeId });
+    return  PlacementRateTypes.findOne({ _id: typeId });
   },
   round: function(value){
     return Math.round(value * 100) / 100;
@@ -56,17 +56,17 @@ Template.jobRates.helpers({
     return self.editMode;
   },
   getAvailableType: function() {
-    var rateTypes = JobRateTypes.find().fetch();
+    var rateTypes = PlacementRateTypes.find().fetch();
     ratesDep.depend();
     return _.filter(rateTypes, function (type) {
       return !_.findWhere(self.rates, { type: type._id });
     });
   },
-  colorJobRateEdit: function() {
+  colorPlacementRateEdit: function() {
     return self.editMode ? '#008DFC' : '';
   }
 });
-Template.jobRates.events({
+Template.placementRates.events({
   'click .editRate': function(){
     self.editMode= ! self.editMode;
   },

@@ -479,7 +479,6 @@ var loadJobs = function (hierId) {
 
         var newJob = {
             tags:[],
-            jobRates:[],
             customer: randomCustomer._id,
             Temporary: {pay:0,bill:0,frequency:null},
             objNameArray: ['job', 'Temporary'],

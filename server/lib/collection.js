@@ -28,8 +28,6 @@ Placements = new Mongo.Collection("placements");
 
 Candidates = new Mongo.Collection("candidates");
 
-JobRateTypes = new Mongo.Collection("jobRateTypes");
-
 SystemConfigs = new Mongo.Collection("systemConfigs");
 
 UserInvitations = new Mongo.Collection("userInvitations");

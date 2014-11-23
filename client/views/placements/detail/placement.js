@@ -139,6 +139,7 @@ Template.placement_nav.helpers({
       {id: 'details', displayName: 'Details', template: 'placement_details'},
       {id: 'notes', displayName: 'Notes', template: 'placement_notes'},
       {id: 'tasks', displayName: 'Tasks', template: 'placement_tasks'},
+      {id: 'rates', displayName: 'Rates', template: 'placement_rates'}
     ];
 
     return tabs;
