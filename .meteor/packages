@@ -15,7 +15,7 @@ mrt:knockout-client
 matb33:collection-hooks
 mrt:googlemaps
 sacha:spin
-mrt:bootstrap3-wysihtml5
+bootstrap3-wysihtml5
 natestrauser:select2
 vjau:xml2js
 cfs:standard-packages
@@ -52,3 +52,4 @@ date-time-picker
 rajit:bootstrap3-datepicker
 
 mrt:twilio-meteor
+
