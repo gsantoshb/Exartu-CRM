@@ -1,0 +1,15 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "bootstrap3-wysihtml5": {
+        "path": "."
+      }
+    },
+    "packages": {
+      "bootstrap3-wysihtml5": {
+        "path": "."
+      }
+    }
+  }
+}
