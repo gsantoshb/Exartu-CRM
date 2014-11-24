@@ -52,7 +52,7 @@ Meteor.methods({
   },
 
   // Customer
-  setCustomer: function (jobId, customerId) {
+  setJobCustomer: function (jobId, customerId) {
     return JobManager.setCustomer(jobId, customerId);
   }
 });

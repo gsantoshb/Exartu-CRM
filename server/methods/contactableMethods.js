@@ -96,6 +96,11 @@ Meteor.methods({
   // Communication
   sendSMSToContactable: function (contactableId, from, to, text) {
    return SMSManager.sendSMSToContactable(contactableId, from, to, text);
+  },
+
+  // Customer relations
+  setContactCustomer: function (contactId, customerId) {
+    return ContactableManager.setCustomer(contactId, customerId);
   }
 });
 

@@ -1,5 +1,6 @@
 var collection;
-Template.jobCustomerInfo.helpers({
+
+Template.contactCustomerInfo.helpers({
   created: function () {
     var customerId = this.data.customer;
     Meteor.subscribe('singleContactable', customerId);
@@ -20,9 +21,9 @@ Template.jobCustomerInfo.helpers({
   }
 });
 
-Template.jobCustomerInfo.events({
+Template.contactCustomerInfo.events({
   'click .addEdit': function (e, ctx) {
-    Composer.showModal('jobCustomerAddEdit', Session.get('entityId'), ctx.data.customer, ctx.data.path, ctx.data.collection, function (customerId) {
+    Composer.showModal('contactCustomerAddEdit', Session.get('entityId'), ctx.data.customer, ctx.data.path, ctx.data.collection, function (customerId) {
       Meteor.subscribe('singleContactable', customerId);
     });
   }
