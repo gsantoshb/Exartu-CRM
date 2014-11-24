@@ -7,20 +7,7 @@
         <div class="box-content-md">
             <ul class="list-3 stripped has-thumb">
                 {{#each contactMethods}}
-                    <li class="list-3-item">
-                        <div class="list-thumb"><i class="{{contactMethodTypeIcon typeEnum}}"></i></div>
-                        <div class="list-3-content list-magic">
-                            {{#if editMode }}
-                                <div class="list-3-actions">
-                                    <a class="delete pointer"><i class="fa fa-trash-o"></i></a>
-                                </div>
-                            {{/if}}
-                            <div class="list-3-content-wrap">
-                                <div class="list-3-item-meta-top">{{displayName}}</div>
-                                <h4 class="list-3-item-title"><a href="{{contactMethodTypePrefix typeEnum}}{{value}}">{{value}}</a></h4>
-                            </div>
-                        </div>
-                    </li>
+                    {{> contactMethodItem}}
                 {{else}}
                     {{#if editMode }}
                     {{else}}
@@ -35,24 +22,45 @@
         </div>
 
         {{#if editMode }}
-            <div class="box-header-2">
-                <div class="input-group">
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{selectedType}} <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            {{#each contactMethodsTypes}}
-                                <li><a class="contact-method-type" href="#">{{displayName}}</a></li>
-                            {{/each}}
-                        </ul>
-                    </div>
-                    <input id="new-contact-method-value" type="text" class="form-control">
-                </div>
-                <a id="cancel-contact-method" class="btn btn-default"> Cancel </a>
-                <span id="add-contact-method-error" class="label label-danger" style="float: right;"></span>
-                <button id="add-contact-method"  type="button" class="btn btn-success" title="Add">
-                    <span class="fa fa-plus"></span>
-                </button>
-            </div>
+            {{> addContactMethod}}
         {{/if}}
+    </div>
+</template>
+
+<template name="contactMethodItem">
+    <li class="list-3-item">
+        <div class="list-thumb"><i class="{{contactMethodTypeIcon typeEnum}}"></i></div>
+        <div class="list-3-content list-magic">
+            {{#if editMode }}
+                <div class="list-3-actions">
+                    <a class="delete pointer"><i class="fa fa-trash-o"></i></a>
+                </div>
+            {{/if}}
+            <div class="list-3-content-wrap">
+                <div class="list-3-item-meta-top">{{displayName}}</div>
+                <h4 class="contact-method-value list-3-item-title"><a href="{{contactMethodTypePrefix typeEnum}}{{value}}">{{value}}</a></h4>
+            </div>
+        </div>
+    </li>
+</template>
+
+<template name="addContactMethod">
+    <div class="box-header-2">
+        <div class="input-group">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{selectedType}} <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    {{#each contactMethodsTypes}}
+                        <li><a class="contact-method-type" href="#">{{displayName}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+            <input id="new-contact-method-value" type="text" class="form-control">
+        </div>
+        <a id="cancel-contact-method" class="btn btn-default"> Cancel </a>
+        <span id="add-contact-method-error" class="label label-danger" style="float: right;"></span>
+        <button id="add-contact-method"  type="button" class="btn btn-success" title="Add">
+            <span class="fa fa-plus"></span>
+        </button>
     </div>
 </template>

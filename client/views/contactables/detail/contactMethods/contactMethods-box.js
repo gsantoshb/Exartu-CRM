@@ -42,15 +42,6 @@ Template.contactableContactMethodsBox.editModeColor = function() {
   return EditContactMethodsMode.value? '#008DFC' : '';
 };
 
-Template.contactableContactMethodsBox.contactMethodsTypes = function() {
-  return contactMethodsTypes;
-};
-
-Template.contactableContactMethodsBox.selectedType = function() {
-  dep.depend();
-  return selectedType? selectedType.displayName: 'Select';
-};
-
 Template.contactableContactMethodsBox.contactMethods = function() {
   var result = [];
   var contactMethods = this.contactMethods;
@@ -59,16 +50,17 @@ Template.contactableContactMethodsBox.contactMethods = function() {
     var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
     cm.displayName = type.displayName;
     cm.typeCode = type.type;
+    cm.typeCode = type.type;
     result.push(cm);
   });
 
   return result;
 };
 
-
 var addNewContactMethod = function() {
   var newContactMethodValue = $('#new-contact-method-value');
   $('#new-contact-method-value').val=null;
+
   if (_.isEmpty(newContactMethodValue.val()) || _.isEmpty(selectedType))
     return;
 
@@ -77,7 +69,17 @@ var addNewContactMethod = function() {
     return;
   }
 
-  Meteor.call('addContactMethod', Session.get('entityId'), selectedType.type, newContactMethodValue.val(), function(err, result) {
+  if (selectedType.type == Enums.contactMethodTypes.phone) {
+    // Format phone number
+    var value = newContactMethodValue.val().replace(/(\(|\)|-| )/g, '');
+  }
+
+  if (selectedType.type == Enums.contactMethodTypes.email) {
+    // Format phone number
+    var value = newContactMethodValue.val();
+  }
+
+  Meteor.call('addContactMethod', Session.get('entityId'), selectedType.type, value, function(err) {
     if (err) {
       $('#add-contact-method-error').text('There was an error inserting the contact method. Please try again.');
     } else {
@@ -87,8 +89,63 @@ var addNewContactMethod = function() {
   });
 };
 
+// Item
+Template.contactMethodItem.rendered = function () {
+  // Format contact method value according with its type
+  var value = this.$('.contact-method-value');
+  switch (this.data.typeEnum) {
+    case Enums.contactMethodTypes.email: break;
+    case Enums.contactMethodTypes.phone: value.mask('+1 (000) 000-0000'); break;
+  }
+};
+
+// Add
+var loadInputMask = function () {
+  // Update input mask according with type selected
+  var input = $('#new-contact-method-value');
+  switch (selectedType.type) {
+    case Enums.contactMethodTypes.email: break;
+    case Enums.contactMethodTypes.phone: input.mask('+1 (000) 000-0000'); break;
+  }
+};
 
 Template.contactableContactMethodsBox.events = {
+  'click .delete': function() {
+    Contactables.update({_id: contactableId},
+      {
+        $pull: {
+          contactMethods: {
+            type: this.type,
+            value: this.value
+          }
+        }
+      }
+    );
+  },
+  'click #edit-contact-method-mode': function() {
+    if (EditContactMethodsMode.value) {
+      EditContactMethodsMode.hide();
+    }
+    else{
+      EditContactMethodsMode.show();
+    }
+  }
+};
+
+Template.addContactMethod.rendered = function () {
+  loadInputMask();
+};
+
+Template.addContactMethod.contactMethodsTypes = function() {
+  return contactMethodsTypes;
+};
+
+Template.addContactMethod.selectedType = function() {
+  dep.depend();
+  return selectedType? selectedType.displayName: 'Select';
+};
+
+Template.addContactMethod.events({
   'click #add-contact-method': function() {
     addNewContactMethod();
   },
@@ -104,31 +161,14 @@ Template.contactableContactMethodsBox.events = {
   'click #cancel-contact-method': function() {
     EditContactMethodsMode.hide();
   },
-  'click #edit-contact-method-mode': function() {
-    if (EditContactMethodsMode.value) {
-      EditContactMethodsMode.hide();
-    }
-    else{
-      EditContactMethodsMode.show();
-    }
-  },
   'click .contact-method-type': function() {
     selectedType = this;
+
+    loadInputMask();
+
     dep.changed();
   },
   'click .addContactMethod': function () {
     EditContactMethodsMode.show();
-  },
-  'click .delete': function() {
-    Contactables.update({_id: contactableId},
-      {
-        $pull: {
-          contactMethods: {
-            type: this.type,
-            value: this.value
-          }
-        }
-      }
-    );
   }
-};
+});
