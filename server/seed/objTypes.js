@@ -105,7 +105,7 @@ newObjType({
       required: false
     },
     {
-      name: 'TaxID/SSN',
+      name: 'taxID',
       displayName: 'TaxID/SSN',
       showInAdd: true,
       required: false
@@ -369,9 +369,9 @@ newObjType({
       displayName: 'Placement Status',
       fieldType: 'lookUp',
       lookUpName: 'placementStatus',
-      showInAdd: true,
+      showInAdd: false,
       lookUpCode: Enums.lookUpTypes.placement.status.lookUpCode,
-      required: true,
+      required: false,
       multiple: false
     }, {
       name: 'candidateStatus',

@@ -3,7 +3,6 @@ JobManager = {
     // Validation
     if (! job.customer) { throw new Error('Customer is required'); }
     if (! job.jobTitle) { throw new Error('Job title is required'); }
-    if (! job.startDate) { throw new Error('Start date is required'); }
 
     // Hack to keep both titles the same
     var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
@@ -20,7 +19,7 @@ JobManager = {
     var jobCopy = _.pick(job, 'objNameArray', 'customer', 'hierId', 'jobTitle', 'duration', 'numberRequired', 'publicJobTitle');
 
     // Default values
-    jobCopy.startDate = new Date();
+
     var ret = Jobs.insert(jobCopy);
 
     return ret;

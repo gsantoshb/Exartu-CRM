@@ -109,6 +109,30 @@
                             {{/objectProperty}}
                         </td>
                     </tr>
+                    {{#if Employee }}
+                    <tr>
+                        <td>TaxID/SSN</td>
+                        <td>
+                            {{#objectProperty property=taxID editable=editMode}}
+                            <input class="form-control" type="text" value="{{value}}">
+                            {{else}}
+                            <span >{{value}}</span>
+                            {{/objectProperty}}
+                        </td>
+                    </tr>
+                    {{/if}}
+                    {{#if Customer}}
+                    <tr>
+                        <td>WorkerComp Code</td>
+                        <td>
+                            {{#objectProperty property=workerCompCode editable=editMode}}
+                            <input class="form-control" type="text" value="{{value}}">
+                            {{else}}
+                            <span >{{value}}</span>
+                            {{/objectProperty}}
+                        </td>
+                    </tr>
+                    {{/if}}
                 </table>
             {{/with}}
 

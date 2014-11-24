@@ -4,8 +4,8 @@
             <a class="btn-action editPlacement pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
             <div class="box-title">Placement Details</div>
         </div>
-        <div class="box-body" id="details-body">
-            <table class="table custom-table text-normal" style="table-layout: fixed;">
+        <div class="box-content-md">
+                <table class="table box-table table-striped">
                 <tbody>
 
                         {{#with placement}}
@@ -24,6 +24,8 @@
                             <tr>
                                 <td>
                                     <i class="fa fa-info-circle"></i>&nbsp;Status:
+                                </td>
+                                <td>
                                     {{#objectProperty property=candidateStatus editable=editMode}}
                                         <div class="form-group  {{hasError}}">
                                             <select class="form-control input-lg">
@@ -44,8 +46,10 @@
                                 </td>
                             </tr>
                         <tr>
-                            <td colspan="2">
+                            <td >
                                 <i class="fa fa-calendar"></i>&nbsp;Start date:
+                                </td>
+                            <td>
                                 {{#objectProperty property=startDate editable=editMode}}
                                 {{>bootstrap3DatePicker value=value options=datePickerOptions}}
                                 {{else}}
@@ -58,8 +62,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2">
+                            <td >
                                 <i class="fa fa-calendar"></i>&nbsp;End date:
+                            </td>
+                            <td>
                                 {{#objectProperty property=endDate editable=editMode}}
                                 {{>bootstrap3DatePicker value=value options=datePickerOptions}}
                                 {{else}}
