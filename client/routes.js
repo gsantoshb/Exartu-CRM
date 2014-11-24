@@ -233,6 +233,15 @@ Router.map(function () {
     path: '/invitationVerification/:token',
     controller: 'InvitationController'
   });
+
+  this.route('emailTemplate', {
+    path: '/emailTemplate/:_id?',
+    controller: 'EmailTemplateController'
+  });
+  this.route('emailTemplates', {
+    path: '/emailTemplates',
+    controller: 'EmailTemplateListController'
+  });
 });
 
 

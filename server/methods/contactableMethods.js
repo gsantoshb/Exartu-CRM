@@ -61,13 +61,27 @@ Meteor.methods({
     ContactableManager.deletePastJobRecord(contactableId, pastJobInfo);
   },
   findCustomer: function (query) {
-
     return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Contactables.find({
       'organization.organizationName': {
         $regex: query,
         $options: 'i'
       }
     }, { fields: { 'organization.organizationName': 1 } })).fetch();
+  },
+  findEmployee: function (query) {
+    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Contactables.find({
+      $or: [{
+        'person.firstName': {
+          $regex: query,
+          $options: 'i'
+        }
+      },{
+        'person.lastName': {
+          $regex: query,
+          $options: 'i'
+        }
+      }]
+    }, { fields: { 'person': 1 } })).fetch();
   },
   getLastCustomer: function () {
     var user = Meteor.user();

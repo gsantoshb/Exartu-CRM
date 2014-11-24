@@ -120,6 +120,16 @@ Template.contactable.events({
   }
 });
 
+Template.contactable_actions.helpers({
+  emailTemplateContext: function () {
+    var type = Utils.getContactableType(this);
+    var context = {
+      //category: [Enums.emailTemplatesCategories.all]
+    };
+    context[type] = Session.get('entityId');
+    return context;
+  }
+});
 // Header
 Template.contactable_header.helpers({
   mainContactMethods: function () {

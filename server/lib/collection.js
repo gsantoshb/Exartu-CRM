@@ -34,6 +34,8 @@ SystemConfigs = new Mongo.Collection("systemConfigs");
 
 UserInvitations = new Mongo.Collection("userInvitations");
 
+EmailTemplates = new Mongo.Collection("emailTemplates");
+
 Collections = {
   Hierarchies: Hierarchies,
   Jobs: Jobs,

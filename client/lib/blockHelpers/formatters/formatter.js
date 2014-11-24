@@ -16,10 +16,17 @@ UI.registerHelper('htmlEditor', function() {
   template.rendered= function(){
     var editor=this.$('.editor');
 
-    editor.wysihtml5({
+    editorInstance = editor.wysihtml5({
       "color": true,
       "size": 'xs',
       'html': true,
+      parserRules: {
+        "tags":{
+          input: {
+            keepAllAttributes: true
+          }
+        }
+      },
       "events": {
         "change": _.bind(function () {
           editor.trigger('change',editor.val());
