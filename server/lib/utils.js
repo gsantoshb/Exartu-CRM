@@ -62,7 +62,7 @@ _.extend( Utils, {
     var selector = c._cursorDescription.selector;
     if (selector.$or) {
       selector.$and = [];
-      selector.$and.push(selector.$or);
+      selector.$and.push({ $or: selector.$or });
       selector.$and.push(hierarchiesQuery);
       delete selector.$or;
     } else {
