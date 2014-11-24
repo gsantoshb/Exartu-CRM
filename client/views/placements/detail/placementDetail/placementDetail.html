@@ -7,50 +7,44 @@
         <div class="box-body" id="details-body">
             <table class="table custom-table text-normal" style="table-layout: fixed;">
                 <tbody>
-                    <tr>
+
                         {{#with placement}}
-                            <td>
-                                <i class="fa fa-info-circle"></i>&nbsp;Placement Status:
-                                {{#objectProperty property=placementStatus editable=editMode}}
-                                    <div class="form-group  {{hasError}}">
-                                        <select class="form-control input-lg">
-                                            {{#unless required}}
-                                              <option value="null" selected="{{isSelected null value}}">--Select--</option>
-                                            {{/unless}}
-                                            {{#each options}}
-                                                <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
-                                            {{/each}}
-                                        </select>
-                                        <span>{{error}}</span>
-                                    </div>
-                                {{else}}
-                                    <strong>
-                                        <strong>{{displayName}}</strong>
-                                    </strong>
-                                {{/objectProperty}}
-                            </td>
-                            <td>
-                                <i class="fa fa-info-circle"></i>&nbsp;Candidate Status:
-                                {{#objectProperty property=candidateStatus editable=editMode}}
-                                    <div class="form-group  {{hasError}}">
-                                        <select class="form-control input-lg">
-                                            {{#unless required}}
-                                                <option value="null" selected="{{isSelected null value}}">--Select--</option>
-                                            {{/unless}}
-                                            {{#each options}}
-                                                <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
-                                            {{/each}}
-                                        </select>
-                                        <span>{{error}}</span>
-                                    </div>
-                                {{else}}
-                                    <strong>
-                                        <strong>{{displayName}}</strong>
-                                    </strong>
-                                {{/objectProperty}}
-                            </td>
+
+                            <tr>
+                                <td>Status note:</td>
+                                <td>
+                                    {{#objectProperty property=statusNote editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                    {{else}}
+                                    <span >{{value}}</span>
+                                    {{/objectProperty}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <i class="fa fa-info-circle"></i>&nbsp;Status:
+                                    {{#objectProperty property=candidateStatus editable=editMode}}
+                                        <div class="form-group  {{hasError}}">
+                                            <select class="form-control input-lg">
+                                                {{#unless required}}
+                                                    <option value="null" selected="{{isSelected null value}}">--Select--</option>
+                                                {{/unless}}
+                                                {{#each options}}
+                                                    <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
+                                                {{/each}}
+                                            </select>
+                                            <span>{{error}}</span>
+                                        </div>
+                                    {{else}}
+                                        <strong>
+                                            <strong>{{displayName}}</strong>
+                                        </strong>
+                                    {{/objectProperty}}
+                                </td>
+                            </tr>
                         {{/with}}
-                    </tr>
+
                 </tbody>
             </table>
         </div>

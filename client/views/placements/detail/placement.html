@@ -11,6 +11,7 @@
                                 <a href="/contactable/{{customerId}}">{{customerDisplayName}}</a>
                             </strong>
                         {{/if}}
+                        <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
                     </h1>
                 </div>
             </div>
@@ -58,4 +59,7 @@
     <div class="col-sm-6">
         {{#with originalPlacement}}{{>tagsBox  }}{{/with}}
     </div>
+    <div class="col-sm-12">
+    {{> placementRates}}
+        </div>
 </template>
