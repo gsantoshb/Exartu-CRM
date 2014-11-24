@@ -24,7 +24,7 @@ ContactablesList = new View('auxContactables',{
       }
     });
 
-    // Customers
+    // Publish contact's customer
     this.publish({
       cursor: function (contactable) {
         if (contactable.Contact && contactable.Contact.customer) {
@@ -38,6 +38,16 @@ ContactablesList = new View('auxContactables',{
           return Contactables.find(changedProps.Contact.customer, { fields: { 'organization.organizationName': 1 } });
         }
       }
+    });
+
+    // Publish customer's contacts
+    this.publish({
+      cursor: function (contactable) {
+        if (contactable.Customer) {
+          return Contactables.find({'Contact.customer': contactable._id});
+        }
+      },
+      to: 'contactables'
     });
   }
 });
