@@ -87,6 +87,7 @@ mrgalaxy:stripe@1.5.6
 mrt:bootstrap3-wysihtml5@0.3.3
 mrt:googlemaps@0.0.2
 mrt:knockout-client@0.1.1
+mrt:mask@0.0.1
 mrt:moment@2.8.1
 mrt:twilio-meteor@1.1.0
 natestrauser:connection-banner@0.4.3
