@@ -49,5 +49,10 @@ Meteor.methods({
     } catch(err) {
       throw new Meteor.Error(err.message);
     }
+  },
+
+  // Customer
+  setCustomer: function (jobId, customerId) {
+    return JobManager.setCustomer(jobId, customerId);
   }
 });

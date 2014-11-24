@@ -70,5 +70,30 @@ JobManager = {
   getJobStatus: function () {
     var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
     return LookUps.find({ hierId: rootHier, lookUpCode: Enums.lookUpTypes.job.status.lookUpCode }).fetch();
+  },
+
+  // Customer
+  setCustomer: function (jobId, customerId) {
+    var userHierarchiesFilter = Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()));
+
+    // Get job
+    var job = Jobs.findOne({_id: jobId, $or: userHierarchiesFilter});
+
+    // Check if job exists in user's hierarchies
+    if (! job)
+      throw new Meteor.Error(404, 'Job with id ' +  jobId + ' not found');
+
+    // If customerId is defined then validate customer, if not set job's customer as null
+    if (customerId) {
+      // Get customer
+      var customer = Contactables.find({_id: customerId, Customer: {$exists: true}, $or: userHierarchiesFilter});
+
+      // Check if it exists in user's hierarchies
+      if (customerId && ! customer)
+        throw new Meteor.Error(404, 'Customer with id ' +  customerId + ' not found');
+    }
+
+    // Update job customer
+    Jobs.update({_id: jobId}, {$set: { customer: customerId}});
   }
 };
