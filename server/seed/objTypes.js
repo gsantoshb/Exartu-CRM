@@ -51,6 +51,12 @@ newObjType({
       defaultValue: null,
       showInAdd: false,
       required: false
+    },
+    {
+      name: 'workerCompCode',
+      displayName: 'Worker Comp Code',
+      showInAdd: false,
+      required: false
     }
   ]
 });
@@ -96,6 +102,12 @@ newObjType({
       lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode,
       defaultValue: null,
       showInAdd: false,
+      required: false
+    },
+    {
+      name: 'TaxID/SSN',
+      displayName: 'TaxID/SSN',
+      showInAdd: true,
       required: false
     }
   ]
@@ -177,25 +189,22 @@ newObjType({
       displayName: 'Status note',
       required: false,
       showInAdd: true
-    }, {
+    },
+    {
 
       name: 'jobDescription',
       displayName: 'Job description',
       required: false,
       showInAdd: true
-    }, {
-      name: 'startDate',
-      displayName: 'Start date',
-      fieldType: 'date',
-      defaultValue: null,
-      required: true
-    }, {
-      name: 'endDate',
-      displayName: 'End date',
-      fieldType: 'date',
-      defaultValue: null,
-      required: false
-    }, {
+    },
+      {
+        name: 'workHours',
+        displayName: 'Work Hours',
+        showInAdd: false,
+        required: false
+      },
+
+      {
       name: 'numberRequired',
       displayName: 'Number required',
       fieldType: 'number',
@@ -372,9 +381,22 @@ newObjType({
       lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode,
       required: false,
       multiple: false
+    },
+    {
+      name: 'startDate',
+      displayName: 'Start date',
+      fieldType: 'date',
+      defaultValue: null,
+      required: true
+    }, {
+      name: 'endDate',
+      displayName: 'End date',
+      fieldType: 'date',
+      defaultValue: null,
+      required: false
     }
 
-    ]
+  ]
 });
 
 

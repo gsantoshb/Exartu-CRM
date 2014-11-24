@@ -164,20 +164,6 @@
     <strong><a href="/contactable/{{customer}}">{{customerName}}</a></strong>
 
     <br/>
-    <i class="icon-calendar-2"></i>
-    <small>
-        {{#formattedDate value=startDate}}
-            {{date}}
-        {{/formattedDate}}-
-        {{#if endDate}}
-            {{#formattedDate value=endDate}}
-                {{date}}
-            {{/formattedDate}}
-        {{/if}}
-    </small>
-
-
-    <br/>
     <div class="task-author">
         {{#if location.displayName}}
         <i class="icon-map-marker-1"></i>

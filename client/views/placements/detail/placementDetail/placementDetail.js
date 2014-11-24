@@ -52,7 +52,14 @@ Template.placementDetail.helpers({
 
     location.value= originalPlacement && originalPlacement.location;
     return location;
+  },
+  datePickerOptions: function () {
+  return {
+    format: "D, MM dd, yyyy",
+    minViewMode: "days",
+    startView: "months"
   }
+}
 });
 
 Template.placementDetail.events({
