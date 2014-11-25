@@ -48,7 +48,7 @@ JobManager = {
     var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
     var existing = LookUps.findOne({ hierId: rootHier, displayName: displayName, lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode });
     if (existing !== undefined) {
-      throw new Error('A job title with the provided display name already exist');
+      throw new Error('A job title with the provided display name already exists');
     }
 
     return LookUps.insert({
