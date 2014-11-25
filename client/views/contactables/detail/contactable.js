@@ -125,7 +125,7 @@ Template.contactable_actions.helpers({
     var email = _.findWhere(this.contactMethods, {typeEnum: Enums.contactMethodTypes.email});
 
     var context = {
-      //category: [Enums.emailTemplatesCategories.all]
+      category: [Enums.emailTemplatesCategories[type.toLowerCase()]],
       recipient: email && email.value
     };
     context[type] = Session.get('entityId');

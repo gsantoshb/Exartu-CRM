@@ -32,7 +32,10 @@ Template.sendTemplateModal.helpers({
     entities = [];
   },
   templates: function () {
-    return EmailTemplates.find();
+    var context = this[0],
+      q = context.category ? {category : context.category} : {};
+
+    return EmailTemplates.find(q);
   },
   missingTypes: function () {
     missingTypesDep.depend();
@@ -82,7 +85,6 @@ Template.sendTemplateModal.helpers({
   entitySelected: function () {
     var self= this;
     return function (value) {
-      debugger;
       _.each(self.mfIds, function (mfId) {
         entities.push({
           entityId: value,
