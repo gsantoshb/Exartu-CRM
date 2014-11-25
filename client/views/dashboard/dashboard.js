@@ -39,16 +39,7 @@ var query ={
   }
 };
 var queryDep= new Deps.Dependency;
-var customerQuery = {
-  Customer: {
-    $exists: true
-  }
-};
-var employeeQuery = {
-  Employee: {
-    $exists: true
-  }
-};
+
 
 var listViewMode = new ReactiveVar(false);
 
@@ -65,7 +56,7 @@ Template.dashboard.created = function(){
     }
   });
 };
-//Template.dashboard.waitOn=['ObjTypesHandler', 'UsersHandler']
+
 Template.dashboard.helpers({
   activities: function(){
     queryDep.depend();
@@ -79,37 +70,10 @@ Template.dashboard.helpers({
     }
       return Activities.find(q, { sort: {'data.dateCreated': -1} });
   },
-
-  customerHistory: function(){
-
-    return getHistorical(Contactables, getDays(), customerQuery);
-  },
-  employeeHistory: function(){
-
-    return getHistorical(Contactables, getDays(), employeeQuery);
-  },
-  jobHistory: function(){
-    return getHistorical(Jobs, getDays());
-  },
-  jobCount: function(){
-    return Jobs.find().count();
-  },
-  customerCount: function(){
-    return Contactables.find(customerQuery).count();
-  },
-  employeeCount: function(){
-    return Contactables.find(employeeQuery).count();
-  },
   listViewMode: function () {
     return listViewMode.get();
   }
 });
-
-var getDays = function(){
-  var now = new Date();
-  var timeInADay = 24 * 60 * 60 * 1000;
-  return [now.getTime() - (timeInADay) * 7, now.getTime() - (timeInADay) * 6, now.getTime() - (timeInADay) * 5, now.getTime() - (timeInADay) * 4, now.getTime() - (timeInADay) * 3, now.getTime() - (timeInADay) * 2, now.getTime() - (timeInADay) * 1, now.getTime() - (timeInADay) * 0];
-};
 
 Template.dashboard.events({
   'keyup #searchString': _.debounce(function(e){
@@ -151,36 +115,3 @@ Template.newContactableActivity.getActivityColor = function(){
 Template.newContactableActivity.getActivityIcon = function(){
   return helper.getActivityIcon(this);
 };
-
-Template.sparkline.text= function(){
-  return this.join();
-}
-Template.sparkline.rendered = function() {
-  this.$('span').sparkline("html", {
-    type: "bar",
-    fillColor: "#4cd964",
-    lineColor: "#4cd964",
-    width: "50",
-    height: "24"
-  });
-}
-
-var getHistorical = function (collection, timeStamps, query) {
-  var history = [];
-  var q = query || {};
-  _.each(timeStamps, function (time) {
-    q.dateCreated = {
-      $lte: time
-    }
-    history.push(collection.find(q).count());
-  })
-  var last = history.length - 1;
-  if (history[last] != 0) {
-    var growth = Math.round(100 * (history[last] - history[last - 1]) / history[last]);
-  } else {
-    var growth = 0;
-  }
-
-  history.growth = (growth > 0 ? '+' : growth < 0 ? '-' : '') + growth + '%';
-  return history;
-}
