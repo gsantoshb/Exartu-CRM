@@ -70,14 +70,6 @@ Template.jobDetail.events({
       return;
     }
     var update= job.getUpdate();
-    var originalJob= jobCollections.findOne({ _id: Session.get('entityId') });
-    var oldLocation= originalJob.location;
-    var newLocation= location.value;
-
-    if ((newLocation && newLocation.displayName) != (oldLocation && oldLocation.displayName)){
-      update.$set = update.$set || {};
-      update.$set.location = newLocation;
-    }
 
     jobCollections.update({_id: job._id}, update, function(err, result) {
       if (!err) {

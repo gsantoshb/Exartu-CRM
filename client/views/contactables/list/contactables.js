@@ -6,11 +6,11 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    if (!SubscriptionHandlers.AuxContactablesHandler) {
-      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
-    }
-    AuxContactablesHandler = SubscriptionHandlers.AuxContactablesHandler;
-    return [AuxContactablesHandler, Meteor.subscribe('allPlacements')];
+    //if (!SubscriptionHandlers.AuxContactablesHandler) {
+    //  SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+    //}
+    //AuxContactablesHandler = SubscriptionHandlers.AuxContactablesHandler;
+    return [Meteor.subscribe('allPlacements')];
   },
   action: function () {
     if (!this.ready()) {
@@ -130,6 +130,9 @@ var info = new Utils.ObjectDefinition({
     objType: {},
     isFiltering: {
       default: false
+    },
+    isLoading: {
+      default: false
     }
   }
 });
@@ -142,13 +145,15 @@ Template.contactables.information = function() {
   if (query.objType.value)
     searchQuery.objNameArray = query.objType.value;
 
-  info.contactablesCount.value = AuxContactablesHandler.totalCount();
+  var contactableCount = Session.get('contactableCount');
+  if (contactableCount)
+    info.contactablesCount.value = contactableCount;
 
   return info;
 };
 
-Template.contactables.isLoading = function () {
-  return AuxContactablesHandler.isLoading();
+Template.contactablesList.isLoading = function () {
+  return SubscriptionHandlers.AuxContactablesHandler.isLoading();
 };
 
 var searchDep = new Deps.Dependency;
@@ -167,7 +172,6 @@ Template.contactables.events({
 Template.contactables.isESSearch = function() {
   return !_.isEmpty(query.searchString.value);
 };
-
 
 // List
 
@@ -321,7 +325,15 @@ Template.contactablesList.created = function() {
     // HACK: Elasticsearch is used when searching with string, so is not necessary to set a new filter
     if (query.searchString.value) return;
 
-    AuxContactablesHandler.setFilter(searchQuery);
+    if (! SubscriptionHandlers.AuxContactablesHandler) {
+      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery});
+    } else {
+      SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery);
+    }
+  });
+
+  Meteor.autorun(function () {
+    Session.set('contactableCount', SubscriptionHandlers.AuxContactablesHandler.totalCount());
   });
 };
 
@@ -497,6 +509,15 @@ Template.contactablesListItem.displayObjType = function() {
 
 Template.contactablesListItem.isESSearch = function() {
   return !_.isEmpty(query.searchString.value);
+};
+
+Template.contactablesListItem.getLastNote = function() {
+  var note = Notes.findOne({'links.id': this._id}, {sort: { dateCreated: -1}});
+  if (note && note.msg.length > 50) {
+    note.msg = note.msg.slice(0, 50) + '..';
+  }
+
+  return note;
 };
 
 // Employee item

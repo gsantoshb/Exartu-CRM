@@ -517,7 +517,7 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 .list-3-actions {
     display: block;
-    margin-top: 25px;
+    /*margin-top: 25px;*/
 }
 
 .list-3 .list-3-item-title {

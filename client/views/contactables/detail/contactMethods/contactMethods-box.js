@@ -99,6 +99,10 @@ Template.contactMethodItem.rendered = function () {
   }
 };
 
+Template.contactMethodItem.editMode = function () {
+  return EditContactMethodsMode.value;
+};
+
 // Add
 var loadInputMask = function () {
   // Update input mask according with type selected
