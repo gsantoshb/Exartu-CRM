@@ -66,12 +66,12 @@ ContactableManager = {
     if (! contactableId) { throw new Error('Contactable ID is required'); }
     if (type === undefined) { throw new Error('Contact method type is required'); }
     if (! value) { throw new Error('Contact method value is required'); }
-    if (! _.contains(_.toArray(Enums.contactMethodTypes), type)) { throw new Error('Invalid Contact Method Type'); }
-    var contactMethodType = ContactMethods.findOne({ type: type });
+
+    var contactMethodType = LookUps.findOne({ _id: type, lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode });
     if (!contactMethodType) { throw new Error('Invalid contact method type'); }
 
     // Conctact method insertion
-    Contactables.update({ _id: contactableId }, { $addToSet: { contactMethods: { type: contactMethodType._id, value: value} } }, function (err, result) {
+    Contactables.update({ _id: contactableId }, { $addToSet: { contactMethods: { type: type, value: value} } }, function (err, result) {
       if (err) { throw err; }
       return result;
     });

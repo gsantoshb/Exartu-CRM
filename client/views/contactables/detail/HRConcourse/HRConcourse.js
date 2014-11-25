@@ -5,8 +5,13 @@ Template.HRConcourse.helpers({
   isRegistered: function(){
     return !!this.entity.user;;
   },
-  email: function(){
-    var email= _.findWhere(this.entity.contactMethods, { typeEnum: Enums.contactMethodTypes.email } );
+  email: function() {
+    var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
+    var email = _.find(this.entity.contactMethods, function (cm) {
+      var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
+        return true;
+    });
     return email && email.value;
   },
   documents: function() {

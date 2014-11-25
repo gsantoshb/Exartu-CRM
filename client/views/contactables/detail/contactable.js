@@ -123,14 +123,14 @@ Template.contactable.events({
 Template.contactable_header.helpers({
   mainContactMethods: function () {
     var result = {};
-    var contactMethods = ContactMethods.find().fetch();
+    var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
     _.some(this.contactMethods, function (cm) {
-      var type = _.findWhere(contactMethods, {_id: cm.type});
+      var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
       if (!type)
         return false;
-      if (type.type == Enums.contactMethodTypes.email)
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
         result.email = cm;
-      if (type.type == Enums.contactMethodTypes.phone)
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone))
         result.phone = cm;
 
       if (!result.email || !result.phone)

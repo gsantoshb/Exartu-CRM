@@ -8,7 +8,7 @@
             <ul class="list-3 stripped has-thumb">
                 {{#each contactMethods}}
                     <li class="list-3-item">
-                        <div class="list-thumb"><i class="{{contactMethodTypeIcon typeEnum}}"></i></div>
+                        <div class="list-thumb"><i class="{{contactMethodTypeIcon type}}"></i></div>
                         <div class="list-3-content list-magic">
                             {{#if editMode }}
                                 <div class="list-3-actions">
@@ -17,7 +17,7 @@
                             {{/if}}
                             <div class="list-3-content-wrap">
                                 <div class="list-3-item-meta-top">{{displayName}}</div>
-                                <h4 class="list-3-item-title"><a href="{{contactMethodTypePrefix typeEnum}}{{value}}">{{value}}</a></h4>
+                                <h4 class="list-3-item-title"><a href="{{contactMethodTypePrefix type}}{{value}}">{{value}}</a></h4>
                             </div>
                         </div>
                     </li>
