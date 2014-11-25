@@ -49,6 +49,14 @@ ContactablesList = new View('auxContactables',{
       },
       to: 'contactables'
     });
+
+    // Last note
+    this.publish({
+      cursor: function (contactable) {
+        return Notes.find({'links.id': contactable._id}, {limit: 1, sort: { dateCreated: -1}});
+      },
+      to: 'notes'
+    });
   }
 });
 

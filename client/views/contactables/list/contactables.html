@@ -39,10 +39,6 @@
                         {{#if isSearching}}
                             searching
                         {{else}}
-                            {{#unless isESSearch}}
-                                {{> fastPagination name="auxContactables" useKeys='true'}}
-                            {{/unless}}
-
                             <div class="fade-in">
                                 {{> contactablesList }}
                             </div>
@@ -200,6 +196,17 @@
                     </div>
                 </div>
             </div>
+
+            {{#with getLastNote}}
+                <div class="col-xs-12">
+                    <small class="text-muted">
+                        <i class="icon-note-paper-1"></i>
+                        <strong> {{msg}} </strong>
+                        by
+                        {{displayUserName userId}}
+                    </small>
+                </div>
+            {{/with}}
 
             {{#if isESSearch}}
                 <div class="col-xs-12">

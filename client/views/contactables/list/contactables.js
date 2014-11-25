@@ -511,6 +511,15 @@ Template.contactablesListItem.isESSearch = function() {
   return !_.isEmpty(query.searchString.value);
 };
 
+Template.contactablesListItem.getLastNote = function() {
+  var note = Notes.findOne({'links.id': this._id}, {sort: { dateCreated: -1}});
+  if (note && note.msg.length > 50) {
+    note.msg = note.msg.slice(0, 50) + '..';
+  }
+
+  return note;
+};
+
 // Employee item
 
 Template.employeeInformation.placementInfo = function () {
