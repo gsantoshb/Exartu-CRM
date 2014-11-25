@@ -12,7 +12,14 @@ Meteor.methods({
   setJobAddress: function (jobId, addressInfo) {
     return JobManager.setAddress(jobId, addressInfo);
   },
-
+  findJob: function (query) {
+    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Jobs.find({
+      'publicJobTitle': {
+        $regex: query,
+        $options: 'i'
+      }
+    }, { fields: { 'publicJobTitle': 1 } })).fetch();
+  },
   getJobs: function(customerId) {
     try {
       return JobManager.getJobs(customerId);
@@ -49,5 +56,10 @@ Meteor.methods({
     } catch(err) {
       throw new Meteor.Error(err.message);
     }
+  },
+
+  // Customer
+  setJobCustomer: function (jobId, customerId) {
+    return JobManager.setCustomer(jobId, customerId);
   }
 });

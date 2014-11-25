@@ -25,6 +25,7 @@
                             </small>
                         {{/with}}
                     </span>
+                        <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
                     </h1>
                 </div>
             {{/with}}
@@ -65,9 +66,7 @@
     {{> jobActivity}}
 </template>
 
-<template name="job_rates">
-    {{> jobRates}}
-</template>
+
 
 <template name="job_description">
     {{> jobDescription}}
@@ -88,7 +87,7 @@
                 {{> jobDetail}}
             </div>
             <div class="col-sm-12">
-                {{> customerInfo customer=getCustomer path='customer' collection=customerCollection}}
+                {{> jobCustomerInfo customer=getCustomer path='customer' collection=customerCollection}}
             </div>
         </div>
         <div class="col-sm-6">

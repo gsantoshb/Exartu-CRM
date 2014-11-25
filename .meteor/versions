@@ -13,6 +13,7 @@ binary-heap@1.0.0
 blaze-tools@1.0.0
 blaze@2.0.1
 boilerplate-generator@1.0.0
+bootstrap3-wysihtml5@0.0.0
 callback-hook@1.0.0
 cfs:access-point@0.0.0
 cfs:base-package@0.0.0
@@ -73,8 +74,7 @@ meteor-platform@1.1.1
 meteor@1.1.1
 meteorhacks:async@1.0.0
 meteorhacks:kadira-binary-deps@1.2.0
-meteorhacks:kadira@2.11.13
-meteorhacks:meteorx@1.2.0
+meteorhacks:kadira@2.5.2
 meteorhacks:npm@1.2.0
 minifiers@1.1.0
 minimongo@1.0.3
@@ -84,14 +84,15 @@ mongo-livedata@1.0.5
 mongo@1.0.6
 mongoview@0.0.0
 mrgalaxy:stripe@1.5.6
-mrt:bootstrap3-wysihtml5@0.3.3
 mrt:googlemaps@0.0.2
 mrt:knockout-client@0.1.1
+mrt:mask@0.0.1
 mrt:moment@2.8.1
 mrt:twilio-meteor@1.1.0
 natestrauser:connection-banner@0.4.3
 natestrauser:select2@3.5.1
 npm-bcrypt@0.7.7
+npm-container@1.0.0
 oauth2@1.1.0
 oauth@1.1.0
 observe-sequence@1.0.2

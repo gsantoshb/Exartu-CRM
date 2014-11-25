@@ -20,7 +20,7 @@
                 <br/>
 
                 {{#unless userNumbers}}
-                    <small class="text-muted"> You have no numbers available to send note as SMS, <a href="/hierarchyManagement"> go to your hierarchies </a> settings to request a number </small>
+                    <small class="text-muted"> You have no numbers available to send note as SMS, <a href="/management/twilioManagement"> go to your Twilio configuration</a> to request a number </small>
                 {{else}}
                     {{#unless contactableNumbers}}
                         <small class="text-muted"> This contactable has no phone number as a contact method, go to details to add one </small>

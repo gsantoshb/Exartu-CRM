@@ -1,17 +1,17 @@
-<template name="jobRates">
+<template name="placementRates">
     <div class="box">
-        <div class="box-header-2">
-            <a class="btn-action tip-top editRate pointer" data-original-title="Add Job Rate" title="Edit" style="color: {{colorJobRateEdit}}"><i class="fa fa-pencil"></i></a>
-            <div class="box-title">
-                Job Rates
-            </div>
-        </div>
+        <!--<div class="box-header-2">-->
+            <!--<a class="btn-action tip-top editRate pointer" data-original-title="Add Placement Rate" title="Edit" style="color: {{colorPlacementRateEdit}}"><i class="fa fa-pencil"></i></a>-->
+            <!--&lt;!&ndash;<div class="box-title">&ndash;&gt;-->
+                <!--&lt;!&ndash;Placement Rates&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</div>-->
 
         <div class="box-body" style="padding: 0 15px">
             {{#if editMode}}
                 <!-- Edit mode -->
                 {{#if rates}}
-                    <!-- Edit the existing job rates -->
+                    <!-- Edit the existing placement rates -->
                     <div class="row">
                         <div class="col-xs-12 col-md-12">
                             <ul class="list-3 stripped ">
@@ -63,7 +63,7 @@
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th class="col-xs-12 col-md-4">Type</th>
+                                    <th class="col-xs-12 col-md-4"></th>
                                     <th class="col-xs-12 col-md-2">Bill</th>
                                     <th class="col-xs-12 col-md-2">Pay</th>
                                 </tr>
@@ -100,7 +100,7 @@
                 {{/if}}
             {{/if}}
 
-            <!-- New Job Rate -->
+            <!-- New Placement Rate -->
             <div class="row margin-top-15">
                 <div class="col-xs-12 col-md-12">
                     <div class="well" style="margin-bottom: 15px">

@@ -71,7 +71,7 @@
                         <div class="table-item-title">
                             <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
                                 <a href="/placement/{{_id}}">
-                                    {{statusDisplayName}}:&nbsp;
+                                    <i class="icon icon-check-list"></i>
                                 </a>
                             </strong>
 
@@ -124,6 +124,21 @@
         <i class="icon-map-marker-1"></i>
         {{jobLocationDisplayName}}
     {{/if}}
+
+        <i class="icon-calendar-2"></i>
+        <small>
+            {{#formattedDate value=startDate}}
+            {{date}}
+            {{/formattedDate}}-
+            {{#if endDate}}
+            {{#formattedDate value=endDate}}
+            {{date}}
+            {{/formattedDate}}
+            {{/if}}
+        </small>
+        <br />
+
+            {{displayUserName userId}}
 </template>
 
 <template name="placementsListSearch">

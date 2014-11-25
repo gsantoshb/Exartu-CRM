@@ -99,17 +99,17 @@ dType.constructor.service({
     }
 })
 dType.constructor.service({
-    name: 'jobRates',
+    name: 'placementRates',
     getSettings: function(options){
-        return {name: 'jobRates'};
+        return {name: 'placementrates'};
     },
     isValid: function(value, serviceSettings){
         return _.isArray(value);
     },
     initValue: function(value, serviceSettings, type, obj){
       var result=[];
-      var similar_job=Jobs.findOne({customer:obj.customer , jobTitle: obj.jobTitle},{sort: { dateCreated: -1},limit:1});
-      if (similar_job  && similar_job.jobRates) return similar_job.jobRates;
+      var similar_placement=Placement.findOne({job:obj.job },{sort: { dateCreated: -1},limit:1});
+      if (similar_placement  && similar_placement.placementRates) return similar_placement.placementRates;
       return result;
 
 //

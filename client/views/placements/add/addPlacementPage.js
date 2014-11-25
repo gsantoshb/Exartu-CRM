@@ -40,6 +40,8 @@ var createPlacement= function(objTypeName){
   }
 
   model= new dType.objTypeInstance(Session.get('objType'), options);
+  var defaultStatus = LookUps.findOne({lookUpCode: Enums.lookUpTypes.placement.status.lookUpCode, isDefault: true});
+  if (defaultStatus) model.status = defaultStatus._id;
   return model
 };
 
@@ -58,8 +60,8 @@ Template.addPlacementPage.helpers({
   },
   employees:function() {
     var employees = [];
-    AllEmployees.find().forEach(function(doc) {
-      employees.push({ id: doc._id, text: doc.displayName});
+    AllEmployees.find({},{ sort: { 'person.lastName' : 1 }}).forEach(function(doc) {
+      employees.push({ id: doc._id, text: doc.displayName + '      ['+ doc._id  + ']'  });
     });
     return employees;
   },

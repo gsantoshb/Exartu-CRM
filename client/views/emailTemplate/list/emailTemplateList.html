@@ -1,0 +1,83 @@
+<template name="emailTemplateList">
+    <div id="content">
+        <div id="content-header" class="mini">
+            <h1>
+                <span class="prop-input">
+                    <span> Templates </span>
+                </span>
+            </h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+            <a href="/contactables" class="current">
+                <span class="prop-input">
+                    <strong> record(s) </strong>
+                    <span class="text text-danger"></span>
+                </span>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="filter">
+                    <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+                        <strong><i class="fa fa-filter"></i></strong>
+                    </a>
+                    <div class="filter-list" id="filter-body">
+                        <div class="filter-item">
+                            <div class="filter-title">
+                                <i class="fa fa-group"></i>
+                                Category
+                            </div>
+                            {{#each categories}}
+                                <button type="button" class="categorySelect btn btn-sm {{isSelectedClass}}">{{name}}</button>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-9">
+                <div class="actions-head">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+
+                            <div class="pull-left suffix-5">
+                                <div class="btn-group">
+                                    <a class="btn btn-success" title="Add" href="/emailTemplate">
+                                        <span class="fa fa-plus"></span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <span class="prop-input">
+                                    <input type="text" class="form-control" placeholder="Search Contacts">
+                                    <span class="text text-danger"></span>
+                                </span>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    {{#each templates}}
+                        <div class="table-item">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-item-cell">
+                                        <a href="/emailTemplate/{{_id}}">{{name}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</template>

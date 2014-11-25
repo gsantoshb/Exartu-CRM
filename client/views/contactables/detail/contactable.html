@@ -136,7 +136,7 @@
         {{> contactableContactMethodsBox}}
 
         {{#if Contact}}
-            {{> customerInfo customer=Contact.customer path='Contact.customer' collection=collection}}
+            {{> contactCustomerInfo customer=Contact.customer path='Contact.customer' collection=collection}}
         {{/if}}
     </div>
     <div class="col-md-6">
@@ -188,6 +188,10 @@
                         </a>
                     </li>
                 {{/if}}
+
+                <li>
+                    {{>sendTemplate emailTemplateContext}}
+                </li>
             </ul>
         </div>
     </div>

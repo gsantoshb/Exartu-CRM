@@ -3,7 +3,6 @@ JobManager = {
     // Validation
     if (! job.customer) { throw new Error('Customer is required'); }
     if (! job.jobTitle) { throw new Error('Job title is required'); }
-    if (! job.startDate) { throw new Error('Start date is required'); }
 
     // Hack to keep both titles the same
     var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
@@ -20,7 +19,7 @@ JobManager = {
     var jobCopy = _.pick(job, 'objNameArray', 'customer', 'hierId', 'jobTitle', 'duration', 'numberRequired', 'publicJobTitle');
 
     // Default values
-    jobCopy.startDate = new Date();
+
     var ret = Jobs.insert(jobCopy);
 
     return ret;
@@ -49,7 +48,7 @@ JobManager = {
     var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
     var existing = LookUps.findOne({ hierId: rootHier, displayName: displayName, lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode });
     if (existing !== undefined) {
-      throw new Error('A job title with the provided display name already exist');
+      throw new Error('A job title with the provided display name already exists');
     }
 
     return LookUps.insert({
@@ -71,5 +70,30 @@ JobManager = {
   getJobStatus: function () {
     var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
     return LookUps.find({ hierId: rootHier, lookUpCode: Enums.lookUpTypes.job.status.lookUpCode }).fetch();
+  },
+
+  // Customer
+  setCustomer: function (jobId, customerId) {
+    var userHierarchiesFilter = Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()));
+
+    // Get job
+    var job = Jobs.findOne({_id: jobId, $or: userHierarchiesFilter});
+
+    // Check if job exists in user's hierarchies
+    if (! job)
+      throw new Meteor.Error(404, 'Job with id ' +  jobId + ' not found');
+
+    // If customerId is defined then validate customer, if not set job's customer as null
+    if (customerId) {
+      // Get customer
+      var customer = Contactables.find({_id: customerId, Customer: {$exists: true}, $or: userHierarchiesFilter});
+
+      // Check if it exists in user's hierarchies
+      if (customerId && ! customer)
+        throw new Meteor.Error(404, 'Customer with id ' +  customerId + ' not found');
+    }
+
+    // Update job customer
+    Jobs.update({_id: jobId}, {$set: { customer: customerId}});
   }
 };

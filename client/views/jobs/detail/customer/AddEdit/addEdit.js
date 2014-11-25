@@ -15,18 +15,14 @@ Template.jobCustomerAddEdit.viewModel = function (entityId, value, path, collect
     if (customer === undefined) {
       customer = null;
     }
-    var upd = {};
-    upd[path] = customer;
 
-    collection.update({_id: entityId}, {$set: upd}, function (err, result) {
+    Meteor.call('setJobCustomer', entityId, customer, function (err, result) {
       if (!err) {
         self.close();
         if (callback && _.isFunction(callback)) {
           callback(customer);
         }
-      }
-
-      else {
+      } else {
         console.dir(err);
       }
     })
@@ -51,6 +47,7 @@ Template.jobCustomerAddEdit.getCustomer = function () {
 };
 
 Template.jobCustomerAddEdit.customerChanged = function () {
+
   return function (value) {
     customer(value);
   }

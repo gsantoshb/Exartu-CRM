@@ -82,7 +82,22 @@ Meteor.methods({
         $regex: '.*' +  query + '.*',
         $options: 'i'
       }
-    }, { fields: { 'organization.organizationName': 1 } })).fetch();
+    }, { fields: { 'organization.organizationName': 1, 'Customer.department':1 } })).fetch();
+  },
+  findEmployee: function (query) {
+    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Contactables.find({
+      $or: [{
+        'person.firstName': {
+          $regex: query,
+          $options: 'i'
+        }
+      },{
+        'person.lastName': {
+          $regex: query,
+          $options: 'i'
+        }
+      }]
+    }, { fields: { 'person': 1 } })).fetch();
   },
   getLastCustomer: function () {
     var user = Meteor.user();
@@ -96,6 +111,11 @@ Meteor.methods({
   // Communication
   sendSMSToContactable: function (contactableId, from, to, text) {
    return SMSManager.sendSMSToContactable(contactableId, from, to, text);
+  },
+
+  // Customer relations
+  setContactCustomer: function (contactId, customerId) {
+    return ContactableManager.setCustomer(contactId, customerId);
   }
 });
 

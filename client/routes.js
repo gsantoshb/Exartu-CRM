@@ -138,6 +138,11 @@ Router.map(function () {
         waitOn: [dType.ObjTypesHandler]
     });
 
+  this.route('placement', {
+    path: '/placement/:_id/:tab?',
+    controller: 'PlacementController'
+  });
+
    this.route('candidates', {
     path: '/candidates',
     controller: 'CandidatesController'
@@ -232,6 +237,15 @@ Router.map(function () {
   this.route('invitationVerification', {
     path: '/invitationVerification/:token',
     controller: 'InvitationController'
+  });
+
+  this.route('emailTemplate', {
+    path: '/emailTemplate/:_id?',
+    controller: 'EmailTemplateController'
+  });
+  this.route('emailTemplates', {
+    path: '/emailTemplates',
+    controller: 'EmailTemplateListController'
   });
 });
 

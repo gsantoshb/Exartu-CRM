@@ -119,6 +119,20 @@ Template.contactable.events({
   }
 });
 
+Template.contactable_actions.helpers({
+  emailTemplateContext: function () {
+    var type = Utils.getContactableType(this);
+    // TODO: use the contact methods lookup actions
+    var email = _.findWhere(this.contactMethods, {typeEnum: Enums.contactMethodTypes.email});
+
+    var context = {
+      category: [Enums.emailTemplatesCategories[type.toLowerCase()]],
+      recipient: email && email.value
+    };
+    context[type] = Session.get('entityId');
+    return context;
+  }
+});
 // Header
 Template.contactable_header.helpers({
   mainContactMethods: function () {
