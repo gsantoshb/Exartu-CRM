@@ -59,27 +59,22 @@ Template.contactableContactMethodsBox.contactMethods = function() {
 
 var addNewContactMethod = function() {
   var newContactMethodValue = $('#new-contact-method-value');
+  var value = newContactMethodValue.val();
   $('#new-contact-method-value').val = null;
-  if (_.isEmpty(newContactMethodValue.val()) || _.isEmpty(selectedType))
+  if (_.isEmpty(value) || _.isEmpty(selectedType))
     return;
 
   // Check email regex
   if (selectedType.lookUpActions) {
-    if (_.contains(selectedType.lookUpActions, Enums.lookUpAction.ContactMethod_Email) && !helper.emailRE.test(newContactMethodValue.val())) {
+    if (_.contains(selectedType.lookUpActions, Enums.lookUpAction.ContactMethod_Email) && !helper.emailRE.test(value)) {
       $('#add-contact-method-error').text('Invalid email format');
       return;
     }
   }
 
-  // TODO: user lookups actions
-  if (selectedType.type == Enums.contactMethodTypes.phone) {
-    // Format phone number
-    var value = newContactMethodValue.val().replace(/(\(|\)|-| )/g, '');
-  }
-
-  if (selectedType.type == Enums.contactMethodTypes.email) {
-    // Format phone number
-    var value = newContactMethodValue.val();
+  // Format phone number
+  if (selectedType.lookUpActions && _.contains(selectedType.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+    value = value.replace(/(\(|\)|-| )/g, '');
   }
 
   Meteor.call('addContactMethod', Session.get('entityId'), selectedType._id, value, function(err) {
@@ -94,12 +89,13 @@ var addNewContactMethod = function() {
 
 // Item
 Template.contactMethodItem.rendered = function () {
+  var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
+  var type = _.findWhere(contactMethodsTypes, { _id: this.data.type });
+
   // Format contact method value according with its type
   var value = this.$('.contact-method-value');
-  // TODO: use contact method lookup actions
-  switch (this.data.typeEnum) {
-    case Enums.contactMethodTypes.email: break;
-    case Enums.contactMethodTypes.phone: value.mask('+1 (000) 000-0000'); break;
+  if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+    value.mask('+1 (000) 000-0000');
   }
 };
 
@@ -109,12 +105,13 @@ Template.contactMethodItem.editMode = function () {
 
 // Add
 var loadInputMask = function () {
+  var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
+  var type = _.findWhere(contactMethodsTypes, { _id: this.data.type });
+
   // Update input mask according with type selected
   var input = $('#new-contact-method-value');
-  // TODO: use contact method lookup actions
-  switch (selectedType.type) {
-    case Enums.contactMethodTypes.email: break;
-    case Enums.contactMethodTypes.phone: input.mask('+1 (000) 000-0000'); break;
+  if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+    input.mask('+1 (000) 000-0000');
   }
 };
 
