@@ -125,7 +125,7 @@ Template.contactable_actions.helpers({
     var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
     var email = _.find(this.contactMethods, function (cm) {
       var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
-      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
+      if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
         return true;
     });
 

@@ -1,8 +1,6 @@
-
-Meteor.methods({
-  test_1: function () {
-    var res = [];
-
+Migrations.add({
+  version: 10,
+  up: function () {
     // Get the new contact methods
     var contactMethodTypes = [];
     _.each(systemLookUps, function(item) {
@@ -16,17 +14,10 @@ Meteor.methods({
     _.each(topLevelHierarchies, function(hierarchy) {
       _.each(contactMethodTypes, function(cmType) {
         cmType.hierId = hierarchy._id;
-
-        res.push(cmType);
         LookUps.insert(cmType);
       });
     });
 
-    return res;
-  },
-
-  test_2: function () {
-    var res = [];
 
     // Get previous contact method types
     var oldCMTypes = ContactMethods.find().fetch();
@@ -55,7 +46,5 @@ Meteor.methods({
       });
       Contactables.update({ _id: contactable._id }, { $set: { contactMethods: updatedContactMethods } } );
     });
-
-    return res;
   }
 });
