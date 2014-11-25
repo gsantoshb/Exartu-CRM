@@ -36,6 +36,18 @@ EmailTemplateManager = {
     });
 
     return result;
+  },
+  sendTemplate: function (templateId, entities, recipient) {
+    var text = this.instantiateTemplate(templateId, entities);
+    var template = EmailTemplates.findOne(templateId);
+
+    Meteor.call('sendEmail', recipient, template.name, text, true);
+    Emails.insert({
+      to: recipient,
+      text: text,
+      userId: Meteor.userId(),
+      templateId: template._id
+    })
   }
 };
 

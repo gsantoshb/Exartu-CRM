@@ -122,7 +122,7 @@ Template.sendTemplateModal.events({
     var context = this[0],
       template = EmailTemplates.findOne(templateId.get());
     sending.set(true);
-    Meteor.call('sendEmail', context.recipient, template.name, preview.get(), true, function (err, result) {
+    Meteor.call('sendTemplate', templateId.get(), entities, context.recipient, function (err, result) {
       if (err){
         console.log(err);
       }else{
