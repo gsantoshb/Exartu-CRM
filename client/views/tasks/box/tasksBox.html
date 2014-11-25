@@ -48,21 +48,17 @@
                                 </div>
 
                                 <div class="checkbox">
-                                    <label>
-                                        {{#objectProperty property=filters.assigned}}
-                                            <input type="checkbox" checked="{{assigned}}" />Assigned to:
-                                        {{/objectProperty}}
-
-                                        {{#objectProperty property=filters.assignedTo}}
-                                            <select class="form-control">
-                                                {{#each users}}
-                                                    <option value="{{_id}}">{{displayUserName _id}}</option>
-                                                {{/each}}
-                                            </select>
-                                        {{/objectProperty}}
-
-                                    </label>
+                                    {{#objectProperty property=filters.assigned}}
+                                        <input type="checkbox" checked="{{assigned}}" />Assigned to:
+                                    {{/objectProperty}}
                                 </div>
+                                {{#objectProperty property=filters.assignedTo}}
+                                    <select class="form-control">
+                                        {{#each users}}
+                                            <option value="{{_id}}">{{displayUserName _id}}</option>
+                                        {{/each}}
+                                    </select>
+                                {{/objectProperty}}
                             </div>
                         </div>
                     </div>
