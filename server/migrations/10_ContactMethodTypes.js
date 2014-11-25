@@ -44,7 +44,9 @@ Migrations.add({
           }
         }
       });
-      Contactables.update({ _id: contactable._id }, { $set: { contactMethods: updatedContactMethods } } );
+      if (updatedContactMethods.length > 0) {
+        Contactables.update({ _id: contactable._id }, { $set: { contactMethods: updatedContactMethods } } );
+      }
     });
   }
 });

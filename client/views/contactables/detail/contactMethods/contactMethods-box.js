@@ -104,14 +104,15 @@ Template.contactMethodItem.editMode = function () {
 };
 
 // Add
-var loadInputMask = function () {
-  var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
-  var type = _.findWhere(contactMethodsTypes, { _id: this.data.type });
-
-  // Update input mask according with type selected
-  var input = $('#new-contact-method-value');
-  if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
-    input.mask('+1 (000) 000-0000');
+var loadInputMask = function (selectedType) {
+  if (selectedType) {
+    var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
+    var type = _.find(contactMethodsTypes,  function(cm){ return cm._id === selectedType._id; });
+    // Update input mask according with type selected
+    var input = $('#new-contact-method-value');
+    if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+      input.mask('+1 (000) 000-0000');
+    }
   }
 };
 
@@ -139,7 +140,7 @@ Template.contactableContactMethodsBox.events = {
 };
 
 Template.addContactMethod.rendered = function () {
-  loadInputMask();
+  loadInputMask(selectedType);
 };
 
 Template.addContactMethod.contactMethodsTypes = function() {
@@ -170,7 +171,7 @@ Template.addContactMethod.events({
   'click .contact-method-type': function() {
     selectedType = this;
 
-    loadInputMask();
+    loadInputMask(selectedType);
 
     dep.changed();
   },
