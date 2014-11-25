@@ -7,7 +7,7 @@ UI.registerHelper('displayProperty', function(){
         template.created = function() {
           if(this.data.required && !this.data.value)
             this.data.value = new Date();
-          this.data.depIsEditable = new Deps.Dependency;
+          this.data.depIsEditable = new Tracker.Dependency;
           this.data.isEditable = this.data.required;
         };
         template.isEditable = function() {
@@ -20,8 +20,7 @@ UI.registerHelper('displayProperty', function(){
         };
         template.events({
           //todo: the dateTimePicker template accepts an onChange callback. We should pass it so we this doesn't depend on the event type or class
-          'dp.change .dateTimePicker': getDate,
-          'blur input.date': getDate,
+          'changeDate .date': getDate,
           'change .editable': function(e) {
             this.isEditable = e.target.checked;
             if(!this.isEditable)
@@ -62,9 +61,9 @@ UI.registerHelper('displayProperty', function(){
 });
 
 var getDate=function(e, ctx){
-  this.value = ctx.$('.dateTimePicker').data('DateTimePicker').date.toDate();
-  dType.isValidField(this);
-}
+  ctx.data.value = e.date;
+  dType.isValidField(ctx.data);
+};
 
 Template.typeInput.helpers({
   isField: function (field) {
@@ -105,12 +104,20 @@ Template.lookUpFieldInput.helpers({
 Template.dateFieldInput.helpers({
   hasError :function(){
     return this.isValid ? '': 'error';
+  },
+  options: function() {
+    // datepicker options
+    return {
+      format: "D, MM dd, yyyy",
+      minViewMode: "days",
+      startView: "months"
+    }
   }
 });
 
 Template.relInput.rendered = function () {
   this.$('select').select2();
-}
+};
 
 Template.relInput.helpers({
   getCustomer: function () {
@@ -123,7 +130,10 @@ Template.relInput.helpers({
           return console.log(err);
 
         self.ready(_.map(result, function (r) {
-            return { id: r._id, text: r.organization.organizationName };
+            var text=r.organization.organizationName;
+            if (r.Customer) text= text + '/' + r.Customer.department;
+            text=text + '/' + r._id;
+            return { id: r._id, text: text};
           })
         );
       });
@@ -136,14 +146,23 @@ Template.relInput.helpers({
     }
   },
   defaultValue: function () {
+    var self = this;
     return function (cb) {
-      Meteor.call('getLastCustomer', function (err, result) {
-        if (!err){
-          cb(null, { id: result._id, text: result.organization.organizationName });
-        }else{
-          cb(err);
-        }
-      });
+      // Check for preset customer value
+      var customer = Contactables.findOne({ _id: self.value });
+
+      if (customer) {
+        cb(null, { id: customer._id, text: customer.organization.organizationName });
+      } else {
+        // Try to get the last customer used
+        Meteor.call('getLastCustomer', function (err, result) {
+          if (!err){
+            cb(null, { id: result._id, text: result.organization.organizationName });
+          }else{
+            cb(err);
+          }
+        });
+      }
     };
   },
   hasError :function(){

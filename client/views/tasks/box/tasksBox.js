@@ -1,36 +1,92 @@
 var entityType=null;
 var isEntitySpecific=false;
-var TasksHandler;
-Template.tasksBox.created=function(){
+var TasksHandler, taskQuery , status;
+var statusDep = new Deps.Dependency;
+
+var loadTaskQueryFromURL = function (params) {
+  // Search string
+  var searchStringQuery = {};
+  if (params.search) {
+    searchStringQuery.default = params.search;
+  }
+
+  // Status
+  if (params.status) {
+    status = _.findWhere(states, {name: params.status});
+  }
+
+  // Owned by me
+  var ownedByMeQuery = {};
+  if (params.owned) {
+    ownedByMeQuery.default = params.owned ? Meteor.userId() : undefined;
+  }
+
+  // Inactive
+  var inactiveQuery = { type: Utils.ReactivePropertyTypes.boolean };
+  if (params.inactives) {
+    inactiveQuery.default = !! params.inactives;
+  }
+
+  // Assigned to
+  var assignedToQuery = {};
+  if (params.assignedTo) {
+    assignedToQuery.default = params.assignedTo;
+  }
+
+  return new Utils.ObjectDefinition({
+    reactiveProps: {
+      searchString: searchStringQuery,
+      ownedByMe: ownedByMeQuery,
+      inactives: inactiveQuery,
+      assignedTo: assignedToQuery
+    }
+  });
+};
+
+Template.tasksBox.created = function() {
+  taskQuery = taskQuery || loadTaskQueryFromURL(Router.current().params);
+
+  var entityId =  Session.get('entityId');
+
   if (! SubscriptionHandlers.TasksHandler) {
     SubscriptionHandlers.TasksHandler = Meteor.paginatedSubscribe("tasks");
   }
   TasksHandler = SubscriptionHandlers.TasksHandler;
 
+  entityType = Utils.getEntityTypeFromRouter();
+  isEntitySpecific = false;
+  if (entityType != null) isEntitySpecific = true;
+
   Meteor.autorun(function () {
-    entityType = Utils.getEntityTypeFromRouter();
-    isEntitySpecific = false;
-    if (entityType != null) isEntitySpecific = true;
+    var urlQuery = new URLQuery();
 
-
-    var queryObj = query.getObject();
+    var queryObj = taskQuery.getObject();
     var q = {};
+
     if(! queryObj.inactives){
       q.inactive = {
         $ne: true
       };
     }
-    if (queryObj.ownedByMe) {
-      q.userId = Meteor.userId();
+
+    if (queryObj.inactives) {
+      urlQuery.addParam('inactive', true);
     }
 
-    if (queryObj.assigned && queryObj.assignedTo) {
-      q.assign = queryObj.assignedTo
+    if (queryObj.ownedByMe) {
+      q.userId = Meteor.userId();
+      urlQuery.addParam('owned', true);
+    }
+
+    if (queryObj.assignedTo) {
+      q.assign = queryObj.assignedTo;
+      urlQuery.addParam('assignedTo', queryObj.assignedTo);
     }
 
     statusDep.depend();
     if (status) {
       _.extend(q, status.query());
+      urlQuery.addParam('status', status.name);
     }
 
     if (queryObj.searchString) {
@@ -38,13 +94,19 @@ Template.tasksBox.created=function(){
         $regex: queryObj.searchString,
         $options: 'i'
       };
+      urlQuery.addParam('search', queryObj.searchString);
     }
+
     if (isEntitySpecific) {
-      q.links = { $elemMatch: { id: Session.get('entityId') } };
+      q.links = { $elemMatch: { id: entityId} };
     }
+
+    urlQuery.apply();
+
     TasksHandler.setFilter(q);
   })
-}
+};
+
 //todo: improve queries to match with the state in the transform
 var states = [
     {
@@ -53,11 +115,16 @@ var states = [
           return {
             completed: null,
             begin: {
-                $lte: new Date(),
+                $lte: new Date()
             },
-            end: {
-                $gte: new Date(),
-            }
+            $or: [
+              {
+                end: { $gte: new Date() }
+              },
+              {
+                end: { $exists: false }
+              }
+            ]
           }
         }
     }, {
@@ -66,10 +133,10 @@ var states = [
           return {
             completed: null,
             begin: {
-                $lt: new Date(),
+                $lt: new Date()
             },
             end: {
-                $lt: new Date(),
+                $lt: new Date()
             }
           }
         }
@@ -95,30 +162,6 @@ var states = [
     }
 ];
 
-
-var query = new Utils.ObjectDefinition({
-  reactiveProps: {
-    searchString: {},
-    ownedByMe: { type: Utils.ReactivePropertyTypes.boolean,
-      default: false
-    },
-    inactives: {
-      type: Utils.ReactivePropertyTypes.boolean,
-      default: false
-    },
-    assigned: {
-      type: Utils.ReactivePropertyTypes.boolean,
-      default: false
-    },
-    assignedTo: {
-      default: Meteor.userId()
-    }
-  }
-});
-
-var status= null;
-var statusDep= new Deps.Dependency;
-
 Template.tasksBox.helpers({
   taskCount: function(){
     TasksHandler.totalCount();
@@ -131,7 +174,7 @@ Template.tasksBox.helpers({
     return Tasks.find();
   },
   filters: function(){
-    return query
+    return taskQuery;
   },
   states: function(){
     return states;
@@ -143,7 +186,8 @@ Template.tasksBox.helpers({
   isLoading: function () {
     return TasksHandler.isLoading();
   }
-})
+});
+
 Template.tasksBox.events({
   'click .addTask': function(){
     if (!isEntitySpecific)
@@ -166,6 +210,5 @@ Template.tasksBox.events({
     status = null;
     statusDep.changed()
   }
-
-})
+});
 

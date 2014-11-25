@@ -40,23 +40,12 @@
                 </div>
 
                 <div class="col-md-9 col-lg-9">
-                    {{#if isSearching}}
-                        searching
-                    {{else}}
-                        <div>
-                            {{>fastPagination name="jobs"}}
-                        </div>
-                        {{#if isLoading}}
-                                <div style="height: 280px;">
-                                </div>
-                        {{else}}
-                            <div class="fade-in">
-                                {{> jobsList }}
-                            </div>
-                        {{/if}}
-                    {{/if}}
-
-                    {{#infinityScroll cb=showMore}} {{/infinityScroll}}
+                    <div>
+                        {{>fastPagination name="jobs"}}
+                    </div>
+                    <div class="fade-in">
+                        {{> jobsList }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -88,28 +77,33 @@
 </template>
 
 <template name="jobsList">
-    {{#each jobs}}
-      {{> jobsListItem }}
-    {{else}}
-        {{#if info.isFiltering.value }}
-        <div class="v-wrapper">
-            <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                <i class="icon-connection-1 text-large"></i>
-                <h1>
-                    No records Found
-                </h1>
-            </div>
+    {{#if isLoading}}
+        <div style="height: 280px;">
         </div>
+    {{else}}
+        {{#each jobs}}
+          {{> jobsListItem }}
         {{else}}
+            {{#if info.isFiltering.value }}
             <div class="v-wrapper">
                 <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                     <i class="icon-connection-1 text-large"></i>
-                    <a href="#" data-bind="attr: { href: '/jobAdd/'+name() }, text: 'New ' + name()"></a>
-                    <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
+                    <h1>
+                        No records Found
+                    </h1>
                 </div>
             </div>
-        {{/if}}
-    {{/each}}
+            {{else}}
+                <div class="v-wrapper">
+                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                        <i class="icon-connection-1 text-large"></i>
+                        <a href="#" data-bind="attr: { href: '/jobAdd/'+name() }, text: 'New ' + name()"></a>
+                        <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
+                    </div>
+                </div>
+            {{/if}}
+        {{/each}}
+    {{/if}}
 </template>
 
 <template name="jobsListItem">
@@ -168,20 +162,6 @@
 <template name="jobInformation">
     <i class="icon-building-2"></i>
     <strong><a href="/contactable/{{customer}}">{{customerName}}</a></strong>
-
-    <br/>
-    <i class="icon-calendar-2"></i>
-    <small>
-        {{#formattedDate value=startDate}}
-            {{date}}
-        {{/formattedDate}}-
-        {{#if endDate}}
-            {{#formattedDate value=endDate}}
-                {{date}}
-            {{/formattedDate}}
-        {{/if}}
-    </small>
-
 
     <br/>
     <div class="task-author">

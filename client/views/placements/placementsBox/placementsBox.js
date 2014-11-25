@@ -4,7 +4,7 @@ var contactable;
 var searchFields = ['jobDisplayName','employeeDisplayName','customerDisplayName'];
 
 var placementCollection = Placements;
-var PlacementHandler;
+var PlacementHandler, placementQuery;
 
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
@@ -29,32 +29,59 @@ var info = new Utils.ObjectDefinition({
     }
   }
 });
-var query = new Utils.ObjectDefinition({
-  reactiveProps: {
-    searchString: {},
-    candidateAction: {},
-    inactives: {
-      type: Utils.ReactivePropertyTypes.boolean,
-      default: false
-    },
-    selectedLimit: {},
-    tags: {
-      type: Utils.ReactivePropertyTypes.array,
-      default: []
-    },
-    statuses: {
-      type: Utils.ReactivePropertyTypes.array,
-      default: []
-    }
+
+
+var loadPlacementQueryFromURL = function (params) {
+  // Search string
+  var searchStringQuery = {};
+  if (params.search) {
+    searchStringQuery.default = params.search;
   }
-});
+
+  // CreationDate
+  var creationDateQuery = {};
+  if (params.creationDate) {
+    creationDateQuery.default = params.creationDate;
+  }
+
+  // Inactive
+  var inactiveQuery = { type: Utils.ReactivePropertyTypes.boolean };
+  if (params.inactives) {
+    inactiveQuery.default = !! params.inactives;
+  }
+
+  // Status
+  var statusQuery = { type: Utils.ReactivePropertyTypes.array };
+  if (params.status) {
+    statusQuery.default = params.status.split(',');
+  }
+
+  // Tags
+  var tagsQuery = { type: Utils.ReactivePropertyTypes.array };
+  if (params.tags) {
+    tagsQuery.default = params.tags.split(',');
+  }
+
+  return new Utils.ObjectDefinition({
+    reactiveProps: {
+      searchString: searchStringQuery,
+      selectedLimit: creationDateQuery,
+      inactives: inactiveQuery,
+      tags: tagsQuery,
+      statuses: statusQuery
+    }
+  });
+};
 
 // All
 
 Template.placementsBox.created = function(){
+  placementQuery = placementQuery || loadPlacementQueryFromURL(Router.current().params);
+
   var entityId = Session.get('entityId');
   entityType = Utils.getEntityTypeFromRouter();
   isEntitySpecific = false;
+
   if (entityType != null) {
     isEntitySpecific = true;
     if (entityType == Enums.linkTypes.contactable.value) {
@@ -66,8 +93,8 @@ Template.placementsBox.created = function(){
 Template.placementsBox.information = function() {
   var searchQuery = {};
 
-  if (query.objType.value)
-    searchQuery.objNameArray = query.objType.value;
+  if (placementQuery.objType.value)
+    searchQuery.objNameArray = placementQuery.objType.value;
 
   info.placementsCount.value = PlacementHandler.totalCount();
 
@@ -88,8 +115,9 @@ Template.placementsList.created = function () {
   }
   PlacementHandler = SubscriptionHandlers.PlacementHandler;
   Meteor.autorun(function () {
-
     var searchQuery = {};
+    var urlQuery = new URLQuery();
+
     searchDep.depend();
 
     if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
@@ -99,12 +127,12 @@ Template.placementsList.created = function () {
       if (contactable.Employee) searchQuery.employee=Session.get('entityId');
     }
 
-    if (!_.isEmpty(query.searchString.value)) {
-      var stringSearches=[];
+    if (!_.isEmpty(placementQuery.searchString.value)) {
+      var stringSearches = [];
       _.each(searchFields, function (field) {
         var aux = {};
         aux[field] = {
-          $regex: query.searchString.value,
+          $regex: placementQuery.searchString.value,
           $options: 'i'
         }
         stringSearches.push(aux);
@@ -114,16 +142,19 @@ Template.placementsList.created = function () {
           $or: stringSearches
         }]
       };
+
+      urlQuery.addParam('search', placementQuery.searchString.value);
     }
 
-    if (query.selectedLimit.value) {
+    if (placementQuery.selectedLimit.value) {
       var dateLimit = new Date();
       searchQuery.dateCreated = {
-        $gte: dateLimit.getTime() - query.selectedLimit.value
+        $gte: dateLimit.getTime() - placementQuery.selectedLimit.value
       };
+      urlQuery.addParam('creationDate', placementQuery.selectedLimit.value);
     }
 
-    if (! query.inactives.value) {
+    if (! placementQuery.inactives.value) {
       var activeStatuses;
       activeStatuses = getActiveStatuses('placement');
       if (_.isArray(activeStatuses) && activeStatuses.length > 0){
@@ -133,39 +164,35 @@ Template.placementsList.created = function () {
       }
     }
 
-    if (!_.isEmpty(query.candidateAction.value) ) {
-      var candidateStatuses = getCandidateStatuses(query.candidateAction.value.valueOf());
-      if (_.isArray(candidateStatuses) && candidateStatuses.length > 0){
-        searchQuery.candidateStatus={
-          $in: candidateStatuses
-        };
-
-      }
-      else
-      {
-        // if here then no candidate statuses match the desired one so must return no rows
-        searchQuery.candidateStatus={true:false};
-      }
+    if (placementQuery.inactives.value) {
+      urlQuery.addParam('inactives', true);
     }
 
-    if (query.tags.value.length > 0) {
+    if (placementQuery.tags.value.length > 0) {
       searchQuery.tags = {
-        $in: query.tags.value
+        $in: placementQuery.tags.value
       };
+      urlQuery.addParam('tags', placementQuery.tags.value);
     }
 
-    if (query.statuses.value && query.statuses.value.length){
-      searchQuery.candidateStatus = {$in: query.statuses.value};
+    if (placementQuery.statuses.value && placementQuery.statuses.value.length > 0){
+      searchQuery.candidateStatus = {$in: placementQuery.statuses.value};
+      urlQuery.addParam('status', placementQuery.statuses.value);
     }
+
+    // Set url query
+    urlQuery.apply();
+
     PlacementHandler.setFilter(searchQuery);
   })
-}
+};
+
 Template.placementsList.info = function() {
   info.isFiltering.value = PlacementHandler.totalCount() != 0;
   return info;
 };
 
-var getActiveStatuses = function(objName){
+var getActiveStatuses = function(){
   var status = Enums.lookUpTypes["placement"];
   status = status && status.status;
   if (status){
@@ -195,11 +222,11 @@ Template.placementsList.placementTypes = function() {
 // List filters
 
 Template.placementsFilters.query = function () {
-  return query;
+  return placementQuery;
 };
 
 Template.placementsFilters.tags = function() {
-  return query.tags;
+  return placementQuery.tags;
 };
 
 Template.placementsFilters.candidateActionOptions= function() {
@@ -213,7 +240,7 @@ Template.placementsListSearch.isJob=function() {
 };
 
 Template.placementsListSearch.searchString = function() {
-  return query.searchString;
+  return placementQuery.searchString;
 };
 
 Template.placementsListSearch.isLoading = function () {

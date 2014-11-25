@@ -75,10 +75,11 @@ Template.dashboard.helpers({
         $regex: query.filter.searchString,
         $options: 'i'
       };
-      q['data.displayName']=regexObject;
-    };
-    return Activities.find(q);
+      q['data.displayName'] = regexObject;
+    }
+      return Activities.find(q, { sort: {'data.dateCreated': -1} });
   },
+
   customerHistory: function(){
 
     return getHistorical(Contactables, getDays(), customerQuery);

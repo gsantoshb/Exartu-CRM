@@ -1,12 +1,12 @@
 var type=null;
 var bill=0;
 var pay=0;
-Template.addJobRate.helpers({
+Template.addPlacementRate.helpers({
   types: function(){
-    return JobRateTypes.find();
+    return PlacementRateTypes.find();
   }
 })
-Template.addJobRate.events({
+Template.addPlacementRate.events({
   'change select':function(e){
     type=e.target.value
   },
@@ -20,7 +20,7 @@ Template.addJobRate.events({
     if(!type)
       return;
 
-    Jobs.update({_id: Session.get('entityId')},{$push: {jobRates: {type: type, bill: bill, pay: pay}}}, function(err, result){
+    Placements.update({_id: Session.get('entityId')},{$push: {placementRates: {type: type, bill: bill, pay: pay}}}, function(err, result){
       if(err){
         console.log(err)
       }else{

@@ -7,21 +7,46 @@
             <div class="box-title">Job Details</div>
             <!--<a class="visible-sm visible-xs box-title" href="#details-body" data-toggle="collapse">Job Details</a>-->
         </div>
-        <div class="box-body" id="details-body">
-            <table class="table custom-table text-normal" style="table-layout: fixed;">
+        <div class="box-content-md">
+            <table class="table box-table table-striped">
                 <tbody>
+                <tr>
+                    <td>Rate Quote:</td>
+                    <td>
+                        {{#objectProperty property=rateQuote editable=editMode}}
+                        <input class="form-control" type="text" value="{{value}}">
+                        {{else}}
+                        <span >{{value}}</span>
+                        {{/objectProperty}}
+                    </td>
+                    </tr>
+                <tr>
+                    <td>Status note:</td>
+                    <td>
+                        {{#objectProperty property=statusNote editable=editMode}}
+                        <input class="form-control" type="text" value="{{value}}">
+                        {{else}}
+                        <span >{{value}}</span>
+                        {{/objectProperty}}
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <i class="fa fa-briefcase"></i>&nbsp;Public job title:
+                    </td>
+                    <td>
                         {{#objectProperty property=publicJobTitle editable=editMode}}
                         <input class="form-control" type="text" value="{{value}}">
                         {{else}}
                         <strong>{{value}}</strong>
                         {{/objectProperty}}
                     </td>
+                </tr>
+                <tr>
                     <td>
                         <i class="fa fa-info-circle"></i>&nbsp;Status:
-
+                    </td>
+                    <td>
                         {{#objectProperty property=status editable=editMode}}
                             <div class="form-group  {{hasError}}">
                                 <select class="form-control input-lg">
@@ -44,6 +69,8 @@
                 <tr>
                     <td>
                         <i class="fa fa-briefcase"></i>&nbsp;Job title:
+                    </td>
+                    <td>
                         {{#objectProperty property=jobTitle editable=editMode}}
                         <div class="form-group  {{hasError}}">
                             <select class="form-control input-md">
@@ -59,9 +86,12 @@
                         </strong>
                         {{/objectProperty}}
                     </td>
-
+                </tr>
+                <tr>
                     <td>
                         <i class="fa fa-info-circle"></i>&nbsp;# Required:
+                    </td>
+                    <td>
                         {{#objectProperty property=numberRequired editable=editMode}}
                             <input class="form-control" type="number" value="{{value}}">
                         {{else}}
@@ -71,41 +101,12 @@
                         {{/objectProperty}}
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <i class="fa fa-calendar"></i>&nbsp;Start date:
-                        {{#objectProperty property=startDate editable=editMode}}
-                        {{#dateTimePicker value=value}}
-                        {{/dateTimePicker}}
-                        {{else}}
-                        <strong>
-                            {{#formattedDate value=value format='MM.DD.YYYY'}}
-                            {{date}}
-                            {{/formattedDate}}
-                        </strong>
-                        {{/objectProperty}}
-                    </td>
-                    <td>
-                        <i class="fa fa-calendar"></i>&nbsp;End date:
-                        {{#objectProperty property=endDate editable=editMode}}
-                        {{#dateTimePicker value=value}}
-                        {{/dateTimePicker}}
-                        {{else}}
-                        <strong>
-                            {{#if value}}
-                            {{#formattedDate value=value format='MM.DD.YYYY'}}
-                            {{date}}
-                            {{/formattedDate}}
-                            {{else}}
-                            Not set
-                            {{/if}}
-                        </strong>
-                        {{/objectProperty}}
-                    </td>
-                </tr>
+
                 <tr>
                     <td>
                         <i class="fa fa-clock-o"></i>&nbsp;Duration:
+                    </td>
+                    <td>
                         {{#objectProperty property=duration editable=editMode}}
                         <div class="form-group  {{hasError}}">
                             <select class="form-control input-lg">
@@ -124,15 +125,13 @@
                         </strong>
                         {{/objectProperty}}
                     </td>
-                    <td>
 
-                    </td>
                 </tr>
 
                 </tbody>
             </table>
 
-            {{>originData}}
+            {{>originData originalJob}}
 
         </div>
         <!-- /.box-content-lg-->

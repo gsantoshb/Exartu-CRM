@@ -12,8 +12,7 @@ ContactableController = RouteController.extend({
       return;
     }
     this.render('contactable');
-
-    Session.set('activeTab', this.params.hash || 'details');
+    Session.set('activeTab', this.params.tab || 'details');
   },
   onAfterAction: function () {
     var title = 'All Contacts / ' + Session.get('contactableDisplayName'),
@@ -123,8 +122,11 @@ Template.contactable.events({
 Template.contactable_actions.helpers({
   emailTemplateContext: function () {
     var type = Utils.getContactableType(this);
+    var email = _.findWhere(this.contactMethods, {typeEnum: Enums.contactMethodTypes.email});
+
     var context = {
       //category: [Enums.emailTemplatesCategories.all]
+      recipient: email && email.value
     };
     context[type] = Session.get('entityId');
     return context;
@@ -141,7 +143,7 @@ Template.contactable_header.helpers({
         return false;
       if (type.type == Enums.contactMethodTypes.email)
         result.email = cm;
-      if (type.type == Enums.contactMethodTypes.phone)
+      if (type.type == Enums.contactMethodTypes.phone)typeEnum: 2
         result.phone = cm;
 
       if (!result.email || !result.phone)

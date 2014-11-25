@@ -90,7 +90,7 @@ ContactableManager = {
     if (! contactableId) { throw new Error('Contactable ID is required'); }
     if (! addressInfo) { throw new Error('Address information is required'); }
 
-    // Conctact method insertion
+    // Contact address insertion
     Contactables.update({ _id: contactableId }, { $set: { location: addressInfo } }, function (err, result) {
       if (err) { throw err; }
       return result;
@@ -177,5 +177,30 @@ ContactableManager = {
         'pastJobs': pastJobInfo
       }
     });
+  },
+
+  // Customer relations
+  setCustomer: function (contactId, customerId) {
+    var userHierarchiesFilter = Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()));
+
+    // Get contact
+    var contact = Contactables.findOne({_id: contactId, Contact: {$exists: true}, $or: userHierarchiesFilter});
+
+    // Check if job exists in user's hierarchies
+    if (! contact)
+      throw new Meteor.Error(404, 'Contact with id ' +  contactId + ' not found');
+
+    // If customerId is defined then validate customer, if not set job's customer as null
+    if (customerId) {
+      // Get customer
+      var customer = Contactables.find({_id: customerId, Customer: {$exists: true}, $or: userHierarchiesFilter});
+
+      // Check if it exists in user's hierarchies
+      if (customerId && ! customer)
+        throw new Meteor.Error(404, 'Customer with id ' +  customerId + ' not found');
+    }
+
+    // Update job customer
+    Contactables.update({_id: contactId}, {$set: { 'Contact.customer': customerId}});
   }
 };

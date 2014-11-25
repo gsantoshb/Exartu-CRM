@@ -25,16 +25,28 @@ _.extend( Utils, {
 
     return user.currentHierId;
   },
+  getHierTreeRoot: function (hier) {
+    var parts = hier.split('-');
+    var root = parts[0];
+    var index = 1;
+    while( root === ExartuConfig.SystemHierarchyId) {
+      root += '-' + parts[index];
+      index++;
+    }
+    return root;
+  },
   filterByHiers: function (hier, key) {
     var accumulated = '';
     var ors = [];
     var key = key || 'hierId';
 
-    _.each(hier.split('-'), function (part) {
+    var hierIdSplitted = hier.split('-');
+    var userHiersIds = hierIdSplitted.splice(1, hierIdSplitted.length - 1);
+    _.each(userHiersIds, function (part) {
       accumulated = accumulated + (accumulated ? '-' : '') + part;
       var aux={};
       aux[key] = {
-        $regex: '^' + accumulated + '$'
+        $regex: '^' + ExartuConfig.SystemHierarchyId + '-' + accumulated + '$'
       };
       ors.push(aux)
     });

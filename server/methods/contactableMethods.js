@@ -26,17 +26,33 @@ Meteor.methods({
 
   // Contact methods
   addContactMethod: function (contactableId, type, value) {
-    ContactableManager.addContactMethod(contactableId, type, value);
+    try {
+      return ContactableManager.addContactMethod(contactableId, type, value);
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
   },
   getContactMethods: function (contactableId) {
-    return ContactableManager.getContactMethods(contactableId);
+    try {
+      return ContactableManager.getContactMethods(contactableId);
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
   },
 
   setContactableAddress: function (contactableId, address) {
-    ContactableManager.setAddress(contactableId, address);
+    try {
+      return ContactableManager.setAddress(contactableId, address);
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
   },
   getAddress: function (contactableId) {
-    return ContactableManager.getAddress(contactableId);
+    try {
+      return ContactableManager.getAddress(contactableId);
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
   },
 
   // Education
@@ -63,10 +79,10 @@ Meteor.methods({
   findCustomer: function (query) {
     return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Contactables.find({
       'organization.organizationName': {
-        $regex: query,
+        $regex: '.*' +  query + '.*',
         $options: 'i'
       }
-    }, { fields: { 'organization.organizationName': 1 } })).fetch();
+    }, { fields: { 'organization.organizationName': 1, 'Customer.department':1 } })).fetch();
   },
   findEmployee: function (query) {
     return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Contactables.find({
@@ -95,6 +111,11 @@ Meteor.methods({
   // Communication
   sendSMSToContactable: function (contactableId, from, to, text) {
    return SMSManager.sendSMSToContactable(contactableId, from, to, text);
+  },
+
+  // Customer relations
+  setContactCustomer: function (contactId, customerId) {
+    return ContactableManager.setCustomer(contactId, customerId);
   }
 });
 

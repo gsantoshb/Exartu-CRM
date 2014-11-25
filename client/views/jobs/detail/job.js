@@ -13,7 +13,7 @@ JobController = RouteController.extend({
       this.render('loadingContactable');
       return;
     }
-    Session.set('activeTab', this.params.hash || 'details');
+    Session.set('activeTab', this.params.tab || 'details');
     this.render('job')
   },
   onAfterAction: function () {
@@ -237,10 +237,12 @@ Template.job_nav.helpers({
       {id: 'notes', displayName: 'Notes', template: 'job_notes'},
       {id: 'description', displayName: 'Description', template: 'job_description'},
       {id: 'tasks', displayName: 'Tasks', template: 'job_tasks'},
-      {id: 'rates', displayName: 'Rates', template: 'job_rates'},
       {id: 'placements', displayName: 'Placements', template: 'job_placements'}
     ];
     return tabs;
+  },
+  getEntityId: function () {
+    return Session.get('entityId');
   }
 });
 

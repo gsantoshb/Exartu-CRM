@@ -2,23 +2,32 @@ Template.sendTemplate.helpers({});
 
 Template.sendTemplate.events({
   'click .btn': function () {
-    Utils.showModal('sendTemplateModal', this);
+    if (!this.recipient){
+      $.gritter.add({
+        title:	'Unable to send email',
+        text:	'You must add an email first',
+        image: 	'/img/logo.png',
+        sticky: false,
+        time: 2000
+      });
+    }else{
+      Utils.showModal('sendTemplateModal', this);
+    }
   }
 });
 var missingTypes = [];
 var missingTypesDep = new Deps.Dependency;
 
-var preview = [];
-var previewDep = new Deps.Dependency;
+var preview = new ReactiveVar();
 
-var templateId;
+var templateId = new ReactiveVar();
+var sending = new ReactiveVar();
 var entities;
 Template.sendTemplateModal.helpers({
   created: function () {
-    console.log(this.data);
     Meteor.subscribe('emailTemplates');
     Meteor.subscribe('emailTemplateMergeFields');
-    preview = '';
+    preview.set('');
     missingTypes = [];
     entities = [];
   },
@@ -73,13 +82,14 @@ Template.sendTemplateModal.helpers({
   entitySelected: function () {
     var self= this;
     return function (value) {
+      debugger;
       _.each(self.mfIds, function (mfId) {
         entities.push({
           entityId: value,
           mergeFieldId: mfId
         });
       });
-      var index = missingTypes.indexOf(this);
+      var index = missingTypes.indexOf(self);
       missingTypes.splice(index, 1);
       if (missingTypes.length == 0){
         instantiate();
@@ -88,20 +98,37 @@ Template.sendTemplateModal.helpers({
     }
   },
   preview: function () {
-    previewDep.depend();
-    return preview;
+    return preview.get();
+  },
+  disableSend: function () {
+    missingTypesDep.depend();
+    return  sending.get() || templateId.get() == undefined || missingTypes.length > 0;
   }
 });
 Template.sendTemplateModal.events({
   'change #template': function (e, ctx) {
-    templateId = e.target.value;
-    var template = EmailTemplates.findOne(templateId),
+    templateId.set(e.target.value);
+    var template = EmailTemplates.findOne(e.target.value),
       mergeFields = getMergeFields(template),
       context = this[0];
     resolveMergeFields(mergeFields, context);
   },
   'click #manageTemplate': function () {
     Utils.dismissModal();
+  },
+  'click #send': function () {
+    var context = this[0],
+      template = EmailTemplates.findOne(templateId.get());
+    sending.set(true);
+    Meteor.call('sendEmail', context.recipient, template.name, preview.get(), true, function (err, result) {
+      if (err){
+        console.log(err);
+      }else{
+
+      }
+      sending.set(false);
+      Utils.dismissModal();
+    })
   }
 });
 
@@ -149,14 +176,12 @@ var getMergeFields= function (template) {
 };
 
 var instantiate = function () {
-  if(!templateId) return;
-  console.log(entities);
-  Meteor.call('getTemplateInstance', templateId, entities, function (err, res) {
+  if(!templateId.get()) return;
+  Meteor.call('getTemplateInstance', templateId.get(), entities, function (err, res) {
     if (err){
       console.log(err);
     }else{
-      preview = res;
-      previewDep.changed();
+      preview.set(res);
     }
   })
 };

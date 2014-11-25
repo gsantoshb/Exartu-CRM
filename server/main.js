@@ -13,7 +13,6 @@ var dbSeed = [
   seedSystemConfigs,
   seedSystemRoles,
   seedSystemContactMethods,
-  seedSystemJobRateTypes,
   seedSubscriptionPlans
 ];
 

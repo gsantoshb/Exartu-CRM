@@ -136,7 +136,7 @@
         {{> contactableContactMethodsBox}}
 
         {{#if Contact}}
-            {{> customerInfo customer=Contact.customer path='Contact.customer' collection=collection}}
+            {{> contactCustomerInfo customer=Contact.customer path='Contact.customer' collection=collection}}
         {{/if}}
     </div>
     <div class="col-md-6">
@@ -262,7 +262,7 @@
 
 
 <template name="contactable_nav">
-    {{> detailNav tabs=tabs}}
+    {{> detailNav tabs=tabs route="contactable" entityId=_id}}
 </template>
 
 <template name="link">

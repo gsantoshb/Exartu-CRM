@@ -14,7 +14,7 @@ PlacementController = RouteController.extend({
           return;
       }
       this.render('placement');
-      Session.set('activeTab', this.params.hash || 'details');
+      Session.set('activeTab', this.params.tab || 'details');
     },
   onAfterAction: function() {
     var title = 'Placements / ' + Session.get('placementDisplayName'),
@@ -132,16 +132,24 @@ Template.placement.events({
 });
 
 // Tabs
+Template.placement_nav.helpers({
+  isActive: function (id) {
+    return (id == Session.get('activeTab'))? 'active' : '';
+  }
+})
 var tabs;
 Template.placement_nav.helpers({
   tabs: function() {
     tabs = [
       {id: 'details', displayName: 'Details', template: 'placement_details'},
       {id: 'notes', displayName: 'Notes', template: 'placement_notes'},
-      {id: 'tasks', displayName: 'Tasks', template: 'placement_tasks'},
+      {id: 'tasks', displayName: 'Tasks', template: 'placement_tasks'}
     ];
 
     return tabs;
+  },
+  getEntityId: function () {
+    return Session.get('entityId');
   }
 });
 

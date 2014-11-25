@@ -47,7 +47,7 @@ Router.map(function () {
   });
 
   this.route('contactable', {
-    path: '/contactable/:_id',
+    path: '/contactable/:_id/:tab?',
     controller: 'ContactableController'
   });
 
@@ -69,7 +69,7 @@ Router.map(function () {
   });
 
   this.route('job', {
-    path: '/job/:_id',
+    path: '/job/:_id/:tab?',
     controller: 'JobController'
   });
 
@@ -137,6 +137,11 @@ Router.map(function () {
         controller: 'PlacementAddController',
         waitOn: [dType.ObjTypesHandler]
     });
+
+  this.route('placement', {
+    path: '/placement/:_id/:tab?',
+    controller: 'PlacementController'
+  });
 
    this.route('candidates', {
     path: '/candidates',

@@ -4,53 +4,85 @@
             <a class="btn-action editPlacement pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
             <div class="box-title">Placement Details</div>
         </div>
-        <div class="box-body" id="details-body">
-            <table class="table custom-table text-normal" style="table-layout: fixed;">
+        <div class="box-content-md">
+                <table class="table box-table table-striped">
                 <tbody>
-                    <tr>
+
                         {{#with placement}}
+
+                            <tr>
+                                <td>Status note:</td>
+                                <td>
+                                    {{#objectProperty property=statusNote editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                    {{else}}
+                                    <span >{{value}}</span>
+                                    {{/objectProperty}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <i class="fa fa-info-circle"></i>&nbsp;Status:
+                                </td>
+                                <td>
+                                    {{#objectProperty property=candidateStatus editable=editMode}}
+                                        <div class="form-group  {{hasError}}">
+                                            <select class="form-control input-lg">
+                                                {{#unless required}}
+                                                    <option value="null" selected="{{isSelected null value}}">--Select--</option>
+                                                {{/unless}}
+                                                {{#each options}}
+                                                    <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
+                                                {{/each}}
+                                            </select>
+                                            <span>{{error}}</span>
+                                        </div>
+                                    {{else}}
+                                        <strong>
+                                            <strong>{{displayName}}</strong>
+                                        </strong>
+                                    {{/objectProperty}}
+                                </td>
+                            </tr>
+                        <tr>
+                            <td >
+                                <i class="fa fa-calendar"></i>&nbsp;Start date:
+                                </td>
                             <td>
-                                <i class="fa fa-info-circle"></i>&nbsp;Placement Status:
-                                {{#objectProperty property=placementStatus editable=editMode}}
-                                    <div class="form-group  {{hasError}}">
-                                        <select class="form-control input-lg">
-                                            {{#unless required}}
-                                              <option value="null" selected="{{isSelected null value}}">--Select--</option>
-                                            {{/unless}}
-                                            {{#each options}}
-                                                <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
-                                            {{/each}}
-                                        </select>
-                                        <span>{{error}}</span>
-                                    </div>
+                                {{#objectProperty property=startDate editable=editMode}}
+                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
                                 {{else}}
-                                    <strong>
-                                        <strong>{{displayName}}</strong>
-                                    </strong>
+                                <strong>
+                                    {{#formattedDate value=value format='ddd, MMMM DD, YYYY'}}
+                                    {{date}}
+                                    {{/formattedDate}}
+                                </strong>
                                 {{/objectProperty}}
                             </td>
+                        </tr>
+                        <tr>
+                            <td >
+                                <i class="fa fa-calendar"></i>&nbsp;End date:
+                            </td>
                             <td>
-                                <i class="fa fa-info-circle"></i>&nbsp;Candidate Status:
-                                {{#objectProperty property=candidateStatus editable=editMode}}
-                                    <div class="form-group  {{hasError}}">
-                                        <select class="form-control input-lg">
-                                            {{#unless required}}
-                                                <option value="null" selected="{{isSelected null value}}">--Select--</option>
-                                            {{/unless}}
-                                            {{#each options}}
-                                                <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
-                                            {{/each}}
-                                        </select>
-                                        <span>{{error}}</span>
-                                    </div>
+                                {{#objectProperty property=endDate editable=editMode}}
+                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
                                 {{else}}
-                                    <strong>
-                                        <strong>{{displayName}}</strong>
-                                    </strong>
+                                <strong>
+                                    {{#if value}}
+                                    {{#formattedDate value=value format='ddd, MMMM DD, YYYY'}}
+                                    {{date}}
+                                    {{/formattedDate}}
+                                    {{else}}
+                                    Not set
+                                    {{/if}}
+                                </strong>
                                 {{/objectProperty}}
                             </td>
+                        </tr>
                         {{/with}}
-                    </tr>
+
                 </tbody>
             </table>
         </div>

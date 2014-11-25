@@ -1,5 +1,5 @@
 var customer = ko.observable();
-Template.jobCustomerAddEdit.viewModel = function (entityId, value, path, collection, callback) {
+Template.contactCustomerAddEdit.viewModel = function (entityId, value, path, collection, callback) {
   if (!entityId) {
     return;
   }
@@ -16,7 +16,7 @@ Template.jobCustomerAddEdit.viewModel = function (entityId, value, path, collect
       customer = null;
     }
 
-    Meteor.call('setJobCustomer', entityId, customer, function (err, result) {
+    Meteor.call('setContactCustomer', entityId, customer, function (err, result) {
       if (!err) {
         self.close();
         if (callback && _.isFunction(callback)) {
@@ -30,7 +30,7 @@ Template.jobCustomerAddEdit.viewModel = function (entityId, value, path, collect
   return self;
 };
 
-Template.jobCustomerAddEdit.getCustomer = function () {
+Template.contactCustomerAddEdit.getCustomer = function () {
   return function (string) {
     var self = this;
 
@@ -46,9 +46,8 @@ Template.jobCustomerAddEdit.getCustomer = function () {
   };
 };
 
-Template.jobCustomerAddEdit.customerChanged = function () {
-
+Template.contactCustomerAddEdit.customerChanged = function () {
   return function (value) {
     customer(value);
   }
-}
+};

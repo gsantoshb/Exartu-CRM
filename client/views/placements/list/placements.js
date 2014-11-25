@@ -1,4 +1,5 @@
 var PlacementHandler;
+
 PlacementsController = RouteController.extend({
   template: 'placements',
   layoutTemplate: 'mainLayout',
@@ -26,6 +27,7 @@ PlacementsController = RouteController.extend({
     else
       this.render('loadingContactable');
 
+    this.render();
   }
 });
 

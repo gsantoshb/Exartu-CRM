@@ -51,6 +51,12 @@ newObjType({
       defaultValue: null,
       showInAdd: false,
       required: false
+    },
+    {
+      name: 'workerCompCode',
+      displayName: 'Worker Comp Code',
+      showInAdd: false,
+      required: false
     }
   ]
 });
@@ -96,6 +102,12 @@ newObjType({
       lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode,
       defaultValue: null,
       showInAdd: false,
+      required: false
+    },
+    {
+      name: 'taxID',
+      displayName: 'TaxID/SSN',
+      showInAdd: true,
       required: false
     }
   ]
@@ -168,28 +180,31 @@ newObjType({
       required: false,
       showInAdd: false
     }, {
+      name: 'rateQuote',
+      displayName: 'Rate quote',
+      required: false,
+      showInAdd: true
+    }, {
       name: 'statusNote',
-      displayName: 'Status Note',
+      displayName: 'Status note',
       required: false,
-      showInAdd: false
-    }, {
+      showInAdd: true
+    },
+    {
+
       name: 'jobDescription',
-      displayName: 'Job Description',
+      displayName: 'Job description',
       required: false,
-      showInAdd: false
-    }, {
-      name: 'startDate',
-      displayName: 'Start date',
-      fieldType: 'date',
-      defaultValue: null,
-      required: true
-    }, {
-      name: 'endDate',
-      displayName: 'End date',
-      fieldType: 'date',
-      defaultValue: null,
-      required: false
-    }, {
+      showInAdd: true
+    },
+      {
+        name: 'workHours',
+        displayName: 'Work Hours',
+        showInAdd: false,
+        required: false
+      },
+
+      {
       name: 'numberRequired',
       displayName: 'Number required',
       fieldType: 'number',
@@ -205,7 +220,7 @@ newObjType({
       defaultValue: null,
       required: false,
       multiple: false,
-      showInAdd: true
+      showInAdd: false
     }, {
       name: 'status',
       displayName: 'Status',
@@ -215,7 +230,7 @@ newObjType({
       required: false,
       multiple: false,
       defaultValue: null, // LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,isDefault:true}),
-      showInAdd: true
+      showInAdd: false
     }
 //    {
 //      name: 'industry',
@@ -354,9 +369,9 @@ newObjType({
       displayName: 'Placement Status',
       fieldType: 'lookUp',
       lookUpName: 'placementStatus',
-      showInAdd: true,
+      showInAdd: false,
       lookUpCode: Enums.lookUpTypes.placement.status.lookUpCode,
-      required: true,
+      required: false,
       multiple: false
     }, {
       name: 'candidateStatus',
@@ -366,9 +381,22 @@ newObjType({
       lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode,
       required: false,
       multiple: false
+    },
+    {
+      name: 'startDate',
+      displayName: 'Start date',
+      fieldType: 'date',
+      defaultValue: null,
+      required: true
+    }, {
+      name: 'endDate',
+      displayName: 'End date',
+      fieldType: 'date',
+      defaultValue: null,
+      required: false
     }
 
-    ]
+  ]
 });
 
 
