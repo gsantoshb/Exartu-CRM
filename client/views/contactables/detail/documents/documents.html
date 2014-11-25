@@ -4,13 +4,7 @@
 
             <div class="add-box-head add-box-responsive col-xs-12 col-md-3">
                 <div class="add-item-icon"><i class="icon-document-1"></i></div>
-                <div class="add-item-title">Documents
-                    {{#objectProperty property=query.searchString}}
-                        <span class="pull-right">
-                            <input class="form-control input-sm " type="text" placeholder="Search" value="{{value}}" >
-                        </span>
-                    {{/objectProperty}}
-                </div>
+                <div class="add-item-title">Documents</div>
             </div>
             <div class="add-box-content col-sm-12 col-md-9">
                 {{#if addForm }}
@@ -27,6 +21,11 @@
             </div>
         </div>
     </div>
+    {{#objectProperty property=query.searchString}}
+        <span>
+            <input class="form-control input-sm " type="text" placeholder="Search" style="width: 30%; margin: 5px 5px 5px 10px;" value="{{value}}" >
+        </span>
+    {{/objectProperty}}
 </template>
 
 <template name="addDocumentForm">
