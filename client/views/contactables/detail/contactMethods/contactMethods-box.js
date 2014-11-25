@@ -108,7 +108,7 @@ var loadInputMask = function () {
   // Update input mask according with type selected
   var input = $('#new-contact-method-value');
   switch (selectedType.type) {
-    case Enums.contactMethodTypes.email: break;
+    case Enums.contactMethodTypes.email: input.unmask(); break;
     case Enums.contactMethodTypes.phone: input.mask('+1 (000) 000-0000'); break;
   }
 };
