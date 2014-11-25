@@ -16,3 +16,5 @@ EmailTemplateMergeFields = new Mongo.Collection('emailTemplateMergeFields');
 Meteor.publish('emailTemplateMergeFields', function () {
   return EmailTemplateMergeFields.find();
 });
+
+Emails = new Mongo.Collection('emails');
