@@ -84,6 +84,9 @@
     {{#if isLoading}}
         <div style="height: 505px;"></div>
     {{else}}
+        {{#unless isESSearch}}
+            {{> fastPagination name="auxContactables" useKeys='true'}}
+        {{/unless}}
         <div style="min-height: 550px">
             {{#each contactables}}
                 {{> contactablesListItem }}
