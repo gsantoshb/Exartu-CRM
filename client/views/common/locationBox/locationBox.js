@@ -67,6 +67,17 @@ Template.locationBox.helpers({
     AutoForm.hooks({
       SetLocation: {
         onSubmit: function(newAddress) {
+          // Check whether the address was set manually or using google autocomplete
+          var manuallySet = _.some(['address', 'city', 'state', 'country', 'postalCode'], function (fieldName) {
+            return location.value[fieldName] != newAddress[fieldName];
+          });
+
+          // Extend address if it was created with google autocomplete
+          if (! manuallySet && location.value.lat)
+            newAddress.lat = location.value.lat;
+          if (! manuallySet && location.value.lng)
+            newAddress.lng = location.value.lng;
+
           self.data.callback && self.data.callback(newAddress);
 
           location.value = newAddress;
@@ -87,6 +98,9 @@ Template.locationBox.helpers({
   },
   editModeColor: function () {
     return EditLocationMode.value ? '#008DFC' : '';
+  },
+  isGoogleAddress: function () {
+    return this.location.lat && this.location.lng;
   }
 });
 
@@ -107,5 +121,8 @@ Template.locationBox.events = {
   'click #cancel-location': function () {
     location.value = oldValue;
     EditLocationMode.value = false;
+  },
+  'click #show-location-map': function () {
+    Utils.showModal('locationMap', { location: this.location});
   }
 };
