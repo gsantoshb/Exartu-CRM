@@ -54,12 +54,23 @@ Template.placementDetail.helpers({
     return location;
   },
   datePickerOptions: function () {
-  return {
-    format: "D, MM dd, yyyy",
-    minViewMode: "days",
-    startView: "months"
+    return {
+      format: "D, MM dd, yyyy",
+      minViewMode: "days",
+      startView: "months"
+    }
+  },
+  fetchStatusOptions: function () {
+    return this.options.map(function (status) {
+      return {id: status._id, text: status.displayName};
+    });
+  },
+  onSelectedStatus: function () {
+    return function (newStatus) {
+      var ctx = Template.parentData(2);
+      ctx.property._value = newStatus;
+    }
   }
-}
 });
 
 Template.placementDetail.events({

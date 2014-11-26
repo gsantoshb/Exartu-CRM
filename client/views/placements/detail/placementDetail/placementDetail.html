@@ -27,17 +27,7 @@
                                 </td>
                                 <td>
                                     {{#objectProperty property=candidateStatus editable=editMode}}
-                                        <div class="form-group  {{hasError}}">
-                                            <select class="form-control input-lg">
-                                                {{#unless required}}
-                                                    <option value="null" selected="{{isSelected null value}}">--Select--</option>
-                                                {{/unless}}
-                                                {{#each options}}
-                                                    <option value="{{_id}}" selected="{{isSelected _id ../value}}" disabled="{{inactive}}">{{displayName}}</option>
-                                                {{/each}}
-                                            </select>
-                                            <span>{{error}}</span>
-                                        </div>
+                                        {{> buttonGroup options=fetchStatusOptions value=value onSelected=onSelectedStatus}}
                                     {{else}}
                                         <strong>
                                             <strong>{{displayName}}</strong>
