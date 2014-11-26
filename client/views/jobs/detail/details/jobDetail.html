@@ -48,17 +48,7 @@
                     </td>
                     <td>
                         {{#objectProperty property=status editable=editMode}}
-                            <div class="form-group  {{hasError}}">
-                                <select class="form-control input-lg">
-                                    {{#unless required}}
-                                        <option value="null" selected="{{isSelected null value}}">--Select--</option>
-                                    {{/unless}}
-                                    {{#each options}}
-                                        <option value="{{_id}}" selected="{{isSelected _id ../value}}" >{{displayName}}</option>
-                                    {{/each}}
-                                </select>
-                                <span>{{error}}</span>
-                            </div><!-- /.form-group -->
+                            {{> buttonGroup options=fetchStatusOptions value=value onSelected=onSelectedStatus}}
                         {{else}}
                             <strong>
                                 <strong>{{displayName}}</strong>
