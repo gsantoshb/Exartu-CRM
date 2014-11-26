@@ -3,7 +3,7 @@ var jobCollections= Jobs;
 JobController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [Meteor.subscribe('singleJob', this.params._id), GoogleMapsHandler]
+    return [Meteor.subscribe('singleJob', this.params._id), GoogleMapsHandler, Meteor.subscribe('jobCounters', this.params._id)]
   },
   data: function () {
     Session.set('entityId', this.params._id);
@@ -234,10 +234,16 @@ Template.job_nav.helpers({
   tabs: function () {
     tabs = [
       {id: 'details', displayName: 'Details', template: 'job_details'},
-      {id: 'notes', displayName: 'Notes', template: 'job_notes'},
+      {id: 'notes', displayName: 'Notes', template: 'job_notes', info: function () {
+        return JobCounter.findOne('notes').count;
+      }},
       {id: 'description', displayName: 'Description', template: 'job_description'},
-      {id: 'tasks', displayName: 'Tasks', template: 'job_tasks'},
-      {id: 'placements', displayName: 'Placements', template: 'job_placements'}
+      {id: 'tasks', displayName: 'Tasks', template: 'job_tasks', info: function () {
+        return JobCounter.findOne('tasks').count;
+      }},
+      {id: 'placements', displayName: 'Placements', template: 'job_placements', info: function () {
+        return JobCounter.findOne('placements').count;
+      }}
     ];
     return tabs;
   },
