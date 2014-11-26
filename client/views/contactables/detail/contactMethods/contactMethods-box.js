@@ -1,6 +1,6 @@
 EditContactMethodsMode = {
   val: false,
-  dep: new Deps.Dependency,
+  dep: new Tracker.Dependency,
   show: function () {
     this.val = true;
     this.dep.changed();
@@ -16,41 +16,41 @@ Object.defineProperty(EditContactMethodsMode, "value", {
     this.dep.depend();
     return this.val;
   },
-  set: function(newValue) {
+  set: function (newValue) {
     this.val = newValue;
     this.dep.changed();
   }
 });
 
-var dep = new Deps.Dependency;
+var dep = new Tracker.Dependency;
 var selectedType;
 var contactableId;
 
 var contactMethodsTypes;
-Template.contactableContactMethodsBox.created = function() {
-  contactMethodsTypes = ContactMethods.find({}).fetch();
+Template.contactableContactMethodsBox.created = function () {
+  contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
   selectedType = contactMethodsTypes[0];
   contactableId = this.data._id;
-  EditContactMethodsMode.value=false;
+  EditContactMethodsMode.value = false;
 };
 
-Template.contactableContactMethodsBox.editMode = function() {
+Template.contactableContactMethodsBox.editMode = function () {
   return EditContactMethodsMode.value;
 };
 
-Template.contactableContactMethodsBox.editModeColor = function() {
-  return EditContactMethodsMode.value? '#008DFC' : '';
+Template.contactableContactMethodsBox.editModeColor = function () {
+  return EditContactMethodsMode.value ? '#008DFC' : '';
 };
 
 Template.contactableContactMethodsBox.contactMethods = function() {
   var result = [];
   var contactMethods = this.contactMethods;
 
-  _.forEach(contactMethods, function(cm) {
-    var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
-    cm.displayName = type.displayName;
-    cm.typeCode = type.type;
-    cm.typeCode = type.type;
+  _.forEach(contactMethods, function (cm) {
+    var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
+    if (type) {
+      cm.displayName = type.displayName;
+    }
     result.push(cm);
   });
 
@@ -59,27 +59,25 @@ Template.contactableContactMethodsBox.contactMethods = function() {
 
 var addNewContactMethod = function() {
   var newContactMethodValue = $('#new-contact-method-value');
-  $('#new-contact-method-value').val=null;
-
-  if (_.isEmpty(newContactMethodValue.val()) || _.isEmpty(selectedType))
+  var value = newContactMethodValue.val();
+  $('#new-contact-method-value').val = null;
+  if (_.isEmpty(value) || _.isEmpty(selectedType))
     return;
 
-  if ( selectedType.type == Enums.contactMethodTypes.email && !helper.emailRE.test(newContactMethodValue.val())) {
-    $('#add-contact-method-error').text('Invalid email format');
-    return;
+  // Check email regex
+  if (selectedType.lookUpActions) {
+    if (_.contains(selectedType.lookUpActions, Enums.lookUpAction.ContactMethod_Email) && !helper.emailRE.test(value)) {
+      $('#add-contact-method-error').text('Invalid email format');
+      return;
+    }
   }
 
-  if (selectedType.type == Enums.contactMethodTypes.phone) {
-    // Format phone number
-    var value = newContactMethodValue.val().replace(/(\(|\)|-| )/g, '');
+  // Format phone number
+  if (selectedType.lookUpActions && _.contains(selectedType.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+    value = value.replace(/(\(|\)|-| )/g, '');
   }
 
-  if (selectedType.type == Enums.contactMethodTypes.email) {
-    // Format phone number
-    var value = newContactMethodValue.val();
-  }
-
-  Meteor.call('addContactMethod', Session.get('entityId'), selectedType.type, value, function(err) {
+  Meteor.call('addContactMethod', Session.get('entityId'), selectedType._id, value, function(err) {
     if (err) {
       $('#add-contact-method-error').text('There was an error inserting the contact method. Please try again.');
     } else {
@@ -91,11 +89,13 @@ var addNewContactMethod = function() {
 
 // Item
 Template.contactMethodItem.rendered = function () {
+  var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
+  var type = _.findWhere(contactMethodsTypes, { _id: this.data.type });
+
   // Format contact method value according with its type
   var value = this.$('.contact-method-value');
-  switch (this.data.typeEnum) {
-    case Enums.contactMethodTypes.email: break;
-    case Enums.contactMethodTypes.phone: value.mask('+1 (000) 000-0000'); break;
+  if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+    value.mask('+1 (000) 000-0000');
   }
 };
 
@@ -104,17 +104,20 @@ Template.contactMethodItem.editMode = function () {
 };
 
 // Add
-var loadInputMask = function () {
-  // Update input mask according with type selected
-  var input = $('#new-contact-method-value');
-  switch (selectedType.type) {
-    case Enums.contactMethodTypes.email: input.unmask(); break;
-    case Enums.contactMethodTypes.phone: input.mask('+1 (000) 000-0000'); break;
+var loadInputMask = function (selectedType) {
+  if (selectedType) {
+    var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
+    var type = _.find(contactMethodsTypes,  function(cm){ return cm._id === selectedType._id; });
+    // Update input mask according with type selected
+    var input = $('#new-contact-method-value');
+    if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+      input.mask('+1 (000) 000-0000');
+    }
   }
 };
 
 Template.contactableContactMethodsBox.events = {
-  'click .delete': function() {
+  'click .delete': function () {
     Contactables.update({_id: contactableId},
       {
         $pull: {
@@ -137,7 +140,7 @@ Template.contactableContactMethodsBox.events = {
 };
 
 Template.addContactMethod.rendered = function () {
-  loadInputMask();
+  loadInputMask(selectedType);
 };
 
 Template.addContactMethod.contactMethodsTypes = function() {
@@ -154,7 +157,7 @@ Template.addContactMethod.events({
     addNewContactMethod();
   },
 
-  'keyup #new-contact-method-value': function(e) {
+  'keyup #new-contact-method-value': function (e) {
     $('#add-contact-method-error').text('');
 
     // Detect Enter
@@ -162,13 +165,13 @@ Template.addContactMethod.events({
       addNewContactMethod();
     }
   },
-  'click #cancel-contact-method': function() {
+  'click #cancel-contact-method': function () {
     EditContactMethodsMode.hide();
   },
   'click .contact-method-type': function() {
     selectedType = this;
 
-    loadInputMask();
+    loadInputMask(selectedType);
 
     dep.changed();
   },

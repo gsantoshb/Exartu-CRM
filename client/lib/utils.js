@@ -576,29 +576,30 @@ Utils.setDecimal= function(rate) {
 // CONTACT METHODS
 
 Utils.contactMethodTypeIcon = function(type) {
-  switch(type) {
-    case Enums.contactMethodTypes.phone:
-      return 'fa fa-phone';
-      break;
-    case Enums.contactMethodTypes.email:
+  var contactMethod = LookUps.findOne({ _id: type, lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode });
+
+  if (contactMethod && contactMethod.lookUpActions) {
+    if (_.contains(contactMethod.lookUpActions, Enums.lookUpAction.ContactMethod_Email)) {
       return 'fa fa-envelope-o';
-      break;
-    case Enums.contactMethodTypes.other:
-      return 'fa fa-comment-o';
-      break;
+    } else if (_.contains(contactMethod.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+      return 'fa fa-phone';
+    }
   }
+  
+  return 'fa fa-comment-o';
 };
 Utils.contactMethodTypePrefix = function(type) {
-  switch(type) {
-    case Enums.contactMethodTypes.phone:
-      return 'callto:';
+  var contactMethod = LookUps.findOne({ _id: type, lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode });
 
-    case Enums.contactMethodTypes.email:
+  if (contactMethod && contactMethod.lookUpActions) {
+    if (_.contains(contactMethod.lookUpActions, Enums.lookUpAction.ContactMethod_Email)) {
       return 'mailto:';
-
-    case Enums.contactMethodTypes.other:
-      return '';
+    } else if (_.contains(contactMethod.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+      return 'callto:';
+    }
   }
+
+  return '';
 };
 Utils.users =function(){
   return Meteor.users.find({});

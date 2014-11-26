@@ -100,7 +100,7 @@ Template.locationBox.helpers({
     return EditLocationMode.value ? '#008DFC' : '';
   },
   isGoogleAddress: function () {
-    return this.location.lat && this.location.lng;
+    return this.location && this.location.lat && this.location.lng;
   }
 });
 

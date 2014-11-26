@@ -122,7 +122,12 @@ Template.contactable.events({
 Template.contactable_actions.helpers({
   emailTemplateContext: function () {
     var type = Utils.getContactableType(this);
-    var email = _.findWhere(this.contactMethods, {typeEnum: Enums.contactMethodTypes.email});
+    var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
+    var email = _.find(this.contactMethods, function (cm) {
+      var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
+      if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
+        return true;
+    });
 
     var context = {
       category: [Enums.emailTemplatesCategories[type.toLowerCase()]],
@@ -136,14 +141,14 @@ Template.contactable_actions.helpers({
 Template.contactable_header.helpers({
   mainContactMethods: function () {
     var result = {};
-    var contactMethods = ContactMethods.find().fetch();
+    var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
     _.some(this.contactMethods, function (cm) {
-      var type = _.findWhere(contactMethods, {_id: cm.type});
+      var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
       if (!type)
         return false;
-      if (type.type == Enums.contactMethodTypes.email)
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
         result.email = cm;
-      if (type.type == Enums.contactMethodTypes.phone)typeEnum: 2
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone))
         result.phone = cm;
 
       if (!result.email || !result.phone)

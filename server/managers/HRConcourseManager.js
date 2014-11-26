@@ -3,16 +3,9 @@ var applicantCenterURL = process.env.HRCENTER_URL || 'http://localhost:3030/';
 
 HRConcourseManager = {
   sendInvitation: function(employeeId, email){
-    console.log('sending invitation..')
-    var employee= Contactables.findOne({ _id: employeeId }, {
-      transform: function(e){
-        _.each(e.contactMethods, function(cm){
-          var cmType=ContactMethods.findOne({_id: cm.type});
-          cm.typeEnum= cmType && cmType.type;
-        })
-        return e
-      }
-    });
+    console.log('sending invitation..');
+
+    var employee= Contactables.findOne({ _id: employeeId });
     if (! employee){
       throw new Meteor.Error(500,'employee not found')
     }
@@ -21,8 +14,15 @@ HRConcourseManager = {
       throw new Meteor.Error(400,'employee already registered')
     }
 
-    if (!email){
-      var contactMethod=_.findWhere(employee.contactMethods,{typeEnum: Enums.contactMethodTypes.email})
+    if (!email) {
+      var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
+
+      var contactMethod = _.find(employee.contactMethods, function (cm) {
+        var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
+        if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
+          return true;
+      });
+
       email= contactMethod ? contactMethod.value: false;
     }
 
