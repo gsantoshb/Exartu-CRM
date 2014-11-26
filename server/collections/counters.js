@@ -40,7 +40,7 @@ var generateCounterPublish = function (ctx, name, cursors) {
     ctx.added(name, collectionName, {
       count: c.count()
     });
-
-    ctx.ready();
   });
+
+  ctx.ready();
 };
