@@ -14,7 +14,7 @@ TasksController = RouteController.extend({
 
     this.render('tasks');
   },
-  onAfterAction: function() {
+  onAfterAction: function () {
     var title = 'Tasks',
       description = 'Manage your tasks here';
     SEO.set({
@@ -31,7 +31,7 @@ TasksController = RouteController.extend({
 });
 
 Template.tasks.helpers({
-  taskCount: function(){
+  taskCount: function () {
     return TasksHandler.totalCount();
-  },
+  }
 });
