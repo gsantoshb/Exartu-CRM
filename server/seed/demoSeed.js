@@ -465,9 +465,7 @@ var loadJobs = function (hierId) {
         ["Hand Nailer"  ]
 
     ];
-    var today = new Date();
-    var tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1);
+
 
   for (var i = 0; i < 25; ++i) {
 
@@ -476,11 +474,10 @@ var loadJobs = function (hierId) {
         var randomJobTitle = jobTitles [Math.floor(Math.random() * jobTitles.length)];
         var randomPublicJobTitle = publicJobTitles [Math.floor(Math.random() * publicJobTitles.length)];
 
-
         var newJob = {
             tags:[],
             customer: randomCustomer._id,
-            Temporary: {pay:0,bill:0,frequency:null},
+            Temporary: {},
             objNameArray: ['job', 'Temporary'],
             hierId: hierId,
             industry: industries[Math.floor(Math.random() * industries.length)]._id,
@@ -489,8 +486,6 @@ var loadJobs = function (hierId) {
             status: statuses[Math.floor(Math.random() * statuses.length)]._id,
             publicJobTitle: randomPublicJobTitle[0],
             jobTitle: randomJobTitle._id,
-            startDate: today,
-            endDate: tomorrow,
             statusNote: 'looks to be making a decision soon',
             description: "a job for all times",
             testData: true
@@ -506,6 +501,49 @@ var loadJobs = function (hierId) {
     }
     ;
 };
+
+
+var loadPlacements = function (hierId) {
+  var today = new Date();
+  var tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+  var jobs = Jobs.find({ hierId: hierId}).fetch();
+  var employees = Contactables.find({objNameArray: 'Employee',hierId:hierId}).fetch();
+  var candidateStatuses = LookUps.find({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode,hierId:hierId}).fetch();
+  var rateType=           LookUps.findOne({lookUpCode: Enums.lookUpTypes.placement.rate.lookUpCode,hierId:hierId});
+  for (var i = 0; i < 25; ++i) {
+    var randomJob = jobs[Math.floor(Math.random() * jobs.length)];
+    var randomEmployee = employees[Math.floor(Math.random() * employees.length)];
+    var newPlacement = {
+      tags: [],
+      job: randomJob._id,
+      objNameArray: 	 ["placement"],
+      employee: randomEmployee._id,
+      candidateStatus: candidateStatuses[Math.floor(Math.random() * candidateStatuses.length)]._id,
+      hierId: hierId,
+      startDate: today,
+      endDate: tomorrow,
+      statusNote: 'excited about the job',
+      "placementRates" :
+        [{
+          "type" : rateType._id,
+          "pay" : "25.00",
+          "bill" : "15.00"
+        }],
+      testData: true
+    }
+    // TODO: check objType's fields
+
+    Meteor.call('addPlacement', newPlacement, function (err, result) {
+      if (!err)
+        console.log("Placement created for demo")
+      else
+        console.log(err);
+    })
+  };
+};
+
+
 
 var loadTasks = function (hierId, usermane, userId) {
     var notes = [
@@ -568,6 +606,7 @@ Meteor.methods({
 
     loadContactables(user.hierId);
     loadJobs(user.hierId);
+    loadPlacements(user.hierId);
     loadTasks(user.hierId, user.username, user._id);
   },
   removeDemoData: function () {
