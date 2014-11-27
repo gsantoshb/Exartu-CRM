@@ -508,6 +508,7 @@ var loadPlacements = function (hierId) {
   var tomorrow = new Date();
   tomorrow.setDate(today.getDate() + 1);
   var jobs = Jobs.find({ hierId: hierId}).fetch();
+  
   var employees = Contactables.find({objNameArray: 'Employee',hierId:hierId}).fetch();
   var candidateStatuses = LookUps.find({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode,hierId:hierId}).fetch();
   var rateType=           LookUps.findOne({lookUpCode: Enums.lookUpTypes.placement.rate.lookUpCode,hierId:hierId});
