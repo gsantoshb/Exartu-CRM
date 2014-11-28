@@ -54,7 +54,12 @@
                 <div class="alert-box alert-danger" style="margin-top: 20px;">
                     {{error}}
                 </div>
-
+                    {{#if isSubmitting}}
+                        <div>Creating account. Please wait a few seconds....</div>
+                        <div class="progress progress-striped active">
+                            <div style="width: 100%;" class="progress-bar progress-bar-info"></div>
+                        </div>
+                    {{/if}}
                 {{else}}
                 <h1>Thank you</h1>
                 <div class="col-md-8 text-center" style="margin-bottom: 150px">
