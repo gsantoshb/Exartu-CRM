@@ -285,6 +285,21 @@ var markInvitationsAsUsed = function(userInvitation) {
 // Email validation template
 Accounts.emailTemplates.siteName = "Exartu ";
 Accounts.emailTemplates.from = "Exartu team<exartu.developer@gmail.com>";
+
+// Email account verification template
+Accounts.emailTemplates.verifyEmail.subject = function (user) {
+  return "Welcome to CRM Exartu";
+};
+Accounts.emailTemplates.verifyEmail.text = function (user, url) {
+  return "Dear " + user.emails[0].address + ",\n\n"
+    + "Welcome, and thank you for registering in Exartu.\n"
+    + "Please click the link below to verify your email address. Alternatively, copy the link into your browser.\n\n"
+    + url + "\n\n"
+    + "Thank you,\n"
+    + "Exartu team";
+};
+
+
 Accounts.emailTemplates.enrollAccount.subject = function (user) {
   return "Welcome to CRM Exartu, " + user.profile.name;
 };
