@@ -1,7 +1,7 @@
 ContactableController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [Meteor.subscribe('singleContactable', this.params._id), GoogleMapsHandler]
+    return [Meteor.subscribe('singleContactable', this.params._id), GoogleMapsHandler, Meteor.subscribe('contactableCounters', this.params._id)]
   },
   data: function () {
     Session.set('entityId', this.params._id);
@@ -11,7 +11,9 @@ ContactableController = RouteController.extend({
       this.render('loadingContactable');
       return;
     }
+
     this.render('contactable');
+
     Session.set('activeTab', this.params.tab || 'details');
   },
   onAfterAction: function () {
@@ -200,9 +202,15 @@ Template.contactable_nav.helpers({
   tabs: function () {
     tabs = [
       {id: 'details', displayName: 'Details', template: 'contactable_details'},
-      {id: 'notes', displayName: 'Notes', template: 'contactable_notes', icon : 'icon-note-paper-1'},
-      {id: 'documents', displayName: 'Documents', template: 'contactable_documents', icon : 'icon-document-1'},
-      {id: 'tasks', displayName: 'Tasks', template: 'contactable_tasks', icon : 'icon-note-paper-1'},
+      {id: 'notes', displayName: 'Notes', template: 'contactable_notes', icon : 'icon-note-paper-1', info: function () {
+        return ContactableCounter.findOne('notes').count;
+      }},
+      {id: 'documents', displayName: 'Documents', template: 'contactable_documents', icon : 'icon-document-1', info: function () {
+        return ContactableCounter.findOne('contactablesFiles').count;
+      }},
+      {id: 'tasks', displayName: 'Tasks', template: 'contactable_tasks', icon : 'icon-note-paper-1', info: function () {
+        return ContactableCounter.findOne('tasks').count;
+      }}
     ];
 
     if (contactable.Customer) {
@@ -212,10 +220,16 @@ Template.contactable_nav.helpers({
     }
 
     if (contactable.Employee) {
-      tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements'});
+      tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements', info: function () {
+        return ContactableCounter.findOne('placements').count;
+      }});
       //tabs.push({id: 'hrconcourse', displayName: 'HRconcourse', template: 'contactable_HRConcourse'});
-      tabs.push({id: 'education', displayName: 'Education', template: 'employeeEduction'});
-      tabs.push({id: 'pastJobs', displayName: 'Past Jobs', template: 'employeePastJobs'});
+      tabs.push({id: 'education', displayName: 'Education', template: 'employeeEduction', info: function () {
+        return Template.parentData(2).education ? Template.parentData(2).education.length : 0;
+      }});
+      tabs.push({id: 'pastJobs', displayName: 'Past Jobs', template: 'employeePastJobs', info: function () {
+        return Template.parentData(2).pastJobs ? Template.parentData(2).pastJobs.length : 0;
+      }});
     }
     return tabs;
   }
