@@ -151,6 +151,7 @@ Template.emailTemplate.events({
     }else{
       Session.set('templateId', EmailTemplates.insert(template));
     }
+    Router.go('/emailTemplates');
 
   },
   'change #mergeFields': function (e, ctx) {

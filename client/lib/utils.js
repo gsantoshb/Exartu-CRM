@@ -635,3 +635,18 @@ URLQuery.prototype.apply = function () {
 
   history.replaceState(null, null, location.pathname + url);
 };
+
+Utils.getContactableEmail = function (contactable) {
+  var result = null;
+  var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
+  _.every(contactable.contactMethods, function (cm) {
+    var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
+    if (!type)
+      return true; //keep lokking
+    if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email)){
+      result = cm.value;
+      return false; //finish
+    }
+  });
+  return result;
+};
