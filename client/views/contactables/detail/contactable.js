@@ -14,7 +14,7 @@ ContactableController = RouteController.extend({
 
     this.render('contactable');
 
-    Session.set('activeTab', this.params.tab || 'details');
+    Session.set('activeTab', this.params.tab || 'activities');
   },
   onAfterAction: function () {
     var title = 'All Contacts / ' + Session.get('contactableDisplayName'),
@@ -197,10 +197,10 @@ Template.contactable_nav.helpers({
 })
 var tabs;
 
-
 Template.contactable_nav.helpers({
   tabs: function () {
     tabs = [
+      {id: 'activities', displayName: 'Activities', template: 'contactableActivities'},
       {id: 'details', displayName: 'Details', template: 'contactable_details'},
       {id: 'notes', displayName: 'Notes', template: 'contactable_notes', icon : 'icon-note-paper-1', info: function () {
         return ContactableCounter.findOne('notes').count;

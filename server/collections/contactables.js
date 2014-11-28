@@ -152,7 +152,6 @@ ContactablesFS = new Document.Collection({
 });
 ContactablesFS.publish();
 
-ContactablesFiles = new Mongo.Collection('contactablesFiles');
 Meteor.publish('contactablesFiles', function () {
   return ContactablesFiles.find();
 });

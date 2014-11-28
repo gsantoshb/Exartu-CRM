@@ -8,6 +8,8 @@ Activities = new Mongo.Collection("activities");
 
 Contactables = new Mongo.Collection("contactables");
 
+ContactablesFiles = new Mongo.Collection('contactablesFiles');
+
 Conversations = new Mongo.Collection("conversations");
 
 Messages = new Mongo.Collection("messages");
