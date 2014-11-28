@@ -107,6 +107,12 @@ Meteor.methods({
       return Contactables.findOne({ houseAccount: true, hierId: user.hierId }, { fields: { 'organization.organizationName': 1 } });
     }
   },
+  getAllContactablesForSelection: function (filter) {
+    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Contactables.find(filter, {
+        objNameArray: 1,
+        contactMethods: 1
+      })).fetch();
+  },
 
   // Communication
   sendSMSToContactable: function (contactableId, from, to, text) {
