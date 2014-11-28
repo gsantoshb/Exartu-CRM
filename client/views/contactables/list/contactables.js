@@ -174,6 +174,7 @@ Template.contactables.isESSearch = function() {
 };
 
 // List
+var selected = new ReactiveVar([]);
 
 var contactableTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
@@ -346,21 +347,118 @@ Template.contactablesList.contactables = function() {
     //urlQuery.push('type=' + query.objType.value);
     return esResult;
   }
-
-  // Hack: in the contactables collection coexists the regular contactables and the contact's customer
-  // which I loaded using the contactables view in the server.
-  // The problem is that those customer should not be listed since they do not belong to this page
-  // to fix that I toke advantage of the fact that those customer 'have less fields',
-  // that's wy I'm filtering out the one that don't have hierId.
-  // A possible solution could be to use 2 collections in the client
-  //return Contactables.find({hierId: {$exists: true}});
-
   return AuxContactables.find();
 };
 
 Template.contactablesList.contactableTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
 };
+
+var clickedAllSelected = new ReactiveVar(false);
+
+Template.contactablesList.helpers({
+  selectedCount: function () {
+    return selected.get().length;
+  },
+  areAllChecked: function () {
+    // true if the count of all contactables (in the local collection) that are selected is equal to te count of all contactables (in the local collection)
+    return AuxContactables.find({_id: { $in : _.pluck(selected.get(),'id') } }).count() == AuxContactables.find().count();
+  },
+  areAllSelectedTheSameType: function () {
+    if (_.isEmpty(selected.get())) return true;
+    //check if there is a common type along all items selected ignoring contactable, person and organization
+    return !_.isEmpty(_.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization'));
+  },
+  showSelectAll: function () {
+    return clickedAllSelected.get() && SubscriptionHandlers.AuxContactablesHandler.pageCount() > 1;
+  },
+  totalCount: function () {
+    return SubscriptionHandlers.AuxContactablesHandler.totalCount();
+  },
+  withoutEmail: function () {
+    return _.filter(selected.get(), function (item) {
+      return ! item.email
+    }).length;
+  },
+  differentTypesSelected: function () {
+    var result = {};
+    // create a hash that contains for each type the count of elements of this type, ignoring contactable, person, organization
+    _.each(selected.get(), function (item) {
+      _.each(_.without(item.type,'contactable', 'person', 'organization'), function (type) {
+        result[type] = result[type] || 0;
+        ++result[type];
+      })
+    });
+
+    // map the hash to an array of name and count objects
+    return _.map(result, function (value, key){
+      return {
+        name: key,
+        count: value
+      }
+    });
+  }
+});
+Template.contactablesList.events({
+  'change #selectAll': function (e) {
+    if (e.target.checked){
+      //add all local items (not already selected) to the selection
+      clickedAllSelected.set(true);
+      AuxContactables.find().forEach(function (contactable) {
+        if (!_.findWhere(selected.curValue, {id: contactable._id})){
+          selected.curValue.push({id: contactable._id, type: contactable.objNameArray, email: Utils.getContactableEmail(contactable) });
+        }
+      });
+      selected.dep.changed();
+    }else{
+      //clear selection
+      selected.set([]);
+    }
+  },
+  'click #sendTemplate': function () {
+    // get the common type that all selected entities have, ignoring contactable, person and organization
+    var commonType = _.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization');
+
+    if (! commonType || ! commonType.length) return;
+    commonType = commonType[0];
+
+    //filter from the selection the ones that don't have email
+    var filtered = _.filter(selected.get(), function (item) {
+      return item.email;
+    });
+
+    var context = {
+      category: [Enums.emailTemplatesCategories[commonType.toLowerCase()]],
+      recipient: _.map(filtered, function (item) {
+        return {
+          id: item.id,
+          email: item.email
+        };
+      })
+    };
+    context[commonType] = _.pluck(filtered, 'id');
+
+    Utils.showModal('sendTemplateModal', context);
+  },
+  'click .selectOneType': function () {
+    //remove all items that are not of this type
+    var self = this;
+    selected.set(_.filter(selected.get(), function (item) {
+      return _.contains(item.type, self.name);
+    }));
+  },
+  'click #selectAllRemotes': function () {
+    Meteor.call('getAllContactablesForSelection', SubscriptionHandlers.AuxContactablesHandler.getFilter(), function(err, result){
+      if (err){
+        console.log(err);
+      }else{
+        selected.set(_.map(result, function (contactable) {
+          return {id: contactable._id, type: contactable.objNameArray, email: Utils.getContactableEmail(contactable) };
+        }));
+      }
+    })
+  }
+});
 
 // Elasticsearch
 
@@ -511,12 +609,33 @@ Template.contactablesListItem.isESSearch = function() {
   return !_.isEmpty(query.searchString.value);
 };
 
+Template.contactablesListItem.helpers({
+  isSelected: function () {
+    return !! _.findWhere(selected.get(), { id: this._id });
+  }
+});
+Template.contactablesListItem.events({
+  'click .select': function (e) {
+    if (e.target.checked){
+      selected.curValue.push({
+        id: this._id,
+        type: this.objNameArray,
+        email: Utils.getContactableEmail(this)
+      })
+    }else{
+      var item = _.findWhere(selected.curValue, {id: this._id});
+      selected.curValue.splice(selected.curValue.indexOf(item), 1 );
+    }
+    selected.dep.changed();
+    clickedAllSelected.set(false);
+  }
+});
+
 Template.contactablesListItem.getLastNote = function() {
   var note = Notes.findOne({'links.id': this._id}, {sort: { dateCreated: -1}});
   if (note && note.msg.length > 50) {
     note.msg = note.msg.slice(0, 50) + '..';
   }
-
   return note;
 };
 

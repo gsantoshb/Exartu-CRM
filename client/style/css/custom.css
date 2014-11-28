@@ -740,6 +740,10 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .table-item:first-child{
     border-top: 1px solid #e7e7e7;
 }
+.table-item.selected {
+    background-color: #FEFAE6;
+}
+
 .actions-head {
     margin-bottom: 0px;
 }
