@@ -166,6 +166,7 @@ FileUploader.createEndpoint('uploadContactablesFiles', {
       description: metadata.description,
       tags: metadata.tags,
       userId: Meteor.userId(),
+      hierId: Meteor.user().hierId,
       fileId: fileId
     };
 
