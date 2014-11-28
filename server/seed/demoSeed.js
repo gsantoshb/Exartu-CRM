@@ -1,4 +1,8 @@
 // Common data
+var tags = [
+   [ 'sales','innovator'], ['javascript','css','oodb','sql','linux'],[ 'accounting','bookkeeping','cpa','auditing']
+
+];
 var contacts = [
   {
     firstName: "Doe",
@@ -367,6 +371,7 @@ var customers = [
     "department": "Primary"
   }
 ];
+var randomTag = tags[Math.floor(Math.random() * tags.length)];
 
 var loadContactables = function (hierId) {
   // Employees
@@ -384,6 +389,7 @@ var loadContactables = function (hierId) {
         description: "top candidate",
         status: status ? status._id : null
       },
+      tags: randomTag,
       statusNote: 'looks to be making a decision soon',
       objNameArray: ["person", "Employee", "contactable"],
       person: {
@@ -413,6 +419,7 @@ var loadContactables = function (hierId) {
         department: data.department,
         status: status ? status._id : null
       },
+      tags: randomTag,
       statusNote: 'looks to be making a decision soon',
       objNameArray: ["organization", "Customer", "contactable"],
       organization: {
@@ -441,7 +448,7 @@ var loadContactables = function (hierId) {
         status: status ? status._id : null,
         customer: randomCustomer._id,
       },
-
+      tags: randomTag,
       statusNote: 'looks to be making a decision soon',
       objNameArray: ["person", "Contact", "contactable"],
       person: {
@@ -523,7 +530,7 @@ var loadJobs = function (hierId) {
         var randomPublicJobTitle = publicJobTitles [Math.floor(Math.random() * publicJobTitles.length)];
 
         var newJob = {
-            tags:[],
+            tags: randomTag,
             customer: randomCustomer._id,
             Temporary: {},
             objNameArray: ['job', 'Temporary'],

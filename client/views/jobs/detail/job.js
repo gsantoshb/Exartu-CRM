@@ -193,7 +193,7 @@ Template.job.events({
   'click #copy-job': function () {
     Utils.showModal('basicModal', {
       title: 'Job copy',
-      message: 'Are you sure you want to copy this job?',
+      message: 'Copy job?',
       buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {label: 'Copy', classes: 'btn-success', value: true}],
       callback: function (result) {
         if (result) {
