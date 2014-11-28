@@ -1,8 +1,18 @@
 var ActivitiesHandler;
+
+var activityTypes = [
+  Enums.activitiesType.contactableAdd,
+  Enums.activitiesType.taskAdd,
+  Enums.activitiesType.placementAdd,
+  Enums.activitiesType.jobAdd,
+  Enums.activitiesType.noteAdd,
+  Enums.activitiesType.fileAdd
+];
+
 DashboardController = RouteController.extend({
   layoutTemplate: 'mainLayout',
     waitOn: function () {
-      SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities');
+      SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', { filter: {type: {$in: activityTypes}}});
       return [HierarchiesHandler, ActivitiesHandler];
     },
     action: function () {
@@ -49,26 +59,17 @@ Template.dashboard.created = function(){
 
     if (query.filter.searchString){
       Meteor.call('searchActivities', query.filter.searchString, function (err, result) {
-        ActivitiesHandler.setFilter({entityId: { $in: result }});
+        ActivitiesHandler.setFilter({type: {$in: activityTypes}, entityId: { $in: result }});
       });
     } else {
-      ActivitiesHandler.setFilter({});
+      ActivitiesHandler.setFilter({type: {$in: activityTypes}});
     }
   });
 };
 
 Template.dashboard.helpers({
   activities: function(){
-    queryDep.depend();
-    var q={};
-    if (query.filter.searchString) {
-      var regexObject = {
-        $regex: query.filter.searchString,
-        $options: 'i'
-      };
-      q['data.displayName'] = regexObject;
-    }
-      return Activities.find(q, { sort: {'data.dateCreated': -1} });
+    return Activities.find({}, { sort: {'data.dateCreated': -1} });
   },
   listViewMode: function () {
     return listViewMode.get();
@@ -101,6 +102,12 @@ Template.activity.helpers({
         return 'newJobActivity';
       case Enums.activitiesType.taskAdd:
         return 'newTaskActivity';
+      case Enums.activitiesType.placementAdd:
+        return 'newPlacementActivity';
+      case Enums.activitiesType.noteAdd:
+        return 'newNoteActivity';
+      case Enums.activitiesType.fileAdd:
+        return 'newFileActivity';
     }
   }
 });
@@ -108,10 +115,3 @@ Template.activity.helpers({
 Template.registerHelper('listViewMode', function () {
   return listViewMode.get();
 });
-
-Template.newContactableActivity.getActivityColor = function(){
-  return helper.getActivityColor(this);
-};
-Template.newContactableActivity.getActivityIcon = function(){
-  return helper.getActivityIcon(this);
-};
