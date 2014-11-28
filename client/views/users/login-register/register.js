@@ -1,4 +1,4 @@
-RegisterController =  RouteController.extend({
+RegisterController = RouteController.extend({
   template: 'register',
   layout: '',
   onBeforeAction: function () {
@@ -6,7 +6,7 @@ RegisterController =  RouteController.extend({
       this.redirect('dashboard');
     }
   },
-  onAfterAction: function() {
+  onAfterAction: function () {
     var title = 'Sign Up',
       description = 'Create a new Exartu account';
     SEO.set({
@@ -23,20 +23,19 @@ RegisterController =  RouteController.extend({
 });
 
 
-
-var isRegistering = true,
-  registeringDep = new Deps.Dependency;
-var error= '',
-  errorDep = new Deps.Dependency;
+var isRegistering = new ReactiveVar(true);
+var isSubmitting = new ReactiveVar(false);
+var error = new ReactiveVar('');
 
 Template.register.helpers({
   isRegistering: function () {
-    registeringDep.depend();
-    return isRegistering;
+    return isRegistering.get();
   },
-  error:function(){
-    errorDep.depend();
-    return error;
+  isSubmitting: function () {
+    return isSubmitting.get();
+  },
+  error: function () {
+    return error.get();
   }
 });
 
@@ -45,20 +44,19 @@ AutoForm.hooks({
   'registerForm': {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
       var self = this;
+      isSubmitting.set(true);
       Meteor.call('registerAccount', insertDoc, function (err, result) {
         if (err) {
           console.log(err);
-          error = err.reason;
-          errorDep.changed();
-        } else if(!result) {
-          error = err.reason;
-          errorDep.changed();
+          error.set(err.reason);
+        } else if (!result) {
+          error.set(err.reason);
         } else {
           self.resetForm();
-          isRegistering = false;
-          registeringDep.changed();
+          isRegistering.set(false);
         }
         self.done();
+        isSubmitting.set(false);
       });
 
       return false;

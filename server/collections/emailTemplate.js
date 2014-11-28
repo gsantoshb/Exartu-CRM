@@ -11,10 +11,10 @@ EmailTemplates.allow({
   }
 });
 EmailTemplates.before.insert(function (userId, doc) {
-    var user = Meteor.user();
-    doc.hierId = user.currentHierId;
-    doc.userId = user._id;
-    doc.dateCreated = Date.now();
+  var user = Meteor.user();
+  doc.hierId = user.currentHierId;
+  doc.userId = user._id;
+  doc.dateCreated = Date.now();
 });
 
 EmailTemplateMergeFields = new Mongo.Collection('emailTemplateMergeFields');

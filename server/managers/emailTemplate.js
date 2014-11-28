@@ -7,7 +7,8 @@ EmailTemplateManager = {
   createTemplate: function (template) {
     return EmailTemplates.insert(template);
   },
-  instantiateTemplate: function (templateId, entities) {
+  instantiateTemplate: function (templateId, entities, recipientId) {
+
     var template = EmailTemplates.findOne(templateId);
     if (!template) throw new Error('template not found');
 
@@ -16,7 +17,7 @@ EmailTemplateManager = {
     var mergeFields = getMergeFields(template);
 
     _.each(mergeFields, function (mf) {
-        var value = getMergeFieldValue(mf, entities);
+        var value = getMergeFieldValue(mf, entities, recipientId);
         result = result.replace(getPatternReplace(mf._id), value);
     });
 
@@ -38,16 +39,31 @@ EmailTemplateManager = {
     return result;
   },
   sendTemplate: function (templateId, entities, recipient) {
-    var text = this.instantiateTemplate(templateId, entities);
+    var self = this;
     var template = EmailTemplates.findOne(templateId);
 
-    Meteor.call('sendEmail', recipient, template.name, text, true);
-    Emails.insert({
-      to: recipient,
-      text: text,
-      userId: Meteor.userId(),
-      templateId: template._id
-    })
+    var sendAndSave = function (email, subject, text) {
+      Meteor.call('sendEmail', email,subject, text, true);
+      Emails.insert({
+        to: email,
+        text: text,
+        userId: Meteor.userId(),
+        templateId: template._id
+      });
+    };
+
+    if (_.isArray(recipient)){
+      _.each(recipient, function (rec) {
+
+        var text = self.instantiateTemplate(templateId, entities, rec.id);
+        sendAndSave(rec.email, template.name, text);
+
+      })
+
+    }else {
+      var text = self.instantiateTemplate(templateId, entities);
+      sendAndSave(recipient, template.name, text);
+    }
   }
 };
 
@@ -62,11 +78,20 @@ var getMergeFields= function (template) {
   return result;
 };
 
-var getMergeFieldValue = function (mergeField, entities) {
+var getMergeFieldValue = function (mergeField, entities, recipientId) {
   var entityId = _.findWhere(entities,{mergeFieldId: mergeField._id});
 
-  if (!entityId) throw new Error('Missed entity for mergeField ' +  mergeField.name );
-  entityId = entityId.entityId;
+  if (entityId && (entityId.entityId === false)){
+    if (!recipientId)
+      return mergeField.testValue;
+    else{
+      entityId = recipientId;
+    }
+  }else{
+    if (!entityId) throw new Error('Missed entity for mergeField ' +  mergeField.name );
+    entityId = entityId.entityId;
+  }
+
   var collection = dType.core.getCollectionOfType(mergeField.objType);
 
   var entity = collection.findOne(entityId);

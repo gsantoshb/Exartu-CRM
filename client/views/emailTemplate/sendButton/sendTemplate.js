@@ -119,18 +119,17 @@ Template.sendTemplateModal.events({
     Utils.dismissModal();
   },
   'click #send': function () {
-    var context = this[0],
-      template = EmailTemplates.findOne(templateId.get());
+    var context = this[0];
+
     sending.set(true);
     Meteor.call('sendTemplate', templateId.get(), entities, context.recipient, function (err, result) {
       if (err){
         console.log(err);
       }else{
-
+        Utils.dismissModal();
       }
       sending.set(false);
-      Utils.dismissModal();
-    })
+    });
   }
 });
 
@@ -147,11 +146,11 @@ var resolveMergeFields = function (mergeFields, context) {
       })
     }else if(context[mf.objType]){
       entities.push({
-        entityId: context[mf.objType],
+        entityId: _.isArray(context[mf.objType]) ? false : context[mf.objType],
         mergeFieldId: mf._id
       })
     }else{
-      var missingEntity =_.findWhere(missingTypes,{objType: mf.objType});
+      var missingEntity =_.findWhere(missingTypes, { objType: mf.objType });
       if (!missingEntity){
         missingTypes.push({objType: mf.objType, mfIds: [mf._id]});
       }else{
