@@ -1,0 +1,64 @@
+<template name="noteItem">
+    <div class="table-item note {{noteClass}}">
+        <a class="btn btn-xs btn-success text-small editNote pointer" title="Edit" style="position: absolute; top: 4px; right: 4px; z-index: 10">
+            <i class="fa fa-pencil"></i>
+        </a>
+        <div class="row">
+            <div class="col-sm-5">
+
+                        <div class="table-item-cell">
+                            <div class="table-item-cell-container">
+                                <div class="table-item-title">
+                            <p class="text text-info"> {{{formatMsg msg}}}</p>
+                        </div>
+                        <div class="note-author">
+                            <a class="pointer">
+                                <span>{{displayUserName userId}}</span>
+                            </a>
+
+                        </div>
+                    </div>
+                    <!-- /.table-item-cell-container -->
+                </div>
+                <!-- /.table-item-cell -->
+            </div>
+            <!-- /.col-sm-3 -->
+
+
+            <!-- /.col-sm-4 -->
+            <div class="col-sm-3">
+                <div class="table-item-cell" style="margin-top: 13px">
+                    <div class="table-item-cell-container">
+                        {{>showNoteDate}}
+                        <!-- /.table-item-cell-container -->
+                    </div>
+                    <!-- /.table-item-cell -->
+                </div>
+                <!-- /.col-sm-3 -->
+            </div>
+            <div class="col-sm-12">
+                <div data-bind="foreach: links">
+                    {{#each links}}
+                    <a href="{{getHref}}">
+                        {{#with getEntity}}
+                        <span class="badge">{{displayName}}</span>
+                        {{/with}}
+                    </a>
+                    {{/each}}
+                </div>
+            </div>
+
+            <!-- /.col-lg-4 -->
+        </div>
+        <!-- /.row -->
+    </div>
+</template>
+
+
+<template name="showNoteDate">
+    <div class="date">
+        {{#formattedDate value=end format='fromNow'}}
+        {{dateCreated}}
+        {{/formattedDate}}
+    </div>
+</template>
