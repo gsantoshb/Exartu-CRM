@@ -1,4 +1,4 @@
-<template name="notesTab">
+<template name="znotesTab">
     <div class="record">
         <div class="row">
             <!--<div class="col-md-3 col-lg-3">-->
@@ -11,7 +11,7 @@
         </div>
     </div>
 </template>
-<template name="notesFilter">
+<template name="znotesFilter">
             <div class="filter">
                 <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
                     <strong><i class="fa fa-filter"></i></strong>
@@ -73,7 +73,7 @@
                 </div>
             </div>
 </template>
-<template name="notesTabAdd">
+<template name="znotesTabAdd">
     <div class="record-add row">
 
         <div class="add-box-content col-sm-12">
@@ -89,7 +89,7 @@
     </div>
 </template>
 
-<template name="notesTabList">
+<template name="znotesTabList">
     <div class="record-list-pagination">
         {{> fastPagination name="notes"}}
     </div>
@@ -100,7 +100,7 @@
     </ul>
 </template>
 
-<template name="notesTabItem">
+<template name="znotesTabItem">
     <li class="record-record list-3-item">
         <div class="list-thumb"><i class="icon-note-paper-2"></i></div>
         <div class="list-3-content list-magic">
@@ -146,7 +146,7 @@
     </li>
 </template>
 
-<template name="notesTabEditItem">
+<template name="znotesTabEditItem">
     {{#autoForm id=formId schema="NoteSchema" doc=doc collection="Notes" type="update"}}
         {{> afQuickField name='msg' rows=3}}
         {{> linksAutoForm name='links' value=doc.links}}
