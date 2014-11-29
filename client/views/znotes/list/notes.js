@@ -1,6 +1,6 @@
 
 var NotesHandler;
-NotesController = RouteController.extend({
+zNotesController = RouteController.extend({
   template: 'notes',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
