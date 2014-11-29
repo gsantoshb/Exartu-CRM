@@ -4,6 +4,7 @@ Meteor.publish('emailTemplates', function () {
 
 EmailTemplates.allow({
   insert: function (userId, doc) {
+
     return true;
   },
   update: function(userId, doc, fieldNames, modifier){
@@ -11,10 +12,13 @@ EmailTemplates.allow({
   }
 });
 EmailTemplates.before.insert(function (userId, doc) {
-  var user = Meteor.user();
-  doc.hierId = user.currentHierId;
-  doc.userId = user._id;
-  doc.dateCreated = Date.now();
+  //if template creation from account registration then no userid yet
+  if (userId) {
+    var user = Meteor.users.findOne({_id: userId});
+    doc.hierId = user.currentHierId;
+    doc.userId = user._id;
+    doc.dateCreated = Date.now();
+  }
 });
 
 EmailTemplateMergeFields = new Mongo.Collection('emailTemplateMergeFields');

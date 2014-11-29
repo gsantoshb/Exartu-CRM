@@ -3,6 +3,7 @@ var tags = [
    [ 'sales','innovator'], ['javascript','css','oodb','sql','linux'],[ 'accounting','bookkeeping','cpa','auditing']
 
 ];
+
 var contacts = [
   {
     firstName: "Doe",

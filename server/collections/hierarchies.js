@@ -40,6 +40,7 @@ Hierarchies.after.insert(function(userId, doc){
   if (!doc.parent){
     if (doc._id != ExartuConfig.SystemHierarchyId){
       seedSystemLookUps(doc._id);
+      seedEmailTemplates(doc._id);
       createHouseAccount(doc);
     }
   }

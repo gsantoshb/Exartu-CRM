@@ -12,7 +12,6 @@ var dbSeed = [
 //  seedSystemLookUps,
   seedSystemConfigs,
   seedSystemRoles,
-  seedSystemContactMethods,
   seedSubscriptionPlans
 ];
 
