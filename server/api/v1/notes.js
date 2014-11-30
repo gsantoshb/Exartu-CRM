@@ -27,7 +27,7 @@ Router.map(function() {
 					response.end(Notes.find(selector).map(mapper.get), {type: 'application/json'});
 
 					break;
-				// Crete new note
+				// Create new note
 				// Body:
 				//   - msg: string
 				// 	 - links: [ string ] // contactable ids

@@ -282,7 +282,7 @@
               New note created by
               <strong> {{displayUserName this.userId}} </strong>
 
-              was linked with
+              <!--linked with-->
 
               -
 
@@ -324,26 +324,15 @@
                           <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
                               <span> {{displayUserName this.userId}} </span>
                           </a>
-                          <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
+
                               <i class="fa fa-calendar"></i>
-                              Start:
                                 <span>
                                   {{#formattedDate value=data.begin format='lll'}}
                                     {{date}}
                                   {{/formattedDate}}
                                 </span>
-                          </a>
-                        {{#if data.end}}
-                            <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
-                                <i class="fa fa-calendar"></i>
-                                End:
-                                    <span>
-                                      {{#formattedDate value=data.end format='lll'}}
-                                        {{date}}
-                                      {{/formattedDate}}
-                                    </span>
-                            </a>
-                        {{/if}}
+
+
                       </div>
                   </div>
                   <!-- /.box-content -->
