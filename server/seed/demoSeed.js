@@ -465,6 +465,7 @@ var loadContactables = function (hierId) {
 
     ContactableManager.create(newContact);
   });
+  console.log("Contactable demo data created",Date.now());
 };
 
 var loadJobs = function (hierId) {
@@ -475,61 +476,12 @@ var loadJobs = function (hierId) {
     var durations = LookUps.find({lookUpCode: Enums.lookUpTypes.job.duration.lookUpCode,hierId:hierId}).fetch();
     var jobTitles = LookUps.find({lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode,hierId:hierId}).fetch();
     var statuses = LookUps.find({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,hierId:hierId}).fetch();
-    var publicJobTitles = [
-        ["QCI"  ],
-        ["Production/sewing"  ],
-        ["Shipping And Receiving Clerk"  ],
-        ["Access Operator"  ],
-
-        ["Typist/statistical"  ],
-        ["Auditor"  ],
-        ["Warehouse Person"  ],
-        ["Utility Worker"  ],
-        ["Administrative Support"  ],
-        ["Special Project(s)"  ],
-        ["Accounts Payable"  ],
-        ["Accounts Receivable Clerk"  ],
-        ["12 hour Nurse"  ],
-        ["Accounting Clerk 1"  ],
-        ["Budget Analyst"  ],
-        ["Accountant"  ],
-
-        ["Yard People"  ],
-        ["Wagemaster"  ],
-        ["Welder"  ],
-        ["Assembler Heavy"  ],
-        ["Accountant"  ],
-        ["Administrative Support"  ],
-
-        ["Yard People"  ],
-        ["Access Operator"  ],
-        ["Admin. Assist."  ],
-        ["Accountant"  ],
-        ["Forklift"  ],
-        ["Packaging"  ],
-        ["Server Deposit"  ],
-        ["Administrative Support"  ],
-        ["Forklift"  ],
-        ["Assembler Heavy"  ],
-        ["Administrative Support"  ],
-        ["C#"  ],
-        ["Access Operator"  ],
-        ["Yard People"  ],
-        ["Background Checks"  ],
-        ["General Administrator I"  ],
-        ["Fabricating Machine"  ],
-        ["Hand Nailer"  ]
-
-    ];
-
 
   for (var i = 0; i < 25; ++i) {
 
         var randomJobType = 'Temporary'; //jobTypes[Math.floor(Math.random() * jobTypes.length)];
         var randomCustomer = customers[Math.floor(Math.random() * customers.length)];
         var randomJobTitle = jobTitles [Math.floor(Math.random() * jobTitles.length)];
-        var randomPublicJobTitle = publicJobTitles [Math.floor(Math.random() * publicJobTitles.length)];
-
         var newJob = {
             tags: randomTag,
             customer: randomCustomer._id,
@@ -540,22 +492,20 @@ var loadJobs = function (hierId) {
             category: categories[Math.floor(Math.random() * categories.length)]._id,
             duration: durations[Math.floor(Math.random() * durations.length)]._id,
             status: statuses[Math.floor(Math.random() * statuses.length)]._id,
-            publicJobTitle: randomPublicJobTitle[0],
+            publicJobTitle: randomJobTitle.displayName,
             jobTitle: randomJobTitle._id,
             statusNote: 'looks to be making a decision soon',
             description: "a job for all times",
             testData: true
         }
-        // TODO: check objType's fields
 
         Meteor.call('addJob', newJob, function (err, result) {
-            if (!err)
-                console.log("Job created for demo")
-            else
+            if (err)
                 console.log(err);
         })
     }
     ;
+  console.log("Job demo data created",Date.now());
 };
 
 
@@ -598,60 +548,73 @@ var loadPlacements = function (hierId) {
         console.log(err);
     })
   };
+  console.log("Placement demo data created",Date.now());
 };
 
-
-
 var loadTasks = function (hierId, usermane, userId) {
+  var employeesFetched = Contactables.find({objNameArray: 'Employee',hierId:hierId}).fetch();
     var notes = [
         "Call " + employees[Math.floor(Math.random() * employees.length)].firstName + " asap",
-        "Contact " + employees[Math.floor(Math.random() * employees.length)].lastName
+        "Contact " + employees[Math.floor(Math.random() * employees.length)].lastName,
+        "Confirm details w/ " + employees[Math.floor(Math.random() * employees.length)].firstName,
+        "Schedule interview w/ " + employees[Math.floor(Math.random() * employees.length)].firstName,
     ];
-
-    // Add users to hier
-    var userIds = [];
-    //for (var j = 0; j < 5; ++j) {
-    //    var newUser = {
-    //        username: usermane + j,
-    //        email: usermane + j + '@' + usermane + j + '.com',
-    //        password: usermane + j
-    //    }
-    //    var id = Meteor.call('addHierUser', newUser, hierId);
-    //    userIds.push(id);
-    //}
-    if (userId)
-        userIds.push(userId);
 
     var today = new Date();
     var tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
 
     for (var i = 0; i < 50; ++i) {
+      var randomEmployee = employeesFetched[Math.floor(Math.random() * employees.length)];
         var newTask = {
             begin: today,
             end: tomorrow,
-            assign: [userIds[Math.floor(Math.random() * userIds.length)]],
+            assign: userId, //[userIds[Math.floor(Math.random() * userIds.length)]],
             msg: notes[Math.floor(Math.random() * notes.length)],
             completed: null,
             hierId: hierId,
             userId: userId,
             testData: true,
-            links: []
+            links: [{id: randomEmployee._id, type: Enums.linkTypes.contactable.value}]
         }
 
         Tasks.insert(newTask, function (err, result) {
-            if (!err)
-                console.log("Task created for demo");
-            else
+            if (err)
                 console.log(err);
         })
     }
+  console.log("Task demo data created",Date.now());
 };
+var loadNotes= function (hierId, usermane, userId) {
+  var employeesFetched = Contactables.find({objNameArray: 'Employee',hierId:hierId}).fetch();
+  var notes = [
+      "Called " + employees[Math.floor(Math.random() * employees.length)].firstName + " asap",
+      "Contacted " + employees[Math.floor(Math.random() * employees.length)].lastName,
+      "Confirmed details w/ " + employees[Math.floor(Math.random() * employees.length)].firstName,
+      "Scheduled interview w/ " + employees[Math.floor(Math.random() * employees.length)].firstName,
+  ];
 
-demoSeed = {
-  loadContactables: loadContactables,
-  loadJobs: loadJobs,
-  loadTasks: loadTasks
+
+  var today = new Date();
+  var tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  for (var i = 0; i < 25; ++i) {
+    var randomEmployee = employeesFetched[Math.floor(Math.random() * employees.length)];
+    var newNote = {
+      msg: notes[Math.floor(Math.random() * notes.length)],
+      hierId: hierId,
+      userId: userId,
+      testData: true,
+      links: [{id: randomEmployee._id, type: Enums.linkTypes.contactable.value}]
+    }
+
+    Notes.insert(newNote, function (err, result) {
+      if (err)
+        console.log(err);
+    })
+  }
+  console.log("Note demo data created",Date.now());
 };
 
 // For testing
@@ -665,13 +628,14 @@ Meteor.methods({
     loadJobs(user.hierId);
     loadPlacements(user.hierId);
     loadTasks(user.hierId, user.username, user._id);
+    loadNotes(user.hierId, user.username, user._id);
   },
   removeDemoData: function () {
     var user = Meteor.user();
     if (!user)
       return;
 
-    _.each([Contactables, Jobs, Tasks], function (collection) {
+    _.each([Contactables, Jobs, Tasks,Placements,Notes], function (collection) {
       collection.direct.remove({ hierId: user.hierId, testData: true });
     });
   }

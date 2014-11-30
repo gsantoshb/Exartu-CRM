@@ -78,7 +78,7 @@ Template.addEditTask.helpers({
     return Meteor.users.find({});
   },
   isSelected: function () {
-    return _.contains(task.assign, this._id);
+    return task.assign==this._id;
   },
   error: function () {
     errorDep.depend();
@@ -160,7 +160,7 @@ var isValid = function (task, key) {
       Error.msg = '';
     }
 
-    if (!task.assign.length) {
+    if (!task.assign) {
       Error.assign = 'This field is required';
       result = false;
     } else {
@@ -236,8 +236,7 @@ Template.addEditTask.events({
   },
   'change .assign': function (e) {
     var newassign = $(e.target).val();
-    if (!_.contains(task.assign, newassign))
-      task.assign.push(newassign);
+    task.assign=newassign;
     taskUpdate();
   },
   'blur .msg': function () {

@@ -15,7 +15,8 @@
                                 </div>
 
                                 {{#objectProperty property=filters.userId}}
-                                    <select class="form-control">
+                                    <select id="userDropdown" class="form-control">
+                                        <option value="">--select--</option>
                                         {{#each users}}
                                             <option value="{{_id}}">{{displayUserName _id}}</option>
                                         {{/each}}

@@ -2,6 +2,7 @@ var entityType = null;
 var isEntitySpecific = false;
 var TasksHandler, taskQuery, status;
 var statusDep = new Deps.Dependency;
+$("#assignedToDropdown").prop("selectedIndex", -1);
 
 var loadTaskQueryFromURL = function (params) {
   // Search string
@@ -17,9 +18,9 @@ var loadTaskQueryFromURL = function (params) {
 
   // Owned by me
   var ownedByMeQuery = {};
-  if (params.owned) {
-    ownedByMeQuery.default = params.owned ? Meteor.userId() : undefined;
-  }
+//  if (params.owned) {
+//    ownedByMeQuery.default = params.owned ? Meteor.userId() : undefined;
+//  }
 
   // Inactive
   var inactiveQuery = {type: Utils.ReactivePropertyTypes.boolean};
@@ -32,7 +33,7 @@ var loadTaskQueryFromURL = function (params) {
   if (params.assignedTo) {
     assignedToQuery.default = params.assignedTo;
   }
-
+  console.log('task box run');
   return new Utils.ObjectDefinition({
     reactiveProps: {
       searchString: searchStringQuery,
@@ -45,7 +46,7 @@ var loadTaskQueryFromURL = function (params) {
 
 Template.tasksBox.created = function () {
   taskQuery = taskQuery || loadTaskQueryFromURL(Router.current().params);
-
+  console.log('task box created',Router.current().params,taskQuery);
   var entityId = Session.get('entityId');
 
   if (!SubscriptionHandlers.TasksHandler) {
@@ -102,7 +103,7 @@ Template.tasksBox.created = function () {
     }
 
     urlQuery.apply();
-
+    console.log('task query',q);
     TasksHandler.setFilter(q);
   })
 };

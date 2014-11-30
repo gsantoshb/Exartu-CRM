@@ -32,13 +32,13 @@
                                         {{/objectProperty}}
                                     </label>
                                 </div>
-                                <div class="checkbox">
-                                    <label>
-                                        {{#objectProperty property=filters.ownedByMe}}
-                                            <input type="checkbox" checked="{{value}}" />Mine only
-                                        {{/objectProperty}}
-                                    </label>
-                                </div>
+                                <!--<div class="checkbox">-->
+                                    <!--<label>-->
+                                        <!--{{#objectProperty property=filters.ownedByMe}}-->
+                                            <!--<input type="checkbox" checked="{{value}}" />Mine only-->
+                                        <!--{{/objectProperty}}-->
+                                    <!--</label>-->
+                                <!--</div>-->
                             </div>
 
                             <div class="filter-item">
@@ -47,13 +47,14 @@
                                     Owner
                                 </div>
 
-                                <div class="checkbox">
-                                    {{#objectProperty property=filters.assigned}}
-                                        <input type="checkbox" checked="{{assigned}}" />Assigned to:
-                                    {{/objectProperty}}
-                                </div>
+                                <!--<div class="checkbox">-->
+                                    <!--{{#objectProperty property=filters.assigned}}-->
+                                        <!--<input type="checkbox" checked="{{assigned}}" />Assigned to:-->
+                                    <!--{{/objectProperty}}-->
+                                <!--</div>-->
                                 {{#objectProperty property=filters.assignedTo}}
-                                    <select class="form-control">
+                                    <select id="assignedToDropdown" class="form-control">
+                                        <option value="">--select--</option>
                                         {{#each users}}
                                             <option value="{{_id}}">{{displayUserName _id}}</option>
                                         {{/each}}

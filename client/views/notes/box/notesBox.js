@@ -1,8 +1,8 @@
 var entityType = null;
 var isEntitySpecific = false;
 var NotesHandler, noteQuery, status;
-var statusDep = new Deps.Dependency;
 
+$("#userDropdown").prop("selectedIndex", -1);
 var loadNoteQueryFromURL = function (params) {
   // Search string
   var searchStringQuery = {};
@@ -25,7 +25,6 @@ var loadNoteQueryFromURL = function (params) {
 
 Template.notesBox.created = function () {
   noteQuery = noteQuery || loadNoteQueryFromURL(Router.current().params);
-
   var entityId = Session.get('entityId');
 
   if (!SubscriptionHandlers.NotesHandler) {
@@ -43,9 +42,8 @@ Template.notesBox.created = function () {
     var queryObj = noteQuery.getObject();
     var q = {};
 
-
     if (queryObj.userId) {
-      q.userId = Meteor.userId();
+      q.userId = queryObj.userId;
       urlQuery.addParam('userId', queryObj.userId);
     }
 
@@ -60,7 +58,7 @@ Template.notesBox.created = function () {
     if (isEntitySpecific) {
       q.links = {$elemMatch: {id: entityId}};
     }
-
+    console.log('query',q);
     urlQuery.apply();
 
     NotesHandler.setFilter(q);
