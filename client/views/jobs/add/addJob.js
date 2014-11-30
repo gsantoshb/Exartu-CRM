@@ -37,6 +37,8 @@ var createJob = function (objTypeName) {
   model = new dType.objTypeInstance(Session.get('objType'), options);
   var defaultStatus = LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode, isDefault: true});
   if (defaultStatus) model.status = defaultStatus._id;
+  var defaultJobTitle = LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode, isDefault: true});
+  if (defaultJobTitle) model.jobTitle = defaultJobTitle._id;
   return model
 };
 
