@@ -33,7 +33,7 @@ var loadTaskQueryFromURL = function (params) {
   if (params.assignedTo) {
     assignedToQuery.default = params.assignedTo;
   }
-  console.log('task box run');
+
   return new Utils.ObjectDefinition({
     reactiveProps: {
       searchString: searchStringQuery,
@@ -46,7 +46,6 @@ var loadTaskQueryFromURL = function (params) {
 
 Template.tasksBox.created = function () {
   taskQuery = taskQuery || loadTaskQueryFromURL(Router.current().params);
-  console.log('task box created',Router.current().params,taskQuery);
   var entityId = Session.get('entityId');
 
   if (!SubscriptionHandlers.TasksHandler) {

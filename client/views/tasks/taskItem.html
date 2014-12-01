@@ -17,15 +17,7 @@
                             </a>
                             to
                             <i class="fa fa-long-arrow-right"></i>
-                            <span>
-                                {{#each assignedUsers}}
-                                    <a>
-                                        <span class="{{isMe}}">
-                                            {{username}}
-                                        </span>
-                                    </a>
-                                {{/each}}
-                            </span>
+                            <span>{{displayUserName assign}}</span>
                         </div>
                     </div>
                     <!-- /.table-item-cell-container -->

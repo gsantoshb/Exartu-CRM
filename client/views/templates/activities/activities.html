@@ -87,15 +87,10 @@
           <td>
               <i class="icon icon-clock-3"></i>
 
-              New task created by
-              <strong> {{displayUserName this.userId}} </strong>
+              New task by
+               {{displayUserName this.userId}}
 
-              was assigned to
-            {{#each task.assign}}
-                <strong>{{displayUserName .}}</strong>,
-            {{/each}}
-
-              -
+                assigned to {{displayUserName task.assign}}
 
               <strong>{{task.msg}}</strong>
 
@@ -127,19 +122,17 @@
                   <div class="box-content">
                       <h4 class="item-title">
                           Task
-                          <span class="spacer">–</span>
-                          <a class="pointer">
-                              <strong>{{task.msg}}</strong>
-                          </a>
-                          Assigned to
-                        {{#each task.assign}}
-                            <a>{{displayUserName .}}</a>,
-                        {{/each}}
-
                       </h4>
+                      <span class="spacer"></span>
+
+                      <strong>{{task.msg}}</strong>
+
                       <div class="item-actions">
                           <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
                               <span> {{displayUserName this.userId}} </span>
+                          </a>
+                          <a class="btn btn-default tip-bottom pointer" title="Task Owner">assigned
+                              <span> {{displayUserName task.assign}} </span>
                           </a>
                           <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
                               <i class="fa fa-calendar"></i>
