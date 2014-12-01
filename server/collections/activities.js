@@ -113,19 +113,6 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
 
   var changes = [];
 
-  var propertiesTracker = function (root, properties) {
-    _.forEach(properties, function (property){
-      var previousValue = root ? self.previous[root][property.field] : self.previous[property.field];
-      var newValue = root? doc[root][property.field] : doc[property.field];
-      if (newValue != previousValue)
-        changes.push({
-          fieldDisplayName: property.displayName,
-          oldValue: property.displayValue ? property.displayValue(previousValue) : previousValue,
-          newValue: property.displayValue? property.displayValue(newValue) : newValue
-        });
-    });
-  };
-
   // Check person properties
   if (fieldNames.indexOf('person') != -1) {
     var personProperties = [
@@ -136,7 +123,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
       { field: 'salutation', displayName: 'salutation'}
     ];
 
-    propertiesTracker('person', personProperties);
+    propertiesTracker(doc, self.previous, changes, 'person', personProperties);
   }
 
   // Check organization properties
@@ -145,11 +132,10 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
       { field: 'organizationName', displayName: 'organization name'},
     ];
 
-    propertiesTracker('organization', organizationProperties);
+    propertiesTracker(doc, self.previous, changes, 'organization', organizationProperties);
   }
 
   // Track changes in Customer, Contact and Employee fields
-  console.log('fieldNames', fieldNames)
   if (fieldNames.indexOf('Customer') != -1) {
     var customerProperties = [
       { field: 'department', displayName: 'department'},
@@ -161,7 +147,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
       { field: 'workerCompCode', displayName: 'Comp code'}
     ];
 
-    propertiesTracker('Customer', customerProperties);
+    propertiesTracker(doc, self.previous, changes, 'Customer', customerProperties);
   }
 
   if (fieldNames.indexOf('Employee') != -1) {
@@ -170,10 +156,10 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
       { field: 'status', displayName: 'status', displayValue: function (statusId) {
         var status = LookUps.findOne(statusId);
         return status.displayName;
-      }},
+      }}
     ];
 
-    propertiesTracker('Employee', employeeProperties);
+    propertiesTracker(doc, self.previous, changes, 'Employee', employeeProperties);
   }
 
   if (fieldNames.indexOf('Contact') != -1) {
@@ -191,14 +177,14 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
       }}
     ];
 
-    propertiesTracker('Contact', contactProperties);
+    propertiesTracker(doc, self.previous, changes, 'Contact', contactProperties);
   }
 
   // Status note
   if (fieldNames.indexOf('statusNote') != -1) {
     var statusNote = [{field: 'statusNote', displayName: 'Status note'}];
 
-    propertiesTracker(undefined, statusNote);
+    propertiesTracker(doc, self.previous, changes, undefined, statusNote);
   }
 
   // Location
@@ -207,7 +193,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
       Utils.getLocationDisplayName(location)
     }}];
 
-    propertiesTracker(undefined, location);
+    propertiesTracker(doc, self.previous, changes, undefined, location);
   }
 
   var lists = [
@@ -227,33 +213,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
   _.forEach(lists, function (list) {
     if (fieldNames.indexOf(list.fieldName) == -1) return;
 
-    var previousValues = self.previous[list.fieldName];
-    var newValues = doc[list.fieldName];
-
-    if (previousValues && previousValues.length > newValues.length) { // Item removed
-      changes.push({fieldDisplayName: list.displayName, removed: true});
-    } else if (!previousValues || previousValues.length < newValues.length) { // Item added
-      var addedItem = newValues[newValues.length - 1];
-      changes.push({fieldDisplayName: list.displayName, added: true, newValue: list.displayItem ? list.displayItem(addedItem) : addedItem});
-    } else if (previousValues.length == newValues.length) { // Item updated
-      _.forEach(previousValues, function (value, index) {
-        // Compare old values and new values
-        if (! _.isEqual(value, newValues[index])) {
-          if (! _.isObject(value)) {
-            changes.push({fieldDisplayName: list.displayName, changed: true, oldValue: value, newValue: newValues[index]});
-          } else {
-            var properties = _.keys(value);
-            var subChanges = [];
-            _.forEach(properties, function (property) {
-              if (! _.isEqual(value[property], newValues[index][property]))
-                subChanges.push({property: property, newValue: newValues[index][property], oldValue: value[property]});
-            });
-
-            changes.push({fieldDisplayName: list.displayName, changed: true, subChanges: subChanges});
-          }
-        }
-      });
-    }
+    listTracker(doc, self.previous, changes, list);
   });
 
   _.forEach(changes, function (change) {
@@ -350,23 +310,53 @@ Placements.after.insert(function (userId, doc) {
   })
 });
 
-Placements.after.update(function (userId, doc) {
-  var data = {};
-  data.dateCreated = new Date();
-  data.job = doc.job;
-  data.employee = doc.employee;
-  data.oldJob = this.previous.job;
-  data.oldEmployee = this.previous.employee;
+Placements.after.update(function (userId, doc, fieldNames, modifier, options) {
+  var self = this;
 
+  var changes = [];
 
-  Activities.insert({
-    userId: userId,
-    hierId: doc.hierId,
-    type: Enums.activitiesType.placementEdit,
-    entityId: doc._id,
-    links: [doc._id, doc.job, doc.employee],
-    data: data
-  })
+  var lists = [
+    { fieldName: 'tags', displayName: 'tags'},
+    { fieldName: 'placementRates', displayName: 'placement rates', displayItem: function (placementRate) {
+      var type = LookUps.findOne(placementRate.type);
+      return type.displayName + ': Pay ' + placementRate.pay + ', Bill ' + placementRate.bill;
+    }}
+  ];
+
+  _.forEach(lists, function (list) {
+    if (fieldNames.indexOf(list.fieldName) == -1) return;
+
+    listTracker(doc, self.previous, changes, list);
+  });
+
+  // Status note
+  if (fieldNames.indexOf('statusNote') != -1) {
+    var statusNote = [{field: 'statusNote', displayName: 'Status note'}];
+
+    propertiesTracker(doc, self.previous, changes, undefined, statusNote);
+  }
+
+  // Placement status
+  if (fieldNames.indexOf('candidateStatus') != -1) {
+    var candidateStatus = [{field: 'candidateStatus', displayName: 'Candidate status', displayValue: function (candidateStatusId) {
+      var status = LookUps.findOne(candidateStatusId);
+      return status.displayName;
+    }}];
+
+    propertiesTracker(doc, self.previous, changes, undefined, candidateStatus);
+  }
+
+  _.forEach(changes, function (change) {
+    _.extend(change, { dateCreated: new Date()});
+
+    Activities.insert({
+      userId: userId,
+      hierId: doc.hierId,
+      type: Enums.activitiesType.placementEdit,
+      entityId: doc._id,
+      data: change
+    })
+  });
 });
 
 // Contactable files
@@ -409,3 +399,48 @@ Meteor.startup(function () {
 // Indexes
 
 Activities._ensureIndex({hierId: 1});
+
+// Helpers
+
+var propertiesTracker = function (doc, previous, changes, root, properties) {
+  _.forEach(properties, function (property){
+    var previousValue = root ? previous[root][property.field] : previous[property.field];
+    var newValue = root? doc[root][property.field] : doc[property.field];
+    if (newValue != previousValue)
+      changes.push({
+        fieldDisplayName: property.displayName,
+        oldValue: property.displayValue ? property.displayValue(previousValue) : previousValue,
+        newValue: property.displayValue? property.displayValue(newValue) : newValue
+      });
+  });
+};
+
+var listTracker = function (doc, previous, changes, list) {
+  var previousValues = previous[list.fieldName];
+  var newValues = doc[list.fieldName];
+
+  if (previousValues && previousValues.length > newValues.length) { // Item removed
+    changes.push({fieldDisplayName: list.displayName, removed: true});
+  } else if (!previousValues || previousValues.length < newValues.length) { // Item added
+    var addedItem = newValues[newValues.length - 1];
+    changes.push({fieldDisplayName: list.displayName, added: true, newValue: list.displayItem ? list.displayItem(addedItem) : addedItem});
+  } else if (previousValues.length == newValues.length) { // Item updated
+    _.forEach(previousValues, function (value, index) {
+      // Compare old values and new values
+      if (! _.isEqual(value, newValues[index])) {
+        if (! _.isObject(value)) {
+          changes.push({fieldDisplayName: list.displayName, changed: true, oldValue: value, newValue: newValues[index]});
+        } else {
+          var properties = _.keys(value);
+          var subChanges = [];
+          _.forEach(properties, function (property) {
+            if (! _.isEqual(value[property], newValues[index][property]))
+              subChanges.push({property: property, newValue: newValues[index][property], oldValue: value[property]});
+          });
+
+          changes.push({fieldDisplayName: list.displayName, changed: true, subChanges: subChanges});
+        }
+      }
+    });
+  }
+};
