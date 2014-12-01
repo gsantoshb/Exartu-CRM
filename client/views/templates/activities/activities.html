@@ -502,7 +502,7 @@
                       <h4 class="item-title">
                           <!--Update-->
 
-                          <!-- Property change -->
+                        <!-- Property change -->
                         {{#unless isListChange}}
                             <!--<span class="spacer">–</span>-->
                           {{data.fieldDisplayName}} has been
@@ -562,4 +562,140 @@
       </div>
       <!-- /.item -->
   {{/if}}
+</template>
+
+<template name="placementsUpdateActivity">
+    {{#if listViewMode}}
+        <tr>
+            <td>
+                <i class="icon icon-clock-3"></i>
+
+                Placement updated by
+                <strong> {{displayUserName this.userId}} </strong>
+
+                -
+
+                <!-- Property change -->
+                {{#unless isListChange}}
+                    <!--<span class="spacer">–</span>-->
+                    {{data.fieldDisplayName}} has been
+                    {{#if data.oldValue}}
+                        changed from <strong>{{data.oldValue}}</strong>
+                    {{else}}
+                        set
+                    {{/if}}
+                    to
+                    <strong>{{data.newValue}}</strong>
+                {{/unless}}
+
+                <!-- Item added -->
+                {{#if data.added}}
+                    An item has been added to {{data.fieldDisplayName}}:
+                    <strong> {{data.newValue}} </strong>
+                {{/if}}
+
+                <!-- Item removed -->
+                {{#if data.removed}}
+                    An item has been removed from {{data.fieldDisplayName}}
+                {{/if}}
+
+                {{#if data.changed}}
+                    An item in {{data.fieldDisplayName}} has been updated:
+                    <ul>
+                        {{#each data.subChanges}}
+                            <li>
+                                {{property}} in updated from <strong> {{oldValue}} </strong> to <strong> {{newValue}} </strong>
+                            </li>
+                        {{/each}}
+                    </ul>
+                {{/if}}
+
+                <div class="pull-right">
+                    {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
+                </div>
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-task">
+            <div class="item-info">
+                <div class="time">
+                    <i class="icon icon-clock-3"></i>
+                    <span>
+                        {{#formattedDate value=data.dateCreated format='fromNow'}}
+                            {{date}}
+                        {{/formattedDate}}
+                    </span>
+                </div>
+                <div class="type">
+                    <i class="icon icon-pencil-1"></i>
+                </div>
+            </div>
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            <!-- Property change -->
+                            {{#unless isListChange}}
+                                <!--<span class="spacer">–</span>-->
+                                {{data.fieldDisplayName}} has been
+                                {{#if data.oldValue}}
+                                    changed from <strong>{{data.oldValue}}</strong>
+                                {{else}}
+                                    set
+                                {{/if}}
+                                to
+                                <strong>{{data.newValue}}</strong>
+                            {{/unless}}
+
+                            <!-- Item added -->
+                            {{#if data.added}}
+                                <!--<span class="spacer">–</span>-->
+                                An item has been added to {{data.fieldDisplayName}}:
+                                <strong> {{data.newValue}} </strong>
+                            {{/if}}
+
+                            <!-- Item removed -->
+                            {{#if data.removed}}
+                                <!--<span class="spacer">–</span>-->
+                                An item has been removed from {{data.fieldDisplayName}}
+                            {{/if}}
+
+                            {{#if data.changed}}
+                                <!--<span class="spacer">–</span>-->
+                                An item in {{data.fieldDisplayName}} has been updated:
+                                <ul>
+                                    {{#each data.subChanges}}
+                                        <li>
+                                            {{property}} updated from <strong> {{oldValue}} </strong> to <strong> {{newValue}} </strong>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            {{/if}}
+                        </h4>
+                        <div class="item-actions">
+                            <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
+                                <span> {{displayUserName this.userId}} </span>
+                            </a>
+
+                            <a class="btn btn-default tip-bottom pointer" >
+                                <i class="fa fa-calendar"></i>
+                                <span>
+                                    {{#formattedDate value=data.dateCreated format='lll'}}
+                                        {{date}}
+                                    {{/formattedDate}}
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    {{/if}}
 </template>
