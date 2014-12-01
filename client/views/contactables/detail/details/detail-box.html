@@ -106,9 +106,15 @@
                         <td>TaxID/SSN</td>
                         <td>
                             {{#objectProperty property=taxID editable=editMode}}
-                            <input class="form-control" type="text" value="{{value}}">
+                                <input class="form-control" type="text" value="{{value}}">
                             {{else}}
-                            <span >{{value}}</span>
+                                {{#if hideTaxID}}
+                                    <a class="pointer showHideTaxId">Show</a>
+                                {{else}}
+                                    {{#if value}}
+                                        <span >{{value}}</span> <a class="pointer showHideTaxId">Hide</a>
+                                    {{/if}}
+                                {{/if}}
                             {{/objectProperty}}
                         </td>
                     </tr>
