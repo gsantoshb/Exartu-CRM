@@ -46,8 +46,8 @@ Router.map(function() {
         case 'POST':
           var data = this.request.body;
           try {
-            var intType = parseInt(data.type);
-            connection.call('addContactMethod', data.contactableId, intType, data.value);
+            //Hot fix data.type is actually the contactMethod id ( the lookup id)
+            connection.call('addContactMethod', data.contactableId, data.type, data.value);
             response.end(data);
           } catch(err) {
             console.log(err);
