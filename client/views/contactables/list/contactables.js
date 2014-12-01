@@ -315,7 +315,7 @@ Template.contactablesList.created = function() {
     if (searchQuery.$and.length == 0)
       delete searchQuery.$and;
 
-    if (!_.isEmpty(query.candidateStatus.value)){
+    if (query.objType.value == 'Employee' && !_.isEmpty(query.candidateStatus.value)){
       searchQuery._id = {$in:_.map(AllPlacements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
       urlQuery.addParam('placementStatus', query.candidateStatus.value);
     }
