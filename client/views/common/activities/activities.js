@@ -1,4 +1,4 @@
-var contactableActivities = [
+var activityTypes = [
   Enums.activitiesType.contactableAdd,
   Enums.activitiesType.taskAdd,
   Enums.activitiesType.placementEdit,
@@ -11,7 +11,7 @@ var contactableActivities = [
 
 var ActivitiesHandler;
 
-Template.contactableActivities.helpers({
+Template.entityActivities.helpers({
   created: function () {
     var query = {
       $or: [
@@ -21,7 +21,7 @@ Template.contactableActivities.helpers({
           links: Session.get('entityId')
         }
       ],
-      type: {$in: contactableActivities}
+      type: {$in: activityTypes }
     };
 
     if (! SubscriptionHandlers.ActivitiesHandler)
@@ -29,12 +29,32 @@ Template.contactableActivities.helpers({
     else
       ActivitiesHandler.setFilter(query);
   },
-  activities: function(){
+  activities: function() {
     return Activities.find({}, {
       sort: {
         'data.dateCreated': -1
       }
     });
+  },
+  activityTemplate: function () {
+    switch (this.type){
+      case Enums.activitiesType.placementEdit:
+        return Template.placementsUpdateActivity;
+      case Enums.activitiesType.placementAdd:
+        return Template.newPlacementActivity;
+      case Enums.activitiesType.contactableAdd:
+        return Template.newContactableActivity;
+      case Enums.activitiesType.jobAdd:
+        return Template.newJobActivity;
+      case Enums.activitiesType.taskAdd:
+        return Template.newTaskActivity;
+      case Enums.activitiesType.noteAdd:
+        return Template.newNoteActivity;
+      case Enums.activitiesType.contactableUpdate:
+        return Template.contactableUpdateActivity;
+      case Enums.activitiesType.fileAdd:
+        return Template.newFileActivity;
+    }
   }
 });
 
@@ -63,25 +83,4 @@ Template.jobActivityPlacementsEdit.helpers({
 
 Template.jobActivityJobAdd.helpers({
   userName: userName
-});
-
-Template.registerHelper('contactableActivityType', function(){
-  switch (this.type){
-    case Enums.activitiesType.placementEdit:
-      return Template.jobActivityPlacementsEdit;
-    case Enums.activitiesType.placementAdd:
-      return Template.newPlacementActivity;
-    case Enums.activitiesType.contactableAdd:
-      return Template.newContactableActivity;
-    case Enums.activitiesType.jobAdd:
-      return Template.newJobActivity;
-    case Enums.activitiesType.taskAdd:
-      return Template.newTaskActivity;
-    case Enums.activitiesType.noteAdd:
-      return Template.newNoteActivity;
-    case Enums.activitiesType.contactableUpdate:
-      return Template.contactableUpdateActivity;
-    case Enums.activitiesType.fileAdd:
-      return Template.newFileActivity;
-  }
 });
