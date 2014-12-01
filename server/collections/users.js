@@ -16,7 +16,9 @@ Meteor.publish(null, function () {
       "hierarchies": 1,
       "currentHierId": 1
     }
-  }));
+  }), {
+    hierIdKeyName: 'hierarchies'
+  });
 });
 
 // Publish user invitations
