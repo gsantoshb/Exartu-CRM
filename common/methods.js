@@ -27,7 +27,3 @@ _.extend(methods, {
             return Enums.hierarchiesRelation.notRelated;
     }
 });
-
-extendObject = function (doc) {
-    doc.editable = methods.getHierarchiesRelation(doc.hierId, Meteor.user().hierId) == -1 ? true : false;
-};
