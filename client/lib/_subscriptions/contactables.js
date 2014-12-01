@@ -7,7 +7,6 @@ Contactables = new Meteor.Collection("contactables", {
       contactable.Contact.customerName = customer && customer.displayName;
     }
 
-    extendObject(contactable);
     return contactable;
   }
 });
@@ -31,7 +30,6 @@ AuxContactables = new Meteor.Collection("auxContactables", {
     if (contactable.location)
       contactable.location.displayName = Utils.getLocationDisplayName(contactable.location);
 
-    extendObject(contactable);
     return contactable;
   }
 });
