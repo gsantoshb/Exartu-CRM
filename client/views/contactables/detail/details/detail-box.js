@@ -23,6 +23,7 @@ Object.defineProperty(EditMode, "value", {
 });
 
 var contactable = {};
+var hideTaxID = new ReactiveVar(false);
 
 Template.contactableDetailBox.helpers({
   created:function(){
@@ -51,6 +52,9 @@ Template.contactableDetailBox.helpers({
       var ctx = Template.parentData(2);
       ctx.property._value = newStatus;
     }
+  },
+  hideTaxID: function () {
+    return hideTaxID.get();
   }
 });
 
@@ -79,5 +83,8 @@ Template.contactableDetailBox.events = {
   'click #cancel-details': function() {
     EditMode.hide();
     contactable.reset();
+  },
+  'click .showHideTaxId': function () {
+    hideTaxID.set(! hideTaxID.get());
   }
 };

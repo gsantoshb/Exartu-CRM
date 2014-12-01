@@ -140,5 +140,5 @@ RESTAPI.response.prototype.error = function(err) {
 		self.response.end(JSON.stringify(err.reason || (err.TypeError || '')));
 	}
 
-	throw new Meteor.Error(500, err);
+	console.error(err);
 };
