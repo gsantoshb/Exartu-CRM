@@ -25,6 +25,13 @@ Meteor.methods({
   },
 
   // Contact methods
+  getContactMethodTypes: function () {
+    try {
+      return ContactableManager.getContactMethodTypes();
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
+  },
   addContactMethod: function (contactableId, type, value) {
     try {
       return ContactableManager.addContactMethod(contactableId, type, value);
