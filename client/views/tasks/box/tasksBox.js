@@ -102,7 +102,6 @@ Template.tasksBox.created = function () {
     }
 
     urlQuery.apply();
-    console.log('task query',q);
     TasksHandler.setFilter(q);
   })
 };

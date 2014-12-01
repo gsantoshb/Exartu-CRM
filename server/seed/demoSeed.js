@@ -176,16 +176,36 @@ var customers = [
     "department": "Shipping"
   },
   {
-    "name": "ABC Corporation",
-    "department": "Shipping"
-  },
-  {
-    "name": "Action Staffing Solutions",
+    "name": "Coke",
     "department": "Primary"
   },
   {
-    "name": "Seintco",
-    "department": "Labor Dispatch 1"
+    "name": "3M",
+    "department": "Primary"
+  },
+  {
+    "name": "Cargill",
+    "department": "Primary"
+  },
+  {
+    "name": "General Electric",
+    "department": "Primary"
+  },
+  {
+    "name": "Kraft Foods",
+    "department": "Primary"
+  },
+  {
+    "name": "Godiva Chocolates",
+    "department": "Primary"
+  },
+  {
+    "name": "Microsoft",
+    "department": "Primary"
+  },
+  {
+    "name": "ABC Corporation",
+    "department": "Shipping"
   },
   {
     "name": "Aldi Inc",
@@ -199,14 +219,8 @@ var customers = [
     "name": "Aquafina",
     "department": "Primary"
   },
-  {
-    "name": "Atlanta Staffing Source Inc",
-    "department": "Sourcing"
-  },
-  {
-    "name": "ATS Staffing",
-    "department": "Primary"
-  },
+
+
   {
     "name": "Best Buy",
     "department": "Store #456"
@@ -219,23 +233,8 @@ var customers = [
     "name": "CompUSA",
     "department": "Primary"
   },
-  {
-    "name": "Crom Equipment",
-    "department": "Warehouse"
-  },
 
-  {
-    "name": "Crom Equipment",
-    "department": "Shipping"
-  },
-  {
-    "name": "Dees Diner",
-    "department": "Payroll"
-  },
-  {
-    "name": "Dover Staffing",
-    "department": "Primary"
-  },
+
   {
     "name": "Elephant Industries Inc.",
     "department": "Human Resources"
@@ -262,7 +261,7 @@ var customers = [
   },
   {
     "name": "Midwest Wireless",
-    "department": "Accountign"
+    "department": "Accounting"
   },
   {
     "name": "Midwest Wireless",
@@ -276,22 +275,7 @@ var customers = [
     "name": "Pencil Designs Inc",
     "department": "Metal Bands"
   },
-  {
-    "name": "Prestige Staffing",
-    "department": "Primary"
-  },
-  {
-    "name": "Sales Tax Test",
-    "department": "Primary"
-  },
-  {
-    "name": "Stoerzinger Supply Co",
-    "department": "Warehouse"
-  },
-  {
-    "name": "Test Jeff Customer",
-    "department": "Primary"
-  },
+
   {
     "name": "Uniform Snow Inc",
     "department": "Warehouse"
@@ -304,14 +288,8 @@ var customers = [
     "name": "Whiting and Associates",
     "department": "Primary"
   },
-  {
-    "name": "Google",
-    "department": "Primary"
-  },
-  {
-    "name": "atlas staffing",
-    "department": "Primary"
-  },
+
+
   {
     "name": "Best Buy",
     "department": "Primary"
@@ -365,10 +343,6 @@ var customers = [
   },
   {
     "name": "XYZ Corp",
-    "department": "Primary"
-  },
-  {
-    "name": "Kyle's Zip Testers",
     "department": "Primary"
   }
 ];
@@ -553,29 +527,35 @@ var loadPlacements = function (hierId) {
 
 var loadTasks = function (hierId, usermane, userId) {
   var employeesFetched = Contactables.find({objNameArray: 'Employee',hierId:hierId}).fetch();
+  var contactsFetched = Contactables.find({objNameArray: 'Contact',hierId:hierId}).fetch();
     var notes = [
-        "Call " + employees[Math.floor(Math.random() * employees.length)].firstName + " asap",
-        "Contact " + employees[Math.floor(Math.random() * employees.length)].lastName,
-        "Confirm details w/ " + employees[Math.floor(Math.random() * employees.length)].firstName,
-        "Schedule interview w/ " + employees[Math.floor(Math.random() * employees.length)].firstName,
+        "Call " ,
+        "confirm details with",
+        "check on progress with",
+        "Discuss offer with",
+        "Reconfirm appt with",
+        "Interview prep with"
+
     ];
 
     var today = new Date();
     var tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
 
-    for (var i = 0; i < 50; ++i) {
-      var randomEmployee = employeesFetched[Math.floor(Math.random() * employees.length)];
+    for (var i = 0; i < 25; ++i) {
+      var person = employeesFetched[Math.floor(Math.random() * employees.length)];
+      if (i % 2 ==0) person=contactsFetched[Math.floor(Math.random() * contacts.length)];
+      var msg=notes[Math.floor(Math.random() * notes.length)] + ' ' +  person.person.firstName ;
         var newTask = {
             begin: today,
             end: tomorrow,
             assign: userId, //[userIds[Math.floor(Math.random() * userIds.length)]],
-            msg: notes[Math.floor(Math.random() * notes.length)],
+            msg: msg,
             completed: null,
             hierId: hierId,
             userId: userId,
             testData: true,
-            links: [{id: randomEmployee._id, type: Enums.linkTypes.contactable.value}]
+            links: [{id: person._id, type: Enums.linkTypes.contactable.value}]
         }
 
         Tasks.insert(newTask, function (err, result) {
@@ -587,11 +567,12 @@ var loadTasks = function (hierId, usermane, userId) {
 };
 var loadNotes= function (hierId, usermane, userId) {
   var employeesFetched = Contactables.find({objNameArray: 'Employee',hierId:hierId}).fetch();
+  var contactsFetched = Contactables.find({objNameArray: 'Contact',hierId:hierId}).fetch();
   var notes = [
-      "Called " + employees[Math.floor(Math.random() * employees.length)].firstName + " asap",
-      "Contacted " + employees[Math.floor(Math.random() * employees.length)].lastName,
-      "Confirmed details w/ " + employees[Math.floor(Math.random() * employees.length)].firstName,
-      "Scheduled interview w/ " + employees[Math.floor(Math.random() * employees.length)].firstName,
+      "Called " ,
+      "Contacted " ,
+      "Confirmed ",
+      "Scheduled interview w/ "
   ];
 
 
@@ -600,13 +581,15 @@ var loadNotes= function (hierId, usermane, userId) {
   tomorrow.setDate(today.getDate() + 1);
 
   for (var i = 0; i < 25; ++i) {
-    var randomEmployee = employeesFetched[Math.floor(Math.random() * employees.length)];
+    var person = employeesFetched[Math.floor(Math.random() * employees.length)];
+    if (i % 2 ==0) person=contactsFetched[Math.floor(Math.random() * contacts.length)];
+    var msg=notes[Math.floor(Math.random() * notes.length)] + ' ' +  person.person.firstName ;
     var newNote = {
-      msg: notes[Math.floor(Math.random() * notes.length)],
+      msg: msg,
       hierId: hierId,
       userId: userId,
       testData: true,
-      links: [{id: randomEmployee._id, type: Enums.linkTypes.contactable.value}]
+      links: [{id: person._id, type: Enums.linkTypes.contactable.value}]
     }
 
     Notes.insert(newNote, function (err, result) {

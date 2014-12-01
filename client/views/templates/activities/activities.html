@@ -87,10 +87,13 @@
           <td>
               <i class="icon icon-clock-3"></i>
 
-              New task by
-               {{displayUserName this.userId}}
-
-                assigned to {{displayUserName task.assign}}
+              New task:
+              <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
+                  <span> {{displayUserName this.userId}} </span>
+              </a>
+              <a class="btn btn-default tip-bottom pointer" title="Task Owner">assigned
+                  <span> {{displayUserName task.assign}} </span>
+              </a>
 
               <strong>{{task.msg}}</strong>
 
