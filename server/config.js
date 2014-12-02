@@ -25,5 +25,7 @@ ExartuConfig = {
   AWS_S3_bucket: undefined,
   // Twilio
   TW_accountSID: undefined,
-  TW_authToken: undefined
+  TW_authToken: undefined,
+  // Nodetime profiler
+  Nodetime_Key: undefined
 };

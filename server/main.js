@@ -88,4 +88,12 @@ Meteor.startup(function () {
   twilio = ExartuConfig.TW_accountSID && ExartuConfig.TW_authToken ?
     Twilio(ExartuConfig.TW_accountSID, ExartuConfig.TW_authToken)
     : undefined;
+
+  // NodeTime profiler
+  if (ExartuConfig.Nodetime_Key) {
+    Nodetime.profile({
+      accountKey: ExartuConfig.Nodetime_Key,
+      appName: 'Exartu'
+    });
+  }
 });
