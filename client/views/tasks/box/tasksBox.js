@@ -127,7 +127,7 @@ var states = [
       }
     }
   }, {
-    name: 'Closed',
+    name: Enums.taskState.overDue,
     query: function () {
       return {
         completed: null,

@@ -21,7 +21,7 @@ Tasks = new Meteor.Collection("tasks", {
         if (now.isBefore(task.end ) || task.end==null) {
           task.state = Enums.taskState.pending;
         } else {
-          task.state = Enums.taskState.closed;
+          task.state = Enums.taskState.overDue;
         }
 
       }
