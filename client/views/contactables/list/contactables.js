@@ -6,10 +6,6 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    //if (!SubscriptionHandlers.AuxContactablesHandler) {
-    //  SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
-    //}
-    //AuxContactablesHandler = SubscriptionHandlers.AuxContactablesHandler;
     return [Meteor.subscribe('allPlacements')];
   },
   action: function () {
@@ -323,9 +319,6 @@ Template.contactablesList.created = function() {
     // Set url query
     urlQuery.apply();
 
-    // HACK: Elasticsearch is used when searching with string, so is not necessary to set a new filter
-    if (query.searchString.value) return;
-
     if (! SubscriptionHandlers.AuxContactablesHandler) {
       SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery});
     } else {
@@ -334,7 +327,11 @@ Template.contactablesList.created = function() {
   });
 
   Meteor.autorun(function () {
-    Session.set('contactableCount', SubscriptionHandlers.AuxContactablesHandler.totalCount());
+    // If Elasticsearch is being used to search then use its result length as contactableCount
+    if (query.searchString.value)
+      Session.set('contactableCount', esResult.length);
+    else
+      Session.set('contactableCount', SubscriptionHandlers.AuxContactablesHandler.totalCount());
   });
 };
 
