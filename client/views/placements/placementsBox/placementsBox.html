@@ -125,20 +125,33 @@
         {{jobLocationDisplayName}}
     {{/if}}
 
-        <i class="icon-calendar-2"></i>
-        <small>
-            {{#formattedDate value=startDate}}
+    <i class="icon-calendar-2"></i>
+    <small>
+        {{#formattedDate value=startDate}}
             {{date}}
-            {{/formattedDate}}-
-            {{#if endDate}}
+        {{/formattedDate}}-
+        {{#if endDate}}
             {{#formattedDate value=endDate}}
-            {{date}}
+                {{date}}
             {{/formattedDate}}
-            {{/if}}
-        </small>
-        <br />
+        {{/if}}
+    </small>
 
-            {{displayUserName userId}}
+    <br/>
+
+    <!-- Placement rates -->
+    {{#each this.placementRates}}
+        {{getRateTypeDisplayName}}
+
+        {{pay}}
+        /
+        {{bill}}
+        <br/>
+    {{/each}}
+
+    <br/>
+
+    {{displayUserName userId}}
 </template>
 
 <template name="placementsListSearch">

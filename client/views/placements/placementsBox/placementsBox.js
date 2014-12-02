@@ -257,45 +257,51 @@ Template.placementsListSearch.events = {
 
 // Item
 
-Template.placementsListItem.employeeDisplayName = function () {
-  var employee = Contactables.findOne(this.employee);
-  return employee && employee.displayName;
-};
-Template.placementsListItem.jobDisplayName = function () {
-  var job = Jobs.findOne(this.job);
-  return job && job.displayName;
-};
-Template.placementInformation.jobLocationDisplayName= function () {
-  var job = Jobs.findOne(this.job);
-  return job && Utils.getLocationDisplayName(job.location);
-};
-Template.placementsListItem.customerId = function () {
-  var job = Jobs.findOne(this.job);
-  var customer = job && Contactables.findOne(job.customer);
-  return customer && customer._id;
-};
-Template.placementsListItem.customerDisplayName = function () {
-  var job = Jobs.findOne(this.job);
-  var customer = job && Contactables.findOne(job.customer);
-  return customer && customer.displayName;
-};
+Template.placementsListItem.helpers({
+  employeeDisplayName: function () {
+    var employee = Contactables.findOne(this.employee);
+    return employee && employee.displayName;
+  },
+  jobDisplayName: function () {
+    var job = Jobs.findOne(this.job);
+    return job && job.displayName;
+  },
+  jobLocationDisplayName: function () {
+    var job = Jobs.findOne(this.job);
+    return job && Utils.getLocationDisplayName(job.location);
+  },
+  customerId: function () {
+    var job = Jobs.findOne(this.job);
+    var customer = job && Contactables.findOne(job.customer);
+    return customer && customer._id;
+  },
+  customerDisplayName: function () {
+    var job = Jobs.findOne(this.job);
+    var customer = job && Contactables.findOne(job.customer);
+    return customer && customer.displayName;
+  },
+  pictureUrl: function(pictureFileId) {
+    var picture = PlacementsFS.findOne({_id: pictureFileId});
+    return picture? picture.url('PlacementsFSThumbs') : undefined;
+  },
+  placementIcon: function() {
+    return helper.getEntityIcon(this);
+  },
+  statusDisplayName: function(item) {
+    var lookUp = LookUps.findOne({_id: this.placementStatus});
 
-Template.placementsListItem.pictureUrl = function(pictureFileId) {
-  var picture = PlacementsFS.findOne({_id: pictureFileId});
-  return picture? picture.url('PlacementsFSThumbs') : undefined;
-};
+    if (lookUp) return lookUp.displayName;
+  },
+  displayObjType: function() {
+    return Utils.getPlacementType(this);
+  }
+});
 
-Template.placementsListItem.placementIcon = function() {
-  return helper.getEntityIcon(this);
-};
+// Item information
 
-Template.placementsListItem.statusDisplayName = function(item) {
-
-  var lookUp = LookUps.findOne({_id: this.placementStatus});
-
-  if (lookUp) return lookUp.displayName;
-};
-
-Template.placementsListItem.displayObjType = function() {
-  return Utils.getPlacementType(this);
-};
+Template.placementInformation.helpers({
+  getRateTypeDisplayName: function () {
+    var rate = LookUps.findOne(this.type);
+    return rate.displayName;
+  }
+});
