@@ -60,14 +60,6 @@ Meteor.publish('allPlacements', function () {
   sub.ready();
 });
 
-Meteor.startup(function () {
-  Meteor.methods({
-    addPlacement: function (placement) {
-      return Placements.insert(placement);
-    }
-  })
-});
-
 Placements.allow({
   insert: function () {
     return true;
