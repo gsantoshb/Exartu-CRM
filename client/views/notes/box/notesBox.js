@@ -27,15 +27,10 @@ Template.notesBox.created = function () {
   noteQuery = noteQuery || loadNoteQueryFromURL(Router.current().params);
   var entityId = Session.get('entityId');
 
-  if (!SubscriptionHandlers.NotesHandler) {
-    SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe("notes");
-  }
-  NotesHandler = SubscriptionHandlers.NotesHandler;
 
   entityType = Utils.getEntityTypeFromRouter();
   isEntitySpecific = false;
   if (entityType != null) isEntitySpecific = true;
-
   Meteor.autorun(function () {
     var urlQuery = new URLQuery();
 
@@ -61,7 +56,12 @@ Template.notesBox.created = function () {
     console.log('query',q);
     urlQuery.apply();
 
-    NotesHandler.setFilter(q);
+    if (!SubscriptionHandlers.NotesHandler) {
+      SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes', {filter: q});
+    }else{
+      SubscriptionHandlers.NotesHandler.setFilter(q);
+    }
+    NotesHandler = SubscriptionHandlers.NotesHandler;
   })
 };
 
