@@ -110,7 +110,6 @@ JobManager = {
       throw new Meteor.Error(404, 'Placement employee not found');
 
     // Validate status
-    console.log('candidateStatus', placement.candidateStatus)
     var status = LookUps.findOne({_id: placement.candidateStatus, lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode});
     if (! status)
       throw new Meteor.Error(404, 'Placement status not found');
