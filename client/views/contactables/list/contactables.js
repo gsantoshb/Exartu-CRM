@@ -338,6 +338,14 @@ Template.contactablesList.created = function() {
   });
 };
 
+// hack: because the handler is created on the created hook, the SubscriptionHandlers 'cleaner' can't find it
+Template.contactablesList.destroyed = function() {
+  if (SubscriptionHandlers.AuxContactablesHandler) {
+    SubscriptionHandlers.AuxContactablesHandler.stop();
+    delete SubscriptionHandlers.AuxContactablesHandler;
+  }
+};
+
 Template.contactablesList.contactables = function() {
   // Dependencies
   esDep.depend();
