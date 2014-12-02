@@ -183,14 +183,9 @@
             <div class="col-sm-8 col-md-8 col-lg-8">
                 <div class="pull-left suffix-5">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" title="Add">
+                        <a href="/jobAdd/Temporary" type="button" class="btn btn-success" title="Add">
                             <span class="fa fa-plus"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" data-bind="foreach: jobTypes">
-                            {{#each jobTypes}}
-                            <li><a href="/jobAdd/{{name}}">Add {{name}}</a></li>
-                            {{/each}}
-                        </ul>
+                        </a>
                     </div>
                 </div>
 

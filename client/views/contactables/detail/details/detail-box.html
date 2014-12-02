@@ -83,15 +83,7 @@
                         <td>Status</td>
                         <td>
                             {{#objectProperty property=status editable=editMode}}
-                            <div class="form-group  {{hasError}}">
-                                <select class="form-control input-lg">
-                                    <option value="null" selected="{{isSelected null value}}">--Select--</option>
-                                    {{#each options}}
-                                    <option value="{{_id}}" selected="{{isSelected _id ../value}}">{{displayName}}</option>
-                                    {{/each}}
-                                </select>
-                                <span>{{error}}</span>
-                            </div>
+                                {{> buttonGroup options=fetchStatusOptions value=value onSelected=onSelectedStatus}}
                             {{else}}
                             <strong>
                                 <strong>{{displayName}}</strong>
@@ -114,9 +106,15 @@
                         <td>TaxID/SSN</td>
                         <td>
                             {{#objectProperty property=taxID editable=editMode}}
-                            <input class="form-control" type="text" value="{{value}}">
+                                <input class="form-control" type="text" value="{{value}}">
                             {{else}}
-                            <span >{{value}}</span>
+                                {{#if hideTaxID}}
+                                    <a class="pointer showHideTaxId">Show</a>
+                                {{else}}
+                                    {{#if value}}
+                                        <span >{{value}}</span> <a class="pointer showHideTaxId">Hide</a>
+                                    {{/if}}
+                                {{/if}}
                             {{/objectProperty}}
                         </td>
                     </tr>

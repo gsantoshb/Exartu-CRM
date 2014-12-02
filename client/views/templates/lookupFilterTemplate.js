@@ -57,14 +57,18 @@ Template.select2.events({
 ///////////// button group //////////////////////////
 
 
-Template.buttonGroup.created = function(){
+Template.buttonGroup.created = function() {
   this.data.selected = this.data.multi ? (this.data.value? this.data.value : [] ): this.data.value || null;
   this.data.selectedDep = new Deps.Dependency;
 };
 
 Template.buttonGroup.isSelectedClass = function(){
   var templateCtx = UI._parentData(1);
+
+  if (! templateCtx.selectedDep) return; // Avoid error when a reactive call override properties defined on created
+
   templateCtx.selectedDep.depend();
+
   if (templateCtx.multi){
     return _.contains(templateCtx.selected, this.id) ? 'btn-primary' : 'btn-default';
   }else{

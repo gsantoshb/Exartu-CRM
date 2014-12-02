@@ -19,7 +19,7 @@
                 {{#autoForm schema="RegisterSchema" id="registerForm" validation="blur"}}
                     <fieldset>
                         <!--<div class="form-group {{#if afFieldIsInvalid name='username'}}has-error{{/if}}">-->
-                            <!--{{> afFieldInput name='username' class="input-lg" placeholder="Choose your Exartu username"}}-->
+                            <!--{{> afFieldInput name='username' class="input-lg" placeholder="Choose your Aïda  username"}}-->
                             <!--{{#if afFieldIsInvalid name='username'}}-->
                             <!--<span class="help-block">{{afFieldMessage name='username'}}</span>-->
                             <!--{{/if}}-->
@@ -54,7 +54,12 @@
                 <div class="alert-box alert-danger" style="margin-top: 20px;">
                     {{error}}
                 </div>
-
+                    {{#if isSubmitting}}
+                        <div>Creating account. Please wait a few seconds....</div>
+                        <div class="progress progress-striped active">
+                            <div style="width: 100%;" class="progress-bar progress-bar-info"></div>
+                        </div>
+                    {{/if}}
                 {{else}}
                 <h1>Thank you</h1>
                 <div class="col-md-8 text-center" style="margin-bottom: 150px">
@@ -69,11 +74,11 @@
                 <div class="row">
                     <div class="col-md-8 text-center">
                         <br><br>
-                        <h4>Take Exartu with you.</h4>
+                        <h4>Take Aïda  with you.</h4>
                         <p>Switch between devices, and pick up wherever you left off.</p>
                     </div>
                     <div class="col-md-4 text-center">
-                        <img alt="Exartu CRM mobile" src="img/exartu-mobile.jpg">
+                        <img alt="Aïda  CRM mobile" src="img/exartu-mobile.jpg">
                     </div>
                 </div>
 

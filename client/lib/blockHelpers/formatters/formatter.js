@@ -96,7 +96,7 @@ Template.dateTimePicker.helpers({
     if (!this.value)
       return;
 
-    return this.options && this.options["moment-format"]? moment(this.value || new Date()).format(this.options["moment-format"].toUpperCase()) : this.value
+    return this.options && this.options["momentFormat"]? moment(this.value || new Date()).format(this.options["momentFormat"]) : this.value
   }
 });
 

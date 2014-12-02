@@ -14,6 +14,10 @@ Template.detailTabs.execHelper = function(helperName) {
   return Template[template][helperName]();
 };
 
+Template.detailTabs.isDefined = function (fn) {
+  return fn != undefined;
+};
+
 Template.detailTabs.renderTabTemplate = function() {
   return Template[this.template](this.data);
 };
@@ -95,5 +99,8 @@ Template.detailNav.helpers({
   },
   isActive: function (id) {
     return (id == Session.get('activeTab')) ? 'active' : '';
+  },
+  isDefined: function (fn) {
+    return fn != undefined;
   }
 });

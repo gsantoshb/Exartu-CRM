@@ -34,7 +34,7 @@ Template.twilioManagement.events({
     var self = this;
     Utils.showModal('basicModal', {
       title: 'Require phone number for hierarchy' +  this.name,
-      message: 'Are you sure you want to request a phone number for this hierarchy?',
+      message: 'Request phone number for this hierarchy?',
       buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {label: 'Request', classes: 'btn-success', value: true}],
       callback: function (result) {
         if (result) {

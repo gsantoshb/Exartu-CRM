@@ -1,0 +1,565 @@
+<!-- New contactable activity -->
+<template name="newContactableActivity">
+  {{#if listViewMode}}
+      <tr>
+          <td>
+              <i class="icon {{getActivityIcon}}"></i>
+
+              New <span>{{data.objTypeName}}</span>
+              <a href="/contactable/{{entityId}}">
+                  <strong>
+                      <span>{{data.displayName}}</span>
+                  </strong>
+              </a>
+
+              created by
+
+              <strong> {{displayUserName userId}} </strong>
+
+            {{#if data.contactableEmail}}
+                <a class="tip-bottom" title="Send Message" href="mailto:{{data.contactableEmail}}">
+                    <i class="fa fa-envelop"></i> {{data.contactableEmail}}
+                </a>
+            {{/if}}
+
+              <div class="pull-right">
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                  {{date}}
+                {{/formattedDate}}
+              </div>
+          </td>
+      </tr>
+  {{else}}
+      <div class="item item-customer">
+          <div class="item-info">
+              <div class="time">
+                  <i class="icon icon-clock-3"></i>
+                    <span>
+                      {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                      {{/formattedDate}}
+                    </span>
+              </div>
+              <div class="type" style="background: {{getActivityColor}}">
+                  <i class="icon {{getActivityIcon}}"></i>
+              </div>
+          </div>
+          <!-- /.item-info -->
+          <div class="item-content">
+              <div class="box">
+                  <div class="box-content">
+                      <h4 class="item-title">
+                          <span>{{data.objTypeName}}</span>
+                          <span class="spacer">–</span>
+                          <a href="/contactable/{{entityId}}">
+                              <strong>
+                                  <span>{{data.displayName}}</span>
+                              </strong>
+                          </a>
+                          <div class="task-author">
+                            {{displayUserName userId}}
+                          </div>
+                      </h4>
+                      <div class="item-actions">
+                        {{#if data.contactableEmail}}
+                            <a class="btn btn-default tip-bottom" title="Send Message" href="mailto:{{data.contactableEmail}}">
+                                <i class="fa fa-envelop"></i> {{data.contactableEmail}}
+                            </a>
+                        {{/if}}
+
+                      </div>
+
+                  </div>
+                  <!-- /.box-content -->
+              </div>
+              <!-- /.box -->
+          </div>
+          <!-- /.item-content -->
+      </div>
+      <!-- /.item -->
+  {{/if}}
+</template>
+
+<!-- New task activity -->
+<template name="newTaskActivity">
+  {{#if listViewMode}}
+      <tr>
+          <td>
+              <i class="icon icon-clock-3"></i>
+
+              New task:
+              <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
+                  <span> {{displayUserName this.userId}} </span>
+              </a>
+              <a class="btn btn-default tip-bottom pointer" title="Task Owner">assigned
+                  <span> {{displayUserName task.assign}} </span>
+              </a>
+
+              <strong>{{task.msg}}</strong>
+
+              <div class="pull-right">
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                  {{date}}
+                {{/formattedDate}}
+              </div>
+          </td>
+      </tr>
+  {{else}}
+      <div class="item item-task">
+          <div class="item-info">
+              <div class="time">
+                  <i class="icon icon-clock-3"></i>
+                    <span>
+                      {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                      {{/formattedDate}}
+                    </span>
+              </div>
+              <div class="type">
+                  <i class="icon icon-clock-3"></i>
+              </div>
+          </div>
+          <!-- /.item-info -->
+          <div class="item-content">
+              <div class="box">
+                  <div class="box-content">
+                      <h4 class="item-title">
+                          Task
+                      </h4>
+                      <span class="spacer"></span>
+
+                      <strong>{{task.msg}}</strong>
+
+                      <div class="item-actions">
+                          <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
+                              <span> {{displayUserName this.userId}} </span>
+                          </a>
+                          <a class="btn btn-default tip-bottom pointer" title="Task Owner">assigned
+                              <span> {{displayUserName task.assign}} </span>
+                          </a>
+                          <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
+                              <i class="fa fa-calendar"></i>
+                              Start:
+                                <span>
+                                  {{#formattedDate value=task.begin format='lll'}}
+                                    {{date}}
+                                  {{/formattedDate}}
+                                </span>
+                          </a>
+                        {{#if task.end}}
+                            <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
+                                <i class="fa fa-calendar"></i>
+                                End:
+                                    <span>
+                                      {{#formattedDate value=task.end format='lll'}}
+                                        {{date}}
+                                      {{/formattedDate}}
+                                    </span>
+                            </a>
+                        {{/if}}
+                      </div>
+                  </div>
+                  <!-- /.box-content -->
+              </div>
+              <!-- /.box -->
+          </div>
+          <!-- /.item-content -->
+      </div>
+      <!-- /.item -->
+  {{/if}}
+</template>
+
+<!-- New job activity -->
+<template name="newJobActivity">
+  {{#if listViewMode}}
+      <tr>
+          <td>
+              <i class="icon icon-briefcase"></i>
+
+              New job
+
+              <a href="/job/{{entityId}}">
+                  <strong>{{data.publicJobTitle}}</strong>
+              </a>
+
+            {{#if customer}}
+                @ <a href="/contactable/{{customer._id}}">{{customerName}}</a>
+            {{/if}}
+
+              created by <strong> {{displayUserName this.userId}} </strong>
+
+              <div class="pull-right">
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                  {{date}}
+                {{/formattedDate}}
+              </div>
+          </td>
+      </tr>
+  {{else}}
+      <div class="item item-job">
+          <div class="item-info">
+              <div class="time">
+                  <i class="icon icon-clock-3"></i><span>
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                  {{date}}
+                {{/formattedDate}}
+              </span>
+              </div>
+              <div class="type">
+                  <i class="icon icon-briefcase"></i>
+              </div>
+          </div>
+          <!-- /.item-info -->
+          <div class="item-content">
+              <div class="box" data-bind="with: data">
+                  <div class="box-content">
+                      <h4 class="item-title">
+                          Job
+                          <span class="spacer">–</span>
+                          <a href="/job/{{entityId}}">
+                              <strong>{{data.publicJobTitle}}</strong>
+                          </a>
+                        {{#if customer}}
+                            @ <a href="/contactable/{{customer._id}}">{{customerName}}</a>
+                        {{/if}}
+                      </h4>
+                      <div class="item-actions">
+                          <a class="btn btn-default tip-bottom addPlacement" title="Assign Candidates">
+                              <i class="icon icon-check-list"> </i> Add placement
+                          </a>
+                      </div>
+                  </div>
+                  <!-- /.box-content -->
+              </div>
+              <!-- /.box -->
+          </div>
+          <!-- /.item-content -->
+      </div>
+      <!-- /.item -->
+  {{/if}}
+</template>
+
+<template name="userLoginActivity">
+    <div class="item item-job">
+        <div class="item-info">
+            <div class="time">
+                <i class="icon icon-clock-3"></i><span>
+              {{#formattedDate value=data.dateCreated format='fromNow'}}
+                {{date}}
+              {{/formattedDate}}
+            </span>
+            </div>
+
+        </div>
+        <!-- /.item-info -->
+        <div class="item-content">
+
+            <div class="box" data-bind="with: data">
+                <div class="box-content">
+                    <h4 class="item-title">
+                        User Login: {{data.username}}
+                    </h4>
+                </div>
+                <!-- /.box-content -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.item-content -->
+    </div>
+    <!-- /.item -->
+</template>
+
+<template name="newNoteActivity">
+  {{#if listViewMode}}
+      <tr>
+          <td>
+              <i class="icon icon-clock-3"></i>
+
+              New note created by
+              <strong> {{displayUserName this.userId}} </strong>
+
+              <!--linked with-->
+
+              -
+
+              <div class="pull-right">
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                  {{date}}
+                {{/formattedDate}}
+              </div>
+          </td>
+      </tr>
+  {{else}}
+      <div class="item item-task">
+          <div class="item-info">
+              <div class="time">
+                  <i class="icon icon-clock-3"></i>
+                    <span>
+                      {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                      {{/formattedDate}}
+                    </span>
+              </div>
+              <div class="type">
+                  <i class="icon icon-note-paper-1"></i>
+              </div>
+          </div>
+          <!-- /.item-info -->
+          <div class="item-content">
+              <div class="box">
+                  <div class="box-content">
+                      <h4 class="item-title">
+                          New note
+
+                        {{#with note}}
+                            <span class="spacer">–</span>
+                            <strong>{{msg}}</strong>
+                        {{/with}}
+                      </h4>
+                      <div class="item-actions">
+                          <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
+                              <span> {{displayUserName this.userId}} </span>
+                          </a>
+
+                              <i class="fa fa-calendar"></i>
+                                <span>
+                                  {{#formattedDate value=data.begin format='lll'}}
+                                    {{date}}
+                                  {{/formattedDate}}
+                                </span>
+
+
+                      </div>
+                  </div>
+                  <!-- /.box-content -->
+              </div>
+              <!-- /.box -->
+          </div>
+          <!-- /.item-content -->
+      </div>
+      <!-- /.item -->
+  {{/if}}
+</template>
+
+<template name="newPlacementActivity">
+  {{#if listViewMode}}
+      <tr>
+          <td>
+              <i class="icon icon-clock-3"></i>
+
+              New placement created by
+              <strong> {{displayUserName this.userId}} </strong>
+
+              for
+
+              <strong><a href="/job/{{job._id}}"> {{job.displayName}} </a></strong>
+
+              -
+
+              <div class="pull-right">
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                  {{date}}
+                {{/formattedDate}}
+              </div>
+          </td>
+      </tr>
+  {{else}}
+      <div class="item item-task">
+          <div class="item-info">
+              <div class="time">
+                  <i class="icon icon-clock-3"></i>
+                    <span>
+                      {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                      {{/formattedDate}}
+                    </span>
+              </div>
+              <div class="type">
+                  <i class="icon icon icon-check-list"></i>
+              </div>
+          </div>
+          <!-- /.item-info -->
+          <div class="item-content">
+              <div class="box">
+                  <div class="box-content">
+                      <h4 class="item-title">
+                          New placement
+
+                          <span class="spacer">–</span>
+                          <strong><a href="/job/{{job._id}}"> {{job.displayName}} </a></strong>
+                      </h4>
+                      <div class="item-actions">
+                          <a class="btn btn-default tip-bottom pointer">by
+                              <span> {{displayUserName this.userId}} </span>
+                          </a>
+                      </div>
+                  </div>
+                  <!-- /.box-content -->
+              </div>
+              <!-- /.box -->
+          </div>
+          <!-- /.item-content -->
+      </div>
+      <!-- /.item -->
+  {{/if}}
+</template>
+
+<template name="newFileActivity">
+  {{#if listViewMode}}
+      <tr>
+          <td>
+              <i class="icon icon-clock-3"></i>
+              New file uploaded
+              -
+              <strong> file.name </strong>
+
+              <div class="pull-right">
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                  {{date}}
+                {{/formattedDate}}
+              </div>
+          </td>
+      </tr>
+  {{else}}
+      <div class="item item-task">
+          <div class="item-info">
+              <div class="time">
+                  <i class="icon icon-clock-3"></i>
+                    <span>
+                      {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                      {{/formattedDate}}
+                    </span>
+              </div>
+              <div class="type">
+                  <i class="icon icon-upload-3"></i>
+              </div>
+          </div>
+          <!-- /.item-info -->
+          <div class="item-content">
+              <div class="box">
+                  <div class="box-content">
+                      <h4 class="item-title">
+                          New file uploaded
+                          <span class="spacer">–</span>
+                          <strong>{{file.name}}</strong>
+                      </h4>
+                      <div class="item-actions">
+                          <a class="btn btn-default tip-bottom pointer">by
+                              <span> {{displayUserName this.userId}} </span>
+                          </a>
+                      </div>
+                  </div>
+                  <!-- /.box-content -->
+              </div>
+              <!-- /.box -->
+          </div>
+          <!-- /.item-content -->
+      </div>
+      <!-- /.item -->
+  {{/if}}
+</template>
+
+<template name="contactableUpdateActivity">
+  {{#if listViewMode}}
+      <tr>
+          <td>
+              <i class="icon icon-clock-3"></i>
+
+              New note created by
+              <strong> {{displayUserName this.userId}} </strong>
+
+              was linked with
+
+              -
+
+              <div class="pull-right">
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                  {{date}}
+                {{/formattedDate}}
+              </div>
+          </td>
+      </tr>
+  {{else}}
+      <div class="item item-task">
+          <div class="item-info">
+              <div class="time">
+                  <i class="icon icon-clock-3"></i>
+                    <span>
+                      {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                      {{/formattedDate}}
+                    </span>
+              </div>
+              <div class="type">
+                  <i class="icon icon-pencil-1"></i>
+              </div>
+          </div>
+          <!-- /.item-info -->
+          <div class="item-content">
+              <div class="box">
+                  <div class="box-content">
+                      <h4 class="item-title">
+                          <!--Update-->
+
+                          <!-- Property change -->
+                        {{#unless isListChange}}
+                            <!--<span class="spacer">–</span>-->
+                          {{data.fieldDisplayName}} has been
+                          {{#if data.oldValue}}
+                              changed from <strong>{{data.oldValue}}</strong>
+                          {{else}}
+                              set
+                          {{/if}}
+                            to
+                            <strong>{{data.newValue}}</strong>
+                        {{/unless}}
+
+                          <!-- Item added -->
+                        {{#if data.added}}
+                            <!--<span class="spacer">–</span>-->
+                            An item has been added to {{data.fieldDisplayName}}:
+                            <strong> {{data.newValue}} </strong>
+                        {{/if}}
+
+                          <!-- Item removed -->
+                        {{#if data.removed}}
+                            <!--<span class="spacer">–</span>-->
+                            An item has been removed from {{data.fieldDisplayName}}
+                        {{/if}}
+
+                        {{#if data.changed}}
+                            <!--<span class="spacer">–</span>-->
+                            An item in {{data.fieldDisplayName}} has been updated:
+                            <ul>
+                              {{#each data.subChanges}}
+                                  <li>
+                                    {{property}} updated from <strong> {{oldValue}} </strong> to <strong> {{newValue}} </strong>
+                                  </li>
+                              {{/each}}
+                            </ul>
+                        {{/if}}
+                      </h4>
+                      <div class="item-actions">
+                          <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
+                              <span> {{displayUserName this.userId}} </span>
+                          </a>
+                          <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
+                              <i class="fa fa-calendar"></i>
+                                <span>
+                                  {{#formattedDate value=data.dateCreated format='lll'}}
+                                    {{date}}
+                                  {{/formattedDate}}
+                                </span>
+                          </a>
+                      </div>
+                  </div>
+                  <!-- /.box-content -->
+              </div>
+              <!-- /.box -->
+          </div>
+          <!-- /.item-content -->
+      </div>
+      <!-- /.item -->
+  {{/if}}
+</template>

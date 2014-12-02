@@ -8,8 +8,8 @@
                         <div class="{{isActive id}} col-xs-4 col-sm-2 col-md-12 details-tab" style="padding-top: 3px;padding-bottom: 3px;">
                             <a href="/{{../route}}/{{../entityId}}/{{id}}">
                                 {{displayName}}
-                                {{#if info}}
-                                    <span class="custom-badge-2">{{execHelper info}}</span>
+                                {{#if isDefined info}}
+                                    <span class="custom-badge-2">{{info}}</span>
                                 {{/if}}
                             </a>
                         </div>
@@ -45,6 +45,9 @@
 
                     <a href="/{{../route}}/{{../entityId}}/{{id}}">
                         {{displayName}}
+                        {{#if isDefined info}}
+                            <span class="custom-badge-2">{{info}}</span>
+                        {{/if}}
                     </a>
                 </div>
             {{/each}}
@@ -55,6 +58,9 @@
 
                     <a class="btn" href="/{{../route}}/{{../entityId}}/{{id}}">
                         {{displayName}}
+                        {{#if isDefined info}}
+                            <span class="custom-badge-2">{{info}}</span>
+                        {{/if}}
                     </a>
                 </div>
             {{/each}}

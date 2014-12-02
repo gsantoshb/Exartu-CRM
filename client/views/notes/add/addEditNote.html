@@ -12,65 +12,55 @@
                         <fieldset>
                             <div class="form-group {{hasError 'msg'}}">
                                 <label class="control-label">Note:</label>
-                                <textarea id="note-input" value="{{msg}}" class="form-control msg add-note-txt input-lg" rows="3" placeholder="Add note here..."></textarea>
+                                <textarea id="note-input" value="{{msg}}" class="form-control msg add-note-txt input-lg"
+                                          rows="3" placeholder="Add note here..."></textarea>
                                 <!--<input class="form-control msg" value="{{msg}}"/>-->
                                 <span>{{error.msg}}</span>
                             </div>
                         </fieldset>
                         <fieldset>
-
-                            <div style="padding: 11px 0px;">
-                                Linked Entities:
-                                {{#each linkedEntities}}
-                                    {{#with getEntity .}}
-                                        <button type="button" class="tag btn btn-xs btn-primary">
-                                                    <span>
-                                                        {{displayName}}
-                                                    </span>
-                                            <i class="remove-link fa fa-times"></i>
-                                        </button>
-                                    {{/with}}
-                                {{/each}}
-                            </div>
-                            <div>
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <select class="form-control" id="noteTypeSelect" title="Select the type of entity that you want to link to the msg">
-                                            <option value="">--type--</option>
-                                            {{#each types}}
-                                                <option value="{{value}}">{{displayName}}</option>
-                                            {{/each}}
-                                        </select>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <select class="form-control" id="noteEntitySelect" title="Select the entity that you want to link">
-                                            <option value="">--select--</option>
-                                            {{#each entities}}
-                                                <option value="{{_id}}">{{displayName}}</option>
-                                            {{/each}}
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button id="noteLinkEntity" class="btn btn-sm btn-primary">Link</button>
+                                <div style="padding: 11px 0px;">
+                                    Linked Entities:
+                                    {{#each linkedEntities}}
+                                        {{#with getEntity .}}
+                                            <button type="button" class="tag btn btn-xs btn-primary">
+                                            <span>
+                                                {{displayName}}
+                                            </span>
+                                                <i class="remove-link fa fa-times"></i>
+                                            </button>
+                                        {{/with}}
+                                    {{/each}}
+                                </div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <select class="form-control" id="noteTypeSelect" title="Select the type of entity that you want to link to the msg">
+                                                <option value="">--type--</option>
+                                                {{#each types}}
+                                                    <option value="{{value}}">{{displayName}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <select class="form-control" id="noteEntitySelect" title="Select the entity that you want to link">
+                                                <option value="">--select--</option>
+                                                {{#each entities}}
+                                                    <option value="{{_id}}">{{displayName}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button id="noteLinkEntity" class="btn btn-sm btn-primary">Link</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </fieldset>
+                            </fieldset>
                         {{/with}}
                     </div>
                 </div>
                 <div class="modal-footer">
-                    {{#if isEditing}}
-                    <a class="btn btn-danger pull-left archive">
-                        <!--{{#with note}}-->
-                        {{#if note.inactive}}
-                        Recover
-                        {{else}}
-                        Archive
-                        {{/if}}
-                        <!--{{/with}}-->
-                    </a>
-                    {{/if}}
+
                     <a class="btn btn-success accept">Save</a>
                     <a href="#" class="btn" data-dismiss="modal">Close</a>
                 </div>

@@ -1,227 +1,207 @@
 var note;
-var Error={};
+var Error = {};
 
-
-//todo: the logic for the linked entities is almost the same in Tasks and Note. We should do some template to use it in both places.
-var typeDep= new Deps.Dependency();
-var linkedDep= new Deps.Dependency();
-var link=function(link){
-  if (_.findWhere(note.links,{
-    id: link.id
-  }))
+//todo: the logic for the linked entities is almost the same in msgs and noteAdd. We should do some template to use it in both places.
+var typeDep = new Tracker.Dependency();
+var linkedDep = new Tracker.Dependency();
+var link = function (link) {
+  if (_.findWhere(note.links, {
+      id: link.id
+    }))
     return;
 
   note.links.push(link);
-}
-var noteDep=new Deps.Dependency;
-var errorDep=new Deps.Dependency;
-var createNote=function(note){
+};
 
-  var note=note || {};
+var noteDep = new Tracker.Dependency;
+var errorDep = new Tracker.Dependency;
 
+var noteUpdate = function (cb) {
+  if (note._id) {
+
+    Notes.update({
+        _id: note._id
+      }, {
+        $set: {
+          msg: note.msg,
+          links: note.links,
+        }
+      },
+      function () {
+        if (cb)
+          cb();
+      }
+    );
+  }
+};
+
+
+var createNote = function (note) {
+  var note = note || {};
   var definition = {
     msg: note.msg,
     links: note.links || []
 //    reactiveProps: {}
   };
-  if(note._id)
-    definition._id= note._id;
+  if (note._id)
+    definition._id = note._id;
   return definition;
 //  return new Utils.ObjectDefinition(definition);
 };
 
 Template.addEditNote.helpers({
-  isEditing: function(){
-    return !! note._id;
+  isEditing: function () {
+    return !!note._id;
   },
-  note:function(){
-    if(!note){
-      var param={};
-      if(this){
-        param=this[0]
+  note: function () {
+    if (!note) {
+      var param = {};
+      if (this) {
+        param = this[0]
       }
-      note=createNote(param);
+      note = createNote(param);
     }
     noteDep.depend();
     return note;
   },
-  users :function(){
+  users: function () {
     return Meteor.users.find({});
   },
-  isSelected:function(){
-    return true;
+  isSelected: function () {
+    return _.contains(note.assign, this._id);
   },
-  error: function(){
-    errorDep.depend()
+  error: function () {
+    errorDep.depend();
     return Error;
   },
-  hasError:function(key){
+  hasError: function (key) {
     errorDep.depend();
-    return Error[key] ? 'error': '';
+    return Error[key] ? 'error' : '';
   },
-
-  types: function(){
-    return _.map( _.filter(_.keys(Enums.linkTypes), function(key){
+  types: function () {
+    return _.map(_.filter(_.keys(Enums.linkTypes), function (key) {
       return !_.contains(['deal', 'candidate'], key);
-    }),function(key){
-        return Enums.linkTypes[key];
+    }), function (key) {
+      return Enums.linkTypes[key];
     });
   },
-  entities:function(){
+  entities: function () {
     typeDep.depend();
-    var selectedType= $('#noteTypeSelect').val();
-    selectedType=parseInt(selectedType);
-    switch (selectedType){
+    var selectedType = $('#noteTypeSelect').val();
+    selectedType = parseInt(selectedType);
+    switch (selectedType) {
       case Enums.linkTypes.contactable.value:
-        return AllContactables.find();
+        return AllContactables.find({}, {
+          sort: {
+            displayName: -1
+          }
+        });
       case Enums.linkTypes.job.value:
-        return AllJobs.find();
-     case Enums.linkTypes.placement.value:
+        return AllJobs.find({}, {
+          sort: {
+            'displayName': -1
+          }
+        });
+      case Enums.linkTypes.placement.value:
         return AllPlacements.find();
       default :
         return [];
     }
   },
-  linkedEntities: function(){
+  linkedEntities: function () {
     linkedDep.depend();
     return note.links;
   },
-  getEntity: Utils.getEntityFromLinkForAdd
+  getEntity: Utils.getEntityFromLinkForAdd,
+  datepickerOptions: function () {
+    return {
+      format: 'D, MM dd, yyyy hh:ii',
+      momentFormat: 'ddd, MMMM DD, YYYY HH:mm'
+    };
+  }
 });
-var isValid= function(note, key){
-  var result= true;
 
-  if (key){
-    if (key=='msg'){
-      if (!note.msg){
-        Error.msg='This field is required';
-        result=false;
-      }else{
-        Error.msg='';
+var isValid = function (note, key) {
+  var result = true;
+
+  if (key) {
+    if (key == 'msg') {
+      if (!note.msg) {
+        Error.msg = 'This field is required';
+        result = false;
+      } else {
+        Error.msg = '';
       }
     }
-
   }
-  else{
-    if (!note.msg){
-      Error.msg='This field is required';
-      result=false;
-    }else{
-      Error.msg='';
+  else {
+    if (!note.msg) {
+      Error.msg = 'This field is required';
+      result = false;
+    } else {
+      Error.msg = '';
     }
-
-
   }
   errorDep.changed();
   return result;
-}
+};
+
 Template.addEditNote.events({
-  'click .accept':function(){
+  'click .accept': function () {
     if (!isValid(note)) {
       return;
     }
 
-    if (note._id){
-      Notes.update({
-        _id: note._id
-      }, {
-        $set: {
-          msg: note.msg,
-          links: note.links
-        }
-      },function(){
+    if (note._id) {
+      noteUpdate(function () {
         $('.modal-host').children().modal('toggle')
-      })
+      });
     } else {
-      Notes.insert(note,function(){
+      Notes.insert(note, function () {
         $('.modal-host').children().modal('toggle')
       })
     }
   },
-  'click .archive': function () {
-    if (!isValid(note)) {
-      return;
-    }
-    if (note._id){
-      Notes.update({
-        _id: note._id
-      }, {
-        $set: {
-          msg: note.msg,
-          links: note.links
-        }
-      },function(){
-        $('.modal-host').children().modal('toggle')
-      })
-    } else {
-      Notes.insert(note,function(){
-        $('.modal-host').children().modal('toggle')
-      })
-    }
+
+  'change .msg': function (e) {
+    note.msg = e.target.value;
+    noteUpdate();
   },
-  'change.dp .completed>.dateTimePicker': function(e, ctx) {
-    if ($(e.target).hasClass('dateTimePicker')){
-      note.completed = $(e.target).data('DateTimePicker').date.toDate();
-    }
-  },
-  'change.dp .begin>.dateTimePicker': function(e, ctx) {
-    if ($(e.target).hasClass('dateTimePicker')){
-      note.begin = $(e.target).data('DateTimePicker').date.toDate();
-    }
-  },
-  'change.dp .end>.dateTimePicker': function(e, ctx) {
-    if ($(e.target).hasClass('dateTimePicker')){
-      note.end = $(e.target).data('DateTimePicker').date.toDate();
-    }
-  },
-  'change .isCompleted': function(e){
-    if(e.target.checked){
-      note.completed=new Date;
-    }else{
-      note.completed=null;
-    }
-    noteDep.changed();
-  },
-  'change .msg':function(e){
-    note.msg= e.target.value;
-  },
-  'change .assign': function(e){
-    note.assign=$(e.target).val()
-  },
-  'blur .msg': function(){
+
+  'blur .msg': function () {
     isValid(note, 'msg');
   },
-  'blur .assign': function(){
-    isValid(note, 'assign');
-  },
 
-  'change #noteTypeSelect': function(){
+
+  'change #noteTypeSelect': function () {
     typeDep.changed();
   },
-  'click #noteLinkEntity':function(){
-    var type= $('#noteTypeSelect').val();
-    type= parseInt(type);
-    var entity= $('#noteEntitySelect').val();
-    if (!_.isNumber(type) || ! entity) return;
+  'click #noteLinkEntity': function () {
+    var type = $('#noteTypeSelect').val();
+    type = parseInt(type);
+    var entity = $('#noteEntitySelect').val();
+    if (!_.isNumber(type) || !entity) return;
 
     link({
       type: type,
       id: entity
     });
     linkedDep.changed();
+    noteUpdate();
   },
-  'click .remove-link': function(){
-    var item=_(note.links).findWhere({id:this._id})
+  'click .remove-link': function () {
+    var item = _(note.links).findWhere({id: this._id})
 
-    note.links= _(note.links).without(item);
+    note.links = _(note.links).without(item);
     linkedDep.changed();
+    noteUpdate();
   }
+});
 
-})
-
-Template.addEditNote.created=function(){
+Template.addEditNote.created = function () {
   Meteor.subscribe('allContactables');
   Meteor.subscribe('allJobs');
   Meteor.subscribe('allPlacements');
-  note=null;
-}
+  Meteor.subscribe('allNotes');
+  note = null;
+};

@@ -25,12 +25,7 @@ Router.map(function() {
             var res = connection.call('getContactMethods', contactableId);
 
             // Transform the response before sending it back
-            var contactMethods = ContactMethods.find().fetch();
-            _.each(res, function (cm) {
-              cm.contactableId = contactableId;
-              cm.type = _.find(contactMethods, function (method) { return method._id === cm.type; }).type;
-            });
-
+            res = mapper.get(res);
             response.end(res);
           } catch(err) {
             console.log(err);
@@ -41,12 +36,11 @@ Router.map(function() {
         // Create new contact method
         // Body:
         //  - contactableId: string
-        //  - type: string (int)
+        //  - type: string (Id)
         //  - value: string
         case 'POST':
           var data = this.request.body;
           try {
-            //Hot fix data.type is actually the contactMethod id ( the lookup id)
             connection.call('addContactMethod', data.contactableId, data.type, data.value);
             response.end(data);
           } catch(err) {
@@ -63,3 +57,23 @@ Router.map(function() {
     }
   })
 });
+
+
+var mapper = {
+  get: function(data, contactableId) {
+    if (!data) return {};
+
+    var result = [];
+    _.each(data, function (item) {
+      var res = {
+        contactableId: contactableId,
+        type: item.type,
+        value: item.value
+      };
+
+      result.push(res);
+    });
+
+    return result;
+  }
+};

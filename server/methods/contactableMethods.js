@@ -25,6 +25,13 @@ Meteor.methods({
   },
 
   // Contact methods
+  getContactMethodTypes: function () {
+    try {
+      return ContactableManager.getContactMethodTypes();
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
+  },
   addContactMethod: function (contactableId, type, value) {
     try {
       return ContactableManager.addContactMethod(contactableId, type, value);
@@ -107,6 +114,12 @@ Meteor.methods({
       return Contactables.findOne({ houseAccount: true, hierId: user.hierId }, { fields: { 'organization.organizationName': 1 } });
     }
   },
+  getAllContactablesForSelection: function (filter) {
+    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Contactables.find(filter, {
+        objNameArray: 1,
+        contactMethods: 1
+      })).fetch();
+  },
 
   // Communication
   sendSMSToContactable: function (contactableId, from, to, text) {
@@ -166,6 +179,7 @@ FileUploader.createEndpoint('uploadContactablesFiles', {
       description: metadata.description,
       tags: metadata.tags,
       userId: Meteor.userId(),
+      hierId: Meteor.user().hierId,
       fileId: fileId
     };
 

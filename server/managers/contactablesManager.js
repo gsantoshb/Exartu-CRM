@@ -61,6 +61,10 @@ ContactableManager = {
     });
   },
 
+  getContactMethodTypes: function () {
+    var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
+    return LookUps.find({ hierId: rootHier, lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
+  },
   addContactMethod: function (contactableId, type, value) {
     // Validation
     if (! contactableId) { throw new Error('Contactable ID is required'); }

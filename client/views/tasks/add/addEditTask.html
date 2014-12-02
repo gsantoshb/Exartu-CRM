@@ -20,7 +20,7 @@
                                 <div class="form-group begin">
                                     <label class="control-label">Begin:</label>
                                     <br/>
-                                    {{#dateTimePicker value=begin autoclose=true}}
+                                    {{#dateTimePicker value=begin options=datepickerOptions}}
                                     {{/dateTimePicker}}
                                 </div>
                             </fieldset>
@@ -28,7 +28,7 @@
                                 <div class="form-group end">
                                     <label class="control-label">End:</label>
                                     <br/>
-                                    {{#dateTimePicker value=end autoclose=true}}
+                                    {{#dateTimePicker value=end options=datepickerOptions}}
                                     {{/dateTimePicker}}
                                 </div>
                             </fieldset>
@@ -56,7 +56,7 @@
                                     <div class="form-group completed">
                                         <label class="control-label">Date completed:</label>
                                         <br/>
-                                        {{#dateTimePicker value=completed}}
+                                        {{#dateTimePicker value=completed options=datepickerOptions}}
                                         {{/dateTimePicker}}
                                     </div>
                                 {{/if}}

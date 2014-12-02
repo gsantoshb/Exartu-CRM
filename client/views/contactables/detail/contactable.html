@@ -109,7 +109,7 @@
 </template>
 
 <template name="contactable_notes">
-    {{> notesTab}}
+        {{> notesBox}}
 </template>
 
 <template name="contactable_documents">
@@ -184,8 +184,8 @@
                         <a id="generate-resume" class="btn btn-default btn-custom-with-circle action-btn">
                             <span class="btn-round"><i class="fa fa-file"></i></span>
                             Generate resume/cv
-                            <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
                         </a>
+                        <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
                     </li>
                 {{/if}}
 

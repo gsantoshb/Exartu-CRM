@@ -80,6 +80,41 @@
     {{#if isLoading}}
         <div style="height: 505px;"></div>
     {{else}}
+        <div style="min-height: 50px">
+            <span class="checkbox" style="float:left;">
+                <label>
+                    <input type="checkbox" id="selectAll" checked="{{areAllChecked}}">
+                    <span> {{#if selectedCount}}&nbsp;{{else}} Select all {{/if}}</span>
+                </label>
+            </span>
+            {{#if selectedCount}}
+                <span>
+                    {{selectedCount}} items selected
+                    {{#if showSelectAll}}
+                        <a id="selectAllRemotes" class="pointer">Select all {{totalCount}}</a>
+                    {{/if}}
+                </span>
+                
+                <span>
+                    {{#if areAllSelectedTheSameType}}
+                        <button class="btn btn-primary pull-right" id="sendTemplate"> send template </button>
+                    {{else}}
+                        <div class="text-danger pull-right">
+                            You can't mix different types, select just the
+                            {{#each differentTypesSelected}}
+                                <a class="pointer selectOneType"> {{name}}({{count}}) </a>, &nbsp;
+                            {{/each}}
+                        </div>
+                    {{/if}}
+                </span>
+                {{#if withoutEmail}}
+                    <div class="text-warning">
+                        {{withoutEmail}} Contacts will not receive the email because they do NOT have an email added
+                    </div>
+                {{/if}}
+            {{/if}}
+        </div>
+
         {{#unless isESSearch}}
             {{> fastPagination name="auxContactables" useKeys='true'}}
         {{/unless}}
@@ -112,11 +147,14 @@
 </template>
 
 <template name="contactablesListItem">
-    <div class="table-item magic">
+    <div class="table-item magic {{#if isSelected}} selected {{/if}}">
         <div class="row ">
             <div class="col-sm-4">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container">
+                        <div style="float: left;margin: 13px 14px 0 -13px;">
+                            <input type="checkbox" class="select" checked="{{isSelected}}">
+                        </div>
 
                         <div class="table-item-title">
                             <a href="/contactable/{{_id}}">

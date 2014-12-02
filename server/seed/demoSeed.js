@@ -1,9 +1,54 @@
 // Common data
+var tags = [
+   [ 'sales','innovator'], ['javascript','css','oodb','sql','linux'],[ 'accounting','bookkeeping','cpa','auditing']
 
-// 30 Employees
-var employees = [
+];
+
+var contacts = [
   {
     firstName: "Doe",
+    lastName: "Samantha"
+  },
+  {
+    firstName: "Reagan",
+    lastName: "John"
+  },
+  {
+    firstName: "Ryan",
+    lastName: "Darcy"
+  },
+  {
+    firstName: "Campos",
+    lastName: "Jeff"
+  },
+  {
+    firstName: "Belton",
+    lastName: "Joseph"
+  },
+  {
+    firstName: "Sotono",
+    lastName: "Reggie"
+  },
+  {
+    firstName: "Columbo",
+    lastName: "Jeff"
+  },
+  {
+    firstName: "Bond",
+    lastName: "James"
+  },
+  {
+    firstName: "Cameron",
+    lastName: "Sandy"
+  },
+  {
+    firstName: "Velotos",
+    lastName: "Remie"
+  }
+];
+var employees = [
+  {
+    firstName: "Eagleton",
     lastName: "Andrew"
   },
   {
@@ -15,7 +60,7 @@ var employees = [
     lastName: "John"
   },
   {
-    firstName: "Campos",
+    firstName: "Ruffington",
     lastName: "Wilson"
   },
   {
@@ -31,7 +76,7 @@ var employees = [
     lastName: "Anna"
   },
   {
-    firstName: "Paycardguy",
+    firstName: "Pankerton",
     lastName: "Johnny"
   },
   {
@@ -40,7 +85,7 @@ var employees = [
   },
   {
     firstName: "Campos",
-    lastName: "Epay"
+    lastName: "Jeffrey"
   },
   {
     firstName: "Climer",
@@ -51,20 +96,20 @@ var employees = [
     lastName: "James"
   },
   {
-    firstName: "InstantPay",
+    firstName: "Love",
     lastName: "Jeff"
   },
   {
-    firstName: "Cardtest",
-    lastName: "EJpay"
+    firstName: "Jones",
+    lastName: "Debbie"
   },
   {
-    firstName: "Hanna",
-    lastName: "Randy"
+    firstName: "Barbeau",
+    lastName: "Adrian"
   },
   {
     firstName: "Pasarini",
-    lastName: "Epay"
+    lastName: "Vito"
   },
   {
     firstName: "Lee",
@@ -131,16 +176,36 @@ var customers = [
     "department": "Shipping"
   },
   {
-    "name": "ABC Corporation",
-    "department": "Shipping"
-  },
-  {
-    "name": "Action Staffing Solutions",
+    "name": "Coke",
     "department": "Primary"
   },
   {
-    "name": "Seintco",
-    "department": "Labor Dispatch 1"
+    "name": "3M",
+    "department": "Primary"
+  },
+  {
+    "name": "Cargill",
+    "department": "Primary"
+  },
+  {
+    "name": "General Electric",
+    "department": "Primary"
+  },
+  {
+    "name": "Kraft Foods",
+    "department": "Primary"
+  },
+  {
+    "name": "Godiva Chocolates",
+    "department": "Primary"
+  },
+  {
+    "name": "Microsoft",
+    "department": "Primary"
+  },
+  {
+    "name": "ABC Corporation",
+    "department": "Shipping"
   },
   {
     "name": "Aldi Inc",
@@ -154,14 +219,8 @@ var customers = [
     "name": "Aquafina",
     "department": "Primary"
   },
-  {
-    "name": "Atlanta Staffing Source Inc",
-    "department": "Sourcing"
-  },
-  {
-    "name": "ATS Staffing",
-    "department": "Primary"
-  },
+
+
   {
     "name": "Best Buy",
     "department": "Store #456"
@@ -171,41 +230,11 @@ var customers = [
     "department": "Warehouse"
   },
   {
-    "name": "compusa",
+    "name": "CompUSA",
     "department": "Primary"
   },
-  {
-    "name": "Crom Equipment",
-    "department": "Taxes"
-  },
-  {
-    "name": "Crom Equipment",
-    "department": "Warehouse"
-  },
-  {
-    "name": "Crom Equipment",
-    "department": "North Warehouse"
-  },
-  {
-    "name": "Crom Equipment",
-    "department": "Primary"
-  },
-  {
-    "name": "Crom Equipment",
-    "department": "Warehouse"
-  },
-  {
-    "name": "Crom Equipment",
-    "department": "Shipping"
-  },
-  {
-    "name": "Dees Diner",
-    "department": "Payroll"
-  },
-  {
-    "name": "Dover Staffing",
-    "department": "Primary"
-  },
+
+
   {
     "name": "Elephant Industries Inc.",
     "department": "Human Resources"
@@ -232,7 +261,7 @@ var customers = [
   },
   {
     "name": "Midwest Wireless",
-    "department": "Accountign"
+    "department": "Accounting"
   },
   {
     "name": "Midwest Wireless",
@@ -246,22 +275,7 @@ var customers = [
     "name": "Pencil Designs Inc",
     "department": "Metal Bands"
   },
-  {
-    "name": "Prestige Staffing",
-    "department": "Primary"
-  },
-  {
-    "name": "Sales Tax Test",
-    "department": "Primary"
-  },
-  {
-    "name": "Stoerzinger Supply Co",
-    "department": "Warehouse"
-  },
-  {
-    "name": "Test Jeff Customer",
-    "department": "Primary"
-  },
+
   {
     "name": "Uniform Snow Inc",
     "department": "Warehouse"
@@ -274,14 +288,8 @@ var customers = [
     "name": "Whiting and Associates",
     "department": "Primary"
   },
-  {
-    "name": "Google",
-    "department": "Primary"
-  },
-  {
-    "name": "atlas staffing",
-    "department": "Primary"
-  },
+
+
   {
     "name": "Best Buy",
     "department": "Primary"
@@ -302,22 +310,13 @@ var customers = [
     "name": "Global Technologies, Inc.",
     "department": "Packline"
   },
-  {
-    "name": "Jon",
-    "department": "Primary"
-  },
+
   {
     "name": "Largo Boats",
     "department": "Primary"
   },
-  {
-    "name": "Mari's Company",
-    "department": "Primary"
-  },
-  {
-    "name": "Mari's Company",
-    "department": "Picking"
-  },
+
+
   {
     "name": "Stanley Tools",
     "department": "Primary"
@@ -345,12 +344,9 @@ var customers = [
   {
     "name": "XYZ Corp",
     "department": "Primary"
-  },
-  {
-    "name": "Kyle's Zip Testers",
-    "department": "Primary"
   }
 ];
+var randomTag = tags[Math.floor(Math.random() * tags.length)];
 
 var loadContactables = function (hierId) {
   // Employees
@@ -365,9 +361,10 @@ var loadContactables = function (hierId) {
 
     var newEmployee = {
       Employee: {
-        description: "test",
+        description: "top candidate",
         status: status ? status._id : null
       },
+      tags: randomTag,
       statusNote: 'looks to be making a decision soon',
       objNameArray: ["person", "Employee", "contactable"],
       person: {
@@ -384,6 +381,7 @@ var loadContactables = function (hierId) {
     ContactableManager.create(newEmployee);
   });
 
+
   // Customers
   _.forEach(customers, function (data) {
 
@@ -396,6 +394,7 @@ var loadContactables = function (hierId) {
         department: data.department,
         status: status ? status._id : null
       },
+      tags: randomTag,
       statusNote: 'looks to be making a decision soon',
       objNameArray: ["organization", "Customer", "contactable"],
       organization: {
@@ -408,7 +407,39 @@ var loadContactables = function (hierId) {
     ContactableManager.create(newCustomer);
   });
 
-  // TODO: Contacts seed
+  _.forEach(contacts, function (data) {
+
+    var status = LookUps.findOne({ lookUpCode: Enums.lookUpTypes.contact.status.lookUpCode, isDefault: true, hierId: hierId });
+    if (status == null) LookUps.findOne({ lookUpCode: Enums.lookUpTypes.contact.status.lookUpCode, hierId: hierId });
+    if (status == null) console.log("unable to find default status code for contact");
+
+    var jobTitles = LookUps.find({lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode, hierId: hierId}).fetch();
+    var randomJobTitle = jobTitles[Math.floor(Math.random() * jobTitles.length)];
+    var customers = Contactables.find({objNameArray: 'Customer',hierId:hierId}).fetch();
+    var randomCustomer = customers[Math.floor(Math.random() * customers.length)];
+    var newContact = {
+      Contact: {
+        description: "buying influence",
+        status: status ? status._id : null,
+        customer: randomCustomer._id,
+      },
+      tags: randomTag,
+      statusNote: 'looks to be making a decision soon',
+      objNameArray: ["person", "Contact", "contactable"],
+      person: {
+        firstName: data.firstName,
+        middleName: "",
+        lastName: data.lastName,
+        jobTitle: randomJobTitle.displayName,
+        salutation: ""
+      },
+      hierId: hierId,
+      testData: true
+    };
+
+    ContactableManager.create(newContact);
+  });
+  console.log("Contactable demo data created",Date.now());
 };
 
 var loadJobs = function (hierId) {
@@ -419,144 +450,154 @@ var loadJobs = function (hierId) {
     var durations = LookUps.find({lookUpCode: Enums.lookUpTypes.job.duration.lookUpCode,hierId:hierId}).fetch();
     var jobTitles = LookUps.find({lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode,hierId:hierId}).fetch();
     var statuses = LookUps.find({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,hierId:hierId}).fetch();
-    var publicJobTitles = [
-        ["QCI"  ],
-        ["Production/sewing"  ],
-        ["Shipping And Receiving Clerk"  ],
-        ["Access Operator"  ],
-
-        ["Typist/statistical"  ],
-        ["Auditor"  ],
-        ["Warehouse Person"  ],
-        ["Utility Worker"  ],
-        ["Administrative Support"  ],
-        ["Special Project(s)"  ],
-        ["Accounts Payable"  ],
-        ["Accounts Receivable Clerk"  ],
-        ["12 hour Nurse"  ],
-        ["Accounting Clerk 1"  ],
-        ["Budget Analyst"  ],
-        ["Accountant"  ],
-
-        ["Yard People"  ],
-        ["Wagemaster"  ],
-        ["Welder"  ],
-        ["Assembler Heavy"  ],
-        ["Accountant"  ],
-        ["Administrative Support"  ],
-
-        ["Yard People"  ],
-        ["Access Operator"  ],
-        ["Admin. Assist."  ],
-        ["Accountant"  ],
-        ["Forklift"  ],
-        ["Packaging"  ],
-        ["Server Deposit"  ],
-        ["Administrative Support"  ],
-        ["Forklift"  ],
-        ["Assembler Heavy"  ],
-        ["Administrative Support"  ],
-        ["C#"  ],
-        ["Access Operator"  ],
-        ["Yard People"  ],
-        ["Background Checks"  ],
-        ["General Administrator I"  ],
-        ["Fabricating Machine"  ],
-        ["Hand Nailer"  ]
-
-    ];
-    var today = new Date();
-    var tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1);
 
   for (var i = 0; i < 25; ++i) {
 
         var randomJobType = 'Temporary'; //jobTypes[Math.floor(Math.random() * jobTypes.length)];
         var randomCustomer = customers[Math.floor(Math.random() * customers.length)];
         var randomJobTitle = jobTitles [Math.floor(Math.random() * jobTitles.length)];
-        var randomPublicJobTitle = publicJobTitles [Math.floor(Math.random() * publicJobTitles.length)];
-
-
         var newJob = {
-            tags:[],
+            tags: randomTag,
             customer: randomCustomer._id,
-            Temporary: {pay:0,bill:0,frequency:null},
+            Temporary: {},
             objNameArray: ['job', 'Temporary'],
             hierId: hierId,
             industry: industries[Math.floor(Math.random() * industries.length)]._id,
             category: categories[Math.floor(Math.random() * categories.length)]._id,
             duration: durations[Math.floor(Math.random() * durations.length)]._id,
             status: statuses[Math.floor(Math.random() * statuses.length)]._id,
-            publicJobTitle: randomPublicJobTitle[0],
+            publicJobTitle: randomJobTitle.displayName,
             jobTitle: randomJobTitle._id,
-            startDate: today,
-            endDate: tomorrow,
             statusNote: 'looks to be making a decision soon',
             description: "a job for all times",
             testData: true
         }
-        // TODO: check objType's fields
 
         Meteor.call('addJob', newJob, function (err, result) {
-            if (!err)
-                console.log("Job created for demo")
-            else
+            if (err)
                 console.log(err);
         })
     }
     ;
+  console.log("Job demo data created",Date.now());
+};
+
+
+var loadPlacements = function (hierId) {
+  var today = new Date();
+  var tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+  var jobs = Jobs.find({ hierId: hierId}).fetch();
+
+  var employees = Contactables.find({objNameArray: 'Employee',hierId:hierId}).fetch();
+  var candidateStatuses = LookUps.find({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode,hierId:hierId}).fetch();
+  var rateType=           LookUps.findOne({lookUpCode: Enums.lookUpTypes.placement.rate.lookUpCode,hierId:hierId});
+  for (var i = 0; i < 10; ++i) {
+    var randomJob = jobs[Math.floor(Math.random() * jobs.length)];
+    var randomEmployee = employees[Math.floor(Math.random() * employees.length)];
+    var newPlacement = {
+      tags: [],
+      job: randomJob._id,
+      objNameArray: 	 ["placement"],
+      employee: randomEmployee._id,
+      candidateStatus: candidateStatuses[Math.floor(Math.random() * candidateStatuses.length)]._id,
+      hierId: hierId,
+      startDate: today,
+      endDate: tomorrow,
+      statusNote: 'excited about the job',
+      "placementRates" :
+        [{
+          "type" : rateType._id,
+          "pay" : "25.00",
+          "bill" : "15.00"
+        }],
+      testData: true
+    }
+    // TODO: check objType's fields
+
+    Meteor.call('addPlacement', newPlacement, function (err, result) {
+      if (!err)
+        console.log("Placement created for demo")
+      else
+        console.log(err);
+    })
+  };
+  console.log("Placement demo data created",Date.now());
 };
 
 var loadTasks = function (hierId, usermane, userId) {
+  var employeesFetched = Contactables.find({objNameArray: 'Employee',hierId:hierId}).fetch();
+  var contactsFetched = Contactables.find({objNameArray: 'Contact',hierId:hierId}).fetch();
     var notes = [
-        "Call " + employees[Math.floor(Math.random() * employees.length)].firstName + " asap",
-        "Contact " + employees[Math.floor(Math.random() * employees.length)].lastName
-    ];
+        "Call " ,
+        "confirm details with",
+        "check on progress with",
+        "Discuss offer with",
+        "Reconfirm appt with",
+        "Interview prep with"
 
-    // Add users to hier
-    var userIds = [];
-    //for (var j = 0; j < 5; ++j) {
-    //    var newUser = {
-    //        username: usermane + j,
-    //        email: usermane + j + '@' + usermane + j + '.com',
-    //        password: usermane + j
-    //    }
-    //    var id = Meteor.call('addHierUser', newUser, hierId);
-    //    userIds.push(id);
-    //}
-    if (userId)
-        userIds.push(userId);
+    ];
 
     var today = new Date();
     var tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
 
-    for (var i = 0; i < 50; ++i) {
+    for (var i = 0; i < 25; ++i) {
+      var person = employeesFetched[Math.floor(Math.random() * employees.length)];
+      if (i % 2 ==0) person=contactsFetched[Math.floor(Math.random() * contacts.length)];
+      var msg=notes[Math.floor(Math.random() * notes.length)] + ' ' +  person.person.firstName ;
         var newTask = {
             begin: today,
             end: tomorrow,
-            assign: [userIds[Math.floor(Math.random() * userIds.length)]],
-            msg: notes[Math.floor(Math.random() * notes.length)],
+            assign: userId, //[userIds[Math.floor(Math.random() * userIds.length)]],
+            msg: msg,
             completed: null,
             hierId: hierId,
             userId: userId,
             testData: true,
-            links: []
+            links: [{id: person._id, type: Enums.linkTypes.contactable.value}]
         }
 
         Tasks.insert(newTask, function (err, result) {
-            if (!err)
-                console.log("Task created for demo");
-            else
+            if (err)
                 console.log(err);
         })
     }
+  console.log("Task demo data created",Date.now());
 };
+var loadNotes= function (hierId, usermane, userId) {
+  var employeesFetched = Contactables.find({objNameArray: 'Employee',hierId:hierId}).fetch();
+  var contactsFetched = Contactables.find({objNameArray: 'Contact',hierId:hierId}).fetch();
+  var notes = [
+      "Called " ,
+      "Contacted " ,
+      "Confirmed ",
+      "Scheduled interview w/ "
+  ];
 
-demoSeed = {
-  loadContactables: loadContactables,
-  loadJobs: loadJobs,
-  loadTasks: loadTasks
+
+  var today = new Date();
+  var tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  for (var i = 0; i < 25; ++i) {
+    var person = employeesFetched[Math.floor(Math.random() * employees.length)];
+    if (i % 2 ==0) person=contactsFetched[Math.floor(Math.random() * contacts.length)];
+    var msg=notes[Math.floor(Math.random() * notes.length)] + ' ' +  person.person.firstName ;
+    var newNote = {
+      msg: msg,
+      hierId: hierId,
+      userId: userId,
+      testData: true,
+      links: [{id: person._id, type: Enums.linkTypes.contactable.value}]
+    }
+
+    Notes.insert(newNote, function (err, result) {
+      if (err)
+        console.log(err);
+    })
+  }
+  console.log("Note demo data created",Date.now());
 };
 
 // For testing
@@ -568,14 +609,16 @@ Meteor.methods({
 
     loadContactables(user.hierId);
     loadJobs(user.hierId);
+    loadPlacements(user.hierId);
     loadTasks(user.hierId, user.username, user._id);
+    loadNotes(user.hierId, user.username, user._id);
   },
   removeDemoData: function () {
     var user = Meteor.user();
     if (!user)
       return;
 
-    _.each([Contactables, Jobs, Tasks], function (collection) {
+    _.each([Contactables, Jobs, Tasks,Placements,Notes], function (collection) {
       collection.direct.remove({ hierId: user.hierId, testData: true });
     });
   }
