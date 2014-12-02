@@ -95,7 +95,7 @@ Template.contactMethodItem.rendered = function () {
   // Format contact method value according with its type
   var value = this.$('.contact-method-value');
   if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
-    value.mask('+1 (000) 000-0000');
+//    value.mask('+1 (000) 000-0000');
   }
 };
 
@@ -111,7 +111,7 @@ var loadInputMask = function (selectedType) {
     // Update input mask according with type selected
     var input = $('#new-contact-method-value');
     if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
-      input.mask('+1 (000) 000-0000');
+//      input.mask('+1 (000) 000-0000');
     }
   }
 };
