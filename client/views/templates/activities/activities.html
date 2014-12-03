@@ -314,6 +314,14 @@
                         {{#with note}}
                             <span class="spacer">–</span>
                             <strong>{{msg}}</strong>
+                            <br/>
+                            {{#each this.links}}
+                                <a href="{{getHref}}">
+                                    {{#with getEntity}}
+                                        <span class="badge">{{displayName}}</span>
+                                    {{/with}}
+                                </a>
+                            {{/each}}
                         {{/with}}
                       </h4>
                       <div class="item-actions">
@@ -321,14 +329,12 @@
                               <span> {{displayUserName this.userId}} </span>
                           </a>
 
-                              <i class="fa fa-calendar"></i>
-                                <span>
-                                  {{#formattedDate value=data.begin format='lll'}}
-                                    {{date}}
-                                  {{/formattedDate}}
-                                </span>
-
-
+                          <i class="fa fa-calendar"></i>
+                          <span>
+                            {{#formattedDate value=data.dateCreated format='lll'}}
+                              {{date}}
+                            {{/formattedDate}}
+                          </span>
                       </div>
                   </div>
                   <!-- /.box-content -->

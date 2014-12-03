@@ -9,6 +9,12 @@ Template.newContactableActivity.getActivityIcon = function(){
 Template.newNoteActivity.helpers({
   note: function () {
     return Notes.findOne(this.entityId);
+  },
+  getHref: function() {
+    return Utils.getHrefFromLink(this);
+  },
+  getEntity: function() {
+    return Utils.getEntityFromLink(this);
   }
 });
 
