@@ -1,6 +1,7 @@
 ActivityViews = new View('activities', {
   collection: Activities,
   cursors: function (activity) {
+    var self = this;
 
     // Contactables
     this.publish({
@@ -50,12 +51,49 @@ ActivityViews = new View('activities', {
       }
     });
 
+
+
     // Notes
+    if (activity.type === Enums.activitiesType.noteAdd) {
+      var c = Notes.find({_id: activity.entityId});
+
+      // Publish links
+      var note = c.fetch()[0];
+
+      if (note) {
+        _.forEach(note.links, function (link) {
+          switch (link.type) {
+            case Enums.linkTypes.contactable.value:
+              self.publish({
+                cursor: function () {
+                  return Contactables.find(link.id);
+                },
+                to: 'contactables'
+              });
+              break;
+            case Enums.linkTypes.job.value:
+              self.publish({
+                cursor: function () {
+                  return Jobs.find(link.id);
+                },
+                to: 'jobs'
+              });
+              break;
+            case Enums.linkTypes.placement.value:
+              self.publish({
+                cursor: function () {
+                  return Placements.find(link.id);
+                },
+                to: 'placements'
+              });
+              break;
+          }
+        });
+      }
+    }
     this.publish({
       cursor: function (activity) {
-        if (activity.type === Enums.activitiesType.noteAdd) {
-          return Notes.find({ _id: activity.data.noteId});
-        }
+        return c;
       },
       to: 'notes'
     });
