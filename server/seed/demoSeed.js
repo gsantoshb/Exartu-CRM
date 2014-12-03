@@ -607,11 +607,20 @@ Meteor.methods({
     if (!user)
       return;
 
+    var progress = ServerProgress.start(Meteor.userId(),'injectData');
+
+    progress.set(5);
     loadContactables(user.hierId);
+    progress.set(30);
     loadJobs(user.hierId);
+    progress.set(40);
     loadPlacements(user.hierId);
+    progress.set(60);
     loadTasks(user.hierId, user.username, user._id);
+    progress.set(80);
     loadNotes(user.hierId, user.username, user._id);
+    progress.set(100);
+    progress.end();
   },
   removeDemoData: function () {
     var user = Meteor.user();
