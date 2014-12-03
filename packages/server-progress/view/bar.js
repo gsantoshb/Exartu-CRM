@@ -1,6 +1,6 @@
-Template.progressBar.created = function () {
-  console.log(this.data);
-};
+//Template.progressBar.created = function () {
+//  console.log(this.data);
+//};
 
 Template.progressBar.helpers({
   progress: function () {
