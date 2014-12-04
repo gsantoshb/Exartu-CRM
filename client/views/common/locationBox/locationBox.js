@@ -34,6 +34,11 @@ LocationSchema = new SimpleSchema({
     label: 'Address line 2',
     optional: true
   },
+  streetNumber: {
+    type: String,
+    label: 'Street Number',
+    optional: true
+  },
   city: {
     type: String,
     label: 'City',

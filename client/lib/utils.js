@@ -243,7 +243,7 @@ Utils.Validators.stringNotEmpty = function() {
 Utils.getLocation = function (googleLocation) {
   if (!googleLocation || !googleLocation.address_components) return undefined;
 
-  var address, city, state, country, postalCode;
+  var address, city, state, country, postalCode, streetNumber;
   _.forEach(googleLocation.address_components, function(component) {
     if (_.findWhere(component.types, 'route'))
       address = component.long_name;
@@ -255,6 +255,8 @@ Utils.getLocation = function (googleLocation) {
       country = component.long_name;
     if (_.findWhere(component.types, 'postal_code'))
       postalCode = component.long_name;
+    if (_.findWhere(component.types, 'street_number'))
+      streetNumber = component.long_name;
   });
 
   return {
@@ -265,7 +267,8 @@ Utils.getLocation = function (googleLocation) {
     city: city,
     state: state,
     country: country,
-    postalCode: postalCode
+    postalCode: postalCode,
+    streetNumber: streetNumber
   }
 };
 

@@ -3,7 +3,7 @@ UI.registerHelper('inputLocation', function() {
     var placeSearch, autocomplete, element=this.$('.location')[0];
     var getLocation = _.bind(function() {
       var place = autocomplete.getPlace();
-      this.value=Utils.getLocation(place)
+      this.value = Utils.getLocation(place)
     },this.data);
 
     autocomplete = new google.maps.places.Autocomplete(element, { types: ['geocode'] });
