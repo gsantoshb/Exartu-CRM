@@ -15,7 +15,7 @@
 Template.asyncSelect.rendered = function () {
   var self = this;
   var placeholder = self.data.placeholder || "Search";
-  var minimumInputLength = self.data.minimumInputLength || 1;
+  var minimumInputLength = self.data.minimumInputLength == undefined ? 1 : self.data.minimumInputLength;
 
   if (! self.data.query || ! _.isFunction(self.data.query)) throw new Error('Template asyncSelect needs a function as query parameter');
   if ( self.data.onChange && ! _.isFunction(self.data.onChange)) throw new Error('Argument onChange of asyncSelect must be a function');

@@ -37,5 +37,13 @@ Meteor.methods({
   },
   acceptUserInvitation: function(token) {
     UserManager.acceptUserInvitation(token, Meteor.user());
+  },
+
+  // Last used
+  getLastUsed: function (type) {
+    return UserManager.getLastUsed(type);
+  },
+  setLastUsed: function (type, value) {
+    return UserManager.setLastUsed(type, value);
   }
 });

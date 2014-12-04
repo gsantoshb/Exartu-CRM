@@ -164,6 +164,64 @@ UserManager = {
 
     // Mark invitation as used
     markInvitationsAsUsed(userInvitation);
+  },
+
+  // Last used
+  getLastUsed: function (type) {
+    var user = Meteor.user();
+
+    switch (type) {
+      case Enums.lastUsedType.customer:
+        if (!user.lastUsed || !user.lastUsed.customer)
+          return [];
+        return _.map(user.lastUsed.customer, function (customerId) {
+          return Contactables.findOne({objNameArray: 'Customer', _id: customerId, $or: Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()))});
+        });
+    }
+  },
+  setLastUsed: function (type, value) {
+    var update = {
+      $set: {}
+    };
+
+    switch (type) {
+      case Enums.lastUsedType.customer:
+        addNewLastUsedItem('customer', value);
+        break;
+    }
+
+    // Update lastUsed list
+    Meteor.users.update({_id: Meteor.userId()}, update);
+
+    function addNewLastUsedItem(lastUsedField, value) {
+      var user = Meteor.user();
+      var oldList = !user.lastUsed || !user.lastUsed[lastUsedField] ? [] : user.lastUsed[lastUsedField];
+
+      // Get new list
+      var newList = generateList(oldList, value);
+
+      if (!_.isEqual(oldList, newList)) {
+        if (!user.lastUsed)
+          update.$set.lastUsed = {
+            customer: newList
+          };
+        else
+          update.$set['lastUsed.' + lastUsedField] = newList;
+      }
+    }
+
+    function generateList(orgList, item) {
+      var list = EJSON.clone(orgList);
+      if (_.contains(list, item))
+        return list;
+
+      if (list.length >= 5) {
+        list.pop(); // remove last item to length less or equal to 5
+      }
+      list.unshift(item); // insert item at the beginning
+
+      return list;
+    }
   }
 };
 
