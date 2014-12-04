@@ -274,6 +274,7 @@ Utils.getLocation = function (googleLocation) {
 
 Utils.getLocationDisplayName = function (location) {
   return !location ? '' : (
+  (location.streetNumber || '' ) + ' '  +
   (location.address  || '' ) + ' '  +
   (location.address1 || '' ) + ', ' +
   (location.city     || '' ) + ', ' +
