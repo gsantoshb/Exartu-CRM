@@ -18,6 +18,9 @@ Template.jobCustomerAddEdit.viewModel = function (entityId, value, path, collect
 
     Meteor.call('setJobCustomer', entityId, customer, function (err, result) {
       if (!err) {
+        // Set as last customer used
+        Meteor.call('setLastUsed', Enums.lastUsedType.customer, customer);
+
         self.close();
         if (callback && _.isFunction(callback)) {
           callback(customer);
@@ -34,15 +37,29 @@ Template.jobCustomerAddEdit.getCustomer = function () {
   return function (string) {
     var self = this;
 
-    Meteor.call('findCustomer', string, function (err, result) {
-      if (err)
-        return console.log(err);
+    if (_.isEmpty(string)) {
+      // Get last five customer used
+      Meteor.call('getLastUsed', Enums.lastUsedType.customer, function (err, result) {
+        if (err)
+          return console.log(err);
 
-      self.ready(_.map(result, function (r) {
-          return { id: r._id, text: r.organization.organizationName };
-        })
-      );
-    });
+
+        self.ready(_.map(result, function (customer) {
+            return { id: customer._id, text: customer.organization.organizationName };
+          })
+        );
+      });
+    } else {
+      Meteor.call('findCustomer', string, function (err, result) {
+        if (err)
+          return console.log(err);
+
+        self.ready(_.map(result, function (r) {
+            return { id: r._id, text: r.organization.organizationName };
+          })
+        );
+      });
+    }
   };
 };
 
