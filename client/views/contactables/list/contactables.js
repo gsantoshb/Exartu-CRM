@@ -6,7 +6,8 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [Meteor.subscribe('allPlacements')];
+    SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+    return [Meteor.subscribe('allPlacements'), SubscriptionHandlers.AuxContactablesHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -319,11 +320,10 @@ Template.contactablesList.created = function() {
     // Set url query
     urlQuery.apply();
 
-    if (! SubscriptionHandlers.AuxContactablesHandler) {
-      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery});
-    } else {
+    if (SubscriptionHandlers.AuxContactablesHandler)
       SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery);
-    }
+    else
+      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery});
   });
 
   Meteor.autorun(function () {
