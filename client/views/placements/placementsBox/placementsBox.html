@@ -180,6 +180,43 @@
                     </span>
                 </div>
             </div><!-- /.col-lg-5 -->
+            <div class="pull-right">
+                {{> placementListSort}}
+            </div>
         </div><!-- /.row -->
+    </div>
+</template>
+
+
+<template name="placementListSort">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Sort by
+            {{#with selectedSort}}
+                <strong>{{displayName}}</strong>
+                {{#if isAscSort .}}
+                    <i class="fa fa-sort-amount-asc"> </i>
+                {{else}}
+                    <i class="fa fa-sort-amount-desc"> </i>
+                {{/if}}
+            {{/with}}
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            {{#each sortFields}}
+                <li>
+                    <a class="sort-field">
+                        {{displayName}}
+                        {{#if isFieldSelected .}}
+                            {{#if isAscSort .}}
+                                <i class="fa fa-sort-amount-asc"> </i>
+                            {{else}}
+                                <i class="fa fa-sort-amount-desc"> </i>
+                            {{/if}}
+                        {{/if}}
+                    </a>
+                </li>
+            {{/each}}
+        </ul>
     </div>
 </template>
