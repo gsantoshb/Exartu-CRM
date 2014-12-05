@@ -123,7 +123,11 @@ Template.placementsList.created = function () {
     if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
 
     if (entityType==Enums.linkTypes.contactable.value) {
-      if (contactable.Customer) searchQuery.customer=Session.get('entityId');
+      if (contactable.Customer) {
+        // Get customer jobs
+        var jobsId = Jobs.find({customer: Session.get('entityId')}).map(function (job) { return job._id;});
+        searchQuery.job = {$in: jobsId};
+      }
       if (contactable.Employee) searchQuery.employee=Session.get('entityId');
     }
 

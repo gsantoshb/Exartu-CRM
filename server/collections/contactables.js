@@ -50,6 +50,14 @@ ContactablesList = new View('auxContactables',{
       to: 'contactables'
     });
 
+    // Publish customer's jobs
+    this.publish({
+      cursor: function (contactable) {
+        return Jobs.find({customer: contactable._id});
+      },
+      to: 'jobs'
+    });
+
     // Last note
     this.publish({
       cursor: function (contactable) {
