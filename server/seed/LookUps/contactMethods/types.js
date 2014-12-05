@@ -1,12 +1,21 @@
 _.forEach([
     {
-      displayName: 'Land Line', lookUpActions: [Enums.lookUpAction.ContactMethod_Phone]
+      displayName: 'Work', lookUpActions: [Enums.lookUpAction.ContactMethod_Phone,Enums.lookUpAction.ContactMethod_WorkPhone]
     },
     {
-      displayName: 'Cell Phone', lookUpActions: [Enums.lookUpAction.ContactMethod_Phone,Enums.lookUpAction.ContactMethod_CellPhone]
+      displayName: 'Home', lookUpActions: [Enums.lookUpAction.ContactMethod_Phone,Enums.lookUpAction.ContactMethod_HomePhone]
     },
     {
-      displayName: 'Email', lookUpActions: [Enums.lookUpAction.ContactMethod_Email]
+      displayName: 'Mobile Phone', lookUpActions: [Enums.lookUpAction.ContactMethod_Phone,Enums.lookUpAction.ContactMethod_MobilePhone]
+    },
+    {
+      displayName: 'Email', lookUpActions: [Enums.lookUpAction.ContactMethod_Email,Enums.lookUpAction.ContactMethod_Email]
+    },
+    {
+      displayName: 'Work Email', lookUpActions: [Enums.lookUpAction.ContactMethod_Email,Enums.lookUpAction.ContactMethod_WorkEmail]
+    },
+    {
+      displayName: 'Personal Email', lookUpActions: [Enums.lookUpAction.ContactMethod_Email,Enums.lookUpAction.ContactMethod_PersonalEmail]
     },
     {
       displayName: 'Other'
