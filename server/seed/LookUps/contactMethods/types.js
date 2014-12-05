@@ -9,16 +9,13 @@ _.forEach([
       displayName: 'Mobile Phone', lookUpActions: [Enums.lookUpAction.ContactMethod_Phone,Enums.lookUpAction.ContactMethod_MobilePhone]
     },
     {
-      displayName: 'Email', lookUpActions: [Enums.lookUpAction.ContactMethod_Email,Enums.lookUpAction.ContactMethod_Email]
+      displayName: 'Email', lookUpActions: [Enums.lookUpAction.ContactMethod_Email]
     },
     {
       displayName: 'Work Email', lookUpActions: [Enums.lookUpAction.ContactMethod_Email,Enums.lookUpAction.ContactMethod_WorkEmail]
     },
     {
       displayName: 'Personal Email', lookUpActions: [Enums.lookUpAction.ContactMethod_Email,Enums.lookUpAction.ContactMethod_PersonalEmail]
-    },
-    {
-      displayName: 'Other'
     }
   ],
   function (item) {

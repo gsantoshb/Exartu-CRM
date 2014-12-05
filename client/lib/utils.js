@@ -646,11 +646,31 @@ Utils.getContactableEmail = function (contactable) {
   _.every(contactable.contactMethods, function (cm) {
     var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
     if (!type)
-      return true; //keep lokking
+      return true; //keep looking
     if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email)){
       result = cm.value;
       return false; //finish
     }
   });
   return result;
+};
+Utils.getContactableMobilePhone = function (contactable) {
+  var result = null;
+  var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
+  _.every(contactable.contactMethods, function (cm) {
+    var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
+    if (!type)
+      return true; //keep looking
+    if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_MobilePhone)){
+      result = cm.value;
+      return false; //finish
+    }
+  });
+  return result;
+};
+Utils.getContactMethodTypes_Email = function () {
+  return LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: "ContactMethod_Email" }).fetch()
+};
+Utils.getContactMethodTypes_MobilePhone = function () {
+  return LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: "ContactMethod_MobilePhone" }).fetch()
 };
