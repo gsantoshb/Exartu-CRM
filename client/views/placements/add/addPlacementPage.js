@@ -32,6 +32,8 @@ PlacementAddController = RouteController.extend({
 var model;
 var options;
 var employeeId;
+var sending = new ReactiveVar(false);
+
 var createPlacement= function(objTypeName){
   options= Session.get('addOptions');
 
@@ -72,6 +74,9 @@ Template.addPlacementPage.helpers({
   },
   isSelected: function(id){
     return employeeId==id;
+  },
+  disableButton: function () {
+    return sending.get();
   }
 });
 
@@ -81,12 +86,13 @@ Template.addPlacementPage.events({
       dType.displayAllMessages(model);
       return;
     }
-    var obj=dType.buildAddModel(model);
+    var obj = dType.buildAddModel(model);
 
     if (options.job) obj.job=options.job;
     obj.employee=employeeId;
-
+    sending.set(true);
     Meteor.call('addPlacement', obj, function(err, result){
+      sending.set(false);
       if(err){
         console.dir(err)
       }

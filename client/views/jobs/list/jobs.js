@@ -297,6 +297,9 @@ Template.jobsList.created= function () {
         JobHandler.setFilter(searchQuery);
       });
     } else {
+      if (selectedSort){
+        JobHandler.setOptions(options);
+      }
       JobHandler.setFilter(searchQuery);
     }
 

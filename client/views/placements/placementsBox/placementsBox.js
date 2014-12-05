@@ -116,6 +116,7 @@ Template.placementsList.created = function () {
   PlacementHandler = SubscriptionHandlers.PlacementHandler;
   Meteor.autorun(function () {
     var searchQuery = {};
+    var options = {};
     var urlQuery = new URLQuery();
 
     searchDep.depend();
@@ -187,7 +188,16 @@ Template.placementsList.created = function () {
     // Set url query
     urlQuery.apply();
 
+    if (selectedSort.get()) {
+      var selected = selectedSort.get();
+      options.sort = {};
+      options.sort[selected.field] = selected.value;
+    } else {
+      delete options.sort;
+    }
+
     PlacementHandler.setFilter(searchQuery);
+    PlacementHandler.setOptions(options);
   })
 };
 
@@ -309,3 +319,46 @@ Template.placementInformation.helpers({
     return rate.displayName;
   }
 });
+
+
+// list sort
+
+var selectedSort =  new ReactiveVar();
+var sortFields = [
+  {field: 'dateCreated', displayName: 'Date'}
+];
+
+Template.placementListSort.helpers({
+  sortFields: function() {
+    return sortFields;
+  },
+  selectedSort: function() {
+    return selectedSort.get();
+  },
+  isFieldSelected: function(field) {
+    return selectedSort.get() && selectedSort.get().field == field.field;
+  },
+  isAscSort: function() {
+    return selectedSort.get() ? selectedSort.get().value == 1: false;
+  }
+});
+
+var setSortField = function(field) {
+  var selected = selectedSort.get();
+  if (selected && selected.field == field.field) {
+    if (selected.value == 1)
+      selected = undefined;
+    else
+      selected.value = 1;
+  } else {
+    selected = field;
+    selected.value = -1;
+  }
+  selectedSort.set(selected);
+};
+
+Template.placementListSort.events = {
+  'click .sort-field': function() {
+    setSortField(this);
+  }
+};
