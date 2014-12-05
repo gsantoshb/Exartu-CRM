@@ -16,19 +16,19 @@ NoteSchema = new SimpleSchema({
   },
   sendAsSMS: {
     type: Boolean,
-    label: 'Send to contactable as SMS',
+    label: 'Send SMS/Text',
     optional: true
   },
   userNumber: {
     type: String,
     optional: true,
-    label: 'Your numbers'
+    label: 'SMS/Text origin number(s)'
   },
   contactableNumber: {
     type: String,
     optional: true,
-    label: 'Contactable numbers'
-  },
+    label: 'SMS/Text destination number'
+  }
 });
 
 AutoForm.hooks({
@@ -44,23 +44,15 @@ AutoForm.hooks({
 
 // Add
 Template.notesTabAdd.helpers({
-  contactableNumbers: function () {
+  mobileNumbers: function () {
     var contactable = Contactables.findOne(this._id);
-    var phoneTypes = _.map(LookUps.find({
-      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
-      lookUpActions: Enums.lookUpAction.ContactMethod_Phone
-    }).fetch(), function (phoneType) {
-      return phoneType._id;
+    return Utils.getContactableMobilePhones(contactable).map(function (number) {
+      var result = {
+        label: number,
+        value: number
+      };
+      return result;
     });
-
-    var numbers = [];
-
-    _.forEach(contactable.contactMethods, function (contactMethod) {
-      if (phoneTypes.indexOf(contactMethod.type) != -1)
-        numbers.push({value: contactMethod.value, label: Utils.getPhoneNumberDisplayName(contactMethod.value)});
-    });
-
-    return numbers;
   },
   userNumbers: function () {
     return Hierarchies.find({phoneNumber: {$exists: true}}).map(function (userHier) {

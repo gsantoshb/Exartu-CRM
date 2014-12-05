@@ -125,7 +125,7 @@ var _requestNumber = function () {
     var fakeNumber = '+' + Math.round(Math.random() * Math.pow(10, 11));
     newNumber = {
       phoneNumber: fakeNumber,
-      friendlyName: '(' + fakeNumber.slice(1, 4) + ') ' + fakeNumber.slice(5, 8) + '-' + fakeNumber.slice(8, 12)
+      friendlyName: fakeNumber //'(' + fakeNumber.slice(1, 4) + ') ' + fakeNumber.slice(5, 8) + '-' + fakeNumber.slice(8, 12)
     };
 
     console.warn('TWILIO: Fake number', newNumber);
