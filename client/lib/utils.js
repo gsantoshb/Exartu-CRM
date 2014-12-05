@@ -610,7 +610,8 @@ Utils.users =function(){
 };
 
 Utils.getPhoneNumberDisplayName = function (phoneNumber) {
-  return  '(' + phoneNumber.slice(1, 4) + ') ' + phoneNumber.slice(5, 8) + '-' + phoneNumber.slice(8, 12);
+  return phoneNumber;
+//  return  '(' + phoneNumber.slice(1, 4) + ') ' + phoneNumber.slice(5, 8) + '-' + phoneNumber.slice(8, 12);
 };
 
 Template.registerHelper('getPhoneNumberDisplayName', function(phoneNumber) {
@@ -654,23 +655,34 @@ Utils.getContactableEmail = function (contactable) {
   });
   return result;
 };
-Utils.getContactableMobilePhone = function (contactable) {
-  var result = null;
-  var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
+
+Utils.getContactableMobilePhones = function (contactable) {
+  var result = [];
+  var contactMethodsTypes = Utils.getContactMethodTypes_MobilePhone();
   _.every(contactable.contactMethods, function (cm) {
     var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
     if (!type)
       return true; //keep looking
-    if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_MobilePhone)){
-      result = cm.value;
-      return false; //finish
+    else
+    {
+      result.push(cm.value);
+      return true;
     }
   });
   return result;
 };
+Utils.getContactableMobilePhone = function (contactable) {
+  var result = Utils.getContactableMobilePhones(contactable);
+  if (result.length>0) return result[0];
+  return null;
+};
+
+
 Utils.getContactMethodTypes_Email = function () {
   return LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: "ContactMethod_Email" }).fetch()
 };
+
 Utils.getContactMethodTypes_MobilePhone = function () {
   return LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: "ContactMethod_MobilePhone" }).fetch()
 };
+

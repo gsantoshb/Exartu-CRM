@@ -22,14 +22,14 @@
                 {{#unless userNumbers}}
                     <small class="text-muted">  <a href="/management/twilioManagement">Enable SMS/Texting</a></small>
                 {{else}}
-                    {{#unless contactableNumbers}}
+                    {{#unless mobileNumbers}}
                         <small class="text-muted"> This record has no mobile phone, so SMS/text not possible</small>
                     {{else}}
                         {{> afQuickField name="sendAsSMS"}}
 
                         {{#if afFieldValueIs name='sendAsSMS' value=true}}
                             {{> afFormGroup name="userNumber" options=userNumbers}}
-                            {{> afFormGroup name="contactableNumber" options=contactableNumbers}}
+                            {{> afFormGroup name="contactableNumber" options=mobileNumbers}}
                         {{/if}}
                     {{/unless}}
                 {{/unless}}
