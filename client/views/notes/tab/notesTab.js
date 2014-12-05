@@ -46,7 +46,13 @@ AutoForm.hooks({
 Template.notesTabAdd.helpers({
   contactableNumbers: function () {
     var contactable = Contactables.findOne(this._id);
-    var phoneTypes = _.map(ContactMethods.find({ type: Enums.contactMethodTypes.phone}).fetch(), function (phoneType) { return phoneType._id;});
+    var phoneTypes = _.map(LookUps.find({
+      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+      lookUpActions: Enums.lookUpAction.ContactMethod_Phone
+    }).fetch(), function (phoneType) {
+      return phoneType._id;
+    });
+
     var numbers = [];
 
     _.forEach(contactable.contactMethods, function (contactMethod) {
