@@ -29,6 +29,10 @@ Template.contactableDetailBox.helpers({
   created:function(){
     EditMode.hide();
   },
+  rendered: function () {
+    // Set up masks
+    this.$('#taxid-text').mask('000-000-000');
+  },
   isSelected: function(value1, value2){
     return value1==value2
   },
@@ -88,3 +92,19 @@ Template.contactableDetailBox.events = {
     hideTaxID.set(! hideTaxID.get());
   }
 };
+
+Template.showTaxIdText.helpers({
+  rendered: function () {
+    this.$('#taxid-text').mask('000-000-000');
+  }
+});
+
+Template.showTaxIdInput.helpers({
+  rendered: function () {
+    this.$('#taxid-input').mask('000-000-000', {
+      onKeyPress: function (val, e, dom) {
+        dom.trigger('change');
+      }
+    });
+  }
+});

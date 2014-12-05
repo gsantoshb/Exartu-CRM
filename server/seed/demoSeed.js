@@ -608,17 +608,18 @@ Meteor.methods({
       return;
 
     var progress = ServerProgress.start(Meteor.userId(),'injectData');
+    var userCurrentHierId = Utils.getUserHierId(user._id);
 
     progress.set(5);
-    loadContactables(user.hierId);
+    loadContactables(userCurrentHierId);
     progress.set(30);
-    loadJobs(user.hierId);
+    loadJobs(userCurrentHierId);
     progress.set(40);
-    loadPlacements(user.hierId);
+    loadPlacements(userCurrentHierId);
     progress.set(60);
-    loadTasks(user.hierId, user.username, user._id);
+    loadTasks(userCurrentHierId, user.username, user._id);
     progress.set(80);
-    loadNotes(user.hierId, user.username, user._id);
+    loadNotes(userCurrentHierId, user.username, user._id);
     progress.set(100);
     progress.end();
   },
