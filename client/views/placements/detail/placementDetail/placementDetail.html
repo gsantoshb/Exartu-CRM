@@ -20,10 +20,23 @@
                                     {{/objectProperty}}
                                 </td>
                             </tr>
-
+                        <tr>
+                            <td>
+                                <i class="fa fa-info-circle"></i>&nbsp;Active/Inactive:
+                            </td>
+                            <td>
+                                {{#objectProperty property=placementStatus editable=editMode}}
+                                {{> buttonGroup options=fetchStatusOptions value=value onSelected=onSelectedStatus}}
+                                {{else}}
+                                <strong>
+                                    <strong>{{displayName}}</strong>
+                                </strong>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
                             <tr>
                                 <td>
-                                    <i class="fa fa-info-circle"></i>&nbsp;Status:
+                                    <i class="fa fa-info-circle"></i>&nbsp;Candidate Status:
                                 </td>
                                 <td>
                                     {{#objectProperty property=candidateStatus editable=editMode}}
