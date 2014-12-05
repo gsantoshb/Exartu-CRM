@@ -150,7 +150,7 @@ Template.contactables.information = function() {
 };
 
 Template.contactablesList.isLoading = function () {
-  return SubscriptionHandlers.AuxContactablesHandler.isLoading();
+  return SubscriptionHandlers.AuxContactablesHandler? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
 };
 
 var searchDep = new Deps.Dependency;
@@ -319,6 +319,9 @@ Template.contactablesList.created = function() {
 
     // Set url query
     urlQuery.apply();
+
+    // Avoid update handler's filter when an Elasticsearch query will be performed
+    if (query.searchString.value) return;
 
     if (SubscriptionHandlers.AuxContactablesHandler)
       SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery);
