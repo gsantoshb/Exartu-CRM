@@ -5,15 +5,15 @@ seedSystemRoles = function ()
     //    [
     //        {
     //            name: Enums.roleFunction.System_Administrator,
-    //            roleDescription: 'Administer system-wide tenants',
-    //            rolePermissions: [Enums.permissionFunction.SysAdmin,Enums.permissionFunction.TenantAdmin,
+    //            roleDescription: 'Administer system-wide clients',
+    //            rolePermissions: [Enums.permissionFunction.SysAdmin,Enums.permissionFunction.ClientAdmin,
     //                Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting,Enums.permissionFunction.Sales_Manager,
     //                Enums.permissionFunction.Sales]
     //        },
     //        {
-    //            name: Enums.roleFunction.Tenant_Administrator ,
+    //            name: Enums.roleFunction.Client_Administrator ,
     //            roleDescription: 'Administer tenancy users and hierarchies',
-    //            rolePermissions: [Enums.permissionFunction.TenantAdmin,
+    //            rolePermissions: [Enums.permissionFunction.ClientAdmin,
     //                Enums.permissionFunction.CRM,Enums.permissionFunction.Recruiting,Enums.permissionFunction.Sales,
     //            Enums.permissionFunction.Sales]
     //        },
