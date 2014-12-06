@@ -23,6 +23,7 @@ Utils.reactiveProp(self, 'editMode', false);
 var location={};
 Utils.reactiveProp(location, 'value', null);
 var services;
+var rolesDep=new Deps.Dependency;
 
 Template.user.created=function(){
   self.editMode=false;
@@ -32,12 +33,14 @@ Template.user.created=function(){
 var user;
 var job;
 var employee;
-Template.user.helpers({
+Template.selectUserRole.helpers({
   roles: function() {
-    return Meteor.roles().find();
-  },
+    return   roles.find()
+  }
+})
+Template.user.helpers({
   user: function(){
-
+    rolesDep.depend();
     var user=Meteor.users.findOne({ _id: Session.get('entityId') });
 
 
@@ -53,10 +56,26 @@ Template.user.helpers({
 });
 
 Template.user.events({
-
+  'click .removeRole': function(e, ctx){
+    var user=Meteor.users.findOne({ _id: Session.get('entityId') });
+    user.roles.splice(user.roles.indexOf(this), 1);
+    Meteor.users.update({_id: Meteor.userId()}, {$set : {roles: user.roles}}, function(err) {
+    });
+    rolesDep.changed();
+  }
 
 });
 
+Template.selectUserRole.events({
+  'click .addRole': function(e, ctx){
+    var newRole =ctx.$('.newRole').val();
+    var user=Meteor.users.findOne({ _id: Session.get('entityId') });
+    user.roles.push(newRole);
+    Meteor.users.update({_id: Meteor.userId()}, {$set : {roles: user.roles}}, function(err) {
+    });
+    rolesDep.changed();
+  }
+});
 
 Template.user_tabs.isActive = function(name){
   var activeTab = Session.get('activeTab') || 'details';

@@ -36,6 +36,8 @@ UserInvitations = new Mongo.Collection("userInvitations");
 
 EmailTemplates = new Mongo.Collection("emailTemplates");
 
+Roles = new Mongo.Collection("roles");
+
 Collections = {
   Hierarchies: Hierarchies,
   Jobs: Jobs,
@@ -51,5 +53,6 @@ Collections = {
   Notes: Notes,
   Placements: Placements,
   Candidates: Candidates,
-  SystemConfigs: SystemConfigs
+  SystemConfigs: SystemConfigs,
+  Roles: Roles
 }
