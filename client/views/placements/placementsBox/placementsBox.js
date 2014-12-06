@@ -197,7 +197,7 @@ Template.placementsList.created = function () {
     }
 
     PlacementHandler.setFilter(searchQuery);
-    PlacementHandler.setOptions(options);
+//    PlacementHandler.setOptions(options);
   })
 };
 

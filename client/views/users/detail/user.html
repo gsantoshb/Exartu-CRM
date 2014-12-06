@@ -16,7 +16,7 @@
                 <div id="breadcrumb" class="breadcrumb-top">
                     <a href="/" title="Go to Home" class="tip-bottom">
                         <i class="fa fa-home"></i>Home</a>
-                    <a href="/users" class="current">Users</a>
+                    <a href="/users" class="current">User</a>{{displayUserName user._id }}
 
                 </div>
 
@@ -34,12 +34,26 @@
         <!-- /.content -->
     </div>
 </template>
+<template name="selectUserRole">
+    <select class="form-control input-lg" type="text" >
+        <option disabled selected> -- select a role -- </option>
+        {{#each roles}}
+            <option value="{{_id}}" selected="{{isSelected lookUpCode ../value}}">{{name}}</option>
+        {{/each}}
+        <span class="input-group-btn">
+            <button id="add-item" class="btn btn-primary" type="button" title="Add">
+                <i class="fa fa-plus"></i>
+            </button>
+        </span>
+    </select>
+</template>
 
 <template name="user_tabs">
 
     <ul class="nav nav-pills bottom-20">
         <li class="{{isActive 'details'}}"><a href="#details">Detail</a></li>
         <li class="{{isActive 'actions'}}"><a href="#actions">Actions</a></li>
+        <li class="{{isActive 'roles'}}"><a href="#roles">Roles</a></li>
     </ul>
 
     <div class="tab-content">
@@ -48,6 +62,26 @@
                 <div class="col-sm-12">
                     <div class="col-sm-12">
                         {{#with user}}  {{> userActivity}}  {{/with}}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="tab-pane  {{isActive 'roles'}}" id="profile-roles">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                        <div class="panel-body no-padding">
+                            {{> selectUserRole}}
+                            <ul class="list-3 stripped">
+                            {{#each user.roles}}
+                                <li>
+                                {{.}}..
+                                </li>
+                            {{/each}}
+                            </ul>
+                        </div>
                     </div>
                 </div>
 

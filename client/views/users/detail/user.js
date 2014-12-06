@@ -33,6 +33,9 @@ var user;
 var job;
 var employee;
 Template.user.helpers({
+  roles: function() {
+    return Meteor.roles().find();
+  },
   user: function(){
 
     var user=Meteor.users.findOne({ _id: Session.get('entityId') });
