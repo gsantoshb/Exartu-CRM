@@ -1,0 +1,71 @@
+<template name="systemHierarchyList">
+    <div id="content">
+        <div id="content-header" class="mini">
+            <h1>
+                <span class="prop-input">
+                    <span>  Hierarchies </span>
+                </span>
+            </h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+            <a href="/hiers" class="current">
+                <span class="prop-input">
+                    <strong> Hierarchies</strong>
+                    <span class="text text-danger"></span>
+                </span>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="filter">
+                    <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+                        <strong><i class="fa fa-filter"></i></strong>
+                    </a>
+                    <div class="filter-list" id="filter-body">
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-9">
+                <div class="actions-head">
+                    <div class="row">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
+
+                            <div class="input-group">
+                                {{#objectProperty property=filters.searchString}}
+                                <input type="text" class="form-control" placeholder="Search Hierarchies" value="{{value}}">
+                                {{/objectProperty}}
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    {{#each systemHierarchies}}
+                        <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <div class="table-item-cell">
+                                        <a href="/systemHierarchy/{{_id}}">{{name}}</a>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="table-item-cell">
+                                        {{dateCreated}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</template>

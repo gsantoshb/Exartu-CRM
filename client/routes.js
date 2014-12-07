@@ -104,6 +104,17 @@ Router.map(function () {
     controller: 'UserController'
   });
 
+  this.route('systemHierarchyList', {
+    path: '/systemHierarchyList',
+    controller: 'SystemHierarchyListController'
+  });
+
+  this.route('systemHierarchy', {
+    path: '/systemHierarchy/:_id?',
+    controller: 'SystemHierarchyController'
+  });
+
+
   this.route('inbox', {
     path: '/inbox',
     controller: 'ConversationsController'
