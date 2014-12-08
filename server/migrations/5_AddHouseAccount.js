@@ -4,7 +4,7 @@ Migrations.add({
   up: function() {
     var allHiers= Hierarchies.find({});
     allHiers.forEach(function(hier){
-      if (hier._id != ExartuConfig.SystemHierarchyId){
+      if (hier._id != ExartuConfig.TenantId){
         var houseAccount= Contactables.findOne({
           hierId: hier._id,
           houseAccount: true

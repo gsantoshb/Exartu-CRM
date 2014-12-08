@@ -9,7 +9,7 @@ Migrations.add({
     });
 
     // Insert the new lookups in each top level hierarchy
-    var topLevelHierarchies = Hierarchies.find({ _id: { $ne: ExartuConfig.SystemHierarchyId }, parent: null }).fetch();
+    var topLevelHierarchies = Hierarchies.find({ _id: { $ne: ExartuConfig.TenantId }, parent: null }).fetch();
 
     _.each(topLevelHierarchies, function(hierarchy) {
       _.each(contactMethodTypes, function(cmType) {

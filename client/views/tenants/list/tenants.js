@@ -1,5 +1,5 @@
-SystemHierarchyListController = RouteController.extend({
-  template: 'systemHierarchyList',
+TenantsController = RouteController.extend({
+  template: 'tenants',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
     return [HierarchiesHandler];
@@ -14,7 +14,7 @@ var query = new Utils.ObjectDefinition({
 var hiers=[];
 var allhiers=[];
 
-var getSystemHierarchies= function() {
+var getTenants= function() {
   var queryObj = query.getObject();
   hiers=allhiers.filter(function(value) {
     return value.name.indexOf(queryObj.searchString) > -1;
@@ -27,26 +27,26 @@ var hierSort= function(value1, value2)
   return 1;
 }
 
-Template.systemHierarchyList.filters = function(){
+Template.tenants.filters = function(){
   return query;
 };
-Template.systemHierarchyList.created=function() {
-  Meteor.call('getSystemHierarchies', {}, function (err, result) {
+Template.tenants.created=function() {
+  Meteor.call('getTenants', {}, function (err, result) {
     if (!err){
       allhiers=result;
       hiers=result;
       queryDep.changed();
     }else{
-      console.log('error on getSystemHierarchies:' + err)
+      console.log('error on getTenants:' + err)
     }
   });
 }
-Template.systemHierarchyList.systemHierarchies = function () {
-  getSystemHierarchies();
+Template.tenants.tenants = function () {
+  getTenants();
   queryDep.depend();
   return hiers.sort(hierSort);
 }
-Template.systemHierarchyList.helpers({
+Template.tenants.helpers({
 
 });
 

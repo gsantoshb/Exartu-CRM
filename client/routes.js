@@ -104,14 +104,14 @@ Router.map(function () {
     controller: 'UserController'
   });
 
-  this.route('systemHierarchyList', {
-    path: '/systemHierarchyList',
-    controller: 'SystemHierarchyListController'
+  this.route('tenants', {
+    path: '/tenants',
+    controller: 'TenantsController'
   });
 
-  this.route('systemHierarchy', {
-    path: '/systemHierarchy/:_id?',
-    controller: 'SystemHierarchyController'
+  this.route('tenant', {
+    path: '/tenant/:_id?',
+    controller: 'TenantController'
   });
 
 

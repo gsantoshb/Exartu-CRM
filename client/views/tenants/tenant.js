@@ -1,7 +1,8 @@
-SystemHierarchyController = RouteController.extend({
+TenantController = RouteController.extend({
+  template: 'tenant',
   layoutHier: 'mainLayout',
   waitOn: function () {
-    return [Meteor.subscribe('systemHierachies')];
+    return [HierarchiesHandler];
   },
   data: function () {
     Session.set('hierId', this.params._id);
@@ -11,7 +12,7 @@ SystemHierarchyController = RouteController.extend({
       this.render('loadingContactable');
       return;
     }
-    this.render('systemHierarchy')
+    this.render('tenant')
   },
   onAfterAction: function () {
 
@@ -19,7 +20,7 @@ SystemHierarchyController = RouteController.extend({
 });
 
 
-Template.systemHierarchy.helpers({
+Template.tenant.helpers({
   hierContext: function () {
     if (Session.get('hierId')) {
       var hier = Hierarchies.findOne(Session.get('hierId'));

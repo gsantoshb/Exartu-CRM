@@ -12,7 +12,7 @@ HierarchyManager = {
      hier._id = generateUniqueHierId(hier.parent);
 
     } else {
-     hier._id = generateUniqueHierId(ExartuConfig.SystemHierarchyId);
+     hier._id = generateUniqueHierId(ExartuConfig.TenantId);
     }
 
     hier.planCode = 0;

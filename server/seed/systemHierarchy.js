@@ -1,12 +1,12 @@
 Meteor.startup(function () {
-  var systemHier = Hierarchies.findOne({_id: ExartuConfig.SystemHierarchyId});
+  var systemHier = Hierarchies.findOne({_id: ExartuConfig.TenantId});
   if (systemHier)
     return;
 
   // Create system hierachy
   var hier = Hierarchies.insert(
     {
-      _id: ExartuConfig.SystemHierarchyId,
+      _id: ExartuConfig.TenantId,
       name: 'system',
       planCode: 1
     }
@@ -27,5 +27,5 @@ Meteor.startup(function () {
 });
 
 Meteor.methods({
-  isSystemHier: function() { return Meteor.user()? Meteor.user().hierId == ExartuConfig.SystemHierarchyId : false; }
+  isSystemHier: function() { return Meteor.user()? Meteor.user().hierId == ExartuConfig.TenantId : false; }
 });
