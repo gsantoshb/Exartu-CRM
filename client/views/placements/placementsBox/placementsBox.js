@@ -206,6 +206,10 @@ Template.placementsList.info = function() {
   return info;
 };
 
+Template.placementsList.isLoading = function() {
+  return SubscriptionHandlers.PlacementHandler.isLoading();
+};
+
 var getActiveStatuses = function(){
   var status = Enums.lookUpTypes["placement"];
   status = status && status.status;
