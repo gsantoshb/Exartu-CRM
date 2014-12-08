@@ -151,7 +151,7 @@ var mapper = {
 
     if(data.email){
       var emailTypeId = ContactMethods.findOne({
-        hierId: ExartuConfig.SystemHierarchyId,
+        hierId: ExartuConfig.TenantId,
         type: Enums.contactMethodTypes.email
       });
       if (emailTypeId){
@@ -164,7 +164,7 @@ var mapper = {
     }
     if(data.phoneNumber){
       var phoneTypeId = ContactMethods.findOne({
-        hierId: ExartuConfig.SystemHierarchyId,
+        hierId: ExartuConfig.TenantId,
         type: Enums.contactMethodTypes.phone
       });
 

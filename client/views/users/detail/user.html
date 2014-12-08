@@ -16,7 +16,7 @@
                 <div id="breadcrumb" class="breadcrumb-top">
                     <a href="/" title="Go to Home" class="tip-bottom">
                         <i class="fa fa-home"></i>Home</a>
-                    <a href="/users" class="current">Users</a>
+                    <a href="/users" class="current">User</a>{{displayUserName user._id }}
 
                 </div>
 
@@ -34,12 +34,28 @@
         <!-- /.content -->
     </div>
 </template>
+<template name="selectUserRole">
+    <div class="col-xs-12 col-md-12">
+        <div class="col-xs-12 col-md-3">
+                <select class="form-control newRole input-lg" type="text" >
+                    <option disabled selected> -- select a role -- </option>
+                    {{#each availableRoles}}
+                        <option value="{{name}}" >{{name}}</option>
+                    {{/each}}
+                </select>
+        </div>
+        <div class="col-xs-12 col-md-1">
+            <span class="btn btn-primary addRole"><i class="fa fa-plus"></i></span>
+        </div>
+    </div>
+</template>
 
 <template name="user_tabs">
 
     <ul class="nav nav-pills bottom-20">
         <li class="{{isActive 'details'}}"><a href="#details">Detail</a></li>
         <li class="{{isActive 'actions'}}"><a href="#actions">Actions</a></li>
+        <li class="{{isActive 'roles'}}"><a href="#roles">Roles</a></li>
     </ul>
 
     <div class="tab-content">
@@ -53,6 +69,31 @@
 
             </div>
 
+        </div>
+
+        <div class="tab-pane  {{isActive 'roles'}}" id="profile-roles">
+            {{> selectUserRole}}
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                        <div class="panel-body no-padding">
+
+                            <ul class="list-3 stripped">
+                            {{#each user.roles}}
+                                <li>
+                                    <div>
+                                        {{.}}
+                                        <button class="btn btn-xs btn-default removeRole"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </li>
+                            {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
         <div class="tab-pane  {{isActive 'actions'}}" id="profile-actions">
             no actions yet
