@@ -8,21 +8,22 @@ Meteor.startup(function () {
     {
       _id: ExartuConfig.TenantId,
       name: 'system',
-      planCode: 1
+      planCode: 1,
+      dateCreated: Date.now()
     }
   );
-
   var systemUser = {
     username: 'exartu',
     email: ExartuConfig.systemUserEmail,
     password: ExartuConfig.systemUserPassword,
     profile: {
       hierId: hier
-    }
+    },
+    roles : [RoleManager.getSystemAdministratorRole()._id]
   };
 
   var systemUserId = Accounts.createUser(systemUser);
-  console.log(systemUserId);
+  console.log('System UserId',systemUserId);
   Meteor.users.update({_id: systemUserId, 'emails.address': ExartuConfig.systemUserEmail}, {$set: {'emails.$.verified': true }});
 });
 

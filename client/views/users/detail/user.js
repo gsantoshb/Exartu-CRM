@@ -38,8 +38,9 @@ Template.selectUserRole.helpers({
     rolesDep.depend();
     var avlRoles=  roles.find().fetch();
     var user=Meteor.users.findOne({ _id: Session.get('entityId') });
+    console.log('role',user.roles,avlRoles);
     return _.filter(avlRoles, function (role) {
-      return !_.findWhere(user.roles, role.name);
+      return !_.findWhere(user.roles, role._id);
     });
   }
 })
@@ -63,7 +64,7 @@ Template.user.helpers({
 Template.user.events({
   'click .removeRole': function(e, ctx){
     var user=Meteor.users.findOne({ _id: Session.get('entityId') });
-    user.roles.splice(user.roles.indexOf(this), 1);
+    user.roles.splice(user.roles.indexOf(this._id), 1);
     Meteor.users.update({_id: Meteor.userId()}, {$set : {roles: user.roles}}, function(err) {
     });
     rolesDep.changed();
@@ -76,7 +77,7 @@ Template.selectUserRole.events({
     var newRole =ctx.$('.newRole').val();
     var user=Meteor.users.findOne({ _id: Session.get('entityId') });
     if (!user.roles || user.roles==null) user.roles=[];
-    if (_.indexOf(user.roles, newRole) == -1)  user.roles.push(newRole);
+    if (_.indexOf(user.roles, newRole._id) == -1)  user.roles.push(newRole);
     Meteor.users.update({_id: Meteor.userId()}, {$set : {roles: user.roles}}, function(err) {
     });
     rolesDep.changed();
@@ -86,5 +87,13 @@ Template.selectUserRole.events({
 Template.user_tabs.isActive = function(name){
   var activeTab = Session.get('activeTab') || 'details';
   return (name == activeTab) ? 'active' : '';
+}
+
+Template.user_tabs.getRoleName = function(id)
+{
+  console.log('this',this);
+  console.log('id',id);
+  var role= roles.findOne({_id:id});
+  if (role) return role.name; else return "role not found";
 }
 
