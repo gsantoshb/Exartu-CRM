@@ -8,7 +8,7 @@ JobsController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
     SubscriptionHandlers.JobHandler = JobHandler = Meteor.paginatedSubscribe('jobs');
-    return [JobHandler];
+    return [JobHandler, Meteor.subscribe('lookUps')];
   },
   action: function () {
     if (!this.ready()) {
@@ -354,6 +354,10 @@ Template.jobsList.jobs = function() {
   return jobCollection.find();
 };
 
+Template.jobsList.isLoading = function() {
+  return SubscriptionHandlers.JobHandler.isLoading();
+};
+
 // List search
 
 Template.jobsList.jobTypes = function() {
@@ -435,7 +439,7 @@ Template.jobsListItem.displayObjType = function() {
 };
 
 Template.jobsListItem.placements = function () {
-  return Placements.find({job: this._id}, { limit: 3});
+  return Placements.find({job: this._id}, { limit: 3, transform: null});
 };
 
 Template.jobsListItem.getEmployeeDisplayName = function () {
