@@ -17,7 +17,8 @@ var allhiers=[];
 var getTenants= function() {
   var queryObj = query.getObject();
   hiers=allhiers.filter(function(value) {
-    return value.name.indexOf(queryObj.searchString) > -1;
+    var val=value.name + ' ' + value.firstUser.emails[0].address;
+    return val.indexOf(queryObj.searchString) > -1;
   });
   queryDep.changed();
 }
@@ -41,19 +42,20 @@ Template.tenants.created=function() {
     }
   });
 }
+
+Template.tenants.getFirstUserText = function ()
+{
+  return this.firstUser.emails[0].address;
+};
+
 Template.tenants.tenants = function () {
   getTenants();
   queryDep.depend();
   return hiers.sort(hierSort);
 }
 
-Template.tenants.helpers({
-  getFirstUser: function(hierid)
-  {
-    Meteor.users.find({hierarchies: {$in : [ 'asdasd']}});
-  }
 
-});
+
 
 
 
