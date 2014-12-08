@@ -46,7 +46,12 @@ Template.tenants.tenants = function () {
   queryDep.depend();
   return hiers.sort(hierSort);
 }
+
 Template.tenants.helpers({
+  getFirstUser: function(hierid)
+  {
+    Meteor.users.find({hierarchies: {$in : [ 'asdasd']}});
+  }
 
 });
 

@@ -39,6 +39,7 @@ EmailTemplates = new Mongo.Collection("emailTemplates");
 Roles = new Mongo.Collection("roles");
 SystemAdmins = new Mongo.Collection("systemAdmins");
 
+
 Collections = {
   Hierarchies: Hierarchies,
   Jobs: Jobs,
