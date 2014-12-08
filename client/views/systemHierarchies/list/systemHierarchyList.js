@@ -21,33 +21,30 @@ var getSystemHierarchies= function() {
   });
   queryDep.changed();
 }
-
-console.log('1');
+var hierSort= function(value1, value2)
+{
+  if (value1.name<value2.name) return -1;
+  return 1;
+}
 
 Template.systemHierarchyList.filters = function(){
   return query;
 };
 Template.systemHierarchyList.created=function() {
-  console.log('1a');
   Meteor.call('getSystemHierarchies', {}, function (err, result) {
-    console.log('2');
     if (!err){
-      console.log('3');
-      allhiers=result.sort();
-      hiers=result.sort();
+      allhiers=result;
+      hiers=result;
       queryDep.changed();
     }else{
-      console.log('4');
       console.log('error on getSystemHierarchies:' + err)
     }
   });
 }
-console.log('5');
 Template.systemHierarchyList.systemHierarchies = function () {
   getSystemHierarchies();
-  console.log('6');
   queryDep.depend();
-  return hiers.sort();
+  return hiers.sort(hierSort);
 }
 Template.systemHierarchyList.helpers({
 
