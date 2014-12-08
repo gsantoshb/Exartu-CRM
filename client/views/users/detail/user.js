@@ -75,7 +75,7 @@ Template.selectUserRole.events({
   'click .addRole': function(e, ctx){
     var newRole =ctx.$('.newRole').val();
     var user=Meteor.users.findOne({ _id: Session.get('entityId') });
-    if (!user.role || user.role==null) user.roles=[];
+    if (!user.roles || user.roles==null) user.roles=[];
     if (_.indexOf(user.roles, newRole) == -1)  user.roles.push(newRole);
     Meteor.users.update({_id: Meteor.userId()}, {$set : {roles: user.roles}}, function(err) {
     });
