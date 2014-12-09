@@ -52,6 +52,39 @@ Meteor.paginatedPublish(JobView, function(){
   publicationName: 'jobs'
 });
 
+JobPlacementView = new View('jobs', {
+  collection: Jobs,
+  cursors: function (job) {
+    // Customer
+    this.publish({
+      cursor: function (job) {
+        if (job.customer)
+          return Contactables.find(job.customer, { fields: { 'organization.organizationName' : 1 } });
+      },
+      to: 'contactables',
+      observedProperties: ['customer'],
+      onChange: function (changedProps, oldSelector) {
+        oldSelector._id = changedProps.customer;
+        return Contactables.find(oldSelector, { fields: { 'organization.organizationName': 1 } });
+      }
+    });
+  }
+});
+
+Meteor.paginatedPublish(JobPlacementView, function(){
+  var user = Meteor.users.findOne({
+    _id: this.userId
+  });
+
+  if (!user)
+    return false;
+
+  return Utils.filterCollectionByUserHier.call(this, JobPlacementView.find());
+}, {
+  pageSize: 15,
+  publicationName: 'jobs'
+});
+
 Meteor.publish('singleJob', function (id) {
   return Utils.filterCollectionByUserHier.call(this, JobView.find({_id: id}));
 });

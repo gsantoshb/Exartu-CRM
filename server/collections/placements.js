@@ -6,12 +6,12 @@ PlacementView = new View('placements', {
     this.publish({
       cursor: function (placement) {
         if (placement.job)
-          return JobView.find(placement.job);
+          return JobPlacementView.find(placement.job);
       },
       to: 'jobs',
       observedProperties: ['job'],
       onChange: function (changedProps, oldSelector) {
-        return JobView.find(changedProps.job);
+        return JobPlacementView.find(changedProps.job);
       }
     });
 
