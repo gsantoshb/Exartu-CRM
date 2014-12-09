@@ -60,12 +60,41 @@ Template.addPlacementPage.helpers({
   objTypeName: function(){
     return Session.get('objType');
   },
-  employees:function() {
-    var employees = [];
-    AllEmployees.find({},{ sort: { 'person.lastName' : 1 }}).forEach(function(doc) {
-      employees.push({ id: doc._id, text: doc.displayName + '      ['+ doc._id  + ']'  });
-    });
-    return employees;
+  getEmployees:function() {
+    return function (string) {
+      var self = this;
+
+      if (_.isEmpty(string)) {
+        // Get last five customer used
+        Meteor.call('getLastUsed', Enums.lastUsedType.employee, function (err, result) {
+          if (err)
+            return console.log(err);
+
+          self.ready(_.map(result, function (employee) {
+              Utils.extendContactableDisplayName(employee);
+              return { id: employee._id, text: employee.displayName};
+            })
+          );
+        });
+      } else {
+        var employees = [];
+        var searchFields = ['person.firstName', 'person.lastName', 'person.middleName'];
+        var query = {
+          $or: _.map(searchFields, function(field) {
+            var aux = {};
+            aux[field] = {
+              $regex: '.*' + string + '.*',
+              $options: 'i'
+            };
+            return aux;
+          })
+        };
+        AllEmployees.find( query, { sort: { 'person.lastName' : 1 }}).forEach(function(doc) {
+          employees.push({ id: doc._id, text: doc.displayName + '      ['+ doc._id  + ']'  });
+        });
+        self.ready(employees);
+      }
+    };
   },
   selectEmployee: function () {
     return function (selectedValue) {
@@ -97,6 +126,9 @@ Template.addPlacementPage.events({
         console.dir(err)
       }
       else{
+        // add employee to last used employees list
+        Meteor.call('setLastUsed', Enums.lastUsedType.employee, obj.employee);
+
         Router.go('/placement/' + result);
       }
     });

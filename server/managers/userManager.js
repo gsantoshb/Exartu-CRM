@@ -183,6 +183,12 @@ UserManager = {
         return _.map(user.lastUsed.customer, function (customerId) {
           return Contactables.findOne({objNameArray: 'Customer', _id: customerId, $or: Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()))});
         });
+      case Enums.lastUsedType.employee:
+        if (!user.lastUsed || !user.lastUsed.employee)
+          return [];
+        return _.map(user.lastUsed.employee, function (employeeId) {
+          return Contactables.findOne({objNameArray: 'Employee', _id: employeeId, $or: Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()))});
+        });
     }
   },
   setLastUsed: function (type, value) {
@@ -193,6 +199,9 @@ UserManager = {
     switch (type) {
       case Enums.lastUsedType.customer:
         addNewLastUsedItem('customer', value);
+        break;
+      case Enums.lastUsedType.employee:
+        addNewLastUsedItem('employee', value);
         break;
     }
 

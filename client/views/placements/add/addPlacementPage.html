@@ -13,7 +13,7 @@
                     <div class="fieldGroup">
                         <span>Employee :</span>
                         <div class="form-group">
-                            {{>select2 options=employees onSelected=selectEmployee}}
+                            {{>asyncSelect query=getEmployees onChange=selectEmployee minimumInputLength=0 width="100%"}}
                         </div><!-- /.form-group -->
                     </div>
 
