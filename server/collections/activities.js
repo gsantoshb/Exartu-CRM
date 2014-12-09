@@ -99,14 +99,42 @@ ActivityViews = new View('activities', {
     });
 
     // Placements
-    this.publish({
-      cursor: function (activity) {
-        if (activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) {
-          return Placements.find({ _id: activity.entityId});
-        }
-      },
-      to: 'notes'
-    });
+    if (activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) {
+      var placementCursor = Placements.find(activity.entityId);
+      var placement = placementCursor.fetch()[0];
+      var jobCursor = Jobs.find(placement.job);
+      var job = jobCursor.fetch()[0];
+      var customerCursor = Contactables.find(job.customer);
+      var employeeCursor = Contactables.find(placement.employee);
+
+      this.publish({
+        cursor: function () {
+          return placementCursor;
+        },
+        to: 'placements'
+      });
+
+      this.publish({
+        cursor: function () {
+          return jobCursor;
+        },
+        to: 'jobs'
+      });
+
+      this.publish({
+        cursor: function () {
+          return customerCursor;
+        },
+        to: 'contactables'
+      });
+
+      this.publish({
+        cursor: function () {
+          return employeeCursor;
+        },
+        to: 'contactables'
+      });
+    }
   }
 });
 

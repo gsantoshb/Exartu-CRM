@@ -107,7 +107,7 @@ Template.placementsBox.isSearching = function() {
   searchDep.depend();
   return isSearching;
 };
-
+var options = {};
 // List
 Template.placementsList.created = function () {
   if (!SubscriptionHandlers.PlacementHandler){
@@ -116,7 +116,7 @@ Template.placementsList.created = function () {
   PlacementHandler = SubscriptionHandlers.PlacementHandler;
   Meteor.autorun(function () {
     var searchQuery = {};
-    var options = {};
+    options = {};
     var urlQuery = new URLQuery();
 
     searchDep.depend();
@@ -197,7 +197,7 @@ Template.placementsList.created = function () {
     }
 
     PlacementHandler.setFilter(searchQuery);
-//    PlacementHandler.setOptions(options);
+    PlacementHandler.setOptions(options);
   })
 };
 
@@ -230,7 +230,7 @@ var getCandidateStatuses = function(objname){
 };
 
 Template.placementsList.placements = function() {
-  return placementCollection.find();
+  return placementCollection.find({}, options);
 };
 
 Template.placementsList.placementTypes = function() {
@@ -329,7 +329,8 @@ Template.placementInformation.helpers({
 
 var selectedSort =  new ReactiveVar();
 var sortFields = [
-  {field: 'dateCreated', displayName: 'Date'}
+  {field: 'dateCreated', displayName: 'Date'},
+  {field: 'employeeInfo.lastName', displayName: 'Name'}
 ];
 
 Template.placementListSort.helpers({

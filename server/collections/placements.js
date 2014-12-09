@@ -124,3 +124,53 @@ Placements.after.update(function(userId, doc){
   }
 
 });
+
+
+// add some employee fields for placement sorting
+Placements.before.insert(function (userId, doc) {
+  var employee = doc.employee && Contactables.findOne(doc.employee);
+  if (employee){
+    doc.employeeInfo = {
+      firstName: employee.person.firstName,
+      lastName: employee.person.lastName,
+      middleName: employee.person.middleName
+    }
+  }
+});
+Placements.after.update(function (userId, doc) {
+  if (doc.employee != this.previous.employee){
+
+    var employee = doc.employee && Contactables.findOne(doc.employee);
+    if (employee) {
+      var employeeInfo = {
+        firstName: employee.person.firstName,
+        lastName: employee.person.lastName,
+        middleName: employee.person.middleName
+      };
+      Placements.update({
+        _id: doc._id
+      }, {
+        $set: {employeeInfo: employeeInfo}
+      });
+    }
+  }
+});
+
+Contactables.after.update(function (userId, doc, fieldNames, modifier, options) {
+  if (doc.Employee && _.contains(fieldNames, 'person') && Placements.find({employee: doc._id}).count()){
+
+    var self = this;
+    var newEmployeeInfo = {};
+    _.each(['firstName', 'lastName', 'middleName'], function (key) {
+      if (doc.person[key] && doc.person[key] !== self.previous.person[key]){
+        newEmployeeInfo['employeeInfo.' + key] = doc.person[key];
+      }
+    });
+
+    if (!_.isEmpty(newEmployeeInfo)){
+      Placements.update({employee: doc._id}, {
+        $set: newEmployeeInfo
+      },{multi: true});
+    }
+  }
+});
