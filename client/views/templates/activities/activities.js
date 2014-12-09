@@ -33,6 +33,12 @@ Template.newTaskActivity.helpers({
 Template.newPlacementActivity.helpers({
   job: function () {
     return Jobs.findOne(this.data.job);
+  },
+  employee: function () {
+    return Contactables.findOne(this.data.employee);
+  },
+  customer: function (customerId) {
+    return Contactables.findOne(customerId);
   }
 });
 

@@ -351,17 +351,18 @@
   {{#if listViewMode}}
       <tr>
           <td>
-              <i class="icon icon-clock-3"></i>
-
-              New placement created by
+              <i class="icon icon-check-list"></i>
+              <a href="/placement/{{entityId}}"> New placement </a>
+              created by
               <strong> {{displayUserName this.userId}} </strong>
-
-              for
-
-              <strong><a href="/job/{{job._id}}"> {{job.displayName}} </a></strong>
-
               -
-
+              <strong><a href="/contactable/{{employee._id}}"> {{employee.displayName}} </a></strong>
+              as
+              <strong><a href="/job/{{job._id}}"> {{job.displayName}} </a></strong>
+              @
+              {{#with customer job.customer}}
+                <strong><a href="/contactable/{{_id}}"> {{displayName}} </a></strong>
+              {{/with}}
               <div class="pull-right">
                 {{#formattedDate value=data.dateCreated format='fromNow'}}
                   {{date}}
@@ -381,7 +382,7 @@
                     </span>
               </div>
               <div class="type">
-                  <i class="icon icon icon-check-list"></i>
+                  <i class="icon icon-check-list"></i>
               </div>
           </div>
           <!-- /.item-info -->
@@ -389,10 +390,15 @@
               <div class="box">
                   <div class="box-content">
                       <h4 class="item-title">
-                          New placement
-
+                          <a href="/placement/{{entityId}}"> New placement </a>
                           <span class="spacer">–</span>
+                          <strong><a href="/contactable/{{employee._id}}"> {{employee.displayName}} </a></strong>
+                           as
                           <strong><a href="/job/{{job._id}}"> {{job.displayName}} </a></strong>
+                          @
+                          {{#with customer job.customer}}
+                              <strong><a href="/contactable/{{_id}}"> {{displayName}} </a></strong>
+                          {{/with}}
                       </h4>
                       <div class="item-actions">
                           <a class="btn btn-default tip-bottom pointer">by
