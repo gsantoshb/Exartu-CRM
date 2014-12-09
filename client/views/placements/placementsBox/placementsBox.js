@@ -1,7 +1,7 @@
 var entityType = null;
 var isEntitySpecific = false;
 var contactable;
-var searchFields = ['jobDisplayName','employeeDisplayName','customerDisplayName'];
+var searchFields = ['employeeInfo.firstName', 'employeeInfo.lastName', 'employeeInfo.middleName'];
 
 var placementCollection = Placements;
 var PlacementHandler, placementQuery;
