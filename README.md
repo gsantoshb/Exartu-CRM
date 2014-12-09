@@ -5,9 +5,9 @@
 It allows sales professionals to efficiently manage prospects, and allows recruiters to manage their open jobs and related candidates and job placements.
 This repository for the moment contains just the shell of a system that has been under development during the last year.
 
-We're currently migrating Exartu to MeteorJS.
 
-Exartu is sponsored by Tempworks Software, Inc, of Eagan, MN, a provider of staffing software, payroll funding and processing, and document management systems.
+Aida is owned and licensed by GAD Inc dba Aida Creative Group of Eagan, MN, a provider of software consulting and business software.
+
 
 ## Install:
 * http://docs.meteor.com/

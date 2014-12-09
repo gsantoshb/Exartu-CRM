@@ -48,7 +48,7 @@ Meteor.startup(function () {
     "service": 'google'
   });
   if (!ExartuConfig) {
-    console.log('can not configure google login or smtp credentials because no Exartu config info is set up');
+    console.log('can not configure google login or smtp credentials because no Aida config info is set up');
   } else if (!googleConfig){
     //read the config
     if (!ExartuConfig.GoogleConfig_clientId || !ExartuConfig.GoogleConfig_clientSecret) {

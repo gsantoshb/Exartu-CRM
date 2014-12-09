@@ -320,7 +320,7 @@ var sendInvitation = function(address, token, hierName) {
     + "Please click the link below to accept the invitation. Alternatively, copy the link into your browser.\n\n"
     + url + "\n\n"
     + "Thank you,\n"
-    + "Exartu team";
+    + "Aida team";
 
   EmailManager.sendEmail(address, 'TempWorks - Invitation', text, false);
 };
@@ -352,20 +352,20 @@ Accounts.emailTemplates.from = "Exartu team<exartu.developer@gmail.com>";
 
 // Email account verification template
 Accounts.emailTemplates.verifyEmail.subject = function (user) {
-  return "Welcome to CRM Exartu";
+  return "Welcome to Aida Sales and Recruiting Software";
 };
 Accounts.emailTemplates.verifyEmail.text = function (user, url) {
   return "Dear " + user.emails[0].address + ",\n\n"
-    + "Welcome, and thank you for registering in Exartu.\n"
+    + "Welcome, and thank you for registering with Aida.\n"
     + "Please click the link below to verify your email address. Alternatively, copy the link into your browser.\n\n"
     + url + "\n\n"
     + "Thank you,\n"
-    + "Exartu team";
+    + "Aida team";
 };
 
 
 Accounts.emailTemplates.enrollAccount.subject = function (user) {
-  return "Welcome to CRM Exartu, " + user.profile.name;
+  return "Welcome to Aida, " + user.profile.name;
 };
 Accounts.emailTemplates.enrollAccount.text = function (user, url) {
   return "You have been selected to participate in building a better future!"
@@ -379,12 +379,12 @@ Accounts.emailTemplates.resetPassword.subject = function (user) {
 };
 Accounts.emailTemplates.resetPassword.text = function (user, url) {
   return "Dear user,\n\n"
-    + "We have received a request to reset the password for your Exartu account.\n"
+    + "We have received a request to reset the password for your Aida account.\n"
     + "Please click the link below to set your new password. Alternatively, copy the link into your browser.\n\n"
     + url + "\n\n"
     + "If you have not requested it, please dismiss this email.\n\n"
     + "Thank you,\n"
-    + "Exartu team";
+    + "Aida team";
 };
 
 
