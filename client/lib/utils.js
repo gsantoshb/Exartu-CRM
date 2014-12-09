@@ -686,3 +686,9 @@ Utils.getContactMethodTypes_MobilePhone = function () {
   return LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: "ContactMethod_MobilePhone" }).fetch()
 };
 
+Utils.extendContactableDisplayName = function (contactable) {
+  if (contactable.person)
+    contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
+  if (contactable.organization)
+    contactable.displayName = contactable.organization.organizationName;
+};
