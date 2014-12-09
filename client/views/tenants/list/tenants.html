@@ -19,12 +19,8 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="filter">
-                    <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-                        <strong><i class="fa fa-filter"></i></strong>
-                    </a>
-                    <div class="filter-list" id="filter-body">
+                    {{> filter_createdDate selectedLimit=query.selectedLimit}}
 
-                    </div>
                 </div>
 
             </div>
@@ -35,7 +31,7 @@
 
                             <div class="input-group">
                                 {{#objectProperty property=filters.searchString}}
-                                <input type="text" class="form-control" placeholder="Search Hierarchies" value="{{value}}">
+                                <input type="text" class="form-control" placeholder="Search Tenants" value="{{value}}">
                                 {{/objectProperty}}
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="button">

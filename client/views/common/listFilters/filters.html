@@ -24,6 +24,19 @@
         {{>lookupFilterTemplate lookUpCode=code callback=cb multi=multi value=lookUpValue}}
     </div>
 </template>
+<template name="sort_lookUp">
+    <div class="filter-item">
+        <div class="filter-title">
+            {{#if title}}
+            {{title}}
+            {{else}}
+            Sort
+            {{/if}}
+        </div>
+
+        {{>lookupFilterTemplate lookUpCode=code callback=cb multi=multi value=lookUpValue}}
+    </div>
+</template>
 
 <template name="filter_inactive">
     <div class="filter-item">

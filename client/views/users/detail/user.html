@@ -40,7 +40,7 @@
                 <select class="form-control newRole input-lg" type="text" >
                     <option disabled selected> -- select a role -- </option>
                     {{#each availableRoles}}
-                        <option value="{{name}}" >{{name}}</option>
+                        <option value="{{_id}}" >{{name}}</option>
                     {{/each}}
                 </select>
         </div>
@@ -83,7 +83,7 @@
                             {{#each user.roles}}
                                 <li>
                                     <div>
-                                        {{.}}
+                                        {{getRoleName .}}
                                         <button class="btn btn-xs btn-default removeRole"><i class="fa fa-times"></i></button>
                                     </div>
                                 </li>

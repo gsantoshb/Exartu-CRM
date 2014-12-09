@@ -91,11 +91,17 @@ UserManager = {
 
       var user = {
         email: document.email,
-        password: document.password
+        password: document.password,
+        roles: []
       };
 
-      if (document.hierId)
+      if (document.hierId) {
         user.profile = {hierId: document.hierId};
+      }
+      else
+      {
+        user.roles= [RoleManager.getClientAdministratorRole()._id];
+      }
 
       var userId = Accounts.createUser(user);
       if (!skipEmailVerification) {

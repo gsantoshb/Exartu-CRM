@@ -37,7 +37,7 @@ Meteor.users.allow({
 
     if (file.hierId != user.hierId)
       return false;
-    if (!_.contains(user.roles, Enums.roleFunction.System_Administrator))
+    if (!_.contains(user.roles, RoleManager.getSystemAdministratorRole()._id))
       return false;
     if (_.any(['dateCreated', 'hierId', 'services'], function (field) {
       return _.contains(fields, field);

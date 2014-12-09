@@ -3,7 +3,7 @@ Meteor.publish('systemConfigs', function () {
 });
 Meteor.publish('systemAdmins', function() {
   var user = Meteor.users.findOne({ _id: this.userId });
-  if (_.indexOf(user.roles, Enums.roleFunction.System_Administrator) == -1)  return null;
+  if (!_.contains(user.roles, RoleManager.getSystemAdministratorRole()._id)) return null;
   else
     return SystemAdmins.find();
 });

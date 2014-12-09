@@ -1,50 +1,73 @@
-var self={};
+var self = {};
+
 Utils.reactiveProp(self,'editMode',false);
-Template.placementRates.created=function(){
-  self.editMode=false;
-  self.rates=[];
+
+RateSchema = new SimpleSchema({
+  type: {
+    type: String,
+    allowedValues: LookUps.find({lookUpCode: Enums.lookUpTypes.placement.rate.lookUpCode}).map(function(rateType){ return rateType._id}),
+    autoform: {
+      type: "select"
+    }
+  },
+  pay: {
+    type: Number,
+    decimal: true,
+    defaultValue: 0,
+    min: 0
+  },
+  bill: {
+    decimal: true,
+    type: Number,
+    defaultValue: 0,
+    min: 0
+  }
+});
+
+Template.placementRates.created = function () {
+  self.editMode = false;
+  self.rates = [];
   loadRates();
-}
+};
+
 var ratesDep=new Deps.Dependency;
 UI.registerHelper('placementRates', function(){
   rates=  self.rates;
   return Template.placementRatesTemplate;
-})
+});
 
-function setTwoNumberDecimal(event) {
-  this.value = parseFloat(this.value).toFixed(2);
-}
-// Edit Rates
+var updateRates=function(){
+  Placements.update({ _id: Session.get('entityId') },{ $set: { placementRates: self.rates } });
+};
 
-var newRate={
-  type:null,
-  pay: 0,
-  bill: 0
-}
-
-var loadRates=function(){
-  var placement=Placements.findOne({
+var loadRates = function () {
+  var placement = Placements.findOne({
     _id: Session.get('entityId')
   });
 
   if (placement.placementRates) self.rates=placement.placementRates;
 };
-var updateRates=function(){
-  Placements.update({ _id: Session.get('entityId') },{ $set: { placementRates: self.rates } });
-};
+
+// Add Rates
+
+AutoForm.hooks({
+  AddPlacementRate: {
+    onSubmit: function(rate) {
+      self.rates.push(rate);
+      updateRates(rate);
+      this.done();
+      this.resetForm();
+      return false;
+    }
+  }
+});
+
+// Edit Rates
+
 Template.placementRates.helpers({
   rates: function(){
     ratesDep.depend();
     return self.rates
-  },
-  resetNewRate: function() {
-    ratesDep.depend();
-    newRate.type=null;
-    newRate.pay=0;
-    newRate.bill=0;
-  },
-  newRate: function(){
-    return newRate;
   },
   getType: function(typeId){
     return LookUps.findOne({lookUpCode: Enums.lookUpTypes.placement.rate.lookUpCode,_id:typeId});
@@ -58,14 +81,17 @@ Template.placementRates.helpers({
   getAvailableType: function() {
     var rateTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.placement.rate.lookUpCode}).fetch();
     ratesDep.depend();
-    return _.filter(rateTypes, function (type) {
+    return _.map(_.filter(rateTypes, function (type) {
       return !_.findWhere(self.rates, { type: type._id });
+    }), function (rateType) {
+      return {label: rateType.displayName, value: rateType._id};
     });
   },
   colorPlacementRateEdit: function() {
     return self.editMode ? '#008DFC' : '';
   }
 });
+
 Template.placementRates.events({
   'click .editRate': function(){
     self.editMode= ! self.editMode;
@@ -78,29 +104,11 @@ Template.placementRates.events({
     updateRates();
     self.editMode=false;
   },
-  'click .addRate': function(e, ctx){
-    newRate.type=ctx.$('.newRateType').val();
-
-    if (! newRate.type) return;
-    newRate.pay=  Utils.setDecimal(newRate.pay);
-    newRate.bill=  Utils.setDecimal(newRate.bill);
-
-    if (_.findWhere(self.rates, { type: newRate.type })) return;
-    self.rates.push(_.clone(newRate));
-    updateRates();
-    newRate.pay=  Utils.setDecimal(0);
-    newRate.bill=  Utils.setDecimal(0);
-    ratesDep.changed();
-  },
   'click .removeRate': function(e, ctx){
-
     self.rates.splice(self.rates.indexOf(this), 1);
     updateRates();
     ratesDep.changed();
   },
-//  'change .newRateType': function(e, ctx){
-//    newRate.type= e.target.value;
-//  },
   'change .payRateInput': function(e, ctx){
     this.pay= e.target.value;
     this.pay=  Utils.setDecimal(this.pay);
