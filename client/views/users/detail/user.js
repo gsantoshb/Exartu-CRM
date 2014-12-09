@@ -38,7 +38,6 @@ Template.selectUserRole.helpers({
     rolesDep.depend();
     var avlRoles=  roles.find().fetch();
     var user=Meteor.users.findOne({ _id: Session.get('entityId') });
-    console.log('role',user.roles,avlRoles);
     return _.filter(avlRoles, function (role) {
       return !_.findWhere(user.roles, role._id);
     });
@@ -91,8 +90,6 @@ Template.user_tabs.isActive = function(name){
 
 Template.user_tabs.getRoleName = function(id)
 {
-  console.log('this',this);
-  console.log('id',id);
   var role= roles.findOne({_id:id});
   if (role) return role.name; else return "role not found";
 }
