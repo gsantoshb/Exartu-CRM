@@ -4,6 +4,9 @@ _.forEach([
   },
   {
     displayName: 'Inactive', lookUpActions:[Enums.lookUpAction.Implies_Inactive]
+  },
+  {
+    displayName: "Deleted",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
   }
 ],
   function (item) {

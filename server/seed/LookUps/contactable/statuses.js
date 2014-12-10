@@ -24,8 +24,10 @@ _.forEach([
   },
   {
     displayName: "Inactive",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
+  },
+  {
+    displayName: "Deleted",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
   }
-
 ],
   function (item) {
     item.lookUpCode = Enums.lookUpTypes.employee.status.lookUpCode;
@@ -41,8 +43,10 @@ _.forEach([
   },
   {
     displayName: "Inactive",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
+  },
+  {
+    displayName: "Deleted",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
   }
-
 ],
   function (item) {
     item.lookUpCode = Enums.lookUpTypes.customer.status.lookUpCode;
@@ -58,8 +62,10 @@ _.forEach([
   },
   {
     displayName: "Inactive",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
+  },
+  {
+    displayName: "Deleted",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
   }
-
 ],
   function (item) {
     item.lookUpCode = Enums.lookUpTypes.contact.status.lookUpCode;
