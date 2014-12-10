@@ -6,7 +6,7 @@ NotesController = RouteController.extend({
   waitOn: function () {
     SubscriptionHandlers.NotesHandler = NotesHandler = Meteor.paginatedSubscribe("notes");
 
-    return [NotesHandler, Meteor.subscribe('allContactables')];
+    return [NotesHandler];
   },
   action: function () {
     if (!this.ready()) {
