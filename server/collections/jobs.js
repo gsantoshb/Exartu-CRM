@@ -93,7 +93,8 @@ Meteor.publish('allJobs', function () {
   var sub = this;
   Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Jobs.find({},{
     fields:{
-      publicJobTitle: 1
+      publicJobTitle: 1,
+      customer: 1
     }
   })), sub, 'allJobs');
   sub.ready();

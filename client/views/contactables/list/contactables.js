@@ -5,7 +5,7 @@ ContactablesController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
     SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
-    return [Meteor.subscribe('allPlacements'), SubscriptionHandlers.AuxContactablesHandler];
+    return [SubscriptionHandlers.AuxContactablesHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -80,7 +80,7 @@ ContactablesController = RouteController.extend({
     }
 
     // Employee's placements status
-    var placementStatusQuery = {};
+    var placementStatusQuery = { type: Utils.ReactivePropertyTypes.array };
     if (type == 'Employee' && this.params.placementStatus) {
       placementStatusQuery.default = this.params.placementStatus.split(',');
     }
@@ -207,6 +207,7 @@ Template.contactablesList.created = function() {
     var searchQuery = {
       $and: [] // Push each $or operator here
     };
+    var clientParams = {};
 
     // Search string
     if (query.searchString.value) {
@@ -305,7 +306,7 @@ Template.contactablesList.created = function() {
       delete searchQuery.$and;
 
     if (query.objType.value == 'Employee' && !_.isEmpty(query.candidateStatus.value)){
-      searchQuery._id = {$in:_.map(AllPlacements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
+      clientParams.placementStatus = query.candidateStatus.value;
       urlQuery.addParam('placementStatus', query.candidateStatus.value);
     }
 
@@ -316,9 +317,9 @@ Template.contactablesList.created = function() {
     if (query.searchString.value) return;
 
     if (SubscriptionHandlers.AuxContactablesHandler)
-      SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery);
+      SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
     else
-      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery});
+      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery, params: clientParams});
   });
 
   Meteor.autorun(function () {

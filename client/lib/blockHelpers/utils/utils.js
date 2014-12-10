@@ -150,3 +150,8 @@ UI.registerHelper('displayUserName', function (id) {
   return isUnique ? localPart : user.emails[0].address;
 });
 
+// Multiline text format helper
+Template.registerHelper('multilineText', function (text) {
+  return text.replace(/\r?\n/g,'<br/>');
+});
+

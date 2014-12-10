@@ -307,13 +307,18 @@ Utils.getEntityFromLink=function(link){
     case Enums.linkTypes.contactable.value:
       return Contactables.findOne({_id: link.id});
     case Enums.linkTypes.job.value:
-      return Jobs.findOne({_id: link.id});
+      var job = Jobs.findOne({_id: link.id});
+      if (! job) return;
+      // Extend displayName with customer displayName
+      var customer = AllContactables.findOne(job.customer);
+      job.displayName += '@' + customer.displayName;
+      return job;
     case Enums.linkTypes.deal.value:
-          return Deals.findOne({_id: link.id});
-      case Enums.linkTypes.placement.value:
-          return Placements.findOne({_id: link.id});
-      case Enums.linkTypes.candidate.value:
-          return Candidates.findOne({_id: link.id});
+        return Deals.findOne({_id: link.id});
+    case Enums.linkTypes.placement.value:
+        return Placements.findOne({_id: link.id});
+    case Enums.linkTypes.candidate.value:
+        return Candidates.findOne({_id: link.id});
   }
 }
 Utils.getEntityFromLinkForAdd=function(link){
@@ -323,11 +328,11 @@ Utils.getEntityFromLinkForAdd=function(link){
     case Enums.linkTypes.job.value:
       return AllJobs.findOne({_id: link.id});
     case Enums.linkTypes.deal.value:
-          return Deals.findOne({_id: link.id});
-      case Enums.linkTypes.placement.value:
-          return AllPlacements.findOne({_id: link.id});
-      case Enums.linkTypes.candidate.value:
-          return AllPlacements.findOne({_id: link.id});
+        return Deals.findOne({_id: link.id});
+    case Enums.linkTypes.placement.value:
+        return AllPlacements.findOne({_id: link.id});
+    case Enums.linkTypes.candidate.value:
+        return AllPlacements.findOne({_id: link.id});
   }
 }
 
