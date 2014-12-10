@@ -196,4 +196,8 @@ Resumes.allow({
 // Indexes
 
 Contactables._ensureIndex({hierId: 1});
+Contactables._ensureIndex({'dateCreated': 1});
 Contactables._ensureIndex({objNameArray: 1});
+Contactables._ensureIndex({'Employee.status': 1});
+Contactables._ensureIndex({'Customer.status': 1});
+Contactables._ensureIndex({'Contact.status': 1});
