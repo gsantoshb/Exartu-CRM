@@ -1,7 +1,6 @@
-Tenants = new Meteor.Collection("tenants");
-TenantsHandler = Meteor.subscribe('tenants');
+Tenants = new Meteor.Collection('tenants', {
 
-TenantsFS = new Document.Collection({
-  collection: Tenants
 });
-Meteor.subscribe(TenantsFS.collectionName);
+
+AllTenants = new Meteor.Collection('allTenants', {
+});

@@ -57,5 +57,6 @@ Collections = {
   Candidates: Candidates,
   SystemConfigs: SystemConfigs,
   Roles: Roles,
-  SystemAdmins: SystemAdmins
+  SystemAdmins: SystemAdmins,
+  Tenants: Hierarchies
 }

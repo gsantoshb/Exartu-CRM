@@ -114,6 +114,7 @@ Template.placementsList.created = function () {
     SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
   }
   PlacementHandler = SubscriptionHandlers.PlacementHandler;
+  console.log('th',PlacementHandler);
   Meteor.autorun(function () {
     var searchQuery = {};
     var params = {};
