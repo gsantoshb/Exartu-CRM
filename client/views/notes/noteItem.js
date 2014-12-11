@@ -17,8 +17,3 @@ Template.noteItem.events({
     Composer.showModal('addEditNote', this)
   }
 });
-Template.noteItem.formatMsg = function(msg) {
-  return msg.replace(/\r?\n/g,'<br/>');
-};
-
-
