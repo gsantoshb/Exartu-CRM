@@ -75,50 +75,49 @@
 </template>
 <template name="showTaskDate">
     {{#if end}}
-    <div class="date">
-        <i class="fa fa-calendar"></i>
-        {{#if statusIs 'pending'}}
-                <span>
-                    <span>Due Date:</span>
-                    <span>
-                        {{#formattedDate value=end format='fromNow'}}
-                            {{date}}
-                        {{/formattedDate}}
-                    </span>
+        <div class="date row">
+            {{#if statusIs 'pending'}}
+                <span class="col-xs-6">Due Date:</span>
+                <span class="col-xs-6">
+                    {{#formattedDate value=end format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
                 </span>
-        {{/if}}
-        {{#if statusIs 'future'}}
-                <span>
-                    <span>Starts:</span>
-                    <span>
-                        {{#formattedDate value=begin format='fromNow'}}
-                            {{date}}
-                        {{/formattedDate}}
-                    </span>
+            {{/if}}
+            {{#if statusIs 'completed'}}
+                <span class="col-xs-6">Completed:</span>
+                <span class="col-xs-6">
+                    {{#formattedDate value=completed format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
                 </span>
-        {{/if}}
-        {{#if statusIs 'completed'}}
+            {{/if}}
+            {{#if statusIs 'overDue'}}
+                <span class="col-xs-6">Ended:</span>
                 <span>
-                    <span>completed:</span>
-                    <!--ko if: completed-->
-                    <span>
-                        {{#formattedDate value=completed format='fromNow'}}
-                            {{date}}
-                        {{/formattedDate}}
-                    </span>
-                    <!--/ko-->
+                    {{#formattedDate value=end format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
                 </span>
-        {{/if}}
-        {{#if statusIs 'overDue'}}
-                <span>
-                    <span>Ended:</span>
-                    <span>
-                        {{#formattedDate value=end format='fromNow'}}
-                            {{date}}
-                        {{/formattedDate}}
-                    </span>
-                </span>
-        {{/if}}
-    </div>
+            {{/if}}
+
+            <br/>
+
+            <span class="col-xs-6">Starts:</span>
+            <span class="col-xs-6">
+                {{#formattedDate value=begin format='lll'}}
+                    {{date}}
+                {{/formattedDate}}
+            </span>
+
+            <br/>
+
+            <span class="col-xs-6">Created:</span>
+            <span class="col-xs-6">
+                {{#formattedDate value=dateCreated format='lll'}}
+                    {{date}}
+                {{/formattedDate}}
+            </span>
+        </div>
     {{/if}}
 </template>

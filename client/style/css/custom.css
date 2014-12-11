@@ -744,6 +744,12 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     background-color: #FEFAE6;
 }
 
+.table-item .date {
+    text-align: inherit;
+    font-size: 11px;
+    color: #999
+}
+
 .actions-head {
     margin-bottom: 0px;
 }
