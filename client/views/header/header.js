@@ -126,7 +126,7 @@ Template.header.rendered = function () {
 //                        $('html').getNiceScroll().resize();
         };
 
-        $('.submenu > a').on('click', submenuLogic);
+        $('.submenu > .trigger-menu').on('click', submenuLogic);
 
         //Theme Switcher
         switcherBtn = $('#switcher-button');
@@ -251,10 +251,8 @@ Template.sidebar.rendered=function(){
 
 }
 Template.sidebar.helpers({
-  contactableObjTypes: function(){
-    return dType.ObjTypes.find({
-      parent: Enums.objGroupType.contactable
-    });
+  contactableTypes: function () {
+    return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
   },
   jobObjTypes: function() {
     return dType.ObjTypes.find({

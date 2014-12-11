@@ -733,6 +733,20 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     display: inline-flex !important;
 }
 
+/* Sidebar */
+
+#sidebar>ul ul {
+    display: block;
+}
+
+.trigger-menu {
+    float: right;
+    margin-top: -30px;
+    margin-right: 18px;
+    font-size: 22px;
+    color: rgba(16, 16, 16, 0.54);
+}
+
 /*lists*/
 .actions-head{
     border-bottom: none;

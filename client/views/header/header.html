@@ -104,12 +104,17 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="contactables {{getActiveClass 'contactables' null}}">
+                <li class="submenu contactables {{getActiveClass 'contactables' null}}">
                     <a href="/contactables">
                         <i class="icon icon-connection-1"></i>
                         <span>Network</span>
-                        <!--<i class="arrow fa fa-chevron-right"></i>-->
                     </a>
+                    <i class="arrow trigger-menu fa fa-plus"></i>
+                    <ul>
+                        {{#each contactableTypes}}
+                            <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
+                        {{/each}}
+                    </ul>
                 </li>
 
                 <li class="jobs {{getActiveClass 'jobs' null}}">
