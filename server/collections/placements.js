@@ -40,7 +40,74 @@ Meteor.paginatedPublish(PlacementView, function(){
   return Utils.filterCollectionByUserHier.call(this, PlacementView.find());
 }, {
   pageSize: 15,
-  publicationName: 'placements'
+  publicationName: 'placements',
+  updateSelector: function (selector, params) {
+    if (!params || !params.searchString) return selector;
+
+    var searchStringSelector = {$or: []};
+
+    // Search employees
+    // person properties query
+    var personFields = ['firstName', 'lastName', 'middleName', 'jobTitle', 'salutation'];
+    var employeeQuery = generateQueryFromFields('person', personFields, params.searchString);
+    employeeQuery.objNameArray = 'Employee';
+    // get id of employees that have a placement
+    var employeesId = Utils.filterCollectionByUserHier.call(this, Placements.find()).map(function (placements) { return placements.employee; });
+    employeeQuery._id = {$in: employeesId};
+    // search employees with a placement with properties that match string
+    var employees = Utils.filterCollectionByUserHier.call(this, Contactables.find(employeeQuery)).map(function (employee) { return employee._id; });
+    searchStringSelector.$or.push({employee: {$in: employees}});
+
+    // Search jobs
+    // job properties query
+    var jobFields = ['publicJobTitle'];
+    var jobQuery = generateQueryFromFields(undefined, jobFields, params.searchString);
+    // get id of jobs that have a placement
+    var jobsId = Utils.filterCollectionByUserHier.call(this, Placements.find()).map(function (placements) { return placements.job; });
+    jobQuery._id = {$in: jobsId};
+    // search jobs with a placement with properties that match string
+    var jobs = Utils.filterCollectionByUserHier.call(this, Jobs.find(jobQuery)).map(function (job) { return job._id; });
+    searchStringSelector.$or.push({job: {$in: jobs}});
+
+    // Search customer
+    // organization properties query
+    var organizationFields = ['organizationName'];
+    var customerQuery = generateQueryFromFields('organization', organizationFields, params.searchString);
+    customerQuery.objNameArray = 'Customer';
+    // get id of jobs' customer of those which has a placement
+    var customerIds = Jobs.find({_id: {$in: jobsId}}).map(function (job){ return job.customer; });
+    customerQuery._id = {$in: customerIds};
+    // search customers with a placement with properties that match string
+    var customers = Utils.filterCollectionByUserHier.call(this, Contactables.find(customerQuery)).map(function (customer) { return customer._id; });
+    // now get id of jobs with customer id in customers
+    var customerJobsId = Jobs.find({customer: {$in: customers}}).map(function (job) { return job._id; });
+    searchStringSelector.$or.push({job: {$in: customerJobsId}});
+
+    // Merge with client selector
+    if (! selector.$or) {
+      selector.$or = searchStringSelector.$or;
+    } else {
+      selector.$and = selector.$and || [];
+      selector.$and.push({$or: selector.$or});
+      selector.$and.push({$or: searchStringSelector.$or});
+      delete selector.$or;
+    }
+
+    return selector;
+
+    function generateQueryFromFields(root, fields, string) {
+      var q = {$or: []};
+      _.forEach(fields, function (f) {
+        var fq = {};
+        fq[(root? root + '.' : '') + f] = {
+          $regex: '.*' + string + '.*',
+          $options: 'i'
+        };
+        q.$or.push(fq);
+      });
+      return q;
+    }
+  }
 });
 
 Meteor.publish('placementDetails', function (id) {
@@ -156,21 +223,21 @@ Placements.after.update(function (userId, doc) {
   }
 });
 
-Contactables.after.update(function (userId, doc, fieldNames, modifier, options) {
-  if (doc.Employee && _.contains(fieldNames, 'person') && Placements.find({employee: doc._id}).count()){
-
-    var self = this;
-    var newEmployeeInfo = {};
-    _.each(['firstName', 'lastName', 'middleName'], function (key) {
-      if (doc.person[key] && doc.person[key] !== self.previous.person[key]){
-        newEmployeeInfo['employeeInfo.' + key] = doc.person[key];
-      }
-    });
-
-    if (!_.isEmpty(newEmployeeInfo)){
-      Placements.update({employee: doc._id}, {
-        $set: newEmployeeInfo
-      },{multi: true});
-    }
-  }
-});
+//Contactables.after.update(function (userId, doc, fieldNames, modifier, options) {
+//  if (doc.Employee && _.contains(fieldNames, 'person') && Placements.find({employee: doc._id}).count()){
+//
+//    var self = this;
+//    var newEmployeeInfo = {};
+//    _.each(['firstName', 'lastName', 'middleName'], function (key) {
+//      if (doc.person[key] && doc.person[key] !== self.previous.person[key]){
+//        newEmployeeInfo['employeeInfo.' + key] = doc.person[key];
+//      }
+//    });
+//
+//    if (!_.isEmpty(newEmployeeInfo)){
+//      Placements.update({employee: doc._id}, {
+//        $set: newEmployeeInfo
+//      },{multi: true});
+//    }
+//  }
+//});

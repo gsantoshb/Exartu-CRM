@@ -116,6 +116,7 @@ Template.placementsList.created = function () {
   PlacementHandler = SubscriptionHandlers.PlacementHandler;
   Meteor.autorun(function () {
     var searchQuery = {};
+    var params = {};
     options = {};
     var urlQuery = new URLQuery();
 
@@ -133,21 +134,7 @@ Template.placementsList.created = function () {
     }
 
     if (!_.isEmpty(placementQuery.searchString.value)) {
-      var stringSearches = [];
-      _.each(searchFields, function (field) {
-        var aux = {};
-        aux[field] = {
-          $regex: placementQuery.searchString.value,
-          $options: 'i'
-        }
-        stringSearches.push(aux);
-      });
-      searchQuery = {
-        $and: [searchQuery, {
-          $or: stringSearches
-        }]
-      };
-
+      params.searchString = placementQuery.searchString.value;
       urlQuery.addParam('search', placementQuery.searchString.value);
     }
 
@@ -196,7 +183,7 @@ Template.placementsList.created = function () {
       delete options.sort;
     }
 
-    PlacementHandler.setFilter(searchQuery);
+    PlacementHandler.setFilter(searchQuery, params);
     PlacementHandler.setOptions(options);
   })
 };
