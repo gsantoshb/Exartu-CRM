@@ -57,5 +57,5 @@ JobCalculatedStatus= {
 
 // General lookups
 LookUps = new Meteor.Collection("lookUps");
-extendedSubscribe('lookUps', 'LookUpsHandler');
+LookUpsHandler = Meteor.subscribe('lookUps');
 
