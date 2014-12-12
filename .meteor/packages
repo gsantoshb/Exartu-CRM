@@ -11,7 +11,6 @@ service-configuration
 http
 accounts-ui
 iron:router
-mrt:knockout-client
 matb33:collection-hooks
 mrt:googlemaps
 sacha:spin
@@ -55,3 +54,4 @@ mrt:twilio-meteor
 mrt:mask
 meteor-nodetime
 server-progress
+
