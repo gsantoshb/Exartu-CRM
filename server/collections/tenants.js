@@ -18,14 +18,16 @@ Meteor.paginatedPublish(TenantView, function(){
   var user = Meteor.users.findOne({
     _id: this.userId
   });
-
+  console.log('tenants pag1');
   if (!user)
     return false;
-  return Utils.filterCollectionByUserHier.call(this, TenantView.find());
-}, {
+  return  TenantView.find();
+  },
+  {
   pageSize: 15,
   publicationName: 'tenants',
   updateSelector: function (selector, params) {
+    console.log('tenants pag2', selector, params);
     if (!params || !params.searchString) return selector;
 
     var searchStringSelector = {$or: []};
@@ -57,3 +59,4 @@ Meteor.paginatedPublish(TenantView, function(){
     }
   }
 });
+

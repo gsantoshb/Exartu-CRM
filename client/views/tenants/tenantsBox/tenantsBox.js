@@ -100,7 +100,6 @@ Template.tenantsList.created = function () {
     SubscriptionHandlers.TenantHandler = Meteor.paginatedSubscribe('tenants');
   }
   TenantHandler = SubscriptionHandlers.TenantHandler;
-  console.log('th',TenantHandler);
   Meteor.autorun(function () {
     var searchQuery = {};
     var params = {};
