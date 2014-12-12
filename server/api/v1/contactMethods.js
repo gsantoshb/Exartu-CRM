@@ -25,7 +25,7 @@ Router.map(function() {
             var res = connection.call('getContactMethods', contactableId);
 
             // Transform the response before sending it back
-            res = mapper.get(res);
+            res = mapper.get(res, contactableId);
             response.end(res);
           } catch(err) {
             console.log(err);
