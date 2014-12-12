@@ -21,7 +21,7 @@ HierarchyManager = {
     var hierNameUseCount = Hierarchies.find({'configuration.webName': hier.name}).count();
 
     hier.configuration={
-     webName: hier.name + hierNameUseCount > 0 ? hierNameUseCount : '', // Add a suffix if hier.name is already used
+     webName: hier.name + (hierNameUseCount > 0 ? '-' + hierNameUseCount : ''), // Add a suffix if hier.name is already used
      title: hier.name
     };
 
