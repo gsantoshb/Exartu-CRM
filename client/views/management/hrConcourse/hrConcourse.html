@@ -1,55 +1,36 @@
 <template name="hrConcourse">
     <div id="content">
         <div id="content-header">
-            <h1>HRConcourse management</h1>
+            <h1>HRConcourse</h1>
         </div>
         <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">Management</a>
             <a href="/hrconcourse" class="current">HRConcourse</a>
         </div>
 
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">
-              HRConcourse
-            </div>
+        <div class="panel panel-default" style="margin: 15px">
             <div class="panel-body">
-                {{#with options}}
-                    <div class="fieldGroup">
-                        <span>Web Name :</span>
-                        <div class="form-group">
-                            {{#objectProperty property=webName editMode=true}}
-                                <input class="form-control input-lg" type="text" placeholder="web name" value="{{value}}">
-                            {{/objectProperty}}
-                        </div><!-- /.form-group -->
-                    </div>
-                    <div class="fieldGroup">
-                        <span>Title :</span>
-                        <div class="form-group">
-                            {{#objectProperty property=title editMode=true}}
-                                <input class="form-control input-lg" type="text" placeholder="title" value="{{value}}">
-                            {{/objectProperty}}
-                        </div><!-- /.form-group -->
-                    </div>
-                    <div class="fieldGroup">
-                        <span>Background :</span>
-                        <div class="form-group">
-                            {{#objectProperty property=background editMode=true}}
-                                {{value}}
-                                <input class="" type="color" placeholder="title" value="{{value}}">
-                            {{/objectProperty}}
-                        </div><!-- /.form-group -->
-                    </div>
+                {{#autoForm id="SetHRConcourseConfiguration" schema="HRCouncoureConfigurationSchema" doc=configuration}}
+                    <fieldset>
+                        {{> afQuickField name='webName'}}
+                        {{> afQuickField name='title'}}
+                        {{> afQuickField name='background' type='color'}}
 
+                        {{#if logo}}
+                            <img id="logo-img" class="img-responsive" style="display: inline; max-height:40px; cursor: pointer"  src="{{logo}}">
+                            <a id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                                Click here to change the logo
+                            </a>
+                        {{else}}
+                            <a id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                                Click here to set a logo
+                            </a>
+                        {{/if}}
+                        <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader"/>
+                    </fieldset>
 
-                {{/with}}
-                    <span>Logo :</span>
-
-                    <div id="edit-pic" title="Click to Edit" style="cursor: pointer">
-                        <img class="img-responsive" style="display: inline; max-height:40px; cursor: pointer"  src="{{logo}}">
-                    </div>
-                    <input id="edit-picture" style="visibility:hidden" name="files" type="file" class="fileUploader" />
-                <button id="saveButton">Save</button>
+                    <button class="btn btn-success pull-right"> Save </button>
+                {{/autoForm}}
             </div>
         </div>
     </div>

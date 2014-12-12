@@ -1,7 +1,6 @@
 hrConcourseManagementController = RouteController.extend({
-  layoutTemplate: 'mainLayout',
   waitOn: function () {
-//    return [];
+    return Meteor.subscribe('hierarchies');
   },
   action: function () {
     if (this.ready())
@@ -11,78 +10,90 @@ hrConcourseManagementController = RouteController.extend({
   }
 });
 
-var options;
-var logo= null;
-var fsFile= null;
-Template.hrConcourse.created= function(){
-  var hier= Hierarchies.findOne(Meteor.user().currentHierId);
-  var config= (hier && hier.configuration) ? hier.configuration : {};
-  options=  new Utils.ObjectDefinition({
-    reactiveProps:{
-      webName:{
-        default: config.webName,
-        validator: function(){
-          return !_.isEmpty(this.value) && !/\s/.test(this.value);
+HRCouncoureConfigurationSchema = new SimpleSchema({
+  webName: {
+    type: String
+  },
+  title: {
+    type: String
+  },
+  background: {
+    type: String,
+    defaultValue: '#f3f3f4'
+  }
+});
+
+AutoForm.hooks({
+  SetHRConcourseConfiguration: {
+    onSubmit: function (configuration) {
+      var self = this;
+
+      // Validate web name
+      Meteor.call("isWebNameAvailable", configuration.webName, function (error, result) {
+        if (! result) {
+          var errorMessage = 'Web name already in use';
+          HRCouncoureConfigurationSchema.namedContext("SetHRConcourseConfiguration").addInvalidKeys([{name: "webName", type: "notUnique", message: errorMessage}]);
+          self.done(new Error(errorMessage));
+        } else {
+          if (fsFile) {
+            // upload logo
+            var file = HierarchiesFS.insert(fsFile);
+            // set logo file id to hier configuration
+            configuration.logo = file._id;
+            // reset file
+            fsFile = null;
+          }
+
+          Meteor.call('saveConfiguration', configuration, function () {
+            self.done();
+          });
         }
-      },
-      title:{
-        default: config.title
-      },
-      background:{
-        default: config.background || '#f3f3f4'
-      }
+      });
+
+      return false;
     }
-  })
-}
+  }
+});
+
+var fsFile = undefined;
+
 Template.hrConcourse.helpers({
-  options: function(){
-    return options;
+  configuration: function () {
+    var currentHier = Hierarchies.findOne(Meteor.user().currentHierId);
+    return currentHier && currentHier.configuration ? currentHier.configuration : {};
   },
   logo: function() {
-    if (logo){
-      HierarchiesFS.getUrlForBlaze(logo)
-    }
-    var hier= Hierarchies.findOne();
-    var config= (hier && hier.configuration) ? hier.configuration : {};
-
+    var hier = Hierarchies.findOne();
+    var config = (hier && hier.configuration) ? hier.configuration : {};
     if (config && config.logo){
       return  HierarchiesFS.getUrlForBlaze(config.logo);
     }
-    return '/assets/user-photo-placeholder.jpg';
   }
-})
+});
+
 Template.hrConcourse.events({
-  'click #saveButton': function(){
-    var opt= options.getObject()
-
-    if (fsFile) {
-      var file = HierarchiesFS.insert(fsFile);
-      logo = file._id;
-      opt.logo= logo
-      fsFile=null;
-    }
-
-    Meteor.call('saveConfiguration', opt, function(err, result){
-      if (err){
-        console.log(err);
-        options.reset();
-        fsFile=null;
-      }
-    })
-  },
   'click #edit-pic': function () {
     $('#edit-picture').trigger('click');
   },
   'change #edit-picture': function (e) {
-    fsFile = new FS.File(e.target.files[0]);
+    var logo = e.target.files[0];
 
-    fsFile.metadata= {
+    // Generate CollectionFS file object
+    fsFile = new FS.File(logo);
+    fsFile.metadata = {
       owner: Meteor.user().currentHierId,
       uploadedBy: Meteor.userId()
     };
 
-//    var file= UsersFS.insert(fsFile);
-//    logo= file._id;
+    // Render temporal logo file
+    var reader = new FileReader();
+    reader.onload = (function(logo) {
+      return function(e) {
+        $('#logo-img').attr('src', e.target.result);
+      };
+    })(logo);
+
+    reader.readAsDataURL(logo);
   }
-})
+});
 
