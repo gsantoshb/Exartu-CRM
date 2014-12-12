@@ -9,6 +9,9 @@ Template.header.helpers({
         }
         return '/assets/user-photo-placeholder.jpg';
     },
+    user: function() {
+      return Meteor.user();
+    },
     userName: function(){
         return Meteor.user().username;
     },
