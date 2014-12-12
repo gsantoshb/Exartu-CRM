@@ -1,17 +1,19 @@
-var customer = ko.observable();
-Template.jobCustomerAddEdit.viewModel = function (entityId, value, path, collection, callback) {
-  if (!entityId) {
-    return;
+var customer = null,
+  value, entityId, callback;
+
+Template.jobCustomerAddEdit.created = function () {
+  entityId = this.data[0];
+  value = this.data[1];
+  callback = this.data[2];
+};
+Template.jobCustomerAddEdit.helpers({
+  addOrEdit: function () {
+    return value ? 'edit' : 'add';
   }
-
-  var self = this;
-  customer(value);
-  self.customer = customer;
-  self.addOrEdit = value ? 'edit' : 'add';
-  self.customers = ko.meteor.find(AllCustomers, {});
-
-  self.add = function () {
-    var customer = self.customer();
+});
+Template.jobCustomerAddEdit.events({
+  'click .add': function () {
+    //var customer = self.customer();
     if (customer === undefined) {
       customer = null;
     }
@@ -21,7 +23,8 @@ Template.jobCustomerAddEdit.viewModel = function (entityId, value, path, collect
         // Set as last customer used
         Meteor.call('setLastUsed', Enums.lastUsedType.customer, customer);
 
-        self.close();
+        Utils.dismissModal();
+
         if (callback && _.isFunction(callback)) {
           callback(customer);
         }
@@ -29,9 +32,8 @@ Template.jobCustomerAddEdit.viewModel = function (entityId, value, path, collect
         console.dir(err);
       }
     })
-  };
-  return self;
-};
+  }
+});
 
 Template.jobCustomerAddEdit.getCustomer = function () {
   return function (string) {
@@ -66,6 +68,6 @@ Template.jobCustomerAddEdit.getCustomer = function () {
 Template.jobCustomerAddEdit.customerChanged = function () {
 
   return function (value) {
-    customer(value);
+    customer = value;
   }
 }
