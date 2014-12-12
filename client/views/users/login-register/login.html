@@ -1,63 +1,56 @@
 <template name="login">
-    <div name="loginVM" class="ex-front">
-        <div class="container">
-            <div id="login-wrapper">
-                <div class="header"><img alt="Exartu" src="/img/logo.png"></div>
-                <div class="banner">
-                    <h1>CRM &amp; Recruiting Software</h1>
-                </div>
-                <div class="login-card">
-                    <div class="login-avatar">
-                        <div class="login-avatar-icon"><i class="icon-profile-business-man"></i></div>
-                    </div>
-
-                    <span class="label label-danger center-block" style="margin-bottom: 10px;" data-bind="text: errorMessage"></span>
-                    <!--ko if: notVerified -->
-                    <a href="#" data-bind="click: resendVerification"> Resend email verification </a>
-                    <!--/ko-->
-
-                    <form role="form">
-                        <div class="form-group">
-                            <label class="sr-only" for="usernameInput">Email address</label>
-                            <input type="email" class="form-control input-lg" id="usernameInput" placeholder="Email" data-bind="value: email">
-                        </div>
-                        <div class="form-group">
-                            <label class="sr-only" for="passwordInput">Password</label>
-                            <input type="password" name="password" class="form-control input-lg" id="passwordInput" placeholder="Password" data-bind="value: password">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-block btn-primary"
-                                    data-bind="click: function(){ $root.loginWithPassword(); }"><strong>Sign in</strong>
-                            </button>
-                        </div>
-                        <!--<a class="pull-right text-normal help-link" href="#">Lost Password?</a>-->
-                        <!--<div class="checkbox">-->
-                        <!--<label class="text-normal">-->
-                        <!--<input type="checkbox" value="">-->
-                        <!--Stay signed in-->
-                        <!--</label>-->
-                        <!--</div>-->
-                    </form>
-
-                    <div class="login-footer">
-                        <div class="pull-left text">
-                            Sign in with
-                        </div>
-                        <div class="pull-right btn-social">
-                            <!--                    <a class="btn btn-facebook" href="#"><i class="fa fa-facebook"></i></a>-->
-                            <!--                    <a class="btn btn-twitter" href="#"><i class="fa fa-twitter"></i></a>-->
-                            <a class="btn btn-google-plus" title="Login using your google account"
-                               data-bind="click: function() { $root.loginWith('Google'); }">
-                                <i class="fa fa-google-plus"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.login-card -->
-
-                <p class="create-account"><a href="/register">Create an account</a></p>
-                <p class="create-account"><a href="#" data-bind="click: recoverPassword">Forgot your password?</a></p>
+    <div class="container">
+        <div id="login-wrapper">
+            <div class="header"><img alt="Exartu" src="/img/logo.png"></div>
+            <div class="banner">
+                <h1>CRM &amp; Recruiting Software </h1>
             </div>
+            <div class="login-card">
+                <div class="login-avatar">
+                    <div class="login-avatar-icon"><i class="icon-profile-business-man"></i></div>
+                </div>
+
+                <span class="label label-danger center-block" style="margin-bottom: 10px;">{{errorMessage}}</span>
+
+                {{#if notVerified}}
+                    <a class="pointer" id="resendVerification"> Resend email verification </a>
+                {{/if}}
+
+                {{#autoForm id="loginForm" schema="LoginSchema" doc=intialValues}}
+                    <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
+                        {{> afFieldInput name='email' class="form-control input-lg" placeholder="Email"}}
+                        {{#if afFieldIsInvalid name='email'}}
+                            <span class="help-block">{{afFieldMessage name='email'}}</span>
+                        {{/if}}
+                    </div>
+
+                    <div class="form-group {{#if afFieldIsInvalid name='password'}}has-error{{/if}}">
+                        {{> afFieldInput name='password' type="password" class="form-control input-lg" placeholder="Password"}}
+                        {{#if afFieldIsInvalid name='password'}}
+                            <span class="help-block">{{afFieldMessage name='password'}}</span>
+                        {{/if}}
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-block btn-primary"><strong>Sign in</strong>
+                        </button>
+                    </div>
+                {{/autoForm}}
+
+                <div class="login-footer">
+                    <div class="pull-left text">
+                        Sign in with
+                    </div>
+                    <div class="pull-right btn-social">
+                        <a class="btn btn-google-plus" title="Login using your google account" id="googleLogin">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.login-card -->
+
+            <p class="create-account"><a href="/register">Create an account</a></p>
+            <p class="create-account"><a class="pointer" id="recoverPassword">Forgot your password?</a></p>
         </div>
     </div>
 </template>
