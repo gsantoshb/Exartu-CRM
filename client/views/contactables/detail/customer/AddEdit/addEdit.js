@@ -1,24 +1,29 @@
-var customer = ko.observable();
-Template.contactCustomerAddEdit.viewModel = function (entityId, value, path, collection, callback) {
-  if (!entityId) {
-    return;
+var customer = null,
+  value, entityId, callback;
+
+Template.contactCustomerAddEdit.created = function () {
+  entityId = this.data[0];
+  value = this.data[1];
+  callback = this.data[2];
+};
+Template.contactCustomerAddEdit.helpers({
+  addOrEdit: function () {
+    return value ? 'edit' : 'add';
   }
+});
 
-  var self = this;
-  customer(value);
-  self.customer = customer;
-  self.addOrEdit = value ? 'edit' : 'add';
-  self.customers = ko.meteor.find(AllCustomers, {});
-
-  self.add = function () {
-    var customer = self.customer();
+Template.contactCustomerAddEdit.events({
+  'click .add': function () {
+    //var customer = self.customer();
     if (customer === undefined) {
       customer = null;
     }
 
     Meteor.call('setContactCustomer', entityId, customer, function (err, result) {
       if (!err) {
-        self.close();
+        // Set as last customer used
+        Utils.dismissModal();
+
         if (callback && _.isFunction(callback)) {
           callback(customer);
         }
@@ -26,9 +31,8 @@ Template.contactCustomerAddEdit.viewModel = function (entityId, value, path, col
         console.dir(err);
       }
     })
-  };
-  return self;
-};
+  }
+});
 
 Template.contactCustomerAddEdit.getCustomer = function () {
   return function (string) {
@@ -48,6 +52,6 @@ Template.contactCustomerAddEdit.getCustomer = function () {
 
 Template.contactCustomerAddEdit.customerChanged = function () {
   return function (value) {
-    customer(value);
+    customer = value;
   }
 };
