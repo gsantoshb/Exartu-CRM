@@ -17,8 +17,11 @@ HierarchyManager = {
 
     hier.planCode = 0;
 
+    // Get count of hierarchies with the same name
+    var hierNameUseCount = Hierarchies.find({'configuration.webName': hier.name}).count();
+
     hier.configuration={
-     webName: hier.name,
+     webName: hier.name + hierNameUseCount > 0 ? hierNameUseCount : '', // Add a suffix if hier.name is already used
      title: hier.name
     };
 
@@ -63,25 +66,32 @@ HierarchyManager = {
   saveConfiguration: function(options) {
     var user= Meteor.user();
     if (!user)
-      return null
+      return null;
+
+    var currentHierId = Utils.getUserHierId(user._id);
+
     if (/\s/.test(options.webName))
       throw new Meteor.Error(500, 'webName contains spaces');
 
-    if (Hierarchies.findOne({'configuration.webName': options.webName, _id: { $ne: user.hierId } })){
+    if (Hierarchies.findOne({'configuration.webName': options.webName, _id: { $ne: currentHierId } })){
       throw new Meteor.Error(500, 'webName already exists');
     }
 
-    var hier=Hierarchies.findOne({_id: user.hierId});
+    var hier = Hierarchies.findOne({_id: currentHierId});
     var oldCong=hier.configuration || {};
 
-    var conf={
+    var conf = {
       webName: options.webName || oldCong.webName,
       title: _.isString(options.title)? options.title : oldCong.title,
       background: options.background || oldCong.webName,
       logo: options.logo || oldCong.logo
-    }
+    };
 
-    Hierarchies.update({_id: user.hierId}, {$set: {configuration: conf}});
+    Hierarchies.update({_id: currentHierId}, {$set: {configuration: conf}});
+  },
+  isWebNameAvailable: function (webName) {
+    var currentHierId = Utils.getUserHierId(Meteor.userId());
+    return ! Hierarchies.findOne({'configuration.webName': webName, _id: {$ne: currentHierId}});
   }
 };
 
