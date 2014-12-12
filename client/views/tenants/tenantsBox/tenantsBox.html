@@ -71,24 +71,12 @@
                         <div class="table-item-title">
                             <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
                                 <a href="/tenant/{{_id}}">
-                                    <i class="icon icon-check-list"></i>
+                                    {{name}}
                                 </a>
                             </strong>
+                            {{_id}}
+                            {{configuration}}
 
-                            <a  href="/contactable/{{employee}}">
-                                {{employeeDisplayName}}
-                                <i class="fa fa-external-link" style="font-size: 14px"></i>
-                            </a>
-
-                            <a  href="/job/{{job}}">
-                                {{jobDisplayName}}
-                                <i class="fa fa-external-link" style="font-size: 14px"></i>
-                            </a>
-
-                            <a  href="/contactable/{{customerId}}">
-                                {{customerDisplayName}}
-                                <i class="fa fa-external-link" style="font-size: 14px"></i>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -120,9 +108,9 @@
 </template>
 
 <template name="tenantInformation">
-    {{#if jobLocationDisplayName}}
-    <i class="icon-map-marker-1"></i>
-    {{jobLocationDisplayName}}
+    {{#if firstUserId}}
+        <i class="icon-map-marker-1"></i>
+        {{displayUserName firstUserId}}
     {{/if}}
 
     <i class="icon-calendar-2"></i>
@@ -148,15 +136,7 @@
     <div class="actions-head search-list">
         <div class="row">
             <div class="col-sm-8 col-md-8 col-lg-8">
-                <div class="pull-left suffix-5">
-                    {{#if isJob}}
-                    <div class="btn-group pull-left suffix-5">
-                        <button type="button" class="btn btn-success addTenant" title="Add">
-                            <span class="fa fa-plus"></span>
-                        </button>
-                    </div>
-                    {{/if}}
-                </div>
+>
 
                 <div class="input-group">
                     {{#objectProperty property=searchString}}

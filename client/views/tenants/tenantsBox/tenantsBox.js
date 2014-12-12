@@ -49,11 +49,6 @@ var loadTenantQueryFromURL = function (params) {
     inactiveQuery.default = !! params.inactives;
   }
 
-  // Status
-  var statusQuery = { type: Utils.ReactivePropertyTypes.array };
-  if (params.status) {
-    statusQuery.default = params.status.split(',');
-  }
 
   // Tags
   var tagsQuery = { type: Utils.ReactivePropertyTypes.array };
@@ -80,13 +75,6 @@ Template.tenantsBox.created = function(){
   var entityId = Session.get('entityId');
   entityType = Utils.getEntityTypeFromRouter();
   isEntitySpecific = false;
-
-  if (entityType != null) {
-    isEntitySpecific = true;
-    if (entityType == Enums.linkTypes.contactable.value) {
-      contactable = Contactables.findOne({_id: entityId});
-    }
-  }
 };
 
 Template.tenantsBox.information = function() {
@@ -137,13 +125,7 @@ Template.tenantsList.created = function () {
     }
 
     if (! tenantQuery.inactives.value) {
-      var activeStatuses;
-      activeStatuses = getActiveStatuses('tenant');
-      if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-        searchQuery.tenantStatus={
-          $in: activeStatuses
-        };
-      }
+        searchQuery.inactive = {$in: [null, false]}
     }
 
     if (tenantQuery.inactives.value) {
@@ -184,14 +166,6 @@ Template.tenantsList.isLoading = function() {
 };
 
 var getActiveStatuses = function(){
-  var status = Enums.lookUpTypes["tenant"];
-  status = status && status.status;
-  if (status){
-    var lookUpCodes = status.lookUpCode;
-    var implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
-    var ids= _.map(implyActives,function(doc){ return doc._id});
-    return ids;
-  }
   return null;
 };
 
@@ -201,9 +175,6 @@ Template.tenantsList.tenants = function() {
   return tenantCollection.find({}, options);
 };
 
-Template.tenantsList.tenantTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.tenant });
-};
 
 // List filters
 
@@ -216,12 +187,6 @@ Template.tenantsFilters.tags = function() {
 };
 
 
-
-// List search
-
-Template.tenantsListSearch.isJob=function() {
-  if (entityType==Enums.linkTypes.job.value) return true;
-};
 
 Template.tenantsListSearch.searchString = function() {
   return tenantQuery.searchString;
@@ -275,7 +240,7 @@ Template.tenantInformation.helpers({
 var selectedSort =  new ReactiveVar();
 var sortFields = [
   {field: 'dateCreated', displayName: 'Date'},
-  {field: 'employeeInfo.lastName', displayName: 'Name'}
+  {field: 'name', displayName: 'Name'}
 ];
 
 Template.tenantListSort.helpers({

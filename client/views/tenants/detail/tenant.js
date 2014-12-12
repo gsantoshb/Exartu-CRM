@@ -19,7 +19,6 @@ TenantController = RouteController.extend({
   }
 });
 
-
 Template.tenant.helpers({
   hierContext: function () {
     if (Session.get('hierId')) {
@@ -29,4 +28,8 @@ Template.tenant.helpers({
   }
 
 });
-
+Template.tenant.events = {
+  'change .inactive': function (e) {
+    Tenants.update({ _id: this._id }, { $set: { inactive: e.target.checked } });
+  }
+}
