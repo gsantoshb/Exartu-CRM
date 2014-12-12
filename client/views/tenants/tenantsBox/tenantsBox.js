@@ -61,8 +61,7 @@ var loadTenantQueryFromURL = function (params) {
       searchString: searchStringQuery,
       selectedLimit: creationDateQuery,
       inactives: inactiveQuery,
-      tags: tagsQuery,
-      statuses: statusQuery
+      tags: tagsQuery
     }
   });
 };
