@@ -1,9 +1,0 @@
-{
-  "name": "knockout-client",
-  "description": "Knockout Client for Meteor",
-  "homepage": "https://github.com/zhouzhuojie/knockout-client",
-  "author": "Zhuojie Zhou <zz@pycode.me> (http://pycode.me)",
-  "version": "0.0.2",
-  "git": "https://github.com/zhouzhuojie/knockout-client.git",
-  "packages": {}
-}

@@ -1,2 +1,2 @@
 ContactMethods = new Meteor.Collection('contactMethods');
-extendedSubscribe('contactMethods', 'ContactMethodsHandler');
+ContactMethodsHandler =  Meteor.subscribe('contactMethods');
