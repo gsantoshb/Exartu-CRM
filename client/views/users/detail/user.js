@@ -4,7 +4,7 @@ UserController = RouteController.extend({
     return [GoogleMapsHandler]
   },
   data: function () {
-    Session.set('entityId', this.params._id);
+    Session.set('userId', this.params._id);
   },
   action:function(){
     if (!this.ready()) {

@@ -70,12 +70,9 @@
                         <div class="table-item-title">
                             <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
                                 <a href="/tenantUser/{{_id}}">
-                                    {{name}}
+                                    {{getUserName}}
                                 </a>
                             </strong>
-                            {{_id}}
-
-
                         </div>
                     </div>
                 </div>
@@ -84,7 +81,11 @@
             <div class="col-sm-6">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container text-muted">
-                        {{> tenantUserInformation }}
+                        <i class="icon-map-marker-1"></i>
+                        {{_id}}
+                        <br /><a href="mailto:{{getUserEmail}}">
+                        <strong>{{getUserEmail}}</strong></a>
+
                     </div>
                 </div>
             </div>
@@ -92,13 +93,7 @@
             <div class="col-sm-2">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container date">
-                        {{#formatted_date date=dateCreated format='fromNow'}}
-                        <span>{{value}}</span><br>
-                        {{/formatted_date}}
-                        {{#if searchKey }}
-                        <i class="glyphicon glyphicon-search"></i>
-                        {{searchKey}}
-                        {{/if}}
+                        {{createdAt}}
                     </div>
                 </div>
             </div>
@@ -107,21 +102,7 @@
 </template>
 
 <template name="tenantUserInformation">
-    {{#if firstUserId}}
-        <i class="icon-map-marker-1"></i>
-        {{displayUserName firstUserId}}
-    {{/if}}
 
-    <i class="icon-calendar-2"></i>
-    <small>
-        {{#formattedDate value=dateCreated}}
-        {{date}}
-        {{/formattedDate}}
-    </small>
-    <br/>
-
-
-    {{displayUserName firstUserId}}
 </template>
 
 <template name="tenantUsersListSearch">

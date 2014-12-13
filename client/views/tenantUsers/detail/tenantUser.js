@@ -1,11 +1,11 @@
 TenantUserController = RouteController.extend({
   template: 'tenantUser',
-  layoutHier: 'mainLayout',
+  layoutUser: 'mainLayout',
   waitOn: function () {
-    return [HierarchiesHandler];
+    return [TenantUsersHandler];
   },
   data: function () {
-    Session.set('hierId', this.params._id);
+    Session.set('userId', this.params._id);
   },
   action: function () {
     if (!this.ready()) {
@@ -18,18 +18,26 @@ TenantUserController = RouteController.extend({
 
   }
 });
-
+var user;
 Template.tenantUser.helpers({
-  hierContext: function () {
-    if (Session.get('hierId')) {
-      var hier = Hierarchies.findOne(Session.get('hierId'));
-      return hier;
+  userContext: function () {
+    if (Session.get('userId')) {
+      user = TenantUsers.findOne({_id: Session.get('userId')});
+      return user;
     }
-  }
+  },
+  getUserName: function()
+    {
+      return Utils.getLocalUserName(user);
+    },
+  getUserEmail: function()
+    {
+      return user.emails[0].address;
+    }
 
 });
 Template.tenantUser.events = {
   'change .inactive': function (e) {
     TenantUsers.update({ _id: this._id }, { $set: { inactive: e.target.checked } });
   }
-}
+};

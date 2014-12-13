@@ -134,6 +134,8 @@ AutoForm.inputValueHandlers({
   }
 });
 
+
+
 // User name display
 UI.registerHelper('displayUserName', function (id) {
   var user = Meteor.users.findOne({ _id: id });

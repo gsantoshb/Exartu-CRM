@@ -195,11 +195,6 @@ Template.tenantUsersListSearch.isLoading = function () {
 }
 
 Template.tenantUsersListSearch.events = {
-  'click .addTenantUser': function (e) {
-    Session.set('addOptions', {job: Session.get('entityId')});
-    Router.go('/tenantUserAdd/tenantUser');
-    e.preventDefault();
-  }
 };
 
 // Item
@@ -220,6 +215,14 @@ Template.tenantUsersListItem.helpers({
   },
   displayObjType: function() {
     return Utils.getTenantUserType(this);
+  },
+  getUserName: function()
+  {
+    return Utils.getLocalUserName(this);
+  },
+  getUserEmail: function()
+  {
+    return this.emails[0].address;
   }
 });
 

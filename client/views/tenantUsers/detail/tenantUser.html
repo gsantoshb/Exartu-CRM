@@ -5,22 +5,16 @@
         </div>
         <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">Management</a>
-            <a href="/tenantUser" class="current">TenantUser</a>
+            <a href="/tenantUser" class="current">TenantUser{{getUserName}}</a>
         </div>
         <div class="container-fluid">
             <div class="form-group">
-                <span>Name:</span>
-                <input class="form-control templateName" placeholder="Name.." value="{{hierContext.name}}">
-            </div>
-            <div class="form-group">
             </div>
             <hr>
+            {{#with userContext}}
             <div>
-
                 <div style="display: {{#if editMode}} block {{else}} none {{/if}}">
-                    {{#with hierContext}}
-                        {{name}}
-                    {{/with}}
+                        {{getUserName}}
                 </div>
                 <!-- Active -->
                 <div class="col-xs-6 col-sm-1">
@@ -32,6 +26,7 @@
                 </div>
 
             </div>
+
             <hr>
 
             <div class="clearfix">
@@ -39,6 +34,7 @@
                     <button id="add" class="btn btn-primary">Save</button>
                 </div>
             </div>
+            {{/with}}
         </div>
 
     </div>

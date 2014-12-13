@@ -2,7 +2,7 @@ TenantController = RouteController.extend({
   template: 'tenant',
   layoutHier: 'mainLayout',
   waitOn: function () {
-    return [HierarchiesHandler];
+    return [TenantsHandler];
   },
   data: function () {
     Session.set('hierId', this.params._id);

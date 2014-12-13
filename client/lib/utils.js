@@ -697,3 +697,8 @@ Utils.extendContactableDisplayName = function (contactable) {
   if (contactable.organization)
     contactable.displayName = contactable.organization.organizationName;
 };
+
+Utils.getLocalUserName= function(user)
+{
+  return  user.emails[0].address.split('@')[0];
+}
