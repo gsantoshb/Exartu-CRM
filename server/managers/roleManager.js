@@ -22,5 +22,9 @@ RoleManager = {
   {
     if (!_.contains(user.roles, RoleManager.getRoleFromName(name)._id)) return false;
     return true;
+  },
+  bUserIsSystemAdministrator: function (user)
+  {
+    return RoleManager.bUserHasRoleId(user,this.getSystemAdministratorRole()._id)
   }
 };

@@ -74,7 +74,7 @@
                                 </a>
                             </strong>
                             {{_id}}
-                            {{configuration}}
+
 
                         </div>
                     </div>
@@ -114,21 +114,14 @@
 
     <i class="icon-calendar-2"></i>
     <small>
-        {{#formattedDate value=startDate}}
-        {{date}}
-        {{/formattedDate}}-
-        {{#if endDate}}
-        {{#formattedDate value=endDate}}
+        {{#formattedDate value=dateCreated}}
         {{date}}
         {{/formattedDate}}
-        {{/if}}
     </small>
-
     <br/>
 
 
-
-    {{displayUserName userId}}
+    {{displayUserName firstUserId}}
 </template>
 
 <template name="tenantsListSearch">

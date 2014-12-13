@@ -1,39 +1,28 @@
 TenantView = new View('tenants', {
   collection: Hierarchies,
-  cursors: function(tenant) {}
+  cursors: function(tenant)
+  {
+  }
 });
 
 
-//Meteor.publish('tenants', function() {
-//  var user = Meteor.users.findOne(this.userId);
-//  if (!user)
-//    return false;
-////  var sysAdmin=systemAdmins.findOne({_id: user._id});
-////  if ( !sysAdmin) return null;
-//  return Hierarchies.find();
-//});
-
-
-Meteor.paginatedPublish(TenantView, function(){
-  var user = Meteor.users.findOne({
-    _id: this.userId
-  });
-  console.log('tenants pag1');
-  if (!user)
-    return false;
-  return  TenantView.find();
+Meteor.paginatedPublish(TenantView, function()
+  {
+    var user = Meteor.users.findOne({
+      _id: this.userId
+    });
+    if (!user)
+      return false;
+    if (!RoleManager.bUserIsSystemAdministrator(user))
+      return null;
+    return TenantView.find();
   },
   {
   pageSize: 15,
   publicationName: 'tenants',
   updateSelector: function (selector, params) {
-    console.log('tenants pag2', selector, params);
     if (!params || !params.searchString) return selector;
-
     var searchStringSelector = {$or: []};
-
-
-    // Merge with client selector
     if (! selector.$or) {
       selector.$or = searchStringSelector.$or;
     } else {
