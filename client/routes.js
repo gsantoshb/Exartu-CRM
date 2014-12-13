@@ -114,6 +114,15 @@ Router.map(function () {
     controller: 'TenantController'
   });
 
+  this.route('tenantUsers', {
+    path: '/tenantUsers',
+    controller: 'TenantUsersController'
+  });
+
+  this.route('tenantUser', {
+    path: '/tenantUser/:_id?',
+    controller: 'TenantUsersController'
+  });
 
   this.route('inbox', {
     path: '/inbox',

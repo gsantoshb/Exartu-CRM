@@ -1,0 +1,45 @@
+<template name="tenantUser">
+    <div id="content">
+        <div id="content-header" class="mini">
+            <h1>TenantUser</h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Management</a>
+            <a href="/tenantUser" class="current">TenantUser</a>
+        </div>
+        <div class="container-fluid">
+            <div class="form-group">
+                <span>Name:</span>
+                <input class="form-control templateName" placeholder="Name.." value="{{hierContext.name}}">
+            </div>
+            <div class="form-group">
+            </div>
+            <hr>
+            <div>
+
+                <div style="display: {{#if editMode}} block {{else}} none {{/if}}">
+                    {{#with hierContext}}
+                        {{name}}
+                    {{/with}}
+                </div>
+                <!-- Active -->
+                <div class="col-xs-6 col-sm-1">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" checked="{{inactive}}" class="inactive" /> Inactive
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+
+            <div class="clearfix">
+                <div class="pull-right">
+                    <button id="add" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</template>
