@@ -5,7 +5,7 @@
           <td>
 
 
-              New <i class="icon {{getActivityIcon}}"></i>
+              <i class="fa fa-plus"></i> <i class="icon {{getActivityIcon}}"></i>
               <span class="task-author">
                   {{displayUserName userId}}
               </span>
@@ -90,7 +90,7 @@
           <td>
               <i class="icon icon-clock-3"></i>
 
-              New task:
+              <i class="fa fa-plus"></i> task:
               <span class="task-author">
                   {{displayUserName userId}}
               </span>
@@ -180,7 +180,7 @@
           <td>
               <i class="icon icon-briefcase"></i>
 
-              New job
+              <i class="fa fa-plus"></i> job
 
               <a href="/job/{{entityId}}">
                   <strong>{{data.publicJobTitle}}</strong>
@@ -278,8 +278,8 @@
   {{#if listViewMode}}
       <tr>
           <td>
-
-              New <i class="icon icon-note-paper-1"></i>
+              <i class="fa fa-plus"></i>
+              <i class="icon icon-note-paper-1"></i>
               <span class="task-author">
                   {{displayUserName userId}}
               </span>
@@ -322,7 +322,7 @@
               <div class="box">
                   <div class="box-content">
                       <h4 class="item-title">
-                          New note
+                          <i class="fa fa-plus"></i> note
 
                         {{#with note}}
                             <span class="spacer">–</span>
@@ -365,7 +365,7 @@
       <tr>
           <td>
               <i class="icon icon-check-list"></i>
-              <a href="/placement/{{entityId}}"> New placement </a>
+              <a href="/placement/{{entityId}}"> <i class="fa fa-plus"></i> placement </a>
               <span class="task-author">
                   {{displayUserName userId}}
               </span>
@@ -403,7 +403,7 @@
               <div class="box">
                   <div class="box-content">
                       <h4 class="item-title">
-                          <a href="/placement/{{entityId}}"> New placement </a>
+                          <a href="/placement/{{entityId}}"> <i class="fa fa-plus"></i> placement </a>
                           <span class="spacer">–</span>
                           <strong><a href="/contactable/{{employee._id}}"> {{employee.displayName}} </a></strong>
                            as
@@ -434,7 +434,7 @@
       <tr>
           <td>
               <i class="icon icon-clock-3"></i>
-              New file uploaded
+              <i class="fa fa-plus"></i> file uploaded
               -
               <strong> file.name </strong>
 
@@ -465,7 +465,7 @@
               <div class="box">
                   <div class="box-content">
                       <h4 class="item-title">
-                          New file uploaded
+                          <i class="fa fa-plus"></i> file uploaded
                           <span class="spacer">–</span>
                           <strong>{{file.name}}</strong>
                       </h4>
