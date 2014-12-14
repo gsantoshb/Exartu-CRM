@@ -47,3 +47,11 @@ Template.newFileActivity.helpers({
     return ContactablesFiles.findOne(this.entityId);
   }
 });
+
+Template.newJobActivity.helpers({
+    customer: function () {
+      return Contactables.findOne(this.data.customerId);
+
+    }
+});
+

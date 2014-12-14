@@ -329,6 +329,9 @@ Tasks.after.insert(function (userId, doc) {
 // Jobs
 
 Jobs.after.insert(function (userId, doc) {
+  var cust=Contactables.findOne(doc.customer);
+  var customerDisplayName;
+  if (cust && cust.organization) customerDisplayName=cust.organization.organizationName;
   Activities.insert({
     userId: userId,
     hierId: doc.hierId,
@@ -338,7 +341,8 @@ Jobs.after.insert(function (userId, doc) {
     data: {
       publicJobTitle: doc.publicJobTitle,
       customerId: doc.customer,
-      dateCreated : new Date()
+      dateCreated : new Date(),
+      customerDisplayName: customerDisplayName
     }
   });
 });
