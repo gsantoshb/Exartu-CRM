@@ -3,18 +3,21 @@
   {{#if listViewMode}}
       <tr>
           <td>
-              <i class="icon {{getActivityIcon}}"></i>
 
-              New <span>{{data.objTypeName}}</span>
+
+              New <i class="icon {{getActivityIcon}}"></i>
+              <span class="task-author">
+                  {{displayUserName userId}}
+              </span>
               <a href="/contactable/{{entityId}}">
                   <strong>
                       <span>{{data.displayName}}</span>
                   </strong>
               </a>
 
-              created by
 
-              <strong> {{displayUserName userId}} </strong>
+
+
 
             {{#if data.contactableEmail}}
                 <a class="tip-bottom" title="Send Message" href="mailto:{{data.contactableEmail}}">
@@ -88,12 +91,13 @@
               <i class="icon icon-clock-3"></i>
 
               New task:
-              <a class="btn btn-default tip-bottom pointer" title="Task Owner">by
-                  <span> {{displayUserName this.userId}} </span>
-              </a>
-              <a class="btn btn-default tip-bottom pointer" title="Task Owner">assigned
-                  <span> {{displayUserName task.assign}} </span>
-              </a>
+              <span class="task-author">
+                  {{displayUserName userId}}
+              </span>
+              <i class="fa fa-long-arrow-right"></i>
+              <span class="task-author">
+                  {{displayUserName task.assign}}
+              </span>
 
               <strong>{{task.msg}}</strong>
 
@@ -185,8 +189,9 @@
             {{#if customer}}
                 @ <a href="/contactable/{{customer._id}}">{{customerName}}</a>
             {{/if}}
-
-              created by <strong> {{displayUserName this.userId}} </strong>
+              <span class="task-author">
+                  {{displayUserName userId}}
+              </span>
 
               <div class="pull-right">
                 {{#formattedDate value=data.dateCreated format='fromNow'}}
@@ -273,14 +278,22 @@
   {{#if listViewMode}}
       <tr>
           <td>
-              <i class="icon icon-clock-3"></i>
 
-              New note created by
-              <strong> {{displayUserName this.userId}} </strong>
+              New <i class="icon icon-note-paper-1"></i>
+              <span class="task-author">
+                  {{displayUserName userId}}
+              </span>
 
-              <!--linked with-->
-
-              -
+              {{#with note}}
+              <strong>{{msg}}</strong>
+              {{#each this.links}}
+              <a href="{{getHref}}">
+                  {{#with getEntity}}
+                  <span class="badge">{{displayName}}</span>
+                  {{/with}}
+              </a>
+              {{/each}}
+              {{/with}}
 
               <div class="pull-right">
                 {{#formattedDate value=data.dateCreated format='fromNow'}}
@@ -353,9 +366,9 @@
           <td>
               <i class="icon icon-check-list"></i>
               <a href="/placement/{{entityId}}"> New placement </a>
-              created by
-              <strong> {{displayUserName this.userId}} </strong>
-              -
+              <span class="task-author">
+                  {{displayUserName userId}}
+              </span>
               <strong><a href="/contactable/{{employee._id}}"> {{employee.displayName}} </a></strong>
               as
               <strong><a href="/job/{{job._id}}"> {{job.displayName}} </a></strong>
@@ -478,12 +491,10 @@
           <td>
               <i class="icon icon-clock-3"></i>
 
-              New note created by
-              <strong> {{displayUserName this.userId}} </strong>
+              <span class="task-author">
+                  {{displayUserName this.userId}}
+              </span>
 
-              was linked with
-
-              -
 
               <div class="pull-right">
                 {{#formattedDate value=data.dateCreated format='fromNow'}}

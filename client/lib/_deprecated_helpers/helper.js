@@ -235,6 +235,7 @@ _.extend(helper, {
     var style = dType.ObjTypes.findOne({
       name: _.isString(activity.data.objTypeName)? activity.data.objTypeName : activity.data.objTypeName()
     }).style;
+    console.log('style',style,activity.data,icons);
     return _.findWhere(icons, {
       name: style.icon
     }).value;
