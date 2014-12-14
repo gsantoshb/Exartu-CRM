@@ -3,20 +3,15 @@
   {{#if listViewMode}}
       <tr>
           <td>
-
-
-              <i class="icon {{getActivityIcon}}"></i>
               <span class="task-author">
                   {{displayUserName userId}}
               </span>
+              <i class="icon {{getActivityIcon}}"></i>
               <a href="/contactable/{{entityId}}">
                   <strong>
                       <span>{{data.displayName}}</span>
                   </strong>
               </a>
-
-
-
 
 
             {{#if data.contactableEmail}}
@@ -35,14 +30,8 @@
   {{else}}
       <div class="item item-customer">
           <div class="item-info">
-              <div class="time">
-                  <i class="icon icon-clock-3"></i>
-                    <span>
-                      {{#formattedDate value=data.dateCreated format='fromNow'}}
-                        {{date}}
-                      {{/formattedDate}}
-                    </span>
-              </div>
+              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+
               <div class="type" style="background: {{getActivityColor}}">
                   <i class="icon {{getActivityIcon}}"></i>
               </div>
@@ -57,9 +46,6 @@
                                   <span>{{data.displayName}}</span>
                               </strong>
                           </a>
-                          <div class="task-author">
-                            {{displayUserName userId}}
-                          </div>
                       </h4>
                       <div class="item-actions">
                         {{#if data.contactableEmail}}
@@ -110,14 +96,8 @@
   {{else}}
       <div class="item item-task">
           <div class="item-info">
-              <div class="time">
-                  <i class="icon icon-clock-3"></i>
-                    <span>
-                      {{#formattedDate value=data.dateCreated format='fromNow'}}
-                        {{date}}
-                      {{/formattedDate}}
-                    </span>
-              </div>
+              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+
               <div class="type">
                   <i class="icon icon-clock-3"></i>
               </div>
@@ -167,12 +147,27 @@
       <!-- /.item -->
   {{/if}}
 </template>
+<template name="activityPrefixDisplay">
 
+    <div class="time">
+        <span class="task-author text-center">
+                  {{displayUserName userId}}
+              </span>
+        <br />
+        {{#formattedDate value=dateCreated format='fromNow'}}
+        {{date}}
+        {{/formattedDate}}
+
+    </div>
+</template>
 <!-- New job activity -->
 <template name="newJobActivity">
   {{#if listViewMode}}
       <tr>
           <td>
+              <span class="task-author">
+                  {{displayUserName userId}}
+              </span>
               <i class="icon icon-briefcase"></i>
 
 
@@ -185,9 +180,7 @@
                <i class="fa fa-long-arrow-right"></i>
                 <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
             {{/if}}
-              <span class="task-author">
-                  {{displayUserName userId}}
-              </span>
+
 
               <div class="pull-right">
                 {{#formattedDate value=data.dateCreated format='fromNow'}}
@@ -199,13 +192,8 @@
   {{else}}
       <div class="item item-job">
           <div class="item-info">
-              <div class="time">
-                  <i class="icon icon-clock-3"></i><span>
-                {{#formattedDate value=data.dateCreated format='fromNow'}}
-                  {{date}}
-                {{/formattedDate}}
-              </span>
-              </div>
+              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+
               <div class="type">
                   <i class="icon icon-briefcase"></i>
               </div>
@@ -300,14 +288,8 @@
   {{else}}
       <div class="item item-task">
           <div class="item-info">
-              <div class="time">
-                  <i class="icon icon-clock-3"></i>
-                    <span>
-                      {{#formattedDate value=data.dateCreated format='fromNow'}}
-                        {{date}}
-                      {{/formattedDate}}
-                    </span>
-              </div>
+              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+
               <div class="type">
                   <i class="icon icon-note-paper-1"></i>
               </div>
@@ -329,18 +311,6 @@
                             {{/each}}
                         {{/with}}
                       </h4>
-                      <div class="item-actions">
-                          <a class="btn btn-default tip-bottom pointer" title="Task Owner">
-                              <span> {{displayUserName this.userId}} </span>
-                          </a>
-
-                          <i class="fa fa-calendar"></i>
-                          <span>
-                            {{#formattedDate value=data.dateCreated format='lll'}}
-                              {{date}}
-                            {{/formattedDate}}
-                          </span>
-                      </div>
                   </div>
                   <!-- /.box-content -->
               </div>
@@ -378,14 +348,8 @@
   {{else}}
       <div class="item item-task">
           <div class="item-info">
-              <div class="time">
-                  <i class="icon icon-clock-3"></i>
-                    <span>
-                      {{#formattedDate value=data.dateCreated format='fromNow'}}
-                        {{date}}
-                      {{/formattedDate}}
-                    </span>
-              </div>
+              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+
               <div class="type">
                   <i class="icon icon-check-list"></i>
               </div>
@@ -405,11 +369,6 @@
                               <strong><a href="/contactable/{{_id}}"> {{displayName}} </a></strong>
                           {{/with}}
                       </h4>
-                      <div class="item-actions">
-                          <a class="btn btn-default tip-bottom pointer">
-                              <span> {{displayUserName this.userId}} </span>
-                          </a>
-                      </div>
                   </div>
                   <!-- /.box-content -->
               </div>
@@ -440,14 +399,8 @@
   {{else}}
       <div class="item item-task">
           <div class="item-info">
-              <div class="time">
-                  <i class="icon icon-clock-3"></i>
-                    <span>
-                      {{#formattedDate value=data.dateCreated format='fromNow'}}
-                        {{date}}
-                      {{/formattedDate}}
-                    </span>
-              </div>
+              {{>activityPrefixDisplay userId=this.userId dateCreated=data.dateCreated }}
+
               <div class="type">
                   <i class="icon icon-upload-3"></i>
               </div>
@@ -498,14 +451,8 @@
   {{else}}
       <div class="item item-task">
           <div class="item-info">
-              <div class="time">
-                  <i class="icon icon-clock-3"></i>
-                    <span>
-                      {{#formattedDate value=data.dateCreated format='fromNow'}}
-                        {{date}}
-                      {{/formattedDate}}
-                    </span>
-              </div>
+              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+
               <div class="type">
                   <i class="icon icon-pencil-1"></i>
               </div>
@@ -635,14 +582,8 @@
     {{else}}
         <div class="item item-task">
             <div class="item-info">
-                <div class="time">
-                    <i class="icon icon-clock-3"></i>
-                    <span>
-                        {{#formattedDate value=data.dateCreated format='fromNow'}}
-                            {{date}}
-                        {{/formattedDate}}
-                    </span>
-                </div>
+                {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+
                 <div class="type">
                     <i class="icon icon-pencil-1"></i>
                 </div>
