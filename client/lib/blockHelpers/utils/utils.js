@@ -100,7 +100,9 @@ Template.dropzone_template.events = {
 
 // Return current git tag
 UI.registerHelper('ExartuVersion', function() {
-  return __meteor_runtime_config__.git_branch == 'release'? __meteor_runtime_config__.git_tag : __meteor_runtime_config__.git_branch + ' - ' + __meteor_runtime_config__.git_tag;
+  var gitTag= (__meteor_runtime_config__.git_tag) ? __meteor_runtime_config__.git_tag : "";
+  return __meteor_runtime_config__.git_branch == 'release'? __meteor_runtime_config__.git_tag : __meteor_runtime_config__.git_branch
+      +gitTag;
 });
 
 
