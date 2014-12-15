@@ -71,20 +71,6 @@ JobPlacementView = new View('jobs', {
   }
 });
 
-Meteor.paginatedPublish(JobPlacementView, function(){
-  var user = Meteor.users.findOne({
-    _id: this.userId
-  });
-
-  if (!user)
-    return false;
-
-  return Utils.filterCollectionByUserHier.call(this, JobPlacementView.find());
-}, {
-  pageSize: 15,
-  publicationName: 'jobs'
-});
-
 Meteor.publish('singleJob', function (id) {
   return Utils.filterCollectionByUserHier.call(this, JobView.find({_id: id}));
 });
