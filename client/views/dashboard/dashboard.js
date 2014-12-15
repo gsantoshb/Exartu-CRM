@@ -51,7 +51,11 @@ var query ={
 };
 var queryDep= new Deps.Dependency;
 var listViewDefault=Session.get('dashboardListViewMode');
-if (!listViewDefault) listViewDefault=false
+if (!listViewDefault)
+{
+  //if we are on mobile, use the list mode unless otherwise selected
+  listViewDefault=( $(window).width()<781) ? true: false;
+}
 var listViewMode = new ReactiveVar(listViewDefault);
 
 Template.dashboard.created = function(){

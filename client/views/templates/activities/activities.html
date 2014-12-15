@@ -1,4 +1,20 @@
-<!-- New contactable activity -->
+<template name="prefixDetailDisplay">
+
+    <div class="time">
+        <span class="task-author text-center">
+                  {{displayUserName userId}}
+
+        <br />
+        {{#formattedDate value=dateCreated format='fromNow'}}
+        {{date}}
+        {{/formattedDate}}
+        </span>
+
+    </div>
+</template>
+<template name="activityIconDisplay">
+    {{>getActivityIcon}}
+</template>
 <template name="newContactableActivity">
   {{#if listViewMode}}
       <tr>
@@ -30,11 +46,8 @@
   {{else}}
       <div class="item item-customer">
           <div class="item-info">
-              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
-              <div class="type" style="background: {{getActivityColor}}">
-                  <i class="icon {{getActivityIcon}}"></i>
-              </div>
           </div>
           <!-- /.item-info -->
           <div class="item-content">
@@ -96,7 +109,7 @@
   {{else}}
       <div class="item item-task">
           <div class="item-info">
-              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
               <div class="type">
                   <i class="icon icon-clock-3"></i>
@@ -147,19 +160,7 @@
       <!-- /.item -->
   {{/if}}
 </template>
-<template name="activityPrefixDisplay">
 
-    <div class="time">
-        <span class="task-author text-center">
-                  {{displayUserName userId}}
-              </span>
-        <br />
-        {{#formattedDate value=dateCreated format='fromNow'}}
-        {{date}}
-        {{/formattedDate}}
-
-    </div>
-</template>
 <!-- New job activity -->
 <template name="newJobActivity">
   {{#if listViewMode}}
@@ -192,7 +193,7 @@
   {{else}}
       <div class="item item-job">
           <div class="item-info">
-              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
               <div class="type">
                   <i class="icon icon-briefcase"></i>
@@ -288,7 +289,7 @@
   {{else}}
       <div class="item item-task">
           <div class="item-info">
-              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
               <div class="type">
                   <i class="icon icon-note-paper-1"></i>
@@ -348,7 +349,7 @@
   {{else}}
       <div class="item item-task">
           <div class="item-info">
-              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
               <div class="type">
                   <i class="icon icon-check-list"></i>
@@ -399,7 +400,7 @@
   {{else}}
       <div class="item item-task">
           <div class="item-info">
-              {{>activityPrefixDisplay userId=this.userId dateCreated=data.dateCreated }}
+              {{>prefixDetailDisplay userId=this.userId dateCreated=data.dateCreated }}
 
               <div class="type">
                   <i class="icon icon-upload-3"></i>
@@ -451,7 +452,7 @@
   {{else}}
       <div class="item item-task">
           <div class="item-info">
-              {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
               <div class="type">
                   <i class="icon icon-pencil-1"></i>
@@ -582,7 +583,7 @@
     {{else}}
         <div class="item item-task">
             <div class="item-info">
-                {{>activityPrefixDisplay userId=userId dateCreated=data.dateCreated }}
+                {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
                 <div class="type">
                     <i class="icon icon-pencil-1"></i>
