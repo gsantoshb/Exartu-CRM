@@ -53,8 +53,7 @@ var queryDep= new Deps.Dependency;
 var listViewDefault=Session.get('dashboardListViewMode');
 if (!listViewDefault)
 {
-  //if we are on mobile, use the list mode unless otherwise selected
-  listViewDefault=( $(window).width()<781) ? true: false;
+  listViewDefault=true;
 }
 var listViewMode = new ReactiveVar(listViewDefault);
 
