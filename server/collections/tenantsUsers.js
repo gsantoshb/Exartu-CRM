@@ -19,7 +19,7 @@ Meteor.paginatedPublish(TenantUserView, function()
     return TenantUserView.find();
   },
   {
-  pageSize: 100,
+  pageSize: 50,
   publicationName: 'tenantUsers',
   updateSelector: function (selector, params) {
     if (!params || !params.searchString) return selector;

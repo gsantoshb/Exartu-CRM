@@ -67,7 +67,7 @@ Meteor.paginatedPublish(TaskView, function () {
 
   return Utils.filterCollectionByUserHier.call(this, TaskView.find({}, { sort: { dateCreated: -1 } }));
 },{
-  pageSize: 100,
+  pageSize: 50,
   publicationName: 'tasks'
 });
 

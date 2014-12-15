@@ -6,7 +6,7 @@ It allows sales professionals to efficiently manage prospects, and allows recrui
 This repository for the moment contains just the shell of a system that has been under development during the last year.
 
 
-Aida is owned and licensed by GAD Inc dba Aida Creative Group of Eagan, MN, a provider of software consulting and business software.
+Aïda is owned and licensed by GAD Inc dba Aïda Creative Group of Eagan, MN, a provider of software consulting and business software.
 
 
 ## Install:

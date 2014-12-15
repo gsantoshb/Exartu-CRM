@@ -1,6 +1,6 @@
 
 
-Copyright (C) 2013-2015 GAD Inc, dba Aida Creative Group
+Copyright (C) 2013-2015 GAD Inc, dba Aïda Creative Group
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
