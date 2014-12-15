@@ -29,7 +29,7 @@ _.extend( Utils, {
     var parts = hier.split('-');
     var root = parts[0];
     var index = 1;
-    while( root === ExartuConfig.SystemHierarchyId) {
+    while( root === ExartuConfig.TenantId) {
       root += '-' + parts[index];
       index++;
     }
@@ -46,7 +46,7 @@ _.extend( Utils, {
       accumulated = accumulated + (accumulated ? '-' : '') + part;
       var aux={};
       aux[key] = {
-        $regex: '^' + ExartuConfig.SystemHierarchyId + '-' + accumulated + '$'
+        $regex: '^' + ExartuConfig.TenantId + '-' + accumulated + '$'
       };
       ors.push(aux)
     });
@@ -85,6 +85,7 @@ _.extend( Utils, {
   },
   getLocationDisplayName: function (location) {
     return !location ? '' : (
+    (location.streetNumber || '' ) + ' '  +
     (location.address  || '' ) + ' '  +
     (location.address1 || '' ) + ', ' +
     (location.city     || '' ) + ', ' +

@@ -50,6 +50,14 @@ ContactablesList = new View('auxContactables',{
       to: 'contactables'
     });
 
+    // Publish customer's jobs
+    this.publish({
+      cursor: function (contactable) {
+        return Jobs.find({customer: contactable._id});
+      },
+      to: 'jobs'
+    });
+
     // Last note
     this.publish({
       cursor: function (contactable) {
@@ -77,7 +85,18 @@ Meteor.paginatedPublish(ContactablesList, function () {
   },
   {
     pageSize: 15,
-    publicationName: 'auxContactables'
+    publicationName: 'auxContactables',
+    updateSelector: function (oldSelector, clientParams) {
+      var newSelector = EJSON.clone(oldSelector);
+      if (clientParams && clientParams.placementStatus) {
+        // Get ids of employees that have placements with status equal to clientParams.placementStatus
+        newSelector._id = {$in: Placements.find({candidateStatus: {$in: clientParams.placementStatus}}).map(function(placement){
+          return placement.employee;
+        })};
+      }
+
+      return newSelector;
+    }
   }
 );
 
@@ -177,4 +196,8 @@ Resumes.allow({
 // Indexes
 
 Contactables._ensureIndex({hierId: 1});
+Contactables._ensureIndex({'dateCreated': 1});
 Contactables._ensureIndex({objNameArray: 1});
+Contactables._ensureIndex({'Employee.status': 1});
+Contactables._ensureIndex({'Customer.status': 1});
+Contactables._ensureIndex({'Contact.status': 1});

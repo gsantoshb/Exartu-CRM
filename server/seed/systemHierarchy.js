@@ -1,31 +1,32 @@
 Meteor.startup(function () {
-  var systemHier = Hierarchies.findOne({_id: ExartuConfig.SystemHierarchyId});
+  var systemHier = Hierarchies.findOne({_id: ExartuConfig.TenantId});
   if (systemHier)
     return;
 
   // Create system hierachy
   var hier = Hierarchies.insert(
     {
-      _id: ExartuConfig.SystemHierarchyId,
+      _id: ExartuConfig.TenantId,
       name: 'system',
-      planCode: 1
+      planCode: 1,
+      dateCreated: Date.now()
     }
   );
-
   var systemUser = {
     username: 'exartu',
     email: ExartuConfig.systemUserEmail,
     password: ExartuConfig.systemUserPassword,
     profile: {
       hierId: hier
-    }
+    },
+    roles : [RoleManager.getSystemAdministratorRole()._id]
   };
 
   var systemUserId = Accounts.createUser(systemUser);
-  console.log(systemUserId);
+  console.log('System UserId',systemUserId);
   Meteor.users.update({_id: systemUserId, 'emails.address': ExartuConfig.systemUserEmail}, {$set: {'emails.$.verified': true }});
 });
 
 Meteor.methods({
-  isSystemHier: function() { return Meteor.user()? Meteor.user().hierId == ExartuConfig.SystemHierarchyId : false; }
+  isSystemHier: function() { return Meteor.user()? Meteor.user().hierId == ExartuConfig.TenantId : false; }
 });

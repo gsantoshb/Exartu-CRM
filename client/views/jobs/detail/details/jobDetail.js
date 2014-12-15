@@ -22,8 +22,7 @@ Template.jobDetail.helpers({
   job: function(){
     var originalJob = jobCollections.findOne({ _id: Session.get('entityId') });
     Session.set('jobDisplayName', originalJob.displayName);
-    if (!job)
-      job = generateReactiveObject(originalJob);
+    job = generateReactiveObject(originalJob);
     return job;
   },
   originalJob:function(){

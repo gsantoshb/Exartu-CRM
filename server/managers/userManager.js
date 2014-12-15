@@ -91,11 +91,17 @@ UserManager = {
 
       var user = {
         email: document.email,
-        password: document.password
+        password: document.password,
+        roles: []
       };
 
-      if (document.hierId)
+      if (document.hierId) {
         user.profile = {hierId: document.hierId};
+      }
+      else
+      {
+        user.roles= [RoleManager.getClientAdministratorRole()._id];
+      }
 
       var userId = Accounts.createUser(user);
       if (!skipEmailVerification) {
@@ -164,6 +170,73 @@ UserManager = {
 
     // Mark invitation as used
     markInvitationsAsUsed(userInvitation);
+  },
+
+  // Last used
+  getLastUsed: function (type) {
+    var user = Meteor.user();
+
+    switch (type) {
+      case Enums.lastUsedType.customer:
+        if (!user.lastUsed || !user.lastUsed.customer)
+          return [];
+        return _.map(user.lastUsed.customer, function (customerId) {
+          return Contactables.findOne({objNameArray: 'Customer', _id: customerId, $or: Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()))});
+        });
+      case Enums.lastUsedType.employee:
+        if (!user.lastUsed || !user.lastUsed.employee)
+          return [];
+        return _.map(user.lastUsed.employee, function (employeeId) {
+          return Contactables.findOne({objNameArray: 'Employee', _id: employeeId, $or: Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()))});
+        });
+    }
+  },
+  setLastUsed: function (type, value) {
+    var update = {
+      $set: {}
+    };
+
+    switch (type) {
+      case Enums.lastUsedType.customer:
+        addNewLastUsedItem('customer', value);
+        break;
+      case Enums.lastUsedType.employee:
+        addNewLastUsedItem('employee', value);
+        break;
+    }
+
+    // Update lastUsed list
+    Meteor.users.update({_id: Meteor.userId()}, update);
+
+    function addNewLastUsedItem(lastUsedField, value) {
+      var user = Meteor.user();
+      var oldList = !user.lastUsed || !user.lastUsed[lastUsedField] ? [] : user.lastUsed[lastUsedField];
+
+      // Get new list
+      var newList = generateList(oldList, value);
+
+      if (!_.isEqual(oldList, newList)) {
+        if (!user.lastUsed)
+          update.$set.lastUsed = {
+            customer: newList
+          };
+        else
+          update.$set['lastUsed.' + lastUsedField] = newList;
+      }
+    }
+
+    function generateList(orgList, item) {
+      var list = EJSON.clone(orgList);
+      if (_.contains(list, item))
+        return list;
+
+      if (list.length >= 5) {
+        list.pop(); // remove last item to length less or equal to 5
+      }
+      list.unshift(item); // insert item at the beginning
+
+      return list;
+    }
   }
 };
 
@@ -256,7 +329,7 @@ var sendInvitation = function(address, token, hierName) {
     + "Please click the link below to accept the invitation. Alternatively, copy the link into your browser.\n\n"
     + url + "\n\n"
     + "Thank you,\n"
-    + "Exartu team";
+    + "Aida team";
 
   EmailManager.sendEmail(address, 'TempWorks - Invitation', text, false);
 };
@@ -288,20 +361,20 @@ Accounts.emailTemplates.from = "Exartu team<exartu.developer@gmail.com>";
 
 // Email account verification template
 Accounts.emailTemplates.verifyEmail.subject = function (user) {
-  return "Welcome to CRM Exartu";
+  return "Welcome to Aida Sales and Recruiting Software";
 };
 Accounts.emailTemplates.verifyEmail.text = function (user, url) {
   return "Dear " + user.emails[0].address + ",\n\n"
-    + "Welcome, and thank you for registering in Exartu.\n"
+    + "Welcome, and thank you for registering with Aida.\n"
     + "Please click the link below to verify your email address. Alternatively, copy the link into your browser.\n\n"
     + url + "\n\n"
     + "Thank you,\n"
-    + "Exartu team";
+    + "Aida team";
 };
 
 
 Accounts.emailTemplates.enrollAccount.subject = function (user) {
-  return "Welcome to CRM Exartu, " + user.profile.name;
+  return "Welcome to Aida, " + user.profile.name;
 };
 Accounts.emailTemplates.enrollAccount.text = function (user, url) {
   return "You have been selected to participate in building a better future!"
@@ -315,12 +388,12 @@ Accounts.emailTemplates.resetPassword.subject = function (user) {
 };
 Accounts.emailTemplates.resetPassword.text = function (user, url) {
   return "Dear user,\n\n"
-    + "We have received a request to reset the password for your Exartu account.\n"
+    + "We have received a request to reset the password for your Aida account.\n"
     + "Please click the link below to set your new password. Alternatively, copy the link into your browser.\n\n"
     + url + "\n\n"
     + "If you have not requested it, please dismiss this email.\n\n"
     + "Thank you,\n"
-    + "Exartu team";
+    + "Aida team";
 };
 
 

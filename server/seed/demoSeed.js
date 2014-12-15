@@ -3,171 +3,171 @@ var tags = [
    [ 'sales','innovator'], ['javascript','css','oodb','sql','linux'],[ 'accounting','bookkeeping','cpa','auditing']
 
 ];
-
 var contacts = [
   {
-    firstName: "Doe",
-    lastName: "Samantha"
+    lastName: "Doe",
+    firstName: "Samantha"
   },
   {
-    firstName: "Reagan",
-    lastName: "John"
+    lastName: "Reagan",
+    firstName: "John"
   },
   {
-    firstName: "Ryan",
-    lastName: "Darcy"
+    lastName: "Ryan",
+    firstName: "Darcy"
   },
   {
-    firstName: "Campos",
-    lastName: "Jeff"
+    lastName: "Campos",
+    firstName: "Jeff"
   },
   {
-    firstName: "Belton",
-    lastName: "Joseph"
+    lastName: "Belton",
+    firstName: "Joseph"
   },
   {
-    firstName: "Sotono",
-    lastName: "Reggie"
+    lastName: "Sotono",
+    firstName: "Reggie"
   },
   {
-    firstName: "Columbo",
-    lastName: "Jeff"
+    lastName: "Columbo",
+    firstName: "Jeff"
   },
   {
-    firstName: "Bond",
-    lastName: "James"
+    lastName: "Bond",
+    firstName: "James"
   },
   {
-    firstName: "Cameron",
-    lastName: "Sandy"
+    lastName: "Cameron",
+    firstName: "Sandy"
   },
   {
-    firstName: "Velotos",
-    lastName: "Remie"
+    lastName: "Velotos",
+    firstName: "Remie"
   }
 ];
 var employees = [
   {
-    firstName: "Eagleton",
-    lastName: "Andrew"
+    lastName: "Eagleton",
+    firstName: "Andrew"
   },
   {
-    firstName: "Gate",
-    lastName: "John"
+    lastName: "Gate",
+    firstName: "John"
   },
   {
-    firstName: "Smith",
-    lastName: "John"
+    lastName: "Smith",
+    firstName: "John"
   },
   {
-    firstName: "Ruffington",
-    lastName: "Wilson"
+    lastName: "Ruffington",
+    firstName: "Wilson"
   },
   {
-    firstName: "Berneche",
-    lastName: "Joe"
+    lastName: "Berneche",
+    firstName: "Joe"
   },
   {
-    firstName: "Soto",
-    lastName: "Roger"
+    lastName: "Soto",
+    firstName: "Roger"
   },
   {
-    firstName: "Schrute",
-    lastName: "Anna"
+    lastName: "Schrute",
+    firstName: "Anna"
   },
   {
-    firstName: "Pankerton",
-    lastName: "Johnny"
+    lastName: "Pankerton",
+    firstName: "Johnny"
   },
   {
-    firstName: "Pasarini",
-    lastName: "Fernando"
+    lastName: "Pasarini",
+    firstName: "Fernando"
   },
   {
-    firstName: "Campos",
-    lastName: "Jeffrey"
+    lastName: "Campos",
+    firstName: "Jeffrey"
   },
   {
-    firstName: "Climer",
-    lastName: "Rae"
+    lastName: "Climer",
+    firstName: "Rae"
   },
   {
-    firstName: "Lewis",
-    lastName: "James"
+    lastName: "Lewis",
+    firstName: "James"
   },
   {
-    firstName: "Love",
-    lastName: "Jeff"
+    lastName: "Love",
+    firstName: "Jeff"
   },
   {
-    firstName: "Jones",
-    lastName: "Debbie"
+    lastName: "Jones",
+    firstName: "Debbie"
   },
   {
-    firstName: "Barbeau",
-    lastName: "Adrian"
+    lastName: "Barbeau",
+    firstName: "Adrian"
   },
   {
-    firstName: "Pasarini",
-    lastName: "Vito"
+    lastName: "Pasarini",
+    firstName: "Vito"
   },
   {
-    firstName: "Lee",
-    lastName: "Nestor"
+    lastName: "Lee",
+    firstName: "Nestor"
   },
   {
-    firstName: "McKee",
-    lastName: "Geoffrey"
+    lastName: "McKee",
+    firstName: "Geoffrey"
   },
   {
-    firstName: "Pennington",
-    lastName: "Charlene"
+    lastName: "Pennington",
+    firstName: "Charlene"
   },
   {
-    firstName: "Wayne",
-    lastName: "John"
+    lastName: "Wayne",
+    firstName: "John"
   },
   {
-    firstName: "Norris",
-    lastName: "Aram"
+    lastName: "Norris",
+    firstName: "Aram"
   },
   {
-    firstName: "Bean",
-    lastName: "Mark"
+    lastName: "Bean",
+    firstName: "Mark"
   },
   {
-    firstName: "Cossey",
-    lastName: "Michael"
+    lastName: "Cossey",
+    firstName: "Michael"
   },
   {
-    firstName: "Edwards",
-    lastName: "Robert"
+    lastName: "Edwards",
+    firstName: "Robert"
   },
   {
-    firstName: "Fox",
-    lastName: "William"
+    lastName: "Fox",
+    firstName: "William"
   },
   {
-    firstName: "Crosby",
-    lastName: "Howard"
+    lastName: "Crosby",
+    firstName: "Howard"
   },
   {
-    firstName: "Small",
-    lastName: "Jeff"
+    lastName: "Small",
+    firstName: "Jeff"
   },
   {
-    firstName: "Whitson",
-    lastName: "Charles"
+    lastName: "Whitson",
+    firstName: "Charles"
   },
   {
-    firstName: "Hart",
-    lastName: "Pamela"
+    lastName: "Hart",
+    firstName: "Pamela"
   },
   {
-    firstName: "Cossey",
-    lastName: "Zoe"
+    lastName: "Cossey",
+    firstName: "Zoe"
   }
 ];
+
 
 // 57 Customers
 var customers = [
@@ -607,11 +607,21 @@ Meteor.methods({
     if (!user)
       return;
 
-    loadContactables(user.hierId);
-    loadJobs(user.hierId);
-    loadPlacements(user.hierId);
-    loadTasks(user.hierId, user.username, user._id);
-    loadNotes(user.hierId, user.username, user._id);
+    var progress = ServerProgress.start(Meteor.userId(),'injectData');
+    var userCurrentHierId = Utils.getUserHierId(user._id);
+
+    progress.set(5);
+    loadContactables(userCurrentHierId);
+    progress.set(30);
+    loadJobs(userCurrentHierId);
+    progress.set(40);
+    loadPlacements(userCurrentHierId);
+    progress.set(60);
+    loadTasks(userCurrentHierId, user.username, user._id);
+    progress.set(80);
+    loadNotes(userCurrentHierId, user.username, user._id);
+    progress.set(100);
+    progress.end();
   },
   removeDemoData: function () {
     var user = Meteor.user();

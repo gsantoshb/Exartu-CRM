@@ -3,7 +3,7 @@ UI.registerHelper('inputLocation', function() {
     var placeSearch, autocomplete, element=this.$('.location')[0];
     var getLocation = _.bind(function() {
       var place = autocomplete.getPlace();
-      this.value=Utils.getLocation(place)
+      this.value = Utils.getLocation(place)
     },this.data);
 
     autocomplete = new google.maps.places.Autocomplete(element, { types: ['geocode'] });
@@ -148,5 +148,10 @@ UI.registerHelper('displayUserName', function (id) {
   //if the localPart is unique return it, else include the domain
   var isUnique = Meteor.users.find({emails: {$elemMatch: {address : {$regex: '^' + localPart + '@.*'} } } }).count() <= 1;
   return isUnique ? localPart : user.emails[0].address;
+});
+
+// Multiline text format helper
+Template.registerHelper('multilineText', function (text) {
+  return text.replace(/\r?\n/g,'<br/>');
 });
 

@@ -4,7 +4,7 @@
         <div id="user-nav" class="navbar-right pull-right">
             <ul class="btn-group">
                 <li class="hidden-xs">
-                    <a href="/user" style="display: inline-flex">
+                    <a href="/user/{{user._id}}" style="display: inline-flex">
                         <span class="user-menu-thumb">
                             <img class="img-responsive" style="max-height:26px; max-width:26px" src="{{userThumbnail}}">
                         </span>
@@ -104,12 +104,17 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="contactables {{getActiveClass 'contactables' null}}">
+                <li class="submenu contactables {{getActiveClass 'contactables' null}}">
                     <a href="/contactables">
                         <i class="icon icon-connection-1"></i>
                         <span>Network</span>
-                        <!--<i class="arrow fa fa-chevron-right"></i>-->
                     </a>
+                    <i class="arrow trigger-menu fa fa-plus"></i>
+                    <ul style="display: none">
+                        {{#each contactableTypes}}
+                            <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
+                        {{/each}}
+                    </ul>
                 </li>
 
                 <li class="jobs {{getActiveClass 'jobs' null}}">

@@ -64,8 +64,8 @@ HRConcourseManager = {
       userId: user._id,
       user: user._id,
       person: {
-        "firstName" : user.username,
-        "lastName" : user.username
+        "firstName" : user.username || user.emails[0].address,
+        "lastName" : user.username || user.emails[0].address
       },
       Employee:{
 

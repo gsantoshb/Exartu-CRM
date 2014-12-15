@@ -387,7 +387,7 @@ newObjType({
       displayName: 'Start date',
       fieldType: 'date',
       defaultValue: null,
-      required: true
+      required: false
     }, {
       name: 'endDate',
       displayName: 'End date',

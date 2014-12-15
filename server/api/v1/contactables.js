@@ -108,20 +108,40 @@ var contactablesAPIAction = function(type, userdata) {
 var mapper = {
 	create: function(data, type) {
 		var contactable = {
-			objNameArray: [ 'person', 'contactable', type],
+			objNameArray: ['contactable', type]
 		};
 
-		_.forEach(['firstName', 'lastName', 'middleName', 'jobTitle'], function(personField) {
+		var personFields = ['firstName', 'lastName', 'middleName', 'jobTitle'];
+
+		// Check if it's a person
+		var isPerson = _.some(personFields, function (fieldName) {
+			return !! data[fieldName];
+		});
+
+		if (isPerson)
+			contactable.objNameArray.push('person');
+
+		_.forEach(personFields, function(personField) {
 			if (data[personField]) {
 				contactable.person = contactable.person || {};
 				contactable.person[personField] = data[personField];
 			}
 		});
 
-		_.forEach(['organizationName', 'department'], function(organziationField) {
-			if (data[organziationField]) {
+		var organizationFields = ['organizationName', 'department'];
+
+		// Check if it's an organization
+		var isOrganization = _.some(organizationFields, function (fieldName){
+			return !! data[fieldName];
+		});
+
+		if (isOrganization)
+			contactable.objNameArray.push('organization');
+
+		_.forEach(organizationFields, function(organizationField) {
+			if (data[organizationField]) {
 				contactable.organization = contactable.organization || {};
-				contactable.organization[organziationField] = data[organziationField];
+				contactable.organization[organizationField] = data[organizationField];
 			}
 		});
 
@@ -131,7 +151,7 @@ var mapper = {
 
     if(data.email){
       var emailTypeId = ContactMethods.findOne({
-        hierId: ExartuConfig.SystemHierarchyId,
+        hierId: ExartuConfig.TenantId,
         type: Enums.contactMethodTypes.email
       });
       if (emailTypeId){
@@ -144,7 +164,7 @@ var mapper = {
     }
     if(data.phoneNumber){
       var phoneTypeId = ContactMethods.findOne({
-        hierId: ExartuConfig.SystemHierarchyId,
+        hierId: ExartuConfig.TenantId,
         type: Enums.contactMethodTypes.phone
       });
 

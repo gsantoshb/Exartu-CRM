@@ -1,7 +1,7 @@
 var entityType = null;
 var isEntitySpecific = false;
 var contactable;
-var searchFields = ['jobDisplayName','employeeDisplayName','customerDisplayName'];
+var searchFields = ['employeeInfo.firstName', 'employeeInfo.lastName', 'employeeInfo.middleName'];
 
 var placementCollection = Placements;
 var PlacementHandler, placementQuery;
@@ -107,15 +107,18 @@ Template.placementsBox.isSearching = function() {
   searchDep.depend();
   return isSearching;
 };
-
+var options = {};
 // List
 Template.placementsList.created = function () {
   if (!SubscriptionHandlers.PlacementHandler){
     SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
   }
   PlacementHandler = SubscriptionHandlers.PlacementHandler;
+  console.log('th',PlacementHandler);
   Meteor.autorun(function () {
     var searchQuery = {};
+    var params = {};
+    options = {};
     var urlQuery = new URLQuery();
 
     searchDep.depend();
@@ -123,26 +126,16 @@ Template.placementsList.created = function () {
     if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
 
     if (entityType==Enums.linkTypes.contactable.value) {
-      if (contactable.Customer) searchQuery.customer=Session.get('entityId');
+      if (contactable.Customer) {
+        // Get customer jobs
+        var jobsId = Jobs.find({customer: Session.get('entityId')}).map(function (job) { return job._id;});
+        searchQuery.job = {$in: jobsId};
+      }
       if (contactable.Employee) searchQuery.employee=Session.get('entityId');
     }
 
     if (!_.isEmpty(placementQuery.searchString.value)) {
-      var stringSearches = [];
-      _.each(searchFields, function (field) {
-        var aux = {};
-        aux[field] = {
-          $regex: placementQuery.searchString.value,
-          $options: 'i'
-        }
-        stringSearches.push(aux);
-      });
-      searchQuery = {
-        $and: [searchQuery, {
-          $or: stringSearches
-        }]
-      };
-
+      params.searchString = placementQuery.searchString.value;
       urlQuery.addParam('search', placementQuery.searchString.value);
     }
 
@@ -183,13 +176,26 @@ Template.placementsList.created = function () {
     // Set url query
     urlQuery.apply();
 
-    PlacementHandler.setFilter(searchQuery);
+    if (selectedSort.get()) {
+      var selected = selectedSort.get();
+      options.sort = {};
+      options.sort[selected.field] = selected.value;
+    } else {
+      delete options.sort;
+    }
+
+    PlacementHandler.setFilter(searchQuery, params);
+    PlacementHandler.setOptions(options);
   })
 };
 
 Template.placementsList.info = function() {
   info.isFiltering.value = PlacementHandler.totalCount() != 0;
   return info;
+};
+
+Template.placementsList.isLoading = function() {
+  return SubscriptionHandlers.PlacementHandler.isLoading();
 };
 
 var getActiveStatuses = function(){
@@ -212,7 +218,7 @@ var getCandidateStatuses = function(objname){
 };
 
 Template.placementsList.placements = function() {
-  return placementCollection.find();
+  return placementCollection.find({}, options);
 };
 
 Template.placementsList.placementTypes = function() {
@@ -305,3 +311,47 @@ Template.placementInformation.helpers({
     return rate.displayName;
   }
 });
+
+
+// list sort
+
+var selectedSort =  new ReactiveVar();
+var sortFields = [
+  {field: 'dateCreated', displayName: 'Date'},
+  {field: 'employeeInfo.lastName', displayName: 'Name'}
+];
+
+Template.placementListSort.helpers({
+  sortFields: function() {
+    return sortFields;
+  },
+  selectedSort: function() {
+    return selectedSort.get();
+  },
+  isFieldSelected: function(field) {
+    return selectedSort.get() && selectedSort.get().field == field.field;
+  },
+  isAscSort: function() {
+    return selectedSort.get() ? selectedSort.get().value == 1: false;
+  }
+});
+
+var setSortField = function(field) {
+  var selected = selectedSort.get();
+  if (selected && selected.field == field.field) {
+    if (selected.value == 1)
+      selected = undefined;
+    else
+      selected.value = 1;
+  } else {
+    selected = field;
+    selected.value = -1;
+  }
+  selectedSort.set(selected);
+};
+
+Template.placementListSort.events = {
+  'click .sort-field': function() {
+    setSortField(this);
+  }
+};

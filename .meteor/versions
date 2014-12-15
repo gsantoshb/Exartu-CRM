@@ -109,6 +109,7 @@ reload@1.1.0
 retry@1.0.0
 routepolicy@1.0.1
 sacha:spin@2.0.4
+server-progress@0.0.0
 service-configuration@1.0.1
 session@1.0.2
 sha@1.0.0

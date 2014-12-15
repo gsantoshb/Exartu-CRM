@@ -1,13 +1,13 @@
 Meteor.publish('lookUps', function () {
-  return Utils.filterCollectionByUserHier.call(this, LookUps.find({hierId: {$ne:ExartuConfig.SystemHierarchyId}}, {sort: {displayName: 1}}));
+  return Utils.filterCollectionByUserHier.call(this, LookUps.find({hierId: {$ne:ExartuConfig.TenantId}}, {sort: {displayName: 1}}));
 });
 
 LookUps.allow({
   update: function(userId, doc) {
-    return Meteor.user() && methods.getHierarchiesRelation(Meteor.user().hierId, doc.hierId) == -1;
+    return Meteor.user() && methods.getHierarchiesRelation(Meteor.user().currentHierId, doc.hierId) == -1;
   },
   insert: function(userId, doc) {
-    return Meteor.user() && methods.getHierarchiesRelation(Meteor.user().hierId, doc.hierId) == -1;
+    return Meteor.user() && methods.getHierarchiesRelation(Meteor.user().currentHierId, doc.hierId) == -1;
   }
 });
 

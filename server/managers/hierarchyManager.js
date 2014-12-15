@@ -1,8 +1,8 @@
 HierarchyManager = {
   create: function(hier) {
-   //TODO: Check options values
+    //TODO: Check options values
 
-   if (hier.parent != null) {
+    if (hier.parent != null) {
      var parentHier = Hierarchies.findOne({
        _id: hier.parent
      });
@@ -11,19 +11,20 @@ HierarchyManager = {
 
      hier._id = generateUniqueHierId(hier.parent);
 
-   } else {
-     hier._id = generateUniqueHierId(ExartuConfig.SystemHierarchyId);
-   }
+    } else {
+     hier._id = generateUniqueHierId(ExartuConfig.TenantId);
+    }
 
-   hier.planCode = 0;
+    hier.planCode = 0;
 
-   hier.configuration={
+    hier.configuration={
      webName: hier.name,
      title: hier.name
-   };
+    };
 
-   Hierarchies.insert(hier);
-   return hier._id;
+    hier.dateCreated = new Date();
+
+    return Hierarchies.insert(hier);
   },
   getCurrentHierUsers: function() {
     return Meteor.users.find({

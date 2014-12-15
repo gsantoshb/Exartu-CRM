@@ -15,7 +15,7 @@ var options;
 var logo= null;
 var fsFile= null;
 Template.hrConcourse.created= function(){
-  var hier= Hierarchies.findOne();
+  var hier= Hierarchies.findOne(Meteor.user().currentHierId);
   var config= (hier && hier.configuration) ? hier.configuration : {};
   options=  new Utils.ObjectDefinition({
     reactiveProps:{
@@ -77,7 +77,7 @@ Template.hrConcourse.events({
     fsFile = new FS.File(e.target.files[0]);
 
     fsFile.metadata= {
-      owner: Meteor.user().hierId,
+      owner: Meteor.user().currentHierId,
       uploadedBy: Meteor.userId()
     };
 

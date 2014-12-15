@@ -1,87 +1,38 @@
-<template name="znotesTab">
+<template name="notesTab">
     <div class="record">
-        <div class="row">
-            <!--<div class="col-md-3 col-lg-3">-->
-                <!--{{> notesFilter}}-->
-            <!--</div>-->
-            <div >
-                {{> notesTabAdd}}
-                {{> notesTabList}}
-            </div>
-        </div>
+        {{> notesTabAdd}}
+        {{> notesTabList}}
     </div>
 </template>
-<template name="znotesFilter">
-            <div class="filter">
-                <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-                    <strong><i class="fa fa-filter"></i></strong>
-                </a>
-                <div class="filter-list" id="filter-body">
-                    <div class="filter-item">
-                        <div class="filter-title">
-                            Status
-                        </div>
 
-                        <div data-bind="foreach: states">
-                            {{#each states}}
-                            <button type="button" class="btn btn-sm selectState {{selectedClass}}">{{name}}</button>
-                            {{/each}}
-                        </div>
-                    </div>
-
-                    <div class="filter-item">
-                        <div class="filter-title">
-                            <i class="fa fa-eye"></i>
-                            Visibility
-                        </div>
-
-                        <div class="checkbox">
-                            <label>
-                                {{#objectProperty property=filters.inactives}}
-                                <input type="checkbox" checked="{{value}}" />Archived
-                                {{/objectProperty}}
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                {{#objectProperty property=filters.ownedByMe}}
-                                <input type="checkbox" checked="{{value}}" />Mine only
-                                {{/objectProperty}}
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="filter-item">
-                        <div class="filter-title">
-                            <i class="fa fa-user"></i>
-                            Owner
-                        </div>
-
-                        <div class="checkbox">
-                            {{#objectProperty property=filters.assigned}}
-                            <input type="checkbox" checked="{{assigned}}" />Assigned to:
-                            {{/objectProperty}}
-                        </div>
-                        {{#objectProperty property=filters.assignedTo}}
-                        <select class="form-control">
-                            {{#each users}}
-                            <option value="{{_id}}">{{displayUserName _id}}</option>
-                            {{/each}}
-                        </select>
-                        {{/objectProperty}}
-                    </div>
-                </div>
-            </div>
-</template>
-<template name="znotesTabAdd">
+<template name="notesTabAdd">
     <div class="record-add row">
+        <div class="add-box-head add-box-responsive col-xs-12 col-md-3">
+            <div class="add-item-icon"><i class="icon-note-paper-1"></i></div>
+            <div class="add-item-title">Notes</div>
+        </div>
 
-        <div class="add-box-content col-sm-12">
+        <div class="add-box-content col-sm-12 col-md-9">
             {{#autoForm id="AddNoteRecord" schema="NoteSchema" meteormethod="addContactableNote" type="method" resetOnSuccess=true}}
                 {{> afQuickField name='msg' rows=3}}
                 {{> linksAutoForm name='links'}}
 
                 <br/>
+
+                {{#unless userNumbers}}
+                    <small class="text-muted">  <a href="/management/twilioManagement">Enable SMS/Texting</a></small>
+                {{else}}
+                    {{#unless mobileNumbers}}
+                        <small class="text-muted"> This record has no mobile phone, so SMS/text not possible</small>
+                    {{else}}
+                        {{> afQuickField name="sendAsSMS"}}
+
+                        {{#if afFieldValueIs name='sendAsSMS' value=true}}
+                            {{> afFormGroup name="userNumber" options=userNumbers}}
+                            {{> afFormGroup name="contactableNumber" options=mobileNumbers}}
+                        {{/if}}
+                    {{/unless}}
+                {{/unless}}
 
                 <button type="submit" class="btn btn-success pull-right"> Save </button>
             {{/autoForm}}
@@ -89,7 +40,7 @@
     </div>
 </template>
 
-<template name="znotesTabList">
+<template name="notesTabList">
     <div class="record-list-pagination">
         {{> fastPagination name="notes"}}
     </div>
@@ -100,7 +51,7 @@
     </ul>
 </template>
 
-<template name="znotesTabItem">
+<template name="notesTabItem">
     <li class="record-record list-3-item">
         <div class="list-thumb"><i class="icon-note-paper-2"></i></div>
         <div class="list-3-content list-magic">
@@ -146,26 +97,13 @@
     </li>
 </template>
 
-<template name="znotesTabEditItem">
+<template name="notesTabEditItem">
     {{#autoForm id=formId schema="NoteSchema" doc=doc collection="Notes" type="update"}}
         {{> afQuickField name='msg' rows=3}}
         {{> linksAutoForm name='links' value=doc.links}}
 
         <br/>
-        {{#unless userNumbers}}
-        <!--<small class="text-muted"> You have no numbers available to send note as SMS, <a href="/management/twilioManagement"> go to your Twilio configuration</a> to request a number </small>-->
-        {{else}}
-        {{#unless contactableNumbers}}
-        <!--<small class="text-muted"> This contactable has no phone number as a contact method, go to details to add one </small>-->
-        {{else}}
-        {{> afQuickField name="sendAsSMS"}}
 
-        {{#if afFieldValueIs name='sendAsSMS' value=true}}
-        {{> afFormGroup name="userNumber" options=userNumbers}}
-        {{> afFormGroup name="contactableNumber" options=contactableNumbers}}
-        {{/if}}
-        {{/unless}}
-        {{/unless}}
         <div class="pull-right">
             <span class="btn btn-default cancelNoteRecordChanges"> Cancel </span>
             <button class="btn btn-success"> Save </button>

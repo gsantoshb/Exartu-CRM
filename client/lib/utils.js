@@ -243,7 +243,7 @@ Utils.Validators.stringNotEmpty = function() {
 Utils.getLocation = function (googleLocation) {
   if (!googleLocation || !googleLocation.address_components) return undefined;
 
-  var address, city, state, country, postalCode;
+  var address, city, state, country, postalCode, streetNumber;
   _.forEach(googleLocation.address_components, function(component) {
     if (_.findWhere(component.types, 'route'))
       address = component.long_name;
@@ -255,6 +255,8 @@ Utils.getLocation = function (googleLocation) {
       country = component.long_name;
     if (_.findWhere(component.types, 'postal_code'))
       postalCode = component.long_name;
+    if (_.findWhere(component.types, 'street_number'))
+      streetNumber = component.long_name;
   });
 
   return {
@@ -265,12 +267,14 @@ Utils.getLocation = function (googleLocation) {
     city: city,
     state: state,
     country: country,
-    postalCode: postalCode
+    postalCode: postalCode,
+    streetNumber: streetNumber
   }
 };
 
 Utils.getLocationDisplayName = function (location) {
   return !location ? '' : (
+  (location.streetNumber || '' ) + ' '  +
   (location.address  || '' ) + ' '  +
   (location.address1 || '' ) + ', ' +
   (location.city     || '' ) + ', ' +
@@ -303,13 +307,18 @@ Utils.getEntityFromLink=function(link){
     case Enums.linkTypes.contactable.value:
       return Contactables.findOne({_id: link.id});
     case Enums.linkTypes.job.value:
-      return Jobs.findOne({_id: link.id});
+      var job = Jobs.findOne({_id: link.id});
+      if (! job) return;
+      // Extend displayName with customer displayName
+      var customer = AllContactables.findOne(job.customer);
+      job.displayName += '@' + customer.displayName;
+      return job;
     case Enums.linkTypes.deal.value:
-          return Deals.findOne({_id: link.id});
-      case Enums.linkTypes.placement.value:
-          return Placements.findOne({_id: link.id});
-      case Enums.linkTypes.candidate.value:
-          return Candidates.findOne({_id: link.id});
+        return Deals.findOne({_id: link.id});
+    case Enums.linkTypes.placement.value:
+        return Placements.findOne({_id: link.id});
+    case Enums.linkTypes.candidate.value:
+        return Candidates.findOne({_id: link.id});
   }
 }
 Utils.getEntityFromLinkForAdd=function(link){
@@ -319,11 +328,11 @@ Utils.getEntityFromLinkForAdd=function(link){
     case Enums.linkTypes.job.value:
       return AllJobs.findOne({_id: link.id});
     case Enums.linkTypes.deal.value:
-          return Deals.findOne({_id: link.id});
-      case Enums.linkTypes.placement.value:
-          return AllPlacements.findOne({_id: link.id});
-      case Enums.linkTypes.candidate.value:
-          return AllPlacements.findOne({_id: link.id});
+        return Deals.findOne({_id: link.id});
+    case Enums.linkTypes.placement.value:
+        return AllPlacements.findOne({_id: link.id});
+    case Enums.linkTypes.candidate.value:
+        return AllPlacements.findOne({_id: link.id});
   }
 }
 
@@ -606,7 +615,8 @@ Utils.users =function(){
 };
 
 Utils.getPhoneNumberDisplayName = function (phoneNumber) {
-  return  '(' + phoneNumber.slice(1, 4) + ') ' + phoneNumber.slice(5, 8) + '-' + phoneNumber.slice(8, 12);
+  return phoneNumber;
+//  return  '(' + phoneNumber.slice(1, 4) + ') ' + phoneNumber.slice(5, 8) + '-' + phoneNumber.slice(8, 12);
 };
 
 Template.registerHelper('getPhoneNumberDisplayName', function(phoneNumber) {
@@ -642,11 +652,48 @@ Utils.getContactableEmail = function (contactable) {
   _.every(contactable.contactMethods, function (cm) {
     var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
     if (!type)
-      return true; //keep lokking
+      return true; //keep looking
     if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email)){
       result = cm.value;
       return false; //finish
     }
   });
   return result;
+};
+
+Utils.getContactableMobilePhones = function (contactable) {
+  var result = [];
+  var contactMethodsTypes = Utils.getContactMethodTypes_MobilePhone();
+  _.every(contactable.contactMethods, function (cm) {
+    var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
+    if (!type)
+      return true; //keep looking
+    else
+    {
+      result.push(cm.value);
+      return true;
+    }
+  });
+  return result;
+};
+Utils.getContactableMobilePhone = function (contactable) {
+  var result = Utils.getContactableMobilePhones(contactable);
+  if (result.length>0) return result[0];
+  return null;
+};
+
+
+Utils.getContactMethodTypes_Email = function () {
+  return LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: "ContactMethod_Email" }).fetch()
+};
+
+Utils.getContactMethodTypes_MobilePhone = function () {
+  return LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: "ContactMethod_MobilePhone" }).fetch()
+};
+
+Utils.extendContactableDisplayName = function (contactable) {
+  if (contactable.person)
+    contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
+  if (contactable.organization)
+    contactable.displayName = contactable.organization.organizationName;
 };

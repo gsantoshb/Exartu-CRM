@@ -54,6 +54,19 @@
                         {{/if}}
                     </td>
                 </tr>
+
+                <tr class="box-table-label">
+                    <td>St. number</td>
+                    <td>
+                        {{#if editMode}}
+                            {{> afFieldInput name='streetNumber'}}
+                        {{else}}
+                            <strong>
+                                {{location.value.streetNumber}}
+                            </strong>
+                        {{/if}}
+                    </td>
+                </tr>
                 <tr>
                     <td class="box-table-label">City</td>
                     <td>

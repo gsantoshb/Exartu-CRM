@@ -1,16 +1,16 @@
-<template name="znotes">
+<template name="tenants">
     <div id="content">
         <div id="content-header" class="mini">
             <h1>
-                <strong>{{getCount notes}}</strong>
-                <span>Notes</span>
+                <strong>{{tenantCount}}</strong>
+                <span>Tenants</span>
             </h1>
         </div>
         <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">Home</a>
-            <a href="/notes" class="current">notes</a>
+            <a href="/tenants" class="current">tenants</a>
         </div>
+        {{>tenantsBox}}
 
-        {{> notesItem}}
     </div>
 </template>

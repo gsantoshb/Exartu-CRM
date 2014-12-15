@@ -8,7 +8,7 @@ RegisterController = RouteController.extend({
   },
   onAfterAction: function () {
     var title = 'Sign Up',
-      description = 'Create a new Exartu account';
+      description = 'Create a new Aida account';
     SEO.set({
       title: title,
       meta: {

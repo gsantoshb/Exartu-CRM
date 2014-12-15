@@ -2,7 +2,7 @@ ExartuConfig = {
   // Mail server
   MAIL_URL: undefined,
   // Root
-  SystemHierarchyId: "sys",
+  TenantId: "sys",
   systemUserEmail: undefined,
   systemUserPassword: undefined,
   // Google

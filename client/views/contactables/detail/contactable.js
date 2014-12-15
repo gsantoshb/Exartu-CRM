@@ -46,6 +46,12 @@ Template.contactable.helpers({
       _id: Session.get('entityId')
     });
     Session.set('contactableDisplayName', contactable.displayName);
+
+    // if contactable is an 'Employee' then add it to last used employees list
+    if (contactable.objNameArray.indexOf('Employee') != -1) {
+      Meteor.call('setLastUsed', Enums.lastUsedType.employee, contactable._id);
+    }
+
     return contactable;
   },
   // Information to dynamic templates

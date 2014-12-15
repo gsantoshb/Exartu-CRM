@@ -1,12 +1,11 @@
-var AuxContactablesHandler;
-
 var query = {};
 
 ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [Meteor.subscribe('allPlacements')];
+    SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+    return [SubscriptionHandlers.AuxContactablesHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -22,12 +21,11 @@ ContactablesController = RouteController.extend({
     var objTypeQuery = {};
     var type = this.params.hash || this.params.type;
     if (type != undefined && type != 'all') {
-      var re = new RegExp("^" + type + "$", "i");
       var objType = dType.ObjTypes.findOne({
-        name: re
+        name: type
       });
       objTypeQuery.default = objType.name;
-      info.objType.value = objType.name+'s';
+      info.objType.value = objType.name + 's';
     } else {
       objTypeQuery.default  = undefined;
       info.objType.value = 'record(s)';
@@ -82,7 +80,7 @@ ContactablesController = RouteController.extend({
     }
 
     // Employee's placements status
-    var placementStatusQuery = {};
+    var placementStatusQuery = { type: Utils.ReactivePropertyTypes.array };
     if (type == 'Employee' && this.params.placementStatus) {
       placementStatusQuery.default = this.params.placementStatus.split(',');
     }
@@ -135,29 +133,27 @@ var info = new Utils.ObjectDefinition({
 
 // All
 
-Template.contactables.information = function() {
-  var searchQuery = {};
+Template.contactables.helpers({
+  information: function() {
+    var searchQuery = {};
 
-  if (query.objType.value)
-    searchQuery.objNameArray = query.objType.value;
+    if (query.objType.value)
+      searchQuery.objNameArray = query.objType.value;
 
-  var contactableCount = Session.get('contactableCount');
-  if (contactableCount)
-    info.contactablesCount.value = contactableCount;
+    var contactableCount = Session.get('contactableCount');
+    if (contactableCount)
+      info.contactablesCount.value = contactableCount;
 
-  return info;
-};
-
-Template.contactablesList.isLoading = function () {
-  return SubscriptionHandlers.AuxContactablesHandler.isLoading();
-};
+    return info;
+  },
+  isSearching: function() {
+    searchDep.depend();
+    return isSearching;
+  }
+});
 
 var searchDep = new Deps.Dependency;
 var isSearching = false;
-Template.contactables.isSearching = function() {
-  searchDep.depend();
-  return isSearching;
-};
 
 Template.contactables.events({
   'click .parseText': function () {
@@ -170,8 +166,6 @@ Template.contactables.isESSearch = function() {
 };
 
 // List
-var selected = new ReactiveVar([]);
-
 var contactableTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
 };
@@ -203,10 +197,9 @@ var getLocationTagValue = function(locationField, locationFields) {
   return value;
 };
 
-Template.contactablesList.info = function() {
-  info.isFiltering.value = AuxContactables.find().count() != 0;
-  return info;
-};
+var clickedAllSelected = new ReactiveVar(false);
+
+var selected = new ReactiveVar([]);
 
 Template.contactablesList.created = function() {
   Meteor.autorun(function(c) {
@@ -214,6 +207,7 @@ Template.contactablesList.created = function() {
     var searchQuery = {
       $and: [] // Push each $or operator here
     };
+    var clientParams = {};
 
     // Search string
     if (query.searchString.value) {
@@ -312,18 +306,20 @@ Template.contactablesList.created = function() {
       delete searchQuery.$and;
 
     if (query.objType.value == 'Employee' && !_.isEmpty(query.candidateStatus.value)){
-      searchQuery._id = {$in:_.map(AllPlacements.find({candidateStatus: {$in: query.candidateStatus.value }}).fetch(), function(placement){return placement.employee})}
+      clientParams.placementStatus = query.candidateStatus.value;
       urlQuery.addParam('placementStatus', query.candidateStatus.value);
     }
 
     // Set url query
     urlQuery.apply();
 
-    if (! SubscriptionHandlers.AuxContactablesHandler) {
-      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery});
-    } else {
-      SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery);
-    }
+    // Avoid update handler's filter when an Elasticsearch query will be performed
+    if (query.searchString.value) return;
+
+    if (SubscriptionHandlers.AuxContactablesHandler)
+      SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
+    else
+      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery, params: clientParams});
   });
 
   Meteor.autorun(function () {
@@ -335,33 +331,29 @@ Template.contactablesList.created = function() {
   });
 };
 
-// hack: because the handler is created on the created hook, the SubscriptionHandlers 'cleaner' can't find it
-Template.contactablesList.destroyed = function() {
-  if (SubscriptionHandlers.AuxContactablesHandler) {
-    SubscriptionHandlers.AuxContactablesHandler.stop();
-    delete SubscriptionHandlers.AuxContactablesHandler;
-  }
-};
-
-Template.contactablesList.contactables = function() {
-  // Dependencies
-  esDep.depend();
-
-  // Elasitsearch
-  if (!_.isEmpty(query.searchString.value)) {
-    //urlQuery.push('type=' + query.objType.value);
-    return esResult;
-  }
-  return AuxContactables.find();
-};
-
-Template.contactablesList.contactableTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
-};
-
-var clickedAllSelected = new ReactiveVar(false);
-
 Template.contactablesList.helpers({
+  isLoading: function () {
+     return SubscriptionHandlers.AuxContactablesHandler? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
+  },
+  info: function() {
+    info.isFiltering.value = AuxContactables.find().count() != 0;
+    return info;
+  },
+  contactables: function() {
+    // Dependencies
+    esDep.depend();
+
+    // Elasitsearch
+    if (!_.isEmpty(query.searchString.value)) {
+      //urlQuery.push('type=' + query.objType.value);
+      return esResult;
+    }
+    return AuxContactables.find();
+  },
+  contactableTypes: function() {
+    return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
+  },
+  //selection
   selectedCount: function () {
     return selected.get().length;
   },
@@ -404,6 +396,7 @@ Template.contactablesList.helpers({
     });
   }
 });
+
 Template.contactablesList.events({
   'change #selectAll': function (e) {
     if (e.target.checked){
@@ -464,6 +457,15 @@ Template.contactablesList.events({
     })
   }
 });
+
+// hack: because the handler is created on the created hook, the SubscriptionHandlers 'cleaner' can't find it
+Template.contactablesList.destroyed = function() {
+  if (SubscriptionHandlers.AuxContactablesHandler) {
+    SubscriptionHandlers.AuxContactablesHandler.stop();
+    delete SubscriptionHandlers.AuxContactablesHandler;
+  }
+};
+
 
 // Elasticsearch
 
@@ -577,48 +579,53 @@ var runESComputation = function () {
 
 // List search
 
-Template.contactablesListSearch.contactableTypes = contactableTypes;
-
-Template.contactablesListSearch.searchString = function() {
-  return query.searchString;
-};
+Template.contactablesListSearch.helpers({
+  contactableTypes: contactableTypes,
+  searchString: function () {
+    return query.searchString;
+  }
+});
 
 // List filters
 
-Template.contactablesFilters.query = function () {
-  return query;
-};
-
-Template.contactablesFilters.isSelectedType = function(typeName){
-  return query.objType.value == typeName;
-};
-
-Template.contactablesFilters.contactableTypes = contactableTypes;
+Template.contactablesFilters.helpers({
+  query: function () {
+    return query;
+  },
+  isSelectedType: function(typeName){
+    return query.objType.value == typeName;
+  },
+  contactableTypes: contactableTypes
+});
 
 // Item
 
-Template.contactablesListItem.pictureUrl = function(pictureFileId) {
-  var picture = ContactablesFS.findOne({_id: pictureFileId});
-  return picture? picture.url('ContactablesFSThumbs') : undefined;
-};
-
-Template.contactablesListItem.contactableIcon = function() {
-  return helper.getEntityIcon(this);
-};
-
-Template.contactablesListItem.displayObjType = function() {
-  return Utils.getContactableType(this);
-};
-
-Template.contactablesListItem.isESSearch = function() {
-  return !_.isEmpty(query.searchString.value);
-};
-
 Template.contactablesListItem.helpers({
+  pictureUrl: function(pictureFileId) {
+  var picture = ContactablesFS.findOne({_id: pictureFileId});
+  return picture ? picture.url('ContactablesFSThumbs') : undefined;
+},
+  contactableIcon: function () {
+    return helper.getEntityIcon(this);
+  },
+  displayObjType: function () {
+    return Utils.getContactableType(this);
+  },
+  isESSearch: function () {
+    return !_.isEmpty(query.searchString.value);
+  },
+  getLastNote: function () {
+    var note = Notes.findOne({'links.id': this._id}, {sort: {dateCreated: -1}});
+    if (note && note.msg.length > 50) {
+      note.msg = note.msg.slice(0, 50) + '..';
+    }
+    return note;
+  },
   isSelected: function () {
     return !! _.findWhere(selected.get(), { id: this._id });
   }
 });
+
 Template.contactablesListItem.events({
   'click .select': function (e) {
     if (e.target.checked){
@@ -636,43 +643,36 @@ Template.contactablesListItem.events({
   }
 });
 
-Template.contactablesListItem.getLastNote = function() {
-  var note = Notes.findOne({'links.id': this._id}, {sort: { dateCreated: -1}});
-  if (note && note.msg.length > 50) {
-    note.msg = note.msg.slice(0, 50) + '..';
-  }
-  return note;
-};
-
 // Employee item
 
-Template.employeeInformation.placementInfo = function () {
-  if (!this.placement)
-    return undefined;
+Template.employeeInformation.helpers({
+  placementInfo: function () {
+    if (!this.placement)
+      return undefined;
 
-  var placementInfo = {};
-  var placement = Placements.findOne({_id: this.placement});
+    var placementInfo = {};
+    var placement = Placements.findOne({_id: this.placement});
 
-  var job = Jobs.findOne({
-    _id: placement.job
-  }, {
-    transform: null
-  });
+    var job = Jobs.findOne({
+      _id: placement.job
+    }, {
+      transform: null
+    });
 
-  var customer = Contactables.findOne({_id: job.customer}, {transform: null});
+    var customer = Contactables.findOne({_id: job.customer}, {transform: null});
 
-  placementInfo.job = job._id;
-  placementInfo.jobTitle = job.publicJobTitle;
-  if (customer) {
-    placementInfo.customerName = customer.organization.organizationName;
-    placementInfo.customer = customer._id;
+    placementInfo.job = job._id;
+    placementInfo.jobTitle = job.publicJobTitle;
+    if (customer) {
+      placementInfo.customerName = customer.organization.organizationName;
+      placementInfo.customer = customer._id;
+    }
+
+    return placementInfo;
   }
-
-  return placementInfo;
-};
+});
 
 // Elasticsearch context match template
-
 Template.esContextMatch.rendered = function() {
   var text = this.$('.contextText');
   text[0].innerHTML = this.data;

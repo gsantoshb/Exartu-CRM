@@ -4,12 +4,12 @@
             <i class="fa fa-pencil"></i>
         </a>
         <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-9">
 
                         <div class="table-item-cell">
                             <div class="table-item-cell-container">
                                 <div class="table-item-title">
-                            <p class="text text-info"> {{{formatMsg msg}}}</p>
+                            <p class="text text-info"> {{{multilineText msg}}}</p>
                         </div>
                         <div class="note-author">
                             <a class="pointer">
@@ -29,7 +29,9 @@
             <div class="col-sm-3">
                 <div class="table-item-cell" style="margin-top: 13px">
                     <div class="table-item-cell-container">
-                        {{>showNoteDate}}
+                        {{#formattedDate value=dateCreated format='fromNow'}}
+                            {{date}}
+                        {{/formattedDate}}
                         <!-- /.table-item-cell-container -->
                     </div>
                     <!-- /.table-item-cell -->
@@ -39,11 +41,11 @@
             <div class="col-sm-12">
                 <div data-bind="foreach: links">
                     {{#each links}}
-                    <a href="{{getHref}}">
-                        {{#with getEntity}}
-                        <span class="badge">{{displayName}}</span>
-                        {{/with}}
-                    </a>
+                        <a href="{{getHref}}">
+                            {{#with getEntity}}
+                            <span class="badge">{{displayName}}</span>
+                            {{/with}}
+                        </a>
                     {{/each}}
                 </div>
             </div>
@@ -51,14 +53,5 @@
             <!-- /.col-lg-4 -->
         </div>
         <!-- /.row -->
-    </div>
-</template>
-
-
-<template name="showNoteDate">
-    <div class="date">
-        {{#formattedDate value=end format='fromNow'}}
-        {{dateCreated}}
-        {{/formattedDate}}
     </div>
 </template>
