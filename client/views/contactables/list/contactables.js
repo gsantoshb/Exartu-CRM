@@ -642,6 +642,9 @@ Template.contactablesListItem.helpers({
   },
   isSelected: function () {
     return !! _.findWhere(selected.get(), { id: this._id });
+  },
+  listViewMode: function () {
+    return listViewMode.get();
   }
 });
 
