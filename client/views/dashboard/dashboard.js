@@ -9,6 +9,7 @@ var activityTypes = [
   Enums.activitiesType.fileAdd
 ];
 
+
 DashboardController = RouteController.extend({
   layoutTemplate: 'mainLayout',
     waitOn: function () {
@@ -49,9 +50,9 @@ var query ={
   }
 };
 var queryDep= new Deps.Dependency;
-
-
-var listViewMode = new ReactiveVar(false);
+var listViewDefault=Session.get('dashboardListViewMode');
+if (!listViewDefault) listViewDefault=false
+var listViewMode = new ReactiveVar(listViewDefault);
 
 Template.dashboard.created = function(){
   Meteor.autorun(function() {
@@ -87,9 +88,11 @@ Template.dashboard.events({
   },
   'click #list-view': function () {
     listViewMode.set(true);
+    Session.set('dashboardListViewMode',false);
   },
   'click #detail-view': function () {
     listViewMode.set(false);
+    Session.set('dashboardListViewMode',false);
   }
 });
 

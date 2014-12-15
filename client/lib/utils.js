@@ -258,17 +258,22 @@ Utils.getLocation = function (googleLocation) {
     if (_.findWhere(component.types, 'street_number'))
       streetNumber = component.long_name;
   });
+  var streetAddress=address;
+  if ((!streetNumber || 0 === streetNumber.length))  {}
+    else
+    streetAddress=streetNumber + ' ' + streetAddress;
 
   return {
     displayName: googleLocation.formatted_address,
     lat: googleLocation.geometry.location.lat(),
     lng: googleLocation.geometry.location.lng(),
-    address: address,
+    address: streetAddress,
     city: city,
     state: state,
     country: country,
-    postalCode: postalCode,
-    streetNumber: streetNumber
+    postalCode: postalCode
+//    ,
+//    streetNumber: streetNumber
   }
 };
 

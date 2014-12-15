@@ -30,6 +30,18 @@
                     <col span="1" style="width: 25%; min-width: 100px;">
                     <col span="1" style="width: 75%;">
                 </colgroup>
+                <!--<tr class="box-table-label">-->
+                    <!--<td>Street #</td>-->
+                    <!--<td>-->
+                        <!--{{#if editMode}}-->
+                        <!--{{> afFieldInput name='streetNumber'}}-->
+                        <!--{{else}}-->
+                        <!--<strong>-->
+                            <!--{{location.value.streetNumber}}-->
+                        <!--</strong>-->
+                        <!--{{/if}}-->
+                    <!--</td>-->
+                <!--</tr>-->
                 <tr>
                     <td class="box-table-label">Address line 1</td>
                     <td>
@@ -55,18 +67,7 @@
                     </td>
                 </tr>
 
-                <tr class="box-table-label">
-                    <td>St. number</td>
-                    <td>
-                        {{#if editMode}}
-                            {{> afFieldInput name='streetNumber'}}
-                        {{else}}
-                            <strong>
-                                {{location.value.streetNumber}}
-                            </strong>
-                        {{/if}}
-                    </td>
-                </tr>
+
                 <tr>
                     <td class="box-table-label">City</td>
                     <td>
