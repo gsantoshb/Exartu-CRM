@@ -73,7 +73,7 @@ Template.locationBox.helpers({
       SetLocation: {
         onSubmit: function(newAddress) {
           // Check whether the address was set manually or using google autocomplete
-          var manuallySet = _.some(['address', 'city', 'state', 'country', 'postalCode'], function (fieldName) {
+          var manuallySet = !location.value || _.some(['address', 'city', 'state', 'country', 'postalCode'], function (fieldName) {
             return location.value[fieldName] != newAddress[fieldName];
           });
 
