@@ -200,7 +200,12 @@ var getLocationTagValue = function(locationField, locationFields) {
 var clickedAllSelected = new ReactiveVar(false);
 
 var selected = new ReactiveVar([]);
-
+var listViewDefault=Session.get('contactableListViewMode');
+if (!listViewDefault)
+{
+  listViewDefault=true;
+}
+var listViewMode = new ReactiveVar(listViewDefault);
 Template.contactablesList.created = function() {
   Meteor.autorun(function(c) {
     var urlQuery = new URLQuery();
@@ -396,8 +401,18 @@ Template.contactablesList.helpers({
     });
   }
 });
-
+Template.contactablesListSearch.events({
+  'click #list-view': function () {
+    listViewMode.set(true);
+    Session.set('contactableListViewMode',true);
+  },
+  'click #detail-view': function () {
+    listViewMode.set(false);
+    Session.set('contactableListViewMode',false);
+  }
+})
 Template.contactablesList.events({
+
   'change #selectAll': function (e) {
     if (e.target.checked){
       //add all local items (not already selected) to the selection
@@ -584,6 +599,10 @@ Template.contactablesListSearch.helpers({
   searchString: function () {
     return query.searchString;
   }
+  ,
+  listViewMode: function () {
+    return listViewMode.get();
+  }
 });
 
 // List filters
@@ -677,3 +696,7 @@ Template.esContextMatch.rendered = function() {
   var text = this.$('.contextText');
   text[0].innerHTML = this.data;
 };
+
+Template.registerHelper('listViewMode', function () {
+  return listViewMode.get();
+});

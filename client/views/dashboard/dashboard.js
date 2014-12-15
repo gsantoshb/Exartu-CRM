@@ -91,7 +91,7 @@ Template.dashboard.events({
   },
   'click #list-view': function () {
     listViewMode.set(true);
-    Session.set('dashboardListViewMode',false);
+    Session.set('dashboardListViewMode',true);
   },
   'click #detail-view': function () {
     listViewMode.set(false);
