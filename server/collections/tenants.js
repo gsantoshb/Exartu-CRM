@@ -18,7 +18,7 @@ Meteor.paginatedPublish(TenantView, function()
     return TenantView.find();
   },
   {
-  pageSize: 15,
+  pageSize: 100,
   publicationName: 'tenants',
   updateSelector: function (selector, params) {
     if (!params || !params.searchString) return selector;
