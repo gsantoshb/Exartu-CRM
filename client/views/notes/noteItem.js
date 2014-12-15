@@ -14,6 +14,6 @@ Template.noteItem.helpers({
 })
 Template.noteItem.events({
   'click .editNote': function () {
-    Composer.showModal('addEditNote', this)
+    Utils.showModal('addEditNote', this)
   }
 });

@@ -14,7 +14,7 @@ Template.taskItem.helpers({
 })
 Template.taskItem.events({
   'click .editTask': function () {
-    Composer.showModal('addEditTask', this)
+    Utils.showModal('addEditTask', this)
   }
 });
 Template.taskState.helpers({

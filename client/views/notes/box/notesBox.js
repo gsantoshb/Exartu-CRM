@@ -91,9 +91,9 @@ Template.notesBox.helpers({
 Template.notesBox.events({
   'click .addNote': function () {
     if (!isEntitySpecific)
-      Composer.showModal('addEditNote');
+      Utils.showModal('addEditNote');
     else
-      Composer.showModal('addEditNote', {
+      Utils.showModal('addEditNote', {
         links: [{
           id: Session.get('entityId'),
           type: entityType

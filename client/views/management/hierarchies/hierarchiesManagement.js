@@ -72,7 +72,7 @@ Template.hierarchiesManagement.events({
   },
   'click #addHier': function(){
     if (! selectedHier) return;
-    Composer.showModal('hierarchyAdd', selectedHier._id);
+    Utils.showModal('hierarchyAdd', selectedHier._id);
   },
   'click .changeCurrent': function(){
     if (! selectedHier) return;

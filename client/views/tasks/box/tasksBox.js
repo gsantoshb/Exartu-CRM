@@ -190,9 +190,9 @@ Template.tasksBox.helpers({
 Template.tasksBox.events({
   'click .addTask': function () {
     if (!isEntitySpecific)
-      Composer.showModal('addEditTask');
+      Utils.showModal('addEditTask');
     else
-      Composer.showModal('addEditTask', {
+      Utils.showModal('addEditTask', {
         links: [{
           id: Session.get('entityId'),
           type: entityType
