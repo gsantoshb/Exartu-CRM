@@ -25,19 +25,34 @@
                         {{> typeInput }}
 
                         {{#with  extraInformation}}
-                            {{#objectProperty property=email hideErrors=true}}
-                                <span>Email:</span>
-                                <div class="form-group {{hasError}}">
-                                    <input class="form-control" type="text" placeholder="Email" value="{{value}}">
-                                    <span>{{error}}</span>
+                            <span>Email:</span>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-8">
+                                        {{#objectProperty property=email}}
+                                            <input class="form-control" type="text" placeholder="Email" value="{{value}}">
+                                            <span>{{error}}</span>
+                                        {{/objectProperty}}
+                                    </div>
+                                    <div class="col-xs-12 col-md-4">
+                                        {{>select2 options=getEmailTypes onSelected=setEmailType initSelection=getDefaultEmailType}}
+                                    </div>
                                 </div>
-                            {{/objectProperty}}
-                            {{#objectProperty property=phoneNumber}}
-                                <span>Phone number:</span>
-                                <div class="form-group">
-                                    <input class="form-control" type="text" placeholder="Phone number" value="{{value}}">
+                            </div>
+
+                            <span>Phone number:</span>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-8">
+                                        {{#objectProperty property=phoneNumber}}
+                                            <input class="form-control" type="text" placeholder="Phone number" value="{{value}}">
+                                        {{/objectProperty}}
+                                    </div>
+                                    <div class="col-xs-12 col-md-4">
+                                        {{>select2 options=getPhoneTypes onSelected=setPhoneType initSelection=getDefaultPhoneType}}
+                                    </div>
                                 </div>
-                            {{/objectProperty}}
+                            </div>
                         {{/with}}
 
                         <div class="form-group text-center top-30">
