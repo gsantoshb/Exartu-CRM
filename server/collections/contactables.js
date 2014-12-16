@@ -84,7 +84,7 @@ Meteor.paginatedPublish(ContactablesList, function () {
     );
   },
   {
-    pageSize: 15,
+    pageSize: 10,
     publicationName: 'auxContactables',
     updateSelector: function (oldSelector, clientParams) {
       var newSelector = EJSON.clone(oldSelector);

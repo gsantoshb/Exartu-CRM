@@ -142,7 +142,7 @@ Meteor.paginatedPublish(ActivityViews, function () {
   return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({},{ sort: { 'data.dateCreated': -1 } }));
 },{
   //infiniteScroll: true,
-  pageSize: 15,
+  pageSize: 10,
   publicationName: 'activities'
 });
 
