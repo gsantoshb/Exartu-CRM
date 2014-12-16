@@ -37,6 +37,7 @@ UI.registerHelper('placementRates', function(){
 });
 
 var updateRates=function(){
+  console.log('updateRates', self.rates);
   Placements.update({ _id: Session.get('entityId') },{ $set: { placementRates: self.rates } }, function (err, result) {
     if (err){
       console.log(err);
