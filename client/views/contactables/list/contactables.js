@@ -634,7 +634,7 @@ Template.contactablesListItem.helpers({
     return !_.isEmpty(query.searchString.value);
   },
   getLastNote: function () {
-    return null;
+
     var note = Notes.findOne({'links.id': this._id}, {sort: {dateCreated: -1}});
     if (note && note.msg.length > 50) {
       note.msg = note.msg.slice(0, 50) + '..';
