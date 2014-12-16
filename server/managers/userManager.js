@@ -206,7 +206,8 @@ UserManager = {
     }
 
     // Update lastUsed list
-    Meteor.users.update({_id: Meteor.userId()}, update);
+    if (!_.isEmpty(update.$set))
+      Meteor.users.update({_id: Meteor.userId()}, update);
 
     function addNewLastUsedItem(lastUsedField, value) {
       var user = Meteor.user();
