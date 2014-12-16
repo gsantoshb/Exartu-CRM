@@ -5,7 +5,7 @@ Utils.reactiveProp(self,'editMode',false);
 RateSchema = new SimpleSchema({
   type: {
     type: String,
-    allowedValues: LookUps.find({lookUpCode: Enums.lookUpTypes.placement.rate.lookUpCode}).map(function(rateType){ return rateType._id}),
+    //allowedValues: LookUps.find({lookUpCode: Enums.lookUpTypes.placement.rate.lookUpCode}).map(function(rateType){ return rateType._id}),
     autoform: {
       type: "select"
     }
