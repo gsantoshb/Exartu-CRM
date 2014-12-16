@@ -28,5 +28,5 @@ ExartuConfig = {
   TW_authToken: undefined,
   // Nodetime profiler
   Nodetime_Key: undefined,
-  PageSize: 50
+  PageSize: 10
 };
