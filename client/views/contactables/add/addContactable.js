@@ -2,6 +2,9 @@ ContactableAddController = RouteController.extend({
   data: function(){
     Session.set('objType',this.params.objType);
   },
+  waitOn: function () {
+    return Meteor.subscribe('lookUps');
+  },
   action: function () {
     if (!this.ready()) {
       this.render('loadingContactable');
@@ -55,6 +58,9 @@ var extraInformation = new Utils.ObjectDefinition({
   }
 });
 
+var emailType = undefined;
+var phoneType = undefined;
+
 Template.addContactablePage.helpers({
   contactable: function(){
     if (!contactable){
@@ -84,6 +90,58 @@ Template.addContactablePage.helpers({
   },
   extraInformation: function() {
     return extraInformation;
+  },
+  getPhoneTypes: function () {
+    return LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: Enums.lookUpAction.ContactMethod_Phone}).map(function(type) {
+      return {text: type.displayName, id: type._id};
+    });
+  },
+  getDefaultPhoneType: function () {
+    // it depends on what contactable type is being created
+    var lookUpAction;
+    switch (Session.get('objType')) {
+      case 'Customer': lookUpAction = Enums.lookUpAction.ContactMethod_WorkPhone; break;
+      case 'Employee': lookUpAction = Enums.lookUpAction.ContactMethod_MobilePhone; break;
+      case 'Contact': lookUpAction = Enums.lookUpAction.ContactMethod_MobilePhone; break;
+    }
+
+    var type = LookUps.findOne({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: lookUpAction});
+    phoneType = type._id;
+
+    return function (e, cb) {
+      cb({id: type._id, text: type.displayName});
+    }
+  },
+  setPhoneType: function () {
+    return function (typeId) {
+      phoneType = typeId;
+    }
+  },
+  getEmailTypes: function () {
+    return LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: Enums.lookUpAction.ContactMethod_Email}).map(function(type) {
+      return {text: type.displayName, id: type._id};
+    });
+  },
+  getDefaultEmailType: function () {
+    // it depends on what contactable type is being created
+    var lookUpAction;
+    switch (Session.get('objType')) {
+      case 'Customer': lookUpAction = Enums.lookUpAction.ContactMethod_WorkEmail; break;
+      case 'Employee': lookUpAction = Enums.lookUpAction.ContactMethod_PersonalEmail; break;
+      case 'Contact': lookUpAction = Enums.lookUpAction.ContactMethod_PersonalEmail; break;
+    }
+
+    var type = LookUps.findOne({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: lookUpAction});
+    emailType = type._id;
+
+    return function (e, cb) {
+      cb({id: type._id, text: type.displayName});
+    }
+  },
+  setEmailType: function () {
+    return function (typeId) {
+      emailType = typeId;
+    }
   }
 });
 
@@ -105,9 +163,8 @@ Template.addContactablePage.events({
       if (extraInformation.email.error.hasError)
         return;
 
-      var emailContactMethodLookUp = ContactMethods.findOne({type: Enums.contactMethodTypes.email});
       cont.contactMethods.push({
-        type: emailContactMethodLookUp._id,
+        type: emailType,
         value: extraInformation.email.value
       });
     }
@@ -115,9 +172,8 @@ Template.addContactablePage.events({
       if (extraInformation.phoneNumber.error.hasError)
         return;
 
-      var emailContactMethodLookUp = ContactMethods.findOne({type: Enums.contactMethodTypes.phone});
       cont.contactMethods.push({
-        type: emailContactMethodLookUp._id,
+        type: phoneType,
         value: extraInformation.phoneNumber.value
       });
     }
