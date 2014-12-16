@@ -609,7 +609,7 @@ Utils.contactMethodTypePrefix = function(type) {
     if (_.contains(contactMethod.lookUpActions, Enums.lookUpAction.ContactMethod_Email)) {
       return 'mailto:';
     } else if (_.contains(contactMethod.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
-      return 'callto:';
+      return Meteor.Device.isPhone() ? 'tel:' : 'callto:';
     }
   }
 
