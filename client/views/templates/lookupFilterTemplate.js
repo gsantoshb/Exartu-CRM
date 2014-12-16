@@ -26,7 +26,8 @@ Template.select2.rendered = function(){
       data: options,
       multiple: this.data.multi,
       allowClear: true,
-      placeholder: this.data.title
+      placeholder: this.data.title,
+      initSelection: this.data.initSelection
     });
   }
   if (this.data && _.isFunction(this.data.options)){
