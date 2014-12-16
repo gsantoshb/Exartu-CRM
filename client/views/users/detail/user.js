@@ -4,14 +4,14 @@ UserController = RouteController.extend({
     return [GoogleMapsHandler]
   },
   data: function () {
-    Session.set('userId', this.params._id);
+    Session.set('entityId', this.params._id);
   },
   action:function(){
     if (!this.ready()) {
       this.render('loadingContactable')
       return;
     }
-    this.render('user')
+    this.render('user');
     Session.set('activeTab', this.params.hash);
   }
 });
@@ -39,7 +39,9 @@ Template.selectUserRole.helpers({
     var avlRoles=  roles.find().fetch();
     var user=Meteor.users.findOne({ _id: Session.get('entityId') });
     if (!user) return;
+    console.log('avlRoles',avlRoles);
     return _.filter(avlRoles, function (role) {
+      console.log('userrole',user,roles,role._id);
       if (!user.roles) user.roles=[];
       return !_.findWhere(user.roles, role._id);
     });

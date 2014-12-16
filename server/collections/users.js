@@ -31,7 +31,16 @@ Meteor.users.allow({
     var user = Meteor.users.findOne({
       _id: userId
     });
-
+    console.log('user',userId,'file',file,'fields',fields,'modifier',modifier);
+    // we get here with
+    //   'userId' as the userID of the meteor user
+    //   'file' is the user record being updated
+    //   'fields' is an array of the fields being updated.  Example:  [ 'roles' ]
+    //   'modifier' is the mongo update clause.  Example: { '$set': { roles: [ 'e5fFGgw5EkTWv2L5R', 'F9w4wLZqMTu75bGS7' ] }
+    //   some checks that need to happen here:
+    //      verify that the meteor user doing the updating is either system admin or tenant admin
+    //      verify that the if the systemadmin role is being added that the user is system admin
+    //      
     if (userId == file._id)
       return true;
 
