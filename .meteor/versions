@@ -89,6 +89,7 @@ mrt:googlemaps@0.0.2
 mrt:mask@0.0.1
 mrt:moment@2.8.1
 mrt:twilio-meteor@1.1.0
+mystor:device-detection@0.2.0
 natestrauser:connection-banner@0.4.3
 natestrauser:select2@3.5.1
 npm-bcrypt@0.7.7
