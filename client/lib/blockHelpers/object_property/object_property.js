@@ -65,7 +65,7 @@ Template.object_property_lookup.helpers({
   options: function(){
 
     //todo: create helper in utils
-    return LookUps.find({lookUpCode: this.property.lookUpCode});
+    return LookUps.find({lookUpCode: this.property.lookUpCode, inactive: { $not: { $in: [true]}}});
   },
   displayName: function(){
     if (this.property.value == null) 
