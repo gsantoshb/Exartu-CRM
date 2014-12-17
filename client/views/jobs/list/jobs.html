@@ -146,7 +146,11 @@
                     <div class="table-item-cell-container date">
                         {{#formattedDate value=dateCreated format='fromNow'}}
                             <span>{{date}}</span>
+                            <br/>
                         {{/formattedDate}}
+
+                        by {{displayUserName userId}}
+
                         {{#if searchKey }}
                             <br />
                             <i class="glyphicon glyphicon-search"></i>
@@ -172,8 +176,6 @@
     <span class="badge">
         {{lookUpName status}}
     </span>
-
-        {{displayUserName userId}}
     </div>
 </template>
 
