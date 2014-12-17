@@ -39,9 +39,7 @@ Template.selectUserRole.helpers({
     var avlRoles=  roles.find().fetch();
     var user=Meteor.users.findOne({ _id: Session.get('entityId') });
     if (!user) return;
-    console.log('avlRoles',avlRoles);
     return _.filter(avlRoles, function (role) {
-      console.log('userrole',user,roles,role._id);
       if (!user.roles) user.roles=[];
       return !_.findWhere(user.roles, role._id);
     });
