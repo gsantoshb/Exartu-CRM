@@ -1560,8 +1560,10 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     .timeline .item{
         border-bottom: 1px solid rgba(0, 0, 0, 0.58);
         margin-bottom: 4px;
-        padding-bottom: 0px;
+        padding: 80px 0 0 0;
     }
+
+    .timeline .item .item-info .type { top: 70px; }
 
 
     /*boxes*/
