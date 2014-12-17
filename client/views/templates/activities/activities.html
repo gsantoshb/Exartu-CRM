@@ -333,7 +333,7 @@
                       {{displayUserName userId}}
                   </span>
                   <strong>{{employee.displayName}}</strong>
-                  as
+                  -
                   <strong>{{job.displayName}}</strong>
                   @
                   {{#with customer job.customer}}
@@ -361,15 +361,15 @@
               <div class="box">
                   <div class="box-content">
                       <h4 class="item-title">
-                          <a href="/placement/{{entityId}}">  </a>
-                          <span class="spacer">–</span>
-                          <strong><a href="/contactable/{{employee._id}}"> {{employee.displayName}} </a></strong>
-                           as
-                          <strong><a href="/job/{{job._id}}"> {{job.displayName}} </a></strong>
-                          @
-                          {{#with customer job.customer}}
-                              <strong><a href="/contactable/{{_id}}"> {{displayName}} </a></strong>
-                          {{/with}}
+                          <a href="/placement/{{entityId}}">
+                              <strong> {{employee.displayName}} </strong>
+                               -
+                              <strong> {{job.displayName}} </strong>
+                              @
+                              {{#with customer job.customer}}
+                                  <strong> {{displayName}} </strong>
+                              {{/with}}
+                          </a>
                       </h4>
                   </div>
                   <!-- /.box-content -->
