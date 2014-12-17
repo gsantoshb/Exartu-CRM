@@ -69,26 +69,20 @@
                 <div class="table-item-cell">
                     <div class="table-item-cell-container">
                         <div class="table-item-title">
-                            <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
-                                <a href="/placement/{{_id}}">
-                                    <i class="icon icon-check-list"></i>
-                                </a>
-                            </strong>
-
-                            <a  href="/contactable/{{employee}}">
-                                {{employeeDisplayName}}
-                                <i class="fa fa-external-link" style="font-size: 14px"></i>
+                            <a href="/placement/{{_id}}">
+                                <strong>
+                                    {{employeeDisplayName}} as {{jobDisplayName}} @ {{customerDisplayName}}
+                                </strong>
                             </a>
 
-                            <a  href="/job/{{job}}">
-                                {{jobDisplayName}}
-                                <i class="fa fa-external-link" style="font-size: 14px"></i>
-                            </a>
-
-                            <a  href="/contactable/{{customerId}}">
-                                {{customerDisplayName}}
-                                <i class="fa fa-external-link" style="font-size: 14px"></i>
-                            </a>
+                            <br/>
+                            <small class="text-muted" style="font-size: 12px; visibility: hidden">
+                                <a href="/contactable/{{employee}}"> employee </a>
+                                <span class="bullet-spacer">·</span>
+                                <a href="/job/{{job}}"> job </a>
+                                <span class="bullet-spacer">·</span>
+                                <a href="/contactable/{{customerId}}"> customer </a>
+                            </small>
                         </div>
                     </div>
                 </div>
