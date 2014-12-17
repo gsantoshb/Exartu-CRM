@@ -648,6 +648,11 @@ Template.contactablesListItem.helpers({
   },
   listViewMode: function () {
     return listViewMode.get();
+  },
+  getStatus: function () {
+    if (this.Customer) return this.Customer.status;
+    if (this.Employee) return this.Employee.status;
+    if (this.Contact) return this.Contact.status;
   }
 });
 

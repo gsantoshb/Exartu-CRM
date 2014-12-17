@@ -195,8 +195,21 @@
                                     </div>
                                     {{displayName}}
                                 </a>
+
                                 <br/>
-                                <strong class="text text-muted text-small">{{displayObjType}}</strong>
+                                <strong class="text text-muted text-small">
+                                    {{displayObjType}}
+                                </strong>
+                                <span class="badge">
+                                    {{lookUpName getStatus}}
+                                </span>
+
+                                <br/>
+                                <div style="font-size: 12px; margin-top: 10px; margin-bottom: -10px;">
+                                    {{#each contactMethods}}
+                                        <a href="{{contactMethodTypePrefix type}}{{value}}"><i class="{{contactMethodTypeIcon type}}"></i> {{value}}</a>
+                                    {{/each}}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -208,9 +221,8 @@
                             {{#if location.displayName}}
                                 <i class="icon-map-marker-1"></i>
                                 {{location.displayName}}
+                                <br/>
                             {{/if}}
-
-                            {{displayUserName userId}}
 
                             {{#if Customer}}
                                 {{> customerInformation }}
@@ -229,26 +241,16 @@
                     <div class="table-item-cell">
                         <div class="table-item-cell-container date">
                             {{#formattedDate value=dateCreated format='fromNow'}}
-                                <span>{{date}}</span><br>
+                                <span>{{date}}</span>
+                                <br>
                             {{/formattedDate}}
+
+                            by {{displayUserName userId}}
+                            <br/>
+
                             {{#if searchKey }}
                                 <i class="glyphicon glyphicon-search"></i>
                                 {{searchKey}}
-                            {{/if}}
-
-                            {{#if contactMethods}}
-                                <div class="btn dropdown" id="contact-Methods-dropdown-{{_id}}">
-                                    <a href="#" data-toggle="dropdown" data-target="#contact-Methods-dropdown-{{_id}}" class="dropdown-toggle">
-                                        <span class="text"> Contact <i class="fa fa-caret-down"></i></span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        {{#each contactMethods}}
-                                            <li>
-                                                <a href="{{contactMethodTypePrefix type}}{{value}}"><i class="{{contactMethodTypeIcon type}}"></i> {{value}}</a>
-                                            </li>
-                                        {{/each}}
-                                    </ul>
-                                </div>
                             {{/if}}
                         </div>
                     </div>
@@ -295,16 +297,8 @@
 <template name="esContextMatch">
     <span class="text-muted separatedLinks contextText"></span>
 </template>
-<template name="contactableInformation">
-    <div class="task-author">
-        <span class="badge">
-            {{lookUpName status}}
-        </span>
-    </div>
-</template>
 
 <template name="customerInformation">
-    {{>contactableInformation contactable=. status=Customer.status}}
 </template>
 
 <template name="employeeInformation">
@@ -322,7 +316,6 @@
         {{/if}}
     {{/if}}
     <br/>
-    {{>contactableInformation contactable=. status=Employee.status}}
 </template>
 
 <template name="contactInformation">
@@ -333,7 +326,6 @@
         </a>
     {{/if}}
     <br/>
-    {{>contactableInformation contactable=. status=Contact.status}}
 </template>
 
 <template name="contactablesListSearch">
