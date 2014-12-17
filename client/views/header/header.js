@@ -170,7 +170,12 @@ Template.header.rendered = function () {
         });
         init = false;
     }
-}
+};
+
+Template.header.destroyed = function () {
+  $('body').removeAttr('data-color');
+};
+
 
 Template.sidebar.rendered=function(){
   var sidebar=$('#sidebar'),
