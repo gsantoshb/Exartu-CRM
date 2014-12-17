@@ -39,6 +39,8 @@ Template.recoverPassword.events({
 AutoForm.hooks({
   recoverPassForm: {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
+      var self = this;
+
       // Set current state
       isSending = true;
       isSendingDep.changed();
