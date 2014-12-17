@@ -54,13 +54,17 @@
                                 </td>
                             <td>
                                 {{#objectProperty property=startDate editable=editMode}}
-                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                    {{>bootstrap3DatePicker value=value options=datePickerOptions}}
                                 {{else}}
-                                <strong>
-                                    {{#formattedDate value=value format='ddd, MMMM DD, YYYY'}}
-                                    {{date}}
-                                    {{/formattedDate}}
-                                </strong>
+                                    <strong>
+                                        {{#if value}}
+                                            {{#formattedDate value=value format='ddd, MMMM DD, YYYY'}}
+                                                {{date}}
+                                            {{/formattedDate}}
+                                        {{else}}
+                                            Not set
+                                        {{/if}}
+                                    </strong>
                                 {{/objectProperty}}
                             </td>
                         </tr>
@@ -70,17 +74,17 @@
                             </td>
                             <td>
                                 {{#objectProperty property=endDate editable=editMode}}
-                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                    {{>bootstrap3DatePicker value=value options=datePickerOptions}}
                                 {{else}}
-                                <strong>
-                                    {{#if value}}
-                                    {{#formattedDate value=value format='ddd, MMMM DD, YYYY'}}
-                                    {{date}}
-                                    {{/formattedDate}}
-                                    {{else}}
-                                    Not set
-                                    {{/if}}
-                                </strong>
+                                    <strong>
+                                        {{#if value}}
+                                            {{#formattedDate value=value format='ddd, MMMM DD, YYYY'}}
+                                                {{date}}
+                                            {{/formattedDate}}
+                                        {{else}}
+                                            Not set
+                                        {{/if}}
+                                    </strong>
                                 {{/objectProperty}}
                             </td>
                         </tr>
