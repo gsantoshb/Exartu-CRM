@@ -21,8 +21,9 @@
     -webkit-animation-name: fadeIn;
 }
 
-.search-row { height: 30px}
-.pagination-row { height: 58px}
+.search-row { height: 30px }
+.pagination-row { min-height: 58px }
+.pagination > li { display: inline-block; margin: 0 -2px; }
 
 /* Login page */
 #login-wrapper { padding-top: 45px; }
