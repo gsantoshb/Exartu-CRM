@@ -124,13 +124,23 @@
         <i class="icon-map-marker-1"></i>
         {{jobLocationDisplayName}}
     {{/if}}
-
-    <i class="icon-calendar-2"></i>
     <small>
-        {{#formattedDate value=startDate}}
-            {{date}}
-        {{/formattedDate}}-
+        {{#if startDate}}
+            <i class="icon-calendar-2"></i>
+            Starting on
+            {{#formattedDate value=startDate}}
+                {{date}}
+            {{/formattedDate}}
+        {{/if}}
+    </small>
+    <small>
         {{#if endDate}}
+            {{#unless startDate}}
+                <i class="icon-calendar-2"></i>
+            {{else}}
+                -
+            {{/unless}}
+            Ending on
             {{#formattedDate value=endDate}}
                 {{date}}
             {{/formattedDate}}
