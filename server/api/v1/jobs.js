@@ -46,7 +46,8 @@ Router.map(function() {
           var data = this.request.body;
           try {
             var jobInfo = mapper.create(data);
-            connection.call('addJob', jobInfo);
+            var jobId = connection.call('addJob', jobInfo);
+            _.extend(data, {id: jobId});
             response.end(data);
           } catch(err) {
             console.log(err);
@@ -85,6 +86,7 @@ var mapper = {
     var result = [];
     _.each(data, function (item) {
       var res = {
+        id: item._id,
         customerId: item.customer,
         jobTitleId: item.jobTitle,
         startDate: item.startDate
