@@ -61,10 +61,5 @@ Meteor.methods({
   // Customer
   setJobCustomer: function (jobId, customerId) {
     return JobManager.setCustomer(jobId, customerId);
-  },
-
-  // Placements
-  addPlacement: function (placement) {
-    return JobManager.addPlacement(placement);
   }
 });
