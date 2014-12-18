@@ -1,11 +1,11 @@
 TenantController = RouteController.extend({
   template: 'tenant',
-  layoutHier: 'mainLayout',
+  layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [TenantsHandler];
+    return [Meteor.subscribe('singleTenant', this.params._id)];
   },
   data: function () {
-    Session.set('hierId', this.params._id);
+    Session.set('tenantId', this.params._id);
   },
   action: function () {
     if (!this.ready()) {
@@ -20,10 +20,10 @@ TenantController = RouteController.extend({
 });
 
 Template.tenant.helpers({
-  hierContext: function () {
-    if (Session.get('hierId')) {
-      var hier = Hierarchies.findOne(Session.get('hierId'));
-      return hier;
+  tenantContext: function () {
+    if (Session.get('tenantId')) {
+      var tenant = Tenants.findOne(Session.get('tenantId'));
+      return tenant;
     }
   }
 

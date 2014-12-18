@@ -10,7 +10,7 @@
         <div class="container-fluid">
             <div class="form-group">
                 <span>Name:</span>
-                <input class="form-control templateName" placeholder="Name.." value="{{hierContext.name}}">
+                <input class="form-control templateName" placeholder="Name.." value="{{tenantContext.name}}">
             </div>
             <div class="form-group">
             </div>
@@ -18,7 +18,7 @@
             <div>
 
                 <div style="display: {{#if editMode}} block {{else}} none {{/if}}">
-                    {{#with hierContext}}
+                    {{#with tenantContext}}
                         {{name}}
                     {{/with}}
                 </div>

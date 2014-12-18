@@ -23,3 +23,7 @@ Meteor.paginatedPublish(TenantView, function()
   }
 );
 
+Meteor.publish('singleTenant', function (id) {
+  return TenantView.find({_id: id});
+});
+

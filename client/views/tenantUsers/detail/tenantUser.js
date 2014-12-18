@@ -2,7 +2,7 @@ TenantUserController = RouteController.extend({
   template: 'tenantUser',
   layoutUser: 'mainLayout',
   waitOn: function () {
-    return [TenantUsersHandler];
+    return [Meteor.subscribe('singleTenantUser', this.params._id)];
   },
   data: function () {
     Session.set('userId', this.params._id);
