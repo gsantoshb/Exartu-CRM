@@ -53,7 +53,6 @@ Template.notesBox.created = function () {
     if (isEntitySpecific) {
       q.links = {$elemMatch: {id: entityId}};
     }
-    console.log('query',q);
     urlQuery.apply();
 
     if (!SubscriptionHandlers.NotesHandler) {
