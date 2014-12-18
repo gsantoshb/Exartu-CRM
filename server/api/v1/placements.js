@@ -82,7 +82,7 @@ var mapper = {
       throw new Meteor.Error(404, 'Placement status with id ' + data.placementStatusId + ' not found');
     placement.placementStatus = data.placementStatusId;
 
-    var candidateStatus = LookUps.find({lookUpCode: Enums.lookUpTypes.candidate.status, _id: data.candidateStatusId, hierId: hierId});
+    var candidateStatus = LookUps.find({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode, _id: data.candidateStatusId, hierId: hierId});
     if (! candidateStatus)
       throw new Meteor.Error(404, 'Candidate status with id ' + data.candidateStatusId + ' not found');
     placement.candidateStatus = data.candidateStatusId;
