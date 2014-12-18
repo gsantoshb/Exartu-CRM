@@ -4,14 +4,14 @@ UserController = RouteController.extend({
     return [GoogleMapsHandler]
   },
   data: function () {
-    Session.set('userId', this.params._id);
+    Session.set('entityId', this.params._id);
   },
   action:function(){
     if (!this.ready()) {
       this.render('loadingContactable')
       return;
     }
-    this.render('user')
+    this.render('user');
     Session.set('activeTab', this.params.hash);
   }
 });

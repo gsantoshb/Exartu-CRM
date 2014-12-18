@@ -8,16 +8,27 @@
                 <div class="table-item-cell">
                     <div class="table-item-cell-container">
                         <div class="table-item-title note">
-                            <p class="text text-info"> {{{multilineText msg}}}</p>
+                            <span style="max-height:100px">
+                                <p class="text text-info"> {{{multilineText msg}}}</p>
+                            </span>
                         </div>
                         <div class="task-author">
-                            by
                             <a class="pointer">
                                 <span>{{displayUserName userId}}</span>
                             </a>
-                            to
                             <i class="fa fa-long-arrow-right"></i>
                             <span>{{displayUserName assign}}</span>
+                        </div>
+                        <div >
+                            <div data-bind="foreach: links">
+                                {{#each links}}
+                                <a href="{{getHref}}">
+                                    {{#with getEntity}}
+                                    <span class="badge">{{displayName}}</span>
+                                    {{/with}}
+                                </a>
+                                {{/each}}
+                            </div>
                         </div>
                     </div>
                     <!-- /.table-item-cell-container -->
@@ -47,17 +58,7 @@
                 </div>
                 <!-- /.col-sm-3 -->
             </div>
-            <div class="col-sm-12">
-                <div data-bind="foreach: links">
-                    {{#each links}}
-                    <a href="{{getHref}}">
-                        {{#with getEntity}}
-                        <span class="badge">{{displayName}}</span>
-                        {{/with}}
-                    </a>
-                    {{/each}}
-                </div>
-            </div>
+
 
             <!-- /.col-lg-4 -->
         </div>

@@ -165,13 +165,15 @@ Contactables.after.insert(function (userId, doc) {
   } else {
     data.displayName = doc.organization.organizationName;
   }
-  Activities.insert({
+  var obj={
     userId: userId,
     hierId: doc.hierId,
     type: Enums.activitiesType.contactableAdd,
     entityId: doc._id,
     data: data
-  })
+  };
+  if (doc && doc.testData ) obj.testData=true;
+  Activities.insert(obj)
 });
 
 Contactables.after.update(function (userId, doc, fieldNames, modifier, options) {
@@ -298,7 +300,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
 // Note
 
 Notes.after.insert(function (userId, doc) {
-  Activities.insert({
+  var obj={
     userId: userId,
     hierId: doc.hierId,
     type: Enums.activitiesType.noteAdd,
@@ -307,13 +309,15 @@ Notes.after.insert(function (userId, doc) {
     data: {
       dateCreated: new Date()
     }
-  })
+  };
+  if (doc && doc.testData ) obj.testData=true;
+  Activities.insert(obj);
 });
 
 // Tasks
 
 Tasks.after.insert(function (userId, doc) {
-  Activities.insert({
+  var obj={
     userId: doc.userId,
     hierId: doc.hierId,
     type: Enums.activitiesType.taskAdd,
@@ -323,7 +327,9 @@ Tasks.after.insert(function (userId, doc) {
       taskId: doc._id,
       dateCreated: new Date()
     }
-  });
+  };
+  if (doc && doc.testData ) obj.testData=true;
+  Activities.insert(obj);
 });
 
 // Jobs
@@ -332,7 +338,7 @@ Jobs.after.insert(function (userId, doc) {
   var cust=Contactables.findOne(doc.customer);
   var customerDisplayName;
   if (cust && cust.organization) customerDisplayName=cust.organization.organizationName;
-  Activities.insert({
+  var obj= {
     userId: userId,
     hierId: doc.hierId,
     type: Enums.activitiesType.jobAdd,
@@ -341,10 +347,12 @@ Jobs.after.insert(function (userId, doc) {
     data: {
       publicJobTitle: doc.publicJobTitle,
       customerId: doc.customer,
-      dateCreated : new Date(),
+      dateCreated: new Date(),
       customerDisplayName: customerDisplayName
     }
-  });
+  };
+  if (doc && doc.testData ) obj.testData=true;
+  Activities.insert(obj);
 });
 
 //Placements
@@ -369,15 +377,16 @@ Placements.after.insert(function (userId, doc) {
 
     }
   }
-
-  Activities.insert({
+  var obj={
     userId: userId,
     hierId: doc.hierId,
     type: type,
     entityId: doc._id,
     links: [doc._id, doc.job, doc.employee],
     data: data
-  })
+  };
+  if (doc && doc.testData ) obj.testData=true;
+  Activities.insert(obj)
 });
 
 Placements.after.update(function (userId, doc, fieldNames, modifier, options) {
@@ -418,14 +427,15 @@ Placements.after.update(function (userId, doc, fieldNames, modifier, options) {
 
   _.forEach(changes, function (change) {
     _.extend(change, { dateCreated: new Date()});
-
-    Activities.insert({
+    var obj={
       userId: userId,
       hierId: doc.hierId,
       type: Enums.activitiesType.placementEdit,
       entityId: doc._id,
       data: change
-    })
+    };
+    if (doc && doc.testData ) obj.testData=true;
+    Activities.insert(obj);
   });
 });
 

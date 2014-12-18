@@ -1,7 +1,7 @@
 var entityType = null;
 var isEntitySpecific = false;
 var contactable;
-var searchFields = ['name'];
+var searchFields = ['currentHierId'];
 
 var tenantUserCollection = TenantUsers;
 var TenantUserHandler, tenantUserQuery;
@@ -102,17 +102,36 @@ Template.tenantUsersList.created = function () {
   TenantUserHandler = SubscriptionHandlers.TenantUserHandler;
   Meteor.autorun(function () {
     var searchQuery = {};
+
     var params = {};
     options = {};
     var urlQuery = new URLQuery();
 
     searchDep.depend();
 
-
-    if (!_.isEmpty(tenantUserQuery.searchString.value)) {
-      params.searchString = tenantUserQuery.searchString.value;
-      urlQuery.addParam('search', tenantUserQuery.searchString.value);
-    }
+    var searchString=tenantUserQuery.searchString.value;
+    if (!_.isEmpty(searchString)) {
+      searchQuery.$and = [];
+      var stringSearches = [];
+      _.each(searchFields, function (field) {
+        var aux = {};
+        aux[field] = {
+          $regex: searchString,
+          $options: 'i'
+        };
+        stringSearches.push(aux);
+      });
+      urlQuery.addParam('search', searchString);
+      stringSearches.push({emails: {$elemMatch: {
+        address: {
+          $regex: searchString,
+          $options: 'i'
+        }
+      }}});
+      searchQuery.$and.push({
+        $or: stringSearches
+      });
+    };
 
     if (tenantUserQuery.selectedLimit.value) {
       var dateLimit = new Date();
@@ -137,10 +156,8 @@ Template.tenantUsersList.created = function () {
       urlQuery.addParam('tags', tenantUserQuery.tags.value);
     }
 
-
     // Set url query
     urlQuery.apply();
-
     if (selectedSort.get()) {
       var selected = selectedSort.get();
       options.sort = {};
@@ -148,8 +165,8 @@ Template.tenantUsersList.created = function () {
     } else {
       delete options.sort;
     }
-
-    TenantUserHandler.setFilter(searchQuery, params);
+    console.log(searchQuery);
+    TenantUserHandler.setFilter(searchQuery);
     TenantUserHandler.setOptions(options);
   })
 };

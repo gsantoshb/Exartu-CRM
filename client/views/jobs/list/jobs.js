@@ -279,7 +279,7 @@ Template.jobsList.created= function () {
       urlQuery.addParam('search', query.searchString.value);
 
       // Search customer using search string in server side and return customers' ids
-      // TODO: find another way to do this kind of search to avoid nasted calls
+      // TODO: find another way to do this kind of search to avoid nested calls
       Meteor.call('findCustomer', query.searchString.value, function (err, result) {
         if (!err)
           stringSearches.push({
@@ -296,7 +296,8 @@ Template.jobsList.created= function () {
 
         JobHandler.setFilter(searchQuery);
       });
-    } else {
+    }
+    else {
       if (selectedSort){
         JobHandler.setOptions(options);
       }

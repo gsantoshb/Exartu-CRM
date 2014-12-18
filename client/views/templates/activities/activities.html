@@ -119,8 +119,9 @@
           <div class="item-content">
               <div class="box">
                   <div class="box-content">
-
-                      <strong>{{task.msg}}</strong>
+                      <h4 class="item-title">
+                        <strong>{{task.msg}}</strong>
+                      </h4>
 
                       <div class="item-actions">
                           <a class="btn btn-default tip-bottom pointer" title="Task Owner">
@@ -328,17 +329,18 @@
       <tr>
           <td>
               <i class="icon icon-check-list"></i>
-              <a href="/placement/{{entityId}}"> </a>
-              <span class="task-author">
-                  {{displayUserName userId}}
-              </span>
-              <strong><a href="/contactable/{{employee._id}}"> {{employee.displayName}} </a></strong>
-              as
-              <strong><a href="/job/{{job._id}}"> {{job.displayName}} </a></strong>
-              @
-              {{#with customer job.customer}}
-                <strong><a href="/contactable/{{_id}}"> {{displayName}} </a></strong>
-              {{/with}}
+              <a href="/placement/{{entityId}}">
+                  <span class="task-author">
+                      {{displayUserName userId}}
+                  </span>
+                  <strong>{{employee.displayName}}</strong>
+                  -
+                  <strong>{{job.displayName}}</strong>
+                  @
+                  {{#with customer job.customer}}
+                    <strong>{{displayName}} </strong>
+                  {{/with}}
+              </a>
               <div class="pull-right">
                 {{#formattedDate value=data.dateCreated format='fromNow'}}
                   {{date}}
@@ -360,15 +362,15 @@
               <div class="box">
                   <div class="box-content">
                       <h4 class="item-title">
-                          <a href="/placement/{{entityId}}">  </a>
-                          <span class="spacer">–</span>
-                          <strong><a href="/contactable/{{employee._id}}"> {{employee.displayName}} </a></strong>
-                           as
-                          <strong><a href="/job/{{job._id}}"> {{job.displayName}} </a></strong>
-                          @
-                          {{#with customer job.customer}}
-                              <strong><a href="/contactable/{{_id}}"> {{displayName}} </a></strong>
-                          {{/with}}
+                          <a href="/placement/{{entityId}}">
+                              <strong> {{employee.displayName}} </strong>
+                               -
+                              <strong> {{job.displayName}} </strong>
+                              @
+                              {{#with customer job.customer}}
+                                  <strong> {{displayName}} </strong>
+                              {{/with}}
+                          </a>
                       </h4>
                   </div>
                   <!-- /.box-content -->
