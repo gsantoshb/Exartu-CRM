@@ -627,9 +627,8 @@ Meteor.methods({
     var user = Meteor.user();
     if (!user)
       return;
-
-    _.each([Contactables, Jobs, Tasks,Placements,Notes], function (collection) {
-      collection.direct.remove({ hierId: user.hierId, testData: true });
+    _.each([Contactables, Jobs, Tasks,Placements,Notes,Activities], function (collection) {
+        collection.direct.remove({ hierId: user.hierId, testData: true });
     });
   }
 });

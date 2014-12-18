@@ -1,4 +1,5 @@
 var query = {};
+var selected = undefined;
 
 ContactablesController = RouteController.extend({
   template: 'contactables',
@@ -100,6 +101,8 @@ ContactablesController = RouteController.extend({
 
     runESComputation();
 
+    selected = new ReactiveVar([]);
+
     this.render('contactables');
   },
   onAfterAction: function() {
@@ -199,7 +202,6 @@ var getLocationTagValue = function(locationField, locationFields) {
 
 var clickedAllSelected = new ReactiveVar(false);
 
-var selected = new ReactiveVar([]);
 var listViewDefault=Session.get('contactableListViewMode');
 if (!listViewDefault)
 {
@@ -646,6 +648,11 @@ Template.contactablesListItem.helpers({
   },
   listViewMode: function () {
     return listViewMode.get();
+  },
+  getStatus: function () {
+    if (this.Customer) return this.Customer.status;
+    if (this.Employee) return this.Employee.status;
+    if (this.Contact) return this.Contact.status;
   }
 });
 

@@ -69,26 +69,20 @@
                 <div class="table-item-cell">
                     <div class="table-item-cell-container">
                         <div class="table-item-title">
-                            <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
-                                <a href="/placement/{{_id}}">
-                                    <i class="icon icon-check-list"></i>
-                                </a>
-                            </strong>
-
-                            <a  href="/contactable/{{employee}}">
-                                {{employeeDisplayName}}
-                                <i class="fa fa-external-link" style="font-size: 14px"></i>
+                            <a href="/placement/{{_id}}">
+                                <strong>
+                                    {{employeeDisplayName}} - {{jobDisplayName}} @ {{customerDisplayName}}
+                                </strong>
                             </a>
 
-                            <a  href="/job/{{job}}">
-                                {{jobDisplayName}}
-                                <i class="fa fa-external-link" style="font-size: 14px"></i>
-                            </a>
-
-                            <a  href="/contactable/{{customerId}}">
-                                {{customerDisplayName}}
-                                <i class="fa fa-external-link" style="font-size: 14px"></i>
-                            </a>
+                            <br/>
+                            <small class="text-muted" style="font-size: 12px; visibility: hidden">
+                                <a href="/contactable/{{employee}}"> employee </a>
+                                <span class="bullet-spacer">·</span>
+                                <a href="/job/{{job}}"> job </a>
+                                <span class="bullet-spacer">·</span>
+                                <a href="/contactable/{{customerId}}"> customer </a>
+                            </small>
                         </div>
                     </div>
                 </div>
@@ -105,12 +99,16 @@
             <div class="col-sm-2">
                 <div class="table-item-cell">
                     <div class="table-item-cell-container date">
-                        {{#formatted_date date=dateCreated format='fromNow'}}
-                        <span>{{value}}</span><br>
-                        {{/formatted_date}}
+                        {{#formattedDate value=dateCreated format='fromNow'}}
+                            <span>{{date}}</span><br>
+                        {{/formattedDate}}
+
+                        {{displayUserName userId}}
+                        <br/>
+
                         {{#if searchKey }}
-                        <i class="glyphicon glyphicon-search"></i>
-                        {{searchKey}}
+                            <i class="glyphicon glyphicon-search"></i>
+                            {{searchKey}}
                         {{/if}}
                     </div>
                 </div>
@@ -124,13 +122,23 @@
         <i class="icon-map-marker-1"></i>
         {{jobLocationDisplayName}}
     {{/if}}
-
-    <i class="icon-calendar-2"></i>
     <small>
-        {{#formattedDate value=startDate}}
-            {{date}}
-        {{/formattedDate}}-
+        {{#if startDate}}
+            <i class="icon-calendar-2"></i>
+            Starting on
+            {{#formattedDate value=startDate}}
+                {{date}}
+            {{/formattedDate}}
+        {{/if}}
+    </small>
+    <small>
         {{#if endDate}}
+            {{#unless startDate}}
+                <i class="icon-calendar-2"></i>
+            {{else}}
+                -
+            {{/unless}}
+            Ending on
             {{#formattedDate value=endDate}}
                 {{date}}
             {{/formattedDate}}
@@ -148,10 +156,6 @@
         {{bill}}
         <br/>
     {{/each}}
-
-    <br/>
-
-    {{displayUserName userId}}
 </template>
 
 <template name="placementsListSearch">

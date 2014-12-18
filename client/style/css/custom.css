@@ -754,6 +754,11 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 .actions-head{
     border-bottom: none;
 }
+
+.table-item {
+    padding-left: 20px;
+}
+
 .table-item:first-child{
     border-top: 1px solid #e7e7e7;
 }

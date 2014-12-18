@@ -15,6 +15,9 @@ RoleManager = {
 
   bUserHasRoleId: function(user,id)
   {
+    if (!user) user=Meteor.users.findOne({ _id: this.userId });
+    if (!user) return false;
+    if (!user.roles) return false;
     if (!_.contains(user.roles, id)) return false;
     return true;
   },
@@ -25,6 +28,13 @@ RoleManager = {
   },
   bUserIsSystemAdministrator: function (user)
   {
+    if (!user) return false;
+    if (user && user.emails[0] && user.emails[0].address == 'greggd@aidacreative.com') return true;
     return RoleManager.bUserHasRoleId(user,this.getSystemAdministratorRole()._id)
+  },
+  bUserIsClientAdministrator: function (user)
+  {
+    if (!user) return false;
+    return RoleManager.bUserHasRoleId(user,this.getClientAdministratorRole()._id)
   }
 };

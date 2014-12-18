@@ -109,10 +109,26 @@ Template.tenantsList.created = function () {
     searchDep.depend();
 
 
-    if (!_.isEmpty(tenantQuery.searchString.value)) {
-      params.searchString = tenantQuery.searchString.value;
-      urlQuery.addParam('search', tenantQuery.searchString.value);
-    }
+
+    var searchString=tenantQuery.searchString.value;
+    if (!_.isEmpty(searchString)) {
+      searchQuery.$and = [];
+      var stringSearches = [];
+      _.each(searchFields, function (field) {
+        var aux = {};
+        aux[field] = {
+          $regex: searchString,
+          $options: 'i'
+        };
+        stringSearches.push(aux);
+      });
+      urlQuery.addParam('search', searchString);
+      searchQuery.$and.push({
+        $or: stringSearches
+      });
+    };
+
+
 
     if (tenantQuery.selectedLimit.value) {
       var dateLimit = new Date();
@@ -149,7 +165,7 @@ Template.tenantsList.created = function () {
       delete options.sort;
     }
 
-    TenantHandler.setFilter(searchQuery, params);
+    TenantHandler.setFilter(searchQuery);
     TenantHandler.setOptions(options);
   })
 };

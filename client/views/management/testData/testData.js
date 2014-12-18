@@ -37,10 +37,13 @@ Template.testData.events({
     isLoadingDep.changed();
     Deps.flush();
     Meteor.call('removeDemoData', function (err, result) {
-      isLoading = false;
-      isLoadingDep.changed();
+      //pause a second so user gets the feel that something happened
+      setTimeout(function () {
+        isLoading = false;
+        isLoadingDep.changed();
 
-      err && console.log(err);
+        err && console.log(err);
+      }, 1000);
     });
   }
 

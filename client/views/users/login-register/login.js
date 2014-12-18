@@ -62,7 +62,7 @@ AutoForm.hooks({
         }
         else {
           Meteor.call('userLoginActivity');
-          self.notVerified.set(false);
+          notVerified.set(false);
           GAnalytics.event("account","signin");
           if (Router.current().route.name === 'login') {
             return Router.go('/');
@@ -75,7 +75,7 @@ AutoForm.hooks({
   }
 });
 Template.login.helpers({
-  notVerified: function () {
+  getNotVerified: function () {
     return notVerified.get();
   },
   errorMessage: function () {
