@@ -630,16 +630,12 @@ Meteor.methods({
     var progress = ServerProgress.start(Meteor.userId(),'removeData');
     var col=[Contactables, Jobs, Tasks,Placements,Notes];
     var inc=100/col.length;
-    var i=0
+    var i=0;
     _.each([Contactables, Jobs, Tasks,Placements,Notes], function (collection) {
-      setTimeout(function()
-      {
         collection.direct.remove({ hierId: user.hierId, testData: true });
         i=i+inc;
         progress.set(i);
-      }, 500);
-
-
+        for (i=0;i<500000;i++) { var x=0};
     });
 
     progress.set(100);
