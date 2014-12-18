@@ -627,9 +627,22 @@ Meteor.methods({
     var user = Meteor.user();
     if (!user)
       return;
-
+    var progress = ServerProgress.start(Meteor.userId(),'removeData');
+    var col=[Contactables, Jobs, Tasks,Placements,Notes];
+    var inc=100/col.length;
+    var i=0
     _.each([Contactables, Jobs, Tasks,Placements,Notes], function (collection) {
-      collection.direct.remove({ hierId: user.hierId, testData: true });
+      setTimeout(function()
+      {
+        collection.direct.remove({ hierId: user.hierId, testData: true });
+        i=i+inc;
+        progress.set(i);
+      }, 500);
+
+
     });
+
+    progress.set(100);
+    progress.end();
   }
 });

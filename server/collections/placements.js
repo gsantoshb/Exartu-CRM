@@ -92,7 +92,6 @@ Meteor.paginatedPublish(PlacementView, function(){
       selector.$and.push({$or: searchStringSelector.$or});
       delete selector.$or;
     }
-
     return selector;
 
     function generateQueryFromFields(root, fields, string) {
