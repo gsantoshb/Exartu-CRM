@@ -84,7 +84,7 @@ Template.usersList.users = function () {
       }
     };
   }
-  return Meteor.users.find(q);
+  return Meteor.users.find(q,{sort: { 'emails.address':1}});
 };
 
 // Invitations
@@ -100,7 +100,7 @@ Template.userInvitationsList.invitations = function() {
       $options: 'i'
     };
   }
-  return UserInvitations.find(q);
+  return UserInvitations.find(q,{sort: {email: 1}});
 };
 
 Template.userInvitationsList.getUserDisplayName = function(userId) {
