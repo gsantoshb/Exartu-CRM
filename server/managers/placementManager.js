@@ -32,5 +32,17 @@ PlacementManager = {
       placement.placementRates = lastJobPlacement.placementRates;
 
     return Placements.insert(placement);
+  },
+  getPlacements: function (jobId, employeeId) {
+    if(!jobId && !employeeId)
+      throw new Error('Either job ID or employee ID must be provided');
+
+    var selector = {};
+    if (jobId)
+      selector.job = jobId;
+    if (employeeId)
+      selector.employee = employeeId;
+
+    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Placements.find(selector, { sort: { 'dateCreated': -1 } })).fetch();
   }
 };
