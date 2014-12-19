@@ -134,3 +134,30 @@ Template.bootstrap3DatePicker.helpers({
   }
 });
 
+
+
+Template.showMore.helpers({
+  created: function () {
+    this.data.hidden = new ReactiveVar(true);
+  },
+  isTooLong: function () {
+    return this.limit < this.text.length;
+  },
+  hidden: function () {
+    return this.hidden.get();
+  },
+  shortText: function () {
+    var lastWord = this.text.indexOf(' ', this.limit);
+    return lastWord === -1 ? this.text : this.text.substring(0, lastWord);
+  }
+});
+
+Template.showMore.events({
+  'click #showMore': function (e, ctx) {
+    ctx.data.hidden.set(false);
+  },
+  'click #showLess': function (e, ctx) {
+    ctx.data.hidden.set(true);
+  }
+});
+

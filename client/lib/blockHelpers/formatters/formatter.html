@@ -24,3 +24,19 @@
         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
     </div>
 </template>
+
+<template name="showMore">
+    {{#if isTooLong}}
+        {{#if hidden}}
+            <span class="pointer" title="Click to show all" id="showMore">
+                {{shortText}}...
+            </span>
+        {{else}}
+            <span class="pointer" title="Click to show Hide" id="showLess">
+                {{text}}
+            </span>
+        {{/if}}
+    {{else}}
+        {{text}}
+    {{/if}}
+</template>

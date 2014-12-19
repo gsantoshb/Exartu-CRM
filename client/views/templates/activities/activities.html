@@ -259,6 +259,7 @@
     <!-- /.item -->
 </template>
 
+
 <template name="newNoteActivity">
   {{#if listViewMode}}
       <tr>
@@ -270,14 +271,14 @@
               </span>
 
               {{#with note}}
-              <strong>{{msg}}</strong>
-              {{#each this.links}}
-              <a href="{{getHref}}">
-                  {{#with getEntity}}
-                  <span class="badge">{{displayName}}</span>
-                  {{/with}}
-              </a>
-              {{/each}}
+                  <strong>{{>showMore text=msg limit=60}}</strong>
+                  {{#each this.links}}
+                      <a href="{{getHref}}">
+                          {{#with getEntity}}
+                          <span class="badge">{{displayName}}</span>
+                          {{/with}}
+                      </a>
+                  {{/each}}
               {{/with}}
 
               <div class="pull-right">
@@ -302,7 +303,7 @@
                   <div class="box-content">
                       <h4 class="item-title">
                         {{#with note}}
-                            <strong>{{msg}}</strong>
+                            <strong>{{>showMore text=msg limit=100}}</strong>
                             <br/>
                             {{#each this.links}}
                                 <a href="{{getHref}}">
