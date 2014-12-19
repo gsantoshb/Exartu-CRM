@@ -19,7 +19,7 @@ HierarchiesManagementController = RouteController.extend({
 });
 var selectedHier = null;
 var selectedHierDep = new Deps.Dependency;
-
+var sortobj={sort: {name: 1}}
 // A simple schema for editing the hierarchy
 var hierarchySchema = new SimpleSchema({
   name: {
@@ -44,10 +44,27 @@ Template.hierarchiesManagement.created = function(){
   selectedHier = Hierarchies.findOne(Meteor.user() && Meteor.user().currentHierId);
   selectedHierDep.changed();
 };
-
+var query = new Utils.ObjectDefinition({
+  reactiveProps: {
+    searchString: {}
+  }
+});
+Template.hierarchiesManagement.filters = function(){
+  return query;
+};
 Template.hierarchiesManagement.helpers({
   hierarchies: function(){
-    return Hierarchies.find({_id: {$in: Meteor.user().hierarchies}});
+    var queryObj = query.getObject();
+    var q = {};
+    if (queryObj.searchString) {
+      q.name =
+      {
+            $regex: queryObj.searchString,
+            $options: 'i'
+      };
+    };
+    q._id={$in: Meteor.user().hierarchies};
+    return Hierarchies.find(q,sortobj);
   },
   selected: function(){
     selectedHierDep.depend();
@@ -58,7 +75,7 @@ Template.hierarchiesManagement.helpers({
   },
   isCurrent: function(){
     return Meteor.user().currentHierId == this._id;
-  }
+  },
 });
 Template.hierarchiesManagement.events({
   'click .hierarchyItem': function(e){
@@ -99,7 +116,7 @@ var getChildrenQuery = function(hierId){
 
 Template.recursiveHierarchies.helpers({
   childHiers: function(){
-    return Hierarchies.find(getChildrenQuery(this._id));
+    return Hierarchies.find(getChildrenQuery(this._id),sortobj);
   },
   isCurrent: function(){
     return Meteor.user().currentHierId == this._id;

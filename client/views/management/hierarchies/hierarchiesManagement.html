@@ -13,7 +13,20 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8">
-                    {{>showHierarchyTree hierarchies=hierarchies}}
+                    <div class="input-group">
+                        {{#objectProperty property=filters.searchString}}
+                        <input type="text" class="form-control" placeholder="Search Hierarchies" value="{{value}}">
+                        {{/objectProperty}}
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                    <div>
+                        <span>&nbsp;</span>
+                        {{>showHierarchyTree hierarchies=hierarchies}}
+                    </div>
                 </div>
                 <div class="col-md-4" style="border-left: solid 2px #979797; min-height: 300px;">
                     {{#with selected}}
@@ -47,32 +60,34 @@
     </div>
 </template>
 <template name="recursiveHierarchies">
-    <ul class="tree-list">
+    <div class="table-items-box">
         {{#each hierarchies}}
-            <li>
-                {{#if hasChilds}}
-                    <a data-toggle="collapse" href="#childs_{{_id}}" class="tree-collapse-trigger">
-                        <i></i>
-                    </a>
-                {{else}}
-                    <!--invisible span that takes the place of the collapse-trigger, so that the items stay aligned-->
-                        <span>
-                            <i class="fa" style="width: 11px"></i>
-                        </span>
-                {{/if}}
-                <a class="hierarchyItem {{isSelectedClass}} tree-item">
-                    {{name}}
-                    {{#if isCurrent}}
-                        <b>(current)</b>
+            <div class="table-item" >
+                <div class="row">
+                    {{#if hasChilds}}
+                        <a data-toggle="collapse" href="#childs_{{_id}}" class="tree-collapse-trigger">
+                            <i></i>
+                        </a>
                     {{else}}
+                        <!--invisible span that takes the place of the collapse-trigger, so that the items stay aligned-->
+                            <span>
+                                <i class="fa" style="width: 11px"></i>
+                            </span>
                     {{/if}}
-                </a>
-                {{#if hasChilds}}
-                    <div id="childs_{{_id}}" class="collapse in tree-child">
-                        {{>showHierarchyTree hierarchies=childHiers}}
-                    </div>
-                {{/if}}
-            </li>
+                    <a class="hierarchyItem {{isSelectedClass}} tree-item">
+                        {{name}}
+                        {{#if isCurrent}}
+                            <b>(current)</b>
+                        {{else}}
+                        {{/if}}
+                    </a>
+                    {{#if hasChilds}}
+                        <div id="childs_{{_id}}" class="collapse in tree-child">
+                            {{>showHierarchyTree hierarchies=childHiers}}
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
         {{/each}}
-    </ul>
+    </div>
 </template>
