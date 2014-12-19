@@ -44,6 +44,7 @@ Router.map(function() {
         //  - externalId: string ?
         case 'POST':
           var data = this.request.body;
+
           try {
             var placement = mapper.create(data, user.hierId);
             var placementId = connection.call('apiInsertPlacement', placement);

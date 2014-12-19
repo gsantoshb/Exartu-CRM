@@ -46,6 +46,7 @@ Router.map(function() {
           var data = this.request.body;
           try {
             var jobInfo = mapper.create(data);
+            console.log('jobInfo',jobInfo);
             var jobId = connection.call('addJob', jobInfo);
             _.extend(data, {id: jobId});
             response.end(data);
@@ -78,6 +79,10 @@ var mapper = {
     if (data.durationId) { res.duration = data.durationId; }
     if (data.statusId) { res.status = data.statusId; }
 
+    //ExternalId
+    if (data.externalId){
+      res.externalId = data.externalId;
+    }
     return res;
   },
   get: function(data, customerId) {
@@ -95,6 +100,11 @@ var mapper = {
       if (item.endDate) { res.endDate = item.endDate; }
       if (item.duration) { res.durationId = item.duration; }
       if (item.status) { res.statusId = item.status; }
+
+      //ExternalId
+      if (item.externalId){
+        res.externalId = item.externalId;
+      }
 
       result.push(res);
     });

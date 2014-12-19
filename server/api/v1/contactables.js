@@ -84,6 +84,7 @@ var contactablesAPIAction = function(type, userdata) {
 		// 	 - status: string (optional)
 		//	 - organizationName: string (optional)
 		// 	 - department: string (optional)
+		// 	 - externalId: string (optional)
 		case 'POST':
 			var data = this.request.body;
 			var contactable = mapper.create(data, type);
@@ -183,6 +184,17 @@ var mapper = {
 				contactable.customerId = data.customerId;
 		}
 
+		//ExternalId
+		if (data.externalId){
+			contactable.externalId = data.externalId;
+		}
+
+		//SSN
+		if (data.ssn){
+			contactable.Employee = contactable.Employee || {};
+			contactable.Employee.taxID = data.ssn;
+		}
+
 		return contactable;
 	},
 	get: function(data, type) {
@@ -209,6 +221,15 @@ var mapper = {
 				contactable.customerId = data.customerId;
 		}
 
+		//ExternalId
+		if (data.externalId){
+			contactable.externalId = data.externalId;
+		}
+
+		//SSN
+		if (data.Employee && data.Employee.taxID){
+			contactable.ssn = data.Employee.taxID;
+		}
 		return contactable;
 	}
 };
