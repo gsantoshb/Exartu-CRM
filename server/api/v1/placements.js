@@ -15,32 +15,35 @@ Router.map(function() {
       var response = new RESTAPI.response(this.response);
 
       switch(this.request.method) {
+        // Get placements by job and/or employee ID
+        // Parameters:
+        //  - jobId: string
+        //  - employeeId: string
         case 'GET':
-          var selector = {
-            hierId: user.hierId
-          };
-
-          var employeeId = this.params.employeeId;
-          if (employeeId)
-            selector.employee = employeeId;
-
           var jobId = this.params.jobId;
-          if (jobId)
-            selector.job = jobId;
+          var employeeId = this.params.employeeId;
+          try {
+            var res = connection.call('getPlacements', jobId, employeeId);
 
-          response.end(Placements.find(selector).map(mapper.get), {type: 'application/json'});
-
+            // Transform the response before sending it back
+            res = mapper.get(res);
+            response.end(res);
+          } catch(err) {
+            console.log(err);
+            response.error(err.message);
+          }
           break;
-        // Crete new placement
+
+        // Add a new placement for a job and employee
         // Body:
-        //  jobId
-        //  employeeId
-        //  placementStatusId
-        //  candidateStatusId
-        //  statusNote (Optional)
+        //  - jobId: string
+        //  - employeeId: string
+        //  - placementStatusId: string
+        //  - candidateStatusId: string
+        //  - statusNote: string ?
+        //  - externalId: string ?
         case 'POST':
           var data = this.request.body;
-
           try {
             var placement = mapper.create(data, user.hierId);
             var placementId = connection.call('apiInsertPlacement', placement);
@@ -97,20 +100,32 @@ var mapper = {
       throw new Meteor.Error(404, 'Employee with id ' + data.employeeId + ' not found');
     placement.employee = data.employeeId;
 
+    //ExternalId
+    if (data.externalId) {
+      placement.externalId = data.externalId;
+    }
+
     return placement;
   },
   get: function(data) {
-    if (!data)
-      return {};
+    if (!data) return {};
 
-    return {
-      id: data._id,
-      dateCreated: data.dateCreated,
-      jobId: data.job,
-      employeeId: data.employee,
-      placementStatusId: data.placementStatus,
-      candidateStatusId: data.candidateStatusId,
-      statusNote: data.statusNote
-    }
+    var result = [];
+    _.each(data, function (item) {
+      var res = {
+        id: item._id,
+        jobId: item.job,
+        employeeId: item.employee,
+        placementStatusId: item.placementStatus,
+        candidateStatusId: item.candidateStatus
+      };
+
+      if (item.statusNote) { res.statusNote = item.statusNote; }
+      if (item.externalId) { res.externalId = item.externalId; }
+
+      result.push(res);
+    });
+
+    return result;
   }
 };

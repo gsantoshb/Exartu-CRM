@@ -18,5 +18,13 @@ Meteor.methods({
   // Placements
   addPlacement: function (placement) {
     return PlacementManager.addPlacement(placement);
-  }
+  },
+
+  getPlacements: function(jobId, employeeId) {
+    try {
+      return PlacementManager.getPlacements(jobId, employeeId);
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
+  },
 });
