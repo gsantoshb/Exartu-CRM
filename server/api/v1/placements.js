@@ -97,6 +97,11 @@ var mapper = {
       throw new Meteor.Error(404, 'Employee with id ' + data.employeeId + ' not found');
     placement.employee = data.employeeId;
 
+    //ExternalId
+    if (data.externalId){
+      placement.externalId = data.externalId;
+    }
+
     return placement;
   },
   get: function(data) {
@@ -110,7 +115,8 @@ var mapper = {
       employeeId: data.employee,
       placementStatusId: data.placementStatus,
       candidateStatusId: data.candidateStatusId,
-      statusNote: data.statusNote
+      statusNote: data.statusNote,
+      externalId: data.externalId
     }
   }
 };
