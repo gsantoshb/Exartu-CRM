@@ -15,8 +15,6 @@ Router.map(function() {
 		path: '/api/' + api_version + '/customers/:id?',
 		action: function() {
 			console.log('API v' + api_version + '/customers ' + this.request.method);
-			console.log(this.request);
-
 			contactablesAPIAction.call(this, 'Customer');
 		}
 	})
@@ -39,7 +37,6 @@ Router.map(function() {
 		path: '/api/' + api_version + '/twwpapi/:id?',
 		action: function() {
 			console.log('API v' + api_version + '/twwpapi ' + this.request.method);
-      console.log(this.request.body);
 
       if (this.request.body){
         var loginData = {

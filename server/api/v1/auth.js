@@ -13,7 +13,6 @@ Router.map(function() {
 		path: '/api/' + api_version + '/auth/login',
 		action: function() {
 			console.log('API v' + api_version + '/auth/login ' + this.request.method);
-      console.log(this.request.body);
 
       this.response.setHeader("Content-Type", "application/json");
       this.response.setHeader("Access-Control-Allow-Origin", "*");
