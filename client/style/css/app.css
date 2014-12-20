@@ -5172,23 +5172,23 @@ li.unread {
 }
 
 .timeline .item-employee .type,.timeline .item-contact .type,.timeline .item-customer .type {
-    background: #1c91f5
+    background: rgb(197, 203, 208)
 }
 
 .timeline .item-job .type {
-    background: #ffd42a
+    background: rgb(197, 203, 208)
 }
 
 .timeline .item-job .type i {
-    color: #333
+    color: rgb(197, 203, 208)
 }
 
 .timeline .item-deal .type {
-    background: #4cd964
+    background: rgb(197, 203, 208)
 }
 
 .timeline .item-task .type {
-    background: #ff2d55
+    background: rgb(197, 203, 208)
 }
 
 @media(min-width: 1200px) {

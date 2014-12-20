@@ -22,6 +22,7 @@
               <span class="task-author">
                   {{displayUserName userId}}
               </span>
+              <i class="icon icon-connection-1"></i>
               <i class="icon {{getActivityIcon}}"></i>
               <a href="/contactable/{{entityId}}">
                   <strong>
@@ -47,13 +48,17 @@
       <div class="item item-customer">
           <div class="item-info">
               {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
-
+              <div class="type">
+                  <i class="icon icon-connection-1"></i>
+              </div>
           </div>
+
           <!-- /.item-info -->
           <div class="item-content">
               <div class="box">
                   <div class="box-content">
                       <h4 class="item-title">
+                          <i class="icon {{getActivityIcon}}"></i>
                           <a href="/contactable/{{entityId}}">
                               <strong>
                                   <span>{{data.displayName}}</span>
@@ -163,7 +168,7 @@
 </template>
 
 <!-- New job activity -->
-<template name="newJobActivity">
+<template name="newActivity">
   {{#if listViewMode}}
       <tr>
           <td>

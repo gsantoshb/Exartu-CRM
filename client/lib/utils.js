@@ -316,7 +316,8 @@ Utils.getEntityFromLink=function(link){
       if (! job) return;
       // Extend displayName with customer displayName
       var customer = AllContactables.findOne(job.customer);
-      job.displayName += '@' + customer.displayName;
+      if (customer && customer.displayName)
+        job.displayName += '@' + customer.displayName;
       return job;
     case Enums.linkTypes.deal.value:
         return Deals.findOne({_id: link.id});
