@@ -151,20 +151,26 @@
     <div class="table-item magic {{#if isSelected}} selected {{/if}}">
         <div class="row ">
             {{#if listViewMode}}
-                    <a href="/contactable/{{_id}}">
-                        {{displayName}}
-                    </a>
-                  <span class="task-author">
-                      {{displayUserName userId}}
-                  </span>
-                  <span class="task-author">
-                      {{_id}}
-                  </span>
-                  <span class="task-author">
-                        {{#formattedDate value=dateCreated format='fromNow'}}
-                        {{date}}
-                        {{/formattedDate}}
-                  </span>
+            <div class="table-item-cell">
+                <div class="table-item-cell-container">
+                    <div class="table-item-title">
+                            <a href="/contactable/{{_id}}">
+                                {{displayName}}
+                            </a>
+                          <span class="task-author">
+                              {{displayUserName userId}}
+                          </span>
+                          <span class="task-author">
+                              {{_id}}
+                          </span>
+                          <span class="task-author">
+                                {{#formattedDate value=dateCreated format='fromNow'}}
+                                {{date}}
+                                {{/formattedDate}}
+                          </span>
+                    </div>
+                </div>
+            </div>
             {{else}}
                 <div class="col-sm-4">
                     <div class="table-item-cell">

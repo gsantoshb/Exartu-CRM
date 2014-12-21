@@ -369,7 +369,9 @@ Template.jobsList.listViewMode= function() {
 Template.jobsListSearch.listViewMode= function() {
   return listViewMode.get();
 };
-
+Template.jobsListItem.listViewMode= function() {
+  return listViewMode.get();
+};
 Template.jobsList.isLoading = function() {
   return SubscriptionHandlers.JobHandler.isLoading();
 };
@@ -477,6 +479,10 @@ Template.jobsListItem.getEmployeeDisplayName = function () {
 };
 
 Template.jobInformation.customerName = function () {
+  var customer =  Contactables.findOne(this.customer);
+  return customer && customer.displayName;
+};
+Template.jobsListItem.customerName = function () {
   var customer =  Contactables.findOne(this.customer);
   return customer && customer.displayName;
 };

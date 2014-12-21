@@ -109,6 +109,37 @@
 </template>
 
 <template name="jobsListItem">
+    {{#if listViewMode}}
+    <div class="table-item magic">
+        <div class="table-item-cell">
+            <div class="table-item-cell-container">
+                <div class="table-item-title">
+                    <a href="/job/{{_id}}">
+                        {{displayName}}
+                    </a>
+                    <strong><a href="/contactable/{{customer}}">{{customerName}}</a></strong>
+                        <span class="badge">
+                            {{lookUpName status}}
+                        </span>
+                    <span class="pull-right">
+                              <span class="task-author">
+                                  {{displayUserName userId}}
+                              </span>
+                              <span class="task-author">
+                                  {{_id}}
+                              </span>
+                              <span class="task-author">
+                                    {{#formattedDate value=dateCreated format='fromNow'}}
+                                    {{date}}
+                                    {{/formattedDate}}
+                              </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{else}}
+
     <div class="table-item magic">
         <div class="row ">
             <div class="col-sm-4">
@@ -163,6 +194,7 @@
             </div>
         </div>
     </div>
+    {{/if}}
 </template>
 
 <template name="jobInformation">
