@@ -230,7 +230,7 @@ Template.contactable_nav.helpers({
         return ContactableCounter.findOne('placements').count;
       }});
       //tabs.push({id: 'hrconcourse', displayName: 'HRconcourse', template: 'contactable_HRConcourse'});
-      tabs.push({id: 'education', displayName: 'Education', template: 'employeeEduction', info: function () {
+      tabs.push({id: 'education', displayName: 'Education', template: 'employeeEducation', info: function () {
         return Template.parentData(2).education ? Template.parentData(2).education.length : 0;
       }});
       tabs.push({id: 'pastJobs', displayName: 'Past Jobs', template: 'employeePastJobs', info: function () {
