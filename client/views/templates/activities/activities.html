@@ -231,7 +231,70 @@
       <!-- /.item -->
   {{/if}}
 </template>
+<template name="newJobActivity">
+    {{#if listViewMode}}
+    <tr>
+        <td>
+            <i class="icon icon-briefcase"></i>
+              <span class="task-author">
+                  {{displayUserName userId}}
+              </span>
 
+            <a href="/job/{{entityId}}">
+                <strong>{{data.publicJobTitle}}</strong>
+            </a>
+
+            {{#if data.customerDisplayName}}
+            <i class="fa fa-long-arrow-right"></i>
+            <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
+            {{/if}}
+
+
+            <div class="pull-right">
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                {{date}}
+                {{/formattedDate}}
+            </div>
+        </td>
+    </tr>
+    {{else}}
+    <div class="item item-job">
+        <div class="item-info">
+            {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
+
+            <div class="type">
+                <i class="icon icon-briefcase"></i>
+            </div>
+        </div>
+        <!-- /.item-info -->
+        <div class="item-content">
+            <div class="box" data-bind="with: data">
+                <div class="box-content">
+                    <h4 class="item-title">
+                        <i class="icon {{getActivityIcon}}"></i>
+                        <a href="/job/{{entityId}}">
+                            <strong>{{data.publicJobTitle}}</strong>
+                        </a>
+                        {{#if data.customerDisplayName}}
+                        <i class="fa fa-long-arrow-right"></i>
+                        <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
+                        {{/if}}
+                    </h4>
+                    <div class="item-actions">
+                        <a class="btn btn-default tip-bottom addPlacement" title="Assign Candidates">
+                            <i class="icon icon-check-list"> </i> Add placement
+                        </a>
+                    </div>
+                </div>
+                <!-- /.box-content -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.item-content -->
+    </div>
+    <!-- /.item -->
+    {{/if}}
+</template>
 <template name="userLoginActivity">
     <div class="item item-job">
         <div class="item-info">
