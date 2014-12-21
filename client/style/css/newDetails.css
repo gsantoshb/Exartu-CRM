@@ -92,7 +92,7 @@
 
 @media (max-width: 500px) {
     .nav-item > a, .nav-item button {
-        width: 64px;
+        width: 48px;
         font-size: 11px;
         padding-left: 1px;
         padding-right: 1px;

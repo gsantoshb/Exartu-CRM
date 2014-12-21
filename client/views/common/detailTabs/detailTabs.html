@@ -57,9 +57,10 @@
                 <div class="{{isActive id}} details-tab nav-item ">
 
                     <a class="btn" href="/{{../route}}/{{../entityId}}/{{id}}">
+                        <!--<i class="icon {{icon}}"></i>-->
                         {{displayName}}
                         {{#if isDefined info}}
-                            <span class="custom-badge-2">{{info}}</span>
+                            <span style="margin-left: 3px" class="custom-badge-2">{{info}}</span>
                         {{/if}}
                     </a>
                 </div>
@@ -75,7 +76,7 @@
                         <div class="{{isActive id}} col-xs-12 col-sm-12 col-md-12 details-tab">
 
                             <a href="/{{../route}}/{{../entityId}}/{{id}}">
-                                {{displayName}}
+                                <i class="icon {{icon}}"></i>
                             </a>
                         </div>
                     {{/each}}

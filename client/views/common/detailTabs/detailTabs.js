@@ -92,10 +92,10 @@ Template.detailNav.created = function () {
 };
 Template.detailNav.helpers({
   mobileTabs: function () {
-    return this.tabs.slice(0, 3);
+    return this.tabs.slice(0, 8);
   },
   otherTabs: function () {
-    return this.tabs.slice(3, this.tabs.length);
+    return this.tabs.slice(8, this.tabs.length);
   },
   isActive: function (id) {
     return (id == Session.get('activeTab')) ? 'active' : '';
