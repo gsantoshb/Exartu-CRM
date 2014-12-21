@@ -131,6 +131,14 @@ var info = new Utils.ObjectDefinition({
   }
 });
 
+var listViewDefault=Session.get('dashboardListViewMode');
+if (!listViewDefault)
+{
+  listViewDefault=true;
+}
+var listViewMode = new ReactiveVar(listViewDefault);
+
+
 Template.jobs.information = function() {
   var searchQuery = {};
 
@@ -355,6 +363,13 @@ Template.jobsList.jobs = function() {
   return jobCollection.find();
 };
 
+Template.jobsList.listViewMode= function() {
+  return listViewMode.get();
+};
+Template.jobsListSearch.listViewMode= function() {
+  return listViewMode.get();
+};
+
 Template.jobsList.isLoading = function() {
   return SubscriptionHandlers.JobHandler.isLoading();
 };
@@ -415,6 +430,19 @@ Template.jobsListSort.events = {
     setSortField(this);
   }
 };
+
+Template.jobsListSearch.events = {
+  'click #list-view': function () {
+    listViewMode.set(true);
+    Session.set('dashboardListViewMode',true);
+  },
+  'click #detail-view': function () {
+    listViewMode.set(false);
+    Session.set('dashboardListViewMode',false);
+  }
+};
+
+
 
 // List filters
 
