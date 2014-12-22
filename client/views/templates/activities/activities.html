@@ -12,6 +12,17 @@
 
     </div>
 </template>
+<template name="suffixListDisplay">
+    <div class="pull-right">
+      <span class="task-author">
+        {{displayUserName userId}}
+
+        {{#formattedDate value=data.dateCreated format='fromNow'}}
+          {{date}}
+        {{/formattedDate}}
+      </span>
+    </div>
+</template>
 <template name="activityIconDisplay">
     {{>getActivityIcon}}
 </template>
@@ -19,10 +30,6 @@
   {{#if listViewMode}}
       <tr>
           <td>
-              <span class="task-author">
-                  {{displayUserName userId}}
-              </span>
-              <i class="icon icon-connection-1"></i>
               <i class="icon {{getActivityIcon}}"></i>
               <a href="/contactable/{{entityId}}">
                   <strong>
@@ -37,11 +44,7 @@
                 </a>
             {{/if}}
 
-              <div class="pull-right">
-                {{#formattedDate value=data.dateCreated format='fromNow'}}
-                  {{date}}
-                {{/formattedDate}}
-              </div>
+            {{>suffixListDisplay}}
           </td>
       </tr>
   {{else}}
@@ -90,25 +93,14 @@
   {{#if listViewMode}}
       <tr>
           <td>
-
-
               <i class="icon icon-clock-3"></i>
-
-              <span class="task-author">
-                  {{displayUserName userId}}
-              </span>
-              <i class="fa fa-long-arrow-right"></i>
               <span class="task-author">
                   {{displayUserName task.assign}}
               </span>
 
               <strong>{{task.msg}}</strong>
 
-              <div class="pull-right">
-                {{#formattedDate value=data.dateCreated format='fromNow'}}
-                  {{date}}
-                {{/formattedDate}}
-              </div>
+              {{>suffixListDisplay}}
           </td>
       </tr>
   {{else}}
@@ -236,9 +228,6 @@
     <tr>
         <td>
             <i class="icon icon-briefcase"></i>
-              <span class="task-author">
-                  {{displayUserName userId}}
-              </span>
 
             <a href="/job/{{entityId}}">
                 <strong>{{data.publicJobTitle}}</strong>
@@ -250,11 +239,7 @@
             {{/if}}
 
 
-            <div class="pull-right">
-                {{#formattedDate value=data.dateCreated format='fromNow'}}
-                {{date}}
-                {{/formattedDate}}
-            </div>
+            {{>suffixListDisplay}}
         </td>
     </tr>
     {{else}}
@@ -332,9 +317,7 @@
           <td>
 
               <i class="icon icon-note-paper-1"></i>
-              <span class="task-author">
-                  {{displayUserName userId}}
-              </span>
+
 
               {{#with note}}
                   <strong>{{>showMore text=msg limit=60}}</strong>
@@ -347,11 +330,7 @@
                   {{/each}}
               {{/with}}
 
-              <div class="pull-right">
-                {{#formattedDate value=data.dateCreated format='fromNow'}}
-                  {{date}}
-                {{/formattedDate}}
-              </div>
+              {{>suffixListDisplay}}
           </td>
       </tr>
   {{else}}
@@ -397,9 +376,6 @@
           <td>
               <i class="icon icon-check-list"></i>
               <a href="/placement/{{entityId}}">
-                  <span class="task-author">
-                      {{displayUserName userId}}
-                  </span>
                   <strong>{{employee.displayName}}</strong>
                   -
                   <strong>{{job.displayName}}</strong>
@@ -408,11 +384,7 @@
                     <strong>{{displayName}} </strong>
                   {{/with}}
               </a>
-              <div class="pull-right">
-                {{#formattedDate value=data.dateCreated format='fromNow'}}
-                  {{date}}
-                {{/formattedDate}}
-              </div>
+              {{>suffixListDisplay}}
           </td>
       </tr>
   {{else}}
@@ -506,16 +478,8 @@
           <td>
               <i class="icon icon-clock-3"></i>
 
-              <span class="task-author">
-                  {{displayUserName this.userId}}
-              </span>
 
-
-              <div class="pull-right">
-                {{#formattedDate value=data.dateCreated format='fromNow'}}
-                  {{date}}
-                {{/formattedDate}}
-              </div>
+              {{>suffixListDisplay}}
           </td>
       </tr>
   {{else}}
@@ -602,9 +566,6 @@
             <td>
                 <i class="icon icon-clock-3"></i>
 
-                update
-                <strong> {{displayUserName this.userId}} </strong>
-
                 -
 
                 <!-- Property change -->
@@ -642,11 +603,7 @@
                     </ul>
                 {{/if}}
 
-                <div class="pull-right">
-                    {{#formattedDate value=data.dateCreated format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
-                </div>
+                {{>suffixListDisplay}}
             </td>
         </tr>
     {{else}}
