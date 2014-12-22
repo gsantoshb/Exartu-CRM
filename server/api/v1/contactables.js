@@ -181,6 +181,14 @@ var mapper = {
 				contactable.customerId = data.customerId;
 		}
 
+		//department
+		if (type == 'Customer') {
+			if (data.department){
+				contactable.Customer = contactable.Customer || {};
+				contactable.Customer.department = data.department;
+			}
+		}
+
 		//ExternalId
 		if (data.externalId){
 			contactable.externalId = data.externalId;
@@ -216,6 +224,13 @@ var mapper = {
 		if (type == 'Contact') {
 			if (data.customerId)
 				contactable.customerId = data.customerId;
+		}
+
+		//department
+		if (type == 'Customer') {
+			if (data.department){
+				contactable.department = data.Customer.department;
+			}
 		}
 
 		//ExternalId
