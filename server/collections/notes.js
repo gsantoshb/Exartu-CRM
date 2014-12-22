@@ -80,7 +80,7 @@ Notes.allow({
 });
 
 Notes.before.insert(function(userId, doc){
-  doc.dateCreated = Date.now();
+  doc.dateCreated = doc.dateCreated || Date.now();
   if (doc.hierId)
     return doc; // It was created by the system, e.g.: from a SMS sent by a contactable
 

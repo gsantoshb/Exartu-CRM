@@ -35,6 +35,7 @@ Router.map(function() {
 				//	 - end: date,
 				//	 - assign: string // user assigned
 				// 	 - links: [ string ] // contactable ids related
+				// 	 - dateCreated: date (optional)
 				case 'POST':
 					var data = this.request.body;
 
@@ -86,7 +87,8 @@ var mapper = {
 					id: link,
 					type: Enums.linkTypes.contactable.value
 				}
-			})
+			}),
+			dateCreated: data.dateCreated
 		};
 	},
 	get: function(data) {
@@ -99,7 +101,8 @@ var mapper = {
 			assign: data.assign[0],
 			links: _.map(data.links, function(link){
 				return link.id;
-			})
+			}),
+			dateCreated: data.dateCreated
 		}
 	}
 };
