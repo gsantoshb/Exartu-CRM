@@ -222,7 +222,6 @@ Template.contactable_nav.helpers({
     if (contactable.Customer) {
       tabs.push({id: 'jobs',mobileDisplayName:'Job', displayName: 'Jobs', template: 'contactable_jobs'});
       tabs.push({id: 'placements',mobileDisplayName: 'Place', displayName: 'Placements', template: 'contactable_placements'});
-      tabs.push({id: 'contacts', mobileDisplayName: 'Contact',displayName: 'Contacts', template: 'contactable_contacts'});
     }
 
     if (contactable.Employee) {
