@@ -1540,6 +1540,16 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
         margin-bottom: 0px;
     }
 
+    /* contactables list */
+    .table-item {
+        margin-bottom: 5px;
+        padding: 10px!important;
+    }
+    .table-item-title {
+        border: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
 }
 
 @media (max-width: 460px) {
