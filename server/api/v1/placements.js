@@ -41,6 +41,8 @@ Router.map(function() {
         //  - placementStatusId: string
         //  - candidateStatusId: string
         //  - statusNote: string ?
+        //  - startDate: string (date) ?
+        //  - endDate: string (date) ?
         //  - externalId: string ?
         case 'POST':
           var data = this.request.body;
@@ -79,8 +81,6 @@ var mapper = {
       ]
     };
 
-    placement.statusNote = data.statusNote;
-
     var placementStatus = LookUps.find({lookUpCode: Enums.lookUpTypes.placement.status.lookUpCode, _id: data.placementStatusId, hierId: hierId});
     if (! placementStatus)
       throw new Meteor.Error(404, 'Placement status with id ' + data.placementStatusId + ' not found');
@@ -101,10 +101,11 @@ var mapper = {
       throw new Meteor.Error(404, 'Employee with id ' + data.employeeId + ' not found');
     placement.employee = data.employeeId;
 
-    //ExternalId
-    if (data.externalId) {
-      placement.externalId = data.externalId;
-    }
+    // Optional values
+    if (data.statusNote) { placement.statusNote = data.statusNote; }
+    if (data.startDate) { placement.startDate = new Date(data.startDate); }
+    if (data.endDate) { placement.endDate = new Date(data.endDate); }
+    if (data.externalId) { placement.externalId = data.externalId; }
 
     return placement;
   },
@@ -121,7 +122,10 @@ var mapper = {
         candidateStatusId: item.candidateStatus
       };
 
+      // Optional values
       if (item.statusNote) { res.statusNote = item.statusNote; }
+      if (item.startDate) { res.startDate = item.startDate; }
+      if (item.endDate) { res.endDate = item.endDate; }
       if (item.externalId) { res.externalId = item.externalId; }
 
       result.push(res);
