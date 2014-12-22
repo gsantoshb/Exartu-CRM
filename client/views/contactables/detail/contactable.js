@@ -207,33 +207,33 @@ Template.contactable_nav.helpers({
   tabs: function () {
     tabs = [
 //      {id: 'activities', displayName: 'Activities', template: 'entityActivities'},
-      {id: 'details', displayName: 'Details', template: 'contactable_details'},
-      {id: 'notes', displayName: 'Notes', template: 'contactable_notes', icon : 'icon-note-paper-1', info: function () {
+      {id: 'details',mobileDisplayName:'Detail', displayName: 'Details', template: 'contactable_details'},
+      {id: 'notes', mobileDisplayName: 'Note',displayName: 'Notes', template: 'contactable_notes', icon : 'icon-note-paper-1', info: function () {
         return ContactableCounter.findOne('notes').count;
       }},
-      {id: 'documents', displayName: 'Documents', template: 'contactable_documents', icon : 'icon-document-1', info: function () {
+      {id: 'documents', mobileDisplayName: 'Doc',displayName: 'Documents', template: 'contactable_documents', icon : 'icon-document-1', info: function () {
         return ContactableCounter.findOne('contactablesFiles').count;
       }},
-      {id: 'tasks', displayName: 'Tasks', template: 'contactable_tasks', icon : 'icon-note-paper-1', info: function () {
+      {id: 'tasks', mobileDisplayName:'Task', displayName:  'Tasks', template: 'contactable_tasks', icon : 'icon-note-paper-1', info: function () {
         return ContactableCounter.findOne('tasks').count;
       }}
     ];
 
     if (contactable.Customer) {
-      tabs.push({id: 'jobs', displayName: 'Jobs', template: 'contactable_jobs'});
-      tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements'});
-      tabs.push({id: 'contacts', displayName: 'Contacts', template: 'contactable_contacts'});
+      tabs.push({id: 'jobs',mobileDisplayName:'Job', displayName: 'Jobs', template: 'contactable_jobs'});
+      tabs.push({id: 'placements',mobileDisplayName: 'Place', displayName: 'Placements', template: 'contactable_placements'});
+      tabs.push({id: 'contacts', mobileDisplayName: 'Contact',displayName: 'Contacts', template: 'contactable_contacts'});
     }
 
     if (contactable.Employee) {
-      tabs.push({id: 'placements', displayName: 'Placements', template: 'contactable_placements', info: function () {
+      tabs.push({id: 'placements', mobileDisplayName: 'Place',displayName: 'Placements', template: 'contactable_placements', info: function () {
         return ContactableCounter.findOne('placements').count;
       }});
       //tabs.push({id: 'hrconcourse', displayName: 'HRconcourse', template: 'contactable_HRConcourse'});
-      tabs.push({id: 'education', displayName: 'Education', template: 'employeeEducation', info: function () {
+      tabs.push({id: 'education',mobileDisplayName: 'Ed.',displayName: 'Education', template: 'employeeEducation', info: function () {
         return Template.parentData(2).education ? Template.parentData(2).education.length : 0;
       }});
-      tabs.push({id: 'pastJobs', displayName: 'Past Jobs', template: 'employeePastJobs', info: function () {
+      tabs.push({id: 'pastJobs', mobileDisplayName:'Past', displayName: 'Past Jobs', template: 'employeePastJobs', info: function () {
         return Template.parentData(2).pastJobs ? Template.parentData(2).pastJobs.length : 0;
       }});
     }
