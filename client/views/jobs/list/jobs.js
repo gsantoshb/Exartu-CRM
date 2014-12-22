@@ -165,7 +165,7 @@ Template.jobsList.created= function () {
 
     selectedSortDep.depend();
 
-    // Sort by
+    // Sort
     if (selectedSort) {
       options.sort = {};
       options.sort[selectedSort.field] = selectedSort.value;

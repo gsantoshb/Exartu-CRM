@@ -80,27 +80,27 @@
     {{#if isLoading}}
         <div style="height: 505px;"></div>
     {{else}}
-        <div class="pagination-row">
+        <div style="margin-top:3px" class="pagination-row">
             <span class="checkbox" style="float:left;">
-                <label>
+                <!--<label>-->
                     <input type="checkbox" id="selectAll" checked="{{areAllChecked}}">
                     <span> {{#if selectedCount}}&nbsp;{{else}}  {{/if}}</span>
-                </label>
+                <!--</label>-->
             </span>
             {{#if selectedCount}}
                 <span>
-                    {{selectedCount}} items selected
+                    {{selectedCount}} selected.
                     {{#if showSelectAll}}
-                        <a id="selectAllRemotes" class="pointer">Select all {{totalCount}}</a>
+                        <a id="selectAllRemotes" class="pointer">&nbsp;Select all {{totalCount}}?</a>
                     {{/if}}
                 </span>
                 
                 <span>
                     {{#if areAllSelectedTheSameType}}
-                        <button class="btn btn-primary pull-right" id="sendTemplate"> send template </button>
+                        <button class="btn btn-primary" id="sendTemplate"> send template </button>
                     {{else}}
                         <div class="text-danger pull-right">
-                            You can't mix different types, select just the
+                            Select desired type
                             {{#each differentTypesSelected}}
                                 <a class="pointer selectOneType"> {{name}}({{count}}) </a>, &nbsp;
                             {{/each}}
@@ -108,9 +108,9 @@
                     {{/if}}
                 </span>
                 {{#if withoutEmail}}
-                    <div class="text-warning">
-                        {{withoutEmail}} Contacts will not receive the email because they do NOT have an email added
-                    </div>
+                    <span class="text-warning">
+                        {{withoutEmail}} have no email address
+                    </span>
                 {{/if}}
             {{/if}}
             {{#unless isESSearch}}

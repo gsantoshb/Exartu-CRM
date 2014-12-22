@@ -215,7 +215,45 @@
 
 <template name="jobsListSearch">
     <div class="actions-head">
-        <div class="row">
+        <div class="row visible-xs">
+            <div class="col-xs-6">
+                <div class="pull-left suffix-5">
+                    <div class="btn-group">
+                        <a href="/jobAdd/Temporary" type="button" class="btn btn-success" title="Add">
+                            <span class="fa fa-plus"></span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    {{#objectProperty property=searchString}}
+                    <input type="text" class="form-control" placeholder="Search Jobs" value="{{value}}">
+                    {{/objectProperty}}
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                     <span class="pointer" style="font-size: 20px;">
+                        {{#if listViewMode}}
+                            <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4" ></i>
+                            <i class="fa fa-bars"></i>
+                        {{else}}
+                            <i class="fa fa-th-large"></i>
+                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4" ></i>
+                        {{/if}}
+                    </span>
+            </div>
+
+            <div class=" col-xs-3">
+                {{> jobsListSort}}
+            </div>
+        </div>
+        <div class="row hidden-xs">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 <div class="pull-left suffix-5">
                     <div class="btn-group">
@@ -237,7 +275,7 @@
                     </span>
                 </div>
             </div>
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <div class="col-sm-2 col-md-2 col-lg-2">
                      <span class="pointer" style="font-size: 20px;">
                         {{#if listViewMode}}
                             <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4" ></i>
@@ -249,7 +287,7 @@
                     </span>
             </div>
 
-            <div class="pull-right">
+            <div class=" col-sm-2 col-md-2 col-lg-2">
                 {{> jobsListSort}}
             </div>
         </div>
@@ -259,7 +297,7 @@
 <template name="jobsListSort">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Sort by
+            Sort
             {{#with selectedSort}}
                 <strong>{{displayName}}</strong>
                 {{#if isAscSort .}}

@@ -68,15 +68,15 @@
     .details-menu{
         margin-top: -1px;
         margin-bottom: -1px;
-        height: 48px;
+        height: 64px;
     }
 
     .nav-item > a, .nav-item button{
         border: solid 1px #E0DDDD;
         background-color: #fff;
         margin-right: -1px;
-        height: 48px;
-        width: 100px;
+        height: 64px;
+        width: 56px;
         padding-top: 13px;
         border-radius: 0;
     }
@@ -92,7 +92,7 @@
 
 @media (max-width: 500px) {
     .nav-item > a, .nav-item button {
-        width: 48px;
+        width: 40px;
         font-size: 11px;
         padding-left: 1px;
         padding-right: 1px;
