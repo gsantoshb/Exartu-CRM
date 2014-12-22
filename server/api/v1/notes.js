@@ -31,10 +31,12 @@ Router.map(function() {
 				// Body:
 				//   - msg: string
 				// 	 - links: [ string ] // contactable ids
+				// 	 - dateCreated: date (optional)
 				case 'POST':
 					var data = this.request.body;
 
 					try {
+
 						var note = mapper.create(data);
 						var noteId = connection.call('apiInsertNote', note);
 						_.extend(data, {id: noteId});
@@ -75,17 +77,19 @@ var mapper = {
 					id: link,
 					type: Enums.linkTypes.contactable.value
 				}
-			})
+			}),
+			dateCreated: data.dateCreated
 		};
 	},
 	get: function(data) {
 		if (!data)
-			return {}
+			return {};
 		return {
 			msg: data.msg,
 			links: _.map(data.links, function(link){
 				return link.id;
-			})
+			}),
+			dateCreated: data.dateCreated
 		}
 	}
 };
