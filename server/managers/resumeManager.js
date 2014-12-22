@@ -35,6 +35,10 @@ ResumeManager = {
     } catch (e) {
       return new Meteor.Error(500, "Error parsing resume");
     }
+  },
+
+  extractInformation: function (information) {
+    return extractInformation(information);
   }
 };
 
@@ -207,7 +211,6 @@ var extractInformation = function (parseResult) {
     console.log('Error while parsing ContactInfo');
     console.log(err)
   }
-  ;
 
   // Person names
   try {
@@ -225,7 +228,6 @@ var extractInformation = function (parseResult) {
     console.log('Error while parsing person names');
     console.log(err)
   }
-  ;
 
   // Tags
   try {
@@ -241,9 +243,9 @@ var extractInformation = function (parseResult) {
   } catch (err) {
     console.log('Error while parsing tags');
     console.log(err)
-  };
+  }
 
-  // educations
+  // Education
   var educations = [];
   try{
     if (structuredResult.EducationHistory){
@@ -299,7 +301,7 @@ var extractInformation = function (parseResult) {
   }
   employee.education = educations;
 
-  //past jobs
+  // Past jobs
   var pastJobs = [];
   try{
     debugger;

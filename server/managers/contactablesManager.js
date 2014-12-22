@@ -22,15 +22,6 @@ ContactableManager = {
         if (error)
           future.throw(error);
         else {
-          // Generate a temp Employee to insert
-          var tempEmployee = {};
-          tempEmployee.objNameArray = ['person', 'Employee', 'contactable'];
-          tempEmployee.person = {
-            firstName: '',
-            middleName: '',
-            lastName: ''
-          };
-          tempEmployee.Employee = {};
 
           // Parse the result
           var json = EJSON.parse(result.content);
@@ -40,7 +31,7 @@ ContactableManager = {
             else {
 
               // Create new Employee
-              extractInformation(result, tempEmployee);
+              var tempEmployee = ResumeManager.extractInformation(result);
               var employeeId = ContactableManager.create(tempEmployee);
               future.return(employeeId);
             }
