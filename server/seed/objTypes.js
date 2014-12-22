@@ -10,26 +10,6 @@
  */
 var newObjType = dType.constructor.objType;
 
-
-newObjType({
-  collection: Notes,
-  objGroupType: Enums.objGroupType.contactable,
-  name: 'note',
-  style: {
-    icon: 'icon-note-paper-1',
-    color: 'yellow'
-  }
-});
-newObjType({
-  collection: Contactables,
-  objGroupType: Enums.objGroupType.contactable,
-  name: 'task',
-  style: {
-    icon: 'icon-clock-3',
-    color: 'red'
-  }
-});
-
 newObjType({
   collection: Contactables,
   objGroupType: Enums.objGroupType.contactable,
