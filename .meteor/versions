@@ -73,10 +73,8 @@ matb33:collection-hooks@0.7.6
 meteor-nodetime@0.0.0
 meteor-platform@1.1.1
 meteor@1.1.1
-meteorhacks:async@1.0.0
 meteorhacks:kadira-binary-deps@1.2.0
 meteorhacks:kadira@2.5.2
-meteorhacks:npm@1.2.0
 minifiers@1.1.0
 minimongo@1.0.3
 mizzao:bootstrap-3@3.2.0_1
@@ -92,6 +90,7 @@ mrt:twilio-meteor@1.1.0
 mystor:device-detection@0.2.0
 natestrauser:connection-banner@0.4.3
 natestrauser:select2@3.5.1
+node-form-data@1.0.0
 npm-bcrypt@0.7.7
 npm-container@1.0.0
 oauth2@1.1.0
