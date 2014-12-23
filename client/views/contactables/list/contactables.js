@@ -653,6 +653,16 @@ Template.contactablesListItem.helpers({
     if (this.Customer) return this.Customer.status;
     if (this.Employee) return this.Employee.status;
     if (this.Contact) return this.Contact.status;
+  },
+  getDepartment: function (){
+
+    if (this.Customer && this.Customer.department)
+    {
+      var dept=this.Customer.department;
+      if (dept=='Primary') return null;
+      dept=" - " + dept
+    }
+    return dept;
   }
 });
 
