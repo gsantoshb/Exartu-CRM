@@ -75,6 +75,44 @@ Router.map(function() {
     }
   });
 
+  // Placement Rates
+  this.route('apiLookups_PlacementRates' + api_version, {
+    where: 'server',
+    path: '/api/' + api_version + '/lookups/placementRates',
+    action: function() {
+      console.log('API v' + api_version + '/lookups/placementRates ' + this.request.method);
+
+      // Get login token from request
+      var loginToken = RESTAPI.getLoginToken(this);
+      // Return user associated to loginToken if it is valid.
+      var user = RESTAPI.getUserFromToken(loginToken);
+      // Create a DPP connection with server and attach user
+      var connection = new RESTAPI.connection(user);
+
+      var response = new RESTAPI.response(this.response);
+
+      switch(this.request.method) {
+        case 'GET':
+          try {
+            var res = connection.call('getPlacementRateTypes');
+
+            // Transform the response before sending it back
+            res = mapper.get(res);
+            response.end(res);
+          } catch(err) {
+            console.log(err);
+            response.error(err.message);
+          }
+          break;
+
+        default:
+          response.error('Method not supported');
+      }
+
+      connection.close();
+    }
+  });
+
 });
 
 
