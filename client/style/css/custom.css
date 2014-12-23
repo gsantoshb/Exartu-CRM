@@ -758,6 +758,7 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 .table-item {
     padding-left: 20px;
+    border-top:0px;
 }
 
 .table-item:first-child{
