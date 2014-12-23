@@ -67,6 +67,17 @@
                             <a class="deleteNoteRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
                         </div>
 
+                        <small>
+                            Created on
+                            {{#formattedDate value=noteRecord.dateCreated format='lll'}}
+                                {{date}}
+                            {{/formattedDate}}
+                            {{#formattedDate value=noteRecord.dateCreated format='fromNow'}}
+                                - {{date}}
+                            {{/formattedDate}}
+                            <br/>
+                        </small>
+
                         {{#each noteRecord.links}}
                             <a href="{{getUrl .}}">
                                 {{#with getEntity .}}
