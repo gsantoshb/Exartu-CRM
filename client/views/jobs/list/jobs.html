@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="col-md-8 col-lg-8">
-                    {{>jobsListSearch}}
+                    {{>jobListSearch}}
 
                 </div>
 
@@ -46,7 +46,7 @@
                         {{>fastPagination name="jobs"}}
                     </div>
                     <div class="fade-in">
-                        {{> jobsList }}
+                        {{> jobList }}
                     </div>
                 </div>
             </div>
@@ -78,13 +78,13 @@
     </div>
 </template>
 
-<template name="jobsList">
+<template name="jobList">
     {{#if isLoading}}
         <div style="height: 280px;">
         </div>
     {{else}}
         {{#each jobs}}
-            {{> jobsListItem }}
+            {{> jobListItem }}
         {{else}}
             {{#if info.isFiltering.value }}
                 <div class="v-wrapper">
@@ -109,7 +109,7 @@
     {{/if}}
 </template>
 
-<template name="jobsListItem">
+<template name="jobListItem">
     {{#if listViewMode}}
         <div class="table-item magic">
             <div class="table-item-cell">
@@ -215,7 +215,7 @@
     </div>
 </template>
 
-<template name="jobsListSearch">
+<template name="jobListSearch">
     <div class="actions-head">
         <div class="row visible-xs">
             <div class="col-xs-8">
@@ -249,7 +249,7 @@
                             <i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
                          {{/if}}
                      </span>
-                     {{> jobsListSort}}
+                     {{> jobListSort}}
             </div>
 
         </div>
@@ -288,13 +288,13 @@
             </div>
 
             <div class=" col-sm-2 col-md-2 col-lg-2">
-                {{> jobsListSort}}
+                {{> jobListSort}}
             </div>
         </div>
     </div>
 </template>
 
-<template name="jobsListSort">
+<template name="jobListSort">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             Sort

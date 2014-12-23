@@ -131,7 +131,7 @@ var info = new Utils.ObjectDefinition({
   }
 });
 
-var listViewDefault=Session.get('dashboardListViewMode');
+var listViewDefault=Session.get('jobListViewMode');
 if (!listViewDefault)
 {
   listViewDefault=true;
@@ -155,7 +155,7 @@ Template.jobs.isLoading = function () {
 }
 
 // List
-Template.jobsList.created= function () {
+Template.jobList.created= function () {
   Meteor.autorun(function () {
     var searchQuery = {
       $and: [] // Push each $or operator here
@@ -317,7 +317,7 @@ Template.jobsList.created= function () {
   })
 };
 
-Template.jobsList.info = function() {
+Template.jobList.info = function() {
   info.isFiltering.value = jobCollection.find().count() != 0;
   return info;
 };
@@ -342,7 +342,7 @@ var jobTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
 };
 
-Template.jobsListSearch.jobTypes = jobTypes;
+Template.jobListSearch.jobTypes = jobTypes;
 
 getActiveStatuses = function(objName){
   var status = Enums.lookUpTypes["job"];
@@ -359,30 +359,30 @@ getActiveStatuses = function(objName){
 
 var searchFields = ['categoryName', 'industryName', 'durationName', 'statusName', 'publicJobTitle'];
 
-Template.jobsList.jobs = function() {
+Template.jobList.jobs = function() {
   return jobCollection.find();
 };
 
-Template.jobsList.listViewMode= function() {
+Template.jobList.listViewMode= function() {
   return listViewMode.get();
 };
-Template.jobsListSearch.listViewMode= function() {
+Template.jobListSearch.listViewMode= function() {
   return listViewMode.get();
 };
-Template.jobsListItem.listViewMode= function() {
+Template.jobListItem.listViewMode= function() {
   return listViewMode.get();
 };
-Template.jobsList.isLoading = function() {
+Template.jobList.isLoading = function() {
   return SubscriptionHandlers.JobHandler.isLoading();
 };
 
 // List search
 
-Template.jobsList.jobTypes = function() {
+Template.jobList.jobTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
 };
 
-Template.jobsListSearch.searchString = function() {
+Template.jobListSearch.searchString = function() {
   return query.searchString;
 };
 
@@ -395,21 +395,21 @@ var sortFields = [
   {field: 'endDate', displayName: 'End date'}
 ];
 
-Template.jobsListSort.sortFields = function() {
+Template.jobListSort.sortFields = function() {
   return sortFields;
 };
 
-Template.jobsListSort.selectedSort = function() {
+Template.jobListSort.selectedSort = function() {
   selectedSortDep.depend();
   return selectedSort;
 };
 
-Template.jobsListSort.isFieldSelected = function(field) {
+Template.jobListSort.isFieldSelected = function(field) {
   selectedSortDep.depend();
   return selectedSort && selectedSort.field == field.field;
 };
 
-Template.jobsListSort.isAscSort = function(field) {
+Template.jobListSort.isAscSort = function(field) {
   selectedSortDep.depend();
   return field.value == 1;
 };
@@ -427,20 +427,20 @@ var setSortField = function(field) {
   selectedSortDep.changed();
 };
 
-Template.jobsListSort.events = {
+Template.jobListSort.events = {
   'click .sort-field': function() {
     setSortField(this);
   }
 };
 
-Template.jobsListSearch.events = {
+Template.jobListSearch.events = {
   'click #list-view': function () {
     listViewMode.set(true);
-    Session.set('dashboardListViewMode',true);
+    Session.set('jobListViewMode',true);
   },
   'click #detail-view': function () {
     listViewMode.set(false);
-    Session.set('dashboardListViewMode',false);
+    Session.set('jobListViewMode',false);
   }
 };
 
@@ -456,24 +456,24 @@ Template.jobsFilters.jobTypes = jobTypes;
 
 // Item
 
-Template.jobsListItem.pictureUrl = function(pictureFileId) {
+Template.jobListItem.pictureUrl = function(pictureFileId) {
   var picture = JobsFS.findOne({_id: pictureFileId});
   return picture? picture.url('JobsFSThumbs') : undefined;
 };
 
-Template.jobsListItem.jobIcon = function() {
+Template.jobListItem.jobIcon = function() {
   return helper.getEntityIcon(this);
 };
 
-Template.jobsListItem.displayObjType = function() {
+Template.jobListItem.displayObjType = function() {
   return Utils.getJobType(this);
 };
 
-Template.jobsListItem.placements = function () {
+Template.jobListItem.placements = function () {
   return Placements.find({job: this._id}, { limit: 3, transform: null});
 };
 
-Template.jobsListItem.getEmployeeDisplayName = function () {
+Template.jobListItem.getEmployeeDisplayName = function () {
   var employee = Contactables.findOne(this.employee);
   return employee ? employee.displayName : 'Employee information not found!';
 };
@@ -482,15 +482,15 @@ Template.jobInformation.customerName = function () {
   var customer =  Contactables.findOne(this.customer);
   return customer && customer.displayName;
 };
-Template.jobsListItem.customerName = function () {
+Template.jobListItem.customerName = function () {
   var customer =  Contactables.findOne(this.customer);
   return customer && customer.displayName;
 };
 
-Template.jobsListItem.countPlacements = function () {
+Template.jobListItem.countPlacements = function () {
   return Placements.find({job: this._id}).count();
 };
 
-Template.jobsListItem.morePlacements = function () {
+Template.jobListItem.morePlacements = function () {
   return Placements.find({job: this._id}).count() > 3;
 };

@@ -72,6 +72,21 @@ var loadPlacementQueryFromURL = function (params) {
     }
   });
 };
+var listViewDefault=Session.get('placementListViewMode');
+if (!listViewDefault)
+{
+  listViewDefault=true;
+}
+var listViewMode = new ReactiveVar(listViewDefault);
+Template.placementList.listViewMode= function() {
+  return listViewMode.get();
+};
+Template.placementListSearch.listViewMode= function() {
+  return listViewMode.get();
+};
+Template.placementListItem.listViewMode= function() {
+  return listViewMode.get();
+};
 
 // All
 
@@ -109,7 +124,7 @@ Template.placementsBox.isSearching = function() {
 };
 var options = {};
 // List
-Template.placementsList.created = function () {
+Template.placementList.created = function () {
   if (!SubscriptionHandlers.PlacementHandler){
     SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
   }
@@ -188,12 +203,12 @@ Template.placementsList.created = function () {
   })
 };
 
-Template.placementsList.info = function() {
+Template.placementList.info = function() {
   info.isFiltering.value = PlacementHandler.totalCount() != 0;
   return info;
 };
 
-Template.placementsList.isLoading = function() {
+Template.placementList.isLoading = function() {
   return SubscriptionHandlers.PlacementHandler.isLoading();
 };
 
@@ -216,11 +231,11 @@ var getCandidateStatuses = function(objname){
   return ids;
 };
 
-Template.placementsList.placements = function() {
+Template.placementList.placements = function() {
   return placementCollection.find({}, options);
 };
 
-Template.placementsList.placementTypes = function() {
+Template.placementList.placementTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.placement });
 };
 
@@ -240,29 +255,37 @@ Template.placementsFilters.candidateActionOptions= function() {
 
 // List search
 
-Template.placementsListSearch.isJob=function() {
+Template.placementListSearch.isJob=function() {
   if (entityType==Enums.linkTypes.job.value) return true;
 };
 
-Template.placementsListSearch.searchString = function() {
+Template.placementListSearch.searchString = function() {
   return placementQuery.searchString;
 };
 
-Template.placementsListSearch.isLoading = function () {
+Template.placementListSearch.isLoading = function () {
   return PlacementHandler.isLoading();
 }
 
-Template.placementsListSearch.events = {
+Template.placementListSearch.events = {
   'click .addPlacement': function (e) {
     Session.set('addOptions', {job: Session.get('entityId')});
     Router.go('/placementAdd/placement');
     e.preventDefault();
-  }
+  },
+  'click #list-view': function () {
+    listViewMode.set(true);
+    Session.set('placementListViewMode',true);
+  },
+  'click #detail-view': function () {
+    listViewMode.set(false);
+    Session.set('placementListViewMode',false);
+  }  
 };
 
 // Item
 
-Template.placementsListItem.helpers({
+Template.placementListItem.helpers({
   employeeDisplayName: function () {
     var employee = Contactables.findOne(this.employee);
     return employee && employee.displayName;
