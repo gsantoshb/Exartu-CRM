@@ -581,7 +581,6 @@ Utils.getDefaultJobStatus=function()
 
 Utils.setDecimal= function(rate) {
   var drate = parseFloat(rate).toFixed(2);
-
   if (drate==null || isNaN(drate)) drate=0;
   return drate;
 }

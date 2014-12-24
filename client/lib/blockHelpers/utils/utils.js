@@ -133,6 +133,11 @@ AutoForm.inputValueHandlers({
     if (this.val()) {
       return $(this).parent().datepicker('getDate');
     }
+  },
+  '.afDecimal': function () {
+    var val=this.val();
+    if (val=="" || val==null || isNaN(val)) val=0;
+    return val;
   }
 });
 
