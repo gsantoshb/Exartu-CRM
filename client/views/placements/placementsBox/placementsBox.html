@@ -5,14 +5,14 @@
         </div>
 
         <div class="col-md-8 col-lg-8">
-            {{>placementsListSearch}}
+            {{>placementListSearch}}
         </div>
 
         <div class="col-md-9 col-lg-9">
             {{#if isSearching}}
                 searching
             {{else}}
-                {{> placementsList }}
+                {{> placementList }}
             {{/if}}
         </div>
     </div>
@@ -35,7 +35,7 @@
     </div>
 </template>
 
-<template name="placementsList">
+<template name="placementList">
     <div>
         {{>fastPagination name='placements'}}
         {{#if isLoading}}
@@ -44,7 +44,7 @@
         {{else}}
             <div class="fade-in">
                 {{#each placements}}
-                    {{> placementsListItem }}
+                    {{> placementListItem }}
                 {{else}}
                     {{#if info.isFiltering.value }}
                         <div class="v-wrapper">
@@ -62,7 +62,7 @@
     </div>
 </template>
 
-<template name="placementsListItem">
+<template name="placementListItem">
     <div class="table-item magic">
         <div class="row ">
             <div class="col-sm-4">
@@ -158,23 +158,21 @@
     {{/each}}
 </template>
 
-<template name="placementsListSearch">
-    <div class="actions-head search-list">
-        <div class="row">
-            <div class="col-sm-8 col-md-8 col-lg-8">
+<template name="placementListSearch">
+    <div class="actions-head">
+        <div class="row visible-xs">
+            <div class="col-xs-8">
                 <div class="pull-left suffix-5">
-                    {{#if isJob}}
-                        <div class="btn-group pull-left suffix-5">
-                            <button type="button" class="btn btn-success addPlacement" title="Add">
-                                <span class="fa fa-plus"></span>
-                            </button>
-                        </div>
-                    {{/if}}
+                    <div class="btn-group">
+                        <a href="/jobAdd/Temporary" type="button" class="btn btn-success" title="Add">
+                            <span class="fa fa-plus"></span>
+                        </a>
+                    </div>
                 </div>
 
                 <div class="input-group">
                     {{#objectProperty property=searchString}}
-                    <input type="text" class="form-control" placeholder="Search placements" value="{{value}}">
+                        <input type="text" class="form-control" placeholder="Search Jobs" value="{{value}}">
                     {{/objectProperty}}
 
                     <span class="input-group-btn">
@@ -183,12 +181,83 @@
                         </button>
                     </span>
                 </div>
-            </div><!-- /.col-lg-5 -->
-            <div class="pull-right">
+            </div>
+            <div class="col-xs-4">
+                     <span class="pointer" style="font-size: 20px;">
+                         {{#if listViewMode}}
+                             <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
+                            <i class="fa fa-bars"></i>
+                         {{else}}
+                             <i class="fa fa-th-large"></i>
+                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
+                         {{/if}}
+                     </span>
+                {{> jobListSort}}
+            </div>
+
+        </div>
+        <div class="row hidden-xs">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+
+                <div class="input-group">
+                    {{#objectProperty property=searchString}}
+                        <input type="text" class="form-control" placeholder="Search Placements" value="{{value}}">
+                    {{/objectProperty}}
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2">
+                     <span class="pointer" style="font-size: 20px;">
+                         {{#if listViewMode}}
+                             <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
+                            <i class="fa fa-bars"></i>
+                         {{else}}
+                             <i class="fa fa-th-large"></i>
+                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
+                         {{/if}}
+                     </span>
+            </div>
+
+            <div class=" col-sm-2 col-md-2 col-lg-2">
                 {{> placementListSort}}
             </div>
-        </div><!-- /.row -->
+        </div>
     </div>
+    <!--<div class="actions-head search-list">-->
+        <!--<div class="row">-->
+            <!--<div class="col-sm-8 col-md-8 col-lg-8">-->
+                <!--<div class="pull-left suffix-5">-->
+                    <!--{{#if isJob}}-->
+                        <!--<div class="btn-group pull-left suffix-5">-->
+                            <!--<button type="button" class="btn btn-success addPlacement" title="Add">-->
+                                <!--<span class="fa fa-plus"></span>-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--{{/if}}-->
+                <!--</div>-->
+
+                <!--<div class="input-group">-->
+                    <!--{{#objectProperty property=searchString}}-->
+                    <!--<input type="text" class="form-control" placeholder="Search placements" value="{{value}}">-->
+                    <!--{{/objectProperty}}-->
+
+                    <!--<span class="input-group-btn">-->
+                        <!--<button class="btn btn-primary" type="button">-->
+                            <!--<i class="fa fa-search"></i>-->
+                        <!--</button>-->
+                    <!--</span>-->
+                <!--</div>-->
+            <!--</div>&lt;!&ndash; /.col-lg-5 &ndash;&gt;-->
+            <!--<div class="pull-right">-->
+                <!--{{> placementListSort}}-->
+            <!--</div>-->
+        <!--</div>&lt;!&ndash; /.row &ndash;&gt;-->
+    <!--</div>-->
 </template>
 
 

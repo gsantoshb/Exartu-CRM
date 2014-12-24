@@ -45,10 +45,8 @@ Meteor.users.allow({
     if (_.contains(fields, 'roles')) {
 
       if (!RoleManager.bUserIsSystemAdministrator(user)) {
-        console.log('1a');
         if (!RoleManager.bUserIsClientAdministrator(user))
         {
-          console.log('rejecting not client admin');
           return false;
         }
         else {
@@ -67,22 +65,23 @@ Meteor.users.allow({
       return true;
     if (file.hierId != user.hierId)
     {
-
-      return false;
+      if (!RoleManager.bUserIsSystemAdministrator(user))
+        return false;
     }
     return true;
     if (_.any(['dateCreated', 'hierId', 'services','roles'], function (field) {
-      return _.contains(fields, field);
-    }))
+          return _.contains(fields, field);
+        }))
     {
       return true;
     }
     else
     {
-
-      return false;
+      if (!RoleManager.bUserIsSystemAdministrator(user))
+        if (!RoleManager.bUserIsClientAdministrator(user))
+          return false;
     }
-}
+  }
 });
 
 //Meteor.publish("users", function () {

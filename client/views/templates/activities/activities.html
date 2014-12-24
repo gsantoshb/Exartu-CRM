@@ -4,10 +4,10 @@
         <span class="task-author text-center">
                   {{displayUserName userId}}
 
-        <br />
-        {{#formattedDate value=dateCreated format='fromNow'}}
-        {{date}}
-        {{/formattedDate}}
+            <br/>
+            {{#formattedDate value=dateCreated format='fromNow'}}
+                {{date}}
+            {{/formattedDate}}
         </span>
 
     </div>
@@ -17,9 +17,9 @@
       <span class="task-author">
         {{displayUserName userId}}
 
-        {{#formattedDate value=data.dateCreated format='fromNow'}}
-          {{date}}
-        {{/formattedDate}}
+          {{#formattedDate value=data.dateCreated format='fromNow'}}
+              {{date}}
+          {{/formattedDate}}
       </span>
     </div>
 </template>
@@ -27,257 +27,261 @@
     {{>getActivityIcon}}
 </template>
 <template name="newContactableActivity">
-  {{#if listViewMode}}
-      <tr>
-          <td>
-              <i class="icon {{getActivityIcon}}"></i>
-              <a href="/contactable/{{entityId}}">
-                  <strong>
-                      <span>{{data.displayName}}</span>
-                  </strong>
-              </a>
-
-
-            {{#if data.contactableEmail}}
-                <a class="tip-bottom" title="Send Message" href="mailto:{{data.contactableEmail}}">
-                    <i class="fa fa-envelop"></i> {{data.contactableEmail}}
+    {{#if listViewMode}}
+        <tr>
+            <td>
+                <i class="icon {{getActivityIcon}}"></i>
+                <a href="/contactable/{{entityId}}">
+                    <strong>
+                        <span>{{data.displayName}}</span>
+                    </strong>
                 </a>
-            {{/if}}
 
-            {{>suffixListDisplay}}
-          </td>
-      </tr>
-  {{else}}
-      <div class="item item-customer">
-          <div class="item-info">
-              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
-              <div class="type">
-                  <i class="icon icon-connection-1"></i>
-              </div>
-          </div>
 
-          <!-- /.item-info -->
-          <div class="item-content">
-              <div class="box">
-                  <div class="box-content">
-                      <h4 class="item-title">
-                          <i class="icon {{getActivityIcon}}"></i>
-                          <a href="/contactable/{{entityId}}">
-                              <strong>
-                                  <span>{{data.displayName}}</span>
-                              </strong>
-                          </a>
-                      </h4>
-                      <div class="item-actions">
-                        {{#if data.contactableEmail}}
-                            <a class="btn btn-default tip-bottom" title="Send Message" href="mailto:{{data.contactableEmail}}">
-                                <i class="fa fa-envelop"></i> {{data.contactableEmail}}
+                {{#if data.contactableEmail}}
+                    <a class="tip-bottom" title="Send Message" href="mailto:{{data.contactableEmail}}">
+                        <i class="fa fa-envelop"></i> {{data.contactableEmail}}
+                    </a>
+                {{/if}}
+
+                {{>suffixListDisplay}}
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-customer">
+            <div class="item-info">
+                {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
+                <div class="type">
+                    <i class="icon icon-connection-1"></i>
+                </div>
+            </div>
+
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            <i class="icon {{getActivityIcon}}"></i>
+                            <a href="/contactable/{{entityId}}">
+                                <strong>
+                                    <span>{{data.displayName}}</span>
+                                </strong>
                             </a>
-                        {{/if}}
+                        </h4>
 
-                      </div>
+                        <div class="item-actions">
+                            {{#if data.contactableEmail}}
+                                <a class="btn btn-default tip-bottom" title="Send Message"
+                                   href="mailto:{{data.contactableEmail}}">
+                                    <i class="fa fa-envelop"></i> {{data.contactableEmail}}
+                                </a>
+                            {{/if}}
 
-                  </div>
-                  <!-- /.box-content -->
-              </div>
-              <!-- /.box -->
-          </div>
-          <!-- /.item-content -->
-      </div>
-      <!-- /.item -->
-  {{/if}}
+                        </div>
+
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    {{/if}}
 </template>
 
 <!-- New task activity -->
 <template name="newTaskActivity">
-  {{#if listViewMode}}
-      <tr>
-          <td>
-              <i class="icon icon-clock-3"></i>
+    {{#if listViewMode}}
+        <tr>
+            <td>
+                <i class="icon icon-clock-3"></i>
               <span class="task-author">
                   {{displayUserName task.assign}}
               </span>
 
-              <strong>{{task.msg}}</strong>
+                <strong>{{task.msg}}</strong>
 
-              {{>suffixListDisplay}}
-          </td>
-      </tr>
-  {{else}}
-      <div class="item item-task">
-          <div class="item-info">
-              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
+                {{>suffixListDisplay}}
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-task">
+            <div class="item-info">
+                {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
-              <div class="type">
-                  <i class="icon icon-clock-3"></i>
-              </div>
-          </div>
-          <!-- /.item-info -->
-          <div class="item-content">
-              <div class="box">
-                  <div class="box-content">
-                      <h4 class="item-title">
-                        <strong>{{task.msg}}</strong>
-                      </h4>
+                <div class="type">
+                    <i class="icon icon-clock-3"></i>
+                </div>
+            </div>
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            <strong>{{task.msg}}</strong>
+                        </h4>
 
-                      <div class="item-actions">
-                          <a class="btn btn-default tip-bottom pointer" title="Task Owner">
-                              <span> {{displayUserName this.userId}} </span>
-                          </a>
-                          <a class="btn btn-default tip-bottom pointer" title="Task Owner">assigned
-                              <span> {{displayUserName task.assign}} </span>
-                          </a>
-                          <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
-                              <i class="fa fa-calendar"></i>
-                              Start:
-                                <span>
-                                  {{#formattedDate value=task.begin format='lll'}}
-                                    {{date}}
-                                  {{/formattedDate}}
-                                </span>
-                          </a>
-                        {{#if task.end}}
+                        <div class="item-actions">
+                            <a class="btn btn-default tip-bottom pointer" title="Task Owner">
+                                <span> {{displayUserName this.userId}} </span>
+                            </a>
+                            <a class="btn btn-default tip-bottom pointer" title="Task Owner">assigned
+                                <span> {{displayUserName task.assign}} </span>
+                            </a>
                             <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
                                 <i class="fa fa-calendar"></i>
-                                End:
-                                    <span>
-                                      {{#formattedDate value=task.end format='lll'}}
+                                Start:
+                                <span>
+                                    {{#formattedDate value=task.begin format='lll'}}
                                         {{date}}
-                                      {{/formattedDate}}
-                                    </span>
+                                    {{/formattedDate}}
+                                </span>
                             </a>
-                        {{/if}}
-                      </div>
-                  </div>
-                  <!-- /.box-content -->
-              </div>
-              <!-- /.box -->
-          </div>
-          <!-- /.item-content -->
-      </div>
-      <!-- /.item -->
-  {{/if}}
+                            {{#if task.end}}
+                                <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
+                                    <i class="fa fa-calendar"></i>
+                                    End:
+                                    <span>
+                                        {{#formattedDate value=task.end format='lll'}}
+                                            {{date}}
+                                        {{/formattedDate}}
+                                    </span>
+                                </a>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    {{/if}}
 </template>
 
 <!-- New job activity -->
 <template name="newActivity">
-  {{#if listViewMode}}
-      <tr>
-          <td>
-              <i class="icon icon-briefcase"></i>
+    {{#if listViewMode}}
+        <tr>
+            <td>
+                <i class="icon icon-briefcase"></i>
               <span class="task-author">
                   {{displayUserName userId}}
               </span>
 
-              <a href="/job/{{entityId}}">
-                  <strong>{{data.publicJobTitle}}</strong>
-              </a>
+                <a href="/job/{{entityId}}">
+                    <strong>{{data.publicJobTitle}}</strong>
+                </a>
 
-            {{#if data.customerDisplayName}}
-               <i class="fa fa-long-arrow-right"></i>
-                <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
-            {{/if}}
+                {{#if data.customerDisplayName}}
+                    <i class="fa fa-long-arrow-right"></i>
+                    <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
+                {{/if}}
 
 
-              <div class="pull-right">
-                {{#formattedDate value=data.dateCreated format='fromNow'}}
-                  {{date}}
-                {{/formattedDate}}
-              </div>
-          </td>
-      </tr>
-  {{else}}
-      <div class="item item-job">
-          <div class="item-info">
-              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
+                <div class="pull-right">
+                    {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
+                </div>
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-job">
+            <div class="item-info">
+                {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
-              <div class="type">
-                  <i class="icon icon-briefcase"></i>
-              </div>
-          </div>
-          <!-- /.item-info -->
-          <div class="item-content">
-              <div class="box" data-bind="with: data">
-                  <div class="box-content">
-                      <h4 class="item-title">
-                          <a href="/job/{{entityId}}">
-                              <strong>{{data.publicJobTitle}}</strong>
-                          </a>
-                          {{#if data.customerDisplayName}}
-                          <i class="fa fa-long-arrow-right"></i>
-                          <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
-                          {{/if}}
-                      </h4>
-                      <div class="item-actions">
-                          <a class="btn btn-default tip-bottom addPlacement" title="Assign Candidates">
-                              <i class="icon icon-check-list"> </i> Add placement
-                          </a>
-                      </div>
-                  </div>
-                  <!-- /.box-content -->
-              </div>
-              <!-- /.box -->
-          </div>
-          <!-- /.item-content -->
-      </div>
-      <!-- /.item -->
-  {{/if}}
+                <div class="type">
+                    <i class="icon icon-briefcase"></i>
+                </div>
+            </div>
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box" data-bind="with: data">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            <a href="/job/{{entityId}}">
+                                <strong>{{data.publicJobTitle}}</strong>
+                            </a>
+                            {{#if data.customerDisplayName}}
+                                <i class="fa fa-long-arrow-right"></i>
+                                <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
+                            {{/if}}
+                        </h4>
+
+                        <div class="item-actions">
+                            <a class="btn btn-default tip-bottom addPlacement" title="Assign Candidates">
+                                <i class="icon icon-check-list"> </i> Add placement
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    {{/if}}
 </template>
 <template name="newJobActivity">
     {{#if listViewMode}}
-    <tr>
-        <td>
-            <i class="icon icon-briefcase"></i>
-
-            <a href="/job/{{entityId}}">
-                <strong>{{data.publicJobTitle}}</strong>
-            </a>
-
-            {{#if data.customerDisplayName}}
-            <i class="fa fa-long-arrow-right"></i>
-            <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
-            {{/if}}
-
-
-            {{>suffixListDisplay}}
-        </td>
-    </tr>
-    {{else}}
-    <div class="item item-job">
-        <div class="item-info">
-            {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
-
-            <div class="type">
+        <tr>
+            <td>
                 <i class="icon icon-briefcase"></i>
-            </div>
-        </div>
-        <!-- /.item-info -->
-        <div class="item-content">
-            <div class="box" data-bind="with: data">
-                <div class="box-content">
-                    <h4 class="item-title">
-                        <i class="icon {{getActivityIcon}}"></i>
-                        <a href="/job/{{entityId}}">
-                            <strong>{{data.publicJobTitle}}</strong>
-                        </a>
-                        {{#if data.customerDisplayName}}
-                        <i class="fa fa-long-arrow-right"></i>
-                        <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
-                        {{/if}}
-                    </h4>
-                    <div class="item-actions">
-                        <a class="btn btn-default tip-bottom addPlacement" title="Assign Candidates">
-                            <i class="icon icon-check-list"> </i> Add placement
-                        </a>
-                    </div>
+
+                <a href="/job/{{entityId}}">
+                    <strong>{{data.publicJobTitle}}</strong>
+                </a>
+
+                {{#if data.customerDisplayName}}
+                    <i class="fa fa-long-arrow-right"></i>
+                    <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
+                {{/if}}
+
+
+                {{>suffixListDisplay}}
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-job">
+            <div class="item-info">
+                {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
+
+                <div class="type">
+                    <i class="icon icon-briefcase"></i>
                 </div>
-                <!-- /.box-content -->
             </div>
-            <!-- /.box -->
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box" data-bind="with: data">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            <i class="icon {{getActivityIcon}}"></i>
+                            <a href="/job/{{entityId}}">
+                                <strong>{{data.publicJobTitle}}</strong>
+                            </a>
+                            {{#if data.customerDisplayName}}
+                                <i class="fa fa-long-arrow-right"></i>
+                                <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
+                            {{/if}}
+                        </h4>
+
+                        <div class="item-actions">
+                            <a class="btn btn-default tip-bottom addPlacement" title="Assign Candidates">
+                                <i class="icon icon-check-list"> </i> Add placement
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
         </div>
-        <!-- /.item-content -->
-    </div>
-    <!-- /.item -->
+        <!-- /.item -->
     {{/if}}
 </template>
 <template name="userLoginActivity">
@@ -285,9 +289,9 @@
         <div class="item-info">
             <div class="time">
                 <i class="icon icon-clock-3"></i><span>
-              {{#formattedDate value=data.dateCreated format='fromNow'}}
-                {{date}}
-              {{/formattedDate}}
+                {{#formattedDate value=data.dateCreated format='fromNow'}}
+                    {{date}}
+                {{/formattedDate}}
             </span>
             </div>
 
@@ -312,252 +316,254 @@
 
 
 <template name="newNoteActivity">
-  {{#if listViewMode}}
-      <tr>
-          <td>
+    {{#if listViewMode}}
+        <tr>
+            <td>
 
-              <i class="icon icon-note-paper-1"></i>
+                <i class="icon icon-note-paper-1"></i>
 
 
-              {{#with note}}
-                  <strong>{{>showMore text=msg limit=60}}</strong>
-                  {{#each this.links}}
-                      <a href="{{getHref}}">
-                          {{#with getEntity}}
-                          <span class="badge">{{displayName}}</span>
-                          {{/with}}
-                      </a>
-                  {{/each}}
-              {{/with}}
+                {{#with note}}
+                    <strong>{{>showMore text=msg limit=60}}</strong>
+                    {{#each this.links}}
+                        <a href="{{getHref}}">
+                            {{#with getEntity}}
+                                <span class="badge">{{displayName}}</span>
+                            {{/with}}
+                        </a>
+                    {{/each}}
+                {{/with}}
 
-              {{>suffixListDisplay}}
-          </td>
-      </tr>
-  {{else}}
-      <div class="item item-task">
-          <div class="item-info">
-              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
+                {{>suffixListDisplay}}
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-task">
+            <div class="item-info">
+                {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
-              <div class="type">
-                  <i class="icon icon-note-paper-1"></i>
-              </div>
-          </div>
-          <!-- /.item-info -->
-          <div class="item-content">
-              <div class="box">
-                  <div class="box-content">
-                      <h4 class="item-title">
-                        {{#with note}}
-                            <strong>{{>showMore text=msg limit=100}}</strong>
-                            <br/>
-                            {{#each this.links}}
-                                <a href="{{getHref}}">
-                                    {{#with getEntity}}
-                                        <span class="badge">{{displayName}}</span>
-                                    {{/with}}
-                                </a>
-                            {{/each}}
-                        {{/with}}
-                      </h4>
-                  </div>
-                  <!-- /.box-content -->
-              </div>
-              <!-- /.box -->
-          </div>
-          <!-- /.item-content -->
-      </div>
-      <!-- /.item -->
-  {{/if}}
+                <div class="type">
+                    <i class="icon icon-note-paper-1"></i>
+                </div>
+            </div>
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            {{#with note}}
+                                <strong>{{>showMore text=msg limit=100}}</strong>
+                                <br/>
+                                {{#each this.links}}
+                                    <a href="{{getHref}}">
+                                        {{#with getEntity}}
+                                            <span class="badge">{{displayName}}</span>
+                                        {{/with}}
+                                    </a>
+                                {{/each}}
+                            {{/with}}
+                        </h4>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    {{/if}}
 </template>
 
 <template name="newPlacementActivity">
-  {{#if listViewMode}}
-      <tr>
-          <td>
-              <i class="icon icon-check-list"></i>
-              <a href="/placement/{{entityId}}">
-                  <strong>{{employee.displayName}}</strong>
-                  -
-                  <strong>{{job.displayName}}</strong>
-                  @
-                  {{#with customer job.customer}}
-                    <strong>{{displayName}} </strong>
-                  {{/with}}
-              </a>
-              {{>suffixListDisplay}}
-          </td>
-      </tr>
-  {{else}}
-      <div class="item item-task">
-          <div class="item-info">
-              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
+    {{#if listViewMode}}
+        <tr>
+            <td>
+                <i class="icon icon-check-list"></i>
+                <a href="/placement/{{entityId}}">
+                    <strong>{{employee.displayName}}</strong>
+                    -
+                    <strong>{{job.displayName}}</strong>
+                    @
+                    {{#with customer job.customer}}
+                        <strong>{{displayName}} </strong>
+                    {{/with}}
+                </a>
+                {{>suffixListDisplay}}
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-task">
+            <div class="item-info">
+                {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
-              <div class="type">
-                  <i class="icon icon-check-list"></i>
-              </div>
-          </div>
-          <!-- /.item-info -->
-          <div class="item-content">
-              <div class="box">
-                  <div class="box-content">
-                      <h4 class="item-title">
-                          <a href="/placement/{{entityId}}">
-                              <strong> {{employee.displayName}} </strong>
-                               -
-                              <strong> {{job.displayName}} </strong>
-                              @
-                              {{#with customer job.customer}}
-                                  <strong> {{displayName}} </strong>
-                              {{/with}}
-                          </a>
-                      </h4>
-                  </div>
-                  <!-- /.box-content -->
-              </div>
-              <!-- /.box -->
-          </div>
-          <!-- /.item-content -->
-      </div>
-      <!-- /.item -->
-  {{/if}}
+                <div class="type">
+                    <i class="icon icon-check-list"></i>
+                </div>
+            </div>
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            <a href="/placement/{{entityId}}">
+                                <strong> {{employee.displayName}} </strong>
+                                -
+                                <strong> {{job.displayName}} </strong>
+                                @
+                                {{#with customer job.customer}}
+                                    <strong> {{displayName}} </strong>
+                                {{/with}}
+                            </a>
+                        </h4>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    {{/if}}
 </template>
 
 <template name="newFileActivity">
-  {{#if listViewMode}}
-      <tr>
-          <td>
-              <i class="icon icon-clock-3"></i>
-               file uploaded
-              -
-              <strong> file.name </strong>
+    {{#if listViewMode}}
+        <tr>
+            <td>
+                <i class="icon icon-clock-3"></i>
+                file uploaded
+                -
+                <strong> file.name </strong>
 
-              <div class="pull-right">
-                {{#formattedDate value=data.dateCreated format='fromNow'}}
-                  {{date}}
-                {{/formattedDate}}
-              </div>
-          </td>
-      </tr>
-  {{else}}
-      <div class="item item-task">
-          <div class="item-info">
-              {{>prefixDetailDisplay userId=this.userId dateCreated=data.dateCreated }}
+                <div class="pull-right">
+                    {{#formattedDate value=data.dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
+                </div>
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-task">
+            <div class="item-info">
+                {{>prefixDetailDisplay userId=this.userId dateCreated=data.dateCreated }}
 
-              <div class="type">
-                  <i class="icon icon-upload-3"></i>
-              </div>
-          </div>
-          <!-- /.item-info -->
-          <div class="item-content">
-              <div class="box">
-                  <div class="box-content">
-                      <h4 class="item-title">
-                           file uploaded
-                          <span class="spacer">–</span>
-                          <strong>{{file.name}}</strong>
-                      </h4>
-                      <div class="item-actions">
-                          <a class="btn btn-default tip-bottom pointer">
-                              <span> {{displayUserName this.userId}} </span>
-                          </a>
-                      </div>
-                  </div>
-                  <!-- /.box-content -->
-              </div>
-              <!-- /.box -->
-          </div>
-          <!-- /.item-content -->
-      </div>
-      <!-- /.item -->
-  {{/if}}
+                <div class="type">
+                    <i class="icon icon-upload-3"></i>
+                </div>
+            </div>
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            file uploaded
+                            <span class="spacer">–</span>
+                            <strong>{{file.name}}</strong>
+                        </h4>
+
+                        <div class="item-actions">
+                            <a class="btn btn-default tip-bottom pointer">
+                                <span> {{displayUserName this.userId}} </span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    {{/if}}
 </template>
 
 <template name="contactableUpdateActivity">
-  {{#if listViewMode}}
-      <tr>
-          <td>
-              <i class="icon icon-clock-3"></i>
+    {{#if listViewMode}}
+        <tr>
+            <td>
+                <i class="icon icon-clock-3"></i>
 
 
-              {{>suffixListDisplay}}
-          </td>
-      </tr>
-  {{else}}
-      <div class="item item-task">
-          <div class="item-info">
-              {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
+                {{>suffixListDisplay}}
+            </td>
+        </tr>
+    {{else}}
+        <div class="item item-task">
+            <div class="item-info">
+                {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
 
-              <div class="type">
-                  <i class="icon icon-pencil-1"></i>
-              </div>
-          </div>
-          <!-- /.item-info -->
-          <div class="item-content">
-              <div class="box">
-                  <div class="box-content">
-                      <h4 class="item-title">
-                          <!--Update-->
+                <div class="type">
+                    <i class="icon icon-pencil-1"></i>
+                </div>
+            </div>
+            <!-- /.item-info -->
+            <div class="item-content">
+                <div class="box">
+                    <div class="box-content">
+                        <h4 class="item-title">
+                            <!--Update-->
 
-                        <!-- Property change -->
-                        {{#unless isListChange}}
-                            <!--<span class="spacer">–</span>-->
-                          {{data.fieldDisplayName}} has been
-                          {{#if data.oldValue}}
-                              changed from <strong>{{data.oldValue}}</strong>
-                          {{else}}
-                              set
-                          {{/if}}
-                            to
-                            <strong>{{data.newValue}}</strong>
-                        {{/unless}}
+                            <!-- Property change -->
+                            {{#unless isListChange}}
+                                <!--<span class="spacer">–</span>-->
+                                {{data.fieldDisplayName}} has been
+                                {{#if data.oldValue}}
+                                    changed from <strong>{{data.oldValue}}</strong>
+                                {{else}}
+                                    set
+                                {{/if}}
+                                to
+                                <strong>{{data.newValue}}</strong>
+                            {{/unless}}
 
-                          <!-- Item added -->
-                        {{#if data.added}}
-                            <!--<span class="spacer">–</span>-->
-                            An item has been added to {{data.fieldDisplayName}}:
-                            <strong> {{data.newValue}} </strong>
-                        {{/if}}
+                            <!-- Item added -->
+                            {{#if data.added}}
+                                <!--<span class="spacer">–</span>-->
+                                An item has been added to {{data.fieldDisplayName}}:
+                                <strong> {{data.newValue}} </strong>
+                            {{/if}}
 
-                          <!-- Item removed -->
-                        {{#if data.removed}}
-                            <!--<span class="spacer">–</span>-->
-                            An item has been removed from {{data.fieldDisplayName}}
-                        {{/if}}
+                            <!-- Item removed -->
+                            {{#if data.removed}}
+                                <!--<span class="spacer">–</span>-->
+                                An item has been removed from {{data.fieldDisplayName}}
+                            {{/if}}
 
-                        {{#if data.changed}}
-                            <!--<span class="spacer">–</span>-->
-                            An item in {{data.fieldDisplayName}} has been updated:
-                            <ul>
-                              {{#each data.subChanges}}
-                                  <li>
-                                    {{property}} updated from <strong> {{oldValue}} </strong> to <strong> {{newValue}} </strong>
-                                  </li>
-                              {{/each}}
-                            </ul>
-                        {{/if}}
-                      </h4>
-                      <div class="item-actions">
-                          <a class="btn btn-default tip-bottom pointer" title="Task Owner">
-                              <span> {{displayUserName this.userId}} </span>
-                          </a>
-                          <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
-                              <i class="fa fa-calendar"></i>
+                            {{#if data.changed}}
+                                <!--<span class="spacer">–</span>-->
+                                An item in {{data.fieldDisplayName}} has been updated:
+                                <ul>
+                                    {{#each data.subChanges}}
+                                        <li>
+                                            {{property}} updated from <strong> {{oldValue}} </strong> to
+                                            <strong> {{newValue}} </strong>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            {{/if}}
+                        </h4>
+                        <div class="item-actions">
+                            <a class="btn btn-default tip-bottom pointer" title="Task Owner">
+                                <span> {{displayUserName this.userId}} </span>
+                            </a>
+                            <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
+                                <i class="fa fa-calendar"></i>
                                 <span>
-                                  {{#formattedDate value=data.dateCreated format='lll'}}
-                                    {{date}}
-                                  {{/formattedDate}}
+                                    {{#formattedDate value=data.dateCreated format='lll'}}
+                                        {{date}}
+                                    {{/formattedDate}}
                                 </span>
-                          </a>
-                      </div>
-                  </div>
-                  <!-- /.box-content -->
-              </div>
-              <!-- /.box -->
-          </div>
-          <!-- /.item-content -->
-      </div>
-      <!-- /.item -->
-  {{/if}}
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /.box-content -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.item-content -->
+        </div>
+        <!-- /.item -->
+    {{/if}}
 </template>
 
 <template name="placementsUpdateActivity">
@@ -597,7 +603,8 @@
                     <ul>
                         {{#each data.subChanges}}
                             <li>
-                                {{property}} in updated from <strong> {{oldValue}} </strong> to <strong> {{newValue}} </strong>
+                                {{property}} in updated from <strong> {{oldValue}} </strong> to
+                                <strong> {{newValue}} </strong>
                             </li>
                         {{/each}}
                     </ul>
@@ -652,7 +659,8 @@
                                 <ul>
                                     {{#each data.subChanges}}
                                         <li>
-                                            {{property}} updated from <strong> {{oldValue}} </strong> to <strong> {{newValue}} </strong>
+                                            {{property}} updated from <strong> {{oldValue}} </strong> to
+                                            <strong> {{newValue}} </strong>
                                         </li>
                                     {{/each}}
                                 </ul>
@@ -663,7 +671,7 @@
                                 <span> {{displayUserName this.userId}} </span>
                             </a>
 
-                            <a class="btn btn-default tip-bottom pointer" >
+                            <a class="btn btn-default tip-bottom pointer">
                                 <i class="fa fa-calendar"></i>
                                 <span>
                                     {{#formattedDate value=data.dateCreated format='lll'}}

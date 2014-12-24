@@ -20,9 +20,9 @@
             <div id="breadcrumb">
                 <a href="/" title="Go to Home" class="tip-bottom">Home</a>
                 <a href="/contactables" class="current">
-                {{#objectProperty property=objType }}
-                    <strong> {{value}} </strong>
-                {{/objectProperty}}</a>
+                    {{#objectProperty property=objType }}
+                        <strong> {{value}} </strong>
+                    {{/objectProperty}}</a>
             </div>
         {{/with}}
 
@@ -81,23 +81,23 @@
         <div style="height: 505px;"></div>
     {{else}}
         <div style="margin-top:3px" class="pagination-row">
-            <span class="checkbox" style="float:left;">
-                <!--<label>-->
-                    <input type="checkbox" id="selectAll" checked="{{areAllChecked}}">
-                    <span> {{#if selectedCount}}&nbsp;{{else}}  {{/if}}</span>
-                <!--</label>-->
-            </span>
+			<span class="checkbox" style="float:left;">
+				<!--<label>-->
+					<input type="checkbox" id="selectAll" checked="{{areAllChecked}}">
+					<span> {{#if selectedCount}}&nbsp;{{else}}  {{/if}}</span>
+				<!--</label>-->
+			</span>
             {{#if selectedCount}}
                 <span>
-                    {{selectedCount}} selected.
+					{{selectedCount}} selected.
                     {{#if showSelectAll}}
                         <a id="selectAllRemotes" class="pointer">&nbsp;Select all {{totalCount}}?</a>
                     {{/if}}
-                </span>
-                
-                <span>
+				</span>
+
+				<span>
                     {{#if areAllSelectedTheSameType}}
-                        <button class="btn btn-primary" id="sendTemplate"> send template </button>
+                        <button class="btn btn-primary" id="sendTemplate"> send template</button>
                     {{else}}
                         <div class="text-danger pull-right">
                             Select desired type
@@ -109,12 +109,12 @@
                 </span>
                 {{#if withoutEmail}}
                     <span class="text-warning">
-                        {{withoutEmail}} have no email address
-                    </span>
+						{{withoutEmail}} have no email address
+					</span>
                 {{/if}}
             {{/if}}
             {{#unless isESSearch}}
-            {{> fastPagination name="auxContactables" useKeys='true'}}
+                {{> fastPagination name="auxContactables" useKeys='true'}}
             {{/unless}}
         </div>
 
@@ -127,6 +127,7 @@
                     <div class="v-wrapper">
                         <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                             <i class="icon-connection-1 text-large"></i>
+
                             <h1>
                                 No records Found
                             </h1>
@@ -137,8 +138,10 @@
                         <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                             <i class="icon-connection-1 text-large"></i>
 
-                            <a href="#" data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
-                            <span class="bullet-spacer" data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
+                            <a href="#"
+                               data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
+                            <span class="bullet-spacer"
+                                  data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
                         </div>
                     </div>
                 {{/if}}
@@ -151,148 +154,158 @@
     <div class="table-item magic {{#if isSelected}} selected {{/if}}">
         <div class="row ">
             {{#if listViewMode}}
-            <div class="table-item-cell">
-                <div class="table-item-cell-container">
-                    <div class="table-item-title">
+                <div class="table-item-cell">
+                    <div class="table-item-cell-container">
+                        <div class="table-item-title">
                             <a href="/contactable/{{_id}}">
                                 {{displayName}}{{getDepartment}}
                             </a>
-                          <span class="task-author">
-                              {{displayUserName userId}}
-                          </span>
-                          <span class="task-author">
-                              {{_id}}
-                          </span>
-                          <span class="task-author">
-                                {{#formattedDate value=dateCreated format='fromNow'}}
-                                {{date}}
-                                {{/formattedDate}}
-                          </span>
+                            <span class="pull-right">
+                                <span class="task-author">
+                                    {{displayUserName userId}}
+                                </span>
+                                  <span class="task-author">
+                                      {{_id}}
+                                  </span>
+                                  <span class="task-author">
+                                      {{#formattedDate value=dateCreated format='fromNow'}}
+                                          {{date}}
+                                      {{/formattedDate}}
+                                  </span>
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
             {{else}}
-                <div class="col-sm-4">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container">
-                            <div style="float: left;margin: 13px 14px 0 -13px;">
-                                <input type="checkbox" class="select" checked="{{isSelected}}">
-                            </div>
+                <div>
+                    <div class="col-sm-4">
+                        <div class="table-item-cell">
+                            <div class="table-item-cell-container">
+                                <div style="float: left;margin: 13px 14px 0 -13px;">
+                                    <input type="checkbox" class="select" checked="{{isSelected}}">
+                                </div>
 
-                            <div class="table-item-title">
-                                <a href="/contactable/{{_id}}">
-                                    <div class="thumb">
-                                        {{#if pictureFileId }}
-                                            {{#with pictureUrl pictureFileId}}
-                                                <a href="#">
-                                                    <img src="{{.}}">
-                                                </a>
-                                            {{/with}}
-                                        {{else}}
-                                            {{#if organization }}
-                                                <i class="icon-buildings-1" style="display: block; margin-top: 10px;"></i>
+                                <div class="table-item-title">
+                                    <a href="/contactable/{{_id}}">
+                                        <div class="thumb">
+                                            {{#if pictureFileId }}
+                                                {{#with pictureUrl pictureFileId}}
+                                                    <a href="#">
+                                                        <img src="{{.}}">
+                                                    </a>
+                                                {{/with}}
+                                            {{else}}
+                                                {{#if organization }}
+                                                    <i class="icon-buildings-1"
+                                                       style="display: block; margin-top: 10px;"></i>
+                                                {{/if}}
+                                                {{#if person }}
+                                                    <i class="icon-profile-business-man"
+                                                       style="display: block; margin-top: 10px;"></i>
+                                                {{/if}}
                                             {{/if}}
-                                            {{#if person }}
-                                                <i class="icon-profile-business-man" style="display: block; margin-top: 10px;"></i>
-                                            {{/if}}
-                                        {{/if}}
-                                    </div>
+                                        </div>
                                     {{displayName}}{{getDepartment}}
-                                </a>
+                                    </a>
 
-                                <br/>
-                                <strong class="text text-muted text-small">
-                                    {{displayObjType}}
-                                </strong>
-                                <span class="badge">
+                                    <br/>
+                                    <strong class="text text-muted text-small">
+                                        {{displayObjType}}
+                                    </strong>
+								<span class="badge">
                                     {{lookUpName getStatus}}
                                 </span>
 
+                                    <br/>
+
+                                    <div style="font-size: 12px; margin-top: 10px; margin-bottom: -10px;">
+                                        {{#each contactMethods}}
+                                            <a href="{{contactMethodTypePrefix type}}{{value}}"><i
+                                                    class="{{contactMethodTypeIcon type}}"></i> {{value}}</a>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="table-item-cell">
+                            <div class="table-item-cell-container text-muted">
+                                {{#if location.displayName}}
+                                    <i class="icon-map-marker-1"></i>
+                                    {{location.displayName}}
+                                    <br/>
+                                {{/if}}
+
+                                {{#if Customer}}
+                                    {{> customerInformation }}
+                                {{/if}}
+                                {{#if Employee}}
+                                    {{> employeeInformation }}
+                                {{/if}}
+                                {{#if Contact}}
+                                    {{> contactInformation }}
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="table-item-cell">
+                            <div class="table-item-cell-container date">
+                                {{#formattedDate value=dateCreated format='fromNow'}}
+                                    <span>{{date}}</span>
+                                    <br>
+                                {{/formattedDate}}
+
+                                {{displayUserName userId}}
                                 <br/>
-                                <div style="font-size: 12px; margin-top: 10px; margin-bottom: -10px;">
-                                    {{#each contactMethods}}
-                                        <a href="{{contactMethodTypePrefix type}}{{value}}"><i class="{{contactMethodTypeIcon type}}"></i> {{value}}</a>
+
+                                {{#if searchKey }}
+                                    <i class="glyphicon glyphicon-search"></i>
+                                    {{searchKey}}
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+
+                    {{#with getLastNote}}
+                        <div class="col-xs-12">
+                            <small class="text-muted">
+                                <i class="icon-note-paper-1"></i>
+                                <strong> {{msg}} </strong>
+
+                                {{displayUserName userId}}
+                            </small>
+                        </div>
+                    {{/with}}
+
+                    {{#if isESSearch}}
+                        <div class="col-xs-12">
+                            <div class="col-xs-10">
+                                <div>
+                                    {{#each _match.properties}}
+                                        <span class="label label-default" style="margin-right: 3px"> {{.}}</span>
+                                    {{/each}}
+                                    <br>
+                                    {{#each _match.contexts}}
+                                        {{> esContextMatch}}
                                     {{/each}}
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container text-muted">
-                            {{#if location.displayName}}
-                                <i class="icon-map-marker-1"></i>
-                                {{location.displayName}}
-                                <br/>
-                            {{/if}}
-
-                            {{#if Customer}}
-                                {{> customerInformation }}
-                            {{/if}}
-                            {{#if Employee}}
-                                {{> employeeInformation }}
-                            {{/if}}
-                            {{#if Contact}}
-                                {{> contactInformation }}
-                            {{/if}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-2">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container date">
-                            {{#formattedDate value=dateCreated format='fromNow'}}
-                                <span>{{date}}</span>
-                                <br>
-                            {{/formattedDate}}
-
-                            {{displayUserName userId}}
-                            <br/>
-
-                            {{#if searchKey }}
-                                <i class="glyphicon glyphicon-search"></i>
-                                {{searchKey}}
-                            {{/if}}
-                        </div>
-                    </div>
-                </div>
-
-                {{#with getLastNote}}
-                    <div class="col-xs-12">
-                        <small class="text-muted">
-                            <i class="icon-note-paper-1"></i>
-                            <strong> {{msg}} </strong>
-
-                            {{displayUserName userId}}
-                        </small>
-                    </div>
-                {{/with}}
-
-                {{#if isESSearch}}
-                    <div class="col-xs-12">
-                        <div class="col-xs-10">
-                            <div>
-                                {{#each _match.properties}}
-                                    <span class="label label-default" style="margin-right: 3px"> {{.}}</span>
-                                {{/each}}
-                                <br>
-                                {{#each _match.contexts}}
-                                    {{> esContextMatch}}
-                                {{/each}}
-                            </div>
-                        </div>
-                        <div class="col-xs-offset-10" >
-                            <small class="text-muted"> Score </small>
-                            <div class="progress" style="height: 6px;">
-                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{_match.score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{_match.score}}%;">
+                            <div class="col-xs-offset-10">
+                                <small class="text-muted"> Score</small>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar progress-bar-success" role="progressbar"
+                                         aria-valuenow="{{_match.score}}" aria-valuemin="0" aria-valuemax="100"
+                                         style="width: {{_match.score}}%;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                {{/if}}
+                    {{/if}}
+                </div>
             {{/if}}
         </div>
     </div>
@@ -309,7 +322,8 @@
     {{#if placementInfo}}
         {{#with placementInfo}}
             <i class="icon icon-check-list"></i>
-            <strong> <a href="/job/{{job}}"> {{jobTitle}} </a></strong> {{#if customerName}} at <strong> <a href="/contactable/{{customer}}"> {{customerName}} </a></strong> {{/if}}
+            <strong> <a href="/job/{{job}}"> {{jobTitle}} </a></strong> {{#if customerName}} at <strong> <a
+                href="/contactable/{{customer}}"> {{customerName}} </a></strong> {{/if}}
         {{/with}}
     {{else}}
         {{#if person}}
@@ -335,55 +349,56 @@
 <template name="contactablesListSearch">
     <div class="actions-head">
         <div class="row search-row">
-                <div class="col-xs-12">
+            <div class="col-xs-12">
 
-                    <div class="col-xs-1">
+                <div class="col-xs-1">
+                    <div class="btn-group">
                         <div class="btn-group">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" title="Add">
-                                    <span class="fa fa-plus"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
-                                    {{#each contactableTypes}}
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                                    title="Add">
+                                <span class="fa fa-plus"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
+                                {{#each contactableTypes}}
                                     <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
-                                    {{/each}}
-                                    <li>
-                                        <a type="button" title="Create employee from resume/CV" class="btn btn-default"
-                                           href="/resumeparser">Create employee from resume/CV file</a>
-                                    </li>
-                                    <li>
-                                        <span class="btn btn-default parseText"
+                                {{/each}}
+                                <li>
+                                    <a type="button" title="Create employee from resume/CV" class="btn btn-default"
+                                       href="/resumeparser">Create employee from resume/CV file</a>
+                                </li>
+                                <li>
+										<span class="btn btn-default parseText"
                                               title="Create employee from plain text">Create employee from resume/CV text</span>
-                                    </li>
-                                </ul>
-                            </div>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-
-                    <div class="col-xs-7">
-                        <div class="input-group">
-                            {{#objectProperty property=searchString}}
-                            <input type="text" class="form-control" placeholder="Search Contacts" value="{{value}}">
-                            {{/objectProperty}}
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-xs-3">
-                                    <span class="pointer" style="font-size: 20px;">
-                                        {{#if listViewMode}}
-                                            <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4" ></i>
-                                            <i class="fa fa-bars"></i>
-                                        {{else}}
-                                            <i class="fa fa-th-large"></i>
-                                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4" ></i>
-                                        {{/if}}
-                                    </span>
                     </div>
                 </div>
+
+                <div class="col-xs-7">
+                    <div class="input-group">
+                        {{#objectProperty property=searchString}}
+                            <input type="text" class="form-control" placeholder="Search Network" value="{{value}}">
+                        {{/objectProperty}}
+                        <span class="input-group-btn">
+								<button class="btn btn-primary" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+							</span>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+									<span class="pointer" style="font-size: 20px;">
+                                        {{#if listViewMode}}
+                                            <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
+											<i class="fa fa-bars"></i>
+                                        {{else}}
+                                            <i class="fa fa-th-large"></i>
+											<i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
+                                        {{/if}}
+                                    </span>
+                </div>
             </div>
+        </div>
     </div>
 </template>

@@ -2,7 +2,6 @@
 #
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
-
 standard-app-packages
 accounts-password
 accounts-google
@@ -24,7 +23,7 @@ mrgalaxy:stripe
 natestrauser:connection-banner
 aldeed:simple-schema
 aldeed:autoform
-meteorhacks:npm
+
 cfs:filesystem
 
 dtype
@@ -57,5 +56,8 @@ server-progress
 
 
 mystor:device-detection
+node-form-data
+
+
 
 npm-container

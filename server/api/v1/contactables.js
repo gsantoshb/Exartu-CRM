@@ -200,6 +200,11 @@ var mapper = {
 			contactable.Employee.taxID = data.ssn;
 		}
 
+		//tags
+		if (data.tags && _.isArray(data.tags)){
+			contactable.tags = data.tags;
+		}
+
 		return contactable;
 	},
 	get: function(data, type) {
@@ -242,6 +247,13 @@ var mapper = {
 		if (data.Employee && data.Employee.taxID){
 			contactable.ssn = data.Employee.taxID;
 		}
+
+		//tags
+		if (data.tags){
+			contactable.tags = data.tags;
+		}
 		return contactable;
 	}
 };
+
+

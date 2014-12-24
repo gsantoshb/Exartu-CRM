@@ -3,6 +3,9 @@ _.forEach([
     displayName: 'Inactive',lookUpActions:[Enums.lookUpAction.Implies_Inactive]
   },
   {
+    displayName: 'Deleted',lookUpActions:[Enums.lookUpAction.Implies_Inactive,Enums.lookUpAction.Implies_Deleted]
+  },
+  {
     displayName: 'Unfilled',lookUpActions:[Enums.lookUpAction.Implies_Active],isDefault: true
   },
   {
