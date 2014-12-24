@@ -158,6 +158,8 @@ AutoForm.inputValueHandlers({
   }
 });
 
+var isEditing =  new ReactiveVar(false);
+
 Template.linksAutoForm.helpers({
   created: function () {
     var self = this;
@@ -187,6 +189,7 @@ Template.linksAutoForm.helpers({
         self.data.linkedDep.changed();
       }
     });
+    isEditing.set(false);
   },
   links: function () {
     this.linkedDep.depend();
@@ -218,7 +221,10 @@ Template.linksAutoForm.helpers({
         return [];
     }
   },
-  getEntity: Utils.getEntityFromLinkForAdd
+  getEntity: Utils.getEntityFromLinkForAdd,
+  isEditing: function () {
+    return isEditing.get();
+  }
 });
 
 var link = function(ctx, link){
@@ -252,5 +258,8 @@ Template.linksAutoForm.events({
     var links = ctx.links;
     Template.parentData(0).links = _(links).without(this);
     ctx.linkedDep.changed();
+  },
+  'click #editLinks': function () {
+    isEditing.set(true);
   }
 });

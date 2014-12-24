@@ -15,6 +15,7 @@
         <div class="add-box-content col-sm-12 col-md-9">
             {{#autoForm id="AddNoteRecord" schema="NoteSchema" meteormethod="addContactableNote" type="method" resetOnSuccess=true}}
                 {{> afQuickField name='msg' rows=3}}
+
                 {{> linksAutoForm name='links'}}
 
                 <br/>
@@ -123,7 +124,8 @@
 </template>
 
 <template name="linksAutoForm">
-    <div data-schema-key="{{name}}" id="links-value" class="{{name}} {{#if afFieldIsInvalid name=name}}has-error{{/if}}">
+    {{#if isEditing}}
+        <div data-schema-key="{{name}}" id="links-value" class="{{name}} {{#if afFieldIsInvalid name=name}}has-error{{/if}}">
         <div class="row">
             <div class="col-md-5">
                 <select class="form-control" id="noteTypeSelect" title="Select the type of entity that you want to link to the msg">
@@ -160,4 +162,17 @@
             <span class="help-block">{{afFieldMessage name=name}}</span>
         {{/if}}
     </div>
+
+    {{else}}
+        <div style="padding: 10px 0px;">
+            <a id="editLinks" class="pointer pull-right">Edit links</a>
+            {{#each links}}
+                <button type="button" class="tag btn btn-xs btn-primary">
+                    {{#with getEntity .}}
+                        <span> {{displayName}} </span>
+                    {{/with}}
+                </button>
+            {{/each}}
+        </div>
+    {{/if}}
 </template>
