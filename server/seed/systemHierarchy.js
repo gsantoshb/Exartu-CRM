@@ -19,7 +19,7 @@ Meteor.startup(function () {
     profile: {
       hierId: hier
     },
-    roles : [RoleManager.getSystemAdministratorRole()._id]
+    roles : []
   };
 
   var systemUserId = Accounts.createUser(systemUser);
