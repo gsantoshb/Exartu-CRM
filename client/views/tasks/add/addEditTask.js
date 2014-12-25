@@ -18,7 +18,6 @@ var errorDep = new Tracker.Dependency;
 
 var taskUpdate = function (cb) {
   if (task._id) {
-
     Tasks.update({
         _id: task._id
       }, {
@@ -217,7 +216,7 @@ Template.addEditTask.events({
     task.begin = $(e.currentTarget).data().datetimepicker.date;
     taskUpdate();
   },
-  'change.dp .end>.dateTimePicker': function (e, ctx) {
+  'change.dp .end>.date': function (e, ctx) {
     task.end = $(e.currentTarget).data().datetimepicker.date;
     taskUpdate();
   },

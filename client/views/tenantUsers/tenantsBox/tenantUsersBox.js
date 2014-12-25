@@ -165,7 +165,6 @@ Template.tenantUsersList.created = function () {
     } else {
       delete options.sort;
     }
-    console.log(searchQuery);
     TenantUserHandler.setFilter(searchQuery);
     TenantUserHandler.setOptions(options);
   })
