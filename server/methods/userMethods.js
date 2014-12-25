@@ -45,5 +45,11 @@ Meteor.methods({
   },
   setLastUsed: function (type, value) {
     return UserManager.setLastUsed(type, value);
+  },
+  bUserIsSystemAdmin: function(user){
+    return RoleManager.bUserIsSystemAdmin(user);
+  },
+  bUserIsClientAdmin: function(user){
+    return RoleManager.bUserIsClientAdmin(user);
   }
 });

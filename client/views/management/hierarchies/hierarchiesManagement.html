@@ -33,13 +33,15 @@
                         <div style="margin-bottom: 50px;">
                             <!--<button id="addHier" class="btn btn-primary pull-right">Add Child</button>-->
                             <h4>
-                                <!--{{name}}-->
+
                                 {{#unless isCurrent}}
                                     <a class="changeCurrent pointer">Set as the current</a>
                                 {{/unless}}
                             </h4>
                         </div>
-                        {{>quickForm schema=hierarchySchema id='hierarchyEdit' doc=. buttonContent="Save" autocomplete="off" }}
+                        {{#if isAdmin}}
+                            {{>quickForm schema=hierarchySchema id='hierarchyEdit' doc=. buttonContent="Save" autocomplete="off" }}
+                        {{/if}}
                     {{else}}
                         <div class="box-v-msg">
                             <h3>Select a Hierarchy</h3>

@@ -26,13 +26,13 @@ RoleManager = {
     if (!_.contains(user.roles, RoleManager.getRoleFromName(name)._id)) return false;
     return true;
   },
-  bUserIsSystemAdministrator: function (user)
+  bUserIsSystemAdmin: function (user)
   {
     if (!user) return false;
     if (user && user.emails[0] && user.emails[0].address == 'greggd@aidacreative.com') return true;
     return RoleManager.bUserHasRoleId(user,this.getSystemAdministratorRole()._id)
   },
-  bUserIsClientAdministrator: function (user)
+  bUserIsClientAdmin: function (user)
   {
     if (!user) return false;
     return RoleManager.bUserHasRoleId(user,this.getClientAdministratorRole()._id)

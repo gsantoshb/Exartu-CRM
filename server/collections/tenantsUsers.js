@@ -14,7 +14,7 @@ Meteor.paginatedPublish(TenantUserView, function()
     });
     if (!user)
       return false;
-    if (!RoleManager.bUserIsSystemAdministrator(user))
+    if (!RoleManager.bUserIsSystemAdmin(user))
       return null;
     return TenantUserView.find();
   },

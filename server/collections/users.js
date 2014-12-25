@@ -44,8 +44,8 @@ Meteor.users.allow({
 
     if (_.contains(fields, 'roles')) {
 
-      if (!RoleManager.bUserIsSystemAdministrator(user)) {
-        if (!RoleManager.bUserIsClientAdministrator(user))
+      if (!RoleManager.bUserIsSystemAdmin(user)) {
+        if (!RoleManager.bUserIsClientAdmin(user))
         {
           return false;
         }
@@ -65,7 +65,7 @@ Meteor.users.allow({
       return true;
     if (file.hierId != user.hierId)
     {
-      if (!RoleManager.bUserIsSystemAdministrator(user))
+      if (!RoleManager.bUserIsSystemAdmin(user))
         return false;
     }
     return true;
@@ -77,8 +77,8 @@ Meteor.users.allow({
     }
     else
     {
-      if (!RoleManager.bUserIsSystemAdministrator(user))
-        if (!RoleManager.bUserIsClientAdministrator(user))
+      if (!RoleManager.bUserIsSystemAdmin(user))
+        if (!RoleManager.bUserIsClientAdmin(user))
           return false;
     }
   }

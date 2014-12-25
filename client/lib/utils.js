@@ -706,4 +706,18 @@ Utils.extendContactableDisplayName = function (contactable) {
 Utils.getLocalUserName= function(user)
 {
   return  user.emails[0].address.split('@')[0];
-}
+};
+Utils.bUserIsClientAdmin= false;
+Utils.bUserIsSystemAdmin= false;
+Utils.bUserIsAdmin= function() { return Utils.bUserIsClientAdmin || Utils.bUserIsSystemAdmin;};
+Meteor.call('bUserIsClientAdmin', Meteor.user(), function (err, result) {
+  if (err)
+    return console.log(err);
+  Utils.bUserIsClientAdmin = result;
+});
+
+Meteor.call('bUserIsClientAdmin', Meteor.user(), function (err, result) {
+  if (err)
+    return console.log(err);
+  Utils.bUserIsSystemAdmin = result;
+});
