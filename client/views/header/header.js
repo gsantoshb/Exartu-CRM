@@ -1,4 +1,7 @@
 Template.header.helpers({
+    isAdmin: function(){
+        return Utils.bUserIsAdmin();
+    },
     userThumbnail: function(){
         var user=Meteor.user()
         if (user.profilePictureId){

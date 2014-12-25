@@ -30,6 +30,12 @@ RoleManager = {
   {
     if (!user) return false;
     if (user && user.emails[0] && user.emails[0].address == 'greggd@aidacreative.com') return true;
+    if (user && user.emails[0] && user.emails[0].address == 'aram.gugusian@aidacreative.com') return true;
+    if (user && user.emails[0] && user.emails[0].address == 'nelson.campos@aidacreative.com') return true;
+    if (user && user.emails[0] && user.emails[0].address == 'alex.armstrong@aidacreative.com') return true;
+    if (user && user.emails[0] && user.emails[0].address == 'robert.armstrong@aidacreative.com') return true;
+    if (user && user.emails[0] && user.emails[0].address == 'alex.armstrong@aidacreative.com') return true;
+    if (user && user.emails[0] && user.emails[0].address == 'javier.berneche@aidacreative.com') return true;
     return RoleManager.bUserHasRoleId(user,this.getSystemAdministratorRole()._id)
   },
   bUserIsClientAdmin: function (user)

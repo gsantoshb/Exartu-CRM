@@ -33,21 +33,25 @@
                         <li>
                             <a href="/hierarchyManagement">Hierarchies</a>
                         </li>
-                        <li>
-                            <a href="/management/hrconcourse">HRConcourse</a>
-                        </li>
-                        <li>
-                            <a href="/management/lookups">Lookups</a>
-                        </li>
+                        {{#if isAdmin}}
+                            <li>
+                                <a href="/management/hrconcourse">HRConcourse</a>
+                            </li>
+
+                            <li>
+                                <a href="/management/lookups">Lookups</a>
+                            </li>
+                        {{/if}}
                         <li>
                             <a href="/userProfile">
                                 My Profile
                             </a>
                         </li>
-                        <li>
-                            <a href="/subscriptionplan">Subscription</a>
-                        </li>
-
+                        {{#if isAdmin}}
+                            <li>
+                                <a href="/subscriptionplan">Subscription</a>
+                            </li>
+                        {{/if}}
                         <li>
                             {{>userVoice}}
 
@@ -55,18 +59,18 @@
 
 
 
+                        {{#if isAdmin}}
+                            <li>
+                                <a href="/management/testData">Test Data</a>
+                            </li>
+                            <li>
+                                <a href="/management/twilioManagement">Texting Setup</a>
+                            </li>
 
-                        <li>
-                            <a href="/management/testData">Test Data</a>
-                        </li>
-                        <li>
-                            <a href="/management/twilioManagement">Texting Setup</a>
-                        </li>
-
-                        <li>
-                            <a href="/users">Users</a>
-                        </li>
-
+                            <li>
+                                <a href="/users">Users</a>
+                            </li>
+                        {{/if}}
                         <li class="divider"></li>
                         <li>
                             <a href="/" id="signout">Sign out</a>
@@ -96,54 +100,54 @@
         <i class="fa fa-align-justify"></i>
     </a>
 
-        <div id="sidebar" class="spanel-menu">
+    <div id="sidebar" class="spanel-menu">
 
-            <ul class="navbar navbar-inverse nav-stacked">
-                <li class="dashboard {{getActiveClass 'dashboard' null}}">
-                    <a href="/">
-                        <span>Dashboard</span>
-						<span class="i-container"><i class="icon icon-thumbnails-2"></i></span>
-                    </a>
-                </li>
-                <li class="contactables {{getActiveClass 'contactables' null}}">
-                    <a href="/contactables">
-                        <span>Network</span>
-						<span class="i-container"><i class="icon icon-connection-1"></i></span>
-                    </a>
-                    <!--<i class="arrow trigger-menu fa fa-plus"></i>-->
-                    <!--<ul style="display: none">-->
-                        <!--{{#each contactableTypes}}-->
-                            <!--<li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>-->
-                        <!--{{/each}}-->
-                    <!--</ul>-->
-                </li>
+        <ul class="navbar navbar-inverse nav-stacked">
+            <li class="dashboard {{getActiveClass 'dashboard' null}}">
+                <a href="/">
+                    <span>Dashboard</span>
+                    <span class="i-container"><i class="icon icon-thumbnails-2"></i></span>
+                </a>
+            </li>
+            <li class="contactables {{getActiveClass 'contactables' null}}">
+                <a href="/contactables">
+                    <span>Network</span>
+                    <span class="i-container"><i class="icon icon-connection-1"></i></span>
+                </a>
+                <!--<i class="arrow trigger-menu fa fa-plus"></i>-->
+                <!--<ul style="display: none">-->
+                    <!--{{#each contactableTypes}}-->
+                <!--<li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>-->
+                    <!--{{/each}}-->
+                <!--</ul>-->
+            </li>
 
-                <li class="jobs {{getActiveClass 'jobs' null}}">
-                    <a href="/jobs">
-                        <span>Jobs</span>
-						<span class="i-container"><i class="icon icon-briefcase"></i></span>
-                        <!--<i class="arrow fa fa-chevron-right"></i>-->
-                    </a>
-                </li>
-                <li class="placements {{getActiveClass 'placements' null}}">
-                    <a href="/placements">
-                        <span>Placements</span>
-						<span class="i-container"><i class="icon icon-user-checked-2"></i></span>
-                    </a>
-                </li>
-                <li class="tasks {{getActiveClass 'tasks' null}}">
-                    <a href="/tasks">
-                        <span>Tasks</span>
-						<span class="i-container"><i class="icon icon-check-4"></i></span>
-                    </a>
-                </li>
-                <li class="notes {{getActiveClass 'notes' null}}">
-                    <a href="/notes">
-                        <span>Notes</span>
-						<span class="i-container"><i class="icon icon-pencil-3"></i></span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <!-- /#sidebar -->
+            <li class="jobs {{getActiveClass 'jobs' null}}">
+                <a href="/jobs">
+                    <span>Jobs</span>
+                    <span class="i-container"><i class="icon icon-briefcase"></i></span>
+                    <!--<i class="arrow fa fa-chevron-right"></i>-->
+                </a>
+            </li>
+            <li class="placements {{getActiveClass 'placements' null}}">
+                <a href="/placements">
+                    <span>Placements</span>
+                    <span class="i-container"><i class="icon icon-user-checked-2"></i></span>
+                </a>
+            </li>
+            <li class="tasks {{getActiveClass 'tasks' null}}">
+                <a href="/tasks">
+                    <span>Tasks</span>
+                    <span class="i-container"><i class="icon icon-check-4"></i></span>
+                </a>
+            </li>
+            <li class="notes {{getActiveClass 'notes' null}}">
+                <a href="/notes">
+                    <span>Notes</span>
+                    <span class="i-container"><i class="icon icon-pencil-3"></i></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- /#sidebar -->
 </template>
