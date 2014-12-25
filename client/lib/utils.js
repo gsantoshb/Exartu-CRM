@@ -710,13 +710,13 @@ Utils.getLocalUserName= function(user)
 Utils.bUserIsClientAdmin= false;
 Utils.bUserIsSystemAdmin= false;
 Utils.bUserIsAdmin= function() { return Utils.bUserIsClientAdmin || Utils.bUserIsSystemAdmin;};
-Meteor.call('bUserIsClientAdmin', Meteor.user(), function (err, result) {
+
+Meteor.call('bUserIsClientAdmin', null, function (err, result) {
   if (err)
     return console.log(err);
   Utils.bUserIsClientAdmin = result;
 });
-
-Meteor.call('bUserIsClientAdmin', Meteor.user(), function (err, result) {
+Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
   if (err)
     return console.log(err);
   Utils.bUserIsSystemAdmin = result;

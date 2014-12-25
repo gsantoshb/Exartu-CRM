@@ -47,9 +47,11 @@ Meteor.methods({
     return UserManager.setLastUsed(type, value);
   },
   bUserIsSystemAdmin: function(user){
+    if (!user) user=  Meteor.users.findOne(this.userId);
     return RoleManager.bUserIsSystemAdmin(user);
   },
   bUserIsClientAdmin: function(user){
+    if (!user) user=  Meteor.users.findOne(this.userId);
     return RoleManager.bUserIsClientAdmin(user);
   }
 });
