@@ -96,7 +96,7 @@ Template.tasksBox.created = function () {
       };
       urlQuery.addParam('search', queryObj.searchString);
     }
-
+    console.log('ent spec',entityId,isEntitySpecific);
     if (isEntitySpecific) {
       q.links = {$elemMatch: {id: entityId}};
     }

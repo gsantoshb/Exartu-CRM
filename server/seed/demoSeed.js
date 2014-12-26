@@ -449,7 +449,7 @@ var loadJobs = function (hierId) {
     var categories = LookUps.find({lookUpCode: Enums.lookUpTypes.job.category.lookUpCode,hierId:hierId}).fetch();
     var durations = LookUps.find({lookUpCode: Enums.lookUpTypes.job.duration.lookUpCode,hierId:hierId}).fetch();
     var jobTitles = LookUps.find({lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode,hierId:hierId}).fetch();
-    var statuses = LookUps.find({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,hierId:hierId}).fetch();
+    var status = LookUps.findOne({ lookUpCode: Enums.lookUpTypes.job.status.lookUpCode, isDefault: true, hierId: hierId });
 
   for (var i = 0; i < 25; ++i) {
 
@@ -465,7 +465,7 @@ var loadJobs = function (hierId) {
             industry: industries[Math.floor(Math.random() * industries.length)]._id,
             category: categories[Math.floor(Math.random() * categories.length)]._id,
             duration: durations[Math.floor(Math.random() * durations.length)]._id,
-            status: statuses[Math.floor(Math.random() * statuses.length)]._id,
+            status: status._id,
             publicJobTitle: randomJobTitle.displayName,
             jobTitle: randomJobTitle._id,
             statusNote: 'looks to be making a decision soon',
@@ -625,10 +625,11 @@ Meteor.methods({
   },
   removeDemoData: function () {
     var user = Meteor.user();
+    var userCurrentHierId = Utils.getUserHierId(user._id);
     if (!user)
       return;
     _.each([Contactables, Jobs, Tasks,Placements,Notes,Activities], function (collection) {
-        collection.direct.remove({ hierId: user.hierId, testData: true });
+        collection.direct.remove({ hierId: userCurrentHierId, testData: true });
     });
   }
 });
