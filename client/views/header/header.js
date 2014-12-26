@@ -1,5 +1,7 @@
 Template.header.helpers({
     isAdmin: function(){
+        return true;
+        console.log('admin',Meteor.user(),Utils.bUserIsAdmin());
         return Utils.bUserIsAdmin();
     },
     userThumbnail: function(){
