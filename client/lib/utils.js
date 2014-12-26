@@ -1,5 +1,8 @@
 Utils = {};
 
+
+
+
 _.extend(Utils, {
   getUserInformation: function(userId) {
     var user = Meteor.users.findOne({_id: userId});
@@ -681,6 +684,7 @@ Utils.getContactableMobilePhones = function (contactable) {
   });
   return result;
 };
+
 Utils.getContactableMobilePhone = function (contactable) {
   var result = Utils.getContactableMobilePhones(contactable);
   if (result.length>0) return result[0];

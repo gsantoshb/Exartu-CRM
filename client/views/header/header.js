@@ -1,8 +1,22 @@
+Utils.adminSettings={};
+Utils.reactiveProp(Utils.adminSettings, 'isClientAdmin', false);
+Utils.reactiveProp(Utils.adminSettings, 'isSystemAdmin', false);
+Utils.reactiveProp(Utils.adminSettings, 'isAdmin', function() { return Utils.adminSettings.isClientAdmin || Utils.adminSettings.isSystemAdmin ;});
+
+Meteor.call('bUserIsClientAdmin', null, function (err, result) {
+    if (err)
+        return console.log(err);
+    Utils.adminSettings.isClientAdmin = result;
+});
+Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
+    if (err)
+        return console.log(err);
+    Utils.adminSettings.isSystemAdmin = result;
+});
+
 Template.header.helpers({
     isAdmin: function(){
-        return true;
-        console.log('admin',Meteor.user(),Utils.bUserIsAdmin());
-        return Utils.bUserIsAdmin();
+        return Utils.adminSettings.isAdmin();
     },
     userThumbnail: function(){
         var user=Meteor.user()

@@ -29,7 +29,6 @@ RoleManager = {
   bUserIsSystemAdmin: function (user)
   {
     if (!user) return false;
-    console.log('user',user.emails[0].address.toLowerCase());
     if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'greggd@aidacreative.com') return true;
     if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'aram.gugusian@aidacreative.com') return true;
     if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'nelson.campos@aidacreative.com') return true;

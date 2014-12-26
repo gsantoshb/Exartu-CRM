@@ -58,7 +58,7 @@ Template.hierarchiesManagement.filters = function () {
 };
 Template.hierarchiesManagement.helpers({
     isAdmin: function () {
-        return Utils.bUserIsAdmin();
+        return Utils.adminSettings.isAdmin();
     },
     hierarchies: function () {
         var queryObj = query.getObject();
