@@ -162,13 +162,13 @@
     <div class="actions-head">
         <div class="row visible-xs">
             <div class="col-xs-8">
-                <div class="pull-left suffix-5">
-                    <div class="btn-group">
-                        <a href="/jobAdd/Temporary" type="button" class="btn btn-success" title="Add">
+                {{#if isJob}}
+                    <div class="btn-group pull-left suffix-5">
+                        <button type="button" class="btn btn-success addPlacement" title="Add">
                             <span class="fa fa-plus"></span>
-                        </a>
+                        </button>
                     </div>
-                </div>
+                {{/if}}
 
                 <div class="input-group">
                     {{#objectProperty property=searchString}}
@@ -199,6 +199,13 @@
         <div class="row hidden-xs">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 
+                {{#if isJob}}
+                    <div class="btn-group pull-left suffix-5">
+                        <button type="button" class="btn btn-success addPlacement" title="Add">
+                            <span class="fa fa-plus"></span>
+                        </button>
+                    </div>
+                {{/if}}
                 <div class="input-group">
                     {{#objectProperty property=searchString}}
                         <input type="text" class="form-control" placeholder="Search Placements" value="{{value}}">

@@ -37,6 +37,7 @@ Template.notesBox.created = function () {
   if (entityType != null) isEntitySpecific = true;
 
   Meteor.autorun(function () {
+
     var urlQuery = new URLQuery();
 
     var queryObj = noteQuery.getObject();
@@ -54,7 +55,7 @@ Template.notesBox.created = function () {
       };
       urlQuery.addParam('search', queryObj.searchString);
     }
-    console.log('ent spec note',entityId);
+    console.log('ent spec note',entityId,q, q.msg);
     if (isEntitySpecific) {
       q.links = {$elemMatch: {id: entityId}};
     }
