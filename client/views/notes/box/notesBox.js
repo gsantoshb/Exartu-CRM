@@ -22,6 +22,7 @@ var loadNoteQueryFromURL = function (params) {
     }
   });
 };
+var options = {};
 
 Template.notesBox.created = function () {
   noteQuery = noteQuery || loadNoteQueryFromURL(Router.current().params);
@@ -60,7 +61,17 @@ Template.notesBox.created = function () {
       q.links = {$elemMatch: {id: entityId}};
     }
     urlQuery.apply();
-    NotesHandler.setFilter(q);
+    if (selectedSort.get()) {
+      var selected = selectedSort.get();
+      options.sort = {};
+      options.sort[selected.field] = selected.value;
+    } else {
+      delete options.sort;
+    }
+    NotesHandler.setFilter(q);    
+    NotesHandler.setOptions(options);
+    
+
 
   })
 };
@@ -101,4 +112,45 @@ Template.notesBox.events({
       })
   }
 });
+// list sort
+
+var selectedSort =  new ReactiveVar();
+var sortFields = [
+  {field: 'dateCreated', displayName: 'Date'},
+];
+
+Template.noteListSort.helpers({
+  sortFields: function() {
+    return sortFields;
+  },
+  selectedSort: function() {
+    return selectedSort.get();
+  },
+  isFieldSelected: function(field) {
+    return selectedSort.get() && selectedSort.get().field == field.field;
+  },
+  isAscSort: function() {
+    return selectedSort.get() ? selectedSort.get().value == 1: false;
+  }
+});
+
+var setSortField = function(field) {
+  var selected = selectedSort.get();
+  if (selected && selected.field == field.field) {
+    if (selected.value == 1)
+      selected = undefined;
+    else
+      selected.value = 1;
+  } else {
+    selected = field;
+    selected.value = -1;
+  }
+  selectedSort.set(selected);
+};
+
+Template.noteListSort.events = {
+  'click .sort-field': function() {
+    setSortField(this);
+  }
+};
 
