@@ -30,6 +30,6 @@ Template.tenant.helpers({
 });
 Template.tenant.events = {
   'change .inactive': function (e) {
-    Tenants.update({ _id: this._id }, { $set: { inactive: e.target.checked } });
+    Hierarchies.update({ _id: this._id }, { $set: { inactive: e.target.checked } });
   }
 }

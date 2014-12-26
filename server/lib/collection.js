@@ -39,7 +39,7 @@ EmailTemplateMergeFields = new Mongo.Collection('emailTemplateMergeFields');
 
 Roles = new Mongo.Collection("roles");
 SystemAdmins = new Mongo.Collection("systemAdmins");
-
+Tenants=Hierarchies;
 Collections = {
   Hierarchies: Hierarchies,
   Jobs: Jobs,

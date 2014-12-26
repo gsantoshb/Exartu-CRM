@@ -1,0 +1,24 @@
+<template name="tenant">
+
+    <div id="content">
+        {{#with tenantContext}}
+            <div id="content-header" class="mini">
+                <h1>Tenant</h1>
+            </div>
+            <div id="breadcrumb">
+                <a href="/" title="Go to Home" class="tip-bottom">Management</a>
+                <a href="/tenant/{{_id}}" class="current">{{name}}</a>
+            </div>
+            <div class="container-fluid">
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" checked="{{inactive}}" class="inactive"/> Inactive
+                    </label>
+                </div>
+
+            </div>
+        {{/with}}
+    </div>
+
+</template>

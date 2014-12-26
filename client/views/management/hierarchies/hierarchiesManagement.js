@@ -72,6 +72,7 @@ Template.hierarchiesManagement.helpers({
         }
         ;
         q._id = {$in: Meteor.user().hierarchies};
+        q.inactive= {$not: true};
         return Hierarchies.find(q, sortobj);
     },
     selected: function () {
