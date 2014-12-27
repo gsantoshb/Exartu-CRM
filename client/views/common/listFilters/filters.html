@@ -103,6 +103,23 @@
         </div>
     </div>
 </template>
+<template name="filter_taxId">
+    <div class="filter-item">
+        <div class="filter-title">
+            <i class="fa fa-map-marker"></i>
+            TaxId
+        </div>
+
+        <div class="input-group">
+            {{#objectProperty property=taxId}}
+                <input type="text" class="form-control" placeholder="SSN etc" value="{{value}}">
+            {{/objectProperty}}
+            <span class="input-group-btn">
+              <button class="add-tag btn btn-default" type="button"><span class="fa fa-map-marker"></span></button>
+            </span>
+        </div>
+    </div>
+</template>
 
 
 <template name="filter_createdBy">

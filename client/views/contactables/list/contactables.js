@@ -80,6 +80,11 @@ ContactablesController = RouteController.extend({
       locationQuery.default += ' country: ' + this.params.country;
     }
 
+    var taxIdQuery={};
+    if (this.params.taxId){
+      taxId.default= this.params.taxId;
+    }
+
     // Employee's placements status
     var placementStatusQuery = { type: Utils.ReactivePropertyTypes.array };
     if (type == 'Employee' && this.params.placementStatus) {
@@ -95,7 +100,8 @@ ContactablesController = RouteController.extend({
         mineOnly: mineQuery,
         tags: tagsQuery,
         location: locationQuery,
-        candidateStatus: placementStatusQuery
+        candidateStatus: placementStatusQuery,
+        taxId: taxIdQuery
       }
     });
 
@@ -284,6 +290,8 @@ Template.contactablesList.created = function() {
       });
     }
 
+
+
     // If not location operator match is used then search on each field
     if (query.location.value && !locationOperatorMatch) {
       var locationOR = {
@@ -308,6 +316,21 @@ Template.contactablesList.created = function() {
       };
       urlQuery.addParam('tags', query.tags.value);
     }
+
+    if (query.taxId.value){
+      var taxIdOR = {
+        $or: []
+      };
+      var aux={};
+      aux['taxId']=query.taxId.value;
+      taxIdOR.$or.push(aux );
+      aux['taxId']={$regex: '([0-9]{5})([' + query.taxId.value + ']{4})' , $options: 'i'};
+      taxIdOR.$or.push(aux );
+      searchQuery.$and.push(taxIdOR);
+
+    }
+
+    console.log('search',searchQuery);
 
     if (searchQuery.$and.length == 0)
       delete searchQuery.$and;

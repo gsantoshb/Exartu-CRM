@@ -76,6 +76,7 @@ Template.contactableDetailBox.events = {
       contactable.showErrors();
       return;
     }
+
     contactable.save(function(err) {
       if (!err) {
         EditMode.hide();
