@@ -330,8 +330,6 @@ Template.contactablesList.created = function() {
 
     }
 
-    console.log('search',searchQuery);
-
     if (searchQuery.$and.length == 0)
       delete searchQuery.$and;
 

@@ -62,45 +62,7 @@
                                     </div>
                                 {{/if}}
                             </fieldset>
-                            <fieldset>
 
-                                <div style="padding: 11px 0px;">
-                                    Linked Entities:
-                                    {{#each linkedEntities}}
-                                        {{#with getEntity .}}
-                                            <button type="button" class="tag btn btn-xs btn-primary">
-                                            <span>
-                                                {{displayName}}
-                                            </span>
-                                                <i class="remove-link fa fa-times"></i>
-                                            </button>
-                                        {{/with}}
-                                    {{/each}}
-                                </div>
-                                <div>
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <select class="form-control" id="taskTypeSelect" title="Select the type of entity that you want to link to the msg">
-                                                <option value="">--type--</option>
-                                                {{#each types}}
-                                                    <option value="{{value}}">{{displayName}}</option>
-                                                {{/each}}
-                                            </select>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <select class="form-control" id="taskEntitySelect" title="Select the entity that you want to link">
-                                                <option value="">--select--</option>
-                                                {{#each entities}}
-                                                    <option value="{{_id}}">{{displayName}}</option>
-                                                {{/each}}
-                                            </select>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button id="taskLinkEntity" class="btn btn-sm btn-primary">Link</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
                         {{/with}}
                     </div>
                 </div>
