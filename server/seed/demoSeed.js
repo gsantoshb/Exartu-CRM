@@ -358,6 +358,11 @@ var loadContactables = function (hierId) {
 
     var jobTitles = LookUps.find({lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode, hierId: hierId}).fetch();
     var randomJobTitle = jobTitles[Math.floor(Math.random() * jobTitles.length)];
+    var emailValue=data.firstName + '.' + data.lastName + '@gmail.com';
+    var mobileValue='1-651-555-' +   (Math.floor(Math.random()*9999999)).toString().substring(2, 6);
+    var contactMethods=[];
+    if (emailContactMethod) contactMethods.push({'type': emailContactMethod._id,'value': emailValue});
+    if (mobileContactMethod) contactMethods.push({'type': mobileContactMethod._id,'value': mobileValue});
 
     var newEmployee = {
       Employee: {
@@ -365,6 +370,7 @@ var loadContactables = function (hierId) {
         status: status ? status._id : null
       },
       tags: randomTag,
+      contactMethods: contactMethods,
       statusNote: 'looks to be making a decision soon',
       objNameArray: ["person", "Employee", "contactable"],
       person: {
@@ -380,7 +386,12 @@ var loadContactables = function (hierId) {
 
     ContactableManager.create(newEmployee);
   });
-
+var mobileContactMethod=
+    LookUps.findOne({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+      lookUpActions: Enums.lookUpAction.ContactMethod_MobilePhone, hierId: hierId});
+  var emailContactMethod=
+      LookUps.findOne({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+        lookUpActions: Enums.lookUpAction.ContactMethod_Email, hierId: hierId});
 
   // Customers
   _.forEach(customers, function (data) {
@@ -388,13 +399,18 @@ var loadContactables = function (hierId) {
     var status = LookUps.findOne({ lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode, isDefault: true, hierId: hierId });
     if (status == null) LookUps.findOne({lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode, hierId: hierId});
     if (status == null) console.log("unable to find default status code for customer");
-
+    var emailValue='sales@' + data.name + '.com';
+    var mobileValue='1-651-555-' +   (Math.floor(Math.random()*9999999)).toString().substring(2, 6);
+    var contactMethods=[];
+    if (emailContactMethod) contactMethods.push({'type': emailContactMethod._id,'value': emailValue});
+    if (mobileContactMethod) contactMethods.push({'type': mobileContactMethod._id,'value': mobileValue});
     var newCustomer = {
       Customer: {
         department: data.department,
         status: status ? status._id : null
       },
       tags: randomTag,
+      contactMethods: contactMethods,
       statusNote: 'looks to be making a decision soon',
       objNameArray: ["organization", "Customer", "contactable"],
       organization: {
@@ -417,6 +433,11 @@ var loadContactables = function (hierId) {
     var randomJobTitle = jobTitles[Math.floor(Math.random() * jobTitles.length)];
     var customers = Contactables.find({objNameArray: 'Customer',hierId:hierId}).fetch();
     var randomCustomer = customers[Math.floor(Math.random() * customers.length)];
+    var emailValue=data.firstName + '.' + data.lastName + '@gmail.com';
+    var mobileValue='1-651-555-' +   (Math.floor(Math.random()*9999999)).toString().substring(2, 6);
+    var contactMethods=[];
+    if (emailContactMethod) contactMethods.push({'type': emailContactMethod._id,'value': emailValue});
+    if (mobileContactMethod) contactMethods.push({'type': mobileContactMethod._id,'value': mobileValue});
     var newContact = {
       Contact: {
         description: "buying influence",
@@ -424,6 +445,7 @@ var loadContactables = function (hierId) {
         customer: randomCustomer._id,
       },
       tags: randomTag,
+      contactMethods: contactMethods,
       statusNote: 'looks to be making a decision soon',
       objNameArray: ["person", "Contact", "contactable"],
       person: {

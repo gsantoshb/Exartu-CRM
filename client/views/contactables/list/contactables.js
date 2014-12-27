@@ -381,7 +381,7 @@ Template.contactablesList.helpers({
   contactables: function() {
     // Dependencies
 
-    // Elasitsearch
+    // ElasticSearch
     if (!_.isEmpty(query.searchString.value)) {
       //urlQuery.push('type=' + query.objType.value);
       return esResult;
@@ -396,7 +396,7 @@ Template.contactablesList.helpers({
     return selected.get().length;
   },
   areAllChecked: function () {
-    // true if the count of all contactables (in the local collection) that are selected is equal to te count of all contactables (in the local collection)
+    // true if the count of all contactables (in the local collection) that are selected is equal to the count of all contactables (in the local collection)
     return AuxContactables.find({_id: { $in : _.pluck(selected.get(),'id') } }).count() == AuxContactables.find().count();
   },
   areAllSelectedTheSameType: function () {
