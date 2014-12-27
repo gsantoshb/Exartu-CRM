@@ -214,6 +214,7 @@ if (!listViewDefault)
   listViewDefault=false;
 }
 var listViewMode = new ReactiveVar(listViewDefault);
+var options = {};
 Template.contactablesList.created = function() {
   Meteor.autorun(function(c) {
     var urlQuery = new URLQuery();
@@ -343,11 +344,21 @@ Template.contactablesList.created = function() {
 
     // Avoid update handler's filter when an Elasticsearch query will be performed
     if (query.searchString.value) return;
+    if (selectedSort.get()) {
+      var selected = selectedSort.get();
+      options.sort = {};
+      options.sort[selected.field] = selected.value;
+    } else {
+      delete options.sort;
+    }
 
-    if (SubscriptionHandlers.AuxContactablesHandler)
+    if (SubscriptionHandlers.AuxContactablesHandler) {
       SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
+      SubscriptionHandlers.AuxContactablesHandler.setOptions(options);
+    }
     else
-      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery, params: clientParams});
+      SubscriptionHandlers.AuxContactablesHandler =
+          Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery, params: clientParams,options:options});
   });
 
   Meteor.autorun(function () {
@@ -369,7 +380,6 @@ Template.contactablesList.helpers({
   },
   contactables: function() {
     // Dependencies
-    esDep.depend();
 
     // Elasitsearch
     if (!_.isEmpty(query.searchString.value)) {
@@ -742,3 +752,45 @@ Template.esContextMatch.rendered = function() {
 Template.registerHelper('listViewMode', function () {
   return listViewMode.get();
 });
+// list sort
+
+var selectedSort =  new ReactiveVar();
+var sortFields = [
+  {field: 'dateCreated', displayName: 'Date'},
+  {field: 'displayName', displayName: 'Name'}
+];
+
+Template.contactableListSort.helpers({
+  sortFields: function() {
+    return sortFields;
+  },
+  selectedSort: function() {
+    return selectedSort.get();
+  },
+  isFieldSelected: function(field) {
+    return selectedSort.get() && selectedSort.get().field == field.field;
+  },
+  isAscSort: function() {
+    return selectedSort.get() ? selectedSort.get().value == 1: false;
+  }
+});
+
+var setSortField = function(field) {
+  var selected = selectedSort.get();
+  if (selected && selected.field == field.field) {
+    if (selected.value == 1)
+      selected = undefined;
+    else
+      selected.value = 1;
+  } else {
+    selected = field;
+    selected.value = -1;
+  }
+  selectedSort.set(selected);
+};
+
+Template.contactableListSort.events = {
+  'click .sort-field': function() {
+    setSortField(this);
+  }
+};

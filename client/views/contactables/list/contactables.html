@@ -206,7 +206,7 @@
                                                 {{/if}}
                                             {{/if}}
                                         </div>
-                                    {{displayName}}{{getDepartment}}
+                                        {{displayName}}{{getDepartment}}
                                     </a>
 
                                     <br/>
@@ -350,33 +350,29 @@
 <template name="contactablesListSearch">
     <div class="actions-head">
         <div class="row search-row">
-            <div class="col-xs-12">
-
-                <div class="col-xs-1">
-                    <div class="btn-group">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
-                                    title="Add">
-                                <span class="fa fa-plus"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
-                                {{#each contactableTypes}}
-                                    <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
-                                {{/each}}
-                                <li>
-                                    <a type="button" title="Create employee from resume/CV" class="btn btn-default"
-                                       href="/resumeparser">Create employee from resume/CV file</a>
-                                </li>
-                                <li>
+            <div class="col-md-12 col-lg-12">
+                <div class="col-md-8 col-lg-8">
+                    <div class="btn-group pull-left suffix-5">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                                title="Add">
+                            <span class="fa fa-plus"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
+                            {{#each contactableTypes}}
+                                <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
+                            {{/each}}
+                            <li>
+                                <a type="button" title="Create employee from resume/CV" class="btn btn-default"
+                                   href="/resumeparser">Create employee from resume/CV file</a>
+                            </li>
+                            <li>
 										<span class="btn btn-default parseText"
                                               title="Create employee from plain text">Create employee from resume/CV text</span>
-                                </li>
-                            </ul>
-                        </div>
+                            </li>
+                        </ul>
                     </div>
-                </div>
 
-                <div class="col-xs-7">
+
                     <div class="input-group">
                         {{#objectProperty property=searchString}}
                             <input type="text" class="form-control" placeholder="Search Network" value="{{value}}">
@@ -388,7 +384,7 @@
 							</span>
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-md-2 col-lg-2">
 									<span class="pointer" style="font-size: 20px;">
                                         {{#if listViewMode}}
                                             <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
@@ -399,7 +395,42 @@
                                         {{/if}}
                                     </span>
                 </div>
+                <div class="col-md-2 col-lg-2">
+                    {{> contactableListSort}}
+                </div>
             </div>
         </div>
+    </div>
+</template>
+<template name="contactableListSort">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Sort
+            {{#with selectedSort}}
+                <strong>{{displayName}}</strong>
+                {{#if isAscSort .}}
+                    <i class="fa fa-sort-amount-asc"> </i>
+                {{else}}
+                    <i class="fa fa-sort-amount-desc"> </i>
+                {{/if}}
+            {{/with}}
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            {{#each sortFields}}
+                <li>
+                    <a class="sort-field">
+                        {{displayName}}
+                        {{#if isFieldSelected .}}
+                            {{#if isAscSort .}}
+                                <i class="fa fa-sort-amount-asc"> </i>
+                            {{else}}
+                                <i class="fa fa-sort-amount-desc"> </i>
+                            {{/if}}
+                        {{/if}}
+                    </a>
+                </li>
+            {{/each}}
+        </ul>
     </div>
 </template>

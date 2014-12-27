@@ -105,6 +105,7 @@ Meteor.publish('allCustomers', function () {
   Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Contactables.find({ Customer: { $exists: true } }, {
     fields: {
       'organization.organizationName': 1,
+      'Customer.department':1,
       houseAccount: 1
     }
   })), sub, 'allCustomers');
@@ -128,7 +129,8 @@ Meteor.publish('allContactables', function () {
       'person.lastName': 1,
       'person.middleName': 1,
       'person.firstName': 1,
-      'organization.organizationName': 1
+      'organization.organizationName': 1,
+      'Customer.department':1
     }
   })), sub, 'allContactables');
   sub.ready();
@@ -158,6 +160,14 @@ Contactables.before.insert(function (userId, doc) {
   doc.hierId = user.currentHierId || doc.hierId;
   doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();
+  if (doc.organization)
+  {
+    doc.displayName= doc.organization.organizationName;
+  };
+  if (doc.person)
+  {
+    doc.displayName= doc.person.lastName+', ' + doc.person.firstName;
+  }
 
   var shortId = Meteor.npmRequire('shortid');
   var aux = shortId.generate();
