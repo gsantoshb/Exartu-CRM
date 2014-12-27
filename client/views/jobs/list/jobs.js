@@ -134,7 +134,7 @@ var info = new Utils.ObjectDefinition({
 var listViewDefault=Session.get('jobListViewMode');
 if (!listViewDefault)
 {
-  listViewDefault=true;
+  listViewDefault=false;
 }
 var listViewMode = new ReactiveVar(listViewDefault);
 
@@ -357,7 +357,7 @@ getActiveStatuses = function(objName){
   return null;
 }
 
-var searchFields = ['categoryName', 'industryName', 'durationName', 'statusName', 'publicJobTitle'];
+var searchFields = ['jobTitle', 'publicJobTitle'];
 
 Template.jobList.jobs = function() {
   return jobCollection.find();
@@ -482,6 +482,7 @@ Template.jobInformation.customerName = function () {
   var customer =  Contactables.findOne(this.customer);
   return customer && customer.displayName;
 };
+
 Template.jobListItem.customerName = function () {
   var customer =  Contactables.findOne(this.customer);
   return customer && customer.displayName;

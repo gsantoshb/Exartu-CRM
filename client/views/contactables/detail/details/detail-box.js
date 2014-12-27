@@ -23,7 +23,7 @@ Object.defineProperty(EditMode, "value", {
 });
 
 var contactable = {};
-var hideTaxID = new ReactiveVar(false);
+var hideTaxID = new ReactiveVar(true);
 
 Template.contactableDetailBox.helpers({
   created:function(){
@@ -31,7 +31,7 @@ Template.contactableDetailBox.helpers({
   },
   rendered: function () {
     // Set up masks
-    this.$('#taxid-text').mask('000-000-000');
+    //this.$('#taxid-text').mask('000-00-0000');
   },
   isSelected: function(value1, value2){
     return value1==value2
@@ -95,16 +95,16 @@ Template.contactableDetailBox.events = {
 
 Template.showTaxIdText.helpers({
   rendered: function () {
-    this.$('#taxid-text').mask('000-000-000');
+    //this.$('#taxid-text').mask('000-000-000');
   }
 });
 
 Template.showTaxIdInput.helpers({
   rendered: function () {
-    this.$('#taxid-input').mask('000-000-000', {
-      onKeyPress: function (val, e, dom) {
-        dom.trigger('change');
-      }
-    });
+    //this.$('#taxid-input').mask('000-000-000', {
+    //  onKeyPress: function (val, e, dom) {
+    //    dom.trigger('change');
+    //  }
+    //});
   }
 });

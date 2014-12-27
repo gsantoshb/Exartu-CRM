@@ -703,8 +703,9 @@ Utils.getContactMethodTypes_MobilePhone = function () {
 Utils.extendContactableDisplayName = function (contactable) {
   if (contactable.person)
     contactable.displayName = contactable.person.lastName + ', ' + contactable.person.firstName + ' ' + contactable.person.middleName;
-  if (contactable.organization)
+  if (contactable.organization) {
     contactable.displayName = contactable.organization.organizationName;
+  }
 };
 
 Utils.getLocalUserName= function(user)

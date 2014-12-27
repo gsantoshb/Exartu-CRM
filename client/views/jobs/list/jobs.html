@@ -117,7 +117,7 @@
                     <div class="table-item-title">
                         <a href="/job/{{_id}}">
                             {{displayName}}
-                        </a>
+                        </a>@
                         <strong><a href="/contactable/{{customer}}">{{customerName}}</a></strong>
                         <span class="badge">
                             {{lookUpName status}}
@@ -201,9 +201,7 @@
 <template name="jobInformation">
     <i class="icon-building-2"></i>
     <strong><a href="/contactable/{{customer}}">{{customerName}}</a></strong>
-
     <br/>
-
     <div class="task-author">
         {{#if location.displayName}}
             <i class="icon-map-marker-1"></i>
@@ -249,7 +247,7 @@
                             <i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
                          {{/if}}
                      </span>
-                     {{> jobListSort}}
+                {{> jobListSort}}
             </div>
 
         </div>
