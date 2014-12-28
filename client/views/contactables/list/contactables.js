@@ -327,6 +327,9 @@ Template.contactablesList.created = function() {
       taxIdOR.$or.push(aux );
       aux['taxId']={$regex: '([0-9]{5})([' + query.taxId.value + ']{4})' , $options: 'i'};
       taxIdOR.$or.push(aux );
+      var aux={};
+      aux['contactMethods']={$elemMatch: {value: {$regex:query.taxId.value,$options:'i'}}}
+      taxIdOR.$or.push(aux );
       searchQuery.$and.push(taxIdOR);
 
     }
