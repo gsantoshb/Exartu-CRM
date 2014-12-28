@@ -29,8 +29,14 @@ NoteSchema = new SimpleSchema({
     type: String,
     optional: true,
     label: 'SMS/Text destination number'
+  },
+  contactableId: {
+    type: String,
+    label: 'Entity'
   }
 });
+
+
 
 AutoForm.hooks({
   AddNoteRecord: {
@@ -41,6 +47,7 @@ AutoForm.hooks({
           type: Utils.getEntityTypeFromRouter()
         };
         doc.links = doc.links || [initialLink];
+        doc.contactableId = Session.get('entityId');
         return doc;
       }
     }
