@@ -122,8 +122,10 @@ Template.addDocumentForm.events = {
           AddForm.hide();
           document.reset();
         }
-        else
+        else {
+          alert('File upload error:' + err)
           console.log('File upload error');
+        }
     });
   },
   'click #cancel-document': function() {
