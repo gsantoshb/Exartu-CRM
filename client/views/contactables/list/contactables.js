@@ -189,6 +189,16 @@ var getActiveStatuses = function(objName){
   }
   return null;
 };
+var getAllStatuses = function(objName){
+  var status = Enums.lookUpTypes[objName.toLowerCase()];
+  status = status && status.status;
+  if (status){
+    var lookUpCodes = status.lookUpCode, 
+        implyAll = LookUps.find({lookUpCode: lookUpCodes}).fetch();
+    return _.map(implyAll ,function(doc){ return doc._id});
+  }
+  return null;
+};
 
 var locationFields = ['address', 'city', 'state', 'country'];
 
@@ -558,12 +568,13 @@ var runESComputation = function () {
     }
 
     // Include inactives
-    if (!query.inactives.value) {
+    if (!query.inactives.value) 
+    {
       var activeStatusFilter = {or: []};
       var activeStatuses;
-      _.each(['Employee','Contact', 'Customer'], function(objName){
+      _.each(['Employee', 'Contact', 'Customer'], function (objName) {
         activeStatuses = getActiveStatuses(objName);
-        _.forEach(activeStatuses, function(activeStatus) {
+        _.forEach(activeStatuses, function (activeStatus) {
           var statusFilter = {};
           statusFilter[objName + '.status'] = activeStatus.toLowerCase();
           activeStatusFilter.or.push({term: statusFilter});
@@ -571,6 +582,21 @@ var runESComputation = function () {
       });
       filters.bool.must.push(activeStatusFilter);
     }
+      else
+      { // hack for problem of esSearch not filtering by hierarchy...enforce that here by forcing a match on a valid status in the hierarchyQ
+        var allStatusFilter = {or: []};
+        var allStatuses;
+        _.each(['Employee', 'Contact', 'Customer'], function (objName) {
+          allStatuses = getAllStatuses(objName);
+          _.forEach(allStatuses, function (allStatus) {
+            var statusFilter = {};
+            statusFilter[objName + '.status'] = allStatus.toLowerCase();
+            allStatusFilter.or.push({term: statusFilter});
+          })
+        });
+        filters.bool.must.push(allStatusFilter);        
+      };
+
 
     // Created by
     if (query.mineOnly.value) {
