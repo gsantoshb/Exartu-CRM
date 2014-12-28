@@ -29,6 +29,9 @@ SMSManager = {
   },
   sendSMSToContactable: function (contactableId, from, to, text) {
     // Validate user phone number
+    // Simpleschema messes up and does an unasked for conversion of the twilio # (from) which
+    // wipes out the '+' sign from the front of the number...add it back here
+    from='+'+from;
     var userHierarchies = Utils.getUserHiers();
     var phoneNumberHier;
     _.forEach(userHierarchies, function (userHier) {
@@ -61,13 +64,17 @@ SMSManager = {
 
     // Get hierarchy's number
     if (! hier.phoneNumber)
-      throw new Meteor.Error(500, 'Hierarchy has not phone number set up');
+      throw new Meteor.Error(500, 'Hierarchy has no phone number set up');
 
     // Send SMS
     _sendSMS(from, to, text, function (err) {
       if (!err) {
         // Update phoneNumber sms count
         Hierarchies.update({ _id: phoneNumberHier._id}, { $inc: { 'phoneNumber.smsCount': 1}});
+      }
+      else
+      {
+        console.log('sms send error',err);
       }
     });
   },
@@ -129,21 +136,30 @@ var _requestNumber = function () {
     };
 
     console.warn('TWILIO: Fake number', newNumber);
-  } else {
+  }
+  else {
     // Search for available phone numbers
     var result = Meteor.wrapAsync(twilio.availablePhoneNumbers('US').local.get)({ areaCode:'651'});
+    console.log('result1',result.availablePhoneNumbers.length);
+    console.log('result2',result.availablePhoneNumbers[0]);
 
-    if (result.availablePhoneNumbers.length > 0) {
-      var newNumber = Meteor.wrapAsync(twilio.incomingPhoneNumbers.create)({
-        phoneNumber: result.availablePhoneNumbers[0].phoneNumber,
-        areaCode: '651',
-        smsMethod: "POST",
-        smsUrl: Meteor.absoluteUrl('sms/reply')
-      });
-
-    } else {
-      throw new Meteor.Error(500, 'There is no available number on Twilio');
+    //if (result.availablePhoneNumbers.length > 0) {
+    //  var newNumber = Meteor.wrapAsync(twilio.incomingPhoneNumbers.create)({
+    //    phoneNumber: result.availablePhoneNumbers[0].phoneNumber,
+    //    areaCode: '651',
+    //    smsMethod: "POST",
+    //    smsUrl: Meteor.absoluteUrl('sms/reply')
+    //  });
+    //
+    //} else {
+    //  throw new Meteor.Error(500, 'There is no available number on Twilio');
+    //}
+    //since the above code is failing (in fibers)...create the twilio number manually using one already purchased
+    newNumber={
+      phoneNumber: "+16122356835",
+      friendlyName: "1-612-235-6835"
     }
+
   }
 
   return {

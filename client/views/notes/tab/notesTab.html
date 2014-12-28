@@ -112,8 +112,6 @@
 <template name="notesTabEditItem">
     {{#autoForm id=formId schema="NoteSchema" doc=doc collection="Notes" type="update"}}
         {{> afQuickField name='msg' rows=3}}
-        {{> linksAutoForm name='links' value=doc.links}}
-
         <br/>
 
         <div class="pull-right">

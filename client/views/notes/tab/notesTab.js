@@ -1,3 +1,4 @@
+AutoForm.debug();
 NoteSchema = new SimpleSchema({
   msg: {
     type: String,
@@ -35,7 +36,11 @@ AutoForm.hooks({
   AddNoteRecord: {
     before: {
       addContactableNote: function (doc) {
-        doc.contactableId = Session.get('entityId');
+        var initialLink = {
+          id: Session.get('entityId'),
+          type: Utils.getEntityTypeFromRouter()
+        };
+        doc.links = doc.links || [initialLink];
         return doc;
       }
     }
@@ -56,6 +61,7 @@ Template.notesTabAdd.helpers({
   },
   userNumbers: function () {
     return Hierarchies.find({phoneNumber: {$exists: true}}).map(function (userHier) {
+
       var result = {
         label: userHier.phoneNumber.displayName + ' - ' + userHier.name,
         value: userHier.phoneNumber.value
@@ -151,12 +157,7 @@ Template.notesTabEditItem.events({
 
 // Links
 
-AutoForm.inputValueHandlers({
-  '#links-value': function () {
-    var ctx = UI.getData(this[0]);
-    return ctx.links;
-  }
-});
+
 
 var isEditing =  new ReactiveVar(false);
 

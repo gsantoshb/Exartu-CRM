@@ -121,25 +121,25 @@ UI.registerHelper('contactMethodTypePrefix', function(type) {
   return Utils.contactMethodTypePrefix(type);
 });
 
-// Custom AutoForm dateTimePicker
-AutoForm.inputValueHandlers({
-  '#date-value': function () {
-    var key = this.data().schemaKey;
-    var formId = UI.currentView.parentView.dataVar.curValue.id;
-    return $('#' + formId + ' .' + key + ' .date').data('datetimepicker').date;
-  },
-
-  '.afDateTimePicker': function () {
-    if (this.val()) {
-      return $(this).parent().datepicker('getDate');
-    }
-  },
-  '.afDecimal': function () {
-    var val=this.val();
-    if (val=="" || val==null || isNaN(val)) val=0;
-    return val;
-  }
-});
+//// Custom AutoForm dateTimePicker
+//AutoForm.inputValueHandlers({
+//  '#date-value': function () {
+//    var key = this.data().schemaKey;
+//    var formId = UI.currentView.parentView.dataVar.curValue.id;
+//    return $('#' + formId + ' .' + key + ' .date').data('datetimepicker').date;
+//  },
+//
+//  '.afDateTimePicker': function () {
+//    if (this.val()) {
+//      return $(this).parent().datepicker('getDate');
+//    }
+//  },
+//  '.afDecimal': function () {
+//    var val=this.val();
+//    if (val=="" || val==null || isNaN(val)) val=0;
+//    return val;
+//  }
+//});
 
 
 
