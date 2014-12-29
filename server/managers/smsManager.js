@@ -140,8 +140,7 @@ var _requestNumber = function () {
   else {
     // Search for available phone numbers
     var result = Meteor.wrapAsync(twilio.availablePhoneNumbers('US').local.get)({ areaCode:'651'});
-    console.log('result1',result.availablePhoneNumbers.length);
-    console.log('result2',result.availablePhoneNumbers[0]);
+
 
     //if (result.availablePhoneNumbers.length > 0) {
     //  var newNumber = Meteor.wrapAsync(twilio.incomingPhoneNumbers.create)({

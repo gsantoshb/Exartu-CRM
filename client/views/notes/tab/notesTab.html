@@ -29,8 +29,8 @@
                         {{> afQuickField name="sendAsSMS"}}
 
                         {{#if afFieldValueIs name='sendAsSMS' value=true}}
-                            {{> afFormGroup name="userNumber" options=userNumbers}}
-                            {{> afFormGroup name="contactableNumber" options=mobileNumbers}}
+                            {{> afFormGroup name="userNumber" value=defaultUserNumber options=userNumbers}}
+                            {{> afFormGroup name="contactableNumber" value=defaultMobileNumber options=mobileNumbers}}
                         {{/if}}
                     {{/unless}}
                 {{/unless}}

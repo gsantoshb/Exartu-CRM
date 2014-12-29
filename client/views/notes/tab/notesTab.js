@@ -1,3 +1,4 @@
+var self={};
 AutoForm.debug();
 NoteSchema = new SimpleSchema({
   msg: {
@@ -53,7 +54,8 @@ AutoForm.hooks({
     }
   }
 });
-
+self.defaultUserNumber=null;
+self.defaultMobileNumber=null;
 // Add
 Template.notesTabAdd.helpers({
   mobileNumbers: function () {
@@ -63,20 +65,23 @@ Template.notesTabAdd.helpers({
         label: number,
         value: number
       };
+      if (!self.defaultMobileNumber) self.defaultMobileNumber=result.value;
       return result;
     });
   },
   userNumbers: function () {
-    return Hierarchies.find({phoneNumber: {$exists: true}}).map(function (userHier) {
-
+    var user=Meteor.user();
+    return Hierarchies.find({_id:user.hierId,phoneNumber: {$exists: true}}).map(function (userHier) {
       var result = {
-        label: userHier.phoneNumber.displayName + ' - ' + userHier.name,
+        label: userHier.phoneNumber.value, //displayName + ' - ' + userHier.name,
         value: userHier.phoneNumber.value
       };
-
+      if (!self.defaultUserNumber) self.defaultUserNumber=result.value;
       return result;
     });
-  }
+  },
+  defaultMobileNumber: function(){return self.defaultMobileNumber;},
+  defaultUserNumber: function(){return self.defaultUserNumber;}
 });
 
 // List
