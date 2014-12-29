@@ -208,8 +208,9 @@ FileUploader.createEndpoint('generateResume', {
       resume.entry('Address', Utils.getLocationDisplayName(employee.location));
 
     // Contact method
+
     if (options.showContactInfo == 'true' && employee.contactMethods) {
-      resume.title("Contact methods");
+      //resume.title("Contact methods");
       _.forEach(employee.contactMethods, function (contactMethod) {
         resume.contactMethodEntry(contactMethod);
       });
@@ -276,9 +277,8 @@ Resume.prototype.entry = function (label, value) {
 Resume.prototype.contactMethodEntry = function (contactMethod) {
   var self = this;
 
-  var type= ContactMethods.findOne(contactMethod.type);
+  var type= LookUps.findOne({ _id:contactMethod.type });
   if (!type) return;
-
   self.doc.fontSize(11).text(type.displayName + ' ' + contactMethod.value);
 };
 

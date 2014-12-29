@@ -117,7 +117,7 @@ Template.contactable.events({
     var downloadLink = $('#download-generated-resume');
     Utils.showModal('basicModal', {
       title: 'Generate Employee Resume/CV',
-      message: 'Do you want to Hide or Show the employee’s contact information in the resume/cv?',
+      message: 'Show employee contact information on resume/cv?',
       buttons: [{label: 'Hide', classes: 'btn-info', value: false}, {label: 'Show', classes: 'btn-success', value: true}],
       callback: function (result) {
         downloadLink.attr('href', FileUploader.getUrl('generateResume', employeeId, { showContactInfo: result}));
