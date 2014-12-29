@@ -290,6 +290,7 @@ Utils.getLocationDisplayName = function (location) {
   (location.country  || '' ));
 };
 
+
 Utils.getLinkTypeFromEntity=function(entity) {
     var objNameArray=entity.objNameArray;
     if (objNameArray && objNameArray.length>0)
