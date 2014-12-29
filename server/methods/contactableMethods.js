@@ -201,11 +201,16 @@ FileUploader.createEndpoint('generateResume', {
     var resume = new Resume(writeStream);
 
     // General information
-    resume.title("General information");
-    resume.entry('First name', employee.person.firstName);
-    resume.entry('Last name', employee.person.lastName);
+    if (employee.location) {
+      resume.entry('', employee.person.firstName + ' ' + employee.person.lastName,18);
+    }
     if (employee.location)
-      resume.entry('Address', Utils.getLocationDisplayName(employee.location));
+    {
+      var location=employee.location;
+      resume.entry('', (location.streetNumber || '' ) + ' '  + (location.address  || '' ) + ' '  + (location.address1 || '' ) );
+      resume.entry('',location.city + ', ' + location.state   );
+      resume.entry('',(location.country  || '' ));
+    }
 
     // Contact method
 
@@ -268,10 +273,10 @@ Resume.prototype.title = function (text) {
   self.doc.moveDown();
 };
 
-Resume.prototype.entry = function (label, value) {
+Resume.prototype.entry = function (label, value,size) {
   var self = this;
-
-  self.doc.fontSize(12).text(label + ': ' + value);
+  if (!size) size=12;
+  self.doc.fontSize(size).text(label  + value);
 };/**/
 
 Resume.prototype.contactMethodEntry = function (contactMethod) {
@@ -279,7 +284,7 @@ Resume.prototype.contactMethodEntry = function (contactMethod) {
 
   var type= LookUps.findOne({ _id:contactMethod.type });
   if (!type) return;
-  self.doc.fontSize(11).text(type.displayName + ' ' + contactMethod.value);
+  self.doc.fontSize(11).text(type.displayName + ': ' + contactMethod.value);
 };
 
 Resume.prototype.educationEntry = function (education) {
