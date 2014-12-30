@@ -40,6 +40,9 @@ Template.contactableDetailBox.helpers({
     contactable = new dType.objInstance(this, Contactables);
     return contactable;
   },
+  originalContactable: function(){
+    return this;
+  },
   editMode : function() {
     return EditMode.value;
   },

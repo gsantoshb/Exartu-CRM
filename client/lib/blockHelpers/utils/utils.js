@@ -159,6 +159,15 @@ UI.registerHelper('displayUserName', function (id) {
   return isUnique ? localPart : user.emails[0].address;
 });
 
+UI.registerHelper('displayHierName', function (hierid) {
+  var hier=Hierarchies.findOne({_id:hierid});
+  if (hier){
+    return hier.name;
+  }
+});
+
+
+
 // Multiline text format helper
 Template.registerHelper('multilineText', function (text) {
   return text.replace(/\r?\n/g,'<br/>');

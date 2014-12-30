@@ -1,15 +1,17 @@
 <template name="contactableDetailBox">
     <div class="box">
         <div class="box-header-2">
-            <a class="btn-action pointer" title="Edit"><i id="edit-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>
+            <a class="btn-action pointer" title="Edit"><i id="edit-mode" class="fa fa-pencil"
+                                                          style="color: {{editModeColor}}"></i></a>
+
             <div class="box-title">
                 Details
             </div>
         </div>
         <div class="box-content-md">
-            {{#with contactable }}
-                <table class="table box-table table-striped">
 
+            <table class="table box-table table-striped">
+                {{#with contactable }}
                     {{#if person }}
                         <tr>
                             <td>First Name</td>
@@ -17,7 +19,7 @@
                                 {{#objectProperty property=firstName editable=editMode}}
                                     <input class="form-control" type="text" value="{{value}}">
                                 {{else}}
-                                    <span >{{value}}</span>
+                                    <span>{{value}}</span>
                                 {{/objectProperty}}
                             </td>
                         </tr>
@@ -27,7 +29,7 @@
                                 {{#objectProperty property=lastName editable=editMode}}
                                     <input class="form-control" type="text" value="{{value}}">
                                 {{else}}
-                                    <span >{{value}}</span>
+                                    <span>{{value}}</span>
                                 {{/objectProperty}}
                             </td>
                         </tr>
@@ -37,7 +39,7 @@
                                 {{#objectProperty property=middleName editable=editMode}}
                                     <input class="form-control" type="text" value="{{value}}">
                                 {{else}}
-                                    <span >{{value}}</span>
+                                    <span>{{value}}</span>
                                 {{/objectProperty}}
                             </td>
                         </tr>
@@ -47,7 +49,7 @@
                                 {{#objectProperty property=jobTitle editable=editMode}}
                                     <input class="form-control" type="text" value="{{value}}">
                                 {{else}}
-                                    <span >{{value}}</span>
+                                    <span>{{value}}</span>
                                 {{/objectProperty}}
                             </td>
                         </tr>
@@ -60,7 +62,7 @@
                                 {{#objectProperty property=organizationName editable=editMode}}
                                     <input class="form-control" type="text" value="{{value}}">
                                 {{else}}
-                                    <span >{{value}}</span>
+                                    <span>{{value}}</span>
                                 {{/objectProperty}}
                             </td>
                         </tr>
@@ -73,7 +75,7 @@
                                 {{#objectProperty property=department editable=editMode}}
                                     <input class="form-control" type="text" value="{{value}}">
                                 {{else}}
-                                    <span >{{value}}</span>
+                                    <span>{{value}}</span>
                                 {{/objectProperty}}
                             </td>
                         </tr>
@@ -85,9 +87,9 @@
                             {{#objectProperty property=status editable=editMode}}
                                 {{> buttonGroup options=fetchStatusOptions value=value onSelected=onSelectedStatus}}
                             {{else}}
-                            <strong>
-                                <strong>{{displayName}}</strong>
-                            </strong>
+                                <strong>
+                                    <strong>{{displayName}}</strong>
+                                </strong>
                             {{/objectProperty}}
                         </td>
                     </tr>
@@ -97,51 +99,73 @@
                             {{#objectProperty property=statusNote editable=editMode}}
                                 <input class="form-control" type="text" value="{{value}}">
                             {{else}}
-                                <span >{{value}}</span>
+                                <span>{{value}}</span>
                             {{/objectProperty}}
                         </td>
                     </tr>
                     {{#if Employee }}
-                    <tr>
-                        <td>TaxID/SSN</td>
-                        <td>
-                            {{#objectProperty property=taxID editable=editMode}}
-                                {{> showTaxIdInput}}
-                            {{else}}
-                                {{#if hideTaxID}}
-                                    <a class="pointer showHideTaxId">Show</a>
+                        <tr>
+                            <td>TaxID/SSN</td>
+                            <td>
+                                {{#objectProperty property=taxID editable=editMode}}
+                                    {{> showTaxIdInput}}
                                 {{else}}
-                                    {{#if value}}
-                                        <!--<span id="taxid-text">{{value}}</span> <a class="pointer showHideTaxId">Hide</a>-->
-                                        {{> showTaxIdText}}
+                                    {{#if hideTaxID}}
+                                        <a class="pointer showHideTaxId">Show</a>
+                                    {{else}}
+                                        {{#if value}}
+                                            <!--<span id="taxid-text">{{value}}</span> <a class="pointer showHideTaxId">Hide</a>-->
+                                            {{> showTaxIdText}}
+                                        {{/if}}
                                     {{/if}}
-                                {{/if}}
-                            {{/objectProperty}}
-                        </td>
-                    </tr>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
                     {{/if}}
                     {{#if Customer}}
+                        <tr>
+                            <td>WorkerComp</td>
+                            <td>
+                                {{#objectProperty property=workerCompCode editable=editMode}}
+                                    <input class="form-control" placeholder="Example: TX8810..." type="text"
+                                           value="{{value}}">
+                                {{else}}
+                                    {{value}}
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
+                    {{/if}}
+                {{/with}}
+                {{#with originalContactable}}
                     <tr>
-                        <td>WorkerComp Code</td>
+                        <td>User</td>
                         <td>
-                            {{#objectProperty property=workerCompCode editable=editMode}}
-                            <input class="form-control" type="text" value="{{value}}">
-                            {{else}}
-
-                            {{/objectProperty}}
+                            {{displayUserName userId}}
                         </td>
                     </tr>
-                    {{/if}}
-                </table>
-            {{/with}}
+                    <tr>
+                        <td>Date Created</td>
+                        <td>
+                            {{#formattedDate value=dateCreated format='lll'}}
+                                {{date}} 
+                            {{/formattedDate}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hierarchy</td>
+                        <td>
+                            {{displayHierName}}{{hierId}}
+                        </td>
+                    </tr>
+                {{/with}}
+            </table>
 
-            {{> originData}}
 
         </div>
         {{#if editMode }}
             <div class="box-header-2">
-                <a id="cancel-details" class="btn btn-default" > Cancel </a>
-                <a id="save-details" class="btn btn-success pull-right" > Save </a>
+                <a id="cancel-details" class="btn btn-default"> Cancel </a>
+                <a id="save-details" class="btn btn-success pull-right"> Save </a>
             </div>
         {{/if}}
     </div>
