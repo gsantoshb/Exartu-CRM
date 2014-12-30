@@ -137,26 +137,7 @@
                     {{/if}}
                 {{/with}}
                 {{#with originalContactable}}
-                    <tr>
-                        <td>User</td>
-                        <td>
-                            {{displayUserName userId}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Date Created</td>
-                        <td>
-                            {{#formattedDate value=dateCreated format='lll'}}
-                                {{date}} 
-                            {{/formattedDate}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Hierarchy</td>
-                        <td>
-                            {{displayHierName}}{{hierId}}
-                        </td>
-                    </tr>
+                    {{>displayOriginDataInline}}
                 {{/with}}
             </table>
 
@@ -170,7 +151,28 @@
         {{/if}}
     </div>
 </template>
-
+<template name="displayOriginDataInline">
+    <tr>
+        <td>User</td>
+        <td>
+            {{displayUserName userId}}
+        </td>
+    </tr>
+    <tr>
+        <td>Date Created</td>
+        <td>
+            {{#formattedDate value=dateCreated format='lll'}}
+                {{date}}
+            {{/formattedDate}}
+        </td>
+    </tr>
+    <tr>
+        <td>Hierarchy</td>
+        <td>
+            {{displayHierName hierId}} ({{hierId}})
+        </td>
+    </tr>
+</template>
 <template name="showTaxIdText">
     <span id="taxid-text">{{value}}</span>
 </template>

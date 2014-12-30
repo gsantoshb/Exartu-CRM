@@ -56,6 +56,7 @@ var query = new Utils.ObjectDefinition({
 Template.hierarchiesManagement.filters = function () {
     return query;
 };
+
 Template.hierarchiesManagement.helpers({
     isAdmin: function () {
         return Utils.adminSettings.isAdmin();
@@ -72,7 +73,7 @@ Template.hierarchiesManagement.helpers({
         }
         ;
         q._id = {$in: Meteor.user().hierarchies};
-        q.inactive= {$not: true};
+        //q.inactive= {$not: true};
         return Hierarchies.find(q, sortobj);
     },
     selected: function () {
@@ -85,9 +86,14 @@ Template.hierarchiesManagement.helpers({
     isCurrent: function () {
         return Meteor.user().currentHierId == this._id;
     },
+    isInactive: function () {
+        return this && this.inactive;
+    }
 });
 Template.hierarchiesManagement.events({
     'click .hierarchyItem': function (e) {
+
+
         if (selectedHier == this)
             selectedHier = null;
         else
@@ -102,6 +108,7 @@ Template.hierarchiesManagement.events({
     },
     'click .changeCurrent': function () {
         if (!selectedHier) return;
+        if (this && this.inactive) return;
 
         Meteor.call('changeCurrentHierId', selectedHier._id, function (err, result) {
             if (err)
@@ -136,5 +143,8 @@ Template.recursiveHierarchies.helpers({
     },
     hasChilds: function () {
         return Hierarchies.find(getChildrenQuery(this._id)).count() > 0;
+    },
+    isInactive: function() {
+        return this.inactive;
     }
 })
