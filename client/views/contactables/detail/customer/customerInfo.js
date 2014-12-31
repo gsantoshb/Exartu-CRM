@@ -24,7 +24,6 @@ Template.contactCustomerInfo.helpers({
 Template.contactCustomerInfo.events({
   'click .addEdit': function (e, ctx) {
     Utils.showModal('contactCustomerAddEdit', Session.get('entityId'), ctx.data.customer, function (customerId) {
-      Meteor.subscribe('singleContactable', customerId);
     });
   }
 });

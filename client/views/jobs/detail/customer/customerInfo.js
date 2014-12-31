@@ -23,7 +23,6 @@ Template.jobCustomerInfo.helpers({
 Template.jobCustomerInfo.events({
   'click .addEdit': function (e, ctx) {
     Utils.showModal('jobCustomerAddEdit', Session.get('entityId'), ctx.data.customer, function (customerId) {
-      Meteor.subscribe('singleContactable', customerId);
     });
   }
 });
