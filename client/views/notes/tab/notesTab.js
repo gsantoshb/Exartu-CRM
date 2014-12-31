@@ -71,7 +71,7 @@ Template.notesTabAdd.helpers({
   },
   userNumbers: function () {
     var user=Meteor.user();
-    return Hierarchies.find({_id:user.hierId,phoneNumber: {$exists: true}}).map(function (userHier) {
+    return Hierarchies.find({_id:user.currentHierId,phoneNumber: {$exists: true}}).map(function (userHier) {
       var result = {
         label: userHier.phoneNumber.value, //displayName + ' - ' + userHier.name,
         value: userHier.phoneNumber.value
