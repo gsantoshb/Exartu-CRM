@@ -1,7 +1,7 @@
 LookupsManagementController = RouteController.extend({
   template: 'lookUpsManagement',
 onAfterAction: function() {
-    var title = 'Settings',
+    var title = 'Lookups',
       description = 'Lookup configurations, etc';
     SEO.set({
       title: title,

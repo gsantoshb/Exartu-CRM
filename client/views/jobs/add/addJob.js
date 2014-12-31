@@ -11,7 +11,7 @@ JobAddController = RouteController.extend({
     this.render('addJobPage');
   },
   onAfterAction: function () {
-    var title = 'Add ' + Session.get('objType'),
+    var title = 'Add Job',
       description = '';
     SEO.set({
       title: title,

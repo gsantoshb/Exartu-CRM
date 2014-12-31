@@ -105,7 +105,7 @@ JobsController = RouteController.extend({
     this.render('jobs');
   },
   onAfterAction: function() {
-    var title = 'My Network',
+    var title = 'Jobs',
       description = 'All your contacts are here';
     SEO.set({
       title: title,

@@ -112,8 +112,8 @@ ContactablesController = RouteController.extend({
     this.render('contactables');
   },
   onAfterAction: function() {
-    var title = 'My Network',
-      description = 'All your contacts are here';
+    var title = 'Network',
+      description = 'Your contacts, employees and customers';
     SEO.set({
       title: title,
       meta: {

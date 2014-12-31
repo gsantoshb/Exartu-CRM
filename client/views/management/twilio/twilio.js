@@ -1,7 +1,7 @@
 TwilioManagementController = RouteController.extend({
   template: 'twilioManagement',
   onAfterAction: function() {
-    var title = 'Settings',
+    var title = 'Texting Setup',
       description = 'Twilio management';
     SEO.set({
       title: title,

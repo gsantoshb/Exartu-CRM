@@ -9,7 +9,7 @@ ResumeParserController = RouteController.extend({
     this.render('resumeParser');
   },
   onAfterAction: function() {
-    var title = 'Resume parser',
+    var title = 'Parser',
       description = '';
     SEO.set({
       title: title,

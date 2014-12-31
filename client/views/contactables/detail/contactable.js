@@ -17,7 +17,7 @@ ContactableController = RouteController.extend({
     Session.set('activeTab', this.params.tab || 'details');
   },
   onAfterAction: function () {
-    var title = 'All Contacts / ' + Session.get('contactableDisplayName'),
+    var title = Session.get('contactableDisplayName'),
       description = 'Contact information';
     SEO.set({
       title: title,

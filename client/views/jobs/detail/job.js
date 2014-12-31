@@ -17,7 +17,7 @@ JobController = RouteController.extend({
     this.render('job')
   },
   onAfterAction: function () {
-    var title = 'Jobs / ' + Session.get('jobDisplayName'),
+    var title = Session.get('jobDisplayName'),
       description = 'Job information';
     SEO.set({
       title: title,
@@ -70,9 +70,11 @@ var getPlacementStatuses = function(type, action){
 };
 
 var job;
+var customer;
+var originalJob;
 Template.job.helpers({
   job: function () {
-    var originalJob = jobCollections.findOne({ _id: Session.get('entityId') });
+    originalJob = jobCollections.findOne({ _id: Session.get('entityId') });
     Session.set('jobDisplayName', originalJob.displayName);
     if (!job)
       job = generateReactiveObject(originalJob);
@@ -123,7 +125,8 @@ Template.job.helpers({
     return Contactables.findOne(placementsAssignment.employee);
   },
   customerName: function () {
-    var customer = Contactables.findOne(this.customer);
+    customer = Contactables.findOne(this.customer);
+    Session.set('jobDisplayName', originalJob.displayName + ' ' + customer.displayName);
     return customer && customer.displayName;
   }
 });

@@ -17,7 +17,7 @@ PlacementController = RouteController.extend({
       Session.set('activeTab', this.params.tab || 'details');
     },
   onAfterAction: function() {
-    var title = 'Placements / ' + Session.get('placementDisplayName'),
+    var title = Session.get('placementDisplayName'),
       description = 'Placement information';
     SEO.set({
       title: title,
