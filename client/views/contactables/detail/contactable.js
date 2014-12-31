@@ -254,3 +254,4 @@ Template.contactable.currentTemplate = function () {
 var selected = _.findWhere(tabs ,{id: Session.get('activeTab')});
   return selected && selected.template;
 };
+
