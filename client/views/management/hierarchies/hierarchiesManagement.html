@@ -15,7 +15,7 @@
                 <div class="col-md-8">
                     <div class="input-group">
                         {{#objectProperty property=filters.searchString}}
-                        <input type="text" class="form-control" placeholder="Search Hierarchies" value="{{value}}">
+                            <input type="text" class="form-control" placeholder="Search Hierarchies" value="{{value}}">
                         {{/objectProperty}}
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="button">
@@ -34,9 +34,9 @@
                             <!--<button id="addHier" class="btn btn-primary pull-right">Add Child</button>-->
                             <h4>
 
-                                {{#unless isCurrent}}{{#unless isInactive}}
+                                {{#unless isCurrent}}
                                     <a class="changeCurrent pointer">Set as the current</a>
-                                {{/unless}}{{/unless}}
+                                {{/unless}}
                             </h4>
                         </div>
                         {{#if isAdmin}}
@@ -77,10 +77,20 @@
                             </span>
                     {{/if}}
                     <a class="hierarchyItem {{isSelectedClass}} tree-item">
-                        <b>{{name}}</b> ({{_id}}
-                        {{#if isCurrent}} Current{{/if}}
-                        {{#if isInactive}} Inactive{{/if}})
+                        {{name}}
+                        {{#if isCurrent}}
+                            <b>(current)</b>
+                        {{else}}
+                        {{/if}}
                     </a>
+                    <div class="pull-right task-author">
+                        {{#formattedDate value=dateCreated format='lll'}}
+                            {{date}}
+                        {{/formattedDate}}<br/>
+                        <!-- /.table-item-cell-container -->
+                        {{_id}}<br/>
+                        {{#if isInactive}}Inactive{{/if}}
+                    </div>
                     {{#if hasChilds}}
                         <div id="childs_{{_id}}" class="collapse in tree-child">
                             {{>showHierarchyTree hierarchies=childHiers}}
