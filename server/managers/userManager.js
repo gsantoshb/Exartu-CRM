@@ -66,7 +66,7 @@ UserManager = {
 
     Meteor.users.update({_id: Meteor.userId(), 'emails.address': email }, {$set: { 'emails.$.token': token }});
 
-    EmailManager.sendEmail(email, 'TempWorks - Email verification', html, true);
+    EmailManager.sendEmail(email, 'Aïda - Email verification', html, true);
   },
   setLastCustomerUsed: function(id){
     if (! Contactables.findOne({_id: id, Customer: {$exists: true}})){
@@ -126,14 +126,28 @@ UserManager = {
       sentBy: Meteor.userId()
     };
 
-    // Send invitation
     // Generate token
     var shortId = Meteor.npmRequire('shortid');
     userInvitation.token = shortId.generate();
-    // Send email
-    sendInvitation(user.email, userInvitation.token, hier.configuration.title);
 
+    // Insert user invitation
     UserInvitations.insert(userInvitation);
+
+    // Check whether the user exist or we need to invite him
+    var invitedUser = Meteor.users.findOne({'emails.address': userInvitation.email});
+    if (!invitedUser) {
+      // Send invitation email
+      sendInvitation(user.email, userInvitation.token, hier.configuration.title);
+    } else {
+      // Add the hierarchy to the user
+      Meteor.users.update({_id: invitedUser._id}, { $addToSet: { hierarchies: userInvitation.hierId } });
+
+      // Mark the invitation as used
+      markInvitationsAsUsed(userInvitation);
+
+      // Send invitation email
+      sendNewHierNotification(user.email, hier.configuration.title);
+    }
   },
   resendUserInvitation: function(userInvitationId) {
     var userInvitation = UserInvitations.findOne(userInvitationId);
@@ -168,7 +182,7 @@ UserManager = {
     // Add the hierarchy specified in user invitation to the user
     Meteor.users.update({_id: user._id}, { $addToSet: { hierarchies: userInvitation.hierId } });
 
-    // Mark invitation as used
+    // Mark the invitation as used
     markInvitationsAsUsed(userInvitation);
   },
 
@@ -332,7 +346,17 @@ var sendInvitation = function(address, token, hierName) {
     + "Thank you,\n"
     + "Aïda team";
 
-  EmailManager.sendEmail(address, 'TempWorks - Invitation', text, false);
+  EmailManager.sendEmail(address, 'Aïda - Invitation', text, false);
+};
+
+var sendNewHierNotification = function(address, hierName) {
+  var text = "Dear user,\n\n"
+    + "You have been invited to the hierarchy '" + hierName + "'.\n"
+    + "You can switch to the new hierarchy through the settings menu.\n\n"
+    + "Thank you,\n"
+    + "Aïda team";
+
+  EmailManager.sendEmail(address, 'Aïda - Invitation', text, false);
 };
 
 var sendEmailToSales = function(user){
