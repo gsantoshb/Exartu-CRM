@@ -34,9 +34,9 @@
                             <!--<button id="addHier" class="btn btn-primary pull-right">Add Child</button>-->
                             <h4>
 
-                                {{#unless isCurrent}}
+                                {{#unless isCurrent}}{{#unless isInactive}}
                                     <a class="changeCurrent pointer">Set as the current</a>
-                                {{/unless}}
+                                {{/unless}}{{/unless}}
                             </h4>
                         </div>
                         {{#if isAdmin}}
@@ -77,20 +77,10 @@
                             </span>
                     {{/if}}
                     <a class="hierarchyItem {{isSelectedClass}} tree-item">
-                        {{name}}
-                        {{#if isCurrent}}
-                            <b>(current)</b>
-                        {{else}}
-                        {{/if}}
+                        <b>{{name}}</b> ({{_id}}
+                        {{#if isCurrent}} Current{{/if}}
+                        {{#if isInactive}} Inactive{{/if}})
                     </a>
-                    <div class="pull-right task-author">
-                            {{#formattedDate value=dateCreated format='lll'}}
-                                {{date}}
-                            {{/formattedDate}}<br/>
-                            <!-- /.table-item-cell-container -->
-                            {{_id}}<br/>
-                        {{#if isInactive}}Inactive{{/if}}
-                    </div>
                     {{#if hasChilds}}
                         <div id="childs_{{_id}}" class="collapse in tree-child">
                             {{>showHierarchyTree hierarchies=childHiers}}
