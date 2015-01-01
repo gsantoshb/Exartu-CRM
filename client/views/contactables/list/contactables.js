@@ -1,3 +1,4 @@
+var useES=false;
 var query = {};
 var selected = undefined;
 
@@ -105,7 +106,7 @@ ContactablesController = RouteController.extend({
       }
     });
 
-    runESComputation();
+    if (useES) runESComputation();
 
     selected = new ReactiveVar([]);
 
@@ -171,7 +172,7 @@ Template.contactables.events({
 });
 
 Template.contactables.isESSearch = function() {
-  return !_.isEmpty(query.searchString.value);
+  return useES && !_.isEmpty(query.searchString.value);
 };
 
 // List
@@ -356,7 +357,13 @@ Template.contactablesList.created = function() {
     urlQuery.apply();
 
     // Avoid update handler's filter when an Elasticsearch query will be performed
-    if (query.searchString.value) return;
+    if (useES) if (query.searchString.value) return;
+    if (query.searchString.value) {
+      searchQuery.displayName = {
+        $regex: query.searchString.value,
+        $options: 'i'
+      };
+    }
     if (selectedSort.get()) {
       var selected = selectedSort.get();
       options.sort = {};
@@ -364,7 +371,7 @@ Template.contactablesList.created = function() {
     } else {
       delete options.sort;
     }
-
+    console.log('searchquery',searchQuery);
     if (SubscriptionHandlers.AuxContactablesHandler) {
       SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
       SubscriptionHandlers.AuxContactablesHandler.setOptions(options);
@@ -395,7 +402,7 @@ Template.contactablesList.helpers({
     // Dependencies
 
     // ElasticSearch
-    if (!_.isEmpty(query.searchString.value)) {
+    if (useES && !_.isEmpty(query.searchString.value)) {
       //urlQuery.push('type=' + query.objType.value);
       return esResult;
     }
@@ -534,6 +541,7 @@ var esDep = new Deps.Dependency;
 var esResult = [];
 
 var runESComputation = function () {
+  if (!useES) return;
   Meteor.autorun(function() {
     if (_.isEmpty(query.searchString.value))
       return;
@@ -680,7 +688,7 @@ Template.contactablesListItem.helpers({
     return Utils.getContactableType(this);
   },
   isESSearch: function () {
-    return !_.isEmpty(query.searchString.value);
+    return useES && !_.isEmpty(query.searchString.value);
   },
   getLastNote: function () {
 
