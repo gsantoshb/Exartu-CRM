@@ -1,7 +1,8 @@
 <template name="locationBox">
     <div class="box">
         <div class="box-header-2">
-            <a class="btn-action tip-top pointer" id="edit-Location" data-original-title="Add Contact" style="color: {{editModeColor}}" title="Edit">
+            <a class="btn-action tip-top pointer" id="edit-Location" data-original-title="Add Contact"
+               style="color: {{editModeColor}}" title="Edit">
                 <i class="fa fa-pencil"></i>
             </a>
 
@@ -15,114 +16,120 @@
                 Address
             </div>
         </div>
+        <div class="box-content-md">
+            {{#if editMode}}
+                <form class="box-content-form" style="margin-bottom: 20px;" role="form">
+                    <strong class="text-muted"> Search address </strong>
+                    {{#inputLocation location}}
+                    {{/inputLocation}}
+                </form>
+            {{/if}}
 
-        {{#if editMode}}
-            <form class="box-content-form" style="margin-bottom: 20px;" role="form">
-                <strong class="text-muted"> Search address </strong>
-                {{#inputLocation location}}
-                {{/inputLocation}}
-            </form>
-        {{/if}}
-
-        {{#autoForm id="SetLocation" schema="LocationSchema" doc=location.value}}
-            <table class="table box-table">
-                <colgroup>
-                    <col span="1" style="width: 25%; min-width: 100px;">
-                    <col span="1" style="width: 75%;">
-                </colgroup>
-                <!--<tr class="box-table-label">-->
+            {{#autoForm id="SetLocation" schema="LocationSchema" doc=location.value}}
+                <table class="table box-table table-striped">
+                    <tbody>
+                    <colgroup>
+                        <col span="1" style="width: 25%; min-width: 100px;">
+                        <col span="1" style="width: 75%;">
+                    </colgroup>
+                    <!--<tr class="box-table-label">-->
                     <!--<td>Street #</td>-->
                     <!--<td>-->
-                        <!--{{#if editMode}}-->
-                        <!--{{> afFieldInput name='streetNumber'}}-->
-                        <!--{{else}}-->
-                        <!--<strong>-->
-                            <!--{{location.value.streetNumber}}-->
-                        <!--</strong>-->
-                        <!--{{/if}}-->
+                            <!--{{#if editMode}}-->
+                    <!--{{> afFieldInput name='streetNumber'}}-->
+                            <!--{{else}}-->
+                    <!--<strong>-->
+                    <!--{{location.value.streetNumber}}-->
+                    <!--</strong>-->
+                            <!--{{/if}}-->
                     <!--</td>-->
-                <!--</tr>-->
-                <tr>
-                    <td class="box-table-label">Address line 1</td>
-                    <td>
-                        {{#if editMode}}
-                            {{> afFieldInput name='address'}}
-                        {{else}}
-                            <strong>
-                                {{location.value.address}}
-                            </strong>
-                        {{/if}}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="box-table-label">Address line 2</td>
-                    <td>
-                        {{#if editMode}}
-                            {{> afFieldInput name='address2'}}
-                        {{else}}
-                            <strong>
-                                {{location.value.address2}}
-                            </strong>
-                        {{/if}}
-                    </td>
-                </tr>
+                    <!--</tr>-->
+                    <tr>
+                        <td class="box-table-label">Address 1</td>
+                        <td>
+                            {{#if editMode}}
+                                {{> afFieldInput name='address'}}
+                            {{else}}
+                                <strong>
+                                    {{location.value.address}}
+                                </strong>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="box-table-label">Address 2</td>
+                        <td>
+                            {{#if editMode}}
+                                {{> afFieldInput name='address2'}}
+                            {{else}}
+                                <strong>
+                                    {{location.value.address2}}
+                                </strong>
+                            {{/if}}
+                        </td>
+                    </tr>
 
 
-                <tr>
-                    <td class="box-table-label">City</td>
-                    <td>
-                        {{#if editMode}}
-                            {{> afFieldInput name='city'}}
-                        {{else}}
-                            <strong>
-                                {{location.value.city}}
-                            </strong>
-                        {{/if}}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="box-table-label">State</td>
-                    <td>
-                        {{#if editMode}}
-                            {{> afFieldInput name='state'}}
-                        {{else}}
-                            <strong>
-                                {{location.value.state}}
-                            </strong>
-                        {{/if}}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="box-table-label">Country</td>
-                    <td>
-                        {{#if editMode}}
-                            {{> afFieldInput name='country'}}
-                        {{else}}
-                            <strong>
-                                {{location.value.country}}
-                            </strong>
-                        {{/if}}
-                    </td>
-                </tr>
-                <tr class="box-table-label">
-                    <td>Zip code</td>
-                    <td>
-                        {{#if editMode}}
-                            {{> afFieldInput name='postalCode'}}
-                        {{else}}
-                            <strong>
-                                {{location.value.postalCode}}
-                            </strong>
-                        {{/if}}
-                    </td>
-                </tr>
-            </table>
-            {{#if editMode }}
-                <div class="box-header-2">
-                    <a id="cancel-location" class="btn btn-default"> Cancel </a>
-                    <button type="submit" class="btn btn-success pull-right"> Save </button>
-                </div>
-            {{/if}}
-        {{/autoForm}}
+                    <tr>
+                        <td class="box-table-label">City</td>
+                        <td>
+                            {{#if editMode}}
+                                {{> afFieldInput name='city'}}
+                            {{else}}
+                                <strong>
+                                    {{location.value.city}}
+                                </strong>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="box-table-label">State</td>
+                        <td>
+                            {{#if editMode}}
+                                {{> afFieldInput name='state'}}
+                            {{else}}
+                                <strong>
+                                    {{location.value.state}}
+                                </strong>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="box-table-label">Country</td>
+                        <td>
+                            {{#if editMode}}
+                                {{> afFieldInput name='country'}}
+                            {{else}}
+                                <strong>
+                                    {{location.value.country}}
+                                </strong>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    <tr class="box-table-label">
+                        <td>Zip code</td>
+                        <td>
+                            {{#if editMode}}
+                                {{> afFieldInput name='postalCode'}}
+                            {{else}}
+                                <strong>
+                                    {{location.value.postalCode}}
+                                </strong>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                {{#if editMode }}
+                    <div class="box-header-2">
+                        <a id="cancel-location" class="btn btn-default"> Cancel </a>
+                        <button type="submit" class="btn btn-success pull-right"> Save</button>
+                    </div>
+                {{/if}}
+
+            {{/autoForm}}
+        </div>
+
     </div>
 </template>
