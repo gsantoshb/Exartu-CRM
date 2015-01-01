@@ -55,8 +55,8 @@ LocationSchema = new SimpleSchema({
     optional: true
   },
   postalCode: {
-    type: Number,
-    label: 'Zip code',
+    type: String,
+    label: 'Postal/Zip',
     optional: true
   }
 });
