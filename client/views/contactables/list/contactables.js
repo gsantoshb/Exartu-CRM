@@ -568,7 +568,7 @@ var runESComputation = function () {
     }
 
     // Include inactives
-    if (!query.inactives.value) 
+    if (!query.inactives.value)
     {
       var activeStatusFilter = {or: []};
       var activeStatuses;
@@ -576,26 +576,12 @@ var runESComputation = function () {
         activeStatuses = getActiveStatuses(objName);
         _.forEach(activeStatuses, function (activeStatus) {
           var statusFilter = {};
-          statusFilter[objName + '.status'] = activeStatus.toLowerCase();
+          statusFilter[objName + '.status'] = activeStatus;
           activeStatusFilter.or.push({term: statusFilter});
         })
       });
       filters.bool.must.push(activeStatusFilter);
     }
-      else
-      { // hack for problem of esSearch not filtering by hierarchy...enforce that here by forcing a match on a valid status in the hierarchyQ
-        var allStatusFilter = {or: []};
-        var allStatuses;
-        _.each(['Employee', 'Contact', 'Customer'], function (objName) {
-          allStatuses = getAllStatuses(objName);
-          _.forEach(allStatuses, function (allStatus) {
-            var statusFilter = {};
-            statusFilter[objName + '.status'] = allStatus.toLowerCase();
-            allStatusFilter.or.push({term: statusFilter});
-          })
-        });
-        filters.bool.must.push(allStatusFilter);        
-      };
 
 
     // Created by
