@@ -758,7 +758,7 @@ Template.employeeInformation.helpers({
     }, {
       transform: null
     });
-
+    if (!job) return placementInfo; // should only happen on hierarchy problem
     var customer = Contactables.findOne({_id: job.customer}, {transform: null});
 
     placementInfo.job = job._id;
