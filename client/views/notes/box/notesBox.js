@@ -24,6 +24,7 @@ var loadNoteQueryFromURL = function (params) {
 };
 var options = {};
 
+
 Template.notesBox.created = function () {
   noteQuery = noteQuery || loadNoteQueryFromURL(Router.current().params);
   var entityId = Session.get('entityId');
@@ -61,6 +62,7 @@ Template.notesBox.created = function () {
       q.links = {$elemMatch: {id: entityId}};
     }
     urlQuery.apply();
+    console.log('selected sort',selectedSort,selectedSort.get(),selectedSort.value);
     if (selectedSort.get()) {
       var selected = selectedSort.get();
       options.sort = {};
@@ -85,7 +87,7 @@ Template.notesBox.helpers({
     return Meteor.users.find();
   },
   notes: function () {
-    return Notes.find({},{sort:{dateCreated: -1}});
+    return Notes.find({});
   },
   filters: function () {
     return noteQuery;
@@ -115,6 +117,8 @@ Template.notesBox.events({
 // list sort
 
 var selectedSort =  new ReactiveVar();
+selectedSort.field='dateCreated';
+selectedSort.value=-1;
 var sortFields = [
   {field: 'dateCreated', displayName: 'Date'},
 ];
