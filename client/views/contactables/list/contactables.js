@@ -1,4 +1,3 @@
-var useES=false;
 var query = {};
 var selected = undefined;
 
@@ -106,7 +105,7 @@ ContactablesController = RouteController.extend({
       }
     });
 
-    if (useES) runESComputation();
+    runESComputation();
 
     selected = new ReactiveVar([]);
 
@@ -172,7 +171,7 @@ Template.contactables.events({
 });
 
 Template.contactables.isESSearch = function() {
-  return useES && !_.isEmpty(query.searchString.value);
+  return !_.isEmpty(query.searchString.value);
 };
 
 // List
@@ -194,8 +193,8 @@ var getAllStatuses = function(objName){
   var status = Enums.lookUpTypes[objName.toLowerCase()];
   status = status && status.status;
   if (status){
-    var lookUpCodes = status.lookUpCode, 
-        implyAll = LookUps.find({lookUpCode: lookUpCodes}).fetch();
+    var lookUpCodes = status.lookUpCode,
+      implyAll = LookUps.find({lookUpCode: lookUpCodes}).fetch();
     return _.map(implyAll ,function(doc){ return doc._id});
   }
   return null;
@@ -357,13 +356,7 @@ Template.contactablesList.created = function() {
     urlQuery.apply();
 
     // Avoid update handler's filter when an Elasticsearch query will be performed
-    if (useES) if (query.searchString.value) return;
-    if (query.searchString.value) {
-      searchQuery.displayName = {
-        $regex: query.searchString.value,
-        $options: 'i'
-      };
-    }
+    if (query.searchString.value) return;
     if (selectedSort.get()) {
       var selected = selectedSort.get();
       options.sort = {};
@@ -371,14 +364,14 @@ Template.contactablesList.created = function() {
     } else {
       delete options.sort;
     }
-    console.log('searchquery',searchQuery);
+
     if (SubscriptionHandlers.AuxContactablesHandler) {
       SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
       SubscriptionHandlers.AuxContactablesHandler.setOptions(options);
     }
     else
       SubscriptionHandlers.AuxContactablesHandler =
-          Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery, params: clientParams,options:options});
+        Meteor.paginatedSubscribe('auxContactables', {filter: searchQuery, params: clientParams,options:options});
   });
 
   Meteor.autorun(function () {
@@ -392,7 +385,7 @@ Template.contactablesList.created = function() {
 
 Template.contactablesList.helpers({
   isLoading: function () {
-     return SubscriptionHandlers.AuxContactablesHandler? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
+    return SubscriptionHandlers.AuxContactablesHandler? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
   },
   info: function() {
     info.isFiltering.value = AuxContactables.find().count() != 0;
@@ -402,7 +395,7 @@ Template.contactablesList.helpers({
     // Dependencies
 
     // ElasticSearch
-    if (useES && !_.isEmpty(query.searchString.value)) {
+    if (!_.isEmpty(query.searchString.value)) {
       //urlQuery.push('type=' + query.objType.value);
       return esResult;
     }
@@ -541,7 +534,6 @@ var esDep = new Deps.Dependency;
 var esResult = [];
 
 var runESComputation = function () {
-  if (!useES) return;
   Meteor.autorun(function() {
     if (_.isEmpty(query.searchString.value))
       return;
@@ -584,12 +576,26 @@ var runESComputation = function () {
         activeStatuses = getActiveStatuses(objName);
         _.forEach(activeStatuses, function (activeStatus) {
           var statusFilter = {};
-          statusFilter[objName + '.status'] = activeStatus;
+          statusFilter[objName + '.status'] = activeStatus.toLowerCase();
           activeStatusFilter.or.push({term: statusFilter});
         })
       });
       filters.bool.must.push(activeStatusFilter);
     }
+    else
+    { // hack for problem of esSearch not filtering by hierarchy...enforce that here by forcing a match on a valid status in the hierarchyQ
+      var allStatusFilter = {or: []};
+      var allStatuses;
+      _.each(['Employee', 'Contact', 'Customer'], function (objName) {
+        allStatuses = getAllStatuses(objName);
+        _.forEach(allStatuses, function (allStatus) {
+          var statusFilter = {};
+          statusFilter[objName + '.status'] = allStatus.toLowerCase();
+          allStatusFilter.or.push({term: statusFilter});
+        })
+      });
+      filters.bool.must.push(allStatusFilter);
+    };
 
 
     // Created by
@@ -678,9 +684,9 @@ Template.contactablesFilters.helpers({
 
 Template.contactablesListItem.helpers({
   pictureUrl: function(pictureFileId) {
-  var picture = ContactablesFS.findOne({_id: pictureFileId});
-  return picture ? picture.url('ContactablesFSThumbs') : undefined;
-},
+    var picture = ContactablesFS.findOne({_id: pictureFileId});
+    return picture ? picture.url('ContactablesFSThumbs') : undefined;
+  },
   contactableIcon: function () {
     return helper.getEntityIcon(this);
   },
@@ -688,7 +694,7 @@ Template.contactablesListItem.helpers({
     return Utils.getContactableType(this);
   },
   isESSearch: function () {
-    return useES && !_.isEmpty(query.searchString.value);
+    return !_.isEmpty(query.searchString.value);
   },
   getLastNote: function () {
 
