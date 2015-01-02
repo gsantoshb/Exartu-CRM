@@ -86,7 +86,7 @@ Template.notesBox.helpers({
     return Meteor.users.find();
   },
   notes: function () {
-    return Notes.find({});
+    return Notes.find({links: { $elemMatch: { id: Session.get('entityId')} } },{sort:{dateCreated: -1}});
   },
   filters: function () {
     return noteQuery;

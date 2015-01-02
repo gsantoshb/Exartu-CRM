@@ -107,7 +107,7 @@ Template.notesTabList.helpers({
     });
   },
   items: function() {
-    return Notes.find({},{ sort: { dateCreated: -1 } });
+    return Notes.find({links: { $elemMatch: { id: Session.get('entityId')} } },{ sort: { dateCreated: -1 } });
   }
 });
 
