@@ -23,7 +23,6 @@ Meteor.startup(function () {
   };
 
   var systemUserId = Accounts.createUser(systemUser);
-  console.log('System UserId',systemUserId);
   Meteor.users.update({_id: systemUserId, 'emails.address': ExartuConfig.systemUserEmail}, {$set: {'emails.$.verified': true }});
 });
 

@@ -57,12 +57,11 @@ Template.notesBox.created = function () {
       };
       urlQuery.addParam('search', queryObj.searchString);
     }
-    console.log('ent spec note',entityId,q, q.msg);
+    //console.log('ent spec note',entityId,q, q.msg);
     if (isEntitySpecific) {
       q.links = {$elemMatch: {id: entityId}};
     }
     urlQuery.apply();
-    console.log('selected sort',selectedSort,selectedSort.get(),selectedSort.value);
     if (selectedSort.get()) {
       var selected = selectedSort.get();
       options.sort = {};
@@ -87,7 +86,7 @@ Template.notesBox.helpers({
     return Meteor.users.find();
   },
   notes: function () {
-    return Notes.find({});
+    return Notes.find({links: { $elemMatch: { id: Session.get('entityId')} } },{sort:{dateCreated: -1}});
   },
   filters: function () {
     return noteQuery;

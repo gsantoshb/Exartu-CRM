@@ -98,6 +98,27 @@ ActivityViews = new View('activities', {
       to: 'notes'
     });
 
+    if (activity.type === Enums.activitiesType.fileAdd) {
+      var c = ContactablesFiles.find({_id: activity.entityId});
+
+      // Publish links
+      var file = c.fetch()[0];
+
+      if (file) {
+        self.publish({
+          cursor: function () {
+            return Contactables.find(file.entityId);
+          },
+          to: 'contactables'
+        });
+      };
+    }
+    this.publish({
+      cursor: function (activity) {
+        return c;
+      },
+      to: 'notes'
+    });
     // Placements
     if (activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) {
       var placementCursor = Placements.find(activity.entityId);
@@ -447,7 +468,7 @@ ContactablesFiles.after.insert(function (userId, doc) {
     hierId: doc.hierId,
     type: Enums.activitiesType.fileAdd,
     entityId: doc._id,
-    links: [doc._id, doc.entityId],
+    links: [doc.entityId],
     data: {
       dateCreated: new Date()
     }
