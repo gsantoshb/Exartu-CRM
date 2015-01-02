@@ -431,15 +431,16 @@
         <tr>
             <td>
                 <i class="icon icon-clock-3"></i>
-                file uploaded
-                -
-                <strong> file.name </strong>
+                file upload <span class="task-author">{{file.name}}</span>
 
-                <div class="pull-right">
-                    {{#formattedDate value=data.dateCreated format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
-                </div>
+                {{#with contactable}}
+                    <a href="/contactable/{{_id}}">
+                        <strong>
+                            <span class="badge">{{displayName}}</span>
+                        </strong>
+                    </a>
+                {{/with}}
+                {{>suffixListDisplay}}
             </td>
         </tr>
     {{else}}
@@ -456,16 +457,16 @@
                 <div class="box">
                     <div class="box-content">
                         <h4 class="item-title">
-                            file uploaded
-                            <span class="spacer">–</span>
-                            <strong>{{file.name}}</strong>
+                            file upload <span class="task-author">{{file.name}}</span>
                         </h4>
-
-                        <div class="item-actions">
-                            <a class="btn btn-default tip-bottom pointer">
-                                <span> {{displayUserName this.userId}} </span>
+                        {{#with contactable}}
+                            <a href="/contactable/{{_id}}">
+                                <strong>
+                                    <span class="badge">{{displayName}}</span>
+                                </strong>
                             </a>
-                        </div>
+                        {{/with}}
+
                     </div>
                     <!-- /.box-content -->
                 </div>

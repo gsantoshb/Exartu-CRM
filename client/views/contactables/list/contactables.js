@@ -371,7 +371,6 @@ Template.contactablesList.created = function() {
     } else {
       delete options.sort;
     }
-    console.log('searchquery',searchQuery);
     if (SubscriptionHandlers.AuxContactablesHandler) {
       SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
       SubscriptionHandlers.AuxContactablesHandler.setOptions(options);
@@ -626,7 +625,6 @@ var runESComputation = function () {
 
     Contactables.esSearch('.*' + query.searchString.value + '.*', filters,function(err, result) {
       if (!err) {
-        console.log('esresult',esResult);
         esResult = _.map(result.hits, function(hit) {
           var contactable = Contactables._transform(hit._source);
           contactable._match = {

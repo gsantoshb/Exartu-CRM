@@ -57,12 +57,11 @@ Template.notesBox.created = function () {
       };
       urlQuery.addParam('search', queryObj.searchString);
     }
-    console.log('ent spec note',entityId,q, q.msg);
+    //console.log('ent spec note',entityId,q, q.msg);
     if (isEntitySpecific) {
       q.links = {$elemMatch: {id: entityId}};
     }
     urlQuery.apply();
-    console.log('selected sort',selectedSort,selectedSort.get(),selectedSort.value);
     if (selectedSort.get()) {
       var selected = selectedSort.get();
       options.sort = {};
