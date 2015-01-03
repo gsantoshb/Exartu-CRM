@@ -1,28 +1,12 @@
 <template name="contactables">
     <div id="content">
         {{#with information}}
-            <div id="content-header" class="mini">
-                <h1>
-                    {{#objectProperty property=contactablesCount }}
-                        <strong> {{value}} </strong>
-                    {{/objectProperty}}
-
-                    {{#objectProperty property=objType}}
-                        {{#if value}}
-                            <span> {{value}} </span>
-                        {{else}}
-                            network
-                        {{/if}}
-                    {{/objectProperty}}
-                </h1>
-            </div>
 
             <div id="breadcrumb">
                 <a href="/" title="Go to Home" class="tip-bottom">Home</a>
                 <a href="/contactables" class="current">
-                    {{#objectProperty property=objType }}
-                        <strong> {{value}} </strong>
-                    {{/objectProperty}}</a>
+                    {{contactablesCount.value}} <strong> records </strong></a>
+
             </div>
         {{/with}}
 

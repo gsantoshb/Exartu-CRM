@@ -1,14 +1,14 @@
 <template name="placements">
     <div id="content">
-        <div id="content-header" class="mini">
-            <h1>
-                <strong>{{placementCount}}</strong>
-                <span>Placements</span>
-            </h1>
-        </div>
+        <!--<div id="content-header" class="mini">-->
+            <!--<h1>-->
+                <!--<strong>{{placementCount}}</strong>-->
+                <!--<span>Placements</span>-->
+            <!--</h1>-->
+        <!--</div>-->
         <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">Home</a>
-            <a href="/placements" class="current">placements</a>
+            <a href="/placements" class="current">{{placementCount}} placements</a>
         </div>
 
         {{>placementsBox}}

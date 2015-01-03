@@ -1,28 +1,25 @@
 <template name="jobs">
     <div id="content">
         {{#with information}}
-            <div id="content-header" class="mini">
-                <h1>
-                    {{#objectProperty property=jobsCount }}
-                        <strong> {{value}} </strong>
-                    {{/objectProperty}}
+            <!--<div id="content-header" class="mini">-->
+                <!--<h1>-->
+                    <!--{{#objectProperty property=jobsCount }}-->
+                        <!--<strong> {{value}} </strong>-->
+                    <!--{{/objectProperty}}-->
 
-                    {{#objectProperty property=objType}}
-                        {{#if value}}
-                            <span> {{value}} </span>
-                        {{else}}
-                            jobs
-                        {{/if}}
-                    {{/objectProperty}}
-                </h1>
-            </div>
+                    <!--{{#objectProperty property=objType}}-->
+                        <!--{{#if value}}-->
+                            <!--<span> {{value}} </span>-->
+                        <!--{{else}}-->
+                            <!--jobs-->
+                        <!--{{/if}}-->
+                    <!--{{/objectProperty}}-->
+                <!--</h1>-->
+            <!--</div>-->
 
             <div id="breadcrumb">
                 <a href="/" title="Go to Home" class="tip-bottom">Home</a>
-                <a href="/jobs" class="current">
-                    {{#objectProperty property=objType }}
-                        <strong> {{value}} </strong>
-                    {{/objectProperty}}
+                <a href="/jobs" class="current">{{jobsCount.value}} jobs
                 </a>
             </div>
         {{/with}}
