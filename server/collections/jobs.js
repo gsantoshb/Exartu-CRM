@@ -1,4 +1,4 @@
-
+var flds= { 'organization.organizationName' : 1 ,'Customer.department':1 };
 JobView = new View('jobs', {
   collection: Jobs,
   cursors: function (job) {
@@ -6,13 +6,13 @@ JobView = new View('jobs', {
     this.publish({
       cursor: function (job) {
         if (job.customer)
-          return Contactables.find(job.customer, { fields: { 'organization.organizationName' : 1 } });
+          return Contactables.find(job.customer, { fields: flds });
       },
       to: 'contactables',
       observedProperties: ['customer'],
       onChange: function (changedProps, oldSelector) {
         oldSelector._id = changedProps.customer;
-        return Contactables.find(oldSelector, { fields: { 'organization.organizationName': 1 } });
+        return Contactables.find(oldSelector, { fields: flds });
       }
     });
 
@@ -59,13 +59,13 @@ JobPlacementView = new View('jobs', {
     this.publish({
       cursor: function (job) {
         if (job.customer)
-          return Contactables.find(job.customer, { fields: { 'organization.organizationName' : 1 } });
+          return Contactables.find(job.customer, { fields: flds});
       },
       to: 'contactables',
       observedProperties: ['customer'],
       onChange: function (changedProps, oldSelector) {
         oldSelector._id = changedProps.customer;
-        return Contactables.find(oldSelector, { fields: { 'organization.organizationName': 1 } });
+        return Contactables.find(oldSelector, { fields: flds });
       }
     });
   }

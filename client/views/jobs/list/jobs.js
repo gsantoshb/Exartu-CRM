@@ -487,6 +487,11 @@ Template.jobListItem.customerName = function () {
   var customer =  Contactables.findOne(this.customer);
   return customer && customer.displayName;
 };
+Template.jobInformation.departmentName = function () {
+  var customer =  Contactables.findOne(this.customer);
+  console.log('customer',customer);
+  if ( customer && customer.Customer) return customer.Customer.department;
+};
 
 Template.jobListItem.countPlacements = function () {
   return Placements.find({job: this._id}).count();
