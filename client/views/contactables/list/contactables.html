@@ -44,13 +44,13 @@
             {{> filter_entityType types=contactableTypes selected=query.objType}}
 
             {{#if isSelectedType 'Employee'}}
-                    {{> filter_lookUp title="Process status" code=7 lookUpValue=query.processStatus multi=true}}
+                {{> filter_lookUp title="Process status" code=7 lookUpValue=query.processStatus multi=true}}
             {{/if}}
             {{#if isSelectedType 'Contact'}}
-                    {{> filter_lookUp title="Process status" code=12 lookUpValue=query.processStatus multi=true}}
+                {{> filter_lookUp title="Process status" code=12 lookUpValue=query.processStatus multi=true}}
             {{/if}}
             {{#if isSelectedType 'Customer'}}
-                    {{> filter_lookUp title="Process status" code=14 lookUpValue=query.processStatus multi=true}}
+                {{> filter_lookUp title="Process status" code=14 lookUpValue=query.processStatus multi=true}}
             {{/if}}
             {{> filter_inactive showInactive=query.inactives}}
 
@@ -148,7 +148,7 @@
                     <div class="table-item-cell-container">
                         <div class="table-item-title">
                             <a href="/contactable/{{_id}}">
-                                {{displayName}}{{getDepartment}}
+                                {{displayName}} - {{getDepartment}}
                             </a>
                             <span class="pull-right">
                                 <span class="task-author">
@@ -195,7 +195,7 @@
                                                 {{/if}}
                                             {{/if}}
                                         </div>
-                                        {{displayName}}{{getDepartment}}
+                                        {{displayName}} - {{getDepartment}}
                                     </a>
 
                                     <br/>
@@ -203,8 +203,11 @@
                                         {{displayObjType}}
                                     </strong>
 								<span class="badge">
-                                    {{lookUpName getStatus}}
+                                    {{lookUpName getProcessStatus}}
                                 </span>
+                                    								<span class="badge">
+                                                                        {{lookUpName activeStatus}}
+                                                                    </span>
 
                                     <br/>
 

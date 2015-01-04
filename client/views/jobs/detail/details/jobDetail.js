@@ -57,7 +57,7 @@ Template.jobDetail.helpers({
       startView: "months"
     }
   },
-  fetchStatusOptions: function () {
+  fetchOptions: function () {
     return this.options.map(function (status) {
       return {id: status._id, text: status.displayName};
     });

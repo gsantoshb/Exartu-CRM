@@ -248,7 +248,17 @@ newObjType({
       multiple: false,
       defaultValue: null, // LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,isDefault:true}),
       showInAdd: false
-    }
+    },
+    {
+      name: 'activeStatus',
+      displayName: 'Active Status',
+      fieldType: 'lookUp',
+      lookUpName: 'activeStatus',
+      lookUpCode: Enums.lookUpTypes.active.status.lookUpCode,
+      defaultValue: null,
+      showInAdd: false,
+      required: false
+    },
 //    {
 //      name: 'industry',
 //      displayName: 'Industry',
@@ -390,7 +400,8 @@ newObjType({
       lookUpCode: Enums.lookUpTypes.placement.status.lookUpCode,
       required: false,
       multiple: false
-    }, {
+    },
+    {
       name: 'candidateStatus',
       displayName: 'Candidate Status',
       fieldType: 'lookUp',
@@ -411,7 +422,17 @@ newObjType({
       fieldType: 'date',
       defaultValue: null,
       required: false
-    }
+    },
+    {
+      name: 'activeStatus',
+      displayName: 'Active Status',
+      fieldType: 'lookUp',
+      lookUpName: 'activeStatus',
+      lookUpCode: Enums.lookUpTypes.active.status.lookUpCode,
+      defaultValue: null,
+      showInAdd: false,
+      required: false
+    },
 
   ]
 });

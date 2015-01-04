@@ -349,33 +349,6 @@ Utils.getEntityFromLinkForAdd=function(link){
   }
 }
 
-Utils.getEntitiesFromType=function(type){
-    switch (type) {
-        case Enums.linkTypes.contactable.value:
-            return Contactables.find();
-        case Enums.linkTypes.job.value:
-            return Jobs.find();
-        case Enums.linkTypes.deal.value:
-            return Deals.find();
-        case Enums.linkTypes.placement.value:
-            return Placements.find();
-        case Enums.linkTypes.candidate.value:
-            return Candidates.find();
-        default :
-        return [];
-    }
-}
-Utils.getTypeFromTypeString=function (str)
-{
-
-  for (var k in Enums.linkTypes) {
-
-    var estr=Enums.linkTypes[k].displayName;
-
-    if (estr == str.toLowerCase() || estr == (str + 's').toLowerCase()) return k;
-  }
-  return null;
-}
 
 Utils.getCollectionFromEntity=function(entity) {
   var strtype=Utils.getLinkTypeFromEntity(entity);
@@ -511,23 +484,7 @@ Utils.getEntityTypeFromRouter=function()
       return null;
   }
 }
-Utils.getEntitiesFromType=function(type)
-{
-  switch (selectedType){
-    case Enums.linkTypes.contactable.value:
-      return Contactables.find();
-    case Enums.linkTypes.job.value:
-      return Jobs.find();
-    case Enums.linkTypes.deal.value:
-      return Deals.find();
-    case Enums.linkTypes.placement.value:
-      return Placements.find();
-    case Enums.linkTypes.candidate.value:
-      return Candidates.find();
-    default :
-      return [];
-  }
-}
+
 
 Utils.getContactableType = function(entity) {
   if (entity.Customer)
@@ -579,12 +536,7 @@ Utils.getContactableType= function(obj) {
   if (obj.Contact)
     return 'Contact';
 };
-Utils.getDefaultJobStatus=function()
-{
-  var defaultStatus=LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode,isDefault:true});
-  if (defaultStatus) defaultStatus=LookUps.findOne({lookUpCode: Enums.lookUpTypes.job.status.lookUpCode});
-  if (defaultStatus) return defaultStatus._id; else return null;
-}
+
 
 Utils.setDecimal= function(rate) {
   var drate = parseFloat(rate).toFixed(2);

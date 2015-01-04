@@ -49,14 +49,7 @@ Template.contactableDetailBox.helpers({
   editModeColor: function() {
     return EditMode.value? '#008DFC' : '';
   },
-  fetchStatusOptions: function () {
-
-    var options=this.options.map(function (status) {
-      return {id: status._id, text: status.displayName};
-    });
-    return options;
-  },
-  fetchActiveStatusOptions: function () {
+  fetchOptions: function () {
     return this.options.map(function (status) {
       return {id: status._id, text: status.displayName};
     });

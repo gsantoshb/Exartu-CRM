@@ -87,7 +87,7 @@
                         <td>Active Status</td>
                         <td>
                             {{#objectProperty property=activeStatus editable=editMode}}
-                                {{> buttonGroup options=fetchActiveStatusOptions value=value onSelected=onSelectedStatus}}
+                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                             {{else}}
                                 <strong>
                                     <strong>{{displayName}}</strong>
@@ -99,7 +99,7 @@
                         <td>Process Status</td>
                         <td>
                             {{#objectProperty property=status editable=editMode}}
-                                {{> buttonGroup options=fetchStatusOptions value=value onSelected=onSelectedStatus}}
+                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                             {{else}}
                                 <strong>
                                     <strong>{{displayName}}</strong>
@@ -190,7 +190,7 @@
     <tr>
         <td>ExternalId</td>
         <td>
-             {{externalId}}
+            {{externalId}}
         </td>
     </tr>
 </template>

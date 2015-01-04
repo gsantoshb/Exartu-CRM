@@ -161,15 +161,15 @@ Template.placementList.created = function () {
       urlQuery.addParam('creationDate', placementQuery.selectedLimit.value);
     }
 
-    if (! placementQuery.inactives.value) {
-      var activeStatuses;
-      activeStatuses = getActiveStatuses('placement');
-      if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-        searchQuery.placementStatus={
-          $in: activeStatuses
-        };
-      }
-    }
+    //if (! placementQuery.inactives.value) {
+    //  var activeStatuses;
+    //  activeStatuses = getActiveStatuses('placement');
+    //  if (_.isArray(activeStatuses) && activeStatuses.length > 0){
+    //    searchQuery.placementStatus={
+    //      $in: activeStatuses
+    //    };
+    //  }
+    //}
 
     if (placementQuery.inactives.value) {
       urlQuery.addParam('inactives', true);
@@ -212,17 +212,7 @@ Template.placementList.isLoading = function() {
   return SubscriptionHandlers.PlacementHandler.isLoading();
 };
 
-var getActiveStatuses = function(){
-  var status = Enums.lookUpTypes["placement"];
-  status = status && status.status;
-  if (status){
-    var lookUpCodes = status.lookUpCode;
-    var implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
-    var ids= _.map(implyActives,function(doc){ return doc._id});
-    return ids;
-  }
-  return null;
-};
+
 
 var getCandidateStatuses = function(objname){
   var code = Enums.lookUpTypes["candidate"].status.lookUpCode;

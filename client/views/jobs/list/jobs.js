@@ -189,27 +189,6 @@ Template.jobList.created= function () {
       urlQuery.addParam('creationDate', query.selectedLimit.value);
     }
 
-    //Status / Inactive
-    if (! query.inactives.value) {
-      var inactiveStatusOR = {
-        $or: []
-      };
-      var activeStatuses;
-      var aux;
-      _.each(['job'], function(objName){
-        activeStatuses = getActiveStatuses(objName);
-        if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-          aux={};
-          aux['status'] = {
-            $in: activeStatuses
-          };
-
-          inactiveStatusOR.$or.push(aux)
-        }
-      });
-      if (inactiveStatusOR.$or.length > 0)
-        searchQuery.$and.push(inactiveStatusOR);
-    }
 
     if (query.inactives.value) {
       urlQuery.addParam('inactives', true);
@@ -343,19 +322,6 @@ var jobTypes = function() {
 };
 
 Template.jobListSearch.jobTypes = jobTypes;
-
-getActiveStatuses = function(objName){
-  var status = Enums.lookUpTypes["job"];
-
-  status = status && status.status;
-  if (status){
-    var lookUpCodes = status.lookUpCode;
-    var implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
-
-    return _.map(implyActives,function(doc){ return doc._id});
-  }
-  return null;
-}
 
 var searchFields = ['jobTitle', 'publicJobTitle'];
 

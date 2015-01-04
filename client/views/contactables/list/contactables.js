@@ -319,7 +319,7 @@ Template.contactablesList.created = function() {
       delete searchQuery.$and;
     if (!_.isEmpty(query.processStatus.value)){
       searchQuery[query.objType.value+'.status']={$in: query.processStatus.value};
-      console.log('query',query.processStatus.value);
+
       urlQuery.addParam('processStatus', query.processStatus.value);
     }
 
@@ -335,7 +335,7 @@ Template.contactablesList.created = function() {
     } else {
       delete options.sort;
     }
-    console.log('searchQuery',searchQuery);
+
     if (SubscriptionHandlers.AuxContactablesHandler) {
       SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
       SubscriptionHandlers.AuxContactablesHandler.setOptions(options);
@@ -480,7 +480,7 @@ Template.contactablesList.events({
   'click #selectAllRemotes': function () {
     Meteor.call('getAllContactablesForSelection', SubscriptionHandlers.AuxContactablesHandler.getFilter(), function(err, result){
       if (err){
-        console.log(err);
+        console.log('get all contactables error',err);
       }else{
         selected.set(_.map(result, function (contactable) {
           return {id: contactable._id, type: contactable.objNameArray, email: Utils.getContactableEmail(contactable) };
@@ -617,7 +617,7 @@ Template.contactablesFilters.helpers({
     return query;
   },
   isSelectedType: function(typeName){
-    console.log('type',typeName,query.objType);
+
     return query.objType.value == typeName;
   },
   selectedType: function(typeName){
@@ -625,7 +625,6 @@ Template.contactablesFilters.helpers({
     if (query.objType.value =='Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
     if (query.objType.value =='Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
     if (query.objType.value =='Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
-    console.log('objtype not found',query.objType);
     return null;
   },
   contactableTypes: contactableTypes

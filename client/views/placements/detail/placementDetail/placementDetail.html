@@ -20,27 +20,26 @@
                                     {{/objectProperty}}
                                 </td>
                             </tr>
-                        <tr>
-                            <td>
-                                <i class="fa fa-info-circle"></i>&nbsp;Active/Inactive:
-                            </td>
-                            <td>
-                                {{#objectProperty property=placementStatus editable=editMode}}
-                                {{> buttonGroup options=fetchStatusOptions value=value onSelected=onSelectedStatus}}
-                                {{else}}
-                                <strong>
-                                    <strong>{{displayName}}</strong>
-                                </strong>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
+
+                            <tr>
+                                <td>Active Status</td>
+                                <td>
+                                    {{#objectProperty property=activeStatus editable=editMode}}
+                                        {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                    {{else}}
+                                        <strong>
+                                            <strong>{{displayName}}</strong>
+                                        </strong>
+                                    {{/objectProperty}}
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
-                                    <i class="fa fa-info-circle"></i>&nbsp;Candidate Status:
+                                    <i class="fa fa-info-circle"></i>&nbsp;Process Status:
                                 </td>
                                 <td>
                                     {{#objectProperty property=candidateStatus editable=editMode}}
-                                        {{> buttonGroup options=fetchStatusOptions value=value onSelected=onSelectedStatus}}
+                                        {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                     {{else}}
                                         <strong>
                                             <strong>{{displayName}}</strong>

@@ -43,12 +43,24 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Active Status</td>
                     <td>
-                        <i class="fa fa-info-circle"></i>&nbsp;Status:
+                        {{#objectProperty property=activeStatus editable=editMode}}
+                            {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                        {{else}}
+                            <strong>
+                                <strong>{{displayName}}</strong>
+                            </strong>
+                        {{/objectProperty}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i class="fa fa-info-circle"></i>&nbsp;Process Status:
                     </td>
                     <td>
                         {{#objectProperty property=status editable=editMode}}
-                            {{> buttonGroup options=fetchStatusOptions value=value onSelected=onSelectedStatus}}
+                            {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                         {{else}}
                             <strong>
                                 <strong>{{displayName}}</strong>
