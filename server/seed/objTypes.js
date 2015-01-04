@@ -25,7 +25,17 @@ newObjType({
       displayName: 'Status note',
       showInAdd: true,
       required: false
-    }
+    },
+    {
+      name: 'activeStatus',
+      displayName: 'Active Status',
+      fieldType: 'lookUp',
+      lookUpName: 'activeStatus',
+      lookUpCode: Enums.lookUpTypes.active.status.lookUpCode,
+      defaultValue: null,
+      showInAdd: false,
+      required: false
+    },
   ]
 });
 newObjType({

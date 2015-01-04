@@ -489,7 +489,6 @@ Template.jobListItem.customerName = function () {
 };
 Template.jobInformation.departmentName = function () {
   var customer =  Contactables.findOne(this.customer);
-  console.log('customer',customer);
   if ( customer && customer.Customer) return customer.Customer.department;
 };
 

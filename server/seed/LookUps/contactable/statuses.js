@@ -1,16 +1,16 @@
 _.forEach([
   {
-    displayName: 'Invited',lookUpActions:[Enums.lookUpAction.Implies_Active],
+    displayName: 'Active',lookUpActions:[Enums.lookUpAction.Implies_Active],
     weight: 2
   },
   {
-    displayName: 'Recruited',lookUpActions:[Enums.lookUpAction.Implies_Active],
+    displayName: 'Inactive',lookUpActions:[Enums.lookUpAction.Implies_Active],
     weight: 3,
     dependencies: [0]
   }
 ],
   function (item) {
-    item.lookUpCode = Enums.lookUpTypes.contactable.status.lookUpCode;
+    item.lookUpCode = Enums.lookUpTypes.active.status.lookUpCode;
     systemLookUps.push(item);
   }
 );
@@ -19,16 +19,19 @@ _.forEach([
 _.forEach([
 
   {
-    displayName: "Active",lookUpActions: [Enums.lookUpAction.Implies_Active],
+    displayName: "Hired",lookUpActions: [],
     isDefault: true
   },
   {
-    displayName: "Inactive",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
+    displayName: "Applicant",lookUpActions: []
   },
-  {
-    displayName: "Deleted",lookUpActions: [Enums.lookUpAction.Implies_Inactive,Enums.lookUpAction.Implies_Deleted]
-  }
-],
+      {
+        displayName: "Prospect",lookUpActions: []
+      },
+      {
+        displayName: "Other",lookUpActions: []
+      }
+  ],
   function (item) {
     item.lookUpCode = Enums.lookUpTypes.employee.status.lookUpCode;
     systemLookUps.push(item);
@@ -38,14 +41,15 @@ _.forEach([
 _.forEach([
 
   {
-    displayName: "Active",lookUpActions: [Enums.lookUpAction.Implies_Active],
+    displayName: "Client",lookUpActions: [],
     isDefault: true
   },
+
   {
-    displayName: "Inactive",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
+    displayName: "Prospect",lookUpActions: []
   },
   {
-    displayName: "Deleted",lookUpActions: [Enums.lookUpAction.Implies_Inactive,Enums.lookUpAction.Implies_Deleted]
+    displayName: "Other",lookUpActions: []
   }
 ],
   function (item) {
@@ -57,15 +61,15 @@ _.forEach([
 _.forEach([
 
   {
-    displayName: "Active",lookUpActions: [Enums.lookUpAction.Implies_Active],
+    displayName: "Prospect",lookUpActions: []
+  },
+  {
+    displayName: "Client",lookUpActions: [],
     isDefault: true
   },
-  {
-    displayName: "Inactive",lookUpActions: [Enums.lookUpAction.Implies_Inactive]
-  },
-  {
-    displayName: "Deleted",lookUpActions: [Enums.lookUpAction.Implies_Inactive,Enums.lookUpAction.Implies_Deleted]
-  }
+      {
+        displayName: "Other",lookUpActions: []
+      }
 ],
   function (item) {
     item.lookUpCode = Enums.lookUpTypes.contact.status.lookUpCode;

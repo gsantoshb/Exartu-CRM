@@ -730,3 +730,7 @@ Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
     return console.log(err);
   Utils.bUserIsSystemAdmin = result;
 });
+Utils.getActiveStatuses = function(){
+  var implyActives = LookUps.find({lookUpCode: Enums.lookUpTypes.active.status.lookUpCode, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
+  return _.map(implyActives,function(doc){ return doc._id});
+};

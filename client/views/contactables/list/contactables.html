@@ -44,9 +44,14 @@
             {{> filter_entityType types=contactableTypes selected=query.objType}}
 
             {{#if isSelectedType 'Employee'}}
-                {{> filter_lookUp title="Placement status" code=10 lookUpValue=query.candidateStatus multi=true}}
+                    {{> filter_lookUp title="Process status" code=7 lookUpValue=query.processStatus multi=true}}
             {{/if}}
-
+            {{#if isSelectedType 'Contact'}}
+                    {{> filter_lookUp title="Process status" code=12 lookUpValue=query.processStatus multi=true}}
+            {{/if}}
+            {{#if isSelectedType 'Customer'}}
+                    {{> filter_lookUp title="Process status" code=14 lookUpValue=query.processStatus multi=true}}
+            {{/if}}
             {{> filter_inactive showInactive=query.inactives}}
 
             {{> filter_createdDate selectedLimit=query.selectedLimit}}

@@ -126,7 +126,9 @@ Template.job.helpers({
   },
   customerName: function () {
     customer = Contactables.findOne(this.customer);
-    Session.set('jobDisplayName', originalJob.displayName + ' ' + customer.displayName);
+    if (originalJob) {
+      Session.set('jobDisplayName', originalJob.displayName + ' ' + customer.displayName);
+    };
     return customer && customer.displayName;
   }
 });

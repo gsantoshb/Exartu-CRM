@@ -6,7 +6,7 @@ ContactablesController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
     SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
-    return [SubscriptionHandlers.AuxContactablesHandler];
+    return [SubscriptionHandlers.AuxContactablesHandler, Meteor.subscribe('lookUps')];
   },
   action: function () {
     if (!this.ready()) {
@@ -85,10 +85,10 @@ ContactablesController = RouteController.extend({
       taxId.default= this.params.taxId;
     }
 
-    // Employee's placements status
-    var placementStatusQuery = { type: Utils.ReactivePropertyTypes.array };
-    if (type == 'Employee' && this.params.placementStatus) {
-      placementStatusQuery.default = this.params.placementStatus.split(',');
+
+    var processStatusQuery = { type: Utils.ReactivePropertyTypes.array };
+    if ( this.params.processStatus) {
+      processStatusQuery.default = this.params.processStatus.split(',');
     }
 
     query = new Utils.ObjectDefinition({
@@ -100,7 +100,7 @@ ContactablesController = RouteController.extend({
         mineOnly: mineQuery,
         tags: tagsQuery,
         location: locationQuery,
-        candidateStatus: placementStatusQuery,
+        processStatus: processStatusQuery,
         taxId: taxIdQuery
       }
     });
@@ -179,26 +179,6 @@ var contactableTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
 };
 
-var getActiveStatuses = function(objName){
-  var status = Enums.lookUpTypes[objName.toLowerCase()];
-  status = status && status.status;
-  if (status){
-    var lookUpCodes = status.lookUpCode,
-      implyActives = LookUps.find({lookUpCode: lookUpCodes, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
-    return _.map(implyActives,function(doc){ return doc._id});
-  }
-  return null;
-};
-var getAllStatuses = function(objName){
-  var status = Enums.lookUpTypes[objName.toLowerCase()];
-  status = status && status.status;
-  if (status){
-    var lookUpCodes = status.lookUpCode,
-      implyAll = LookUps.find({lookUpCode: lookUpCodes}).fetch();
-    return _.map(implyAll ,function(doc){ return doc._id});
-  }
-  return null;
-};
 
 var locationFields = ['address', 'city', 'state', 'country'];
 
@@ -243,7 +223,6 @@ Template.contactablesList.created = function() {
       searchQuery.objNameArray = query.objType.value;
       urlQuery.addParam('type', query.objType.value);
     }
-
     // Creation date
     if (query.selectedLimit.value) {
       var dateLimit = new Date();
@@ -253,26 +232,18 @@ Template.contactablesList.created = function() {
       urlQuery.addParam('creationDate', query.selectedLimit.value);
     }
 
-    // Status / Inactive
-    if (! query.inactives.value) {
-      var inactiveStatusOR = {
-        $or: []
-      };
-      var activeStatuses;
-      var aux;
-      _.each(['Employee', 'Contact', 'Customer'], function(objName){
-        activeStatuses = getActiveStatuses(objName);
-        if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-          aux={};
-          aux[objName + '.status'] = {
-            $in: activeStatuses
-          };
-          inactiveStatusOR.$or.push(aux)
-        }
-      });
-      if (inactiveStatusOR.$or.length > 0)
-        searchQuery.$and.push(inactiveStatusOR);
-    }
+    //// Status / Inactive
+    //if (! query.inactives.value) {
+    //  var activeOR = {
+    //    $or: []
+    //  };
+    //  var activeStatuses=Utils.getActiveStatuses();
+    //  if (_.isArray(activeStatuses) && activeStatuses.length > 0){
+    //    activeOR.$or.push({activeStatus: {$in: activeStatuses}});
+    //  }
+    //  activeOR.$or.push({activeStatus:{$exists:false}});
+    //  searchQuery.$and.push( activeOR);
+    //}
 
     if (query.inactives.value) {
       urlQuery.addParam('inactives', true);
@@ -346,10 +317,10 @@ Template.contactablesList.created = function() {
 
     if (searchQuery.$and.length == 0)
       delete searchQuery.$and;
-
-    if (query.objType.value == 'Employee' && !_.isEmpty(query.candidateStatus.value)){
-      clientParams.placementStatus = query.candidateStatus.value;
-      urlQuery.addParam('placementStatus', query.candidateStatus.value);
+    if (!_.isEmpty(query.processStatus.value)){
+      searchQuery[query.objType.value+'.status']={$in: query.processStatus.value};
+      console.log('query',query.processStatus.value);
+      urlQuery.addParam('processStatus', query.processStatus.value);
     }
 
     // Set url query
@@ -364,7 +335,7 @@ Template.contactablesList.created = function() {
     } else {
       delete options.sort;
     }
-
+    console.log('searchQuery',searchQuery);
     if (SubscriptionHandlers.AuxContactablesHandler) {
       SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
       SubscriptionHandlers.AuxContactablesHandler.setOptions(options);
@@ -567,35 +538,7 @@ var runESComputation = function () {
       filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
     }
 
-    // Include inactives
-    if (!query.inactives.value)
-    {
-      var activeStatusFilter = {or: []};
-      var activeStatuses;
-      _.each(['Employee', 'Contact', 'Customer'], function (objName) {
-        activeStatuses = getActiveStatuses(objName);
-        _.forEach(activeStatuses, function (activeStatus) {
-          var statusFilter = {};
-          statusFilter[objName + '.status'] = activeStatus.toLowerCase();
-          activeStatusFilter.or.push({term: statusFilter});
-        })
-      });
-      filters.bool.must.push(activeStatusFilter);
-    }
-    else
-    { // hack for problem of esSearch not filtering by hierarchy...enforce that here by forcing a match on a valid status in the hierarchyQ
-      var allStatusFilter = {or: []};
-      var allStatuses;
-      _.each(['Employee', 'Contact', 'Customer'], function (objName) {
-        allStatuses = getAllStatuses(objName);
-        _.forEach(allStatuses, function (allStatus) {
-          var statusFilter = {};
-          statusFilter[objName + '.status'] = allStatus.toLowerCase();
-          allStatusFilter.or.push({term: statusFilter});
-        })
-      });
-      filters.bool.must.push(allStatusFilter);
-    };
+
 
 
     // Created by
@@ -674,7 +617,16 @@ Template.contactablesFilters.helpers({
     return query;
   },
   isSelectedType: function(typeName){
+    console.log('type',typeName,query.objType);
     return query.objType.value == typeName;
+  },
+  selectedType: function(typeName){
+    //query.processStatus.value=[];
+    if (query.objType.value =='Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
+    if (query.objType.value =='Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
+    if (query.objType.value =='Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
+    console.log('objtype not found',query.objType);
+    return null;
   },
   contactableTypes: contactableTypes
 });
@@ -710,9 +662,7 @@ Template.contactablesListItem.helpers({
     return listViewMode.get();
   },
   getStatus: function () {
-    if (this.Customer) return this.Customer.status;
-    if (this.Employee) return this.Employee.status;
-    if (this.Contact) return this.Contact.status;
+    return this.activeStatus;
   },
   getDepartment: function (){
 
@@ -752,7 +702,7 @@ Template.employeeInformation.helpers({
 
     var placementInfo = {};
     var placement = Placements.findOne({_id: this.placement});
-
+    if (!placement) return;
     var job = Jobs.findOne({
       _id: placement.job
     }, {
