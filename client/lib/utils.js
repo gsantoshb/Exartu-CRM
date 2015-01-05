@@ -686,3 +686,9 @@ Utils.getActiveStatuses = function(){
   var implyActives = LookUps.find({lookUpCode: Enums.lookUpTypes.active.status.lookUpCode, lookUpActions: Enums.lookUpAction.Implies_Active}).fetch();
   return _.map(implyActives,function(doc){ return doc._id});
 };
+Utils.getActiveStatusDefaultId=function(){
+  var user = Meteor.user() ;
+  var lkp=LookUps.find({ hierId: user.currentHierId, lookUpCode: Enums.lookUpTypes.active.status.lookUpCode ,isDefault:true}).fetch();
+  if (!lkp) lkp=LookUps.find({ hierId: user.currentHierId, lookUpCode: Enums.lookUpTypes.active.status.lookUpCode }).fetch();
+  return lkp._id;
+}
