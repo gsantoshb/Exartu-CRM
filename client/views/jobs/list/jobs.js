@@ -89,12 +89,23 @@ JobsController = RouteController.extend({
       statusQuery.default = this.params.status;
     }
 
+
+    var activeStatusQuery = { type: Utils.ReactivePropertyTypes.array };
+    if ( this.params.activeStatus) {
+      if (this.params.activeStatus) {
+        activeStatusQuery.default = this.params.activeStatus.split(',');
+      }
+      else
+      {
+        //activeStatusQuery.default=Utils.getActiveStatusDefaultId();
+      }
+    }
     query = new Utils.ObjectDefinition({
       reactiveProps: {
         objType: objTypeQuery,
         searchString: searchStringQuery,
         selectedLimit: creationDateQuery,
-        inactives: inactiveQuery,
+        activeStatus:activeStatusQuery,
         mineOnly: mineQuery,
         tags: tagsQuery,
         location: locationQuery,
@@ -190,9 +201,7 @@ Template.jobList.created= function () {
     }
 
 
-    if (query.inactives.value) {
-      urlQuery.addParam('inactives', true);
-    }
+
 
     //Created by
     if (query.mineOnly.value) {
@@ -241,6 +250,13 @@ Template.jobList.created= function () {
       if (locationOR.$or.length > 0)
         searchQuery.$and.push(locationOR);
     }
+
+    if (!_.isEmpty(query.activeStatus.value)){
+      searchQuery.activeStatus={$in: query.activeStatus.value};
+
+      urlQuery.addParam('activeStatus', query.activeStatus.value);
+    }
+
 
     // Status filter
     if (query.status.value){

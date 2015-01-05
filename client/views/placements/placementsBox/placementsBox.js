@@ -4,11 +4,10 @@ var contactable;
 var searchFields = ['employeeInfo.firstName', 'employeeInfo.lastName', 'employeeInfo.middleName'];
 
 var placementCollection = Placements;
-var PlacementHandler, placementQuery;
+var PlacementHandler, query;
 
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
-    candidateActionOptions:{ default: ['Submittal','Sendout','Placed']},
     placementsCount: {},
     objType: {},
     isRecentDaySelected: {
@@ -31,7 +30,7 @@ var info = new Utils.ObjectDefinition({
 });
 
 
-var loadPlacementQueryFromURL = function (params) {
+var loadqueryFromURL = function (params) {
   // Search string
   var searchStringQuery = {};
   if (params.search) {
@@ -44,11 +43,6 @@ var loadPlacementQueryFromURL = function (params) {
     creationDateQuery.default = params.creationDate;
   }
 
-  // Inactive
-  var inactiveQuery = { type: Utils.ReactivePropertyTypes.boolean };
-  if (params.inactives) {
-    inactiveQuery.default = !! params.inactives;
-  }
 
   // Status
   var statusQuery = { type: Utils.ReactivePropertyTypes.array };
@@ -61,12 +55,19 @@ var loadPlacementQueryFromURL = function (params) {
   if (params.tags) {
     tagsQuery.default = params.tags.split(',');
   }
-
+  var activeStatusQuery = { type: Utils.ReactivePropertyTypes.array };
+  if (params.activeStatus) {
+    activeStatusQuery.default = params.activeStatus.split(',');
+  }
+  else
+  {
+    //activeStatusQuery.default=Utils.getActiveStatusDefaultId();
+  };
   return new Utils.ObjectDefinition({
     reactiveProps: {
       searchString: searchStringQuery,
       selectedLimit: creationDateQuery,
-      inactives: inactiveQuery,
+      activeStatus:activeStatusQuery,
       tags: tagsQuery,
       statuses: statusQuery
     }
@@ -91,7 +92,7 @@ Template.placementListItem.listViewMode= function() {
 // All
 
 Template.placementsBox.created = function(){
-  placementQuery = placementQuery || loadPlacementQueryFromURL(Router.current().params);
+  query = query || loadqueryFromURL(Router.current().params);
 
   var entityId = Session.get('entityId');
   entityType = Utils.getEntityTypeFromRouter();
@@ -108,8 +109,8 @@ Template.placementsBox.created = function(){
 Template.placementsBox.information = function() {
   var searchQuery = {};
 
-  if (placementQuery.objType.value)
-    searchQuery.objNameArray = placementQuery.objType.value;
+  if (query.objType.value)
+    searchQuery.objNameArray = query.objType.value;
 
   info.placementsCount.value = PlacementHandler.totalCount();
 
@@ -148,43 +149,33 @@ Template.placementList.created = function () {
       if (contactable.Employee) searchQuery.employee=Session.get('entityId');
     }
 
-    if (!_.isEmpty(placementQuery.searchString.value)) {
-      params.searchString = placementQuery.searchString.value;
-      urlQuery.addParam('search', placementQuery.searchString.value);
+    if (!_.isEmpty(query.searchString.value)) {
+      params.searchString = query.searchString.value;
+      urlQuery.addParam('search', query.searchString.value);
     }
 
-    if (placementQuery.selectedLimit.value) {
+    if (query.selectedLimit.value) {
       var dateLimit = new Date();
       searchQuery.dateCreated = {
-        $gte: dateLimit.getTime() - placementQuery.selectedLimit.value
+        $gte: dateLimit.getTime() - query.selectedLimit.value
       };
-      urlQuery.addParam('creationDate', placementQuery.selectedLimit.value);
+      urlQuery.addParam('creationDate', query.selectedLimit.value);
     }
 
-    //if (! placementQuery.inactives.value) {
-    //  var activeStatuses;
-    //  activeStatuses = getActiveStatuses('placement');
-    //  if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-    //    searchQuery.placementStatus={
-    //      $in: activeStatuses
-    //    };
-    //  }
-    //}
-
-    if (placementQuery.inactives.value) {
-      urlQuery.addParam('inactives', true);
-    }
-
-    if (placementQuery.tags.value.length > 0) {
+    if (query.tags.value.length > 0) {
       searchQuery.tags = {
-        $in: placementQuery.tags.value
+        $in: query.tags.value
       };
-      urlQuery.addParam('tags', placementQuery.tags.value);
+      urlQuery.addParam('tags', query.tags.value);
     }
+    if (!_.isEmpty(query.activeStatus.value)){
+      searchQuery.activeStatus={$in: query.activeStatus.value};
 
-    if (placementQuery.statuses.value && placementQuery.statuses.value.length > 0){
-      searchQuery.candidateStatus = {$in: placementQuery.statuses.value};
-      urlQuery.addParam('status', placementQuery.statuses.value);
+      urlQuery.addParam('activeStatus', query.activeStatus.value);
+    }
+    if (query.statuses.value && query.statuses.value.length > 0){
+      searchQuery.candidateStatus = {$in: query.statuses.value};
+      urlQuery.addParam('status', query.statuses.value);
     }
 
     // Set url query
@@ -232,16 +223,14 @@ Template.placementList.placementTypes = function() {
 // List filters
 
 Template.placementsFilters.query = function () {
-  return placementQuery;
+  return query;
 };
 
 Template.placementsFilters.tags = function() {
-  return placementQuery.tags;
+  return query.tags;
 };
 
-Template.placementsFilters.candidateActionOptions= function() {
-  return info.candidateActionOptions.value;
-}
+
 
 // List search
 
@@ -250,7 +239,7 @@ Template.placementListSearch.isJob=function() {
 };
 
 Template.placementListSearch.searchString = function() {
-  return placementQuery.searchString;
+  return query.searchString;
 };
 
 Template.placementListSearch.isLoading = function () {

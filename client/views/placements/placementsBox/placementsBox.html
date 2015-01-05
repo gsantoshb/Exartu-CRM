@@ -25,9 +25,10 @@
         </a>
 
         <div class="filter-list" id="filter-body">
-            {{> filter_lookUp code=10 lookUpValue=query.statuses multi=true}}
+            {{> filter_lookUp title="Process status" code=10 lookUpValue=query.statuses multi=true}}
 
-            {{> filter_inactive showInactive=query.inactives}}
+            {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
+
 
             {{> filter_createdDate selectedLimit=query.selectedLimit}}
 

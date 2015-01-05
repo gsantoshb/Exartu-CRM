@@ -255,22 +255,7 @@ Template.contactablesList.created = function() {
       urlQuery.addParam('creationDate', query.selectedLimit.value);
     }
 
-    //// Status / Inactive
-    //if (! query.inactives.value) {
-    //  var activeOR = {
-    //    $or: []
-    //  };
-    //  var activeStatuses=Utils.getActiveStatuses();
-    //  if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-    //    activeOR.$or.push({activeStatus: {$in: activeStatuses}});
-    //  }
-    //  activeOR.$or.push({activeStatus:{$exists:false}});
-    //  searchQuery.$and.push( activeOR);
-    //}
 
-    if (query.inactives.value) {
-      urlQuery.addParam('inactives', true);
-    }
 
     // Created by
     if (query.mineOnly.val) {
