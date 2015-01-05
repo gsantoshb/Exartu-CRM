@@ -84,10 +84,9 @@
                                 {{/if}}
                                 {{#each this.placementRates}}
                                     {{getRateTypeDisplayName}}
+                                    {{bill}}/{{pay}}
 
-                                    {{pay}}
-                                    /
-                                    {{bill}}
+
                                     <br/>
                                 {{/each}}
 
@@ -130,8 +129,9 @@
                                     <a href="/contactable/{{customerId}}"> customer </a>
                                 </small>
                                                         <span class="badge">
-                                                            {{lookUpName status}}
+                                                            {{lookUpName candidateStatus}}
                                                         </span>
+
                         <span class="badge">
                             {{lookUpName activeStatus}}
                         </span>
