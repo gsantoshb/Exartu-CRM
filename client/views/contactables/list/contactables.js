@@ -642,8 +642,17 @@ Template.contactablesFilters.helpers({
 
     return query.objType.value == typeName;
   },
+    selectedType: function(typeName){
+  //query.processStatus.value=[];
+  if (query.objType.value =='Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
+  if (query.objType.value =='Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
+  if (query.objType.value =='Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
+  return null;
+},
   contactableTypes: contactableTypes
 });
+
+
 
 // Item
 

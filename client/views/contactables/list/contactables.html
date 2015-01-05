@@ -44,7 +44,7 @@
             {{> filter_entityType types=contactableTypes selected=query.objType}}
 
             {{#if isSelectedType 'Employee'}}
-                {{> filter_lookUp title="Process status" code=7 lookUpValue=query.employeeStatus multi=true}}
+                {{> filter_lookUp title="Process status" code=7 lookUpValue=query.employeeProcessStatus multi=true}}
             {{/if}}
             {{#if isSelectedType 'Contact'}}
                 {{> filter_lookUp title="Process status" code=12 lookUpValue=query.contactProcessStatus multi=true}}
