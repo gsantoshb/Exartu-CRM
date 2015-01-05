@@ -250,7 +250,7 @@ Template.contactablesList.created = function() {
     }
 
     // Created by
-    if (query.mineOnly.value) {
+    if (query.mineOnly.val) {
       searchQuery.userId = Meteor.userId();
       urlQuery.addParam('mine', true);
     }
@@ -335,7 +335,7 @@ Template.contactablesList.created = function() {
     } else {
       delete options.sort;
     }
-
+    console.log('sq',searchQuery); // keep this console log here until the multiple search call is fixed
     if (SubscriptionHandlers.AuxContactablesHandler) {
       SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
       SubscriptionHandlers.AuxContactablesHandler.setOptions(options);

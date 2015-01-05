@@ -1,6 +1,7 @@
 _.forEach([
   {
     displayName: 'Active',lookUpActions:[Enums.lookUpAction.Implies_Active],
+    isDefault: true,
     weight: 2
   },
   {

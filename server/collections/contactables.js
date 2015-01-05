@@ -71,7 +71,7 @@ ContactablesList = new View('auxContactables',{
 Meteor.paginatedPublish(ContactablesList, function () {
     if (!this.userId)
       return false;
-
+    console.log('searchcalled')
     return Utils.filterCollectionByUserHier.call(this, ContactablesList.find({},
       {
         fields: {
@@ -87,6 +87,7 @@ Meteor.paginatedPublish(ContactablesList, function () {
     pageSize: 10,
     publicationName: 'auxContactables',
     updateSelector: function (oldSelector, clientParams) {
+      console.log('searchcalled2');
       var newSelector = EJSON.clone(oldSelector);
       if (clientParams && clientParams.placementStatus) {
         // Get ids of employees that have placements with status equal to clientParams.placementStatus
@@ -160,6 +161,8 @@ Contactables.before.insert(function (userId, doc) {
   doc.hierId = user.currentHierId || doc.hierId;
   doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();
+  if (!doc.activeStatus) doc.activeStatus=LookUpManager.getActiveStatusDefault();
+
   if (doc.organization)
   {
     doc.displayName= doc.organization.organizationName;
