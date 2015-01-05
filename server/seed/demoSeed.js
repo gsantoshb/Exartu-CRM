@@ -530,8 +530,8 @@ var loadPlacements = function (hierId) {
       "placementRates" :
         [{
           "type" : rateType._id,
-          "pay" : "25.00",
-          "bill" : "15.00"
+          "pay" : "15.00",
+          "bill" : "25.00"
         }],
       testData: true
     }
