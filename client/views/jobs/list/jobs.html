@@ -60,7 +60,7 @@
         <div class="filter-list" id="filter-body">
             {{> filter_entityType title="Job type" types=jobTypes selected=query.objType}}
 
-            {{> filter_lookUp title="Process status" code=3 lookUpValue=query.status multi=false}}
+            {{> filter_lookUp title="Process status" code=3 lookUpValue=query.status multi=true}}
 
             {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
 

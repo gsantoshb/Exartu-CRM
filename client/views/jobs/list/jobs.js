@@ -84,7 +84,7 @@ JobsController = RouteController.extend({
     }
 
     // Status
-    var statusQuery = {};
+    var statusQuery = {type: Utils.ReactivePropertyTypes.array};
     if (this.params.status) {
       statusQuery.default = this.params.status;
     }
@@ -257,6 +257,11 @@ Template.jobList.created= function () {
       urlQuery.addParam('activeStatus', query.activeStatus.value);
     }
 
+    if (!_.isEmpty(query.status.value)){
+      searchQuery.status={$in: query.status.value};
+
+      urlQuery.addParam('status', query.status.value);
+    }
 
     // Status filter
     if (query.status.value){
