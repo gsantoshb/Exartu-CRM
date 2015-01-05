@@ -611,18 +611,11 @@ URLQuery.prototype.apply = function () {
 };
 
 Utils.getContactableEmail = function (contactable) {
-  var result = null;
   var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
-  _.every(contactable.contactMethods, function (cm) {
-    var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
-    if (!type)
-      return true; //keep looking
-    if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email)){
-      result = cm.value;
-      return false; //finish
-    }
-  });
-  return result;
+  var emailType = _.find(contactMethodsTypes, function(type) { return _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email) });
+  var contactableEmail = _.find(contactable.contactMethods, function(cm) { return cm.type == emailType._id });
+
+  return contactableEmail ? contactableEmail.value : null;
 };
 
 Utils.getContactableMobilePhones = function (contactable) {
