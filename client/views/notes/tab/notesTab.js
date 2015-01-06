@@ -86,26 +86,27 @@ Template.notesTabAdd.helpers({
 
 // List
 var NotesHandler;
-Template.notesTabList.helpers({
-  created: function () {
-    var self = this;
-    if (!SubscriptionHandlers.NotesHandler){
-      SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes');
-    }
-    NotesHandler = SubscriptionHandlers.NotesHandler;
 
-    Meteor.autorun(function () {
-      var searchQuery = {
-        links: {
-          $elemMatch: {
-            id: Session.get('entityId')
-          }
+Template.notesTabList.created = function () {
+  var self = this;
+  if (!SubscriptionHandlers.NotesHandler){
+    SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes');
+  }
+  NotesHandler = SubscriptionHandlers.NotesHandler;
+
+  Meteor.autorun(function () {
+    var searchQuery = {
+      links: {
+        $elemMatch: {
+          id: Session.get('entityId')
         }
-      };
+      }
+    };
 
-      NotesHandler.setFilter(searchQuery);
-    });
-  },
+    NotesHandler.setFilter(searchQuery);
+  });
+};
+Template.notesTabList.helpers({
   items: function() {
     return Notes.find({links: { $elemMatch: { id: Session.get('entityId')} } },{ sort: { dateCreated: -1 } });
   }
@@ -173,37 +174,68 @@ Template.notesTabEditItem.events({
 
 var isEditing =  new ReactiveVar(false);
 
+Template.linksAutoForm.created = function () {
+  var self = this;
+  var ctx = Template.parentData(1);
+
+  var initialLink = {
+    id: ctx._id,
+    type: Utils.getEntityTypeFromRouter()
+  };
+
+  self.data.links = self.data.value || [initialLink];
+  self.data.typeDep = new Tracker.Dependency();
+  self.data.linkedDep = new Tracker.Dependency();
+
+  Meteor.subscribe('allContactables');
+  Meteor.subscribe('allJobs');
+  Meteor.subscribe('allPlacements');
+
+  if (self.data.value)
+    return; // Don't reset form on edit mode
+
+  // TODO: Find another way to reset links when form is submitted
+  var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
+  formTemplate.template.events({
+    'reset form': function () {
+      self.data.links = [initialLink];
+      self.data.linkedDep.changed();
+    }
+  });
+  isEditing.set(false);
+}
+
 Template.linksAutoForm.helpers({
-  created: function () {
-    var self = this;
-    var ctx = Template.parentData(1);
-
-    var initialLink = {
-      id: ctx._id,
-      type: Utils.getEntityTypeFromRouter()
-    };
-
-    self.data.links = self.data.value || [initialLink];
-    self.data.typeDep = new Tracker.Dependency();
-    self.data.linkedDep = new Tracker.Dependency();
-
-    Meteor.subscribe('allContactables');
-    Meteor.subscribe('allJobs');
-    Meteor.subscribe('allPlacements');
-
-    if (self.data.value)
-      return; // Don't reset form on edit mode
-
-    // TODO: Find another way to reset links when form is submitted
-    var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
-    formTemplate.template.events({
-      'reset form': function () {
-        self.data.links = [initialLink];
-        self.data.linkedDep.changed();
-      }
-    });
-    isEditing.set(false);
-  },
+  //created: function () {
+  //  var self = this;
+  //  var ctx = Template.parentData(1);
+  //
+  //  var initialLink = {
+  //    id: ctx._id,
+  //    type: Utils.getEntityTypeFromRouter()
+  //  };
+  //
+  //  self.data.links = self.data.value || [initialLink];
+  //  self.data.typeDep = new Tracker.Dependency();
+  //  self.data.linkedDep = new Tracker.Dependency();
+  //
+  //  Meteor.subscribe('allContactables');
+  //  Meteor.subscribe('allJobs');
+  //  Meteor.subscribe('allPlacements');
+  //
+  //  if (self.data.value)
+  //    return; // Don't reset form on edit mode
+  //
+  //  // TODO: Find another way to reset links when form is submitted
+  //  var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
+  //  formTemplate.template.events({
+  //    'reset form': function () {
+  //      self.data.links = [initialLink];
+  //      self.data.linkedDep.changed();
+  //    }
+  //  });
+  //  isEditing.set(false);
+  //},
   links: function () {
     this.linkedDep.depend();
     return this.links;
