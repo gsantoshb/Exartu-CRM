@@ -78,7 +78,8 @@ UserManager = {
     return Meteor.users.findOne({ username: username }) == null;
   },
   isEmailAvailable: function (email) {
-    return Meteor.users.findOne({ emails: { $elemMatch: { address: email } } }) == null;
+	var regex = new RegExp(["^",email,"$"].join(""),"i");
+    return Meteor.users.findOne({ emails: { $elemMatch: { address: regex } } }) == null;
   },
   registerAccount: function (document, skipEmailVerification) {
     // Check username and email
