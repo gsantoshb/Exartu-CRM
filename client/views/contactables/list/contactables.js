@@ -99,17 +99,14 @@ ContactablesController = RouteController.extend({
       contactProcessStatusQuery.default = this.params.contactProcessStatus.split(',');
     }
 
-    var activeStatusQuery = { type: Utils.ReactivePropertyTypes.array };
-    if ( this.params.activeStatus) {
-      if (this.params.activeStatus) {
-        activeStatusQuery.default = this.params.activeStatus.split(',');
-      }
-      else
-      {
-        //activeStatusQuery.default=Utils.getActiveStatusDefaultId();
-      }
+    var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
+    if (this.params.activeStatus) {
+      activeStatusQuery.default = this.params.activeStatus.split(',');
     }
-
+    else
+    {
+      activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
+    };
 
     query = new Utils.ObjectDefinition({
       reactiveProps: {

@@ -179,7 +179,7 @@ Template.addNewLookUpItem.events({
               LookUps.insert({
                   displayName: newValue,
                   lookUpCode: lookUpCode,
-                  hierId: Meteor.user().hierId
+                  hierId: Meteor.user().currentHierId
               });
               $('#new-item')[0].value=null;
           };

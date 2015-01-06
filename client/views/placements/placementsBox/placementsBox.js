@@ -1,3 +1,4 @@
+
 var entityType = null;
 var isEntitySpecific = false;
 var contactable;
@@ -55,13 +56,14 @@ var loadqueryFromURL = function (params) {
   if (params.tags) {
     tagsQuery.default = params.tags.split(',');
   }
-  var activeStatusQuery = { type: Utils.ReactivePropertyTypes.array };
+  var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
   if (params.activeStatus) {
     activeStatusQuery.default = params.activeStatus.split(',');
   }
   else
   {
-    //activeStatusQuery.default=Utils.getActiveStatusDefaultId();
+    if (Meteor.user()) // verify not a fresh reload
+        activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
   };
   return new Utils.ObjectDefinition({
     reactiveProps: {
@@ -172,7 +174,8 @@ Template.placementList.created = function () {
       searchQuery.activeStatus={$in: query.activeStatus.value};
 
       urlQuery.addParam('activeStatus', query.activeStatus.value);
-    }
+    };
+
     if (query.statuses.value && query.statuses.value.length > 0){
       searchQuery.candidateStatus = {$in: query.statuses.value};
       urlQuery.addParam('status', query.statuses.value);

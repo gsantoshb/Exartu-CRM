@@ -611,11 +611,18 @@ URLQuery.prototype.apply = function () {
 };
 
 Utils.getContactableEmail = function (contactable) {
+  var result = null;
   var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
-  var emailType = _.find(contactMethodsTypes, function(type) { return _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email) });
-  var contactableEmail = _.find(contactable.contactMethods, function(cm) { return cm.type == emailType._id });
-
-  return contactableEmail ? contactableEmail.value : null;
+  _.every(contactable.contactMethods, function (cm) {
+    var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
+    if (!type)
+      return true; //keep looking
+    if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email)){
+      result = cm.value;
+      return false; //finish
+    }
+  });
+  return result;
 };
 
 Utils.getContactableMobilePhones = function (contactable) {
@@ -681,7 +688,7 @@ Utils.getActiveStatuses = function(){
 };
 Utils.getActiveStatusDefaultId=function(){
   var user = Meteor.user() ;
-  var lkp=LookUps.find({ hierId: user.currentHierId, lookUpCode: Enums.lookUpTypes.active.status.lookUpCode ,isDefault:true}).fetch();
-  if (!lkp) lkp=LookUps.find({ hierId: user.currentHierId, lookUpCode: Enums.lookUpTypes.active.status.lookUpCode }).fetch();
+  var lkp=LookUps.findOne({ hierId: user.currentHierId, lookUpCode: Enums.lookUpTypes.active.status.lookUpCode ,isDefault:true});
+  if (!lkp) lkp=LookUps.findOne({ hierId: user.currentHierId, lookUpCode: Enums.lookUpTypes.active.status.lookUpCode });
   return lkp._id;
 }

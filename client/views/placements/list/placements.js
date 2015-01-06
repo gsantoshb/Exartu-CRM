@@ -5,7 +5,7 @@ PlacementsController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function() {
     SubscriptionHandlers.PlacementHandler = PlacementHandler = SubscriptionHandlers.PlacementHandler || Meteor.paginatedSubscribe('placements');
-    return [PlacementHandler, LookUpsHandler];
+    return [PlacementHandler, LookUpsHandler,Meteor.subscribe('lookUps')];
   },
   onAfterAction: function() {
     var title = 'Placements',
@@ -26,7 +26,6 @@ PlacementsController = RouteController.extend({
       this.render();
     else
       this.render('loadingContactable');
-
     this.render();
   }
 });

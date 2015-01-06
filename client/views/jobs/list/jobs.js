@@ -47,12 +47,6 @@ JobsController = RouteController.extend({
       creationDateQuery.default = this.params.creationDate;
     }
 
-    // Inactive
-    var inactiveQuery = { type: Utils.ReactivePropertyTypes.boolean };
-    if (this.params.inactives) {
-      inactiveQuery.default = !! this.params.inactives;
-    }
-
     // Mine only
     var mineQuery = { type: Utils.ReactivePropertyTypes.boolean };
     if (this.params.mine) {
@@ -89,17 +83,15 @@ JobsController = RouteController.extend({
       statusQuery.default = this.params.status;
     }
 
-
-    var activeStatusQuery = { type: Utils.ReactivePropertyTypes.array };
-    if ( this.params.activeStatus) {
-      if (this.params.activeStatus) {
-        activeStatusQuery.default = this.params.activeStatus.split(',');
-      }
-      else
-      {
-        //activeStatusQuery.default=Utils.getActiveStatusDefaultId();
-      }
+    var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
+    if (this.params.activeStatus) {
+      activeStatusQuery.default = this.params.activeStatus.split(',');
     }
+    else
+    {
+      activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
+    };
+
     query = new Utils.ObjectDefinition({
       reactiveProps: {
         objType: objTypeQuery,
@@ -260,12 +252,6 @@ Template.jobList.created= function () {
     if (!_.isEmpty(query.status.value)){
       searchQuery.status={$in: query.status.value};
 
-      urlQuery.addParam('status', query.status.value);
-    }
-
-    // Status filter
-    if (query.status.value){
-      searchQuery.$and.push({status: query.status.value});
       urlQuery.addParam('status', query.status.value);
     }
 
