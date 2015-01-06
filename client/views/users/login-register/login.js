@@ -1,15 +1,20 @@
 LoginController = RouteController.extend({
   template: 'login',
-  layout: '',
+  //layout: '',
   onBeforeAction: function () {
     if (Meteor.user()) {
       this.redirect('dashboard');
+    }else{
+      this.next();
     }
   },
   data: function() {
     email = this.params.email;
     return this;
   },
+  //actions: function () {
+  //  this.render();
+  //},
   onAfterAction: function() {
     var title = 'Login',
       description = '';

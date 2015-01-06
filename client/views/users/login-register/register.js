@@ -1,10 +1,11 @@
 RegisterController = RouteController.extend({
   template: 'register',
-  layout: '',
   onBeforeAction: function () {
     if (Meteor.user()) {
       this.redirect('dashboard');
-    }
+    }else{
+      this.next();
+    };
   },
   onAfterAction: function () {
     var title = 'Sign Up',
