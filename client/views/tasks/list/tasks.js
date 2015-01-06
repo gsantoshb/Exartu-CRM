@@ -4,7 +4,10 @@ TasksController = RouteController.extend({
   template: 'tasks',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return SubscriptionHandlers.TasksHandler = TasksHandler = Meteor.paginatedSubscribe("tasks");
+    if (!SubscriptionHandlers.TasksHandler){
+      SubscriptionHandlers.TasksHandler = TasksHandler = Meteor.paginatedSubscribe("tasks");
+    }
+    return SubscriptionHandlers.TasksHandler;
   },
   action: function () {
     if (!this.ready()) {

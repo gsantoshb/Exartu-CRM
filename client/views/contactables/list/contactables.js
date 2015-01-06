@@ -5,7 +5,9 @@ ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+    if (!SubscriptionHandlers.AuxContactablesHandler){
+      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+    }
     return [SubscriptionHandlers.AuxContactablesHandler, Meteor.subscribe('lookUps')];
   },
   action: function () {

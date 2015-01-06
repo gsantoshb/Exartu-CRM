@@ -15,8 +15,9 @@ var OnBeforeActions = {
   loginRequired: function(pause) {
     if (!Meteor.userId()) {
       this.render('login');
-      return pause();
+      //return pause();
     }
+    this.next();
   }
 };
 
@@ -148,15 +149,12 @@ Router.map(function () {
     path: '/placements',
     controller: 'PlacementsController'
   });
-  this.route('placement', {
-    path: '/placement/:_id',
-    controller: 'PlacementController'
+
+  this.route('addPlacementPage', {
+      path: '/placementAdd/:objType',
+      controller: 'PlacementAddController',
+      waitOn: [dType.ObjTypesHandler]
   });
-    this.route('addPlacementPage', {
-        path: '/placementAdd/:objType',
-        controller: 'PlacementAddController',
-        waitOn: [dType.ObjTypesHandler]
-    });
 
   this.route('placement', {
     path: '/placement/:_id/:tab?',
