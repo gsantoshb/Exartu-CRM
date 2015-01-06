@@ -144,7 +144,8 @@ Template.job_details.helpers({
     }
   },
   getCustomer: function () {
-    return Template.parentData(1).originalJob().customer;
+    //todo: find another way to do this
+    return Template.parentData(1).__helpers[" originalJob"]().customer;
   },
   customerCollection: function () {
     return Contactables;
