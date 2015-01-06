@@ -15,7 +15,6 @@ Jobs = new Meteor.Collection('jobs', {
 
     if (job.location)
       job.location.displayName = Utils.getLocationDisplayName(job.location);
-
     return job;
   }
 });

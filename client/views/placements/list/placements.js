@@ -29,7 +29,6 @@ PlacementsController = RouteController.extend({
       this.render();
     else
       this.render('loadingContactable');
-
     this.render();
   }
 });

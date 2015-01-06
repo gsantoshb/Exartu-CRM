@@ -88,10 +88,27 @@ ContactablesController = RouteController.extend({
     }
 
 
-    var processStatusQuery = { type: Utils.ReactivePropertyTypes.array };
-    if ( this.params.processStatus) {
-      processStatusQuery.default = this.params.processStatus.split(',');
+    var employeeProcessStatusQuery = { type: Utils.ReactivePropertyTypes.array };
+    if ( this.params.employeeProcessStatus) {
+      employeeProcessStatusQuery.default = this.params.employeeProcessStatus.split(',');
     }
+    var customerProcessStatusQuery = { type: Utils.ReactivePropertyTypes.array };
+    if ( this.params.customerProcessStatus) {
+      customerProcessStatusQuery.default = this.params.customerProcessStatus.split(',');
+    }
+    var contactProcessStatusQuery = { type: Utils.ReactivePropertyTypes.array };
+    if ( this.params.contactProcessStatus) {
+      contactProcessStatusQuery.default = this.params.contactProcessStatus.split(',');
+    }
+
+    var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
+    if (this.params.activeStatus) {
+      activeStatusQuery.default = this.params.activeStatus.split(',');
+    }
+    else
+    {
+      activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
+    };
 
     query = new Utils.ObjectDefinition({
       reactiveProps: {
@@ -102,7 +119,10 @@ ContactablesController = RouteController.extend({
         mineOnly: mineQuery,
         tags: tagsQuery,
         location: locationQuery,
-        processStatus: processStatusQuery,
+        employeeProcessStatus: employeeProcessStatusQuery,
+        customerProcessStatus: customerProcessStatusQuery,
+        contactProcessStatus: contactProcessStatusQuery,
+        activeStatus:activeStatusQuery,
         taxId: taxIdQuery
       }
     });
@@ -234,22 +254,7 @@ Template.contactablesList.created = function() {
       urlQuery.addParam('creationDate', query.selectedLimit.value);
     }
 
-    //// Status / Inactive
-    //if (! query.inactives.value) {
-    //  var activeOR = {
-    //    $or: []
-    //  };
-    //  var activeStatuses=Utils.getActiveStatuses();
-    //  if (_.isArray(activeStatuses) && activeStatuses.length > 0){
-    //    activeOR.$or.push({activeStatus: {$in: activeStatuses}});
-    //  }
-    //  activeOR.$or.push({activeStatus:{$exists:false}});
-    //  searchQuery.$and.push( activeOR);
-    //}
 
-    if (query.inactives.value) {
-      urlQuery.addParam('inactives', true);
-    }
 
     // Created by
     if (query.mineOnly.val) {
@@ -319,12 +324,26 @@ Template.contactablesList.created = function() {
 
     if (searchQuery.$and.length == 0)
       delete searchQuery.$and;
-    if (!_.isEmpty(query.processStatus.value)){
-      searchQuery[query.objType.value+'.status']={$in: query.processStatus.value};
+    if (!_.isEmpty(query.employeeProcessStatus.value)){
+      searchQuery[query.objType.value+'.status']={$in: query.employeeProcessStatus.value};
 
-      urlQuery.addParam('processStatus', query.processStatus.value);
+      urlQuery.addParam('employeeProcessStatus', query.employeeProcessStatus.value);
     }
+    if (!_.isEmpty(query.customerProcessStatus.value)){
+      searchQuery[query.objType.value+'.status']={$in: query.customerProcessStatus.value};
 
+      urlQuery.addParam('customerProcessStatus', query.customerProcessStatus.value);
+    }
+    if (!_.isEmpty(query.contactProcessStatus.value)){
+      searchQuery[query.objType.value+'.status']={$in: query.contactProcessStatus.value};
+
+      urlQuery.addParam('contactProcessStatus', query.contactProcessStatus.value);
+    }
+    if (!_.isEmpty(query.activeStatus.value)){
+      searchQuery.activeStatus={$in: query.activeStatus.value};
+
+      urlQuery.addParam('activeStatus', query.activeStatus.value);
+    }
     // Set url query
     urlQuery.apply();
 
@@ -622,15 +641,17 @@ Template.contactablesFilters.helpers({
 
     return query.objType.value == typeName;
   },
-  selectedType: function(typeName){
-    //query.processStatus.value=[];
-    if (query.objType.value =='Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
-    if (query.objType.value =='Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
-    if (query.objType.value =='Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
-    return null;
-  },
+    selectedType: function(typeName){
+  //query.processStatus.value=[];
+  if (query.objType.value =='Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
+  if (query.objType.value =='Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
+  if (query.objType.value =='Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
+  return null;
+},
   contactableTypes: contactableTypes
 });
+
+
 
 // Item
 
@@ -664,6 +685,12 @@ Template.contactablesListItem.helpers({
   },
   getStatus: function () {
     return this.activeStatus;
+  },
+  getProcessStatus: function () {
+    if (this.Customer) return this.Customer.status;
+    if (this.Employee) return this.Employee.status;
+    if (this.Contact) return this.Contact.status;
+    return null;
   },
   getDepartment: function (){
 

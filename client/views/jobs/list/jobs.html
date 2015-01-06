@@ -58,11 +58,12 @@
         </a>
 
         <div class="filter-list" id="filter-body">
-            {{> filter_entityType types=jobTypes selected=query.objType}}
+            {{> filter_entityType title="Job type" types=jobTypes selected=query.objType}}
 
-            {{> filter_lookUp code=3 lookUpValue=query.status multi=false}}
+            {{> filter_lookUp title="Process status" code=3 lookUpValue=query.status multi=true}}
 
-            {{> filter_inactive showInactive=query.inactives}}
+            {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
+
 
             {{> filter_createdBy showMineOnly=query.mineOnly}}
 

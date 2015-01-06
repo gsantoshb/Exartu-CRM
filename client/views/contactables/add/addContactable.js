@@ -92,9 +92,18 @@ Template.addContactablePage.helpers({
     return extraInformation;
   },
   getPhoneTypes: function () {
-    return LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: Enums.lookUpAction.ContactMethod_Phone}).map(function(type) {
-      return {text: type.displayName, id: type._id};
-    });
+    return LookUps.find(
+      {
+        lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+        lookUpActions: { $in: [
+          Enums.lookUpAction.ContactMethod_Phone,
+          Enums.lookUpAction.ContactMethod_MobilePhone,
+          Enums.lookUpAction.ContactMethod_WorkPhone,
+          Enums.lookUpAction.ContactMethod_HomePhone
+        ]}
+      }).map(function (type) {
+        return {text: type.displayName, id: type._id};
+      });
   },
   getDefaultPhoneType: function () {
     // it depends on what contactable type is being created
@@ -106,6 +115,9 @@ Template.addContactablePage.helpers({
     }
 
     var type = LookUps.findOne({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: lookUpAction});
+    // if the lookup for the specific lookupAction is not found, use the default email type
+    if (!type)
+      type = LookUps.findOne({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: Enums.lookUpAction.ContactMethod_Phone});
     phoneType = type._id;
 
     return function (e, cb) {
@@ -118,9 +130,13 @@ Template.addContactablePage.helpers({
     }
   },
   getEmailTypes: function () {
-    return LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: Enums.lookUpAction.ContactMethod_Email}).map(function(type) {
-      return {text: type.displayName, id: type._id};
-    });
+    return LookUps.find(
+      {
+        lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+        lookUpActions: { $in: [Enums.lookUpAction.ContactMethod_Email, Enums.lookUpAction.ContactMethod_WorkEmail, Enums.lookUpAction.ContactMethod_PersonalEmail ]}
+      }).map(function (type) {
+        return {text: type.displayName, id: type._id};
+      });
   },
   getDefaultEmailType: function () {
     // it depends on what contactable type is being created
@@ -132,6 +148,10 @@ Template.addContactablePage.helpers({
     }
 
     var type = LookUps.findOne({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: lookUpAction});
+    // if the lookup for the specific lookupAction is not found, use the default email type
+    if (!type)
+      type = LookUps.findOne({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions: Enums.lookUpAction.ContactMethod_Email});
+
     emailType = type._id;
 
     return function (e, cb) {

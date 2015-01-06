@@ -51,12 +51,6 @@ JobsController = RouteController.extend({
       creationDateQuery.default = this.params.creationDate;
     }
 
-    // Inactive
-    var inactiveQuery = { type: Utils.ReactivePropertyTypes.boolean };
-    if (this.params.inactives) {
-      inactiveQuery.default = !! this.params.inactives;
-    }
-
     // Mine only
     var mineQuery = { type: Utils.ReactivePropertyTypes.boolean };
     if (this.params.mine) {
@@ -88,17 +82,26 @@ JobsController = RouteController.extend({
     }
 
     // Status
-    var statusQuery = {};
+    var statusQuery = {type: Utils.ReactivePropertyTypes.array};
     if (this.params.status) {
       statusQuery.default = this.params.status;
     }
+
+    var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
+    if (this.params.activeStatus) {
+      activeStatusQuery.default = this.params.activeStatus.split(',');
+    }
+    else
+    {
+      activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
+    };
 
     query = new Utils.ObjectDefinition({
       reactiveProps: {
         objType: objTypeQuery,
         searchString: searchStringQuery,
         selectedLimit: creationDateQuery,
-        inactives: inactiveQuery,
+        activeStatus:activeStatusQuery,
         mineOnly: mineQuery,
         tags: tagsQuery,
         location: locationQuery,
@@ -194,9 +197,7 @@ Template.jobList.created= function () {
     }
 
 
-    if (query.inactives.value) {
-      urlQuery.addParam('inactives', true);
-    }
+
 
     //Created by
     if (query.mineOnly.value) {
@@ -246,9 +247,15 @@ Template.jobList.created= function () {
         searchQuery.$and.push(locationOR);
     }
 
-    // Status filter
-    if (query.status.value){
-      searchQuery.$and.push({status: query.status.value});
+    if (!_.isEmpty(query.activeStatus.value)){
+      searchQuery.activeStatus={$in: query.activeStatus.value};
+
+      urlQuery.addParam('activeStatus', query.activeStatus.value);
+    }
+
+    if (!_.isEmpty(query.status.value)){
+      searchQuery.status={$in: query.status.value};
+
       urlQuery.addParam('status', query.status.value);
     }
 

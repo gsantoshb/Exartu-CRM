@@ -230,7 +230,6 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
       { field: 'department', displayName: 'department'},
       { field: 'status', displayName: 'status', displayValue: function (statusId) {
         var status = LookUps.findOne(statusId);
-        console.log('status changed ', status.displayName);
         return status.displayName;
       }},
       { field: 'workerCompCode', displayName: 'Comp code'}
@@ -391,10 +390,8 @@ Placements.after.insert(function (userId, doc) {
   if (placementStatus) {
     if (_.contains(placementStatus.lookUpActions, Enums.lookUpAction.Placement_Assigned)) {
       type = Enums.activitiesType.placementAdd;
-      console.log('placementAdd')
     } else if (_.contains(placementStatus.lookUpActions, Enums.lookUpAction.Placement_Candidate)) {
       type = Enums.activitiesType.candidateAdd;
-      console.log('candidateAdd')
 
     }
   }

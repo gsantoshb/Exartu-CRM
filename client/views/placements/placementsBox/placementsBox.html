@@ -25,9 +25,10 @@
         </a>
 
         <div class="filter-list" id="filter-body">
-            {{> filter_lookUp code=10 lookUpValue=query.statuses multi=true}}
+            {{> filter_lookUp title="Process status" code=10 lookUpValue=query.statuses multi=true}}
 
-            {{> filter_inactive showInactive=query.inactives}}
+            {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
+
 
             {{> filter_createdDate selectedLimit=query.selectedLimit}}
 
@@ -84,10 +85,9 @@
                                 {{/if}}
                                 {{#each this.placementRates}}
                                     {{getRateTypeDisplayName}}
+                                    {{bill}}/{{pay}}
 
-                                    {{pay}}
-                                    /
-                                    {{bill}}
+
                                     <br/>
                                 {{/each}}
 
@@ -120,21 +120,17 @@
                                         {{employeeDisplayName}} - {{jobDisplayName}} - {{customerDisplayName}}
                                     </strong>
                                 </a>
-
-                                <br/>
-                                <small class="text-muted" style="font-size: 12px; visibility: hidden">
+                            </div>
+                            <div>
+                                <span>
                                     <a href="/contactable/{{employee}}"> employee </a>
                                     <span class="bullet-spacer">·</span>
                                     <a href="/job/{{job}}"> job </a>
                                     <span class="bullet-spacer">·</span>
                                     <a href="/contactable/{{customerId}}"> customer </a>
-                                </small>
-                                                        <span class="badge">
-                                                            {{lookUpName status}}
-                                                        </span>
-                        <span class="badge">
-                            {{lookUpName activeStatus}}
-                        </span>
+                                </span>
+                                <span class="badge">{{lookUpName candidateStatus}}</span><span
+                                    class="badge">{{lookUpName activeStatus}}</span>
                             </div>
                         </div>
                     </div>

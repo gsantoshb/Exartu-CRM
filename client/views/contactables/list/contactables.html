@@ -44,15 +44,16 @@
             {{> filter_entityType types=contactableTypes selected=query.objType}}
 
             {{#if isSelectedType 'Employee'}}
-                {{> filter_lookUp title="Process status" code=7 lookUpValue=query.processStatus multi=true}}
+                {{> filter_lookUp title="Process status" code=7 lookUpValue=query.employeeProcessStatus multi=true}}
             {{/if}}
             {{#if isSelectedType 'Contact'}}
-                {{> filter_lookUp title="Process status" code=12 lookUpValue=query.processStatus multi=true}}
+                {{> filter_lookUp title="Process status" code=12 lookUpValue=query.contactProcessStatus multi=true}}
             {{/if}}
             {{#if isSelectedType 'Customer'}}
-                {{> filter_lookUp title="Process status" code=14 lookUpValue=query.processStatus multi=true}}
+                {{> filter_lookUp title="Process status" code=14 lookUpValue=query.customerProcessStatus multi=true}}
             {{/if}}
-            {{> filter_inactive showInactive=query.inactives}}
+            {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
+
 
             {{> filter_createdDate selectedLimit=query.selectedLimit}}
 
@@ -202,12 +203,12 @@
                                     <strong class="text text-muted text-small">
                                         {{displayObjType}}
                                     </strong>
-								<span class="badge">
-                                    {{lookUpName getProcessStatus}}
-                                </span>
-                                    								<span class="badge">
-                                                                        {{lookUpName activeStatus}}
-                                                                    </span>
+                                    <span class="badge">
+                                        {{lookUpName getProcessStatus}}
+                                    </span>
+                                    <span class="badge">
+                                        {{lookUpName activeStatus}}
+                                    </span>
 
                                     <br/>
 

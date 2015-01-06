@@ -14,7 +14,7 @@ Template.contactableContactsBox.hasContacts = function() {
 };
 
 Template.contactableContactsBox.contacts = function() {
-  return Contactables.find({Contact: {$exists: true}});
+  return Contactables.find({'Contact.customer': this._id});
 };
 
 Template.contactableContactsBox.events = {
