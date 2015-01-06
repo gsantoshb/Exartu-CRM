@@ -12,7 +12,7 @@ Meteor.paginatedPublish(TenantView, function()
       _id: this.userId
     });
     if (!user)
-      return false;
+      return [];
     if (!RoleManager.bUserIsSystemAdmin(user))
       return null;
     return TenantView.find();

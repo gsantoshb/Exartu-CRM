@@ -63,7 +63,7 @@ TaskView = new View('tasks', {
 Meteor.paginatedPublish(TaskView, function () {
   var user = Meteor.users.findOne({ _id: this.userId });
   if (!user)
-    return false;
+    return [];
 
   return Utils.filterCollectionByUserHier.call(this, TaskView.find({}, { sort: { dateCreated: -1 } }));
 },{

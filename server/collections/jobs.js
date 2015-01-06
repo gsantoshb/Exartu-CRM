@@ -44,7 +44,7 @@ Meteor.paginatedPublish(JobView, function(){
   });
 
   if (!user)
-    return false;
+    return [];
 
   return Utils.filterCollectionByUserHier.call(this, JobView.find());
 }, {

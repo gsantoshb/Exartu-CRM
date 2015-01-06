@@ -36,7 +36,7 @@ Meteor.paginatedPublish(PlacementView, function(){
   });
 
   if (!user)
-    return false;
+    return [];
   return Utils.filterCollectionByUserHier.call(this, PlacementView.find());
 }, {
   pageSize: 10,

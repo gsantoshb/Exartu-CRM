@@ -64,7 +64,7 @@ _.extend( Utils, {
 
     var currentHier = Utils.getUserHierId(this.userId);
     if (!currentHier) {
-      return false;
+      return [];
     }
 
     var hierarchiesQuery = {

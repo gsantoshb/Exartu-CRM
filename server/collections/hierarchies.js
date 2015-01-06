@@ -1,7 +1,7 @@
 Meteor.publish('hierarchies', function() {
   var user = Meteor.users.findOne(this.userId);
   if (!user)
-    return false;
+    return [];
 
   var userHierarchies = [];
   _.forEach( user.hierarchies, function (hierarchy) {
