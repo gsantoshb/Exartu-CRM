@@ -12,12 +12,12 @@ Router.configure({
 });
 
 var OnBeforeActions = {
-  loginRequired: function(pause) {
+  loginRequired: function() {
     if (!Meteor.userId()) {
       this.render('login');
-      //return pause();
+    }else{
+      this.next();
     }
-    this.next();
   }
 };
 
