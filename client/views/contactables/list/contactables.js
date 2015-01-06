@@ -1,6 +1,6 @@
 var query = {};
 var selected = undefined;
-
+//lookUpsHandler;
 ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
@@ -8,7 +8,7 @@ ContactablesController = RouteController.extend({
     if (!SubscriptionHandlers.AuxContactablesHandler){
       SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
     }
-    return [SubscriptionHandlers.AuxContactablesHandler, Meteor.subscribe('lookUps')];
+    return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler];
   },
   action: function () {
     if (!this.ready()) {
