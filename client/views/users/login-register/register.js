@@ -51,7 +51,7 @@ AutoForm.hooks({
           console.log(err);
           error.set(err.reason);
         } else if (!result) {
-          error.set(err.reason);
+          error.set('Email is already in use by another account');
         } else {
           self.resetForm();
           isRegistering.set(false);
