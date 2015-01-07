@@ -9,13 +9,16 @@ Template.contactableContactsBox.created = function () {
   }
   ContactablesHandler = SubscriptionHandlers.ContactablesHandler;
 };
-Template.contactableContactsBox.hasContacts = function() {
-  return _.isObject(this.Customer);
-};
 
-Template.contactableContactsBox.contacts = function() {
-  return Contactables.find({'Contact.customer': this._id});
-};
+Template.contactableContactsBox.helpers({
+  hasContacts: function () {
+    return _.isObject(this.Customer);
+  },
+
+  contacts: function () {
+    return Contactables.find({'Contact.customer': this._id});
+  }
+});
 
 Template.contactableContactsBox.events = {
   'click .addContact': function () {

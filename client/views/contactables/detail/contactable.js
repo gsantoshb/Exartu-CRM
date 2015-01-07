@@ -58,6 +58,7 @@ Template.contactable.helpers({
   collection: function () {
     return Contactables;
   },
+
   // Counters
   documentCount: function () {
     return ContactablesFS.find({'metadata.entityId': Session.get('entityId')}).count() + Resumes.find({employeeId: Session.get('entityId')}).count()
@@ -67,6 +68,11 @@ Template.contactable.helpers({
   },
   jobCount: function () {
     return Jobs.find({'customer': Session.get('entityId')}).count();
+  },
+
+  currentTemplate: function () {
+    var selected = _.findWhere(tabs, {id: Session.get('activeTab')});
+    return selected && selected.template;
   }
 });
 
@@ -190,28 +196,26 @@ Template.contactable_header.helpers({
 });
 
 // Details
-
-Template.contactable_details.setNewAddress = function () {
-  var self = this;
-  return function (newAddress) {
-    Meteor.call('setContactableAddress', self._id, newAddress);
-  }
-};
-
-// Detail
 Template.contactable_details.helpers({
   collection: function () {
     return Contactables;
+  },
+
+  setNewAddress: function () {
+    var self = this;
+    return function (newAddress) {
+      Meteor.call('setContactableAddress', self._id, newAddress);
+    }
   }
 });
 
 // Tabs
-
 Template.contactable_nav.helpers({
   isActive: function (id) {
     return (id == Session.get('activeTab'))? 'active' : '';
   }
-})
+});
+
 var tabs;
 
 Template.contactable_nav.helpers({
@@ -250,8 +254,5 @@ Template.contactable_nav.helpers({
     return tabs;
   }
 });
-Template.contactable.currentTemplate = function () {
-var selected = _.findWhere(tabs ,{id: Session.get('activeTab')});
-  return selected && selected.template;
-};
+
 
