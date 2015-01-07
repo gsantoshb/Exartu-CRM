@@ -1,8 +1,10 @@
 // Entity type
-Template.filter_entityType.typeOptionClass = function(option) {
-  var selectedType = UI._parentData(1).selected;
-  return selectedType.value == option.name? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
-};
+Template.filter_entityType.helpers({
+  typeOptionClass: function (option) {
+    var selectedType = UI._parentData(1).selected;
+    return selectedType.value == option.name ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  }
+});
 
 Template.filter_entityType.events = {
   'click .typeSelect': function() {
@@ -18,18 +20,22 @@ Template.filter_entityType.events = {
 
 
 // LookUp
-Template.filter_lookUp.cb = function(){
-  var self = this;
-  return function(lookUpId){
-    self.lookUpValue.value = lookUpId;
+Template.filter_lookUp.helpers({
+  cb: function () {
+    var self = this;
+    return function (lookUpId) {
+      self.lookUpValue.value = lookUpId;
+    }
   }
-};
+});
 
 
 // Inactive
-Template.filter_inactive.showInactive = function() {
-  return this.showInactive.value ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
-};
+Template.filter_inactive.helpers({
+  showInactive: function () {
+    return this.showInactive.value ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  }
+});
 
 Template.filter_inactive.events = {
   'click #show-inactives': function() {
@@ -51,13 +57,15 @@ var setDateCreatedFilter = function(value) {
     this.selectedLimit.value = value;
 };
 
-Template.filter_createdDate.recentOptions = function() {
-  return timeLimits;
-};
+Template.filter_createdDate.helpers({
+  recentOptions: function () {
+    return timeLimits;
+  },
 
-Template.filter_createdDate.recentOptionClass = function(option) {
-  return this.selectedLimit.value == option? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
-};
+  recentOptionClass: function (option) {
+    return this.selectedLimit.value == option ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  }
+});
 
 Template.filter_createdDate.events = {
   'click #recent-day': function() {
@@ -110,9 +118,11 @@ Template.filter_tags.events = {
 
 
 // Created By
-Template.filter_createdBy.showMineOnly = function() {
-  return this.showMineOnly.value ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
-};
+Template.filter_createdBy.helpers({
+  showMineOnly: function () {
+    return this.showMineOnly.value ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  }
+});
 
 Template.filter_createdBy.events = {
   'click #show-mineOnly': function() {

@@ -294,27 +294,26 @@ Utils.getLocationDisplayName = function (location) {
 };
 
 
-Utils.getLinkTypeFromEntity=function(entity) {
+Utils.getLinkTypeFromEntity = function(entity) {
     var objNameArray=entity.objNameArray;
     if (objNameArray && objNameArray.length>0)
         return entity.objNameArray[objNameArray.length-1];
     return null;
-}
+};
 
-Utils.getHrefFromEntity=function(entity)
-{
+Utils.getHrefFromEntity = function(entity){
     var linktype=Utils.getLinkTypeFromEntity(entity);
-    if (linkType)
-    {
-        var link={};
-        link.type=linkType;
-        link.id=entity._id;
-        return Utils.getHrefFromLink(link);
+    if (linkType)    {
+      var link={};
+      link.type=linkType;
+      link.id=entity._id;
+      return Utils.getHrefFromLink(link);
 
     }
     return null;
-}
-Utils.getEntityFromLink=function(link){
+};
+
+Utils.getEntityFromLink = function(link){
   switch (link.type){
     case Enums.linkTypes.contactable.value:
       return Contactables.findOne({_id: link.id});
@@ -333,8 +332,9 @@ Utils.getEntityFromLink=function(link){
     case Enums.linkTypes.candidate.value:
         return Candidates.findOne({_id: link.id});
   }
-}
-Utils.getEntityFromLinkForAdd=function(link){
+};
+
+Utils.getEntityFromLinkForAdd = function(link){
   switch (link.type){
     case Enums.linkTypes.contactable.value:
       return AllContactables.findOne({_id: link.id});
@@ -347,10 +347,10 @@ Utils.getEntityFromLinkForAdd=function(link){
     case Enums.linkTypes.candidate.value:
         return AllPlacements.findOne({_id: link.id});
   }
-}
+};
 
 
-Utils.getCollectionFromEntity=function(entity) {
+Utils.getCollectionFromEntity = function(entity) {
   var strtype=Utils.getLinkTypeFromEntity(entity);
   if ($.inArray(strtype, ['Employee','Contact','Customer','contactable'])!=-1) return Contactables;
   if ($.inArray(strtype, ['Job','job'])!=-1) return Jobs;
@@ -359,7 +359,7 @@ Utils.getCollectionFromEntity=function(entity) {
   if ($.inArray(strtype, ['Candidate','candidate'])!=-1) return Candidates;
 }
 
-Utils.getCollectionFromType=function(type){
+Utils.getCollectionFromType = function(type){
   switch (type) {
     case Enums.linkTypes.contactable.value:
       return ContactablesFS;
@@ -374,9 +374,9 @@ Utils.getCollectionFromType=function(type){
     default :
       return [];
   }
-}
+};
 
-Utils.getHrefFromLink=function(link){
+Utils.getHrefFromLink = function(link){
   switch (link.type){
     case Enums.linkTypes.contactable.value:
       return '/contactable/'+ link.id;
@@ -392,7 +392,7 @@ Utils.getHrefFromLink=function(link){
 };
 
 
-Utils.toReactiveObject=function(addModel, obj){
+Utils.toReactiveObject = function(addModel, obj){
   var reactiveObj={
     _id: obj._id,
     reactiveProps: {}
@@ -407,7 +407,7 @@ Utils.toReactiveObject=function(addModel, obj){
 
       }
     })
-  })
+  });
   _.each(addModel.subTypes,function(subType){
     path=subType.name + '.';
     object=obj[subType.name];
@@ -418,13 +418,13 @@ Utils.toReactiveObject=function(addModel, obj){
         }
       })
     })
-  })
+  });
 
   _.extend(reactiveObj.reactiveProps, props);
   return reactiveObj;
-}
+};
 
-var getDefinitionFromField=function(field, obj, path){
+var getDefinitionFromField = function(field, obj, path){
   var type;
   switch (field.fieldType){
     case 'string':
@@ -446,7 +446,7 @@ var getDefinitionFromField=function(field, obj, path){
     default: obj[field.name],
     update: path+ field.name,
     type: type
-  }
+  };
   if(type==Utils.ReactivePropertyTypes.lookUp){
     var displayName=obj[field.name+'Name'];
     var lookup=LookUps.findOne({_id: obj[field.name]});
@@ -459,14 +459,13 @@ var getDefinitionFromField=function(field, obj, path){
   }
   return result;
 };
-Utils.getLookUpsByCode=function(code)
-{
+
+Utils.getLookUpsByCode = function(code){
     LookUps.find({lookUpCode: code, inactive: {$ne: true}}, { sort: {displayName: 1} });
 };
 
-Utils.getEntityTypeFromRouter=function()
-{
-  switch (Router.current().route.name) {
+Utils.getEntityTypeFromRouter = function(){
+  switch (Router.current().route.getName()) {
     case 'contactable':
       return Enums.linkTypes.contactable.value;
       break;
@@ -483,7 +482,7 @@ Utils.getEntityTypeFromRouter=function()
     default :
       return null;
   }
-}
+};
 
 
 Utils.getContactableType = function(entity) {
@@ -523,10 +522,12 @@ Utils.showModal = function (templateName) {
     modal.remove();
   });
 };
+
 Utils.dismissModal = function () {
   $('.modal-host').children().modal('toggle');
 };
-Utils.getContactableType= function(obj) {
+
+Utils.getContactableType = function(obj) {
   if (obj.Customer)
     return 'Customer';
   if (obj.Employee && obj.Contact)
@@ -538,7 +539,7 @@ Utils.getContactableType= function(obj) {
 };
 
 
-Utils.setDecimal= function(rate) {
+Utils.setDecimal = function(rate) {
   var drate = parseFloat(rate).toFixed(2);
   if (drate==null || isNaN(drate)) drate=0;
   return drate;
@@ -561,6 +562,7 @@ Utils.contactMethodTypeIcon = function(type) {
   
   return 'fa fa-comment-o';
 };
+
 Utils.contactMethodTypePrefix = function(type) {
   var contactMethod = LookUps.findOne({ _id: type, lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode });
 
@@ -574,6 +576,7 @@ Utils.contactMethodTypePrefix = function(type) {
 
   return '';
 };
+
 Utils.users =function(){
   return Meteor.users.find({});
 };

@@ -54,13 +54,11 @@ Router.map(function () {
 
   this.route('addContactablePage', {
     path: '/contactableAdd/:objType',
-    controller: 'ContactableAddController',
-    waitOn: [dType.ObjTypesHandler]
+    controller: 'ContactableAddController'
   });
   this.route('addJobPage', {
     path: '/jobAdd/:objType',
-    controller: 'JobAddController',
-    waitOn: [dType.ObjTypesHandler]
+    controller: 'JobAddController'
   });
 
   this.route('jobs', {
@@ -83,8 +81,7 @@ Router.map(function () {
 
     this.route('addDealPage', {
         path: '/dealAdd/:objType',
-        controller: 'DealAddController',
-        waitOn: [dType.ObjTypesHandler]
+        controller: 'DealAddController'
     });
 
     this.route('deal', {
@@ -152,8 +149,7 @@ Router.map(function () {
 
   this.route('addPlacementPage', {
       path: '/placementAdd/:objType',
-      controller: 'PlacementAddController',
-      waitOn: [dType.ObjTypesHandler]
+      controller: 'PlacementAddController'
   });
 
   this.route('placement', {
@@ -188,7 +184,6 @@ Router.map(function () {
   this.route('resumeParser', {
     path: '/resumeparser',
     controller: 'ResumeParserController'
-//    plans: [SubscriptionPlan.plansEnum.enterprise]
   });
 
   this.route('planLimitation', {
@@ -275,10 +270,10 @@ Deps.autorun(function () {
   var current = Router.current();
   if (current){
     // prevent scroll up when navigating with tabs
-    if(lastRoute == current.route.name && lastParam == current.params._id){
+    if(lastRoute == current.route.getName() && lastParam == current.params._id){
       return
     }
-    lastRoute = current.route.name;
+    lastRoute = current.route.getName();
     lastParam = current.params._id;
   }
   Deps.afterFlush(function () {

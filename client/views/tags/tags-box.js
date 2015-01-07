@@ -2,63 +2,53 @@ var objdef = {};
 var self={};
 var coll=null;
 Utils.reactiveProp(self, 'editMode', false);
+
 Template.tagsBox.created=function(){
   self.editMode=false;
-}
-Template.tagsBox.tags = function() {
-  coll=Utils.getCollectionFromEntity(this);
-  if (!_.isArray(this.tags)) this.tags=[];
-  objdef = new Utils.ObjectDefinition({
+};
 
-    reactiveProps: {
-      tags: {
-        type: Utils.ReactivePropertyTypes.array,
-        default: this.tags,
-        cb: {
-          onInsert: function(newValue) {
-            coll.update({ _id: objdef._id}, {$addToSet: {tags: newValue}});
-            GAnalytics.event("/objdef", "tags", "add");
-          },
-          onRemove: function(value) {
-            coll.update({ _id: objdef._id}, {$pull: {tags: value}});
+Template.tagsBox.helpers({
+  tags: function () {
+    coll = Utils.getCollectionFromEntity(this);
+    if (!_.isArray(this.tags)) this.tags = [];
+    objdef = new Utils.ObjectDefinition({
+
+      reactiveProps: {
+        tags: {
+          type: Utils.ReactivePropertyTypes.array,
+          default: this.tags,
+          cb: {
+            onInsert: function (newValue) {
+              coll.update({_id: objdef._id}, {$addToSet: {tags: newValue}});
+              GAnalytics.event("/objdef", "tags", "add");
+            },
+            onRemove: function (value) {
+              coll.update({_id: objdef._id}, {$pull: {tags: value}});
+            }
           }
         }
-      }
-    },
-    _id: this._id
-  });
-  return objdef.tags;
-};
+      },
+      _id: this._id
+    });
+    return objdef.tags;
+  },
 
-Template.tagsBox.editMode = function() {
-  return self.editMode;
-};
+  editMode: function () {
+    return self.editMode;
+  },
 
-Template.tagsBox.editModeColor = function() {
-  return self.editMode? '#008DFC' : '';
-}
+  editModeColor: function () {
+    return self.editMode ? '#008DFC' : '';
+  },
 
-Template.tagsBox.hasTags = function() {
-  return _.isArray(this.tags);
-};
+  hasTags: function () {
+    return _.isArray(this.tags);
+  },
 
-Template.tagsBox.isEmptyTags = function() {
-  return _.isEmpty(objdef.tags.value);
-};
-
-var addTag = function() {
-  var inputTag = $('#new-tag')[0];
-
-  if (!inputTag.value)
-    return;
-
-  if (_.indexOf(objdef.tags.value, inputTag.value) != -1)
-    return;
-
-  objdef.tags.insert(inputTag.value);
-  inputTag.value = '';
-  inputTag.focus();
-}
+  isEmptyTags: function () {
+    return _.isEmpty(objdef.tags.value);
+  }
+});
 
 Template.tagsBox.events = {
   'click .add-tag': function() {
@@ -80,3 +70,17 @@ Template.tagsBox.events = {
     self.editMode = ! self.editMode;
   }
 };
+
+var addTag = function() {
+  var inputTag = $('#new-tag')[0];
+
+  if (!inputTag.value)
+    return;
+
+  if (_.indexOf(objdef.tags.value, inputTag.value) != -1)
+    return;
+
+  objdef.tags.insert(inputTag.value);
+  inputTag.value = '';
+  inputTag.focus();
+}

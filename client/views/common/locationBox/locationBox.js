@@ -64,8 +64,9 @@ LocationSchema = new SimpleSchema({
 var location = {};
 Utils.reactiveProp(location, 'value', null);
 
-Template.locationBox.helpers({
-  created: function () {
+
+
+Template.locationBox.created = function () {
     var self = this;
     location.value = self.data.location;
 
@@ -74,8 +75,8 @@ Template.locationBox.helpers({
         onSubmit: function(newAddress) {
           // Check whether the address was set manually or using google autocomplete
           var manuallySet = !location.value || _.some(['address', 'city', 'state', 'country', 'postalCode'], function (fieldName) {
-            return location.value[fieldName] != newAddress[fieldName];
-          });
+              return location.value[fieldName] != newAddress[fieldName];
+            });
 
           // Extend address if it was created with google autocomplete
           if (! manuallySet && location.value.lat)
@@ -94,7 +95,10 @@ Template.locationBox.helpers({
         }
       }
     });
-  },
+};
+
+Template.locationBox.helpers({
+
   location: function() {
     return location;
   },
