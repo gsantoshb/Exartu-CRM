@@ -370,8 +370,10 @@ Template.contactablesList.created = function() {
     // If Elasticsearch is being used to search then use its result length as contactableCount
     if (query.searchString.value)
       Session.set('contactableCount', esResult.length);
-    else
-      Session.set('contactableCount', SubscriptionHandlers.AuxContactablesHandler.totalCount());
+    else {
+      if (SubscriptionHandlers && SubscriptionHandlers.AuxContactablesHandler)
+        Session.set('contactableCount', SubscriptionHandlers.AuxContactablesHandler.totalCount());
+    }
   });
 };
 

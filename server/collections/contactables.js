@@ -162,7 +162,7 @@ Contactables.before.insert(function (userId, doc) {
   doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();
   if (!doc.activeStatus) doc.activeStatus=LookUpManager.getActiveStatusDefaultId();
-
+  console.log('doc',doc.dateCreated,doc);
   if (doc.organization)
   {
     doc.displayName= doc.organization.organizationName;
