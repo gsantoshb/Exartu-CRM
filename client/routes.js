@@ -149,8 +149,7 @@ Router.map(function () {
 
   this.route('addPlacementPage', {
       path: '/placementAdd/:objType',
-      controller: 'PlacementAddController',
-      waitOn: [dType.ObjTypesHandler]
+      controller: 'PlacementAddController'
   });
 
   this.route('placement', {
@@ -185,7 +184,6 @@ Router.map(function () {
   this.route('resumeParser', {
     path: '/resumeparser',
     controller: 'ResumeParserController'
-//    plans: [SubscriptionPlan.plansEnum.enterprise]
   });
 
   this.route('planLimitation', {
