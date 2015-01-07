@@ -69,7 +69,7 @@ AutoForm.hooks({
           Meteor.call('userLoginActivity');
           notVerified.set(false);
           GAnalytics.event("account","signin");
-          if (Router.current().route.name === 'login') {
+          if (Router.current().route.getName() === 'login') {
             return Router.go('/');
           }
         }

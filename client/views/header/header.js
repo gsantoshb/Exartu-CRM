@@ -291,7 +291,7 @@ Template.sidebar.helpers({
     if (!current) return '';
 
     var currentType = current.params.type;
-    var currentRoute = current.route.name;
+    var currentRoute = current.route.getName();
 
     if (currentRoute == route && (type == currentType)){
       return 'active'

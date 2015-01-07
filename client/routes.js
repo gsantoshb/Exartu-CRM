@@ -270,10 +270,10 @@ Deps.autorun(function () {
   var current = Router.current();
   if (current){
     // prevent scroll up when navigating with tabs
-    if(lastRoute == current.route.name && lastParam == current.params._id){
+    if(lastRoute == current.route.getName() && lastParam == current.params._id){
       return
     }
-    lastRoute = current.route.name;
+    lastRoute = current.route.getName();
     lastParam = current.params._id;
   }
   Deps.afterFlush(function () {

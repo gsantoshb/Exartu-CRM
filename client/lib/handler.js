@@ -9,7 +9,7 @@ Meteor.autorun(function () {
 
   if (!route) return;
 
-  var name = route.route.name;
+  var name = route.route.getName();
 
   if (name != lastName){
     lastName = name;
