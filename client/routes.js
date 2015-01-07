@@ -54,13 +54,11 @@ Router.map(function () {
 
   this.route('addContactablePage', {
     path: '/contactableAdd/:objType',
-    controller: 'ContactableAddController',
-    waitOn: [dType.ObjTypesHandler]
+    controller: 'ContactableAddController'
   });
   this.route('addJobPage', {
     path: '/jobAdd/:objType',
-    controller: 'JobAddController',
-    waitOn: [dType.ObjTypesHandler]
+    controller: 'JobAddController'
   });
 
   this.route('jobs', {
@@ -83,8 +81,7 @@ Router.map(function () {
 
     this.route('addDealPage', {
         path: '/dealAdd/:objType',
-        controller: 'DealAddController',
-        waitOn: [dType.ObjTypesHandler]
+        controller: 'DealAddController'
     });
 
     this.route('deal', {
