@@ -206,36 +206,6 @@ Template.linksAutoForm.created = function () {
 }
 
 Template.linksAutoForm.helpers({
-  //created: function () {
-  //  var self = this;
-  //  var ctx = Template.parentData(1);
-  //
-  //  var initialLink = {
-  //    id: ctx._id,
-  //    type: Utils.getEntityTypeFromRouter()
-  //  };
-  //
-  //  self.data.links = self.data.value || [initialLink];
-  //  self.data.typeDep = new Tracker.Dependency();
-  //  self.data.linkedDep = new Tracker.Dependency();
-  //
-  //  Meteor.subscribe('allContactables');
-  //  Meteor.subscribe('allJobs');
-  //  Meteor.subscribe('allPlacements');
-  //
-  //  if (self.data.value)
-  //    return; // Don't reset form on edit mode
-  //
-  //  // TODO: Find another way to reset links when form is submitted
-  //  var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
-  //  formTemplate.template.events({
-  //    'reset form': function () {
-  //      self.data.links = [initialLink];
-  //      self.data.linkedDep.changed();
-  //    }
-  //  });
-  //  isEditing.set(false);
-  //},
   links: function () {
     this.linkedDep.depend();
     return this.links;
