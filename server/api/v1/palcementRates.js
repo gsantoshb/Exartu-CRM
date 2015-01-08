@@ -20,7 +20,7 @@ Router.map(function() {
         // Parameters:
         //  - placementId: string
         case 'GET':
-          var placementId = this.params.placementId;
+          var placementId = this.params.query.placementId;
           try {
             var res = connection.call('getPlacementRates', placementId);
 
@@ -41,7 +41,7 @@ Router.map(function() {
         //  - bill: string (number)
         //  - pay: string (number)
         case 'POST':
-          var data = this.request.body;
+          var data = this.request.bodyFields;
           try {
             var rateInfo = mapper.create(data);
             connection.call('addPlacementRate', rateInfo);
