@@ -138,9 +138,8 @@ Template.job_details.helpers({
     return jobCollections.findOne({ _id: Session.get('entityId') });
   },
   setNewAddress: function () {
-    var self = this;
     return function (newAddress) {
-      Meteor.call('setJobAddress', self._id, newAddress);
+      Meteor.call('setJobAddress', Session.get('entityId'), newAddress);
     }
   },
   getCustomer: function () {
