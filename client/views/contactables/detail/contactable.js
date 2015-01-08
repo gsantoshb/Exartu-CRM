@@ -193,7 +193,6 @@ Template.contactable_header.helpers({
 
 Template.contactable_details.setNewAddress = function () {
   return function (newAddress) {
-		console.log(Session.get('entityId'));
       Meteor.call('setContactableAddress', Session.get('entityId'), newAddress);
   }
 };
