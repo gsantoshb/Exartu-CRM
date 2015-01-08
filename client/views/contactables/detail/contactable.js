@@ -203,7 +203,6 @@ Template.contactable_details.helpers({
 
   setNewAddress: function () {
     return function (newAddress) {
-		console.log(Session.get('entityId'));
       Meteor.call('setContactableAddress', Session.get('entityId'), newAddress);
     }
   }
