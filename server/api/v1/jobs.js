@@ -20,7 +20,7 @@ Router.map(function() {
         // Parameters:
         //  - customerId: string
         case 'GET':
-          var customerId = this.params.customerId;
+          var customerId = this.params.query.customerId;
           try {
             var res = connection.call('getJobs', customerId);
 
@@ -43,7 +43,7 @@ Router.map(function() {
         //  - durationId: string ?
         //  - statusId: string ?
         case 'POST':
-          var data = this.request.body;
+          var data = this.request.bodyFields;
           try {
             var jobInfo = mapper.create(data);
             var jobId = connection.call('addJob', jobInfo);

@@ -38,10 +38,10 @@ Router.map(function() {
 		action: function() {
 			console.log('API v' + api_version + '/twwpapi ' + this.request.method);
 
-      if (this.request.body){
+      if (this.request.bodyFields){
         var loginData = {
-          email : this.request.body.userEmail,
-          password : this.request.body.userPassword
+          email : this.request.bodyFields.userEmail,
+          password : this.request.bodyFields.userPassword
         };
         var userData = RESTAPI.loginAction(loginData);
 
@@ -65,8 +65,8 @@ var contactablesAPIAction = function(type, userdata) {
 
 	switch(this.request.method) {
 		case 'GET':
-			if (this.params.id)
-				response.end(mapper.get(Contactables.findOne({_id: this.params.id, objNameArray: type, hierId: user.hierId}), type), {type: 'application/json'});
+			if (this.params.query.id)
+				response.end(mapper.get(Contactables.findOne({_id: this.params.query.id, objNameArray: type, hierId: user.hierId}), type), {type: 'application/json'});
 			else
 				response.end(Contactables.find({objNameArray: type, hierId: user.hierId}).map(function(contactable) {return mapper.get(contactable, type);}), {type: 'application/json'});
 		 	break;
@@ -83,7 +83,7 @@ var contactablesAPIAction = function(type, userdata) {
 		// 	 - department: string (optional)
 		// 	 - externalId: string (optional)
 		case 'POST':
-			var data = this.request.body;
+			var data = this.request.bodyFields;
 			var contactable = mapper.create(data, type);
 
 			try {
