@@ -213,11 +213,11 @@ Template.addEditTask.events({
     taskUpdate();
   },
   'change.dp .begin>.date': function (e, ctx) {
-    task.begin = $(e.currentTarget).data().datetimepicker.date;
+    task.begin = $(e.currentTarget).data().date;
     taskUpdate();
   },
   'change.dp .end>.date': function (e, ctx) {
-    task.end = $(e.currentTarget).data().datetimepicker.date;
+    task.end = $(e.currentTarget).data().date;
     taskUpdate();
   },
   'change .isCompleted': function (e) {
