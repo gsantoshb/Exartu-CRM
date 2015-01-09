@@ -91,7 +91,7 @@ UserManager = {
       //var userId = Accounts.createUser({ username: document.username, email: document.email, password: document.password });
 
       var user = {
-        email: document.email,
+        email: document.email.toLowerCase(),
         password: document.password,
         roles: []
       };
@@ -108,7 +108,7 @@ UserManager = {
       if (!skipEmailVerification) {
         Accounts.sendVerificationEmail(userId);
       } else {
-        Meteor.users.update({_id: userId, 'emails.address':  document.email}, {$set: { 'emails.$.verified':  true}});
+        Meteor.users.update({_id: userId, 'emails.address':  document.email.toLowerCase()}, {$set: { 'emails.$.verified':  true}});
       }
 
       return userId;
@@ -121,7 +121,7 @@ UserManager = {
 
     var userInvitation = {
       hierId: hier._id,
-      email: user.email,
+      email: user.email.toLowerCase(),
       hierName: hier.configuration.title,
       createdAt: new Date(),
       sentBy: Meteor.userId()
@@ -132,7 +132,8 @@ UserManager = {
     userInvitation.token = shortId.generate();
 
     // Insert user invitation
-    UserInvitations.insert(userInvitation);
+	if(!UserInvitations.findOne({email: userInvitation.email}))
+      UserInvitations.insert(userInvitation);
 
     // Check whether the user exist or we need to invite him
     var invitedUser = Meteor.users.findOne({'emails.address': userInvitation.email});
