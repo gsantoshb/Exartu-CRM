@@ -108,9 +108,9 @@ Template.addDocumentForm.events = {
 
     // Get extension
     var extension;
-    var splittedName = document.file.name.split('.');
-    if (splittedName.length > 1)
-      extension = splittedName[splittedName.length - 1];
+    var splitName = document.file.name.split('.');
+    if (splitName.length > 1)
+      extension = splitName[splitName.length - 1];
 
     var metadata = {
       entityId: Session.get('entityId'),
