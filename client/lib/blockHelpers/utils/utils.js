@@ -159,6 +159,12 @@ UI.registerHelper('displayUserName', function (id) {
   return isUnique ? localPart : user.emails[0].address;
 });
 
+// User name display
+UI.registerHelper('displaySearchKey', function (id) {
+  return ((id)? id: '').substr(0,4);
+});
+
+
 UI.registerHelper('displayHierName', function (hierid) {
   var hier=Hierarchies.findOne({_id:hierid});
   if (hier){

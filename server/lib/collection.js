@@ -24,8 +24,6 @@ Relations = new Mongo.Collection("relations");
 
 LookUps = new Mongo.Collection("lookUps");
 
-ContactMethods = new Mongo.Collection("contactMethods");
-
 Placements = new Mongo.Collection("placements");
 
 Candidates = new Mongo.Collection("candidates");

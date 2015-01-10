@@ -170,33 +170,33 @@ var extractInformation = function (parseResult) {
     if (ContactInfo && ContactInfo && ContactInfo.ContactMethod) {
       var contactMethod = ContactInfo.ContactMethod;
 
-      var phoneTypeId = ContactMethods.findOne({type: Enums.contactMethodTypes.phone})._id;
-      var emailTypeId = ContactMethods.findOne({type: Enums.contactMethodTypes.email})._id;
-      _.each(contactMethod, function (cm) {
-
-
-        if (cm.Telephone)
-          _.each(cm.Telephone, function (telephone) {
-            employee.contactMethods.push({
-              type: phoneTypeId,
-              value: telephone.FormattedNumber[0]
-            })
-          });
-
-        if (cm.Mobile)
-          _.each(cm.Mobile, function (telephone) {
-            employee.contactMethods.push({
-              type: phoneTypeId,
-              value: telephone.FormattedNumber[0]
-            })
-          });
-
-        if (cm.InternetEmailAddress) {
-          employee.contactMethods.push({
-            type: emailTypeId,
-            value: cm.InternetEmailAddress[0]
-          });
-        }
+      //var phoneTypeId = ContactMethods.findOne({type: Enums.contactMethodTypes.phone})._id;
+      //var emailTypeId = ContactMethods.findOne({type: Enums.contactMethodTypes.email})._id;
+      //_.each(contactMethod, function (cm) {
+      //
+      //
+      //  if (cm.Telephone)
+      //    _.each(cm.Telephone, function (telephone) {
+      //      employee.contactMethods.push({
+      //        type: phoneTypeId,
+      //        value: telephone.FormattedNumber[0]
+      //      })
+      //    });
+      //
+      //  if (cm.Mobile)
+      //    _.each(cm.Mobile, function (telephone) {
+      //      employee.contactMethods.push({
+      //        type: phoneTypeId,
+      //        value: telephone.FormattedNumber[0]
+      //      })
+      //    });
+      //
+      //  if (cm.InternetEmailAddress) {
+      //    employee.contactMethods.push({
+      //      type: emailTypeId,
+      //      value: cm.InternetEmailAddress[0]
+      //    });
+      //  }
         if (cm.PostalAddress) {
           var loc = cm.PostalAddress[0];
           employee.location = {
@@ -205,7 +205,7 @@ var extractInformation = function (parseResult) {
             postalCode: loc.PostalCode ? loc.PostalCode[0] : ''
           };
         }
-      });
+      //});
     }
   } catch (err) {
     console.log('Error while parsing ContactInfo');

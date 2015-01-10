@@ -386,12 +386,8 @@ var loadContactables = function (hierId) {
 
     ContactableManager.create(newEmployee);
   });
-var mobileContactMethod=
-    LookUps.findOne({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
-      lookUpActions: Enums.lookUpAction.ContactMethod_MobilePhone, hierId: hierId});
-  var emailContactMethod=
-      LookUps.findOne({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
-        lookUpActions: Enums.lookUpAction.ContactMethod_Email, hierId: hierId});
+  var mobileContactMethod=LookUpManager.ContactMethodTypes_MobilePhone();
+  var emailContactMethod=LookUpManager.ContactMethodTypes_Email();
 
   // Customers
   _.forEach(customers, function (data) {

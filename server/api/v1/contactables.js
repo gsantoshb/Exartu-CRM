@@ -147,34 +147,34 @@ var mapper = {
 			statusNote: data.status || ''
 		};
 
-    if(data.email){
-      var emailTypeId = ContactMethods.findOne({
-        hierId: ExartuConfig.TenantId,
-        type: Enums.contactMethodTypes.email
-      });
-      if (emailTypeId){
-        emailTypeId = emailTypeId._id;
-        contactable.contactMethods = [{
-          type: emailTypeId,
-          value: data.email
-        }]
-      }
-    }
-    if(data.phoneNumber){
-      var phoneTypeId = ContactMethods.findOne({
-        hierId: ExartuConfig.TenantId,
-        type: Enums.contactMethodTypes.phone
-      });
-
-      if (phoneTypeId){
-        phoneTypeId = phoneTypeId._id;
-        contactable.contactMethods = contactable.contactMethods || [];
-        contactable.contactMethods.push({
-          type: phoneTypeId,
-          value: data.phoneNumber
-        });
-      }
-    }
+    //if(data.email){
+    //  var emailTypeId = ContactMethods.findOne({
+    //    hierId: ExartuConfig.TenantId,
+    //    type: Enums.contactMethodTypes.email
+    //  });
+    //  if (emailTypeId){
+    //    emailTypeId = emailTypeId._id;
+    //    contactable.contactMethods = [{
+    //      type: emailTypeId,
+    //      value: data.email
+    //    }]
+    //  }
+    //}
+    //if(data.phoneNumber){
+    //  var phoneTypeId = ContactMethods.findOne({
+    //    hierId: ExartuConfig.TenantId,
+    //    type: Enums.contactMethodTypes.phone
+    //  });
+    //
+    //  if (phoneTypeId){
+    //    phoneTypeId = phoneTypeId._id;
+    //    contactable.contactMethods = contactable.contactMethods || [];
+    //    contactable.contactMethods.push({
+    //      type: phoneTypeId,
+    //      value: data.phoneNumber
+    //    });
+    //  }
+    //}
 
 		if (type == 'Contact') {
 			if (data.customerId)

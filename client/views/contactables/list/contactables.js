@@ -367,7 +367,9 @@ Template.contactablesList.created = function() {
   });
 
   Meteor.autorun(function () {
-    // If Elasticsearch is being used to search then use its result length as contactableCount
+    if (!SubscriptionHandlers.AuxContactablesHandler){
+      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+    }
     if (query.searchString.value)
       Session.set('contactableCount', esResult.length);
     else {
@@ -595,7 +597,6 @@ var runESComputation = function () {
 
     isSearching = true;
     searchDep.changed();
-
     Contactables.esSearch('.*' + query.searchString.value + '.*', filters,function(err, result) {
       if (!err) {
         esResult = _.map(result.hits, function(hit) {
