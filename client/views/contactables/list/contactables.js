@@ -12,10 +12,11 @@ ContactablesController = RouteController.extend({
   },
   action: function () {
     if (!this.ready()) {
+      console.log('hello action1',this.isFirstRun,this);
       this.render('loadingContactable');
       return;
     }
-
+    console.log('hello action2',this.isFirstRun,this);
     if (this.isFirstRun == false) {
       this.render();
       return;
@@ -46,11 +47,7 @@ ContactablesController = RouteController.extend({
       creationDateQuery.default = this.params.creationDate;
     }
 
-    // Status
-    var statusQuery = { type: Utils.ReactivePropertyTypes.boolean };
-    if (this.params.inactives) {
-      statusQuery.default = !! this.params.inactives;
-    }
+
 
     // Mine only
     var mineQuery = { type: Utils.ReactivePropertyTypes.boolean };
@@ -86,7 +83,7 @@ ContactablesController = RouteController.extend({
     if (this.params.taxId){
       taxId.default= this.params.taxId;
     }
-
+    console.log('processing customer status');
 
     var employeeProcessStatusQuery = { type: Utils.ReactivePropertyTypes.array };
     if ( this.params.employeeProcessStatus) {
@@ -115,7 +112,6 @@ ContactablesController = RouteController.extend({
         objType: objTypeQuery,
         searchString: searchStringQuery,
         selectedLimit: creationDateQuery,
-        inactives: statusQuery,
         mineOnly: mineQuery,
         tags: tagsQuery,
         location: locationQuery,
@@ -646,6 +642,7 @@ Template.contactablesFilters.helpers({
   },
     selectedType: function(typeName){
   //query.processStatus.value=[];
+      console.log('hello selectedType');
   if (query.objType.value =='Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
   if (query.objType.value =='Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
   if (query.objType.value =='Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
