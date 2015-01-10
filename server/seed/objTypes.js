@@ -443,7 +443,7 @@ newObjType({
   name: 'hotList',
   style: {
     icon: 'briefcase',
-    color: 'green'
+    color: 'blue'
   },
   objGroupType: Enums.objGroupType.hotList,
 //  services: ['messages', 'tasks', 'notes', 'tags'],

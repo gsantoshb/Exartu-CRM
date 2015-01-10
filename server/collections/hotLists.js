@@ -19,10 +19,6 @@ Meteor.paginatedPublish(HotListView, function()
   }, {
       pageSize: 10,
       publicationName: 'hotLists'
-  },
-  {
-  pageSize: 10,
-  publicationName: 'hotLists'
   }
 );
 
