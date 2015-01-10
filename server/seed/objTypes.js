@@ -438,3 +438,47 @@ newObjType({
 });
 
 
+newObjType({
+  collection: HotLists,
+  name: 'hotList',
+  style: {
+    icon: 'briefcase',
+    color: 'green'
+  },
+  objGroupType: Enums.objGroupType.hotList,
+//  services: ['messages', 'tasks', 'notes', 'tags'],
+  services: [],
+  fields: [
+    {
+      name: 'hotListName',
+      displayName: 'Name',
+      required: true,
+      showInAdd: true,
+      required: true
+    },
+    {
+      name: 'statusNote',
+      displayName: 'Status Note',
+      showInAdd: false,
+      required: false
+    },
+    {
+      name: 'objType',
+      displayName: 'Type',
+      showInAdd: true,
+      required: true
+    },
+
+    {
+      name: 'activeStatus',
+      displayName: 'Active Status',
+      fieldType: 'lookUp',
+      lookUpName: 'activeStatus',
+      lookUpCode: Enums.lookUpTypes.active.status.lookUpCode,
+      defaultValue: null,
+      showInAdd: false,
+      required: false
+    },
+
+  ]
+});

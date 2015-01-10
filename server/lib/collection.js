@@ -38,6 +38,8 @@ EmailTemplateMergeFields = new Mongo.Collection('emailTemplateMergeFields');
 Roles = new Mongo.Collection("roles");
 SystemAdmins = new Mongo.Collection("systemAdmins");
 Tenants=Hierarchies;
+
+HotLists=new Mongo.Collection("hotLists");
 Collections = {
   Hierarchies: Hierarchies,
   Jobs: Jobs,
@@ -56,5 +58,6 @@ Collections = {
   SystemConfigs: SystemConfigs,
   Roles: Roles,
   SystemAdmins: SystemAdmins,
-  Tenants: Hierarchies
+  Tenants: Hierarchies,
+  HotLists: HotLists
 };

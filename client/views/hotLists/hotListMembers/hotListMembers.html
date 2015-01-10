@@ -1,0 +1,138 @@
+<template name="hotListRates">
+    <div class="box">
+
+        <div class="box-header-2">
+            <a class="btn-action tip-top editRate pointer" data-original-title="Add HotList Rate" title="Edit" style="color: {{colorHotListRateEdit}}"><i class="fa fa-pencil"></i></a>            <div class="box-title">
+                HotList Rates
+            </div>
+        </div>
+        <div class="box-body" style="padding: 0 15px">
+            {{#if editMode}}
+                <!-- Edit mode -->
+                {{#if rates}}
+                    <!-- Edit the existing hotList rates -->
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <ul class="list-3 stripped ">
+                                {{#each rates}}
+                                <li class="row list-3-item">
+                                    <!-- Rate type -->
+                                    <div class="col-xs-12 col-md-4">
+                                        <label class="col-xs-4">Type:</label>
+                                        <div class="col-xs-8">
+                                            {{#with getType type}} {{displayName}} {{/with}}
+                                        </div>
+                                    </div>
+                                    <!-- Bill amount -->
+                                    <div class="col-xs-12 col-md-3">
+                                        <label class="col-xs-4">Bill:</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" step="any" class="form-control billRateInput" value="{{bill}}">
+                                        </div>
+                                    </div>
+                                    <!-- Pay amount -->
+                                    <div class="col-xs-12 col-md-3">
+                                        <label class="col-xs-4">Pay:</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" step="any" class="form-control payRateInput" value="{{pay}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-2">
+                                        <button class="btn btn-xs btn-default removeRate"><i class="fa fa-times"></i> remove </button>
+                                    </div>
+                                </li>
+                                {{/each}}
+                            </ul>
+
+                            <!-- Save & cancel buttons -->
+                            <div class="row" style="margin: 10px 0">
+                                <div class="pull-right">
+                                    <span class="btn btn-default cancelButtonRates">Cancel</span>
+                                    <span class="btn btn-info saveButtonRates">Save</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+
+            {{else}}
+                <!-- Display mode -->
+                {{#if rates}}
+                    <!-- Display the rates -->
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th class="col-xs-12 col-md-4"></th>
+                                    <th class="col-xs-12 col-md-2">Bill</th>
+                                    <th class="col-xs-12 col-md-2">Pay</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {{#each rates}}
+                                <tr>
+                                    <!-- Rate type -->
+                                    <td>
+                                        {{#with getType type}}
+                                        {{displayName}}
+                                        {{/with}}
+                                    </td>
+                                    <!-- Bill amount -->
+                                    <td><span class="billRateInput">{{round bill}}</span></td>
+                                    <!-- Pay amount -->
+                                    <td>{{round pay}}</td>
+                                </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {{/if}}
+            {{/if}}
+
+            <!-- New HotList Rate -->
+            <div class="row margin-top-15">
+                <div class="col-xs-12 col-md-12">
+                    <div class="well" style="margin-bottom: 15px">
+                        <div class="row">
+                            {{#if getAvailableType}}
+                                {{#autoForm id="AddHotListRate" schema="RateSchema" resetOnSuccess=true}}
+                                        <!-- Rate type -->
+                                        <div class="col-xs-12 col-md-4">
+                                            <label class="col-xs-3">Type</label>
+                                            <div class="col-xs-9">
+                                                {{> afFieldInput name='type' options=getAvailableType}}
+                                            </div>
+                                        </div>
+                                        <!-- Bill amount -->
+                                        <div class="col-xs-12 col-md-3">
+                                            <label class="col-xs-3">Bill</label>
+                                            <div class="col-xs-9">
+                                                {{> afFieldInput class='afDecimal' name='bill' step=1000000.00}}
+                                            </div>
+                                        </div>
+                                        <!-- Pay amount -->
+                                        <div class="col-xs-12 col-md-3">
+                                            <label class="col-xs-3">Pay</label>
+                                            <div class="col-xs-9">
+                                                {{> afFieldInput class='afDecimal' name='pay' step=1000000.00}}
+                                            </div>
+                                        </div>
+                                    <button class="btn btn-success pull-right"> Add </button>
+                                {{/autoForm}}
+                            {{else}}
+                                <center>
+                                    <small class="text-muted text-center"> All rate types have been set </small>
+                                </center>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
