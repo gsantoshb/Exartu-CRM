@@ -2,13 +2,18 @@
 
 seedHotLists = function(hierId) {
   var hotLists= [{
-      hotListName: 'Hotlist Example'
+      hotListName: 'Hotlist Example',
+      objNameArray: 	 ["hotList"],
+      objType: 'employee'
   }
   ];
-
-  //_.forEach(hotLists, function (data) {
-  //  var newHotList=data;
-  //  HotListManager.createHotList(data);
-  //});
+    _.forEach(hotLists, function (data) {
+        Meteor.call('addHotList', data, function (err, result) {
+            if (!err)
+                console.log("Hotlist created for demo")
+            else
+                console.log(err);
+        });
+    });
 };
 

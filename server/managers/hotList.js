@@ -4,7 +4,7 @@ var getPatternReplace = function (id) {
 };
 
 HotListManager = {
-  createHotList: function (hotlist) {
+  addHotList: function (hotlist) {
     return HotLists.insert(hotlist);
   }
 };
