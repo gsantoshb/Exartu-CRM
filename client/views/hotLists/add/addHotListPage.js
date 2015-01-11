@@ -31,7 +31,7 @@ HotListAddController = RouteController.extend({
 
 var model;
 var options;
-var employeeId;
+
 var sending = new ReactiveVar(false);
 
 var createHotList= function(objTypeName){
@@ -48,9 +48,7 @@ var createHotList= function(objTypeName){
 };
 
 Template.addHotListPage.helpers({
-  employeeId: function () {
-  return employeeId;
-  },
+
   model: function(){
     if (!model){
       model=createHotList(Session.get('objType'));
@@ -60,47 +58,7 @@ Template.addHotListPage.helpers({
   objTypeName: function(){
     return Session.get('objType');
   },
-  getEmployees:function() {
-    return function (string) {
-      var self = this;
 
-      if (_.isEmpty(string)) {
-        // Get last five customer used
-        Meteor.call('getLastUsed', Enums.lastUsedType.employee, function (err, result) {
-          if (err)
-            return console.log(err);
-
-          self.ready(_.map(result, function (employee) {
-              Utils.extendContactableDisplayName(employee);
-              return { id: employee._id, text: employee.displayName};
-            })
-          );
-        });
-      } else {
-        var employees = [];
-        var searchFields = ['person.firstName', 'person.lastName', 'person.middleName'];
-        var query = {
-          $or: _.map(searchFields, function(field) {
-            var aux = {};
-            aux[field] = {
-              $regex: '.*' + string + '.*',
-              $options: 'i'
-            };
-            return aux;
-          })
-        };
-        AllEmployees.find( query, { sort: { 'person.lastName' : 1 }}).forEach(function(doc) {
-          employees.push({ id: doc._id, text: doc.displayName + '      ['+ doc._id  + ']'  });
-        });
-        self.ready(employees);
-      }
-    };
-  },
-  selectEmployee: function () {
-    return function (selectedValue) {
-      employeeId = selectedValue;
-    }
-  },
   isSelected: function(id){
     return employeeId==id;
   },
@@ -117,8 +75,6 @@ Template.addHotListPage.events({
     }
     var obj = dType.buildAddModel(model);
 
-    if (options.job) obj.job=options.job;
-    obj.employee=employeeId;
     sending.set(true);
     Meteor.call('addHotList', obj, function(err, result){
       sending.set(false);
@@ -126,9 +82,6 @@ Template.addHotListPage.events({
         console.dir(err)
       }
       else{
-        // add employee to last used employees list
-        Meteor.call('setLastUsed', Enums.lastUsedType.employee, obj.employee);
-
         Router.go('/hotList/' + result);
       }
     });

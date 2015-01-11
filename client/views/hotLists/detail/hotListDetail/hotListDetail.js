@@ -47,19 +47,7 @@ Template.hotListDetail.helpers({
   isSelected:function(optionValue, currentValue){
     return optionValue == currentValue;
   },
-  location: function(){
-    var originalHotList = HotLists.findOne({ _id: Session.get('entityId') });
 
-    location.value= originalHotList && originalHotList.location;
-    return location;
-  },
-  datePickerOptions: function () {
-    return {
-      format: "D, MM dd, yyyy",
-      minViewMode: "days",
-      startView: "months"
-    }
-  },
   fetchOptions: function () {
     return this.options.map(function (status) {
       return {id: status._id, text: status.displayName};

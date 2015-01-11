@@ -67,14 +67,13 @@
 
 <template name="hotListListItem">
     <div class="table-item magic">
-        {{#if listViewMode}}
             <div>
                 <div class="table-item-cell">
                     <div class="table-item-cell-container">
                         <div class="table-item-title">
                             <a href="/hotList/{{_id}}">
                                 <strong>
-                                    {{employeeDisplayName}} - {{jobDisplayName}} - {{customerDisplayName}}
+                                    {{hotListName}}
                                 </strong>
                             </a>
                             <span class="task-author">
@@ -109,57 +108,7 @@
                     </div>
                 </div>
             </div>
-        {{else}}
-            <div class="row ">
-                <div class="col-sm-4">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container">
-                            <div class="table-item-title">
-                                <a href="/hotList/{{_id}}">
-                                    <strong>
-                                        {{employeeDisplayName}} - {{jobDisplayName}} - {{customerDisplayName}}
-                                    </strong>
-                                </a>
-                            </div>
-                            <div>
-                                <span>
-                                    <a href="/contactable/{{employee}}"> employee </a>
-                                    <span class="bullet-spacer">·</span>
-                                    <a href="/job/{{job}}"> job </a>
-                                    <span class="bullet-spacer">·</span>
-                                    <a href="/contactable/{{customerId}}"> customer </a>
-                                </span>
-                                <span class="badge">{{lookUpName candidateStatus}}</span><span
-                                    class="badge">{{lookUpName activeStatus}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-sm-6">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container text-muted">
-                            {{> hotListInformation }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-2">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container date">
-                            {{#formattedDate value=dateCreated format='fromNow'}}
-                                <span>{{date}}</span><br>
-                            {{/formattedDate}}
-
-                            {{displayUserName userId}}
-                            <br/>
-
-                            <i class="glyphicon glyphicon-search"></i>{{displaySearchKey _id}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {{/if}}
     </div>
 </template>
 
@@ -205,13 +154,11 @@
     <div class="actions-head">
         <div class="row visible-xs">
             <div class="col-xs-8">
-                {{#if isJob}}
                     <div class="btn-group pull-left suffix-5">
                         <button type="button" class="btn btn-success addHotList" title="Add">
                             <span class="fa fa-plus"></span>
                         </button>
                     </div>
-                {{/if}}
 
                 <div class="input-group">
                     {{#objectProperty property=searchString}}

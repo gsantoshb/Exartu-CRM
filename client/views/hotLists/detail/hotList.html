@@ -4,13 +4,7 @@
             <div id="content-header" class="mini">
                 <div class="profile-content-header">
                     <h1 class="profile-name">
-                        {{#if employee}}<a href="/contactable/{{employee}}"> {{employeeDisplayName}} </a>{{/if}}
-                        {{#if job}}
-                            <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
-                                <a href="/job/{{job}}"> {{jobDisplayName}} @ </a>
-                                <a href="/contactable/{{customerId}}">{{customerDisplayName}}</a>
-                            </strong>
-                        {{/if}}
+                        <a href="/hotlist/{{_id}}"> {{hotListName}} </a>
                         <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
                     </h1>
                 </div>
@@ -43,9 +37,7 @@
     {{> tasksBox}}
 </template>
 
-<template name="hotList_rates">
-    {{> hotListRates}}
-</template>
+
 
 <template name="hotList_notes">
     {{> notesBox}}
@@ -56,9 +48,10 @@
         {{#with originalHotList}}  {{> hotListDetail}}  {{/with}}
     </div>
     <div class="col-sm-6">
-        {{#with originalHotList}}{{>tagsBox  }}{{/with}}
+        {{> contactableContactsBox}}
+
     </div>
-    <div class="col-sm-12">
-    {{> hotListRates}}
+    <div class="col-sm-6">
+        {{#with originalHotList}}{{>tagsBox  }}{{/with}}
         </div>
 </template>

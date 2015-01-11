@@ -1,6 +1,6 @@
 
 HotListView = new View('hotLists', {
-  collection: Meteor.users,
+  collection: HotLists,
   cursors: function(hotList)
   {
   }

@@ -2,7 +2,7 @@
 var entityType = null;
 var isEntitySpecific = false;
 var contactable;
-var searchFields = ['employeeInfo.firstName', 'employeeInfo.lastName', 'employeeInfo.middleName'];
+var searchFields = ['name','statusNote'];
 
 var hotListCollection = HotLists;
 var HotListHandler, query;
@@ -44,11 +44,17 @@ var loadqueryFromURL = function (params) {
     creationDateQuery.default = params.creationDate;
   }
 
-
-  // Status
-  var objTypeQuery = { type: Utils.ReactivePropertyTypes.array };
-  if (params.status) {
-    objTypeQuery.default = params.status.split(',');
+  var objTypeQuery = {};
+  var type = params.hash || params.type;
+  if (type != undefined && type != 'all') {
+    var objType = dType.ObjTypes.findOne({
+      name: type
+    });
+    objTypeQuery.default = objType.name;
+    info.objType.value = objType.name + 's';
+  } else {
+    objTypeQuery.default  = undefined;
+    info.objType.value = 'record(s)';
   }
 
   // Tags
@@ -56,22 +62,22 @@ var loadqueryFromURL = function (params) {
   if (params.tags) {
     tagsQuery.default = params.tags.split(',');
   }
-  var activeobjTypeQuery = {type: Utils.ReactivePropertyTypes.array};
+  var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
   if (params.activeStatus) {
-    activeobjTypeQuery.default = params.activeStatus.split(',');
+    activeStatusQuery.default = params.activeStatus.split(',');
   }
   else
   {
     if (Meteor.user()) // verify not a fresh reload
-        activeobjTypeQuery.default = [Utils.getActiveStatusDefaultId()];
+        activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
   };
   return new Utils.ObjectDefinition({
     reactiveProps: {
       searchString: searchStringQuery,
       selectedLimit: creationDateQuery,
-      activeStatus:activeobjTypeQuery,
+      activeStatus:activeStatusQuery,
       tags: tagsQuery,
-      objTypes: objTypeQuery
+      objType: objTypeQuery
     }
   });
 };
@@ -88,17 +94,6 @@ var isSearching = false;
 // All
 Template.hotListsBox.created = function(){
   query = query || loadqueryFromURL(Router.current().params);
-
-  var entityId = Session.get('entityId');
-  entityType = Utils.getEntityTypeFromRouter();
-  isEntitySpecific = false;
-
-  if (entityType != null) {
-    isEntitySpecific = true;
-    if (entityType == Enums.linkTypes.contactable.value) {
-      contactable = Contactables.findOne({_id: entityId});
-    }
-  }
 };
 
 Template.hotListsBox.helpers({
@@ -135,17 +130,6 @@ Template.hotListList.created = function () {
 
     searchDep.depend();
 
-    if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
-
-    if (entityType==Enums.linkTypes.contactable.value) {
-      if (contactable.Customer) {
-        // Get customer jobs
-        var jobsId = Jobs.find({customer: Session.get('entityId')}).map(function (job) { return job._id;});
-        searchQuery.job = {$in: jobsId};
-      }
-      if (contactable.Employee) searchQuery.employee=Session.get('entityId');
-    }
-
     if (!_.isEmpty(query.searchString.value)) {
       params.searchString = query.searchString.value;
       urlQuery.addParam('search', query.searchString.value);
@@ -171,9 +155,9 @@ Template.hotListList.created = function () {
       urlQuery.addParam('activeStatus', query.activeStatus.value);
     };
 
-    if (query.objTypes.value && query.objTypes.value.length > 0){
-      searchQuery.candidateStatus = {$in: query.objTypes.value};
-      urlQuery.addParam('status', query.objTypes.value);
+    if (query.objType.value && query.objType.value.length > 0){
+      searchQuery.candidateStatus = {$in: query.objType.value};
+      urlQuery.addParam('status', query.objType.value);
     }
 
     // Set url query
@@ -206,9 +190,6 @@ Template.hotListList.helpers({
     return hotListCollection.find({}, options);
   },
 
-  contactableTypes: function() {
-    return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
-  },
 
   listViewMode: function () {
     return listViewMode.get();
@@ -216,21 +197,14 @@ Template.hotListList.helpers({
 });
 
 
-
-var getHotListTypes = function(){
-  return [
-    Enums.hotListCategories.employee,
-    Enums.hotListCategories.customer,
-    Enums.hotListCategories.employee,
-  ]
-};
-
-
-
 // List filters
 Template.hotListsFilters.helpers({
   query: function () {
     return query;
+  },
+
+  contactableTypes: function() {
+    return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
   },
 
   tags: function () {
@@ -279,35 +253,8 @@ Template.hotListListItem.helpers({
   displayObjType: function () {
     return Utils.getContactableType(this);
   },
-  employeeDisplayName: function () {
-    var employee = Contactables.findOne(this.employee);
-    return employee && employee.displayName;
-  },
-  jobDisplayName: function () {
-    var job = Jobs.findOne(this.job);
-    return job && job.displayName;
-  },
-  jobLocationDisplayName: function () {
-    var job = Jobs.findOne(this.job);
-    return job && Utils.getLocationDisplayName(job.location);
-  },
-  customerId: function () {
-    var job = Jobs.findOne(this.job);
-    var customer = job && Contactables.findOne(job.customer);
-    return customer && customer._id;
-  },
-  customerDisplayName: function () {
-    var job = Jobs.findOne(this.job);
-    var customer = job && Contactables.findOne(job.customer);
-    return customer && customer.displayName;
-  },
-  pictureUrl: function (pictureFileId) {
-    var picture = HotListsFS.findOne({_id: pictureFileId});
-    return picture ? picture.url('HotListsFSThumbs') : undefined;
-  },
-  hotListIcon: function () {
-    return helper.getEntityIcon(this);
-  },
+
+
   statusDisplayName: function (item) {
     var lookUp = LookUps.findOne({_id: this.hotListStatus});
 
