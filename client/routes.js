@@ -156,6 +156,20 @@ Router.map(function () {
     path: '/placement/:_id/:tab?',
     controller: 'PlacementController'
   });
+  this.route('hotLists', {
+    path: '/hotLists',
+    controller: 'HotListsController'
+  });
+
+  this.route('addHotListPage', {
+    path: '/hotListAdd/:objType',
+    controller: 'HotListAddController'
+  });
+
+  this.route('hotList', {
+    path: '/hotList/:_id/:tab?',
+    controller: 'HotListController'
+  });
 
    this.route('candidates', {
     path: '/candidates',

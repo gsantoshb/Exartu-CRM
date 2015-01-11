@@ -694,4 +694,8 @@ Utils.getActiveStatusDefaultId=function(){
   var lkp=LookUps.findOne({ hierId: user.currentHierId, lookUpCode: Enums.lookUpTypes.active.status.lookUpCode ,isDefault:true});
   if (!lkp) lkp=LookUps.findOne({ hierId: user.currentHierId, lookUpCode: Enums.lookUpTypes.active.status.lookUpCode });
   return lkp._id;
+};
+Utils.getEmployeeProcessStatuses=function(){
+  var lkps = LookUps.find({lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode}).fetch();
+  return _.map(lkps,function(doc){ return doc._id});
 }

@@ -25,7 +25,7 @@
         </a>
 
         <div class="filter-list" id="filter-body">
-            {{> filter_lookUp title="Process status" code=10 lookUpValue=query.statuses multi=true}}
+            {{> filter_entityType types=contactableTypes selected=query.objType}}
 
             {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
 
