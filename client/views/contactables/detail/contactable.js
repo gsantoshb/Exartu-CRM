@@ -195,18 +195,6 @@ Template.contactable_header.helpers({
   }
 });
 
-// Details
-<<<<<<< HEAD
-
-Template.contactable_details.setNewAddress = function () {
-  return function (newAddress) {
-      Meteor.call('setContactableAddress', Session.get('entityId'), newAddress);
-  }
-};
-
-// Detail
-=======
->>>>>>> devel
 Template.contactable_details.helpers({
   collection: function () {
     return Contactables;
