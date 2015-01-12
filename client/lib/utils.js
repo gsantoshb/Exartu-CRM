@@ -338,7 +338,7 @@ Utils.getEntityFromLink = function (link) {
             return Deals.findOne({_id: link.id});
         case Enums.linkTypes.placement.value:
             return Placements.findOne({_id: link.id});
-        case Enums.linkTypes.hotlist.value:
+        case Enums.linkTypes.hotList.value:
             return HotLists.findOne({_id: link.id});
     }
 };

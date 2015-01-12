@@ -2,7 +2,7 @@
 
 seedHotLists = function(hierId) {
   var hotLists= [{
-      hotListName: 'Hotlist Example',
+      displayName: 'Hotlist Example',
       objNameArray: 	 ["hotList"],
       objType: 'employee'
   }

@@ -450,7 +450,7 @@ newObjType({
   services: [],
   fields: [
     {
-      name: 'hotListName',
+      name: 'displayName',
       displayName: 'Name',
       required: true,
       showInAdd: true,

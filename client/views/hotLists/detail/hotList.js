@@ -17,7 +17,7 @@ HotListController = RouteController.extend({
       Session.set('activeTab', this.params.tab || 'details');
     },
   onAfterAction: function() {
-    var title = Session.get('hotListDisplayName'),
+    var title = Session.get('displayName'),
       description = 'HotList information';
     SEO.set({
       title: title,
@@ -59,7 +59,7 @@ var employee;
 Template.hotList.helpers({
   hotList: function(){
     var originalHotList=hotListCollection.findOne({ _id: Session.get('entityId') });
-    Session.set('hotListDisplayName', originalHotList.displayName);
+    Session.set('displayName', originalHotList.displayName);
     if (originalHotList.tags==null)
     {
       originalHotList.tags=[];

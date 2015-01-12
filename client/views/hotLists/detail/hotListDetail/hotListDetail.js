@@ -16,7 +16,7 @@ var hotList;
 Template.hotListDetail.helpers({
   hotList: function(){
     var originalHotList = HotLists.findOne({ _id: Session.get('entityId') });
-    Session.set('hotListDisplayName', originalHotList.displayName);
+    Session.set('displayName', originalHotList.displayName);
     hotList = generateReactiveObject(originalHotList);
     return hotList;
   },

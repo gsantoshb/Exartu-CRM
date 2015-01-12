@@ -570,11 +570,11 @@ var loadHotLists = function (hierId) {
         members.push(randomEmployee._id);
     };
     var newHotList = {
-        hotListName: 'Hotlist Example',
+        displayName: 'Hotlist Example',
         objNameArray: ["hotList"],
-        objType: 'employee',
+        objType: dType.ObjTypes.findOne({name:"Employee"})._id,
         hierId: hierId,
-        statusNote: 'candidates ready to send out',
+        statusNote: 'Demo Hotlist: employees ready to send out',
         testData: true,
         members: members
     };
