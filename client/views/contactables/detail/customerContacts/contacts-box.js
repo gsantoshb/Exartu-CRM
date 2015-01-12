@@ -23,6 +23,7 @@ Template.contactableContactsBox.helpers({
 Template.contactableContactsBox.events = {
   'click .addContact': function () {
     Session.set('options', {Contact: {customer: Session.get('entityId')}});
-    Router.go('addContactablePage', {objType: 'Contact'});
+    Router.go('/contactableAdd/Contact');
+
   }
 };

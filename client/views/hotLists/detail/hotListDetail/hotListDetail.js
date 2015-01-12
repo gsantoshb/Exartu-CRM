@@ -53,6 +53,18 @@ Template.hotListDetail.helpers({
       return {id: status._id, text: status.displayName};
     });
   },
+  fetchObjTypeOptions: function () {
+    var objs = dType.ObjTypes.find({name: {$in: Enums.hotListCategories}}).fetch();
+
+    return objs.map(function (item) {
+      return {id: item._id, text: item.name};
+    });
+  },
+  getObjTypeName: function()
+  {
+    console.log('this',this.value);
+    return dType.ObjTypes.findOne({_id: this.value}).name;
+  },
   onSelectedStatus: function () {
     return function (newStatus) {
       var ctx = Template.parentData(2);

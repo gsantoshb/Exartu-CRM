@@ -39,10 +39,10 @@
                                 </td>
                                 <td>
                                     {{#objectProperty property=objType editable=editMode}}
-                                        {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                        {{> buttonGroup options=fetchObjTypeOptions value=value onSelected=onSelectedStatus}}
                                     {{else}}
                                         <strong>
-                                            <strong>{{displayName}}</strong>
+                                            <strong>{{getObjTypeName}}</strong>
                                         </strong>
                                     {{/objectProperty}}
                                 </td>

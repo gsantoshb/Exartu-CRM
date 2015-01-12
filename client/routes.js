@@ -56,6 +56,7 @@ Router.map(function () {
     path: '/contactableAdd/:objType',
     controller: 'ContactableAddController'
   });
+
   this.route('addJobPage', {
     path: '/jobAdd/:objType',
     controller: 'JobAddController'

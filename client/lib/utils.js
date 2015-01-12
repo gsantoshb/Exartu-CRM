@@ -715,9 +715,3 @@ Utils.getActiveStatusDefaultId = function () {
     });
     return lkp._id;
 };
-Utils.getEmployeeProcessStatuses = function () {
-    var lkps = LookUps.find({lookUpCode: Enums.lookUpTypes.employee.status.lookUpCode}).fetch();
-    return _.map(lkps, function (doc) {
-        return doc._id
-    });
-}
