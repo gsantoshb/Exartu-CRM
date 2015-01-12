@@ -10,7 +10,7 @@ if (Meteor.isServer) {
     path = Npm.require("path");
 
   Router.onBeforeAction(function(req, res, next) {
-    var file = {}; // Store a file and then pass it to the request.
+    var fileData = {}; // Store a file and then pass it to the request.
     var body = {}; // Store body fields and then pass it to the request.
 
     if (req.method === "POST") {
@@ -27,7 +27,7 @@ if (Meteor.isServer) {
         });
 
         file.on('end', function() {
-          file = {
+          fileData = {
             originalFilename: filename,
             path: saveTo,
             size: fileSizeBytes
@@ -39,7 +39,7 @@ if (Meteor.isServer) {
       });
       busboy.on("finish", function() {
         // Pass the file on to the request
-        req.file = file;
+        req.file = fileData;
         req.bodyFields = body;
         next();
       });
