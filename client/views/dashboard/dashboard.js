@@ -13,8 +13,10 @@ var activityTypes = [
 DashboardController = RouteController.extend({
   layoutTemplate: 'mainLayout',
     waitOn: function () {
-      SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', { filter: {type: {$in: activityTypes}}});
-      return [HierarchiesHandler, ActivitiesHandler];
+      if (!SubscriptionHandlers.ActivitiesHandler){
+        SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', { filter: {type: {$in: activityTypes}}});
+      }
+      return [HierarchiesHandler, SubscriptionHandlers.ActivitiesHandler];
     },
     action: function () {
       if (!this.ready()) {

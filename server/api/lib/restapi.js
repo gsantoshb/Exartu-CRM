@@ -18,7 +18,7 @@ RESTAPI.generateLoginToken = function(userId) {
 };
 
 RESTAPI.getLoginToken = function(request) {
-	return request.params.loginToken || request.request.headers["login-token"];
+	return request.params.query.loginToken || request.request.headers["login-token"];
 };
 
 RESTAPI.loginAction = function (data) {

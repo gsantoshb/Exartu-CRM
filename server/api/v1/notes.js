@@ -20,9 +20,9 @@ Router.map(function() {
 						hierId: user.hierId
 					};
 
-					var id = this.params.entityId;
+					var id = this.params.query.entityId;
 					if (id)
-						selector['links.id'] = id
+						selector['links.id'] = id;
 
 					response.end(Notes.find(selector).map(mapper.get), {type: 'application/json'});
 
@@ -33,7 +33,7 @@ Router.map(function() {
 				// 	 - links: [ string ] // contactable ids
 				// 	 - dateCreated: date (optional)
 				case 'POST':
-					var data = this.request.body;
+					var data = this.request.bodyFields;
 
 					try {
 
@@ -42,7 +42,7 @@ Router.map(function() {
 						_.extend(data, {id: noteId});
 						response.end(data);
 					} catch(err) {
-						console.log(err)
+						console.log(err);
 						response.error(err);
 					}
 					break;
@@ -65,7 +65,7 @@ Meteor.methods({
 var mapper = {
 	create: function(data) {
 		if (!data.links)
-			throw new Meteor.Error(500, "Links are required")
+			throw new Meteor.Error(500, "Links are required");
 		return {
 			msg: data.msg,
 			links: _.map(data.links, function(link) {

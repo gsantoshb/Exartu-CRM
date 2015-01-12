@@ -27,7 +27,7 @@ _.forEach([
     displayName: "Applicant",lookUpActions: []
   },
       {
-        displayName: "Prospect",lookUpActions: []
+        displayName: "Candidate",lookUpActions: []
       },
       {
         displayName: "Other",lookUpActions: []

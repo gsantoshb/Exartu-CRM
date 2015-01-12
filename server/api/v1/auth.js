@@ -20,7 +20,7 @@ Router.map(function() {
 
 			switch(this.request.method) {
 				case 'POST':
-				 	var data = !_.isEmpty(this.request.body)? this.request.body : this.request.headers;
+				 	var data = !_.isEmpty(this.request.bodyFields)? this.request.bodyFields : this.request.headers;
 				 	try {
             var result = RESTAPI.loginAction(data);
             this.response.statusCode = 200;

@@ -1,12 +1,14 @@
 var query = {};
 var selected = undefined;
-
+//lookUpsHandler;
 ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
-    return [SubscriptionHandlers.AuxContactablesHandler, Meteor.subscribe('lookUps')];
+    if (!SubscriptionHandlers.AuxContactablesHandler){
+      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+    }
+    return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler];
   },
   action: function () {
     if (!this.ready()) {
@@ -14,10 +16,6 @@ ContactablesController = RouteController.extend({
       return;
     }
 
-    if (this.isFirstRun == false) {
-      this.render();
-      return;
-    }
 
     var objTypeQuery = {};
     var type = this.params.hash || this.params.type;
@@ -44,11 +42,7 @@ ContactablesController = RouteController.extend({
       creationDateQuery.default = this.params.creationDate;
     }
 
-    // Status
-    var statusQuery = { type: Utils.ReactivePropertyTypes.boolean };
-    if (this.params.inactives) {
-      statusQuery.default = !! this.params.inactives;
-    }
+
 
     // Mine only
     var mineQuery = { type: Utils.ReactivePropertyTypes.boolean };
@@ -85,19 +79,30 @@ ContactablesController = RouteController.extend({
       taxId.default= this.params.taxId;
     }
 
-
     var employeeProcessStatusQuery = { type: Utils.ReactivePropertyTypes.array };
     if ( this.params.employeeProcessStatus) {
       employeeProcessStatusQuery.default = this.params.employeeProcessStatus.split(',');
     }
+    else
+    {
+      employeeProcessStatusQuery.default = [];
+    };
     var customerProcessStatusQuery = { type: Utils.ReactivePropertyTypes.array };
     if ( this.params.customerProcessStatus) {
       customerProcessStatusQuery.default = this.params.customerProcessStatus.split(',');
     }
+    else
+    {
+      customerProcessStatusQuery.default=[];
+    };
     var contactProcessStatusQuery = { type: Utils.ReactivePropertyTypes.array };
     if ( this.params.contactProcessStatus) {
       contactProcessStatusQuery.default = this.params.contactProcessStatus.split(',');
     }
+    else
+    {
+      contactProcessStatusQuery.default=[];
+    };
 
     var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
     if (this.params.activeStatus) {
@@ -113,7 +118,6 @@ ContactablesController = RouteController.extend({
         objType: objTypeQuery,
         searchString: searchStringQuery,
         selectedLimit: creationDateQuery,
-        inactives: statusQuery,
         mineOnly: mineQuery,
         tags: tagsQuery,
         location: locationQuery,
@@ -365,11 +369,15 @@ Template.contactablesList.created = function() {
   });
 
   Meteor.autorun(function () {
-    // If Elasticsearch is being used to search then use its result length as contactableCount
+    if (!SubscriptionHandlers.AuxContactablesHandler){
+      SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+    }
     if (query.searchString.value)
       Session.set('contactableCount', esResult.length);
-    else
-      Session.set('contactableCount', SubscriptionHandlers.AuxContactablesHandler.totalCount());
+    else {
+      if (SubscriptionHandlers && SubscriptionHandlers.AuxContactablesHandler)
+        Session.set('contactableCount', SubscriptionHandlers.AuxContactablesHandler.totalCount());
+    }
   });
 };
 
@@ -591,7 +599,6 @@ var runESComputation = function () {
 
     isSearching = true;
     searchDep.changed();
-
     Contactables.esSearch('.*' + query.searchString.value + '.*', filters,function(err, result) {
       if (!err) {
         esResult = _.map(result.hits, function(hit) {

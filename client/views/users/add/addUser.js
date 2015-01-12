@@ -1,10 +1,9 @@
 AddUserController = RouteController.extend({
   template: 'addUser',
-  layout: '',
   data: function() {
-    email = this.params.email;
-    token = this.params.token;
-    hierName = this.params.from;
+    email = this.params.query.email;
+    token = this.params.query.token;
+    hierName = this.params.query.from;
   }
 });
 

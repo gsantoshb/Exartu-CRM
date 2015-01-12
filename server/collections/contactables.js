@@ -70,7 +70,7 @@ ContactablesList = new View('auxContactables',{
 
 Meteor.paginatedPublish(ContactablesList, function () {
     if (!this.userId)
-      return false;
+      return [];
     console.log('searchcalled')
     return Utils.filterCollectionByUserHier.call(this, ContactablesList.find({},
       {
@@ -162,7 +162,7 @@ Contactables.before.insert(function (userId, doc) {
   doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();
   if (!doc.activeStatus) doc.activeStatus=LookUpManager.getActiveStatusDefaultId();
-
+  console.log('doc',doc.dateCreated,doc);
   if (doc.organization)
   {
     doc.displayName= doc.organization.organizationName;
@@ -172,9 +172,6 @@ Contactables.before.insert(function (userId, doc) {
     doc.displayName= doc.person.lastName+', ' + doc.person.firstName;
   }
 
-  var shortId = Meteor.npmRequire('shortid');
-  var aux = shortId.generate();
-  doc.searchKey = aux;
 });
 
 // Contactables documents

@@ -30,31 +30,32 @@ TaskView = new View('tasks', {
       }
     });
 
-    // Deals
-    this.publish({
-      cursor: function (task) {
-        var dealsIds = _.pluck(_.where(task.links, { type: Enums.linkTypes.deal.value }), 'id');
-        return Deals.find({ _id: { $in: dealsIds } });
-      },
-      to: 'jobs',
-      observedProperties: ['links'],
-      onChange: function (changedProps, oldSelector) {
-        var dealsIds = _.pluck(_.where(changedProps.links, { type: Enums.linkTypes.deal.value }), 'id');
-        return Deals.find({ _id: { $in: dealsIds } });
-      }
-    });
+
 
     // Placements
     this.publish({
       cursor: function (task) {
-        var placementsIds = _.pluck(_.filter(task.links, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
-        return Placements.find({ _id: { $in: placementsIds } });
+        var hotListsIds = _.pluck(_.filter(task.links, function (link) { return link.type == Enums.linkTypes.hotList.value; }), 'id');
+        return Placements.find({ _id: { $in: hotListsIds } });
       },
-      to: 'jobs',
+      to: 'placements',
       observedProperties: ['links'],
       onChange: function (changedProps, oldSelector) {
-        var placementsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
-        return Placements.find({ _id: { $in: placementsIds } });
+        var hotListsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.hotList.value; }), 'id');
+        return Placements.find({ _id: { $in: hotListsIds } });
+      }
+    });
+    // HotLists
+    this.publish({
+      cursor: function (task) {
+        var hotListsIds = _.pluck(_.filter(task.links, function (link) { return link.type == Enums.linkTypes.hotList.value;}), 'id');
+        return HotLists.find({ _id: { $in: hotListsIds } });
+      },
+      to: 'hotLists',
+      observedProperties: ['links'],
+      onChange: function (changedProps, oldSelector) {
+        var hotListsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.hotList.value;}), 'id');
+        return HotLists.find({ _id: { $in: hotListsIds } });
       }
     });
   }
@@ -63,7 +64,7 @@ TaskView = new View('tasks', {
 Meteor.paginatedPublish(TaskView, function () {
   var user = Meteor.users.findOne({ _id: this.userId });
   if (!user)
-    return false;
+    return [];
 
   return Utils.filterCollectionByUserHier.call(this, TaskView.find({}, { sort: { dateCreated: -1 } }));
 },{

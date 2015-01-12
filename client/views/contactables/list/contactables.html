@@ -149,7 +149,7 @@
                     <div class="table-item-cell-container">
                         <div class="table-item-title">
                             <a href="/contactable/{{_id}}">
-                                {{displayName}} - {{getDepartment}}
+                                {{displayName}} {{getDepartment}}
                             </a>
                             <span class="pull-right">
                                 <span class="task-author">
@@ -196,7 +196,7 @@
                                                 {{/if}}
                                             {{/if}}
                                         </div>
-                                        {{displayName}} - {{getDepartment}}
+                                        {{displayName}} {{getDepartment}}
                                     </a>
 
                                     <br/>
@@ -255,11 +255,9 @@
 
                                 {{displayUserName userId}}
                                 <br/>
-
-                                {{#if searchKey }}
-                                    <i class="glyphicon glyphicon-search"></i>
-                                    {{searchKey}}
-                                {{/if}}
+                                <i class="glyphicon glyphicon-search"></i>{{displaySearchKey _id}}
+                                <br />
+                                {{hierId}}
                             </div>
                         </div>
                     </div>
@@ -355,12 +353,12 @@
                                 <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
                             {{/each}}
                             <li>
-                                <a type="button" title="Create employee from resume/CV" class="btn btn-default"
+                                <a type="button" title="Create employee from resume/CV"
                                    href="/resumeparser">Create employee from resume/CV file</a>
                             </li>
                             <li>
-										<span class="btn btn-default parseText"
-                                              title="Create employee from plain text">Create employee from resume/CV text</span>
+                                <a class="parseText"
+                                      title="Create employee from plain text">Create employee from resume/CV text</a>
                             </li>
                         </ul>
                     </div>
@@ -378,15 +376,15 @@
                     </div>
                 </div>
                 <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2">
-									<span class="pointer" style="font-size: 20px;">
-                                        {{#if listViewMode}}
-                                            <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
-											<i class="fa fa-bars"></i>
-                                        {{else}}
-                                            <i class="fa fa-th-large"></i>
-											<i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
-                                        {{/if}}
-                                    </span>
+                    <span class="pointer" style="font-size: 20px;">
+                        {{#if listViewMode}}
+                            <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
+                            <i class="fa fa-bars"></i>
+                        {{else}}
+                            <i class="fa fa-th-large"></i>
+                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
+                        {{/if}}
+                    </span>
                 </div>
                 <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2">
                     {{> contactableListSort}}

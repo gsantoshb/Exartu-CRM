@@ -20,7 +20,7 @@ Router.map(function() {
         // Parameters:
         //  - contactableId: string
         case 'GET':
-          var contactableId = this.params.contactableId;
+          var contactableId = this.params.query.contactableId;
           try {
             var res = connection.call('getAddress', contactableId);
 
@@ -44,7 +44,7 @@ Router.map(function() {
         //  - country: string
         //  - zip: string (int)
         case 'POST':
-          var data = this.request.body;
+          var data = this.request.bodyFields;
           try {
             var addressInfo = mapper.create(data);
             connection.call('setContactableAddress', data.contactableId, addressInfo);

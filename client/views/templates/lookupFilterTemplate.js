@@ -1,21 +1,24 @@
-Template.lookupFilterTemplate.templateName = function(){
-  return this.template || 'buttonGroup';
-};
+Template.lookupFilterTemplate.helpers({
+  templateName: function () {
+    return this.template || 'buttonGroup';
+  },
 
-Template.lookupFilterTemplate.templateContext = function(){
-  return {
-    options: _.map(LookUps.find({ lookUpCode: this.lookUpCode }).fetch(), function(lookup){
-      return {
-        id: lookup._id,
-        text: lookup.displayName
-      }
-    }),
-    onSelected: this.callback,
-    multi: this.multi,
-    title: this.title,
-    value: this.value.val // Use val instead of value to avoid reactivity
-  };
-};
+  templateContext: function () {
+    return {
+      options: _.map(LookUps.find({lookUpCode: this.lookUpCode}).fetch(), function (lookup) {
+        return {
+          id: lookup._id,
+          text: lookup.displayName
+        }
+      }),
+      onSelected: this.callback,
+      multi: this.multi,
+      title: this.title,
+      value: this.value.val // Use val instead of value to avoid reactivity
+    };
+  }
+});
+
 
 ///////////////  select2 //////////////////////////////
 
@@ -57,25 +60,26 @@ Template.select2.events({
 
 ///////////// button group //////////////////////////
 
-
 Template.buttonGroup.created = function() {
   this.data.selected = this.data.multi ? (this.data.value? this.data.value : [] ): this.data.value || null;
   this.data.selectedDep = new Deps.Dependency;
 };
 
-Template.buttonGroup.isSelectedClass = function(){
-  var templateCtx = UI._parentData(1);
+Template.buttonGroup.helpers({
+  isSelectedClass: function(){
+    var templateCtx = UI._parentData(1);
 
-  if (! templateCtx.selectedDep) return; // Avoid error when a reactive call override properties defined on created
+    if (! templateCtx.selectedDep) return; // Avoid error when a reactive call override properties defined on created
 
-  templateCtx.selectedDep.depend();
+    templateCtx.selectedDep.depend();
 
-  if (templateCtx.multi){
-    return _.contains(templateCtx.selected, this.id) ? 'btn-primary' : 'btn-default';
-  }else{
-    return (templateCtx.selected == this.id) ? 'btn-primary' : 'btn-default';
+    if (templateCtx.multi){
+      return _.contains(templateCtx.selected, this.id) ? 'btn-primary' : 'btn-default';
+    }else{
+      return (templateCtx.selected == this.id) ? 'btn-primary' : 'btn-default';
+    }
   }
-};
+});
 
 Template.buttonGroup.events({
   'click button': function(e, ctx){

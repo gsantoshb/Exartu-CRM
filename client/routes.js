@@ -12,10 +12,11 @@ Router.configure({
 });
 
 var OnBeforeActions = {
-  loginRequired: function(pause) {
+  loginRequired: function() {
     if (!Meteor.userId()) {
       this.render('login');
-      return pause();
+    }else{
+      this.next();
     }
   }
 };
@@ -53,13 +54,12 @@ Router.map(function () {
 
   this.route('addContactablePage', {
     path: '/contactableAdd/:objType',
-    controller: 'ContactableAddController',
-    waitOn: [dType.ObjTypesHandler]
+    controller: 'ContactableAddController'
   });
+
   this.route('addJobPage', {
     path: '/jobAdd/:objType',
-    controller: 'JobAddController',
-    waitOn: [dType.ObjTypesHandler]
+    controller: 'JobAddController'
   });
 
   this.route('jobs', {
@@ -82,8 +82,7 @@ Router.map(function () {
 
     this.route('addDealPage', {
         path: '/dealAdd/:objType',
-        controller: 'DealAddController',
-        waitOn: [dType.ObjTypesHandler]
+        controller: 'DealAddController'
     });
 
     this.route('deal', {
@@ -148,19 +147,29 @@ Router.map(function () {
     path: '/placements',
     controller: 'PlacementsController'
   });
-  this.route('placement', {
-    path: '/placement/:_id',
-    controller: 'PlacementController'
+
+  this.route('addPlacementPage', {
+      path: '/placementAdd/:objType',
+      controller: 'PlacementAddController'
   });
-    this.route('addPlacementPage', {
-        path: '/placementAdd/:objType',
-        controller: 'PlacementAddController',
-        waitOn: [dType.ObjTypesHandler]
-    });
 
   this.route('placement', {
     path: '/placement/:_id/:tab?',
     controller: 'PlacementController'
+  });
+  this.route('hotLists', {
+    path: '/hotLists',
+    controller: 'HotListsController'
+  });
+
+  this.route('addHotListPage', {
+    path: '/hotListAdd/:objType',
+    controller: 'HotListAddController'
+  });
+
+  this.route('hotList', {
+    path: '/hotList/:_id/:tab?',
+    controller: 'HotListController'
   });
 
    this.route('candidates', {
@@ -190,7 +199,6 @@ Router.map(function () {
   this.route('resumeParser', {
     path: '/resumeparser',
     controller: 'ResumeParserController'
-//    plans: [SubscriptionPlan.plansEnum.enterprise]
   });
 
   this.route('planLimitation', {
@@ -277,10 +285,10 @@ Deps.autorun(function () {
   var current = Router.current();
   if (current){
     // prevent scroll up when navigating with tabs
-    if(lastRoute == current.route.name && lastParam == current.params._id){
+    if(lastRoute == current.route.getName() && lastParam == current.params._id){
       return
     }
-    lastRoute = current.route.name;
+    lastRoute = current.route.getName();
     lastParam = current.params._id;
   }
   Deps.afterFlush(function () {

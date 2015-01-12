@@ -20,7 +20,7 @@ Router.map(function() {
         // Parameters:
         //  - contactableId: string
         case 'GET':
-          var contactableId = this.params.contactableId;
+          var contactableId = this.params.query.contactableId;
           try {
             var res = connection.call('getContactMethods', contactableId);
 
@@ -39,7 +39,7 @@ Router.map(function() {
         //  - type: string (Id)
         //  - value: string
         case 'POST':
-          var data = this.request.body;
+          var data = this.request.bodyFields;
           try {
             connection.call('addContactMethod', data.contactableId, data.type, data.value);
             response.end(data);

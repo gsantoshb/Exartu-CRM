@@ -1,7 +1,7 @@
 Meteor.publish('hierarchies', function() {
   var user = Meteor.users.findOne(this.userId);
   if (!user)
-    return false;
+    return [];
 
   var userHierarchies = [];
   _.forEach( user.hierarchies, function (hierarchy) {
@@ -40,8 +40,11 @@ Hierarchies.after.insert(function(userId, doc){
   if (!doc.parent){
     if (doc._id != ExartuConfig.TenantId) {
       seedSystemLookUps(doc._id);
+
       seedEmailTemplates(doc._id);
+      seedHotLists(doc._id);
       createHouseAccount(doc);
+
     }
   }
 });

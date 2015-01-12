@@ -4,8 +4,11 @@ PlacementsController = RouteController.extend({
   template: 'placements',
   layoutTemplate: 'mainLayout',
   waitOn: function() {
-    SubscriptionHandlers.PlacementHandler = PlacementHandler = SubscriptionHandlers.PlacementHandler || Meteor.paginatedSubscribe('placements');
-    return [PlacementHandler, LookUpsHandler,Meteor.subscribe('lookUps')];
+    if (!SubscriptionHandlers.PlacementHandler){
+      SubscriptionHandlers.PlacementHandler = SubscriptionHandlers.PlacementHandler || Meteor.paginatedSubscribe('placements');
+    }
+    PlacementHandler = SubscriptionHandlers.PlacementHandler;
+    return [PlacementHandler, LookUpsHandler];
   },
   onAfterAction: function() {
     var title = 'Placements',

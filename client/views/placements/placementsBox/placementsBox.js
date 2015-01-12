@@ -81,18 +81,11 @@ if (!listViewDefault)
   listViewDefault=true;
 }
 var listViewMode = new ReactiveVar(listViewDefault);
-Template.placementList.listViewMode= function() {
-  return listViewMode.get();
-};
-Template.placementListSearch.listViewMode= function() {
-  return listViewMode.get();
-};
-Template.placementListItem.listViewMode= function() {
-  return listViewMode.get();
-};
+
+var searchDep = new Deps.Dependency;
+var isSearching = false;
 
 // All
-
 Template.placementsBox.created = function(){
   query = query || loadqueryFromURL(Router.current().params);
 
@@ -108,23 +101,25 @@ Template.placementsBox.created = function(){
   }
 };
 
-Template.placementsBox.information = function() {
-  var searchQuery = {};
+Template.placementsBox.helpers({
+  information: function () {
+    var searchQuery = {};
 
-  if (query.objType.value)
-    searchQuery.objNameArray = query.objType.value;
+    if (query.objType.value)
+      searchQuery.objNameArray = query.objType.value;
 
-  info.placementsCount.value = PlacementHandler.totalCount();
+    info.placementsCount.value = PlacementHandler.totalCount();
 
-  return info;
-};
+    return info;
+  },
 
-var searchDep = new Deps.Dependency;
-var isSearching = false;
-Template.placementsBox.isSearching = function() {
-  searchDep.depend();
-  return isSearching;
-};
+  isSearching: function () {
+    searchDep.depend();
+    return isSearching;
+  }
+});
+
+
 var options = {};
 // List
 Template.placementList.created = function () {
@@ -197,14 +192,28 @@ Template.placementList.created = function () {
   })
 };
 
-Template.placementList.info = function() {
-  info.isFiltering.value = PlacementHandler.totalCount() != 0;
-  return info;
-};
+Template.placementList.helpers({
+  info: function () {
+    info.isFiltering.value = PlacementHandler.totalCount() != 0;
+    return info;
+  },
 
-Template.placementList.isLoading = function() {
-  return SubscriptionHandlers.PlacementHandler.isLoading();
-};
+  isLoading: function () {
+    return SubscriptionHandlers.PlacementHandler.isLoading();
+  },
+
+  placements: function () {
+    return placementCollection.find({}, options);
+  },
+
+  placementTypes: function () {
+    return dType.ObjTypes.find({parent: Enums.objGroupType.placement});
+  },
+
+  listViewMode: function () {
+    return listViewMode.get();
+  }
+});
 
 
 
@@ -215,39 +224,37 @@ var getCandidateStatuses = function(objname){
   return ids;
 };
 
-Template.placementList.placements = function() {
-  return placementCollection.find({}, options);
-};
 
-Template.placementList.placementTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.placement });
-};
 
 // List filters
+Template.placementsFilters.helpers({
+  query: function () {
+    return query;
+  },
 
-Template.placementsFilters.query = function () {
-  return query;
-};
-
-Template.placementsFilters.tags = function() {
-  return query.tags;
-};
-
-
+  tags: function () {
+    return query.tags;
+  }
+});
 
 // List search
+Template.placementListSearch.helpers({
+  isJob: function () {
+    if (entityType == Enums.linkTypes.job.value) return true;
+  },
 
-Template.placementListSearch.isJob=function() {
-  if (entityType==Enums.linkTypes.job.value) return true;
-};
+  searchString: function () {
+    return query.searchString;
+  },
 
-Template.placementListSearch.searchString = function() {
-  return query.searchString;
-};
+  isLoading: function () {
+    return PlacementHandler.isLoading();
+  },
 
-Template.placementListSearch.isLoading = function () {
-  return PlacementHandler.isLoading();
-}
+  listViewMode: function () {
+    return listViewMode.get();
+  }
+});
 
 Template.placementListSearch.events = {
   'click .addPlacement': function (e) {
@@ -290,20 +297,24 @@ Template.placementListItem.helpers({
     var customer = job && Contactables.findOne(job.customer);
     return customer && customer.displayName;
   },
-  pictureUrl: function(pictureFileId) {
+  pictureUrl: function (pictureFileId) {
     var picture = PlacementsFS.findOne({_id: pictureFileId});
-    return picture? picture.url('PlacementsFSThumbs') : undefined;
+    return picture ? picture.url('PlacementsFSThumbs') : undefined;
   },
-  placementIcon: function() {
+  placementIcon: function () {
     return helper.getEntityIcon(this);
   },
-  statusDisplayName: function(item) {
+  statusDisplayName: function (item) {
     var lookUp = LookUps.findOne({_id: this.placementStatus});
 
     if (lookUp) return lookUp.displayName;
   },
-  displayObjType: function() {
+  displayObjType: function () {
     return Utils.getPlacementType(this);
+  },
+
+  listViewMode: function () {
+    return listViewMode.get();
   }
 });
 

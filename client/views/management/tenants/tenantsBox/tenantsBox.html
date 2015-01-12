@@ -93,10 +93,7 @@
                         {{#formatted_date date=dateCreated format='fromNow'}}
                         <span>{{value}}</span><br>
                         {{/formatted_date}}
-                        {{#if searchKey }}
-                        <i class="glyphicon glyphicon-search"></i>
-                        {{searchKey}}
-                        {{/if}}
+                            <i class="glyphicon glyphicon-search"></i>{{displaySearchKey _id}}
                     </div>
                 </div>
             </div>

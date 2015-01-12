@@ -7,8 +7,12 @@ JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    SubscriptionHandlers.JobHandler = JobHandler = Meteor.paginatedSubscribe('jobs');
-    return [JobHandler, Meteor.subscribe('lookUps')];
+    if (!SubscriptionHandlers.JobHandler){
+      SubscriptionHandlers.JobHandler = Meteor.paginatedSubscribe('jobs');
+    }
+    JobHandler = SubscriptionHandlers.JobHandler;
+
+    return [SubscriptionHandlers.JobHandler, Meteor.subscribe('lookUps')];
   },
   action: function () {
     if (!this.ready()) {

@@ -34,28 +34,30 @@ Template.contactableContactMethodsBox.created = function () {
   EditContactMethodsMode.value = false;
 };
 
-Template.contactableContactMethodsBox.editMode = function () {
-  return EditContactMethodsMode.value;
-};
+Template.contactableContactMethodsBox.helpers({
+  editMode: function () {
+    return EditContactMethodsMode.value;
+  },
 
-Template.contactableContactMethodsBox.editModeColor = function () {
-  return EditContactMethodsMode.value ? '#008DFC' : '';
-};
+  editModeColor: function () {
+    return EditContactMethodsMode.value ? '#008DFC' : '';
+  },
 
-Template.contactableContactMethodsBox.contactMethods = function() {
-  var result = [];
-  var contactMethods = this.contactMethods;
+  contactMethods: function () {
+    var result = [];
+    var contactMethods = this.contactMethods;
 
-  _.forEach(contactMethods, function (cm) {
-    var type = _.findWhere(contactMethodsTypes, { _id: cm.type });
-    if (type) {
-      cm.displayName = type.displayName;
-    }
-    result.push(cm);
-  });
+    _.forEach(contactMethods, function (cm) {
+      var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
+      if (type) {
+        cm.displayName = type.displayName;
+      }
+      result.push(cm);
+    });
 
-  return result;
-};
+    return result;
+  }
+});
 
 var addNewContactMethod = function() {
   var newContactMethodValue = $('#new-contact-method-value');
@@ -99,9 +101,11 @@ Template.contactMethodItem.rendered = function () {
   }
 };
 
-Template.contactMethodItem.editMode = function () {
-  return EditContactMethodsMode.value;
-};
+Template.contactMethodItem.helpers({
+  editMode: function () {
+    return EditContactMethodsMode.value;
+  }
+});
 
 // Add
 var loadInputMask = function (selectedType) {
@@ -143,14 +147,15 @@ Template.addContactMethod.rendered = function () {
   loadInputMask(selectedType);
 };
 
-Template.addContactMethod.contactMethodsTypes = function() {
-  return contactMethodsTypes;
-};
-
-Template.addContactMethod.selectedType = function() {
-  dep.depend();
-  return selectedType? selectedType.displayName: 'Select';
-};
+Template.addContactMethod.helpers({
+  contactMethodsTypes: function () {
+    return contactMethodsTypes;
+  },
+  selectedType: function () {
+    dep.depend();
+    return selectedType ? selectedType.displayName : 'Select';
+  }
+});
 
 Template.addContactMethod.events({
   'click #add-contact-method': function() {

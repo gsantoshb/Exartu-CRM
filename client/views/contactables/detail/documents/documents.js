@@ -35,10 +35,21 @@ var endParsing = function() {
 
 
 // Add document panel
+Template.contactableDocumentsAdd.helpers({
+  addForm: function () {
+    return AddForm.value;
+  },
 
-Template.contactableDocumentsAdd.addForm = function() {
-  return AddForm.value;
-};
+  showAddForm: function () {
+    return function (file) {
+      AddForm.show(file);
+    };
+  },
+
+  query: function () {
+    return query;
+  }
+});
 
 Template.contactableDocumentsAdd.events = {
   'click .add-trigger': function() {
@@ -47,12 +58,6 @@ Template.contactableDocumentsAdd.events = {
   'change #add-file': function(e) {
     AddForm.show(e.target.files[0]);
   }
-};
-
-Template.contactableDocumentsAdd.showAddForm = function() {
-  return function(file) {
-    AddForm.show(file);
-  };
 };
 
 // Add document form
@@ -74,9 +79,11 @@ var document = new Utils.ObjectDefinition({
   file: {}
 });
 
-Template.addDocumentForm.newDocument = function() {
-  return document;
-};
+Template.addDocumentForm.helpers({
+  newDocument: function() {
+    return document;
+  }
+});
 
 Template.addDocumentForm.events = {
   'click #add-tag': function(e) {
@@ -101,9 +108,9 @@ Template.addDocumentForm.events = {
 
     // Get extension
     var extension;
-    var splittedName = document.file.name.split('.');
-    if (splittedName.length > 1)
-      extension = splittedName[splittedName.length - 1];
+    var splitName = document.file.name.split('.');
+    if (splitName.length > 1)
+      extension = splitName[splitName.length - 1];
 
     var metadata = {
       entityId: Session.get('entityId'),
@@ -135,68 +142,71 @@ Template.addDocumentForm.events = {
 };
 
 // List documents
-
-Template.contactableDocumentsList.documents = function() {
-  if (!this.entity)
-    return;
-
-  documents = ContactablesFiles.find({
-      entityId: this.entity._id,
-      name: {
-        $regex: query.searchString.value,
-        $options: 'i'
-      }
-    }
-  );
-
-  documentsCount = documents.count();
-  documentsCount += Resumes.find({employeeId: this.entity._id}).count();
-  documentsDep.changed();
-
-  return documents;
-};
-
 var documentsDep = new Deps.Dependency;
 var documentsCount = 0;
-Template.contactableDocumentsList.isEmpty = function() {
-  documentsDep.depend();
-  return documentsCount == 0;
-};
 
-Template.contactableDocumentsList.resumes = function() {
-  var resumes = Resumes.find({employeeId: this.entity._id});
-  return resumes && resumes.count() > 0? resumes : undefined;
-};
+Template.contactableDocumentsList.helpers({
+  documents: function () {
+    if (!this.entity)
+      return;
+
+    documents = ContactablesFiles.find({
+        entityId: this.entity._id,
+        name: {
+          $regex: query.searchString.value,
+          $options: 'i'
+        }
+      }
+    );
+
+    documentsCount = documents.count();
+    documentsCount += Resumes.find({employeeId: this.entity._id}).count();
+    documentsDep.changed();
+
+    return documents;
+  },
+
+  isEmpty: function () {
+    documentsDep.depend();
+    return documentsCount == 0;
+  },
+
+  resumes: function () {
+    var resumes = Resumes.find({employeeId: this.entity._id});
+    return resumes && resumes.count() > 0 ? resumes : undefined;
+  },
+
+
+  url: function () {
+    return FileUploader.getUrl('uploadContactablesFiles', this.fileId);
+  },
+
+  resumeUrl: function () {
+    return FileUploader.getUrl('uploadResume', this.resumeId);
+  },
+
+  documentIcon: function (type) {
+    switch (true) {
+      case /application\/zip/.test(type):
+        return 'icon-file-zip';
+      case /image\//.test(type):
+        return 'icon-file-image-1';
+      case /text\/css/.test(type):
+        return 'icon-file-code';
+      case /application\/pdf/.test(type) || /application\/msword/.test(type) :
+        return 'icon-file-1';
+      default:
+        return 'icon-file-1';
+    }
+  }
+});
+
 
 var query = new Utils.ObjectDefinition({
   reactiveProps: {
     searchString: {}
   }
 });
-
-Template.contactableDocumentsAdd.query = function() {
-  return query;
-};
-
-Template.contactableDocumentsList.url = function() {
-  return FileUploader.getUrl('uploadContactablesFiles', this.fileId);
-};
-
-Template.contactableDocumentsList.resumeUrl = function() {
-  return FileUploader.getUrl('uploadResume', this.resumeId);
-};
-
-Template.contactableDocumentsList.documentIcon = function(type) {
-  switch(true) {
-    case /application\/zip/.test(type): return 'icon-file-zip';
-    case /image\//.test(type): return 'icon-file-image-1';
-    case /text\/css/.test(type): return 'icon-file-code';
-    case /application\/pdf/.test(type)
-      || /application\/msword/.test(type)
-      : return 'icon-file-1';
-    default: return 'icon-file-1';
-  };
-};
 
 Template.contactableDocumentsList.events = {
   'click .delete': function(e) {

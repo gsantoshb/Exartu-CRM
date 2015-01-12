@@ -173,7 +173,7 @@ var mainTypes = ['Employee','Contact','Customer'];
 
 Contactables.after.insert(function (userId, doc) {
   var data = {};
-  data.dateCreated = doc.dateCreated;
+  data.dateCreated = new Date();
   data.objTypeName = _.find(doc.objNameArray,function(item){
     return  mainTypes.indexOf(item)>=0
   });

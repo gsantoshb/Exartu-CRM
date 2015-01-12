@@ -47,14 +47,27 @@ NoteView = new View('notes', {
     // Placements
     this.publish({
       cursor: function (note) {
-        var placementsIds = _.pluck(_.filter(note.links, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
-        return PlacementView.find({ _id: { $in: placementsIds } });
+        var hotListsIds = _.pluck(_.filter(note.links, function (link) { return link.type == Enums.linkTypes.hotList.value ; }), 'id');
+        return PlacementView.find({ _id: { $in: hotListsIds } });
       },
-      to: 'placements',
+      to: 'hotLists',
       observedProperties: ['links'],
       onChange: function (changedProps, oldSelector) {
-        var placementsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
-        return PlacementView.find({ _id: { $in: placementsIds } });
+        var hotListsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.hotList.value ; }), 'id');
+        return PlacementView.find({ _id: { $in: hotListsIds } });
+      }
+    });
+    // HotLists
+    this.publish({
+      cursor: function (note) {
+        var hotListsIds = _.pluck(_.filter(note.links, function (link) { return link.type == Enums.linkTypes.hotList.value ; }), 'id');
+        return HotListView.find({ _id: { $in: hotListsIds } });
+      },
+      to: 'hotLists',
+      observedProperties: ['links'],
+      onChange: function (changedProps, oldSelector) {
+        var hotListsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.hotList.value ; }), 'id');
+        return HotListView.find({ _id: { $in: hotListsIds } });
       }
     });
   }
