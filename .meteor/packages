@@ -27,7 +27,6 @@ aldeed:autoform
 cfs:filesystem
 
 document
-es
 external-storage
 paypal
 subscription-plan
@@ -59,3 +58,4 @@ shammar13:busboy
 aida:mongo-view
 aida:pagination
 aida:dtype
+aida:es

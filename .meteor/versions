@@ -5,6 +5,7 @@ accounts-password@1.0.5
 accounts-ui@1.1.4
 accounts-ui-unstyled@1.1.5
 aida:dtype@0.1.0
+aida:es@0.1.0
 aida:mongo-view@0.1.2
 aida:pagination@0.1.2
 aldeed:autoform@4.2.2
@@ -46,7 +47,6 @@ deps@1.0.6
 document@0.0.1
 ejson@1.0.5
 email@1.0.5
-es@0.0.0
 external-storage@0.0.0
 fastclick@1.0.2
 file-uploader@0.0.0
