@@ -36,9 +36,7 @@ cfs:graphicsmagick
 mizzao:bootstrap-3
 
 force-ssl
-pagination
 
-mongoview
 reactive-var
 cfs:data-man
 cfs:gridfs
@@ -59,3 +57,5 @@ node-form-data
 
 npm-container
 shammar13:busboy
+aida:mongo-view
+aida:pagination
