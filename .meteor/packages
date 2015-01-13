@@ -26,7 +26,6 @@ aldeed:autoform
 
 cfs:filesystem
 
-dtype
 document
 es
 external-storage
@@ -59,3 +58,4 @@ npm-container
 shammar13:busboy
 aida:mongo-view
 aida:pagination
+aida:dtype
