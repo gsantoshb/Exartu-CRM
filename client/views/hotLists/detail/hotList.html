@@ -1,0 +1,57 @@
+<template name="hotList">
+    <div id="content" class="details">
+        {{#with originalHotList}}
+            <div id="content-header" class="mini">
+                <div class="profile-content-header">
+                    <h1 class="profile-name">
+                        <a href="/hotlist/{{_id}}"> {{displayName}} </a>
+                        <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
+                    </h1>
+                </div>
+            </div>
+        {{/with}}
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="details-menu col-md-2">
+                    {{>hotList_nav}}
+                </div>
+                <div class="details-view col-md-10">
+                    <div class="details-view-content clearfix">
+                        <div class="tab-pane active">
+                            {{> UI.dynamic template=currentTemplate  data=hotList }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="hotList_nav">
+    {{> detailNav tabs=tabs route="hotList" entityId=getEntityId}}
+</template>
+
+<template name="hotList_tasks">
+    {{> tasksBox}}
+</template>
+
+
+
+<template name="hotList_notes">
+    {{> notesBox}}
+</template>
+
+<template name="hotList_details">
+    <div class="col-sm-6">
+        {{#with originalHotList}}  {{> hotListDetail}}  {{/with}}
+    </div>
+    <div class="col-sm-6">
+        {{> contactableContactsBox}}
+
+    </div>
+    <div class="col-sm-6">
+        {{#with originalHotList}}{{>tagsBox  }}{{/with}}
+        </div>
+</template>

@@ -40,8 +40,8 @@ _.extend( Utils, {
     var ors = [];
     var key = key || 'hierId';
 
-    var hierIdSplitted = hier.split('-');
-    var userHiersIds = hierIdSplitted.splice(1, hierIdSplitted.length - 1);
+    var hierIdSplit = hier.split('-');
+    var userHiersIds = hierIdSplit.splice(1, hierIdSplit.length - 1);
     _.each(userHiersIds, function (part) {
       accumulated = accumulated + (accumulated ? '-' : '') + part;
       var aux={};

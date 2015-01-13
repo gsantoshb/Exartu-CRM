@@ -172,9 +172,6 @@ Contactables.before.insert(function (userId, doc) {
     doc.displayName= doc.person.lastName+', ' + doc.person.firstName;
   }
 
-  var shortId = Meteor.npmRequire('shortid');
-  var aux = shortId.generate();
-  doc.searchKey = aux;
 });
 
 // Contactables documents

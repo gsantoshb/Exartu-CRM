@@ -19,7 +19,7 @@ FileUploader.createEndpoint = function(route, options) {
           case 'POST':
             var data = {};
 
-            _.extend(data, this.request.files);
+            _.extend(data, { file: this.request.file });
             _.extend(data, this.request.query);
 
             if (!data.userId)

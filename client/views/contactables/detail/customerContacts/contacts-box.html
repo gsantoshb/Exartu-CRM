@@ -2,7 +2,7 @@
     {{#if hasContacts }}
         <div class="box">
             <div class="box-header-2">
-                <a class="btn-action tip-top addContact" data-original-title="Add Contact" href="#" title="Add"><i class="fa fa-plus"></i></a>
+                <btn class="btn-action tip-top addContact" data-original-title="Add Contact" href="#" title="Add"><i class="fa fa-plus"></i></btn>
                 <div class="box-title">Contacts</div>
             </div>
             <div class="box-content-md">
@@ -14,7 +14,9 @@
                                 <div class="list-3-content-wrap">
                                     <div class="pull-right">
                                         {{#each contactMethods}}
-                                            <a class="btn btn-xs btn-default tip-bottom" href="{{contactMethodTypePrefix type}}{{value}}" title="{{value}}"><i class="{{contactMethodTypeIcon type}}"></i> </a>
+                                            <a class="btn btn-xs btn-default tip-bottom"
+                                               href="{{contactMethodTypePrefix type}}{{value}}" title="{{value}}">
+                                                <i class="{{contactMethodTypeIcon type}}"></i> </a>
                                         {{/each}}
                                     </div>
                                     {{#if person}}

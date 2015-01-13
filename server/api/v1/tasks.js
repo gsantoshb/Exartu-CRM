@@ -20,9 +20,9 @@ Router.map(function() {
 						hierId: user.hierId
 					};
 
-					var id = this.params.entityId;
+					var id = this.params.query.entityId;
 					if (id)
-						selector['links.id'] = id
+						selector['links.id'] = id;
 
 					response.end(Tasks.find(selector).map(mapper.get), {type: 'application/json'});
 
@@ -37,7 +37,7 @@ Router.map(function() {
 				// 	 - links: [ string ] // contactable ids related
 				// 	 - dateCreated: date (optional)
 				case 'POST':
-					var data = this.request.body;
+					var data = this.request.bodyFields;
 
 					try {
 						var task = mapper.create(data, user);
@@ -45,7 +45,7 @@ Router.map(function() {
 						_.extend(data, {id: taskId});
 						response.end(data);
 					} catch(err) {
-						console.log(err)
+						console.log(err);
 						response.error(err);
 					}
 					break;
@@ -93,7 +93,7 @@ var mapper = {
 	},
 	get: function(data) {
 		if (!data)
-			return {}
+			return {};
 		return {
 			msg: data.msg,
 			begin: data.begin,

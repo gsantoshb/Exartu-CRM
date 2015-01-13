@@ -2,6 +2,7 @@
 ES.syncCollection({
 	collection: Contactables,
 	fields: [
+		{ name: 'idField', label: 'Id'},
 		{ name: 'person.firstName', label: 'First name'}, { name: 'person.lastName', label: 'Last name'}, { name: 'person.middleName', label: 'Middle name'}, { name: 'person.jobTitle', label: 'Job title'},
 		{ name: 'organization.organizationName', label: 'Organization name'},
 		{ name: 'Customer.department', label: 'Deparment'},

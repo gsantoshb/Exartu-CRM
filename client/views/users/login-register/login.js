@@ -53,8 +53,8 @@ AutoForm.hooks({
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
       var self = this;
       //isSubmitting.set(true);
-      email = insertDoc.email;
-      Meteor.loginWithPassword({ email: insertDoc.email }, insertDoc.password, function (err, result) {
+      email = insertDoc.email.toLowerCase();
+      Meteor.loginWithPassword({ email: email }, insertDoc.password, function (err, result) {
         if (err) {
           if(err.reason == 'Email not verified') {
             notVerified.set(true);

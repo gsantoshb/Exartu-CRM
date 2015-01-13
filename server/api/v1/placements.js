@@ -20,8 +20,8 @@ Router.map(function() {
         //  - jobId: string
         //  - employeeId: string
         case 'GET':
-          var jobId = this.params.jobId;
-          var employeeId = this.params.employeeId;
+          var jobId = this.params.query.jobId;
+          var employeeId = this.params.query.employeeId;
           try {
             var res = connection.call('getPlacements', jobId, employeeId);
 
@@ -45,7 +45,7 @@ Router.map(function() {
         //  - endDate: string (date) ?
         //  - externalId: string ?
         case 'POST':
-          var data = this.request.body;
+          var data = this.request.bodyFields;
 
           try {
             var placement = mapper.create(data, user.hierId);

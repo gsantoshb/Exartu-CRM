@@ -44,7 +44,7 @@ Router.map(function() {
 					break;
 
 				case 'GET': 
-					var data = this.params;
+					var data = this.params.query;
 
 					if (!data.entityId)
 						response.error('EntityId is required');

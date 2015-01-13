@@ -103,10 +103,6 @@ Jobs.before.insert(function (userId, doc) {
   doc.dateCreated = Date.now();
   if (!doc.activeStatus) doc.activeStatus=LookUpManager.getActiveStatusDefaultId();
 
-  var shortId = Meteor.npmRequire('shortid');
-  var aux = shortId.generate();
-  doc.searchKey = aux;
-  console.log('shortId: ' + aux);
 });
 
 // Indexes

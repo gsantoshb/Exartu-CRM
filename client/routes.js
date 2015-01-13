@@ -56,6 +56,7 @@ Router.map(function () {
     path: '/contactableAdd/:objType',
     controller: 'ContactableAddController'
   });
+
   this.route('addJobPage', {
     path: '/jobAdd/:objType',
     controller: 'JobAddController'
@@ -155,6 +156,20 @@ Router.map(function () {
   this.route('placement', {
     path: '/placement/:_id/:tab?',
     controller: 'PlacementController'
+  });
+  this.route('hotLists', {
+    path: '/hotLists',
+    controller: 'HotListsController'
+  });
+
+  this.route('addHotListPage', {
+    path: '/hotListAdd/:objType',
+    controller: 'HotListAddController'
+  });
+
+  this.route('hotList', {
+    path: '/hotList/:_id/:tab?',
+    controller: 'HotListController'
   });
 
    this.route('candidates', {

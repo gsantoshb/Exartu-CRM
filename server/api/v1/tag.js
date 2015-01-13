@@ -19,8 +19,8 @@ Router.map(function() {
 
       switch(this.request.method) {
         case 'GET':
-          if (this.params.contactableId) {
-            var contactable = Contactables.findOne({_id: this.params.contactableId, hierId: user.hierId});
+          if (this.params.query.contactableId) {
+            var contactable = Contactables.findOne({_id: this.params.query.contactableId, hierId: user.hierId});
             response.end(contactable && contactable.tags, {type: 'application/json'});
           }
           else
@@ -32,7 +32,7 @@ Router.map(function() {
         //   - tag: string
         // 	 - contactableId: string
         case 'POST':
-          var data = this.request.body || {};
+          var data = this.request.bodyFields || {};
 
           if (! data.contactableId) {
             response.error('argument contactableId is required');

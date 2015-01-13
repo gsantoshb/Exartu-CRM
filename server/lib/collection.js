@@ -24,8 +24,6 @@ Relations = new Mongo.Collection("relations");
 
 LookUps = new Mongo.Collection("lookUps");
 
-ContactMethods = new Mongo.Collection("contactMethods");
-
 Placements = new Mongo.Collection("placements");
 
 Candidates = new Mongo.Collection("candidates");
@@ -40,6 +38,8 @@ EmailTemplateMergeFields = new Mongo.Collection('emailTemplateMergeFields');
 Roles = new Mongo.Collection("roles");
 SystemAdmins = new Mongo.Collection("systemAdmins");
 Tenants=Hierarchies;
+
+HotLists=new Mongo.Collection("hotLists");
 Collections = {
   Hierarchies: Hierarchies,
   Jobs: Jobs,
@@ -58,5 +58,6 @@ Collections = {
   SystemConfigs: SystemConfigs,
   Roles: Roles,
   SystemAdmins: SystemAdmins,
-  Tenants: Hierarchies
+  Tenants: Hierarchies,
+  HotLists: HotLists
 };
