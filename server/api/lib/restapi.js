@@ -118,6 +118,7 @@ RESTAPI.response.prototype.end = function(message, options) {
 		// Content-type
 		switch(options.type) {
 			case 'json': self.response.setHeader("Content-Type", "application/json"); break;
+			case 'xml': self.response.setHeader("Content-Type", "text/xml"); break;
 			default: 
 		}
 	}
@@ -126,7 +127,12 @@ RESTAPI.response.prototype.end = function(message, options) {
 	}
 
 	self.response.statusCode = code;
-	self.response.end(JSON.stringify(message));
+
+	if (options.plain) {
+		self.response.end(message);
+	} else {
+		self.response.end(JSON.stringify(message));
+	}
 };
 
 RESTAPI.response.prototype.error = function(err) {
