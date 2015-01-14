@@ -61,7 +61,14 @@ var extraInformation = new Utils.ObjectDefinition({
 var emailType = undefined;
 var phoneType = undefined;
 
+var addDisabled = new ReactiveVar(false);
+Template.addContactablePage.created=function(){
+  addDisabled.set(false);
+};
 Template.addContactablePage.helpers({
+  addDisabled: function () {
+    return addDisabled.get();
+  },
   contactable: function(){
     if (!contactable){
       var options=Session.get('options');
@@ -174,7 +181,7 @@ Template.addContactablePage.events({
       dType.displayAllMessages(this);
       return;
     }
-    var cont=dType.buildAddModel(this);
+    var cont = dType.buildAddModel(this);
 
     // Extend contactable with extra information
     // - Contact methods
@@ -199,8 +206,9 @@ Template.addContactablePage.events({
     }
 
     extraInformation.reset();
-
+    addDisabled.set(true);
     Meteor.call('addContactable', cont, function(err, result){
+      addDisabled.set(false);
       if(err){
         console.dir(err);
       }else{
