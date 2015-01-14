@@ -608,8 +608,8 @@ var loadTasks = function (hierId, usermane, userId) {
     tomorrow.setDate(today.getDate() + 1);
 
     for (var i = 0; i < 25; ++i) {
-        var person = employeesFetched[Math.floor(Math.random() * employees.length)];
-        if (i % 2 == 0) person = contactsFetched[Math.floor(Math.random() * contacts.length)];
+        var person = employeesFetched[Math.floor(Math.random() * employeesFetched.length)];
+        if (i % 2 == 0) person = contactsFetched[Math.floor(Math.random() * contactsFetched.length)];
         var msg = notes[Math.floor(Math.random() * notes.length)] + ' ' + person.person.firstName;
         var newTask = {
             begin: today,
@@ -646,8 +646,8 @@ var loadNotes = function (hierId, usermane, userId) {
     tomorrow.setDate(today.getDate() + 1);
 
     for (var i = 0; i < 25; ++i) {
-        var person = employeesFetched[Math.floor(Math.random() * employees.length)];
-        if (i % 2 == 0) person = contactsFetched[Math.floor(Math.random() * contacts.length)];
+        var person = employeesFetched[Math.floor(Math.random() * employeesFetched.length)];
+        if (i % 2 == 0) person = contactsFetched[Math.floor(Math.random() * contactsFetched.length)];
         var msg = notes[Math.floor(Math.random() * notes.length)] + ' ' + person.person.firstName;
         var newNote = {
             msg: msg,
@@ -695,7 +695,7 @@ Meteor.methods({
         var userCurrentHierId = Utils.getUserHierId(user._id);
         if (!user)
             return;
-        _.each([Contactables, Jobs, Tasks, Placements, Notes, Activities], function (collection) {
+        _.each([HotLists,Contactables, Jobs, Tasks, Placements, Notes, Activities], function (collection) {
             collection.direct.remove({hierId: userCurrentHierId, testData: true});
         });
     }
