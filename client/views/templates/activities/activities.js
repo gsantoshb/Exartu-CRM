@@ -1,10 +1,12 @@
-Template.newContactableActivity.getActivityColor = function(){
-  return helper.getActivityColor(this);
-};
+Template.newContactableActivity.helpers({
+  getActivityColor: function(){
+    return helper.getActivityColor(this);
+  },
 
-Template.newContactableActivity.getActivityIcon = function(){
-  return helper.getActivityIcon(this);
-};
+  getActivityIcon: function(){
+    return helper.getActivityIcon(this);
+  }
+});
 
 Template.newNoteActivity.helpers({
   note: function () {
