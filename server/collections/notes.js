@@ -109,4 +109,4 @@ Notes.before.insert(function(userId, doc){
 Notes._ensureIndex({hierId: 1});
 Notes._ensureIndex({assign: 1});
 Notes._ensureIndex({userId: 1});
-Notes._ensureIndex({"links._id":1});
+Notes._ensureIndex({"links.id":1});
