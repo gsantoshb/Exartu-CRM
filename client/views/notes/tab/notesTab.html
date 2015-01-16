@@ -24,7 +24,7 @@
                     <small class="text-muted">  <a href="/management/twilioManagement">Enable SMS/Texting</a></small>
                 {{else}}
                     {{#unless mobileNumbers}}
-                        <small class="text-muted"> This record has no mobile phone, so SMS/text not possible</small>
+                        <small class="text-muted"> This record has no mobile phone, so SMS/text is not possible</small>
                     {{else}}
                         {{> afQuickField name="sendAsSMS"}}
 

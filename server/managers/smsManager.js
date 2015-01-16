@@ -80,16 +80,19 @@ SMSManager = {
   },
   processSMSReply: function (reply) {
     // Get origin phone number hierarchy
-    var hier = Hierarchies.findOne({'phoneNumber.value': reply.To});
+    var hier = Hierarchies.findOne({'phoneNumber.value': {$regex: reply.To, $options: 'x'}});
     if (! hier)
-      throw new Meteor.Error(404, 'There is no hierarchy with phone number ' + reply.To);
-
-    var hierFilter = Utils.filterByHiers(hier._id);
+      throw new Error('There is no hierarchy with phone number ' + reply.To);
 
     // Get contactable with phone number equal to reply.To that belong to hier
-    var contactable = Contactables.findOne({'contactMethods.value': reply.From, $or: hierFilter});
+    var hierFilter = Utils.filterByHiers(hier._id);
+    var fromNumber = reply.From.trim();
+    if (fromNumber.length > 10)
+      fromNumber = fromNumber.substring(1, fromNumber.length -1);
+
+    var contactable = Contactables.findOne({ 'contactMethods.value': {$regex: fromNumber, $options: 'x'}, $or: hierFilter});
     if (! contactable)
-      throw new Meteor.Error(404, 'There is no contactable with phone number ' + reply.From + ' in hierarchy ' + hier.name);
+      throw new Error('There is no contactable with phone number ' + reply.From + ' in hierarchy ' + hier.name);
 
     // Create note
     var note = {
@@ -110,19 +113,43 @@ SMSManager = {
 };
 
 // Twilio SMS Endpoint
-Router.map(function () {
+Router.map(function() {
+  // Placement Statuses
   this.route('smsReply', {
-    path: 'sms/reply',
     where: 'server',
-    action: function () {
-      // Respond to twilio
-      var resp = new Twilio.TwimlResponse();
-      this.response.writeHead(200, { 'Content-Type':'text/xml' });
-      this.response.end(resp.toString());
-      // Process the received sms
-      SMSManager.processSMSReply(this.request.body);
+    path: 'sms/reply',
+    action: function() {
+      var response = new RESTAPI.response(this.response);
+
+      // Obtain data from the respective method executed
+      var data;
+      switch(this.request.method) {
+        case 'GET':
+          data = this.params.query;
+          break;
+
+        case 'POST':
+          data = this.request.bodyFields;
+          break;
+
+        default:
+          response.error('Method not supported');
+      }
+
+      try {
+        // Process the received sms
+        SMSManager.processSMSReply(data);
+
+        // Respond to twilio
+        console.log('responding');
+        var resp = new Twilio.TwimlResponse();
+        response.end(resp.toString(), { type: 'xml', plain: true });
+      } catch(err) {
+        console.log(err);
+        response.error(err.message);
+      }
     }
-  })
+  });
 });
 
 var _requestNumber = function () {
@@ -141,23 +168,22 @@ var _requestNumber = function () {
     // Search for available phone numbers
     var result = Meteor.wrapAsync(twilio.availablePhoneNumbers('US').local.get)({ areaCode:'651'});
 
+    if (result.availablePhoneNumbers.length > 0) {
+      newNumber = Meteor.wrapAsync(twilio.incomingPhoneNumbers.create)({
+        phoneNumber: result.availablePhoneNumbers[0].phoneNumber,
+        areaCode: '651',
+        smsMethod: "GET",
+        smsUrl: Meteor.absoluteUrl('sms/reply')
+      });
 
-    //if (result.availablePhoneNumbers.length > 0) {
-    //  var newNumber = Meteor.wrapAsync(twilio.incomingPhoneNumbers.create)({
-    //    phoneNumber: result.availablePhoneNumbers[0].phoneNumber,
-    //    areaCode: '651',
-    //    smsMethod: "POST",
-    //    smsUrl: Meteor.absoluteUrl('sms/reply')
-    //  });
-    //
-    //} else {
-    //  throw new Meteor.Error(500, 'There is no available number on Twilio');
-    //}
-    //since the above code is failing (in fibers)...create the twilio number manually using one already purchased
-    newNumber={
-      phoneNumber: "+16122356835",
-      friendlyName: "1-612-235-6835"
+    } else {
+      throw new Meteor.Error(500, 'There is no available number on Twilio');
     }
+    ////since the above code is failing (in fibers)...create the twilio number manually using one already purchased
+    //newNumber={
+    //  phoneNumber: "+16122356835",
+    //  friendlyName: "1-612-235-6835"
+    //}
 
   }
 

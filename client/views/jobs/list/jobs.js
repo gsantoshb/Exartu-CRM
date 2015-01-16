@@ -138,28 +138,27 @@ var info = new Utils.ObjectDefinition({
   }
 });
 
-var listViewDefault=Session.get('jobListViewMode');
-if (!listViewDefault)
-{
-  listViewDefault=false;
-}
+var listViewDefault = Session.get('jobListViewMode');
+if (!listViewDefault) { listViewDefault = false; }
+
 var listViewMode = new ReactiveVar(listViewDefault);
 
+Template.jobs.helpers({
+  information: function() {
+    var searchQuery = {};
 
-Template.jobs.information = function() {
-  var searchQuery = {};
+    if (query.objType.value)
+      searchQuery.objNameArray = query.objType.value;
 
-  if (query.objType.value)
-    searchQuery.objNameArray = query.objType.value;
+    info.jobsCount.value = JobHandler.totalCount();
 
-  info.jobsCount.value = JobHandler.totalCount();
+    return info;
+  },
 
-  return info;
-};
-
-Template.jobs.isLoading = function () {
-  return JobHandler.isLoading();
-}
+  isLoading: function () {
+    return JobHandler.isLoading();
+  }
+});
 
 // List
 Template.jobList.created= function () {
@@ -307,10 +306,28 @@ Template.jobList.created= function () {
   })
 };
 
-Template.jobList.info = function() {
-  info.isFiltering.value = jobCollection.find().count() != 0;
-  return info;
-};
+Template.jobList.helpers({
+  info: function() {
+    info.isFiltering.value = jobCollection.find().count() != 0;
+    return info;
+  },
+
+  listViewMode: function() {
+    return listViewMode.get();
+  },
+
+  jobs: function() {
+    return jobCollection.find();
+  },
+
+  isLoading: function() {
+    return SubscriptionHandlers.JobHandler.isLoading();
+  },
+
+  jobTypes: function() {
+    return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
+  }
+});
 
 var locationFields = ['address', 'city', 'state', 'country'];
 
@@ -332,39 +349,10 @@ var jobTypes = function() {
   return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
 };
 
-Template.jobListSearch.jobTypes = jobTypes;
-
 var searchFields = ['jobTitle', 'publicJobTitle'];
 
-Template.jobList.jobs = function() {
-  return jobCollection.find();
-};
-
-Template.jobList.listViewMode= function() {
-  return listViewMode.get();
-};
-Template.jobListSearch.listViewMode= function() {
-  return listViewMode.get();
-};
-Template.jobListItem.listViewMode= function() {
-  return listViewMode.get();
-};
-Template.jobList.isLoading = function() {
-  return SubscriptionHandlers.JobHandler.isLoading();
-};
-
-// List search
-
-Template.jobList.jobTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
-};
-
-Template.jobListSearch.searchString = function() {
-  return query.searchString;
-};
 
 // List sorting
-
 var selectedSort;
 var selectedSortDep = new Deps.Dependency;
 var sortFields = [
@@ -372,24 +360,26 @@ var sortFields = [
   {field: 'endDate', displayName: 'End date'}
 ];
 
-Template.jobListSort.sortFields = function() {
-  return sortFields;
-};
+Template.jobListSort.helpers({
+  sortFields: function() {
+    return sortFields;
+  },
 
-Template.jobListSort.selectedSort = function() {
-  selectedSortDep.depend();
-  return selectedSort;
-};
+  selectedSort: function() {
+    selectedSortDep.depend();
+    return selectedSort;
+  },
 
-Template.jobListSort.isFieldSelected = function(field) {
-  selectedSortDep.depend();
-  return selectedSort && selectedSort.field == field.field;
-};
+  isFieldSelected: function(field) {
+    selectedSortDep.depend();
+    return selectedSort && selectedSort.field == field.field;
+  },
 
-Template.jobListSort.isAscSort = function(field) {
-  selectedSortDep.depend();
-  return field.value == 1;
-};
+  isAscSort: function(field) {
+    selectedSortDep.depend();
+    return field.value == 1;
+  }
+});
 
 var setSortField = function(field) {
   if (selectedSort && selectedSort.field == field.field) {
@@ -410,6 +400,20 @@ Template.jobListSort.events = {
   }
 };
 
+
+// List search
+Template.jobListSearch.helpers({
+  jobTypes: jobTypes,
+
+  listViewMode:  function() {
+    return listViewMode.get();
+  },
+
+  searchString: function() {
+    return query.searchString;
+  }
+});
+
 Template.jobListSearch.events = {
   'click #list-view': function () {
     listViewMode.set(true);
@@ -422,57 +426,66 @@ Template.jobListSearch.events = {
 };
 
 
-
 // List filters
+Template.jobsFilters.helpers({
+  query: function () {
+    return query;
+  },
 
-Template.jobsFilters.query = function () {
-  return query;
-};
+  jobTypes: jobTypes
+});
 
-Template.jobsFilters.jobTypes = jobTypes;
 
-// Item
+// List Items
+Template.jobListItem.helpers({
+  listViewMode: function() {
+    return listViewMode.get();
+  },
 
-Template.jobListItem.pictureUrl = function(pictureFileId) {
-  var picture = JobsFS.findOne({_id: pictureFileId});
-  return picture? picture.url('JobsFSThumbs') : undefined;
-};
+  pictureUrl: function(pictureFileId) {
+    var picture = JobsFS.findOne({_id: pictureFileId});
+    return picture? picture.url('JobsFSThumbs') : undefined;
+  },
 
-Template.jobListItem.jobIcon = function() {
-  return helper.getEntityIcon(this);
-};
+  jobIcon: function() {
+    return helper.getEntityIcon(this);
+  },
 
-Template.jobListItem.displayObjType = function() {
-  return Utils.getJobType(this);
-};
+  displayObjType: function() {
+    return Utils.getJobType(this);
+  },
 
-Template.jobListItem.placements = function () {
-  return Placements.find({job: this._id}, { limit: 3, transform: null});
-};
+  placements: function () {
+    return Placements.find({job: this._id}, { limit: 3, transform: null});
+  },
 
-Template.jobListItem.getEmployeeDisplayName = function () {
-  var employee = Contactables.findOne(this.employee);
-  return employee ? employee.displayName : 'Employee information not found!';
-};
+  getEmployeeDisplayName: function () {
+    var employee = Contactables.findOne(this.employee);
+    return employee ? employee.displayName : 'Employee information not found!';
+  },
 
-Template.jobInformation.customerName = function () {
-  var customer =  Contactables.findOne(this.customer);
-  return customer && customer.displayName;
-};
+  customerName: function () {
+    var customer =  Contactables.findOne(this.customer);
+    return customer && customer.displayName;
+  },
 
-Template.jobListItem.customerName = function () {
-  var customer =  Contactables.findOne(this.customer);
-  return customer && customer.displayName;
-};
-Template.jobInformation.departmentName = function () {
-  var customer =  Contactables.findOne(this.customer);
-  if ( customer && customer.Customer) return customer.Customer.department;
-};
+  countPlacements: function () {
+    return Placements.find({job: this._id}).count();
+  },
 
-Template.jobListItem.countPlacements = function () {
-  return Placements.find({job: this._id}).count();
-};
+  morePlacements: function () {
+    return Placements.find({job: this._id}).count() > 3;
+  }
+});
 
-Template.jobListItem.morePlacements = function () {
-  return Placements.find({job: this._id}).count() > 3;
-};
+Template.jobInformation.helpers({
+  customerName: function () {
+    var customer =  Contactables.findOne(this.customer);
+    return customer && customer.displayName;
+  },
+
+  departmentName: function () {
+    var customer =  Contactables.findOne(this.customer);
+    if ( customer && customer.Customer) return customer.Customer.department;
+  }
+});

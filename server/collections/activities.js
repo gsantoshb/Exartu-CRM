@@ -498,6 +498,7 @@ Meteor.startup(function () {
 
 Activities._ensureIndex({hierId: 1});
 
+Activities._ensureIndex({type: 1});
 // Helpers
 
 var propertiesTracker = function (doc, previous, changes, root, properties) {
