@@ -46,9 +46,13 @@
         {{> fastPagination name="notes"}}
     </div>
     <ul class="record-list list-3 stripped has-thumb">
-        {{#each items}}
-            {{> notesTabItem}}
-        {{/each}}
+        {{#if isLoading}}
+            <div style="min-height: 350px; background: url('/img/spinner.gif') no-repeat center;"></div>
+        {{else}}
+            {{#each items}}
+                {{> notesTabItem}}
+            {{/each}}
+        {{/if}}
     </ul>
 </template>
 

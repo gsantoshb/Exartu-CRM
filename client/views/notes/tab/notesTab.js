@@ -89,10 +89,7 @@ var NotesHandler;
 
 Template.notesTabList.created = function () {
   var self = this;
-  if (!SubscriptionHandlers.NotesHandler){
-    SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes');
-  }
-  NotesHandler = SubscriptionHandlers.NotesHandler;
+
 
   Meteor.autorun(function () {
     var searchQuery = {
@@ -102,13 +99,20 @@ Template.notesTabList.created = function () {
         }
       }
     };
-
-    NotesHandler.setFilter(searchQuery);
+    if (!SubscriptionHandlers.NotesHandler){
+      SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes',{filter: searchQuery});
+    }else{
+      SubscriptionHandlers.NotesHandler.setFilter(searchQuery);
+    }
+    NotesHandler = SubscriptionHandlers.NotesHandler;
   });
 };
 Template.notesTabList.helpers({
   items: function() {
     return Notes.find({links: { $elemMatch: { id: Session.get('entityId')} } },{ sort: { dateCreated: -1 } });
+  },
+  isLoading: function () {
+    return ! SubscriptionHandlers.NotesHandler.ready();
   }
 });
 
