@@ -115,7 +115,7 @@ Meteor.publish('placementDetails', function (id) {
 
 Meteor.publish('allPlacements', function () {
   var sub = this;
-  PlacementView.publishCursor(Utils.filterCollectionByUserHier.call(this, PlacementView.find({},{
+  Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Placements.find({},{
     fields: {
       status: 1,
       employee: 1,
