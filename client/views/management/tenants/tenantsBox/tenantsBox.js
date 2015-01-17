@@ -88,13 +88,23 @@ Template.tenantsBox.information = function () {
 };
 
 var searchDep = new Deps.Dependency;
-var isSearching = false;
-Template.tenantsBox.helpers({
-    isSearching: function () {
-        searchDep.depend();
-        return isSearching;
-    }
-});
+//var isSearching = false;
+//Template.tenantsBox.helpers({
+//    isSearching: function () {
+//        searchDep.depend();
+//        return isSearching;
+//    },
+//    information : function () {
+//        var searchQuery = {};
+//
+//        if (tenantQuery.objType.value)
+//            searchQuery.objNameArray = tenantQuery.objType.value;
+//
+//        info.tenantsCount.value = TenantHandler.totalCount();
+//
+//        return info;
+//    }
+//});
 var options = {};
 // List
 Template.tenantsList.created = function () {

@@ -87,7 +87,7 @@ Meteor.paginatedPublish(ContactablesList, function () {
     pageSize: 10,
     publicationName: 'auxContactables',
     updateSelector: function (oldSelector, clientParams) {
-      console.log('searchcalled2');
+      console.log('searchcalled2',Date.now(),new Date());
       var newSelector = EJSON.clone(oldSelector);
       if (clientParams && clientParams.placementStatus) {
         // Get ids of employees that have placements with status equal to clientParams.placementStatus
