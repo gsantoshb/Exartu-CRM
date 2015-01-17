@@ -38,6 +38,10 @@ Meteor.methods({
   acceptUserInvitation: function(token) {
     UserManager.acceptUserInvitation(token, Meteor.user());
   },
+  addUserToHierarchy: function(id,hierId)
+  {
+    UserManager.addUserToHierarchy(id,hierId);
+  },
 
   // Last used
   getLastUsed: function (type) {

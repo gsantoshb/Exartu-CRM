@@ -116,6 +116,9 @@ UserManager = {
 
     return false;
   },
+  addUserToHierarchy: function(id,hierId) {
+    Meteor.users.update({_id: id}, { $addToSet: { hierarchies: hierId } });
+  },
   sendUserInvitation: function (user, hierId) {
     var hier = Hierarchies.findOne(hierId || Meteor.user().currentHierId);
 

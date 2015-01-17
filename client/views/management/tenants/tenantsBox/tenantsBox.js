@@ -1,7 +1,7 @@
 var entityType = null;
 var isEntitySpecific = false;
 var contactable;
-var searchFields = ['name'];
+var searchFields = ['name','configuration.webName','configuration.title','_id'];
 
 var tenantCollection = Tenants;
 var TenantHandler, tenantQuery;
