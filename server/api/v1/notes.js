@@ -27,18 +27,18 @@ Router.map(function() {
 					response.end(Notes.find(selector).map(mapper.get), {type: 'application/json'});
 
 					break;
-				// Create new note
+
+				// Add a new note for a contactable
 				// Body:
-				//   - msg: string
-				// 	 - links: [ string ] // contactable ids
-				// 	 - dateCreated: date (optional)
+				//  - msg: string
+				//  - link: string  // contactable ids
+				//  - dateCreated: string (date) ?
 				case 'POST':
 					var data = this.request.bodyFields;
 
 					try {
-
 						var note = mapper.create(data);
-						var noteId = connection.call('apiInsertNote', note);
+						var noteId = connection.call('apiAddNote', note);
 						_.extend(data, {id: noteId});
 						response.end(data);
 					} catch(err) {
@@ -56,30 +56,17 @@ Router.map(function() {
 	})
 });
 
-Meteor.methods({
-	apiInsertNote: function(note) {
-		return Notes.insert(note);
-	}
-});
-
 var mapper = {
 	create: function(data) {
-		if (!data.links)
-			throw new Meteor.Error(500, "Links are required");
-		return {
+		var note = {
 			msg: data.msg,
-			links: _.map(data.links, function(link) {
-				var entity = Contactables.findOne(link);
-				if (!entity)
-					throw new Meteor.Error(404, 'Entity with id ' + link + 'not found');
-				
-				return {
-					id: link,
-					type: Enums.linkTypes.contactable.value
-				}
-			}),
-			dateCreated: data.dateCreated
+			link: data.link
 		};
+
+		// Optional values
+		if (data.dateCreated) { note.dateCreated = data.dateCreated; }
+
+		return note;
 	},
 	get: function(data) {
 		if (!data)
