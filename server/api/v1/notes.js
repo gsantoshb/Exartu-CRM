@@ -15,17 +15,21 @@ Router.map(function() {
 			var response = new RESTAPI.response(this.response);
 
 			switch(this.request.method) {
+				// Get notes for an entity by ID
+				// Parameters:
+				//  - entityId: string
 				case 'GET':
-					var selector = {
-						hierId: user.hierId
-					};
+					var entityId = this.params.query.entityId;
+					try {
+						var res = connection.call('apiGetNotes', entityId);
 
-					var id = this.params.query.entityId;
-					if (id)
-						selector['links.id'] = id;
-
-					response.end(Notes.find(selector).map(mapper.get), {type: 'application/json'});
-
+						// Transform the response before sending it back
+						res = mapper.get(res);
+						response.end(res);
+					} catch(err) {
+						console.log(err);
+						response.error(err.message);
+					}
 					break;
 
 				// Add a new note for a contactable
@@ -33,6 +37,7 @@ Router.map(function() {
 				//  - msg: string
 				//  - link: string  // contactable ids
 				//  - dateCreated: string (date) ?
+				//  - externalId: string ?
 				case 'POST':
 					var data = this.request.bodyFields;
 
@@ -65,18 +70,28 @@ var mapper = {
 
 		// Optional values
 		if (data.dateCreated) { note.dateCreated = data.dateCreated; }
+		if (data.externalId) { placement.externalId = data.externalId; }
 
 		return note;
 	},
-	get: function(data) {
-		if (!data)
-			return {};
-		return {
-			msg: data.msg,
-			links: _.map(data.links, function(link){
-				return link.id;
-			}),
-			dateCreated: data.dateCreated
-		}
+	get: function(data, customerId) {
+		if (!data) return {};
+
+		var result = [];
+		_.each(data, function (item) {
+			var res = {
+				id: item._id,
+				msg: item.msg,
+				link: item.links[0].id
+			};
+
+			// Optional values
+			if (item.dateCreated) { res.dateCreated = item.dateCreated; }
+			if (item.externalId) { res.externalId = item.externalId; }
+
+			result.push(res);
+		});
+
+		return result;
 	}
 };

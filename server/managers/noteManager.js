@@ -13,5 +13,10 @@ NoteManager = {
     delete note.link;
 
     return Notes.insert(note);
+  },
+
+  apiGetNotes: function(entityId) {
+    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() },
+      Notes.find({ 'links.id': entityId}, { sort: { 'dateCreated': -1 } })).fetch();
   }
 };

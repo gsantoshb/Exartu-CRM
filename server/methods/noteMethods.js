@@ -5,5 +5,12 @@ Meteor.methods({
     } catch(err) {
       throw new Meteor.Error(err.message);
     }
+  },
+  apiGetNotes: function(entityId) {
+    try {
+      return NoteManager.apiGetNotes(entityId);
+    } catch(err) {
+      throw new Meteor.Error(err.message);
+    }
   }
 });
