@@ -1,24 +1,74 @@
 <template name="tenant">
-
     <div id="content">
-        {{#with tenantContext}}
-            <div id="content-header" class="mini">
-                <h1>Tenant</h1>
-            </div>
-            <div id="breadcrumb">
-                <a href="/" title="Go to Home" class="tip-bottom">Management</a>
-                <a href="/tenant/{{_id}}" class="current">{{name}}</a>
-            </div>
-            <div class="container-fluid">
 
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" checked="{{inactive}}" class="inactive"/> Inactive
-                    </label>
-                </div>
+        <div id="content-header" class="mini">
+            <h1>Tenant</h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Tenant</a>
+            <a href="/tenant/{{_id}}" class="current">{{#with tenantContext}}{{name}}{{/with}}</a>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                {{#with tenantContext}}
 
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" checked="{{inactive}}" class="inactive"/> Inactive
+                        </label>
+                    </div>
+                <span class="table-item-cell">
+                    {{#if isMember}}
+                        You are a member of this hierarchy
+                    {{else}}
+                        <a href="#">
+                            <div class="list-3-item-meta-top join-hierarchy">Join hierarchy</div>
+                        </a>
+                    {{/if}}
+
+                </span>
+                {{/with}}
             </div>
-        {{/with}}
+            <div class="row">
+                <div class="box-title">Users ({{usersCount}})</div>
+
+                {{#each users}}
+
+                    <div class="table-items-box">
+                        <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <div class="table-item-cell" data-bind="foreach: $data.emails">
+                                        {{#each emails}}
+                                            <a href="mailto:{{address}}">
+                                                <strong>{{address}}</strong>
+                                            </a>
+                                        {{/each}}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-3">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" checked="{{inactive}}" class="inactive"/> Inactive
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2">
+                    <span class="table-item-cell text-small">
+                        Created at
+                        {{#formattedDate value=createdAt format='lll'}}
+                            {{date}}
+                        {{/formattedDate}}
+                    </span>
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
     </div>
 
 </template>
