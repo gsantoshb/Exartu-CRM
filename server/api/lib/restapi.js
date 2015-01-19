@@ -128,7 +128,7 @@ RESTAPI.response.prototype.end = function(message, options) {
 
 	self.response.statusCode = code;
 
-	if (options.plain) {
+	if (options && options.plain) {
 		self.response.end(message);
 	} else {
 		self.response.end(JSON.stringify(message));
