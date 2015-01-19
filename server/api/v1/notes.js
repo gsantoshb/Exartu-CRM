@@ -70,11 +70,11 @@ var mapper = {
 
 		// Optional values
 		if (data.dateCreated) { note.dateCreated = data.dateCreated; }
-		if (data.externalId) { placement.externalId = data.externalId; }
+		if (data.externalId) { note.externalId = data.externalId; }
 
 		return note;
 	},
-	get: function(data, customerId) {
+	get: function(data) {
 		if (!data) return {};
 
 		var result = [];

@@ -15,33 +15,38 @@ Router.map(function() {
 			var response = new RESTAPI.response(this.response);
 
 			switch(this.request.method) {
+				// Get tasks for an entity by ID
+				// Parameters:
+				//  - entityId: string
 				case 'GET':
-					var selector = {
-						hierId: user.hierId
-					};
+					var entityId = this.params.query.entityId;
+					try {
+						var res = connection.call('apiGetTasks', entityId);
 
-					var id = this.params.query.entityId;
-					if (id)
-						selector['links.id'] = id;
+						// Transform the response before sending it back
+						res = mapper.get(res);
+						response.end(res);
+					} catch(err) {
+						console.log(err);
+						response.error(err.message);
+					}
+					break;
 
-					response.end(Tasks.find(selector).map(mapper.get), {type: 'application/json'});
-
-				 	break;
-
-				// Crete new task
+				// Add a new task for a contactable
 				// Body:
-				//   - msg: string
-				//	 - begin: date,
-				//	 - end: date,
-				//	 - assign: string // user assigned
-				// 	 - links: [ string ] // contactable ids related
-				// 	 - dateCreated: date (optional)
+				//  - msg: string
+				//  - begin: string (date) ?
+				//  - end: string (date) ?
+				//  - assign: string ? // user assigned
+				//  - link: string  // contactable ids
+				//  - dateCreated: string (date) ?
+				//  - externalId: string ?
 				case 'POST':
 					var data = this.request.bodyFields;
 
 					try {
 						var task = mapper.create(data, user);
-						var taskId = connection.call('apiInsertTask', task);
+						var taskId = connection.call('apiAddTask', task);
 						_.extend(data, {id: taskId});
 						response.end(data);
 					} catch(err) {
@@ -59,50 +64,44 @@ Router.map(function() {
 	})
 });
 
-Meteor.methods({
-	apiInsertTask: function(task) {
-		return Tasks.insert(task);
-	}
-});
 
 var mapper = {
 	create: function(data, user) {
-		if (!data.links)
-			throw new Meteor.Error(500, 'Links are required');
-
-		data.begin = data.begin || new Date();
-		data.assign = data.assign || user._id;
-
-		return {
+		var task = {
 			msg: data.msg,
-			begin: data.begin,
-			end: data.end,
-			assign: [data.assign],
-			links: _.map(data.links, function(link) {
-				var entity = Contactables.findOne(link);
-				if (!entity)
-					throw new Meteor.Error(404, 'Entity with id ' + link + 'not found');
-				
-				return {
-					id: link,
-					type: Enums.linkTypes.contactable.value
-				}
-			}),
-			dateCreated: data.dateCreated
+			begin: data.begin || new Date(),
+			assign: [data.assign || user._id],
+			link: data.link
 		};
+
+		// Optional values
+		if (data.end) { task.end = data.end; }
+		if (data.dateCreated) { task.dateCreated = data.dateCreated; }
+		if (data.externalId) { task.externalId = data.externalId; }
+
+		return task;
 	},
 	get: function(data) {
-		if (!data)
-			return {};
-		return {
-			msg: data.msg,
-			begin: data.begin,
-			end: data.end,
-			assign: data.assign[0],
-			links: _.map(data.links, function(link){
-				return link.id;
-			}),
-			dateCreated: data.dateCreated
-		}
+		if (!data) return {};
+
+		var result = [];
+		_.each(data, function (item) {
+			var res = {
+				id: item._id,
+				msg: item.msg,
+				begin: item.begin,
+				assign: item.assign[0],
+				link: item.links[0].id
+			};
+
+			// Optional values
+			if (item.end) { res.end = item.end; }
+			if (item.dateCreated) { res.dateCreated = item.dateCreated; }
+			if (item.externalId) { res.externalId = item.externalId; }
+
+			result.push(res);
+		});
+
+		return result;
 	}
 };
