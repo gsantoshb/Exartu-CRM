@@ -56,6 +56,8 @@ var sortFields = [
   {field: 'displayName', displayName: 'Name'}
 ];
 
+var listIsLoading = new ReactiveVar();
+
 var setSortField = function(field) {
   var selected = selectedSort.get();
   if (selected && selected.field == field.field) {
@@ -207,7 +209,6 @@ ContactablesController = RouteController.extend({
     selected = new ReactiveVar([]);
 
     this.render('contactables');
-    $('body .pagination-container').addClass('magic-pager');
   },
   onAfterAction: function() {
     var title = 'Network',
@@ -451,6 +452,9 @@ Template.contactablesList.helpers({
 
 // List Header - Helpers
 Template.contactablesListHeader.helpers({
+  listViewMode: function () {
+    return listViewMode.get();
+  },
   //selection
   selectedCount: function () {
     return selected.get().length;
@@ -501,7 +505,6 @@ Template.contactablesListSearch.helpers({
     return SubscriptionHandlers.AuxContactablesHandler? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
   },
   contactableTypes: contactableTypes,
-
 
   info: function() {
     info.isFiltering.value = AuxContactables.find().count() != 0;
@@ -738,10 +741,17 @@ Template.contactablesListHeader.events({
 
 // List Search - Events
 Template.contactablesListSearch.events({
-  'click #toggle-filters': function(){
-    console.log('test test');
-    $('body .network-content #column-filters').toggle('hidden');
-    $('body .network-content #column-list').toggle('col-md-9', 'col-md-12');
+  'click #toggle-filters': function(e){
+    if( $(e.currentTarget).attr('data-view') == 'normal' ){
+      $('body .network-content #column-filters').addClass('hidden');
+      $('body .network-content #column-list').removeClass('col-md-9').addClass('col-md-12');
+      $(e.currentTarget).attr('data-view', 'wide');
+    }
+    else{
+      $('body .network-content #column-filters').removeClass('hidden');
+      $('body .network-content #column-list').removeClass('col-md-12').addClass('col-md-9');
+      $(e.currentTarget).attr('data-view', 'normal');
+    }
   },
   'click #list-view': function () {
     listViewMode.set(true);
