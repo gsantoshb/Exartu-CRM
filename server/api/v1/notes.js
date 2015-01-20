@@ -45,7 +45,6 @@ Router.map(function() {
 						var note = mapper.create(data);
 						var noteId = connection.call('apiAddNote', note);
 						_.extend(data, {id: noteId});
-						console.log('api notes insert response data', JSON.stringify(data));
 						response.end(data);
 					} catch(err) {
 						console.log(err);
