@@ -81,7 +81,7 @@ var mapper = {
 			throw new Meteor.Error(500, "Links are required");
 		return {
 			msg: data.msg,
-			links: getLink(data.link),
+			links: [getLink(data.link)],
 			dateCreated: data.dateCreated
 		};
 	},
