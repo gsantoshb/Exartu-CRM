@@ -62,24 +62,26 @@ Meteor.methods({
 		return Notes.insert(note);
 	}
 });
+var getLink=function(link) {
+	var entity = Contactables.findOne(link);
+	if (!entity)
+		throw new Meteor.Error(404, 'Entity with id ' + link + 'not found');
+
+	return {
+		id: link,
+		type: Enums.linkTypes.contactable.value
+	}
+
+}
 
 var mapper = {
 	create: function(data) {
 		console.log('notes data2',JSON.stringify(data));
-		if (!data.links)
+		if (!data.link)
 			throw new Meteor.Error(500, "Links are required");
 		return {
 			msg: data.msg,
-			links: _.map(data.links, function(link) {
-				var entity = Contactables.findOne(link);
-				if (!entity)
-					throw new Meteor.Error(404, 'Entity with id ' + link + 'not found');
-				
-				return {
-					id: link,
-					type: Enums.linkTypes.contactable.value
-				}
-			}),
+			links: getLink(data.link),
 			dateCreated: data.dateCreated
 		};
 	},
