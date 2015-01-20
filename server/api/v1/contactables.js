@@ -112,8 +112,11 @@ var mapper = {
 		var personFields = ['firstName', 'lastName', 'middleName', 'jobTitle'];
 
 		// Check if it's a person
+		// might be sending over a person with a blank or null last and first name so check if those fields exist
+		// and if so set them to NA (not available)
 		var isPerson = _.some(personFields, function (fieldName) {
-			return !! data[fieldName];
+			if (data[fieldName]==null || data[fieldName]=='') data[fieldName]='NA';
+			return !! data[fieldName]  ;
 		});
 
 		if (isPerson)
