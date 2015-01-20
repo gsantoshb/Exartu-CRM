@@ -9,7 +9,6 @@ if (Meteor.isServer) {
     os = Npm.require("os"),
     path = Npm.require("path");
 
-  
   Router.onBeforeAction(function(req, res, next) {
     var fileData = {}; // Store a file and then pass it to the request.
     var body = {}; // Store body fields and then pass it to the request.
