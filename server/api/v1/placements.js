@@ -38,6 +38,7 @@ Router.map(function() {
         // Body:
         //  - jobId: string
         //  - employeeId: string
+        //  - placementStatusId: string
         //  - candidateStatusId: string
         //  - statusNote: string ?
         //  - startDate: string (date) ?
@@ -80,6 +81,10 @@ var mapper = {
       ]
     };
 
+    var placementStatus = LookUps.find({lookUpCode: Enums.lookUpTypes.placement.status.lookUpCode, _id: data.placementStatusId, hierId: hierId});
+    if (! placementStatus)
+      throw new Meteor.Error(404, 'Placement status with id ' + data.placementStatusId + ' not found');
+    placement.placementStatus = data.placementStatusId;
 
     var candidateStatus = LookUps.find({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode, _id: data.candidateStatusId, hierId: hierId});
     if (! candidateStatus)
@@ -113,6 +118,7 @@ var mapper = {
         id: item._id,
         jobId: item.job,
         employeeId: item.employee,
+        placementStatusId: item.placementStatus,
         candidateStatusId: item.candidateStatus
       };
 

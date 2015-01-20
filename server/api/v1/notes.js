@@ -40,7 +40,6 @@ Router.map(function() {
 				//  - externalId: string ?
 				case 'POST':
 					var data = this.request.bodyFields;
-					console.log('notes data2',JSON.stringify(this.request.bodyFields));
 
 					try {
 						var note = mapper.create(data);
@@ -63,32 +62,11 @@ Router.map(function() {
 	})
 });
 
-Meteor.methods({
-	apiInsertNote: function(note) {
-		return Notes.insert(note);
-	}
-});
-var getLink=function(link) {
-	var entity = Contactables.findOne(link);
-	if (!entity)
-		throw new Meteor.Error(404, 'Entity with id ' + link + 'not found');
-
-	return {
-		id: link,
-		type: Enums.linkTypes.contactable.value
-	}
-
-}
-
 var mapper = {
 	create: function(data) {
-		console.log('notes data2',JSON.stringify(data));
-		if (!data.link)
-			throw new Meteor.Error(500, "Links are required");
-		return {
+		var note = {
 			msg: data.msg,
-			links: [getLink(data.link)],
-			dateCreated: data.dateCreated
+			link: data.link
 		};
 
 		// Optional values
