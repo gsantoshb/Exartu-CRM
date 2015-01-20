@@ -426,30 +426,6 @@ Template.contactables.helpers({
   }
 });
 
-// List List - Helpers
-Template.contactablesList.helpers({
-  isLoading: function () {
-    return SubscriptionHandlers.AuxContactablesHandler? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
-  },
-  info: function() {
-    info.isFiltering.value = AuxContactables.find().count() != 0;
-    return info;
-  },
-  contactables: function() {
-    // Dependencies
-
-    // ElasticSearch
-    if (!_.isEmpty(query.searchString.value)) {
-      //urlQuery.push('type=' + query.objType.value);
-      return esResult;
-    }
-    return AuxContactables.find();
-  },
-  contactableTypes: function() {
-    return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
-  }
-});
-
 // List Header - Helpers
 Template.contactablesListHeader.helpers({
   listViewMode: function () {
@@ -550,6 +526,61 @@ Template.contactableListSort.helpers({
   }
 });
 
+// List Filters - Helpers
+Template.contactablesFilters.helpers({
+  information: function() {
+    var searchQuery = {};
+
+    if (query.objType.value)
+      searchQuery.objNameArray = query.objType.value;
+
+    var contactableCount = Session.get('contactableCount');
+    if (contactableCount)
+      info.contactablesCount.value = contactableCount;
+
+    return info;
+  },
+  query: function () {
+    return query;
+  },
+  isSelectedType: function(typeName){
+
+    return query.objType.value == typeName;
+  },
+  selectedType: function(typeName){
+    //query.processStatus.value=[];
+    if (query.objType.value =='Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
+    if (query.objType.value =='Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
+    if (query.objType.value =='Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
+    return null;
+  },
+  contactableTypes: contactableTypes
+});
+
+// List - Helpers
+Template.contactablesList.helpers({
+  isLoading: function () {
+    return SubscriptionHandlers.AuxContactablesHandler? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
+  },
+  info: function() {
+    info.isFiltering.value = AuxContactables.find().count() != 0;
+    return info;
+  },
+  contactables: function() {
+    // Dependencies
+
+    // ElasticSearch
+    if (!_.isEmpty(query.searchString.value)) {
+      //urlQuery.push('type=' + query.objType.value);
+      return esResult;
+    }
+    return AuxContactables.find();
+  },
+  contactableTypes: function() {
+    return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
+  }
+});
+
 // List Item - Helpers
 Template.contactablesListItem.helpers({
   pictureUrl: function(pictureFileId) {
@@ -598,37 +629,6 @@ Template.contactablesListItem.helpers({
   }
 });
 
-// Filters - Helpers
-Template.contactablesFilters.helpers({
-  information: function() {
-    var searchQuery = {};
-
-    if (query.objType.value)
-      searchQuery.objNameArray = query.objType.value;
-
-    var contactableCount = Session.get('contactableCount');
-    if (contactableCount)
-      info.contactablesCount.value = contactableCount;
-
-    return info;
-  },
-  query: function () {
-    return query;
-  },
-  isSelectedType: function(typeName){
-
-    return query.objType.value == typeName;
-  },
-  selectedType: function(typeName){
-    //query.processStatus.value=[];
-    if (query.objType.value =='Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
-    if (query.objType.value =='Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
-    if (query.objType.value =='Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
-    return null;
-  },
-  contactableTypes: contactableTypes
-});
-
 // Employee Item - Helpers
 Template.employeeInformation.helpers({
   placementInfo: function () {
@@ -670,10 +670,6 @@ Template.contactables.events({
   'click .parseText': function () {
     Utils.showModal('textParser');
   }
-});
-
-// List - Events
-Template.contactablesList.events({
 });
 
 // List Header - Events
@@ -768,6 +764,10 @@ Template.contactableListSort.events({
   'click .sort-field': function() {
     setSortField(this);
   }
+});
+
+// List - Events
+Template.contactablesList.events({
 });
 
 // List Item - Events
