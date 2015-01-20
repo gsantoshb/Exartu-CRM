@@ -34,6 +34,7 @@ Router.map(function() {
 				// 	 - dateCreated: date (optional)
 				case 'POST':
 					var data = this.request.bodyFields;
+					console.log('notes data2',JSON.stringify(this.request.bodyFields));
 
 					try {
 
@@ -64,6 +65,7 @@ Meteor.methods({
 
 var mapper = {
 	create: function(data) {
+		console.log('notes data2',JSON.stringify(data));
 		if (!data.links)
 			throw new Meteor.Error(500, "Links are required");
 		return {
