@@ -30,7 +30,7 @@
 <template name="tenantsFilters">
     {{#with information}}
 
-        
+
         <div class="page-title">
             <h1><span>{{tenantsCount.value}}</span> tenant records</h1>
         </div>
@@ -72,6 +72,24 @@
         {{/each}}
     {{/if}}
 </template>
+<template name="tenantsListHeader">
+    {{#if listViewMode}}
+        <div class="list-header network-list-header simple-network-list-header">
+            <div class="list-header-cell network-list-header-title">Name</div>
+            <div class="list-header-cell network-list-header-owner">Id</div>
+            <div class="list-header-cell network-list-header-owner">WebName</div>
+            <div class="list-header-cell network-list-header-time">Date</div>
+        </div>
+        <!-- /.list-header -->
+    {{else}}
+        <div class="list-header network-list-header">
+            <div class="list-header-cell network-list-header-title">Name</div>
+            <div class="list-header-cell network-list-header-contact">WebName</div>
+            <div class="list-header-cell network-list-header-time">Date</div>
+        </div>
+    {{/if}}
+
+</template>
 
 <template name="tenantsListItem">
     {{#if listViewMode}}
@@ -82,8 +100,8 @@
                 </div>
             </div>
             <div class="list-item-details network-list-item-details">
-                <div class="list-item-cell network-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell network-list-item-code">{{_id}}</div>
+                <div class="list-item-cell network-list-item-code">{{configuration.title}}</div>
                 <div class="list-item-cell network-list-item-time">
                     {{#formattedDate value=dateCreated format='fromNow'}}
                         {{date}}
@@ -94,29 +112,14 @@
         </div>
         <!-- /.network-list-item -->
     {{else}}
-        <div class="list-item network-list-item {{#if isSelected}} selected {{/if}}">
-            <div class="list-item-cell network-list-item-checkbox">
-                <input type="checkbox" class="select" checked="{{isSelected}}">
-            </div>
-            <div class="list-item-cell list-item-icon">
-                <a class="item-icon item-icon-network" href="/tenant/{{_id}}">
-                    {{#if pictureFileId }}
-                        {{#with pictureUrl pictureFileId}}
-                            <a href="#">
-                                <img src="{{.}}">
-                            </a>
-                        {{/with}}
-                    {{else}}
-                        {{#if organization }}<i class="icon-buildings-1"></i>{{/if}}
-                        {{#if person }}<i class="icon-profile-business-man"></i>{{/if}}
-                    {{/if}}
-                </a>
-            </div>
+        <div class="list-item network-list-item ">
+
+
 
             <div class="list-item-cell network-list-item-title">
                 <div class="item-title"><a href="#">{{name}}</a></div>
                 <div class="item-subtitle">
-                    {{configuration.webName}}
+                    {{_id}}
                 </div>
             </div>
             <div class="list-item-details network-list-item-details">
@@ -204,23 +207,7 @@
 
 </template>
 
-<template name="tenantsListHeader">
-    {{#if listViewMode}}
-        <div class="list-header network-list-header simple-network-list-header">
-            <div class="list-header-cell network-list-header-title">Name</div>
-            <div class="list-header-cell network-list-header-owner">WebName</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
-        </div>
-        <!-- /.list-header -->
-    {{else}}
-        <div class="list-header network-list-header">
-            <div class="list-header-cell network-list-header-title">Name</div>
-            <div class="list-header-cell network-list-header-contact">WebName</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
-        </div>
-    {{/if}}
 
-</template>
 
 <template name="tenantListSort">
     <div class="btn-group">

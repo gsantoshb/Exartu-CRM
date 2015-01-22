@@ -29,7 +29,16 @@ var info = new Utils.ObjectDefinition({
     }
 });
 
-
+// register list view mode helper
+Template.registerHelper('listViewMode', function () {
+    return listViewMode.get();
+});
+var listViewDefault=Session.get('tenantListViewMode');
+if (!listViewDefault)
+{
+    listViewDefault=false;
+}
+var listViewMode = new ReactiveVar(listViewDefault);
 var loadTenantQueryFromURL = function (params) {
     // Search string
     var searchStringQuery = {};
@@ -227,6 +236,9 @@ Template.tenantsListSearch.helpers({
     },
     isLoading: function () {
         return TenantHandler.isLoading();
+    },
+    listViewMode: function () {
+        return listViewMode.get();
     }
 });
 
@@ -235,6 +247,26 @@ Template.tenantsListSearch.events = {
         Session.set('addOptions', {job: Session.get('entityId')});
         Router.go('/tenantAdd/tenant');
         e.preventDefault();
+    },
+    'click #list-view': function () {
+        listViewMode.set(true);
+        Session.set('tenantListViewMode',true);
+    },
+    'click #detail-view': function () {
+        listViewMode.set(false);
+        Session.set('tenantListViewMode',false);
+    },
+    'click #toggle-filters': function(e){
+        if( $(e.currentTarget).attr('data-view') == 'normal' ){
+            $('body .network-content #column-filters').addClass('hidden');
+            $('body .network-content #column-list').removeClass('col-md-9').addClass('col-md-12');
+            $(e.currentTarget).attr('data-view', 'wide');
+        }
+        else{
+            $('body .network-content #column-filters').removeClass('hidden');
+            $('body .network-content #column-list').removeClass('col-md-12').addClass('col-md-9');
+            $(e.currentTarget).attr('data-view', 'normal');
+        }
     }
 };
 
@@ -256,6 +288,9 @@ Template.tenantsListItem.helpers({
     },
     displayObjType: function () {
         return Utils.getTenantType(this);
+    },
+    listViewMode: function () {
+        return listViewMode.get();
     }
 });
 
