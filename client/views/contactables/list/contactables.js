@@ -481,7 +481,6 @@ Template.contactablesListSearch.helpers({
     return SubscriptionHandlers.AuxContactablesHandler? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
   },
   contactableTypes: contactableTypes,
-
   info: function() {
     info.isFiltering.value = AuxContactables.find().count() != 0;
     return info;
@@ -499,12 +498,9 @@ Template.contactablesListSearch.helpers({
   contactableTypes: function() {
     return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
   },
-
-
   searchString: function () {
     return query.searchString;
-  }
-  ,
+  },
   listViewMode: function () {
     return listViewMode.get();
   }
@@ -629,7 +625,7 @@ Template.contactablesListItem.helpers({
   }
 });
 
-// Employee Item - Helpers
+// Employee Information - Helpers
 Template.employeeInformation.helpers({
   placementInfo: function () {
     if (!this.placement)

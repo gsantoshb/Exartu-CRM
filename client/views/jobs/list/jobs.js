@@ -1,8 +1,72 @@
-
+/**
+ * Variables
+ */
 var jobCollection = Jobs;
 var JobHandler;
 var query;
 
+var info = new Utils.ObjectDefinition({
+  reactiveProps: {
+    jobsCount: {},
+    objType: {},
+    objTypeDisplayName: {},
+    isFiltering: {
+      default: false
+    }
+  }
+});
+
+var listViewDefault = Session.get('jobListViewMode');
+if (!listViewDefault) { listViewDefault = false; }
+
+var listViewMode = new ReactiveVar(listViewDefault);
+
+var locationFields = ['address', 'city', 'state', 'country'];
+
+var getLocationTagValue = function(locationField, locationFields) {
+  var regex = new RegExp('(?:'+ locationField + ':)((?!'+ locationFields.filter(function(field) {
+    return field != locationField;
+  }).map(function(field){
+    return field + ':';
+  }).join('|') +').)*', 'ig');
+  var match = regex.exec(query.location.value);
+  var value;
+  if (match)
+    value = match[0].substring(locationField.length + 1).trim();
+
+  return value;
+};
+
+var jobTypes = function() {
+  return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
+};
+
+var searchFields = ['jobTitle', 'publicJobTitle'];
+
+// List sorting
+var selectedSort;
+var selectedSortDep = new Deps.Dependency;
+var sortFields = [
+  {field: 'startDate', displayName: 'Start date'},
+  {field: 'endDate', displayName: 'End date'}
+];
+
+var setSortField = function(field) {
+  if (selectedSort && selectedSort.field == field.field) {
+    if (selectedSort.value == 1)
+      selectedSort = undefined;
+    else
+      selectedSort.value = 1;
+  } else {
+    selectedSort = field;
+    selectedSort.value = -1;
+  }
+  selectedSortDep.changed();
+};
+
+/**
+ * Controller
+ */
 JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
@@ -127,41 +191,10 @@ JobsController = RouteController.extend({
   }
 });
 
-var info = new Utils.ObjectDefinition({
-  reactiveProps: {
-    jobsCount: {},
-    objType: {},
-    objTypeDisplayName: {},
-    isFiltering: {
-      default: false
-    }
-  }
-});
-
-var listViewDefault = Session.get('jobListViewMode');
-if (!listViewDefault) { listViewDefault = false; }
-
-var listViewMode = new ReactiveVar(listViewDefault);
-
-Template.jobs.helpers({
-  information: function() {
-    var searchQuery = {};
-
-    if (query.objType.value)
-      searchQuery.objNameArray = query.objType.value;
-
-    info.jobsCount.value = JobHandler.totalCount();
-
-    return info;
-  },
-
-  isLoading: function () {
-    return JobHandler.isLoading();
-  }
-});
-
-// List
-Template.jobList.created= function () {
+/**
+ * Callbacks
+ */
+Template.jobList.created = function () {
   Meteor.autorun(function () {
     var searchQuery = {
       $and: [] // Push each $or operator here
@@ -190,8 +223,8 @@ Template.jobList.created= function () {
       var dateLimit = new Date();
       searchQuery.$and.push({
         dateCreated: {
-        $gte: dateLimit.getTime() - query.selectedLimit.value
-      }});
+          $gte: dateLimit.getTime() - query.selectedLimit.value
+        }});
       urlQuery.addParam('creationDate', query.selectedLimit.value);
     }
 
@@ -306,60 +339,48 @@ Template.jobList.created= function () {
   })
 };
 
-Template.jobList.helpers({
-  info: function() {
-    info.isFiltering.value = jobCollection.find().count() != 0;
-    return info;
-  },
-
-  listViewMode: function() {
-    return listViewMode.get();
-  },
-
-  jobs: function() {
-    return jobCollection.find();
-  },
-
-  isLoading: function() {
-    return SubscriptionHandlers.JobHandler.isLoading();
-  },
-
-  jobTypes: function() {
-    return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
+Template.jobList.rendered = function() {
+  /**
+   * @todo review code, this ia a small hack to make ti work.
+   * This particular plugin doesn't seem to behave quite right if you initialize it more than once so we're doing it on each first click event.
+   */
+  $(document).on('click', 'button[data-toggle="popover"]', function(e) {
+    var object = e.currentTarget;
+    if( $(object).attr('data-init') == 'off' ){
+      $(object).popover('show');
+      $(object).attr('data-init', 'on');
+    }
+  });
+};
+/**
+ * Helpers
+ */
+// Page - Helpers
+Template.jobs.helpers({
+  isLoading: function () {
+    return JobHandler.isLoading();
   }
 });
 
-var locationFields = ['address', 'city', 'state', 'country'];
+// List Header - Helpers
+Template.jobListHeader.helpers({
+  listViewMode:  function() {
+    return listViewMode.get();
+  }
+});
 
-var getLocationTagValue = function(locationField, locationFields) {
-  var regex = new RegExp('(?:'+ locationField + ':)((?!'+ locationFields.filter(function(field) {
-    return field != locationField;
-  }).map(function(field){
-    return field + ':';
-  }).join('|') +').)*', 'ig');
-  var match = regex.exec(query.location.value);
-  var value;
-  if (match)
-    value = match[0].substring(locationField.length + 1).trim();
+// List Search - Helpers
+Template.jobListSearch.helpers({
+  jobTypes: jobTypes,
+  listViewMode:  function() {
+    return listViewMode.get();
+  },
+  searchString: function() {
+    return query.searchString;
+  }
+});
 
-  return value;
-};
-
-var jobTypes = function() {
-  return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
-};
-
-var searchFields = ['jobTitle', 'publicJobTitle'];
-
-
-// List sorting
-var selectedSort;
-var selectedSortDep = new Deps.Dependency;
-var sortFields = [
-  {field: 'startDate', displayName: 'Start date'},
-  {field: 'endDate', displayName: 'End date'}
-];
-
+// List Sort - Helpers
 Template.jobListSort.helpers({
   sortFields: function() {
     return sortFields;
@@ -381,62 +402,45 @@ Template.jobListSort.helpers({
   }
 });
 
-var setSortField = function(field) {
-  if (selectedSort && selectedSort.field == field.field) {
-    if (selectedSort.value == 1)
-      selectedSort = undefined;
-    else
-      selectedSort.value = 1;
-  } else {
-    selectedSort = field;
-    selectedSort.value = -1;
-  }
-  selectedSortDep.changed();
-};
+// List Filters - Helpers
+Template.jobFilters.helpers({
+  information: function() {
+    var searchQuery = {};
 
-Template.jobListSort.events = {
-  'click .sort-field': function() {
-    setSortField(this);
-  }
-};
+    if (query.objType.value)
+      searchQuery.objNameArray = query.objType.value;
 
+    info.jobsCount.value = JobHandler.totalCount();
 
-// List search
-Template.jobListSearch.helpers({
-  jobTypes: jobTypes,
-
-  listViewMode:  function() {
-    return listViewMode.get();
+    return info;
   },
-
-  searchString: function() {
-    return query.searchString;
-  }
-});
-
-Template.jobListSearch.events = {
-  'click #list-view': function () {
-    listViewMode.set(true);
-    Session.set('jobListViewMode',true);
-  },
-  'click #detail-view': function () {
-    listViewMode.set(false);
-    Session.set('jobListViewMode',false);
-  }
-};
-
-
-// List filters
-Template.jobsFilters.helpers({
   query: function () {
     return query;
   },
-
   jobTypes: jobTypes
 });
 
+// List - Helpers
+Template.jobList.helpers({
+  info: function() {
+    info.isFiltering.value = jobCollection.find().count() != 0;
+    return info;
+  },
+  listViewMode: function() {
+    return listViewMode.get();
+  },
+  jobs: function() {
+    return jobCollection.find();
+  },
+  isLoading: function() {
+    return SubscriptionHandlers.JobHandler.isLoading();
+  },
+  jobTypes: function() {
+    return dType.ObjTypes.find({ parent: Enums.objGroupType.job });
+  }
+});
 
-// List Items
+// List Items - Helpers
 Template.jobListItem.helpers({
   listViewMode: function() {
     return listViewMode.get();
@@ -478,6 +482,7 @@ Template.jobListItem.helpers({
   }
 });
 
+// Job Information - Helpers
 Template.jobInformation.helpers({
   customerName: function () {
     var customer =  Contactables.findOne(this.customer);
@@ -489,3 +494,37 @@ Template.jobInformation.helpers({
     if ( customer && customer.Customer) return customer.Customer.department;
   }
 });
+
+/**
+ * Events
+ */
+// List Search - Events
+Template.jobListSearch.events = {
+  'click #toggle-filters': function(e){
+    if( $(e.currentTarget).attr('data-view') == 'normal' ){
+      $('body .network-content #column-filters').addClass('hidden');
+      $('body .network-content #column-list').removeClass('col-md-9').addClass('col-md-12');
+      $(e.currentTarget).attr('data-view', 'wide');
+    }
+    else{
+      $('body .network-content #column-filters').removeClass('hidden');
+      $('body .network-content #column-list').removeClass('col-md-12').addClass('col-md-9');
+      $(e.currentTarget).attr('data-view', 'normal');
+    }
+  },
+  'click #list-view': function () {
+    listViewMode.set(true);
+    Session.set('jobListViewMode',true);
+  },
+  'click #detail-view': function () {
+    listViewMode.set(false);
+    Session.set('jobListViewMode',false);
+  }
+};
+
+// List Sort - Events
+Template.jobListSort.events = {
+  'click .sort-field': function() {
+    setSortField(this);
+  }
+};

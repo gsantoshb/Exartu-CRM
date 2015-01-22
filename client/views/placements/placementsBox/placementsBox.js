@@ -1,4 +1,6 @@
-
+/**
+ * Variables
+ */
 var entityType = null;
 var isEntitySpecific = false;
 var contactable;
@@ -29,7 +31,6 @@ var info = new Utils.ObjectDefinition({
     }
   }
 });
-
 
 var loadqueryFromURL = function (params) {
   // Search string
@@ -85,7 +86,39 @@ var listViewMode = new ReactiveVar(listViewDefault);
 var searchDep = new Deps.Dependency;
 var isSearching = false;
 
-// All
+var options = {};
+
+var getCandidateStatuses = function(objname){
+  var code = Enums.lookUpTypes["candidate"].status.lookUpCode;
+  var lkps= LookUps.find( { lookUpCode:code, lookUpActions: { $in: [ objname ] }}).fetch();
+  var ids= _.map(lkps,function(doc) {  return doc._id;});
+  return ids;
+};
+
+// list sort
+var selectedSort =  new ReactiveVar();
+var sortFields = [
+  {field: 'dateCreated', displayName: 'Date'},
+  {field: 'employeeInfo.lastName', displayName: 'Name'}
+];
+
+var setSortField = function(field) {
+  var selected = selectedSort.get();
+  if (selected && selected.field == field.field) {
+    if (selected.value == 1)
+      selected = undefined;
+    else
+      selected.value = 1;
+  } else {
+    selected = field;
+    selected.value = -1;
+  }
+  selectedSort.set(selected);
+};
+
+/**
+ * Callbacks
+ */
 Template.placementsBox.created = function(){
   query = query || loadqueryFromURL(Router.current().params);
 
@@ -101,32 +134,12 @@ Template.placementsBox.created = function(){
   }
 };
 
-Template.placementsBox.helpers({
-  information: function () {
-    var searchQuery = {};
-
-    if (query.objType.value)
-      searchQuery.objNameArray = query.objType.value;
-
-    info.placementsCount.value = PlacementHandler.totalCount();
-
-    return info;
-  },
-
-  isSearching: function () {
-    searchDep.depend();
-    return isSearching;
-  }
-});
-
-
-var options = {};
-// List
 Template.placementList.created = function () {
   if (!SubscriptionHandlers.PlacementHandler){
     SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
   }
   PlacementHandler = SubscriptionHandlers.PlacementHandler;
+
   Meteor.autorun(function () {
     var searchQuery = {};
     var params = {};
@@ -192,88 +205,94 @@ Template.placementList.created = function () {
   })
 };
 
-Template.placementList.helpers({
-  info: function () {
-    info.isFiltering.value = PlacementHandler.totalCount() != 0;
-    return info;
-  },
+/**
+ * Helpers
+ */
+// Placements Box - Helpers
+Template.placementsBox.helpers({
+  isSearching: function () {
+    searchDep.depend();
+    return isSearching;
+  }
+});
 
-  isLoading: function () {
-    return SubscriptionHandlers.PlacementHandler.isLoading();
-  },
-
-  placements: function () {
-    return placementCollection.find({}, options);
-  },
-
-  placementTypes: function () {
-    return dType.ObjTypes.find({parent: Enums.objGroupType.placement});
-  },
-
+// List Header - Helpers
+Template.placementListHeader.helpers({
   listViewMode: function () {
     return listViewMode.get();
   }
 });
 
+// List Search - Helpers
+Template.placementListSearch.helpers({
+  isJob: function () {
+    if (entityType == Enums.linkTypes.job.value) return true;
+  },
+  searchString: function () {
+    return query.searchString;
+  },
+  isLoading: function () {
+    return PlacementHandler.isLoading();
+  },
+  listViewMode: function () {
+    return listViewMode.get();
+  }
+});
 
+// List Sort - Helpers
+Template.placementListSort.helpers({
+  sortFields: function() {
+    return sortFields;
+  },
+  selectedSort: function() {
+    return selectedSort.get();
+  },
+  isFieldSelected: function(field) {
+    return selectedSort.get() && selectedSort.get().field == field.field;
+  },
+  isAscSort: function() {
+    return selectedSort.get() ? selectedSort.get().value == 1: false;
+  }
+});
 
-var getCandidateStatuses = function(objname){
-  var code = Enums.lookUpTypes["candidate"].status.lookUpCode;
-  var lkps= LookUps.find( { lookUpCode:code, lookUpActions: { $in: [ objname ] }}).fetch();
-  var ids= _.map(lkps,function(doc) {  return doc._id;});
-  return ids;
-};
-
-
-
-// List filters
-Template.placementsFilters.helpers({
+// List Filters - Helpers
+Template.placementFilters.helpers({
+  placementsCount: function() {
+    console.log(PlacementHandler.totalCount());
+    return PlacementHandler.totalCount();
+  },
   query: function () {
     return query;
   },
-
   tags: function () {
     return query.tags;
   }
 });
 
-// List search
-Template.placementListSearch.helpers({
-  isJob: function () {
-    if (entityType == Enums.linkTypes.job.value) return true;
+// List - Helpers
+Template.placementList.helpers({
+  listViewMode: function () {
+    return listViewMode.get();
   },
-
-  searchString: function () {
-    return query.searchString;
+  info: function () {
+    info.isFiltering.value = PlacementHandler.totalCount() != 0;
+    return info;
   },
-
   isLoading: function () {
-    return PlacementHandler.isLoading();
+    return SubscriptionHandlers.PlacementHandler.isLoading();
   },
-
+  placements: function () {
+    return placementCollection.find({}, options);
+  },
+  placementTypes: function () {
+    return dType.ObjTypes.find({parent: Enums.objGroupType.placement});
+  },
   listViewMode: function () {
     return listViewMode.get();
   }
 });
 
-Template.placementListSearch.events = {
-  'click .addPlacement': function (e) {
-    Session.set('addOptions', {job: Session.get('entityId')});
-    Router.go('/placementAdd/placement');
-    e.preventDefault();
-  },
-  'click #list-view': function () {
-    listViewMode.set(true);
-    Session.set('placementListViewMode',true);
-  },
-  'click #detail-view': function () {
-    listViewMode.set(false);
-    Session.set('placementListViewMode',false);
-  }  
-};
-
-// Item
-
+// List Item - Helpers
 Template.placementListItem.helpers({
   employeeDisplayName: function () {
     var employee = Contactables.findOne(this.employee);
@@ -318,8 +337,7 @@ Template.placementListItem.helpers({
   }
 });
 
-// Item information
-
+// Placement Information - Helpers
 Template.placementInformation.helpers({
   getRateTypeDisplayName: function () {
     var rate = LookUps.findOne(this.type);
@@ -327,46 +345,41 @@ Template.placementInformation.helpers({
   }
 });
 
-
-// list sort
-
-var selectedSort =  new ReactiveVar();
-var sortFields = [
-  {field: 'dateCreated', displayName: 'Date'},
-  {field: 'employeeInfo.lastName', displayName: 'Name'}
-];
-
-Template.placementListSort.helpers({
-  sortFields: function() {
-    return sortFields;
+/**
+ * Events
+ */
+// List Search - Events
+Template.placementListSearch.events({
+  'click #toggle-filters': function(e){
+    if( $(e.currentTarget).attr('data-view') == 'normal' ){
+      $('body .network-content #column-filters').addClass('hidden');
+      $('body .network-content #column-list').removeClass('col-md-9').addClass('col-md-12');
+      $(e.currentTarget).attr('data-view', 'wide');
+    }
+    else{
+      $('body .network-content #column-filters').removeClass('hidden');
+      $('body .network-content #column-list').removeClass('col-md-12').addClass('col-md-9');
+      $(e.currentTarget).attr('data-view', 'normal');
+    }
   },
-  selectedSort: function() {
-    return selectedSort.get();
+  'click .addPlacement': function (e) {
+    Session.set('addOptions', {job: Session.get('entityId')});
+    Router.go('/placementAdd/placement');
+    e.preventDefault();
   },
-  isFieldSelected: function(field) {
-    return selectedSort.get() && selectedSort.get().field == field.field;
+  'click #list-view': function () {
+    listViewMode.set(true);
+    Session.set('placementListViewMode',true);
   },
-  isAscSort: function() {
-    return selectedSort.get() ? selectedSort.get().value == 1: false;
-  }
+  'click #detail-view': function () {
+    listViewMode.set(false);
+    Session.set('placementListViewMode',false);
+  }  
 });
 
-var setSortField = function(field) {
-  var selected = selectedSort.get();
-  if (selected && selected.field == field.field) {
-    if (selected.value == 1)
-      selected = undefined;
-    else
-      selected.value = 1;
-  } else {
-    selected = field;
-    selected.value = -1;
-  }
-  selectedSort.set(selected);
-};
-
-Template.placementListSort.events = {
+// List Sort - Helpers
+Template.placementListSort.events({
   'click .sort-field': function() {
     setSortField(this);
   }
-};
+});
