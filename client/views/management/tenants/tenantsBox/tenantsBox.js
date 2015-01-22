@@ -178,6 +178,7 @@ Template.tenantsList.created = function () {
 
         TenantHandler.setFilter(searchQuery);
         TenantHandler.setOptions(options);
+        Session.set('tenantCount', TenantHandler.totalCount());
     })
 };
 
@@ -207,6 +208,15 @@ Template.tenantsFilters.helpers({
     },
     tags: function () {
         return tenantQuery.tags;
+    },
+    information: function() {
+
+
+        var tenantCount = Session.get('tenantCount');
+        if (tenantCount)
+            info.tenantsCount.value = tenantCount;
+
+        return info;
     }
 });
 
