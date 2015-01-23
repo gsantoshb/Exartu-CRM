@@ -33,10 +33,9 @@ var info = new Utils.ObjectDefinition({
 Template.registerHelper('listViewMode', function () {
     return listViewMode.get();
 });
-var listViewDefault=Session.get('tenantListViewMode');
-if (!listViewDefault)
-{
-    listViewDefault=false;
+var listViewDefault = Session.get('tenantListViewMode');
+if (!listViewDefault) {
+    listViewDefault = false;
 }
 var listViewMode = new ReactiveVar(listViewDefault);
 var loadTenantUserQueryFromURL = function (params) {
@@ -86,13 +85,12 @@ Template.tenantUsersBox.created = function () {
 };
 
 
-
-Template.tenantUsersBox.helpers ({
+Template.tenantUsersBox.helpers({
     information: function () {
         info.tenantUsersCount.value = TenantUserHandler.totalCount();
         return info;
     },
-    isSearching: function() {
+    isSearching: function () {
         searchDep.depend();
         return isSearching;
     }
@@ -147,9 +145,9 @@ Template.tenantUsersList.created = function () {
         ;
 
         if (tenantUserQuery.selectedLimit.value) {
-            var dateLimit = new Date();
+            var dateLimit = new Date(tenantUserQuery.selectedLimit.value);
             searchQuery.createdAt = {
-                $gte: dateLimit.getTime() - tenantUserQuery.selectedLimit.value
+                $gte: dateLimit
             };
             urlQuery.addParam('creationDate', tenantUserQuery.selectedLimit.value);
         }
@@ -178,32 +176,29 @@ Template.tenantUsersList.created = function () {
         } else {
             delete options.sort;
         }
+        console.log('tusearchquery', searchQuery);
         TenantUserHandler.setFilter(searchQuery);
         TenantUserHandler.setOptions(options);
         Session.set('tenantUsersCount', TenantUserHandler.totalCount());
     })
 };
 
-Template.tenantUsersList.info = function () {
-    info.isFiltering.value = TenantUserHandler.totalCount() != 0;
-    return info;
-};
-
-Template.tenantUsersList.isLoading = function () {
-    return SubscriptionHandlers.TenantUserHandler.isLoading();
-};
+Template.tenantUsersList.helpers({
+    info: function () {
+        info.isFiltering.value = TenantUserHandler.totalCount() != 0;
+        return info;
+    },
+    isLoading: function () {
+        return SubscriptionHandlers.TenantUserHandler.isLoading();
+    },
+    tenantUsers: function () {
+        return tenantUserCollection.find({}, options);
+    }
+});
 
 var getActiveStatuses = function () {
     return null;
 };
-
-
-Template.tenantUsersList.tenantUsers = function () {
-    return tenantUserCollection.find({}, options);
-};
-
-
-// List filters
 
 Template.tenantUsersFilters.helpers({
     query: function () {
@@ -212,7 +207,7 @@ Template.tenantUsersFilters.helpers({
     tags: function () {
         return tenantUserQuery.tags;
     },
-    information: function() {
+    information: function () {
         var tenantUsersCount = Session.get('tenantUsersCount');
         if (tenantUsersCount)
             info.tenantUsersCount.value = tenantUsersCount;
@@ -282,7 +277,6 @@ Template.tenantUsersListItem.helpers({
         return this.emails[0].address;
     }
 });
-
 
 
 // list sort
