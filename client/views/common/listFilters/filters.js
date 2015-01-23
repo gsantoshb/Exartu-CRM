@@ -62,7 +62,6 @@ var timeLimitsISO= {
   year: yearISO
 }
 var setDateCreatedFilter = function(value) {
-  console.log('cre',this.selectedLimit.value,'cre2',value,'cre3');
   if (this.selectedLimit.value == value)
     this.selectedLimit.value = undefined;
   else

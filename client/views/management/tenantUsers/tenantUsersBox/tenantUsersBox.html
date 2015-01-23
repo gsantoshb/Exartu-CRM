@@ -75,8 +75,7 @@
 <template name="tenantUsersListHeader">
     {{#if listViewMode}}
         <div class="list-header network-list-header simple-network-list-header">
-            <div class="list-header-cell network-list-header-title">Name</div>
-            <div class="list-header-cell network-list-header-contact">Email</div>
+            <div class="list-header-cell network-list-header-title">User</div>
             <div class="list-header-cell network-list-header-contact">Id</div>
             <div class="list-header-cell network-list-header-contact">Hierarchy</div>
             <div class="list-header-cell network-list-header-time">Date</div>
@@ -84,8 +83,7 @@
         <!-- /.list-header -->
     {{else}}
         <div class="list-header network-list-header">
-            <div class="list-header-cell network-list-header-title">Name</div>
-            <div class="list-header-cell network-list-header-contact">Email</div>
+            <div class="list-header-cell network-list-header-title">User</div>
             <div class="list-header-cell network-list-header-contact">Id</div>
             <div class="list-header-cell network-list-header-contact">Hierarchy</div>
             <div class="list-header-cell network-list-header-time">Date</div>
@@ -99,14 +97,12 @@
         <div class="list-item network-list-item simple-network-list-item {{#if isSelected}} selected {{/if}}">
             <div class="list-item-cell network-list-item-title">
                 <div class="item-title single">
-                    <a href="/tenantUser/{{_id}}">{{username}}</a>
+                    <a href="/tenantUser/{{_id}}">{{getUserEmail}}</a>
                 </div>
             </div>
             <div class="list-item-details network-list-item-details">
-                <div class="list-item-cell network-list-item-code">{{emails.address}}</div>
                 <div class="list-item-cell network-list-item-code">{{_id}}</div>
-                <div class="list-item-cell network-list-item-code">{{username}}</div>
-                <div class="list-item-cell network-list-item-code">{{hierId}}</div>
+                <div class="list-item-cell network-list-item-code">                        <a href="/tenant/{{hierId}}">{{hierId}}</a></div>
                 <div class="list-item-cell network-list-item-time">{{createdAt}}
                 </div>
             </div>
@@ -116,34 +112,22 @@
     {{else}}
         <div class="list-item network-list-item ">
             <div class="list-item-cell network-list-item-title">
-                <div class="item-title"><a href="#">{{username}}</a></div>
-                <div class="item-subtitle">
-                    {{_id}}
-                </div>
+                <div class="item-title"><a href="#">{{getUserEmail}}</a></div>
             </div>
+            <div class="item-subtitle">
+                {{_id}}
+            </div>
+
             <div class="list-item-details network-list-item-details">
                 <div class="list-item-cell network-list-item-contact">
-
-
                     <small>
-                        Email: {{emails.address}}<br/>
-                        HierId: {{hierId}}
+                        <a href="/tenant/{{hierId}}">{{hierId}}</a>
                     </small>
                     <br/>
-
 
                 </div>
                 <div class="list-item-cell network-list-item-time">
                     {{createdAt}}
-                </div>
-                <div class="list-item-cell item-overflow network-item-overflow">
-                    <a href="#">
-                            <span class="ico-more">
-                              <span class="dot-1"></span>
-                              <span class="dot-2"></span>
-                              <span class="dot-3"></span>
-                            </span>
-                    </a>
                 </div>
             </div>
             <!-- /.list-item-cell -->
@@ -200,7 +184,6 @@
 
 
 </template>
-
 
 
 <template name="tenantUserListSort">

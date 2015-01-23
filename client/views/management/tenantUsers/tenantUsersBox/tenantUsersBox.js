@@ -176,7 +176,6 @@ Template.tenantUsersList.created = function () {
         } else {
             delete options.sort;
         }
-        console.log('tusearchquery', searchQuery);
         TenantUserHandler.setFilter(searchQuery);
         TenantUserHandler.setOptions(options);
         Session.set('tenantUsersCount', TenantUserHandler.totalCount());
@@ -214,12 +213,12 @@ Template.tenantUsersFilters.helpers({
         return info;
     }
 });
-Template.tenantsListSearch.helpers({
+Template.tenantUsersListSearch.helpers({
     searchString: function () {
-        return tenantQuery.searchString;
+        return tenantUserQuery.searchString;
     },
     isLoading: function () {
-        return TenantHandler.isLoading();
+        return TenantUserHandler.isLoading();
     },
     listViewMode: function () {
         return listViewMode.get();
