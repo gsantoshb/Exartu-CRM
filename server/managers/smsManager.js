@@ -80,17 +80,26 @@ SMSManager = {
   },
   processSMSReply: function (reply) {
     // Get origin phone number hierarchy
-    var hier = Hierarchies.findOne({'phoneNumber.value': {$regex: reply.To, $options: 'x'}});
+    var hier = Hierarchies.findOne({'phoneNumber.value': {$regex: reply.To.replace(/\+/g, ''), $options: 'x'}});
     if (! hier)
       throw new Error('There is no hierarchy with phone number ' + reply.To);
 
-    // Get contactable with phone number equal to reply.To that belong to hier
+    // Get contactable with phone number equal to reply.From that belong to hier
+    var contactable;
     var hierFilter = Utils.filterByHiers(hier._id);
     var fromNumber = reply.From.trim();
-    if (fromNumber.length > 10)
-      fromNumber = fromNumber.substring(1, fromNumber.length -1);
+    if (fromNumber.length >= 10) {
+      // Craft phone number regex
+      var areaCode = fromNumber.slice(fromNumber.length - 10, fromNumber.length - 7);
+      var part1 = fromNumber.slice(fromNumber.length - 7, fromNumber.length - 4);
+      var part2 = fromNumber.slice(fromNumber.length - 4, fromNumber.length);
+      var regex = '(\\+1)?(\\()?' + areaCode + '(\\))?(\\-)?' + part1 + '(\\-)?' + part2;
 
-    var contactable = Contactables.findOne({ 'contactMethods.value': {$regex: fromNumber, $options: 'x'}, $or: hierFilter});
+      contactable = Contactables.findOne({ 'contactMethods.value': {$regex: regex, $options: 'x'}, $or: hierFilter});
+    } else {
+      contactable = Contactables.findOne({ 'contactMethods.value': {$regex: fromNumber, $options: 'x'}, $or: hierFilter});
+    }
+
     if (! contactable)
       throw new Error('There is no contactable with phone number ' + reply.From + ' in hierarchy ' + hier.name);
 

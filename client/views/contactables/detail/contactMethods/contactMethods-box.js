@@ -77,6 +77,12 @@ var addNewContactMethod = function() {
   // Format phone number
   if (selectedType.lookUpActions && _.contains(selectedType.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
     value = value.replace(/(\(|\)|-| )/g, '');
+    // Test phone number format
+    var regex = /^[\+]?[\d]+$/;
+    if (!regex.test(value)) {
+      $('#add-contact-method-error').text('Invalid phone number format');
+      return;
+    }
   }
 
   Meteor.call('addContactMethod', Session.get('entityId'), selectedType._id, value, function(err) {
