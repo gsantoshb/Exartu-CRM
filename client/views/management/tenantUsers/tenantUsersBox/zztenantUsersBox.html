@@ -1,24 +1,24 @@
-<!--<template name="tenantsBox">-->
+<!--<template name="tenantUsersBox">-->
     <!--<div class="row">-->
         <!--<div class="col-md-3 col-lg-3">-->
-            <!--{{> tenantsFilters }}-->
+            <!--{{> tenantUsersFilters }}-->
         <!--</div>-->
 
         <!--<div class="col-md-8 col-lg-8">-->
-            <!--{{>tenantsListSearch}}-->
+            <!--{{>tenantUsersListSearch}}-->
         <!--</div>-->
 
         <!--<div class="col-md-9 col-lg-9">-->
             <!--{{#if isSearching}}-->
             <!--searching-->
             <!--{{else}}-->
-            <!--{{> tenantsList }}-->
+            <!--{{> tenantUsersList }}-->
             <!--{{/if}}-->
         <!--</div>-->
     <!--</div>-->
 <!--</template>-->
 
-<!--<template name="tenantsFilters">-->
+<!--<template name="tenantUsersFilters">-->
     <!--<div class="filter">-->
         <!--<a class="filter-toggle" data-toggle="collapse" href="#filter-body">-->
             <!--<strong><i class="fa fa-filter"></i></strong>-->
@@ -34,16 +34,16 @@
     <!--</div>-->
 <!--</template>-->
 
-<!--<template name="tenantsList">-->
+<!--<template name="tenantUsersList">-->
     <!--<div>-->
-        <!--{{>fastPagination name='tenants'}}-->
+        <!--{{>fastPagination name='tenantUsers'}}-->
         <!--{{#if isLoading}}-->
         <!--<div style="height: 280px;">-->
         <!--</div>-->
         <!--{{else}}-->
         <!--<div class="fade-in">-->
-            <!--{{#each tenants}}-->
-            <!--{{> tenantsListItem }}-->
+            <!--{{#each tenantUsers}}-->
+            <!--{{> tenantUsersListItem }}-->
             <!--{{else}}-->
             <!--{{#if info.isFiltering.value }}-->
             <!--<div class="v-wrapper">-->
@@ -61,16 +61,16 @@
     <!--</div>-->
 <!--</template>-->
 
-<!--<template name="tenantsListItem">-->
+<!--<template name="tenantUsersListItem">-->
     <!--<div class="table-item magic">-->
         <!--<div class="row ">-->
-            <!--<div class="col-xs-3">-->
+            <!--<div class="col-sm-4">-->
                 <!--<div class="table-item-cell">-->
                     <!--<div class="table-item-cell-container">-->
                         <!--<div class="table-item-title">-->
                             <!--<strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">-->
-                                <!--<a href="/tenant/{{_id}}">-->
-                                    <!--{{name}}-->
+                                <!--<a href="/tenantUser/{{_id}}">-->
+                                    <!--{{getUserName}}-->
                                 <!--</a>-->
                             <!--</strong>-->
                         <!--</div>-->
@@ -81,16 +81,19 @@
             <!--<div class="col-sm-6">-->
                 <!--<div class="table-item-cell">-->
                     <!--<div class="table-item-cell-container text-muted">-->
-                        <!--{{> tenantInformation }}-->
+                        <!--<i class="icon-map-marker-1"></i>-->
+                        <!--{{_id}}-->
+                        <!--<br /><a href="mailto:{{getUserEmail}}">-->
+                        <!--<strong>{{getUserEmail}}</strong></a>-->
+
                     <!--</div>-->
                 <!--</div>-->
             <!--</div>-->
 
-            <!--<div class="col-sm-3">-->
+            <!--<div class="col-sm-2">-->
                 <!--<div class="table-item-cell">-->
                     <!--<div class="table-item-cell-container date">-->
-                        <!--{{dateCreated}}<br>-->
-                            <!--<i class="glyphicon glyphicon-search"></i>{{_id}}-->
+                        <!--{{createdAt}}-->
                     <!--</div>-->
                 <!--</div>-->
             <!--</div>-->
@@ -98,29 +101,17 @@
     <!--</div>-->
 <!--</template>-->
 
-<template name="tenantInformation">
-    {{#if firstUserId}}
-        <i class="icon-map-marker-1"></i>
-        {{displayUserName firstUserId}}
-    {{/if}}
+<!--<template name="tenantUserInformation">-->
 
-    <small>
-        WebName: {{configuration.webName}}<br />
-        Title: {{configuration.title}}
-    </small>
-    <br/>
+<!--</template>-->
 
-
-    {{displayUserName firstUserId}}
-</template>
-
-<!--<template name="tenantsListSearch">-->
+<!--<template name="tenantUsersListSearch">-->
     <!--<div class="actions-head search-list">-->
         <!--<div class="row">-->
             <!--<div class="col-sm-8 col-md-8 col-lg-8">-->
                 <!--<div class="input-group">-->
                     <!--{{#objectProperty property=searchString}}-->
-                    <!--<input type="text" class="form-control" placeholder="Search tenants" value="{{value}}">-->
+                    <!--<input type="text" class="form-control" placeholder="Search tenantUsers" value="{{value}}">-->
                     <!--{{/objectProperty}}-->
 
                     <!--<span class="input-group-btn">-->
@@ -131,14 +122,14 @@
                 <!--</div>-->
             <!--</div>&lt;!&ndash; /.col-lg-5 &ndash;&gt;-->
             <!--<div class="pull-right">-->
-                <!--{{> tenantListSort}}-->
+                <!--{{> tenantUserListSort}}-->
             <!--</div>-->
         <!--</div>&lt;!&ndash; /.row &ndash;&gt;-->
     <!--</div>-->
 <!--</template>-->
 
 
-<!--<template name="tenantListSort">-->
+<!--<template name="tenantUserListSort">-->
     <!--<div class="btn-group">-->
         <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">-->
             <!--Sort-->

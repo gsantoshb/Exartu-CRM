@@ -1,0 +1,237 @@
+<template name="tenantUsersBox">
+    <div id="content" class="network-content nicer-filters">
+        <div class="row">
+            <div class="col-md-3 col-lg-3" id="column-filters">
+                {{> tenantUsersFilters }}
+            </div>
+            <div class="col-md-9" id="column-list">
+                <div class="list-container">
+                    <div class="list-holder">
+
+                        <div class="list-actions">
+                            {{>tenantUsersListSearch}}
+                        </div>
+
+                        {{>tenantUsersListHeader}}
+
+                        {{#if isSearching}}
+                            searching
+                        {{else}}
+                            {{> tenantUsersList }}
+                        {{/if}}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="tenantUsersFilters">
+    {{#with information}}
+
+
+        <div class="page-title">
+            <h1><span>{{tenantUsersCount.value}}</span> tenantUser records</h1>
+        </div>
+    {{/with}}
+
+    <div class="filter">
+        <a class="filter-toggle" data-toggle="collapse" href="#filter-body"><i class="fa fa-filter"></i> Filters</a>
+
+        <div class="filter-list" id="filter-body">
+
+            {{> filter_createdDate selectedLimit=query.selectedLimit}}
+
+            {{> filter_tags tags=query.tags}}
+        </div>
+    </div>
+</template>
+
+<template name="tenantUsersList">
+    {{#if isLoading}}
+        <div style="height: 505px;"></div>
+    {{else}}
+        {{#each tenantUsers}}
+            <div class="list-item-section">
+                {{> tenantUsersListItem }}
+            </div>
+        {{else}}
+            {{#if info.isFiltering.value }}
+                <div class="v-wrapper">
+                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                        <i class="icon-connection-1 text-large"></i>
+
+                        <h1>
+                            No records Found
+                        </h1>
+                    </div>
+                </div>
+            {{else}}
+            {{/if}}
+        {{/each}}
+    {{/if}}
+</template>
+<template name="tenantUsersListHeader">
+    {{#if listViewMode}}
+        <div class="list-header network-list-header simple-network-list-header">
+            <div class="list-header-cell network-list-header-title">Name</div>
+            <div class="list-header-cell network-list-header-contact">Email</div>
+            <div class="list-header-cell network-list-header-contact">Id</div>
+            <div class="list-header-cell network-list-header-contact">Hierarchy</div>
+            <div class="list-header-cell network-list-header-time">Date</div>
+        </div>
+        <!-- /.list-header -->
+    {{else}}
+        <div class="list-header network-list-header">
+            <div class="list-header-cell network-list-header-title">Name</div>
+            <div class="list-header-cell network-list-header-contact">Email</div>
+            <div class="list-header-cell network-list-header-contact">Id</div>
+            <div class="list-header-cell network-list-header-contact">Hierarchy</div>
+            <div class="list-header-cell network-list-header-time">Date</div>
+        </div>
+    {{/if}}
+
+</template>
+
+<template name="tenantUsersListItem">
+    {{#if listViewMode}}
+        <div class="list-item network-list-item simple-network-list-item {{#if isSelected}} selected {{/if}}">
+            <div class="list-item-cell network-list-item-title">
+                <div class="item-title single">
+                    <a href="/tenantUser/{{_id}}">{{username}}</a>
+                </div>
+            </div>
+            <div class="list-item-details network-list-item-details">
+                <div class="list-item-cell network-list-item-code">{{emails.address}}</div>
+                <div class="list-item-cell network-list-item-code">{{_id}}</div>
+                <div class="list-item-cell network-list-item-code">{{username}}</div>
+                <div class="list-item-cell network-list-item-code">{{hierId}}</div>
+                <div class="list-item-cell network-list-item-time">{{createdAt}}
+                </div>
+            </div>
+            <!-- /.list-item-cell -->
+        </div>
+        <!-- /.network-list-item -->
+    {{else}}
+        <div class="list-item network-list-item ">
+            <div class="list-item-cell network-list-item-title">
+                <div class="item-title"><a href="#">{{username}}</a></div>
+                <div class="item-subtitle">
+                    {{_id}}
+                </div>
+            </div>
+            <div class="list-item-details network-list-item-details">
+                <div class="list-item-cell network-list-item-contact">
+
+
+                    <small>
+                        Email: {{emails.address}}<br/>
+                        HierId: {{hierId}}
+                    </small>
+                    <br/>
+
+
+                </div>
+                <div class="list-item-cell network-list-item-time">
+                    {{createdAt}}
+                </div>
+                <div class="list-item-cell item-overflow network-item-overflow">
+                    <a href="#">
+                            <span class="ico-more">
+                              <span class="dot-1"></span>
+                              <span class="dot-2"></span>
+                              <span class="dot-3"></span>
+                            </span>
+                    </a>
+                </div>
+            </div>
+            <!-- /.list-item-cell -->
+            {{#with getLastNote}}
+                <div class="list-item-more network-list-item-more">
+                    <div class="list-item-more-entry">
+                        <div class="list-item-more-entry-icon"></div>
+                    </div>
+                    <!-- /.list-item-more-entry -->
+                </div>
+                <!-- /.list-item-more -->
+            {{/with}}
+        </div>
+    {{/if}}
+</template>
+
+
+<template name="tenantUsersListSearch">
+
+
+    <div class="list-actions-cell search-list">
+        <div class="input-group">
+                <span class="prop-input">
+                    {{#objectProperty property=searchString}}
+                        <input type="text" class="form-control" placeholder="Search network" value="{{value}}">
+                    {{/objectProperty}}
+                    <span class="text text-danger"></span>
+                </span>
+                <span class="input-group-btn">
+                    <button class="btn btn-search" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+        </div>
+    </div>
+    <!-- /.search-list -->
+
+    <div class="list-actions-cell view-mode-list">
+        {{#if listViewMode}}
+            <a href="#"><i id="detail-view" class="fa fa-th-list"></i></a>
+            <a class="active" href="#"><i class="fa fa-bars"></i></a>
+        {{else}}
+            <a class="active" href="#"><i class="fa fa-th-list"></i></a>
+            <a href="#"><i id="list-view" class="fa fa-bars"></i></a>
+        {{/if}}
+        <a id="toggle-filters" href="#" data-view="normal"><i class="fa fa-desktop"></i></a>
+    </div>
+    <!-- /.view-mode-list -->
+
+    <div class="list-actions-cell order-list">
+        {{> tenantUserListSort}}
+    </div>
+    <!-- ./order-list -->
+
+
+</template>
+
+
+
+<template name="tenantUserListSort">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Sort
+            {{#with selectedSort}}
+                <strong>{{displayName}}</strong>
+                {{#if isAscSort .}}
+                    <i class="fa fa-sort-amount-asc"> </i>
+                {{else}}
+                    <i class="fa fa-sort-amount-desc"> </i>
+                {{/if}}
+            {{/with}}
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            {{#each sortFields}}
+                <li>
+                    <a class="sort-field">
+                        {{displayName}}
+                        {{#if isFieldSelected .}}
+                            {{#if isAscSort .}}
+                                <i class="fa fa-sort-amount-asc"> </i>
+                            {{else}}
+                                <i class="fa fa-sort-amount-desc"> </i>
+                            {{/if}}
+                        {{/if}}
+                    </a>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+</template>

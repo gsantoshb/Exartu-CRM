@@ -1,15 +1,14 @@
 var entityType = null;
 var isEntitySpecific = false;
 var contactable;
-var searchFields = ['name', 'configuration.webName', 'configuration.title', '_id'];
+var searchFields = ['currentHierId'];
 
-var tenantCollection = Tenants;
-var TenantHandler, tenantQuery;
-
+var tenantUserCollection = TenantUsers;
+var TenantUserHandler, tenantUserQuery;
 
 var info = new Utils.ObjectDefinition({
     reactiveProps: {
-        tenantsCount: {},
+        tenantUsersCount: {},
         objType: {},
         isRecentDaySelected: {
             default: false
@@ -34,16 +33,13 @@ var info = new Utils.ObjectDefinition({
 Template.registerHelper('listViewMode', function () {
     return listViewMode.get();
 });
-var listViewDefault = Session.get('tenantListViewMode');
-if (!listViewDefault) {
-    listViewDefault = false;
+var listViewDefault=Session.get('tenantListViewMode');
+if (!listViewDefault)
+{
+    listViewDefault=false;
 }
 var listViewMode = new ReactiveVar(listViewDefault);
-// Page - Variables
-var searchDep = new Deps.Dependency;
-var isSearching = false;
-
-var loadTenantQueryFromURL = function (params) {
+var loadTenantUserQueryFromURL = function (params) {
     // Search string
     var searchStringQuery = {};
     if (params.search) {
@@ -81,16 +77,19 @@ var loadTenantQueryFromURL = function (params) {
 
 // All
 
-Template.tenantsBox.created = function () {
-    tenantQuery = tenantQuery || loadTenantQueryFromURL(Router.current().params);
+Template.tenantUsersBox.created = function () {
+    tenantUserQuery = tenantUserQuery || loadTenantUserQueryFromURL(Router.current().params);
 
     var entityId = Session.get('entityId');
     entityType = Utils.getEntityTypeFromRouter();
     isEntitySpecific = false;
 };
-Template.tenantsBox.helpers ({
+
+
+
+Template.tenantUsersBox.helpers ({
     information: function () {
-        info.tenantsCount.value = TenantHandler.totalCount();
+        info.tenantUsersCount.value = TenantUserHandler.totalCount();
         return info;
     },
     isSearching: function() {
@@ -99,25 +98,26 @@ Template.tenantsBox.helpers ({
     }
 });
 
+var searchDep = new Deps.Dependency;
+var isSearching = false;
 
 var options = {};
 // List
-Template.tenantsList.created = function () {
-    if (!SubscriptionHandlers.TenantHandler) {
-        SubscriptionHandlers.TenantHandler = Meteor.paginatedSubscribe('tenants');
+Template.tenantUsersList.created = function () {
+    if (!SubscriptionHandlers.TenantUserHandler) {
+        SubscriptionHandlers.TenantUserHandler = Meteor.paginatedSubscribe('tenantUsers');
     }
-    TenantHandler = SubscriptionHandlers.TenantHandler;
+    TenantUserHandler = SubscriptionHandlers.TenantUserHandler;
     Meteor.autorun(function () {
         var searchQuery = {};
+
         var params = {};
         options = {};
         var urlQuery = new URLQuery();
-        isSearching=true;
 
         searchDep.depend();
 
-
-        var searchString = tenantQuery.searchString.value;
+        var searchString = tenantUserQuery.searchString.value;
         if (!_.isEmpty(searchString)) {
             searchQuery.$and = [];
             var stringSearches = [];
@@ -130,40 +130,47 @@ Template.tenantsList.created = function () {
                 stringSearches.push(aux);
             });
             urlQuery.addParam('search', searchString);
+            stringSearches.push({
+                emails: {
+                    $elemMatch: {
+                        address: {
+                            $regex: searchString,
+                            $options: 'i'
+                        }
+                    }
+                }
+            });
             searchQuery.$and.push({
                 $or: stringSearches
             });
         }
         ;
 
-
-        if (tenantQuery.selectedLimit.value) {
+        if (tenantUserQuery.selectedLimit.value) {
             var dateLimit = new Date();
-            searchQuery.dateCreated = {
-                $gte: dateLimit.getTime() - tenantQuery.selectedLimit.value
+            searchQuery.createdAt = {
+                $gte: dateLimit.getTime() - tenantUserQuery.selectedLimit.value
             };
-            urlQuery.addParam('creationDate', tenantQuery.selectedLimit.value);
+            urlQuery.addParam('creationDate', tenantUserQuery.selectedLimit.value);
         }
 
-        if (!tenantQuery.inactives.value) {
+        if (!tenantUserQuery.inactives.value) {
             searchQuery.inactive = {$in: [null, false]}
         }
 
-        if (tenantQuery.inactives.value) {
+        if (tenantUserQuery.inactives.value) {
             urlQuery.addParam('inactives', true);
         }
 
-        if (tenantQuery.tags.value.length > 0) {
+        if (tenantUserQuery.tags.value.length > 0) {
             searchQuery.tags = {
-                $in: tenantQuery.tags.value
+                $in: tenantUserQuery.tags.value
             };
-            urlQuery.addParam('tags', tenantQuery.tags.value);
+            urlQuery.addParam('tags', tenantUserQuery.tags.value);
         }
-
 
         // Set url query
         urlQuery.apply();
-
         if (selectedSort.get()) {
             var selected = selectedSort.get();
             options.sort = {};
@@ -171,53 +178,47 @@ Template.tenantsList.created = function () {
         } else {
             delete options.sort;
         }
-
-        TenantHandler.setFilter(searchQuery);
-        TenantHandler.setOptions(options);
-        Session.set('tenantCount', TenantHandler.totalCount());
-        isSearching=false;
+        TenantUserHandler.setFilter(searchQuery);
+        TenantUserHandler.setOptions(options);
+        Session.set('tenantUsersCount', TenantUserHandler.totalCount());
     })
+};
+
+Template.tenantUsersList.info = function () {
+    info.isFiltering.value = TenantUserHandler.totalCount() != 0;
+    return info;
+};
+
+Template.tenantUsersList.isLoading = function () {
+    return SubscriptionHandlers.TenantUserHandler.isLoading();
 };
 
 var getActiveStatuses = function () {
     return null;
 };
 
-Template.tenantsList.helpers({
-    tenants: function () {
-        return tenantCollection.find({}, options);
-    },
-    info: function () {
-        info.isFiltering.value = TenantHandler.totalCount() != 0;
-        return info;
-    },
-    isLoading: function () {
-        return SubscriptionHandlers.TenantHandler.isLoading();
-    }
-});
+
+Template.tenantUsersList.tenantUsers = function () {
+    return tenantUserCollection.find({}, options);
+};
 
 
 // List filters
 
-Template.tenantsFilters.helpers({
+Template.tenantUsersFilters.helpers({
     query: function () {
-        return tenantQuery;
+        return tenantUserQuery;
     },
     tags: function () {
-        return tenantQuery.tags;
+        return tenantUserQuery.tags;
     },
-    information: function () {
-
-
-        var tenantCount = Session.get('tenantCount');
-        if (tenantCount)
-            info.tenantsCount.value = tenantCount;
-
+    information: function() {
+        var tenantUsersCount = Session.get('tenantUsersCount');
+        if (tenantUsersCount)
+            info.tenantUsersCount.value = tenantUsersCount;
         return info;
     }
 });
-
-
 Template.tenantsListSearch.helpers({
     searchString: function () {
         return tenantQuery.searchString;
@@ -230,12 +231,9 @@ Template.tenantsListSearch.helpers({
     }
 });
 
-Template.tenantsListSearch.events = {
-    'click .addTenant': function (e) {
-        Session.set('addOptions', {job: Session.get('entityId')});
-        Router.go('/tenantAdd/tenant');
-        e.preventDefault();
-    },
+
+Template.tenantUsersListSearch.events = {
+
     'click #list-view': function () {
         listViewMode.set(true);
         Session.set('tenantListViewMode', true);
@@ -260,37 +258,42 @@ Template.tenantsListSearch.events = {
 
 // Item
 
-Template.tenantsListItem.helpers({
+Template.tenantUsersListItem.helpers({
 
     pictureUrl: function (pictureFileId) {
-        var picture = TenantsFS.findOne({_id: pictureFileId});
-        return picture ? picture.url('TenantsFSThumbs') : undefined;
+        var picture = TenantUsersFS.findOne({_id: pictureFileId});
+        return picture ? picture.url('TenantUsersFSThumbs') : undefined;
     },
-    tenantIcon: function () {
+    tenantUserIcon: function () {
         return helper.getEntityIcon(this);
     },
     statusDisplayName: function (item) {
-        var lookUp = LookUps.findOne({_id: this.tenantStatus});
+        var lookUp = LookUps.findOne({_id: this.tenantUserStatus});
 
         if (lookUp) return lookUp.displayName;
     },
     displayObjType: function () {
-        return Utils.getTenantType(this);
+        return Utils.getTenantUserType(this);
     },
-    listViewMode: function () {
-        return listViewMode.get();
+    getUserName: function () {
+        return Utils.getLocalUserName(this);
+    },
+    getUserEmail: function () {
+        return this.emails[0].address;
     }
 });
+
+
 
 // list sort
 
 var selectedSort = new ReactiveVar();
 var sortFields = [
-    {field: 'dateCreated', displayName: 'Date'},
+    {field: 'createdAt', displayName: 'Date'},
     {field: 'name', displayName: 'Name'}
 ];
 
-Template.tenantListSort.helpers({
+Template.tenantUserListSort.helpers({
     sortFields: function () {
         return sortFields;
     },
@@ -319,7 +322,7 @@ var setSortField = function (field) {
     selectedSort.set(selected);
 };
 
-Template.tenantListSort.events = {
+Template.tenantUserListSort.events = {
     'click .sort-field': function () {
         setSortField(this);
     }
