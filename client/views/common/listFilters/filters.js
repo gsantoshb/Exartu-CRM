@@ -57,7 +57,7 @@ var setDateCreatedFilter = function(value) {
     this.selectedLimit.value = value;
 };
 
-Template.filter_createdDate.helpers({
+Template.filter_dateCreated.helpers({
   recentOptions: function () {
     return timeLimits;
   },
@@ -67,7 +67,7 @@ Template.filter_createdDate.helpers({
   }
 });
 
-Template.filter_createdDate.events = {
+Template.filter_dateCreated.events = {
   'click #recent-day': function() {
     setDateCreatedFilter.call(this, timeLimits.day);
   },
