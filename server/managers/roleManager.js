@@ -1,3 +1,6 @@
+//
+//
+//
 RoleManager = {
   getRoleFromName: function (name) {
     return Roles.findOne({name: name});
@@ -12,18 +15,23 @@ RoleManager = {
   getClientAdministratorRole: function() {
     return RoleManager.getRoleFromName(Enums.roleFunction.Client_Administrator);
   },
-
+  getUserRoles: function(user) {
+    if (!user) return [];
+    var hierId=user.hierId;
+    if (!user.hierRoles) return [];
+    var hr =_.findWhere(user.hierRoles,{hierId: hierId});
+    if (!hr) return [];
+    return hr.roles;
+  },
   bUserHasRoleId: function(user,id)
   {
-    if (!user) user=Meteor.users.findOne({ _id: this.userId });
-    if (!user) return false;
-    if (!user.roles) return false;
-    if (!_.contains(user.roles, id)) return false;
+    var roles=RoleManager.getUserRoles(user);
+    if (!_.contains(roles, id)) return false;
     return true;
   },
   bUserHasRoleName: function(user,name)
   {
-    if (!_.contains(user.roles, RoleManager.getRoleFromName(name)._id)) return false;
+    if (!_.contains(RoleManager.getUserRoles(user), RoleManager.getRoleFromName(name)._id)) return false;
     return true;
   },
   bUserIsSystemAdmin: function (user)
@@ -42,7 +50,6 @@ RoleManager = {
   },
   bUserIsClientAdmin: function (user)
   {
-    if (!user) return false;
     return RoleManager.bUserHasRoleId(user,this.getClientAdministratorRole()._id)
   }
 };
