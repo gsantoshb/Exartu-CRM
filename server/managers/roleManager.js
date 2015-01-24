@@ -19,9 +19,8 @@ RoleManager = {
     if (!user) return [];
     if (!user.hierRoles) return [];
     var hr =_.findWhere(user.hierRoles,{hierId: user.currentHierId});
-    if (!hr) return [];
-    console.log('hr',hr);
-    return hr.map(function(item){ return item.roleId})
+    var roles=(hr) ? hr.roleIds : [];
+    return roles.map(function(item){ return item.roleId})
   },
   bUserHasRoleId: function(user,id)
   {

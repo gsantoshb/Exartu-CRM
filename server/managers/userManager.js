@@ -96,13 +96,10 @@ UserManager = {
         hierRoles: []
       };
 
-      //if (document.hierId) {
-      //  user.profile = {hierId: document.hierId};
-      //}
-      //else
-      //{
-      //  user.roles= [RoleManager.getClientAdministratorRole()._id];
-      //}
+      if (document.currentHierId) {
+        user.currentHierId=document.currentHierId;
+        user.profile = {hierId: document.hierId};
+      }
 
       var userId = Accounts.createUser(user);
       if (!skipEmailVerification) {
@@ -165,8 +162,8 @@ UserManager = {
     if (!userInvitation)
       throw Error(500, 'Invalid user invitation');
 
-    // Set hierId equal to the user's who send the invitation
-    user.hierId = userInvitation.hierId;
+    // Set hierId equal to the user who sent the invitation
+    user.currentHierId = userInvitation.hierId;
 
     // Register user avoiding email verification
     Meteor.call('registerAccount', user, true);
@@ -294,27 +291,21 @@ Accounts.onCreateUser(function (options, user) {
     }
   }
 
-  if (!options.profile || !options.profile.hierId) {
+  if (!options.currentHierId) {
     var userPermissions = [];
 
     hierId = Meteor.call('createHier', {
       name: userEmail.split('@')[0]
     });
-
     // Send email to sales
     sendEmailToSales(user);
-
     user._id = Meteor.uuid();
   } else {
-    hierId = options.profile.hierId;
+    hierId = options.currentHierId;
   }
-
   user.hierarchies = [hierId];
-  console.log('create user options',options);
-  user.hierRoles=[{hierId:hierId,roleId:(options.roles) ? options.roles : []}];
-  user.currentHierId = hierId;
-
-
+  user.currentHierId=hierId;
+  user.hierRoles=[{hierId:hierId,roleIds:(options.roles) ? options.roles : []}];
   Hierarchies.update({
     _id: user.hierId
   }, {
