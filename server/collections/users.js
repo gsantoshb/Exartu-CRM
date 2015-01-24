@@ -7,7 +7,6 @@ Meteor.publish(null, function () {
             'services.google.picture': 1,
             'services.email': 1,
             'profilePictureId': 1,
-            'hierId': 1,
             'hierRoles': 1,
             'createdAt': 1,
             'permissions': 1,
@@ -35,6 +34,7 @@ Meteor.publish('userInvitations', function () {
 
 Meteor.users.allow({
     update: function (userId, file, fields, modifier) {
+        console.log('uhr1',userId,file,fields,modifier);
         var user = Meteor.users.findOne({
             _id: userId
         });
@@ -58,7 +58,7 @@ Meteor.users.allow({
                 else {
                     if (modifier && modifier.$set && modifier.$set.hierRoles) {
                         _.each(modifier.$set.hierRoles, function (item) {
-                            if (item.roles== RoleManager.getSystemAdministratorRole()._id) {
+                            if (item.roleId== RoleManager.getSystemAdministratorRole()._id) {
 
                                 return false;
                             }
@@ -67,13 +67,13 @@ Meteor.users.allow({
                 }
             }
         };
-         if (userId == file._id)
-            return true;
-        if (file.hierId != user.hierId) {
+        console.log('uhr2');
+        if (userId == file._id) return true;
+        if (file.currentHierId != user.currentHierId) {
             if (!RoleManager.bUserIsSystemAdmin(user))
                 return false;
         }
-        return true;
+        console.log('uhr2a');
         if (_.any(['dateCreated', 'hierId', 'services'], function (field) {
                 return _.contains(fields, field);
             })) {
@@ -84,6 +84,8 @@ Meteor.users.allow({
                 if (!RoleManager.bUserIsClientAdmin(user))
                     return false;
         }
+        console.log('uhr3');
+        return true;
     }
 });
 

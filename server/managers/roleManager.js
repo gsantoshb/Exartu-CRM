@@ -17,16 +17,16 @@ RoleManager = {
   },
   getUserRoles: function(user) {
     if (!user) return [];
-    var hierId=user.hierId;
     if (!user.hierRoles) return [];
-    var hr =_.findWhere(user.hierRoles,{hierId: hierId});
+    var hr =_.findWhere(user.hierRoles,{hierId: user.currentHierId});
     if (!hr) return [];
-    return hr.roles;
+    console.log('hr',hr);
+    return hr.map(function(item){ return item.roleId})
   },
   bUserHasRoleId: function(user,id)
   {
-    var roles=RoleManager.getUserRoles(user);
-    if (!_.contains(roles, id)) return false;
+    var roleIds=RoleManager.getUserRoles(user);
+    if (!_.contains(roleIds, id)) return false;
     return true;
   },
   bUserHasRoleName: function(user,name)

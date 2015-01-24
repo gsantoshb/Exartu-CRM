@@ -93,16 +93,16 @@ UserManager = {
       var user = {
         email: document.email.toLowerCase(),
         password: document.password,
-        roles: []
+        hierRoles: []
       };
 
-      if (document.hierId) {
-        user.profile = {hierId: document.hierId};
-      }
-      else
-      {
-        user.roles= [RoleManager.getClientAdministratorRole()._id];
-      }
+      //if (document.hierId) {
+      //  user.profile = {hierId: document.hierId};
+      //}
+      //else
+      //{
+      //  user.roles= [RoleManager.getClientAdministratorRole()._id];
+      //}
 
       var userId = Accounts.createUser(user);
       if (!skipEmailVerification) {
@@ -278,7 +278,6 @@ Accounts.validateLoginAttempt(function(attempt) {
 });
 
 Accounts.onCreateUser(function (options, user) {
-  console.log('cre1')
   var hierId = '';
   var userEmail = options.email;
   if (user.services) {
@@ -310,9 +309,9 @@ Accounts.onCreateUser(function (options, user) {
     hierId = options.profile.hierId;
   }
 
-  user.hierId = hierId;
   user.hierarchies = [hierId];
-  user.hierRoles=[{hierId:hierId,roles:(options.roles) ? options.roles : []}];
+  console.log('create user options',options);
+  user.hierRoles=[{hierId:hierId,roleId:(options.roles) ? options.roles : []}];
   user.currentHierId = hierId;
 
 
@@ -323,7 +322,6 @@ Accounts.onCreateUser(function (options, user) {
       users: user._id
     }
   });
-  console.log('cre2')
   return user;
 });
 
