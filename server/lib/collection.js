@@ -59,5 +59,6 @@ Collections = {
   Roles: Roles,
   SystemAdmins: SystemAdmins,
   Tenants: Hierarchies,
-  HotLists: HotLists
+  HotLists: HotLists,
+  UserInvitations:UserInvitations
 };

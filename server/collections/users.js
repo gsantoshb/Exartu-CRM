@@ -31,6 +31,11 @@ Meteor.publish('userInvitations', function () {
         }
     }));
 });
+UserInvitations.allow({
+    remove: function () {
+        return true;
+    }
+})
 
 Meteor.users.allow({
     update: function (userId, file, fields, modifier) {
