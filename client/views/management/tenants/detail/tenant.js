@@ -43,11 +43,14 @@ Template.tenant.helpers({
     }
 });
 Template.tenant.events = {
-    'change .inactive': function (e) {
+    'change .inactiveHier': function (e) {
         Hierarchies.update({_id: hierId}, {$set: {inactive: e.target.checked}});
+        alert('hierarchy inactive flag set to ' + e.target.checked);
+
     },
     'click .join-hierarchy': function () {
         Meteor.call('addUserToHierarchy', userId, hierId);
+        alert('hierarchy joined');
     },
     'change .inactive': function(e)
     {
@@ -64,5 +67,6 @@ Template.tenant.events = {
                 alert(err);
             };
         });
-    },
+        alert('user inactive flag set to ' + e.target.checked );
+    }
 }

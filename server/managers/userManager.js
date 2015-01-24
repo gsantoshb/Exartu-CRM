@@ -262,7 +262,17 @@ UserManager = {
 Accounts.validateLoginAttempt(function(attempt) {
   if (!attempt.allowed)
     return false;
-  if (attempt.user.inactive) return false;
+  if (attempt.user.inactive)
+  {
+    console.log('attempt to log into inactive user', attempt.user._id);
+    return false;
+  }
+  var hier=Hierarchies.findOne({_id: attempt.user.currentHierId});
+  if (!hier || hier.inactive)
+  {
+    console.log('attempt to log into invalid or inactive hierarchy', attempt.user._id,attempt.user.currentHierId);
+    return false;
+  }
 
   // Users from applicantCenter
   if (attempt.user.origin){
