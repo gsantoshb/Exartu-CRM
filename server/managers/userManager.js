@@ -315,6 +315,7 @@ Accounts.onCreateUser(function (options, user) {
   }
   user.hierarchies = [hierId];
   user.currentHierId=hierId;
+  user.hierId=hierId; //temp...need to remove user.hierId references from submodules first
   user.hierRoles=[{hierId:hierId,roleIds:(options.roles) ? options.roles : []}];
   Hierarchies.update({
     _id: user.hierId

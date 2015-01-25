@@ -37,7 +37,7 @@ HierarchyManager = {
   changeCurrentHier: function(hierId) {
     var user = Meteor.user();
     //todo:check if it's valid
-    Meteor.users.update({_id: user._id}, { $set: { currentHierId: hierId } });
+    Meteor.users.update({_id: user._id}, { $set: { currentHierId: hierId ,hierId:hierId} });
     Meteor.users.update({_id: user._id}, { $unset: { lastCustomerUsed: "", lastEmployeeUsed:""}});
   },
   setLookupDefault: function(lookUpCode, valueId) {
