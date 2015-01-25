@@ -157,12 +157,20 @@ Contactables.before.insert(function (userId, doc) {
   }catch (e) {
     var user= { }
   }
+  if (doc.Employee && doc.Employee.taxID)
+  {
+    if (!ContactableManager.isTaxIdUnused(doc.Employee.taxID,user.hierId))
+    {
+      throw new Meteor.Error(500, 'TaxId already in use' );
+      return false;
+    }
+
+  }
 
   doc.hierId = user.currentHierId || doc.hierId;
   doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();
   if (!doc.activeStatus) doc.activeStatus=LookUpManager.getActiveStatusDefaultId();
-  console.log('doc',doc.dateCreated,doc);
   if (doc.organization)
   {
     doc.displayName= doc.organization.organizationName;

@@ -98,6 +98,13 @@ ContactableManager = {
     var contactable = Contactables.findOne({ _id: contactableId }, { fields: { location: 1 } });
     return contactable ? contactable.location : {};
   },
+  isTaxIdUnused: function(taxid,hierid)
+  {
+    if (!taxid) return true;
+    var cnt=Contactables.find({'Employee.taxID':taxid,hierId:hierid}).count();
+    return (cnt==0) ? true: false;
+
+  },
 
   // Notes
   addNote: function (note) {

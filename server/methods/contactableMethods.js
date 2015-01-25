@@ -54,6 +54,10 @@ Meteor.methods({
       throw new Meteor.Error(err.message);
     }
   },
+  IsTaxIdUnused: function(taxid,hierid) {
+    return ContactableManager.isTaxIdUnused(taxid,hierid);
+  },
+
   getAddress: function (contactableId) {
     try {
       return ContactableManager.getAddress(contactableId);
