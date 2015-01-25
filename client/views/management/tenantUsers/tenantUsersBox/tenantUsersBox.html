@@ -93,7 +93,7 @@
 </template>
 
 <template name="tenantUsersListItem">
-    {{#if listViewMode}}
+
         <div class="list-item network-list-item simple-network-list-item {{#if isSelected}} selected {{/if}}">
             <div class="list-item-cell network-list-item-title">
                 <div class="item-title single">
@@ -109,39 +109,7 @@
             <!-- /.list-item-cell -->
         </div>
         <!-- /.network-list-item -->
-    {{else}}
-        <div class="list-item network-list-item ">
-            <div class="list-item-cell network-list-item-title">
-                <div class="item-title"><a href="#">{{getUserEmail}}</a></div>
-            </div>
-            <div class="item-subtitle">
-                {{_id}}
-            </div>
 
-            <div class="list-item-details network-list-item-details">
-                <div class="list-item-cell network-list-item-contact">
-                    <small>
-                        <a href="/tenant/{{hierId}}">{{hierId}}</a>
-                    </small>
-                    <br/>
-
-                </div>
-                <div class="list-item-cell network-list-item-time">
-                    {{createdAt}}
-                </div>
-            </div>
-            <!-- /.list-item-cell -->
-            {{#with getLastNote}}
-                <div class="list-item-more network-list-item-more">
-                    <div class="list-item-more-entry">
-                        <div class="list-item-more-entry-icon"></div>
-                    </div>
-                    <!-- /.list-item-more-entry -->
-                </div>
-                <!-- /.list-item-more -->
-            {{/with}}
-        </div>
-    {{/if}}
 </template>
 
 

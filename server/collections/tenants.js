@@ -18,7 +18,7 @@ Meteor.paginatedPublish(TenantView, function()
     return TenantView.find();
   },
   {
-  pageSize: 10,
+  pageSize: 200,
   publicationName: 'tenants'
   }
 );
@@ -26,6 +26,18 @@ Meteor.paginatedPublish(TenantView, function()
 Meteor.publish('singleTenant', function (id) {
   return TenantView.find({_id: id});
 });
+
+
+Meteor.publish('allTenants'),function() {
+
+  var user = Meteor.users.findOne({
+    _id: this.userId
+  });
+  console.log('at',this.userId,RoleManager.bUserIsSystemAdmin(user),'cnt',Hierarchies.find().count());
+  if (!RoleManager.bUserIsSystemAdmin(user))
+    return null;
+  return TenantView.find();
+}
 
 Tenants.allow({
   update: function (userId, file, fields, modifier) {

@@ -126,7 +126,8 @@ createHouseAccount = function(hierarchy){
 
       },
       hierId: hierarchy._id,
-      userId: (hierarchy.user && hierarchy.user.length > 0) ? hierarchy.user[0] : null
+      userId: (hierarchy.user && hierarchy.user.length > 0) ? hierarchy.user[0] : null,
+      dateCreated: Date.now()
     };
     Contactables.insert(customer);
   }

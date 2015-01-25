@@ -51,6 +51,10 @@ RoleManager = {
   },
   bUserIsClientAdmin: function (user)
   {
-    return RoleManager.bUserHasRoleId(user,this.getClientAdministratorRole()._id)
+    var role=this.getClientAdministratorRole();
+    if (role && role._id)
+    return RoleManager.bUserHasRoleId(user,role._id);
+    else
+      return false;
   }
 };

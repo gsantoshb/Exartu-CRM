@@ -72,13 +72,11 @@ Meteor.users.allow({
                 }
             }
         };
-        console.log('uhr2');
         if (userId == file._id) return true;
         if (file.currentHierId != user.currentHierId) {
             if (!RoleManager.bUserIsSystemAdmin(user))
                 return false;
         }
-        console.log('uhr2a');
         if (_.any(['dateCreated', 'hierId', 'services'], function (field) {
                 return _.contains(fields, field);
             })) {
@@ -89,7 +87,6 @@ Meteor.users.allow({
                 if (!RoleManager.bUserIsClientAdmin(user))
                     return false;
         }
-        console.log('uhr3');
         return true;
     }
 });
