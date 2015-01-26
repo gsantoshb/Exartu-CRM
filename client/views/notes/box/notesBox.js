@@ -24,6 +24,7 @@ var loadNoteQueryFromURL = function (params) {
 };
 var options = {};
 
+var noteCount = new ReactiveVar();
 
 Template.notesBox.created = function () {
   noteQuery = noteQuery || loadNoteQueryFromURL(Router.current().params);
