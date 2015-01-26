@@ -81,7 +81,7 @@ Template.notesBox.created = function () {
 
 Template.notesBox.helpers({
   noteCount: function () {
-    NotesHandler.totalCount();
+    return NotesHandler.totalCount();
   },
   users: function () {
     return Meteor.users.find();
