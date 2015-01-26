@@ -401,6 +401,8 @@ Template.contactablesList.destroyed = function() {
     SubscriptionHandlers.AuxContactablesHandler.stop();
     delete SubscriptionHandlers.AuxContactablesHandler;
   }
+
+  $('.popover').popover('destroy');
 };
 
 /**
