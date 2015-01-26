@@ -653,6 +653,39 @@ Template.employeeInformation.helpers({
   }
 });
 
+// Filters - Helpers
+Template.contactablesFilters.helpers({
+  information: function() {
+    var searchQuery = {};
+
+    if (query.objType.value)
+      searchQuery.objNameArray = query.objType.value;
+
+    var contactableCount = Session.get('contactableCount');
+    if (contactableCount)
+      info.contactablesCount.value = contactableCount;
+
+    return info;
+  },
+  query: function () {
+    return query;
+  },
+  isSelectedType: function(typeName){
+    console.log('seltype',typeName,query.objType.value);
+    return query.objType.value == typeName;
+  },
+  selectedType: function(typeName){
+    //query.processStatus.value=[];
+    if (query.objType.value =='Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
+    if (query.objType.value =='Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
+    if (query.objType.value =='Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
+    return null;
+  },
+  contactableTypes: contactableTypes
+});
+
+// Employee Item - Helpers
+
 // register list view mode helper
 Template.registerHelper('listViewMode', function () {
   return listViewMode.get();

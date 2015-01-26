@@ -1,32 +1,31 @@
 UserController = RouteController.extend({
-  layoutTemplate: 'mainLayout',
-  waitOn: function(){
-    return [GoogleMapsHandler]
-  },
-  data: function () {
-    Session.set('entityId', this.params._id);
-  },
-  action:function(){
-    if (!this.ready()) {
-      this.render('loadingContactable')
-      return;
+    layoutTemplate: 'mainLayout',
+    waitOn: function () {
+        return [GoogleMapsHandler]
+    },
+    data: function () {
+        Session.set('entityId', this.params._id);
+    },
+    action: function () {
+        if (!this.ready()) {
+            this.render('loadingContactable')
+            return;
+        }
+        this.render('user');
+        Session.set('activeTab', this.params.hash);
     }
-    this.render('user');
-    Session.set('activeTab', this.params.hash);
-  }
 });
 
 
-
-var self={};
+var self = {};
 Utils.reactiveProp(self, 'editMode', false);
-var location={};
+var location = {};
 Utils.reactiveProp(location, 'value', null);
 var services;
-var rolesDep=new Deps.Dependency;
+var rolesDep = new Deps.Dependency;
 
-Template.user.created=function(){
-  self.editMode=false;
+Template.user.created = function () {
+    self.editMode = false;
 };
 
 
@@ -34,65 +33,87 @@ var user;
 var job;
 var employee;
 Template.selectUserRole.helpers({
-  availableRoles: function() {
-    rolesDep.depend();
-    var avlRoles=  roles.find().fetch();
-    var user=Meteor.users.findOne({ _id: Session.get('entityId') });
-    if (!user) return;
-    return _.filter(avlRoles, function (role) {
-      if (!user.roles) user.roles=[];
-      return !_.findWhere(user.roles, role._id);
-    });
-  }
+    availableRoles: function () {
+        rolesDep.depend();
+        var avlRoles = roles.find().fetch();
+        var user = Meteor.users.findOne({_id: Session.get('entityId')});
+        if (!user) return;
+        return _.filter(avlRoles, function (role) {
+            var currHierRole= _.findWhere(user.hierRoles, {hierId: user.currentHierId});
+            if (!currHierRole) return true;
+            return !_.contains(currHierRole.roleIds,role._id);
+        });
+    }
 })
 Template.user.helpers({
-  user: function(){
-    rolesDep.depend();
-    var user=Meteor.users.findOne({ _id: Session.get('entityId') });
+    user: function () {
+        rolesDep.depend();
+        var user = Meteor.users.findOne({_id: Session.get('entityId')});
 
 
-    return user;
-  },
-  editMode:function(){
-    return self.editMode;
-  },
-  colorEdit:function(){
-    return self.editMode ? '#008DFC' : '#ddd'
-  }
+        return user;
+    },
+    editMode: function () {
+        return self.editMode;
+    },
+    colorEdit: function () {
+        return self.editMode ? '#008DFC' : '#ddd'
+    }
 
 });
 
 Template.user.events({
-  'click .removeRole': function(e, ctx){
-    var user=Meteor.users.findOne({ _id: Session.get('entityId') });
-    user.roles.splice(user.roles.indexOf(this._id), 1);
-    Meteor.users.update({_id: Meteor.userId()}, {$set : {roles: user.roles}}, function(err) {
-    });
-    rolesDep.changed();
-  }
+    'click .removeRole': function (e, ctx) {
+        console.log('rem',this._id);
+        var user = Meteor.users.findOne({_id: Session.get('entityId')});
+        var currHierRoles = _.findWhere(user.hierRoles,{hierId:user.currentHierId});
+        var newHierRoles= _.reject(currHierRoles,function(el) { el.hierId==user.currentHierId});
+        var currRoles=currHierRoles.roleIds;
+        currRoles.splice(currRoles.indexOf(this._id), 1);
+        //
+        //var newRoles = _.reject(currRoles,function (el) {
+        //    console.log('el',el,this._id,'currRoles',currRoles);
+        //    return !( el == this._id)
+        //});
+        newHierRoles.push({hierId:user.currentHierId,roleIds:currRoles});
+        Meteor.users.update({_id: Session.get('entityId')}, {$set: {hierRoles: newHierRoles}}, function (err) {
+        });
+        rolesDep.changed();
+    }
 
 });
 
 Template.selectUserRole.events({
-  'click .addRole': function(e, ctx){
-    var newRole =ctx.$('.newRole').val();
-    var user=Meteor.users.findOne({ _id: Session.get('entityId') });
-    if (!user.roles || user.roles==null) user.roles=[];
-    if (_.indexOf(user.roles, newRole._id) == -1)  user.roles.push(newRole);
-    Meteor.users.update({_id: Meteor.userId()}, {$set : {roles: user.roles}}, function(err) {
-    });
-    rolesDep.changed();
-  }
+    'click .addRole': function (e, ctx) {
+        var newRoleId = ctx.$('.newRole').val();
+        var user = Meteor.users.findOne({_id: Session.get('entityId')});
+        var currHierRoles = _.findWhere(user.hierRoles,{hierId:user.currentHierId});
+        var newHierRoles= (currHierRoles) ? _.reject(currHierRoles,function(el) { el.hierId==user.currentHierId}) : [];
+        var currRoleIds=(currHierRoles && currHierRoles.roleIds) ? currHierRoles.roleIds: [];
+        currRoleIds.push(newRoleId)
+        newHierRoles.push({hierId:user.currentHierId,roleIds:currRoleIds});
+        Meteor.users.update({_id: Session.get('entityId')}, {$set: {hierRoles: newHierRoles}}, function (err) {
+            if (err) console.log('userhr',err);
+        });
+        rolesDep.changed();
+    }
 });
 
-Template.user_tabs.isActive = function(name){
-  var activeTab = Session.get('activeTab') || 'details';
-  return (name == activeTab) ? 'active' : '';
-}
+Template.user_tabs.helpers({
+    isActive: function (name) {
+        var activeTab = Session.get('activeTab') || 'details';
+        return (name == activeTab) ? 'active' : '';
+    },
+    getRoleName: function (id) {
+        var role = roles.findOne({_id: id});
+        if (role) return role.name; else return "role not found";
+    },
+    roles: function() {
+        var user = Meteor.users.findOne({_id: Session.get('entityId')});
+        var currHierRoles = _.findWhere(user.hierRoles,{hierId:user.currentHierId});
+        console.log('currHierRoles',currHierRoles.roleIds);
+        return currHierRoles.roleIds;
+    }
 
-Template.user_tabs.getRoleName = function(id)
-{
-  var role= roles.findOne({_id:id});
-  if (role) return role.name; else return "role not found";
-}
+});
 

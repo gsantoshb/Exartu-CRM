@@ -1,3 +1,6 @@
+//
+//
+//
 RoleManager = {
   getRoleFromName: function (name) {
     return Roles.findOne({name: name});
@@ -12,24 +15,30 @@ RoleManager = {
   getClientAdministratorRole: function() {
     return RoleManager.getRoleFromName(Enums.roleFunction.Client_Administrator);
   },
-
+  getUserRoles: function(user) {
+    if (!user) return [];
+    if (!user.hierRoles) return [];
+    var hr =_.findWhere(user.hierRoles,{hierId: user.currentHierId});
+    var roles=(hr) ? hr.roleIds : [];
+    return roles.map(function(item){ return item.roleId})
+  },
   bUserHasRoleId: function(user,id)
   {
-    if (!user) user=Meteor.users.findOne({ _id: this.userId });
-    if (!user) return false;
-    if (!user.roles) return false;
-    if (!_.contains(user.roles, id)) return false;
+    var roleIds=RoleManager.getUserRoles(user);
+    if (!_.contains(roleIds, id)) return false;
     return true;
   },
   bUserHasRoleName: function(user,name)
   {
-    if (!_.contains(user.roles, RoleManager.getRoleFromName(name)._id)) return false;
+    if (!_.contains(RoleManager.getUserRoles(user), RoleManager.getRoleFromName(name)._id)) return false;
     return true;
   },
   bUserIsSystemAdmin: function (user)
   {
     if (!user) return false;
     if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'greggd@aidacreative.com') return true;
+    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'greggd@tempworks.com') return true;
+    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'gregg1@tempworks.com') return true;
     if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'aram.gugusian@aidacreative.com') return true;
     if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'nelson.campos@aidacreative.com') return true;
     if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'alex.armstrong@aidacreative.com') return true;
@@ -42,7 +51,10 @@ RoleManager = {
   },
   bUserIsClientAdmin: function (user)
   {
-    if (!user) return false;
-    return RoleManager.bUserHasRoleId(user,this.getClientAdministratorRole()._id)
+    var role=this.getClientAdministratorRole();
+    if (role && role._id)
+    return RoleManager.bUserHasRoleId(user,role._id);
+    else
+      return false;
   }
 };

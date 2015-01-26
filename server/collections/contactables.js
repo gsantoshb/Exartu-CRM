@@ -157,12 +157,20 @@ Contactables.before.insert(function (userId, doc) {
   }catch (e) {
     var user= { }
   }
+  if (doc.Employee && doc.Employee.taxID)
+  {
+    if (!ContactableManager.isTaxIdUnused(doc.Employee.taxID,user.hierId))
+    {
+      throw new Meteor.Error(500, 'TaxId already in use' );
+      return false;
+    }
+
+  }
 
   doc.hierId = user.currentHierId || doc.hierId;
   doc.userId = user._id || doc.userId;
   doc.dateCreated = Date.now();
   if (!doc.activeStatus) doc.activeStatus=LookUpManager.getActiveStatusDefaultId();
-  console.log('doc',doc.dateCreated,doc);
   if (doc.organization)
   {
     doc.displayName= doc.organization.organizationName;
@@ -181,8 +189,15 @@ ContactablesFS = new Document.Collection({
 });
 ContactablesFS.publish();
 
+
 Meteor.publish('contactablesFiles', function () {
   return ContactablesFiles.find();
+});
+ContactablesFiles.allow({
+  remove: function (userId, file) {
+    var user=Meteor.users.findOne({_id: userId});
+    return (RoleManager.bUserIsClientAdmin(user) || RoleManager.bUserIsSystemAdmin(user)) ? true : false;
+  }
 });
 
 // Employee resumes
@@ -199,7 +214,8 @@ Resumes.allow({
     return false;
   },
   remove: function (userId, file) {
-    return false;
+    console.log('resume remove');
+    return (RoleManager.bUserIsClientAdmin() || RoleManager.bUserIsSystemAdmin()) ? true : false;
   }
 });
 

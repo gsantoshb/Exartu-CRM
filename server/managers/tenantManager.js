@@ -1,15 +1,11 @@
 TenantManager = {
-//  getTenants: function (query) {
-//    var hiersWithUser = [];
-//    var user = Meteor.users.findOne({ _id: this.userId });
-////    var sysAdmin=systemAdmins.findOne({_id: user._id});
-////    if ( !sysAdmin) return null;
-//    var hiers = Hierarchies.find(query).fetch();
-//    var hiersWithUser = [];
-//    _.each(hiers, function (h) {
-//      h.firstUser = Meteor.users.findOne({hierarchies: {$in: [h._id]}});
-//      hiersWithUser.push(h);
-//    });
-//    return hiersWithUser;
-//  }
+    addUserToTenant: function(id,hierId) {
+        Meteor.users.update({_id: id}, { $addToSet: { hierarchies: hierId } });
+        var x=Meteor.users.findOne({_id:id});
+        console.log('user', x.hierarchies);
+
+    },
+    removeUserFromTenant: function(id,hierId) {
+        Meteor.users.update({_id: id}, { $pull: { hierarchies: hierId } });
+    }
 };

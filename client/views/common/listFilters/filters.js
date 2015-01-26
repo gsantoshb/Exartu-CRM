@@ -50,6 +50,17 @@ var timeLimits = {
   month: 30 * 24 * 60 * 60 * 1000,
   year: 365 * 24 * 60 * 60 * 1000
 };
+var dayISO,weekISO,monthISO,yearISO
+dayISO=moment().subtract(1, 'day');
+weekISO=moment().subtract(1, 'week');
+monthISO=moment().subtract(1, 'month');
+yearISO=moment().subtract(1, 'year');
+var timeLimitsISO= {
+  day: dayISO,
+  week: weekISO,
+  month: monthISO,
+  year: yearISO
+}
 var setDateCreatedFilter = function(value) {
   if (this.selectedLimit.value == value)
     this.selectedLimit.value = undefined;
@@ -57,17 +68,25 @@ var setDateCreatedFilter = function(value) {
     this.selectedLimit.value = value;
 };
 
-Template.filter_createdDate.helpers({
+
+Template.filter_dateCreated.helpers({
   recentOptions: function () {
     return timeLimits;
   },
-
+  recentOptionClass: function (option) {
+    return this.selectedLimit.value == option ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  }
+});
+Template.filter_dateCreatedISO.helpers({
+  recentOptionsISO: function () {
+    return timeLimitsISO;
+  },
   recentOptionClass: function (option) {
     return this.selectedLimit.value == option ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
   }
 });
 
-Template.filter_createdDate.events = {
+Template.filter_dateCreated.events = {
   'click #recent-day': function() {
     setDateCreatedFilter.call(this, timeLimits.day);
   },
@@ -79,6 +98,20 @@ Template.filter_createdDate.events = {
   },
   'click #recent-year': function() {
     setDateCreatedFilter.call(this, timeLimits.year);
+  }
+};
+Template.filter_dateCreatedISO.events = {
+  'click #recent-day': function() {
+    setDateCreatedFilter.call(this, timeLimitsISO.day);
+  },
+  'click #recent-week': function() {
+    setDateCreatedFilter.call(this, timeLimitsISO.week);
+  },
+  'click #recent-month': function() {
+    setDateCreatedFilter.call(this, timeLimitsISO.month);
+  },
+  'click #recent-year': function() {
+    setDateCreatedFilter.call(this, timeLimitsISO.year);
   }
 };
 

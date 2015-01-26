@@ -93,15 +93,12 @@ UserManager = {
       var user = {
         email: document.email.toLowerCase(),
         password: document.password,
-        roles: []
+        hierRoles: []
       };
 
-      if (document.hierId) {
+      if (document.currentHierId) {
+        user.currentHierId=document.currentHierId;
         user.profile = {hierId: document.hierId};
-      }
-      else
-      {
-        user.roles= [RoleManager.getClientAdministratorRole()._id];
       }
 
       var userId = Accounts.createUser(user);
@@ -165,8 +162,8 @@ UserManager = {
     if (!userInvitation)
       throw Error(500, 'Invalid user invitation');
 
-    // Set hierId equal to the user's who send the invitation
-    user.hierId = userInvitation.hierId;
+    // Set hierId equal to the user who sent the invitation
+    user.currentHierId = userInvitation.hierId;
 
     // Register user avoiding email verification
     Meteor.call('registerAccount', user, true);
@@ -265,7 +262,17 @@ UserManager = {
 Accounts.validateLoginAttempt(function(attempt) {
   if (!attempt.allowed)
     return false;
-  if (attempt.user.inactive) return false;
+  if (attempt.user.inactive)
+  {
+    console.log('attempt to log into inactive user', attempt.user._id);
+    return false;
+  }
+  var hier=Hierarchies.findOne({_id: attempt.user.currentHierId});
+  if (!hier || hier.inactive)
+  {
+    console.log('attempt to log into invalid or inactive hierarchy', attempt.user._id,attempt.user.currentHierId);
+    return false;
+  }
 
   // Users from applicantCenter
   if (attempt.user.origin){
@@ -280,8 +287,6 @@ Accounts.validateLoginAttempt(function(attempt) {
 Accounts.onCreateUser(function (options, user) {
   var hierId = '';
   var userEmail = options.email;
-  var roles = options.roles;
-
   if (user.services) {
     if (user.services.google) {
       //TODO: check if the account is already in the database
@@ -296,39 +301,22 @@ Accounts.onCreateUser(function (options, user) {
     }
   }
 
-  if (!options.profile || !options.profile.hierId) {
-    var userRoles = [];
+  if (!options.currentHierId) {
     var userPermissions = [];
 
     hierId = Meteor.call('createHier', {
       name: userEmail.split('@')[0]
     });
-
     // Send email to sales
     sendEmailToSales(user);
-
     user._id = Meteor.uuid();
   } else {
-    hierId = options.profile.hierId;
+    hierId = options.currentHierId;
   }
-
-  if (!user.permissions) {
-    var userPermissions = [];
-    _.forEach(options.roles, function (role) {
-      var dbrole = Roles.findOne({
-        name: role.name
-      });
-      if (dbrole){
-        user.permissions = _.uniq(userPermissions.concat(dbrole.rolePermissions));
-      }
-    });
-  }
-
-  user.roles = roles;
-  user.hierId = hierId;
   user.hierarchies = [hierId];
-  user.currentHierId = hierId;
-
+  user.currentHierId=hierId;
+  user.hierId=hierId; //temp...need to remove user.hierId references from submodules first
+  user.hierRoles=[{hierId:hierId,roleIds:(options.roles) ? options.roles : []}];
   Hierarchies.update({
     _id: user.hierId
   }, {
@@ -336,13 +324,13 @@ Accounts.onCreateUser(function (options, user) {
       users: user._id
     }
   });
-
   return user;
 });
 
 // Helpers
 
 var sendInvitation = function(address, token, hierName) {
+  console.log('invite sent');
   var url = Meteor.absoluteUrl('invitation/' + token);
   var text = "Dear user,\n\n"
     + "You have been invited to the hierarchy '" + hierName + "'.\n"

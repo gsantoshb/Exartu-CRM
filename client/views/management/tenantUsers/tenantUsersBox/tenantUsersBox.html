@@ -1,23 +1,23 @@
-<template name="tenantsBox">
+<template name="tenantUsersBox">
     <div id="content" class="network-content nicer-filters">
         <div class="row">
             <div class="col-md-3 col-lg-3" id="column-filters">
-                {{> tenantsFilters }}
+                {{> tenantUsersFilters }}
             </div>
             <div class="col-md-9" id="column-list">
                 <div class="list-container">
                     <div class="list-holder">
 
                         <div class="list-actions">
-                            {{>tenantsListSearch}}
+                            {{>tenantUsersListSearch}}
                         </div>
 
-                        {{>tenantsListHeader}}
+                        {{>tenantUsersListHeader}}
 
                         {{#if isSearching}}
                             searching
                         {{else}}
-                            {{> tenantsList }}
+                            {{> tenantUsersList }}
                         {{/if}}
 
                     </div>
@@ -27,12 +27,12 @@
     </div>
 </template>
 
-<template name="tenantsFilters">
+<template name="tenantUsersFilters">
     {{#with information}}
 
 
         <div class="page-title">
-            <h1><span>{{tenantsCount.value}}</span> tenant records</h1>
+            <h1><span>{{tenantUsersCount.value}}</span> tenantUser records</h1>
         </div>
     {{/with}}
 
@@ -41,20 +41,20 @@
 
         <div class="filter-list" id="filter-body">
 
-            {{> filter_dateCreated selectedLimit=query.selectedLimit}}
+            {{> filter_dateCreatedISO selectedLimit=query.selectedLimit}}
 
             {{> filter_tags tags=query.tags}}
         </div>
     </div>
 </template>
 
-<template name="tenantsList">
+<template name="tenantUsersList">
     {{#if isLoading}}
         <div style="height: 505px;"></div>
     {{else}}
-        {{#each tenants}}
+        {{#each tenantUsers}}
             <div class="list-item-section">
-                {{> tenantsListItem }}
+                {{> tenantUsersListItem }}
             </div>
         {{else}}
             {{#if info.isFiltering.value }}
@@ -72,99 +72,48 @@
         {{/each}}
     {{/if}}
 </template>
-<template name="tenantsListHeader">
+<template name="tenantUsersListHeader">
     {{#if listViewMode}}
         <div class="list-header network-list-header simple-network-list-header">
-            <div class="list-header-cell network-list-header-title">Name</div>
-            <div class="list-header-cell network-list-header-owner">Id</div>
-            <div class="list-header-cell network-list-header-owner">WebName</div>
+            <div class="list-header-cell network-list-header-title">User</div>
+            <div class="list-header-cell network-list-header-contact">Id</div>
+            <div class="list-header-cell network-list-header-contact">Hierarchy</div>
             <div class="list-header-cell network-list-header-time">Date</div>
         </div>
         <!-- /.list-header -->
     {{else}}
         <div class="list-header network-list-header">
-            <div class="list-header-cell network-list-header-title">Name</div>
-            <div class="list-header-cell network-list-header-contact">WebName</div>
+            <div class="list-header-cell network-list-header-title">User</div>
+            <div class="list-header-cell network-list-header-contact">Id</div>
+            <div class="list-header-cell network-list-header-contact">Hierarchy</div>
             <div class="list-header-cell network-list-header-time">Date</div>
         </div>
     {{/if}}
 
 </template>
 
-<template name="tenantsListItem">
-    {{#if listViewMode}}
+<template name="tenantUsersListItem">
+
         <div class="list-item network-list-item simple-network-list-item {{#if isSelected}} selected {{/if}}">
             <div class="list-item-cell network-list-item-title">
                 <div class="item-title single">
-                    <a href="/tenant/{{_id}}">{{name}}</a>
+                    <a href="/tenantUser/{{_id}}">{{getUserEmail}}</a>
                 </div>
             </div>
             <div class="list-item-details network-list-item-details">
                 <div class="list-item-cell network-list-item-code">{{_id}}</div>
-                <div class="list-item-cell network-list-item-code">{{configuration.title}}</div>
-                <div class="list-item-cell network-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
+                <div class="list-item-cell network-list-item-code">                        <a href="/tenant/{{hierId}}">{{hierId}}</a></div>
+                <div class="list-item-cell network-list-item-time">{{createdAt}}
                 </div>
             </div>
             <!-- /.list-item-cell -->
         </div>
         <!-- /.network-list-item -->
-    {{else}}
-        <div class="list-item network-list-item ">
-            <div class="list-item-cell network-list-item-title">
-                <div class="item-title"><a href="/tenant/{{_id}}">{{name}}</a></div>
-                <div class="item-subtitle">
-                    {{_id}}
-                </div>
-            </div>
-            <div class="list-item-details network-list-item-details">
-                <div class="list-item-cell network-list-item-contact">
-                    {{#if firstUserId}}
-                        <i class="icon-map-marker-1"></i>
-                        {{displayUserName firstUserId}}
-                    {{/if}}
 
-                    <small>
-                        WebName: {{configuration.webName}}<br/>
-                        Title: {{configuration.title}}
-                    </small>
-                    <br/>
-
-
-                </div>
-                <div class="list-item-cell network-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        <span>{{date}}</span>
-                    {{/formattedDate}}
-                </div>
-                <div class="list-item-cell item-overflow network-item-overflow">
-                    <a href="#">
-                            <span class="ico-more">
-                              <span class="dot-1"></span>
-                              <span class="dot-2"></span>
-                              <span class="dot-3"></span>
-                            </span>
-                    </a>
-                </div>
-            </div>
-            <!-- /.list-item-cell -->
-            {{#with getLastNote}}
-                <div class="list-item-more network-list-item-more">
-                    <div class="list-item-more-entry">
-                        <div class="list-item-more-entry-icon"></div>
-                    </div>
-                    <!-- /.list-item-more-entry -->
-                </div>
-                <!-- /.list-item-more -->
-            {{/with}}
-        </div>
-    {{/if}}
 </template>
 
 
-<template name="tenantsListSearch">
+<template name="tenantUsersListSearch">
 
 
     <div class="list-actions-cell search-list">
@@ -197,7 +146,7 @@
     <!-- /.view-mode-list -->
 
     <div class="list-actions-cell order-list">
-        {{> tenantListSort}}
+        {{> tenantUserListSort}}
     </div>
     <!-- ./order-list -->
 
@@ -205,8 +154,7 @@
 </template>
 
 
-
-<template name="tenantListSort">
+<template name="tenantUserListSort">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             Sort

@@ -14,7 +14,8 @@
                     <div class="pull-left suffix-5">
                         <!-- Single button -->
                         <div class="btn-group">
-                            <button type="button" class="btn btn-success addUser dropdown-toggle" data-toggle="dropdown" title="Add">
+                            <button type="button" class="btn btn-success addUser dropdown-toggle" data-toggle="dropdown"
+                                    title="Add">
                                 <span class="fa fa-plus"></span>
                             </button>
                         </div>
@@ -30,8 +31,10 @@
                             </button>
                         </span>
                     </div>
-                </div><!-- /.col-lg-5 -->
-            </div><!-- /.row -->
+                </div>
+                <!-- /.col-lg-5 -->
+            </div>
+            <!-- /.row -->
         </div>
 
         <div class="table-items-box">
@@ -43,7 +46,8 @@
                     <a href="#" id="showInvitations">Invitations ({{invitationsCount}})</a>
                 </li>
             </ul>
-            <div class="tab-content" style="border-radius: 0 0 4px 4px; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">
+            <div class="tab-content"
+                 style="border-radius: 0 0 4px 4px; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">
                 <span></span>
                 {{#if showInvitations}}
                     {{> userInvitationsList}}
@@ -74,14 +78,16 @@
                 <div class="col-xs-3">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" checked="{{inactive}}" class="inactive" /> Inactive
+                            <input type="checkbox" checked="{{inactive}}" class="inactive"/> Inactive
                         </label>
                     </div>
                 </div>
 
                 <div class="col-xs-3">
                     <span class="table-item-cell">
-                        <a href="/user/{{_id}}"> <div class="list-3-item-meta-top">Profile</div> </a>
+                        <a href="/user/{{_id}}">
+                            <div class="list-3-item-meta-top">Profile</div>
+                        </a>
                         <!--<a id="resend-email"> Resend email </a>-->
                     </span>
                 </div>
@@ -112,13 +118,15 @@
                     </div>
                 </div>
 
-                <div class="col-xs-3">
+                <div class="col-xs-1">
                     <span class="table-item-cell">
-                        <a href="#"> <div class="list-3-item-meta-top resend-invitation">Resend</div> </a>
+                        <a href="#">
+                            <div class="list-3-item-meta-top resend-invitation">Resend</div>
+                        </a>
                     </span>
                 </div>
 
-                <div class="col-xs-5">
+                <div class="col-xs-3">
                     <span class="table-item-cell text-small">
                         {{#with getUserDisplayName sentBy}}
                             Invited by <strong>{{.}}</strong>
@@ -126,10 +134,15 @@
                         {{else}}
                             Sent
                         {{/with}}
-                         at
+                        at
                         {{#formattedDate value=createdAt format='lll'}}
                             <strong>{{date}}</strong>
                         {{/formattedDate}}
+                    </span>
+                </div>
+                <div class="col-xs-1">
+                    <span class="table-item-cell">
+                    <a class="delete pointer"><i class="fa fa-trash-o"></i></a>
                     </span>
                 </div>
             </div>

@@ -1,43 +1,62 @@
 <template name="tenantUser">
     <div id="content">
-        {{#with userContext}}
+
+
         <div id="content-header" class="mini">
-            <h1>TenantUser</h1>
-            <div  class="profile-content-header">
-                <h1 class="profile-name">{{displayName}}</h1>
-                <div id="breadcrumb">
-                    <a href="/" title="Go to Home" class="tip-bottom">Management</a>
-                    <a href="/tenantUser" class="current">TenantUser{{getUserName}}</a>
-                </div>
-            </div>
+            {{#with userContext}}
+                <h1>TenantUser {{getUserName}}</h1>
+            {{/with}}
+
         </div>
         <div class="container-fluid">
-            <div class="form-group">
-            </div>
-            <hr>
-            <div>
-                <div style="display: {{#if editMode}} block {{else}} none {{/if}}">
-                        {{getUserName}}
-                </div>
-                <!-- Active -->
-                <div class="col-xs-6 col-sm-1">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" checked="{{inactive}}" class="inactive" /> Inactive
-                        </label>
+            <div class="row">
+                {{#with userContext}}
+
+                    <div>
+                        <div class="col-xs-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" checked="{{inactive}}" class="inactive"/> Inactive
+                                </label>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
-
+                {{/with}}
             </div>
 
-            <hr>
-
-            <div class="clearfix">
-                <div class="pull-right">
-                    <button id="add" class="btn btn-primary">Save</button>
-                </div>
+            <div class="row col-xs-12">
+                <div class="col-xs-6">{{>tenantUserHierMember}}</div>
+                <div class="col-xs-6">{{>tenantUserHierAvailable}}</div>
             </div>
         </div>
-        {{/with}}
     </div>
+</template>
+<template name="tenantUserHierMember">
+    <h1>Member</h1>
+    <ul>
+        {{#each hierMember}}
+            <li>
+                {{name}}
+                {{_id}}
+                <a id="removeHier" class="">Remove</a>
+            </li>
+        {{/each}}
+
+    </ul>
+</template>
+<template name="tenantUserHierAvailable">
+    <h1>Available</h1>
+    {{#objectProperty property=searchString}}
+        <input type="text" class="form-control" placeholder="Search available" value="{{value}}">
+    {{/objectProperty}}
+    <ul>
+        {{#each hierAvailable}}
+            <li>
+                {{name}} {{_id}}
+                <a id="addHier" class="">Add</a>
+            </li>
+        {{/each}}
+
+    </ul>
 </template>

@@ -210,6 +210,7 @@ Template.addContactablePage.events({
     Meteor.call('addContactable', cont, function(err, result){
       addDisabled.set(false);
       if(err){
+        alert('Error adding record:'+ err);
         console.dir(err);
       }else{
         GAnalytics.event("/contactableAdd", Session.get('objType'));

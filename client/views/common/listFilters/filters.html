@@ -49,7 +49,7 @@
     </div>
 </template>
 
-<template name="filter_createdDate">
+<template name="filter_dateCreated">
     <div class="filter-item">
         <div class="filter-title">
             <i class="fa fa-calendar"></i>
@@ -60,6 +60,19 @@
         <button type="button" class="{{recentOptionClass recentOptions.week}}" style="margin-bottom: 3px" id="recent-week">This week</button>
         <button type="button" class="{{recentOptionClass recentOptions.month}}" style="margin-bottom: 3px" id="recent-month">This month</button>
         <button type="button" class="{{recentOptionClass recentOptions.year}}" style="margin-bottom: 3px" id="recent-year">This year</button>
+    </div>
+</template>
+<template name="filter_dateCreatedISO">
+    <div class="filter-item">
+        <div class="filter-title">
+            <i class="fa fa-calendar"></i>
+            Creation date
+        </div>
+
+        <button type="button" class="{{recentOptionClass recentOptionsISO.day}}" style="margin-bottom: 3px" id="recent-day">Today</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.week}}" style="margin-bottom: 3px" id="recent-week">This week</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.month}}" style="margin-bottom: 3px" id="recent-month">This month</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.year}}" style="margin-bottom: 3px" id="recent-year">This year</button>
     </div>
 </template>
 
