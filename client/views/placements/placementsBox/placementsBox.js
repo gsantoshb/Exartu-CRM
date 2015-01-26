@@ -258,7 +258,6 @@ Template.placementListSort.helpers({
 // List Filters - Helpers
 Template.placementFilters.helpers({
   placementsCount: function() {
-    console.log(PlacementHandler.totalCount());
     return PlacementHandler.totalCount();
   },
   query: function () {

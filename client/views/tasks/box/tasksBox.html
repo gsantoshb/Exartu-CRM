@@ -1,125 +1,120 @@
 <template name="tasksBox">
-        <div>
-            <div class="row">
-                <div class="col-md-3 col-lg-3">
-                    <div class="filter">
-                        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-                            <strong><i class="fa fa-filter"></i></strong>
-                        </a>
-                        <div class="filter-list" id="filter-body">
-                            <div class="filter-item">
-                                <div class="filter-title">
-                                    Status
-                                </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="page-title">
+                <h1><span>{{taskCount}}</span> Tasks</h1>
+            </div>
+            <div class="filter">
+                <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+                    <strong><i class="fa fa-filter"></i></strong>
+                </a>
+                <div class="filter-list" id="filter-body">
+                    <div class="filter-item">
+                        <div class="filter-title">
+                            Status
+                        </div>
 
-                                <div data-bind="foreach: states">
-                                    {{#each states}}
-                                        <button type="button" class="btn btn-sm selectState {{selectedClass}}">{{name}}</button>
-                                    {{/each}}
-                                </div>
-                            </div>
-
-                            <div class="filter-item">
-                                <div class="filter-title">
-                                    <i class="fa fa-eye"></i>
-                                    Visibility
-                                </div>
-
-                                <div class="checkbox">
-                                    <label>
-                                        {{#objectProperty property=filters.inactives}}
-                                            <input type="checkbox" checked="{{value}}" />Archived
-                                        {{/objectProperty}}
-                                    </label>
-                                </div>
-                                <!--<div class="checkbox">-->
-                                    <!--<label>-->
-                                        <!--{{#objectProperty property=filters.ownedByMe}}-->
-                                            <!--<input type="checkbox" checked="{{value}}" />Mine only-->
-                                        <!--{{/objectProperty}}-->
-                                    <!--</label>-->
-                                <!--</div>-->
-                            </div>
-
-                            <div class="filter-item">
-                                <div class="filter-title">
-                                    <i class="fa fa-user"></i>
-                                    Owner
-                                </div>
-
-                                <!--<div class="checkbox">-->
-                                    <!--{{#objectProperty property=filters.assigned}}-->
-                                        <!--<input type="checkbox" checked="{{assigned}}" />Assigned to:-->
-                                    <!--{{/objectProperty}}-->
-                                <!--</div>-->
-                                {{#objectProperty property=filters.assignedTo}}
-                                    <select id="assignedToDropdown" class="form-control">
-                                        <option value="">--select--</option>
-                                        {{#each users}}
-                                            <option value="{{_id}}">{{displayUserName _id}}</option>
-                                        {{/each}}
-                                    </select>
-                                {{/objectProperty}}
-                            </div>
+                        <div data-bind="foreach: states">
+                            {{#each states}}
+                                <button type="button" class="btn btn-sm selectState {{selectedClass}}">{{name}}</button>
+                            {{/each}}
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-8 col-lg-8">
-                    <div class="actions-head search-list">
-                        <div class="row">
-                            <!--<div class="pull-right visible-lg">-->
-                                <!--<strong data-bind="text: tasks().length + ' task'+ (tasks().length > 1 ? 's':'')"></strong>&nbsp;due date-->
-                            <!--</div>-->
-                            <div class="col-sm-8 col-md-8 col-lg-8">
-                                <!-- Single button -->
-                                <div class="btn-group pull-left suffix-5">
-                                    <button type="button" class="btn btn-success addTask" title="Add">
-                                        <span class="fa fa-plus"></span>
-                                    </button>
-                                </div>
-                                <div class="input-group">
-                                    {{#objectProperty property=filters.searchString editable=true}}
-                                        <input type="text" class="form-control" placeholder="Search tasks" value="{{value}}">
-                                    {{/objectProperty}}
+                    <div class="filter-item">
+                        <div class="filter-title">
+                            <i class="fa fa-eye"></i>
+                            Visibility
+                        </div>
 
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div><!-- /.col-lg-5 -->
+                        <div class="checkbox">
+                            <label>
+                                {{#objectProperty property=filters.inactives}}
+                                    <input type="checkbox" checked="{{value}}" />Archived
+                                {{/objectProperty}}
+                            </label>
+                        </div>
+                        <!--<div class="checkbox">-->
+                        <!--<label>-->
+                            <!--{{#objectProperty property=filters.ownedByMe}}-->
+                        <!--<input type="checkbox" checked="{{value}}" />Mine only-->
+                            <!--{{/objectProperty}}-->
+                        <!--</label>-->
+                        <!--</div>-->
+                    </div>
 
-                        </div><!-- /.row -->
+                    <div class="filter-item">
+                        <div class="filter-title">
+                            <i class="fa fa-user"></i>
+                            Owner
+                        </div>
+
+                        <!--<div class="checkbox">-->
+                            <!--{{#objectProperty property=filters.assigned}}-->
+                        <!--<input type="checkbox" checked="{{assigned}}" />Assigned to:-->
+                            <!--{{/objectProperty}}-->
+                        <!--</div>-->
+                        {{#objectProperty property=filters.assignedTo}}
+                            <select id="assignedToDropdown" class="form-control">
+                                <option value="">--select--</option>
+                                {{#each users}}
+                                    <option value="{{_id}}">{{displayUserName _id}}</option>
+                                {{/each}}
+                            </select>
+                        {{/objectProperty}}
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="col-md-9 col-lg-9">
+        <div class="col-md-9">
+            <div class="list-container">
+                <div class="list-holder">
+                    <div class="list-actions">
+                        <div class="list-actions-cell btn-add-to-list">
+                            <button type="button" class="btn btn-success addTask" title="Add">
+                                <span class="fa fa-plus"></span> Add
+                            </button>
+                        </div>
+
+                        <div class="list-actions-cell search-list">
+                            <div class="input-group">
+                            <span class="prop-input">
+                                {{#objectProperty property=filters.searchString editable=true}}
+                                    <input type="text" class="form-control" placeholder="Search network">
+                                    <span class="text" data-status="Inactive"></span>
+                                {{/objectProperty}}
+                            </span>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                        </div><!-- /.search-list -->
+
+                        {{>fastPagination name="tasks" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                    </div>
+
+                    <div class="list-header tasks-list-header">
+                        <div class="list-header-cell tasks-list-header-title">Title</div>
+                        <div class="list-header-cell tasks-list-header-startdate">Start Date</div>
+                        <div class="list-header-cell tasks-list-header-status">Status</div>
+                    </div>
 
                     <!-- Entities list -->
-                    <div class="table-items-box">
-                        {{> fastPagination name="tasks"}}
+                    <div class="list-item-section">
                         {{#if isLoading}}
                             <div style="height: 678px;">
                             </div>
                         {{else}}
-                            <div class="fade-in">
-                                {{#each tasks}}
-                                    {{>taskItem}}
-                                {{else}}
-                                    <!--<div class="v-wrapper">-->
-                                        <!--<div class="v-wrapper-cell text-center text-muted" style="height: 678px;">-->
-                                            <!--<i class="icon-clock-3 text-large"></i>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                {{/each}}
-                            </div>
+                            {{#each tasks}}
+                                {{>taskItem}}
+                            {{/each}}
                         {{/if}}
                     </div>
-
                 </div>
-
             </div>
         </div>
+    </div>
 </template>
