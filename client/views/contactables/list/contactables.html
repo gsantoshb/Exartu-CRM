@@ -123,17 +123,22 @@
                 <div class="list-item-cell network-list-item-checkbox">
                     <input type="checkbox" class="select" checked="{{isSelected}}">
                 </div>
-                <div class="list-item-cell list-item-icon">
-                    <a class="item-icon item-icon-network" href="/contactable/{{_id}}">
+                <div class="list-item-cell">
+                    <a class="" href="/contactable/{{_id}}">
                         {{#if pictureFileId }}
                             {{#with pictureUrl pictureFileId}}
-                                <a href="#">
-                                    <img src="{{.}}">
-                                </a>
+                            <div class="profile-pic">
+                                <div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">
+                                    <a id="edit-pic" title="Click to Edit" class="pointer">
+                                        <img class="" src="{{.}}" style="max-height: 40px;max-width: 40px;">
+                                    </a>
+                                </div>
+                            </div>
                             {{/with}}
+
                         {{else}}
-                            {{#if organization }}<i class="icon-buildings-1"></i>{{/if}}
-                            {{#if person }}<i class="icon-profile-business-man"></i>{{/if}}
+                            {{#if organization }}<i class=" item-icon item-icon-network list-item-icon icon-buildings-1"></i>{{/if}}
+                            {{#if person }}<i class="item-icon item-icon-network  list-item-icon icon-profile-business-man"></i>{{/if}}
                         {{/if}}
                     </a>
                 </div>
