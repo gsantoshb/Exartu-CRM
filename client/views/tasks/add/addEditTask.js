@@ -16,6 +16,7 @@ var link = function (link) {
 var taskDep = new Tracker.Dependency;
 var errorDep = new Tracker.Dependency;
 
+var addDisabled = new ReactiveVar(false);
 var taskUpdate = function (cb) {
   if (task._id) {
     Tasks.update({
@@ -41,6 +42,7 @@ var taskUpdate = function (cb) {
 
 
 var createTask = function (task) {
+  addDisabled.set(false);
   var task = task || {};
   var definition = {
     begin: task.begin || new Date(),
@@ -59,6 +61,10 @@ var createTask = function (task) {
 };
 
 Template.addEditTask.helpers({
+
+  addDisabled: function () {
+    return addDisabled.get();
+  },
   isEditing: function () {
     return !!task._id;
   },
@@ -175,7 +181,7 @@ Template.addEditTask.events({
     if (!isValid(task)) {
       return;
     }
-
+    addDisabled.set(true);
     if (task._id) {
       taskUpdate(function () {
         $('.modal-host').children().modal('toggle')
@@ -185,6 +191,7 @@ Template.addEditTask.events({
         $('.modal-host').children().modal('toggle')
       })
     }
+    addDisabled.set(false);
   },
   'click .archive': function () {
     if (!isValid(task)) {
