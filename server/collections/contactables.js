@@ -189,8 +189,15 @@ ContactablesFS = new Document.Collection({
 });
 ContactablesFS.publish();
 
+
 Meteor.publish('contactablesFiles', function () {
   return ContactablesFiles.find();
+});
+ContactablesFiles.allow({
+  remove: function (userId, file) {
+    var user=Meteor.users.findOne({_id: userId});
+    return (RoleManager.bUserIsClientAdmin(user) || RoleManager.bUserIsSystemAdmin(user)) ? true : false;
+  }
 });
 
 // Employee resumes
@@ -207,7 +214,8 @@ Resumes.allow({
     return false;
   },
   remove: function (userId, file) {
-    return false;
+    console.log('resume remove');
+    return (RoleManager.bUserIsClientAdmin() || RoleManager.bUserIsSystemAdmin()) ? true : false;
   }
 });
 
