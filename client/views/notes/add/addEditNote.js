@@ -15,7 +15,7 @@ var link = function (link) {
 
 var noteDep = new Tracker.Dependency;
 var errorDep = new Tracker.Dependency;
-
+var addDisabled = new ReactiveVar(false);
 var isSaving = new ReactiveVar(false);
 
 var noteUpdate = function (cb) {
@@ -39,6 +39,7 @@ var noteUpdate = function (cb) {
 
 
 var createNote = function (note) {
+  addDisabled.set(false);
   var note = note || {};
   var definition = {
     msg: note.msg,
@@ -52,6 +53,9 @@ var createNote = function (note) {
 };
 
 Template.addEditNote.helpers({
+  addDisabled: function () {
+    return addDisabled.get();
+  },
   isEditing: function () {
     return !!note._id;
   },
@@ -156,7 +160,7 @@ Template.addEditNote.events({
     if (!isValid(note)) {
       return;
     }
-
+    addDisabled.set(true);
     // disable the button while processing
     isSaving.set(true);
 
@@ -171,6 +175,7 @@ Template.addEditNote.events({
         $('.modal-host').children().modal('toggle')
       })
     }
+    addDisabled.set(false);
   },
 
   'change .msg': function (e) {
