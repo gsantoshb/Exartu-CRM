@@ -101,6 +101,93 @@ Meteor.paginatedPublish(ContactablesList, function () {
   }
 );
 
+
+Meteor.publish('auxContactableList', function () {
+  var self = this;
+
+  if (this.userId) {
+    var currentHier = Utils.getUserHierId(this.userId);
+
+    // Publication Handle
+    var handle = Contactables.find({
+      $or: Utils.filterByHiers(currentHier)
+    }, {
+      limit: 50,
+      sort: {'dateCreated': -1},
+      fields: {
+        dateCreated: 1,
+        userId: 1,
+        hierId: 1,
+        placement: 1,
+        pictureFileId: 1,
+        organization: 1,
+        person: 1,
+        Customer: 1,
+        Employee: 1,
+        Contact: 1,
+        activeStatus: 1,
+        contactMethods: 1,
+        location: 1
+      }
+    });
+
+    Mongo.Collection._publishCursor(handle, self, 'auxContactableList');
+  }
+
+  self.ready();
+});
+
+Meteor.publish('auxPlacementInfo', function(placementIds) {
+  var self = this;
+  var handles = { jobs: [], customers: [] };
+  var placementHandle = null;
+
+  // Send over the Job and Customer information for a single Placement
+  function publishRelations(placement) {
+    // Job
+    var job = Jobs.findOne({_id: placement.job}, {fields: { customer: 1 }});
+    var jobsCursor =  Jobs.find({_id: placement.job}, {fields: { publicJobTitle: 1, customer: 1 }});
+    handles.jobs[placement._id] = Mongo.Collection._publishCursor(jobsCursor, self, 'jobs');
+
+    // Customer
+    var customerCursor = Contactables.find({_id: job.customer}, {fields: { organization: 1 }});
+    handles.customers[placement._id] = Mongo.Collection._publishCursor(customerCursor, self, 'contactables');
+  }
+
+  // Publish the placement
+  placementHandle = Placements.find({_id: {$in: placementIds}}, { fields: { job: 1 }}).observeChanges({
+    added: function(id, doc) {
+      publishRelations(doc);
+      self.added('placements', id, doc);
+    },
+    changed: function(id, fields) {
+      self.changed('placements', id, fields);
+    },
+    removed: function(id) {
+      // stop observing changes on the jobs and customers for this placement
+      handles.jobs[id] && handles.jobs[id].stop();
+      handles.customers[id] && handles.customers[id].stop();
+
+      // delete the post
+      self.removed('placements', id);
+    }
+  });
+
+  self.ready();
+  self.onStop(function() { placementHandle.stop(); });
+});
+
+Meteor.publish('auxContactableListRelations', function (relations) {
+  return [
+    // Contact customers
+    Contactables.find({_id: {$in: relations.customerIds}}, { fields: { person: 1, organization: 1 }}),
+
+    // Notes
+    Notes.find({links: {$elemMatch: {id: {$in: relations.contactableIds }}}}, {sort: { dateCreated: -1}})
+  ]
+});
+
+
 Meteor.publish('allCustomers', function () {
   var sub = this;
   Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Contactables.find({ Customer: { $exists: true } }, {

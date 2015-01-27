@@ -65,38 +65,34 @@
 </template>
 
 <template name="contactablesList">
-    {{#if isLoading}}
-        <div style="height: 505px;"></div>
+    {{#each contactables}}
+        <div class="list-item-section">
+            {{> contactablesListItem }}
+        </div>
     {{else}}
-        {{#each contactables}}
-            <div class="list-item-section">
-                {{> contactablesListItem }}
+        {{#if info.isFiltering.value }}
+            <div class="v-wrapper">
+                <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                    <i class="icon-connection-1 text-large"></i>
+
+                    <h1>
+                        No records Found
+                    </h1>
+                </div>
             </div>
         {{else}}
-            {{#if info.isFiltering.value }}
-                <div class="v-wrapper">
-                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                        <i class="icon-connection-1 text-large"></i>
+            <div class="v-wrapper">
+                <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                    <i class="icon-connection-1 text-large"></i>
 
-                        <h1>
-                            No records Found
-                        </h1>
-                    </div>
+                    <a href="#"
+                       data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
+                    <span class="bullet-spacer"
+                          data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
                 </div>
-            {{else}}
-                <div class="v-wrapper">
-                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                        <i class="icon-connection-1 text-large"></i>
-
-                        <a href="#"
-                           data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
-                        <span class="bullet-spacer"
-                              data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
-                    </div>
-                </div>
-            {{/if}}
-        {{/each}}
-    {{/if}}
+            </div>
+        {{/if}}
+    {{/each}}
 </template>
 
 <template name="contactablesListItem">
@@ -240,7 +236,7 @@
 <template name="contactInformation">
     {{#if Contact.customer}}
         <a href="/contactable/{{Contact.customer}}">
-            {{Contact.customerName}}
+            {{customerName Contact.customer}}
         </a>
     {{/if}}
     <br/>
@@ -299,14 +295,6 @@
         <div class="list-actions-cell order-list">
             {{> contactableListSort}}
         </div><!-- ./order-list -->
-
-        {{#if listIsLoading}}
-            loading
-        {{else}}
-            {{#unless isESSearch}}
-                {{>fastPagination name="auxContactables" useKeys='true'}}
-            {{/unless}}
-        {{/if}}
 </template>
 
 <template name="contactablesListHeader">
