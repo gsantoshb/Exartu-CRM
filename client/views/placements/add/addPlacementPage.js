@@ -123,7 +123,8 @@ Template.addPlacementPage.events({
     Meteor.call('addPlacement', obj, function(err, result){
       sending.set(false);
       if(err){
-        console.dir(err)
+        console.dir(err);
+        alert('Add placement error: ' + err);
       }
       else{
         // add employee to last used employees list

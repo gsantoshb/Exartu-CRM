@@ -12,11 +12,9 @@ var link = function (link) {
 
   note.links.push(link);
 };
-
 var noteDep = new Tracker.Dependency;
 var errorDep = new Tracker.Dependency;
 var addDisabled = new ReactiveVar(false);
-var isSaving = new ReactiveVar(false);
 
 var noteUpdate = function (cb) {
   if (note._id) {
@@ -124,9 +122,6 @@ Template.addEditNote.helpers({
       format: 'D, MM dd, yyyy hh:ii',
       momentFormat: 'ddd, MMMM DD, YYYY HH:mm'
     };
-  },
-  isSaving: function () {
-    return isSaving.get();
   }
 });
 
@@ -162,16 +157,14 @@ Template.addEditNote.events({
     }
     addDisabled.set(true);
     // disable the button while processing
-    isSaving.set(true);
+
 
     if (note._id) {
       noteUpdate(function () {
-        isSaving.set(false);
         $('.modal-host').children().modal('toggle')
       });
     } else {
       Notes.insert(note, function () {
-        isSaving.set(false);
         $('.modal-host').children().modal('toggle')
       })
     }

@@ -71,7 +71,6 @@ ContactablesList = new View('auxContactables',{
 Meteor.paginatedPublish(ContactablesList, function () {
     if (!this.userId)
       return [];
-    console.log('searchcalled')
     return Utils.filterCollectionByUserHier.call(this, ContactablesList.find({},
       {
         fields: {

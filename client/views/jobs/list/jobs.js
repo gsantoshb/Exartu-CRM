@@ -48,7 +48,8 @@ var selectedSort;
 var selectedSortDep = new Deps.Dependency;
 var sortFields = [
   {field: 'startDate', displayName: 'Start date'},
-  {field: 'endDate', displayName: 'End date'}
+  {field: 'endDate', displayName: 'End date'},
+  {field: 'dateCreated', displayName: 'Date created'}
 ];
 
 var setSortField = function(field) {

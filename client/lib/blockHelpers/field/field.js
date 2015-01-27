@@ -157,6 +157,7 @@ Template.relInput.helpers({
         // Try to get the last customer used
         Meteor.call('getLastCustomer', function (err, result) {
           if (!err){
+            if (result && result._id && result.organization )
             cb(null, { id: result._id, text: result.organization.organizationName });
           }else{
             cb(err);
