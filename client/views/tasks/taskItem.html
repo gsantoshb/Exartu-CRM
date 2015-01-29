@@ -1,124 +1,93 @@
 <template name="taskItem">
-    <div class="table-item task {{taskClass}}">
-        <a class="btn btn-xs btn-success text-small editTask pointer" title="Edit" style="position: absolute; top: 4px; right: 4px; z-index: 10">
-            <i class="fa fa-pencil"></i>
-        </a>
-        <div class="row">
-            <div class="col-sm-5">
-                <div class="table-item-cell">
-                    <div class="table-item-cell-container">
-                        <div class="table-item-title note">
-                            <span style="max-height:100px">
-                                <p class="text text-info"> {{>showMore text=msg limit=60}}</p>
-                            </span>
-                        </div>
-                        <div class="task-author">
-                            <a class="pointer">
-                                <span>{{displayUserName userId}}</span>
-                            </a>
-                            <i class="fa fa-long-arrow-right"></i>
-                            <span>{{displayUserName assign}}</span>
-                        </div>
-                        <div >
-                            <div data-bind="foreach: links">
-                                {{#each links}}
-                                <a href="{{getHref}}">
-                                    {{#with getEntity}}
-                                    <span class="badge">{{displayName}}</span>
-                                    {{/with}}
-                                </a>
-                                {{/each}}
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.table-item-cell-container -->
-                </div>
-                <!-- /.table-item-cell -->
-            </div>
-            <!-- /.col-sm-3 -->
-            <div class="col-sm-4">
-                <div class="table-item-cell"  style="margin-top: 13px">
-                    {{#if inactive}}
-                        <span class="text-muted">Archived</span>
-                        <br>
-                    {{/if}}
-                    {{>taskState}}
-
-                </div>
-            </div>
-
-            <!-- /.col-sm-4 -->
-            <div class="col-sm-3">
-                <div class="table-item-cell" style="margin-top: 13px">
-                    <div class="table-item-cell-container">
-                        {{>showTaskDate}}
-                        <!-- /.table-item-cell-container -->
-                    </div>
-                    <!-- /.table-item-cell -->
-                </div>
-                <!-- /.col-sm-3 -->
-            </div>
-
-
-            <!-- /.col-lg-4 -->
+    <div class="list-item tasks-list-item">
+        <div class="list-item-cell list-item-icon">
+            <a class="item-icon item-icon-tasks editTask" href="#"><i class="ico-tasks"></i></a>
         </div>
-        <!-- /.row -->
-    </div>
-</template>
-
-<template name="taskState">
-    <div class="table-item-cell-container text-small task-state">
-        <span>
-            <i class="{{getStateIcon}}"></i>&nbsp;
-            <span>{{state}}</span>
-        </span>
-    </div>
-</template>
-<template name="showTaskDate">
-    {{#if end}}
-        <div class="date row">
-            {{#if statusIs 'pending'}}
-                <span class="col-xs-6">Due Date:</span>
-                <span class="col-xs-6">
-                    {{#formattedDate value=end format='fromNow'}}
+        <div class="list-item-cell tasks-list-item-title">
+            <div class="item-title">
+                <a href="#" class="editTask ">{{>showMore text=msg limit=60}}</a>
+            </div>
+            <div class="item-subtitle">
+                <a href="#">{{displayUserName userId}}</a> <i class="fa fa-long-arrow-right"></i> <a href="#">{{displayUserName assign}}</a>
+                <span class="time-text">
+                    {{#formattedDate value=dateCreated format='lll'}}
                         {{date}}
                     {{/formattedDate}}
                 </span>
-            {{/if}}
-            {{#if statusIs 'completed'}}
-                <span class="col-xs-6">Completed:</span>
-                <span class="col-xs-6">
-                    {{#formattedDate value=completed format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
-                </span>
-            {{/if}}
-            {{#if statusIs 'overDue'}}
-                <span class="col-xs-6">Ended:</span>
-                <span>
-                    {{#formattedDate value=end format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
-                </span>
-            {{/if}}
-
-            <br/>
-
-            <span class="col-xs-6">Starts:</span>
-            <span class="col-xs-6">
+            </div>
+        </div>
+        <div class="list-item-details tasks-list-item-details">
+            <div class="list-item-cell tasks-list-item-startdate">
+                <span class="visible-xs">Started:</span>
                 {{#formattedDate value=begin format='lll'}}
                     {{date}}
                 {{/formattedDate}}
-            </span>
-
-            <br/>
-
-            <span class="col-xs-6">Created:</span>
-            <span class="col-xs-6">
-                {{#formattedDate value=dateCreated format='lll'}}
-                    {{date}}
-                {{/formattedDate}}
-            </span>
+            </div>
+            <div class="list-item-cell tasks-list-item-status">{{>taskLabel}}</div>
+            <div class="list-item-cell item-overflow tasks-item-overflow">
+                <a href="#">
+                    <span class="ico-more">
+                      <span class="dot-1"></span>
+                      <span class="dot-2"></span>
+                      <span class="dot-3"></span>
+                    </span>
+                </a>
+            </div>
         </div>
+    </div><!-- /.tasks-list-item -->
+</template>
+
+<template name="taskLabel">
+    {{#if inactive}}
+        <span class="item-label-2 label-archived">Archived</span>
+    {{else}}
+        <span class="item-label-2 label-{{getStatus}}">{{state}}</span>&nbsp;
+
+        {{#if statusIs 'pending'}}
+            {{#formattedDate value=end format='fromNow'}}
+                {{date}}
+            {{/formattedDate}}
+        {{/if}}
+        {{#if statusIs 'completed'}}
+            {{#formattedDate value=completed format='fromNow'}}
+                {{date}}
+            {{/formattedDate}}
+        {{/if}}
+        {{#if statusIs 'overDue'}}
+            {{#formattedDate value=end format='fromNow'}}
+                {{date}}
+            {{/formattedDate}}
+        {{/if}}
+    {{/if}}
+
+    {{#if hasLinks}}
+    <div id="link-{{_id}}" style="display: none">
+        {{#each links}}
+            <a href="{{getHref}}">
+                {{#with getEntity}}
+                    <span class="badge">{{displayName}}</span>
+                {{/with}}
+            </a>
+        {{/each}}
+    </div>
+
+    <button data-content="" data-placement="top" data-toggle="popover" data-container="body" type="button" class="btn-users" data-html="true" data-link="link-{{_id}}" data-init="off">
+        <i class="fa fa-users"></i>
+    </button>
+    {{/if}}
+
+</template>
+
+<template name="showTaskDate">
+    {{#if end}}
+            {{#if statusIs 'pending'}}
+                <span class="item-label-2 label-pending">Pending</span>
+            {{/if}}
+            {{#if statusIs 'completed'}}
+                <span class="item-label-2 label-completed">Completed</span>
+            {{/if}}
+            {{#if statusIs 'overDue'}}
+                <span class="item-label-2 label-overdue">Over Due</span>
+            {{/if}}
     {{/if}}
 </template>

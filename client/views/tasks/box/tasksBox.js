@@ -44,6 +44,8 @@ var loadTaskQueryFromURL = function (params) {
   });
 };
 
+var taskCount = new ReactiveVar();
+
 Template.tasksBox.created = function () {
   taskQuery = taskQuery || loadTaskQueryFromURL(Router.current().params);
   var entityId = Session.get('entityId');
@@ -106,6 +108,22 @@ Template.tasksBox.created = function () {
   })
 };
 
+Template.tasksBox.rendered = function(){
+  $(document).on('click', 'button[data-toggle="popover"]', function(e) {
+    var object = e.currentTarget;
+    var linkId = $(object).attr('data-link');
+    if( $(object).attr('data-init') == 'off' ){
+      $(object).attr('data-content', $('#'+linkId).html());
+      $(object).popover('show');
+      $(object).attr('data-init', 'on');
+    }
+  });
+};
+
+Template.tasksBox.destroyed = function(){
+  $('.popover').popover('destroy');
+};
+
 //todo: improve queries to match with the state in the transform
 var states = [
   {
@@ -163,7 +181,7 @@ var states = [
 
 Template.tasksBox.helpers({
   taskCount: function () {
-    TasksHandler.totalCount();
+    return TasksHandler.totalCount();
   },
   users: function () {
     return Meteor.users.find();

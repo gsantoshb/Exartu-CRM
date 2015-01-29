@@ -401,6 +401,8 @@ Template.contactablesList.destroyed = function() {
     SubscriptionHandlers.AuxContactablesHandler.stop();
     delete SubscriptionHandlers.AuxContactablesHandler;
   }
+
+  $('.popover').popover('destroy');
 };
 
 /**
@@ -423,30 +425,6 @@ Template.contactables.helpers({
   isSearching: function() {
     searchDep.depend();
     return isSearching;
-  }
-});
-
-// List List - Helpers
-Template.contactablesList.helpers({
-  isLoading: function () {
-    return SubscriptionHandlers.AuxContactablesHandler? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
-  },
-  info: function() {
-    info.isFiltering.value = AuxContactables.find().count() != 0;
-    return info;
-  },
-  contactables: function() {
-    // Dependencies
-
-    // ElasticSearch
-    if (!_.isEmpty(query.searchString.value)) {
-      //urlQuery.push('type=' + query.objType.value);
-      return esResult;
-    }
-    return AuxContactables.find();
-  },
-  contactableTypes: function() {
-    return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
   }
 });
 
@@ -505,7 +483,6 @@ Template.contactablesListSearch.helpers({
     return SubscriptionHandlers.AuxContactablesHandler? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
   },
   contactableTypes: contactableTypes,
-
   info: function() {
     info.isFiltering.value = AuxContactables.find().count() != 0;
     return info;
@@ -523,12 +500,9 @@ Template.contactablesListSearch.helpers({
   contactableTypes: function() {
     return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
   },
-
-
   searchString: function () {
     return query.searchString;
-  }
-  ,
+  },
   listViewMode: function () {
     return listViewMode.get();
   }
@@ -547,6 +521,61 @@ Template.contactableListSort.helpers({
   },
   isAscSort: function() {
     return selectedSort.get() ? selectedSort.get().value == 1: false;
+  }
+});
+
+// List Filters - Helpers
+Template.contactablesFilters.helpers({
+  information: function() {
+    var searchQuery = {};
+
+    if (query.objType.value)
+      searchQuery.objNameArray = query.objType.value;
+
+    var contactableCount = Session.get('contactableCount');
+    if (contactableCount)
+      info.contactablesCount.value = contactableCount;
+
+    return info;
+  },
+  query: function () {
+    return query;
+  },
+  isSelectedType: function(typeName){
+
+    return query.objType.value == typeName;
+  },
+  selectedType: function(typeName){
+    //query.processStatus.value=[];
+    if (query.objType.value =='Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
+    if (query.objType.value =='Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
+    if (query.objType.value =='Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
+    return null;
+  },
+  contactableTypes: contactableTypes
+});
+
+// List - Helpers
+Template.contactablesList.helpers({
+  isLoading: function () {
+    return SubscriptionHandlers.AuxContactablesHandler? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
+  },
+  info: function() {
+    info.isFiltering.value = AuxContactables.find().count() != 0;
+    return info;
+  },
+  contactables: function() {
+    // Dependencies
+
+    // ElasticSearch
+    if (!_.isEmpty(query.searchString.value)) {
+      //urlQuery.push('type=' + query.objType.value);
+      return esResult;
+    }
+    return AuxContactables.find();
+  },
+  contactableTypes: function() {
+    return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
   }
 });
 
@@ -598,6 +627,34 @@ Template.contactablesListItem.helpers({
   }
 });
 
+// Employee Information - Helpers
+Template.employeeInformation.helpers({
+  placementInfo: function () {
+    if (!this.placement)
+      return undefined;
+
+    var placementInfo = {};
+    var placement = Placements.findOne({_id: this.placement});
+    if (!placement) return;
+    var job = Jobs.findOne({
+      _id: placement.job
+    }, {
+      transform: null
+    });
+    if (!job) return placementInfo; // should only happen on hierarchy problem
+    var customer = Contactables.findOne({_id: job.customer}, {transform: null});
+
+    placementInfo.job = job._id;
+    placementInfo.jobTitle = job.publicJobTitle;
+    if (customer) {
+      placementInfo.customerName = customer.organization.organizationName;
+      placementInfo.customer = customer._id;
+    }
+
+    return placementInfo;
+  }
+});
+
 // Filters - Helpers
 Template.contactablesFilters.helpers({
   information: function() {
@@ -630,32 +687,6 @@ Template.contactablesFilters.helpers({
 });
 
 // Employee Item - Helpers
-Template.employeeInformation.helpers({
-  placementInfo: function () {
-    if (!this.placement)
-      return undefined;
-
-    var placementInfo = {};
-    var placement = Placements.findOne({_id: this.placement});
-    if (!placement) return;
-    var job = Jobs.findOne({
-      _id: placement.job
-    }, {
-      transform: null
-    });
-    if (!job) return placementInfo; // should only happen on hierarchy problem
-    var customer = Contactables.findOne({_id: job.customer}, {transform: null});
-
-    placementInfo.job = job._id;
-    placementInfo.jobTitle = job.publicJobTitle;
-    if (customer) {
-      placementInfo.customerName = customer.organization.organizationName;
-      placementInfo.customer = customer._id;
-    }
-
-    return placementInfo;
-  }
-});
 
 // register list view mode helper
 Template.registerHelper('listViewMode', function () {
@@ -670,10 +701,6 @@ Template.contactables.events({
   'click .parseText': function () {
     Utils.showModal('textParser');
   }
-});
-
-// List - Events
-Template.contactablesList.events({
 });
 
 // List Header - Events
@@ -768,6 +795,10 @@ Template.contactableListSort.events({
   'click .sort-field': function() {
     setSortField(this);
   }
+});
+
+// List - Events
+Template.contactablesList.events({
 });
 
 // List Item - Events

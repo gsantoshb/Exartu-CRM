@@ -1,52 +1,33 @@
 <template name="noteItem">
-    <div class="table-item note {{noteClass}}">
-        <a class="btn btn-xs btn-success text-small editNote pointer" title="Edit"
-           style="position: absolute; top: 4px; right: 4px; z-index: 10">
-            <i class="fa fa-pencil"></i>
-        </a>
-
-        <div class="row">
-            <div class="col-sm-9">
-                <div class="table-item-cell">
-                    <div class="table-item-cell-container">
-                        <div>
-                            <p class="text text-info"> {{>showMore text=msg limit=60}}</p>
-                        </div>
-
-                        <div class="pull-left" data-bind="foreach: links">
-                            {{#each links}}
-                                <a href="{{getHref}}">
-                                    {{#with getEntity}}
-                                        <span class="badge">{{displayName}}</span>
-                                    {{/with}}
-                                </a>
-                            {{/each}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- /.col-sm-4 -->
-            <div class="col-sm-3">
-                <div class="table-item-cell" style="margin-top: 13px">
-                    <div class="table-item-cell-container date">
-                        {{#formattedDate value=dateCreated format='fromNow'}}
-                            {{date}}
-                        {{/formattedDate}}<br/>
-                        {{#formattedDate value=dateCreated format='lll'}}
-                            {{date}}
-                        {{/formattedDate}}<br/>
-                        <!-- /.table-item-cell-container -->
-                        <span>{{displayUserName userId}}</span>
-                    </div>
-                    <!-- /.table-item-cell -->
-                </div>
-                <!-- /.col-sm-3 -->
-            </div>
-
-            <!-- /.col-lg-4 -->
+    <div class="list-item notes-list-item {{noteClass}}">
+        <div class="list-item-cell list-item-icon">
+            <a href="#" class="item-icon item-icon-notes editNote"><i class="icon icon-pencil-3"></i></a>
         </div>
-        <!-- /.row -->
+        <div class="list-item-cell notes-list-item-title">
+            <div class="item-title single"><a class="editNote" href="#">{{>showMore text=msg limit=60}}</a> </div>
+        </div>
+        <div class="list-item-details notes-list-item-details">
+            <div class="list-item-cell notes-list-item-owner">{{displayUserName userId}}</div>
+            <div class="list-item-cell notes-list-item-edit">
+                <i class="fa fa-clock-o"></i>&nbsp;
+                {{#formattedDate value=dateCreated format='fromNow'}}
+                    {{date}}
+                {{/formattedDate}}
+            </div>
+            <div class="list-item-cell notes-list-item-time">
+                {{#formattedDate value=dateCreated format='lll'}}
+                    {{date}}
+                {{/formattedDate}}
+            </div>
+            <div class="list-item-cell item-overflow notes-item-overflow">
+                <a href="#">
+                  <span class="ico-more">
+                    <span class="dot-1"></span>
+                    <span class="dot-2"></span>
+                    <span class="dot-3"></span>
+                  </span>
+                </a>
+            </div>
+        </div><!-- /.list-item-cell -->
     </div>
 </template>

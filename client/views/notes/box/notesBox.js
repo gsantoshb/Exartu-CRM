@@ -24,6 +24,7 @@ var loadNoteQueryFromURL = function (params) {
 };
 var options = {};
 
+var noteCount = new ReactiveVar();
 
 Template.notesBox.created = function () {
   noteQuery = noteQuery || loadNoteQueryFromURL(Router.current().params);
@@ -80,7 +81,7 @@ Template.notesBox.created = function () {
 
 Template.notesBox.helpers({
   noteCount: function () {
-    NotesHandler.totalCount();
+    return NotesHandler.totalCount();
   },
   users: function () {
     return Meteor.users.find();

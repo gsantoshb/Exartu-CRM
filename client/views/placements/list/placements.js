@@ -1,5 +1,11 @@
+/**
+ * Variables
+ */
 var PlacementHandler;
 
+/**
+ * Controller
+ */
 PlacementsController = RouteController.extend({
   template: 'placements',
   layoutTemplate: 'mainLayout',
@@ -33,6 +39,10 @@ PlacementsController = RouteController.extend({
   }
 });
 
+/**
+ * Helpers
+ */
+// Placements - Helpers
 Template.placements.helpers({
   placementCount: function(){
     return PlacementHandler.totalCount();

@@ -115,7 +115,7 @@ Meteor.methods({
     if (user.lastCustomerUsed) {
       return Contactables.findOne({ _id: user.lastCustomerUsed }, { fields: { 'organization.organizationName': 1 } });
     } else {
-      return Contactables.findOne({ houseAccount: true, hierId: user.hierId }, { fields: { 'organization.organizationName': 1 } });
+      return null;
     }
   },
   getAllContactablesForSelection: function (filter) {

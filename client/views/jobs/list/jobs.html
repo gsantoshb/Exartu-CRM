@@ -1,49 +1,35 @@
 <template name="jobs">
-    <div id="content">
-        {{#with information}}
-            <!--<div id="content-header" class="mini">-->
-                <!--<h1>-->
-                    <!--{{#objectProperty property=jobsCount }}-->
-                        <!--<strong> {{value}} </strong>-->
-                    <!--{{/objectProperty}}-->
-
-                    <!--{{#objectProperty property=objType}}-->
-                        <!--{{#if value}}-->
-                            <!--<span> {{value}} </span>-->
-                        <!--{{else}}-->
-                            <!--jobs-->
-                        <!--{{/if}}-->
-                    <!--{{/objectProperty}}-->
-                <!--</h1>-->
-            <!--</div>-->
-
-            <div id="breadcrumb">
-                <a href="/" title="Go to Home" class="tip-bottom">Home</a>
-                <a href="/jobs" class="current">{{jobsCount.value}} jobs
-                </a>
+    <div id="content" class="network-content nicer-filters">
+        <div class="row">
+            <div class="col-md-3 col-lg-3" id="column-filters">
+                {{> jobFilters }}
             </div>
-        {{/with}}
+            <div class="col-md-9" id="column-list">
+                <div class="list-container">
+                    <div class="list-holder">
 
-        <div>
-            <div class="row">
-                <div class="col-md-3 col-lg-3">
-                    <sidebar>
-                        {{> jobsFilters }}
-                    </sidebar>
-                </div>
+                        <div class="list-actions">
+                            {{>jobListSearch}}
+                        </div>
 
-                <div class="col-md-8 col-lg-8">
-                    {{>jobListSearch}}
+                        {{>jobListHeader}}
 
-                </div>
+                        {{#if isSearching}}
+                            searching
+                        {{else}}
+                            {{> jobList }}
+                        {{/if}}
 
+                        <div class="list-actions last">
+                            {{#if listIsLoading}}
+                                loading
+                            {{else}}
+                                {{#unless isESSearch}}
+                                    {{>fastPagination name="jobs" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                                {{/unless}}
+                            {{/if}}
+                        </div>
 
-                <div class="col-md-9 col-lg-9">
-                    <div>
-                        {{>fastPagination name="jobs"}}
-                    </div>
-                    <div class="fade-in">
-                        {{> jobList }}
                     </div>
                 </div>
             </div>
@@ -51,246 +37,73 @@
     </div>
 </template>
 
-<template name="jobsFilters">
-    <div class="filter">
-        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-            <strong><i class="fa fa-filter"></i></strong>
-        </a>
-
-        <div class="filter-list" id="filter-body">
-            {{> filter_entityType title="Job type" types=jobTypes selected=query.objType}}
-
-            {{> filter_lookUp title="Process status" code=3 lookUpValue=query.status multi=true}}
-
-            {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
-
-
-            {{> filter_createdBy showMineOnly=query.mineOnly}}
-
-            {{> filter_dateCreated selectedLimit=query.selectedLimit}}
-
-            {{> filter_tags tags=query.tags}}
-
-            {{> filter_location location=query.location}}
-        </div>
-    </div>
-</template>
-
-<template name="jobList">
-    {{#if isLoading}}
-        <div style="height: 280px;">
-        </div>
-    {{else}}
-        {{#each jobs}}
-            {{> jobListItem }}
-        {{else}}
-            {{#if info.isFiltering.value }}
-                <div class="v-wrapper">
-                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                        <i class="icon-connection-1 text-large"></i>
-
-                        <h1>
-                            No records Found
-                        </h1>
-                    </div>
-                </div>
-            {{else}}
-                <div class="v-wrapper">
-                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                        <i class="icon-connection-1 text-large"></i>
-                        <a href="#" data-bind="attr: { href: '/jobAdd/'+name() }, text: 'New ' + name()"></a>
-                        <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
-                    </div>
-                </div>
-            {{/if}}
-        {{/each}}
-    {{/if}}
-</template>
-
-<template name="jobListItem">
+<template name="jobListHeader">
     {{#if listViewMode}}
-        <div class="table-item magic">
-            <div class="table-item-cell">
-                <div class="table-item-cell-container">
-                    <div class="table-item-title">
-                        <a href="/job/{{_id}}">
-                            {{displayName}}
-                        </a>
-                        <small class="text-muted text-normal">-</small>
-                        <strong><a href="/contactable/{{customer}}">{{customerName}}</a></strong>
-                        <span class="badge">
-                            {{lookUpName status}}
-                        </span>
-                        <span class="badge">
-                            {{lookUpName activeStatus}}
-                        </span>
-                    <span class="pull-right">
-                              <span class="task-author">
-                                  {{displayUserName userId}}
-                              </span>
-                              <span class="task-author">
-                                  {{_id}}
-                              </span>
-                              <span class="task-author">
-                                  {{#formattedDate value=dateCreated format='fromNow'}}
-                                      {{date}}
-                                  {{/formattedDate}}
-                              </span>
-                    </span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="list-header jobs-list-header">
+            <div class="list-header-cell jobs-list-header-title">Title</div>
+            <div class="list-header-cell jobs-list-header-placements">Placements</div>
+            <div class="list-header-cell jobs-list-header-status">Info</div>
+            <div class="list-header-cell jobs-list-header-code">Code</div>
+            <div class="list-header-cell jobs-list-header-owner">Owner</div>
+            <div class="list-header-cell jobs-list-header-time">Date</div>
+        </div><!-- /.list-header -->
     {{else}}
-
-        <div class="table-item magic">
-            <div class="row ">
-                <div class="col-sm-4 col-xs-4">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container">
-                            <div class="table-item-title">
-                                <a href="/job/{{_id}}">
-                                    {{displayName}}
-                                </a>
-                                <br/>
-                                <small class="text-muted text-normal">
-                                    {{countPlacements}} placements
-                                    {{#each placements}}
-                                        <a href="/contactable/{{employee}}">
-                                            <span class="badge badge-primary">{{getEmployeeDisplayName}}</span>
-                                        </a>
-                                    {{/each}}
-                                    {{#if morePlacements}}
-                                        <a href="/job/{{_id}}#placements"> show all..</a>
-                                    {{/if}}
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-5 col-xs-5">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container text-muted">
-                            {{> jobInformation }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-3 col-xs-3">
-                    <div class="table-item-cell">
-                        <div class="table-item-cell-container date">
-                            {{#formattedDate value=dateCreated format='fromNow'}}
-                                <span>{{date}}</span>
-                                <br/>
-                            {{/formattedDate}}
-
-                            {{displayUserName userId}}
-
-                            <br/><i class="glyphicon glyphicon-search"></i>{{displaySearchKey _id}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="list-header jobs-list-header">
+            <div class="list-header-cell jobs-list-header-title">Title</div>
+            <div class="list-header-cell jobs-list-header-placements">Placements</div>
+            <div class="list-header-cell jobs-list-header-status">Info</div>
+            <div class="list-header-cell jobs-list-header-code">Code</div>
+            <div class="list-header-cell jobs-list-header-owner">Owner</div>
+            <div class="list-header-cell jobs-list-header-time">Date</div>
         </div>
     {{/if}}
-</template>
-
-<template name="jobInformation">
-    <i class="icon-building-2"></i>
-    <strong><a href="/contactable/{{customer}}">{{customerName}} - {{departmentName}}</a></strong>
-    <br/>
-    <div class="task-author">
-        {{#if location.displayName}}
-            <i class="icon-map-marker-1"></i>
-            {{location.displayName}}
-        {{/if}}
-        <span class="badge">
-            {{lookUpName status}}
-        </span>
-                <span class="badge">
-                    {{lookUpName activeStatus}}
-                </span>
-    </div>
 </template>
 
 <template name="jobListSearch">
-    <div class="actions-head">
-        <div class="row visible-xs">
-            <div class="col-xs-8">
-                <div class="pull-left suffix-5">
-                    <div class="btn-group">
-                        <a href="/jobAdd/Temporary" type="button" class="btn btn-success" title="Add">
-                            <span class="fa fa-plus"></span>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    {{#objectProperty property=searchString}}
-                        <input type="text" class="form-control" placeholder="Search jobs" value="{{value}}">
-                    {{/objectProperty}}
-
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                     <span class="pointer" style="font-size: 20px;">
-                         {{#if listViewMode}}
-                             <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
-                            <i class="fa fa-bars"></i>
-                         {{else}}
-                             <i class="fa fa-th-large"></i>
-                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
-                         {{/if}}
-                     </span>
-                {{> jobListSort}}
-            </div>
-
+    <div class="list-actions-cell btn-add-to-list">
+        <div class="btn-group">
+            <a href="/jobAdd/Temporary" type="button" class="btn btn-success" title="Add"><span class="fa fa-plus"></span> Add</a>
         </div>
-        <div class="row hidden-xs">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                <div class="pull-left suffix-5">
-                    <div class="btn-group">
-                        <a href="/jobAdd/Temporary" type="button" class="btn btn-success" title="Add">
-                            <span class="fa fa-plus"></span>
-                        </a>
-                    </div>
-                </div>
+    </div><!-- /.btn-add-to-list -->
 
-                <div class="input-group">
-                    {{#objectProperty property=searchString}}
-                        <input type="text" class="form-control" placeholder="Search jobs" value="{{value}}">
-                    {{/objectProperty}}
-
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </div>
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                     <span class="pointer" style="font-size: 20px;">
-                         {{#if listViewMode}}
-                             <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
-                            <i class="fa fa-bars"></i>
-                         {{else}}
-                             <i class="fa fa-th-large"></i>
-                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
-                         {{/if}}
-                     </span>
-            </div>
-
-            <div class=" col-sm-2 col-md-2 col-lg-2">
-                {{> jobListSort}}
-            </div>
+    <div class="list-actions-cell search-list">
+        <div class="input-group">
+            <span class="prop-input">
+                {{#objectProperty property=searchString}}
+                    <input type="text" class="form-control" placeholder="Search jobs" value="{{value}}">
+                {{/objectProperty}}
+                <span class="text text-danger"></span>
+            </span>
+            <span class="input-group-btn">
+                <button class="btn btn-search" type="button">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
         </div>
-    </div>
+    </div><!-- /.search-list -->
+
+    <div class="list-actions-cell view-mode-list">
+        {{#if listViewMode}}
+            <a href="#"><i id="detail-view" class="fa fa-th-list"></i></a>
+            <a class="active" href="#"><i class="fa fa-bars"></i></a>
+        {{else}}
+            <a class="active" href="#"><i class="fa fa-th-list"></i></a>
+            <a href="#"><i id="list-view" class="fa fa-bars"></i></a>
+        {{/if}}
+        <a id="toggle-filters" href="#" data-view="normal"><i class="fa fa-desktop"></i></a>
+    </div><!-- /.view-mode-list -->
+
+    <div class="list-actions-cell order-list">
+        {{> jobListSort}}
+    </div><!-- ./order-list -->
+
+    {{#if listIsLoading}}
+        loading
+    {{else}}
+        {{#unless isESSearch}}
+            {{>fastPagination name="jobs" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+        {{/unless}}
+    {{/if}}
 </template>
 
 <template name="jobListSort">
@@ -324,4 +137,128 @@
             {{/each}}
         </ul>
     </div>
+</template>
+
+<template name="jobFilters">
+    {{#with information}}
+        <div class="page-title">
+            <h1><span>{{jobsCount.value}}</span> network records</h1>
+        </div>
+    {{/with}}
+
+    <div class="filter">
+        <div class="filter-list" id="filter-body">
+            {{> filter_entityType title="Job type" types=jobTypes selected=query.objType}}
+
+            {{> filter_lookUp title="Process status" code=3 lookUpValue=query.status multi=true}}
+
+            {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
+
+
+            {{> filter_createdBy showMineOnly=query.mineOnly}}
+
+            {{> filter_tags tags=query.tags}}
+
+            {{> filter_location location=query.location}}
+        </div>
+    </div>
+</template>
+
+<template name="jobList">
+    {{#if isLoading}}
+        <div style="height: 280px;"></div>
+    {{else}}
+        <div class="list-item-section">
+            {{#each jobs}}
+                {{> jobListItem }}
+            {{else}}
+                {{#if info.isFiltering.value }}
+                    <div class="v-wrapper">
+                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                            <i class="icon-connection-1 text-large"></i>
+                            <h1>No records Found</h1>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="v-wrapper">
+                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                            <i class="icon-connection-1 text-large"></i>
+                            <a href="#" data-bind="attr: { href: '/jobAdd/'+name() }, text: 'New ' + name()"></a>
+                            <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
+                        </div>
+                    </div>
+                {{/if}}
+            {{/each}}
+        </div>
+    {{/if}}
+</template>
+
+<template name="jobListItem">
+    {{#if listViewMode}}
+        <div class="list-item jobs-list-item">
+            <div class="list-item-cell jobs-list-item-title">
+                <div class="item-title single">
+                    <a href="/job/{{_id}}">{{displayName}}</a> <span class="item-title-more">&#8212; <a href="/contactable/{{customer}}">{{customerName}}</a></span>
+                </div>
+            </div>
+            <div class="list-item-details jobs-list-item-details">
+                <div class="list-item-cell jobs-list-item-placements"><span class="hidden-xs"><a class="btn-round" href="#"><span>10</span></a></span> <span class="visible-xs"><strong>0</strong> Placements</span></div>
+                <div class="list-item-cell jobs-list-item-status"><span class="item-label">{{lookUpName status}}</span> <span class="item-label" data-status="Inactive">{{lookUpName activeStatus}}</span></div>
+                <div class="list-item-cell jobs-list-item-code ">{{_id}}</div>
+                <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
+                <div class="list-item-cell jobs-list-item-time">
+                    {{#formattedDate value=dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
+                </div>
+            </div><!-- /.list-item-cell -->
+        </div><!-- /.jobs-list-item -->
+    {{else}}
+        <div class="list-item jobs-list-item">
+            <div class="list-item-cell list-item-icon">
+                <a class="item-icon item-icon-jobs" href="/job/{{_id}}"><i class="icon-briefcase-2"></i></a>
+            </div>
+            <div class="list-item-cell jobs-list-item-title">
+                <div class="item-title"><a href="/job/{{_id}}">{{displayName}}</a></div>
+                <div class="item-subtitle"><a href="/contactable/{{customer}}">{{customerName}} {{#if departmentName}}&#8212; {{departmentName}}{{/if}}</a></div>
+            </div>
+            <div class="list-item-details jobs-list-item-details">
+                <div class="list-item-cell jobs-list-item-placements">
+                    <span class="hidden-xs"><a class="btn-round" href="#"><span>{{countPlacements}}</span></a></span>
+                    <span class="visible-xs"><strong>{{countPlacements}}1</strong> Placement</span>
+                </div>
+                <div class="list-item-cell jobs-list-item-status">
+                    {{> jobInformation }}
+                </div>
+                <div class="list-item-cell jobs-list-item-code ">{{displaySearchKey _id}}</div>
+                <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
+                <div class="list-item-cell jobs-list-item-time">
+                    {{#formattedDate value=dateCreated format='fromNow'}}
+                        <span>{{date}}</span>
+                        <br/>
+                    {{/formattedDate}}
+                </div>
+                <div class="list-item-cell item-overflow jobs-item-overflow">
+                    <a href="#">
+                        <span class="ico-more">
+                          <span class="dot-1"></span>
+                          <span class="dot-2"></span>
+                          <span class="dot-3"></span>
+                        </span>
+                    </a>
+                </div>
+            </div><!-- /.list-item-cell -->
+        </div><!-- /.jobs-list-item -->
+    {{/if}}
+</template>
+
+<template name="jobInformation">
+    <span class="item-label">{{lookUpName status}}</span> <span class="item-label" data-status="{{lookUpName activeStatus}}">{{lookUpName activeStatus}}</span>
+    {{#if location.displayName}}
+        <button class="btn-round" type="button"
+                data-container="body" data-toggle="popover" data-placement="top" data-html="true"
+                data-content='{{location.displayName}}' data-init="off">
+            <i class="fa fa-map-marker"></i>
+        </button>
+    {{/if}}
 </template>

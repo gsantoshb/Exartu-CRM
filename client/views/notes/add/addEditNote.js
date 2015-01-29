@@ -12,11 +12,9 @@ var link = function (link) {
 
   note.links.push(link);
 };
-
 var noteDep = new Tracker.Dependency;
 var errorDep = new Tracker.Dependency;
-
-var isSaving = new ReactiveVar(false);
+var addDisabled = new ReactiveVar(false);
 
 var noteUpdate = function (cb) {
   if (note._id) {
@@ -39,6 +37,7 @@ var noteUpdate = function (cb) {
 
 
 var createNote = function (note) {
+  addDisabled.set(false);
   var note = note || {};
   var definition = {
     msg: note.msg,
@@ -52,6 +51,9 @@ var createNote = function (note) {
 };
 
 Template.addEditNote.helpers({
+  addDisabled: function () {
+    return addDisabled.get();
+  },
   isEditing: function () {
     return !!note._id;
   },
@@ -120,9 +122,6 @@ Template.addEditNote.helpers({
       format: 'D, MM dd, yyyy hh:ii',
       momentFormat: 'ddd, MMMM DD, YYYY HH:mm'
     };
-  },
-  isSaving: function () {
-    return isSaving.get();
   }
 });
 
@@ -156,21 +155,20 @@ Template.addEditNote.events({
     if (!isValid(note)) {
       return;
     }
-
+    addDisabled.set(true);
     // disable the button while processing
-    isSaving.set(true);
+
 
     if (note._id) {
       noteUpdate(function () {
-        isSaving.set(false);
         $('.modal-host').children().modal('toggle')
       });
     } else {
       Notes.insert(note, function () {
-        isSaving.set(false);
         $('.modal-host').children().modal('toggle')
       })
     }
+    addDisabled.set(false);
   },
 
   'change .msg': function (e) {

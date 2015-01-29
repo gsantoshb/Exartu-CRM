@@ -26,9 +26,11 @@ JobAddController = RouteController.extend({
   }
 });
 
+var addDisabled = new ReactiveVar(false);
 var model;
 var subTypesDep = new Deps.Dependency;
 var createJob = function (objTypeName) {
+  addDisabled.set(false);
   var options = Session.get('addOptions');
   if (options) {
     Session.set('addOptions', undefined);
@@ -43,6 +45,9 @@ var createJob = function (objTypeName) {
 };
 
 Template.addJobPage.helpers({
+  addDisabled: function () {
+    return addDisabled.get();
+  },
   model: function () {
     if (!model) {
       model = createJob(Session.get('objType'));
@@ -65,7 +70,7 @@ Template.addJobPage.events({
       return;
     }
     var obj = dType.buildAddModel(model);
-
+    addDisabled.set(true);
     Meteor.call('addJob', obj, function (err, result) {
       if (err) {
         console.dir(err)
@@ -75,6 +80,7 @@ Template.addJobPage.events({
           if (err)
             console.dir(err);
         });
+        addDisabled.set(false);
         Router.go('/job/' + result);
       }
     });
