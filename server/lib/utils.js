@@ -83,13 +83,12 @@ _.extend( Utils, {
 
     return c;
   },
-  getLocationDisplayName: function (location) {
-    return !location ? '' : (
-    (location.streetNumber || '' ) + ' '  +
-    (location.address  || '' ) + ' '  +
-    (location.address1 || '' ) + ', ' +
-    (location.city     || '' ) + ', ' +
-    (location.state    || '' ) + ', ' +
-    (location.country  || '' ));
+  getLocationDisplayName: function (address) {
+    return !address ? '' : (
+    (address.address  || '' ) + ' '  +
+    (address.address1 || '' ) + ', ' +
+    (address.city     || '' ) + ', ' +
+    (address.state    || '' ) + ', ' +
+    (address.country  || '' ));
   }
 });

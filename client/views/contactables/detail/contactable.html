@@ -86,7 +86,7 @@
 
         {{#if location}}
             <i class="fa fa-map-marker"></i>
-            <span>{{locationDisplayName}}</span>
+            <span>{{businessAddress}}</span>
         {{/if}}
     </p>
 
@@ -145,7 +145,7 @@
 
         {{> contactable_contacts}}
         {{>tagsBox}}
-        {{> locationBox callback=setNewAddress location=location}}
+        {{>addressBox}}
     </div>
     </row>
 </template>

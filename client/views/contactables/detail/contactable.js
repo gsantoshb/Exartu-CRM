@@ -1,7 +1,10 @@
 ContactableController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    return [Meteor.subscribe('singleContactable', this.params._id), GoogleMapsHandler, Meteor.subscribe('contactableCounters', this.params._id)]
+    return [Meteor.subscribe('singleContactable', this.params._id),
+      Meteor.subscribe('contactableAddresses', this.params._id),
+      GoogleMapsHandler,
+      Meteor.subscribe('contactableCounters', this.params._id)]
   },
   data: function () {
     Session.set('entityId', this.params._id);
@@ -190,7 +193,7 @@ Template.contactable_header.helpers({
     }
     return "/assets/user-photo-placeholder.jpg";
   },
-  locationDisplayName: function () {
+  businessAddress: function () {
     return Utils.getLocationDisplayName(this.location);
   }
 });

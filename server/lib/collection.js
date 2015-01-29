@@ -33,13 +33,19 @@ SystemConfigs = new Mongo.Collection("systemConfigs");
 UserInvitations = new Mongo.Collection("userInvitations");
 
 EmailTemplates = new Mongo.Collection("emailTemplates");
+
 EmailTemplateMergeFields = new Mongo.Collection('emailTemplateMergeFields');
 
 Roles = new Mongo.Collection("roles");
-SystemAdmins = new Mongo.Collection("systemAdmins");
-Tenants=Hierarchies;
 
-HotLists=new Mongo.Collection("hotLists");
+SystemAdmins = new Mongo.Collection("systemAdmins");
+
+Tenants = Hierarchies;
+
+HotLists = new Mongo.Collection("hotLists");
+
+Addresses = new Mongo.Collection("addresses");
+
 Collections = {
   Hierarchies: Hierarchies,
   Jobs: Jobs,

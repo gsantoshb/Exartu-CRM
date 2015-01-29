@@ -1,0 +1,14 @@
+<template name="addressList">
+    <ul class="list-3 stripped">
+        {{#each addresses}}
+        <li class="list-3-item">
+            <div class="list-3-content list-magic">
+                <div class="list-3-content-wrap">
+                    <h4 class="list-3-item-meta-top" >{{addressType}}, {{address}} {{address2}}</h4>
+                    <h4 class="list-3-item-title">{{postalCode}},{{city}},{{state}},{{country}}</h4>
+                </div>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</template>
