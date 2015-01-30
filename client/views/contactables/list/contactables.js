@@ -405,6 +405,8 @@ Template.contactablesList.destroyed = function() {
   $('.popover').popover('destroy');
 };
 
+
+
 /**
  * Helpers
  */

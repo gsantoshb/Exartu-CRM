@@ -79,7 +79,7 @@ var loadqueryFromURL = function (params) {
 var listViewDefault=Session.get('placementListViewMode');
 if (!listViewDefault)
 {
-  listViewDefault=true;
+  listViewDefault=false;
 }
 var listViewMode = new ReactiveVar(listViewDefault);
 
