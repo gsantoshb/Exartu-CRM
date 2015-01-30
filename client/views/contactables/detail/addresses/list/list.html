@@ -8,7 +8,7 @@
             <div class="box-title">Addresses</div>
         </div>
         {{#if showLocationAddBox}}
-            {{>locationBox linkId=linkId callback=setNewAddress }}
+            {{>addressAddEdit linkId=linkId callback=setNewAddress }}
         {{/if}}
         <ul class="list-3 stripped">
             {{#each addresses}}
@@ -24,7 +24,7 @@
                                 <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
                             </div>
                             {{#if showLocationEditBox}}
-                                {{>locationBox linkId=linkId  callback=setNewAddress location=.}}
+                                {{>addressAddEdit linkId=linkId  callback=setNewAddress location=.}}
                             {{/if}}
 
                         </div>

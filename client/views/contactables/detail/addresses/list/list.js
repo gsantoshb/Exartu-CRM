@@ -15,22 +15,11 @@ Template.addressList.helpers({
         return lkp.displayName;
     },
     setNewAddress: function () {
-        return function (address) {
-            address.linkId=Session.get('entityId');
-
-            console.log('addr add ed  ',address);
-            Meteor.call('addEditAddress', address, function (err, result) {
-                console.log('addedit',address);
-                if (err) {
-                    alert(err);
-                    console.log(err)
-                }
-                else {
-                    addressesDep.changed();
-                    showLocationEditBox.set(false);
-                    showLocationAddBox.set(false);
-                }
-            });
+        debugger;
+        return function () {
+            addressesDep.changed();
+            showLocationEditBox.set(false);
+            showLocationAddBox.set(false);
         }
     },
     showLocationEditBox: function () {

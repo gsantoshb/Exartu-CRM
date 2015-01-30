@@ -5,7 +5,7 @@
         <input class="form-control locationSearchInput" placeholder="Search for an address" autocomplete="off" />
     </form>
 
-    {{#autoForm id="addressAddEditForm" schema="AddressSchema" validation="blur" doc=address}}
+    {{#autoForm id="addressAddEditForm" schema="LocationSchema" validation="blur" doc=address}}
 
     <div class="form-group {{#if afFieldIsInvalid name='address'}}has-error{{/if}}">
         {{> afFieldInput name='address' class="form-control " placeholder="Address"}}
@@ -53,8 +53,11 @@
     </div>
 
 
+
+
+
     <div class="form-group">
-        <button class="btn btn-block btn-primary"><strong>Create</strong>
+        <button class="btn btn-block btn-primary"><strong>Ok</strong>
         </button>
     </div>
     {{/autoForm}}
