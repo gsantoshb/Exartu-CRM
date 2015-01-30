@@ -292,15 +292,15 @@ Utils.getLocation = function (googleLocation) {
     }
 };
 
-Utils.getLocationDisplayName = function (location) {
-    return !location ? '' : (
-    (location.streetNumber || '' ) + ' ' +
-    (location.address || '' ) + ' ' +
-    (location.address1 || '' ) + ', ' +
-    (location.city || '' ) + ', ' +
-    (location.state || '' ) + ', ' +
-    (location.country || '' ));
-};
+//Utils.getLocationDisplayName = function (location) {
+//    return !location ? '' : (
+//    (location.streetNumber || '' ) + ' ' +
+//    (location.address || '' ) + ' ' +
+//    (location.address1 || '' ) + ', ' +
+//    (location.city || '' ) + ', ' +
+//    (location.state || '' ) + ', ' +
+//    (location.country || '' ));
+//};
 Utils.getLocationDisplayName = function (id) {
 
     var billingAddressType= Enums.lookUpAction.Address_Billing;
@@ -636,6 +636,13 @@ Utils.getAddressTypes = function () {
     var addressTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode}).fetch();
     return addressTypes;
 };
+Utils.getAddressTypeDefault = function () {
+    var addressType = LookUps.findOne({lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,isDefault:true});
+    if (!addressType) addressType =LookUps.findOne({lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,inactive: {$exists:false}});
+    if (!addressType) addressType =LookUps.findOne({lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode});
+    return addressType;
+};
+
 
 Utils.getContactableEmail = function (contactable) {
     var result = null;

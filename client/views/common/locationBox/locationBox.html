@@ -1,21 +1,21 @@
 <template name="locationBox">
     <div class="box">
-        <div class="box-header-2">
-            <a class="btn-action tip-top pointer" id="edit-Location" data-original-title="Add Contact"
-               style="color: {{editModeColor}}" title="Edit">
-                <i class="fa fa-pencil"></i>
-            </a>
+        <!--<div class="box-header-2">-->
+            <!--<a class="btn-action tip-top pointer" id="edit-Location" data-original-title="Location"-->
+               <!--style="color: {{editModeColor}}" title="Edit">-->
+                <!--<i class="fa fa-pencil"></i>-->
+            <!--</a>-->
 
-            <a class="btn-action pointer" id="show-location-map" style="margin-right: 10px">
-                {{#if isGoogleAddress}}
-                    <i class="fa fa-map-marker"></i>
-                {{/if}}
-            </a>
+            <!--<a class="btn-action pointer" id="show-location-map" style="margin-right: 10px">-->
+                <!--{{#if isGoogleAddress}}-->
+                    <!--<i class="fa fa-map-marker"></i>-->
+                <!--{{/if}}-->
+            <!--</a>-->
 
-            <div class="box-title">
-                Address
-            </div>
-        </div>
+            <!--<div class="box-title">-->
+                <!--Address-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="box-content-md">
             {{#if editMode}}
                 <form class="box-content-form" style="margin-bottom: 20px;" role="form">
@@ -107,17 +107,15 @@
                         </td>
                     </tr>
                     <tr class="box-table-label">
-                        <td>Zip code</td>
+                        <td>Type</td>
                         <td>
-                            {{#if editMode}}
-                                {{> afFieldInput name='postalCode'}}
-                            {{else}}
-                                <strong>
-                                    {{location.value.postalCode}}
-                                </strong>
-                            {{/if}}
+                                {{> afFieldInput name='addressTypeId' class="form-control "  options=getAddressTypes}}
+                                {{#if afFieldIsInvalid name='addressTypeId'}}
+                                    <span class="help-block">{{afFieldMessage name='addressTypeId'}}</span>
+                                {{/if}}
                         </td>
                     </tr>
+
                     </tbody>
                 </table>
 

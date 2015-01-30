@@ -1,18 +1,36 @@
 <template name="addressList">
-    <ul class="list-3 stripped">
-        {{#each addresses}}
-        <li class="list-3-item">
-            <div class="list-3-content list-magic">
-                <div class="list-3-content-wrap">
-                    <h4 class="list-3-item-meta-top" >{{getAddressTypeDisplayName }}, {{address}} {{address2}}</h4>
-                    <h4 class="list-3-item-title">{{postalCode}},{{city}},{{state}},{{country}}</h4>
-                    <div class="list-3-actions">
-                        <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
+    <div class="box">
+
+        <div class="box-header-2">
+            <a class="btn-action pointer" title="Edit"><i id="create-address-mode" class="fa fa-plus"
+                                                          style="color: {{editModeColor}}"></i></a>
+
+            <div class="box-title">Addresses</div>
+        </div>
+        {{#if showLocationAddBox}}
+            {{>locationBox linkId=linkId callback=setNewAddress }}
+        {{/if}}
+        <ul class="list-3 stripped">
+            {{#each addresses}}
+                <li class="list-3-item">
+                    <div class="list-3-content list-magic">
+                        <div class="list-3-content-wrap">
+                            <h4 class="list-3-item-meta-top">{{getAddressTypeDisplayName }}</h4>
+                            <h4 class="list-3-item-title">{{address}} {{city}}, {{state}} {{country}}</h4>
+
+                            <div class="list-3-actions">
+                                <a class="editAddressRecord pointer"><i class="fa fa-edit"></i> Edit</a>
+                                <span class="bullet-spacer">·</span>
+                                <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
+                            </div>
+                            {{#if showLocationEditBox}}
+                                {{>locationBox linkId=linkId  callback=setNewAddress location=.}}
+                            {{/if}}
+
+                        </div>
                     </div>
-                    {{locationBox location=.}}
-                </div>
-            </div>
-        </li>
-        {{/each}}
-    </ul>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
 </template>
