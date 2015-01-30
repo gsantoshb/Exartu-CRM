@@ -1,3 +1,4 @@
+
 var oldValue;
 EditLocationMode = {
   val: false,

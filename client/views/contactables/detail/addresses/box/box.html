@@ -6,11 +6,12 @@
             <div class="box-title">Addresses</div>
         </div>
         <div class="box-content-md">
+            {{> addressList}}
             {{#if editMode }}
-            {{> addressAdd}}
+            {{> addressAddEdit}}
             {{/if}}
 
-            {{> addressList}}
+
         </div>
     </div>
 </template>

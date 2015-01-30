@@ -673,7 +673,6 @@ Template.contactablesFilters.helpers({
     return query;
   },
   isSelectedType: function(typeName){
-    console.log('seltype',typeName,query.objType.value);
     return query.objType.value == typeName;
   },
   selectedType: function(typeName){
