@@ -39,7 +39,7 @@
 
 <template name="contactablesListHeader">
     {{#if listViewMode}}
-        <div class="list-header network-list-header simple-network-list-header">
+        <div class="list-header network-list-header simple-view">
             <div class="list-header-cell network-list-header-title">Title</div>
             <div class="list-header-cell network-list-header-owner">Owner</div>
             <div class="list-header-cell network-list-header-code">Code</div>
@@ -223,34 +223,36 @@
     {{#if isLoading}}
         <div style="height: 505px;"></div>
     {{else}}
-        {{#each contactables}}
-            <div class="list-item-section">
-                {{> contactablesListItem }}
-            </div>
-        {{else}}
-            {{#if info.isFiltering.value }}
-                <div class="v-wrapper">
-                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                        <i class="icon-connection-1 text-large"></i>
-
-                        <h1>
-                            No records Found
-                        </h1>
-                    </div>
+        <div class="list-item-section {{#if listViewMode}}simple-view{{/if}}">
+            {{#each contactables}}
+                <div class="list-item-section">
+                    {{> contactablesListItem }}
                 </div>
             {{else}}
-                <div class="v-wrapper">
-                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                        <i class="icon-connection-1 text-large"></i>
+                {{#if info.isFiltering.value }}
+                    <div class="v-wrapper">
+                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                            <i class="icon-connection-1 text-large"></i>
 
-                        <a href="#"
-                           data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
+                            <h1>
+                                No records Found
+                            </h1>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="v-wrapper">
+                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                            <i class="icon-connection-1 text-large"></i>
+
+                            <a href="#"
+                               data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
                         <span class="bullet-spacer"
                               data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
+                        </div>
                     </div>
-                </div>
-            {{/if}}
-        {{/each}}
+                {{/if}}
+            {{/each}}
+        </div>
     {{/if}}
 </template>
 
