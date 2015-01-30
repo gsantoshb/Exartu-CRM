@@ -166,7 +166,7 @@
         <ul class="dropdown-menu" role="menu">
             {{#each sortFields}}
                 <li>
-                    <a class="sort-field">
+                    <a class="sort-field" href="#">
                         {{displayName}}
                         {{#if isFieldSelected .}}
                             {{#if isAscSort .}}
@@ -271,25 +271,6 @@
                         {{date}}
                     {{/formattedDate}}
                 </div>
-                <div class="list-item-cell">
-                    <a class="" href="/contactable/{{_id}}">
-                        {{#if pictureFileId }}
-                            {{#with pictureUrl pictureFileId}}
-                            <div class="profile-pic">
-                                <div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">
-                                    <a id="edit-pic" title="Click to Edit" class="pointer">
-                                        <img class="" src="{{.}}" style="max-height: 40px;max-width: 40px;">
-                                    </a>
-                                </div>
-                            </div>
-                            {{/with}}
-
-                        {{else}}
-                            {{#if organization }}<i class=" item-icon item-icon-network list-item-icon icon-buildings-1"></i>{{/if}}
-                            {{#if person }}<i class="item-icon item-icon-network  list-item-icon icon-profile-business-man"></i>{{/if}}
-                        {{/if}}
-                    </a>
-                </div>
             </div><!-- /.list-item-cell -->
         </div><!-- /.network-list-item -->
     {{else}}
@@ -313,7 +294,7 @@
             </div>
 
             <div class="list-item-cell network-list-item-title">
-                <div class="item-title {{#if Customer}}single{{/if}}{{#if getDepartment}}single{{/if}}"><a href="#">{{displayName}}</a></div>
+                <div class="item-title {{#if Customer}}single{{/if}}{{#if getDepartment}}single{{/if}}"><a href="/contactable/{{_id}}">{{displayName}}</a></div>
                 <div class="item-subtitle">
                     {{#if Customer}}
                         {{> customerInformation }}
@@ -360,11 +341,11 @@
                 </div>
                 <div class="list-item-cell item-overflow network-item-overflow">
                     <a href="#">
-                            <span class="ico-more">
-                              <span class="dot-1"></span>
-                              <span class="dot-2"></span>
-                              <span class="dot-3"></span>
-                            </span>
+                        <span class="ico-more">
+                          <span class="dot-1"></span>
+                          <span class="dot-2"></span>
+                          <span class="dot-3"></span>
+                        </span>
                     </a>
                 </div>
             </div><!-- /.list-item-cell -->

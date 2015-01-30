@@ -17,6 +17,7 @@
             </div>
         </div>
         <div class="list-item-details tasks-list-item-details">
+            <div class="list-item-cell tasks-list-item-owner">{{displayUserName userId}}</div>
             <div class="list-item-cell tasks-list-item-startdate">
                 <span class="visible-xs">Started:</span>
                 {{#formattedDate value=begin format='lll'}}
