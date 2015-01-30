@@ -13,7 +13,7 @@ UI.registerHelper('inputLocation', function() {
     });
   };
 
-  // Avoid navegation when press enter key
+  // Avoid navigation when press enter key
   Template.inputLocationTemplate.events = {
     'keypress .location': function(e){
       if (e.which == 13) {
