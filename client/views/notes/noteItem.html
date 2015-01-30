@@ -19,6 +19,23 @@
                     {{date}}
                 {{/formattedDate}}
             </div>
+
+            {{#if hasLinks}}
+                <div id="link-{{_id}}" style="display: none">
+                    {{#each links}}
+                        <a href="{{getHref}}">
+                            {{#with getEntity}}
+                                <span class="badge">{{displayName}}</span>
+                            {{/with}}
+                        </a>
+                    {{/each}}
+                </div>
+
+                <button data-content="" data-placement="top" data-toggle="popover" data-container="body" type="button" class="btn-users" data-html="true" data-link="link-{{_id}}" data-init="off">
+                    <i class="fa fa-users"></i>
+                </button>
+            {{/if}}
+
             <div class="list-item-cell item-overflow notes-item-overflow">
                 <a href="#">
                   <span class="ico-more">

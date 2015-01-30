@@ -78,6 +78,17 @@ Template.notesBox.created = function () {
   })
 };
 
+Template.notesBox.rendered = function(){
+    $(document).on('click', 'button[data-toggle="popover"]', function(e) {
+        var object = e.currentTarget;
+        var linkId = $(object).attr('data-link');
+        if( $(object).attr('data-init') == 'off' ){
+            $(object).attr('data-content', $('#'+linkId).html());
+            $(object).popover('show');
+            $(object).attr('data-init', 'on');
+        }
+    });
+};
 
 Template.notesBox.helpers({
   noteCount: function () {

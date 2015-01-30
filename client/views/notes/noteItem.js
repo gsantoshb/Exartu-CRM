@@ -2,6 +2,9 @@ Template.noteItem.helpers({
   noteClass: function(){
     return 'note-' + this.state + (this.inactive ? ' inactive' : '');
   },
+    hasLinks: function() {
+        return this.links.length;
+    },
   getHref: function(){
     return Utils.getHrefFromLink(this);
   },
