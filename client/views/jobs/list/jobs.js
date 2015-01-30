@@ -446,38 +446,30 @@ Template.jobListItem.helpers({
   listViewMode: function() {
     return listViewMode.get();
   },
-
   pictureUrl: function(pictureFileId) {
     var picture = JobsFS.findOne({_id: pictureFileId});
     return picture? picture.url('JobsFSThumbs') : undefined;
   },
-
   jobIcon: function() {
     return helper.getEntityIcon(this);
   },
-
   displayObjType: function() {
     return Utils.getJobType(this);
   },
-
   placements: function () {
     return Placements.find({job: this._id}, { limit: 3, transform: null});
   },
-
   getEmployeeDisplayName: function () {
     var employee = Contactables.findOne(this.employee);
     return employee ? employee.displayName : 'Employee information not found!';
   },
-
   customerName: function () {
     var customer =  Contactables.findOne(this.customer);
     return customer && customer.displayName;
   },
-
   countPlacements: function () {
     return Placements.find({job: this._id}).count();
   },
-
   morePlacements: function () {
     return Placements.find({job: this._id}).count() > 3;
   }
