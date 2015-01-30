@@ -35,25 +35,21 @@ var query = new Utils.ObjectDefinition({
 });
 var defaultUpdateDep = new Deps.Dependency;
 
-Template.selectLookUpType.lookUpTypes = function() {
-  var lookUpTypes = [];
-  _.forEach(Enums.lookUpTypes, function(subType){
-    _.forEach(subType, function(item){
-      lookUpTypes.push(item)
-    })
-  });
-//  query.lookUpCode.value = lookUpTypes[0].code;
-//  var items= Template.lookUpsManagement.items();
-  return _.sortBy(lookUpTypes,'displayName');
+Template.selectLookUpType.helpers({
+    lookUpTypes : function() {
+        var lookUpTypes = [];
+        _.forEach(Enums.lookUpTypes, function(subType){
+            _.forEach(subType, function(item){
+                lookUpTypes.push(item)
+            })
+        });
+        return _.sortBy(lookUpTypes,'displayName');
 
-};
-
-
-
-
-Template.selectLookUpType.isSelected = function(id){
-  return (this.value || this._id) ==id;
-};
+    },
+    isSelected : function(id) {
+        return (this.value || this._id) == id;
+    }
+});
 
 Template.selectLookUpType.events = {
   'change': function(e) {
@@ -61,63 +57,65 @@ Template.selectLookUpType.events = {
   }
 };
 
-Template.searchLookUpItem.searchString = function() {
-  return query.searchString;
-};
-Template.lookUpsManagement.getId= function(row)
-{
-    return row._id;
-}
-Template.lookUpsManagement.getLookUpActions= function()
-{
-  defaultUpdateDep.depend();
-  var lookUpActions = [];
-  _.forEach(Enums.lookUpTypes, function(subType){
-    _.forEach(subType, function(item){
-
-        if (item.lookUpCode == query.lookUpCode.value)
-        {
-          lookUpActions = item.lookUpActions;
-        }
-    })
-  });
-
-  return lookUpActions;
-
-}
-
-
-Template.selectLookUpType.lookUpActions=function()
-{
-    defaultUpdateDep.depend();
-}
-
-Template.lookUpsManagement.items = function() {
-  defaultUpdateDep.depend();
-  var q = { lookUpCode: query.lookUpCode.value};
-  if (query.searchString.value)
-    q.$or = [
-      {
-        displayName: {
-          $regex:  query.searchString.value ,
-          $options: 'i'
-        }
-      }
-    ];
-
-  var hier = Hierarchies.findOne();
-  return LookUps.find(q,
-    {
-      transform: function(item) {
-        Utils.reactiveProp(item,'editMode',false);
-        Utils.reactiveProp(item,'editActionMode',false);
-        item.errMsg = '';
-        return item;
-      },
-      sort: {displayName: 1}
+Template.searchLookUpItem.helpers({
+    searchString: function () {
+        return query.searchString;
     }
-  );
-};
+});
+
+
+Template.selectLookUpType.helpers({
+    lookUpActions: function () {
+        defaultUpdateDep.depend();
+    }
+});
+
+Template.lookUpsManagement.helpers({
+    items : function() {
+        defaultUpdateDep.depend();
+        var q = { lookUpCode: query.lookUpCode.value};
+        if (query.searchString.value)
+            q.$or = [
+                {
+                    displayName: {
+                        $regex:  query.searchString.value ,
+                        $options: 'i'
+                    }
+                }
+            ];
+
+        var hier = Hierarchies.findOne();
+        return LookUps.find(q,
+            {
+                transform: function(item) {
+                    Utils.reactiveProp(item,'editMode',false);
+                    Utils.reactiveProp(item,'editActionMode',false);
+                    item.errMsg = '';
+                    return item;
+                },
+                sort: {displayName: 1}
+            }
+        );
+    },
+    getLookUpActions: function () {
+        defaultUpdateDep.depend();
+        var lookUpActions = [];
+        _.forEach(Enums.lookUpTypes, function (subType) {
+            _.forEach(subType, function (item) {
+
+                if (item.lookUpCode == query.lookUpCode.value) {
+                    lookUpActions = item.lookUpActions;
+                }
+            })
+        });
+
+        return lookUpActions;
+
+    },
+    getId: function (row) {
+        return row._id;
+    }
+});
 
 Template.lookUpsManagement.events = {
   'change .set-default': function(e) {

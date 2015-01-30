@@ -6,7 +6,7 @@ var address = {
   country: '',
   postalCode: ''
 };
-var resetAddres = function () {
+var resetAddress = function () {
   address.address = '';
   address.address2 = '';
   address.city = '';
@@ -17,18 +17,19 @@ var resetAddres = function () {
 
 var addressCreatedCallback;
 AutoForm.hooks({
-  addressAddForm: {
+  addressAddEditForm: {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
       var self = this;
       //Copy properties from insert doc into current doc which has lat lng
       for (var k in insertDoc) currentDoc[k] = insertDoc[k];
       //Set the contactable id on the current doc
-      currentDoc.contactableId = Session.get("entityId");
-      Meteor.call('addAddressToContactable', currentDoc, function (err, result) {
+      currentDoc.linkId = Session.get("entityId");
+      Addresses.insert(currentDoc);
+      Meteor.call('addEditAddress', currentDoc, function (err, result) {
         if (err) {
           console.log(err);
         } else {
-          resetAddres();
+          resetAddress();
           self.resetForm();
           addressCreatedCallback();
 
@@ -40,13 +41,13 @@ AutoForm.hooks({
     }
   }
 });
-Template.addressAdd.rendered = function () {
+Template.addressAddEdit.rendered = function () {
   var self = this;
 
   this.addressCreated = function(callback){
     addressCreatedCallback = callback;
   };
-  resetAddres();
+  resetAddress();
   var inputElement = this.$('.locationSearchInput')[0];
   var autocomplete = new google.maps.places.Autocomplete(inputElement, { types: ['geocode'] });
   // When the user selects an address from the dropdown this event is raised
@@ -58,9 +59,9 @@ Template.addressAdd.rendered = function () {
     AutoForm.invalidateFormContext("addressAddForm");
     inputElement.value = '';
   });
-  //gets an object containg the address data from the autocomplete place result
+  //gets an object containing the address data from the autocomplete place result
   var placeToAddress = function (place) {
-    resetAddres();
+    resetAddress();
     var componentForm = {
       street_number: 'short_name',
       route: 'long_name',
@@ -72,10 +73,10 @@ Template.addressAdd.rendered = function () {
     // Get each component of the address from the place details
     // and fill the corresponding field on the form.
     for (var i = 0; i < place.address_components.length; i++) {
-      var addressType = place.address_components[i].types[0];
-      if (componentForm[addressType]) {
-        var val = place.address_components[i][componentForm[addressType]];
-        switch (addressType) {
+      var componentType = place.address_components[i].types[0];
+      if (componentForm[componentType]) {
+        var val = place.address_components[i][componentForm[componentType]];
+        switch (componentType) {
           case 'street_number':
             address.address = val;
             break;
@@ -102,9 +103,15 @@ Template.addressAdd.rendered = function () {
     address.lng = place.geometry.location.lng();
   };
 };
-Template.addressAdd.helpers({
+Template.addressAddEdit.helpers({
   address: function () {
     return address;
+  },
+  getAddressTypes: function(){
+    addressTypes= Utils.getAddressTypes();
+    return _.map(addressTypes, function (addresstype) {
+      return {label: addresstype.displayName, value: addresstype._id};
+    });
   }
 });
 

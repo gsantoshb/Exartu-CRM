@@ -66,5 +66,6 @@ Collections = {
   SystemAdmins: SystemAdmins,
   Tenants: Hierarchies,
   HotLists: HotLists,
-  UserInvitations:UserInvitations
+  UserInvitations:UserInvitations,
+  Addresses: Addresses
 };

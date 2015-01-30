@@ -1,3 +1,3 @@
-Meteor.publish("contactableAddresses", function (contactableId) {
-    return Addresses.find({contactableId: contactableId});
+Meteor.publish("linkedAddresses", function (linkid) {
+    return Addresses.find({linkId: linkid});
 });

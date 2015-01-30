@@ -1,11 +1,11 @@
-<template name="addressAdd">
+<template name="addressAddEdit">
 
     <form class="box-content-form" style="margin-bottom: 20px;" role="form">
         <strong class="text-muted"> Search address </strong>
         <input class="form-control locationSearchInput" placeholder="Search for an address" autocomplete="off" />
     </form>
 
-    {{#autoForm id="addressAddForm" schema="AddressSchema" validation="blur" doc=address}}
+    {{#autoForm id="addressAddEditForm" schema="AddressSchema" validation="blur" doc=address}}
 
     <div class="form-group {{#if afFieldIsInvalid name='address'}}has-error{{/if}}">
         {{> afFieldInput name='address' class="form-control " placeholder="Address"}}
@@ -44,10 +44,11 @@
         {{/if}}
     </div>
 
-    <div class="form-group {{#if afFieldIsInvalid name='addressType'}}has-error{{/if}}">
-        {{> afFieldInput name='addressType' class="form-control " firstOption="Select a type" options="allowed" }}
-        {{#if afFieldIsInvalid name='addressType'}}
-        <span class="help-block">{{afFieldMessage name='addressType'}}</span>
+    <div class="form-group {{#if afFieldIsInvalid name='addressTypeId'}}has-error{{/if}}">
+        {{> afFieldInput name='addressTypeId' class="form-control "  options=getAddressTypes
+            firstOption="Select a type"  }}
+        {{#if afFieldIsInvalid name='addressTypeId'}}
+        <span class="help-block">{{afFieldMessage name='addressTypeId'}}</span>
         {{/if}}
     </div>
 
