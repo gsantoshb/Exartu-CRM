@@ -18,33 +18,34 @@
                 {{#formattedDate value=dateCreated format='lll'}}
                     {{date}}
                 {{/formattedDate}}
-            </div>
+
 
             {{#if hasLinks}}
-                <div id="link-{{_id}}" style="display: none">
+                <div id="link-{{_id}}" >
                     {{#each links}}
                         <a href="{{getHref}}">
                             {{#with getEntity}}
                                 <span class="badge">{{displayName}}</span>
                             {{/with}}
+
                         </a>
                     {{/each}}
                 </div>
 
-                <button data-content="" data-placement="top" data-toggle="popover" data-container="body" type="button" class="btn-users" data-html="true" data-link="link-{{_id}}" data-init="off">
-                    <i class="fa fa-users"></i>
-                </button>
+                <!--<button data-content="" data-placement="top" data-toggle="popover" data-container="body" type="button" class="btn-users" data-html="true" data-link="link-{{_id}}" data-init="off">-->
+                    <!--<i class="fa fa-users"></i>-->
+                <!--</button>-->
             {{/if}}
-
-            <div class="list-item-cell item-overflow notes-item-overflow">
-                <a href="#">
-                  <span class="ico-more">
-                    <span class="dot-1"></span>
-                    <span class="dot-2"></span>
-                    <span class="dot-3"></span>
-                  </span>
-                </a>
             </div>
+            <!--<div class="list-item-cell item-overflow notes-item-overflow">-->
+                <!--<a href="#">-->
+                  <!--<span class="ico-more">-->
+                    <!--<span class="dot-1"></span>-->
+                    <!--<span class="dot-2"></span>-->
+                    <!--<span class="dot-3"></span>-->
+                  <!--</span>-->
+                <!--</a>-->
+            <!--</div>-->
         </div><!-- /.list-item-cell -->
     </div>
 </template>
