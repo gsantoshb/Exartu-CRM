@@ -28,11 +28,16 @@ Template.addressList.helpers({
     showLocationAddBox: function () {
         return showLocationAddBox.get();
     },
-    linkId: function() { return Session.get('entityId');}
+    linkId: function() { return Session.get('entityId');
+    },
+    isAdmin: function(){
+        return Utils.adminSettings.isAdmin();
+    }
 });
 Template.addressList.events({
 
     'click .deleteAddressRecord': function () {
+        if (!confirm('Delete this address record?')) return;
         Meteor.call('removeAddress', this._id, function (err, result) {
             if (err) {
                 console.log(err);

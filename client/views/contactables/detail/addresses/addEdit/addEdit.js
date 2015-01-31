@@ -71,6 +71,7 @@ var resetAddress = function () {
 
 var addressCreatedCallback;
 
+var addDisabled = new ReactiveVar(false);
 Template.addressAddEdit.created= function() {
     var self = this;
     address.addressTypeId=Utils.getAddressTypeDefault()._id;
@@ -78,12 +79,12 @@ Template.addressAddEdit.created= function() {
     AutoForm.hooks({
         addressAddEditForm: {
             onSubmit: function (insertDoc, updateDoc, currentDoc) {
+                addDisabled.set(true);
                 var selfautoform=this;
                 //Copy properties from insert doc into current doc which has lat lng
                 for (var k in insertDoc) currentDoc[k] = insertDoc[k];
                 //Set the contactable id on the current doc
                 currentDoc.linkId = Session.get("entityId");
-                Addresses.insert(currentDoc);
                 Meteor.call('addEditAddress', currentDoc, function (err, result) {
                     if (err) {
                         console.log(err);
@@ -91,11 +92,11 @@ Template.addressAddEdit.created= function() {
                         resetAddress();
                         selfautoform.resetForm();
                         self.data.callback && self.data.callback();
-
                     }
                     selfautoform.done();
 
                 });
+                addDisabled.set(false);
                 return false;
             }
         }
@@ -171,6 +172,8 @@ Template.addressAddEdit.helpers({
         return _.map(addressTypes, function (addresstype) {
             return {label: addresstype.displayName, value: addresstype._id};
         });
+    },addDisabled: function () {
+        return addDisabled.get();
     }
 });
 

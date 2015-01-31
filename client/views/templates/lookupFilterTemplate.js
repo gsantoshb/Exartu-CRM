@@ -68,8 +68,12 @@ Template.buttonGroup.created = function() {
 Template.buttonGroup.helpers({
   isSelectedClass: function(){
     var templateCtx = UI._parentData(1);
-
-    if (! templateCtx.selectedDep) return; // Avoid error when a reactive call override properties defined on created
+      console.log('tctx',templateCtx);
+    if (! templateCtx.selectedDep)
+    {
+        templateCtx.selected=[];
+        templateCtx.selectedDep=new Deps.Dependency;
+    } // Avoid error when a reactive call override properties defined on created
 
     templateCtx.selectedDep.depend();
 
