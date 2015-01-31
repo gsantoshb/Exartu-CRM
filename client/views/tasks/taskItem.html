@@ -62,7 +62,7 @@
     {{/if}}
 
     {{#if hasLinks}}
-    <div id="link-{{_id}}" style="display: none">
+    <div id="link-{{_id}}" >
         {{#each links}}
             <a href="{{getHref}}">
                 {{#with getEntity}}
@@ -72,9 +72,9 @@
         {{/each}}
     </div>
 
-    <button data-content="" data-placement="top" data-toggle="popover" data-container="body" type="button" class="btn-users" data-html="true" data-link="link-{{_id}}" data-init="off">
-        <i class="fa fa-users"></i>
-    </button>
+    <!--<button data-content="" data-placement="top" data-toggle="popover" data-container="body" type="button" class="btn-users" data-html="true" data-link="link-{{_id}}" data-init="off">-->
+        <!--<i class="fa fa-users"></i>-->
+    <!--</button>-->
     {{/if}}
 
 </template>
