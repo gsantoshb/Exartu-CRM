@@ -85,10 +85,10 @@ Notes.allow({
     return true;
   },
   update: function () {
-    return true; // TODO: Only allow to edit if note belongs to user's hierarchy
+    return true;
   },
   remove: function () {
-    return true; // TODO: Only allow to edit if note belongs to user's hierarchy
+    return true;
   }
 });
 

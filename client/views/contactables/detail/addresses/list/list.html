@@ -20,8 +20,10 @@
 
                             <div class="list-3-actions">
                                 <a class="editAddressRecord pointer"><i class="fa fa-edit"></i> Edit</a>
-                                <span class="bullet-spacer">·</span>
-                                <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
+                                {{#if isAdmin}}
+                                    <span class="bullet-spacer">·</span>
+                                    <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
+                                {{/if}}
                             </div>
                             {{#if showLocationEditBox}}
                                 {{>addressAddEdit linkId=linkId  callback=setNewAddress location=.}}
