@@ -173,13 +173,12 @@ Template.addNewLookUpItem.events({
           var lookUpCode = query.lookUpCode.value;
           if (!newValue)
               return;
-          if (confirm('Add new item ' + newValue)) {
-              LookUps.insert({
+
+          LookUps.insert({
                   displayName: newValue,
                   lookUpCode: lookUpCode,
                   hierId: Meteor.user().currentHierId
               });
-              $('#new-item')[0].value=null;
-          };
+          $('#new-item')[0].value=null;
   }
 });
