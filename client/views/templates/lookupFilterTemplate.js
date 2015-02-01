@@ -58,23 +58,23 @@ Template.select2.events({
 });
 
 
-///////////// button group //////////////////////////
+///////////// button group //////////////////////s////
 
 Template.buttonGroup.created = function() {
   this.data.selected = this.data.multi ? (this.data.value? this.data.value : [] ): this.data.value || null;
   this.data.selectedDep = new Deps.Dependency;
 };
-
+var lastSelected={};
 Template.buttonGroup.helpers({
   isSelectedClass: function(){
     var templateCtx = UI._parentData(1);
       console.log('tctx',templateCtx);
     if (! templateCtx.selectedDep)
     {
-        templateCtx.selected=[];
+        templateCtx.selected=lastSelected[templateCtx.options[0]];
         templateCtx.selectedDep=new Deps.Dependency;
     } // Avoid error when a reactive call override properties defined on created
-
+    lastSelected[templateCtx.options[0]]=templateCtx.selected;
     templateCtx.selectedDep.depend();
 
     if (templateCtx.multi){
