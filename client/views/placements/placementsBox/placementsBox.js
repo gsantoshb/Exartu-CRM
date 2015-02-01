@@ -281,7 +281,7 @@ Template.placementList.helpers({
     return SubscriptionHandlers.PlacementHandler.isLoading();
   },
   placements: function () {
-    return placementCollection.find({}, options);
+    return placementCollection.find({});
   },
   placementTypes: function () {
     return dType.ObjTypes.find({parent: Enums.objGroupType.placement});

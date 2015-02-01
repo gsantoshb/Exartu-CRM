@@ -444,6 +444,11 @@ Template.jobList.helpers({
 });
 
 // List Items - Helpers
+Template.jobListItem.events({
+    'click .show-placements': function (e) {
+        alert(e);
+    }
+});
 Template.jobListItem.helpers({
     listViewMode: function () {
         return listViewMode.get();
@@ -467,12 +472,14 @@ Template.jobListItem.helpers({
     },
     customerName: function () {
         var customer = Contactables.findOne(this.customer);
-        console.log('cust',Contactables.find().fetch(),customer,this);
         return customer && customer.displayName;
     },
     countPlacements: function () {
-        console.log('plac',Placements.find().count());
         return Placements.find({job: this._id}).count();
+    },
+    countRequired: function () {
+        console.log('this',this);
+        return this.numberRequired;
     },
     morePlacements: function () {
         return Placements.find({job: this._id}).count() > 3;
