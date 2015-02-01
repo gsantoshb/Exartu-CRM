@@ -478,7 +478,6 @@ Template.jobListItem.helpers({
         return Placements.find({job: this._id}).count();
     },
     countRequired: function () {
-        console.log('this',this);
         return this.numberRequired;
     },
     morePlacements: function () {

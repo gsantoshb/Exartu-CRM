@@ -62,7 +62,6 @@ Template.hotListDetail.helpers({
   },
   getObjTypeName: function()
   {
-    console.log('this',this.value);
     return dType.ObjTypes.findOne({_id: this.value}).name;
   },
   onSelectedStatus: function () {
