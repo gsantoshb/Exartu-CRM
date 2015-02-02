@@ -258,31 +258,7 @@ newObjType({
       defaultValue: null,
       showInAdd: false,
       required: false
-    },
-//    {
-//      name: 'industry',
-//      displayName: 'Industry',
-//      fieldType: 'lookUp',
-//      lookUpName: 'jobIndustry',
-//      lookUpCode: Enums.lookUpTypes.job.industry.code,
-//      required: false,
-//      lookUpName: 'jobTitle',
-//      multiple: false,
-//      showInAdd: false,
-//      defaultValue: null
-//    },
-//    {
-//      name: 'category',
-//      displayName: 'Category',
-//      fieldType: 'lookUp',
-//      lookUpName: 'jobCategory',
-//      lookUpCode: Enums.lookUpTypes.job.category.code,
-//      required: false,
-//      lookUpName: 'jobTitle',
-//      multiple: false,
-//      showInAdd: false,
-//      defaultValue: null
-//    }
+    }
   ]
 });
 newObjType({
@@ -391,15 +367,6 @@ newObjType({
       displayName: 'Status Note',
       showInAdd: false,
       required: false
-    }, {
-      name: 'placementStatus',
-      displayName: 'Placement Status',
-      fieldType: 'lookUp',
-      lookUpName: 'placementStatus',
-      showInAdd: false,
-      lookUpCode: Enums.lookUpTypes.placement.status.lookUpCode,
-      required: false,
-      multiple: false
     },
     {
       name: 'candidateStatus',

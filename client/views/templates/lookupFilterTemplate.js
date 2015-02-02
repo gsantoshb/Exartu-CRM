@@ -68,7 +68,6 @@ var lastSelected={};
 Template.buttonGroup.helpers({
   isSelectedClass: function(){
     var templateCtx = UI._parentData(1);
-      console.log('tctx',templateCtx);
     if (! templateCtx.selectedDep)
     {
         templateCtx.selected=lastSelected[templateCtx.options[0]];
