@@ -207,9 +207,11 @@
                 <div class="list-item-cell jobs-list-item-code ">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell jobs-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
+                   <span class="time-text">
+                       {{#formattedDate value=dateCreated format='lll'}}
+                           {{date}}
+                       {{/formattedDate}}
+                   </span>
                 </div>
             </div><!-- /.list-item-cell -->
         </div><!-- /.jobs-list-item -->
@@ -233,10 +235,11 @@
                 <div class="list-item-cell jobs-list-item-code ">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell jobs-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        <span>{{date}}</span>
-                        <br/>
-                    {{/formattedDate}}
+                   <span class="time-text">
+                       {{#formattedDate value=dateCreated format='lll'}}
+                           {{date}}
+                       {{/formattedDate}}
+                   </span>
                 </div>
                 <div class="list-item-cell item-overflow jobs-item-overflow">
                     <a href="#">

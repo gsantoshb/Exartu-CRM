@@ -4,6 +4,14 @@
 var jobCollection = Jobs;
 var JobHandler;
 var query;
+var selectedSort =  new ReactiveVar();
+selectedSort.set({field:'dateCreated',value:-1});
+
+console.log('selectedsort1',selectedSort);
+var selectedSortDep = new Deps.Dependency;
+var sortFields = [
+    {field: 'startDate', displayName: 'Start date'},
+    {field: 'dateCreated', displayName: 'Date created'}];
 
 var info = new Utils.ObjectDefinition({
     reactiveProps: {
@@ -45,26 +53,18 @@ var jobTypes = function () {
 
 var searchFields = ['jobTitle', 'publicJobTitle'];
 
-// List sorting
-var selectedSort;
-var selectedSortDep = new Deps.Dependency;
-var sortFields = [
-    {field: 'startDate', displayName: 'Start date'},
-    {field: 'endDate', displayName: 'End date'},
-    {field: 'dateCreated', displayName: 'Date created'}
-];
-
-var setSortField = function (field) {
-    if (selectedSort && selectedSort.field == field.field) {
-        if (selectedSort.value == 1)
-            selectedSort = undefined;
+var setSortField = function(field) {
+    var selected = selectedSort.get();
+    if (selected && selected.field == field.field) {
+        if (selected.value == 1)
+            selected = undefined;
         else
-            selectedSort.value = 1;
+            selected.value = 1;
     } else {
-        selectedSort = field;
-        selectedSort.value = -1;
+        selected = field;
+        selected.value = -1;
     }
-    selectedSortDep.changed();
+    selectedSort.set(selected);
 };
 
 /**
@@ -207,14 +207,6 @@ Template.jobList.created = function () {
 
         selectedSortDep.depend();
 
-        // Sort
-        if (selectedSort) {
-            options.sort = {};
-            options.sort[selectedSort.field] = selectedSort.value;
-        } else {
-            delete options.sort;
-        }
-
         // Type
         if (query.objType.value) {
             searchQuery.$and.push({objNameArray: query.objType.value});
@@ -294,7 +286,13 @@ Template.jobList.created = function () {
 
             urlQuery.addParam('status', query.status.value);
         }
-
+        if (selectedSort.get()) {
+            var selected = selectedSort.get();
+            options.sort = {};
+            options.sort[selected.field] = selected.value;
+        } else {
+            delete options.sort;
+        }
         // String search
         if (query.searchString.value) {
             var stringSearches = [];
@@ -334,9 +332,8 @@ Template.jobList.created = function () {
             if (selectedSort) {
                 JobHandler.setOptions(options);
             }
-            JobHandler.setFilter(searchQuery);
+            JobHandler.setFilter(searchQuery,options);
         }
-
         // Set url query
         urlQuery.apply();
     })
