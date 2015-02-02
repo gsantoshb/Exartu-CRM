@@ -120,6 +120,12 @@ var setSortField = function(field) {
  * Callbacks
  */
 Template.placementsBox.created = function(){
+
+  if (!SubscriptionHandlers.PlacementHandler){
+    SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
+  }
+  PlacementHandler = SubscriptionHandlers.PlacementHandler;
+  
   query = query || loadqueryFromURL(Router.current().params);
 
   var entityId = Session.get('entityId');
@@ -135,11 +141,6 @@ Template.placementsBox.created = function(){
 };
 
 Template.placementList.created = function () {
-  if (!SubscriptionHandlers.PlacementHandler){
-    SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
-  }
-  PlacementHandler = SubscriptionHandlers.PlacementHandler;
-
   Meteor.autorun(function () {
     var searchQuery = {};
     var params = {};
