@@ -172,7 +172,6 @@ Template.jobList.created = function () {
         var urlQuery = new URLQuery();
         if (Session.get('entityId'))
         {
-            console.log('entity relative search')
             searchQuery.customer=Session.get('entityId');
         };
 
@@ -293,7 +292,6 @@ Template.jobList.created = function () {
                 searchQuery.$and.push({
                     $or: stringSearches
                 });
-                console.log('jobsearchQuery',searchQuery);
                 JobHandler.setFilter(searchQuery);
             });
         }
@@ -303,7 +301,7 @@ Template.jobList.created = function () {
             if (selectedSort) {
                 JobHandler.setOptions(options);
             }
-            console.log('jobsearchQuery',searchQuery);
+
             JobHandler.setFilter(searchQuery,options);
         }
         // Set url query

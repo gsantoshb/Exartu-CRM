@@ -104,8 +104,8 @@ UsersFS = new Document.Collection({
 });
 UsersFS.publish();
 
-Users._ensureIndex({hierarchies: 1});
-Users._ensureIndex({currentHierId: 1});
-Users._ensureIndex({username: 1});
+//Users._ensureIndex({hierarchies: 1});
+//Users._ensureIndex({currentHierId: 1});
+//Users._ensureIndex({username: 1});
 
 
