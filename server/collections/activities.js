@@ -1,55 +1,90 @@
 ActivityViews = new View('activities', {
   collection: Activities,
   cursors: function (activity) {
-    var self = this;
+      var self = this;
 
-    // Contactables
-    this.publish({
-      cursor: function (activity) {
-        if (activity.type === Enums.activitiesType.contactableAdd) {
-          return Contactables.find({ _id: activity.entityId, auxType: { $ne: Enums.activitiesType.contactableAdd } }); // hack to obtain the type in the onChange event
-        }
-      },
-      to: 'contactables',
-      observedProperties: ['entityId'],
-      onChange: function (changedProps, oldSelector) {
-        if (oldSelector.auxType.$ne === Enums.activitiesType.contactableAdd) {
-          return Contactables.find({ _id: changedProps, auxType: { $ne: Enums.activitiesType.contactableAdd } }); // hack to obtain the type in the onChange event
-        }
-      }
-    });
+      // Contactables
+      this.publish({
+          cursor: function (activity) {
+              if (activity.type === Enums.activitiesType.contactableAdd) {
+                  return Contactables.find({
+                      _id: activity.entityId,
+                      auxType: {$ne: Enums.activitiesType.contactableAdd}
+                  }); // hack to obtain the type in the onChange event
+              }
+          },
+          to: 'contactables',
+          observedProperties: ['entityId'],
+          onChange: function (changedProps, oldSelector) {
+              if (oldSelector.auxType.$ne === Enums.activitiesType.contactableAdd) {
+                  return Contactables.find({_id: changedProps, auxType: {$ne: Enums.activitiesType.contactableAdd}}); // hack to obtain the type in the onChange event
+              }
+          }
+      });
 
-    // Tasks
-    this.publish({
-      cursor: function (activity) {
-        if (activity.type === Enums.activitiesType.taskAdd) {
-          return Tasks.find({ _id: activity.data.taskId, auxType: { $ne: Enums.activitiesType.taskAdd } }); // hack to obtain the type in the onChange event
-        }
-      },
-      to: 'tasks',
-      observedProperties: ['entityId'],
-      onChange: function (changedProps, oldSelector) {
-        if (oldSelector.auxType.$ne === Enums.activitiesType.taskAdd) {
-          return Tasks.find({ _id: changedProps, auxType: { $ne: Enums.activitiesType.taskAdd } }); // hack to obtain the type in the onChange event
-        }
-      }
-    });
+      // Tasks
+      this.publish({
+          cursor: function (activity) {
+              if (activity.type === Enums.activitiesType.taskAdd) {
+                  return Tasks.find({_id: activity.data.taskId, auxType: {$ne: Enums.activitiesType.taskAdd}}); // hack to obtain the type in the onChange event
+              }
+          },
+          to: 'tasks',
+          observedProperties: ['entityId'],
+          onChange: function (changedProps, oldSelector) {
+              if (oldSelector.auxType.$ne === Enums.activitiesType.taskAdd) {
+                  return Tasks.find({_id: changedProps, auxType: {$ne: Enums.activitiesType.taskAdd}}); // hack to obtain the type in the onChange event
+              }
+          }
+      });
 
-    // Jobs
-    this.publish({
-      cursor: function (activity) {
-        if (activity.type === Enums.activitiesType.jobAdd) {
-          return Jobs.find({ _id: activity.entityId, auxType: { $ne: Enums.activitiesType.jobAdd } }); // hack to obtain the type in the onChange event
-        }
-      },
-      to: 'jobs',
-      observedProperties: ['entityId'],
-      onChange: function (changedProps, oldSelector) {
-        if (oldSelector.auxType.$ne === Enums.activitiesType.jobAdd) {
-          return Jobs.find({ _id: changedProps, auxType: { $ne: Enums.activitiesType.jobAdd } }); // hack to obtain the type in the onChange event
-        }
-      }
-    });
+      // Jobs
+      this.publish({
+          cursor: function (activity) {
+              if (activity.type === Enums.activitiesType.jobAdd) {
+                  return Jobs.find({_id: activity.entityId, auxType: {$ne: Enums.activitiesType.jobAdd}}); // hack to obtain the type in the onChange event
+              }
+          },
+          to: 'jobs',
+          observedProperties: ['entityId'],
+          onChange: function (changedProps, oldSelector) {
+              if (oldSelector.auxType.$ne === Enums.activitiesType.jobAdd) {
+                  return Jobs.find({_id: changedProps, auxType: {$ne: Enums.activitiesType.jobAdd}}); // hack to obtain the type in the onChange event
+              }
+          }
+      });
+
+      // File uploads
+      if (activity.type === Enums.activitiesType.fileAdd) {
+          _.forEach(activity.links, function (link) {
+              switch (link.type) {
+                  case Enums.linkTypes.contactable.value:
+                      self.publish({
+                          cursor: function () {
+                              return Contactables.find(link.id);
+                          },
+                          to: 'contactables'
+                      });
+                      break;
+                  case Enums.linkTypes.job.value:
+                      self.publish({
+                          cursor: function () {
+                              return Jobs.find(link.id);
+                          },
+                          to: 'jobs'
+                      });
+                      break;
+                  case Enums.linkTypes.placement.value:
+                      self.publish({
+                          cursor: function () {
+                              return Placements.find(link.id);
+                          },
+                          to: 'placements'
+                      });
+                      break;
+              }
+          });
+      };
 
 
       // Notes
