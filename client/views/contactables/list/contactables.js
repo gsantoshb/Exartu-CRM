@@ -544,11 +544,9 @@ Template.contactablesFilters.helpers({
         return query;
     },
     isSelectedType: function(typeName){
-
         return query.objType.value == typeName;
     },
     selectedType: function(typeName){
-        //query.processStatus.value=[];
         if (query.objType.value =='Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
         if (query.objType.value =='Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
         if (query.objType.value =='Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
@@ -864,9 +862,6 @@ var runESComputation = function () {
             var now = new Date();
             filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
         }
-
-
-
 
         // Created by
         if (query.mineOnly.value) {

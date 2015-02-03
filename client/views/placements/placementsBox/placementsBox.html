@@ -137,16 +137,17 @@
 </template>
 
 <template name="placementFilters">
-    <div class="page-title">
-        <h1><span>{{placementCount}}</span> placements</h1>
-    </div>
+    {{#with information}}
+        <div class="page-title">
+            <h1><span>{{placementsCount}}</span> placements</h1>
+        </div>
+    {{/with}}
 
     <div class="filter">
         <div class="filter-list" id="filter-body">
             {{> filter_lookUp title="Process status" code=10 lookUpValue=query.statuses multi=true}}
 
             {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
-
 
             {{> filter_dateCreated selectedLimit=query.selectedLimit}}
 
