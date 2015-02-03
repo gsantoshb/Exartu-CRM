@@ -417,6 +417,23 @@ Utils.getHrefFromLink = function (link) {
     }
 };
 
+Utils.updateModel= function(model,key,val) {
+    var keyfound = false;
+    var updatedModel = model;
+
+    for (var i = 0; i < updatedModel.fieldGroups[0].items.length; i++)
+    {
+        if (updatedModel.fieldGroups[0].items[i].name == key)
+        {
+            updatedModel.fieldGroups[0].items[i].value = val;
+            keyfound = true;
+        }
+    }
+    if (!keyfound) console.log('model no find', model,key,val);
+    console.log('upmod',updatedModel);
+    return updatedModel;
+};
+
 
 Utils.toReactiveObject = function (addModel, obj) {
     var reactiveObj = {

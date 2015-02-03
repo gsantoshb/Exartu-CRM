@@ -1,7 +1,7 @@
 var entityType = null;
 var isEntitySpecific = false;
 var NotesHandler, noteQuery, status;
-
+var selectedSort =  new ReactiveVar();
 $("#userDropdown").prop("selectedIndex", -1);
 var loadNoteQueryFromURL = function (params) {
   // Search string
@@ -127,7 +127,7 @@ Template.notesBox.events({
 });
 // list sort
 
-var selectedSort =  new ReactiveVar();
+
 selectedSort.field='dateCreated';
 selectedSort.value=-1;
 var sortFields = [

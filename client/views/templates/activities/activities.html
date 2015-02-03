@@ -95,14 +95,22 @@
     {{#if listViewMode}}
         <tr>
             <td>
-                <i class="icon icon-clock-3"></i>
-              <span class="task-author">
-                  {{displayUserName task.assign}}
-              </span>
+                {{#with task}}
+                    <i class="icon icon-clock-3"></i>
+                  <span class="task-author">
+                      {{displayUserName assign}}
+                  </span>
 
-                <strong>{{task.msg}}</strong>
-
-                {{>suffixListDisplay}}
+                    <strong>{{>showMore text=msg limit=60}}</strong>
+                    {{#each links}}
+                        <a href="{{getHref}}">
+                            {{#with getEntity}}
+                                <span class="badge">{{displayName}}</span>
+                            {{/with}}
+                        </a>
+                    {{/each}}
+                    {{>suffixListDisplay}}
+                {{/with}}
             </td>
         </tr>
     {{else}}
@@ -123,9 +131,17 @@
                         </h4>
 
                         <div class="item-actions">
-                            <a class="btn btn-default tip-bottom pointer" title="Task Owner">
-                                <span> {{displayUserName this.userId}} </span>
-                            </a>
+                            {{#with task}}
+                                {{#each links}}
+                                    <a href="{{getHref}}">
+                                        {{#with getEntity}}
+                                            <span class="badge">{{displayName}}</span>
+                                        {{/with}}
+                                    </a>
+                                {{/each}}
+                                {{>suffixListDisplay}}
+                            {{/with}}
+
                             <a class="btn btn-default tip-bottom pointer" title="Task Owner">assigned
                                 <span> {{displayUserName task.assign}} </span>
                             </a>
