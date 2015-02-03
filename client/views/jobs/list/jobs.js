@@ -6,38 +6,39 @@ var JobHandler;
 /**
  * Controller
  */
-Session.set('entityId',undefined);
+Session.set('entityId', undefined);
 JobsController = RouteController.extend({
-  template: 'jobs',
-  layoutTemplate: 'mainLayout',
-  waitOn: function() {
-    if (!SubscriptionHandlers.JobHandler){
-      SubscriptionHandlers.JobHandler = SubscriptionHandlers.JobHandler || Meteor.paginatedSubscribe('jobs');
+    template: 'jobs',
+    layoutTemplate: 'mainLayout',
+    waitOn: function () {
+        Session.set('entityId', undefined);
+        if (!SubscriptionHandlers.JobHandler) {
+            SubscriptionHandlers.JobHandler = SubscriptionHandlers.JobHandler || Meteor.paginatedSubscribe('jobs');
+        }
+        JobHandler = SubscriptionHandlers.JobHandler;
+        return [JobHandler, LookUpsHandler];
+    },
+    onAfterAction: function () {
+        var title = 'Jobs',
+            description = 'Manage your list here';
+        SEO.set({
+            title: title,
+            meta: {
+                'description': description
+            },
+            og: {
+                'title': title,
+                'description': description
+            }
+        });
+    },
+    action: function () {
+        if (this.ready())
+            this.render();
+        else
+            this.render('loadingContactable');
+        this.render();
     }
-    JobHandler = SubscriptionHandlers.JobHandler;
-    return [JobHandler, LookUpsHandler];
-  },
-  onAfterAction: function() {
-    var title = 'Jobs',
-    description = 'Manage your list here';
-    SEO.set({
-      title: title,
-      meta: {
-        'description': description
-      },
-      og: {
-        'title': title,
-        'description': description
-      }
-    });
-  },
-  action: function(){
-    if (this.ready())
-      this.render();
-    else
-      this.render('loadingContactable');
-    this.render();
-  }
 });
 
 /**
@@ -45,7 +46,7 @@ JobsController = RouteController.extend({
  */
 // Jobs - Helpers
 Template.jobs.helpers({
-  jobCount: function(){
-    return JobHandler.totalCount();
-  }
+    jobCount: function () {
+        return JobHandler.totalCount();
+    }
 });

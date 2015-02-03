@@ -10,6 +10,7 @@ PlacementsController = RouteController.extend({
   template: 'placements',
   layoutTemplate: 'mainLayout',
   waitOn: function() {
+      Session.set('entityId', undefined);
     if (!SubscriptionHandlers.PlacementHandler){
       SubscriptionHandlers.PlacementHandler = SubscriptionHandlers.PlacementHandler || Meteor.paginatedSubscribe('placements');
     }

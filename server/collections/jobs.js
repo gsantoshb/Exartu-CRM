@@ -82,7 +82,7 @@ Meteor.publish('allJobs', function () {
       publicJobTitle: 1,
       customer: 1
     }
-  }).limit(200)
+  })
   ), sub, 'allJobs');
   sub.ready();
 });
