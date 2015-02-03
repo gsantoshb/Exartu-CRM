@@ -185,7 +185,7 @@ Template.tasksBox.helpers({
     return TasksHandler.totalCount();
   },
   users: function () {
-    return Meteor.users.find();
+    return Meteor.users.find({},{sort: {'emails.address':1}});
   },
   tasks: function () {
 
