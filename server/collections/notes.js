@@ -107,6 +107,6 @@ Notes.before.insert(function(userId, doc){
 // Indexes
 
 Notes._ensureIndex({hierId: 1});
-Notes._ensureIndex({assign: 1});
 Notes._ensureIndex({userId: 1});
 Notes._ensureIndex({"links.id":1});
+Notes._ensureIndex({"dateCreated":1});

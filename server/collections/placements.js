@@ -218,22 +218,9 @@ Placements.after.update(function (userId, doc) {
     }
   }
 });
-
-//Contactables.after.update(function (userId, doc, fieldNames, modifier, options) {
-//  if (doc.Employee && _.contains(fieldNames, 'person') && Placements.find({employee: doc._id}).count()){
-//
-//    var self = this;
-//    var newEmployeeInfo = {};
-//    _.each(['firstName', 'lastName', 'middleName'], function (key) {
-//      if (doc.person[key] && doc.person[key] !== self.previous.person[key]){
-//        newEmployeeInfo['employeeInfo.' + key] = doc.person[key];
-//      }
-//    });
-//
-//    if (!_.isEmpty(newEmployeeInfo)){
-//      Placements.update({employee: doc._id}, {
-//        $set: newEmployeeInfo
-//      },{multi: true});
-//    }
-//  }
-//});
+Placements._ensureIndex({dateCreated: 1});
+Placements._ensureIndex({activeStatus: 1});
+Placements._ensureIndex({userId: 1});
+Placements._ensureIndex({hierId: 1});
+Placements._ensureIndex({objNameArray: 1});
+Placements._ensureIndex({candidateStatus: 1});

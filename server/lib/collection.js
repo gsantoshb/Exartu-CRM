@@ -46,6 +46,7 @@ HotLists = new Mongo.Collection("hotLists");
 
 Addresses = new Mongo.Collection("addresses");
 
+
 Collections = {
   Hierarchies: Hierarchies,
   Jobs: Jobs,

@@ -21,3 +21,9 @@ Addresses.before.insert(function (userId, doc) {
     doc.userId=userId;
     doc.hierId=user.hierId;
 });
+Addresses._ensureIndex({dateCreated: 1});
+Addresses._ensureIndex({activeStatus: 1});
+Addresses._ensureIndex({userId: 1});
+Addresses._ensureIndex({hierId: 1});
+Addresses._ensureIndex({linkId: 1});
+Addresses._ensureIndex({addressTypeId: 1});

@@ -227,3 +227,4 @@ Contactables._ensureIndex({'Employee.status': 1});
 Contactables._ensureIndex({'Customer.status': 1});
 Contactables._ensureIndex({'Contact.status': 1});
 Contactables._ensureIndex({'activeStatus': 1});
+Contactables._ensureIndex({userId: 1})
