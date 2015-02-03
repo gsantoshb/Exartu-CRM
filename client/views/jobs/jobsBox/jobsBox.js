@@ -3,7 +3,7 @@
  */
 var jobCollection = Jobs;
 var JobHandler;
-var entityId = Session.get('entityId');
+var entityId;
 var query;
 var selectedSort =  new ReactiveVar();
 selectedSort.set({field:'dateCreated',value:-1});
@@ -159,8 +159,7 @@ Template.jobsBox.created = function(){
     }
     JobHandler = SubscriptionHandlers.JobHandler;
     query = query || loadqueryFromURL(Router.current().params);
-    console.log('q2',query);
-    var entityId = Session.get('entityId');
+    entityId = Session.get('entityId');
 };
 
 Template.jobList.created = function () {
@@ -294,7 +293,7 @@ Template.jobList.created = function () {
                 searchQuery.$and.push({
                     $or: stringSearches
                 });
-
+                console.log('jobsearchQuery',searchQuery);
                 JobHandler.setFilter(searchQuery);
             });
         }
@@ -304,6 +303,7 @@ Template.jobList.created = function () {
             if (selectedSort) {
                 JobHandler.setOptions(options);
             }
+            console.log('jobsearchQuery',searchQuery);
             JobHandler.setFilter(searchQuery,options);
         }
         // Set url query

@@ -138,11 +138,13 @@
 </template>
 
 <template name="jobFilters">
-    {{#with information}}
+
         <div class="page-title">
+            {{#with information}}
             <h1><span>{{jobsCount.value}}</span> jobs</h1>
+            {{/with}}
         </div>
-    {{/with}}
+
 
     <div class="filter">
         <div class="filter-list" id="filter-body">

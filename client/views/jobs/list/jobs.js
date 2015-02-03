@@ -6,6 +6,7 @@ var JobHandler;
 /**
  * Controller
  */
+Session.set('entityId',undefined);
 JobsController = RouteController.extend({
   template: 'jobs',
   layoutTemplate: 'mainLayout',
