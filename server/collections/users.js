@@ -103,3 +103,9 @@ UsersFS = new Document.Collection({
     collection: Meteor.users
 });
 UsersFS.publish();
+
+Users._ensureIndex({hierarchies: 1});
+Users._ensureIndex({currentHierId: 1});
+Users._ensureIndex({username: 1});
+
+
