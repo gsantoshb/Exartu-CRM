@@ -137,17 +137,11 @@
 </template>
 
 <template name="placementFilters">
-<<<<<<< HEAD
     {{#with information}}
         <div class="page-title">
             <h1><span>{{placementsCount}}</span> placements</h1>
         </div>
     {{/with}}
-=======
-    <div class="page-title">
-        <h1><span>{{placementCount}}</span> records</h1>
-    </div>
->>>>>>> 8e4ef4e00b622d54365a8a4c7f3890b3471da6d8
 
     <div class="filter">
         <div class="filter-list" id="filter-body">
@@ -184,70 +178,70 @@
 </template>
 
 <template name="placementListItem">
-        {{#if listViewMode}}
-            <div class="list-item placements-list-item">
-                <div class="list-item-cell placements-list-item-title">
-                    <div class="item-title"><a href="/placement/{{_id}}">{{employeeDisplayName}} <i class="fa fa-long-arrow-right"></i> {{jobDisplayName}} <span class="item-title-more">@ {{customerDisplayName}}</span></a></div>
-                    <div class="item-subtitle">
-                        {{#if startDate}}
-                            <span>
+    {{#if listViewMode}}
+        <div class="list-item placements-list-item">
+            <div class="list-item-cell placements-list-item-title">
+                <div class="item-title"><a href="/placement/{{_id}}">{{employeeDisplayName}} <i class="fa fa-long-arrow-right"></i> {{jobDisplayName}} <span class="item-title-more">@ {{customerDisplayName}}</span></a></div>
+                <div class="item-subtitle">
+                    {{#if startDate}}
+                        <span>
                                 <i class="fa fa-calendar-o"></i>&nbsp;
-                                {{#formattedDate value=startDate}}
-                                    {{date}}
-                                {{/formattedDate}}
+                            {{#formattedDate value=startDate}}
+                                {{date}}
+                            {{/formattedDate}}
                             </span><br>
-                        {{/if}}
-                        {{#each this.placementRates}}
-                            {{getRateTypeDisplayName}}
-                            {{bill}}/{{pay}}<br>
-                        {{/each}}
-                    </div>
+                    {{/if}}
+                    {{#each this.placementRates}}
+                        {{getRateTypeDisplayName}}
+                        {{bill}}/{{pay}}<br>
+                    {{/each}}
                 </div>
-                <div class="list-item-details placements-list-item-details">
-                    <div class="list-item-cell placements-list-item-code ">{{displaySearchKey _id}}</div>
-                    <div class="list-item-cell placements-list-item-owner">{{displayUserName userId}}</div>
-                    <div class="list-item-cell placements-list-item-time">
-                        {{#formattedDate value=dateCreated format='fromNow'}}
-                            {{date}}
-                        {{/formattedDate}}
-                    </div>
-                </div><!-- /.list-item-cell -->
             </div>
-        {{else}}
-            <div class="list-item placements-list-item">
-                <div class="list-item-cell list-item-icon">
-                    <a href="/placement/{{_id}}" class="item-icon item-icon-placements"><i class="icon-user-checked-2"></i></a>
+            <div class="list-item-details placements-list-item-details">
+                <div class="list-item-cell placements-list-item-code ">{{displaySearchKey _id}}</div>
+                <div class="list-item-cell placements-list-item-owner">{{displayUserName userId}}</div>
+                <div class="list-item-cell placements-list-item-time">
+                    {{#formattedDate value=dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
                 </div>
-                <div class="list-item-cell placements-list-item-title">
-                    <div class="item-title"><a href="/contactable/{{employee}}">{{employeeDisplayName}}</a> <i class="fa fa-long-arrow-right"></i> <a href="/job/{{job}}">{{jobDisplayName}}</a> </div>
-                    <div class="item-subtitle"><a href="/contactable/{{customerId}}">{{customerDisplayName}}</a></div>
-                    <div class="item-subtitle-more">
-                        {{> placementInformation}}
-                    </div>
+            </div><!-- /.list-item-cell -->
+        </div>
+    {{else}}
+        <div class="list-item placements-list-item">
+            <div class="list-item-cell list-item-icon">
+                <a href="/placement/{{_id}}" class="item-icon item-icon-placements"><i class="icon-user-checked-2"></i></a>
+            </div>
+            <div class="list-item-cell placements-list-item-title">
+                <div class="item-title"><a href="/contactable/{{employee}}">{{employeeDisplayName}}</a> <i class="fa fa-long-arrow-right"></i> <a href="/job/{{job}}">{{jobDisplayName}}</a> </div>
+                <div class="item-subtitle"><a href="/contactable/{{customerId}}">{{customerDisplayName}}</a></div>
+                <div class="item-subtitle-more">
+                    {{> placementInformation}}
                 </div>
-                <div class="list-item-details placements-list-item-details">
-                    <div class="list-item-cell placements-list-item-status">
-                        <span class="item-label">{{lookUpName candidateStatus}}</span> <span class="item-label">{{lookUpName activeStatus}}</span>
-                    </div>
-                    <div class="list-item-cell placements-list-item-code ">{{displaySearchKey _id}}</div>
-                    <div class="list-item-cell placements-list-item-owner">{{displayUserName userId}}</div>
-                    <div class="list-item-cell placements-list-item-time">
-                        {{#formattedDate value=dateCreated format='fromNow'}}
-                            <span>{{date}}</span><br>
-                        {{/formattedDate}}
-                    </div>
-                    <div class="list-item-cell item-overflow placements-item-overflow">
-                        <a href="#">
+            </div>
+            <div class="list-item-details placements-list-item-details">
+                <div class="list-item-cell placements-list-item-status">
+                    <span class="item-label">{{lookUpName candidateStatus}}</span> <span class="item-label">{{lookUpName activeStatus}}</span>
+                </div>
+                <div class="list-item-cell placements-list-item-code ">{{displaySearchKey _id}}</div>
+                <div class="list-item-cell placements-list-item-owner">{{displayUserName userId}}</div>
+                <div class="list-item-cell placements-list-item-time">
+                    {{#formattedDate value=dateCreated format='fromNow'}}
+                        <span>{{date}}</span><br>
+                    {{/formattedDate}}
+                </div>
+                <div class="list-item-cell item-overflow placements-item-overflow">
+                    <a href="#">
                         <span class="ico-more">
                           <span class="dot-1"></span>
                           <span class="dot-2"></span>
                           <span class="dot-3"></span>
                         </span>
-                        </a>
-                    </div>
-                </div><!-- /.list-item-cell -->
-            </div>
-        {{/if}}
+                    </a>
+                </div>
+            </div><!-- /.list-item-cell -->
+        </div>
+    {{/if}}
 </template>
 
 <template name="placementInformation">
