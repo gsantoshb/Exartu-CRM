@@ -82,7 +82,8 @@ Meteor.publish('allJobs', function () {
       publicJobTitle: 1,
       customer: 1
     }
-  })), sub, 'allJobs');
+  }).limit(200)
+  ), sub, 'allJobs');
   sub.ready();
 });
 
@@ -106,9 +107,14 @@ Jobs.before.insert(function (userId, doc) {
 });
 
 // Indexes
+Jobs._ensureIndex({customer: 1});
+Jobs._ensureIndex({status: 1});
 
+Jobs._ensureIndex({activeStatus: 1});
+Jobs._ensureIndex({userId: 1});
 Jobs._ensureIndex({hierId: 1});
 Jobs._ensureIndex({objNameArray: 1});
+Jobs._ensureIndex({dateCreated: 1});
 
 //// View
 //

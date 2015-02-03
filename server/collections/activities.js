@@ -580,3 +580,11 @@ var listTracker = function (doc, previous, changes, list) {
     });
   }
 };
+
+
+Activities._ensureIndex({dateCreated: 1});
+Activities._ensureIndex({activeStatus: 1});
+Activities._ensureIndex({userId: 1});
+Activities._ensureIndex({hierId: 1});
+Activities._ensureIndex({entityId: 1});
+Activities._ensureIndex({type: 1});

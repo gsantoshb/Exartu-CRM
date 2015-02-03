@@ -58,32 +58,31 @@ Template.select2.events({
 });
 
 
-///////////// button group //////////////////////s////
+///////////// button group //////////////////////////
 
 Template.buttonGroup.created = function() {
-  this.data.selected = this.data.multi ? (this.data.value? this.data.value : [] ): this.data.value || null;
-  this.data.selectedDep = new Deps.Dependency;
+    this.data.selected = this.data.multi ? (this.data.value? this.data.value : [] ): this.data.value || null;
+    this.data.selectedDep = new Deps.Dependency;
 };
 var lastSelected={};
 Template.buttonGroup.helpers({
-  isSelectedClass: function(){
-    var templateCtx = UI._parentData(1);
-    if (! templateCtx.selectedDep)
-    {
-        templateCtx.selected=lastSelected[templateCtx.options[0]];
-        templateCtx.selectedDep=new Deps.Dependency;
-    } // Avoid error when a reactive call override properties defined on created
-    lastSelected[templateCtx.options[0]]=templateCtx.selected;
-    templateCtx.selectedDep.depend();
+    isSelectedClass: function(){
+        var templateCtx = UI._parentData(1);
+        if (! templateCtx.selectedDep)
+        {
+            templateCtx.selected=lastSelected[templateCtx.options[0]];
+            templateCtx.selectedDep=new Deps.Dependency;
+        } // Avoid error when a reactive call override properties defined on created
+        lastSelected[templateCtx.options[0]]=templateCtx.selected;
+        templateCtx.selectedDep.depend();
 
-    if (templateCtx.multi){
-      return _.contains(templateCtx.selected, this.id) ? 'btn-primary' : 'btn-default';
-    }else{
-      return (templateCtx.selected == this.id) ? 'btn-primary' : 'btn-default';
+        if (templateCtx.multi){
+            return _.contains(templateCtx.selected, this.id) ? 'btn-primary' : 'btn-default';
+        }else{
+            return (templateCtx.selected == this.id) ? 'btn-primary' : 'btn-default';
+        }
     }
-  }
 });
-
 Template.buttonGroup.events({
   'click button': function(e, ctx){
     var thisId = this.id;

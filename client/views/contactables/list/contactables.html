@@ -197,8 +197,6 @@
     {{/with}}
 
     <div class="filter">
-        <a class="filter-toggle" data-toggle="collapse" href="#filter-body"><i class="fa fa-filter"></i> Filters</a>
-
         <div class="filter-list" id="filter-body">
             {{> filter_entityType types=contactableTypes selected=query.objType}}
 
@@ -346,7 +344,9 @@
                         </button>
                     {{/if}}
                 </div>
-                <div class="list-item-cell network-list-item-type">{{displayObjType}}</div>
+                <div class="list-item-cell network-list-item-type">
+                    {{#if Customer}}Customer<br>{{/if}}{{#if Employee}}Employee<br>{{/if}}{{#if Contact}}Contact{{/if}}
+                </div>
                 <div class="list-item-cell network-list-item-status">
                     <span class="item-label">{{lookUpName getProcessStatus}}</span>
                     <span class="item-label"
