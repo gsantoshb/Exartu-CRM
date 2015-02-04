@@ -103,7 +103,7 @@ Template.hotListsBox.helpers({
     if (query.objType.value)
       searchQuery.objNameArray = query.objType.value;
 
-    info.hotListsCount.value = HotListHandler.totalCount();
+    info.hotListCount.value = HotListHandler.totalCount();
 
     return info;
   },

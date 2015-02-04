@@ -74,6 +74,19 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff5e3c', endColorstr='#ffff2c66', GradientType=0);
   color: #ffffff;
 }
+#sidebar .navbar li.hotlists.active .i-container,
+#sidebar .navbar li.hotlists a:hover .i-container {
+    background-image: -webkit-linear-gradient(top, #ff5e3c 0%, #ff2c66 100%);
+    background-image: -o-linear-gradient(top, #ff5e3c 0%, #ff2c66 100%);
+    background-image: -webkit-gradient(linear, left 0%, left 100%, from(#ff5e3c), to(#ff2c66));
+    background-image: -webkit-linear-gradient(top, #ff5e3c, 0%, #ff2c66, 100%);
+    background-image: -moz-linear-gradient(top, #ff5e3c 0%, #ff2c66 100%);
+    background-image: linear-gradient(to bottom, #ff5e3c 0%, #ff2c66 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff5e3c', endColorstr='#ffff2c66', GradientType=0);
+    color: #ffffff;
+}
+
 #sidebar .navbar li.notes.active .i-container,
 #sidebar .navbar li.notes a:hover .i-container {
   background-image: -webkit-linear-gradient(top, #ffdb49 0%, #ffce07 100%);
@@ -322,6 +335,18 @@ span[data-status="Inactive"] {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff5e3c', endColorstr='#ffff2c66', GradientType=0);
   padding-top: 3px;
   padding-left: 2px;
+}
+.item-icon-hotlists {
+    background-image: -webkit-linear-gradient(top, #ff5e3c 0%, #ff2c66 100%);
+    background-image: -o-linear-gradient(top, #ff5e3c 0%, #ff2c66 100%);
+    background-image: -webkit-gradient(linear, left 0%, left 100%, from(#ff5e3c), to(#ff2c66));
+    background-image: -webkit-linear-gradient(top, #ff5e3c, 0%, #ff2c66, 100%);
+    background-image: -moz-linear-gradient(top, #ff5e3c 0%, #ff2c66 100%);
+    background-image: linear-gradient(to bottom, #ff5e3c 0%, #ff2c66 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff5e3c', endColorstr='#ffff2c66', GradientType=0);
+    padding-top: 3px;
+    padding-left: 2px;
 }
 .item-icon-notes {
   color: #333333;
