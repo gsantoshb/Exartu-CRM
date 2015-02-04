@@ -38,7 +38,6 @@
 </template>
 
 
-
 <template name="hotList_notes">
     {{> notesBox}}
 </template>
@@ -53,5 +52,41 @@
     </div>
     <div class="col-sm-6">
         {{#with originalHotList}}{{>tagsBox  }}{{/with}}
+    </div>
+    <div class="col-sm-6">
+        {{>hotListMembers  }}
+    </div>
+</template>
+<template name="hotListMembers">
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action editHotList pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i
+                    class="fa fa-pencil"></i></a>
+
+            <div class="box-title">HotList Members</div>
         </div>
+        <div class="box-content-md">
+            <div class="panel-body no-padding">
+                <ul class="list-3 stripped">
+                    {{#each hotListMembers}}
+                        <li>
+                            <!-- Name -->
+                            <div class="col-xs-12 no-padding">
+                                {{#each hotListMembers}}
+                                    <a href="/contactable/{{_id}}">
+                                        <strong>
+                                            <span class="badge">{{displayName}}</span>
+                                        </strong>
+                                    </a>
+                                <span class="task-author text-center">{{_id}}</span>
+                                    <button class="btn btn-xs btn-default remove"><i class="fa fa-times"></i> remove
+                                    </button>
+                                {{/each}}
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
 </template>

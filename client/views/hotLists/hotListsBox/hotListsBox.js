@@ -166,7 +166,6 @@ Template.hotListList.created = function () {
     } else {
       delete options.sort;
     }
-    console.log('hotlistquery',searchQuery);
     HotListHandler.setFilter(searchQuery, params);
     HotListHandler.setOptions(options);
   })

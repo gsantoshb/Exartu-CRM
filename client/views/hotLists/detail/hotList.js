@@ -7,6 +7,7 @@ HotListController = RouteController.extend({
     },
     data: function () {
         Session.set('entityId', this.params._id);
+        Session.set('currentHotListId',this.params._id);
     },
     action:function(){
       if (!this.ready()) {
@@ -37,10 +38,13 @@ Utils.reactiveProp(self, 'editMode', false);
 var location={};
 Utils.reactiveProp(location, 'value', null);
 var services;
+var hotList, originalHotList;
+var hotListMembersDep= new Deps.Dependency();
 
 Template.hotList.created=function(){
   self.editMode = false;
-  var originalHotList=hotListCollection.findOne({ _id: Session.get('entityId') });
+  originalHotList=hotListCollection.findOne({ _id: Session.get('entityId') });
+    Session.set('currentHotListDisplayName',originalHotList.displayName);
   var definition={
     reactiveProps:{
       tags:{
@@ -53,13 +57,11 @@ Template.hotList.created=function(){
   services= Utils.ObjectDefinition(definition);
 };
 
-var hotList;
-var job;
-var employee;
+
 Template.hotList.helpers({
   hotList: function(){
-    var originalHotList=hotListCollection.findOne({ _id: Session.get('entityId') });
-    Session.set('displayName', originalHotList.displayName);
+    //var originalHotList=hotListCollection.findOne({ _id: Session.get('entityId') });
+    //Session.set('displayName', originalHotList.displayName);
     if (originalHotList.tags==null)
     {
       originalHotList.tags=[];
@@ -90,14 +92,6 @@ Template.hotList.events({
     }
     var update=hotList.getUpdate();
     var originalHotList=hotListCollection.findOne({ _id: Session.get('entityId') });
-    var oldLocation= originalHotList.location;
-    var newLocation= location.value;
-
-    if ((newLocation && newLocation.displayName) != (oldLocation && oldLocation.displayName)){
-      update.$set= update.$set || {};
-      update.$set.location= newLocation;
-    }
-
     if (services.tags.value.length > 0)
       update.$set.tags = services.tags.value;
 
@@ -146,3 +140,17 @@ Template.hotList.currentTemplate = function () {
   var selected = _.findWhere(tabs ,{id: Session.get('activeTab')});
   return selected && selected.template;
 };
+Template.hotListMembers.helpers({
+    hotListMembers: function() {
+        hotListMembersDep.depend();
+        console.log('hotlist',originalHotList);
+        return Contactables.find({_id: { $in: originalHotList.members}},{sort: {displayName:1}});
+    }
+});
+Template.hotList.events({
+    'click .remove': function(e, ctx){
+        originalHotList.members.splice(originalHotList.members.indexOf(this._id), 1);
+        hotListCollection.update({_id:hotList._id}, {$set: { members: originalHotList.members}});
+        hotListMembersDep.changed();
+    }
+})
