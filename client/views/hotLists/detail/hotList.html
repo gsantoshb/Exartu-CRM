@@ -15,6 +15,7 @@
             <div class="row">
                 <div class="details-menu col-md-2">
                     {{>hotList_nav}}
+                    {{>hotList_actions}}
                 </div>
                 <div class="details-view col-md-10">
                     <div class="details-view-content clearfix">
@@ -83,6 +84,36 @@
                             </div>
                         </li>
                     {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="hotList_actions">
+    <div class="hidden-xs hidden-sm">
+        <div class="details-actions row">
+            <ul class="no-padding">
+
+                <li>
+                        {{>sendTemplate emailTemplateContext}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="visible-xs visible-sm pull-right">
+        <div class="details-actions">
+            <div class="btn-group nav-item">
+                <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                    Act
+                </a>
+                <ul class="dropdown-menu pull-right" role="menu">
+                            <li>
+                                <a id="makeEmployee">
+                                    <span><i class="fa fa-exchange"></i></span>
+                                    Make Employee
+                                </a>
+                            </li>
                 </ul>
             </div>
         </div>

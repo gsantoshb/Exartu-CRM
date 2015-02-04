@@ -5,7 +5,7 @@ ContactableController = RouteController.extend({
       Meteor.subscribe('linkedAddresses', this.params._id),
       GoogleMapsHandler,
       Meteor.subscribe('contactableCounters', this.params._id),
-        Meteor.subscribe('singleHotList', Session.get('recentHotListId'))]
+        Meteor.subscribe('singleHotList', Session.get('HotListId'))]
   },
   data: function () {
     Session.set('entityId', this.params._id);
@@ -264,28 +264,29 @@ Template.hotListMembershipsBox.helpers({
         hotListMembershipsDep.depend();
         return  hotlists=HotLists.find({members: contactable._id});
     },
-    recentlyAccessedHotListInfo: function() {
+    recentHotList: function() {
         var obj;
-        if (Session.get('recentHotListId'))
+        if (Session.get('HotListId'))
         {
             obj={};
-            obj.recentHotListId=Session.get('recentHotListId');
-            obj.recentHotListDisplayName=Session.get('recentHotListDisplayName')
+            obj.hotListId=Session.get('HotListId');
+            obj.hotListDisplayName=Session.get('HotListDisplayName')
         }
+        return obj;
     }
 });
 Template.hotListMembershipsBox.events({
-    'click .remove': function(e, ctx){
+    'click .removeHotList': function(e, ctx){
         var hotlist=HotLists.findOne({_id: this._id});
-        hotlist.members.splice(hotlist.members.indexOf(this._id), 1);
-        HotLists.update({_id:hotList._id}, {$set: { members: hotlist.members}});
+        hotlist.members.splice(hotlist.members.indexOf(contactable._id), 1);
+        HotLists.update({_id:hotlist._id}, {$set: { members: hotlist.members}});
         hotListMembershipsDep.changed();
     },
-    'click .add': function(e, ctx){
-        var id=Session.get('recentHotListId');
+    'click .addHotList': function(e, ctx){
+        var id=Session.get('HotListId');
         var hotlist=HotLists.findOne({_id: id});
         hotlist.members.push(contactable._id);
-        HotLists.update({_id:hotList._id}, {$set: { members: hotlist.members}});
+        HotLists.update({_id:hotlist._id}, {$set: { members: hotlist.members}});
         hotListMembershipsDep.changed();
     }
 });

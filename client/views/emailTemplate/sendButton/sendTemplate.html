@@ -1,5 +1,6 @@
 <template name="sendTemplate">
-    <a class="btn btn-default btn-custom-with-circle action-btn">Send Template</a>
+    <a class="btn btn-default btn-custom-with-circle action-btn">
+        <span class="btn-round"><i class="fa fa-envelope"></i></span>Send templated email</a>
 </template>
 
 <template name="sendTemplateModal">
@@ -8,7 +9,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Send template</h4>
+                    <h4 class="modal-title">Send templated email</h4>
                 </div>
                 <div class="modal-body" style="overflow: auto; max-height: 80vh;">
                     {{#each missingTypes}}
