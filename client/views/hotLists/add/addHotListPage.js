@@ -40,10 +40,7 @@ var createHotList= function(objTypeName){
   if (options){
     Session.set('addOptions', undefined);
   }
-
   model= new dType.objTypeInstance(Session.get('objType'), options);
-  var defaultStatus = LookUps.findOne({lookUpCode: Enums.lookUpTypes.hotList.status.lookUpCode, isDefault: true});
-  if (defaultStatus) model.status = defaultStatus._id;
   return model
 };
 

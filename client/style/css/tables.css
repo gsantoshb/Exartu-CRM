@@ -696,10 +696,10 @@ span[data-status="Inactive"] {
   .list-actions.last:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-actions.last:after {
     clear: both;
@@ -818,10 +818,10 @@ span[data-status="Inactive"] {
   .list-item-details:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-item-details:after {
     clear: both;
@@ -881,10 +881,10 @@ span[data-status="Inactive"] {
   .list-item-more .list-item-more-entry:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-item-more .list-item-more-entry:after {
     clear: both;
@@ -909,10 +909,10 @@ span[data-status="Inactive"] {
   .list-item-more .list-item-more-entry .list-item-more-entry-content:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-item-more .list-item-more-entry .list-item-more-entry-content:after {
     clear: both;
@@ -1025,10 +1025,10 @@ span[data-status="Inactive"] {
   .list-item .list-item-more .list-item-more-entry:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-item .list-item-more .list-item-more-entry:after {
     clear: both;
@@ -1054,10 +1054,10 @@ span[data-status="Inactive"] {
   .list-item .list-item-more .list-item-more-entry .list-item-more-entry-content:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-item .list-item-more .list-item-more-entry .list-item-more-entry-content:after {
     clear: both;
@@ -1255,6 +1255,60 @@ span[data-status="Inactive"] {
   .simple-view .jobs-list-header-time {
     margin-right: 0;
   }
+}
+
+@media (max-width: 767px) {
+    .hotlists-list-item .list-item-details .list-item-cell {
+        width: 30%;
+    }
+    .hotlists-list-item .list-item-details .item-overflow {
+        width: 10%;
+    }
+    .hotlists-list-item .list-item-details .hotlists-list-item-hotlists {
+        font-size: 11px;
+        margin-top: 2px;
+    }
+    .hotlists-list-item .list-item-details .hotlists-list-item-owner {
+        text-align: center;
+    }
+}
+@media (min-width: 768px) {
+    .hotlists-list-header .hotlists-list-header-title {
+        width: 30%;
+        margin-right: 52px;
+    }
+    .hotlists-list-header .hotlists-list-header-status,
+    .hotlists-list-header .hotlists-list-header-owner {
+        -webkit-flex: 2;
+        -moz-flex: 2;
+        -ms-flex: 2;
+        flex: 2;
+    }
+    .hotlists-list-item .hotlists-list-item-title {
+        width: 30%;
+    }
+    .hotlists-list-item .list-item-details .hotlists-list-item-status,
+    .hotlists-list-item .list-item-details .hotlists-list-item-owner {
+        -webkit-flex: 2;
+        -moz-flex: 2;
+        -ms-flex: 2;
+        flex: 2;
+    }
+    .simple-view .hotlists-list-header-title {
+        width: 50%;
+        margin-right: 0;
+    }
+    .simple-view .hotlists-list-header-time {
+        margin-right: 0;
+    }
+    .simple-view .hotlists-list-item .hotlists-list-item-title {
+        width: 50%;
+    }
+    .simple-view .item-subtitle,
+    .simple-view .item-subtitle a {
+        color: #d5d5d5;
+        font-size: 11px;
+    }
 }
 @media (max-width: 767px) {
   .placements-list-item .list-item-details .list-item-cell {

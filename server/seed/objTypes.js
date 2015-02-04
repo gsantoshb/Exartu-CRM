@@ -420,20 +420,19 @@ newObjType({
       name: 'displayName',
       displayName: 'Name',
       required: true,
-      showInAdd: true,
-      required: true
+      showInAdd: true
     },
+      {
+          name: 'description',
+          displayName: 'Description',
+          required: false,
+          showInAdd: false
+      },
     {
       name: 'statusNote',
       displayName: 'Status Note',
       showInAdd: false,
       required: false
-    },
-    {
-      name: 'objType',
-      displayName: 'Type',
-      showInAdd: true,
-      required: true
     },
 
     {

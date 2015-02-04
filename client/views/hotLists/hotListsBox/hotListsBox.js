@@ -2,7 +2,7 @@
 var entityType = null;
 var isEntitySpecific = false;
 var contactable;
-var searchFields = ['name','statusNote'];
+var searchFields = ['displayName','description'];
 
 var hotListCollection = HotLists;
 var HotListHandler, query;
@@ -155,10 +155,6 @@ Template.hotListList.created = function () {
       urlQuery.addParam('activeStatus', query.activeStatus.value);
     };
 
-    if (query.objType.value && query.objType.value.length > 0){
-      searchQuery.candidateStatus = {$in: query.objType.value};
-      urlQuery.addParam('status', query.objType.value);
-    }
 
     // Set url query
     urlQuery.apply();
@@ -198,7 +194,7 @@ Template.hotListList.helpers({
 
 
 // List filters
-Template.hotListsFilters.helpers({
+Template.hotListFilters.helpers({
   query: function () {
     return query;
   },
@@ -250,20 +246,6 @@ Template.hotListListSearch.events = {
 // Item
 
 Template.hotListListItem.helpers({
-  displayObjType: function () {
-    return Utils.getContactableType(this);
-  },
-
-
-  statusDisplayName: function (item) {
-    var lookUp = LookUps.findOne({_id: this.hotListStatus});
-
-    if (lookUp) return lookUp.displayName;
-  },
-  displayObjType: function () {
-    return Utils.getHotListType(this);
-  },
-
   listViewMode: function () {
     return listViewMode.get();
   }
@@ -272,10 +254,7 @@ Template.hotListListItem.helpers({
 // Item information
 
 Template.hotListInformation.helpers({
-  getRateTypeDisplayName: function () {
-    var rate = LookUps.findOne(this.type);
-    return rate.displayName;
-  }
+
 });
 
 
@@ -284,7 +263,7 @@ Template.hotListInformation.helpers({
 var selectedSort =  new ReactiveVar();
 var sortFields = [
   {field: 'dateCreated', displayName: 'Date'},
-  {field: 'employeeInfo.lastName', displayName: 'Name'}
+  {field: 'displayName', displayName: 'Name'}
 ];
 
 Template.hotListListSort.helpers({
