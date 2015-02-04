@@ -153,4 +153,4 @@ Template.hotList.events({
         hotListCollection.update({_id:hotList._id}, {$set: { members: originalHotList.members}});
         hotListMembersDep.changed();
     }
-})
+});

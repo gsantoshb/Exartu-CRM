@@ -145,9 +145,41 @@
 
         {{> contactable_contacts}}
         {{>tagsBox}}
+        {{>hotListMembershipsBox}}
         {{>addressList}}
     </div>
     </row>
+</template>
+<template name="hotListMembershipsBox">
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action editHotList pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i
+                    class="fa fa-pencil"></i></a>
+
+            <div class="box-title">HotList Memberships</div>
+        </div>
+        <div class="box-content-md">
+            <div class="panel-body no-padding">
+                <ul class="list-3 stripped">
+                    {{#each hotListMemberships}}
+                        <li>
+                            <!-- Name -->
+                            <div class="col-xs-12 no-padding">
+                                <a href="/hotlist/{{_id}}">
+                                    <strong>
+                                        <span class="badge">{{displayName}}</span>
+                                    </strong>
+                                </a>
+                                <span class="task-author text-center">{{_id}}</span>
+                                <button class="btn btn-xs btn-default remove"><i class="fa fa-times"></i> remove
+                                </button>
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
 </template>
 
 <template name="contactable_HRConcourse">

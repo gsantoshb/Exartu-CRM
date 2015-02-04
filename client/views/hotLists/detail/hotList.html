@@ -72,16 +72,14 @@
                         <li>
                             <!-- Name -->
                             <div class="col-xs-12 no-padding">
-                                {{#each hotListMembers}}
                                     <a href="/contactable/{{_id}}">
                                         <strong>
                                             <span class="badge">{{displayName}}</span>
                                         </strong>
                                     </a>
-                                <span class="task-author text-center">{{_id}}</span>
+                                    <span class="task-author text-center">{{_id}}</span>
                                     <button class="btn btn-xs btn-default remove"><i class="fa fa-times"></i> remove
                                     </button>
-                                {{/each}}
                             </div>
                         </li>
                     {{/each}}
