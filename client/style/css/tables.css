@@ -76,14 +76,14 @@ body {
 }
 #sidebar .navbar li.hotlists.active .i-container,
 #sidebar .navbar li.hotlists a:hover .i-container {
-    background-image: -webkit-linear-gradient(top, #ff5e3c 0%, #ff2c66 100%);
-    background-image: -o-linear-gradient(top, #ff5e3c 0%, #ff2c66 100%);
-    background-image: -webkit-gradient(linear, left 0%, left 100%, from(#ff5e3c), to(#ff2c66));
-    background-image: -webkit-linear-gradient(top, #ff5e3c, 0%, #ff2c66, 100%);
-    background-image: -moz-linear-gradient(top, #ff5e3c 0%, #ff2c66 100%);
-    background-image: linear-gradient(to bottom, #ff5e3c 0%, #ff2c66 100%);
+    background-image: -webkit-linear-gradient(top, #ff5e3c 0%, #B85D11 100%);
+    background-image: -o-linear-gradient(top, #ff5e3c 0%, #B85D11 100%);
+    background-image: -webkit-gradient(linear, left 0%, left 100%, from(#ff5e3c), to(#B85D11));
+    background-image: -webkit-linear-gradient(top, #ff5e3c, 0%, #B85D11, 100%);
+    background-image: -moz-linear-gradient(top, #ff5e3c 0%, #B85D11 100%);
+    background-image: linear-gradient(to bottom, #ff5e3c 0%, #B85D11 100%);
     background-repeat: repeat-x;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff5e3c', endColorstr='#ffff2c66', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff5e3c', endColorstr='#ffB85D11', GradientType=0);
     color: #ffffff;
 }
 
