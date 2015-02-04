@@ -1,6 +1,6 @@
-Template.sendEmailTemplate.helpers({});
+Template.sendSmsTemplate.helpers({});
 
-Template.sendEmailTemplate.events({
+Template.sendSmsTemplate.events({
   'click .btn': function () {
     if (!this.recipient){
       $.gritter.add({
@@ -11,7 +11,7 @@ Template.sendEmailTemplate.events({
         time: 2000
       });
     }else{
-      Utils.showModal('sendEmailTemplateModal', this);
+      Utils.showModal('sendSmsTemplateModal', this);
     }
   }
 });
@@ -23,10 +23,10 @@ var preview = new ReactiveVar();
 var templateId = new ReactiveVar();
 var sending = new ReactiveVar();
 var entities;
-Template.sendEmailTemplateModal.helpers({
+Template.sendSmsTemplateModal.helpers({
   created: function () {
-    Meteor.subscribe('emailTemplates');
-    Meteor.subscribe('emailTemplateMergeFields');
+    Meteor.subscribe('smsTemplates');
+    Meteor.subscribe('smsTemplateMergeFields');
     preview.set('');
     missingTypes = [];
     entities = [];
@@ -107,7 +107,7 @@ Template.sendEmailTemplateModal.helpers({
     return  sending.get() || templateId.get() == undefined || missingTypes.length > 0;
   }
 });
-Template.sendEmailTemplateModal.events({
+Template.sendSmsTemplateModal.events({
   'change #template': function (e, ctx) {
     templateId.set(e.target.value);
     var template = EmailTemplates.findOne(e.target.value),
@@ -122,7 +122,7 @@ Template.sendEmailTemplateModal.events({
     var context = this[0];
 
     sending.set(true);
-    Meteor.call('sendEmailTemplate', templateId.get(), entities, context.recipient, function (err, result) {
+    Meteor.call('sendSmsTemplate', templateId.get(), entities, context.recipient, function (err, result) {
       if (err){
         console.log(err);
       }else{

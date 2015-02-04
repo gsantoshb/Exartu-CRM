@@ -722,7 +722,7 @@ Template.contactablesListHeader.events({
             selected.set([]);
         }
     },
-    'click #sendTemplate': function () {
+    'click #sendEmailTemplate': function () {
         // get the common type that all selected entities have, ignoring contactable, person and organization
         var commonType = _.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization');
 
@@ -745,7 +745,7 @@ Template.contactablesListHeader.events({
         };
         context[commonType] = _.pluck(filtered, 'id');
 
-        Utils.showModal('sendTemplateModal', context);
+        Utils.showModal('sendEmailTemplateModal', context);
     },
 
     'click #selectAllRemotes': function () {
