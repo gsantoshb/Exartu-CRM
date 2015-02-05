@@ -203,22 +203,22 @@ var _requestNumber = function () {
         // Search for available phone numbers
         var result = Meteor.wrapAsync(twilio.availablePhoneNumbers('US').local.get)({areaCode: '651'});
 
-        //if (result.availablePhoneNumbers.length > 0) {
-        //  newNumber = Meteor.wrapAsync(twilio.incomingPhoneNumbers.create)({
-        //    phoneNumber: result.availablePhoneNumbers[0].phoneNumber,
-        //    areaCode: '651',
-        //    smsMethod: "GET",
-        //    smsUrl: Meteor.absoluteUrl('sms/reply')
-        //  });
-        //
-        //} else {
-        //  throw new Meteor.Error(500, 'There is no available number on Twilio');
-        //}
-        //since the above code is failing)...create the twilio number manually using one already purchased
-        newNumber = {
-            phoneNumber: "+16122356835",
-            friendlyName: "1-612-235-6835"
+        if (result.availablePhoneNumbers.length > 0) {
+          newNumber = Meteor.wrapAsync(twilio.incomingPhoneNumbers.create)({
+            phoneNumber: result.availablePhoneNumbers[0].phoneNumber,
+            areaCode: '651',
+            smsMethod: "GET",
+            smsUrl: Meteor.absoluteUrl('sms/reply')
+          });
+
+        } else {
+          throw new Meteor.Error(500, 'There is no available number on Twilio');
         }
+        //since the above code is failing)...create the twilio number manually using one already purchased
+        //newNumber = {
+        //    phoneNumber: "+16122356835",
+        //    friendlyName: "1-612-235-6835"
+        //}
 
     }
 
