@@ -109,7 +109,7 @@ ContactableManager = {
   // Notes
   addNote: function (note) {
     if ( note.sendAsSMS) {
-      // Send SMS
+      // Send SMS to contactableId (which may be a contactable or a hotlist of contactables)
       SMSManager.sendSMSToContactable(note.contactableId, note.userNumber, note.contactableNumber, note.msg);
     }
 

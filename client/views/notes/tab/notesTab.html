@@ -15,27 +15,45 @@
         <div class="add-box-content col-sm-12 col-md-9">
             {{#autoForm id="AddNoteRecord" schema="NoteSchema" meteormethod="addContactableNote" type="method" resetOnSuccess=true}}
                 {{> afQuickField name='msg' rows=3}}
-
-                {{> linksAutoForm name='links'}}
-
+                <div style="visibility:{{isContactableNote}}">
+                    {{> linksAutoForm name='links'}}
+                </div>
                 <br/>
+                {{#if isContactableNote}}
+                    {{#unless userNumbers}}
+                        <small class="text-muted"><a href="/management/twilioManagement">Enable SMS/Texting</a></small>
+                    {{else}}
+                        {{#unless mobileNumbers}}
+                            <small class="text-muted"> This record has no mobile phone, so SMS/text is not possible
+                            </small>
+                        {{else}}
+                            {{> afQuickField name="sendAsSMS"}}
 
-                {{#unless userNumbers}}
-                    <small class="text-muted">  <a href="/management/twilioManagement">Enable SMS/Texting</a></small>
-                {{else}}
-                    {{#unless mobileNumbers}}
-                        <small class="text-muted"> This record has no mobile phone, so SMS/text is not possible</small>
+                            {{#if afFieldValueIs name='sendAsSMS' value=true}}
+                                {{> afFormGroup name="userNumber" value=defaultUserNumber options=userNumbers}}
+                                {{> afFormGroup name="contactableNumber" value=defaultMobileNumber options=mobileNumbers}}
+                            {{/if}}
+                        {{/unless}}
+                    {{/unless}}
+                {{/if}}
+
+                {{#if isHotListNote}}
+                    {{#unless userNumbers}}
+                        <small class="text-muted"><a href="/management/twilioManagement">Enable SMS/Texting</a></small>
                     {{else}}
                         {{> afQuickField name="sendAsSMS"}}
 
                         {{#if afFieldValueIs name='sendAsSMS' value=true}}
                             {{> afFormGroup name="userNumber" value=defaultUserNumber options=userNumbers}}
-                            {{> afFormGroup name="contactableNumber" value=defaultMobileNumber options=mobileNumbers}}
                         {{/if}}
                     {{/unless}}
-                {{/unless}}
+                {{/if}}
 
-                <button type="submit" class="btn btn-success pull-right"> Save </button>
+
+
+
+
+                <button type="submit" class="btn btn-success pull-right"> Save</button>
             {{/autoForm}}
         </div>
     </div>
@@ -120,50 +138,52 @@
 
         <div class="pull-right">
             <span class="btn btn-default cancelNoteRecordChanges"> Cancel </span>
-            <button class="btn btn-success"> Save </button>
+            <button class="btn btn-success"> Save</button>
         </div>
     {{/autoForm}}
 </template>
 
 <template name="linksAutoForm">
     {{#if isEditing}}
-        <div data-schema-key="{{name}}" id="links-value" class="{{name}} {{#if afFieldIsInvalid name=name}}has-error{{/if}}">
-        <div class="row">
-            <div class="col-md-5">
-                <select class="form-control" id="noteTypeSelect" title="Select the type of entity that you want to link to the msg">
-                    <option value="">--type--</option>
-                    {{#each types}}
-                        <option value="{{value}}">{{displayName}}</option>
-                    {{/each}}
-                </select>
+        <div data-schema-key="{{name}}" id="links-value"
+             class="{{name}} {{#if afFieldIsInvalid name=name}}has-error{{/if}}">
+            <div class="row">
+                <div class="col-md-5">
+                    <select class="form-control" id="noteTypeSelect"
+                            title="Select the type of entity that you want to link to the msg">
+                        <option value="">--type--</option>
+                        {{#each types}}
+                            <option value="{{value}}">{{displayName}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <select class="form-control" id="noteEntitySelect" title="Select the entity that you want to link">
+                        <option value="">--select--</option>
+                        {{#each entities}}
+                            <option value="{{_id}}">{{displayName}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <span id="noteLinkEntity" class="btn btn-md btn-default pull-right">Link</span>
+                </div>
             </div>
-            <div class="col-md-5">
-                <select class="form-control" id="noteEntitySelect" title="Select the entity that you want to link">
-                    <option value="">--select--</option>
-                    {{#each entities}}
-                        <option value="{{_id}}">{{displayName}}</option>
-                    {{/each}}
-                </select>
-            </div>
-            <div class="col-md-2">
-                <span id="noteLinkEntity" class="btn btn-md btn-default pull-right">Link</span>
-            </div>
+            <br/>
+
+            {{#each links}}
+                <button type="button" class="tag btn btn-xs btn-primary">
+                    {{#with getEntity .}}
+                        <span> {{displayName}} </span>
+                    {{/with}}
+                    <i class="remove-link fa fa-times"></i>
+                </button>
+            {{/each}}
+
+            {{#if afFieldIsInvalid name=name}}
+                <span class="help-block">{{afFieldMessage name=name}}</span>
+            {{/if}}
         </div>
-        <br/>
-
-        {{#each links}}
-            <button type="button" class="tag btn btn-xs btn-primary">
-                {{#with getEntity .}}
-                    <span> {{displayName}} </span>
-                {{/with}}
-                <i class="remove-link fa fa-times"></i>
-            </button>
-        {{/each}}
-
-        {{#if afFieldIsInvalid name=name}}
-            <span class="help-block">{{afFieldMessage name=name}}</span>
-        {{/if}}
-    </div>
 
     {{else}}
         <div style="padding: 10px 0px;">

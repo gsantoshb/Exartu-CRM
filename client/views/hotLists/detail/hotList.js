@@ -7,7 +7,7 @@ HotListController = RouteController.extend({
     },
     data: function () {
         Session.set('entityId', this.params._id);
-        Session.set('HotListId', this.params._id);
+        Session.set('hotListId', this.params._id);
     },
     action: function () {
         if (!this.ready()) {
@@ -44,7 +44,7 @@ var hotListMembersDep = new Deps.Dependency();
 Template.hotList.created = function () {
     self.editMode = false;
     originalHotList = hotListCollection.findOne({_id: Session.get('entityId')});
-    Session.set('HotListDisplayName', originalHotList.displayName);
+    Session.set('hotListDisplayName', originalHotList.displayName);
     var definition = {
         reactiveProps: {
             tags: {

@@ -40,7 +40,7 @@
 
 
 <template name="hotList_notes">
-    {{> notesBox}}
+    {{> notesTab}}
 </template>
 
 <template name="hotList_details">
@@ -91,34 +91,5 @@
 </template>
 
 <template name="hotList_actions">
-    <div class="hidden-xs hidden-sm">
-        <div class="details-actions row">
-            <ul class="no-padding">
 
-                <li>
-                        {{>sendEmailTemplate emailTemplateContext}}
-                </li>
-                <li>
-                        {{>sendSmsTemplate smsTemplateContext}}
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="visible-xs visible-sm pull-right">
-        <div class="details-actions">
-            <div class="btn-group nav-item">
-                <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                    Act
-                </a>
-                <ul class="dropdown-menu pull-right" role="menu">
-                            <li>
-                                <a id="makeEmployee">
-                                    <span><i class="fa fa-exchange"></i></span>
-                                    Make Employee
-                                </a>
-                            </li>
-                </ul>
-            </div>
-        </div>
-    </div>
 </template>

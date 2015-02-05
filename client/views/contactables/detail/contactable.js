@@ -5,7 +5,7 @@ ContactableController = RouteController.extend({
       Meteor.subscribe('linkedAddresses', this.params._id),
       GoogleMapsHandler,
       Meteor.subscribe('contactableCounters', this.params._id),
-        Meteor.subscribe('singleHotList', Session.get('HotListId'))]
+        Meteor.subscribe('singleHotList', Session.get('hotListId'))]
   },
   data: function () {
     Session.set('entityId', this.params._id);
@@ -266,11 +266,11 @@ Template.hotListMembershipsBox.helpers({
     },
     recentHotList: function() {
         var obj;
-        if (Session.get('HotListId'))
+        if (Session.get('hotListId'))
         {
             obj={};
-            obj.hotListId=Session.get('HotListId');
-            obj.hotListDisplayName=Session.get('HotListDisplayName')
+            obj.hotListId=Session.get('hotListId');
+            obj.hotListDisplayName=Session.get('hotListDisplayName')
         }
         return obj;
     }
@@ -283,7 +283,7 @@ Template.hotListMembershipsBox.events({
         hotListMembershipsDep.changed();
     },
     'click .addHotList': function(e, ctx){
-        var id=Session.get('HotListId');
+        var id=Session.get('hotListId');
         var hotlist=HotLists.findOne({_id: id});
         hotlist.members.push(contactable._id);
         HotLists.update({_id:hotlist._id}, {$set: { members: hotlist.members}});
