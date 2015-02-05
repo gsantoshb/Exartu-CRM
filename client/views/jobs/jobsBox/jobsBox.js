@@ -341,6 +341,9 @@ Template.jobListHeader.helpers({
 
 // List Search - Helpers
 Template.jobListSearch.helpers({
+    showAddButton: function() {
+      return (entityId) ? true : false;
+    },
     jobTypes: jobTypes,
     listViewMode: function () {
         return listViewMode.get();

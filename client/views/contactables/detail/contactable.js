@@ -50,6 +50,7 @@ Template.contactable.helpers({
     contactable = Contactables.findOne({
       _id: Session.get('entityId')
     });
+      if (!contactable) return ;
     Session.set('contactableDisplayName', contactable.displayName);
 
     // if contactable is an 'Employee' then add it to last used employees list

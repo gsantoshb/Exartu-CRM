@@ -121,6 +121,10 @@ var setSortField = function(field) {
  * Callbacks
  */
 Template.placementsBox.created = function(){
+    if (!SubscriptionHandlers.PlacementHandler){
+        SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
+    }
+    PlacementHandler = SubscriptionHandlers.PlacementHandler;
     query = query || loadqueryFromURL(Router.current().params);
 
     var entityId = Session.get('entityId');
@@ -136,10 +140,7 @@ Template.placementsBox.created = function(){
 };
 
 Template.placementList.created = function () {
-    if (!SubscriptionHandlers.PlacementHandler){
-        SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
-    }
-    PlacementHandler = SubscriptionHandlers.PlacementHandler;
+
 
     Meteor.autorun(function () {
         var searchQuery = {};
@@ -235,6 +236,9 @@ Template.placementListHeader.helpers({
 Template.placementListSearch.helpers({
     isJob: function () {
         if (entityType == Enums.linkTypes.job.value) return true;
+    },
+    showAddButton: function() {
+        return entityType == Enums.linkTypes.job.value;
     },
     searchString: function () {
         return query.searchString;

@@ -77,6 +77,7 @@ var originalJob;
 Template.job.helpers({
     job: function () {
         originalJob = jobCollections.findOne({_id: Session.get('entityId')});
+        if (!originalJob) return false;
         Session.set('jobDisplayName', originalJob.displayName);
         if (!job)
             job = generateReactiveObject(originalJob);

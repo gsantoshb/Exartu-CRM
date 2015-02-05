@@ -42,7 +42,8 @@
             <div class="list-header-cell placements-list-header-code">Code</div>
             <div class="list-header-cell placements-list-header-owner">Owner</div>
             <div class="list-header-cell placements-list-header-time">Date</div>
-        </div><!-- /.list-header -->
+        </div>
+        <!-- /.list-header -->
     {{else}}
         <div class="list-header placements-list-header">
             <div class="list-header-cell placements-list-header-title">Title</div>
@@ -55,13 +56,16 @@
 </template>
 
 <template name="placementListSearch">
-    <div class="list-actions-cell btn-add-to-list">
-        <div class="btn-group">
-            <button type="button" class="btn btn-success addPlacement" title="Add">
-                <span class="fa fa-plus"></span> Add
-            </button>
+    {{#if showAddButton}}
+        <div class="list-actions-cell btn-add-to-list">
+            <div class="btn-group">
+                <button type="button" class="btn btn-success addPlacement" title="Add">
+                    <span class="fa fa-plus"></span> Add
+                </button>
+            </div>
         </div>
-    </div><!-- /.btn-add-to-list -->
+        <!-- /.btn-add-to-list -->
+    {{/if}}
 
     <div class="list-actions-cell search-list">
         <div class="input-group">
@@ -77,7 +81,8 @@
                 </button>
             </span>
         </div>
-    </div><!-- /.search-list -->
+    </div>
+    <!-- /.search-list -->
 
     <div class="list-actions-cell view-mode-list">
         {{#if listViewMode}}
@@ -88,11 +93,13 @@
             <a href="#"><i id="list-view" class="fa fa-bars"></i></a>
         {{/if}}
         <a id="toggle-filters" href="#" data-view="normal"><i class="fa fa-desktop"></i></a>
-    </div><!-- /.view-mode-list -->
+    </div>
+    <!-- /.view-mode-list -->
 
     <div class="list-actions-cell order-list">
         {{> placementListSort}}
-    </div><!-- ./order-list -->
+    </div>
+    <!-- ./order-list -->
 
     {{#if listIsLoading}}
         loading
@@ -168,6 +175,7 @@
                     <div class="v-wrapper">
                         <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                             <i class="icon-connection-1 text-large"></i>
+
                             <h1>No records Found</h1>
                         </div>
                     </div>
@@ -181,7 +189,9 @@
     {{#if listViewMode}}
         <div class="list-item placements-list-item">
             <div class="list-item-cell placements-list-item-title">
-                <div class="item-title"><a href="/placement/{{_id}}">{{employeeDisplayName}} <i class="fa fa-long-arrow-right"></i> {{jobDisplayName}} <span class="item-title-more">@ {{customerDisplayName}}</span></a></div>
+                <div class="item-title"><a href="/placement/{{_id}}">{{employeeDisplayName}} <i
+                        class="fa fa-long-arrow-right"></i> {{jobDisplayName}} <span
+                        class="item-title-more">@ {{customerDisplayName}}</span></a></div>
                 <div class="item-subtitle">
                     {{#if startDate}}
                         <span>
@@ -205,7 +215,8 @@
                         {{date}}
                     {{/formattedDate}}
                 </div>
-            </div><!-- /.list-item-cell -->
+            </div>
+            <!-- /.list-item-cell -->
         </div>
     {{else}}
         <div class="list-item placements-list-item">
@@ -213,7 +224,8 @@
                 <a href="/placement/{{_id}}" class="item-icon item-icon-placements"><i class="icon-user-checked-2"></i></a>
             </div>
             <div class="list-item-cell placements-list-item-title">
-                <div class="item-title"><a href="/contactable/{{employee}}">{{employeeDisplayName}}</a> <i class="fa fa-long-arrow-right"></i> <a href="/job/{{job}}">{{jobDisplayName}}</a> </div>
+                <div class="item-title"><a href="/contactable/{{employee}}">{{employeeDisplayName}}</a> <i
+                        class="fa fa-long-arrow-right"></i> <a href="/job/{{job}}">{{jobDisplayName}}</a></div>
                 <div class="item-subtitle"><a href="/contactable/{{customerId}}">{{customerDisplayName}}</a></div>
                 <div class="item-subtitle-more">
                     {{> placementInformation}}
@@ -221,7 +233,8 @@
             </div>
             <div class="list-item-details placements-list-item-details">
                 <div class="list-item-cell placements-list-item-status">
-                    <span class="item-label">{{lookUpName candidateStatus}}</span> <span class="item-label">{{lookUpName activeStatus}}</span>
+                    <span class="item-label">{{lookUpName candidateStatus}}</span> <span
+                        class="item-label">{{lookUpName activeStatus}}</span>
                 </div>
                 <div class="list-item-cell placements-list-item-code ">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell placements-list-item-owner">{{displayUserName userId}}</div>
@@ -239,7 +252,8 @@
                         </span>
                     </a>
                 </div>
-            </div><!-- /.list-item-cell -->
+            </div>
+            <!-- /.list-item-cell -->
         </div>
     {{/if}}
 </template>
