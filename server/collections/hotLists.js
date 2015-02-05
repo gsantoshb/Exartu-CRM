@@ -38,6 +38,9 @@ Meteor.paginatedPublish(HotListView, function()
 Meteor.publish('singleHotList', function (id) {
   return  HotListView.find({_id: id});
 });
+Meteor.publish('auxHotLists', function (id) {
+    return  HotListView.find({members: id});
+});
 
 
 Meteor.publish('hotListDetails', function (id) {
