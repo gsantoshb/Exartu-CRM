@@ -149,7 +149,8 @@ Template.hotListMembers.helpers({
 Template.hotList.events({
     'click .remove': function (e, ctx) {
         originalHotList.members.splice(originalHotList.members.indexOf(this._id), 1);
-        hotListCollection.update({_id: hotList._id}, {$set: {members: originalHotList.members}});
         hotListMembersDep.changed();
+        hotListCollection.update({_id: hotList._id}, {$set: {members: originalHotList.members}});
+
     }
 });
