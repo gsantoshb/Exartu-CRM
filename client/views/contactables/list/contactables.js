@@ -726,8 +726,22 @@ Template.contactablesListHeader.events({
             }
         });
         HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
-        if (confirm(inc + ' added. Go to HotList?'))
-            Router.go('/hotlist/' + id);
+        var self = this;
+        Utils.showModal('basicModal', {
+            title: 'Navigate to Hot List',
+            message: inc + ' added. Navigate to hotlist \'' + hotlist.displayName + '\'?',
+            buttons: [{label: 'Cancel', classes: 'btn-default', value: true}, {
+                label: 'Yes',
+                classes: 'btn-success',
+                value: true
+            }],
+            callback: function (result) {
+                if (result) {
+                    Router.go('/hotlist/' + id);
+                }
+            }
+        });
+        return false;
     },
     'change #selectAll': function (e) {
         if (e.target.checked) {
