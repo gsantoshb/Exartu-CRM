@@ -44,6 +44,13 @@ AutoForm.hooks({
     AddNoteRecord: {
         before: {
             addContactableNote: function (doc) {
+                if (doc.sendAsSMS && Session.get('entityId')==Session.get('hotListId'))
+                {
+                    if (!confirm('You are sending this message to all members of the hot list.  Continue?'))
+                    {
+                        return false;
+                    }
+                }
                 var initialLink = {
                     id: Session.get('entityId'),
                     type: Utils.getEntityTypeFromRouter()
