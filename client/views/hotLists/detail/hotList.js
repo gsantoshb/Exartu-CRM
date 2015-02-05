@@ -143,6 +143,9 @@ Template.hotListMembers.helpers({
         hotListMembersDep.depend();
         console.log('hotlist', originalHotList);
         return Contactables.find({_id: {$in: originalHotList.members}}, {sort: {displayName: 1}});
+    },
+    memberCount: function() {
+        return originalHotList.members.length;
     }
 });
 Template.hotList.events({
