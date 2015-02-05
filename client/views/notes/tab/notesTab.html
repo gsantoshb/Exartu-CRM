@@ -15,11 +15,12 @@
         <div class="add-box-content col-sm-12 col-md-9">
             {{#autoForm id="AddNoteRecord" schema="NoteSchema" meteormethod="addContactableNote" type="method" resetOnSuccess=true}}
                 {{> afQuickField name='msg' rows=3}}
-                <div style="visibility:{{isContactableNote}}">
-                    {{> linksAutoForm name='links'}}
-                </div>
-                <br/>
                 {{#if isContactableNote}}
+                    <div style="visibility:{{isContactableNote}}">
+                        {{> linksAutoForm name='links'}}
+                    </div>
+                    <br/>
+
                     {{#unless userNumbers}}
                         <small class="text-muted"><a href="/management/twilioManagement">Enable SMS/Texting</a></small>
                     {{else}}
