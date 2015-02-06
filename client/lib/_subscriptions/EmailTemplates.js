@@ -1,2 +1,3 @@
-EmailTemplateMergeFields = new Mongo.Collection('emailTemplateMergeFields');
-EmailTemplates = new Mongo.Collection('emailTemplates');
+EmailTemplateMergeFields = new Meteor.Collection('emailTemplateMergeFields');
+EmailTemplates = new Meteor.Collection('emailTemplates');
+AllEmailTemplates  = new Meteor.Collection('allEmailTemplates');

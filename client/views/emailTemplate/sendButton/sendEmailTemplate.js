@@ -23,19 +23,18 @@ var preview = new ReactiveVar();
 var templateId = new ReactiveVar();
 var sending = new ReactiveVar();
 var entities;
-Template.sendEmailTemplateModal.helpers({
-  created: function () {
+Template.sendEmailTemplateModal.created= function() {
     Meteor.subscribe('emailTemplates');
     Meteor.subscribe('emailTemplateMergeFields');
+    Meteor.subscribe('allEmailTemplates');
     preview.set('');
     missingTypes = [];
     entities = [];
-  },
+};
+Template.sendEmailTemplateModal.helpers({
   templates: function () {
-    var context = this[0],
-      q = context.category ? {category : context.category} : {};
-
-    return EmailTemplates.find(q);
+    var context = this[0], q = context.category ? {category : context.category} : {};
+    return AllEmailTemplates.find(q);
   },
   missingTypes: function () {
     missingTypesDep.depend();
