@@ -155,18 +155,6 @@ Template.addEditNote.events({
             return;
         }
         ;
-        //if (note.links[0].id == Session.get('hotListId')) {
-        //    if (confirm("Texting this note to all members of this hot list.  Continue?")) {
-        //        Meteor.call('hotListTextMessageSend', note.links[0].id, note.msg, function (err, result)
-        //        {
-        //            if (err) {
-        //                alert(err);
-        //                return;
-        //            }
-        //        });
-        //    }
-        //}
-        //;
         addDisabled.set(true);
         // disable the button while processing
 

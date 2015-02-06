@@ -118,8 +118,7 @@ Template.hotList_nav.helpers({
         tabs = [
 //      {id: 'activities', displayName: 'Activities', template: 'entityActivities'},
             {id: 'details', displayName: 'Details', template: 'hotList_details'},
-            {id: 'notes', displayName: 'Notes', template: 'hotList_notes'},
-            {id: 'tasks', displayName: 'Tasks', template: 'hotList_tasks'}
+            {id: 'notes', displayName: 'Notes', template: 'hotList_notes'}
         ];
 
         return tabs;
@@ -144,6 +143,9 @@ Template.hotListMembers.helpers({
         hotListMembersDep.depend();
         console.log('hotlist', originalHotList);
         return Contactables.find({_id: {$in: originalHotList.members}}, {sort: {displayName: 1}});
+    },
+    memberCount: function() {
+        return originalHotList.members.length;
     }
 });
 Template.hotList.events({

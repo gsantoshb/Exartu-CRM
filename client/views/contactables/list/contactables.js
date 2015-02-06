@@ -726,8 +726,22 @@ Template.contactablesListHeader.events({
             }
         });
         HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
-        if (confirm(inc + ' added. Go to HotList?'))
-            Router.go('/hotlist/' + id);
+        var self = this;
+        Utils.showModal('basicModal', {
+            title: 'Navigate to Hot List',
+            message: inc + ' added. Navigate to hotlist \'' + hotlist.displayName + '\'?',
+            buttons: [{label: 'Cancel', classes: 'btn-default', value: true}, {
+                label: 'Yes',
+                classes: 'btn-success',
+                value: true
+            }],
+            callback: function (result) {
+                if (result) {
+                    Router.go('/hotlist/' + id);
+                }
+            }
+        });
+        return false;
     },
     'change #selectAll': function (e) {
         if (e.target.checked) {
@@ -800,6 +814,9 @@ Template.contactablesListHeader.events({
 
 // List Search - Events
 Template.contactablesListSearch.events({
+    'keyup #searchString': _.debounce(function(e){
+        query.searchString.value = e.target.value;
+      },200),
     'click #toggle-filters': function (e) {
         if ($(e.currentTarget).attr('data-view') == 'normal') {
             $('body .network-content #column-filters').addClass('hidden');

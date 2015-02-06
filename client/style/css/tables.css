@@ -74,8 +74,8 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff5e3c', endColorstr='#ffff2c66', GradientType=0);
   color: #ffffff;
 }
-#sidebar .navbar li.hotlists.active .i-container,
-#sidebar .navbar li.hotlists a:hover .i-container {
+#sidebar .navbar li.hotLists.active .i-container,
+#sidebar .navbar li.hotLists a:hover .i-container {
     background-image: -webkit-linear-gradient(top, #ff5e3c 0%, #B85D11 100%);
     background-image: -o-linear-gradient(top, #ff5e3c 0%, #B85D11 100%);
     background-image: -webkit-gradient(linear, left 0%, left 100%, from(#ff5e3c), to(#B85D11));
@@ -336,7 +336,7 @@ span[data-status="Inactive"] {
   padding-top: 3px;
   padding-left: 2px;
 }
-.item-icon-hotlists {
+.item-icon-hotLists {
     background-image: -webkit-linear-gradient(top, #ff5e3c 0%, #ff2c66 100%);
     background-image: -o-linear-gradient(top, #ff5e3c 0%, #ff2c66 100%);
     background-image: -webkit-gradient(linear, left 0%, left 100%, from(#ff5e3c), to(#ff2c66));
@@ -1283,50 +1283,50 @@ span[data-status="Inactive"] {
 }
 
 @media (max-width: 767px) {
-    .hotlists-list-item .list-item-details .list-item-cell {
+    .hotLists-list-item .list-item-details .list-item-cell {
         width: 30%;
     }
-    .hotlists-list-item .list-item-details .item-overflow {
+    .hotLists-list-item .list-item-details .item-overflow {
         width: 10%;
     }
-    .hotlists-list-item .list-item-details .hotlists-list-item-hotlists {
+    .hotLists-list-item .list-item-details .hotLists-list-item-hotLists {
         font-size: 11px;
         margin-top: 2px;
     }
-    .hotlists-list-item .list-item-details .hotlists-list-item-owner {
+    .hotLists-list-item .list-item-details .hotLists-list-item-owner {
         text-align: center;
     }
 }
 @media (min-width: 768px) {
-    .hotlists-list-header .hotlists-list-header-title {
+    .hotLists-list-header .hotLists-list-header-title {
         width: 30%;
         margin-right: 52px;
     }
-    .hotlists-list-header .hotlists-list-header-status,
-    .hotlists-list-header .hotlists-list-header-owner {
+    .hotLists-list-header .hotLists-list-header-status,
+    .hotLists-list-header .hotLists-list-header-owner {
         -webkit-flex: 2;
         -moz-flex: 2;
         -ms-flex: 2;
         flex: 2;
     }
-    .hotlists-list-item .hotlists-list-item-title {
+    .hotLists-list-item .hotLists-list-item-title {
         width: 30%;
     }
-    .hotlists-list-item .list-item-details .hotlists-list-item-status,
-    .hotlists-list-item .list-item-details .hotlists-list-item-owner {
+    .hotLists-list-item .list-item-details .hotLists-list-item-status,
+    .hotLists-list-item .list-item-details .hotLists-list-item-owner {
         -webkit-flex: 2;
         -moz-flex: 2;
         -ms-flex: 2;
         flex: 2;
     }
-    .simple-view .hotlists-list-header-title {
+    .simple-view .hotLists-list-header-title {
         width: 50%;
         margin-right: 0;
     }
-    .simple-view .hotlists-list-header-time {
+    .simple-view .hotLists-list-header-time {
         margin-right: 0;
     }
-    .simple-view .hotlists-list-item .hotlists-list-item-title {
+    .simple-view .hotLists-list-item .hotLists-list-item-title {
         width: 50%;
     }
     .simple-view .item-subtitle,

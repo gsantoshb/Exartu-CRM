@@ -3,6 +3,7 @@ ContactableController = RouteController.extend({
   waitOn: function () {
     return [Meteor.subscribe('singleContactable', this.params._id),
       Meteor.subscribe('linkedAddresses', this.params._id),
+        Meteor.subscribe('auxHotLists', this.params._id),
       GoogleMapsHandler,
       Meteor.subscribe('contactableCounters', this.params._id),
         Meteor.subscribe('singleHotList', Session.get('hotListId'))]
@@ -49,6 +50,7 @@ Template.contactable.helpers({
     contactable = Contactables.findOne({
       _id: Session.get('entityId')
     });
+      if (!contactable) return ;
     Session.set('contactableDisplayName', contactable.displayName);
 
     // if contactable is an 'Employee' then add it to last used employees list
@@ -262,7 +264,7 @@ var hotListMembershipsDep=new  Deps.Dependency;
 Template.hotListMembershipsBox.helpers({
     hotListMemberships: function() {
         hotListMembershipsDep.depend();
-        return  hotlists=HotLists.find({members: contactable._id});
+        return  hotlists=   HotLists.find({members: contactable._id});
     },
     recentHotList: function() {
         var obj;

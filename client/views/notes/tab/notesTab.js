@@ -44,6 +44,22 @@ AutoForm.hooks({
     AddNoteRecord: {
         before: {
             addContactableNote: function (doc) {
+                if (doc.sendAsSMS && Session.get('entityId')==Session.get('hotListId'))
+                {
+                    var hotlist=HotLists.findOne(Session.get('hotListId'));
+                    if (!hotlist || !hotlist.members) return false;
+                    Utils.showModal('basicModal', {
+                        title: 'Confirm send' ,
+                        message: 'Send to the ' + hotlist.members.length + ' members of hot list \'' + hotlist.displayName + '\'.  Continue?',
+                        buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {label: 'Send', classes: 'btn-success', value: true}],
+                        callback: function (result) {
+                            if (!result) {
+                                return false;
+                            }
+                        }
+                    });
+
+                };
                 var initialLink = {
                     id: Session.get('entityId'),
                     type: Utils.getEntityTypeFromRouter()

@@ -341,6 +341,9 @@ Template.jobListHeader.helpers({
 
 // List Search - Helpers
 Template.jobListSearch.helpers({
+    showAddButton: function() {
+      return (entityId) ? true : false;
+    },
     jobTypes: jobTypes,
     listViewMode: function () {
         return listViewMode.get();
@@ -470,6 +473,9 @@ Template.jobInformation.helpers({
  */
 // List Search - Events
 Template.jobListSearch.events = {
+    'keyup #searchString': _.debounce(function(e){
+        query.searchString.value = e.target.value;
+      },200),
     'click #toggle-filters': function (e) {
         if ($(e.currentTarget).attr('data-view') == 'normal') {
             $('body .network-content #column-filters').addClass('hidden');
