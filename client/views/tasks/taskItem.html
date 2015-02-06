@@ -9,15 +9,26 @@
             </div>
             <div class="item-subtitle">
                 <a href="#">{{displayUserName userId}}</a> <i class="fa fa-long-arrow-right"></i> <a href="#">{{displayUserName assign}}</a>
-                <span class="time-text">
-                    {{#formattedDate value=dateCreated format='lll'}}
-                        {{date}}
-                    {{/formattedDate}}
-                </span>
+            </div>
+            <div class="item-subtitle-more">
+                by {{displayUserName userId}} &nbsp;&nbsp;
+                {{#formattedDate value=dateCreated}}
+                    {{date}}
+                {{/formattedDate}}
             </div>
         </div>
         <div class="list-item-details tasks-list-item-details">
-            <div class="list-item-cell tasks-list-item-owner">{{displayUserName userId}}</div>
+            <div class="list-item-cell tasks-list-item-linked">
+                {{#if hasLinks}}
+                        {{#each links}}
+                            <a href="{{getHref}}">
+                                {{#with getEntity}}
+                                    <span class="item-label">{{displayName}}</span>
+                                {{/with}}
+                            </a>
+                        {{/each}}
+                {{/if}}
+            </div>
             <!--<div class="list-item-cell tasks-list-item-startdate">-->
                 <!--<span class="visible-xs">Started:</span>-->
                 <!--{{#formattedDate value=begin format='lll'}}-->
@@ -59,22 +70,6 @@
                 {{date}}
             {{/formattedDate}}
         {{/if}}
-    {{/if}}
-
-    {{#if hasLinks}}
-    <div id="link-{{_id}}" >
-        {{#each links}}
-            <a href="{{getHref}}">
-                {{#with getEntity}}
-                    <span class="badge">{{displayName}}</span>
-                {{/with}}
-            </a>
-        {{/each}}
-    </div>
-
-    <!--<button data-content="" data-placement="top" data-toggle="popover" data-container="body" type="button" class="btn-users" data-html="true" data-link="link-{{_id}}" data-init="off">-->
-        <!--<i class="fa fa-users"></i>-->
-    <!--</button>-->
     {{/if}}
 
 </template>
