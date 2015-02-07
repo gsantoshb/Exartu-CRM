@@ -814,6 +814,9 @@ Template.contactablesListHeader.events({
 
 // List Search - Events
 Template.contactablesListSearch.events({
+    'keyup #searchString': _.debounce(function(e){
+        query.searchString.value = e.target.value;
+      },200),
     'click #toggle-filters': function (e) {
         if ($(e.currentTarget).attr('data-view') == 'normal') {
             $('body .network-content #column-filters').addClass('hidden');

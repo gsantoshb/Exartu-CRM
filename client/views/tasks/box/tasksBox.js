@@ -207,6 +207,10 @@ Template.tasksBox.helpers({
 });
 
 Template.tasksBox.events({
+  'keyup #searchString': _.debounce(function(e){
+      taskQuery.searchString.value = e.target.value;
+	  console.log(taskQuery.getObject().searchString);
+  },200),
   'click .addTask': function () {
     if (!isEntitySpecific)
       Utils.showModal('addEditTask');
