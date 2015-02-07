@@ -174,6 +174,7 @@ Template.contactable_actions.helpers({
             recipient: email && email.value
         };
         context[type] = Session.get('entityId');
+        console.log('context from contactable',context,'type',type,'email',email);
         return context;
     }
 });

@@ -33,7 +33,9 @@ Template.sendEmailTemplateModal.created= function() {
 };
 Template.sendEmailTemplateModal.helpers({
   templates: function () {
+
     var context = this[0], q = context.category ? {category : context.category} : {};
+      console.log('this',q,context.category);
     return AllEmailTemplates.find(q);
   },
   missingTypes: function () {
