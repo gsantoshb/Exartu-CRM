@@ -80,17 +80,10 @@ Utils.reactiveProp(location, 'value', null);
 Template.locationBox.created = function () {
     var self = this;
     location.value = self.data.location;
-    console.log('loc',location,location.value,'selfloc',self.data.location);
-
-
-    //if (!location.value) location={};
-    //location['linkId']=self.data.linkId;
-    //location['addressTypeId']=Utils.getAddressTypeDefault()._id;
     AutoForm.hooks({
 
         SetLocation: {
             onSubmit: function (newAddress) {
-                console.log('new address',newAddress);
                 // Check whether the address was set manually or using google autocomplete
                 var manuallySet = !location.value || _.some(['address', 'city', 'state', 'country', 'postalCode'], function (fieldName) {
                         return location.value[fieldName] != newAddress[fieldName];
@@ -135,7 +128,6 @@ Template.locationBox.helpers({
         });
     },
     getAddressTypeIdDefault: function () {
-        console.log('address type default',Utils.getAddressTypeDefault()._id);
         return Utils.getAddressTypeDefault()._id;
     }
 });

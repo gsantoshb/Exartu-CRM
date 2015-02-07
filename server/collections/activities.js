@@ -318,7 +318,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
         return status.displayName;
       }}
     ];
-
+    if (self.previous['Employee']) //make sure this isn't a transformation to an employee from contact
     propertiesTracker(doc, self.previous, changes, 'Employee', employeeProperties);
   }
 
