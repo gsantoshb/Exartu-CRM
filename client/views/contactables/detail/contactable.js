@@ -107,27 +107,10 @@ Template.contactable.events({
     },
     // Actions
     'click #makeEmployee': function () {
-        var lkp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.employee_status, isDefault: true});
-        if (!lkp)
-        {
-            alert('There is no default employee process status, so you can not create an employee.')
-        };
-        var emp={status:lkp._id,taxID: ''};
-        Contactables.update({_id: Session.get('entityId')}, {
-            $set: {
-                Employee: emp
-            },
-            $push: {objNameArray: 'Employee'}
-        });
+        doTransform('employee');
     },
     'click #makeContact': function () {
-
-        Contactables.update({_id: Session.get('entityId')}, {
-            $set: {
-                Contact: {}
-            },
-            $push: {objNameArray: 'Contact'}
-        });
+        doTransform('contact');
     },
     'click #generate-resume': function () {
         var employeeId = this._id;
@@ -147,6 +130,49 @@ Template.contactable.events({
         });
     }
 });
+var doTransform = function (type) {
+    return Utils.showModal('basicModal', {
+        title: 'Employee and Contact',
+        message: 'Make this record be both an Employee and a Contact. Continue?',
+        buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {
+            label: 'Ok',
+            classes: 'btn-success',
+            value: true
+        }],
+        callback: function (result) {
+            if (result && type == 'contact') {
+                var lkp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.contact_status, isDefault: true});
+                if (!lkp) {
+                    alert('There is no default contact process status, so you can not create a contact.');
+                    return;
+                }
+                Contactables.update({_id: Session.get('entityId')}, {
+                    $set: {
+                        Contact: {status: lkp._id}
+                    },
+                    $push: {objNameArray: 'Contact'}
+                });
+            }
+            ;
+            if (result && type == 'employee') {
+                var lkp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.employee_status, isDefault: true});
+                if (!lkp) {
+                    alert('There is no default employee process status, so you can not create an employee.');
+                    return;
+                }
+                ;
+                var emp = {status: lkp._id, taxID: ''};
+                Contactables.update({_id: Session.get('entityId')}, {
+                    $set: {
+                        Employee: emp
+                    },
+                    $push: {objNameArray: 'Employee'}
+                });
+            }
+            ;
+        }
+    });
+};
 
 Template.contactable_actions.helpers({
 
@@ -174,7 +200,7 @@ Template.contactable_actions.helpers({
             recipient: email && email.value
         };
         context[type] = Session.get('entityId');
-        console.log('context from contactable',context,'type',type,'email',email);
+        console.log('context from contactable', context, 'type', type, 'email', email);
         return context;
     }
 });
