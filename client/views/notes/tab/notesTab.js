@@ -23,6 +23,11 @@ NoteSchema = new SimpleSchema({
         label: 'Send SMS/Text',
         optional: true
     },
+    hotListFirstName: {
+        type: Boolean,
+        label: 'Preface with first name?',
+        optional: false
+    },
     userNumber: {
         type: String,
         optional: true,

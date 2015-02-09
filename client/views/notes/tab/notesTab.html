@@ -30,6 +30,7 @@
                         {{else}}
                             {{> afQuickField name="sendAsSMS"}}
 
+
                             {{#if afFieldValueIs name='sendAsSMS' value=true}}
                                 {{> afFormGroup name="userNumber" value=defaultUserNumber options=userNumbers}}
                                 {{> afFormGroup name="contactableNumber" value=defaultMobileNumber options=mobileNumbers}}
@@ -43,6 +44,7 @@
                         <small class="text-muted"><a href="/management/twilioManagement">Enable SMS/Texting</a></small>
                     {{else}}
                         {{> afQuickField name="sendAsSMS"}}
+                        {{> afQuickField name="hotListFirstName"}}
 
                         {{#if afFieldValueIs name='sendAsSMS' value=true}}
                             {{> afFormGroup name="userNumber" value=defaultUserNumber options=userNumbers}}
