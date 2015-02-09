@@ -27,7 +27,7 @@ SMSManager = {
 
         return phoneNumber;
     },
-    sendSMSToContactable: function (id, from, to, text) {
+    sendSMSToContactable: function (id, from, to, text,hotListFirstName) {
         var ids;
         // try for a hotlist of contactables
         var hotlist = HotLists.findOne({_id:id});
@@ -64,8 +64,14 @@ SMSManager = {
             if (!contactable)
                 throw new Meteor.Error(404, 'Contactable not found',contactableid);
             var destNumber;
+            var msgText=text;
             if (hotlist)
             {
+                if (hotListFirstName)
+                {
+                    if (contactable.person && contactable.person.firstName)
+                        if (contactable) msgText= contactable.person.firstName + ', ' + msgText;
+                }
                 var contactMethodsTypes=LookUps.find({
                     lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
                     lookUpActions: "ContactMethod_MobilePhone"
@@ -88,7 +94,7 @@ SMSManager = {
             };
 
             // Send SMS
-            _sendSMS(from, destNumber, text, function (err) {
+            _sendSMS(from, destNumber, msgText, function (err) {
                 if (!err) {
                     // Update phoneNumber sms count
                     Hierarchies.update({_id: phoneNumberHier._id}, {$inc: {'phoneNumber.smsCount': 1}});

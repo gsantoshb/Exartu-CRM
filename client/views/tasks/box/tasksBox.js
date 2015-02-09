@@ -104,7 +104,6 @@ Template.tasksBox.created = function () {
     }
 
     urlQuery.apply();
-      console.log('taskfilter',q);
     TasksHandler.setFilter(q);
   })
 };
