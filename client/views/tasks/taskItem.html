@@ -12,7 +12,7 @@
             </div>
             <div class="item-subtitle-more">
                 by {{displayUserName userId}} &nbsp;&nbsp;
-                {{#formattedDate value=dateCreated}}
+                {{#formattedDate value=dateCreated format='fromNow'}}
                     {{date}}
                 {{/formattedDate}}
             </div>
@@ -20,21 +20,20 @@
         <div class="list-item-details tasks-list-item-details">
             <div class="list-item-cell tasks-list-item-linked">
                 {{#if hasLinks}}
-                        {{#each links}}
-                            <a href="{{getHref}}">
-                                {{#with getEntity}}
-                                    <span class="item-label">{{displayName}}</span>
-                                {{/with}}
-                            </a>
-                        {{/each}}
+                    {{#each links}}
+                        <a href="{{getHref}}">
+                            {{#with getEntity}}
+                                <span class="item-label">{{displayName}}</span>
+                            {{/with}}
+                        </a>
+                    {{/each}}
                 {{/if}}
             </div>
-            <!--<div class="list-item-cell tasks-list-item-startdate">-->
-                <!--<span class="visible-xs">Started:</span>-->
-                <!--{{#formattedDate value=begin format='lll'}}-->
-                    <!--{{date}}-->
-                <!--{{/formattedDate}}-->
-            <!--</div>-->
+            <div class="list-item-cell tasks-list-item-startdate">
+                {{#formattedDate value=begin format='lll'}}
+                    {{date}}
+                {{/formattedDate}}
+            </div>
             <div class="list-item-cell tasks-list-item-status">{{>taskLabel}}</div>
             <div class="list-item-cell item-overflow tasks-item-overflow">
                 <a href="#">
@@ -56,17 +55,17 @@
         <span class="item-label-2 label-{{getStatus}}">{{state}}</span>&nbsp;
 
         {{#if statusIs 'pending'}}
-            {{#formattedDate value=end format='fromNow'}}
+            {{#formattedDate value=end format='lll'}}
                 {{date}}
             {{/formattedDate}}
         {{/if}}
         {{#if statusIs 'completed'}}
-            {{#formattedDate value=completed format='fromNow'}}
+            {{#formattedDate value=completed format='lll'}}
                 {{date}}
             {{/formattedDate}}
         {{/if}}
         {{#if statusIs 'overDue'}}
-            {{#formattedDate value=end format='fromNow'}}
+            {{#formattedDate value=end format='lll'}}
                 {{date}}
             {{/formattedDate}}
         {{/if}}
@@ -76,14 +75,14 @@
 
 <template name="showTaskDate">
     {{#if end}}
-            {{#if statusIs 'pending'}}
-                <span class="item-label-2 label-pending">Pending</span>
-            {{/if}}
-            {{#if statusIs 'completed'}}
-                <span class="item-label-2 label-completed">Completed</span>
-            {{/if}}
-            {{#if statusIs 'overDue'}}
-                <span class="item-label-2 label-overdue">Over Due</span>
-            {{/if}}
+        {{#if statusIs 'pending'}}
+            <span class="item-label-2 label-pending">Pending</span>
+        {{/if}}
+        {{#if statusIs 'completed'}}
+            <span class="item-label-2 label-completed">Completed</span>
+        {{/if}}
+        {{#if statusIs 'overDue'}}
+            <span class="item-label-2 label-overdue">Over Due</span>
+        {{/if}}
     {{/if}}
 </template>

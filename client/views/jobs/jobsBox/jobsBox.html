@@ -40,8 +40,6 @@
         <div class="list-header jobs-list-header simple-view">
             <div class="list-header-cell jobs-list-header-title">Title</div>
             <div class="list-header-cell jobs-list-header-placements">Placements</div>
-            <div class="list-header-cell jobs-list-header-status">Status</div>
-            <div class="list-header-cell jobs-list-header-code">Code</div>
             <div class="list-header-cell jobs-list-header-owner">Owner</div>
             <div class="list-header-cell jobs-list-header-time">Date</div>
         </div>
@@ -210,22 +208,22 @@
                 <div class="item-title single">
                     <a href="/job/{{_id}}">{{displayName}}</a> <span class="item-title-more">&#8212; <a
                         href="/contactable/{{customer}}">{{customerName}}</a></span>
+
+                    <span class="item-label prefix-10">{{lookUpName status}}</span>
+                    <span class="item-label" data-status="{{lookUpName activeStatus}}">{{lookUpName activeStatus}}</span>
+                    <span class="item-label">{{displaySearchKey _id}}</span>
                 </div>
             </div>
             <div class="list-item-details jobs-list-item-details">
-                <div class="list-item-cell jobs-list-item-placements"><span class="hidden-xs"><a class="btn-round"
-                                                                                                 href="#"><span>10</span></a></span>
-                    <span class="visible-xs"><strong>0</strong> Placements</span></div>
-                <div class="list-item-cell jobs-list-item-status"><span class="item-label">{{lookUpName status}}</span>
-                    <span class="item-label" data-status="Inactive">{{lookUpName activeStatus}}</span></div>
-                <div class="list-item-cell jobs-list-item-code ">{{displaySearchKey _id}}</div>
+                <div class="list-item-cell jobs-list-item-placements">
+                    <span class="hidden-xs"><span class="btn-round-placeholder">{{countPlacements}}</span></span>
+                    <span class="visible-xs"><strong>{{countPlacements}}</strong> Placements</span>
+                </div>
                 <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell jobs-list-item-time">
-                   <span class="time-text">
-                       {{#formattedDate value=dateCreated format='lll'}}
-                           {{date}}
-                       {{/formattedDate}}
-                   </span>
+                    {{#formattedDate value=dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
                 </div>
             </div>
             <!-- /.list-item-cell -->
@@ -243,8 +241,7 @@
             </div>
             <div class="list-item-details jobs-list-item-details">
                 <div class="list-item-cell jobs-list-item-placements">
-                    <span class="hidden-xs"><a class="btn-round"
-                                               href="/job/{{_id}}/placements"><span>{{countPlacements}}
+                    <span class="hidden-xs"><a href="/job/{{_id}}/placements"><span>{{countPlacements}}
                         /{{countRequired}}</span></a></span>
                     <span class="visible-xs"><strong>{{countPlacements}}1</strong> Placement</span>
                 </div>
@@ -254,11 +251,9 @@
                 <div class="list-item-cell jobs-list-item-code ">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell jobs-list-item-time">
-                   <span class="time-text">
-                       {{#formattedDate value=dateCreated format='lll'}}
-                           {{date}}
-                       {{/formattedDate}}
-                   </span>
+                   {{#formattedDate value=dateCreated format='fromNow'}}
+                       {{date}}
+                   {{/formattedDate}}
                 </div>
                 <div class="list-item-cell item-overflow jobs-item-overflow">
                     <a href="#">
