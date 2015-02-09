@@ -26,7 +26,7 @@ NoteSchema = new SimpleSchema({
     hotListFirstName: {
         type: Boolean,
         label: 'Preface with first name?',
-        optional: false
+        optional: true
     },
     userNumber: {
         type: String,
