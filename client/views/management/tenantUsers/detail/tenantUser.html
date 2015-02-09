@@ -3,6 +3,8 @@
 
 
         <div id="content-header" class="mini">
+
+
             {{#with userContext}}
                 <h1>TenantUser {{getUserName}}</h1>
             {{/with}}
@@ -10,6 +12,7 @@
         </div>
         <div class="container-fluid">
             <div class="row">
+                User Object: {{userJSON}}
                 {{#with userContext}}
 
                     <div>
@@ -37,9 +40,11 @@
     <ul>
         {{#each hierMember}}
             <li>
-                {{name}}
+                {{isSelectedClass}}
+                <a class=" {{isSelectedClass}} item-title" href="/tenant/{{_id}}">{{name}} </a>
                 {{_id}}
-                <a id="removeHier" class="">Remove</a>
+                <button  id="removeHier"  class="btn btn-default" type="button">Remove</button>
+                <button  id="makeCurrent"  class="btn btn-default" type="button">Make Current</button>
             </li>
         {{/each}}
 
@@ -53,8 +58,9 @@
     <ul>
         {{#each hierAvailable}}
             <li>
-                {{name}} {{_id}}
-                <a id="addHier" class="">Add</a>
+                <a class="item-title" href="/tenant/{{_id}}">{{name}} </a>
+                {{_id}}
+                <button  id="addHier"  class="btn btn-default" type="button">Add</button>
             </li>
         {{/each}}
 
