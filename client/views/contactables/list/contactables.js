@@ -390,7 +390,12 @@ Template.contactablesList.rendered = function () {
      */
     $(document).on('click', 'button[data-toggle="popover"]', function (e) {
         var object = e.currentTarget;
+        // destroy any other popovers open on page
+        $('.popover').popover('destroy');
+
         if ($(object).attr('data-init') == 'off') {
+            // we set all other popovers besides this one to off so that we can open them next time
+            $('button[data-toggle="popover"]').attr('data-init', 'off');
             $(object).popover('show');
             $(object).attr('data-init', 'on');
         }
@@ -404,9 +409,12 @@ Template.contactablesList.destroyed = function () {
         delete SubscriptionHandlers.AuxContactablesHandler;
     }
 
-    $('.popover').popover('destroy');
+    $('.popover').hide().popover('destroy');
 };
 
+Template.contactablesListItem.destroyed = function () {
+    $('.popover').hide().popover('destroy');
+};
 
 /**
  * Helpers
@@ -693,8 +701,6 @@ Template.contactablesFilters.helpers({
     },
     contactableTypes: contactableTypes
 });
-
-// Employee Item - Helpers
 
 // register list view mode helper
 Template.registerHelper('listViewMode', function () {

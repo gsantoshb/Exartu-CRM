@@ -55,9 +55,13 @@
         <span class="item-label-2 label-{{getStatus}}">{{state}}</span>&nbsp;
 
         {{#if statusIs 'pending'}}
-            {{#formattedDate value=end format='lll'}}
-                {{date}}
-            {{/formattedDate}}
+            {{#if end}}
+                {{#formattedDate value=end format='lll'}}
+                    {{date}}
+                {{/formattedDate}}
+            {{else}}
+                <em>no end date</em>
+            {{/if}}
         {{/if}}
         {{#if statusIs 'completed'}}
             {{#formattedDate value=completed format='lll'}}
