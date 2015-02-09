@@ -220,7 +220,6 @@ Resumes.allow({
         return false;
     },
     remove: function (userId, file) {
-        console.log('resume remove');
         return (RoleManager.bUserIsClientAdmin() || RoleManager.bUserIsSystemAdmin()) ? true : false;
     }
 });

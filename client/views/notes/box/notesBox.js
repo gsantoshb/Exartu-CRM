@@ -40,7 +40,6 @@ Template.notesBox.created = function () {
   if (entityType != null) isEntitySpecific = true;
 
   Meteor.autorun(function () {
-
     var urlQuery = new URLQuery();
 
     var queryObj = noteQuery.getObject();
@@ -113,6 +112,10 @@ Template.notesBox.helpers({
 });
 
 Template.notesBox.events({
+  'keyup #searchString': _.debounce(function(e){
+      noteQuery.searchString.value = e.target.value;
+	  console.log(noteQuery.getObject().searchString);
+    },200),
   'click .addNote': function () {
     if (!isEntitySpecific)
       Utils.showModal('addEditNote');

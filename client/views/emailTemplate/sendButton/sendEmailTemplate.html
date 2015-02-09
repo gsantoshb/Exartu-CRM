@@ -14,7 +14,7 @@
                 <div class="modal-body" style="overflow: auto; max-height: 80vh;">
                     {{#each missingTypes}}
                         <div>
-                            <span> I need a(n) {{objType}} select one here </span>
+                            <span> This template includes {{objType}} fields.  Select one here: &nbsp; </span>
                             {{>asyncSelect query=objTypeQuery placeholder="Search Entity" onChange=entitySelected width='200px'}}
                         </div>
                     {{else}}

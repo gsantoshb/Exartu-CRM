@@ -64,7 +64,6 @@ Template.user.helpers({
 
 Template.user.events({
     'click .removeRole': function (e, ctx) {
-        console.log('rem',this._id);
         var user = Meteor.users.findOne({_id: Session.get('entityId')});
         var currHierRoles = _.findWhere(user.hierRoles,{hierId:user.currentHierId});
         var newHierRoles= _.reject(currHierRoles,function(el) { el.hierId==user.currentHierId});
@@ -111,7 +110,6 @@ Template.user_tabs.helpers({
     roles: function() {
         var user = Meteor.users.findOne({_id: Session.get('entityId')});
         var currHierRoles = _.findWhere(user.hierRoles,{hierId:user.currentHierId});
-        console.log('currHierRoles',currHierRoles.roleIds);
         return currHierRoles.roleIds;
     }
 
