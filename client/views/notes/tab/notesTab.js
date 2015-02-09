@@ -77,7 +77,6 @@ var hotlist=null;
 Template.notesTabAdd.helpers({
     isHotListNote: function () {
         hotlist = HotLists.findOne(this._id);
-        console.log('hotlist',hotlist);
         return (hotlist)? true: false; // hide numbers if hotlist
     },
     isContactableNote: function () {
@@ -236,16 +235,16 @@ Template.linksAutoForm.created = function () {
     if (self.data.value)
         return; // Don't reset form on edit mode
 
-    // TODO: Find another way to reset links when form is submitted
-    var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
-    if (!hotlist) {
-        formTemplate.template.events({
-            'reset form': function () {
-                self.data.links = [initialLink];
-                self.data.linkedDep.changed();
-            }
-        });
-    };
+    //// TODO: Find another way to reset links when form is submitted
+    //var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
+    //if (!hotlist) {
+    //    formTemplate.template.events({
+    //        'reset form': function () {
+    //            self.data.links = [initialLink];
+    //            self.data.linkedDep.changed();
+    //        }
+    //    });
+    //};
     isEditing.set(false);
 }
 
