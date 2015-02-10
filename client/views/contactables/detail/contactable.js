@@ -174,8 +174,8 @@ var doTransform = function (type) {
     });
 };
 
+// Action Buttons
 Template.contactable_actions.helpers({
-
     hasEmailAddress: function () {
         var type = Utils.getContactableType(this);
         var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
@@ -202,8 +202,22 @@ Template.contactable_actions.helpers({
         context[type] = Session.get('entityId');
         console.log('context from contactable', context, 'type', type, 'email', email);
         return context;
+    },
+    isAppCenterUser: function () {
+        // Registered users have the user property set
+        return !!contactable.user;
+    },
+    alreadyInvited: function () {
+        // Invited users have the invitation property set
+        return !!contactable.invitation;
     }
 });
+Template.contactable_actions.events({
+    'click #sendAppCenterInvite': function () {
+        Utils.showModal('sendAppCenterInvitation', contactable);
+    }
+});
+
 // Header
 Template.contactable_header.helpers({
     mainContactMethods: function () {
