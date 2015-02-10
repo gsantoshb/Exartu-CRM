@@ -7,6 +7,8 @@ TenantController = RouteController.extend({
         hierId=this.params._id;
         SubscriptionHandlers.TenantUserHandler = TenantUserHandler = SubscriptionHandlers.TenantUserHandler
         || Meteor.paginatedSubscribe('tenantUsers');
+        SubscriptionHandlers.TenantActivitiesHandler = TenantActivitiesHandler = SubscriptionHandlers.TenantActivitiesHandler
+        || Meteor.paginatedSubscribe('tenantActivities');
         return [Meteor.subscribe('singleTenant',hierId),TenantUserHandler ];
     },
     data: function () {
@@ -40,6 +42,9 @@ Template.tenant.helpers({
     },
     users: function () {
         return TenantUsers.find({hierarchies: hierId});
+    },
+    activities: function () {
+        return TenantActivities.find({hierId: hierId},{sort: {'data.dateCreated':-1}});
     },
     usersCount: function() {
         return TenantUsers.find({hierarchies: hierId}).count();
