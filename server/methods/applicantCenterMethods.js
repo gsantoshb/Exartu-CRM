@@ -1,11 +1,13 @@
 
 Meteor.methods({
-  createEmployeeForUser: function(userId) {
+  createEmployeeForUser: function(userId, firstName, lastName) {
     // Validate parameters
     check(userId, String);
+    check(firstName, String);
+    check(lastName, String);
 
     try {
-      return ApplicantCenterManager.createEmployeeForUser(userId);
+      return ApplicantCenterManager.createEmployeeForUser(userId, firstName, lastName);
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
@@ -25,13 +27,15 @@ Meteor.methods({
     }
   },
 
-  syncEmployeeFromInvitation: function (userId, invitationId) {
+  syncEmployeeFromInvitation: function (userId, firstName, lastName, invitationId) {
     // Validate parameters
     check(userId, String);
+    check(firstName, String);
+    check(lastName, String);
     check(invitationId, String);
 
     try {
-      return ApplicantCenterManager.syncEmployeeFromInvitation(userId, invitationId);
+      return ApplicantCenterManager.syncEmployeeFromInvitation(userId, firstName, lastName,invitationId);
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
