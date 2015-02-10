@@ -54,6 +54,24 @@
                                 {{/objectProperty}}
                             </td>
                         </tr>
+                        <tr>
+                            <td>Birth Bate</td>
+                            <td>
+                                {{#objectProperty property=birthDate editable=editMode}}
+                                    {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                {{else}}
+                                    <strong>
+                                        {{#if value}}
+                                            {{#formattedDate value=value format='MMMM DD, YYYY'}}
+                                                {{date}}
+                                            {{/formattedDate}}
+                                        {{else}}
+                                            <!--Not set-->
+                                        {{/if}}
+                                    </strong>
+                                {{/objectProperty}}
+                            </td>
+                        </tr>
                     {{/if}}
 
                     {{#if organization }}

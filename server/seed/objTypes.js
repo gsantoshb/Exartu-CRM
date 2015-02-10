@@ -156,6 +156,13 @@ newObjType({
       displayName: 'Salutation',
       showInAdd: false,
       required: false
+    },
+    {
+      name: 'birthDate',
+      displayName: 'Birth Date',
+      showInAdd: false,
+      required: false,
+      fieldType: 'date'
     }
   ]
 });

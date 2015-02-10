@@ -262,6 +262,10 @@ Template.contactable_header.helpers({
     },
     getLocationDisplayName: function () {
         return Utils.getLocationDisplayName(this._id);
+    },
+    isAppCenterUser: function () {
+        // Registered users have the user property set
+        return !!contactable.user;
     }
 });
 
