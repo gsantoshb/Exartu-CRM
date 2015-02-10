@@ -23,5 +23,17 @@ Meteor.methods({
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
+  },
+
+  syncEmployeeFromInvitation: function (userId, invitationId) {
+    // Validate parameters
+    check(userId, String);
+    check(invitationId, String);
+
+    try {
+      return ApplicantCenterManager.syncEmployeeFromInvitation(userId, invitationId);
+    } catch (err) {
+      throw new Meteor.Error(err.message);
+    }
   }
 });
