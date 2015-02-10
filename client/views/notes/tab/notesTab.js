@@ -75,17 +75,8 @@ var hotlist = null;
 var responsesOnly = false;
 var responsesOnlyDep= new Deps.Dependency;
 Template.notesTabAdd.events({
-    'click #inbound': function(e,ctx) {
-        responsesOnly=true;
-        responsesOnlyDep.changed();
-    },
-
-    'click #outbound': function(e,ctx) {
-        console.log('ib',e,ctx);
-    },
 });
 Template.notesTab.created=function(){
-    console.log('view',this.view.parentView.name)
     if (this.view && this.view.parentView && this.view.parentView.name=="Template.hotList_responses") {
         responsesOnly = true;
     }
@@ -156,7 +147,6 @@ Template.notesTabList.created = function () {
                     }
                 };
             }
-            console.log('tablist',searchQuery,hotlist,responsesOnly);
             if (!SubscriptionHandlers.NotesHandler) {
                 SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
             } else {
