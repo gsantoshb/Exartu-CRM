@@ -20,7 +20,7 @@
                 <div class="details-view col-md-10">
                     <div class="details-view-content clearfix">
                         <div class="tab-pane active">
-                            {{> UI.dynamic template=currentTemplate  data=hotList }}
+                            {{> UI.dynamic template=currentTemplate  data=hotList  }}
                         </div>
                     </div>
 
@@ -41,6 +41,9 @@
 
 <template name="hotList_notes">
     {{> notesTab}}
+</template>
+<template name="hotList_responses">
+    {{> notesTab  }}
 </template>
 
 <template name="hotList_details">

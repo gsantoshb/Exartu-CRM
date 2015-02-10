@@ -118,7 +118,9 @@ Template.hotList_nav.helpers({
         tabs = [
 //      {id: 'activities', displayName: 'Activities', template: 'entityActivities'},
             {id: 'details', displayName: 'Details', template: 'hotList_details'},
-            {id: 'notes', displayName: 'Notes', template: 'hotList_notes'}
+            {id: 'notes', displayName: 'Notes', template: 'hotList_notes'},
+
+            {id: 'responses', displayName: 'Responses', template: 'hotList_responses'},
         ];
 
         return tabs;
