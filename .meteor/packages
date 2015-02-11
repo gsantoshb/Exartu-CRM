@@ -36,6 +36,7 @@ cfs:data-man
 cfs:gridfs
 cfs:s3
 file-uploader
+
 meteorhacks:kadira
 date-time-picker
 rajit:bootstrap3-datepicker
