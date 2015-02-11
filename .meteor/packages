@@ -54,4 +54,5 @@ aida:mongo-view
 aida:pagination
 aida:dtype
 aida:es
+
 meteorhacks:fast-render
