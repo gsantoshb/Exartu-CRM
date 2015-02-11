@@ -99,7 +99,7 @@ Router.map(function () {
     controller: 'UserProfileController'
   });
   this.route('user', {
-    path: '/user/:_id?',
+    path: '/user/:_id/:tab?',
     controller: 'UserController'
   });
 
