@@ -21,7 +21,15 @@ TenantUserController = RouteController.extend({
 });
 var user;
 Template.tenantUser.helpers({
+    userJSON: function ()
+    {
+        hierDep.depend();
+        var user= TenantUsers.findOne({_id: Session.get('userId')});
+        return JSON.stringify(user);
+
+    },
     userContext: function () {
+        hierDep.depend();
         if (Session.get('userId')) {
             user = TenantUsers.findOne({_id: Session.get('userId')});
             return user;
@@ -54,6 +62,14 @@ var searchFields = ['_id', 'name'];
 var hierDep=new Deps.Dependency;
 var tenantUser;
 Template.tenantUserHierMember.helpers({
+    isCurrent: function() {
+        return (this._id==user.currentHierId  )
+    },
+    isSelectedClass: function() {
+        hierDep.depend();
+        user = Meteor.users.findOne({_id: user._id});
+        return (this._id==user.currentHierId  ) ? 'active' : '';
+    },
     hierMember: function() {
         hierDep.depend();
         tenantUser = TenantUsers.findOne({_id: Session.get('userId')});
@@ -64,6 +80,12 @@ Template.tenantUserHierMember.events = {
     'click #removeHier': function (e) {
         Meteor.call("removeUserFromTenant",user._id,this._id);
         hierDep.changed();
+    },
+    'click #makeCurrent': function (e) {
+        Meteor.call('changeCurrentHierId', this._id,user._id, function (err, result) {
+            hierDep.changed();
+        });
+
     }
 };
 Template.tenantUserHierAvailable.helpers({

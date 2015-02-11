@@ -42,7 +42,6 @@
         <div class="list-header network-list-header simple-view">
             <div class="list-header-cell network-list-header-title">Title</div>
             <div class="list-header-cell network-list-header-owner">Owner</div>
-            <div class="list-header-cell network-list-header-code">Code</div>
             <div class="list-header-cell network-list-header-time">Date</div>
         </div>
         <!-- /.list-header -->
@@ -72,7 +71,8 @@
                     <span class="text-info">- {{withoutEmail}} have no email address</span>
                 {{else}}
                     <i class="fa fa-long-arrow-right"></i>
-                    <button class="btn btn-sm btn-primary" id="sendTemplate"> send email template</button>
+                    <button class="btn btn-sm btn-primary" id="sendEmailTemplate"> send email template</button>
+
                 {{/if}}
             {{else}}
                 <div class="list-interactive-msg-options">
@@ -84,6 +84,11 @@
                     </div>
                 </div>
             {{/if}}
+            {{#with recentHotList}}
+                <button type="button" class="btn btn-success addHotList" title="Add">
+                    <span class="fa fa-plus"></span> Add selected to HotList: {{displayName}}
+                </button>
+            {{/with}}
         </div>
         <!-- /.list-interactive-msg -->
     {{/if}}
@@ -117,7 +122,7 @@
         <div class="input-group">
                 <span class="prop-input">
                     {{#objectProperty property=searchString}}
-                        <input type="text" class="form-control" placeholder="Search network" value="{{value}}">
+                        <input id="searchString" type="text" class="form-control" placeholder="Search network" value="{{value}}">
                     {{/objectProperty}}
                     <span class="text text-danger"></span>
                 </span>
@@ -265,14 +270,14 @@
     {{#if listViewMode}}
         <div class="list-item network-list-item simple-network-list-item {{#if isSelected}} selected {{/if}}">
             <div class="list-item-cell network-list-item-title">
-                <div class="item-title single">
+                <div class="item-title">
                     <a href="/contactable/{{_id}}">{{displayName}}</a>
                     {{#if getDepartment}}<span class="item-title-more">&mdash; {{getDepartment}}</span>{{/if}}
+                    <span class="item-label prefix-10">{{displaySearchKey _id}}</span>
                 </div>
             </div>
             <div class="list-item-details network-list-item-details">
                 <div class="list-item-cell network-list-item-owner">{{displayUserName userId}}</div>
-                <div class="list-item-cell network-list-item-code">{{_id}}</div>
                 <div class="list-item-cell network-list-item-time">
                     {{#formattedDate value=dateCreated format='fromNow'}}
                         {{date}}
@@ -284,7 +289,7 @@
         <!-- /.network-list-item -->
     {{else}}
         <div class="list-item network-list-item {{#if isSelected}} selected {{/if}}">
-            <div class="list-item-cell network-list-item-checkbox">
+            <div class="list-item-cell list-item-checkbox network-list-item-checkbox">
                 <input type="checkbox" class="select" checked="{{isSelected}}">
             </div>
             <div class="list-item-cell list-item-icon">
@@ -315,11 +320,11 @@
                     {{#if Customer}}
                         {{> customerInformation }}
                     {{/if}}
-                    {{#if Employee}}
-                        {{> employeeInformation }}
-                    {{/if}}
                     {{#if Contact}}
                         {{> contactInformation }}
+                    {{/if}}
+                    {{#if Employee}}
+                        {{> employeeInformation }}
                     {{/if}}
                     {{#if getDepartment}}
                         <a href="#"><em>{{getDepartment}}</em></a>
@@ -392,8 +397,7 @@
     {{/if}}
 </template>
 
-<template name="customerInformation">
-</template>
+<template name="customerInformation"></template>
 
 <template name="employeeInformation">
     {{#if placementInfo}}
@@ -404,7 +408,7 @@
     {{else}}
         {{#if person}}
             {{#if person.jobTitle}}
-                {{person.jobTitle}}
+                <br><em>{{person.jobTitle}}</em>
             {{/if}}
         {{/if}}
     {{/if}}
@@ -417,7 +421,6 @@
             {{Contact.customerName}}
         </a>
     {{/if}}
-    <br/>
 </template>
 
 <template name="esContextMatch">

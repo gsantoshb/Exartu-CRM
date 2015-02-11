@@ -46,27 +46,30 @@ HotLists = new Mongo.Collection("hotLists");
 
 Addresses = new Mongo.Collection("addresses");
 
+ApplicantCenterInvitations = new Mongo.Collection('applicantCenterInvitations');
+
 
 Collections = {
-  Hierarchies: Hierarchies,
-  Jobs: Jobs,
-  Deals: Deals,
-  Activities: Activities,
-  Contactables: Contactables,
-  Conversations: Conversations,
-  Messages: Messages,
-  ObjTypes: ObjTypes,
-  Relations: Relations,
-  LookUps: LookUps,
-  Tasks: Tasks,
-  Notes: Notes,
-  Placements: Placements,
-  Candidates: Candidates,
-  SystemConfigs: SystemConfigs,
-  Roles: Roles,
-  SystemAdmins: SystemAdmins,
-  Tenants: Hierarchies,
-  HotLists: HotLists,
-  UserInvitations:UserInvitations,
-  Addresses: Addresses
+    Hierarchies: Hierarchies,
+    Jobs: Jobs,
+    Deals: Deals,
+    Activities: Activities,
+    Contactables: Contactables,
+    Conversations: Conversations,
+    Messages: Messages,
+    ObjTypes: ObjTypes,
+    Relations: Relations,
+    LookUps: LookUps,
+    Tasks: Tasks,
+    Notes: Notes,
+    Placements: Placements,
+    Candidates: Candidates,
+    SystemConfigs: SystemConfigs,
+    Roles: Roles,
+    SystemAdmins: SystemAdmins,
+    Tenants: Hierarchies,
+    HotLists: HotLists,
+    UserInvitations: UserInvitations,
+    Addresses: Addresses,
+    EmailTemplates: EmailTemplates
 };

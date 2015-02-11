@@ -81,12 +81,12 @@
                             <div class="input-group">
                             <span class="prop-input">
                                 {{#objectProperty property=filters.searchString editable=true}}
-                                    <input type="text" class="form-control" placeholder="Search network">
+                                    <input id="searchString" type="text" class="form-control" placeholder="Search network">
                                     <span class="text" data-status="Inactive"></span>
                                 {{/objectProperty}}
                             </span>
                             <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button">
+                                <button class="btn btn-search" type="button">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>
@@ -98,8 +98,8 @@
 
                     <div class="list-header tasks-list-header">
                         <div class="list-header-cell tasks-list-header-title">Title</div>
-                        <div class="list-header-cell tasks-list-header-owner">Owner</div>
-
+                        <div class="list-header-cell tasks-list-header-linked">Linked</div>
+                        <div class="list-header-cell tasks-list-header-startdate">Start Date</div>
                         <div class="list-header-cell tasks-list-header-status">Status</div>
                     </div>
 

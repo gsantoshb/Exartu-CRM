@@ -104,7 +104,6 @@ Template.tasksBox.created = function () {
     }
 
     urlQuery.apply();
-      console.log('taskfilter',q);
     TasksHandler.setFilter(q);
   })
 };
@@ -185,7 +184,7 @@ Template.tasksBox.helpers({
     return TasksHandler.totalCount();
   },
   users: function () {
-    return Meteor.users.find();
+    return Meteor.users.find({},{sort: {'emails.address':1}});
   },
   tasks: function () {
 
@@ -207,6 +206,10 @@ Template.tasksBox.helpers({
 });
 
 Template.tasksBox.events({
+  'keyup #searchString': _.debounce(function(e){
+      taskQuery.searchString.value = e.target.value;
+	  console.log(taskQuery.getObject().searchString);
+  },200),
   'click .addTask': function () {
     if (!isEntitySpecific)
       Utils.showModal('addEditTask');

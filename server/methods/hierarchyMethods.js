@@ -17,8 +17,8 @@ Meteor.methods({
 
     return SMSManager.createHierarchyNumber(hierId);
   },
-  changeCurrentHierId: function(hierId){
-    HierarchyManager.changeCurrentHier(hierId);
+  changeCurrentHierId: function(hierid,userid){
+    HierarchyManager.changeCurrentHier(hierid,userid);
   },
   setLookUpDefault: function(lookUpCode, valueId) {
     HierarchyManager.setLookupDefault(lookUpCode, valueId);

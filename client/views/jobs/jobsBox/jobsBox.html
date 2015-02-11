@@ -1,38 +1,38 @@
 <template name="jobsBox">
-        <div class="row">
-            <div class="col-md-3 col-lg-3" id="column-filters">
-                {{> jobFilters }}
-            </div>
-            <div class="col-md-9" id="column-list">
-                <div class="list-container">
-                    <div class="list-holder">
+    <div class="row">
+        <div class="col-md-3 col-lg-3" id="column-filters">
+            {{> jobFilters }}
+        </div>
+        <div class="col-md-9" id="column-list">
+            <div class="list-container">
+                <div class="list-holder">
 
-                        <div class="list-actions">
-                            {{>jobListSearch}}
-                        </div>
-
-                        {{>jobListHeader}}
-
-                        {{#if isSearching}}
-                            searching
-                        {{else}}
-                            {{> jobList }}
-                        {{/if}}
-
-                        <div class="list-actions last">
-                            {{#if listIsLoading}}
-                                loading
-                            {{else}}
-                                {{#unless isESSearch}}
-                                    {{>fastPagination name="jobs" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
-                                {{/unless}}
-                            {{/if}}
-                        </div>
-
+                    <div class="list-actions">
+                        {{>jobListSearch}}
                     </div>
+
+                    {{>jobListHeader}}
+
+                    {{#if isSearching}}
+                        searching
+                    {{else}}
+                        {{> jobList }}
+                    {{/if}}
+
+                    <div class="list-actions last">
+                        {{#if listIsLoading}}
+                            loading
+                        {{else}}
+                            {{#unless isESSearch}}
+                                {{>fastPagination name="jobs" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                            {{/unless}}
+                        {{/if}}
+                    </div>
+
                 </div>
             </div>
         </div>
+    </div>
 </template>
 
 <template name="jobListHeader">
@@ -40,11 +40,10 @@
         <div class="list-header jobs-list-header simple-view">
             <div class="list-header-cell jobs-list-header-title">Title</div>
             <div class="list-header-cell jobs-list-header-placements">Placements</div>
-            <div class="list-header-cell jobs-list-header-status">Status</div>
-            <div class="list-header-cell jobs-list-header-code">Code</div>
             <div class="list-header-cell jobs-list-header-owner">Owner</div>
             <div class="list-header-cell jobs-list-header-time">Date</div>
-        </div><!-- /.list-header -->
+        </div>
+        <!-- /.list-header -->
     {{else}}
         <div class="list-header jobs-list-header">
             <div class="list-header-cell jobs-list-header-title">Title</div>
@@ -58,17 +57,21 @@
 </template>
 
 <template name="jobListSearch">
-    <div class="list-actions-cell btn-add-to-list">
-        <div class="btn-group">
-            <a href="/jobAdd/Temporary" type="button" class="btn btn-success" title="Add"><span class="fa fa-plus"></span> Add</a>
+    {{#if showAddButton}}
+        <div class="list-actions-cell btn-add-to-list">
+            <div class="btn-group">
+                <a href="/jobAdd/Temporary" type="button" class="btn btn-success" title="Add"><span
+                        class="fa fa-plus"></span> Add</a>
+            </div>
         </div>
-    </div><!-- /.btn-add-to-list -->
+        <!-- /.btn-add-to-list -->
+    {{/if}}
 
     <div class="list-actions-cell search-list">
         <div class="input-group">
             <span class="prop-input">
                 {{#objectProperty property=searchString}}
-                    <input type="text" class="form-control" placeholder="Search jobs" value="{{value}}">
+                    <input id="searchString" type="text" class="form-control" placeholder="Search jobs" value="{{value}}">
                 {{/objectProperty}}
                 <span class="text text-danger"></span>
             </span>
@@ -78,7 +81,8 @@
                 </button>
             </span>
         </div>
-    </div><!-- /.search-list -->
+    </div>
+    <!-- /.search-list -->
 
     <div class="list-actions-cell view-mode-list">
         {{#if listViewMode}}
@@ -89,11 +93,13 @@
             <a href="#"><i id="list-view" class="fa fa-bars"></i></a>
         {{/if}}
         <a id="toggle-filters" href="#" data-view="normal"><i class="fa fa-desktop"></i></a>
-    </div><!-- /.view-mode-list -->
+    </div>
+    <!-- /.view-mode-list -->
 
     <div class="list-actions-cell order-list">
         {{> jobListSort}}
-    </div><!-- ./order-list -->
+    </div>
+    <!-- ./order-list -->
 
     {{#if listIsLoading}}
         loading
@@ -139,11 +145,11 @@
 
 <template name="jobFilters">
 
-        <div class="page-title">
-            {{#with information}}
+    <div class="page-title">
+        {{#with information}}
             <h1><span>{{jobsCount.value}}</span> jobs</h1>
-            {{/with}}
-        </div>
+        {{/with}}
+    </div>
 
 
     <div class="filter">
@@ -176,6 +182,7 @@
                     <div class="v-wrapper">
                         <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                             <i class="icon-connection-1 text-large"></i>
+
                             <h1>No records Found</h1>
                         </div>
                     </div>
@@ -184,7 +191,8 @@
                         <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                             <i class="icon-connection-1 text-large"></i>
                             <a href="#" data-bind="attr: { href: '/jobAdd/'+name() }, text: 'New ' + name()"></a>
-                            <span class="bullet-spacer" data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
+                            <span class="bullet-spacer"
+                                  data-bind="visible: $index()< $parent.jobTypes().length-1">·</span>
                         </div>
                     </div>
                 {{/if}}
@@ -198,23 +206,29 @@
         <div class="list-item jobs-list-item">
             <div class="list-item-cell jobs-list-item-title">
                 <div class="item-title single">
-                    <a href="/job/{{_id}}">{{displayName}}</a> <span class="item-title-more">&#8212; <a href="/contactable/{{customer}}">{{customerName}}</a></span>
+                    <a href="/job/{{_id}}">{{displayName}}</a> <span class="item-title-more">&#8212; <a
+                        href="/contactable/{{customer}}">{{customerName}}</a></span>
+
+                    <span class="item-label prefix-10">{{lookUpName status}}</span>
+                    <span class="item-label" data-status="{{lookUpName activeStatus}}">{{lookUpName activeStatus}}</span>
+                    <span class="item-label">{{displaySearchKey _id}}</span>
                 </div>
             </div>
             <div class="list-item-details jobs-list-item-details">
-                <div class="list-item-cell jobs-list-item-placements"><span class="hidden-xs"><a class="btn-round" href="#"><span>10</span></a></span> <span class="visible-xs"><strong>0</strong> Placements</span></div>
-                <div class="list-item-cell jobs-list-item-status"><span class="item-label">{{lookUpName status}}</span> <span class="item-label" data-status="Inactive">{{lookUpName activeStatus}}</span></div>
-                <div class="list-item-cell jobs-list-item-code ">{{displaySearchKey _id}}</div>
+                <div class="list-item-cell jobs-list-item-placements">
+                    <span class="hidden-xs"><span class="btn-round-placeholder">{{countPlacements}}</span></span>
+                    <span class="visible-xs"><strong>{{countPlacements}}</strong> Placements</span>
+                </div>
                 <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell jobs-list-item-time">
-                   <span class="time-text">
-                       {{#formattedDate value=dateCreated format='lll'}}
-                           {{date}}
-                       {{/formattedDate}}
-                   </span>
+                    {{#formattedDate value=dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
                 </div>
-            </div><!-- /.list-item-cell -->
-        </div><!-- /.jobs-list-item -->
+            </div>
+            <!-- /.list-item-cell -->
+        </div>
+        <!-- /.jobs-list-item -->
     {{else}}
         <div class="list-item jobs-list-item">
             <div class="list-item-cell list-item-icon">
@@ -222,11 +236,13 @@
             </div>
             <div class="list-item-cell jobs-list-item-title">
                 <div class="item-title"><a href="/job/{{_id}}">{{displayName}}</a></div>
-                <div class="item-subtitle"><a href="/contactable/{{customer}}">{{customerName}} {{#if departmentName}}&#8212; {{departmentName}}{{/if}}</a></div>
+                <div class="item-subtitle"><a href="/contactable/{{customer}}">{{customerName}} {{#if departmentName}}
+                    &#8212; {{departmentName}}{{/if}}</a></div>
             </div>
             <div class="list-item-details jobs-list-item-details">
                 <div class="list-item-cell jobs-list-item-placements">
-                    <span class="hidden-xs"><a class="btn-round" href="/job/{{_id}}/placements"><span>{{countPlacements}}/{{countRequired}}</span></a></span>
+                    <span class="hidden-xs"><a href="/job/{{_id}}/placements"><span>{{countPlacements}}
+                        /{{countRequired}}</span></a></span>
                     <span class="visible-xs"><strong>{{countPlacements}}1</strong> Placement</span>
                 </div>
                 <div class="list-item-cell jobs-list-item-status">
@@ -235,11 +251,9 @@
                 <div class="list-item-cell jobs-list-item-code ">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell jobs-list-item-time">
-                   <span class="time-text">
-                       {{#formattedDate value=dateCreated format='lll'}}
-                           {{date}}
-                       {{/formattedDate}}
-                   </span>
+                   {{#formattedDate value=dateCreated format='fromNow'}}
+                       {{date}}
+                   {{/formattedDate}}
                 </div>
                 <div class="list-item-cell item-overflow jobs-item-overflow">
                     <a href="#">
@@ -250,13 +264,16 @@
                         </span>
                     </a>
                 </div>
-            </div><!-- /.list-item-cell -->
-        </div><!-- /.jobs-list-item -->
+            </div>
+            <!-- /.list-item-cell -->
+        </div>
+        <!-- /.jobs-list-item -->
     {{/if}}
 </template>
 
 <template name="jobInformation">
-    <span class="item-label">{{lookUpName status}}</span> <span class="item-label" data-status="{{lookUpName activeStatus}}">{{lookUpName activeStatus}}</span>
+    <span class="item-label">{{lookUpName status}}</span> <span class="item-label"
+                                                                data-status="{{lookUpName activeStatus}}">{{lookUpName activeStatus}}</span>
     {{#if location.displayName}}
         <button class="btn-round" type="button"
                 data-container="body" data-toggle="popover" data-placement="top" data-html="true"

@@ -121,6 +121,10 @@ var setSortField = function(field) {
  * Callbacks
  */
 Template.placementsBox.created = function(){
+    if (!SubscriptionHandlers.PlacementHandler){
+        SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
+    }
+    PlacementHandler = SubscriptionHandlers.PlacementHandler;
     query = query || loadqueryFromURL(Router.current().params);
 
     var entityId = Session.get('entityId');
@@ -136,10 +140,7 @@ Template.placementsBox.created = function(){
 };
 
 Template.placementList.created = function () {
-    if (!SubscriptionHandlers.PlacementHandler){
-        SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
-    }
-    PlacementHandler = SubscriptionHandlers.PlacementHandler;
+
 
     Meteor.autorun(function () {
         var searchQuery = {};
@@ -235,6 +236,9 @@ Template.placementListHeader.helpers({
 Template.placementListSearch.helpers({
     isJob: function () {
         if (entityType == Enums.linkTypes.job.value) return true;
+    },
+    showAddButton: function() {
+        return entityType == Enums.linkTypes.job.value;
     },
     searchString: function () {
         return query.searchString;
@@ -366,6 +370,9 @@ Template.placementInformation.helpers({
  */
 // List Search - Events
 Template.placementListSearch.events({
+    'keyup #searchString': _.debounce(function(e){
+        query.searchString.value = e.target.value;
+      },200),
     'click #toggle-filters': function(e){
         if( $(e.currentTarget).attr('data-view') == 'normal' ){
             $('body .network-content #column-filters').addClass('hidden');

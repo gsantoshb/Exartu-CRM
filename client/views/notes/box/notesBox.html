@@ -43,12 +43,12 @@
                         <div class="list-actions-cell search-list">
                             <div class="input-group">
                                 {{#objectProperty property=filters.searchString editable=true}}
-                                    <input type="text" class="form-control" placeholder="Search notes"
+                                    <input id="searchString" type="text" class="form-control" placeholder="Search notes"
                                            value="{{value}}">
                                 {{/objectProperty}}
 
                                 <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button">
+                                    <button class="btn btn-search" type="button">
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </span>
@@ -64,9 +64,8 @@
 
                     <div class="list-header notes-list-header">
                         <div class="list-header-cell notes-list-header-title">Title</div>
-                        <div class="list-header-cell notes-list-header-owner">Owner</div>
+                        <div class="list-header-cell notes-list-header-linked">Linked</div>
                         <div class="list-header-cell notes-list-header-edit">Last Edit</div>
-                        <div class="list-header-cell notes-list-header-time">Date</div>
                     </div>
 
                     <!-- Entities list -->

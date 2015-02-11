@@ -55,9 +55,10 @@ Template.newFileActivity.helpers({
         return ContactablesFiles.findOne(this.entityId);
     },
     contactable: function () {
+
         var id;
         if (this.links && this.links[0]) id = this.links[0];
-        if (this.links && this.links[0]) id = this.links[1]; // hack because links were incorrect at one point
+        if (this.links && !this.links[0]) id = this.links[1]; // hack because links were incorrect at one point
         return Contactables.findOne(id);
     }
 });

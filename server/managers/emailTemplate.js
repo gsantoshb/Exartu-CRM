@@ -38,7 +38,7 @@ EmailTemplateManager = {
 
     return result;
   },
-  sendTemplate: function (templateId, entities, recipient) {
+  sendEmailTemplate: function (templateId, entities, recipient) {
     var self = this;
     var template = EmailTemplates.findOne(templateId);
 

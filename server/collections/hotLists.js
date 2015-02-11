@@ -3,6 +3,19 @@ HotListView = new View('hotLists', {
   collection: HotLists,
   cursors: function(hotList)
   {
+      // Customer
+      this.publish({
+          cursor: function (hotlist) {
+              var members = (hotlist.members) ? hotlist.members : [];
+              return Contactables.find({_id: {$in : members}});
+          },
+          to: 'contactables',
+          observedProperties: ['customer'],
+          onChange: function (changedProps, oldSelector) {
+              oldSelector._id = changedProps.customer;
+              return Contactables.find(oldSelector, {fields: flds});
+          }
+      });
   }
 });
 
@@ -24,6 +37,9 @@ Meteor.paginatedPublish(HotListView, function()
 
 Meteor.publish('singleHotList', function (id) {
   return  HotListView.find({_id: id});
+});
+Meteor.publish('auxHotLists', function (id) {
+    return  HotListView.find({members: id});
 });
 
 

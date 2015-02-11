@@ -10,6 +10,9 @@
         </div>
         <div class="container-fluid">
             <div class="row">
+                <div class="checkbox">
+                    Hierarchy object: {{tenantJSON}}
+                </div>
                 {{#with tenantContext}}
 
                     <div class="checkbox">
@@ -29,17 +32,16 @@
                 </span>
                 {{/with}}
             </div>
+
             <div class="row">
-                <div class="box-title">Tenant Users: ({{usersCount}})</div>
-
+                <h1 class="box-title">Tenant Users: ({{usersCount}})</h1>
                 {{#each users}}
-
                     <div class="table-items-box">
                         <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
                             <div class="row">
                                 <div class="col-xs-3">
                                     <div class="table-item-cell" data-bind="foreach: $data.emails">
-                                            <a href="/tenantUser/{{_id}}">{{_id}}</a>
+                                        <a href="/tenantUser/{{_id}}">{{_id}}</a>
                                     </div>
                                 </div>
                                 <div class="col-xs-3">
@@ -51,7 +53,6 @@
                                         {{/each}}
                                     </div>
                                 </div>
-
                                 <div class="col-xs-3">
                                     <div class="checkbox">
                                         <label>
@@ -73,7 +74,23 @@
                     </div>
                 {{/each}}
             </div>
+            <div class="row">
+                <h2 class="box-title">Tenant Activities:</h2>
+                <div class="table-items-box">
+
+                    {{#each activities}}
+                        <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    {{#with data}}
+                                        {{dateCreated}}{{displayName}}
+                                    {{/with}}
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
         </div>
     </div>
-
 </template>

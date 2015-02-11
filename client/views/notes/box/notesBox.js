@@ -40,7 +40,6 @@ Template.notesBox.created = function () {
   if (entityType != null) isEntitySpecific = true;
 
   Meteor.autorun(function () {
-
     var urlQuery = new URLQuery();
 
     var queryObj = noteQuery.getObject();
@@ -95,7 +94,7 @@ Template.notesBox.helpers({
     return NotesHandler.totalCount();
   },
   users: function () {
-    return Meteor.users.find();
+      return Meteor.users.find({},{sort: {'emails.address':1}});
   },
   notes: function () {
     return Notes.find();
@@ -113,6 +112,10 @@ Template.notesBox.helpers({
 });
 
 Template.notesBox.events({
+  'keyup #searchString': _.debounce(function(e){
+      noteQuery.searchString.value = e.target.value;
+	  console.log(noteQuery.getObject().searchString);
+    },200),
   'click .addNote': function () {
     if (!isEntitySpecific)
       Utils.showModal('addEditNote');

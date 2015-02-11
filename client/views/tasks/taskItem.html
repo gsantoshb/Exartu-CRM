@@ -8,22 +8,32 @@
                 <a href="#" class="editTask ">{{>showMore text=msg limit=60}}</a>
             </div>
             <div class="item-subtitle">
-                <a href="#">{{displayUserName userId}}</a> <i class="fa fa-long-arrow-right"></i> <a href="#">{{displayUserName assign}}</a>
-                <span class="time-text">
-                    {{#formattedDate value=dateCreated format='lll'}}
-                        {{date}}
-                    {{/formattedDate}}
-                </span>
+                {{displayUserName userId}} <i class="fa fa-long-arrow-right"></i> {{displayUserName assign}}
+            </div>
+            <div class="item-subtitle-more">
+                by {{displayUserName userId}} &nbsp;&nbsp;
+                {{#formattedDate value=dateCreated format='fromNow'}}
+                    {{date}}
+                {{/formattedDate}}
             </div>
         </div>
         <div class="list-item-details tasks-list-item-details">
-            <div class="list-item-cell tasks-list-item-owner">{{displayUserName userId}}</div>
-            <!--<div class="list-item-cell tasks-list-item-startdate">-->
-                <!--<span class="visible-xs">Started:</span>-->
-                <!--{{#formattedDate value=begin format='lll'}}-->
-                    <!--{{date}}-->
-                <!--{{/formattedDate}}-->
-            <!--</div>-->
+            <div class="list-item-cell tasks-list-item-linked">
+                {{#if hasLinks}}
+                    {{#each links}}
+                        <a href="{{getHref}}">
+                            {{#with getEntity}}
+                                <span class="item-label">{{displayName}}</span>
+                            {{/with}}
+                        </a>
+                    {{/each}}
+                {{/if}}
+            </div>
+            <div class="list-item-cell tasks-list-item-startdate">
+                {{#formattedDate value=begin format='lll'}}
+                    {{date}}
+                {{/formattedDate}}
+            </div>
             <div class="list-item-cell tasks-list-item-status">{{>taskLabel}}</div>
             <div class="list-item-cell item-overflow tasks-item-overflow">
                 <a href="#">
@@ -45,50 +55,38 @@
         <span class="item-label-2 label-{{getStatus}}">{{state}}</span>&nbsp;
 
         {{#if statusIs 'pending'}}
-            {{#formattedDate value=end format='fromNow'}}
-                {{date}}
-            {{/formattedDate}}
+            {{#if end}}
+                {{#formattedDate value=end format='lll'}}
+                    {{date}}
+                {{/formattedDate}}
+            {{else}}
+                <em>no end date</em>
+            {{/if}}
         {{/if}}
         {{#if statusIs 'completed'}}
-            {{#formattedDate value=completed format='fromNow'}}
+            {{#formattedDate value=completed format='lll'}}
                 {{date}}
             {{/formattedDate}}
         {{/if}}
         {{#if statusIs 'overDue'}}
-            {{#formattedDate value=end format='fromNow'}}
+            {{#formattedDate value=end format='lll'}}
                 {{date}}
             {{/formattedDate}}
         {{/if}}
-    {{/if}}
-
-    {{#if hasLinks}}
-    <div id="link-{{_id}}" >
-        {{#each links}}
-            <a href="{{getHref}}">
-                {{#with getEntity}}
-                    <span class="badge">{{displayName}}</span>
-                {{/with}}
-            </a>
-        {{/each}}
-    </div>
-
-    <!--<button data-content="" data-placement="top" data-toggle="popover" data-container="body" type="button" class="btn-users" data-html="true" data-link="link-{{_id}}" data-init="off">-->
-        <!--<i class="fa fa-users"></i>-->
-    <!--</button>-->
     {{/if}}
 
 </template>
 
 <template name="showTaskDate">
     {{#if end}}
-            {{#if statusIs 'pending'}}
-                <span class="item-label-2 label-pending">Pending</span>
-            {{/if}}
-            {{#if statusIs 'completed'}}
-                <span class="item-label-2 label-completed">Completed</span>
-            {{/if}}
-            {{#if statusIs 'overDue'}}
-                <span class="item-label-2 label-overdue">Over Due</span>
-            {{/if}}
+        {{#if statusIs 'pending'}}
+            <span class="item-label-2 label-pending">Pending</span>
+        {{/if}}
+        {{#if statusIs 'completed'}}
+            <span class="item-label-2 label-completed">Completed</span>
+        {{/if}}
+        {{#if statusIs 'overDue'}}
+            <span class="item-label-2 label-overdue">Over Due</span>
+        {{/if}}
     {{/if}}
 </template>

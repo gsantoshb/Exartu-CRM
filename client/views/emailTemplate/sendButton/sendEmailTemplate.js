@@ -1,6 +1,6 @@
-Template.sendTemplate.helpers({});
+Template.sendEmailTemplate.helpers({});
 
-Template.sendTemplate.events({
+Template.sendEmailTemplate.events({
   'click .btn': function () {
     if (!this.recipient){
       $.gritter.add({
@@ -11,7 +11,7 @@ Template.sendTemplate.events({
         time: 2000
       });
     }else{
-      Utils.showModal('sendTemplateModal', this);
+      Utils.showModal('sendEmailTemplateModal', this);
     }
   }
 });
@@ -23,19 +23,18 @@ var preview = new ReactiveVar();
 var templateId = new ReactiveVar();
 var sending = new ReactiveVar();
 var entities;
-Template.sendTemplateModal.helpers({
-  created: function () {
+Template.sendEmailTemplateModal.created= function() {
     Meteor.subscribe('emailTemplates');
     Meteor.subscribe('emailTemplateMergeFields');
+    Meteor.subscribe('allEmailTemplates');
     preview.set('');
     missingTypes = [];
     entities = [];
-  },
+};
+Template.sendEmailTemplateModal.helpers({
   templates: function () {
-    var context = this[0],
-      q = context.category ? {category : context.category} : {};
-
-    return EmailTemplates.find(q);
+    var context = this[0], q = context.category ? {category : { $in: context.category}} : {};
+    return AllEmailTemplates.find(q);
   },
   missingTypes: function () {
     missingTypesDep.depend();
@@ -107,7 +106,7 @@ Template.sendTemplateModal.helpers({
     return  sending.get() || templateId.get() == undefined || missingTypes.length > 0;
   }
 });
-Template.sendTemplateModal.events({
+Template.sendEmailTemplateModal.events({
   'change #template': function (e, ctx) {
     templateId.set(e.target.value);
     var template = EmailTemplates.findOne(e.target.value),
@@ -122,7 +121,7 @@ Template.sendTemplateModal.events({
     var context = this[0];
 
     sending.set(true);
-    Meteor.call('sendTemplate', templateId.get(), entities, context.recipient, function (err, result) {
+    Meteor.call('sendEmailTemplate', templateId.get(), entities, context.recipient, function (err, result) {
       if (err){
         console.log(err);
       }else{

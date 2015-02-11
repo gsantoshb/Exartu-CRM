@@ -33,7 +33,7 @@
 <template name="contactable_header">
     {{#if pictureFileId}}
         <div class="profile-pic">
-            <div class="thumb thumb-md profile-pic-photo"  style="cursor: pointer;">
+            <div class="thumb thumb-md profile-pic-photo" style="cursor: pointer;">
                 <a id="edit-pic" title="Click to Edit" class="pointer">
                     <img class="" src="{{pictureUrl}}" style="max-height: 40px;max-width: 40px;">
                 </a>
@@ -81,6 +81,10 @@
             {{/if}}
         </strong>
         <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
+
+        {{#if isAppCenterUser}}
+            <small><span class="label label-info">Applicant Center user</span></small>
+        {{/if}}
     </h1>
     <p class="profile-address">
 
@@ -109,7 +113,7 @@
 </template>
 
 <template name="contactable_notes">
-        {{> notesTab}}
+    {{> notesTab}}
 </template>
 
 <template name="contactable_documents">
@@ -132,22 +136,62 @@
 
 <template name="contactable_details">
     <row>
-    <div class="col-md-6">
-        {{> contactableDetailBox}}
+        <div class="col-md-6">
+            {{> contactableDetailBox}}
 
-        {{> contactableContactMethodsBox}}
+            {{> contactableContactMethodsBox}}
 
-        {{#if Contact}}
-            {{> contactCustomerInfo customer=Contact.customer path='Contact.customer' collection=collection}}
-        {{/if}}
-    </div>
-    <div class="col-md-6">
+            {{#if Contact}}
+                {{> contactCustomerInfo customer=Contact.customer path='Contact.customer' collection=collection}}
+            {{/if}}
+        </div>
+        <div class="col-md-6">
 
-        {{> contactable_contacts}}
-        {{>tagsBox}}
-        {{>addressList}}
-    </div>
+            {{> contactable_contacts}}
+            {{>tagsBox}}
+            {{>hotListMembershipsBox}}
+            {{>addressList}}
+        </div>
     </row>
+</template>
+<template name="hotListMembershipsBox">
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action editHotList pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i
+                    class="fa fa-pencil"></i></a>
+
+
+            <div class="box-title">HotList Memberships</div>
+        </div>
+        <div class="box-content-md">
+            <div class="panel-body no-padding">
+                <div class="row">
+                    {{#with recentHotList}}
+                        <button type="button" class="btn btn-success addHotList" title="Add">
+                            <span class="fa fa-plus"></span> Add: {{hotListDisplayName}} ({{hotListId}})
+                        </button>
+                    {{/with}}
+                </div>
+                <ul class="list-3 stripped">
+                    {{#each hotListMemberships}}
+                        <li>
+                            <!-- Name -->
+                            <div class="col-xs-12 no-padding">
+                                <a href="/hotlist/{{_id}}">
+                                    <strong>
+                                        <span class="badge">{{displayName}}</span>
+                                    </strong>
+                                </a>
+                                <span class="task-author text-center">{{_id}}</span>
+                                <button class="btn btn-xs btn-default removeHotList"><i class="fa fa-times"></i> remove
+                                </button>
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
 </template>
 
 <template name="contactable_HRConcourse">
@@ -168,7 +212,7 @@
                         <li>
                             <a id="makeEmployee" class="btn btn-default btn-custom-with-circle action-btn">
                                 <span class="btn-round"><i class="fa fa-exchange"></i></span>
-                                <span style="white-space: normal;"> Add also as an employee</span>
+                                <span style="white-space: normal;"> Make into an Employee</span>
                             </a>
                         </li>
                     {{/if}}
@@ -178,7 +222,7 @@
                         <li>
                             <a id="makeContact" class="btn btn-default btn-custom-with-circle action-btn">
                                 <span class="btn-round"><i class="fa fa-exchange"></i></span>
-                                <span style="white-space: normal;">Add also as a contact</span>
+                                <span style="white-space: normal;">Make into a Contact</span>
                             </a>
                         </li>
                     {{/if}}
@@ -189,13 +233,28 @@
                             <span class="btn-round"><i class="fa fa-file"></i></span>
                             Build resume/cv
                         </a>
-                        <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
+                        <a id="download-generated-resume" target="_blank"
+                           download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
                     </li>
+
+                    <!-- Applicant Center user status -->
+                    {{#unless isAppCenterUser}}
+                        <li>
+                            <a id="sendAppCenterInvite" class="btn btn-default btn-custom-with-circle action-btn">
+                                <span class="btn-round"><i class="fa fa-envelope"></i></span>
+                                {{#unless alreadyInvited}}
+                                    <span style="white-space: normal;">Invite to App Center</span>
+                                {{else}}
+                                    <span style="white-space: normal;">Resend AC invitation</span>
+                                {{/unless}}
+                            </a>
+                        </li>
+                    {{/unless}}
                 {{/if}}
 
                 <li>
                     {{#if hasEmailAddress}}
-                    {{>sendTemplate emailTemplateContext}}
+                        {{>sendEmailTemplate emailTemplateContext}}
                     {{/if}}
                 </li>
             </ul>
@@ -233,7 +292,9 @@
                             <a id="generate-resume">
                                 <span><i class="fa fa-file"></i></span>
                                 Generate resume
-                                <a id="download-generated-resume" target="_blank" download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
+                                <a id="download-generated-resume" target="_blank"
+                                   download="{{person.firstName}}-{{person.lastName}}-Resume.pdf"
+                                   style="display: none"></a>
                             </a>
                         </li>
                     {{/if}}
@@ -257,7 +318,7 @@
             </div>
         </div>
         <!--<div id="breadcrumb">-->
-            <!--<a href="/" title="" class="tip-bottom" data-original-title="Go to Home"><i class="fa fa-home"></i> Home</a>-->
+        <!--<a href="/" title="" class="tip-bottom" data-original-title="Go to Home"><i class="fa fa-home"></i> Home</a>-->
         <!--</div>-->
         <div class="container-fluid" style="background-color: #F6F6F6;">
             <div class="page-loader" style="height: 748px; background-color: #FFF;border: solid 1px #DFDFDF;">

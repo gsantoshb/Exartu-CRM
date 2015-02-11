@@ -26,3 +26,8 @@ Meteor.publish('emailTemplateMergeFields', function () {
 });
 
 Emails = new Mongo.Collection('emails');
+Meteor.publish('allEmailTemplates', function () {
+    var sub = this;
+    Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, EmailTemplates.find({} )), sub, 'allEmailTemplates');
+    sub.ready();
+});

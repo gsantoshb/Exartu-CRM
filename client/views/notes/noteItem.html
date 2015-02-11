@@ -4,48 +4,43 @@
             <a href="#" class="item-icon item-icon-notes editNote"><i class="icon icon-pencil-3"></i></a>
         </div>
         <div class="list-item-cell notes-list-item-title">
-            <div class="item-title single"><a class="editNote" href="#">{{>showMore text=msg limit=60}}</a> </div>
-        </div>
-        <div class="list-item-details notes-list-item-details">
-            <div class="list-item-cell notes-list-item-owner">{{displayUserName userId}}</div>
-            <div class="list-item-cell notes-list-item-edit">
-                <i class="fa fa-clock-o"></i>&nbsp;
+            <div class="item-title"><a class="editNote" href="#">{{>showMore text=msg limit=60}}</a></div>
+            <div class="item-subtitle text-gray">by <a href="#">{{displayUserName userId}}</a>&nbsp;&nbsp;
                 {{#formattedDate value=dateCreated format='fromNow'}}
                     {{date}}
                 {{/formattedDate}}
             </div>
-            <div class="list-item-cell notes-list-item-time">
+        </div>
+        <div class="list-item-details notes-list-item-details">
+            <div class="list-item-cell notes-list-item-linked">
+                {{#if hasLinks}}
+                    <div id="link-{{_id}}" >
+                        {{#each links}}
+                            <a href="{{getHref}}">
+                                {{#with getEntity}}
+                                    <span class="badge item-label">{{displayName}}</span>
+                                {{/with}}
+
+                            </a>
+                        {{/each}}
+                    </div>
+                {{/if}}
+            </div>
+            <div class="list-item-cell notes-list-item-edit">
+                <i class="fa fa-clock-o"></i>&nbsp;
                 {{#formattedDate value=dateCreated format='lll'}}
                     {{date}}
                 {{/formattedDate}}
-
-
-            {{#if hasLinks}}
-                <div id="link-{{_id}}" >
-                    {{#each links}}
-                        <a href="{{getHref}}">
-                            {{#with getEntity}}
-                                <span class="badge">{{displayName}}</span>
-                            {{/with}}
-
-                        </a>
-                    {{/each}}
-                </div>
-
-                <!--<button data-content="" data-placement="top" data-toggle="popover" data-container="body" type="button" class="btn-users" data-html="true" data-link="link-{{_id}}" data-init="off">-->
-                    <!--<i class="fa fa-users"></i>-->
-                <!--</button>-->
-            {{/if}}
             </div>
-            <!--<div class="list-item-cell item-overflow notes-item-overflow">-->
-                <!--<a href="#">-->
-                  <!--<span class="ico-more">-->
-                    <!--<span class="dot-1"></span>-->
-                    <!--<span class="dot-2"></span>-->
-                    <!--<span class="dot-3"></span>-->
-                  <!--</span>-->
-                <!--</a>-->
-            <!--</div>-->
+            <div class="list-item-cell item-overflow notes-item-overflow">
+                <a href="#">
+                      <span class="ico-more">
+                        <span class="dot-1"></span>
+                        <span class="dot-2"></span>
+                        <span class="dot-3"></span>
+                      </span>
+                </a>
+            </div>
         </div><!-- /.list-item-cell -->
     </div>
 </template>

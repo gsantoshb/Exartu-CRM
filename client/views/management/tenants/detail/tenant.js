@@ -1,8 +1,15 @@
+var hierId ;
+var userId;
 TenantController = RouteController.extend({
     template: 'tenant',
     layoutTemplate: 'mainLayout',
     waitOn: function () {
-        return [Meteor.subscribe('singleTenant', this.params._id)];
+        hierId=this.params._id;
+        SubscriptionHandlers.TenantUserHandler = TenantUserHandler = SubscriptionHandlers.TenantUserHandler
+        || Meteor.paginatedSubscribe('tenantUsers');
+        SubscriptionHandlers.TenantActivitiesHandler = TenantActivitiesHandler = SubscriptionHandlers.TenantActivitiesHandler
+        || Meteor.paginatedSubscribe('tenantActivities');
+        return [Meteor.subscribe('singleTenant',hierId),TenantUserHandler ];
     },
     data: function () {
         Session.set('tenantId', this.params._id);
@@ -18,27 +25,32 @@ TenantController = RouteController.extend({
 
     }
 });
-var hierId ;
-var userId;
+
 Template.tenant.created= function() {
-    hierId=Session.get('tenantId');
     userId=Meteor.user()._id;
 }
 Template.tenant.helpers({
+    tenantJSON: function()
+    {
+        var tenant = Tenants.findOne(hierId);
+        console.log('tenant',hierId,tenant);
+        return JSON.stringify(tenant);
+    },
     tenantContext: function () {
-        if (hierId) {
             var tenant = Tenants.findOne(hierId);
             return tenant;
-        }
     },
     users: function () {
-        return Meteor.users.find({hierarchies: hierId});
+        return TenantUsers.find({hierarchies: hierId});
+    },
+    activities: function () {
+        return TenantActivities.find({hierId: hierId},{sort: {'data.dateCreated':-1}});
     },
     usersCount: function() {
-        return Meteor.users.find({hierarchies: hierId}).count();
+        return TenantUsers.find({hierarchies: hierId}).count();
     },
     isMember: function() {
-        var member=Meteor.users.findOne({hierarchies: hierId,_id: userId});
+        var member=TenantUsers.findOne({hierarchies: hierId,_id: userId});
         return (member) ? true: false;
     }
 });

@@ -62,6 +62,13 @@ Template.contactableDetailBox.helpers({
   },
   hideTaxID: function () {
     return hideTaxID.get();
+  },
+  datePickerOptions: function () {
+    return {
+      format: "MM dd, yyyy",
+      minViewMode: "days",
+      startView: "months"
+    }
   }
 });
 

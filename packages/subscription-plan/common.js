@@ -11,7 +11,7 @@ SubscriptionPlan.getUserPlan = function() {
   var user = Meteor.users.findOne({_id: Meteor.userId()});
 //  console.dir(user);
 
-  var hier = Hierarchies.findOne({_id: user.hierId});
+  var hier = Hierarchies.findOne({_id: user.currentHierId});
 //  console.dir(hier);
 
   if(!hier)

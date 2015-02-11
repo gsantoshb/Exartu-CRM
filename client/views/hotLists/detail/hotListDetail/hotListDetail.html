@@ -33,22 +33,6 @@
                                     {{/objectProperty}}
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <i class="fa fa-info-circle"></i>&nbsp;Type:
-                                </td>
-                                <td>
-                                    {{#objectProperty property=objType editable=editMode}}
-                                        {{> buttonGroup options=fetchObjTypeOptions value=value onSelected=onSelectedStatus}}
-                                    {{else}}
-                                        <strong>
-                                            <strong>{{getObjTypeName}}</strong>
-                                        </strong>
-                                    {{/objectProperty}}
-                                </td>
-                            </tr>
-
-
                         {{/with}}
                         {{#with originalHotList}}
                             {{>displayOriginDataInline}}

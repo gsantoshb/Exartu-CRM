@@ -15,11 +15,12 @@
             <div class="row">
                 <div class="details-menu col-md-2">
                     {{>hotList_nav}}
+                    {{>hotList_actions}}
                 </div>
                 <div class="details-view col-md-10">
                     <div class="details-view-content clearfix">
                         <div class="tab-pane active">
-                            {{> UI.dynamic template=currentTemplate  data=hotList }}
+                            {{> UI.dynamic template=currentTemplate  data=hotList  }}
                         </div>
                     </div>
 
@@ -38,9 +39,11 @@
 </template>
 
 
-
 <template name="hotList_notes">
-    {{> notesBox}}
+    {{> notesTab}}
+</template>
+<template name="hotList_responses">
+    {{> notesTab  }}
 </template>
 
 <template name="hotList_details">
@@ -51,7 +54,43 @@
         {{> contactableContactsBox}}
 
     </div>
+
     <div class="col-sm-6">
-        {{#with originalHotList}}{{>tagsBox  }}{{/with}}
+        {{>hotListMembers  }}
+    </div>
+</template>
+<template name="hotListMembers">
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action editHotList pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i
+                    class="fa fa-pencil"></i></a>
+
+            <div class="box-title">HotList Members ({{memberCount}})</div>
         </div>
+        <div class="box-content-md">
+            <div class="panel-body no-padding">
+                <ul class="list-3 stripped">
+                    {{#each hotListMembers}}
+                        <li>
+                            <!-- Name -->
+                            <div class="col-xs-12 no-padding">
+                                    <a href="/contactable/{{_id}}">
+                                        <strong>
+                                            <span class="badge">{{displayName}}</span>
+                                        </strong>
+                                    </a>
+                                    <span class="task-author text-center">{{_id}}</span>
+                                    <button class="btn btn-xs btn-default remove"><i class="fa fa-times"></i> remove
+                                    </button>
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="hotList_actions">
+
 </template>

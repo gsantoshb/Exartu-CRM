@@ -1,232 +1,112 @@
 <template name="hotListsBox">
     <div class="row">
-        <div class="col-md-3 col-lg-3">
-            {{> hotListsFilters }}
+        <div class="col-md-3 col-lg-3" id="column-filters">
+            {{> hotListFilters hotListCount=hotListCount}}
         </div>
+        <div class="col-md-9" id="column-list">
+            <div class="list-container">
+                <div class="list-holder">
 
-        <div class="col-md-8 col-lg-8">
-            {{>hotListListSearch}}
-        </div>
-
-        <div class="col-md-9 col-lg-9">
-            {{#if isSearching}}
-                searching
-            {{else}}
-                {{> hotListList }}
-            {{/if}}
-        </div>
-    </div>
-</template>
-
-<template name="hotListsFilters">
-    <div class="filter">
-        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-            <strong><i class="fa fa-filter"></i></strong>
-        </a>
-
-        <div class="filter-list" id="filter-body">
-            {{> filter_entityType types=contactableTypes selected=query.objType}}
-
-            {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
-
-
-            {{> filter_dateCreated selectedLimit=query.selectedLimit}}
-
-            {{> filter_tags tags=query.tags}}
-        </div>
-    </div>
-</template>
-
-<template name="hotListList">
-    <div>
-        {{>fastPagination name='hotLists'}}
-        {{#if isLoading}}
-            <div style="height: 280px;">
-            </div>
-        {{else}}
-            <div class="fade-in">
-                {{#each hotLists}}
-                    {{> hotListListItem }}
-                {{else}}
-                    {{#if info.isFiltering.value }}
-                        <div class="v-wrapper">
-                            <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                                <i class="icon-connection-1 text-large"></i>
-
-                                <h1>
-                                    No records Found
-                                </h1>
-                            </div>
-                        </div>
-                    {{/if}}
-                {{/each}}
-            </div>
-        {{/if}}
-    </div>
-</template>
-
-<template name="hotListListItem">
-    <div class="table-item magic">
-            <div>
-                <div class="table-item-cell">
-                    <div class="table-item-cell-container">
-                        <div class="table-item-title">
-                            <a href="/hotList/{{_id}}">
-                                <strong>
-                                    {{displayName}}
-                                </strong>
-                            </a>
-                            <span class="task-author">
-                                {{#if startDate}}
-                                    {{#formattedDate value=startDate}}
-                                        {{date}}
-                                    {{/formattedDate}}
-                                {{/if}}
-                                {{#each this.hotListRates}}
-                                    {{getRateTypeDisplayName}}
-                                    {{bill}}/{{pay}}
-
-
-                                    <br/>
-                                {{/each}}
-
-                                <span class="pull-right">
-                                      <span class="task-author">
-                                          {{displayUserName userId}}
-                                      </span>
-                                      <span class="task-author">
-                                          {{_id}}
-                                      </span>
-                                      <span class="task-author">
-                                          {{#formattedDate value=dateCreated format='fromNow'}}
-                                              {{date}}
-                                          {{/formattedDate}}
-                                      </span>
-                                </span>
-                            </span>
-                        </div>
+                    <div class="list-actions">
+                        {{>hotListListSearch}}
                     </div>
+
+                    {{>hotListListHeader}}
+
+                    {{#if isSearching}}
+                        searching
+                    {{else}}
+                        {{> hotListList }}
+                    {{/if}}
+
+                    <div class="list-actions last">
+                        {{#if listIsLoading}}
+                            loading
+                        {{else}}
+                            {{#unless isESSearch}}
+                                {{>fastPagination name="hotLists" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                            {{/unless}}
+                        {{/if}}
+                    </div>
+
                 </div>
             </div>
-
+        </div>
     </div>
 </template>
 
-<template name="hotListInformation">
-    {{#if jobLocationDisplayName}}
-        <i class="icon-map-marker-1"></i>
-        {{jobLocationDisplayName}}
+<template name="hotListListHeader">
+    {{#if listViewMode}}
+        <div class="list-header hotLists-list-header simple-view">
+            <div class="list-header-cell hotLists-list-header-title">Title</div>
+            <div class="list-header-cell hotLists-list-header-code">Code</div>
+            <div class="list-header-cell hotLists-list-header-owner">Owner</div>
+            <div class="list-header-cell hotLists-list-header-time">Date</div>
+        </div>
+        <!-- /.list-header -->
+    {{else}}
+        <div class="list-header hotLists-list-header">
+            <div class="list-header-cell hotLists-list-header-title">Title</div>
+            <div class="list-header-cell hotLists-list-header-status">Status</div>
+            <div class="list-header-cell hotLists-list-header-code">Code</div>
+            <div class="list-header-cell hotLists-list-header-owner">Owner</div>
+            <div class="list-header-cell hotLists-list-header-time">Date</div>
+        </div>
     {{/if}}
-    <small>
-        {{#if startDate}}
-            <i class="icon-calendar-2"></i>
-            Starting on
-            {{#formattedDate value=startDate}}
-                {{date}}
-            {{/formattedDate}}
-        {{/if}}
-    </small>
-    <small>
-        {{#if endDate}}
-            {{#unless startDate}}
-                <i class="icon-calendar-2"></i>
-            {{else}}
-                -
-            {{/unless}}
-            Ending on
-            {{#formattedDate value=endDate}}
-                {{date}}
-            {{/formattedDate}}
-        {{/if}}
-    </small>
-
-    <br/>
-
-    <!-- HotList rates -->
-    {{#each this.hotListRates}}
-        {{getRateTypeDisplayName}}
-        {{bill}}/{{pay}}
-        <br/>
-    {{/each}}
 </template>
 
 <template name="hotListListSearch">
-    <div class="actions-head">
-        <div class="row visible-xs">
-            <div class="col-xs-8">
-                    <div class="btn-group pull-left suffix-5">
-                        <button type="button" class="btn btn-success addHotList" title="Add">
-                            <span class="fa fa-plus"></span>
-                        </button>
-                    </div>
-
-                <div class="input-group">
-                    {{#objectProperty property=searchString}}
-                        <input type="text" class="form-control" placeholder="Search hotLists" value="{{value}}">
-                    {{/objectProperty}}
-
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                     <span class="pointer" style="font-size: 20px;">
-                         {{#if listViewMode}}
-                             <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
-                            <i class="fa fa-bars"></i>
-                         {{else}}
-                             <i class="fa fa-th-large"></i>
-                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
-                         {{/if}}
-                     </span>
-                {{> hotListListSort}}
-            </div>
-
-        </div>
-        <div class="row hidden-xs">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-
-                {{#if isJob}}
-                    <div class="btn-group pull-left suffix-5">
-                        <button type="button" class="btn btn-success addHotList" title="Add">
-                            <span class="fa fa-plus"></span>
-                        </button>
-                    </div>
-                {{/if}}
-                <div class="input-group">
-                    {{#objectProperty property=searchString}}
-                        <input type="text" class="form-control" placeholder="Search HotLists" value="{{value}}">
-                    {{/objectProperty}}
-
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </div>
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                     <span class="pointer" style="font-size: 20px;">
-                         {{#if listViewMode}}
-                             <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
-                            <i class="fa fa-bars"></i>
-                         {{else}}
-                             <i class="fa fa-th-large"></i>
-                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
-                         {{/if}}
-                     </span>
-            </div>
-
-            <div class=" col-sm-2 col-md-2 col-lg-2">
-                {{> hotListListSort}}
-            </div>
+    <div class="list-actions-cell btn-add-to-list">
+        <div class="btn-group">
+            <button type="button" class="btn btn-success addHotList" title="Add">
+                <span class="fa fa-plus"></span> Add
+            </button>
         </div>
     </div>
-</template>
+    <!-- /.btn-add-to-list -->
 
+    <div class="list-actions-cell search-list">
+        <div class="input-group">
+            <span class="prop-input">
+                {{#objectProperty property=searchString}}
+                    <input type="text" class="form-control" placeholder="Search hotLists" value="{{value}}">
+                {{/objectProperty}}
+                <span class="text text-danger"></span>
+            </span>
+            <span class="input-group-btn">
+                <button class="btn btn-search" type="button">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+    <!-- /.search-list -->
+
+    <div class="list-actions-cell view-mode-list">
+        {{#if listViewMode}}
+            <a href="#"><i id="detail-view" class="fa fa-th-list"></i></a>
+            <a class="active" href="#"><i class="fa fa-bars"></i></a>
+        {{else}}
+            <a class="active" href="#"><i class="fa fa-th-list"></i></a>
+            <a href="#"><i id="list-view" class="fa fa-bars"></i></a>
+        {{/if}}
+        <a id="toggle-filters" href="#" data-view="normal"><i class="fa fa-desktop"></i></a>
+    </div>
+    <!-- /.view-mode-list -->
+
+    <div class="list-actions-cell order-list">
+        {{> hotListListSort}}
+    </div>
+    <!-- ./order-list -->
+
+    {{#if listIsLoading}}
+        loading
+    {{else}}
+        {{#unless isESSearch}}
+            {{>fastPagination name="hotLists" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+        {{/unless}}
+    {{/if}}
+</template>
 
 <template name="hotListListSort">
     <div class="btn-group">
@@ -245,7 +125,7 @@
         <ul class="dropdown-menu" role="menu">
             {{#each sortFields}}
                 <li>
-                    <a class="sort-field">
+                    <a class="sort-field" href="#">
                         {{displayName}}
                         {{#if isFieldSelected .}}
                             {{#if isAscSort .}}
@@ -259,4 +139,108 @@
             {{/each}}
         </ul>
     </div>
+</template>
+
+<template name="hotListFilters">
+    <div class="page-title">
+        <h1><span>{{hotListCount}}</span> hotlists</h1>
+    </div>
+
+    <div class="filter">
+        <div class="filter-list" id="filter-body">
+
+            {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
+
+            {{> filter_dateCreated selectedLimit=query.selectedLimit}}
+
+            {{> filter_tags tags=query.tags}}
+        </div>
+    </div>
+</template>
+
+<template name="hotListList">
+    {{#if isLoading}}
+        <div style="height: 280px;"></div>
+    {{else}}
+        <div class="list-item-section {{#if listViewMode}}simple-view{{/if}}">
+            {{#each hotLists}}
+                {{> hotListListItem }}
+            {{else}}
+                {{#if info.isFiltering.value }}
+                    <div class="v-wrapper">
+                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                            <i class="icon-connection-1 text-large"></i>
+
+                            <h1>No records Found</h1>
+                        </div>
+                    </div>
+                {{/if}}
+            {{/each}}
+        </div>
+    {{/if}}
+</template>
+
+<template name="hotListListItem">
+    {{#if listViewMode}}
+        <div class="list-item hotLists-list-item">
+            <div class="list-item-cell hotLists-list-item-title">
+                <div class="item-title">
+                    <div class="item-title"><a href="/hotList/{{_id}}">{{displayName}} </a></div>
+                </div>
+                <div class="item-subtitle">
+                </div>
+            </div>
+            <div class="list-item-details hotLists-list-item-details">
+                <div class="list-item-cell hotLists-list-item-code ">{{displaySearchKey _id}}</div>
+                <div class="list-item-cell hotLists-list-item-owner">{{displayUserName userId}}</div>
+                <div class="list-item-cell hotLists-list-item-time">
+                    {{#formattedDate value=dateCreated format='fromNow'}}
+                        {{date}}
+                    {{/formattedDate}}
+                </div>
+            </div>
+            <!-- /.list-item-cell -->
+        </div>
+    {{else}}
+        <div class="list-item hotLists-list-item">
+            <div class="list-item-cell list-item-icon">
+
+            </div>
+            <div class="list-item-cell hotLists-list-item-title">
+                <div class="item-title"><a href="/hotList/{{_id}}">{{displayName}} </a></div>
+            </div>
+            <div class="list-item-details hotLists-list-item-details">
+                <div class="list-item-cell hotLists-list-item-status">
+                    <div class="list-item-cell hotLists-list-item-status ">{{lookUpName activeStatus}} ({{memberCount}}
+                        )
+                    </div>
+                </div>
+                <div class="list-item-cell hotLists-list-item-code ">{{displaySearchKey _id}}</div>
+                <div class="list-item-cell hotLists-list-item-owner">{{displayUserName userId}}</div>
+                <div class="list-item-cell hotLists-list-item-time">
+                    {{#formattedDate value=dateCreated format='fromNow'}}
+                        <span>{{date}}</span><br>
+                    {{/formattedDate}}
+                </div>
+                <div class="list-item-cell item-overflow hotLists-item-overflow">
+                    <a href="#">
+                        <span class="ico-more">
+                          <span class="dot-1"></span>
+                          <span class="dot-2"></span>
+                          <span class="dot-3"></span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <!-- /.list-item-cell -->
+        </div>
+    {{/if}}
+</template>
+
+<template name="hotListInformation">
+    <span>
+        {{description}}
+
+    </span>
+    <br>
 </template>

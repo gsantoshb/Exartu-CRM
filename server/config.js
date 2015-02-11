@@ -28,5 +28,7 @@ ExartuConfig = {
   TW_authToken: undefined,
   // Nodetime profiler
   Nodetime_Key: undefined,
-  PageSize: 10
+  PageSize: 10,
+  // Applicant Center URL
+  ApplicantCenter_URL: undefined
 };

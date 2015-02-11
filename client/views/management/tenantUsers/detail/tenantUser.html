@@ -3,6 +3,8 @@
 
 
         <div id="content-header" class="mini">
+
+
             {{#with userContext}}
                 <h1>TenantUser {{getUserName}}</h1>
             {{/with}}
@@ -10,6 +12,7 @@
         </div>
         <div class="container-fluid">
             <div class="row">
+                User Object: {{userJSON}}
                 {{#with userContext}}
 
                     <div>
@@ -34,16 +37,21 @@
 </template>
 <template name="tenantUserHierMember">
     <h1>Member</h1>
-    <ul>
-        {{#each hierMember}}
-            <li>
-                {{name}}
-                {{_id}}
-                <a id="removeHier" class="">Remove</a>
-            </li>
-        {{/each}}
 
-    </ul>
+    <div class="tree">
+        <div class="table-items-box">
+            {{#each hierMember}}
+                <div class="table-item">
+                    <div class="row">
+
+                        <a class="col-xs-6 hierarchyItem  {{isSelectedClass}} tree-item" href="/tenant/{{_id}}">{{name}} ({{_id}}) </a>
+                        {{#unless isCurrent}}<a id="removeHier" class="col-xs-3 btn " type="button">Remove</a>
+                        <a id="makeCurrent" class="col-xs-3 btn " type="button">Make Current</a>{{/unless}}
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
 </template>
 <template name="tenantUserHierAvailable">
     <h1>Available</h1>
@@ -53,8 +61,9 @@
     <ul>
         {{#each hierAvailable}}
             <li>
-                {{name}} {{_id}}
-                <a id="addHier" class="">Add</a>
+                <a class="item-title" href="/tenant/{{_id}}">{{name}} </a>
+                {{_id}}
+                <a id="addHier" class="btn btn-default" type="button">Add</a>
             </li>
         {{/each}}
 

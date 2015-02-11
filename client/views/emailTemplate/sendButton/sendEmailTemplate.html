@@ -1,19 +1,20 @@
-<template name="sendTemplate">
-    <a class="btn btn-default btn-custom-with-circle action-btn">Send Template</a>
+<template name="sendEmailTemplate">
+    <a class="btn btn-default btn-custom-with-circle action-btn">
+        <span class="btn-round"><i class="fa fa-envelope"></i></span>Send email</a>
 </template>
 
-<template name="sendTemplateModal">
+<template name="sendEmailTemplateModal">
     <div class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Send template</h4>
+                    <h4 class="modal-title">Send email</h4>
                 </div>
                 <div class="modal-body" style="overflow: auto; max-height: 80vh;">
                     {{#each missingTypes}}
                         <div>
-                            <span> I need a(n) {{objType}} select one here </span>
+                            <span> This template includes {{objType}} fields.  Select one here: &nbsp; </span>
                             {{>asyncSelect query=objTypeQuery placeholder="Search Entity" onChange=entitySelected width='200px'}}
                         </div>
                     {{else}}
