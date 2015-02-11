@@ -1,6 +1,6 @@
 
 ApplicantCenterManager = {
-  createEmployeeForUser: function(userId) {
+  createEmployeeForUser: function(userId, firstName, lastName) {
     // Validate user
     var user = Meteor.users.findOne(userId);
     if (!user) throw new Error('Invalid user ID');
@@ -12,8 +12,8 @@ ApplicantCenterManager = {
       userId: user._id,
       user: user._id,
       person: {
-        "firstName" : user.userEmail,
-        "lastName" : user.userEmail
+        "firstName" : firstName,
+        "lastName" : lastName
       },
       Employee: {}
     });
@@ -56,7 +56,7 @@ ApplicantCenterManager = {
     sendAppCenterInvitation(invitation.email, invitation.hierId, invitation.token);
   },
 
-  syncEmployeeFromInvitation: function (userId, invitationId) {
+  syncEmployeeFromInvitation: function (userId, firstName, lastName, invitationId) {
     // Validate user
     var user = Meteor.users.findOne(userId);
     if (!user) throw new Error('Invalid user ID');
@@ -66,7 +66,11 @@ ApplicantCenterManager = {
     if (!invitation) throw new Error('Invalid invitation ID');
 
     // Update employee information
-    Contactables.update({_id: invitation.employeeId}, {$set: {user: userId}});
+    Contactables.update({_id: invitation.employeeId}, {$set: {
+      user: userId,
+      'person.firstName': firstName,
+      'person.lastName': lastName
+    }});
 
     // Mark invitation as used
     ApplicantCenterInvitations.update({_id: invitationId}, {$set: {used: true}});

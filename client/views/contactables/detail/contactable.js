@@ -190,28 +190,42 @@ Template.contactable_actions.helpers({
         var type = Utils.getContactableType(this);
         var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
         var email = _.find(this.contactMethods, function (cm) {
-            var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
-            if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
+            var cmtype = _.findWhere(contactMethodsTypes, {_id: cm.type});
+            if (cmtype && cmtype.lookUpActions && _.contains(cmtype.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
                 return true;
         });
+        var context = {};
+        if (type.search('/')>-1) {
+            var typearray = type.split(/[\s/]+/); // create array if multi type entity
+            var cats = [];
+            _.forEach(typearray, function (t) {
+                cats.push(Enums.emailTemplatesCategories[t.toLowerCase()]);
+                context[t]=Session.get('entityId');
+            });
+            context.category= cats;
+            context.recipient= email && email.value
+        }
+        else {
 
-        var context = {
-            category: [Enums.emailTemplatesCategories[type.toLowerCase()]],
-            recipient: email && email.value
-        };
-        context[type] = Session.get('entityId');
-        console.log('context from contactable', context, 'type', type, 'email', email);
+            context = {
+                category: [Enums.emailTemplatesCategories[type.toLowerCase()]],
+                recipient: email && email.value
+            };
+            context[type] = Session.get('entityId');
+        }
         return context;
     },
     isAppCenterUser: function () {
         // Registered users have the user property set
         return !!contactable.user;
-    },
+    }
+    ,
     alreadyInvited: function () {
         // Invited users have the invitation property set
         return !!contactable.invitation;
     }
-});
+})
+;
 Template.contactable_actions.events({
     'click #sendAppCenterInvite': function () {
         Utils.showModal('sendAppCenterInvitation', contactable);
@@ -248,6 +262,10 @@ Template.contactable_header.helpers({
     },
     getLocationDisplayName: function () {
         return Utils.getLocationDisplayName(this._id);
+    },
+    isAppCenterUser: function () {
+        // Registered users have the user property set
+        return !!contactable.user;
     }
 });
 
@@ -381,6 +399,8 @@ Template.hotListMembershipsBox.events({
         var id = Session.get('hotListId');
         var hotlist = HotLists.findOne({_id: id});
         hotlist.members.push(contactable._id);
+        hotlist.members = $.unique(hotlist.members);
+
         HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
         hotListMembershipsDep.changed();
     }

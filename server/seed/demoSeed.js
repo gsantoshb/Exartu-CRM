@@ -568,6 +568,7 @@ var loadHotLists = function (hierId) {
     for (var i = 0; i < 10; ++i) {
         var randomEmployee = employees[Math.floor(Math.random() * employees.length)];
         members.push(randomEmployee._id);
+        members = $.unique(members);
     };
     var newHotList = {
         displayName: 'Hotlist Example',

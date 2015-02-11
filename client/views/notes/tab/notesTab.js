@@ -1,4 +1,5 @@
 var self = {};
+
 AutoForm.debug();
 NoteSchema = new SimpleSchema({
     msg: {
@@ -55,14 +56,14 @@ AutoForm.hooks({
                 };
                 doc.links = doc.links || [initialLink];
                 doc.contactableId = Session.get('entityId');
-                if (doc.sendAsSMS && Session.get('entityId')==Session.get('hotListId'))
-                {
-                    var hotlist=HotLists.findOne(Session.get('hotListId'));
+                if (doc.sendAsSMS && Session.get('entityId') == Session.get('hotListId')) {
+                    var hotlist = HotLists.findOne(Session.get('hotListId'));
                     if (!hotlist || !hotlist.members) return false;
-                    var message= 'Send to the ' + hotlist.members.length + ' members of hot list \'' + hotlist.displayName + '\'.  Continue?';
-                    return  (confirm (message)) ? doc: false;
+                    var message = 'Send to the ' + hotlist.members.length + ' members of hot list \'' + hotlist.displayName + '\'.  Continue?';
+                    return (confirm(message)) ? doc : false;
 
-                };
+                }
+                ;
                 return doc;
             }
         }
@@ -70,15 +71,28 @@ AutoForm.hooks({
 });
 self.defaultUserNumber = null;
 self.defaultMobileNumber = null;
-var hotlist=null;
+var hotlist = null;
+var responsesOnly = false;
+var responsesOnlyDep= new Deps.Dependency;
+Template.notesTabAdd.events({
+});
+Template.notesTab.created=function(){
+    if (this.view && this.view.parentView && this.view.parentView.name=="Template.hotList_responses") {
+        responsesOnly = true;
+    }
+    else
+    {
+        responsesOnly=false;
+    }
+}
 Template.notesTabAdd.helpers({
     isHotListNote: function () {
         hotlist = HotLists.findOne(this._id);
-        return (hotlist)? true: false; // hide numbers if hotlist
+        return (hotlist) ? true : false; // hide numbers if hotlist
     },
     isContactableNote: function () {
         var contactable = Contactables.findOne(this._id);
-        return (contactable)? true:false; // hide numbers if hotlist
+        return (contactable) ? true : false; // hide numbers if hotlist
     },
     mobileNumbers: function () {
         var contactable = Contactables.findOne(this._id);
@@ -123,24 +137,36 @@ Template.notesTabList.created = function () {
 
 
     Meteor.autorun(function () {
-        var searchQuery = {
-            links: {
-                $elemMatch: {
-                    id: Session.get('entityId')
-                }
+            responsesOnlyDep.depend();
+            var searchQuery = {};
+
+            if (responsesOnly && hotlist) //means only get responses to a hotlist send
+            {
+                searchQuery['links.id'] = {
+                    $in:  hotlist.members
+                };
             }
-        };
-        if (!SubscriptionHandlers.NotesHandler) {
-            SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-        } else {
-            SubscriptionHandlers.NotesHandler.setFilter(searchQuery);
+            else {
+                searchQuery.links = {
+                    $elemMatch: {
+                        id: Session.get('entityId')
+                    }
+                };
+            }
+            if (!SubscriptionHandlers.NotesHandler) {
+                SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+            } else {
+                SubscriptionHandlers.NotesHandler.setFilter(searchQuery);
+            }
+            NotesHandler = SubscriptionHandlers.NotesHandler;
         }
-        NotesHandler = SubscriptionHandlers.NotesHandler;
-    });
-};
+    )
+    ;
+}
+;
 Template.notesTabList.helpers({
     items: function () {
-        return Notes.find({links: {$elemMatch: {id: Session.get('entityId')}}}, {sort: {dateCreated: -1}});
+        return Notes.find();
     },
     isLoading: function () {
         return !SubscriptionHandlers.NotesHandler.ready();
