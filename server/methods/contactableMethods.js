@@ -58,13 +58,6 @@ Meteor.methods({
     return ContactableManager.isTaxIdUnused(taxid,hierid);
   },
 
-//  getAddress: function (contactableId) {
-//    try {
-//      return AddressManager.getBusinessAddress(contactableId);
-//    } catch(err) {
-//      throw new Meteor.Error(err.message);
-//    }
-//  },
 
   // Education
   addEducationRecord: function (contactableId, educationInfo) {
