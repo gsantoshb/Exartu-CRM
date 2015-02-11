@@ -81,6 +81,10 @@
             {{/if}}
         </strong>
         <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
+
+        {{#if isAppCenterUser}}
+            <small><span class="label label-info">Applicant Center user</span></small>
+        {{/if}}
     </h1>
     <p class="profile-address">
 
@@ -232,6 +236,20 @@
                         <a id="download-generated-resume" target="_blank"
                            download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
                     </li>
+
+                    <!-- Applicant Center user status -->
+                    {{#unless isAppCenterUser}}
+                        <li>
+                            <a id="sendAppCenterInvite" class="btn btn-default btn-custom-with-circle action-btn">
+                                <span class="btn-round"><i class="fa fa-envelope"></i></span>
+                                {{#unless alreadyInvited}}
+                                    <span style="white-space: normal;">Invite to App Center</span>
+                                {{else}}
+                                    <span style="white-space: normal;">Resend AC invitation</span>
+                                {{/unless}}
+                            </a>
+                        </li>
+                    {{/unless}}
                 {{/if}}
 
                 <li>

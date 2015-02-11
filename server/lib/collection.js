@@ -46,6 +46,8 @@ HotLists = new Mongo.Collection("hotLists");
 
 Addresses = new Mongo.Collection("addresses");
 
+ApplicantCenterInvitations = new Mongo.Collection('applicantCenterInvitations');
+
 
 Collections = {
     Hierarchies: Hierarchies,

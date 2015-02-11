@@ -1,0 +1,55 @@
+<template name="sendAppCenterInvitation">
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Applicant Center Invitation</h4>
+                </div>
+
+                {{#autoForm schema="AppCenterInvitationSchema" id="sendAppCenterInvitationForm" validation="blur"}}
+                    <!-- Body -->
+                    <div class="modal-body" style="overflow: auto; max-height: 80vh;">
+                        {{#if alreadyInvited}}
+                            <div class="alert-box alert-info" style="padding: 5px;">
+                                This employee was already invited, but you can send a new invitation
+                            </div>
+                            <br />
+                        {{/if}}
+
+                        <p>Please enter the email you want to send the invitation to</p>
+
+                        <fieldset>
+                            <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
+                                {{> afFieldInput name='email' placeholder="Enter email" value=email }}
+                                {{#if afFieldIsInvalid name='email'}}
+                                    <span class="help-block">{{afFieldMessage name='email'}}</span>
+                                {{/if}}
+                            </div>
+                        </fieldset>
+
+                        <!-- Error messages -->
+                        {{#if error}}
+                            <div class="alert-box alert-danger">
+                                {{error}}
+                            </div>
+                        {{/if}}
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer">
+                        <span class="btn btn-info dismiss">Cancel</span>
+                        <button class="btn btn-success">Send</button>
+                    </div>
+                {{/autoForm}}
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</template>

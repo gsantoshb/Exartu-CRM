@@ -44,19 +44,19 @@ NoteView = new View('notes', {
       }
     });
 
-    // Placements
-    this.publish({
-      cursor: function (note) {
-        var hotListsIds = _.pluck(_.filter(note.links, function (link) { return link.type == Enums.linkTypes.hotList.value ; }), 'id');
-        return PlacementView.find({ _id: { $in: hotListsIds } });
-      },
-      to: 'hotLists',
-      observedProperties: ['links'],
-      onChange: function (changedProps, oldSelector) {
-        var hotListsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.hotList.value ; }), 'id');
-        return PlacementView.find({ _id: { $in: hotListsIds } });
-      }
-    });
+      // Placements
+      this.publish({
+          cursor: function (note) {
+              var placementsIds = _.pluck(_.filter(note.links, function (link) { return link.type == Enums.linkTypes.placement.value}), 'id');
+              return PlacementView.find({ _id: { $in: placementsIds } });
+          },
+          to: 'placements',
+          observedProperties: ['links'],
+          onChange: function (changedProps, oldSelector) {
+              var placementsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
+              return PlacementView.find({ _id: { $in: placementsIds } });
+          }
+      });
     // HotLists
     this.publish({
       cursor: function (note) {

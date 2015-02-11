@@ -62,11 +62,13 @@ var searchFields = ['_id', 'name'];
 var hierDep=new Deps.Dependency;
 var tenantUser;
 Template.tenantUserHierMember.helpers({
+    isCurrent: function() {
+        return (this._id==user.currentHierId  )
+    },
     isSelectedClass: function() {
         hierDep.depend();
         user = Meteor.users.findOne({_id: user._id});
-        console.log('this',this._id,user.currentHierId);
-        return ( this._id==user.curentHierId  ) ? 'active' : '';
+        return (this._id==user.currentHierId  ) ? 'active' : '';
     },
     hierMember: function() {
         hierDep.depend();
