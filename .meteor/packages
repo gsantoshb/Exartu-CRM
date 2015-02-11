@@ -23,6 +23,7 @@ mrgalaxy:stripe
 natestrauser:connection-banner
 aldeed:simple-schema
 aldeed:autoform
+
 cfs:filesystem
 document
 external-storage
