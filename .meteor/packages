@@ -25,23 +25,20 @@ aldeed:simple-schema
 aldeed:autoform
 
 cfs:filesystem
-
 document
 external-storage
 paypal
 subscription-plan
 cfs:graphicsmagick
 mizzao:bootstrap-3
-
 force-ssl
-
 reactive-var
 cfs:data-man
 cfs:gridfs
 cfs:s3
 file-uploader
-meteorhacks:kadira
 
+meteorhacks:kadira
 date-time-picker
 rajit:bootstrap3-datepicker
 
@@ -56,7 +53,8 @@ node-form-data
 npm-container
 shammar13:busboy
 aida:mongo-view
-aida:pagination
+aida:pagination@1.0.4
 aida:dtype
 aida:es
+
 meteorhacks:fast-render
