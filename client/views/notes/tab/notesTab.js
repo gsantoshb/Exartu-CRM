@@ -80,6 +80,10 @@ Template.notesTab.created=function(){
     if (this.view && this.view.parentView && this.view.parentView.name=="Template.hotList_responses") {
         responsesOnly = true;
     }
+    else
+    {
+        responsesOnly=false;
+    }
 }
 Template.notesTabAdd.helpers({
     isHotListNote: function () {

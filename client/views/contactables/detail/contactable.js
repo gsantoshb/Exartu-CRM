@@ -399,6 +399,8 @@ Template.hotListMembershipsBox.events({
         var id = Session.get('hotListId');
         var hotlist = HotLists.findOne({_id: id});
         hotlist.members.push(contactable._id);
+        hotlist.members = $.unique(hotlist.members);
+
         HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
         hotListMembershipsDep.changed();
     }
