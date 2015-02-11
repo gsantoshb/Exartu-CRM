@@ -23,25 +23,20 @@ mrgalaxy:stripe
 natestrauser:connection-banner
 aldeed:simple-schema
 aldeed:autoform
-
 cfs:filesystem
-
 document
 external-storage
 paypal
 subscription-plan
 cfs:graphicsmagick
 mizzao:bootstrap-3
-
 force-ssl
-
 reactive-var
 cfs:data-man
 cfs:gridfs
 cfs:s3
 file-uploader
 meteorhacks:kadira
-
 date-time-picker
 rajit:bootstrap3-datepicker
 
