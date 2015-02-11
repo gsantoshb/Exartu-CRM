@@ -8,7 +8,7 @@ Meteor.methods({
   removeAddress: function(id) {
     AddressManager.removeAddress(id);
   },
-    getAddress: function (contactableid,adddresstype) {
+    getAddress: function (contactableid,addresstype) {
         return AddressManager.getAddress(contactableid,addresstype);
     }
 });
