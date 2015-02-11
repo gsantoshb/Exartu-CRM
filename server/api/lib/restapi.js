@@ -11,7 +11,16 @@ var selectorFromUserQuery = function (user) {
 };
 
 RESTAPI.generateLoginToken = function(userId) {
-  var stampedLoginToken = Accounts._generateStampedLoginToken();
+	
+	// delete old tokens created for the api
+	// this can be an issue if the api is being use from multiple origins
+	// todo: maybe we should expire the tokens somehow
+	Meteor.users.update(userId, {$pull: {"services.resume.loginTokens": { apiToken: true } } } );
+
+	var stampedLoginToken = Accounts._generateStampedLoginToken();
+
+	stampedLoginToken.apiToken = true;
+
 	Accounts._insertHashedLoginToken(userId, stampedLoginToken);
 
   return stampedLoginToken.token;
