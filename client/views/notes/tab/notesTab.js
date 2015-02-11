@@ -138,7 +138,9 @@ Template.notesTabList.created = function () {
 
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
-                searchQuery.contactableId = {$in: hotlist.members};
+                searchQuery['links.id'] = {
+                    $in:  hotlist.members
+                };
             }
             else {
                 searchQuery.links = {
@@ -160,7 +162,7 @@ Template.notesTabList.created = function () {
 ;
 Template.notesTabList.helpers({
     items: function () {
-        return Notes.find({links: {$elemMatch: {id: Session.get('entityId')}}}, {sort: {dateCreated: -1}});
+        return Notes.find();
     },
     isLoading: function () {
         return !SubscriptionHandlers.NotesHandler.ready();

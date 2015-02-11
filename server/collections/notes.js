@@ -47,7 +47,7 @@ NoteView = new View('notes', {
       // Placements
       this.publish({
           cursor: function (note) {
-              var placementsIds = _.pluck(_.filter(note.links, function (link) { return link.type == Enums.linkTypes.placement.value || link.type == Enums.linkTypes.candidate.value; }), 'id');
+              var placementsIds = _.pluck(_.filter(note.links, function (link) { return link.type == Enums.linkTypes.placement.value}), 'id');
               return PlacementView.find({ _id: { $in: placementsIds } });
           },
           to: 'placements',
