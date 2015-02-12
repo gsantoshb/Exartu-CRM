@@ -53,7 +53,7 @@ node-form-data
 npm-container
 shammar13:busboy
 aida:mongo-view
-aida:pagination@1.0.4
+aida:pagination
 aida:dtype
 aida:es
 

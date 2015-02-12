@@ -61,7 +61,7 @@ ContactablesList = new View('auxContactables', {
         // Last note
         this.publish({
             cursor: function (contactable) {
-                return Notes.find({'links.id': contactable._id}, {limit: 10, sort: {dateCreated: -1}});
+                return Notes.find({'links.id': contactable._id}, {limit: 50, sort: {dateCreated: -1}});
             },
             to: 'notes'
         });
