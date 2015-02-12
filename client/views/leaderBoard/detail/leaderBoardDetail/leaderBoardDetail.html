@@ -1,0 +1,58 @@
+<template name="leaderBoardDetail">
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action editLeaderBoard pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
+            <div class="box-title">LeaderBoard Details</div>
+        </div>
+        <div class="box-content-md">
+                <table class="table box-table table-striped">
+                <tbody>
+
+                        {{#with leaderBoard}}
+
+                            <tr>
+                                <td>Status note:</td>
+                                <td>
+                                    {{#objectProperty property=statusNote editable=editMode}}
+                                    <input class="form-control" type="text" value="{{value}}">
+                                    {{else}}
+                                    <span >{{value}}</span>
+                                    {{/objectProperty}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Active Status</td>
+                                <td>
+                                    {{#objectProperty property=activeStatus editable=editMode}}
+                                        {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                    {{else}}
+                                        <strong>
+                                            <strong>{{displayName}}</strong>
+                                        </strong>
+                                    {{/objectProperty}}
+                                </td>
+                            </tr>
+                        {{/with}}
+                        {{#with originalLeaderBoard}}
+                            {{>displayOriginDataInline}}
+                        {{/with}}
+
+                </tbody>
+            </table>
+        </div>
+
+        {{#if editMode}}
+            <div class="box-header-2" style="height: 60px">
+                <div class="pull-right">
+                    <span class="btn btn-default cancelButton">
+                        Cancel
+                    </span>
+                    <span class="btn btn-info saveDetailsButton">
+                        Save
+                    </span>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</template>

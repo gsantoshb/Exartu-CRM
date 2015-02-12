@@ -1,0 +1,96 @@
+<template name="leaderBoard">
+    <div id="content" class="details">
+        {{#with originalLeaderBoard}}
+            <div id="content-header" class="mini">
+                <div class="profile-content-header">
+                    <h1 class="profile-name">
+                        <a href="/leaderboard/{{_id}}"> {{displayName}} </a>
+                        <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
+                    </h1>
+                </div>
+            </div>
+        {{/with}}
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="details-menu col-md-2">
+                    {{>leaderBoard_nav}}
+                    {{>leaderBoard_actions}}
+                </div>
+                <div class="details-view col-md-10">
+                    <div class="details-view-content clearfix">
+                        <div class="tab-pane active">
+                            {{> UI.dynamic template=currentTemplate  data=leaderBoard  }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="leaderBoard_nav">
+    {{> detailNav tabs=tabs route="leaderBoard" entityId=getEntityId}}
+</template>
+
+<template name="leaderBoard_tasks">
+    {{> tasksBox}}
+</template>
+
+
+<template name="leaderBoard_notes">
+    {{> notesTab}}
+</template>
+<template name="leaderBoard_responses">
+    {{> notesTab  }}
+</template>
+
+<template name="leaderBoard_details">
+    <div class="col-sm-6">
+        {{#with originalLeaderBoard}}  {{> leaderBoardDetail}}  {{/with}}
+    </div>
+    <div class="col-sm-6">
+        {{> contactableContactsBox}}
+
+    </div>
+
+    <div class="col-sm-6">
+        {{>leaderBoardMembers  }}
+    </div>
+</template>
+<template name="leaderBoardMembers">
+    <div class="box">
+        <div class="box-header-2">
+            <a class="btn-action editLeaderBoard pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i
+                    class="fa fa-pencil"></i></a>
+
+            <div class="box-title">LeaderBoard Members ({{memberCount}})</div>
+        </div>
+        <div class="box-content-md">
+            <div class="panel-body no-padding">
+                <ul class="list-3 stripped">
+                    {{#each leaderBoardMembers}}
+                        <li>
+                            <!-- Name -->
+                            <div class="col-xs-12 no-padding">
+                                    <a href="/contactable/{{_id}}">
+                                        <strong>
+                                            <span class="badge">{{displayName}}</span>
+                                        </strong>
+                                    </a>
+                                    <span class="task-author text-center">{{_id}}</span>
+                                    <button class="btn btn-xs btn-default remove"><i class="fa fa-times"></i> remove
+                                    </button>
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="leaderBoard_actions">
+
+</template>
