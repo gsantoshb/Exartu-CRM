@@ -306,6 +306,7 @@ Template.jobList.created = function () {
         }
         // Set url query
         urlQuery.apply();
+        SubscriptionHandlers.JobHandler._isLoading.value = false;
     })
 };
 
