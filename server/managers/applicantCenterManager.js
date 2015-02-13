@@ -1,10 +1,22 @@
 
 ApplicantCenterManager = {
   createEmployeeForUser: function(userId, firstName, lastName) {
+    console.log('createEmployeeForUser');
     // Validate user
     var user = Meteor.users.findOne(userId);
     if (!user) throw new Error('Invalid user ID');
 
+    //create docCenter account
+
+    var email = user.userEmail;
+
+    try{
+      var docCenterId = DocCenter.insertUser(user.hierId, {email: email, userName: email});
+    }catch (e){
+      console.log('error', e);
+    }
+
+    console.log('docCenterId', docCenterId);
     // Create new employee
     var empId = Contactables.insert({
       objNameArray:['person', 'Employee', 'Contactable'],
@@ -15,7 +27,8 @@ ApplicantCenterManager = {
         "firstName" : firstName,
         "lastName" : lastName
       },
-      Employee: {}
+      Employee: {},
+      docCenterId: docCenterId
     });
 
     if (!empId) throw new Error('An error occurred while creating the corresponding employee');

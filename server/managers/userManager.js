@@ -97,7 +97,7 @@ UserManager = {
       };
 
       if (document.currentHierId) {
-        user.currentHierId=document.currentHierId;
+        user.currentHierId = document.currentHierId;
         user.profile = {hierId: document.hierId};
       }
 
@@ -307,6 +307,10 @@ Accounts.onCreateUser(function (options, user) {
     hierId = Meteor.call('createHier', {
       name: userEmail.split('@')[0]
     });
+
+    DocCenterManager.registerHier(hierId, userEmail);
+
+
     // Send email to sales
     sendEmailToSales(user);
     user._id = Meteor.uuid();
@@ -314,9 +318,10 @@ Accounts.onCreateUser(function (options, user) {
     hierId = options.currentHierId;
   }
   user.hierarchies = [hierId];
-  user.currentHierId=hierId;
-  user.hierId=hierId; //temp...need to remove user.hierId references from submodules first
-  user.hierRoles=[{hierId:hierId,roleIds:(options.roles) ? options.roles : []}];
+  user.currentHierId = hierId;
+  user.hierId = hierId; //temp...need to remove user.hierId references from submodules first
+  user.hierRoles = [{ hierId: hierId, roleIds: (options.roles) ? options.roles : [] }];
+
   Hierarchies.update({
     _id: user.hierId
   }, {
@@ -324,6 +329,7 @@ Accounts.onCreateUser(function (options, user) {
       users: user._id
     }
   });
+
   return user;
 });
 
