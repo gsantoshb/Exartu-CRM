@@ -35,9 +35,6 @@ RoleManager = {
     bUserIsSystemAdmin: function (user) {
         if (!user) return false;
         var admins=ExartuConfig.AdminEmails.split(',');
-        console.log('AdminEmails:', ExartuConfig.AdminEmails);
-        console.log('users email', user.emails[0].address.toLowerCase());
-        console.log('contains', _.contains(admins, user.emails[0].address.toLowerCase()));
         if (user && user.emails[0] && _.contains(admins, user.emails[0].address.toLowerCase())) return true;
         return RoleManager.bUserHasRoleId(user, this.getSystemAdministratorRole()._id)
     },
