@@ -71,7 +71,7 @@ Template.notesBox.created = function () {
     }
     NotesHandler.setFilter(q);    
     NotesHandler.setOptions(options);
-    SubscriptionHandlers.NotesHandler._isLoading.value = false;
+    NotesHandler._isLoading.value = false;
 
 
   })

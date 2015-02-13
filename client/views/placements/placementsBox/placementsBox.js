@@ -193,7 +193,7 @@ Template.placementList.created = function () {
 
         // Set url query
         urlQuery.apply();
-		PlacementHandler._isLoading.value = false;
+		SubscriptionHandlers.PlacementHandler._isLoading.value = false;
         if (selectedSort.get()) {
             var selected = selectedSort.get();
             options.sort = {};
