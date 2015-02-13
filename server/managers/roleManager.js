@@ -34,7 +34,7 @@ RoleManager = {
     },
     bUserIsSystemAdmin: function (user) {
         if (!user) return false;
-        var admins=ExartuConfig.AdminEmails.split(',');
+        var admins=String(ExartuConfig.AdminEmails).trim().split(',');
         if (user && user.emails[0] && _.contains(admins, user.emails[0].address.toLowerCase())) return true;
         return RoleManager.bUserHasRoleId(user, this.getSystemAdministratorRole()._id)
     },
