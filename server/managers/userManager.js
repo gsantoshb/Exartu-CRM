@@ -308,7 +308,13 @@ Accounts.onCreateUser(function (options, user) {
       name: userEmail.split('@')[0]
     });
 
-    DocCenterManager.registerHier(hierId, userEmail);
+    try{
+      DocCenterManager.registerHier(hierId, userEmail);
+    }catch (e){
+      console.error('error while registering in docCenter');
+      console.log(e);
+    }
+
 
 
     // Send email to sales

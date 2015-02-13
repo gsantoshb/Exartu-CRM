@@ -33,4 +33,16 @@ DocCenterManager = {
     })
 
   }
-}
+};
+
+Meteor.methods({
+  registerOnDocCenter: function () {
+    var user = Meteor.user();
+
+    var email = user.emails[0];
+
+    DocCenterManager.registerHier(user.currentHierId, email, function () {
+
+    })
+  }
+});

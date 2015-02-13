@@ -2,7 +2,7 @@ Accounts = new Meteor.Collection('docCenterAccounts');
 
 _.extend(DocCenter,{
   _authkey: 'Tw04ksHr5',
-  _docCenterUrl: 'http://hrconcourseapi1.ngrok.com',
+  _docCenterUrl: 'http://hrconcourseapi.aidacreative.com',
 
   login: Meteor.wrapAsync(function (hierId, cb) {
     debugger;
