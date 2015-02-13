@@ -205,12 +205,6 @@ Template.placementList.created = function () {
         PlacementHandler.setFilter(searchQuery, params);
         PlacementHandler.setOptions(options);
 
-        if (query.searchString.value)
-            Session.set('placementCount', esResult.length);
-        else {
-            if (SubscriptionHandlers && SubscriptionHandlers.PlacementHandler)
-                Session.set('placementCount', SubscriptionHandlers.PlacementHandler.totalCount());
-        }
     })
 };
 
@@ -275,9 +269,7 @@ Template.placementFilters.helpers({
         //if (query.objType.value)
         //    searchQuery.objNameArray = query.objType.value;
 
-        var placementCount = Session.get('placementCount');
-        if (placementCount)
-            info.placementsCount = placementCount;
+        info.placementsCount = PlacementHandler.totalCount();
 
         return info;
     },
