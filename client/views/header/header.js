@@ -8,7 +8,6 @@ Utils.reactiveProp(Utils.adminSettings, 'isAdmin', function () {
 Meteor.call('bUserIsClientAdmin', null, function (err, result) {
     if (err)
         return console.log(err);
-    console.log('clientadmin?',result);
     Utils.adminSettings.isClientAdmin = result;
 });
 Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
