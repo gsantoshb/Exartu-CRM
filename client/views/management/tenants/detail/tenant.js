@@ -33,7 +33,6 @@ Template.tenant.helpers({
     tenantJSON: function()
     {
         var tenant = Tenants.findOne(hierId);
-        console.log('tenant',hierId,tenant);
         return JSON.stringify(tenant);
     },
     tenantContext: function () {

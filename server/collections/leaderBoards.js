@@ -17,12 +17,9 @@ Meteor.paginatedPublish(LeaderBoardView, function () {
             fields: {
                 'username': 1,
                 'emails': 1,
-                'services.google.picture': 1,
-                'services.email': 1,
-                'profilePictureId': 1,
+
                 'hierRoles': 1,
                 'createdAt': 1,
-                'permissions': 1,
                 'lastCustomerUsed': 1,
                 'inactive': 1,
                 'hierarchies': 1,

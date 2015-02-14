@@ -14,22 +14,20 @@ RoleManager = {
     getClientAdministratorRole: function () {
         return RoleManager.getRoleFromName(Enums.roleFunction.Client_Administrator);
     },
-    getUserRoles: function (user) {
+    getUserRoleIds: function (user) {
         if (!user) return [];
         if (!user.hierRoles) return [];
         var hr = _.findWhere(user.hierRoles, {hierId: user.currentHierId});
-        var roles = (hr) ? hr.roleIds : [];
-        return roles.map(function (item) {
-            return item.roleId
-        })
+        var roleIds = (hr) ? hr.roleIds : [];
+        return roleIds;
     },
     bUserHasRoleId: function (user, id) {
-        var roleIds = RoleManager.getUserRoles(user);
+        var roleIds = RoleManager.getUserRoleIds(user);
         if (!_.contains(roleIds, id)) return false;
         return true;
     },
     bUserHasRoleName: function (user, name) {
-        if (!_.contains(RoleManager.getUserRoles(user), RoleManager.getRoleFromName(name)._id)) return false;
+        if (!_.contains(RoleManager.getUserRoleIds(user), RoleManager.getRoleFromName(name)._id)) return false;
         return true;
     },
     bUserIsSystemAdmin: function (user) {

@@ -230,6 +230,9 @@ Template.leaderBoardListSearch.events = {
 // Item
 
 Template.leaderBoardListItem.helpers({
+    dailyCount: function(){
+
+    },
     listViewMode: function () {
         return listViewMode.get();
     },
