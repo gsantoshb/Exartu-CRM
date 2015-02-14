@@ -13,11 +13,27 @@ Meteor.publish("leaderBoards", function () {
     var cursors=[{name:"Notes",cursor:notesCursor}]
     generateLeaderBoardPublish(this, 'leaderBoards', cursors);
 });
+//db.sales.aggregate(
+//    [
+//        {
+//            $group : {
+//                _id : { month: { $month: "$date" }, day: { $dayOfMonth: "$date" }, year: { $year: "$date" } },
+//                totalPrice: { $sum: { $multiply: [ "$price", "$quantity" ] } },
+//                averageQuantity: { $avg: "$quantity" },
+//                count: { $sum: 1 }
+//            }
+//        }
+//    ]
+//)
 
 
 var generateLeaderBoardPublish = function (ctx, name, cursors) {
+    console.log('curs', JSON.stringify(cursors));
     _.forEach(cursors, function (c) {
-        ctx.added(name, c.name, c.cursor);
+        console.log('c', c);
+        ctx.added(name, "notes", {
+            counts: c.cursor
+        });
     });
 
     ctx.ready();

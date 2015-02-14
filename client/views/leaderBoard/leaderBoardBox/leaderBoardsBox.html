@@ -55,51 +55,12 @@
 </template>
 
 <template name="leaderBoardListSearch">
-    <div class="list-actions-cell btn-add-to-list">
-    </div>
-    <!-- /.btn-add-to-list -->
-
-    <div class="list-actions-cell search-list">
-        <div class="input-group">
-            <span class="prop-input">
-                {{#objectProperty property=searchString}}
-                    <input type="text" class="form-control" placeholder="Search leaderBoards" value="{{value}}">
-                {{/objectProperty}}
-                <span class="text text-danger"></span>
-            </span>
-            <span class="input-group-btn">
-                <button class="btn btn-search" type="button">
-                    <i class="fa fa-search"></i>
-                </button>
-            </span>
-        </div>
-    </div>
-    <!-- /.search-list -->
-
-    <div class="list-actions-cell view-mode-list">
-        {{#if listViewMode}}
-            <a href="#"><i id="detail-view" class="fa fa-th-list"></i></a>
-            <a class="active" href="#"><i class="fa fa-bars"></i></a>
-        {{else}}
-            <a class="active" href="#"><i class="fa fa-th-list"></i></a>
-            <a href="#"><i id="list-view" class="fa fa-bars"></i></a>
-        {{/if}}
-        <a id="toggle-filters" href="#" data-view="normal"><i class="fa fa-desktop"></i></a>
-    </div>
-    <!-- /.view-mode-list -->
-
-    <div class="list-actions-cell order-list">
-        {{> leaderBoardListSort}}
-    </div>
-    <!-- ./order-list -->
-
-    {{#if listIsLoading}}
-        loading
-    {{else}}
-        {{#unless isESSearch}}
-            {{>fastPagination name="leaderBoards" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
-        {{/unless}}
-    {{/if}}
+    <button class="btn btn-sm btn-primary" style="margin-bottom: 3px">
+        Activity
+    </button>
+    <button class="btn btn-sm btn-default" style="margin-bottom: 3px">
+        Deal Pipeline
+    </button>
 </template>
 
 <template name="leaderBoardListSort">
