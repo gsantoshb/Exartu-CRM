@@ -78,7 +78,7 @@ _.forEach([
 
 
         {
-            displayName: "Contacted", lookUpActions: [],sortOrder:10
+            displayName: "Contacted", lookUpActions: [],sortOrder:15
         },
         {
             displayName: "Qualified", lookUpActions: [],sortOrder:20
