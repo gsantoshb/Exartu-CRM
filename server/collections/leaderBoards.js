@@ -1,47 +1,36 @@
-LeaderBoardView = new View('leaderBoards', {
-    collection: Meteor.users,
-    cursors: function (leaderBoard) {
-    }
+Meteor.publish("leaderBoards", function () {
+    var cursors = [
+        Notes.aggregate([{$group: {
+            _id: "$userId",
+            count: {$sum:1}
+        }}])
+    ];
+
+    generateLeaderBoardPublish(this, 'leaderBoards', cursors);
 });
+//db.sales.aggregate(
+//    [
+//        {
+//            $group : {
+//                _id : { month: { $month: "$date" }, day: { $dayOfMonth: "$date" }, year: { $year: "$date" } },
+//                totalPrice: { $sum: { $multiply: [ "$price", "$quantity" ] } },
+//                averageQuantity: { $avg: "$quantity" },
+//                count: { $sum: 1 }
+//            }
+//        }
+//    ]
+//)
 
 
-Meteor.paginatedPublish(LeaderBoardView, function () {
-        var user = Meteor.users.findOne({
-            _id: this.userId
+
+var generateLeaderBoardPublish = function (ctx, name, cursors) {
+    console.log('curs',JSON.stringify(cursors));
+    _.forEach(cursors, function(c){
+        console.log('c',c);
+        ctx.added(name, "notes", {
+            counts:c
         });
-        if (!user)
-            return [];
-        if (!RoleManager.bUserIsSystemAdmin(user))
-            return [];
-        return Utils.filterCollectionByUserHier.call(this, LeaderBoardView.find({}, {
-            fields: {
-                'username': 1,
-                'emails': 1,
-
-                'hierRoles': 1,
-                'createdAt': 1,
-                'lastCustomerUsed': 1,
-                'inactive': 1,
-                'hierarchies': 1,
-                'currentHierId': 1
-            }
-        }), {
-            hierIdKeyName: 'hierarchies'
-        });
-    },
-    {
-        pageSize: 200,
-        publicationName: 'leaderBoards'
-    }
-);
-
-Meteor.publish('singleLeaderBoard', function (id) {
-    var user = Meteor.users.findOne({
-        _id: this.userId
     });
-    if (!user)
-        return [];
-    if (!RoleManager.bUserIsSystemAdmin(user))
-        return [];
-    return LeaderBoardView.find({_id: id});
-});
+
+    ctx.ready();
+};

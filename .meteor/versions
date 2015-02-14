@@ -79,6 +79,8 @@ matb33:collection-hooks@0.7.9
 meteor@1.1.4
 meteor-nodetime@0.0.0
 meteor-platform@1.2.1
+meteorhacks:aggregate@1.1.0
+meteorhacks:collection-utils@1.0.0
 meteorhacks:fast-render@2.3.1
 meteorhacks:inject-data@1.2.2
 meteorhacks:kadira@2.18.0
