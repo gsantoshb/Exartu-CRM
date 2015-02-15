@@ -729,10 +729,10 @@ span[data-status="Inactive"] {
   .list-actions.last:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-actions.last:after {
     clear: both;
@@ -851,10 +851,10 @@ span[data-status="Inactive"] {
   .list-item-details:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-item-details:after {
     clear: both;
@@ -914,10 +914,10 @@ span[data-status="Inactive"] {
   .list-item-more .list-item-more-entry:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-item-more .list-item-more-entry:after {
     clear: both;
@@ -942,10 +942,10 @@ span[data-status="Inactive"] {
   .list-item-more .list-item-more-entry .list-item-more-entry-content:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-item-more .list-item-more-entry .list-item-more-entry-content:after {
     clear: both;
@@ -1058,10 +1058,10 @@ span[data-status="Inactive"] {
   .list-item .list-item-more .list-item-more-entry:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-item .list-item-more .list-item-more-entry:after {
     clear: both;
@@ -1087,10 +1087,10 @@ span[data-status="Inactive"] {
   .list-item .list-item-more .list-item-more-entry .list-item-more-entry-content:after {
     content: " ";
     /* 1 */
-  
+
     display: table;
     /* 2 */
-  
+
   }
   .list-item .list-item-more .list-item-more-entry .list-item-more-entry-content:after {
     clear: both;
@@ -1311,6 +1311,106 @@ span[data-status="Inactive"] {
     text-align: center;
   }
 }
+
+
+@media (max-width: 767px) {
+    .leaderBoards-list-item .list-item-details .list-item-cell {
+        width: 30%;
+    }
+    .leaderBoards-list-item .list-item-details .item-overflow {
+        width: 10%;
+    }
+    .leaderBoards-list-item .list-item-details .leaderBoards-list-item-leaderBoards {
+        font-size: 11px;
+        margin-top: 2px;
+    }
+    .leaderBoards-list-item .list-item-details .leaderBoards-list-item-owner {
+        text-align: center;
+    }
+}
+@media (min-width: 768px) {
+    .leaderBoards-list-header .leaderBoards-list-header-title {
+        width: 20%;
+        margin-right: 52px;
+    }
+    .leaderBoards-list-header .leaderBoards-list-header-status,
+    .leaderBoards-list-header .leaderBoards-list-header-owner {
+        -webkit-flex: 2;
+        -moz-flex: 2;
+        -ms-flex: 2;
+        flex: 2;
+    }
+    .leaderBoards-list-item .leaderBoards-list-item-title {
+        width: 20%;
+    }
+    .leaderBoards-list-item .list-item-details .leaderBoards-list-item-status,
+    .leaderBoards-list-item .list-item-details .leaderBoards-list-item-owner {
+        -webkit-flex: 2;
+        -moz-flex: 2;
+        -ms-flex: 2;
+        flex: 2;
+    }
+    .simple-view .leaderBoards-list-header-title {
+        width: 20%;
+        margin-right: 0;
+    }
+    .simple-view .leaderBoards-list-header-status,
+    .simple-view .leaderBoards-list-header-owner {
+        -webkit-flex: 1;
+        -moz-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+    }
+    .simple-view .leaderBoards-list-header-time {
+        -webkit-flex: 2;
+        -moz-flex: 2;
+        -ms-flex: 2;
+        flex: 2;
+    }
+    .simple-view .leaderBoards-list-header-time {
+        margin-right: 0;
+    }
+    .simple-view .leaderBoards-list-item .leaderBoards-list-item-title {
+        width: 20%;
+    }
+    .simple-view .item-subtitle,
+    .simple-view .item-subtitle a {
+        color: #d5d5d5;
+        font-size: 11px;
+    }
+    .simple-view .leaderBoards-list-header-status {
+        -webkit-flex: 1;
+        -moz-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+    }
+    .simple-view .list-item-details .leaderBoards-list-item-time {
+        -webkit-flex: 2;
+        -moz-flex: 2;
+        -ms-flex: 2;
+        flex: 2;
+    }
+    .simple-view .list-item-details .leaderBoards-list-item-owner {
+        -webkit-flex: 1;
+        -moz-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+    }
+}
+.tasks-list-item .btn-users {
+    display: none;
+    border: 0;
+    margin-left: 7px;
+    background: none;
+    cursor: pointer;
+    color: #ccc;
+    font-size: 17px;
+    position: absolute;
+    right: 20px;
+    top: 22px;
+}
+
+
 @media (min-width: 768px) {
   .placements-list-header .placements-list-header-title {
     width: 30%;

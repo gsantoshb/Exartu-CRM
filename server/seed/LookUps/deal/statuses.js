@@ -1,19 +1,25 @@
 _.forEach([
-  {
-    displayName: 'Won', lookUpActions:[Enums.lookUpAction.Won,Enums.lookUpAction.Implies_Inactive]
-  },
-  {
-    displayName: 'Lost',lookUpActions:[Enums.lookUpAction.Lost,Enums.lookUpAction.Implies_Inactive]
-  },
-  {
-    displayName: 'Inactive', lookUpActions:[Enums.lookUpAction.Implies_Inactive]
-  },
-  {
-    displayName: 'Active', lookUpActions:[Enums.lookUpAction.Implies_Active],isDefault: true
-  }
-],
-  function (item) {
-    item.lookUpCode = Enums.lookUpTypes.deal.status.lookUpCode;
-    systemLookUps.push(item);
-  }
+        {
+            displayName: 'Qualification', lookUpActions: [], isDefault: true,sortOrder:10
+        },
+        {
+            displayName: 'Decision Process', lookUpActions: [],sortOrder:20
+        },
+        {
+            displayName: 'Presentation', lookUpActions: [],sortOrder:30
+        },
+        {
+            displayName: 'Negotiation', lookUpActions: [],sortOrder:40
+        },
+        {
+            displayName: 'Won', lookUpActions: [],sortOrder:50
+        },
+        {
+            displayName: 'Lost', lookUpActions: [],sortOrder:50
+        }
+    ],
+    function (item) {
+        item.lookUpCode = Enums.lookUpTypes.deal.status.lookUpCode;
+        systemLookUps.push(item);
+    }
 );

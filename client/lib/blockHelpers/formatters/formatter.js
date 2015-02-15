@@ -150,7 +150,9 @@ Template.showMore.helpers({
     return this.hidden.get();
   },
   shortText: function () {
-    var lastWord = this.text.indexOf(' ', this.limit);
+      // find a good last space to break...but given the border case of text length being almost equal to 'limit'
+      // back off a little from the limit
+    var lastWord = this.text.indexOf(' ', this.limit-8);
     return lastWord === -1 ? this.text : this.text.substring(0, lastWord);
   }
 });

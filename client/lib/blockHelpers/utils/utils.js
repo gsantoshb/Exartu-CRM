@@ -147,7 +147,6 @@ UI.registerHelper('contactMethodTypePrefix', function(type) {
 UI.registerHelper('displayUserName', function (id) {
   var user = Meteor.users.findOne({ _id: id });
   if (!user) return '';
-
   if (user.userName){
     return user.userName
   }

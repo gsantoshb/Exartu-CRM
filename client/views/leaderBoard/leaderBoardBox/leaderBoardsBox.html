@@ -1,0 +1,217 @@
+<template name="leaderBoardsBox">
+    <div class="row">
+        <div class="col-md-3 col-lg-3" id="column-filters">
+            {{> leaderBoardFilters leaderBoardCount=leaderBoardCount}}
+        </div>
+        <div class="col-md-9" id="column-list">
+            <div class="list-container">
+                <div class="list-holder">
+
+                    <div class="list-actions">
+                        {{>leaderBoardListSearch}}
+                    </div>
+
+                    {{> UI.dynamic template=getLeaderBoardHeaderTemplate}}
+
+                    {{#if isSearching}}
+                        searching
+                    {{else}}
+                        {{> leaderBoardList }}
+                    {{/if}}
+
+                    <div class="list-actions last">
+                        {{#if listIsLoading}}
+                            loading
+                        {{else}}
+                            {{#unless isESSearch}}
+                                {{>fastPagination name="leaderBoards" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                            {{/unless}}
+                        {{/if}}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="leaderBoardActivityListHeader">
+        <h1 class="text-center">Sales Activity</h1>
+        <div class="list-header leaderBoards-list-header simple-view">
+            <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Day</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Week</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Month</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Quarter</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Year</div>
+
+        </div>
+</template>
+<template name="leaderBoardPipelineListHeader">
+        <h1 class="text-center">Deal Pipeline</h1>
+        <div class="list-header leaderBoards-list-header simple-view">
+            <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Qualified</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Decision Makers</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Needs Analysis</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Quote</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Won</div>
+        </div>
+</template>
+<template name="leaderBoardContactListHeader">
+        <h1 class="text-center">Contact Pipeline</h1>
+        <div class="list-header leaderBoards-list-header simple-view">
+            <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Day</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Week</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Month</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Quarter</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Year</div>
+        </div>
+</template>
+
+<template name="leaderBoardListSearch">
+
+</template>
+
+<template name="leaderBoardListSort">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Sort
+            {{#with selectedSort}}
+                <strong>{{displayName}}</strong>
+                {{#if isAscSort .}}
+                    <i class="fa fa-sort-amount-asc"> </i>
+                {{else}}
+                    <i class="fa fa-sort-amount-desc"> </i>
+                {{/if}}
+            {{/with}}
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            {{#each sortFields}}
+                <li>
+                    <a class="sort-field" href="#">
+                        {{displayName}}
+                        {{#if isFieldSelected .}}
+                            {{#if isAscSort .}}
+                                <i class="fa fa-sort-amount-asc"> </i>
+                            {{else}}
+                                <i class="fa fa-sort-amount-desc"> </i>
+                            {{/if}}
+                        {{/if}}
+                    </a>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+</template>
+
+<template name="leaderBoardFilters">
+    <div class="page-title">
+        <h1>Leaderboards</h1>
+    </div>
+
+    <div class="filter">
+        <div class="filter-list" id="filter-body">
+            <span class="text-center">{{> filter_lookUp title=" " code=20 lookUpValue=query.leaderBoardType multi=false}}</span>
+        </div>
+    </div>
+</template>
+<template name="leaderBoardList">
+    {{#if isLoading}}
+        <div style="height: 280px;"></div>
+    {{else}}
+        <div class="list-item-section {{#if listViewMode}}simple-view{{/if}}">
+            {{#each leaderBoards}}
+                {{> UI.dynamic template=getLeaderBoardListItemTemplate }}
+            {{else}}
+                {{#if info.isFiltering.value }}
+                    <div class="v-wrapper">
+                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                            <i class="icon-connection-1 text-large"></i>
+
+                            <h1>No records Found</h1>
+                        </div>
+                    </div>
+                {{/if}}
+            {{/each}}
+        </div>
+    {{/if}}
+</template>
+
+<template name="leaderBoardActivityListItem">
+        <div class="list-item leaderBoards-list-item">
+            <div class="list-item-cell leaderBoards-list-item-title">
+                <div class="item-title">
+                    <div class="item-title"><a href="/leaderBoard/{{_id}}">{{displayUserName _id}} </a></div>
+                </div>
+                <div class="item-subtitle">
+                </div>
+            </div>
+            <div class="list-item-details leaderBoards-list-item-details">
+                <div class="list-item-cell leaderBoards-list-item-status ">{{day1}}</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">{{day7}}</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">{{day30}}</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">{{day91}}</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">{{day365}}</div>
+            </div>
+            <!-- /.list-item-cell -->
+        </div>
+</template>
+<template name="leaderBoardPipelineListItem">
+    {{#if listViewMode}}
+        <div class="list-item leaderBoards-list-item">
+            <div class="list-item-cell leaderBoards-list-item-title">
+                <div class="item-title">
+                    <div class="item-title"><a href="/leaderBoard/{{_id}}">{{displayUserName _id}} </a></div>
+                </div>
+                <div class="item-subtitle">
+                </div>
+            </div>
+            <div class="list-item-details leaderBoards-list-item-details">
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
+            </div>
+            <!-- /.list-item-cell -->
+        </div>
+    {{else}}
+        <div class="list-item leaderBoards-list-item">
+        </div>
+    {{/if}}
+</template>
+<template name="leaderBoardContactListItem">
+    {{#if listViewMode}}
+        <div class="list-item leaderBoards-list-item">
+            <div class="list-item-cell leaderBoards-list-item-title">
+                <div class="item-title">
+                    <div class="item-title"><a href="/leaderBoard/{{_id}}">{{displayUserName _id}} </a></div>
+                </div>
+                <div class="item-subtitle">
+                </div>
+            </div>
+            <div class="list-item-details leaderBoards-list-item-details">
+                <div class="list-item-cell leaderBoards-list-item-status ">{{day1}}</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">{{day7}}</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">{{day30}}</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
+            </div>
+            <!-- /.list-item-cell -->
+        </div>
+    {{else}}
+        <div class="list-item leaderBoards-list-item">
+        </div>
+    {{/if}}
+</template>
+
+<template name="leaderBoardInformation">
+    <span>
+        {{description}}
+
+    </span>
+    <br>
+</template>

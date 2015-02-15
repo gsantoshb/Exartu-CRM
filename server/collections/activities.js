@@ -662,3 +662,4 @@ Activities._ensureIndex({userId: 1});
 Activities._ensureIndex({hierId: 1});
 Activities._ensureIndex({entityId: 1});
 Activities._ensureIndex({type: 1});
+
