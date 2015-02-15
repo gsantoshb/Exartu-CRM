@@ -60,17 +60,23 @@ var loadqueryFromURL = function (params) {
     var tagsQuery = {type: Utils.ReactivePropertyTypes.array};
     if (params.tags) {
         tagsQuery.default = params.tags.split(',');
-    }
+    };
+    var leaderBoardQuery = {type: Utils.ReactivePropertyTypes.array};
+    if (params.leaderBoard) {
+        leaderBoardQuery.default = params.leaderBoard;
+    };
 
     return new Utils.ObjectDefinition({
         reactiveProps: {
             searchString: searchStringQuery,
-            selectedLimit: creationDateQuery,
-            tags: tagsQuery,
-            objType: objTypeQuery
+            objType: objTypeQuery,
+            leaderBoardType: leaderBoardQuery,
+            tags: tagsQuery
         }
     });
 };
+
+
 var listViewDefault = Session.get('leaderBoardListViewMode');
 if (!listViewDefault) {
     listViewDefault = true;
@@ -82,10 +88,52 @@ var isSearching = false;
 
 // All
 Template.leaderBoardsBox.created = function () {
-    query = query || loadqueryFromURL(Router.current().params);
+    query =  loadqueryFromURL(Router.current().params);
 };
 
+//Template.leaderBoardListHeader.helpers({
+//    activityBoard: function (){
+//        console.log('this',this);
+//        if (!query.leaderBoardType.value || query.leaderBoardType.value.length==0) return true;
+//        var b=false;
+//        if (query.leaderBoardType.value)
+//        {
+//            var lkp=LookUps.findOne({_id:query.leaderBoardType.value});
+//            console.log('lk',lkp,query.leaderBoardType.value);
+//            if (lkp && lkp.lookUpActions && _.contains(lkp.lookUpActions,Enums.lookUpAction.LeaderBoardType_Activity))
+//            {
+//                b=true;
+//            }
+//
+//        }
+//        else
+//        {
+//            b=true;
+//        }
+//        return b;
+//    }
+//});
 Template.leaderBoardsBox.helpers({
+    getLeaderBoardTemplate: function(){
+        var board=Enums.lookUpAction.LeaderBoardType_Activity;
+        if (query.leaderBoardType.value)
+        {
+            var lkp=LookUps.findOne({_id:query.leaderBoardType.value});
+            if (lkp && lkp.lookUpActions && lkp.lookUpActions.length>0)
+            {
+                board=lkp.lookUpActions[0];
+            }
+        }
+        switch (board) {
+            case Enums.lookUpAction.LeaderBoardType_Activity:
+                return 'leaderBoardActivityListHeader';
+            case Enums.lookUpAction.LeaderBoardType_Pipeline:
+                return 'leaderBoardPipelineListHeader';
+            case Enums.lookUpAction.LeaderBoardType_Contacts:
+                return 'leaderBoardContactListHeader';
+        };
+    },
+
     information: function () {
         var searchQuery = {};
 
@@ -122,24 +170,17 @@ Template.leaderBoardList.created = function () {
         if (!_.isEmpty(query.searchString.value)) {
             params.searchString = query.searchString.value;
             urlQuery.addParam('search', query.searchString.value);
-        }
-
-        if (query.selectedLimit.value) {
-            var dateLimit = new Date();
-            searchQuery.dateCreated = {
-                $gte: dateLimit.getTime() - query.selectedLimit.value
-            };
-            urlQuery.addParam('creationDate', query.selectedLimit.value);
-        }
-
+        };
         if (query.tags.value.length > 0) {
             searchQuery.tags = {
                 $in: query.tags.value
             };
             urlQuery.addParam('tags', query.tags.value);
-        }
-
-
+        };
+        console.log('lbt',query.leaderBoardType.value);
+        if (query.leaderBoardType.value) {
+            urlQuery.addParam('leaderBoardType',query.leaderBoardType.value)
+        };
         // Set url query
         urlQuery.apply();
 
@@ -150,7 +191,6 @@ Template.leaderBoardList.created = function () {
         } else {
             delete options.sort;
         }
-        console.log('leadersearch',searchQuery);
         LeaderBoardHandler.setFilter(searchQuery, params);
         LeaderBoardHandler.setOptions(options);
     })
@@ -194,22 +234,24 @@ Template.leaderBoardFilters.helpers({
 
 // List search
 Template.leaderBoardListSearch.helpers({
+    query: function () {
+        console.log('listsearchquery');
+        return query;
+    },
     isJob: function () {
         if (entityType == Enums.linkTypes.job.value) return true;
     },
-
     searchString: function () {
         return query.searchString;
     },
-
     isLoading: function () {
         return LeaderBoardHandler.isLoading();
     },
-
     listViewMode: function () {
         return listViewMode.get();
     }
 });
+
 
 Template.leaderBoardListSearch.events = {
     'click .addLeaderBoard': function (e) {
@@ -230,7 +272,7 @@ Template.leaderBoardListSearch.events = {
 // Item
 
 Template.leaderBoardListItem.helpers({
-    dailyCount: function(){
+    dailyCount: function () {
 
     },
     listViewMode: function () {

@@ -11,12 +11,12 @@
                         {{>leaderBoardListSearch}}
                     </div>
 
-                    {{>leaderBoardListHeader}}
+                    {{> UI.dynamic template=getLeaderBoardTemplate}}
 
                     {{#if isSearching}}
                         searching
                     {{else}}
-                        {{> leaderBoardList }}
+                        {{>leaderBoardListItem}}
                     {{/if}}
 
                     <div class="list-actions last">
@@ -35,32 +35,43 @@
     </div>
 </template>
 
-<template name="leaderBoardListHeader">
-    {{#if listViewMode}}
+<template name="leaderBoardActivityListHeader">
+        <h1>Sales Activity</h1>
         <div class="list-header leaderBoards-list-header simple-view">
             <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
             <div class="list-header-cell leaderBoards-list-header-status">Day</div>
-            <div class="list-header-cell leaderBoards-list-header-owner">Week</div>
-            <div class="list-header-cell leaderBoards-list-header-time">Month</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Week</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Month</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Quarter</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Year</div>
+
         </div>
-        <!-- /.list-header -->
-    {{else}}
-        <div class="list-header leaderBoards-list-header">
+</template>
+<template name="leaderBoardPipelineListHeader">
+        <h1>Deal Pipeline</h1>
+        <div class="list-header leaderBoards-list-header simple-view">
+            <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Qualified</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Decision Makers</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Needs Analysis</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Quote</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Won</div>
+        </div>
+</template>
+<template name="leaderBoardContactListHeader">
+        <h1>Contact Pipeline</h1>
+        <div class="list-header leaderBoards-list-header simple-view">
             <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
             <div class="list-header-cell leaderBoards-list-header-status">Day</div>
-            <div class="list-header-cell leaderBoards-list-header-owner">Week</div>
-            <div class="list-header-cell leaderBoards-list-header-time">Month</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Week</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Month</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Quarter</div>
+            <div class="list-header-cell leaderBoards-list-header-status">Year</div>
         </div>
-    {{/if}}
 </template>
 
 <template name="leaderBoardListSearch">
-    <button class="btn btn-sm btn-primary" style="margin-bottom: 3px">
-        Activity
-    </button>
-    <button class="btn btn-sm btn-default" style="margin-bottom: 3px">
-        Deal Pipeline
-    </button>
+    {{> filter_lookUp title=" " code=20 lookUpValue=query.leaderBoardType multi=false}}
 </template>
 
 <template name="leaderBoardListSort">
@@ -103,15 +114,14 @@
 
     <div class="filter">
         <div class="filter-list" id="filter-body">
-
-            {{> filter_dateCreated selectedLimit=query.selectedLimit}}
-
             {{> filter_tags tags=query.tags}}
         </div>
     </div>
 </template>
-
 <template name="leaderBoardList">
+    <div class="page-title">
+        <h1>Activity Leaders</h1>
+    </div>
     {{#if isLoading}}
         <div style="height: 280px;"></div>
     {{else}}
@@ -144,11 +154,11 @@
                 </div>
             </div>
             <div class="list-item-details leaderBoards-list-item-details">
-                <div class="list-item-cell leaderBoards-list-item-code ">{{todayCount}}</div>
-                <div class="list-item-cell leaderBoards-list-item-owner">15</div>
-                <div class="list-item-cell leaderBoards-list-item-time">
-                    25
-                </div>
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
+                <div class="list-item-cell leaderBoards-list-item-status ">5</div>
             </div>
             <!-- /.list-item-cell -->
         </div>

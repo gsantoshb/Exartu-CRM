@@ -1,12 +1,12 @@
 _.forEach([
   {
-    displayName: 'Activity', lookUpActions:[Enums.lookUpAction.LeaderBoardType_Activity]
+    displayName: 'Note Activity', lookUpActions:[Enums.lookUpAction.LeaderBoardType_Activity]
   },
   {
-    displayName: 'Contacts',lookUpActions:[Enums.lookUpAction.LeaderBoardType_Contacts]
+    displayName: 'Contacts Acquired',lookUpActions:[Enums.lookUpAction.LeaderBoardType_Contacts]
   },
   {
-    displayName: 'Pipeline', lookUpActions:[Enums.lookUpAction.LeaderBoardType_Pipeline]
+    displayName: 'Deal Pipeline', lookUpActions:[Enums.lookUpAction.LeaderBoardType_Pipeline]
   }
 ],
   function (item) {

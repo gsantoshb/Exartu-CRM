@@ -8,7 +8,9 @@ Migrations.add({
         Enums.lookUpTypes.customer.status.lookUpCode,
         Enums.lookUpTypes.employee.status.lookUpCode,
         Enums.lookUpTypes.contact.status.lookUpCode,
-        Enums.lookUpTypes.placement.status.lookUpCode
+        Enums.lookUpTypes.howHeardOf.type.lookUpCode,
+          Enums.lookUpTypes.howHeardOf.type.lookUpCode,
+
       ];
       _.forEach(statusCodes, function (statusCode) {
         var status = {
