@@ -1,6 +1,6 @@
 _.forEach([
   {
-    displayName: 'Note Activity', lookUpActions:[Enums.lookUpAction.LeaderBoardType_Activity]
+    displayName: 'Sales Activity', lookUpActions:[Enums.lookUpAction.LeaderBoardType_Activity]
   },
   {
     displayName: 'Contacts Acquired',lookUpActions:[Enums.lookUpAction.LeaderBoardType_Contacts]

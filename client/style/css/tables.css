@@ -1330,7 +1330,7 @@ span[data-status="Inactive"] {
 }
 @media (min-width: 768px) {
     .leaderBoards-list-header .leaderBoards-list-header-title {
-        width: 30%;
+        width: 20%;
         margin-right: 52px;
     }
     .leaderBoards-list-header .leaderBoards-list-header-status,
@@ -1341,7 +1341,7 @@ span[data-status="Inactive"] {
         flex: 2;
     }
     .leaderBoards-list-item .leaderBoards-list-item-title {
-        width: 30%;
+        width: 20%;
     }
     .leaderBoards-list-item .list-item-details .leaderBoards-list-item-status,
     .leaderBoards-list-item .list-item-details .leaderBoards-list-item-owner {
@@ -1351,7 +1351,7 @@ span[data-status="Inactive"] {
         flex: 2;
     }
     .simple-view .leaderBoards-list-header-title {
-        width: 30%;
+        width: 20%;
         margin-right: 0;
     }
     .simple-view .leaderBoards-list-header-status,
@@ -1371,7 +1371,7 @@ span[data-status="Inactive"] {
         margin-right: 0;
     }
     .simple-view .leaderBoards-list-item .leaderBoards-list-item-title {
-        width: 30%;
+        width: 20%;
     }
     .simple-view .item-subtitle,
     .simple-view .item-subtitle a {

@@ -91,40 +91,21 @@ Template.leaderBoardsBox.created = function () {
     query =  loadqueryFromURL(Router.current().params);
 };
 
-//Template.leaderBoardListHeader.helpers({
-//    activityBoard: function (){
-//        console.log('this',this);
-//        if (!query.leaderBoardType.value || query.leaderBoardType.value.length==0) return true;
-//        var b=false;
-//        if (query.leaderBoardType.value)
-//        {
-//            var lkp=LookUps.findOne({_id:query.leaderBoardType.value});
-//            console.log('lk',lkp,query.leaderBoardType.value);
-//            if (lkp && lkp.lookUpActions && _.contains(lkp.lookUpActions,Enums.lookUpAction.LeaderBoardType_Activity))
-//            {
-//                b=true;
-//            }
-//
-//        }
-//        else
-//        {
-//            b=true;
-//        }
-//        return b;
-//    }
-//});
-Template.leaderBoardsBox.helpers({
-    getLeaderBoardTemplate: function(){
-        var board=Enums.lookUpAction.LeaderBoardType_Activity;
-        if (query.leaderBoardType.value)
+var getBoard=function() {
+    var board=Enums.lookUpAction.LeaderBoardType_Activity;
+    if (query.leaderBoardType.value)
+    {
+        var lkp=LookUps.findOne({_id:query.leaderBoardType.value});
+        if (lkp && lkp.lookUpActions && lkp.lookUpActions.length>0)
         {
-            var lkp=LookUps.findOne({_id:query.leaderBoardType.value});
-            if (lkp && lkp.lookUpActions && lkp.lookUpActions.length>0)
-            {
-                board=lkp.lookUpActions[0];
-            }
+            board=lkp.lookUpActions[0];
         }
-        switch (board) {
+    }
+    return board;
+};
+Template.leaderBoardsBox.helpers({
+    getLeaderBoardHeaderTemplate: function(){
+        switch (getBoard()) {
             case Enums.lookUpAction.LeaderBoardType_Activity:
                 return 'leaderBoardActivityListHeader';
             case Enums.lookUpAction.LeaderBoardType_Pipeline:
@@ -133,6 +114,7 @@ Template.leaderBoardsBox.helpers({
                 return 'leaderBoardContactListHeader';
         };
     },
+
 
     information: function () {
         var searchQuery = {};
@@ -177,7 +159,6 @@ Template.leaderBoardList.created = function () {
             };
             urlQuery.addParam('tags', query.tags.value);
         };
-        console.log('lbt',query.leaderBoardType.value);
         if (query.leaderBoardType.value) {
             urlQuery.addParam('leaderBoardType',query.leaderBoardType.value)
         };
@@ -197,6 +178,16 @@ Template.leaderBoardList.created = function () {
 };
 
 Template.leaderBoardList.helpers({
+    getLeaderBoardListItemTemplate: function(){
+        switch (getBoard()) {
+            case Enums.lookUpAction.LeaderBoardType_Activity:
+                return 'leaderBoardActivityListItem';
+            case Enums.lookUpAction.LeaderBoardType_Pipeline:
+                return 'leaderBoardPipelineListItem';
+            case Enums.lookUpAction.LeaderBoardType_Contacts:
+                return 'leaderBoardContactListItem';
+        };
+    },
     info: function () {
         info.isFiltering.value = LeaderBoardHandler.totalCount() != 0;
         return info;
@@ -207,7 +198,15 @@ Template.leaderBoardList.helpers({
     },
 
     leaderBoards: function () {
-        return leaderBoardCollection.find({}, options);
+        switch (getBoard()) {
+            case Enums.lookUpAction.LeaderBoardType_Activity:
+                var activity=leaderBoardCollection.findOne({_id:'Notes'}, options);
+                return activity.counts;
+            case Enums.lookUpAction.LeaderBoardType_Pipeline:
+                return 'leaderBoardPipelineListItem';
+            case Enums.lookUpAction.LeaderBoardType_Contacts:
+                return 'leaderBoardContactListItem';
+        };
     },
 
 
@@ -235,7 +234,6 @@ Template.leaderBoardFilters.helpers({
 // List search
 Template.leaderBoardListSearch.helpers({
     query: function () {
-        console.log('listsearchquery');
         return query;
     },
     isJob: function () {
@@ -271,10 +269,23 @@ Template.leaderBoardListSearch.events = {
 
 // Item
 
-Template.leaderBoardListItem.helpers({
-    dailyCount: function () {
-
+Template.leaderBoardActivityListItem.helpers({
+    listViewMode: function () {
+        return listViewMode.get();
     },
+    memberCount: function () {
+        return this.members.length;
+    }
+});
+Template.leaderBoardContactListItem.helpers({
+    listViewMode: function () {
+        return listViewMode.get();
+    },
+    memberCount: function () {
+        return this.members.length;
+    }
+});
+Template.leaderBoardPipelineListItem.helpers({
     listViewMode: function () {
         return listViewMode.get();
     },
