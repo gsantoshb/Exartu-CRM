@@ -7,7 +7,7 @@ Meteor.publish("leaderBoards", function () {
     var day365 = (new Date()).getTime() - 365 * 1000 * 60 * 60 * 24 * 1;
     var user=Meteor.users.findOne({_id:this.userId});
     var notesCursor =
-        Notes.aggregate([{$match: {hierId: user.currentHierId}},{
+        Notes.aggregate([{$match: {hierId: user.currentHierId,userId: {$exists: true}}},{
             $group: {
                 _id: "$userId",
                 day1: {$sum: {$cond: [{$gte: ["$dateCreated", day1]}, 1, 0]}},
