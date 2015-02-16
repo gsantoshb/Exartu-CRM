@@ -135,6 +135,19 @@
                             {{/objectProperty}}
                         </td>
                     </tr>
+                    <tr>
+                        <td>How heard of</td>
+                        <td>
+                            {{#objectProperty property=howHeardOf editable=editMode}}
+                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                            {{else}}
+                                <strong>
+                                    <strong>{{displayName}}</strong>
+                                </strong>
+                            {{/objectProperty}}
+                        </td>
+                    </tr>
+
                     {{#if Employee }}
                         <tr>
                             <td>TaxID/SSN</td>

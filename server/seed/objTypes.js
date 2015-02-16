@@ -36,6 +36,16 @@ newObjType({
       showInAdd: false,
       required: false
     },
+      {
+          name: 'howHeardOf',
+          displayName: 'How Heard Of',
+          fieldType: 'lookUp',
+          lookUpName: 'howHeardOf',
+          lookUpCode: Enums.lookUpTypes.howHeardOf.type.lookUpCode,
+          defaultValue: null,
+          showInAdd: false,
+          required: false
+      },
   ]
 });
 newObjType({

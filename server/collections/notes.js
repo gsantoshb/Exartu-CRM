@@ -110,3 +110,4 @@ Notes._ensureIndex({hierId: 1});
 Notes._ensureIndex({userId: 1});
 Notes._ensureIndex({"links.id":1});
 Notes._ensureIndex({"dateCreated":1});
+
