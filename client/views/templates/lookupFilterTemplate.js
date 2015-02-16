@@ -14,7 +14,8 @@ Template.lookupFilterTemplate.helpers({
       onSelected: this.callback,
       multi: this.multi,
       title: this.title,
-      value: this.value.val // Use val instead of value to avoid reactivity
+      value: this.value.val, // Use val instead of value to avoid reactivity
+        code: this.lookUpCode
     };
   }
 });
@@ -70,10 +71,11 @@ Template.buttonGroup.helpers({
         var templateCtx = UI._parentData(1);
         if (! templateCtx.selectedDep)
         {
-            templateCtx.selected=lastSelected[templateCtx.options[0]];
+            templateCtx.selected=lastSelected[templateCtx.code];
             templateCtx.selectedDep=new Deps.Dependency;
+            //console.log('lastSelected',lastSelected);
         } // Avoid error when a reactive call override properties defined on created
-        lastSelected[templateCtx.options[0]]=templateCtx.selected;
+        lastSelected[templateCtx.code]=templateCtx.selected;
         templateCtx.selectedDep.depend();
 
         if (templateCtx.multi){
