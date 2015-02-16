@@ -92,8 +92,10 @@ Template.leaderBoardsBox.helpers({
             case Enums.lookUpAction.LeaderBoardType_Activity:
                 return 'leaderBoardActivityListHeader';
             case Enums.lookUpAction.LeaderBoardType_Pipeline:
+                alert('this board is under construction');
                 return 'leaderBoardPipelineListHeader';
             case Enums.lookUpAction.LeaderBoardType_Contacts:
+                alert('this board is under construction');
                 return 'leaderBoardContactListHeader';
         };
     },
