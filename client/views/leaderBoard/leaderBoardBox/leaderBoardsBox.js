@@ -37,25 +37,6 @@ var loadqueryFromURL = function (params) {
         searchStringQuery.default = params.search;
     }
 
-    // CreationDate
-    var creationDateQuery = {};
-    if (params.creationDate) {
-        creationDateQuery.default = params.creationDate;
-    }
-
-    var objTypeQuery = {};
-    var type = params.hash || params.type;
-    if (type != undefined && type != 'all') {
-        var objType = dType.ObjTypes.findOne({
-            name: type
-        });
-        objTypeQuery.default = objType.name;
-        info.objType.value = objType.name + 's';
-    } else {
-        objTypeQuery.default = undefined;
-        info.objType.value = 'record(s)';
-    }
-
     // Tags
     var tagsQuery = {type: Utils.ReactivePropertyTypes.array};
     if (params.tags) {
@@ -69,7 +50,6 @@ var loadqueryFromURL = function (params) {
     return new Utils.ObjectDefinition({
         reactiveProps: {
             searchString: searchStringQuery,
-            objType: objTypeQuery,
             leaderBoardType: leaderBoardQuery,
             tags: tagsQuery
         }
@@ -83,11 +63,14 @@ if (!listViewDefault) {
 }
 var listViewMode = new ReactiveVar(listViewDefault);
 
-var searchDep = new Deps.Dependency;
 var isSearching = false;
 
 // All
 Template.leaderBoardsBox.created = function () {
+    if (!SubscriptionHandlers.LeaderBoardHandler) {
+        SubscriptionHandlers.LeaderBoardHandler = Meteor.paginatedSubscribe('leaderBoards');
+    }
+    LeaderBoardHandler = SubscriptionHandlers.LeaderBoardHandler;
     query =  loadqueryFromURL(Router.current().params);
 };
 
@@ -128,7 +111,6 @@ Template.leaderBoardsBox.helpers({
     },
 
     isSearching: function () {
-        searchDep.depend();
         return isSearching;
     }
 });
@@ -136,23 +118,15 @@ Template.leaderBoardsBox.helpers({
 
 var options = {};
 // List
+var searchQuery;
 Template.leaderBoardList.created = function () {
-    if (!SubscriptionHandlers.LeaderBoardHandler) {
-        SubscriptionHandlers.LeaderBoardHandler = Meteor.paginatedSubscribe('leaderBoards');
-    }
-    LeaderBoardHandler = SubscriptionHandlers.LeaderBoardHandler;
+
     Meteor.autorun(function () {
-        var searchQuery = {};
+        searchQuery = {};
         var params = {};
         options = {};
         var urlQuery = new URLQuery();
 
-        searchDep.depend();
-
-        if (!_.isEmpty(query.searchString.value)) {
-            params.searchString = query.searchString.value;
-            urlQuery.addParam('search', query.searchString.value);
-        };
         if (query.tags.value.length > 0) {
             searchQuery.tags = {
                 $in: query.tags.value
@@ -171,6 +145,16 @@ Template.leaderBoardList.created = function () {
             options.sort[selected.field] = selected.value;
         } else {
             delete options.sort;
+        }
+        if (query.searchString.value) {
+            //find user emails matching the search string
+            var uids=[];
+            var users=Meteor.users.find({'emails.0.address': {$regex: query.searchString.value,$options: 'i'}}).fetch();
+            _.map(users, function (doc) {
+                uids.push(doc._id);
+            });
+            searchQuery._id= {$in: uids};
+            urlQuery.addParam('search', query.searchString.value);
         }
         LeaderBoardHandler.setFilter(searchQuery, params);
         LeaderBoardHandler.setOptions(options);
@@ -201,7 +185,19 @@ Template.leaderBoardList.helpers({
         switch (getBoard()) {
             case Enums.lookUpAction.LeaderBoardType_Activity:
                 var activity=leaderBoardCollection.findOne({_id:'Notes'}, options);
-                return activity.counts;
+                if (query.searchString.value)
+                {
+                    var uids=[];
+                    var users=Meteor.users.find({'emails.0.address': {$regex: query.searchString.value,$options: 'i'}}).fetch();
+                    _.map(users, function (doc) {
+                        uids.push(doc._id);
+                    });
+                    return _.filter(activity.counts,function(c) { return _.contains(uids, c._id)});
+                }
+                else
+                {
+                    return activity.counts;
+                };
             case Enums.lookUpAction.LeaderBoardType_Pipeline:
                 return 'leaderBoardPipelineListItem';
             case Enums.lookUpAction.LeaderBoardType_Contacts:
@@ -222,10 +218,6 @@ Template.leaderBoardFilters.helpers({
         return query;
     },
 
-    contactableTypes: function () {
-        return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
-    },
-
     tags: function () {
         return query.tags;
     }
@@ -235,9 +227,6 @@ Template.leaderBoardFilters.helpers({
 Template.leaderBoardListSearch.helpers({
     query: function () {
         return query;
-    },
-    isJob: function () {
-        if (entityType == Enums.linkTypes.job.value) return true;
     },
     searchString: function () {
         return query.searchString;
@@ -252,11 +241,9 @@ Template.leaderBoardListSearch.helpers({
 
 
 Template.leaderBoardListSearch.events = {
-    'click .addLeaderBoard': function (e) {
-        Session.set('addOptions', {job: Session.get('entityId')});
-        Router.go('/leaderBoardAdd/leaderBoard');
-        e.preventDefault();
-    },
+    'keyup #searchString': _.debounce(function(e){
+        query.searchString.value = e.target.value;
+    },200),
     'click #list-view': function () {
         listViewMode.set(true);
         Session.set('leaderBoardListViewMode', true);

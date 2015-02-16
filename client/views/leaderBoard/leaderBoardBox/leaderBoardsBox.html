@@ -71,6 +71,21 @@
 </template>
 
 <template name="leaderBoardListSearch">
+    <div class="list-actions-cell search-list">
+        <div class="input-group">
+            <span class="prop-input">
+                {{#objectProperty property=searchString}}
+                    <input id="searchString" type="text" class="form-control" placeholder="Search leaders" value="{{value}}">
+                {{/objectProperty}}
+                <span class="text text-danger"></span>
+            </span>
+            <span class="input-group-btn">
+                <button class="btn btn-search" type="button">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
 
 </template>
 

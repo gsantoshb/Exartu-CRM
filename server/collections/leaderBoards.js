@@ -17,7 +17,6 @@ Meteor.publish("leaderBoards", function () {
                 day365: {$sum: {$cond: [{$gte: ["$dateCreated", day365]}, 1, 0]}}
             }
         }]);
-
     var cursors = [{name: "Notes", cursor: notesCursor}]
     generateLeaderBoardPublish(this, 'leaderBoards', cursors);
 });
@@ -29,6 +28,7 @@ var generateLeaderBoardPublish = function (ctx, name, cursors) {
             counts: c.cursor
         });
     });
+
 
     ctx.ready();
 };

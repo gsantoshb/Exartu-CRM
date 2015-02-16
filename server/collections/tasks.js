@@ -1,5 +1,5 @@
 TaskView = new View('tasks', {
-  collection: Tasks,
+  collection: Notes,
   cursors: function (task) {
 
     // Contactables
@@ -66,7 +66,7 @@ Meteor.paginatedPublish(TaskView, function () {
   if (!user)
     return [];
 
-  return Utils.filterCollectionByUserHier.call(this, TaskView.find({}, { sort: { dateCreated: -1 } }));
+  return Utils.filterCollectionByUserHier.call(this, TaskView.find({task:true}, { sort: { dateCreated: -1 } }));
 },{
   pageSize: 10,
   publicationName: 'tasks'
@@ -86,6 +86,7 @@ Tasks.before.insert(function (userId, doc) {
   doc.hierId = user.currentHierId;
   doc.userId = user._id;
   doc.dateCreated = doc.dateCreated || Date.now();
+    doc.task=true
 });
 
 // Indexes
