@@ -141,13 +141,7 @@ Template.leaderBoardList.created = function () {
         // Set url query
         urlQuery.apply();
 
-        if (selectedSort.get()) {
-            var selected = selectedSort.get();
-            options.sort = {};
-            options.sort[selected.field] = selected.value;
-        } else {
-            delete options.sort;
-        }
+
         if (query.searchString.value) {
             //find user emails matching the search string
             var uids=[];
@@ -187,6 +181,7 @@ Template.leaderBoardList.helpers({
         switch (getBoard()) {
             case Enums.lookUpAction.LeaderBoardType_Activity:
                 var activity=leaderBoardCollection.findOne({_id:'Notes'}, options);
+                var results;
                 if (query.searchString.value)
                 {
                     var uids=[];
@@ -194,12 +189,20 @@ Template.leaderBoardList.helpers({
                     _.map(users, function (doc) {
                         uids.push(doc._id);
                     });
-                    return _.filter(activity.counts,function(c) { return _.contains(uids, c._id)});
+                    results= _.filter(activity.counts,function(c) { return _.contains(uids, c._id)});
                 }
                 else
                 {
-                    return activity.counts;
+                    results= activity.counts;
                 };
+                var selected={field:'rank'};
+                if (selectedSort.get()) {
+                    var selected = selectedSort.get();
+                };
+                if (selected.field=="name")
+                return Utils.sortByUserName(results);
+                if (selected.field=="rank")
+                    return _.sortBy(results,function(l) {  return -l.day7});
             case Enums.lookUpAction.LeaderBoardType_Pipeline:
                 return 'leaderBoardPipelineListItem';
             case Enums.lookUpAction.LeaderBoardType_Contacts:
@@ -292,8 +295,8 @@ Template.leaderBoardInformation.helpers({});
 
 var selectedSort = new ReactiveVar();
 var sortFields = [
-    {field: 'dateCreated', displayName: 'Date'},
-    {field: 'displayName', displayName: 'Name'}
+    {field: 'name', displayName: 'Name'},
+    {field: 'rank', displayName: 'Rank'}
 ];
 
 Template.leaderBoardListSort.helpers({
