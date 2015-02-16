@@ -54,7 +54,7 @@ var loadTaskQueryFromURL = function (params) {
 var taskCount = new ReactiveVar();
 
 Template.tasksBox.created = function () {
-    taskQuery = taskQuery || loadTaskQueryFromURL(Router.current().params);
+    taskQuery = taskQuery || loadTaskQueryFromURL(Router.current().params.query);
     var entityId = Session.get('entityId');
 
     if (!SubscriptionHandlers.TasksHandler) {

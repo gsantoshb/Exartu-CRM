@@ -6,6 +6,8 @@ $("#userDropdown").prop("selectedIndex", -1);
 var loadNoteQueryFromURL = function (params) {
   // Search string
   var searchStringQuery = {};
+
+
   if (params.search) {
     searchStringQuery.default = params.search;
   }
@@ -15,19 +17,20 @@ var loadNoteQueryFromURL = function (params) {
     userIdQuery.default = params.userId;
   }
 
-  return new Utils.ObjectDefinition({
+  var x= new Utils.ObjectDefinition({
     reactiveProps: {
       searchString: searchStringQuery,
       userId: userIdQuery
     }
   });
+    return x;
 };
 var options = {};
 
 var noteCount = new ReactiveVar();
 
 Template.notesBox.created = function () {
-  noteQuery = noteQuery || loadNoteQueryFromURL(Router.current().params);
+  noteQuery = noteQuery || loadNoteQueryFromURL(Router.current().params.query);
   var entityId = Session.get('entityId');
 
   if (!SubscriptionHandlers.NotesHandler) {
@@ -41,7 +44,6 @@ Template.notesBox.created = function () {
 
   Meteor.autorun(function () {
     var urlQuery = new URLQuery();
-
     var queryObj = noteQuery.getObject();
     var q = {};
 
@@ -49,7 +51,6 @@ Template.notesBox.created = function () {
       q.userId = queryObj.userId;
       urlQuery.addParam('userId', queryObj.userId);
     }
-
     if (queryObj.searchString) {
       q.msg = {
         $regex: queryObj.searchString,
@@ -57,7 +58,6 @@ Template.notesBox.created = function () {
       };
       urlQuery.addParam('search', queryObj.searchString);
     }
-    //console.log('ent spec note',entityId,q, q.msg);
     if (isEntitySpecific) {
       q.links = {$elemMatch: {id: entityId}};
     }
@@ -114,7 +114,6 @@ Template.notesBox.helpers({
 Template.notesBox.events({
   'keyup #searchString': _.debounce(function(e){
       noteQuery.searchString.value = e.target.value;
-	  console.log(noteQuery.getObject().searchString);
     },200),
   'click .addNote': function () {
     if (!isEntitySpecific)

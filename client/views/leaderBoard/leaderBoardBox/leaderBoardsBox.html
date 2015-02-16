@@ -36,38 +36,41 @@
 </template>
 
 <template name="leaderBoardActivityListHeader">
-        <h1 class="text-center">Sales Activity</h1>
-        <div class="list-header leaderBoards-list-header simple-view">
-            <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Day</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Week</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Month</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Quarter</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Year</div>
+    <h1 class="text-center">Sales Activity</h1>
 
-        </div>
+    <div class="list-header leaderBoards-list-header simple-view">
+        <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Day</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Week</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Month</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Quarter</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Year</div>
+
+    </div>
 </template>
 <template name="leaderBoardPipelineListHeader">
-        <h1 class="text-center">Deal Pipeline</h1>
-        <div class="list-header leaderBoards-list-header simple-view">
-            <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Qualified</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Decision Makers</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Needs Analysis</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Quote</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Won</div>
-        </div>
+    <h1 class="text-center">Deal Pipeline</h1>
+
+    <div class="list-header leaderBoards-list-header simple-view">
+        <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Qualified</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Decision Makers</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Needs Analysis</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Quote</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Won</div>
+    </div>
 </template>
 <template name="leaderBoardContactListHeader">
-        <h1 class="text-center">Contact Pipeline</h1>
-        <div class="list-header leaderBoards-list-header simple-view">
-            <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Day</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Week</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Month</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Quarter</div>
-            <div class="list-header-cell leaderBoards-list-header-status">Year</div>
-        </div>
+    <h1 class="text-center">Contact Pipeline</h1>
+
+    <div class="list-header leaderBoards-list-header simple-view">
+        <div class="list-header-cell leaderBoards-list-header-title">Leader</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Day</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Week</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Month</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Quarter</div>
+        <div class="list-header-cell leaderBoards-list-header-status">Year</div>
+    </div>
 </template>
 
 <template name="leaderBoardListSearch">
@@ -75,7 +78,8 @@
         <div class="input-group">
             <span class="prop-input">
                 {{#objectProperty property=searchString}}
-                    <input id="searchString" type="text" class="form-control" placeholder="Search leaders" value="{{value}}">
+                    <input id="searchString" type="text" class="form-control" placeholder="Search leaders"
+                           value="{{value}}">
                 {{/objectProperty}}
                 <span class="text text-danger"></span>
             </span>
@@ -159,23 +163,26 @@
 </template>
 
 <template name="leaderBoardActivityListItem">
-        <div class="list-item leaderBoards-list-item">
-            <div class="list-item-cell leaderBoards-list-item-title">
-                <div class="item-title">
-                    <div class="item-title"><a href="/leaderBoard/{{_id}}">{{displayUserName _id}} </a></div>
-                </div>
-                <div class="item-subtitle">
-                </div>
+    <div class="list-item leaderBoards-list-item">
+        <div class="list-item-cell leaderBoards-list-item-title">
+            <div class="item-title">
+                <div class="item-title"><a href="/leaderBoard/{{_id}}">{{displayUserName _id}} </a></div>
             </div>
-            <div class="list-item-details leaderBoards-list-item-details">
-                <div class="list-item-cell leaderBoards-list-item-status ">{{day1}}</div>
-                <div class="list-item-cell leaderBoards-list-item-status ">{{day7}}</div>
-                <div class="list-item-cell leaderBoards-list-item-status ">{{day30}}</div>
-                <div class="list-item-cell leaderBoards-list-item-status ">{{day91}}</div>
-                <div class="list-item-cell leaderBoards-list-item-status ">{{day365}}</div>
+            <div class="item-subtitle">
             </div>
-            <!-- /.list-item-cell -->
         </div>
+        <div class="list-item-details leaderBoards-list-item-details">
+            <div class="list-item-cell leaderBoards-list-item-status ">{{day1}}</div>
+            <div class="list-item-cell leaderBoards-list-item-status ">
+                <a href="/notes?userId={{_id}}"  title="day7">{{day7}}</a>
+            </div>
+            <div class="list-item-cell leaderBoards-list-item-status ">{{day30}}
+            </div>
+            <div class="list-item-cell leaderBoards-list-item-status ">{{day91}}</div>
+            <div class="list-item-cell leaderBoards-list-item-status ">{{day365}}</div>
+        </div>
+        <!-- /.list-item-cell -->
+    </div>
 </template>
 <template name="leaderBoardPipelineListItem">
     {{#if listViewMode}}

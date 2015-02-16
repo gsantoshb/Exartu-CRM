@@ -39,7 +39,7 @@ Meteor.paginatedPublish(PlacementView, function(){
     return [];
   return Utils.filterCollectionByUserHier.call(this, PlacementView.find());
 }, {
-  pageSize: 10,
+  pageSize: 50,
   publicationName: 'placements',
   updateSelector: function (selector, params) {
     if (!params || !params.searchString) return selector;

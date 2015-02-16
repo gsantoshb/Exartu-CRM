@@ -125,7 +125,7 @@ Template.placementsBox.created = function(){
         SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
     }
     PlacementHandler = SubscriptionHandlers.PlacementHandler;
-    query = query || loadqueryFromURL(Router.current().params);
+    query = query || loadqueryFromURL(Router.current().params.query);
 
     var entityId = Session.get('entityId');
     entityType = Utils.getEntityTypeFromRouter();
