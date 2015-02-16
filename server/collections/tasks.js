@@ -93,6 +93,6 @@ Tasks.before.insert(function (userId, doc) {
 
 Tasks._ensureIndex({hierId: 1});
 Tasks._ensureIndex({assign: 1});
-Notes._ensureIndex({userId: 1});
-Notes._ensureIndex({"links.id":1});
-Notes._ensureIndex({"dateCreated":1});
+Tasks._ensureIndex({userId: 1});
+Tasks._ensureIndex({"links.id":1});
+Tasks._ensureIndex({"dateCreated":1});
