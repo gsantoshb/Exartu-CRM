@@ -25,6 +25,20 @@
                                 {{/each}}
                             </select>
                         {{/objectProperty}}
+                        {{> filter_dateCreated selectedLimit=filters.selectedLimit}}
+                        <div class="filter-item">
+                            <div class="filter-title">
+                                <i class="fa fa-eye"></i>
+                                Visibility
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    {{#objectProperty property=filters.ownedByMe}}
+                                        <input type="checkbox" checked="{{value}}" />Mine only
+                                    {{/objectProperty}}
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

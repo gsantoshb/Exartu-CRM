@@ -195,14 +195,12 @@ Template.leaderBoardList.helpers({
                 {
                     results= activity.counts;
                 };
-                var selected={field:'rank'};
+                var selected={field:'day7'};
                 if (selectedSort.get()) {
                     var selected = selectedSort.get();
                 };
-                if (selected.field=="name")
-                return Utils.sortByUserName(results);
-                if (selected.field=="rank")
-                    return _.sortBy(results,function(l) {  return -l.day7});
+                if (selected.field=="name") return Utils.sortByUserName(results);
+                return _.sortBy(results,function(l) {  return -l[selected.field]});
             case Enums.lookUpAction.LeaderBoardType_Pipeline:
                 return 'leaderBoardPipelineListItem';
             case Enums.lookUpAction.LeaderBoardType_Contacts:
@@ -296,7 +294,11 @@ Template.leaderBoardInformation.helpers({});
 var selectedSort = new ReactiveVar();
 var sortFields = [
     {field: 'name', displayName: 'Name'},
-    {field: 'rank', displayName: 'Rank'}
+    {field: 'day1', displayName: 'day1'},
+    {field: 'day7', displayName: 'day7'},
+    {field: 'day30', displayName: 'day30'},
+    {field: 'day91', displayName: 'day91'},
+    {field: 'day365', displayName: 'day365'}
 ];
 
 Template.leaderBoardListSort.helpers({
