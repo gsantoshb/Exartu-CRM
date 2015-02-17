@@ -31,13 +31,7 @@
                                 <i class="fa fa-eye"></i>
                                 Visibility
                             </div>
-                            <div class="checkbox">
-                                <label>
-                                    {{#objectProperty property=filters.ownedByMe}}
-                                        <input type="checkbox" checked="{{value}}" />Mine only
-                                    {{/objectProperty}}
-                                </label>
-                            </div>
+                            {{> filter_createdBy showMineOnly=filters.ownedByMe}}
                         </div>
                     </div>
                 </div>
