@@ -44,25 +44,6 @@ Template.filter_inactive.events = {
 };
 
 // CreatedDate
-var timeLimits = {
-    day: 24 * 60 * 60 * 1000,
-    week: 7 * 24 * 60 * 60 * 1000,
-    month: 30 * 24 * 60 * 60 * 1000,
-    quarter: 91 * 24 * 60 * 60 * 1000,
-    year: 365 * 24 * 60 * 60 * 1000
-};
-var dayISO, weekISO, monthISO, yearISO
-dayISO = moment().subtract(1, 'day');
-weekISO = moment().subtract(1, 'week');
-monthISO = moment().subtract(1, 'month');
-quarterISO = moment().subtract(91, 'day');
-yearISO = moment().subtract(1, 'year');
-var timeLimitsISO = {
-    day: dayISO,
-    week: weekISO,
-    month: monthISO,
-    year: yearISO
-}
 var setDateCreatedFilter = function (value) {
     if (this.selectedLimit.value == value)
         this.selectedLimit.value = undefined;
@@ -73,7 +54,7 @@ var setDateCreatedFilter = function (value) {
 
 Template.filter_dateCreated.helpers({
     recentOptions: function () {
-        return timeLimits;
+        return Global.timeLimits;
     },
     recentOptionClass: function (option) {
         return this.selectedLimit.value == option ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
@@ -81,7 +62,7 @@ Template.filter_dateCreated.helpers({
 });
 Template.filter_dateCreatedISO.helpers({
     recentOptionsISO: function () {
-        return timeLimitsISO;
+        return Global.timeLimitsISO;
     },
     recentOptionClass: function (option) {
         return this.selectedLimit.value == option ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
@@ -90,36 +71,36 @@ Template.filter_dateCreatedISO.helpers({
 
 Template.filter_dateCreated.events = {
     'click #recent-day': function () {
-        setDateCreatedFilter.call(this, timeLimits.day);
+        setDateCreatedFilter.call(this, Global.timeLimits.day);
     },
     'click #recent-week': function () {
-        setDateCreatedFilter.call(this, timeLimits.week);
+        setDateCreatedFilter.call(this, Global.timeLimits.week);
     },
     'click #recent-month': function () {
-        setDateCreatedFilter.call(this, timeLimits.month);
+        setDateCreatedFilter.call(this, Global.timeLimits.month);
     },
     'click #recent-quarter': function () {
-        setDateCreatedFilter.call(this, timeLimits.quarter);
+        setDateCreatedFilter.call(this, Global.timeLimits.quarter);
     },
     'click #recent-year': function () {
-        setDateCreatedFilter.call(this, timeLimits.year);
+        setDateCreatedFilter.call(this, Global.timeLimits.year);
     }
 };
 Template.filter_dateCreatedISO.events = {
     'click #recent-day': function () {
-        setDateCreatedFilter.call(this, timeLimitsISO.day);
+        setDateCreatedFilter.call(this, Global.timeLimitsISO.day);
     },
     'click #recent-week': function () {
-        setDateCreatedFilter.call(this, timeLimitsISO.week);
+        setDateCreatedFilter.call(this, Global.timeLimitsISO.week);
     },
     'click #recent-month': function () {
-        setDateCreatedFilter.call(this, timeLimitsISO.month);
+        setDateCreatedFilter.call(this, Global.timeLimitsISO.month);
     },
     'click #recent-quarter': function () {
-        setDateCreatedFilter.call(this, timeLimitsISO.quarter);
+        setDateCreatedFilter.call(this, Global.timeLimitsISO.quarter);
     },
     'click #recent-year': function () {
-        setDateCreatedFilter.call(this, timeLimitsISO.year);
+        setDateCreatedFilter.call(this, Global.timeLimitsISO.year);
     }
 };
 
