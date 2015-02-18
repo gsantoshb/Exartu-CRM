@@ -96,12 +96,14 @@ ActivityViews = new View('activities', {
             var note = c.fetch()[0];
 
             if (note) {
-                _.forEach(note.links, function (link) {
-                    switch (link.type) {
+                var links= _.pluck(note.links,'id');
+                var types= _.pluck(note.links,'type');
+                _.forEach(types, function (t) {
+                    switch (t) {
                         case Enums.linkTypes.contactable.value:
                             self.publish({
                                 cursor: function () {
-                                    return Contactables.find(link.id);
+                                    return Contactables.find({_id: { $in: links}});
                                 },
                                 to: 'contactables'
                             });
@@ -109,7 +111,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.job.value:
                             self.publish({
                                 cursor: function () {
-                                    return Jobs.find(link.id);
+                                    return Jobs.find({_id: { $in: links}});
                                 },
                                 to: 'jobs'
                             });
@@ -117,7 +119,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.placement.value:
                             self.publish({
                                 cursor: function () {
-                                    return Placements.find(link.id);
+                                    return Placements.find({_id: { $in: links}});
                                 },
                                 to: 'placements'
                             });
