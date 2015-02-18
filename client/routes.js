@@ -275,6 +275,11 @@ Router.map(function () {
     path: '/emailTemplates',
     controller: 'EmailTemplateListController'
   });
+
+  this.route('docCenterManagement', {
+    path: '/management/docCenter',
+    controller: 'DocCenterManagementController'
+  });
 });
 
 

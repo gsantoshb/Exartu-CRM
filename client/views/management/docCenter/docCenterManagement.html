@@ -1,0 +1,40 @@
+<template name="docCenterManagement">
+    <div id="content" class="lookUps">
+        <div id="content-header" class="mini">
+            <h1>DocCenter management</h1>
+        </div>
+
+
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Management</a>
+            <a href="/management/docCenter" class="current">DocCenter</a>
+        </div>
+
+        <div class="container-fluid">
+            <div class="">
+                <!-- Header -->
+                <div>
+                    {{#with isRegistered}}
+                        Your credentials:
+                        <div>UserName: {{this.userName}}</div>
+                        <div>
+                            Password:
+                            {{#if showPass}}
+                                {{this.password}}
+                            {{else}}
+                                <a id="showPass" class="pointer">Show Password</a>
+                            {{/if}}
+                        </div>
+
+                    {{else}}
+                        <div class="alert alert-warning" role="alert">
+                            You have not configured docCenter
+                        </div>
+
+                        <button id="activateDocCenter" class="btn btn-primary pull-right" disabled="{{isActivating}}">Activate</button>
+                    {{/with}}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

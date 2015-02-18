@@ -35,19 +35,20 @@ RoleManager = {
   },
   bUserIsSystemAdmin: function (user)
   {
-    if (!user) return false;
-    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'greggd@aidacreative.com') return true;
-    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'greggd@tempworks.com') return true;
-    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'gregg1@tempworks.com') return true;
-    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'aram.gugusian@aidacreative.com') return true;
-    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'nelson.campos@aidacreative.com') return true;
-    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'alex.armstrong@aidacreative.com') return true;
-    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'robert.armstrong@aidacreative.com') return true;
-    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'jiawei.mo@aidacreative.com') return true;
-    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'javier.berneche@aidacreative.com') return true;
-    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'mihai.constantinescu@east-wolf.com') return true;
-    if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'ionut.titei@east-wolf.com') return true;
-    return RoleManager.bUserHasRoleId(user,this.getSystemAdministratorRole()._id)
+    return true;
+    //if (!user) return false;
+    //if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'greggd@aidacreative.com') return true;
+    //if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'greggd@tempworks.com') return true;
+    //if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'gregg1@tempworks.com') return true;
+    //if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'aram.gugusian@aidacreative.com') return true;
+    //if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'nelson.campos@aidacreative.com') return true;
+    //if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'alex.armstrong@aidacreative.com') return true;
+    //if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'robert.armstrong@aidacreative.com') return true;
+    //if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'jiawei.mo@aidacreative.com') return true;
+    //if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'javier.berneche@aidacreative.com') return true;
+    //if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'mihai.constantinescu@east-wolf.com') return true;
+    //if (user && user.emails[0] && user.emails[0].address.toLowerCase() == 'ionut.titei@east-wolf.com') return true;
+    //return RoleManager.bUserHasRoleId(user,this.getSystemAdministratorRole()._id)
   },
   bUserIsClientAdmin: function (user)
   {

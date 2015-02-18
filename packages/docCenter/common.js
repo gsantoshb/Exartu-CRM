@@ -76,8 +76,16 @@ DocCenter = {
   insertUser: function (userData, cb) {
     Meteor.call('docCenter.insertUser', userData, cb);
   },
-  accountExists: function (id, cb) {
-    Meteor.call('docCenter.accountExists', id, function(err, result){
+  accountExists: function (cb) {
+    Meteor.call('docCenter.accountExists', function(err, result){
+      if (err){
+        return console.log(err);
+      }
+      cb(result);
+    });
+  },
+  getCredentials: function (cb) {
+    Meteor.call('docCenter.getCredentials', function(err, result){
       if (err){
         return console.log(err);
       }

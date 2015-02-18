@@ -51,14 +51,14 @@ _.extend(DocCenter,{
       Authkey: this._authkey
     };
 
-    console.log(docCenterUser);
+    console.log('> registering',docCenterUser);
 
     HTTP.post(this._docCenterUrl + '/api/Account', { data: docCenterUser}, function (err, response) {
       if (err){
         console.error(err);
         cb(err);
       }else {
-        console.log('response', response);
+        console.log('registering Complete');
         Accounts.insert({
           _id: hierId,
           userName: docCenterUser.UserName,
@@ -159,6 +159,10 @@ _.extend(DocCenter,{
 
   accountExists: function (id) {
     return Accounts.find(id).count();
+  },
+  getCredentials: function (id) {
+    console.log('id', id);
+    return Accounts.findOne(id);
   },
 
   /**
@@ -325,7 +329,10 @@ Meteor.methods({
   'docCenter.instantiateDocument': function (docId, externalId, mergeFieldsValues) {
     return DocCenter.instantiateDocument(Meteor.user().currentHierId, docId, externalId, mergeFieldsValues || []);
   },
-  'docCenter.accountExists': function (id) {
-    return DocCenter.accountExists(id);
+  'docCenter.accountExists': function () {
+    return DocCenter.accountExists(Meteor.user().currentHierId);
+  },
+  'docCenter.getCredentials': function () {
+    return DocCenter.getCredentials(Meteor.user().currentHierId);
   }
 });
