@@ -140,12 +140,14 @@ ActivityViews = new View('activities', {
             var task = c.fetch()[0];
 
             if (task) {
-                _.forEach(task.links, function (link) {
-                    switch (link.type) {
+                var links= _.pluck(task.links,'id');
+                var types= _.pluck(task.links,'type');
+                _.forEach(types, function (t) {
+                    switch (t) {
                         case Enums.linkTypes.contactable.value:
                             self.publish({
                                 cursor: function () {
-                                    return Contactables.find(link.id);
+                                    return Contactables.find({_id: { $in: links}}); //try all keys regardless of type since doesn't matter
                                 },
                                 to: 'contactables'
                             });
@@ -153,7 +155,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.job.value:
                             self.publish({
                                 cursor: function () {
-                                    return Jobs.find(link.id);
+                                    return Jobs.find({_id:links});
                                 },
                                 to: 'jobs'
                             });
@@ -161,7 +163,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.placement.value:
                             self.publish({
                                 cursor: function () {
-                                    return Placements.find(link.id);
+                                    return Placements.find({_id:links});
                                 },
                                 to: 'placements'
                             });
