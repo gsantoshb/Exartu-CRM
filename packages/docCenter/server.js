@@ -5,7 +5,6 @@ _.extend(DocCenter,{
   _docCenterUrl: 'http://hrconcourseapi.aidacreative.com',
 
   login: Meteor.wrapAsync(function (hierId, cb) {
-    debugger;
     var account = getAccount(hierId);
 
     var data = {
@@ -21,11 +20,8 @@ _.extend(DocCenter,{
       }
     }, function (err, response) {
       if (err){
-        //console.error(err);
         cb(err);
       }else{
-        //console.log(response);
-        console.log('token', response.data.access_token);
 
         Accounts.update(hierId, {
           $set: {
@@ -51,14 +47,12 @@ _.extend(DocCenter,{
       Authkey: this._authkey
     };
 
-    console.log('> registering',docCenterUser);
 
     HTTP.post(this._docCenterUrl + '/api/Account', { data: docCenterUser}, function (err, response) {
       if (err){
         console.error(err);
         cb(err);
       }else {
-        console.log('registering Complete');
         Accounts.insert({
           _id: hierId,
           userName: docCenterUser.UserName,
@@ -144,14 +138,13 @@ _.extend(DocCenter,{
       Email: userData.email,
       Password: userData.password || generatePassword()
     };
-    console.log('options', options);
 
     api.post(self._docCenterUrl + '/api/Users', { data: options }, function (err, response) {
       if (err){
         cb(err);
       }else{
-        console.log('response.data', response.data);
-        cb(null, response.data);
+        options.docCenterId = response.data;
+        cb(null, options);
       }
     });
 
@@ -174,7 +167,6 @@ _.extend(DocCenter,{
    * @param {string} mergeFieldsValues.value
    */
   instantiateDocument: Meteor.wrapAsync(function (hierId, docId, externalId, mergeFieldsValues, cb) {
-
 
     var account = getAccount(hierId);
     var self = this;
@@ -298,14 +290,6 @@ var getAutorizationString = function (account) {
 };
 
 Meteor.methods({
-  //'docCenter.register': function () {
-  //  var user = Meteor.user();
-  //  var hier = Hierarchies.findOne(user.currentHierId);
-  //  var email = user.emails[0].address;
-  //
-  //  DocCenter.register(hier.name, email, hier._id);
-  //},
-
   'docCenter.getDocuments': function () {
     return DocCenter.getDocuments(Meteor.user().currentHierId);
   },
@@ -316,14 +300,6 @@ Meteor.methods({
 
   'docCenter.login': function () {
     return DocCenter.login(Meteor.user().currentHierId);
-  },
-
-  //'docCenter.insertMergeField': function (mf) {
-  //  return DocCenter.insertMergeField(Meteor.user().currentHierId, mf);
-  //},
-
-  'docCenter.insertUser': function (userData) {
-    return DocCenter.insertUser(Meteor.user().currentHierId, userData);
   },
 
   'docCenter.instantiateDocument': function (docId, externalId, mergeFieldsValues) {

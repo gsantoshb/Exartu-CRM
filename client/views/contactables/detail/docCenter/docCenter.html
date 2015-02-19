@@ -8,9 +8,8 @@
                 {{> documentInstances}}
             {{else}}
                 <div style="padding: 10px">
-                    <p class="alert alert-warning">The Employee has not an account on docCenter yet</p>
+                    <p class="alert alert-warning">The Employee has not an account on HRConcourse yet</p>
                     <button class="btn" id="createAccount">Create one for him</button>
-                    <button class="btn">Add an existing account</button>
                 </div>
                 {{#if createAccount}}
                     {{> quickForm schema=createAccountSchema id="createDocCenterAccount"}}
@@ -49,7 +48,7 @@
                         <div class="list-thumb"><i class="icon-note-paper-2"></i></div>
                         <div class="list-3-content list-magic">
                             <div class="list-3-content-wrap">
-                                <div class="list-3-item-title">{{documentName}}</div>
+                                <div class="list-3-item-title"><a href="/documentInstance/{{documentId}}">{{documentName}}</a></div>
                                 <div class="list-3-actions">
                                     <span class="editNoteRecord"> {{getStatus status}} </span>
                                 </div>

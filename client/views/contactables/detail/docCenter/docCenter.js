@@ -1,8 +1,4 @@
 
-//Template.docCenterTab.created = function () {
-//
-//};
-
 var createAccountSchema = new SimpleSchema({
   email: {
     type: String,
@@ -14,7 +10,7 @@ var createAccountSchema = new SimpleSchema({
 Template.docCenterTab.helpers({
   hasAccount: function () {
     var contactable = Contactables.findOne(Session.get('entityId'));
-    return contactable && contactable.docCenterId;
+    return contactable && contactable.docCenter;
   },
   createAccountSchema: function () {
     return createAccountSchema;
@@ -23,14 +19,12 @@ Template.docCenterTab.helpers({
 
 Template.docCenterTab.events({
   'click #createAccount': function (e, ctx) {
-    DocCenter.insertUser({
-      userName: 'asd',
-      email: 'asd@asd.asd',
-      id: Session.get('entityId')
+
+    Meteor.call('createDocCenterAccount', Session.get('entityId'), function () {
+
     });
   }
 });
-
 
 
 var documents = new ReactiveVar([]);
@@ -66,9 +60,7 @@ Template.sendDocument.events({
     if (!selectedId){
       return;
     }
-    DocCenter.instantiateDocument(selectedId, contactable.docCenterId, getMergeFieldsValues(), function () {
-      console.log(arguments);
-    });
+    DocCenter.instantiateDocument(selectedId, contactable.docCenterId, getMergeFieldsValues(), function () { });
 
   }
 });
@@ -83,7 +75,7 @@ Template.documentInstances.created = function () {
   var contactable = Contactables.findOne(Session.get('entityId'));
 
   gettingInstances.set(true);
-  DocCenter.getDocumentInstances(contactable.docCenterId, function (data) {
+  DocCenter.getDocumentInstances(contactable.docCenter.docCenterId, function (data) {
     instances.set(data);
     gettingInstances.set(false);
   })

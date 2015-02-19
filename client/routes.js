@@ -280,6 +280,11 @@ Router.map(function () {
     path: '/management/docCenter',
     controller: 'DocCenterManagementController'
   });
+
+  this.route('documentInstance', {
+    path: '/documentInstance/:id',
+    controller: 'InstanceController'
+  });
 });
 
 
