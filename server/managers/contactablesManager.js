@@ -80,24 +80,6 @@ ContactableManager = {
     return contactable ? contactable.contactMethods : [];
   },
 
-  setAddress: function (contactableId, addressInfo) {
-    // Validation
-    if (! contactableId) { throw new Error('Contactable ID is required'); }
-    if (! addressInfo) { throw new Error('Address information is required'); }
-
-    // Contact address insertion
-    Contactables.update({ _id: contactableId }, { $set: { location: addressInfo } }, function (err, result) {
-      if (err) { throw err; }
-      return result;
-    });
-  },
-  getAddress: function (contactableId) {
-    // Validation
-    if (! contactableId) { throw new Error('Contactable ID is required'); }
-
-    var contactable = Contactables.findOne({ _id: contactableId }, { fields: { location: 1 } });
-    return contactable ? contactable.location : {};
-  },
   isTaxIdUnused: function(taxid,hierid)
   {
     if (!taxid) return true;

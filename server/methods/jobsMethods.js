@@ -9,9 +9,6 @@ Meteor.methods({
   'copyJob': function (jobId) {
     return JobManager.copy(jobId);
   },
-  setJobAddress: function (jobId, addressInfo) {
-    return JobManager.setAddress(jobId, addressInfo);
-  },
   findJob: function (query) {
     return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Jobs.find({
       'publicJobTitle': {

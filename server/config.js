@@ -1,5 +1,6 @@
 ExartuConfig = {
   // Mail server
+    AdminEmails: undefined,
   MAIL_URL: undefined,
   // Root
   TenantId: "sys",

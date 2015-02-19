@@ -96,12 +96,14 @@ ActivityViews = new View('activities', {
             var note = c.fetch()[0];
 
             if (note) {
-                _.forEach(note.links, function (link) {
-                    switch (link.type) {
+                var links= _.pluck(note.links,'id');
+                var types= _.pluck(note.links,'type');
+                _.forEach(types, function (t) {
+                    switch (t) {
                         case Enums.linkTypes.contactable.value:
                             self.publish({
                                 cursor: function () {
-                                    return Contactables.find(link.id);
+                                    return Contactables.find({_id: { $in: links}});
                                 },
                                 to: 'contactables'
                             });
@@ -109,7 +111,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.job.value:
                             self.publish({
                                 cursor: function () {
-                                    return Jobs.find(link.id);
+                                    return Jobs.find({_id: { $in: links}});
                                 },
                                 to: 'jobs'
                             });
@@ -117,7 +119,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.placement.value:
                             self.publish({
                                 cursor: function () {
-                                    return Placements.find(link.id);
+                                    return Placements.find({_id: { $in: links}});
                                 },
                                 to: 'placements'
                             });
@@ -140,12 +142,14 @@ ActivityViews = new View('activities', {
             var task = c.fetch()[0];
 
             if (task) {
-                _.forEach(task.links, function (link) {
-                    switch (link.type) {
+                var links= _.pluck(task.links,'id');
+                var types= _.pluck(task.links,'type');
+                _.forEach(types, function (t) {
+                    switch (t) {
                         case Enums.linkTypes.contactable.value:
                             self.publish({
                                 cursor: function () {
-                                    return Contactables.find(link.id);
+                                    return Contactables.find({_id: { $in: links}}); //try all keys regardless of type since doesn't matter
                                 },
                                 to: 'contactables'
                             });
@@ -153,7 +157,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.job.value:
                             self.publish({
                                 cursor: function () {
-                                    return Jobs.find(link.id);
+                                    return Jobs.find({_id:links});
                                 },
                                 to: 'jobs'
                             });
@@ -161,7 +165,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.placement.value:
                             self.publish({
                                 cursor: function () {
-                                    return Placements.find(link.id);
+                                    return Placements.find({_id:links});
                                 },
                                 to: 'placements'
                             });
@@ -237,7 +241,7 @@ Meteor.paginatedPublish(ActivityViews, function () {
     return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({}, {sort: {'data.dateCreated': -1}}));
 }, {
     //infiniteScroll: true,
-    pageSize: 10,
+    pageSize: 50,
     publicationName: 'activities'
 });
 
@@ -662,3 +666,4 @@ Activities._ensureIndex({userId: 1});
 Activities._ensureIndex({hierId: 1});
 Activities._ensureIndex({entityId: 1});
 Activities._ensureIndex({type: 1});
+

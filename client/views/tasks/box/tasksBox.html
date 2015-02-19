@@ -14,13 +14,13 @@
                             Status
                         </div>
 
-                        <div data-bind="foreach: states">
+                        <div>
                             {{#each states}}
                                 <button type="button" class="btn btn-sm selectState {{selectedClass}}">{{name}}</button>
                             {{/each}}
                         </div>
                     </div>
-
+                    {{> filter_dateCreated selectedLimit=filters.selectedLimit}}
                     <div class="filter-item">
                         <div class="filter-title">
                             <i class="fa fa-eye"></i>
@@ -34,13 +34,7 @@
                                 {{/objectProperty}}
                             </label>
                         </div>
-                        <!--<div class="checkbox">-->
-                        <!--<label>-->
-                            <!--{{#objectProperty property=filters.ownedByMe}}-->
-                        <!--<input type="checkbox" checked="{{value}}" />Mine only-->
-                            <!--{{/objectProperty}}-->
-                        <!--</label>-->
-                        <!--</div>-->
+                        {{> filter_createdBy showMineOnly=filters.ownedByMe}}
                     </div>
 
                     <div class="filter-item">
@@ -49,11 +43,6 @@
                             Owner
                         </div>
 
-                        <!--<div class="checkbox">-->
-                            <!--{{#objectProperty property=filters.assigned}}-->
-                        <!--<input type="checkbox" checked="{{assigned}}" />Assigned to:-->
-                            <!--{{/objectProperty}}-->
-                        <!--</div>-->
                         {{#objectProperty property=filters.assignedTo}}
                             <select id="assignedToDropdown" class="form-control">
                                 <option value="">--select--</option>

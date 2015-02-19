@@ -50,11 +50,17 @@ AutoForm.hooks({
     AddNoteRecord: {
         before: {
             addContactableNote: function (doc) {
-                var initialLink = {
+                var initialLink = [{
                     id: Session.get('entityId'),
                     type: Utils.getEntityTypeFromRouter()
-                };
-                doc.links = doc.links || [initialLink];
+                }];
+
+                var c = Contactables.findOne({_id: Session.get('entityId')});
+                if (c && c.Contact && c.Contact.customer) {
+                    initialLink.push({id: c.Contact.customer, type: Enums.linkTypes.contactable.value})
+                }
+                ;
+                doc.links = doc.links || initialLink;
                 doc.contactableId = Session.get('entityId');
                 if (doc.sendAsSMS && Session.get('entityId') == Session.get('hotListId')) {
                     var hotlist = HotLists.findOne(Session.get('hotListId'));
@@ -73,16 +79,14 @@ self.defaultUserNumber = null;
 self.defaultMobileNumber = null;
 var hotlist = null;
 var responsesOnly = false;
-var responsesOnlyDep= new Deps.Dependency;
-Template.notesTabAdd.events({
-});
-Template.notesTab.created=function(){
-    if (this.view && this.view.parentView && this.view.parentView.name=="Template.hotList_responses") {
+var responsesOnlyDep = new Deps.Dependency;
+Template.notesTabAdd.events({});
+Template.notesTab.created = function () {
+    if (this.view && this.view.parentView && this.view.parentView.name == "Template.hotList_responses") {
         responsesOnly = true;
     }
-    else
-    {
-        responsesOnly=false;
+    else {
+        responsesOnly = false;
     }
 }
 Template.notesTabAdd.helpers({
@@ -143,7 +147,7 @@ Template.notesTabList.created = function () {
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
                 searchQuery['links.id'] = {
-                    $in:  hotlist.members
+                    $in: hotlist.members
                 };
             }
             else {

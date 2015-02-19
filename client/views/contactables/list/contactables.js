@@ -89,10 +89,9 @@ ContactablesController = RouteController.extend({
             this.render('loadingContactable');
             return;
         }
-
-
+        var params=this.params.query;
         var objTypeQuery = {};
-        var type = this.params.hash || this.params.type;
+        var type = params.hash || params.type;
         if (type != undefined && type != 'all') {
             var objType = dType.ObjTypes.findOne({
                 name: type
@@ -106,71 +105,71 @@ ContactablesController = RouteController.extend({
 
         // Search string
         var searchStringQuery = {};
-        if (this.params.search) {
-            searchStringQuery.default = this.params.search;
+        if (params.search) {
+            searchStringQuery.default = params.search;
         }
 
         // CreationDate
         var creationDateQuery = {};
-        if (this.params.creationDate) {
-            creationDateQuery.default = this.params.creationDate;
+        if (params.creationDate) {
+            creationDateQuery.default = params.creationDate;
         }
 
 
         // Mine only
         var mineQuery = {type: Utils.ReactivePropertyTypes.boolean};
-        if (this.params.mine) {
-            mineQuery.default = !!this.params.mine;
+        if (params.mine) {
+            mineQuery.default = !!params.mine;
         }
 
         // Tags
         var tagsQuery = {type: Utils.ReactivePropertyTypes.array};
-        if (this.params.tags) {
-            tagsQuery.default = this.params.tags.split(',');
+        if (params.tags) {
+            tagsQuery.default = params.tags.split(',');
         }
 
         // Location
         var locationQuery = {};
-        if (this.params.address) {
-            locationQuery.default = ' address: ' + this.params.address;
+        if (params.address) {
+            locationQuery.default = ' address: ' + params.address;
         }
-        if (this.params.city) {
+        if (params.city) {
             locationQuery.default = locationQuery.default || '';
-            locationQuery.default += ' city: ' + this.params.city;
+            locationQuery.default += ' city: ' + params.city;
         }
-        if (this.params.state) {
+        if (params.state) {
             locationQuery.default = locationQuery.default || '';
-            locationQuery.default += ' state: ' + this.params.state;
+            locationQuery.default += ' state: ' + params.state;
         }
-        if (this.params.country) {
+        if (params.country) {
             locationQuery.default = locationQuery.default || '';
-            locationQuery.default += ' country: ' + this.params.country;
+            locationQuery.default += ' country: ' + params.country;
         }
 
         var taxIdQuery = {};
-        if (this.params.taxId) {
-            taxId.default = this.params.taxId;
+        if (params.taxId) {
+            taxId.default = params.taxId;
         }
 
         var employeeProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
-        if (this.params.employeeProcessStatus) {
-            employeeProcessStatusQuery.default = this.params.employeeProcessStatus.split(',');
+        if (params.employeeProcessStatus) {
+            employeeProcessStatusQuery.default = params.employeeProcessStatus.split(',');
         }
         else {
             employeeProcessStatusQuery.default = [];
         }
         ;
         var customerProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
-        if (this.params.customerProcessStatus) {
-            customerProcessStatusQuery.default = this.params.customerProcessStatus.split(',');
+        if (params.customerProcessStatus) {
+            customerProcessStatusQuery.default = params.customerProcessStatus.split(',');
         }
         else {
             customerProcessStatusQuery.default = [];
         }
         ;
         var contactProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
-        if (this.params.contactProcessStatus) {
-            contactProcessStatusQuery.default = this.params.contactProcessStatus.split(',');
+        if (params.contactProcessStatus) {
+            contactProcessStatusQuery.default = params.contactProcessStatus.split(',');
         }
         else {
             contactProcessStatusQuery.default = [];
@@ -178,8 +177,8 @@ ContactablesController = RouteController.extend({
         ;
 
         var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
-        if (this.params.activeStatus) {
-            activeStatusQuery.default = this.params.activeStatus.split(',');
+        if (params.activeStatus) {
+            activeStatusQuery.default = params.activeStatus.split(',');
         }
         else {
             activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
@@ -356,7 +355,6 @@ Template.contactablesList.created = function () {
         } else {
             delete options.sort;
         }
-        console.log('sq', searchQuery); // keep this console log here until the multiple search call is fixed
         if (SubscriptionHandlers.AuxContactablesHandler) {
             SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
             SubscriptionHandlers.AuxContactablesHandler.setOptions(options);

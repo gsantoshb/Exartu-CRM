@@ -1,8 +1,9 @@
 <template name="notesTab">
     <div class="record">
         {{> notesTabAdd}}
-        {{> notesTabList}}
     </div>
+
+    {{> notesTabList}}
 </template>
 
 <template name="notesTabAdd">
@@ -52,10 +53,6 @@
                     {{/unless}}
                 {{/if}}
 
-
-
-
-
                 <button type="submit" class="btn btn-success pull-right"> Save</button>
             {{/autoForm}}
         </div>
@@ -66,7 +63,7 @@
     <div class="record-list-pagination">
         {{> fastPagination name="notes"}}
     </div>
-    <ul class="record-list list-3 stripped has-thumb">
+    <ul class="">
         {{#if isLoading}}
             <div style="min-height: 350px; background: url('/img/spinner.gif') no-repeat center;"></div>
         {{else}}
@@ -78,59 +75,10 @@
 </template>
 
 <template name="notesTabItem">
-    <li class="record-record list-3-item">
-        <div class="list-thumb"><i class="icon-note-paper-2"></i></div>
-        <div class="list-3-content list-magic">
-            <div class="list-3-content-wrap">
-                {{#with getCtx}}
-                    {{#if isEditing}}
-                        {{> notesTabEditItem doc=noteRecord}}
-                    {{else}}
-                        <div class="list-3-item-title">{{noteRecord.msg}}</div>
-                        <div class="list-3-actions">
-                            <a class="editNoteRecord pointer"><i class="fa fa-edit"></i> Edit</a>
-                            <span class="bullet-spacer">·</span>
-                            <a class="deleteNoteRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
-                        </div>
-
-                        <small>
-                            Created on
-                            {{#formattedDate value=noteRecord.dateCreated format='lll'}}
-                                {{date}}
-                            {{/formattedDate}}
-                            {{#formattedDate value=noteRecord.dateCreated format='fromNow'}}
-                                - {{date}}
-                            {{/formattedDate}}
-                            <br/>
-                        </small>
-
-                        {{#each noteRecord.links}}
-                            <a href="{{getUrl .}}">
-                                {{#with getEntity .}}
-                                    <span class="badge badge-primary">{{displayName}}</span>
-                                {{/with}}
-                            </a>
-                        {{/each}}
-
-                        {{#if noteRecord.sendAsSMS}}
-                            <hr/>
-                            <div class="text-muted">
-                                {{#if noteRecord.isReply}}
-                                    <i class="icon-inbox-4"></i>
-                                {{else}}
-                                    <i class="icon-plane-paper-1"></i>
-                                {{/if}}
-                                <strong> SMS </strong>
-
-                                <span class="bullet-spacer">·</span>
-                                <span> From {{getPhoneNumberDisplayName noteRecord.userNumber}}</span>
-                                <span> To {{getPhoneNumberDisplayName noteRecord.contactableNumber}}</span>
-                            </div>
-                        {{/if}}
-                    {{/if}}
-                {{/with}}
-            </div>
-        </div>
+    <li >
+        {{#with getCtx}}
+            {{>noteItem noteRecord}}
+        {{/with}}
     </li>
 </template>
 

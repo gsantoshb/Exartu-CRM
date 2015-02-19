@@ -55,7 +55,6 @@ Template.addPlacementPage.helpers({
         if (!model) {
             model = createPlacement(Session.get('objType'));
         }
-        console.log('model', model);
         return model;
     },
     objTypeName: function () {

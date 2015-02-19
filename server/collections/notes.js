@@ -76,7 +76,7 @@ NoteView = new View('notes', {
 Meteor.paginatedPublish(NoteView, function () {
   return Utils.filterCollectionByUserHier.call(this, NoteView.find({}, { sort: { dateCreated: -1 } }));
 },{
-  pageSize: 10,
+  pageSize: 50,
   publishName: 'notes'
 });
 
@@ -110,3 +110,4 @@ Notes._ensureIndex({hierId: 1});
 Notes._ensureIndex({userId: 1});
 Notes._ensureIndex({"links.id":1});
 Notes._ensureIndex({"dateCreated":1});
+

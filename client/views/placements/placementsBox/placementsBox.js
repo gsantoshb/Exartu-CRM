@@ -125,7 +125,7 @@ Template.placementsBox.created = function(){
         SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
     }
     PlacementHandler = SubscriptionHandlers.PlacementHandler;
-    query = query || loadqueryFromURL(Router.current().params);
+    query = query || loadqueryFromURL(Router.current().params.query);
 
     var entityId = Session.get('entityId');
     entityType = Utils.getEntityTypeFromRouter();
@@ -193,7 +193,7 @@ Template.placementList.created = function () {
 
         // Set url query
         urlQuery.apply();
-
+		SubscriptionHandlers.PlacementHandler._isLoading.value = false;
         if (selectedSort.get()) {
             var selected = selectedSort.get();
             options.sort = {};
@@ -204,13 +204,6 @@ Template.placementList.created = function () {
 
         PlacementHandler.setFilter(searchQuery, params);
         PlacementHandler.setOptions(options);
-
-        if (query.searchString.value)
-            Session.set('placementCount', esResult.length);
-        else {
-            if (SubscriptionHandlers && SubscriptionHandlers.PlacementHandler)
-                Session.set('placementCount', SubscriptionHandlers.PlacementHandler.totalCount());
-        }
     })
 };
 
@@ -275,9 +268,7 @@ Template.placementFilters.helpers({
         //if (query.objType.value)
         //    searchQuery.objNameArray = query.objType.value;
 
-        var placementCount = Session.get('placementCount');
-        if (placementCount)
-            info.placementsCount = placementCount;
+        info.placementsCount = PlacementHandler.totalCount();
 
         return info;
     },

@@ -99,7 +99,7 @@ Router.map(function () {
     controller: 'UserProfileController'
   });
   this.route('user', {
-    path: '/user/:_id?',
+    path: '/user/:_id/:tab?',
     controller: 'UserController'
   });
 
@@ -171,7 +171,20 @@ Router.map(function () {
     path: '/hotList/:_id/:tab?',
     controller: 'HotListController'
   });
+    this.route('leaderBoards', {
+        path: '/leaderBoards',
+        controller: 'LeaderBoardsController'
+    });
 
+    this.route('addLeaderBoardPage', {
+        path: '/leaderBoardAdd/:objType',
+        controller: 'LeaderBoardAddController'
+    });
+
+    this.route('leaderBoard', {
+        path: '/leaderBoard/:_id/:tab?',
+        controller: 'LeaderBoardController'
+    });
    this.route('candidates', {
     path: '/candidates',
     controller: 'CandidatesController'
