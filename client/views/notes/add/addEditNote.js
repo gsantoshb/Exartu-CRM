@@ -17,7 +17,6 @@ var addDisabled = new ReactiveVar(false);
 
 var noteUpdate = function (cb) {
     if (note._id) {
-
         Notes.update({
                 _id: note._id
             }, {

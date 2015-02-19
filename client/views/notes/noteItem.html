@@ -4,7 +4,7 @@
             <a href="#" class="item-icon item-icon-notes editNote"><i class="icon icon-pencil-3"></i></a>
         </div>
         <div class="list-item-cell notes-list-item-title">
-            <div class="item-title"><a class="editNote" href="#">{{>showMore text=msg limit=60}}</a>
+            <div class="item-title">{{>showMore text=msg limit=100}}
                 {{#if sendAsSMS}}
                     <div class="text-muted">
                         {{#if isReply}}
