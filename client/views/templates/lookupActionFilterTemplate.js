@@ -11,14 +11,15 @@ Template.lookupFilterActionTemplate.created = function () {
     }
 };
 Template.lookupFilterActionTemplate.getOptions = function () {
-    console.log('options sorted', LookUps.find({lookUpCode: this.lookUpCode}, {sort: {sortOrder: 1}}).fetch());
+    console.log('options sorted', LookUps.find({lookUpCode: this.lookUpCode}, {sort: {sortOrder: 1,displayName:1}}).fetch());
     return _.bind(function () {
 
         if (!this.options) {
-            this.options = _.map(LookUps.find({lookUpCode: this.lookUpCode}, {sort: {sortOrder: 1}}).fetch(), function (lookup) {
+            this.options = _.map(LookUps.find({lookUpCode: this.lookUpCode}, {sort: {sortOrder: 1,displayName:1}}).fetch(), function (lookup) {
                 return {
                     id: lookup._id,
-                    text: lookup.displayName
+                    text: lookup.displayName,
+                    sortOrder: lookup.sortOrder
                 }
             });
         }

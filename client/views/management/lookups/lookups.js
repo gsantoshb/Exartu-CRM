@@ -93,7 +93,7 @@ Template.lookUpsManagement.helpers({
                     item.errMsg = '';
                     return item;
                 },
-                sort: {displayName: 1}
+                sort: {sortOrder:1, displayName: 1}
             }
         );
     },

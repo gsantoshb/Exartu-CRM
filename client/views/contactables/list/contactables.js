@@ -90,8 +90,6 @@ ContactablesController = RouteController.extend({
             return;
         }
         var params=this.params.query;
-        console.log('contactq',this.params,this.params.query);
-
         var objTypeQuery = {};
         var type = params.hash || params.type;
         if (type != undefined && type != 'all') {
@@ -357,7 +355,6 @@ Template.contactablesList.created = function () {
         } else {
             delete options.sort;
         }
-        console.log('sq', searchQuery); // keep this console log here until the multiple search call is fixed
         if (SubscriptionHandlers.AuxContactablesHandler) {
             SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
             SubscriptionHandlers.AuxContactablesHandler.setOptions(options);
