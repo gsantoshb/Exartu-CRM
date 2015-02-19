@@ -48,6 +48,8 @@ Addresses = new Mongo.Collection("addresses");
 
 ApplicantCenterInvitations = new Mongo.Collection('applicantCenterInvitations');
 
+Tags = new Mongo.Collection("tags");
+
 
 Collections = {
     Hierarchies: Hierarchies,
