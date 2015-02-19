@@ -61,7 +61,7 @@ ContactablesList = new View('auxContactables', {
         // Last note
         this.publish({
             cursor: function (contactable) {
-                return Notes.find({'links.id': contactable._id}, {limit: 10, sort: {dateCreated: -1}});
+                return Notes.find({'links.id': contactable._id}, {limit: 50, sort: {dateCreated: -1}});
             },
             to: 'notes'
         });
@@ -91,7 +91,7 @@ Meteor.paginatedPublish(ContactablesList, function () {
         );
     },
     {
-        pageSize: 10,
+        pageSize: 25,
         publicationName: 'auxContactables',
         updateSelector: function (oldSelector, clientParams) {
             console.log('searchcalled2', Date.now(), new Date());

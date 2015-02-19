@@ -55,7 +55,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Birth Bate</td>
+                            <td>Birth Date</td>
                             <td>
                                 {{#objectProperty property=birthDate editable=editMode}}
                                     {{>bootstrap3DatePicker value=value options=datePickerOptions}}
@@ -135,6 +135,19 @@
                             {{/objectProperty}}
                         </td>
                     </tr>
+                    <tr>
+                        <td>How heard of</td>
+                        <td>
+                            {{#objectProperty property=howHeardOf editable=editMode}}
+                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                            {{else}}
+                                <strong>
+                                    <strong>{{displayName}}</strong>
+                                </strong>
+                            {{/objectProperty}}
+                        </td>
+                    </tr>
+
                     {{#if Employee }}
                         <tr>
                             <td>TaxID/SSN</td>

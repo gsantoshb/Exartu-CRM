@@ -64,7 +64,7 @@ Router.map(function() {
 var mapper = {
 	create: function(data) {
 		var note = {
-			msg: data.msg,
+			msg: (data.msg) ? data.msg : '',
 			link: data.link
 		};
 

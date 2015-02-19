@@ -14,7 +14,6 @@ UserActivityController = RouteController.extend({
     }
     Session.set('activeTab', this.params.hash);
     this.render('userActivity')
-
   }
 });
 var userActivities=[Enums.activitiesType.userLogin];

@@ -124,10 +124,12 @@ var loadqueryFromURL = function (params) {
     }
 
     // Status
-    var statusQuery = {type: Utils.ReactivePropertyTypes.array};
+    var statusQuery = { type: Utils.ReactivePropertyTypes.array };
     if (params.status) {
-        statusQuery.default = params.status;
+        statusQuery.default = params.status.split(',');
     }
+
+
 
     var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
     if (params.activeStatus) {
@@ -158,7 +160,7 @@ Template.jobsBox.created = function(){
         SubscriptionHandlers.JobHandler = Meteor.paginatedSubscribe('jobs');
     }
     JobHandler = SubscriptionHandlers.JobHandler;
-    query = query || loadqueryFromURL(Router.current().params);
+    query = query || loadqueryFromURL(Router.current().params.query);
     entityId = Session.get('entityId');
 };
 
@@ -247,15 +249,14 @@ Template.jobList.created = function () {
 
         if (!_.isEmpty(query.activeStatus.value)) {
             searchQuery.activeStatus = {$in: query.activeStatus.value};
-
             urlQuery.addParam('activeStatus', query.activeStatus.value);
         }
 
         if (!_.isEmpty(query.status.value)) {
             searchQuery.status = {$in: query.status.value};
-
             urlQuery.addParam('status', query.status.value);
         }
+
         if (selectedSort.get()) {
             var selected = selectedSort.get();
             options.sort = {};
@@ -292,16 +293,17 @@ Template.jobList.created = function () {
                 searchQuery.$and.push({
                     $or: stringSearches
                 });
+                console.log('jsearch1',searchQuery);
                 JobHandler.setFilter(searchQuery);
             });
         }
         else {
+            SubscriptionHandlers.JobHandler._isLoading.value = false;
             if (searchQuery.$and.length == 0)
                 delete searchQuery.$and;
             if (selectedSort) {
                 JobHandler.setOptions(options);
             }
-
             JobHandler.setFilter(searchQuery,options);
         }
         // Set url query

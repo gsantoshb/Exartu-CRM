@@ -1,7 +1,9 @@
-Utils.adminSettings={};
+Utils.adminSettings = {};
 Utils.reactiveProp(Utils.adminSettings, 'isClientAdmin', false);
 Utils.reactiveProp(Utils.adminSettings, 'isSystemAdmin', false);
-Utils.reactiveProp(Utils.adminSettings, 'isAdmin', function() { return Utils.adminSettings.isClientAdmin || Utils.adminSettings.isSystemAdmin ;});
+Utils.reactiveProp(Utils.adminSettings, 'isAdmin', function () {
+    return Utils.adminSettings.isClientAdmin || Utils.adminSettings.isSystemAdmin;
+});
 
 Meteor.call('bUserIsClientAdmin', null, function (err, result) {
     if (err)
@@ -15,29 +17,29 @@ Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
 });
 
 Template.header.helpers({
-    isAdmin: function(){
+    isAdmin: function () {
         return Utils.adminSettings.isAdmin();
     },
-    userThumbnail: function(){
-        var user=Meteor.user()
-        if (user.profilePictureId){
+    userThumbnail: function () {
+        var user = Meteor.user()
+        if (user.profilePictureId) {
             return UsersFS.getThumbnailUrlForBlaze(user.profilePictureId)
         }
-        if (user.services && user.services.google && user.services.google.picture){
-            return  user.services.google.picture;
+        if (user.services && user.services.google && user.services.google.picture) {
+            return user.services.google.picture;
         }
         return '/assets/user-photo-placeholder.jpg';
     },
-    user: function() {
-      return Meteor.user();
+    user: function () {
+        return Meteor.user();
     },
-    userName: function(){
+    userName: function () {
         return Meteor.user().username;
     },
-    userEmail: function(){
-      return Meteor.user().emails[0].address;
+    userEmail: function () {
+        return Meteor.user().emails[0].address;
     },
-    UnreadMessagesCount: function(){
+    UnreadMessagesCount: function () {
         return Messages.find({
             read: false,
             destination: Meteor.userId()
@@ -47,7 +49,7 @@ Template.header.helpers({
             }
         }).count();
     },
-    latestUnreadMessages: function(){
+    latestUnreadMessages: function () {
         return Messages.find({
             read: false,
             destination: Meteor.userId()
@@ -58,26 +60,26 @@ Template.header.helpers({
             limit: 4
         });
     },
-    userInfo:function(msg){
+    userInfo: function (msg) {
         return Utils.getUserInformation(msg.from);
     },
-    conversationURL: function(msg){
+    conversationURL: function (msg) {
         return '/inbox/' + msg.conversationId;
     },
-    hierInfo: function() {
-      return Hierarchies.findOne({_id: Meteor.user().hierId});
+    hierInfo: function () {
+        return Hierarchies.findOne({_id: Meteor.user().hierId});
     },
-    isFree: function(planCode) {
-      return planCode == SubscriptionPlan.plansEnum.free;
+    isFree: function (planCode) {
+        return planCode == SubscriptionPlan.plansEnum.free;
     },
-    currentHierName: function(){
-      var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
-      return hier ? hier.name : '';
+    currentHierName: function () {
+        var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
+        return hier ? hier.name : '';
     }
 });
 Template.header.events({
-    'click #signout': function(){
-        Meteor.logout(function(){
+    'click #signout': function () {
+        Meteor.logout(function () {
             Router.go('/login');
         });
     }
@@ -109,13 +111,13 @@ Template.header.rendered = function () {
             var submenu = $(this).siblings('ul');
             var li = $(this).parents('li');
             var trigger = $(this).parents('#menu-trigger');
-            var hideIfClickOutside=function(e){
-              if (! submenu.is(e.target) && submenu.has(e.target).length === 0
-              && ! li.is(e.target) && li.has(e.target).length === 0  ) {
-                submenu.slideUp();
-                li.removeClass('open');
-                $('#sidebar').off('click',hideIfClickOutside);
-              }
+            var hideIfClickOutside = function (e) {
+                if (!submenu.is(e.target) && submenu.has(e.target).length === 0
+                    && !li.is(e.target) && li.has(e.target).length === 0) {
+                    submenu.slideUp();
+                    li.removeClass('open');
+                    $('#sidebar').off('click', hideIfClickOutside);
+                }
             }
             if ($(window).width() > 480) {
                 var submenus = $('#sidebar li.submenu ul');
@@ -136,7 +138,7 @@ Template.header.rendered = function () {
                 if (($(window).width() > 768) || ($(window).width() <= 480)) {
                     submenus.slideUp();
                     submenu.slideDown();
-                  $('#sidebar').on('click',hideIfClickOutside);
+                    $('#sidebar').on('click', hideIfClickOutside);
 
                 } else {
                     submenus.fadeOut(250);
@@ -192,112 +194,115 @@ Template.header.rendered = function () {
 };
 
 Template.header.destroyed = function () {
-  $('body').removeAttr('data-color');
+    $('body').removeAttr('data-color');
 };
 
 
-Template.sidebar.rendered=function(){
-  var sidebar=$('#sidebar'),
-    body=$('body'),
-    trigger=$('#menu-trigger'),
-    isOpen=false;
+Template.sidebar.rendered = function () {
+    var sidebar = $('#sidebar'),
+        body = $('body'),
+        trigger = $('#menu-trigger'),
+        isOpen = false;
 
-  var minimunWidth=768;
+    var minimunWidth = 768;
 
-  var hideIfClickOutside=function(e){
-    var submenuTrigger= $('.submenu>a');
+    var hideIfClickOutside = function (e) {
+        var submenuTrigger = $('.submenu>a');
 
-    var isInMenuTrigger = submenuTrigger.is(e.target) || submenuTrigger.has(e.target).length > 0;
-    var isInTrigger = trigger.is(e.target) || trigger.has(e.target).length > 0;
-    if (! isInMenuTrigger && ! isInTrigger) {
-      hide();
-      body.off('click',hideIfClickOutside);
+        var isInMenuTrigger = submenuTrigger.is(e.target) || submenuTrigger.has(e.target).length > 0;
+        var isInTrigger = trigger.is(e.target) || trigger.has(e.target).length > 0;
+        if (!isInMenuTrigger && !isInTrigger) {
+            hide();
+            body.off('click', hideIfClickOutside);
+        }
     }
-  }
-  var hide=function(){
-    body.removeClass('in');
-    body.addClass('animating');
-    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
-      body.removeClass('animating');
-    });
+    var hide = function () {
+        body.removeClass('in');
+        body.addClass('animating');
+        sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function () {
+            body.removeClass('animating');
+        });
 
-    sidebar.removeClass('in');
-    sidebar.addClass('animating');
-    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
-      sidebar.removeClass('animating');
-    });
-    body.off('click',hideIfClickOutside);
-    isOpen=false;
-  }
-  var show=function(){
-    sidebar.show();
-
-    body.addClass('in');
-    body.addClass('animating');
-    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
-      body.removeClass('animating');
-    });
-
-
-    sidebar.addClass('in');
-    sidebar.addClass('animating');
-    sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function() {
-      sidebar.removeClass('animating');
-    });
-    isOpen=true;
-  }
-  var start=function(){
-    isOpen=false;
-    trigger.unbind( "click" );
-    trigger.click(function(){
-      if(isOpen){
-        hide();
-      } else {
-        show();
-        body.click(hideIfClickOutside);
-      }
-    })
-  }
-  var stop = function(){
-    sidebar.removeClass('in');
-    body.removeClass('in');
-    body.off('click', hideIfClickOutside);
-    trigger.unbind( "click" );
-  };
-
-  if ($(window).width() < minimunWidth){
-    start();
-  }
-  $(window).resize(_.debounce(function(){
-    if ($(window).width() < minimunWidth){
-      start();
-    }else{
-      stop();
+        sidebar.removeClass('in');
+        sidebar.addClass('animating');
+        sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function () {
+            sidebar.removeClass('animating');
+        });
+        body.off('click', hideIfClickOutside);
+        isOpen = false;
     }
-  },400));
+    var show = function () {
+        sidebar.show();
+
+        body.addClass('in');
+        body.addClass('animating');
+        sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function () {
+            body.removeClass('animating');
+        });
+
+
+        sidebar.addClass('in');
+        sidebar.addClass('animating');
+        sidebar.on('animationend webkitAnimationEnd oAnimationEnd', function () {
+            sidebar.removeClass('animating');
+        });
+        isOpen = true;
+    }
+    var start = function () {
+        isOpen = false;
+        trigger.unbind("click");
+        trigger.click(function () {
+            if (isOpen) {
+                hide();
+            } else {
+                show();
+                body.click(hideIfClickOutside);
+            }
+        })
+    }
+    var stop = function () {
+        sidebar.removeClass('in');
+        body.removeClass('in');
+        body.off('click', hideIfClickOutside);
+        trigger.unbind("click");
+    };
+
+    if ($(window).width() < minimunWidth) {
+        start();
+    }
+    $(window).resize(_.debounce(function () {
+        if ($(window).width() < minimunWidth) {
+            start();
+        } else {
+            stop();
+        }
+    }, 400));
 
 }
 Template.sidebar.helpers({
-  contactableTypes: function () {
-    return dType.ObjTypes.find({ parent: Enums.objGroupType.contactable });
-  },
-  jobObjTypes: function() {
-    return dType.ObjTypes.find({
-      parent: Enums.objGroupType.job
-    });
-  },
-  getActiveClass: function(route, type){
-    var current= Router.current();
-    if (!current) return '';
+    isAdmin: function () {
+        return Utils.adminSettings.isAdmin();
+    },
+    contactableTypes: function () {
+        return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
+    },
+    jobObjTypes: function () {
+        return dType.ObjTypes.find({
+            parent: Enums.objGroupType.job
+        });
+    },
+    getActiveClass: function (route, type) {
+        var current = Router.current();
+        if (!current) return '';
 
-    var currentType = current.params.type;
-    var currentRoute = current.route.getName();
+        var currentType = current.params.type;
+        var currentRoute = current.route.getName();
 
-    if (currentRoute == route && (type == currentType)){
-      return 'active'
+        if (currentRoute == route && (type == currentType)) {
+            return 'active'
+        }
+        return ''
     }
-    return ''
-  }
 
 });
 

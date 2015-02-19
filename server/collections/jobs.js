@@ -48,7 +48,7 @@ Meteor.paginatedPublish(JobView, function(){
 
   return Utils.filterCollectionByUserHier.call(this, JobView.find());
 }, {
-  pageSize: 10,
+  pageSize: 50,
   publicationName: 'jobs'
 });
 

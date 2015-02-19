@@ -11,6 +11,10 @@ AddressManager = {
     },
     removeAddress: function (id) {
         Addresses.remove({_id: id});
+    },
+    getAddress: function (contactableid,addresstype) {
+        var addr=Addresses.findOne({linkId:contactableid}); // ignore type check for now
+        return addr;
     }
 
 };

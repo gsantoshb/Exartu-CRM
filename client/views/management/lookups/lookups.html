@@ -4,7 +4,7 @@
             <h1>Lookups management</h1>
         </div>
 
-        
+
         <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">Management</a>
             <a href="/lookups" class="current">Lookups</a>
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Body -->
                 <div class="panel-body no-padding">
                     <ul class="list-3 stripped">
@@ -38,12 +38,15 @@
                                 <div class="col-xs-12 col-sm-3 no-padding">
                                     {{#if editMode}}
                                         <div class="col-xs-9 no-padding">
-                                            <input class="form-control" id="{{_id}}" type="text" placeholder="Enter a name" value="{{displayName}}"/>
+                                            <input class="form-control" id="{{_id}}" type="text"
+                                                   placeholder="Enter a name" value="{{displayName}}"/>
                                         </div>
                                         <div class="col-xs-3 no-padding" style="padding-left: 3px; top: 2px">
                                             <div class="btn-group">
-                                                <span class="btn btn-sm btn-success save"><i class="fa fa-check"></i></span>
-                                                <span class="btn btn-sm btn-danger cancel"><i class="fa fa-times"></i></span>
+                                                <span class="btn btn-sm btn-success save"><i
+                                                        class="fa fa-check"></i></span>
+                                                <span class="btn btn-sm btn-danger cancel"><i
+                                                        class="fa fa-times"></i></span>
                                             </div>
                                         </div>
                                     {{else}}
@@ -52,59 +55,72 @@
                                     {{/if}}
                                 </div>
                                 <!-- lookUpAction -->
-                                <div class="col-xs-12 col-sm-5 no-padding">
+                                <div class="col-xs-12 col-sm-3 no-padding">
                                     {{#if editActionMode}}
-                                    <div class="col-xs-9 no-padding">
-                                        <div class="input-group">
-                                            <select id="{{_id}}newLookUpAction"  class="form-control input-lg" type="text" >
-                                                {{#each getLookUpActions ..}}
-                                                <option value="{{.}}" >{{.}}</option>
-                                                {{/each}}
-                                            </select>
+                                        <div class="col-xs-9 no-padding">
+                                            <div class="input-group">
+                                                <select id="{{_id}}newLookUpAction" class="form-control input-lg"
+                                                        type="text">
+                                                    {{#each getLookUpActions ..}}
+                                                        <option value="{{.}}">{{.}}</option>
+                                                    {{/each}}
+                                                </select>
                                             <span class="input-group-btn">
-                                                  <button class="add-tag btn btn-success save_lookUpAction" type="button"><span class="fa fa-plus"></span></button>
+                                                  <button class="add-tag btn btn-success save_lookUpAction"
+                                                          type="button"><span class="fa fa-plus"></span></button>
                                             </span>
-                                        </div>
+                                            </div>
 
-                                        <div class="box">
-                                            <div class="box-content-md tags-content">
-                                                {{#each lookUpActions}}
+                                            <div class="box">
+                                                <div class="box-content-md tags-content">
+                                                    {{#each lookUpActions}}
 
-                                                <button type="button" class="tag btn btn-xs btn-primary">
-                                                    {{.}}
-                                                    <i id="{{getId ..}}" lookUpAction="{{.}}" class="remove-tag fa fa-times"></i>
-                                                </button>
-                                                {{/each}}
+                                                        <button type="button" class="tag btn btn-xs btn-primary">
+                                                            {{.}}
+                                                            <i id="{{getId ..}}" lookUpAction="{{.}}"
+                                                               class="remove-tag fa fa-times"></i>
+                                                        </button>
+                                                    {{/each}}
 
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-xs-3 no-padding" style="padding-left: 3px; top: 2px">
-                                        <div class="btn-group">
-                                            <span class="btn btn-sm btn-success save"><i class="fa fa-check"></i></span>
-                                            <span class="btn btn-sm btn-danger cancelAction"><i class="fa fa-times"></i></span>
+                                        <div class="col-xs-3 no-padding" style="padding-left: 3px; top: 2px">
+                                            <div class="btn-group">
+                                                <span class="btn btn-sm btn-success save"><i
+                                                        class="fa fa-check"></i></span>
+                                                <span class="btn btn-sm btn-danger cancelAction"><i
+                                                        class="fa fa-times"></i></span>
+                                            </div>
                                         </div>
-                                    </div>
                                     {{else}}
-                                    <span class="label label-default pointer editAction" title="Edit">Edit actions</span>
-                                    {{#each lookUpActions}}{{.}} {{/each}}
+                                        <span class="label label-default pointer editAction"
+                                              title="Edit">Edit actions</span>
+                                        {{#each lookUpActions}}{{.}} {{/each}}
                                     {{/if}}
                                 </div>
-                                
+
                                 <!-- Default -->
                                 <div class="col-xs-6 col-sm-1">
-                                    <div class="checkbox">
+                                    <label class="">Sort:</label>
+
+                                    <div class="">
+                                        <input type="number" step="any" class="form-control set-sort" value="{{sortOrder}}">
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-1">
+                                    <div class="">
                                         <label>
-                                          <input type="checkbox" checked="{{isDefault}}" class="set-default" /> Default
+                                            <input type="checkbox" checked="{{isDefault}}" class="set-default"/> Default
                                         </label>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Active -->
                                 <div class="col-xs-6 col-sm-1">
                                     <div class="checkbox">
                                         <label>
-                                          <input type="checkbox" checked="{{inactive}}" class="inactive" /> Inactive
+                                            <input type="checkbox" checked="{{inactive}}" class="inactive"/> Inactive
                                         </label>
                                     </div>
                                 </div>
@@ -123,8 +139,8 @@
 
 
 <template name="selectLookUpType">
-    <select class="form-control input-lg" type="text" >
-        <option disabled selected> -- select an option -- </option>
+    <select class="form-control input-lg" type="text">
+        <option disabled selected> -- select an option --</option>
         {{#each lookUpTypes}}
             <option value="{{lookUpCode}}" selected="{{isSelected lookUpCode ../value}}">{{displayName}}</option>
         {{/each}}
@@ -135,7 +151,7 @@
 <template name="searchLookUpItem">
     <div class="input-group">
         {{#objectProperty property=searchString}}
-            <input type="text" class="form-control" placeholder="Search" value="{{value}}" />
+            <input type="text" class="form-control" placeholder="Search" value="{{value}}"/>
         {{/objectProperty}}
         <span class="input-group-btn">
             <button class="btn btn-primary" type="button" title="Search">
@@ -147,7 +163,7 @@
 <template name="searchlookUpActionItem">
     <div class="input-group">
         {{#objectProperty property=searchString}}
-        <input type="text" class="form-control" placeholder="Search" value="{{value}}" />
+            <input type="text" class="form-control" placeholder="Search" value="{{value}}"/>
         {{/objectProperty}}
         <span class="input-group-btn">
             <button class="btn btn-primary" type="button" title="Search">

@@ -303,11 +303,15 @@ Utils.getLocation = function (googleLocation) {
 //};
 Utils.getLocationDisplayName = function (id) {
 
-    var billingAddressType= Enums.lookUpAction.Address_Billing;
-    var addressTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
-            lookUpAction: {$ne:  billingAddressType}}).fetch();
-    var addressTypeIds= _.pluck(addressTypes,function(item) { return item._id});
-    var location=Addresses.findOne({linkId:id,addressTypeId: {$in : addressTypeIds}}).fetch();
+    var billingAddressType = Enums.lookUpAction.Address_Billing;
+    var addressTypes = LookUps.find({
+        lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
+        lookUpAction: {$ne: billingAddressType}
+    }).fetch();
+    var addressTypeIds = _.pluck(addressTypes, function (item) {
+        return item._id
+    });
+    var location = Addresses.findOne({linkId: id, addressTypeId: {$in: addressTypeIds}}).fetch();
 
     return !location ? '' : (
     (location.streetNumber || '' ) + ' ' +
@@ -317,7 +321,6 @@ Utils.getLocationDisplayName = function (id) {
     (location.state || '' ) + ', ' +
     (location.country || '' ));
 };
-
 
 
 Utils.getLinkTypeFromEntity = function (entity) {
@@ -417,20 +420,18 @@ Utils.getHrefFromLink = function (link) {
     }
 };
 
-Utils.updateModel= function(model,key,val) {
+Utils.updateModel = function (model, key, val) {
     var keyfound = false;
     var updatedModel = model;
 
-    for (var i = 0; i < updatedModel.fieldGroups[0].items.length; i++)
-    {
-        if (updatedModel.fieldGroups[0].items[i].name == key)
-        {
+    for (var i = 0; i < updatedModel.fieldGroups[0].items.length; i++) {
+        if (updatedModel.fieldGroups[0].items[i].name == key) {
             updatedModel.fieldGroups[0].items[i].value = val;
             keyfound = true;
         }
     }
-    if (!keyfound) console.log('model no find', model,key,val);
-    console.log('upmod',updatedModel);
+    if (!keyfound) console.log('model no find', model, key, val);
+    console.log('upmod', updatedModel);
     return updatedModel;
 };
 
@@ -654,9 +655,12 @@ Utils.getAddressTypes = function () {
     return addressTypes;
 };
 Utils.getAddressTypeDefault = function () {
-    var addressType = LookUps.findOne({lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,isDefault:true});
-    if (!addressType) addressType =LookUps.findOne({lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,inactive: {$exists:false}});
-    if (!addressType) addressType =LookUps.findOne({lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode});
+    var addressType = LookUps.findOne({lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode, isDefault: true});
+    if (!addressType) addressType = LookUps.findOne({
+        lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
+        inactive: {$exists: false}
+    });
+    if (!addressType) addressType = LookUps.findOne({lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode});
     return addressType;
 };
 
@@ -761,3 +765,19 @@ Utils.getActiveStatusDefaultId = function () {
     });
     return lkp._id;
 };
+Utils.sortByUserName = function (arr) {
+    var arr = _.sortBy(arr, function (a) {
+        var u = Meteor.users.findOne({_id: a._id});
+        return (u && u.emails[0]) ? u.emails[0].address : 0;
+    });
+    return arr;
+}
+
+Utils.sortFetchOptions=function(lkpcursor) {
+    var opts = _.sortBy(lkpcursor.fetch(), function (o) {
+        return o.sortOrder
+    });
+    return opts.map(function (status) {
+        return {id: status._id, text: status.displayName,sortOrder:status.sortOrder};
+    });
+}
