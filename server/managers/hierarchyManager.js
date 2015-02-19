@@ -27,7 +27,9 @@ HierarchyManager = {
 
         hier.dateCreated = new Date();
 
-        return Hierarchies.insert(hier);
+        var hierId = Hierarchies.insert(hier);
+
+        return hierId
     },
     getCurrentHierUsers: function () {
         return Meteor.users.find({
