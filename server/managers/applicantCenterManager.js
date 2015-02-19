@@ -28,7 +28,7 @@ ApplicantCenterManager = {
        DocCenterManager.insertUser(empId, {
          userName: email,
          email: email
-       });
+       }, user.hierId);
     }catch (e){
       console.log('error', e);
     }

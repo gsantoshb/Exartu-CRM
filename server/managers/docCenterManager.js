@@ -32,9 +32,9 @@ DocCenterManager = {
     })
 
   },
-  insertUser: function (employeeId, userData) {
+  insertUser: function (employeeId, userData, hierId) {
 
-    var result = DocCenter.insertUser(Meteor.user().currentHierId, userData);
+    var result = DocCenter.insertUser(hierId || Meteor.user().currentHierId, userData);
 
     Contactables.update(employeeId, { $set: { docCenter: result } });
 
