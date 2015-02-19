@@ -772,3 +772,12 @@ Utils.sortByUserName = function (arr) {
     });
     return arr;
 }
+
+Utils.sortFetchOptions=function(lkpcursor) {
+    var opts = _.sortBy(lkpcursor.fetch(), function (o) {
+        return o.sortOrder
+    });
+    return opts.map(function (status) {
+        return {id: status._id, text: status.displayName,sortOrder:status.sortOrder};
+    });
+}

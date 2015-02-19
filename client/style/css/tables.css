@@ -1521,7 +1521,7 @@ span[data-status="Inactive"] {
 }
 @media (min-width: 768px) {
   .tasks-list-header .tasks-list-header-title {
-    width: 35%;
+    width: 20%;
     margin-right: 52px;
   }
   .tasks-list-header .tasks-list-header-status {
@@ -1532,7 +1532,7 @@ span[data-status="Inactive"] {
     margin-right: 40px;
   }
   .tasks-list-item .tasks-list-item-title {
-    width: 35%;
+    width: 20%;
   }
   .tasks-list-item .list-item-details .tasks-list-item-status {
     -webkit-flex: 2;
@@ -1557,7 +1557,7 @@ span[data-status="Inactive"] {
 }
 @media (min-width: 768px) {
   .notes-list-header .notes-list-header-title {
-    width: 45%;
+    width: 25%;
     margin-right: 52px;
   }
   .notes-list-header .notes-list-header-owner {
@@ -1570,7 +1570,7 @@ span[data-status="Inactive"] {
     margin-right: 37px;
   }
   .notes-list-item .notes-list-item-title {
-    width: 45%;
+    width: 25%;
   }
   .notes-list-item .list-item-details .notes-list-item-owner {
     -webkit-flex: 1;

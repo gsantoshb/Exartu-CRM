@@ -93,7 +93,7 @@ Template.lookUpsManagement.helpers({
                     item.errMsg = '';
                     return item;
                 },
-                sort: {displayName: 1}
+                sort: {sortOrder:1, displayName: 1}
             }
         );
     },
@@ -128,7 +128,9 @@ Template.lookUpsManagement.events = {
         }
     },
     'change .set-sort': function (e) {
-        var sortval= e.target.value;
+        var sortval= parseInt(e.target.value);
+        sortval= isNaN(sortval)? 0: sortval;
+
         LookUps.update({_id: this._id}, {$set: {sortOrder: sortval}});
     },
     'click .edit': function () {
