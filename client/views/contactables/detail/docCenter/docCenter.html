@@ -1,0 +1,70 @@
+<template name="docCenterTab">
+    <div class="record">
+        {{#if isLoading}}
+            <div style="min-height: 350px; background: url('/img/spinner.gif') no-repeat center;"></div>
+        {{else}}
+            {{#if hasAccount}}
+                {{> sendDocument}}
+                {{> documentInstances}}
+            {{else}}
+                <div style="padding: 10px">
+                    <p class="alert alert-warning">The Employee has not an account on HRConcourse yet</p>
+                    <button class="btn" id="createAccount">Create one for him</button>
+                </div>
+                {{#if createAccount}}
+                    {{> quickForm schema=createAccountSchema id="createDocCenterAccount"}}
+                {{/if}}
+            {{/if}}
+        {{/if}}
+    </div>
+</template>
+
+<template name="sendDocument">
+    <div class="record-add row">
+        <div class="add-box-head add-box-responsive col-xs-12 col-md-3">
+            <div class="add-item-icon"><i class="icon-note-paper-1"></i></div>
+            <div class="add-item-title">Documents</div>
+        </div>
+
+        <div class="add-box-content col-sm-12 col-md-9">
+            <select id="documentSelect">
+                {{#each documents}}
+                    <option value="{{id}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <button class="btn btn-success pull-right" id="send"> Send </button>
+    </div>
+</template>
+
+<template name="documentInstances">
+    <ul class="record-list list-3 stripped has-thumb">
+        {{#if isLoading}}
+            <div style="min-height: 350px; background: url('/img/spinner.gif') no-repeat center;"></div>
+        {{else}}
+            {{#each instances}}
+                <li class="record-record list-3-item">
+                    <a style="color: inherit" class="pointer">
+                        <div class="list-thumb"><i class="icon-note-paper-2"></i></div>
+                        <div class="list-3-content list-magic">
+                            <div class="list-3-content-wrap">
+                                <div class="list-3-item-title"><a href="/documentInstance/{{documentId}}">{{documentName}}</a></div>
+                                <div class="list-3-actions">
+                                    <span class="editNoteRecord"> {{getStatus status}} </span>
+                                </div>
+
+                                <small>
+                                    Created on
+                                    {{#formattedDate value=dateCreated format='lll'}}
+                                        {{date}}
+                                    {{/formattedDate}}
+                                    <br/>
+                                </small>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            {{/each}}
+        {{/if}}
+    </ul>
+</template>

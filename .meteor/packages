@@ -58,5 +58,6 @@ aida:dtype
 aida:es
 
 meteorhacks:fast-render
+doccenter
 meteorhacks:aggregate
 momentjs:moment

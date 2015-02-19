@@ -367,6 +367,12 @@ Template.contactable_nav.helpers({
                     return Template.parentData(2).pastJobs ? Template.parentData(2).pastJobs.length : 0;
                 }
             });
+            tabs.push({
+                id: 'docCenter',
+                mobileDisplayName: 'DocCenter',
+                displayName: 'DocCenter',
+                template: 'docCenterTab'
+            });
         }
         return tabs;
     }
