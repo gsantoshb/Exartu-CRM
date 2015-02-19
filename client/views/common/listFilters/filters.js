@@ -109,12 +109,12 @@ Template.filter_dateCreatedISO.events = {
 var addTag = function () {
 
 
-    if (!selectedValue)
+    if (!selectedValue) {
         return;
-
-    if (_.indexOf(this.tags.value, selectedValue) != -1)
+    }
+    if (_.indexOf(this.tags.value, selectedValue) != -1) {
         return;
-
+    }
     this.tags.insert(selectedValue);
 
 };
