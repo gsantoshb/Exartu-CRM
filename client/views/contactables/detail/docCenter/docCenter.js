@@ -60,7 +60,7 @@ Template.sendDocument.events({
     if (!selectedId){
       return;
     }
-    DocCenter.instantiateDocument(selectedId, contactable.docCenterId, getMergeFieldsValues(), function () { });
+    DocCenter.instantiateDocument(selectedId, contactable.docCenter.docCenterId, getMergeFieldsValues(), function () { });
 
   }
 });
