@@ -17,6 +17,14 @@ Template.noteItem.helpers({
     capMsglength: function () {
         var lastWord = this.msg.indexOf(' ', 299);
         return lastWord === -1 ? this.msg : this.msg.substring(0, lastWord) + '...';
+    },
+    fromEmployee: function () {
+        var empUser = Contactables.findOne({_id: Session.get('entityId')}).user;
+        return empUser && empUser === this.userId;
+    },
+    displayEmployeeName: function () {
+        var emp = Contactables.findOne({_id: Session.get('entityId')});
+        return emp.displayName;
     }
 });
 

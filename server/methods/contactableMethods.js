@@ -23,6 +23,17 @@ Meteor.methods({
     addContactableNote: function (note) {
         ContactableManager.addNote(note);
     },
+    addEmployeeNote: function (message, employeeId) {
+        // Validate data
+        check(message, String);
+        check(employeeId, String);
+
+        try {
+            return ContactableManager.addEmployeeNote(message, employeeId);
+        } catch (err) {
+            throw new Meteor.Error(err.message);
+        }
+    },
 
     // Contact methods
     getContactMethodTypes: function () {

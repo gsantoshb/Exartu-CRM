@@ -99,6 +99,25 @@ ContactableManager = {
     // Save note
     Notes.insert(note);
   },
+  addEmployeeNote: function (message, employeeId) {
+    // Validations
+    if (!message) throw new Error('Message is required');
+    if (!employeeId) throw new Error('Employee ID is required');
+    var employee = Contactables.findOne({_id: employeeId, Employee: {$exists: true}});
+    if (!employee) throw new Error('Invalid employee ID');
+
+    var note = {
+      msg: message,
+      links: [{id: employeeId, type: Enums.linkTypes.contactable.value}],
+      contactableId: employeeId,
+      dateCreated: new Date(),
+      hierId: employee.hierId,
+      userId: employee.userId
+    };
+
+    // Insert note
+    return Notes.insert(note);
+  },
 
   // Education record
   addEducationRecord: function (contactableId, educationInfo) {
