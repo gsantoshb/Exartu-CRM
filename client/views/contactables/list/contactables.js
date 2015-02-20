@@ -345,7 +345,7 @@ Template.contactablesList.created = function () {
         }
         // Set url query
         urlQuery.apply();
-
+		isSearching = false;
         // Avoid update handler's filter when an Elasticsearch query will be performed
         if (query.searchString.value) return;
         if (selectedSort.get()) {

@@ -115,7 +115,6 @@ Template.tasksBox.created = function () {
         }
         urlQuery.apply();
         TasksHandler.setFilter(q);
-        TasksHandler._isLoading.value = false;
     })
 };
 
