@@ -303,7 +303,7 @@ Template.jobList.created = function () {
             if (selectedSort) {
                 JobHandler.setOptions(options);
             }
-            JobHandler.setFilter(searchQuery);
+            JobHandler.setFilter(searchQuery, options);
         }
         // Set url query
         urlQuery.apply();
