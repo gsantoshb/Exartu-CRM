@@ -64,6 +64,7 @@ var setSortField = function(field) {
         selected.value = -1;
     }
     selectedSort.set(selected);
+	console.log(selected);
 };
 
 var loadqueryFromURL = function (params) {
@@ -303,7 +304,7 @@ Template.jobList.created = function () {
             if (selectedSort) {
                 JobHandler.setOptions(options);
             }
-            JobHandler.setFilter(searchQuery, options);
+            JobHandler.setFilter(searchQuery);
         }
         // Set url query
         urlQuery.apply();
@@ -503,5 +504,6 @@ Template.jobListSearch.events = {
 Template.jobListSort.events = {
     'click .sort-field': function () {
         setSortField(this);
+		console.log(JobHandler.isLoading());
     }
 };
