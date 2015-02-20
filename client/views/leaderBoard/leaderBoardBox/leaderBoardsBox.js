@@ -71,6 +71,7 @@ Template.leaderBoardsBox.created = function () {
         SubscriptionHandlers.LeaderBoardHandler = Meteor.paginatedSubscribe('leaderBoards');
     }
     LeaderBoardHandler = SubscriptionHandlers.LeaderBoardHandler;
+    Meteor.subscribe('leaderBoardCustomers');
     query =  loadqueryFromURL(Router.current().params);
 };
 
@@ -92,7 +93,6 @@ Template.leaderBoardsBox.helpers({
             case Enums.lookUpAction.LeaderBoardType_Activity:
                 return 'leaderBoardActivityListHeader';
             case Enums.lookUpAction.LeaderBoardType_Pipeline:
-                alert('this board is under construction');
                 return 'leaderBoardPipelineListHeader';
             case Enums.lookUpAction.LeaderBoardType_Contacts:
                 alert('this board is under construction');
@@ -335,3 +335,25 @@ Template.leaderBoardListSort.events = {
         setSortField(this);
     }
 };
+var pipelineArray=null;
+var getPipelineArray=function() {
+    if (pipelineArray) return pipeLineArray;
+    var lkps =LookUps.find({lookUpCode: Enums.lookUpCodes.customer_status,sortOrder: {$gt: 0}},{sort: {sortOrder:1}}).fetch();
+    return lkps;
+}
+Template.pipelineColumn.helpers({
+    dealColumnTitle: function() {
+        if (getPipelineArray()[this.val])
+        return getPipelineArray()[this.val].displayName;
+    },
+    dealColumnVisible: function() {
+        return (getPipelineArray()[this.val]);
+    },
+    dealColumnItems: function () {
+        if (getPipelineArray()[this.val]) {
+            var lkpid = getPipelineArray()[this.val]._id;
+            console.log('find',Contactables.find({status: lkpid}));
+            return Contactables.find({status: lkpid});
+        };
+    }
+})

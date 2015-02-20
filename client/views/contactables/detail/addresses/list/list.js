@@ -11,6 +11,10 @@ Template.addressList.helpers({
         return addresses;
     },
     getAddressTypeDisplayName: function () {
+        if (!this.addressTypeId) {
+            console.log('missing addresstypeid on address');
+            return "";
+        }
         var lkp = LookUps.findOne({_id: this.addressTypeId});
         return lkp.displayName;
     },

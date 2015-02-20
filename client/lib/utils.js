@@ -311,7 +311,7 @@ Utils.getLocationDisplayName = function (id) {
     var addressTypeIds = _.pluck(addressTypes, function (item) {
         return item._id
     });
-    var location = Addresses.findOne({linkId: id, addressTypeId: {$in: addressTypeIds}}).fetch();
+    var location = Addresses.findOne({linkId: id, addressTypeId: {$in: addressTypeIds}});
 
     return !location ? '' : (
     (location.streetNumber || '' ) + ' ' +

@@ -23,5 +23,12 @@ LookUpManager={
             lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
             hierId: user.currentHierId, lookUpActions: "ContactMethod_OfficePhone"
         });
-    }
+    },
+    getAddressTypeDefaultId: function() {
+        return LookUps.findOne({
+            lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
+            isDefault: true,
+            hierId: Meteor.user().currentHierId
+        })._id;
+    },
 };

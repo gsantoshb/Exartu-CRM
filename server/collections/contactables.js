@@ -3,6 +3,16 @@ Meteor.publish('singleContactable', function (id) {
     ContactablesList.publishCursor(Utils.filterCollectionByUserHier.call(this, ContactablesList.find({_id: id})), sub, 'contactables');
     sub.ready();
 });
+Meteor.publish('leaderBoardCustomers', function () {
+    var lkps= LookUps.find({lookUpCode:Enums.lookUpCodes.customer_status,sortOrder: {$gt:0}}).fetch();
+    var lkpids= _.pluck(lkps,'_id');
+    var activeStatusId=LookUpManager.getActiveStatusDefaultId()
+    var sub = this;
+    ContactablesList.publishCursor(Utils.filterCollectionByUserHier.call(this,
+            ContactablesList.find({Customer: {$exists: true},activeStatus: LookUpManager.getActiveStatusDefaultId(),status: {$in: lkpids}})),
+        sub, 'contactables');
+    sub.ready();
+});
 
 ContactablesList = new View('auxContactables', {
     collection: Contactables,
@@ -160,6 +170,8 @@ Contactables.allow({
 
 // Hooks
 
+
+
 Contactables.before.insert(function (userId, doc) {
     try {
         var user = Meteor.user() || {};
@@ -198,6 +210,10 @@ ContactablesFS.publish();
 
 Meteor.publish('contactablesFiles', function () {
     return ContactablesFiles.find();
+});
+ContactablesFiles.before.insert(function(userId,doc){
+    doc.dateCreated=Date.now();
+
 });
 ContactablesFiles.allow({
     remove: function (userId, file) {

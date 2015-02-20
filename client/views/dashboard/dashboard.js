@@ -1,4 +1,4 @@
-var ActivitiesHandler;
+(function(){var ActivitiesHandler;
 
 var activityTypes = [
     Enums.activitiesType.contactableAdd,
@@ -124,3 +124,5 @@ Template.activity.helpers({
 Template.registerHelper('listViewMode', function () {
     return listViewMode.get();
 });
+
+})();
