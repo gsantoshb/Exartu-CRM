@@ -9,7 +9,12 @@
             {{else}}
                 <div style="padding: 10px">
                     <p class="alert alert-warning">The Employee has not an account on HRConcourse yet</p>
-                    <button class="btn" id="createAccount">Create one for him</button>
+
+                    {{#if hasEmail}}
+                        <button class="btn" id="createAccount">Create one for him</button>
+                    {{else}}
+                        <span class="text-danger">You must add an email for this employee</span>
+                    {{/if}}
                 </div>
                 {{#if createAccount}}
                     {{> quickForm schema=createAccountSchema id="createDocCenterAccount"}}

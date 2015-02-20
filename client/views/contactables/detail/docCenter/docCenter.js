@@ -14,6 +14,15 @@ Template.docCenterTab.helpers({
   },
   createAccountSchema: function () {
     return createAccountSchema;
+  },
+  hasEmail: function () {
+    var employee = Contactables.findOne(Session.get('entityId'));
+    return  _.any(employee.contactMethods, function(cm){
+      var cmType = LookUps.findOne(cm.type);
+      return _.contains(cmType.lookUpActions, Enums.lookUpAction.ContactMethod_Email);
+    });
+
+
   }
 });
 
