@@ -64,6 +64,7 @@ var setSortField = function(field) {
         selected.value = -1;
     }
     selectedSort.set(selected);
+	SubscriptionHandlers.JobHandler._isLoading.value = false;
 };
 
 var loadqueryFromURL = function (params) {
@@ -304,7 +305,7 @@ Template.jobList.created = function () {
             if (selectedSort) {
                 JobHandler.setOptions(options);
             }
-            JobHandler.setFilter(searchQuery,options);
+            JobHandler.setFilter(searchQuery);
         }
         // Set url query
         urlQuery.apply();
