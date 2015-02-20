@@ -298,7 +298,6 @@ Template.jobList.created = function () {
             });
         }
         else {
-            SubscriptionHandlers.JobHandler._isLoading.value = false;
             if (searchQuery.$and.length == 0)
                 delete searchQuery.$and;
             if (selectedSort) {

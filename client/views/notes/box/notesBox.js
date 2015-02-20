@@ -98,7 +98,6 @@ Template.notesBox.created = function () {
         }
         NotesHandler.setFilter(q);
         NotesHandler.setOptions(options);
-        NotesHandler._isLoading.value = false;
 
 
     })

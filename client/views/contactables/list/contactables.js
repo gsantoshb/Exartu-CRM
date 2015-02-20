@@ -345,7 +345,6 @@ Template.contactablesList.created = function () {
         }
         // Set url query
         urlQuery.apply();
-		SubscriptionHandlers.AuxContactablesHandler._isLoading.value = false;
 		isSearching = false;
         // Avoid update handler's filter when an Elasticsearch query will be performed
         if (query.searchString.value) return;
