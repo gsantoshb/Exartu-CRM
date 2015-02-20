@@ -47,9 +47,9 @@ Meteor.methods({
 
     var email = user.emails[0];
 
-    DocCenterManager.registerHier(user.currentHierId, email, function () {
+    email = email.address;
 
-    })
+    return DocCenterManager.registerHier(user.currentHierId, email)
   },
   createDocCenterAccount: function (employeeID) {
     var employee = Contactables.findOne(employeeID);
