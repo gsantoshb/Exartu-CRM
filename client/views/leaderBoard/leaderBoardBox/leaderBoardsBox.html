@@ -13,21 +13,8 @@
 
                     {{> UI.dynamic template=getLeaderBoardHeaderTemplate}}
 
-                    {{#if isSearching}}
-                        searching
-                    {{else}}
-                        {{> leaderBoardList }}
-                    {{/if}}
 
-                    <div class="list-actions last">
-                        {{#if listIsLoading}}
-                            loading
-                        {{else}}
-                            {{#unless isESSearch}}
-                                {{>fastPagination name="leaderBoards" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
-                            {{/unless}}
-                        {{/if}}
-                    </div>
+
 
                 </div>
             </div>
@@ -47,12 +34,13 @@
         <div class="list-header-cell leaderBoards-list-header-status">Year</div>
 
     </div>
+    {{> leaderBoardActivityList }}
 </template>
 <template name="pipelineColumn">
     <div class="text-center"><h4>{{dealColumnTitle val}}</h4></div>
     <div>
         {{#each dealColumnItems val}}
-            {{.}}
+            {{displayName}}
         {{/each}}
     </div>
 </template>
@@ -150,13 +138,13 @@
         </div>
     </div>
 </template>
-<template name="leaderBoardList">
+<template name="leaderBoardActivityList">
     {{#if isLoading}}
         <div style="height: 280px;"></div>
     {{else}}
         <div class="list-item-section {{#if listViewMode}}simple-view{{/if}}">
-            {{#each leaderBoards}}
-                {{> UI.dynamic template=getLeaderBoardListItemTemplate }}
+            {{#each leaders}}
+                {{>leaderBoardActivityListItem }}
             {{else}}
                 {{#if info.isFiltering.value }}
                     <div class="v-wrapper">

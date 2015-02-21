@@ -3,15 +3,12 @@ Meteor.publish('singleContactable', function (id) {
     ContactablesList.publishCursor(Utils.filterCollectionByUserHier.call(this, ContactablesList.find({_id: id})), sub, 'contactables');
     sub.ready();
 });
-Meteor.publish('leaderBoardCustomers', function () {
-    var lkps= LookUps.find({lookUpCode:Enums.lookUpCodes.customer_status,sortOrder: {$gt:0}}).fetch();
-    var lkpids= _.pluck(lkps,'_id');
-    var activeStatusId=LookUpManager.getActiveStatusDefaultId()
+Meteor.publish('leaderBoardCustomers', function (activeid,statusids) {
     var sub = this;
-    ContactablesList.publishCursor(Utils.filterCollectionByUserHier.call(this,
-            ContactablesList.find({Customer: {$exists: true},activeStatus: LookUpManager.getActiveStatusDefaultId(),status: {$in: lkpids}})),
-        sub, 'contactables');
-    sub.ready();
+        console.log('lcustsub',activeid,statusids);
+    console.log('xxx',Contactables.find({Customer: {$exists: true},activeStatus: activeid,'Customer.status': {$in: statusids}}).count());
+    return Utils.filterCollectionByUserHier.call(this,
+            Contactables.find({Customer: {$exists: true},activeStatus: activeid,'Customer.status': {$in: statusids}}))
 });
 
 ContactablesList = new View('auxContactables', {
