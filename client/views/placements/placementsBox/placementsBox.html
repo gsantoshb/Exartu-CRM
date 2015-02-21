@@ -257,7 +257,7 @@
 <template name="placementInformation">
     <span>
         {{#if startDate}}
-            <i class="fa fa-calendar-o"></i>&nbsp;From
+            <i class="fa fa-calendar-o"></i>&nbsp;
             {{#formattedDate value=startDate}}
                 {{date}}
             {{/formattedDate}}
@@ -265,9 +265,9 @@
 
         {{#if endDate}}
             {{#unless startDate}}
-                <i class="fa fa-calendar-o"></i>&nbsp;Until
+                <i class="fa fa-calendar-o"></i>&nbsp;
             {{else}}
-                to &mdash;
+                &mdash;
             {{/unless}}
             {{#formattedDate value=endDate}}
                 {{date}}

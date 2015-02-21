@@ -44,8 +44,9 @@ var loadqueryFromURL = function (params) {
     }
     ;
     var leaderBoardQuery = {type: Utils.ReactivePropertyTypes.array};
-    if (params.leaderBoard) {
-        leaderBoardQuery.default = params.leaderBoard;
+    console.log('params',params);
+    if (params.leaderBoardType) {
+        leaderBoardQuery.default = params.leaderBoardType;
     }
     ;
 
@@ -73,11 +74,11 @@ Template.leaderBoardsBox.created = function () {
         SubscriptionHandlers.LeaderBoardHandler = Meteor.paginatedSubscribe('leaderBoards');
     }
     LeaderBoardHandler = SubscriptionHandlers.LeaderBoardHandler;
-    var lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.customer_status, sortOrder: {$gt: 0}}).fetch();
-    var lkpids = _.pluck(lkps, '_id');
-    var activeid = Utils.getActiveStatusDefaultId();
-    Meteor.subscribe('leaderBoardCustomers', activeid, lkpids);
-    query = loadqueryFromURL(Router.current().params);
+    //var lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.customer_status, sortOrder: {$gt: 0}}).fetch();
+    //var lkpids = _.pluck(lkps, '_id');
+    //var activeid = Utils.getActiveStatusDefaultId();
+    //Meteor.subscribe('leaderBoardCustomers', activeid, lkpids);
+    query = loadqueryFromURL(Router.current().params.query);
 };
 
 var getBoard = function () {
@@ -92,11 +93,23 @@ var getBoard = function () {
 };
 Template.leaderBoardsBox.helpers({
     getLeaderBoardHeaderTemplate: function () {
+        var urlQuery = new URLQuery();
+        urlQuery.addParam('leaderBoardType', query.leaderBoardType.value);
+        urlQuery.apply();
         switch (getBoard()) {
             case Enums.lookUpAction.LeaderBoardType_Activity:
+            {
+
                 return 'leaderBoardActivityListHeader';
+            }
             case Enums.lookUpAction.LeaderBoardType_Pipeline:
+            {
+                var lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.customer_status, sortOrder: {$gt: 0}}).fetch();
+                var lkpids = _.pluck(lkps, '_id');
+                var activeid = Utils.getActiveStatusDefaultId();
+                Meteor.subscribe('leaderBoardCustomers', activeid, lkpids);
                 return 'leaderBoardPipelineListHeader';
+            }
             case Enums.lookUpAction.LeaderBoardType_Contacts:
                 alert('this board is under construction');
                 return 'leaderBoardContactListHeader';

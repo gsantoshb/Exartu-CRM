@@ -40,7 +40,11 @@
     <div class="text-center"><h4>{{dealColumnTitle val}}</h4></div>
     <div>
         {{#each dealColumnItems val}}
-            {{displayName}}
+            <div class="item-subtitle"><a href="/contactable/{{_id}}">{{>showMore text=displayName limit=20}}</a></div>
+
+            <div class="item-subtitle-more">
+                {{statusNote}}
+            </div>
         {{/each}}
     </div>
 </template>

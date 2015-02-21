@@ -5,8 +5,6 @@ Meteor.publish('singleContactable', function (id) {
 });
 Meteor.publish('leaderBoardCustomers', function (activeid,statusids) {
     var sub = this;
-        console.log('lcustsub',activeid,statusids);
-    console.log('xxx',Contactables.find({Customer: {$exists: true},activeStatus: activeid,'Customer.status': {$in: statusids}}).count());
     return Utils.filterCollectionByUserHier.call(this,
             Contactables.find({Customer: {$exists: true},activeStatus: activeid,'Customer.status': {$in: statusids}}))
 });
