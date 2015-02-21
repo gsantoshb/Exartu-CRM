@@ -14,8 +14,6 @@
                     {{> UI.dynamic template=getLeaderBoardHeaderTemplate}}
 
 
-
-
                 </div>
             </div>
         </div>
@@ -42,8 +40,11 @@
         {{#each dealColumnItems val}}
             <div class="item-subtitle"><a href="/contactable/{{_id}}">{{>showMore text=displayName limit=20}}</a></div>
 
-            <div class="item-subtitle-more">
-                {{statusNote}}
+            <div class="item-subtitle-card">
+                {{>showMore text=statusNote limit=35}}
+            </div>
+            <div class="item-subtitle-card-user">
+                {{displayUserName userId}}
             </div>
         {{/each}}
     </div>

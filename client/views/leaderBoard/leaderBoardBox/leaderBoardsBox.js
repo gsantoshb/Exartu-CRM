@@ -377,4 +377,9 @@ Template.pipelineColumn.helpers({
         }
         ;
     }
+});
+Template.pipelineColumn.events({
+    changeStatus: function(e1,e2) {
+        console.log('thise1e2',this,e1,e2);
+    }
 })

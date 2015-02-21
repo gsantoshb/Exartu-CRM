@@ -64,7 +64,7 @@ Template.fileProgress.progress = function() {
   return this.uploadProgress();
 };
 
-UI.registerHelper('dragAndDrop', function() {
+UI.registerHelper('dragAndDropZone', function() {
   return Template.dropzone_template;
 });
 

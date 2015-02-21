@@ -474,6 +474,16 @@ span[data-status="Inactive"] {
   font-size: 10px;
   color: #ccc;
 }
+.item-subtitle-card {
+    margin-top: -4px;
+    font-size: 10px;
+    color: #ccc;
+}
+.item-subtitle-card-user {
+    margin-top: -4px;
+    font-size: 9px;
+    color: #ccc;
+}
 .text-gray {
   color: #ccc;
 }
