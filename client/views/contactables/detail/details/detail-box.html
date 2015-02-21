@@ -125,6 +125,20 @@
                             {{/objectProperty}}
                         </td>
                     </tr>
+                    {{#if lostCustomer}}
+                        <tr>
+                            <td>Lost Reason</td>
+                            <td>
+                                    {{#objectProperty property=lostReason editable=editMode}}
+                                        {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                    {{else}}
+                                        <strong>
+                                            <strong>{{displayName}}</strong>
+                                        </strong>
+                                    {{/objectProperty}}
+                            </td>
+                        </tr>
+                    {{/if}}
                     <tr>
                         <td>Status note</td>
                         <td>

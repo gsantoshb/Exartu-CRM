@@ -76,6 +76,16 @@ newObjType({
       required: false
     },
     {
+        name: 'lostReason',
+        displayName: 'Lost Reason',
+        fieldType: 'lookUp',
+        lookUpName: 'lostReason',
+        lookUpCode: Enums.lookUpTypes.customer.lostReason.lookUpCode,
+        defaultValue: null,
+        showInAdd: false,
+        required: false
+    },
+    {
       name: 'workerCompCode',
       displayName: 'Worker Comp Code',
       showInAdd: false,

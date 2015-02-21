@@ -25,7 +25,6 @@ var loadNoteQueryFromURL = function (params) {
     var ownedByMeQuery = {type: Utils.ReactivePropertyTypes.boolean};
     ownedByMeQuery.default=false;
     if (params.owned) {
-        console.log('paramsowned',params.owned);
         ownedByMeQuery.default = params.owned ? true: false;
     }
 

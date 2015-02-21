@@ -78,7 +78,6 @@ Template.buttonGroup.helpers({
         if (!templateCtx.selectedDep) {
             templateCtx.selected = lastSelected[templateCtx.code];
             templateCtx.selectedDep = new Deps.Dependency;
-            //console.log('lastSelected',lastSelected);
         } // Avoid error when a reactive call override properties defined on created
         lastSelected[templateCtx.code] = templateCtx.selected;
         templateCtx.selectedDep.depend();

@@ -369,17 +369,10 @@ Template.pipelineColumn.helpers({
         return (getPipelineArray()[this.val]);
     },
     dealColumnItems: function () {
-        console.log('gepipe', getPipelineArray(), this.val);
         if (getPipelineArray()[this.val]) {
             var lkpid = getPipelineArray()[this.val]._id;
-            console.log('find', Contactables.find({status: lkpid}).count());
             return Contactables.find({'Customer.status': lkpid});
         }
         ;
     }
 });
-Template.pipelineColumn.events({
-    changeStatus: function(e1,e2) {
-        console.log('thise1e2',this,e1,e2);
-    }
-})

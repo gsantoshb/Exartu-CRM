@@ -158,6 +158,13 @@ UI.registerHelper('displayUserName', function (id) {
   return isUnique ? localPart : user.emails[0].address;
 });
 
+UI.registerHelper('customerDepartmentName'), function (customer)
+{
+    var result=customer.displayName;
+    if (customer.Customer && customer.Customer.department)
+    if (customer.Customer.department !='Primary') result=result + ' ' + customer.Customer.department;
+    return result;
+}
 // User name display
 UI.registerHelper('displaySearchKey', function (id) {
   return ((id)? id: '').substr(0,4);

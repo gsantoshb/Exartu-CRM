@@ -431,7 +431,6 @@ Utils.updateModel = function (model, key, val) {
         }
     }
     if (!keyfound) console.log('model no find', model, key, val);
-    console.log('upmod', updatedModel);
     return updatedModel;
 };
 
