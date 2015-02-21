@@ -169,8 +169,8 @@ var employees = [
 ];
 
 
-// 57 Customers
-var customers = [
+// 57 Clients
+var clients = [
     {
         "name": "Yahoo",
         "department": "Shipping"
@@ -393,30 +393,30 @@ var loadContactables = function (hierId) {
     var mobileContactMethod = LookUpManager.ContactMethodTypes_MobilePhone();
     var emailContactMethod = LookUpManager.ContactMethodTypes_Email();
 
-    // Customers
-    _.forEach(customers, function (data) {
+    // Clients
+    _.forEach(clients, function (data) {
 
         var status = LookUps.findOne({
-            lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode,
+            lookUpCode: Enums.lookUpTypes.client.status.lookUpCode,
             isDefault: true,
             hierId: hierId
         });
-        if (status == null) LookUps.findOne({lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode, hierId: hierId});
-        if (status == null) console.log("unable to find default status code for customer");
+        if (status == null) LookUps.findOne({lookUpCode: Enums.lookUpTypes.client.status.lookUpCode, hierId: hierId});
+        if (status == null) console.log("unable to find default status code for client");
         var emailValue = 'sales@' + data.name + '.com';
         var mobileValue = '1-651-555-' + (Math.floor(Math.random() * 9999999)).toString().substring(2, 6);
         var contactMethods = [];
         if (emailContactMethod) contactMethods.push({'type': emailContactMethod._id, 'value': emailValue});
         if (mobileContactMethod) contactMethods.push({'type': mobileContactMethod._id, 'value': mobileValue});
-        var newCustomer = {
-            Customer: {
+        var newClient = {
+            Client: {
                 department: data.department,
                 status: status ? status._id : null
             },
             tags: randomTag,
             contactMethods: contactMethods,
             statusNote: 'looks to be making a decision soon',
-            objNameArray: ["organization", "Customer", "contactable"],
+            objNameArray: ["organization", "Client", "contactable"],
             organization: {
                 organizationName: data.name
             },
@@ -424,7 +424,7 @@ var loadContactables = function (hierId) {
             testData: true
         };
 
-        ContactableManager.create(newCustomer);
+        ContactableManager.create(newClient);
     });
 
     _.forEach(contacts, function (data) {
@@ -439,8 +439,8 @@ var loadContactables = function (hierId) {
 
         var jobTitles = LookUps.find({lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode, hierId: hierId}).fetch();
         var randomJobTitle = jobTitles[Math.floor(Math.random() * jobTitles.length)];
-        var customers = Contactables.find({objNameArray: 'Customer', hierId: hierId}).fetch();
-        var randomCustomer = customers[Math.floor(Math.random() * customers.length)];
+        var clients = Contactables.find({objNameArray: 'Client', hierId: hierId}).fetch();
+        var randomClient = clients[Math.floor(Math.random() * clients.length)];
         var emailValue = data.firstName + '.' + data.lastName + '@gmail.com';
         var mobileValue = '1-651-555-' + (Math.floor(Math.random() * 9999999)).toString().substring(2, 6);
         var contactMethods = [];
@@ -450,7 +450,7 @@ var loadContactables = function (hierId) {
             Contact: {
                 description: "buying influence",
                 status: status ? status._id : null,
-                customer: randomCustomer._id,
+                client: randomClient._id,
             },
             tags: randomTag,
             contactMethods: contactMethods,
@@ -473,7 +473,7 @@ var loadContactables = function (hierId) {
 };
 
 var loadJobs = function (hierId) {
-    var customers = Contactables.find({objNameArray: 'Customer', hierId: hierId}).fetch();
+    var clients = Contactables.find({objNameArray: 'Client', hierId: hierId}).fetch();
     var jobTypes = dType.ObjTypes.find({parent: 'job'}).fetch()
     var industries = LookUps.find({lookUpCode: Enums.lookUpTypes.job.industry.lookUpCode, hierId: hierId}).fetch();
     var categories = LookUps.find({lookUpCode: Enums.lookUpTypes.job.category.lookUpCode, hierId: hierId}).fetch();
@@ -488,11 +488,11 @@ var loadJobs = function (hierId) {
     for (var i = 0; i < 25; ++i) {
 
         var randomJobType = 'Temporary'; //jobTypes[Math.floor(Math.random() * jobTypes.length)];
-        var randomCustomer = customers[Math.floor(Math.random() * customers.length)];
+        var randomClient = clients[Math.floor(Math.random() * clients.length)];
         var randomJobTitle = jobTitles [Math.floor(Math.random() * jobTitles.length)];
         var newJob = {
             tags: randomTag,
-            customer: randomCustomer._id,
+            client: randomClient._id,
             Temporary: {},
             objNameArray: ['job', 'Temporary'],
             hierId: hierId,

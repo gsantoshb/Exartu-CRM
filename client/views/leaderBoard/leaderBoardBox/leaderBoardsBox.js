@@ -44,7 +44,6 @@ var loadqueryFromURL = function (params) {
     }
     ;
     var leaderBoardQuery = {type: Utils.ReactivePropertyTypes.array};
-    console.log('params',params);
     if (params.leaderBoardType) {
         leaderBoardQuery.default = params.leaderBoardType;
     }
@@ -74,10 +73,10 @@ Template.leaderBoardsBox.created = function () {
         SubscriptionHandlers.LeaderBoardHandler = Meteor.paginatedSubscribe('leaderBoards');
     }
     LeaderBoardHandler = SubscriptionHandlers.LeaderBoardHandler;
-    //var lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.customer_status, sortOrder: {$gt: 0}}).fetch();
+    //var lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.client_status, sortOrder: {$gt: 0}}).fetch();
     //var lkpids = _.pluck(lkps, '_id');
     //var activeid = Utils.getActiveStatusDefaultId();
-    //Meteor.subscribe('leaderBoardCustomers', activeid, lkpids);
+    //Meteor.subscribe('leaderBoardClients', activeid, lkpids);
     query = loadqueryFromURL(Router.current().params.query);
 };
 
@@ -104,10 +103,10 @@ Template.leaderBoardsBox.helpers({
             }
             case Enums.lookUpAction.LeaderBoardType_Pipeline:
             {
-                var lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.customer_status, sortOrder: {$gt: 0}}).fetch();
+                var lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.client_status, sortOrder: {$gt: 0}}).fetch();
                 var lkpids = _.pluck(lkps, '_id');
                 var activeid = Utils.getActiveStatusDefaultId();
-                Meteor.subscribe('leaderBoardCustomers', activeid, lkpids);
+                Meteor.subscribe('leaderBoardClients', activeid, lkpids);
                 return 'leaderBoardPipelineListHeader';
             }
             case Enums.lookUpAction.LeaderBoardType_Contacts:
@@ -355,7 +354,7 @@ var pipelineArray = null;
 var getPipelineArray = function () {
     if (pipelineArray) return pipeLineArray;
     var lkps = LookUps.find({
-        lookUpCode: Enums.lookUpCodes.customer_status,
+        lookUpCode: Enums.lookUpCodes.client_status,
         sortOrder: {$gt: 0}
     }, {sort: {sortOrder: 1}}).fetch();
     return lkps;
@@ -371,7 +370,7 @@ Template.pipelineColumn.helpers({
     dealColumnItems: function () {
         if (getPipelineArray()[this.val]) {
             var lkpid = getPipelineArray()[this.val]._id;
-            return Contactables.find({'Customer.status': lkpid});
+            return Contactables.find({'Client.status': lkpid});
         }
         ;
     }

@@ -16,13 +16,13 @@ Router.map(function() {
       var response = new RESTAPI.response(this.response);
 
       switch(this.request.method) {
-        // Get jobs by customer ID
+        // Get jobs by client ID
         // Parameters:
-        //  - customerId: string
+        //  - clientId: string
         case 'GET':
-          var customerId = this.params.query.customerId;
+          var clientId = this.params.query.clientId;
           try {
-            var res = connection.call('getJobs', customerId);
+            var res = connection.call('getJobs', clientId);
 
             // Transform the response before sending it back
             res = mapper.get(res);
@@ -34,9 +34,9 @@ Router.map(function() {
           break;
 
 
-        // Add a new job for a customer
+        // Add a new job for a client
         // Body:
-        //  - customerId: string
+        //  - clientId: string
         //  - jobTitleId: string
         //  - startDate: string (date)
         //  - endDate: string (date) ?
@@ -68,7 +68,7 @@ Router.map(function() {
 var mapper = {
   create: function(data) {
     var res = {
-      customer: data.customerId,
+      client: data.clientId,
       jobTitle: data.jobTitleId,
       startDate: new Date(data.startDate),
       objNameArray: ["Temporary", "job"]
@@ -84,14 +84,14 @@ var mapper = {
     }
     return res;
   },
-  get: function(data, customerId) {
+  get: function(data, clientId) {
     if (!data) return {};
 
     var result = [];
     _.each(data, function (item) {
       var res = {
         id: item._id,
-        customerId: item.customer,
+        clientId: item.client,
         jobTitleId: item.jobTitle,
         startDate: item.startDate
       };

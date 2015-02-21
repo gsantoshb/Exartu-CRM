@@ -53,11 +53,11 @@ Template.contactableDetailBox.helpers({
     fetchOptions: function () {
         return Utils.sortFetchOptions(this.options);
     },
-    lostCustomer: function () {
+    lostClient: function () {
         statusDep.depend();
         if (contactable.status.value) {
             var lkp = LookUps.findOne({_id: contactable.status.value});
-            if (lkp) return (_.contains(lkp.lookUpActions, Enums.lookUpAction.Customer_Lost));
+            if (lkp) return (_.contains(lkp.lookUpActions, Enums.lookUpAction.Client_Lost));
         }
         return false;
     },

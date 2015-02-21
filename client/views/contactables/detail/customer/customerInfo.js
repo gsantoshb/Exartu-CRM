@@ -1,13 +1,13 @@
 var collection;
 
-Template.contactCustomerInfo.helpers({
+Template.contactClientInfo.helpers({
   created: function () {
-    var customerId = this.data.customer;
-    Meteor.subscribe('singleContactable', customerId);
+    var clientId = this.data.client;
+    Meteor.subscribe('singleContactable', clientId);
     collection = this.data.collection;
   },
-  customer: function () {
-    return Contactables.findOne({_id: this.customer});
+  client: function () {
+    return Contactables.findOne({_id: this.client});
   },
   pictureUrl: function () {
     if (this.pictureFileId) {
@@ -21,9 +21,9 @@ Template.contactCustomerInfo.helpers({
   }
 });
 
-Template.contactCustomerInfo.events({
+Template.contactClientInfo.events({
   'click .addEdit': function (e, ctx) {
-    Utils.showModal('contactCustomerAddEdit', Session.get('entityId'), ctx.data.customer, function (customerId) {
+    Utils.showModal('contactClientAddEdit', Session.get('entityId'), ctx.data.client, function (clientId) {
     });
   }
 });

@@ -40,7 +40,7 @@ HierarchyManager = {
         var user = Meteor.user();
         if (userid) user = Meteor.users.findOne({_id: userid})
         Meteor.users.update({_id: user._id}, {$set: {currentHierId: hierid, hierId: hierid}});
-        Meteor.users.update({_id: user._id}, {$unset: {lastCustomerUsed: "", lastEmployeeUsed: ""}});
+        Meteor.users.update({_id: user._id}, {$unset: {lastClientUsed: "", lastEmployeeUsed: ""}});
     },
     setLookupDefault: function (lookUpCode, valueId) {
         var lookUpValue = LookUps.findOne({lookUpCode: lookUpCode, _id: valueId});
@@ -114,21 +114,21 @@ var generateUniqueHierId = function (prefix) {
 
 createHouseAccount = function (hierarchy) {
     if (!Contactables.findOne({hierId: hierarchy._id, houseAccount: true})) {
-        var customer = {
+        var client = {
             objNameArray: [
                 "organization",
-                "Customer",
+                "Client",
                 "contactable"
             ],
             houseAccount: true,
             organization: {
                 organizationName: "House Account"
             },
-            Customer: {},
+            Client: {},
             hierId: hierarchy._id,
             userId: (hierarchy.user && hierarchy.user.length > 0) ? hierarchy.user[0] : null,
             dateCreated: Date.now()
         };
-        Contactables.insert(customer);
+        Contactables.insert(client);
     }
 };

@@ -1,11 +1,11 @@
 var newRelation = dType.constructor.relation;
 newRelation({
-    name: 'CustomerContacts',
+    name: 'ClientContacts',
     obj1: 'Contact',
-    obj2: 'Customer',
+    obj2: 'Client',
     visibilityOn1: {
-        name: 'customer',
-        displayName: 'Customer',
+        name: 'client',
+        displayName: 'Client',
         collection: 'Contactables',
         cardinality: {
             min: 0,
@@ -15,12 +15,12 @@ newRelation({
 });
 
 newRelation({
-    name: 'CustomerJobs',
+    name: 'ClientJobs',
     obj1: 'job',
-    obj2: 'Customer',
+    obj2: 'Client',
     visibilityOn1: {
-        name: 'customer',
-        displayName: 'Customer',
+        name: 'client',
+        displayName: 'Client',
         collection: 'Contactables',
         cardinality: {
             min: 1,

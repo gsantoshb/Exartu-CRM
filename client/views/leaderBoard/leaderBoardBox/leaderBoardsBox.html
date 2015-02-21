@@ -39,7 +39,7 @@
     <div>
         {{#each dealColumnItems val}}
             <div class="item-subtitle"><a href="/contactable/{{_id}}">{{>showMore text=displayName limit=20}}
-            {{#if Customer.department!='Primary'}}{{>showMore text=Customer.department limit=20}}{{/if}}</a></div>
+            {{#if Client.department!='Primary'}}{{>showMore text=Client.department limit=20}}{{/if}}</a></div>
 
             <div class="item-subtitle-card">
                 {{>showMore text=statusNote limit=35}}

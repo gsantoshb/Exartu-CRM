@@ -48,7 +48,7 @@
 <template name="relInput">
     <span>{{displayName}} : </span>
     <div class="form-group  {{hasError}}">
-        {{>asyncSelect query=getCustomer placeholder="Search customer" onChange=customerChanged width='100%' defaultValue=defaultValue}}
+        {{>asyncSelect query=getClient placeholder="Search client" onChange=clientChanged width='100%' defaultValue=defaultValue}}
         <span>{{error}}</span>
     </div><!-- /.form-group -->
 </template>

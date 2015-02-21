@@ -217,8 +217,8 @@ ContactableManager = {
         });
     },
 
-    // Customer relations
-    setCustomer: function (contactId, customerId) {
+    // Client relations
+    setClient: function (contactId, clientId) {
         var userHierarchiesFilter = Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()));
 
         // Get contact
@@ -228,17 +228,17 @@ ContactableManager = {
         if (!contact)
             throw new Meteor.Error(404, 'Contact with id ' + contactId + ' not found');
 
-        // If customerId is defined then validate customer, if not set job's customer as null
-        if (customerId) {
-            // Get customer
-            var customer = Contactables.find({_id: customerId, Customer: {$exists: true}, $or: userHierarchiesFilter});
+        // If clientId is defined then validate client, if not set job's client as null
+        if (clientId) {
+            // Get client
+            var client = Contactables.find({_id: clientId, Client: {$exists: true}, $or: userHierarchiesFilter});
 
             // Check if it exists in user's hierarchies
-            if (customerId && !customer)
-                throw new Meteor.Error(404, 'Customer with id ' + customerId + ' not found');
+            if (clientId && !client)
+                throw new Meteor.Error(404, 'Client with id ' + clientId + ' not found');
         }
 
-        // Update job customer
-        Contactables.update({_id: contactId}, {$set: {'Contact.customer': customerId}});
+        // Update job client
+        Contactables.update({_id: contactId}, {$set: {'Contact.client': clientId}});
     }
 };

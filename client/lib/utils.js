@@ -349,10 +349,10 @@ Utils.getEntityFromLink = function (link) {
         case Enums.linkTypes.job.value:
             var job = Jobs.findOne({_id: link.id});
             if (!job) return;
-            // Extend displayName with customer displayName
-            var customer = AllContactables.findOne(job.customer);
-            if (customer && customer.displayName)
-                job.displayName += '@' + customer.displayName;
+            // Extend displayName with client displayName
+            var client = AllContactables.findOne(job.client);
+            if (client && client.displayName)
+                job.displayName += '@' + client.displayName;
             return job;
         case Enums.linkTypes.deal.value:
             return Deals.findOne({_id: link.id});
@@ -381,7 +381,7 @@ Utils.getEntityFromLinkForAdd = function (link) {
 
 Utils.getCollectionFromEntity = function (entity) {
     var strtype = Utils.getLinkTypeFromEntity(entity);
-    if ($.inArray(strtype, ['Employee', 'Contact', 'Customer', 'contactable']) != -1) return Contactables;
+    if ($.inArray(strtype, ['Employee', 'Contact', 'Client', 'contactable']) != -1) return Contactables;
     if ($.inArray(strtype, ['Job', 'job', 'Temporary']) != -1) return Jobs;
     if ($.inArray(strtype, ['Deal', 'deal']) != -1) return Deals;
     if ($.inArray(strtype, ['Placement', 'placement']) != -1) return Placements;
@@ -564,8 +564,8 @@ Utils.dismissModal = function () {
 };
 
 Utils.getContactableType = function (obj) {
-    if (obj.Customer)
-        return 'Customer';
+    if (obj.Client)
+        return 'Client';
     if (obj.Employee && obj.Contact)
         return 'Employee/Contact';
     if (obj.Employee)

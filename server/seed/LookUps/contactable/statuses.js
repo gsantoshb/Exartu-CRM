@@ -43,10 +43,10 @@ _.forEach([
         systemLookUps.push(item);
     }
 );
-//customer status
+//client status
 _.forEach([
         {
-            displayName: "Lost", lookUpActions: [Enums.lookUpAction.Customer_Lost], sortOrder:-20
+            displayName: "Lost", lookUpActions: [Enums.lookUpAction.Client_Lost], sortOrder:-20
         },
         {
             displayName: "Prospect", lookUpActions: [],
@@ -72,7 +72,7 @@ _.forEach([
         }
     ],
     function (item) {
-        item.lookUpCode = Enums.lookUpTypes.customer.status.lookUpCode;
+        item.lookUpCode = Enums.lookUpTypes.client.status.lookUpCode;
         systemLookUps.push(item);
     }
 );
@@ -94,7 +94,7 @@ _.forEach([
         }
     ],
     function (item) {
-        item.lookUpCode = Enums.lookUpTypes.customer.lostReason.lookUpCode
+        item.lookUpCode = Enums.lookUpTypes.client.lostReason.lookUpCode
         systemLookUps.push(item);
     }
 );

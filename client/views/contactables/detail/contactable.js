@@ -73,7 +73,7 @@ Template.contactable.helpers({
         return Notes.find({links: {$elemMatch: {id: Session.get('entityId')}}}).count();
     },
     jobCount: function () {
-        return Jobs.find({'customer': Session.get('entityId')}).count();
+        return Jobs.find({'client': Session.get('entityId')}).count();
     },
 
     currentTemplate: function () {
@@ -328,7 +328,7 @@ Template.contactable_nav.helpers({
             }
         ];
 
-        if (contactable.Customer) {
+        if (contactable.Client) {
             tabs.push({id: 'jobs', mobileDisplayName: 'Job', displayName: 'Jobs', template: 'contactable_jobs'});
             tabs.push({
                 id: 'placements',

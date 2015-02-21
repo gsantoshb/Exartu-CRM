@@ -158,11 +158,11 @@ UI.registerHelper('displayUserName', function (id) {
   return isUnique ? localPart : user.emails[0].address;
 });
 
-UI.registerHelper('customerDepartmentName'), function (customer)
+UI.registerHelper('clientDepartmentName'), function (client)
 {
-    var result=customer.displayName;
-    if (customer.Customer && customer.Customer.department)
-    if (customer.Customer.department !='Primary') result=result + ' ' + customer.Customer.department;
+    var result=client.displayName;
+    if (client.Client && client.Client.department)
+    if (client.Client.department !='Primary') result=result + ' ' + client.Client.department;
     return result;
 }
 // User name display

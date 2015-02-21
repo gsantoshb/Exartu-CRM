@@ -18,13 +18,13 @@ Template.contactablePlacementsBox.placements = function() {
       transform: null
     });
 
-    var customer = Contactables.findOne({_id: job.customer}, {transform: null});
+    var client = Contactables.findOne({_id: job.client}, {transform: null});
 
     placement.job = job._id;
     placement.jobTitle = job.publicJobTitle;
-    if (customer) {
-      placement.customerName = customer.organization.organizationName;
-      placement.customer = customer._id;
+    if (client) {
+      placement.clientName = client.organization.organizationName;
+      placement.client = client._id;
     }
   });
 

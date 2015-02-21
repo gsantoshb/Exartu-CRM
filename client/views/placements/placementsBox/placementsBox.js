@@ -153,9 +153,9 @@ Template.placementList.created = function () {
         if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
 
         if (entityType==Enums.linkTypes.contactable.value) {
-            if (contactable.Customer) {
-                // Get customer jobs
-                var jobsId = Jobs.find({customer: Session.get('entityId')}).map(function (job) { return job._id;});
+            if (contactable.Client) {
+                // Get client jobs
+                var jobsId = Jobs.find({client: Session.get('entityId')}).map(function (job) { return job._id;});
                 searchQuery.job = {$in: jobsId};
             }
             if (contactable.Employee) searchQuery.employee=Session.get('entityId');
@@ -316,15 +316,15 @@ Template.placementListItem.helpers({
         var job = Jobs.findOne(this.job);
         return job && Utils.getLocationDisplayName(job.location);
     },
-    customerId: function () {
+    clientId: function () {
         var job = Jobs.findOne(this.job);
-        var customer = job && Contactables.findOne(job.customer);
-        return customer && customer._id;
+        var client = job && Contactables.findOne(job.client);
+        return client && client._id;
     },
-    customerDisplayName: function () {
+    clientDisplayName: function () {
         var job = Jobs.findOne(this.job);
-        var customer = job && Contactables.findOne(job.customer);
-        return customer && customer.displayName;
+        var client = job && Contactables.findOne(job.client);
+        return client && client.displayName;
     },
     pictureUrl: function (pictureFileId) {
         var picture = PlacementsFS.findOne({_id: pictureFileId});

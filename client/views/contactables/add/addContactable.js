@@ -116,7 +116,7 @@ Template.addContactablePage.helpers({
     // it depends on what contactable type is being created
     var lookUpAction;
     switch (Session.get('objType')) {
-      case 'Customer': lookUpAction = Enums.lookUpAction.ContactMethod_WorkPhone; break;
+      case 'Client': lookUpAction = Enums.lookUpAction.ContactMethod_WorkPhone; break;
       case 'Employee': lookUpAction = Enums.lookUpAction.ContactMethod_MobilePhone; break;
       case 'Contact': lookUpAction = Enums.lookUpAction.ContactMethod_MobilePhone; break;
     }
@@ -149,7 +149,7 @@ Template.addContactablePage.helpers({
     // it depends on what contactable type is being created
     var lookUpAction;
     switch (Session.get('objType')) {
-      case 'Customer': lookUpAction = Enums.lookUpAction.ContactMethod_WorkEmail; break;
+      case 'Client': lookUpAction = Enums.lookUpAction.ContactMethod_WorkEmail; break;
       case 'Employee': lookUpAction = Enums.lookUpAction.ContactMethod_PersonalEmail; break;
       case 'Contact': lookUpAction = Enums.lookUpAction.ContactMethod_PersonalEmail; break;
     }

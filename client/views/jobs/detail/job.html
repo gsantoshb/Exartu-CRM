@@ -6,9 +6,9 @@
                 <div  class="profile-content-header">
                     <h1 class="profile-name">{{displayName}}
                         <small> at
-                            <a  href="/contactable/{{customer}}">
+                            <a  href="/contactable/{{client}}">
                                 <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
-                                    {{customerName}}
+                                    {{clientName}}
                                     <i class="fa fa-external-link" style="font-size: 14px"></i>
                                 </strong>
                             </a>
@@ -46,8 +46,8 @@
 
                 </div>
             </div>
-            <!--{{>job_tabs job=. getCustomer=getCustomer jobCollection=jobCollection originalJob=originalJob documentCount=documentCount noteCount=noteCount}}-->
-            <!--job=. getCustomer=getCustomer jobCollection=jobCollection originalJob=originalJob documentCount=documentCount noteCount=noteCount-->
+            <!--{{>job_tabs job=. getClient=getClient jobCollection=jobCollection originalJob=originalJob documentCount=documentCount noteCount=noteCount}}-->
+            <!--job=. getClient=getClient jobCollection=jobCollection originalJob=originalJob documentCount=documentCount noteCount=noteCount-->
         </div>
     </div>
 </template>
@@ -87,7 +87,7 @@
                 {{> jobDetail}}
             </div>
             <div class="col-sm-12">
-                {{> jobCustomerInfo customer=getCustomer path='customer' collection=customerCollection}}
+                {{> jobClientInfo client=getClient path='client' collection=clientCollection}}
             </div>
         </div>
         <div class="col-sm-6">

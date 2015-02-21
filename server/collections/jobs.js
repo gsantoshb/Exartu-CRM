@@ -1,17 +1,17 @@
-var flds= { 'organization.organizationName' : 1 ,'Customer.department':1 };
+var flds= { 'organization.organizationName' : 1 ,'Client.department':1 };
 JobView = new View('jobs', {
   collection: Jobs,
   cursors: function (job) {
-    // Customer
+    // Client
     this.publish({
       cursor: function (job) {
-        if (job.customer)
-          return Contactables.find(job.customer, { fields: flds });
+        if (job.client)
+          return Contactables.find(job.client, { fields: flds });
       },
       to: 'contactables',
-      observedProperties: ['customer'],
+      observedProperties: ['client'],
       onChange: function (changedProps, oldSelector) {
-        oldSelector._id = changedProps.customer;
+        oldSelector._id = changedProps.client;
         return Contactables.find(oldSelector, { fields: flds });
       }
     });
@@ -55,16 +55,16 @@ Meteor.paginatedPublish(JobView, function(){
 JobPlacementView = new View('jobs', {
   collection: Jobs,
   cursors: function (job) {
-    // Customer
+    // Client
     this.publish({
       cursor: function (job) {
-        if (job.customer)
-          return Contactables.find(job.customer, { fields: flds});
+        if (job.client)
+          return Contactables.find(job.client, { fields: flds});
       },
       to: 'contactables',
-      observedProperties: ['customer'],
+      observedProperties: ['client'],
       onChange: function (changedProps, oldSelector) {
-        oldSelector._id = changedProps.customer;
+        oldSelector._id = changedProps.client;
         return Contactables.find(oldSelector, { fields: flds });
       }
     });
@@ -80,7 +80,7 @@ Meteor.publish('allJobs', function () {
   Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Jobs.find({},{
     fields:{
       publicJobTitle: 1,
-      customer: 1
+      client: 1
     }
   })
   ), sub, 'allJobs');
@@ -107,7 +107,7 @@ Jobs.before.insert(function (userId, doc) {
 });
 
 // Indexes
-Jobs._ensureIndex({customer: 1});
+Jobs._ensureIndex({client: 1});
 Jobs._ensureIndex({status: 1});
 
 Jobs._ensureIndex({activeStatus: 1});
@@ -121,9 +121,9 @@ Jobs._ensureIndex({dateCreated: 1});
 //JobView = new Meteor.Collection('JobView', {
 //  collection: Jobs,
 //  mapping: {
-//    customerInfo: {
+//    clientInfo: {
 //      find: function(job) {
-//        return Contactables.find(job.customerId,{
+//        return Contactables.find(job.clientId,{
 //          fields: {
 //            'organization.organizationName': 1
 //          }

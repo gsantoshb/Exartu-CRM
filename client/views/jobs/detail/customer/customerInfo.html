@@ -1,27 +1,27 @@
 
-<template name="jobCustomerInfo">
-    {{#if customer}}
+<template name="jobClientInfo">
+    {{#if client}}
         <div class="box">
-            {{#with customer}}
+            {{#with client}}
                 <div class="box-header-2">
                     <a class="btn-action addEdit pointer" title="Edit"><i class="fa fa-pencil"></i></a>
                     <div class="box-title">
                         <a href="/contactable/{{_id}}" style="color: #777;">
                             <span>{{displayName}}</span>
                         </a>
-                        <!--<a class="box-title visible-sm visible-xs" href="#customer-body" data-toggle="collapse" >-->
-                            <!--Customer-->
+                        <!--<a class="box-title visible-sm visible-xs" href="#client-body" data-toggle="collapse" >-->
+                            <!--Client-->
                         <!--</a>-->
                     </div>
                 </div>
-                <div class="" id="customer-body">
+                <div class="" id="client-body">
                     <a href="/contactable/{{_id}}">
                         <h5 class="visible-sm visible-xs" style="text-align: center">{{displayName}}</h5>
                         <p class="text-center">
                             <img style="max-heigth:40px; max-width:40px;" src="{{pictureUrl}}">
                         </p>
                     </a>
-                    <p>{{Customer.statusNote}}</p>
+                    <p>{{Client.statusNote}}</p>
                     <table class="table table-striped ">
                         <tbody>
                         {{#if location}}
@@ -55,14 +55,14 @@
                 <a class="btn-action addEdit" href="#"><i class="fa fa-pencil"></i></a>
                 <div class="box-title">
                     <a style="color: #777;">
-                        <span>No Customer</span>
+                        <span>No Client</span>
                     </a>
                 </div>
             </div>
             <div class="box-v-msg">
                 <div class="box-v-msg-content">
                     <i class="icon-buildings-1"></i>
-                    <p>No Customer linked<br>
+                    <p>No Client linked<br>
                     </p>
                 </div><!-- /.box-v-msg-content -->
             </div>
