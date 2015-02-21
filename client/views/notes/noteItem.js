@@ -3,6 +3,7 @@ Template.noteItem.helpers({
         return 'note-' + this.state + (this.inactive ? ' inactive' : '');
     },
     hasLinks: function () {
+        if (!this.links) return false;
         return this.links.length;
     },
     getHref: function () {
@@ -19,7 +20,9 @@ Template.noteItem.helpers({
         return lastWord === -1 ? this.msg : this.msg.substring(0, lastWord) + '...';
     },
     fromEmployee: function () {
-        var empUser = Contactables.findOne({_id: Session.get('entityId')}).user;
+        var e = Contactables.findOne({_id: Session.get('entityId')});
+        if (!e) return false;
+        var empUser= e.userId;
         return empUser && empUser === this.userId;
     },
     displayEmployeeName: function () {

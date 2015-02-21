@@ -1549,10 +1549,10 @@ span[data-status="Inactive"] {
     margin-top: 25px;
   }
   .notes-list-item .list-item-details .list-item-cell {
-    width: 30%;
+
   }
   .notes-list-item .list-item-details .item-overflow {
-    width: 10%;
+
   }
 }
 @media (min-width: 768px) {
