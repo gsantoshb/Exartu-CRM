@@ -1,13 +1,13 @@
 var fs = Meteor.npmRequire('fs');
 
 Meteor.methods({
-    esSynchAll: function()
+    esSynchAll: function(q)
     {
         console.log('userissysadmin',RoleManager.bUserIsSystemAdmin());
         if (RoleManager.bUserIsSystemAdmin())
         {
             // meaningless update to contactables to force es sync
-            Contactables.update({},{$set: {zzz:1}},{multi:true})      ;
+            Contactables.update(q,{$set: {zzz:1}},{multi:true})      ;
         }
     },
     addContactable: function (contactable) {
