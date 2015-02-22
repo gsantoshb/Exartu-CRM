@@ -31,18 +31,28 @@ RoleManager = {
         return true;
     },
     bUserIsSystemAdmin: function (user) {
-        if (!user) return false;
-        var admins=String(ExartuConfig.AdminEmails).trim().split(',');
+        if (!user) {
+            try {
+                user = Meteor.user();
+            }
+            catch (err) {
+                user = Meteor.users.findOne({_id: this.userId});
+            }
+            if (!user) return false;
+        }
+        var admins = String(ExartuConfig.AdminEmails).trim().split(',');
         if (user && user.emails[0] && _.contains(admins, user.emails[0].address.toLowerCase())) return true;
         return RoleManager.bUserHasRoleId(user, this.getSystemAdministratorRole()._id)
-    },
+    }
+    ,
     bUserIsClientAdmin: function (user) {
         var role = this.getClientAdministratorRole();
         if (role && role._id)
             return RoleManager.bUserHasRoleId(user, role._id);
         else
             return false;
-    },
+    }
+    ,
     bUserIsAdmin: function (user) {
         return (RoleManager.bUserIsClientAdmin(user) || RoleManager.bUserIsSystemAdmin(user));
     }
