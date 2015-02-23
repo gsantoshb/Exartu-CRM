@@ -20,6 +20,7 @@ _.extend(DocCenter,{
       }
     }, function (err, response) {
       if (err){
+
         cb(err);
       }else{
 
@@ -39,29 +40,46 @@ _.extend(DocCenter,{
   register: Meteor.wrapAsync(function (userName, email, hierId, cb) {
     //generate a docCenter user
 
+    var self = this;
+
     var docCenterUser = {
       UserName: userName,
       Email: email,
       Password: generatePassword(),
       Hier: hierId,
-      Authkey: this._authkey
+      Authkey: self._authkey
     };
 
 
-    HTTP.post(this._docCenterUrl + '/api/Account', { data: docCenterUser}, function (err, response) {
-      if (err){
-        console.error(err);
-        cb(err);
-      }else {
-        console.log('response', response);
-        Accounts.insert({
-          _id: hierId,
-          userName: docCenterUser.UserName,
-          password: docCenterUser.Password //todo: encrypt
-        });
-        cb(null);
+    var tryRegister = function (intent, originalUsername) {
+
+      intent = _.isNumber(intent) ? intent : 0;
+
+      if (intent > 1){
+        docCenterUser.UserName = originalUsername + '_' + Random.id(3);
       }
-    })
+
+      HTTP.post(self._docCenterUrl + '/api/Account', { data: docCenterUser}, function (err, response) {
+        if (err){
+          //try with a different username
+          if (intent >= 3){
+            console.error('Max numbers of retries in register to docCenter');
+            cb(err);
+          }else{
+            tryRegister(++intent, originalUsername);
+          }
+        }else {
+          console.log('response', response);
+          Accounts.insert({
+            _id: hierId,
+            userName: docCenterUser.UserName,
+            password: docCenterUser.Password //todo: encrypt
+          });
+          cb(null);
+        }
+      })
+    };
+    tryRegister(1, docCenterUser.UserName);
   }),
 
   /**
