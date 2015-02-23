@@ -21,7 +21,7 @@ ResumeManager = {
 
             var response = Meteor.wrapAsync(form.submit, form)({
                 host: ExartuConfig.ResumeParserURL,
-                path: "/resumeparser/api/Parser/Parse",
+                path: "/api/Parser/Parse",
                 headers: headers
             });
 
@@ -39,6 +39,7 @@ ResumeManager = {
         }
 
         try {
+            console.log('result', result);
             var json = JSON.parse(result);
             var object = xml2jsAsync(json);
             return extractInformation(object);
