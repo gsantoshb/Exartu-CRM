@@ -31,8 +31,13 @@ Router.map(function () {
     path: '/',
     controller: 'DashboardController'
   });
+  this.route('calendar', {
+        path: '/calendar',
+        template: 'taskCalendar'
+  });
 
-  this.route('login', {
+
+    this.route('login', {
     path: '/login',
     controller: 'LoginController'
   });

@@ -1,0 +1,20 @@
+<template name="taskCalendar">
+    <div id="content">
+        <div class="hidden-xs" style="">
+            <div id="content-header" class="mini">
+                <h1>Calendar</h1>
+            </div>
+            <div id="breadcrumb">
+                <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+                <a href="/calendar" class="current">Calendar</a>
+            </div>
+
+        </div>
+        <div class="col-lg-10 col-md-10" style="margin-bottom: 5%; margin-left: 2%">
+            {{> fullcalendar options id='myCalendar'}}
+        </div>
+        <div style="clear: both"></div>
+    </div>
+
+
+</template>

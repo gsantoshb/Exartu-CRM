@@ -68,7 +68,7 @@ _.forEach([
         }
         ,
         {
-            displayName: "Won", lookUpActions: [],sortOrder:60
+            displayName: "Won", lookUpActions: [Enums.lookUpAction.Client_Won],sortOrder:60
         }
     ],
     function (item) {

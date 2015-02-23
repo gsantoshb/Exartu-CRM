@@ -18,6 +18,10 @@ TaskManager = {
   apiGetTasks: function(entityId) {
     return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() },
       Tasks.find({ 'links.id': entityId}, { sort: { 'dateCreated': -1 } })).fetch();
+  },
+    apiGetTasksBeetwen: function(start, end){
+
+      return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Tasks.find({$and:[{$or:[{end:{$gte: start}} , {begin:{$lte: end}}]},{inactive:{$ne: true}}]})).fetch();
   }
 };
 

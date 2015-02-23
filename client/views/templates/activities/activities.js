@@ -5,6 +5,24 @@ Template.newContactableActivity.helpers({
 
     getActivityIcon: function () {
         return helper.getActivityIcon(this);
+    },
+    getClientName: function(act) {
+        var data=this.data;
+        if (data && data.objTypeName && data.objTypeName=='Contact' && this.entityId)
+        {
+            var c=Contactables.findOne({_id:this.entityId});
+            if (c  && c.Contact && c.Contact.clientName)
+                return c.Contact.clientName;
+        }
+    },
+    getClientId: function(act) {
+        var data=this.data;
+        if (data && data.objTypeName && data.objTypeName=='Contact' && this.entityId)
+        {
+            var c=Contactables.findOne({_id:this.entityId});
+            if (c  && c.Contact && c.Contact.client)
+                return c.Contact.client;
+        }
     }
 });
 
