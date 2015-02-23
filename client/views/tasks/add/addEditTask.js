@@ -24,8 +24,8 @@ var taskUpdate = function (cb) {
                 _id: task._id
             }, {
                 $set: {
-                    begin: task.begin,
-                    end: task.end,
+                    begin: task.begin ? new Date(task.begin): task.begin,
+                    end: task.end ? new Date(task.end): task.end,
                     assign: task.assign,
                     msg: task.msg,
                     completed: task.completed,
@@ -52,9 +52,10 @@ var createTask = function (task) {
 
         addDisabled.set(false);
         var task = task || {};
+
         var definition = {
-            begin: task.begin || new Date(),
-            end: task.end || null,
+            begin: task.begin ? new Date(task.begin): new Date(),
+            end: task.end ? new Date(task.end): new Date(),
             assign: task.assign || [Meteor.userId()],
             msg: task.msg,
             completed: task.completed,
@@ -186,7 +187,7 @@ var isValid = function (task, key) {
 };
 
 Template.addEditTask.events({
-    'click .accept': function () {
+    'click .accept': function (e, ctx) {
         if (!isValid(task)) {
             return;
         }
@@ -198,7 +199,8 @@ Template.addEditTask.events({
             });
         } else {
             Tasks.insert(task, function () {
-                $('.modal-host').children().modal('toggle')
+                $('.modal-host').children().modal('toggle');
+
             })
         }
         addDisabled.set(false);
@@ -227,15 +229,15 @@ Template.addEditTask.events({
     },
     'change.dp .completed>.dateTimePicker': function (e, ctx) {
         task.completed = $(e.currentTarget).data().datetimepicker.date;
-        taskUpdate();
+        //taskUpdate();
     },
     'change.dp .begin>.date': function (e, ctx) {
         task.begin = $(e.currentTarget).data().date;
-        taskUpdate();
+        //taskUpdate();
     },
     'change.dp .end>.date': function (e, ctx) {
         task.end = $(e.currentTarget).data().date;
-        taskUpdate();
+        //taskUpdate();
     },
     'change .isCompleted': function (e) {
         if (e.target.checked) {
@@ -244,16 +246,16 @@ Template.addEditTask.events({
             task.completed = null;
         }
         taskDep.changed();
-        taskUpdate();
+        //taskUpdate();
     },
     'change .msg': function (e) {
         task.msg = e.target.value;
-        taskUpdate();
+        //taskUpdate();
     },
     'change .assign': function (e) {
         var newassign = $(e.target).val();
         task.assign = newassign;
-        taskUpdate();
+        //taskUpdate();
     },
     'blur .msg': function () {
         isValid(task, 'msg');
@@ -276,14 +278,14 @@ Template.addEditTask.events({
             id: entity
         });
         linkedDep.changed();
-        taskUpdate();
+        //taskUpdate();
     },
     'click .remove-link': function () {
         var item = _(task.links).findWhere({id: this._id})
 
         task.links = _(task.links).without(item);
         linkedDep.changed();
-        taskUpdate();
+        //taskUpdate();
     }
 });
 
