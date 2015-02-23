@@ -359,6 +359,10 @@ var getPipelineArray = function () {
     return lkps;
 }
 Template.pipelineColumn.helpers({
+    bDisplayDepartment: function (e) {
+        return !(e=='Primary')
+    }
+    ,
     dealColumnTitle: function () {
         if (getPipelineArray()[this.val])
             return getPipelineArray()[this.val].displayName;
