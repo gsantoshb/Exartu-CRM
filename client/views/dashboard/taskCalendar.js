@@ -26,6 +26,7 @@ Template.taskCalendar.helpers({
             id:'myCalendar',
             monthNames:['January', 'February', 'March', 'April', 'May', 'June', 'July',
                 'August', 'September', 'October', 'November', 'December'],
+            eventLimit: 5,
 
 
             eventClick: function(calEvent, jsEvent, view) {
