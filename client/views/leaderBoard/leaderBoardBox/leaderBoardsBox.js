@@ -73,20 +73,18 @@ Template.leaderBoardsBox.created = function () {
         SubscriptionHandlers.LeaderBoardHandler = Meteor.paginatedSubscribe('leaderBoards');
     }
     LeaderBoardHandler = SubscriptionHandlers.LeaderBoardHandler;
-    //var lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.client_status, sortOrder: {$gt: 0}}).fetch();
-    //var lkpids = _.pluck(lkps, '_id');
-    //var activeid = Utils.getActiveStatusDefaultId();
-    //Meteor.subscribe('leaderBoardClients', activeid, lkpids);
     query = loadqueryFromURL(Router.current().params.query);
 };
 
 var getBoard = function () {
-    var board = Enums.lookUpAction.LeaderBoardType_Activity;
+    var board= Session.get('recentLeaderBoard');
+    if (!board) board = Enums.lookUpAction.LeaderBoardType_Activity;
     if (query.leaderBoardType.value) {
         var lkp = LookUps.findOne({_id: query.leaderBoardType.value});
         if (lkp && lkp.lookUpActions && lkp.lookUpActions.length > 0) {
             board = lkp.lookUpActions[0];
         }
+        Session.set('recentLeaderBoard',board);
     }
     return board;
 };
@@ -98,7 +96,6 @@ Template.leaderBoardsBox.helpers({
         switch (getBoard()) {
             case Enums.lookUpAction.LeaderBoardType_Activity:
             {
-
                 return 'leaderBoardActivityListHeader';
             }
             case Enums.lookUpAction.LeaderBoardType_Pipeline:
@@ -111,6 +108,8 @@ Template.leaderBoardsBox.helpers({
             }
             case Enums.lookUpAction.LeaderBoardType_Contacts:
                 alert('this board is under construction');
+                return 'leaderBoardContactListHeader';
+            default:
                 return 'leaderBoardContactListHeader';
         }
         ;

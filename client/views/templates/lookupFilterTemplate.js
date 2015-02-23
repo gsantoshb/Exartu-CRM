@@ -5,7 +5,7 @@ Template.lookupFilterTemplate.helpers({
 
     templateContext: function () {
         return {
-            options: _.map(LookUps.find({lookUpCode: this.lookUpCode}, {
+            options: _.map(LookUps.find({lookUpCode: this.lookUpCode,inactive:{$ne:true}}, {
                 sort: {
                     sortOrder: 1,
                     displayName: 1
