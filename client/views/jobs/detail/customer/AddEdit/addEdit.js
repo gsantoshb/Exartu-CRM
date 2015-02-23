@@ -1,32 +1,32 @@
-var customer = null,
+var client = null,
   value, entityId, callback;
 
-Template.jobCustomerAddEdit.created = function () {
+Template.jobClientAddEdit.created = function () {
   entityId = this.data[0];
   value = this.data[1];
   callback = this.data[2];
 };
-Template.jobCustomerAddEdit.helpers({
+Template.jobClientAddEdit.helpers({
   addOrEdit: function () {
     return value ? 'edit' : 'add';
   }
 });
-Template.jobCustomerAddEdit.events({
+Template.jobClientAddEdit.events({
   'click .add': function () {
-    //var customer = self.customer();
-    if (customer === undefined) {
-      customer = null;
+    //var client = self.client();
+    if (client === undefined) {
+      client = null;
     }
 
-    Meteor.call('setJobCustomer', entityId, customer, function (err, result) {
+    Meteor.call('setJobClient', entityId, client, function (err, result) {
       if (!err) {
-        // Set as last customer used
-        Meteor.call('setLastUsed', Enums.lastUsedType.customer, customer);
+        // Set as last client used
+        Meteor.call('setLastUsed', Enums.lastUsedType.client, client);
 
         Utils.dismissModal();
 
         if (callback && _.isFunction(callback)) {
-          callback(customer);
+          callback(client);
         }
       } else {
         console.dir(err);
@@ -35,24 +35,24 @@ Template.jobCustomerAddEdit.events({
   }
 });
 
-Template.jobCustomerAddEdit.getCustomer = function () {
+Template.jobClientAddEdit.getClient = function () {
   return function (string) {
     var self = this;
 
     if (_.isEmpty(string)) {
-      // Get last five customer used
-      Meteor.call('getLastUsed', Enums.lastUsedType.customer, function (err, result) {
+      // Get last five client used
+      Meteor.call('getLastUsed', Enums.lastUsedType.client, function (err, result) {
         if (err)
           return console.log(err);
 
 
-        self.ready(_.map(result, function (customer) {
-            return { id: customer._id, text: customer.organization.organizationName };
+        self.ready(_.map(result, function (client) {
+            return { id: client._id, text: client.organization.organizationName };
           })
         );
       });
     } else {
-      Meteor.call('findCustomer', string, function (err, result) {
+      Meteor.call('findClient', string, function (err, result) {
         if (err)
           return console.log(err);
 
@@ -65,9 +65,9 @@ Template.jobCustomerAddEdit.getCustomer = function () {
   };
 };
 
-Template.jobCustomerAddEdit.customerChanged = function () {
+Template.jobClientAddEdit.clientChanged = function () {
 
   return function (value) {
-    customer = value;
+    client = value;
   }
 }

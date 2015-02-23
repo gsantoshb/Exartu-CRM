@@ -2,9 +2,9 @@ Contactables = new Meteor.Collection("contactables", {
   transform: function (contactable) {
     Utils.extendContactableDisplayName(contactable);
 
-    if (contactable.Contact && contactable.Contact.customer) {
-      var customer = Contactables.findOne({_id: contactable.Contact.customer });
-      contactable.Contact.customerName = customer && customer.displayName;
+    if (contactable.Contact && contactable.Contact.client) {
+      var client = Contactables.findOne({_id: contactable.Contact.client });
+      contactable.Contact.clientName = client && client.displayName;
     }
 
     return contactable;
@@ -15,9 +15,9 @@ AuxContactables = new Meteor.Collection("auxContactables", {
   transform: function (contactable) {
     Utils.extendContactableDisplayName(contactable);
 
-    if (contactable.Contact && contactable.Contact.customer) {
-      var customer = Contactables.findOne({_id: contactable.Contact.customer });
-      contactable.Contact.customerName = customer && customer.displayName;
+    if (contactable.Contact && contactable.Contact.client) {
+      var client = Contactables.findOne({_id: contactable.Contact.client });
+      contactable.Contact.clientName = client && client.displayName;
     }
 
     if (contactable.location)
@@ -27,7 +27,7 @@ AuxContactables = new Meteor.Collection("auxContactables", {
   }
 });
 
-AllCustomers  = new Meteor.Collection('allCustomers', {
+AllClients  = new Meteor.Collection('allClients', {
   transform: function (contactable) {
     Utils.extendContactableDisplayName(contactable);
     return contactable;

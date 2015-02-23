@@ -69,11 +69,7 @@ Template.user.events({
         var newHierRoles= _.reject(currHierRoles,function(el) { el.hierId==user.currentHierId});
         var currRoles=currHierRoles.roleIds;
         currRoles.splice(currRoles.indexOf(this._id), 1);
-        //
-        //var newRoles = _.reject(currRoles,function (el) {
-        //    console.log('el',el,this._id,'currRoles',currRoles);
-        //    return !( el == this._id)
-        //});
+
         newHierRoles.push({hierId:user.currentHierId,roleIds:currRoles});
         Meteor.users.update({_id: Session.get('entityId')}, {$set: {hierRoles: newHierRoles}}, function (err) {
         });

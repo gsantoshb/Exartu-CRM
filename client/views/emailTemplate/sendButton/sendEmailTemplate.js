@@ -43,10 +43,10 @@ Template.sendEmailTemplateModal.helpers({
   objTypeQuery: function () {
     var mf = this;
     switch (mf.objType){
-      case 'Customer':
+      case 'Client':
         return function (string) {
           var self = this;
-          return Meteor.call('findCustomer', string, function (err, result) {
+          return Meteor.call('findClient', string, function (err, result) {
             if (err)
               return console.log(err);
             self.ready(_.map(result, function (r) {

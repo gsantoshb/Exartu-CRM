@@ -5179,7 +5179,7 @@ li.unread {
     padding-bottom: 10px
 }
 
-.timeline .item-employee .type,.timeline .item-contact .type,.timeline .item-customer .type {
+.timeline .item-employee .type,.timeline .item-contact .type,.timeline .item-client .type {
     background: rgb(197, 203, 208)
 }
 

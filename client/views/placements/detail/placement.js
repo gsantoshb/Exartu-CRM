@@ -85,15 +85,15 @@ Template.placement.helpers({
     var job =  Jobs.findOne(this.job);
     return job && job.displayName;
   },
-  customerId: function () {
+  clientId: function () {
     var job =  Jobs.findOne(this.job);
-    var customer = job && Contactables.findOne(job.customer);
-    return customer && customer._id;
+    var client = job && Contactables.findOne(job.client);
+    return client && client._id;
   },
-  customerDisplayName: function () {
+  clientDisplayName: function () {
     var job =  Jobs.findOne(this.job);
-    var customer = job && Contactables.findOne(job.customer);
-    return customer && customer.displayName;
+    var client = job && Contactables.findOne(job.client);
+    return client && client.displayName;
   }
 });
 

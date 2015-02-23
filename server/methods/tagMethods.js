@@ -12,6 +12,10 @@ Meteor.methods({
     } catch(err) {
       throw new Meteor.Error(err.message);
     }
+  },
+  apiGetAllTags: function(tag){
+     return  Tags.find({ tags: { $regex: tag } }).fetch();
+
   }
 });
 

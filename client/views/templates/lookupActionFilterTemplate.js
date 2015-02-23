@@ -11,7 +11,6 @@ Template.lookupFilterActionTemplate.created = function () {
     }
 };
 Template.lookupFilterActionTemplate.getOptions = function () {
-    console.log('options sorted', LookUps.find({lookUpCode: this.lookUpCode}, {sort: {sortOrder: 1,displayName:1}}).fetch());
     return _.bind(function () {
 
         if (!this.options) {

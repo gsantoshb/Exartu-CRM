@@ -21,8 +21,8 @@ Jobs = new Meteor.Collection('jobs', {
 
 AllJobs = new Meteor.Collection('allJobs', {
   transform: function (job) {
-    var customer = AllContactables.findOne(job.customer);
-    job.displayName = job.publicJobTitle + '@' + customer.displayName;
+    var client = AllContactables.findOne(job.client);
+    job.displayName = job.publicJobTitle + '@' + client.displayName;
     return job;
   }
 });

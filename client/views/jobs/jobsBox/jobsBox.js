@@ -64,6 +64,7 @@ var setSortField = function(field) {
         selected.value = -1;
     }
     selectedSort.set(selected);
+	console.log(selected);
 };
 
 var loadqueryFromURL = function (params) {
@@ -174,7 +175,7 @@ Template.jobList.created = function () {
         var urlQuery = new URLQuery();
         if (Session.get('entityId'))
         {
-            searchQuery.customer=Session.get('entityId');
+            searchQuery.client=Session.get('entityId');
         };
 
         selectedSortDep.depend();
@@ -278,14 +279,14 @@ Template.jobList.created = function () {
 
             urlQuery.addParam('search', query.searchString.value);
 
-            // Search customer using search string in server side and return customers' ids
+            // Search client using search string in server side and return clients' ids
             // TODO: find another way to do this kind of search to avoid nested calls
-            Meteor.call('findCustomer', query.searchString.value, function (err, result) {
+            Meteor.call('findClient', query.searchString.value, function (err, result) {
                 if (!err)
                     stringSearches.push({
-                        customer: {
-                            $in: _.map(result, function (customer) {
-                                return customer._id;
+                        client: {
+                            $in: _.map(result, function (client) {
+                                return client._id;
                             })
                         }
                     });
@@ -298,13 +299,12 @@ Template.jobList.created = function () {
             });
         }
         else {
-            SubscriptionHandlers.JobHandler._isLoading.value = false;
             if (searchQuery.$and.length == 0)
                 delete searchQuery.$and;
             if (selectedSort) {
                 JobHandler.setOptions(options);
             }
-            JobHandler.setFilter(searchQuery,options);
+            JobHandler.setFilter(searchQuery);
         }
         // Set url query
         urlQuery.apply();
@@ -442,9 +442,9 @@ Template.jobListItem.helpers({
         var employee = Contactables.findOne(this.employee);
         return employee ? employee.displayName : 'Employee information not found!';
     },
-    customerName: function () {
-        var customer = Contactables.findOne(this.customer);
-        return customer && customer.displayName;
+    clientName: function () {
+        var client = Contactables.findOne(this.client);
+        return client && client.displayName;
     },
     countPlacements: function () {
         return Placements.find({job: this._id}).count();
@@ -459,14 +459,14 @@ Template.jobListItem.helpers({
 
 // Job Information - Helpers
 Template.jobInformation.helpers({
-    customerName: function () {
-        var customer = Contactables.findOne(this.customer);
-        return customer && customer.displayName;
+    clientName: function () {
+        var client = Contactables.findOne(this.client);
+        return client && client.displayName;
     },
 
     departmentName: function () {
-        var customer = Contactables.findOne(this.customer);
-        if (customer && customer.Customer) return customer.Customer.department;
+        var client = Contactables.findOne(this.client);
+        if (client && client.Client) return client.Client.department;
     }
 });
 
@@ -504,5 +504,6 @@ Template.jobListSearch.events = {
 Template.jobListSort.events = {
     'click .sort-field': function () {
         setSortField(this);
+		console.log(JobHandler.isLoading());
     }
 };

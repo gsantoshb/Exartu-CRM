@@ -1,7 +1,7 @@
 /*
  * Add to system hierarchy the basic obj types
  * 	objGroupType Contactable contains:
- *    - objType Customer
+ *    - objType Client
  *    - objType Employee
  *    - objType Contact
  *  Job:
@@ -51,7 +51,7 @@ newObjType({
 newObjType({
   objGroupType: Enums.objGroupType.contactable,
   parent: 'contactable',
-  name: 'Customer',
+  name: 'Client',
   style: {
     icon: 'build',
     color: 'aqua'
@@ -70,10 +70,20 @@ newObjType({
       displayName: 'Status',
       fieldType: 'lookUp',
       lookUpName: 'status',
-      lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode,
+      lookUpCode: Enums.lookUpTypes.client.status.lookUpCode,
       defaultValue: null,
       showInAdd: false,
       required: false
+    },
+    {
+        name: 'lostReason',
+        displayName: 'Lost Reason',
+        fieldType: 'lookUp',
+        lookUpName: 'lostReason',
+        lookUpCode: Enums.lookUpTypes.client.lostReason.lookUpCode,
+        defaultValue: null,
+        showInAdd: false,
+        required: false
     },
     {
       name: 'workerCompCode',

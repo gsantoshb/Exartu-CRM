@@ -2,20 +2,20 @@
 var contactable = null;
 var JobHandler;
 
-Template.customerJobs.created = function () {
+Template.clientJobs.created = function () {
   if (!SubscriptionHandlers.JobHandler){
-    SubscriptionHandlers.JobHandler = Meteor.paginatedSubscribe('jobs', {filter: {customer: Session.get('entityId')}});
+    SubscriptionHandlers.JobHandler = Meteor.paginatedSubscribe('jobs', {filter: {client: Session.get('entityId')}});
   }else{
-    SubscriptionHandlers.JobHandler.setFilter({customer: Session.get('entityId')});
+    SubscriptionHandlers.JobHandler.setFilter({client: Session.get('entityId')});
 
   }
   JobHandler = SubscriptionHandlers.JobHandler;
 };
 
-Template.customerJobs.helpers({
-  isCustomer: function(){
+Template.clientJobs.helpers({
+  isClient: function(){
     contactable= Contactables.findOne({_id: Session.get('entityId')});
-    return !! contactable.Customer;
+    return !! contactable.Client;
   },
   jobs: function(){
     return Jobs.find();
@@ -26,9 +26,9 @@ Template.customerJobs.helpers({
   }
 });
 
-Template.customerJobs.events({
+Template.clientJobs.events({
   'click .addJob': function(e){
-    Session.set('addOptions', { customer: contactable._id });
+    Session.set('addOptions', { client: contactable._id });
     Router.go('/jobAdd/Temporary');
     e.preventDefault();
   }

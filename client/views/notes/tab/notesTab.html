@@ -63,7 +63,7 @@
     <div class="record-list-pagination">
         {{> fastPagination name="notes"}}
     </div>
-    <ul class="">
+
         {{#if isLoading}}
             <div style="min-height: 350px; background: url('/img/spinner.gif') no-repeat center;"></div>
         {{else}}
@@ -71,7 +71,7 @@
                 {{> notesTabItem}}
             {{/each}}
         {{/if}}
-    </ul>
+
 </template>
 
 <template name="notesTabItem">

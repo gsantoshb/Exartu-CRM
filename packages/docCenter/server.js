@@ -53,6 +53,7 @@ _.extend(DocCenter,{
         console.error(err);
         cb(err);
       }else {
+        console.log('response', response);
         Accounts.insert({
           _id: hierId,
           userName: docCenterUser.UserName,

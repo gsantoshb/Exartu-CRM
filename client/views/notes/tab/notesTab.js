@@ -56,8 +56,8 @@ AutoForm.hooks({
                 }];
 
                 var c = Contactables.findOne({_id: Session.get('entityId')});
-                if (c && c.Contact && c.Contact.customer) {
-                    initialLink.push({id: c.Contact.customer, type: Enums.linkTypes.contactable.value})
+                if (c && c.Contact && c.Contact.client) {
+                    initialLink.push({id: c.Contact.client, type: Enums.linkTypes.contactable.value})
                 }
                 ;
                 doc.links = doc.links || initialLink;

@@ -72,7 +72,7 @@ var getPlacementStatuses = function (type, action) {
 };
 
 var job;
-var customer;
+var client;
 var originalJob;
 Template.job.helpers({
     job: function () {
@@ -98,9 +98,9 @@ Template.job.helpers({
     jobCollection: function () {
         return jobCollections;
     },
-    getCustomer: function () {
+    getClient: function () {
         var j = jobCollections.findOne({_id: Session.get('entityId')});
-        return j && j.customer;
+        return j && j.client;
     },
     noteCount: function () {
         return Notes.find({links: {$elemMatch: {id: Session.get('entityId')}}}).count();
@@ -131,13 +131,13 @@ Template.job.helpers({
 
         return Contactables.findOne(placementsAssignment.employee);
     },
-    customerName: function () {
-        customer = Contactables.findOne(this.customer);
+    clientName: function () {
+        client = Contactables.findOne(this.client);
         if (originalJob) {
-            Session.set('jobDisplayName', originalJob.displayName + ' ' + customer.displayName);
+            Session.set('jobDisplayName', originalJob.displayName + ' ' + client.displayName);
         }
         ;
-        return customer && customer.displayName;
+        return client && client.displayName;
     },
     currentTemplate: function () {
         var selected = _.findWhere(tabs, {id: Session.get('activeTab')});
@@ -154,11 +154,11 @@ Template.job_details.helpers({
             Meteor.call('setJobAddress', Session.get('entityId'), newAddress);
         }
     },
-    getCustomer: function () {
+    getClient: function () {
         //todo: find another way to do this
-        return Template.parentData(1).__helpers[" originalJob"]().customer;
+        return Template.parentData(1).__helpers[" originalJob"]().client;
     },
-    customerCollection: function () {
+    clientCollection: function () {
         return Contactables;
     }
 });

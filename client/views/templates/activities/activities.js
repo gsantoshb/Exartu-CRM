@@ -45,8 +45,8 @@ Template.newPlacementActivity.helpers({
     employee: function () {
         return Contactables.findOne(this.data.employee);
     },
-    customer: function (customerId) {
-        return Contactables.findOne(customerId);
+    client: function (clientId) {
+        return Contactables.findOne(clientId);
     }
 });
 
@@ -64,8 +64,8 @@ Template.newFileActivity.helpers({
 });
 
 Template.newJobActivity.helpers({
-    customer: function () {
-        return Contactables.findOne(this.data.customerId);
+    client: function () {
+        return Contactables.findOne(this.data.clientId);
 
     }
 });

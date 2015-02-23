@@ -124,18 +124,18 @@ Template.relInput.rendered = function () {
 };
 
 Template.relInput.helpers({
-    getCustomer: function () {
+    getClient: function () {
         return function (string) {
             var self = this;
 
             //todo: calculate method
-            Meteor.call('findCustomer', string, function (err, result) {
+            Meteor.call('findClient', string, function (err, result) {
                 if (err)
                     return console.log(err);
 
                 self.ready(_.map(result, function (r) {
                         var text = r.organization.organizationName;
-                        if (r.Customer) text = text + '/' + r.Customer.department;
+                        if (r.Client) text = text + '/' + r.Client.department;
                         text = text + '/' + r._id;
                         return {id: r._id, text: text};
                     })
@@ -143,7 +143,7 @@ Template.relInput.helpers({
             });
         };
     },
-    customerChanged: function () {
+    clientChanged: function () {
         var self = this;
         return function (value) {
             self.value = value;
@@ -152,14 +152,14 @@ Template.relInput.helpers({
     defaultValue: function () {
         var self = this;
         return function (cb) {
-            // Check for preset customer value
-            var customer = Contactables.findOne({_id: self.value});
+            // Check for preset client value
+            var client = Contactables.findOne({_id: self.value});
 
-            if (customer) {
-                cb(null, {id: customer._id, text: customer.organization.organizationName});
+            if (client) {
+                cb(null, {id: client._id, text: client.organization.organizationName});
             } else {
-                // Try to get the last customer used
-                Meteor.call('getLastCustomer', function (err, result) {
+                // Try to get the last client used
+                Meteor.call('getLastClient', function (err, result) {
                     if (!err) {
                         if (result && result._id && result.organization)
                             cb(null, {id: result._id, text: result.organization.organizationName});

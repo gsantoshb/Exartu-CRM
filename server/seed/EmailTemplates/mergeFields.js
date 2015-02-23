@@ -5,10 +5,10 @@ var mergeFields=[{
   objType: 'Employee',
   testValue: 'John'
 },{
-  name: 'customerOrganizationName',
-  displayName: 'Customer.organizationName',
+  name: 'clientOrganizationName',
+  displayName: 'Client.organizationName',
   path: 'organization.organizationName',
-  objType: 'Customer',
+  objType: 'Client',
   testValue: 'Super Company'
 },{
   name: 'employeeLocation',

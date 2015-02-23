@@ -17,9 +17,9 @@ Meteor.methods({
       }
     }, { fields: { 'publicJobTitle': 1 } })).fetch();
   },
-  getJobs: function(customerId) {
+  getJobs: function(clientId) {
     try {
-      return JobManager.getJobs(customerId);
+      return JobManager.getJobs(clientId);
     } catch(err) {
       throw new Meteor.Error(err.message);
     }
@@ -55,8 +55,8 @@ Meteor.methods({
     }
   },
 
-  // Customer
-  setJobCustomer: function (jobId, customerId) {
-    return JobManager.setCustomer(jobId, customerId);
+  // Client
+  setJobClient: function (jobId, clientId) {
+    return JobManager.setClient(jobId, clientId);
   }
 });

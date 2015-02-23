@@ -1,7 +1,7 @@
 JobManager = {
   create: function(job) {
     // Validation
-    if (! job.customer) { throw new Error('Customer is required'); }
+    if (! job.client) { throw new Error('Client is required'); }
     if (! job.jobTitle) { throw new Error('Job title is required'); }
 
     // Hack to keep both titles the same
@@ -16,7 +16,7 @@ JobManager = {
     if (job.hierId != Meteor.user().hierId)
       throw new Meteor.Error(500, 'User not allowed to copy the job');
 
-    var jobCopy = _.pick(job, 'objNameArray', 'customer', 'hierId', 'jobTitle', 'duration', 'numberRequired', 'publicJobTitle');
+    var jobCopy = _.pick(job, 'objNameArray', 'client', 'hierId', 'jobTitle', 'duration', 'numberRequired', 'publicJobTitle');
 
     // Default values
 
@@ -25,8 +25,8 @@ JobManager = {
     return ret;
   },
 
-  getJobs: function (customerId) {
-    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Jobs.find({ customer: customerId }, { sort: { 'dateCreated': -1 } })).fetch();
+  getJobs: function (clientId) {
+    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Jobs.find({ client: clientId }, { sort: { 'dateCreated': -1 } })).fetch();
   },
 
   // Job Lookups
@@ -61,8 +61,8 @@ JobManager = {
     return LookUps.find({ hierId: rootHier, lookUpCode: Enums.lookUpTypes.job.status.lookUpCode }).fetch();
   },
 
-  // Customer
-  setCustomer: function (jobId, customerId) {
+  // Client
+  setClient: function (jobId, clientId) {
     var userHierarchiesFilter = Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()));
 
     // Get job
@@ -72,17 +72,17 @@ JobManager = {
     if (! job)
       throw new Meteor.Error(404, 'Job with id ' +  jobId + ' not found');
 
-    // If customerId is defined then validate customer, if not set job's customer as null
-    if (customerId) {
-      // Get customer
-      var customer = Contactables.find({_id: customerId, Customer: {$exists: true}, $or: userHierarchiesFilter});
+    // If clientId is defined then validate client, if not set job's client as null
+    if (clientId) {
+      // Get client
+      var client = Contactables.find({_id: clientId, Client: {$exists: true}, $or: userHierarchiesFilter});
 
       // Check if it exists in user's hierarchies
-      if (customerId && ! customer)
-        throw new Meteor.Error(404, 'Customer with id ' +  customerId + ' not found');
+      if (clientId && ! client)
+        throw new Meteor.Error(404, 'Client with id ' +  clientId + ' not found');
     }
 
-    // Update job customer
-    Jobs.update({_id: jobId}, {$set: { customer: customerId}});
+    // Update job client
+    Jobs.update({_id: jobId}, {$set: { client: clientId}});
   }
 };

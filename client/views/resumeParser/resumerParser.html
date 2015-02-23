@@ -26,13 +26,13 @@
         {{#if addForm }}
             {{>addDocumentForm}}
         {{else}}
-            {{#dragAndDrop onDrop=uploadFile}}
+            {{#dragAndDropZone onDrop=uploadFile}}
                 <h3 class="lead">Drop resumes here</h3>
                 <p>or</p>
                 <br>
                 <span class="btn btn-default add-trigger"> Upload file </span>
                 <input style="visibility: hidden" id="add-file" type="file">
-            {{/dragAndDrop}}
+            {{/dragAndDropZone}}
         {{/if}}
     </div><!-- /#document -->
 </template>

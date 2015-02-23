@@ -68,11 +68,11 @@ UserManager = {
 
         EmailManager.sendEmail(email, 'Aïda - Email verification', html, true);
     },
-    setLastCustomerUsed: function (id) {
-        if (!Contactables.findOne({_id: id, Customer: {$exists: true}})) {
-            throw new Meteor.Error(400, 'Customer Not found')
+    setLastClientUsed: function (id) {
+        if (!Contactables.findOne({_id: id, Client: {$exists: true}})) {
+            throw new Meteor.Error(400, 'Client Not found')
         }
-        Meteor.users.update({_id: Meteor.userId()}, {$set: {lastCustomerUsed: id}});
+        Meteor.users.update({_id: Meteor.userId()}, {$set: {lastClientUsed: id}});
     },
     isUsernameAvailable: function (username) {
         return Meteor.users.findOne({username: username}) == null;
@@ -196,13 +196,13 @@ UserManager = {
         var user = Meteor.user();
 
         switch (type) {
-            case Enums.lastUsedType.customer:
-                if (!user.lastUsed || !user.lastUsed.customer)
+            case Enums.lastUsedType.client:
+                if (!user.lastUsed || !user.lastUsed.client)
                     return [];
-                return _.map(user.lastUsed.customer, function (customerId) {
+                return _.map(user.lastUsed.client, function (clientId) {
                     return Contactables.findOne({
-                        objNameArray: 'Customer',
-                        _id: customerId,
+                        objNameArray: 'Client',
+                        _id: clientId,
                         $or: Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()))
                     });
                 });
@@ -224,8 +224,8 @@ UserManager = {
         };
 
         switch (type) {
-            case Enums.lastUsedType.customer:
-                addNewLastUsedItem('customer', value);
+            case Enums.lastUsedType.client:
+                addNewLastUsedItem('client', value);
                 break;
             case Enums.lastUsedType.employee:
                 addNewLastUsedItem('employee', value);
@@ -246,7 +246,7 @@ UserManager = {
             if (!_.isEqual(oldList, newList)) {
                 if (!user.lastUsed)
                     update.$set.lastUsed = {
-                        customer: newList
+                        client: newList
                     };
                 else
                     update.$set['lastUsed.' + lastUsedField] = newList;
@@ -327,6 +327,7 @@ Accounts.onCreateUser(function (options, user) {
     user.hierId = hierId; //temp...need to remove user.hierId references from submodules first
     var hierRoleIds = (options.roles) ? options.roles: [];
     if (!options.currentHierId) // means account creation
+        if (RoleManager.getClientAdministratorRole()) // make sure this isn't system init in which case no roles yet
         hierRoleIds.push(RoleManager.getClientAdministratorRole()._id);
     user.hierRoles = [{hierId: hierId, roleIds: hierRoleIds}];
     Hierarchies.update({

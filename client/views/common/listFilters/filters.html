@@ -86,7 +86,7 @@
         </div>
 
         <div class="input-group" style="margin-bottom: 10px">
-            <input id="new-tag" type="text" class="form-control" placeholder="sales, javascript, RN ...">
+            {{>asyncSelect query=getTags placeholder="Search client" onChange=tagsChanged width='100%'}}
             <span class="input-group-btn">
               <button class="add-tag btn btn-default" type="button"><span class="fa fa-plus"></span></button>
             </span>

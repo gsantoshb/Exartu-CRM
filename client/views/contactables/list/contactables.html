@@ -211,8 +211,8 @@
             {{#if isSelectedType 'Contact'}}
                 {{> filter_lookUp title="Process status" code=12 lookUpValue=query.contactProcessStatus multi=true}}
             {{/if}}
-            {{#if isSelectedType 'Customer'}}
-                {{> filter_lookUp title="Process status" code=14 lookUpValue=query.customerProcessStatus multi=true}}
+            {{#if isSelectedType 'Client'}}
+                {{> filter_lookUp title="Process status" code=14 lookUpValue=query.clientProcessStatus multi=true}}
             {{/if}}
             {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}
 
@@ -314,11 +314,11 @@
             </div>
 
             <div class="list-item-cell network-list-item-title">
-                <div class="item-title {{#if Customer}}single{{/if}}{{#if getDepartment}}single{{/if}}"><a
+                <div class="item-title {{#if Client}}single{{/if}}{{#if getDepartment}}single{{/if}}"><a
                         href="/contactable/{{_id}}">{{displayName}}</a></div>
                 <div class="item-subtitle">
-                    {{#if Customer}}
-                        {{> customerInformation }}
+                    {{#if Client}}
+                        {{> clientInformation }}
                     {{/if}}
                     {{#if Contact}}
                         {{> contactInformation }}
@@ -350,7 +350,7 @@
                     {{/if}}
                 </div>
                 <div class="list-item-cell network-list-item-type">
-                    {{#if Customer}}Customer<br>{{/if}}{{#if Employee}}Employee<br>{{/if}}{{#if Contact}}Contact{{/if}}
+                    {{#if Client}}Client<br>{{/if}}{{#if Employee}}Employee<br>{{/if}}{{#if Contact}}Contact{{/if}}
                 </div>
                 <div class="list-item-cell network-list-item-status">
                     <span class="item-label">{{lookUpName getProcessStatus}}</span>
@@ -397,13 +397,13 @@
     {{/if}}
 </template>
 
-<template name="customerInformation"></template>
+<template name="clientInformation"></template>
 
 <template name="employeeInformation">
     {{#if placementInfo}}
         {{#with placementInfo}}
-            <a href="/job/{{job}}"><span class="info">{{jobTitle}}</span></a> {{#if customerName}} &#x2219; <a
-                href="/contactable/{{customer}}"> {{customerName}} </a> {{/if}}
+            <a href="/job/{{job}}"><span class="info">{{jobTitle}}</span></a> {{#if clientName}} &#x2219; <a
+                href="/contactable/{{client}}"> {{clientName}} </a> {{/if}}
         {{/with}}
     {{else}}
         {{#if person}}
@@ -416,9 +416,9 @@
 </template>
 
 <template name="contactInformation">
-    {{#if Contact.customer}}
-        <a href="/contactable/{{Contact.customer}}">
-            {{Contact.customerName}}
+    {{#if Contact.client}}
+        <a href="/contactable/{{Contact.client}}">
+            {{Contact.clientName}}
         </a>
     {{/if}}
 </template>

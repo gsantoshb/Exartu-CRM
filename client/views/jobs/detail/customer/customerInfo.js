@@ -1,12 +1,12 @@
 var collection;
-Template.jobCustomerInfo.helpers({
+Template.jobClientInfo.helpers({
   created: function () {
-    var customerId = this.data.customer;
-    Meteor.subscribe('singleContactable', customerId);
+    var clientId = this.data.client;
+    Meteor.subscribe('singleContactable', clientId);
     collection = this.data.collection;
   },
-  customer: function () {
-    return Contactables.findOne({_id: this.customer});
+  client: function () {
+    return Contactables.findOne({_id: this.client});
   },
   pictureUrl: function () {
     if (this.pictureFileId) {
@@ -20,9 +20,9 @@ Template.jobCustomerInfo.helpers({
   }
 });
 
-Template.jobCustomerInfo.events({
+Template.jobClientInfo.events({
   'click .addEdit': function (e, ctx) {
-    Utils.showModal('jobCustomerAddEdit', Session.get('entityId'), ctx.data.customer, function (customerId) {
+    Utils.showModal('jobClientAddEdit', Session.get('entityId'), ctx.data.client, function (clientId) {
     });
   }
 });
