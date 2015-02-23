@@ -1,26 +1,12 @@
-var tasksUser = [];
 var allTasks = [];
-var isLoading = new ReactiveVar();
 
-Template.taskCalendar.created = function(){
-    //isLoading.set(true);
-    //Meteor.call('apiGetAllTasks', function(error, result){
-    //   isLoading.set(false);
-    //    allTasks = result;
-    //   tasksUser = _.map(result, function(t){
-    //        return {title: t.msg, start: t.begin, end: t.end, description:""  }
-    //    })
-    //})
-};
 
 
 
 
 
 Template.taskCalendar.helpers({
-    isLoading: function () {
-        return isLoading.get();
-    },
+
     options: function() {
         return {
             id:'myCalendar',
@@ -49,11 +35,13 @@ Template.taskCalendar.helpers({
                 right:  'prev,today,next'
             },
             viewRender: function(view, element){
-               calendarDiv=$('#myCalendar');
+                //searching by class because id isn't working
+                var calendarDiv=$('.fc');
+
+
 
                Meteor.call('apiGetTasksBeetwen', view.intervalStart.toDate() , view.intervalEnd.toDate() , function(error, result){
                     console.log('result', result);
-                    isLoading.set(false);
                     allTasks = result;
                     _.each(result, function(t){
                          t = Utils.clasifyTags(t);
