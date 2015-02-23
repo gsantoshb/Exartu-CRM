@@ -204,6 +204,21 @@ _.extend(DocCenter,{
         cb(null, response.data);
       }
     });
+  }),
+
+  getUserToken: Meteor.wrapAsync(function (hierId, externalId, cb) {
+    var account = getAccount(hierId);
+    var self = this;
+
+    var api = new DocCenterApi(account);
+
+    api.get(self._docCenterUrl + '/api/Token?userId=' + externalId, function (err, response) {
+      if (err) {
+        console.error(err);
+      } else {
+        cb(null, response.data);
+      }
+    });
   })
 });
 
