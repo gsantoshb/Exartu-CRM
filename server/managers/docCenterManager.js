@@ -39,6 +39,27 @@ DocCenterManager = {
     Contactables.update(employeeId, { $set: { docCenter: result } });
 
   },
+
+  getUserDocuments: function(employeeId) {
+    // Validations
+    if (!employeeId) throw new Error('Employee ID is required');
+    var employee = Contactables.findOne({_id: employeeId});
+    if (!employee) throw new Error('Invalid employee ID');
+    if (!employee.docCenter) throw new Error('Employee does not have an HR Concourse account');
+
+    var future = new Future();
+
+    DocCenter.getDocumentInstances(employee.hierId, employee.docCenter.docCenterId, function (err, result) {
+      if (err) {
+        console.log(err);
+        future.throw(err);
+      } else {
+        future.return(result);
+      }
+    });
+
+    return future.wait();
+  },
   getUserToken: function (employeeId) {
     // Validations
     if (!employeeId) throw new Error('Employee ID is required');
