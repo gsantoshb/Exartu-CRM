@@ -52,12 +52,27 @@ Template.taskCalendar.helpers({
                calendarDiv=$('#myCalendar');
 
                Meteor.call('apiGetTasksBeetwen', view.intervalStart.toDate() , view.intervalEnd.toDate() , function(error, result){
-
+                    console.log('result', result);
                     isLoading.set(false);
                     allTasks = result;
                     _.each(result, function(t){
+                         t = Utils.clasifyTags(t);
+                         switch(t.state) {
+                             case Enums.taskState.future:
+                                 calendarDiv.fullCalendar( 'renderEvent',{title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future'  } );
+                                 break;
+                             case Enums.taskState.completed:
+                                 calendarDiv.fullCalendar( 'renderEvent',{title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-completed'  } );
+                                 break;
+                             case Enums.taskState.overDue:
+                                 calendarDiv.fullCalendar( 'renderEvent',{title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-overDue'  } );
+                                 break;
+                             case Enums.taskState.pending:
+                                 calendarDiv.fullCalendar( 'renderEvent',{title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-pending'  } );
+                                 break;
+                         }
 
-                           calendarDiv.fullCalendar( 'renderEvent',{title: t.msg, start: t.begin, end: t.end, description:""  } )
+
                     }
 
 
