@@ -137,9 +137,6 @@ Template.bootstrap3DatePicker.helpers({
 
 
 Template.showMore.helpers({
-  //created: function () {
-  //  this.data.hidden = new ReactiveVar(true);
-  //},
   isTooLong: function () {
     return this.limit < this.text.length;
   },
