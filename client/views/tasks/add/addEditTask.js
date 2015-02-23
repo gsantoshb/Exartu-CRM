@@ -45,8 +45,8 @@ var taskUpdate = function (cb) {
 var createTask = function (task) {
         if (task && task.links && task.links[0] && task.links.length==1) {
             var c = Contactables.findOne({_id: task.links[0].id});
-            if (c && c.Contact && c.Contact.customer) {
-                task.links.push({id: c.Contact.customer, type: Enums.linkTypes.contactable.value})
+            if (c && c.Contact && c.Contact.client) {
+                task.links.push({id: c.Contact.client, type: Enums.linkTypes.contactable.value})
             };
         };
 

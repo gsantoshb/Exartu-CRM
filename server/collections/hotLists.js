@@ -3,16 +3,16 @@ HotListView = new View('hotLists', {
   collection: HotLists,
   cursors: function(hotList)
   {
-      // Customer
+      // Client
       this.publish({
           cursor: function (hotlist) {
               var members = (hotlist.members) ? hotlist.members : [];
               return Contactables.find({_id: {$in : members}});
           },
           to: 'contactables',
-          observedProperties: ['customer'],
+          observedProperties: ['client'],
           onChange: function (changedProps, oldSelector) {
-              oldSelector._id = changedProps.customer;
+              oldSelector._id = changedProps.client;
               return Contactables.find(oldSelector, {fields: flds});
           }
       });

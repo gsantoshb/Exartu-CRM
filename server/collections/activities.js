@@ -203,7 +203,7 @@ ActivityViews = new View('activities', {
             var placement = placementCursor.fetch()[0];
             var jobCursor = Jobs.find(placement.job);
             var job = jobCursor.fetch()[0];
-            var customerCursor = Contactables.find(job.customer);
+            var clientCursor = Contactables.find(job.client);
             var employeeCursor = Contactables.find(placement.employee);
 
             this.publish({
@@ -222,7 +222,7 @@ ActivityViews = new View('activities', {
 
             this.publish({
                 cursor: function () {
-                    return customerCursor;
+                    return clientCursor;
                 },
                 to: 'contactables'
             });
@@ -245,7 +245,7 @@ Meteor.paginatedPublish(ActivityViews, function () {
     publicationName: 'activities'
 });
 
-var mainTypes = ['Employee', 'Contact', 'Customer'];
+var mainTypes = ['Employee', 'Contact', 'Client'];
 
 // Contactable
 
@@ -302,9 +302,9 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
         propertiesTracker(doc, self.previous, changes, 'organization', organizationProperties);
     }
 
-    // Track changes in Customer, Contact and Employee fields
-    if (fieldNames.indexOf('Customer') != -1) {
-        var customerProperties = [
+    // Track changes in Client, Contact and Employee fields
+    if (fieldNames.indexOf('Client') != -1) {
+        var clientProperties = [
             {field: 'department', displayName: 'department'},
             {
                 field: 'status', displayName: 'status', displayValue: function (statusId) {
@@ -315,7 +315,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
             {field: 'workerCompCode', displayName: 'Comp code'}
         ];
 
-        propertiesTracker(doc, self.previous, changes, 'Customer', customerProperties);
+        propertiesTracker(doc, self.previous, changes, 'Client', clientProperties);
     }
 
     if (fieldNames.indexOf('Employee') != -1) {
@@ -335,12 +335,12 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
     if (fieldNames.indexOf('Contact') != -1) {
         var contactProperties = [
             {
-                field: 'customer', displayName: 'Customer', displayValue: function (customerId) {
-                var customer = Contactables.findOne(customerId);
-                if (customer.person)
-                    return customer.person.lastName + ', ' + customer.person.firstName + ' ' + customer.person.middleName;
-                if (customer.organization)
-                    return customer.organization.organizationName;
+                field: 'client', displayName: 'Client', displayValue: function (clientId) {
+                var client = Contactables.findOne(clientId);
+                if (client.person)
+                    return client.person.lastName + ', ' + client.person.firstName + ' ' + client.person.middleName;
+                if (client.organization)
+                    return client.organization.organizationName;
             }
             },
             {
@@ -453,20 +453,20 @@ Tasks.after.insert(function (userId, doc) {
 // Jobs
 
 Jobs.after.insert(function (userId, doc) {
-    var cust = Contactables.findOne(doc.customer);
-    var customerDisplayName;
-    if (cust && cust.organization) customerDisplayName = cust.organization.organizationName;
+    var cust = Contactables.findOne(doc.client);
+    var clientDisplayName;
+    if (cust && cust.organization) clientDisplayName = cust.organization.organizationName;
     var obj = {
         userId: userId,
         hierId: doc.hierId,
         type: Enums.activitiesType.jobAdd,
         entityId: doc._id,
-        links: [doc._id, doc.customer],
+        links: [doc._id, doc.client],
         data: {
             publicJobTitle: doc.publicJobTitle,
-            customerId: doc.customer,
+            clientId: doc.client,
             dateCreated: new Date(),
-            customerDisplayName: customerDisplayName
+            clientDisplayName: clientDisplayName
         }
     };
     if (doc && doc.testData) obj.testData = true;

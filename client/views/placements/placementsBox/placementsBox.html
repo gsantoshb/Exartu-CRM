@@ -191,7 +191,7 @@
             <div class="list-item-cell placements-list-item-title">
                 <div class="item-title"><a href="/placement/{{_id}}">{{employeeDisplayName}} <i
                         class="fa fa-long-arrow-right"></i> {{jobDisplayName}}
-                    <span class="item-title-more prefix-10">@ {{customerDisplayName}}</span></a>
+                    <span class="item-title-more prefix-10">@ {{clientDisplayName}}</span></a>
                     <span class="item-label prefix-10">{{lookUpName candidateStatus}}</span>
                     <span class="item-label">{{lookUpName activeStatus}}</span>
                 </div>
@@ -222,7 +222,7 @@
             <div class="list-item-cell placements-list-item-title">
                 <div class="item-title"><a href="/contactable/{{employee}}">{{employeeDisplayName}}</a> <i
                         class="fa fa-long-arrow-right"></i> <a href="/job/{{job}}">{{jobDisplayName}}</a></div>
-                <div class="item-subtitle"><a href="/contactable/{{customerId}}">{{customerDisplayName}}</a></div>
+                <div class="item-subtitle"><a href="/contactable/{{clientId}}">{{clientDisplayName}}</a></div>
                 <div class="item-subtitle-more">
                     {{> placementInformation}}
                 </div>
@@ -257,7 +257,7 @@
 <template name="placementInformation">
     <span>
         {{#if startDate}}
-            <i class="fa fa-calendar-o"></i>&nbsp;From
+            <i class="fa fa-calendar-o"></i>&nbsp;
             {{#formattedDate value=startDate}}
                 {{date}}
             {{/formattedDate}}
@@ -265,9 +265,9 @@
 
         {{#if endDate}}
             {{#unless startDate}}
-                <i class="fa fa-calendar-o"></i>&nbsp;Until
+                <i class="fa fa-calendar-o"></i>&nbsp;
             {{else}}
-                to &mdash;
+                &mdash;
             {{/unless}}
             {{#formattedDate value=endDate}}
                 {{date}}

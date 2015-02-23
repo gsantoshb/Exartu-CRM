@@ -1,4 +1,4 @@
-// Add House Account customer for old hierarchies
+// Add House Account client for old hierarchies
 Migrations.add({
   version: 5,
   up: function() {
@@ -17,13 +17,13 @@ Migrations.add({
     })
 
     console.log('updating jobs..')
-    Jobs.find({customer: null}).forEach(function(job){
+    Jobs.find({client: null}).forEach(function(job){
       var houseAccount= Contactables.findOne({
         hierId: job.hierId,
         houseAccount: true
       });
       if (houseAccount){
-        Jobs.update({ _id: job._id }, { $set: {customer: houseAccount._id}});
+        Jobs.update({ _id: job._id }, { $set: {client: houseAccount._id}});
       }
     })
 

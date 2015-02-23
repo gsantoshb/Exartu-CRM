@@ -3,6 +3,11 @@ Meteor.publish('singleContactable', function (id) {
     ContactablesList.publishCursor(Utils.filterCollectionByUserHier.call(this, ContactablesList.find({_id: id})), sub, 'contactables');
     sub.ready();
 });
+Meteor.publish('leaderBoardClients', function (activeid,statusids) {
+    var sub = this;
+    return Utils.filterCollectionByUserHier.call(this,
+            Contactables.find({Client: {$exists: true},activeStatus: activeid,'Client.status': {$in: statusids}}))
+});
 
 ContactablesList = new View('auxContactables', {
     collection: Contactables,
@@ -24,36 +29,36 @@ ContactablesList = new View('auxContactables', {
             }
         });
 
-        // Publish contact's customer
+        // Publish contact's client
         this.publish({
             cursor: function (contactable) {
-                if (contactable.Contact && contactable.Contact.customer) {
-                    return Contactables.find(contactable.Contact.customer, {fields: {'organization.organizationName': 1}});
+                if (contactable.Contact && contactable.Contact.client) {
+                    return Contactables.find(contactable.Contact.client, {fields: {'organization.organizationName': 1}});
                 }
             },
             to: 'contactables',
             observedProperties: ['Contact'],
             onChange: function (changedProps, oldSelector) {
-                if (changedProps.Contact.customer) {
-                    return Contactables.find(changedProps.Contact.customer, {fields: {'organization.organizationName': 1}});
+                if (changedProps.Contact.client) {
+                    return Contactables.find(changedProps.Contact.client, {fields: {'organization.organizationName': 1}});
                 }
             }
         });
 
-        // Publish customer's contacts
+        // Publish client's contacts
         this.publish({
             cursor: function (contactable) {
-                if (contactable.Customer) {
-                    return Contactables.find({'Contact.customer': contactable._id});
+                if (contactable.Client) {
+                    return Contactables.find({'Contact.client': contactable._id});
                 }
             },
             to: 'contactables'
         });
 
-        // Publish customer's jobs
+        // Publish client's jobs
         this.publish({
             cursor: function (contactable) {
-                return Jobs.find({customer: contactable._id});
+                return Jobs.find({client: contactable._id});
             },
             to: 'jobs'
         });
@@ -110,15 +115,15 @@ Meteor.paginatedPublish(ContactablesList, function () {
     }
 );
 
-Meteor.publish('allCustomers', function () {
+Meteor.publish('allClients', function () {
     var sub = this;
-    Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Contactables.find({Customer: {$exists: true}}, {
+    Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Contactables.find({Client: {$exists: true}}, {
         fields: {
             'organization.organizationName': 1,
-            'Customer.department': 1,
+            'Client.department': 1,
             houseAccount: 1
         }
-    })), sub, 'allCustomers');
+    })), sub, 'allClients');
     sub.ready();
 });
 Meteor.publish('allEmployees', function () {
@@ -140,7 +145,7 @@ Meteor.publish('allContactables', function () {
             'person.middleName': 1,
             'person.firstName': 1,
             'organization.organizationName': 1,
-            'Customer.department': 1
+            'Client.department': 1
         }
     })), sub, 'allContactables');
     sub.ready();
@@ -159,6 +164,8 @@ Contactables.allow({
 });
 
 // Hooks
+
+
 
 Contactables.before.insert(function (userId, doc) {
     try {
@@ -199,6 +206,10 @@ ContactablesFS.publish();
 Meteor.publish('contactablesFiles', function () {
     return ContactablesFiles.find();
 });
+ContactablesFiles.before.insert(function(userId,doc){
+    doc.dateCreated=Date.now();
+
+});
 ContactablesFiles.allow({
     remove: function (userId, file) {
         var user = Meteor.users.findOne({_id: userId});
@@ -230,7 +241,7 @@ Contactables._ensureIndex({hierId: 1});
 Contactables._ensureIndex({'dateCreated': 1});
 Contactables._ensureIndex({objNameArray: 1});
 Contactables._ensureIndex({'Employee.status': 1});
-Contactables._ensureIndex({'Customer.status': 1});
+Contactables._ensureIndex({'Client.status': 1});
 Contactables._ensureIndex({'Contact.status': 1});
 Contactables._ensureIndex({'activeStatus': 1});
 Contactables._ensureIndex({userId: 1})

@@ -111,7 +111,7 @@ _.forEach([
 		displayName: "Corporate Development and Training"
   },
   {
-		displayName: "Customer Training"
+		displayName: "Client Training"
   },
   {
 		displayName: "Early Childhood Care & Development"
@@ -427,7 +427,7 @@ _.forEach([
 		displayName: "Call Center"
   },
   {
-		displayName: "Customer Training"
+		displayName: "Client Training"
   },
   {
 		displayName: "Flight Attendant"
@@ -436,16 +436,16 @@ _.forEach([
 		displayName: "Hair Cutting/Styling"
   },
   {
-		displayName: "General/Other: Customer Support/Client Care"
+		displayName: "General/Other: Client Support/Client Care"
   },
   {
 		displayName: "Reservations/Ticketing"
   },
   {
-		displayName: "Retail Customer Service"
+		displayName: "Retail Client Service"
   },
   {
-		displayName: "Technical Customer Service"
+		displayName: "Technical Client Service"
   },
   {
 		displayName: "Computer/Electronics/Telecomm Install/Maintain/Repair"

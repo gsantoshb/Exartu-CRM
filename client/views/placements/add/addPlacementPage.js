@@ -65,7 +65,7 @@ Template.addPlacementPage.helpers({
             var self = this;
 
             if (_.isEmpty(string)) {
-                // Get last five customer used
+                // Get last five client used
                 Meteor.call('getLastUsed', Enums.lastUsedType.employee, function (err, result) {
                     if (err)
                         return console.log(err);

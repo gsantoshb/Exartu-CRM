@@ -24,6 +24,7 @@ Object.defineProperty(EditMode, "value", {
 
 var contactable = {};
 var hideTaxID = new ReactiveVar(true);
+var statusDep=new Deps.Dependency;
 
 Template.contactableDetailBox.helpers({
     created: function () {
@@ -52,10 +53,19 @@ Template.contactableDetailBox.helpers({
     fetchOptions: function () {
         return Utils.sortFetchOptions(this.options);
     },
+    lostClient: function () {
+        statusDep.depend();
+        if (contactable.status.value) {
+            var lkp = LookUps.findOne({_id: contactable.status.value});
+            if (lkp) return (_.contains(lkp.lookUpActions, Enums.lookUpAction.Client_Lost));
+        }
+        return false;
+    },
     onSelectedStatus: function () {
         return function (newStatus) {
             var ctx = Template.parentData(2);
             ctx.property._value = newStatus;
+            statusDep.changed();
         }
     },
     hideTaxID: function () {

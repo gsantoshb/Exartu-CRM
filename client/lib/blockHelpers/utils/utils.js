@@ -64,7 +64,7 @@ Template.fileProgress.progress = function() {
   return this.uploadProgress();
 };
 
-UI.registerHelper('dragAndDrop', function() {
+UI.registerHelper('dragAndDropZone', function() {
   return Template.dropzone_template;
 });
 
@@ -158,6 +158,13 @@ UI.registerHelper('displayUserName', function (id) {
   return isUnique ? localPart : user.emails[0].address;
 });
 
+UI.registerHelper('clientDepartmentName'), function (client)
+{
+    var result=client.displayName;
+    if (client.Client && client.Client.department)
+    if (client.Client.department !='Primary') result=result + ' ' + client.Client.department;
+    return result;
+}
 // User name display
 UI.registerHelper('displaySearchKey', function (id) {
   return ((id)? id: '').substr(0,4);

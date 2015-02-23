@@ -1,31 +1,31 @@
-var customer = null,
+var client = null,
   value, entityId, callback;
 
-Template.contactCustomerAddEdit.created = function () {
+Template.contactClientAddEdit.created = function () {
   entityId = this.data[0];
   value = this.data[1];
   callback = this.data[2];
 };
-Template.contactCustomerAddEdit.helpers({
+Template.contactClientAddEdit.helpers({
   addOrEdit: function () {
     return value ? 'edit' : 'add';
   }
 });
 
-Template.contactCustomerAddEdit.events({
+Template.contactClientAddEdit.events({
   'click .add': function () {
-    //var customer = self.customer();
-    if (customer === undefined) {
-      customer = null;
+    //var client = self.client();
+    if (client === undefined) {
+      client = null;
     }
 
-    Meteor.call('setContactCustomer', entityId, customer, function (err, result) {
+    Meteor.call('setContactClient', entityId, client, function (err, result) {
       if (!err) {
-        // Set as last customer used
+        // Set as last client used
         Utils.dismissModal();
 
         if (callback && _.isFunction(callback)) {
-          callback(customer);
+          callback(client);
         }
       } else {
         console.dir(err);
@@ -34,11 +34,11 @@ Template.contactCustomerAddEdit.events({
   }
 });
 
-Template.contactCustomerAddEdit.getCustomer = function () {
+Template.contactClientAddEdit.getClient = function () {
   return function (string) {
     var self = this;
 
-    Meteor.call('findCustomer', string, function (err, result) {
+    Meteor.call('findClient', string, function (err, result) {
       if (err)
         return console.log(err);
 
@@ -50,8 +50,8 @@ Template.contactCustomerAddEdit.getCustomer = function () {
   };
 };
 
-Template.contactCustomerAddEdit.customerChanged = function () {
+Template.contactClientAddEdit.clientChanged = function () {
   return function (value) {
-    customer = value;
+    client = value;
   }
 };

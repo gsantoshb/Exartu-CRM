@@ -14,8 +14,8 @@ Meteor.methods({
   updateEmailVerification: function(email) {
     UserManager.updateEmailVerification(email);
   },
-  setLastCustomerUsed: function(id){
-    UserManager.setLastCustomerUsed(id);
+  setLastClientUsed: function(id){
+    UserManager.setLastClientUsed(id);
   },
   isUsernameAvailable: function (userName) {
     return UserManager.isUsernameAvailable(userName);

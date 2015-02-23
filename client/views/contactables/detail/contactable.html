@@ -64,20 +64,20 @@
                 {{/if}}
             {{/if}}
 
-            {{#if Contact.customerName}}
+            {{#if Contact.clientName}}
                 <!--<br>-->
                 <small>
-                    <a href="/contactable/{{Contact.customer}}">
+                    <a href="/contactable/{{Contact.client}}">
                         <strong class="text text-muted" style="font-size: 25px; color: #A29E9E">
-                            {{Contact.customerName}}
+                            {{Contact.clientName}}
                             <i class="fa fa-external-link" style="font-size: 14px"></i>
                         </strong>
                     </a>
                 </small>
             {{/if}}
 
-            {{#if Customer.department}}
-                <small>{{Customer.department}}</small>
+            {{#if Client.department}}
+                <small>{{Client.department}}</small>
             {{/if}}
         </strong>
         <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
@@ -142,7 +142,7 @@
             {{> contactableContactMethodsBox}}
 
             {{#if Contact}}
-                {{> contactCustomerInfo customer=Contact.customer path='Contact.customer' collection=collection}}
+                {{> contactClientInfo client=Contact.client path='Contact.client' collection=collection}}
             {{/if}}
         </div>
         <div class="col-md-6">

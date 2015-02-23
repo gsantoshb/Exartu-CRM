@@ -31,18 +31,18 @@ Migrations.add({
       }
     })
 
-    console.log('updating customers');
+    console.log('updating clients');
     Contactables.find({
-      Customer:{$exists: true},
+      Client:{$exists: true},
       $or: [{
-      'Customer.status': {$exists: false}
+      'Client.status': {$exists: false}
     },{
-      'Customer.status': null
+      'Client.status': null
     }]}).forEach(function(doc, index, cursor){
-      var lookUp = LookUps.findOne({lookUpCode: Enums.lookUpTypes.customer.status.lookUpCode, isDefault: true, hierId: doc.hierId});
+      var lookUp = LookUps.findOne({lookUpCode: Enums.lookUpTypes.client.status.lookUpCode, isDefault: true, hierId: doc.hierId});
       if (lookUp){
-        console.log('updating customer ' + doc._id + ' with status ' + lookUp._id);
-        return Contactables.direct.update({_id: doc._id},{ $set: { 'Customer.status': lookUp._id } }, {});
+        console.log('updating client ' + doc._id + ' with status ' + lookUp._id);
+        return Contactables.direct.update({_id: doc._id},{ $set: { 'Client.status': lookUp._id } }, {});
       }
     })
 

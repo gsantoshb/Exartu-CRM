@@ -1,6 +1,5 @@
 AddressManager = {
     addEditAddress: function (addr) {
-        console.log('addr',addr);
         // Validation
         if (!addr) {
             throw new Error('Address information is required');

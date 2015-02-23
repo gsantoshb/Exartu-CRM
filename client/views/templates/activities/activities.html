@@ -51,7 +51,7 @@
             </td>
         </tr>
     {{else}}
-        <div class="item item-customer">
+        <div class="item item-client">
             <div class="item-info">
                 {{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}
                 <div class="type">
@@ -196,9 +196,9 @@
                     <strong>{{data.publicJobTitle}}</strong>
                 </a>
 
-                {{#if data.customerDisplayName}}
+                {{#if data.clientDisplayName}}
                     <i class="fa fa-long-arrow-right"></i>
-                    <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
+                    <a href="/contactable/{{data.clientId}}">{{data.clientDisplayName}}</a>
                 {{/if}}
 
 
@@ -226,9 +226,9 @@
                             <a href="/job/{{entityId}}">
                                 <strong>{{data.publicJobTitle}}</strong>
                             </a>
-                            {{#if data.customerDisplayName}}
+                            {{#if data.clientDisplayName}}
                                 <i class="fa fa-long-arrow-right"></i>
-                                <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
+                                <a href="/contactable/{{data.clientId}}">{{data.clientDisplayName}}</a>
                             {{/if}}
                         </h4>
 
@@ -257,9 +257,9 @@
                     <strong>{{data.publicJobTitle}}</strong>
                 </a>
 
-                {{#if data.customerDisplayName}}
+                {{#if data.clientDisplayName}}
                     <i class="fa fa-long-arrow-right"></i>
-                    <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
+                    <a href="/contactable/{{data.clientId}}">{{data.clientDisplayName}}</a>
                 {{/if}}
 
 
@@ -284,9 +284,9 @@
                             <a href="/job/{{entityId}}">
                                 <strong>{{data.publicJobTitle}}</strong>
                             </a>
-                            {{#if data.customerDisplayName}}
+                            {{#if data.clientDisplayName}}
                                 <i class="fa fa-long-arrow-right"></i>
-                                <a href="/contactable/{{data.customerId}}">{{data.customerDisplayName}}</a>
+                                <a href="/contactable/{{data.clientId}}">{{data.clientDisplayName}}</a>
                             {{/if}}
                         </h4>
 
@@ -405,7 +405,7 @@
                     -
                     <strong>{{job.displayName}}</strong>
                     @
-                    {{#with customer job.customer}}
+                    {{#with client job.client}}
                         <strong>{{displayName}} </strong>
                     {{/with}}
                 </a>
@@ -431,7 +431,7 @@
                                 -
                                 <strong> {{job.displayName}} </strong>
                                 @
-                                {{#with customer job.customer}}
+                                {{#with client job.client}}
                                     <strong> {{displayName}} </strong>
                                 {{/with}}
                             </a>

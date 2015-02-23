@@ -4,7 +4,7 @@
             <a href="#" class="item-icon item-icon-notes editNote"><i class="icon icon-pencil-3"></i></a>
         </div>
         <div class="list-item-cell notes-list-item-title">
-            <div class="item-title"><a class="editNote" href="#">{{>showMore text=msg limit=60}}</a>
+            <div class="item-title">{{>showMore text=msg limit=100}}
                 {{#if sendAsSMS}}
                     <div class="text-muted">
                         {{#if isReply}}
@@ -20,7 +20,14 @@
                     </div>
                 {{/if}}
             </div>
-            <div class="item-subtitle text-gray">by <a href="#">{{displayUserName userId}}</a>&nbsp;&nbsp;
+            <div class="item-subtitle text-gray">
+                <a href="#">
+                    {{#if fromEmployee}}
+                        {{displayEmployeeName}}
+                    {{else}}
+                        {{displayUserName userId}}
+                    {{/if}}
+                </a>&nbsp;&nbsp;
                 {{#formattedDate value=dateCreated format='fromNow'}}
                     {{date}}
                 {{/formattedDate}}

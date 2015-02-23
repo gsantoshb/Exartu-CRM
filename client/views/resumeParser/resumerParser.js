@@ -56,7 +56,7 @@ Template.resumeAdd.uploadFile = function() {
 // List resumes
 
 Template.resumesList.resumes = function() {
-  return Resumes.find();
+  return Resumes.find({},{sort: {dateCreated: -1}});
 };
 
 Template.resumesList.completedInfo = function() {

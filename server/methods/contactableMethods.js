@@ -1,6 +1,15 @@
 var fs = Meteor.npmRequire('fs');
 
 Meteor.methods({
+    esSynchAll: function(q)
+    {
+        console.log('userissysadmin',RoleManager.bUserIsSystemAdmin());
+        if (RoleManager.bUserIsSystemAdmin())
+        {
+            // meaningless update to contactables to force es sync
+            Contactables.update(q,{$set: {zzz:1}},{multi:true})      ;
+        }
+    },
     addContactable: function (contactable) {
         return ContactableManager.create(contactable);
     },
@@ -22,6 +31,17 @@ Meteor.methods({
     // Notes
     addContactableNote: function (note) {
         ContactableManager.addNote(note);
+    },
+    addEmployeeNote: function (message, employeeId) {
+        // Validate data
+        check(message, String);
+        check(employeeId, String);
+
+        try {
+            return ContactableManager.addEmployeeNote(message, employeeId);
+        } catch (err) {
+            throw new Meteor.Error(err.message);
+        }
     },
 
     // Contact methods
@@ -81,13 +101,13 @@ Meteor.methods({
     deletePastJobRecord: function (contactableId, pastJobInfo) {
         ContactableManager.deletePastJobRecord(contactableId, pastJobInfo);
     },
-    findCustomer: function (query) {
+    findClient: function (query) {
         return Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Contactables.find({
             'organization.organizationName': {
                 $regex: '.*' + query + '.*',
                 $options: 'i'
             }
-        }, {fields: {'organization.organizationName': 1, 'Customer.department': 1}})).fetch();
+        }, {fields: {'organization.organizationName': 1, 'Client.department': 1}})).fetch();
     },
     findEmployee: function (query) {
         return Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Contactables.find({
@@ -104,10 +124,10 @@ Meteor.methods({
             }]
         }, {fields: {'person': 1}})).fetch();
     },
-    getLastCustomer: function () {
+    getLastClient: function () {
         var user = Meteor.user();
-        if (user.lastCustomerUsed) {
-            return Contactables.findOne({_id: user.lastCustomerUsed}, {fields: {'organization.organizationName': 1}});
+        if (user.lastClientUsed) {
+            return Contactables.findOne({_id: user.lastClientUsed}, {fields: {'organization.organizationName': 1}});
         } else {
             return null;
         }
@@ -124,9 +144,9 @@ Meteor.methods({
         return SMSManager.sendSMSToContactable(contactableId, from, to, text);
     },
 
-    // Customer relations
-    setContactCustomer: function (contactId, customerId) {
-        return ContactableManager.setCustomer(contactId, customerId);
+    // Client relations
+    setContactClient: function (contactId, clientId) {
+        return ContactableManager.setClient(contactId, clientId);
     }
 });
 

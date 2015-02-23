@@ -87,7 +87,7 @@
                         </tr>
                     {{/if}}
 
-                    {{#if Customer }}
+                    {{#if Client }}
                         <tr>
                             <td>Department</td>
                             <td>
@@ -125,6 +125,20 @@
                             {{/objectProperty}}
                         </td>
                     </tr>
+                    {{#if lostClient}}
+                        <tr>
+                            <td>Lost Reason</td>
+                            <td>
+                                    {{#objectProperty property=lostReason editable=editMode}}
+                                        {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                    {{else}}
+                                        <strong>
+                                            <strong>{{displayName}}</strong>
+                                        </strong>
+                                    {{/objectProperty}}
+                            </td>
+                        </tr>
+                    {{/if}}
                     <tr>
                         <td>Status note</td>
                         <td>
@@ -167,7 +181,7 @@
                             </td>
                         </tr>
                     {{/if}}
-                    {{#if Customer}}
+                    {{#if Client}}
                         <tr>
                             <td>WorkerComp</td>
                             <td>

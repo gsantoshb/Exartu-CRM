@@ -3,26 +3,26 @@ var ContactablesHandler;
 Template.contactableContactsBox.created = function () {
 
   if (!SubscriptionHandlers.ContactablesHandler){
-    SubscriptionHandlers.ContactablesHandler = Meteor.paginatedSubscribe('contactables',{ filter: { 'Contact.customer': this.data._id  } });
+    SubscriptionHandlers.ContactablesHandler = Meteor.paginatedSubscribe('contactables',{ filter: { 'Contact.client': this.data._id  } });
   }else{
-    SubscriptionHandlers.ContactablesHandler.setFilter({ filter: { 'Contact.customer': this.data._id  } });
+    SubscriptionHandlers.ContactablesHandler.setFilter({ filter: { 'Contact.client': this.data._id  } });
   }
   ContactablesHandler = SubscriptionHandlers.ContactablesHandler;
 };
 
 Template.contactableContactsBox.helpers({
   hasContacts: function () {
-    return _.isObject(this.Customer);
+    return _.isObject(this.Client);
   },
 
   contacts: function () {
-    return Contactables.find({'Contact.customer': this._id});
+    return Contactables.find({'Contact.client': this._id});
   }
 });
 
 Template.contactableContactsBox.events = {
   'click .addContact': function () {
-    Session.set('options', {Contact: {customer: Session.get('entityId')}});
+    Session.set('options', {Contact: {client: Session.get('entityId')}});
     Router.go('/contactableAdd/Contact');
 
   }

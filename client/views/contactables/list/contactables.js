@@ -159,12 +159,12 @@ ContactablesController = RouteController.extend({
             employeeProcessStatusQuery.default = [];
         }
         ;
-        var customerProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
-        if (params.customerProcessStatus) {
-            customerProcessStatusQuery.default = params.customerProcessStatus.split(',');
+        var clientProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
+        if (params.clientProcessStatus) {
+            clientProcessStatusQuery.default = params.clientProcessStatus.split(',');
         }
         else {
-            customerProcessStatusQuery.default = [];
+            clientProcessStatusQuery.default = [];
         }
         ;
         var contactProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
@@ -194,7 +194,7 @@ ContactablesController = RouteController.extend({
                 tags: tagsQuery,
                 location: locationQuery,
                 employeeProcessStatus: employeeProcessStatusQuery,
-                customerProcessStatus: customerProcessStatusQuery,
+                clientProcessStatus: clientProcessStatusQuery,
                 contactProcessStatus: contactProcessStatusQuery,
                 activeStatus: activeStatusQuery,
                 taxId: taxIdQuery
@@ -209,7 +209,7 @@ ContactablesController = RouteController.extend({
     },
     onAfterAction: function () {
         var title = 'Network',
-            description = 'Your contacts, employees and customers';
+            description = 'Your contacts, employees and clients';
         SEO.set({
             title: title,
             meta: {
@@ -328,10 +328,10 @@ Template.contactablesList.created = function () {
 
             urlQuery.addParam('employeeProcessStatus', query.employeeProcessStatus.value);
         }
-        if (!_.isEmpty(query.customerProcessStatus.value)) {
-            searchQuery[query.objType.value + '.status'] = {$in: query.customerProcessStatus.value};
+        if (!_.isEmpty(query.clientProcessStatus.value)) {
+            searchQuery[query.objType.value + '.status'] = {$in: query.clientProcessStatus.value};
 
-            urlQuery.addParam('customerProcessStatus', query.customerProcessStatus.value);
+            urlQuery.addParam('clientProcessStatus', query.clientProcessStatus.value);
         }
         if (!_.isEmpty(query.contactProcessStatus.value)) {
             searchQuery[query.objType.value + '.status'] = {$in: query.contactProcessStatus.value};
@@ -345,7 +345,7 @@ Template.contactablesList.created = function () {
         }
         // Set url query
         urlQuery.apply();
-
+		isSearching = false;
         // Avoid update handler's filter when an Elasticsearch query will be performed
         if (query.searchString.value) return;
         if (selectedSort.get()) {
@@ -562,7 +562,7 @@ Template.contactablesFilters.helpers({
     selectedType: function (typeName) {
         if (query.objType.value == 'Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
         if (query.objType.value == 'Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
-        if (query.objType.value == 'Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
+        if (query.objType.value == 'Client') return Enums.lookUpTypes.client.status.lookUpCode;
         return null;
     },
     contactableTypes: contactableTypes
@@ -627,14 +627,14 @@ Template.contactablesListItem.helpers({
         return this.activeStatus;
     },
     getProcessStatus: function () {
-        if (this.Customer) return this.Customer.status;
+        if (this.Client) return this.Client.status;
         if (this.Employee) return this.Employee.status;
         if (this.Contact) return this.Contact.status;
         return null;
     },
     getDepartment: function () {
-        if (this.Customer && this.Customer.department) {
-            var dept = this.Customer.department;
+        if (this.Client && this.Client.department) {
+            var dept = this.Client.department;
             if (dept == 'Primary') return null;
             //dept=" - " + dept
         }
@@ -657,13 +657,13 @@ Template.employeeInformation.helpers({
             transform: null
         });
         if (!job) return placementInfo; // should only happen on hierarchy problem
-        var customer = Contactables.findOne({_id: job.customer}, {transform: null});
+        var client = Contactables.findOne({_id: job.client}, {transform: null});
 
         placementInfo.job = job._id;
         placementInfo.jobTitle = job.publicJobTitle;
-        if (customer) {
-            placementInfo.customerName = customer.organization.organizationName;
-            placementInfo.customer = customer._id;
+        if (client) {
+            placementInfo.clientName = client.organization.organizationName;
+            placementInfo.client = client._id;
         }
 
         return placementInfo;
@@ -694,7 +694,7 @@ Template.contactablesFilters.helpers({
         //query.processStatus.value=[];
         if (query.objType.value == 'Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
         if (query.objType.value == 'Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
-        if (query.objType.value == 'Customer') return Enums.lookUpTypes.customer.status.lookUpCode;
+        if (query.objType.value == 'Client') return Enums.lookUpTypes.client.status.lookUpCode;
         return null;
     },
     contactableTypes: contactableTypes

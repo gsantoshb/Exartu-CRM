@@ -5,7 +5,7 @@ Migrations.add({
 
     _.forEach(hierarchiesId, function (hierId) {
       var statusCodes = [
-        Enums.lookUpTypes.customer.status.lookUpCode,
+        Enums.lookUpTypes.client.status.lookUpCode,
         Enums.lookUpTypes.employee.status.lookUpCode,
         Enums.lookUpTypes.contact.status.lookUpCode,
         Enums.lookUpTypes.howHeardOf.type.lookUpCode,

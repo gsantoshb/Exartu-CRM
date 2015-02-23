@@ -3,6 +3,7 @@ Template.noteItem.helpers({
         return 'note-' + this.state + (this.inactive ? ' inactive' : '');
     },
     hasLinks: function () {
+        if (!this.links) return false;
         return this.links.length;
     },
     getHref: function () {
@@ -17,6 +18,16 @@ Template.noteItem.helpers({
     capMsglength: function () {
         var lastWord = this.msg.indexOf(' ', 299);
         return lastWord === -1 ? this.msg : this.msg.substring(0, lastWord) + '...';
+    },
+    fromEmployee: function () {
+        var e = Contactables.findOne({_id: Session.get('entityId')});
+        if (!e) return false;
+        var empUser= e.userId;
+        return empUser && empUser === this.userId;
+    },
+    displayEmployeeName: function () {
+        var emp = Contactables.findOne({_id: Session.get('entityId')});
+        return emp.displayName;
     }
 });
 

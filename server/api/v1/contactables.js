@@ -10,12 +10,12 @@ Router.map(function() {
 });
 
 Router.map(function() {
-	this.route('apiCustomer' + api_version, {
+	this.route('apiClient' + api_version, {
 		where: 'server',
-		path: '/api/' + api_version + '/customers/:id?',
+		path: '/api/' + api_version + '/clients/:id?',
 		action: function() {
-			console.log('API v' + api_version + '/customers ' + this.request.method);
-			contactablesAPIAction.call(this, 'Customer');
+			console.log('API v' + api_version + '/clients ' + this.request.method);
+			contactablesAPIAction.call(this, 'Client');
 		}
 	})
 });
@@ -111,7 +111,7 @@ var mapper = {
 		//
 		// api might be sending in faulty data such as a person with a blank or null last name so determine here
 		// whether it's a person or an organization based on its contactable type
-		// if it's a customer, assume organization
+		// if it's a client, assume organization
 		// set any blank fields for its type to 'NA'
 		if (type=='Employee' || type=='Contact') {
 			var personFields = ['firstName', 'lastName', 'middleName', 'jobTitle'];
@@ -177,15 +177,15 @@ var mapper = {
     //}
 
 		if (type == 'Contact') {
-			if (data.customerId)
-				contactable.customerId = data.customerId;
+			if (data.clientId)
+				contactable.clientId = data.clientId;
 		}
 
 		//department
-		if (type == 'Customer') {
+		if (type == 'Client') {
 			if (data.department){
-				contactable.Customer = contactable.Customer || {};
-				contactable.Customer.department = data.department;
+				contactable.Client = contactable.Client || {};
+				contactable.Client.department = data.department;
 			}
 		}
 
@@ -227,14 +227,14 @@ var mapper = {
 		}
 
 		if (type == 'Contact') {
-			if (data.customerId)
-				contactable.customerId = data.customerId;
+			if (data.clientId)
+				contactable.clientId = data.clientId;
 		}
 
 		//department
-		if (type == 'Customer') {
+		if (type == 'Client') {
 			if (data.department){
-				contactable.department = data.Customer.department;
+				contactable.department = data.Client.department;
 			}
 		}
 

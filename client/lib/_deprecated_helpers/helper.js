@@ -299,19 +299,19 @@ _.extend(helper, {
     chechFileHandler(user.profilePictureId, cb);
   },
   // Return picture's url, used in job list
-  getCustomerPictureUrl: function (customerId) {
-    var customer = Contactables.findOne({_id: customerId});
-    if (!customer)
+  getClientPictureUrl: function (clientId) {
+    var client = Contactables.findOne({_id: clientId});
+    if (!client)
       return {};
 
-    return ContactablesFS.getThumbnailUrl(customer.pictureFileId);
+    return ContactablesFS.getThumbnailUrl(client.pictureFileId);
   },
 
   getEmployeePictureUrl: function (employee) {
     return getContactablePictureUrl(employee && employee.pictureFileId ? employee.pictureFileId() : null, '/assets/user-photo-placeholder.jpg')
   },
   getContactablePictureUrl: function (contactable) {
-    return getContactablePictureUrl(contactable && contactable.pictureFileId ? contactable.pictureFileId() : null, contactable.Customer ? '/assets/logo-exartu.png' : '/assets/user-photo-placeholder.jpg')
+    return getContactablePictureUrl(contactable && contactable.pictureFileId ? contactable.pictureFileId() : null, contactable.Client ? '/assets/logo-exartu.png' : '/assets/user-photo-placeholder.jpg')
   },
   getContactPictureUrl: function (contact) {
     return getContactablePictureUrl(contact && contact.pictureFileId ? contact.pictureFileId() : null, '/assets/user-photo-placeholder.jpg')

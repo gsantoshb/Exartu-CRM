@@ -44,7 +44,16 @@ Template.docCenterManagement.events({
     isActivating.set(true);
     Meteor.call('registerOnDocCenter', function (err, result) {
       isActivating.set(false);
-      if (err) console.log(err);
+
+      if (err){
+        console.log(err);
+      }else{
+        isLoading.set(true);
+        DocCenter.getCredentials(function (result) {
+          isRegistered.set(result);
+          isLoading.set(false);
+        })
+      }
     })
   },
   'click #showPass': function () {

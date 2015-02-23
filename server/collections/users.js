@@ -10,7 +10,7 @@ Meteor.publish(null, function () {
             'hierRoles': 1,
             'createdAt': 1,
             'permissions': 1,
-            'lastCustomerUsed': 1,
+            'lastClientUsed': 1,
             'inactive': 1,
             'hierarchies': 1,
             'currentHierId': 1

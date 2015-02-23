@@ -2,7 +2,7 @@
 PlacementView = new View('placements', {
   collection: Placements,
   cursors: function (placement) {
-    // Job with Customer
+    // Job with Client
     this.publish({
       cursor: function (placement) {
         if (placement.job)
@@ -69,19 +69,19 @@ Meteor.paginatedPublish(PlacementView, function(){
     var jobs = Utils.filterCollectionByUserHier.call(this, Jobs.find(jobQuery)).map(function (job) { return job._id; });
     searchStringSelector.$or.push({job: {$in: jobs}});
 
-    // Search customer
+    // Search client
     // organization properties query
     var organizationFields = ['organizationName'];
-    var customerQuery = generateQueryFromFields('organization', organizationFields, params.searchString);
-    customerQuery.objNameArray = 'Customer';
-    // get id of jobs' customer of those which has a placement
-    var customerIds = Jobs.find({_id: {$in: jobsId}}).map(function (job){ return job.customer; });
-    customerQuery._id = {$in: customerIds};
-    // search customers with a placement with properties that match string
-    var customers = Utils.filterCollectionByUserHier.call(this, Contactables.find(customerQuery)).map(function (customer) { return customer._id; });
-    // now get id of jobs with customer id in customers
-    var customerJobsId = Jobs.find({customer: {$in: customers}}).map(function (job) { return job._id; });
-    searchStringSelector.$or.push({job: {$in: customerJobsId}});
+    var clientQuery = generateQueryFromFields('organization', organizationFields, params.searchString);
+    clientQuery.objNameArray = 'Client';
+    // get id of jobs' client of those which has a placement
+    var clientIds = Jobs.find({_id: {$in: jobsId}}).map(function (job){ return job.client; });
+    clientQuery._id = {$in: clientIds};
+    // search clients with a placement with properties that match string
+    var clients = Utils.filterCollectionByUserHier.call(this, Contactables.find(clientQuery)).map(function (client) { return client._id; });
+    // now get id of jobs with client id in clients
+    var clientJobsId = Jobs.find({client: {$in: clients}}).map(function (job) { return job._id; });
+    searchStringSelector.$or.push({job: {$in: clientJobsId}});
 
     // Merge with client selector
     if (! selector.$or) {
