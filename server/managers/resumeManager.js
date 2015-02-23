@@ -39,7 +39,6 @@ ResumeManager = {
         }
 
         try {
-            console.log('result', result);
             var json = JSON.parse(result);
             var object = xml2jsAsync(json);
             return extractInformation(object);
