@@ -147,4 +147,20 @@ Template.recursiveHierarchies.helpers({
     isInactive: function() {
         return this.inactive;
     }
+});
+
+Template.recursiveHierarchies.events({
+    'click .makeCurrent': function(e)
+    {
+        if (this && this.inactive) return;
+
+        Meteor.call('changeCurrentHierId', this._id, function (err, result) {
+            if (err)
+                console.error(err);
+            else {
+                Meteor.disconnect();
+                Meteor.reconnect();
+            }
+        })
+    }
 })
