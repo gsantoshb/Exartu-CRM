@@ -6,6 +6,13 @@ ApplicantCenterManager = {
     var user = Meteor.users.findOne(userId);
     if (!user) throw new Error('Invalid user ID');
 
+    // Email contact method
+    var hierFilter = Utils.filterByHiers(user.hierId);
+    var emailCM = LookUps.findOne({
+      lookUpCode: Enums.lookUpCodes.contactMethod_types,
+      lookUpActions: Enums.lookUpAction.ContactMethod_Email,
+      $or: hierFilter
+    });
 
     // Create new employee
     var empId = Contactables.insert({
@@ -17,6 +24,7 @@ ApplicantCenterManager = {
         "firstName" : firstName,
         "lastName" : lastName
       },
+      contactMethods: [{type: emailCM._id, value: user.userEmail}],
       Employee: {}
     });
 
