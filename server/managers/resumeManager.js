@@ -1,9 +1,9 @@
 Meteor.startup(function () {
     if ( ! ExartuConfig.ResumeParserURL ){
-        console.Error('ResumeParserURL not set');
+        console.error('ResumeParserURL not set');
     }
     if ( ! ExartuConfig.ResumeParserPasscode ){
-        console.Error('ResumeParserPasscode not set');
+        console.error('ResumeParserPasscode not set');
     }
 });
 
