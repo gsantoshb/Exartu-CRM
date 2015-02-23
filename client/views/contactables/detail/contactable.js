@@ -369,8 +369,8 @@ Template.contactable_nav.helpers({
             });
             tabs.push({
                 id: 'docCenter',
-                mobileDisplayName: 'DocCenter',
-                displayName: 'DocCenter',
+                mobileDisplayName: 'HRConcourse',
+                displayName: 'HRConcourse',
                 template: 'docCenterTab'
             });
         }

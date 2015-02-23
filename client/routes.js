@@ -204,10 +204,10 @@ Router.map(function () {
     controller: 'LookupsManagementController'
   });
 
-  this.route('hrConcourseManagement', {
-    path: '/management/hrconcourse',
-    controller: 'hrConcourseManagementController'
-  });
+  //this.route('docourseManagement', {
+  //  path: '/management/hrconcourse',
+  //  controller: 'hrConcourseManagementController'
+  //});
 
   this.route('twilioManagement', {
     path: '/management/twilioManagement',
@@ -295,7 +295,7 @@ Router.map(function () {
   });
 
   this.route('docCenterManagement', {
-    path: '/management/docCenter',
+    path: '/management/hrConcourse',
     controller: 'DocCenterManagementController'
   });
 
