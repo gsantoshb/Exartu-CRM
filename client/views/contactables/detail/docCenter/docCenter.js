@@ -7,6 +7,13 @@ var createAccountSchema = new SimpleSchema({
   }
 });
 
+var isCreatingAccount = new ReactiveVar(false);
+
+Template.docCenterTab.created = function () {
+  isCreatingAccount.set(false);
+}
+
+
 Template.docCenterTab.helpers({
   hasAccount: function () {
     var contactable = Contactables.findOne(Session.get('entityId'));
@@ -23,14 +30,18 @@ Template.docCenterTab.helpers({
     });
 
 
+  },
+  isCreatingAccount: function () {
+    return isCreatingAccount.get();
   }
 });
 
 Template.docCenterTab.events({
   'click #createAccount': function (e, ctx) {
 
+    isCreatingAccount.set(true);
     Meteor.call('createDocCenterAccount', Session.get('entityId'), function () {
-
+      isCreatingAccount.set(false);
     });
   }
 });
