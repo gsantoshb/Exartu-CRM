@@ -579,7 +579,7 @@ Template.contactablesList.helpers({
     },
     contactables: function () {
         // Dependencies
-
+        esDep.depend();
         // ElasticSearch
         if (!_.isEmpty(query.searchString.value)) {
             //urlQuery.push('type=' + query.objType.value);
