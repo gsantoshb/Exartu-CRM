@@ -343,6 +343,7 @@ Template.jobListHeader.helpers({
 
 // List Search - Helpers
 Template.jobListSearch.helpers({
+
     showAddButton: function() {
       return (entityId) ? true : false;
     },
@@ -475,6 +476,11 @@ Template.jobInformation.helpers({
  */
 // List Search - Events
 Template.jobListSearch.events = {
+    'click .addJob': function(e){
+        Session.set('addOptions', { client: entityId });
+        Router.go('/jobAdd/Temporary');
+        e.preventDefault();
+    },
     'keyup #searchString': _.debounce(function(e){
         query.searchString.value = e.target.value;
       },200),

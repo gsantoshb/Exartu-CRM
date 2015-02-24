@@ -29,6 +29,7 @@ Template.clientJobs.helpers({
 Template.clientJobs.events({
   'click .addJob': function(e){
     Session.set('addOptions', { client: contactable._id });
+      console.log('set add aoptions',contactable);
     Router.go('/jobAdd/Temporary');
     e.preventDefault();
   }

@@ -25,15 +25,26 @@ LookupsManagementController = RouteController.extend({
         this.render('lookUpsManagement');
     }
 });
+var query;
 
-var query = new Utils.ObjectDefinition({
-    reactiveProps: {
-        searchString: {},
-        lookUpCode: {},
-        lookUpActions: []
+var loadqueryFromURL = function (params) {
+    // Search string
+    var lookUpCodeQuery = {};
+    if (params.lookUpCode) {
+        lookUpCodeQuery.default = parseInt(params.lookUpCode);
     }
-});
+    return new Utils.ObjectDefinition({
+        reactiveProps: {
+            searchString: {},
+            lookUpCode: lookUpCodeQuery,
+            lookUpActions: []
+        }
+    });
+}
 var defaultUpdateDep = new Deps.Dependency;
+Template.lookUpsManagement.created = function () {
+    query = loadqueryFromURL(Router.current().params.query);
+};
 
 Template.selectLookUpType.helpers({
     lookUpTypes: function () {
@@ -54,6 +65,9 @@ Template.selectLookUpType.helpers({
 Template.selectLookUpType.events = {
     'change': function (e) {
         query.lookUpCode.value = parseInt(e.currentTarget.value);
+        var urlQuery = new URLQuery();
+        urlQuery.addParam('lookUpCode', query.lookUpCode.value);
+        urlQuery.apply();
     }
 };
 
@@ -71,6 +85,7 @@ Template.selectLookUpType.helpers({
 });
 
 Template.lookUpsManagement.helpers({
+
     items: function () {
         defaultUpdateDep.depend();
         var q = {lookUpCode: query.lookUpCode.value};
@@ -90,10 +105,11 @@ Template.lookUpsManagement.helpers({
                 transform: function (item) {
                     Utils.reactiveProp(item, 'editMode', false);
                     Utils.reactiveProp(item, 'editActionMode', false);
+                    Utils.reactiveProp(item, 'editDescriptionMode', false);
                     item.errMsg = '';
                     return item;
                 },
-                sort: {sortOrder:1, displayName: 1}
+                sort: {sortOrder: 1, displayName: 1}
             }
         );
     },
@@ -128,8 +144,8 @@ Template.lookUpsManagement.events = {
         }
     },
     'change .set-sort': function (e) {
-        var sortval= parseInt(e.target.value);
-        sortval= isNaN(sortval)? 0: sortval;
+        var sortval = parseInt(e.target.value);
+        sortval = isNaN(sortval) ? 0 : sortval;
 
         LookUps.update({_id: this._id}, {$set: {sortOrder: sortval}});
     },
@@ -138,6 +154,9 @@ Template.lookUpsManagement.events = {
     },
     'click .editAction': function () {
         this.editActionMode = !this.editActionMode;
+    },
+    'click .editDescription': function () {
+        this.editDescriptionMode = !this.editDescriptionMode;
     },
     'click .cancel': function () {
         this.editMode = false;
@@ -150,6 +169,12 @@ Template.lookUpsManagement.events = {
         if (!displayName) return;
         LookUps.update({_id: this._id}, {$set: {displayName: displayName}});
         this.editMode = false;
+    },
+    'click .save_description': function (e, ctx) {
+        var description = ctx.$('#' + this._id+'description').val();
+        if (!description) return;
+        LookUps.update({_id: this._id}, {$set: {description: description}});
+        this.editDescriptionMode = false;
     },
     'click .save_lookUpAction': function (e, ctx) {
         var newLookUpAction = ctx.$('#' + this._id + 'newLookUpAction').val();
