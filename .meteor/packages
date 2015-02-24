@@ -39,7 +39,6 @@ cfs:s3
 file-uploader
 
 meteorhacks:kadira
-date-time-picker
 rajit:bootstrap3-datepicker
 
 mrt:twilio-meteor
@@ -61,4 +60,5 @@ meteorhacks:fast-render
 doccenter
 meteorhacks:aggregate
 momentjs:moment
-rzymek:fullcalendar
+
+fullcalendar
