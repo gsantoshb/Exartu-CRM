@@ -31,14 +31,7 @@
             <div class="add-item-title">Documents</div>
         </div>
 
-        <div class="add-box-content col-sm-12 col-md-9">
-            <select id="documentSelect">
-                {{#each documents}}
-                    <option value="{{id}}">{{name}}</option>
-                {{/each}}
-            </select>
-        </div>
-        <button class="btn btn-success pull-right" id="send"> Send </button>
+        <button class="btn btn-success" id="selectDocuments"> Send documents</button>
     </div>
 </template>
 
@@ -72,4 +65,41 @@
             {{/each}}
         {{/if}}
     </ul>
+</template>
+
+<template name="sendDocumentsModal">
+    <div class="modal fade" id="sendDocsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">×</a>
+                    <h4>Documents</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        {{#if isLoading}}
+                            <div style="min-height: 200px; background: url('/img/spinner.gif') no-repeat center;"></div>
+                        {{else}}
+                            {{#each documents}}
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" class="docCheckbox" data-docId="{{id}}">
+                                        {{name}}
+                                    </label>
+                                </div>
+                            {{else}}
+                                <div style="min-height: 200px;">
+                                    You don't have documents created, go to <a href="http://hrconcourse.aidacreative.com" target="_blank">hrConcourse</a>
+                                </div>
+                            {{/each}}
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-success accept" disabled="{{isSending}}">Save {{objTypeName}}</a>
+                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
