@@ -39,6 +39,14 @@ var loadqueryFromURL = function (params) {
         searchStringQuery.default = params.search;
     }
 
+    // Mine only
+    var mineQuery = {type: Utils.ReactivePropertyTypes.boolean};
+    if (params.mine) {
+        mineQuery.default = !!params.mine;
+    }
+
+
+
     // CreationDate
     var creationDateQuery = {};
     if (params.creationDate) {
@@ -73,6 +81,7 @@ var loadqueryFromURL = function (params) {
             selectedLimit: creationDateQuery,
             activeStatus: activeStatusQuery,
             tags: tagsQuery,
+            mineOnly: mineQuery,
             statuses: statusQuery
         }
     });
@@ -143,7 +152,9 @@ Template.placementList.created = function () {
 
 
     Meteor.autorun(function () {
-        var searchQuery = {};
+        var searchQuery = {
+            $and: [] // Push each $or operator here
+        };
         var params = {};
         options = {};
         var urlQuery = new URLQuery();
@@ -164,6 +175,12 @@ Template.placementList.created = function () {
         if (!_.isEmpty(query.searchString.value)) {
             params.searchString = query.searchString.value;
             urlQuery.addParam('search', query.searchString.value);
+        }
+
+        //Created by
+        if (query.mineOnly.value) {
+            searchQuery.$and.push({userId: Meteor.userId()});
+            urlQuery.addParam('mine', true);
         }
 
         if (query.selectedLimit.value) {
@@ -200,7 +217,8 @@ Template.placementList.created = function () {
         } else {
             delete options.sort;
         }
-
+        if (searchQuery.$and.length == 0)
+            delete searchQuery.$and;
         PlacementHandler.setFilter(searchQuery, params);
         PlacementHandler.setOptions(options);
     })

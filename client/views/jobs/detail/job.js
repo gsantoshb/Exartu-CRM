@@ -156,7 +156,8 @@ Template.job_details.helpers({
     },
     getClient: function () {
         //todo: find another way to do this
-        return Template.parentData(1).__helpers[" originalJob"]().client;
+        if (Template.parentData(1).__helpers[" originalJob"]())
+            return Template.parentData(1).__helpers[" originalJob"]().client;
     },
     clientCollection: function () {
         return Contactables;
