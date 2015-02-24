@@ -1,20 +1,38 @@
 <template name="taskCalendar">
-    <div id="content">
-        <div class="hidden-xs" style="">
-            <div id="content-header" class="mini">
-                <h1>Calendar</h1>
+    <div id="content" class="network-content nicer-filters">
+        <div class="row">
+            <div class="col-md-3 col-lg-3" id="column-filters">
+                {{>calendarFilters}}
             </div>
-            <div id="breadcrumb">
-                <a href="/" title="Go to Home" class="tip-bottom">Home</a>
-                <a href="/calendar" class="current">Calendar</a>
-            </div>
+            <div class="col-md-9" id="column-list">
+                <div class="list-container">
+                    <div class="list-holder">
 
+                        <div class="col-lg-5 col-md-5" style="margin-bottom: 5%; margin-left: 2%">
+                            {{> fullcalendar options  }}
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+            </div>
         </div>
-        <div class="col-lg-10 col-md-10" style="margin-bottom: 5%; margin-left: 2%">
-            {{> fullcalendar options  }}
-        </div>
-        <div style="clear: both"></div>
+
+
+
     </div>
 
+
+</template>
+
+<template name="calendarFilters">
+
+        <div class="page-title">
+            <h1><span>{{taskFounded}}</span> tasks</h1>
+        </div>
+        {{> filter_createdBy showMineOnly=query.mineOnly}}
 
 </template>

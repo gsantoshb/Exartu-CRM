@@ -71,7 +71,7 @@ Template.addPlacementPage.helpers({
                         return console.log(err);
 
                     self.ready(_.map(result, function (employee) {
-                            Utils.extendContactableDisplayName(employee);
+                                                  Utils.extendContactableDisplayName(employee);
                             return {id: employee._id, text: employee.displayName};
                         })
                     );
