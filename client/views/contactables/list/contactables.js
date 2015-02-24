@@ -502,16 +502,16 @@ Template.contactablesListSearch.helpers({
         info.isFiltering.value = AuxContactables.find().count() != 0;
         return info;
     },
-    contactables: function () {
-        // Dependencies
-
-        // ElasticSearch
-        if (!_.isEmpty(query.searchString.value)) {
-            //urlQuery.push('type=' + query.objType.value);
-            return esResult;
-        }
-        return AuxContactables.find();
-    },
+    //contactables: function () {
+    //    // Dependencies
+    //    console.log('contactables requery');
+    //    // ElasticSearch
+    //    if (!_.isEmpty(query.searchString.value)) {
+    //        //urlQuery.push('type=' + query.objType.value);
+    //        return esResult;
+    //    }
+    //    return AuxContactables.find();
+    //},
     contactableTypes: function () {
         return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
     },
@@ -820,7 +820,7 @@ Template.contactablesListHeader.events({
 Template.contactablesListSearch.events({
     'keyup #searchString': _.debounce(function(e){
         query.searchString.value = e.target.value;
-      },200),
+      },100),
     'click #toggle-filters': function (e) {
         if ($(e.currentTarget).attr('data-view') == 'normal') {
             $('body .network-content #column-filters').addClass('hidden');
