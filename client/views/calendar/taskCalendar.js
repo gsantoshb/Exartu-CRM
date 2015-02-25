@@ -1,8 +1,23 @@
 var allTasks = [];
-var query = {};
+var mineQuery = {};
+var showMineOnly = true;
 var start;
 var end;
-var init;
+var init = false;
+
+
+var info = new Utils.ObjectDefinition({
+  reactiveProps: {
+    contactablesCount: {},
+    objType: {},
+    isFiltering: {
+      default: true
+    },
+    isLoading: {
+      default: false
+    }
+  }
+});
 
 CalendarController = RouteController.extend({
   template: 'taskCalendar'
@@ -14,18 +29,18 @@ Meteor.autorun(function () {
   // depend start, end
   startEndDep.depend();
 
-  if (!start || !end) return;
+  if (!start || !end || (showMineOnly== null)) return;
 
   init = false;
-  Meteor.subscribe("tasks2", start, end, function () {
+  Meteor.subscribe("tasks2", start, end, showMineOnly , function () {
     rerender();
   });
 
 });
 
-Template.calendarFilters.helpers({
-  taskFounded: function () {
-    return allTasks.length;
+Template.taskCalendar.helpers({
+  taskCount: function () {
+    return Tasks.find({}).count();
   },
   query: function () {
     return query;
@@ -33,51 +48,86 @@ Template.calendarFilters.helpers({
 
 });
 
-Tasks.find({}).observe({
-
-  added: function(document) {
-    if (!init) return;
-    debugger;
-    document = Utils.clasifyTags(document);
-
-    var calendarDiv = $('.fc');
-    switch(document.state) {
-                case Enums.taskState.future:
-                     calendarDiv.fullCalendar( 'renderEvent',{id: document._id, title: document.msg, start: document.begin, end: document.end, description:"", className:'item-label-2 label-future'  } );
-                     break;
-                 case Enums.taskState.completed:
-                     calendarDiv.fullCalendar( 'renderEvent',{id: document._id,title: document.msg, start: document.begin, end: document.end, description:"", className:'item-label-2 label-completed'  } );
-                     break;
-                 case Enums.taskState.overDue:
-                     calendarDiv.fullCalendar( 'renderEvent',{id: document._id,title: document.msg, start: document.begin, end: document.end, description:"", className:'item-label-2 label-overDue'  } );
-                     break;
-                 case Enums.taskState.pending:
-                     calendarDiv.fullCalendar( 'renderEvent',{id: document._id,title: document.msg, start: document.begin, end: document.end, description:"", className:'item-label-2 label-pending'  } );
-                     break;
-             }
+Template.taskCalendar.created=function() {
 
 
+   observe = Tasks.find({}).observe({
+
+    added: function (document) {
+
+      if (!init) return;
+
+      //document = Utils.clasifyTags(document);
+
+      var calendarDiv = $('.fc');
+      switch (document.state) {
+        case Enums.taskState.future:
+          calendarDiv.fullCalendar('renderEvent', {
+            id: document._id,
+            title: document.msg,
+            start: document.begin,
+            end: document.end,
+            description: "",
+            className: 'item-label-2 label-future'
+          });
+          break;
+        case Enums.taskState.completed:
+          calendarDiv.fullCalendar('renderEvent', {
+            id: document._id,
+            title: document.msg,
+            start: document.begin,
+            end: document.end,
+            description: "",
+            className: 'item-label-2 label-completed'
+          });
+          break;
+        case Enums.taskState.overDue:
+          calendarDiv.fullCalendar('renderEvent', {
+            id: document._id,
+            title: document.msg,
+            start: document.begin,
+            end: document.end,
+            description: "",
+            className: 'item-label-2 label-overDue'
+          });
+          break;
+        case Enums.taskState.pending:
+          calendarDiv.fullCalendar('renderEvent', {
+            id: document._id,
+            title: document.msg,
+            start: document.begin,
+            end: document.end,
+            description: "",
+            className: 'item-label-2 label-pending'
+          });
+          break;
+      }
 
 
-    rerender();
+      rerender();
 
 
-  },
+    },
 
-  removed: _.debounce(function(oldDocument) {
-    var calendarDiv = $('.fc');
-    calendarDiv.fullCalendar( 'removeEvents', function(event){
-     return event.id == oldDocument._id;
-    })
-  }, 500),
+    removed:
 
-  changed: function(newDocument, oldDocument) {
-    var calendarDiv = $('.fc');
-    var event = _.find(calendarDiv.fullCalendar('clientEvents'), function(ev){
-          return oldDocument._id == ev.id;
-    });
-    newDocument = Utils.clasifyTags(newDocument);
-    switch(newDocument.state) {
+      _.debounce(function (oldDocument) {
+
+
+      var calendarDiv = $('.fc');
+      calendarDiv.fullCalendar('removeEvents', function (event) {
+        return event.id == oldDocument._id;
+      })
+    }, 500),
+
+    changed: function (newDocument, oldDocument) {
+
+      var calendarDiv = $('.fc');
+      var event = _.find(calendarDiv.fullCalendar('clientEvents'), function (ev) {
+        return oldDocument._id == ev.id;
+      });
+      newDocument = Utils.clasifyTags(newDocument);
+      switch (newDocument.state) {
         case Enums.taskState.future:
           event.className = 'item-label-2 label-future';
           break;
@@ -92,26 +142,30 @@ Tasks.find({}).observe({
           break;
 
       }
-    event.title = newDocument.msg;
-    event.start = newDocument.begin;
-    event.end = newDocument.end;
+      event.title = newDocument.msg;
+      event.start = newDocument.begin;
+      event.end = newDocument.end;
 
 
-    calendarDiv.fullCalendar('updateEvent', event);
+      calendarDiv.fullCalendar('updateEvent', event);
 
-  }
-});
+    }
+  })
+
+};
+
+Template.taskCalendar.destroyed=function() {
+
+  observe.stop();
+};
+
+
 
 var rerender = _.debounce(function () {
-  var startTimer = new Date().getTime();
   var calendarDiv = $('.fc');
-  console.log('refetch');
   calendarDiv.fullCalendar( 'refetchEvents' );
-  var endTimer = new Date().getTime();
-  var time = endTimer - startTimer;
-  console.log('Render time: ' + time);
   init = true;
-},500);
+},650);
 
 Template.taskCalendar.helpers({
   options: function () {
@@ -192,3 +246,18 @@ Template.taskCalendar.helpers({
     }
   }
 });
+
+Template.taskCalendar.helpers({
+  showMineOnly: function () {
+    startEndDep.depend();
+    return showMineOnly ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  }
+});
+
+Template.taskCalendar.events = {
+  'click #show-mineOnly': function () {
+    showMineOnly = !showMineOnly;
+    startEndDep.changed();
+
+  }
+};
