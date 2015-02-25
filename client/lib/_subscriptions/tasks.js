@@ -8,7 +8,7 @@ Tasks = new Meteor.Collection("tasks", {
         _id: userId
       });
     });
-    task = Utils.clasifyTags(task);
+    task = Utils.classifyTags(task);
     return task
   }
 });
