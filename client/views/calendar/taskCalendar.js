@@ -2,6 +2,7 @@ var allTasks = [];
 var query = {};
 var start;
 var end;
+var init;
 
 CalendarController = RouteController.extend({
   template: 'taskCalendar'
@@ -15,8 +16,11 @@ Meteor.autorun(function () {
 
   if (!start || !end) return;
 
+  init = false;
+  Meteor.subscribe("tasks2", start, end, function () {
+    rerender();
+  });
 
-  Meteor.subscribe("tasks2", start, end);
 });
 
 Template.calendarFilters.helpers({
@@ -32,8 +36,10 @@ Template.calendarFilters.helpers({
 Tasks.find({}).observe({
 
   added: function(document) {
-    console.log('>>>add');
+    if (!init) return;
+    debugger;
     document = Utils.clasifyTags(document);
+
     var calendarDiv = $('.fc');
     switch(document.state) {
                 case Enums.taskState.future:
@@ -49,6 +55,13 @@ Tasks.find({}).observe({
                      calendarDiv.fullCalendar( 'renderEvent',{id: document._id,title: document.msg, start: document.begin, end: document.end, description:"", className:'item-label-2 label-pending'  } );
                      break;
              }
+
+
+
+
+    rerender();
+
+
   },
 
   removed: _.debounce(function(oldDocument) {
@@ -89,6 +102,16 @@ Tasks.find({}).observe({
   }
 });
 
+var rerender = _.debounce(function () {
+  var startTimer = new Date().getTime();
+  var calendarDiv = $('.fc');
+  console.log('refetch');
+  calendarDiv.fullCalendar( 'refetchEvents' );
+  var endTimer = new Date().getTime();
+  var time = endTimer - startTimer;
+  console.log('Render time: ' + time);
+  init = true;
+},500);
 
 Template.taskCalendar.helpers({
   options: function () {
@@ -111,25 +134,26 @@ Template.taskCalendar.helpers({
         center: 'month,basicWeek,basicDay',
         right: 'prev,today,next'
       },
-      //events: function (start, end, timezone, callback) {
-      //  callback(_.map(Tasks.find().fetch(), function (t) {
-      //      switch(t.state) {
-      //                  case Enums.taskState.future:
-      //                       return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future'  } ;
-      //                       break;
-      //                  case Enums.taskState.completed:
-      //                      return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-completed'  } ;
-      //                       break;
-      //                  case Enums.taskState.overDue:
-      //                      return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-overDue'  } ;
-      //                      break;
-      //                  case Enums.taskState.pending:
-      //                      return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-pending'  };
-      //                      break;
-      //     }
-      //
-      //  }));
-      //},
+
+      events: function (start, end, timezone, callback) {
+        callback(_.map(Tasks.find().fetch(), function (t) {
+            switch(t.state) {
+                        case Enums.taskState.future:
+                             return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future'  } ;
+                             break;
+                        case Enums.taskState.completed:
+                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-completed'  } ;
+                             break;
+                        case Enums.taskState.overDue:
+                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-overDue'  } ;
+                            break;
+                        case Enums.taskState.pending:
+                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-pending'  };
+                            break;
+           }
+
+        }));
+      },
       viewRender: function (view, element) {
         //searching by class because id isn't working
         var calendarDiv = $('.fc');

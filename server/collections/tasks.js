@@ -79,10 +79,9 @@ Meteor.paginatedPublish(TaskView, function () {
 
 Meteor.publish("tasks2",  function (start, end) {
 
-   console.log('start', _.isString(start));
-   console.log('end', end);
+
    var prueba = Utils.filterCollectionByUserHier.call({ userId: this.userId }, Tasks.find({$and:[{$and:[{end:{$gte: start}} , {begin:{$lte: end}}]},{inactive:{$ne: true}}]}))
-   console.log('legth prueba', prueba.count());
+
     return prueba;
 });
 
