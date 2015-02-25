@@ -38,7 +38,6 @@ Template.docCenterTab.helpers({
 
 Template.docCenterTab.events({
   'click #createAccount': function (e, ctx) {
-
     isCreatingAccount.set(true);
     Meteor.call('createDocCenterAccount', Session.get('entityId'), function () {
       isCreatingAccount.set(false);
@@ -47,19 +46,61 @@ Template.docCenterTab.events({
 });
 
 
-var documents = new ReactiveVar([]);
 
-Template.sendDocument.created = function () {
+Template.sendDocument.events({
+  'click #selectDocuments': function (e, ctx) {
+    Utils.showModal('sendDocumentsModal')
+
+  }
+});
+
+
+// modal
+var documents = new ReactiveVar([]),
+  modalLoading = new ReactiveVar(),
+  isSending = new ReactiveVar();
+
+Template.sendDocumentsModal.created = function () {
+  modalLoading.set(true);
+  isSending.set(false);
   DocCenter.getDocuments(function (data) {
+    modalLoading.set(false);
     documents.set(data)
   })
 };
 
-Template.sendDocument.helpers({
+Template.sendDocumentsModal.helpers({
   documents: function () {
     return documents.get();
+  },
+  isLoading: function () {
+    return modalLoading.get();
+  },
+  isSending: function () {
+    return isSending.get();
   }
 });
+
+Template.sendDocumentsModal.events({
+  'click .accept': function (e, ctx) {
+    var contactable = Contactables.findOne(Session.get('entityId'));
+
+    var checked = ctx.$('.docCheckbox:checked');
+    checked = _.map(checked, function (checkbox) {
+      return $(checkbox).data('docid');
+    });
+    if (!checked || !checked.length) return;
+
+    isSending.set(true);
+
+    DocCenter.instantiateDocument(checked, contactable.docCenter.docCenterId, getMergeFieldsValues(), function () {
+      isSending.set(false);
+      Utils.dismissModal();
+      loadInstances();
+    });
+  }  
+});
+
 var getMergeFieldsValues = function () {
   var contactable = Contactables.findOne(Session.get('entityId'));
 
@@ -72,33 +113,23 @@ var getMergeFieldsValues = function () {
   }];
 };
 
-Template.sendDocument.events({
-  'click #send': function (e, ctx) {
-    var selectedId = ctx.$('#documentSelect').val();
-    var contactable = Contactables.findOne(Session.get('entityId'));
-
-    if (!selectedId){
-      return;
-    }
-    DocCenter.instantiateDocument(selectedId, contactable.docCenter.docCenterId, getMergeFieldsValues(), function () { });
-
-  }
-});
-
-
 //instances list
 
-var instances = new ReactiveVar([]);
-var gettingInstances = new ReactiveVar(false);
+var instances = new ReactiveVar([]),
+  gettingInstances = new ReactiveVar(false);
 
-Template.documentInstances.created = function () {
+var loadInstances = function () {
   var contactable = Contactables.findOne(Session.get('entityId'));
 
   gettingInstances.set(true);
   DocCenter.getDocumentInstances(contactable.docCenter.docCenterId, function (data) {
+    console.log('data', data);
     instances.set(data);
     gettingInstances.set(false);
   })
+}
+Template.documentInstances.created = function () {
+  loadInstances();
 };
 
 Template.documentInstances.helpers({

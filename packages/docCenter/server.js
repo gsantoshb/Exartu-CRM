@@ -190,10 +190,13 @@ _.extend(DocCenter,{
     var account = getAccount(hierId);
     var self = this;
 
+    if (_.isString(docId)){
+      docId = [docId];
+    }
     var api = new DocCenterApi(account);
     var option = {
       userId: externalId,
-      documentIds: [docId],
+      documentIds: docId,
       recipient: "asd asd",
       initialValues: mergeFieldsValues
     };
@@ -232,7 +235,6 @@ var DocCenterApi = function (account) {
 
 _.each(['get', 'post'], function (method) {
   DocCenterApi.prototype[method] = function (/*arguments*/) {
-    debugger;
     var self = this,
       url = arguments[0],
       options = arguments[1] && _.isFunction(arguments[1]) ? {} : arguments[1],
