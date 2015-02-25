@@ -1,6 +1,12 @@
 var allTasks = [];
 var mineQuery = {};
 var showMineOnly = true;
+var showToday = true;
+var showNext = false;
+var showPrev = false;
+var showByMonth = true;
+var showByWeek = false;
+var showByDay = false;
 var start;
 var end;
 var init = false;
@@ -35,16 +41,6 @@ Meteor.autorun(function () {
   Meteor.subscribe("tasks2", start, end, showMineOnly , function () {
     rerender();
   });
-
-});
-
-Template.taskCalendar.helpers({
-  taskCount: function () {
-    return Tasks.find({}).count();
-  },
-  query: function () {
-    return query;
-  }
 
 });
 
@@ -244,22 +240,202 @@ Template.taskCalendar.helpers({
 
       }
     }
-  }
-});
-
-Template.taskCalendar.helpers({
+  },
+  taskCount: function () {
+    return Tasks.find({}).count();
+  },
+  query: function () {
+    return query;
+  },
   showMineOnly: function () {
     startEndDep.depend();
 
     return showMineOnly ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
 
+  },
+  showToday: function(){
+    startEndDep.depend();
+    return showToday ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+    //cambiar el return
+  },
+  showNext: function(){
+    startEndDep.depend();
+    return showNext ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  },
+  showPrev: function(){
+    startEndDep.depend();
+    return showPrev ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  },
+  showByMonth: function(){
+    startEndDep.depend();
+    return showByMonth ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+    //cambiar el return
+  },
+  showByWeek: function(){
+    startEndDep.depend();
+    return showByWeek ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  },
+  showByDay: function(){
+    startEndDep.depend();
+    return showByDay ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
   }
+
 });
+
 
 Template.taskCalendar.events = {
   'click #show-mineOnly': function () {
     showMineOnly = !showMineOnly;
     startEndDep.changed();
 
+  },
+  'click #show-Today': function () {
+    showToday = true;
+    showNext = false;
+    showPrev = false;
+    var calendarDiv = $('.fc');
+    calendarDiv.fullCalendar('today');
+    startEndDep.changed();
+
+
+
+  },
+  'click #show-Next': function () {
+
+    var calendarDiv = $('.fc');
+    calendarDiv.fullCalendar('next');
+    var today = new Date();
+    if((today>start) && (today<end)){
+      showToday = true;
+      showNext = false;
+      showPrev = false;
+    }
+    else if(today>end){
+      showToday = false;
+      showNext = false;
+      showPrev = true;
+    }
+    else if(today<start){
+      showToday = false;
+      showNext = true;
+      showPrev = false;
+    }
+    startEndDep.changed();
+
+
+
+  },
+  'click #show-Prev': function () {
+
+    var calendarDiv = $('.fc');
+    calendarDiv.fullCalendar('prev');
+    var today = new Date();
+    if((today>start) && (today<end)){
+      showToday = true;
+      showNext = false;
+      showPrev = false;
+    }
+    else if(today>end){
+      showToday = false;
+      showNext = false;
+      showPrev = true;
+    }
+    else if(today<start){
+      showToday = false;
+      showNext = true;
+      showPrev = false;
+    }
+    startEndDep.changed();
+
+
+
+  },
+  'click #show-byMonth': function () {
+    var calendarDiv = $('.fc');
+
+    if(calendarDiv.fullCalendar( 'getView').title != 'month') {
+      calendarDiv.fullCalendar('changeView', 'month');
+      var today = new Date();
+      if((today>start) && (today<end)){
+        showToday = true;
+        showNext = false;
+        showPrev = false;
+      }
+      else if(today>end){
+        showToday = false;
+        showNext = false;
+        showPrev = true;
+      }
+      else if(today<start){
+        showToday = false;
+        showNext = true;
+        showPrev = false;
+      }
+      showByMonth = true;
+      showByDay = false;
+      showByWeek = false;
+
+      startEndDep.changed();
+    }
+
+
+  },
+  'click #show-byWeek': function () {
+    var calendarDiv = $('.fc');
+
+    if(calendarDiv.fullCalendar( 'getView').title != 'agendaWeek') {
+
+      calendarDiv.fullCalendar('changeView', 'agendaWeek');
+      var today = new Date();
+      if((today>start) && (today<end)){
+        showToday = true;
+        showNext = false;
+        showPrev = false;
+      }
+      else if(today>end){
+        showToday = false;
+        showNext = false;
+        showPrev = true;
+      }
+      else if(today<start){
+        showToday = false;
+        showNext = true;
+        showPrev = false;
+      }
+      showByMonth = false;
+      showByDay = false;
+      showByWeek = true;
+      startEndDep.changed();
+    }
+  },
+  'click #show-byDay': function () {
+    var calendarDiv = $('.fc');
+
+    if(calendarDiv.fullCalendar( 'getView').title != 'agendaDay') {
+      calendarDiv.fullCalendar('changeView', 'agendaDay');
+      var today = new Date();
+      if((today>start) && (today<end)){
+        showToday = true;
+        showNext = false;
+        showPrev = false;
+      }
+      else if(today>end){
+        showToday = false;
+        showNext = false;
+        showPrev = true;
+      }
+      else if(today<start){
+        showToday = false;
+        showNext = true;
+        showPrev = false;
+      }
+      showByMonth = false;
+      showByDay = true;
+      showByWeek = false;
+
+      startEndDep.changed();
+    }
+
   }
+
 };
