@@ -137,9 +137,24 @@ Template.documentInstances.helpers({
     return instances.get();
   },
   getStatus: function (status) {
-    return 'sent'
+    return documentStatusDictionary[status]
   },
   isLoading: function () {
     return gettingInstances.get();
   }
 });
+
+var documentStatus = {
+  InActive: 0,
+  Expired: 1,
+  Denied: 2,
+  PartiallyCompleted: 3,
+  Sent: 4,
+  ExternalSubmitted: 5,
+  Submitted: 6,
+  Approved: 7,
+  ReadOnly: 8,
+  PendingFile: 9
+};
+
+var documentStatusDictionary = _.invert(documentStatus);
