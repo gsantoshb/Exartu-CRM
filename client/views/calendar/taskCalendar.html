@@ -5,24 +5,29 @@
                 <div class="page-title">
                     <h1><span>{{taskCount}}</span> tasks</h1>
                 </div>
-                <div class="filter">
-                    <div class="filter-item">
-                        <div class="filter-title">
-                            <i class="fa fa-user"></i>
-                            Created by
-                        </div>
 
-                        <button id="show-mineOnly" type="button" class="{{showMineOnly}}">Mine Only</button>
+
+                <div class="filter">
+                    <div class="filter-list" id="filter-body">
+                       <div class="filter-item">
+                           <div class="filter-title">
+                             <i class="fa fa-user"></i>
+                             Created by
+                          </div>
+                          <button id="show-mineOnly" type="button" class="{{showMineOnly}}">Mine Only</button>
+                       </div>
                     </div>
                 </div>
 
             </div>
-            <div class="col-md-9" id="column-list">
+            <div class="col-md-9" id="column-list" >
                 <div class="list-container">
                     <div class="list-holder">
+                        <div class="list-actions" style="padding-top: 5%"></div>
+                        <div class="col-lg-12 col-md-12 list-actions last" style="margin-bottom: 5%; padding-left: 2%; padding-right:8%; padding-bottom: 2% ">
 
-                        <div class="col-lg-5 col-md-5" style="margin-bottom: 5%; margin-left: 2%">
                             {{> fullcalendar options  }}
+
                         </div>
 
                     </div>

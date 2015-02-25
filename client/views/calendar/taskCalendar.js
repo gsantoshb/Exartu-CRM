@@ -250,7 +250,9 @@ Template.taskCalendar.helpers({
 Template.taskCalendar.helpers({
   showMineOnly: function () {
     startEndDep.depend();
+
     return showMineOnly ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+
   }
 });
 
