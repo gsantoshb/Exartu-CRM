@@ -177,7 +177,7 @@ Template.filter_tags.helpers({
 // Created By
 Template.filter_createdBy.helpers({
     showMineOnly: function () {
-        return this.showMineOnly.value ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+      return this.showMineOnly.value ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
     }
 });
 

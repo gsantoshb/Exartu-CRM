@@ -1,20 +1,51 @@
 <template name="taskCalendar">
-    <div id="content">
-        <div class="hidden-xs" style="">
-            <div id="content-header" class="mini">
-                <h1>Calendar</h1>
-            </div>
-            <div id="breadcrumb">
-                <a href="/" title="Go to Home" class="tip-bottom">Home</a>
-                <a href="/calendar" class="current">Calendar</a>
-            </div>
+    <div id="content" class="network-content nicer-filters">
+        <div class="row">
+            <div class="col-md-3 col-lg-3" id="column-filters">
+                <div class="page-title">
+                    <h1><span>{{taskCount}}</span> tasks</h1>
+                </div>
 
+
+                <div class="filter">
+                    <div class="filter-list" id="filter-body">
+                       <div class="filter-item">
+                           <div class="filter-title">
+                             <i class="fa fa-user"></i>
+                             Created by
+                          </div>
+                          <button id="show-mineOnly" type="button" class="{{showMineOnly}}">Mine Only</button>
+                       </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-9" id="column-list" >
+                <div class="list-container">
+                    <div class="list-holder">
+                        <div class="list-actions" style="padding-top: 5%"></div>
+                        <div class="col-lg-12 col-md-12 list-actions last" style="margin-bottom: 5%; padding-left: 2%; padding-right:8%; padding-bottom: 2% ">
+
+                            {{> fullcalendar options  }}
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+            </div>
         </div>
-        <div class="col-lg-10 col-md-10" style="margin-bottom: 5%; margin-left: 2%">
-            {{> fullcalendar options  }}
-        </div>
-        <div style="clear: both"></div>
+
+
+
     </div>
 
 
 </template>
+
+
+
+

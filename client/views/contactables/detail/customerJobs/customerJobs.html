@@ -12,25 +12,43 @@
             <div class="box-content-md">
                 <ul class="list-3 stripped has-thumb">
                     {{#each jobs}}
-                        <li class="list-3-item">
-                            <div class="list-thumb"><i class="icon-briefcase"></i></div>
-                            <div class="list-3-content list-magic">
-                                <div class="list-3-content-wrap">
-                                    <div class="pull-right">
-                                        <div class="table-item magic">
-                                            {{>jobDate}}
-                                        </div>
-                                    </div>
-                                    <div class="list-3-item-meta-top">{{lookUpName status}}</div>
-                                    <h4 class="list-3-item-title"><a href="/job/{{_id}}">{{displayName}}</a></h4>
+                        <div class="list-item jobs-list-item">
+                            <div class="list-item-cell list-item-icon">
+                                <a class="item-icon item-icon-jobs" href="/job/{{_id}}"><i class="icon-briefcase-2"></i></a>
+                            </div>
+                            <div class="list-item-cell jobs-list-item-title">
+                                <div class="item-title"><a href="/job/{{_id}}">{{displayName}}</a></div>
+                                <div class="item-subtitle"><a
+                                        href="/contactable/{{client}}">{{clientName}} {{#if departmentName}}
+                                    &#8212; {{departmentName}}{{/if}}</a></div>
+                            </div>
+                            <div class="list-item-details jobs-list-item-details">
+                                <div class="list-item-cell jobs-list-item-placements">
+                    <span class="hidden-xs"><a href="/job/{{_id}}/placements"><span>{{countPlacements}}
+                        /{{countRequired}}</span></a></span>
+                                    <span class="visible-xs"><strong>{{countPlacements}}1</strong> Placement</span>
+                                </div>
+                                <div class="list-item-cell jobs-list-item-status">
+                                    {{> jobInformation }}
+                                </div>
+                                <div class="list-item-cell jobs-list-item-code ">{{displaySearchKey _id}}</div>
+                                <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
+                                <div class="list-item-cell jobs-list-item-time">
+                                    {{#formattedDate value=dateCreated format='fromNow'}}
+                                        {{date}}
+                                    {{/formattedDate}}
+                                </div>
+                                <div class="list-item-cell item-overflow jobs-item-overflow">
+                                    <a href="#">
+                        <span class="ico-more">
+                          <span class="dot-1"></span>
+                          <span class="dot-2"></span>
+                          <span class="dot-3"></span>
+                        </span>
+                                    </a>
                                 </div>
                             </div>
-                        </li>
-                    {{else}}
-                        <div class="box-v-msg">
-                            <div class="box-v-msg-content">
-                                <i class="icon-briefcase"></i>
-                            </div>
+                            <!-- /.list-item-cell -->
                         </div>
                     {{/each}}
                 </ul>
@@ -51,7 +69,7 @@
                     {{date}}
                 {{/formattedDate}}
             {{/if}}
-                <br/><i class="glyphicon glyphicon-search"></i>{{displaySearchKey _id}}
+            <br/><i class="glyphicon glyphicon-search"></i>{{displaySearchKey _id}}
         </div>
     </div>
 </template>

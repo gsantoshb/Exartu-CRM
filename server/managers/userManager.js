@@ -209,12 +209,15 @@ UserManager = {
             case Enums.lastUsedType.employee:
                 if (!user.lastUsed || !user.lastUsed.employee)
                     return [];
-                return _.map(user.lastUsed.employee, function (employeeId) {
-                    return Contactables.findOne({
+                return _.filter(_.map(user.lastUsed.employee, function (employeeId) {
+                    to_return =  Contactables.findOne({
                         objNameArray: 'Employee',
                         _id: employeeId,
                         $or: Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()))
                     });
+                    return to_return;
+                }), function (elem) {
+                    return elem;
                 });
         }
     },

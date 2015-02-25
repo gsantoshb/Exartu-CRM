@@ -64,7 +64,6 @@ var setSortField = function(field) {
         selected.value = -1;
     }
     selectedSort.set(selected);
-	console.log(selected);
 };
 
 var loadqueryFromURL = function (params) {
@@ -299,12 +298,13 @@ Template.jobList.created = function () {
             });
         }
         else {
+            SubscriptionHandlers.JobHandler._isLoading.value = false;
             if (searchQuery.$and.length == 0)
                 delete searchQuery.$and;
             if (selectedSort) {
                 JobHandler.setOptions(options);
             }
-            JobHandler.setFilter(searchQuery);
+            JobHandler.setFilter(searchQuery,options);
         }
         // Set url query
         urlQuery.apply();
@@ -343,9 +343,8 @@ Template.jobListHeader.helpers({
 
 // List Search - Helpers
 Template.jobListSearch.helpers({
-
     showAddButton: function() {
-      return (entityId) ? true : false;
+        return (entityId) ? true : false;
     },
     jobTypes: jobTypes,
     listViewMode: function () {
@@ -476,14 +475,9 @@ Template.jobInformation.helpers({
  */
 // List Search - Events
 Template.jobListSearch.events = {
-    'click .addJob': function(e){
-        Session.set('addOptions', { client: entityId });
-        Router.go('/jobAdd/Temporary');
-        e.preventDefault();
-    },
     'keyup #searchString': _.debounce(function(e){
         query.searchString.value = e.target.value;
-      },200),
+    },200),
     'click #toggle-filters': function (e) {
         if ($(e.currentTarget).attr('data-view') == 'normal') {
             $('body .network-content #column-filters').addClass('hidden');
@@ -510,6 +504,5 @@ Template.jobListSearch.events = {
 Template.jobListSort.events = {
     'click .sort-field': function () {
         setSortField(this);
-		console.log(JobHandler.isLoading());
     }
 };
