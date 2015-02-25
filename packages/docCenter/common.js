@@ -63,14 +63,24 @@ DocCenter = {
    * @param {string} documentId
    */
   approveDocument: function (documentId, cb) {
-
+    Meteor.call('docCenter.approveDocument', documentId, function(err, result){
+      if (err){
+        return console.log(err);
+      }
+      cb(result);
+    })
   },
   /**
    *
    * @param {string} documentId
    */
-  denyDocument: function (documentId, cb) {
-
+  denyDocument: function (documentId, reason, cb) {
+    Meteor.call('docCenter.denyDocument', documentId, reason, function(err, result){
+      if (err){
+        return console.log(err);
+      }
+      cb(result);
+    })
   },
 
   insertUser: function (userData, cb) {

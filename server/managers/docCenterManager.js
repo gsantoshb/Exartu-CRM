@@ -64,5 +64,52 @@ Meteor.methods({
       email: email.value
     };
     return DocCenterManager.insertUser(employeeID, userData)
+  },
+  documentInstancepdf: function (id) {
+    var user = Meteor.user();
+
+    return DocCenter.renderDocumentInstance(user.currentHierId, id);
   }
+});
+
+Router.map(function() {
+  this.route('documentInstancepdf', {
+    where: 'server',
+    path: 'documentInstancepdf/:token/:id?',
+    action: function() {
+
+      var self = this;
+      var user = Meteor.users.findOne({"services.resume.loginTokens.hashedToken": Accounts._hashLoginToken(self.params.token) });
+
+      self.response.setHeader("Content-Type", "application/pdf");
+      var response = DocCenter.renderDocumentInstance(user.currentHierId, self.params.id, function (err, result) {
+        //
+        //this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        //self.response.setHeader("Content-Length", result.content.length);
+
+        //self.response.statusCode = 200;
+        self.response.end(result);
+      });
+
+
+
+      //this.response.writeHead("Content-Type", "application/pdf");
+      //this.response.writeHead("Accept-Ranges", "bytes");
+      //this.response.writeHead("Content-Length", result.length);
+
+      //console.log('---- seting headers');
+      //self.response.writeHead(response.statusCode, response.headers);
+      //
+      //
+      //setTimeout(function () {
+      //  console.log('---- writing Response');
+      //  self.response.write(response.content);
+      //  console.log('---- ending response');
+      //  self.response.end();
+      //},10000);
+
+      //this.response.end()
+
+    }
+  })
 });
