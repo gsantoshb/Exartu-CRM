@@ -781,7 +781,7 @@ Utils.sortFetchOptions=function(lkpcursor) {
     });
 }
 
-Utils.clasifyTags=function(task) {
+Utils.classifyTags=function(task) {
     var now = moment(new Date())
     if (task.completed == undefined) {
         task.completed = null;

@@ -13,11 +13,11 @@ Meteor.methods({
       throw new Meteor.Error(err.message);
     }
   },
-  apiGetTasksBeetwen: function(start, end){
+  apiGetTasksBetween: function(start, end){
       try {
           console.log('start', start);
           console.log('end', end);
-          return TaskManager.apiGetTasksBeetwen(start, end);
+          return TaskManager.apiGetTasksBetween(start, end);
       } catch(err) {
           throw new Meteor.Error(err.message);
       }

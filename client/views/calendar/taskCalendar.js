@@ -40,11 +40,11 @@ Template.taskCalendar.helpers({
 
 
 
-               Meteor.call('apiGetTasksBeetwen', view.intervalStart.toDate() , view.intervalEnd.toDate() , function(error, result){
+               Meteor.call('apiGetTasksBetween', view.intervalStart.toDate() , view.intervalEnd.toDate() , function(error, result){
                     console.log('result', result);
                     allTasks = result;
                     _.each(result, function(t){
-                         t = Utils.clasifyTags(t);
+                         t = Utils.classifyTags(t);
                          switch(t.state) {
                              case Enums.taskState.future:
                                  calendarDiv.fullCalendar( 'renderEvent',{title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future'  } );
