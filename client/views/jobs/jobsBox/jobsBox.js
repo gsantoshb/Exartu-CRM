@@ -302,9 +302,9 @@ Template.jobList.created = function () {
                 SubscriptionHandlers.JobHandler._isLoading.value = false;
             if (searchQuery.$and.length == 0)
                 delete searchQuery.$and;
-            if (selectedSort) {
-                JobHandler.setOptions(options);
-            }
+            //if (selectedSort) {
+            //    JobHandler.setOptions(options);
+            //}
             JobHandler.setFilter(searchQuery, options);
         }
         // Set url query
