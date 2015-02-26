@@ -5,9 +5,9 @@ var jobCollection = Jobs;
 var JobHandler;
 var entityId;
 var query;
-var selectedSort =  new ReactiveVar();
-selectedSort.set({field:'dateCreated',value:-1});
-var searchDep=new Deps.Dependency;
+var selectedSort = new ReactiveVar();
+selectedSort.set({field: 'dateCreated', value: -1});
+var searchDep = new Deps.Dependency;
 var selectedSortDep = new Deps.Dependency;
 var sortFields = [
     {field: 'startDate', displayName: 'Start date'},
@@ -53,7 +53,7 @@ var jobTypes = function () {
 
 var searchFields = ['jobTitle', 'publicJobTitle'];
 
-var setSortField = function(field) {
+var setSortField = function (field) {
     var selected = selectedSort.get();
     if (selected && selected.field == field.field) {
         if (selected.value == 1)
@@ -125,11 +125,10 @@ var loadqueryFromURL = function (params) {
     }
 
     // Status
-    var statusQuery = { type: Utils.ReactivePropertyTypes.array };
+    var statusQuery = {type: Utils.ReactivePropertyTypes.array};
     if (params.status) {
         statusQuery.default = params.status.split(',');
     }
-
 
 
     var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
@@ -153,16 +152,15 @@ var loadqueryFromURL = function (params) {
             status: statusQuery
         }
     });
-
-
 }
-Template.jobsBox.created = function(){
-    if (!SubscriptionHandlers.JobHandler){
+
+Template.jobsBox.created = function () {
+    query = query || loadqueryFromURL(Router.current().params.query);
+    entityId = Session.get('entityId');
+    if (!SubscriptionHandlers.JobHandler) {
         SubscriptionHandlers.JobHandler = Meteor.paginatedSubscribe('jobs');
     }
     JobHandler = SubscriptionHandlers.JobHandler;
-    query = query || loadqueryFromURL(Router.current().params.query);
-    entityId = Session.get('entityId');
 };
 
 var searchQuery
@@ -174,10 +172,10 @@ Template.jobList.created = function () {
         };
         var options = {};
         var urlQuery = new URLQuery();
-        if (Session.get('entityId'))
-        {
-            searchQuery.client=Session.get('entityId');
-        };
+        if (Session.get('entityId')) {
+            searchQuery.client = Session.get('entityId');
+        }
+        ;
 
         selectedSortDep.depend();
 
@@ -301,13 +299,13 @@ Template.jobList.created = function () {
         }
         else {
             if (SubscriptionHandlers.JobHandler && SubscriptionHandlers.JobHandler._isLoading)
-                    SubscriptionHandlers.JobHandler._isLoading.value = false;
+                SubscriptionHandlers.JobHandler._isLoading.value = false;
             if (searchQuery.$and.length == 0)
                 delete searchQuery.$and;
             if (selectedSort) {
                 JobHandler.setOptions(options);
             }
-            JobHandler.setFilter(searchQuery,options);
+            JobHandler.setFilter(searchQuery, options);
         }
         // Set url query
         urlQuery.apply();
@@ -347,7 +345,7 @@ Template.jobListHeader.helpers({
 
 // List Search - Helpers
 Template.jobListSearch.helpers({
-    showAddButton: function() {
+    showAddButton: function () {
         return (entityId) ? true : false;
     },
     jobTypes: jobTypes,
@@ -409,8 +407,15 @@ Template.jobList.helpers({
         return listViewMode.get();
     },
     jobs: function () {
-        searchDep.depend();
-        return jobCollection.find(searchQuery);
+        if (entityId) {
+            searchDep.depend();
+            return jobCollection.find(searchQuery);
+        }
+        else
+        {
+            console.log('query jobs');
+            return jobCollection.find();
+        }
     },
     isLoading: function () {
         return SubscriptionHandlers.JobHandler.isLoading();
@@ -480,9 +485,9 @@ Template.jobInformation.helpers({
  */
 // List Search - Events
 Template.jobListSearch.events = {
-    'keyup #searchString': _.debounce(function(e){
+    'keyup #searchString': _.debounce(function (e) {
         query.searchString.value = e.target.value;
-    },200),
+    }, 200),
     'click #toggle-filters': function (e) {
         if ($(e.currentTarget).attr('data-view') == 'normal') {
             $('body .network-content #column-filters').addClass('hidden');
