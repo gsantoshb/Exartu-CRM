@@ -299,10 +299,11 @@ Template.jobList.created = function () {
             if (searchQuery.$and.length == 0)
                 delete searchQuery.$and;
             setSubscription(searchQuery, options);
+            searchDep.changed();
         }
         // Set url query
         urlQuery.apply();
-        searchDep.changed();
+
     })
 };
 var setSubscription = function (searchQuery, options) {
