@@ -1,108 +1,119 @@
-var flds= { 'organization.organizationName' : 1 ,'Client.department':1 };
+var flds = {'organization.organizationName': 1, 'Client.department': 1};
 JobView = new View('jobs', {
-  collection: Jobs,
-  cursors: function (job) {
-    // Client
-    this.publish({
-      cursor: function (job) {
-        if (job.client)
-          return Contactables.find(job.client, { fields: flds });
-      },
-      to: 'contactables',
-      observedProperties: ['client'],
-      onChange: function (changedProps, oldSelector) {
-        oldSelector._id = changedProps.client;
-        return Contactables.find(oldSelector, { fields: flds });
-      }
-    });
+    collection: Jobs,
+    cursors: function (job) {
+        // Client
+        this.publish({
+            cursor: function (job) {
+                if (job.client)
+                    return Contactables.find(job.client, {fields: flds});
+            },
+            to: 'contactables',
+            observedProperties: ['client'],
+            onChange: function (changedProps, oldSelector) {
+                oldSelector._id = changedProps.client;
+                return Contactables.find(oldSelector, {fields: flds});
+            }
+        });
 
-    // Publish the three most recent placements
-    var placements = Placements.find({job: job._id}, { fields: { 'employee' : 1, 'job': 1 }, sort: { dateCreated: -1 }});
-    var employeeIds = placements.fetch().map(function (p) {return p.employee;});
+        // Publish the three most recent placements
+        var placements = Placements.find({job: job._id}, {fields: {'employee': 1, 'job': 1}, sort: {dateCreated: -1}});
+        var employeeIds = placements.fetch().map(function (p) {
+            return p.employee;
+        });
 
-    this.publish({
-      cursor: function () {
-        return placements;
-      },
-      to: 'placements'
-    });
+        this.publish({
+            cursor: function () {
+                return placements;
+            },
+            to: 'placements'
+        });
 
-    // Employees
-    this.publish({
-      cursor: function () {
-        return Contactables.find({_id: { $in: employeeIds}});
-      },
-      to: 'contactables'
-    });
+        // Employees
+        this.publish({
+            cursor: function () {
+                return Contactables.find({_id: {$in: employeeIds}});
+            },
+            to: 'contactables'
+        });
 
-  }
+    }
 });
 
-Meteor.paginatedPublish(JobView, function(){
-  var user = Meteor.users.findOne({
-    _id: this.userId
-  });
+Meteor.paginatedPublish(JobView, function () {
+    var user = Meteor.users.findOne({
+        _id: this.userId
+    });
 
-  if (!user)
-    return [];
+    if (!user)
+        return [];
 
-  return Utils.filterCollectionByUserHier.call(this, JobView.find());
+    return Utils.filterCollectionByUserHier.call(this, JobView.find({},
+        {
+            fields: {
+                // Only fields displayed on list
+            },
+            sort: {
+                dateCreated: -1
+            }
+        }
+    ));
 }, {
-  pageSize: 15,
-  publicationName: 'jobs'
+    pageSize: 15,
+    publicationName: 'jobs'
 });
 
 JobPlacementView = new View('jobs', {
-  collection: Jobs,
-  cursors: function (job) {
-    // Client
-    this.publish({
-      cursor: function (job) {
-        if (job.client)
-          return Contactables.find(job.client, { fields: flds});
-      },
-      to: 'contactables',
-      observedProperties: ['client'],
-      onChange: function (changedProps, oldSelector) {
-        oldSelector._id = changedProps.client;
-        return Contactables.find(oldSelector, { fields: flds });
-      }
-    });
-  }
+    collection: Jobs,
+    cursors: function (job) {
+        // Client
+        this.publish({
+            cursor: function (job) {
+                if (job.client)
+                    return Contactables.find(job.client, {fields: flds});
+            },
+            to: 'contactables',
+            observedProperties: ['client'],
+            onChange: function (changedProps, oldSelector) {
+                oldSelector._id = changedProps.client;
+                return Contactables.find(oldSelector, {fields: flds});
+            }
+        });
+    }
 });
 
 Meteor.publish('singleJob', function (id) {
-  return Utils.filterCollectionByUserHier.call(this, JobView.find({_id: id}));
+    return Utils.filterCollectionByUserHier.call(this, JobView.find({_id: id}));
 });
 
 Meteor.publish('allJobs', function () {
-  var sub = this;
-  Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Jobs.find({},{
-    fields:{
-      publicJobTitle: 1,
-      client: 1
-    }
-  })
-  ), sub, 'allJobs');
-  sub.ready();
+    var sub = this;
+    Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Jobs.find({}, {
+            fields: {
+                publicJobTitle: 1,
+                client: 1
+            }
+        })
+    ), sub, 'allJobs');
+    sub.ready();
 });
 
 Jobs.allow({
-  update: function () {
-    return true;
-  }
+    update: function () {
+        return true;
+    }
 });
 
 Jobs.before.insert(function (userId, doc) {
-  try {
-    var user = Meteor.user() || {};
-  } catch (e) {
-    var user = {}
-  }
-  doc.hierId = user.currentHierId || doc.hierId;
-  doc.userId = user._id || doc.userId;
-  doc.dateCreated = Date.now();
-  if (!doc.activeStatus) doc.activeStatus=LookUpManager.getActiveStatusDefaultId();
+    try {
+        var user = Meteor.user() || {};
+    } catch (e) {
+        var user = {}
+    }
+    doc.hierId = user.currentHierId || doc.hierId;
+    doc.userId = user._id || doc.userId;
+    doc.dateCreated = Date.now();
+    if (!doc.activeStatus) doc.activeStatus = LookUpManager.getActiveStatusDefaultId();
 
 });
 

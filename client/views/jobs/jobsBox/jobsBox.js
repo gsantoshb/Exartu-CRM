@@ -2,9 +2,9 @@
  * Variables
  */
 var jobCollection = Jobs;
-var searchQuery, options
-var JobHandler;
+var searchQuery, options;
 var entityId;
+var JobHandler;
 var query;
 var selectedSort = new ReactiveVar();
 selectedSort.set({field: 'dateCreated', value: -1});
@@ -294,8 +294,8 @@ Template.jobList.created = function () {
             });
         }
         else {
-            if (SubscriptionHandlers.JobHandler && SubscriptionHandlers.JobHandler._isLoading)
-                SubscriptionHandlers.JobHandler._isLoading.value = false;
+            //if (SubscriptionHandlers.JobHandler && SubscriptionHandlers.JobHandler._isLoading)
+            //    SubscriptionHandlers.JobHandler._isLoading.value = false;
             if (searchQuery.$and.length == 0)
                 delete searchQuery.$and;
             setSubscription(searchQuery, options);
@@ -306,17 +306,20 @@ Template.jobList.created = function () {
     })
 };
 var setSubscription = function (searchQuery, options) {
-    console.log(options);
+
     if (SubscriptionHandlers.JobHandler) {
         SubscriptionHandlers.JobHandler.setFilter(searchQuery);
         SubscriptionHandlers.JobHandler.setOptions(options);
+        JobHandler=SubscriptionHandlers.JobHandler;
     }
-    else
+    else {
         SubscriptionHandlers.JobHandler =
             Meteor.paginatedSubscribe('jobs', {
                 filter: searchQuery,
                 options: options
             });
+        JobHandler = SubscriptionHandlers.JobHandler;
+    }
 }
 
 // List - Helpers
@@ -360,7 +363,7 @@ Template.jobList.rendered = function () {
 // Page - Helpers
 Template.jobs.helpers({
     isLoading: function () {
-        return JobHandler.isLoading();
+        return SubscriptionHandlers.JobHandler.isLoading();
     }
 });
 
@@ -411,11 +414,12 @@ Template.jobListSort.helpers({
 Template.jobFilters.helpers({
     information: function () {
         var searchQuery = {};
+        searchDep.depend();
 
         if (query.objType.value)
             searchQuery.objNameArray = query.objType.value;
-
-        info.jobsCount.value = JobHandler.totalCount();
+        if (JobHandler)
+            info.jobsCount.value = JobHandler.totalCount();
 
         return info;
     },
