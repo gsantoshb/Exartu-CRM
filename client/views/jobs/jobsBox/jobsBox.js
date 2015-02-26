@@ -299,6 +299,7 @@ Template.jobList.created = function () {
             if (searchQuery.$and.length == 0)
                 delete searchQuery.$and;
             setSubscription(searchQuery, options);
+            console.log('subscription set');
             searchDep.changed();
         }
         // Set url query
