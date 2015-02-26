@@ -157,10 +157,6 @@ var loadqueryFromURL = function (params) {
 Template.jobsBox.created = function () {
     query = query || loadqueryFromURL(Router.current().params.query);
     entityId = Session.get('entityId');
-    if (!SubscriptionHandlers.JobHandler) {
-        SubscriptionHandlers.JobHandler = Meteor.paginatedSubscribe('jobs');
-    }
-    JobHandler = SubscriptionHandlers.JobHandler;
 };
 
 var searchQuery
@@ -293,7 +289,7 @@ Template.jobList.created = function () {
                 searchQuery.$and.push({
                     $or: stringSearches
                 });
-                JobHandler.setFilter(searchQuery);
+                setSubscription(searchQuery,options);
                 searchDep.changed();
             });
         }
@@ -302,16 +298,26 @@ Template.jobList.created = function () {
                 SubscriptionHandlers.JobHandler._isLoading.value = false;
             if (searchQuery.$and.length == 0)
                 delete searchQuery.$and;
-            //if (selectedSort) {
-            //    JobHandler.setOptions(options);
-            //}
-            JobHandler.setFilter(searchQuery, options);
+            setSubscription(searchQuery,options);
         }
         // Set url query
         urlQuery.apply();
         searchDep.changed();
     })
 };
+var setSubscription=function (searchQuery,options) {
+    if (SubscriptionHandlers.JobHandler) {
+        SubscriptionHandlers.JobHandler.setFilter(searchQuery);
+        SubscriptionHandlers.JobHandler.setOptions(options);
+    }
+    else
+        SubscriptionHandlers.JobHandler =
+            Meteor.paginatedSubscribe('jobs', {
+                filter: searchQuery,
+                options: options
+            });
+}
+
 
 Template.jobList.rendered = function () {
     /**
@@ -407,14 +413,14 @@ Template.jobList.helpers({
         return listViewMode.get();
     },
     jobs: function () {
+        searchDep.depend();
         if (entityId) {
-            searchDep.depend();
+
             return jobCollection.find(searchQuery);
         }
         else
         {
-            console.log('query jobs');
-            return jobCollection.find();
+            return jobCollection.find(searchQuery);
         }
     },
     isLoading: function () {
