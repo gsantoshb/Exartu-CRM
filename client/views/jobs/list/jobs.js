@@ -12,10 +12,6 @@ JobsController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function () {
         Session.set('entityId', undefined);
-        //if (!SubscriptionHandlers.JobHandler) {
-        //    SubscriptionHandlers.JobHandler = SubscriptionHandlers.JobHandler || Meteor.paginatedSubscribe('jobs');
-        //}
-        //JobHandler = SubscriptionHandlers.JobHandler;
         return [ LookUpsHandler];
     },
     onAfterAction: function () {
@@ -38,15 +34,5 @@ JobsController = RouteController.extend({
         else
             this.render('loadingContactable');
         this.render();
-    }
-});
-
-/**
- * Helpers
- */
-// Jobs - Helpers
-Template.jobs.helpers({
-    jobCount: function () {
-        return JobHandler.totalCount();
     }
 });
