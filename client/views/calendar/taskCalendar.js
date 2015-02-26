@@ -11,6 +11,7 @@ var start;
 var end;
 var init = false;
 var currentDate;
+var loadingCount = false;
 
 
 var info = new Utils.ObjectDefinition({
@@ -31,16 +32,24 @@ CalendarController = RouteController.extend({
 });
 
 var startEndDep = new Deps.Dependency();
+var loadingDep = new Deps.Dependency();
 
+var handler;
 Meteor.autorun(function () {
   // depend start, end
   startEndDep.depend();
 
   if (!start || !end || (showMineOnly== null)) return;
+  loadingCount = true;
+  loadingDep.changed();
+
+  handler && handler.stop();
 
   init = false;
-  Meteor.subscribe("tasks2", start, end, showMineOnly , function () {
+  handler = Meteor.subscribe("tasks2", start, end, showMineOnly , function () {
     rerender();
+    loadingCount = false;
+    loadingDep.changed();
   });
 
 });
@@ -171,7 +180,7 @@ Template.taskCalendar.helpers({
       id: 'myCalendar',
       monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July',
         'August', 'September', 'October', 'November', 'December'],
-      eventLimit: 5,
+      eventLimit: true,
       eventClick: function (calEvent, jsEvent, view) {
         // change the border color just for fun
 
@@ -183,6 +192,17 @@ Template.taskCalendar.helpers({
       },
       header:false,
       timeFormat:'HH:mm',
+      views:{
+        basicDay:{
+          eventLimit:38
+        },
+        basicWeek:{
+          eventLimit:38
+        },
+        month:{
+          eventLimit:5
+        }
+      },
 
 
       events: function (start, end, timezone, callback) {
@@ -241,9 +261,34 @@ Template.taskCalendar.helpers({
       }
     }
   },
-  taskCount: function () {
-    return Tasks.find({}).count();
-  },
+  taskCount: {
+    title:function(){
+      loadingDep.depend();
+      if(loadingCount){
+        return ""
+      }
+      console.log('title');
+      //Tasks.find().count();
+
+      return "tasks";
+      },
+
+
+
+    count: function(){
+      loadingDep.depend();
+      if(loadingCount){
+        return "loading..."
+      }
+
+      return Tasks.find({}).count();
+    }
+   },
+
+
+
+
+
   query: function () {
     return query;
   },
