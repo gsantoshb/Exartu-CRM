@@ -10,6 +10,7 @@ var showByDay = false;
 var start;
 var end;
 var init = false;
+var currentDate;
 
 
 var info = new Utils.ObjectDefinition({
@@ -45,6 +46,7 @@ Meteor.autorun(function () {
 });
 
 Template.taskCalendar.created=function() {
+  var calendarDiv = $('.fc');
 
 
    observe = Tasks.find({}).observe({
@@ -55,7 +57,7 @@ Template.taskCalendar.created=function() {
 
       //document = Utils.clasifyTags(document);
 
-      var calendarDiv = $('.fc');
+
       switch (document.state) {
         case Enums.taskState.future:
           calendarDiv.fullCalendar('renderEvent', {
@@ -122,7 +124,7 @@ Template.taskCalendar.created=function() {
       var event = _.find(calendarDiv.fullCalendar('clientEvents'), function (ev) {
         return oldDocument._id == ev.id;
       });
-      newDocument = Utils.clasifyTags(newDocument);
+
       switch (newDocument.state) {
         case Enums.taskState.future:
           event.className = 'item-label-2 label-future';
@@ -179,11 +181,9 @@ Template.taskCalendar.helpers({
         });
         Utils.showModal('addEditTask', task)
       },
-      header: {
-        left: 'title',
-        center: 'month,basicWeek,basicDay',
-        right: 'prev,today,next'
-      },
+      header:false,
+      timeFormat:'HH:mm',
+
 
       events: function (start, end, timezone, callback) {
         callback(_.map(Tasks.find().fetch(), function (t) {
@@ -278,6 +278,11 @@ Template.taskCalendar.helpers({
   showByDay: function(){
     startEndDep.depend();
     return showByDay ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  },
+  currentDate: function(){
+    startEndDep.depend();
+    var calendarDiv = $('.fc');
+    return calendarDiv.fullCalendar( 'getView').title;
   }
 
 });
@@ -295,6 +300,7 @@ Template.taskCalendar.events = {
     showPrev = false;
     var calendarDiv = $('.fc');
     calendarDiv.fullCalendar('today');
+
     startEndDep.changed();
 
 
@@ -353,7 +359,7 @@ Template.taskCalendar.events = {
   'click #show-byMonth': function () {
     var calendarDiv = $('.fc');
 
-    if(calendarDiv.fullCalendar( 'getView').title != 'month') {
+
       calendarDiv.fullCalendar('changeView', 'month');
       var today = new Date();
       if((today>start) && (today<end)){
@@ -376,16 +382,16 @@ Template.taskCalendar.events = {
       showByWeek = false;
 
       startEndDep.changed();
-    }
+
 
 
   },
   'click #show-byWeek': function () {
     var calendarDiv = $('.fc');
 
-    if(calendarDiv.fullCalendar( 'getView').title != 'agendaWeek') {
 
-      calendarDiv.fullCalendar('changeView', 'agendaWeek');
+
+      calendarDiv.fullCalendar('changeView', 'basicWeek');
       var today = new Date();
       if((today>start) && (today<end)){
         showToday = true;
@@ -406,13 +412,13 @@ Template.taskCalendar.events = {
       showByDay = false;
       showByWeek = true;
       startEndDep.changed();
-    }
+
   },
   'click #show-byDay': function () {
     var calendarDiv = $('.fc');
 
-    if(calendarDiv.fullCalendar( 'getView').title != 'agendaDay') {
-      calendarDiv.fullCalendar('changeView', 'agendaDay');
+
+      calendarDiv.fullCalendar('changeView', 'basicDay');
       var today = new Date();
       if((today>start) && (today<end)){
         showToday = true;
@@ -432,9 +438,8 @@ Template.taskCalendar.events = {
       showByMonth = false;
       showByDay = true;
       showByWeek = false;
-
       startEndDep.changed();
-    }
+
 
   }
 
