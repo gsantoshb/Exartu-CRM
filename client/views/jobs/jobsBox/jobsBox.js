@@ -277,17 +277,11 @@ Template.jobList.created = function () {
             urlQuery.addParam('search', query.searchString.value);
         }
 
-        if (SubscriptionHandlers.JobHandler && SubscriptionHandlers.JobHandler._isLoading)
-            SubscriptionHandlers.JobHandler._isLoading.value = false;
         if (searchQuery.$and.length == 0)
             delete searchQuery.$and;
-        setSubscription(searchQuery, options);
         searchDep.changed();
-        if (SubscriptionHandlers.JobHandler && SubscriptionHandlers.JobHandler._isLoading)
-            SubscriptionHandlers.JobHandler._isLoading.value = false;
-
         urlQuery.apply();
-
+		setSubscription(searchQuery, options);
     })
 };
 var setSubscription = function (searchQuery, options) {
