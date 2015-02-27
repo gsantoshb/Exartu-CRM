@@ -117,7 +117,7 @@ var setComputedDisplayFields=function (doc) {
     return doc;
 };
 Jobs.after.update(function (userId, doc, fieldNames, modifier, options) {
-    if (this.previous.jobTitle != doc.jobTitle || this.previous.client != doc.client)
+    //if (this.previous.jobTitle != doc.jobTitle || this.previous.client != doc.client)
     {
         setComputedDisplayFields(doc);
         var aftmodifier= {};
