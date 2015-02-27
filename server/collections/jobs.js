@@ -117,7 +117,7 @@ var setComputedDisplayFields=function (doc) {
     return doc;
 };
 Jobs.after.update(function (userId, doc, fieldNames, modifier, options) {
-    //if (this.previous.jobTitle != doc.jobTitle || this.previous.client != doc.client)
+    if (this.previous.jobTitle != doc.jobTitle || this.previous.client != doc.client)
     {
         setComputedDisplayFields(doc);
         var aftmodifier= {};
@@ -128,14 +128,14 @@ Jobs.after.update(function (userId, doc, fieldNames, modifier, options) {
     }
 }, {fetchPrevious: true/false});
 
-Jobs.before.update(function (userId,doc, fieldNames, modifier){
-    doc=setComputedDisplayFields(doc);
-    modifier.$set = modifier.$set || {};
-    modifier.$set.jobTitleDisplayName = doc.jobTitleDisplayName;
-    modifier.$set.clientDisplayName = doc.clientDisplayName;
-    modifier.$set.displayName = doc.displayName;
-    //console.log('doc.jobTitleDisplayName',doc.jobTitleDisplayName);
-});
+//Jobs.before.update(function (userId,doc, fieldNames, modifier){
+//    //doc=setComputedDisplayFields(doc);
+//    //modifier.$set = modifier.$set || {};
+//    //modifier.$set.jobTitleDisplayName = doc.jobTitleDisplayName;
+//    //modifier.$set.clientDisplayName = doc.clientDisplayName;
+//    //modifier.$set.displayName = doc.displayName;
+//    //console.log('doc.jobTitleDisplayName',doc.jobTitleDisplayName);
+//});
 Jobs.before.insert(function (userId, doc) {
     try {
         var user = Meteor.user() || {};
