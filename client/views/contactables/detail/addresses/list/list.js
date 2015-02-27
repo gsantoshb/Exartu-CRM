@@ -6,9 +6,9 @@ var showLocationAddBox = new ReactiveVar(false);
 var addressesDep = new Deps.Dependency();
 Template.addressList.helpers({
     addresses: function () {
-        var addresses = Addresses.find({'linkId': Session.get('entityId')});
+        var contactable = Contactables.findOne({_id: Session.get('entityId')});
         addressesDep.depend();
-        return addresses;
+        return contactable.addresses;
     },
     getAddressTypeDisplayName: function () {
         if (!this.addressTypeId) {
@@ -19,7 +19,6 @@ Template.addressList.helpers({
         return lkp.displayName;
     },
     setNewAddress: function () {
-        debugger;
         return function () {
             addressesDep.changed();
             showLocationEditBox.set(false);
@@ -40,7 +39,6 @@ Template.addressList.helpers({
     }
 });
 Template.addressList.events({
-
     'click .deleteAddressRecord': function () {
         var self = this;
         Utils.showModal('basicModal', {
