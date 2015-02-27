@@ -52,7 +52,7 @@ var jobTypes = function () {
     return dType.ObjTypes.find({parent: Enums.objGroupType.job});
 };
 
-var searchFields = ['jobTitle', 'publicJobTitle'];
+var searchFields = ['displayName', 'publicJobTitle'];
 
 var setSortField = function (field) {
     var selected = selectedSort.get();
@@ -271,38 +271,18 @@ Template.jobList.created = function () {
                 };
                 stringSearches.push(aux);
             });
-
-            urlQuery.addParam('search', query.searchString.value);
-
-            // Search client using search string in server side and return clients' ids
-            // TODO: find another way to do this kind of search to avoid nested calls
-            Meteor.call('findClient', query.searchString.value, function (err, result) {
-                if (!err)
-                    stringSearches.push({
-                        client: {
-                            $in: _.map(result, function (client) {
-                                return client._id;
-                            })
-                        }
-                    });
-
-                searchQuery.$and.push({
-                    $or: stringSearches
-                });
-                setSubscription(searchQuery, options);
-                searchDep.changed();
+            searchQuery.$and.push({
+                $or: stringSearches
             });
+            urlQuery.addParam('search', query.searchString.value);
         }
-        else {
-            //if (SubscriptionHandlers.JobHandler && SubscriptionHandlers.JobHandler._isLoading)
-            //    SubscriptionHandlers.JobHandler._isLoading.value = false;
-            if (searchQuery.$and.length == 0)
-                delete searchQuery.$and;
-            setSubscription(searchQuery, options);
-            console.log('subscription set');
-            searchDep.changed();
-        }
-        // Set url query
+
+        //if (SubscriptionHandlers.JobHandler && SubscriptionHandlers.JobHandler._isLoading)
+        //    SubscriptionHandlers.JobHandler._isLoading.value = false;
+        if (searchQuery.$and.length == 0)
+            delete searchQuery.$and;
+        setSubscription(searchQuery, options);
+        searchDep.changed();
         urlQuery.apply();
 
     })
@@ -312,7 +292,7 @@ var setSubscription = function (searchQuery, options) {
     if (SubscriptionHandlers.JobHandler) {
         SubscriptionHandlers.JobHandler.setFilter(searchQuery);
         SubscriptionHandlers.JobHandler.setOptions(options);
-        JobHandler=SubscriptionHandlers.JobHandler;
+        JobHandler = SubscriptionHandlers.JobHandler;
     }
     else {
         SubscriptionHandlers.JobHandler =
