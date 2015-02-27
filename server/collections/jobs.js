@@ -103,7 +103,39 @@ Jobs.allow({
         return true;
     }
 });
+var setComputedDisplayFields=function (doc) {
+    if (doc.client) {
+        var c = Contactables.findOne(doc.client);
+        if (c) doc.clientDisplayName = c.displayName;
+    };
 
+    if (doc.jobTitle){
+        var jt = LookUps.findOne(doc.jobTitle);
+        if (jt) doc.jobTitleDisplayName=jt.displayName;
+    }
+    doc.displayName=doc.jobTitleDisplayName + ' @ ' + doc.clientDisplayName;
+    return doc;
+};
+Jobs.after.update(function (userId, doc, fieldNames, modifier, options) {
+    if (this.previous.jobTitle != doc.jobTitle || this.previous.client != doc.client)
+    {
+        setComputedDisplayFields(doc);
+        var aftmodifier= {};
+        aftmodifier.jobTitleDisplayName = doc.jobTitleDisplayName;
+        aftmodifier.clientDisplayName = doc.clientDisplayName;
+        aftmodifier.displayName = doc.displayName;
+        Jobs.update({_id:doc._id},{$set: aftmodifier})
+    }
+}, {fetchPrevious: true/false});
+
+Jobs.before.update(function (userId,doc, fieldNames, modifier){
+    doc=setComputedDisplayFields(doc);
+    modifier.$set = modifier.$set || {};
+    modifier.$set.jobTitleDisplayName = doc.jobTitleDisplayName;
+    modifier.$set.clientDisplayName = doc.clientDisplayName;
+    modifier.$set.displayName = doc.displayName;
+    //console.log('doc.jobTitleDisplayName',doc.jobTitleDisplayName);
+});
 Jobs.before.insert(function (userId, doc) {
     try {
         var user = Meteor.user() || {};
@@ -115,16 +147,7 @@ Jobs.before.insert(function (userId, doc) {
     doc.userId = user._id || doc.userId;
     doc.dateCreated = Date.now();
     if (!doc.activeStatus) doc.activeStatus = LookUpManager.getActiveStatusDefaultId();
-    if (doc.client) {
-        var c = Contactables.findOne(doc.client);
-        if (c) doc.clientDisplayName = c.displayName;
-    };
-
-    if (doc.jobTitle){
-        var jt = LookUps.findOne(doc.jobTitle);
-        if (jt) doc.jobTitleDisplayName=jt.displayName;
-    }
-    doc.displayName=doc.jobTitleDisplayName + ' @ ' + doc.clientDisplayName;
+    setComputedDisplayFields(doc);
     if (!doc.tags) doc.tags=[];
 });
 
