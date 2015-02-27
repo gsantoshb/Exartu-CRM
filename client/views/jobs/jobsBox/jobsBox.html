@@ -172,7 +172,9 @@
 </template>
 
 <template name="jobList">
-
+{{#if isLoading}}
+        <div style="height: 280px;"></div>
+{{else}}
         <div class="list-item-section {{#if listViewMode}}simple-view{{/if}}">
             {{#each jobs}}
                 {{> jobListItem }}
@@ -197,6 +199,7 @@
                 {{/if}}
             {{/each}}
         </div>
+{{/if}}
 </template>
 
 <template name="jobListItem">
