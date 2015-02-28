@@ -282,7 +282,7 @@ Template.jobList.created = function () {
 
         urlQuery.apply();
 		setSubscription(searchQuery, options);
-        searchDep.changed();
+        //searchDep.changed();
     })
 };
 var setSubscription = function (searchQuery, options) {
