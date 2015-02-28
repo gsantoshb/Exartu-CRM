@@ -93,6 +93,7 @@ Placements.before.insert(function (userId, doc) {
 
 });
 
+
 Placements.after.insert(function (userId, doc) {
     Contactables.update({
         _id: doc.employee

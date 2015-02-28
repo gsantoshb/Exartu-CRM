@@ -3,18 +3,18 @@ JobView = new View('jobs', {
     collection: Jobs,
     cursors: function (job) {
         // Client
-        this.publish({
-            cursor: function (job) {
-                if (job.client)
-                    return Contactables.find(job.client, {fields: flds});
-            },
-            to: 'contactables',
-            observedProperties: ['client'],
-            onChange: function (changedProps, oldSelector) {
-                oldSelector._id = changedProps.client;
-                return Contactables.find(oldSelector, {fields: flds});
-            }
-        });
+        //this.publish({
+        //    cursor: function (job) {
+        //        if (job.client)
+        //            return Contactables.find(job.client, {fields: flds});
+        //    },
+        //    to: 'contactables',
+        //    observedProperties: ['client'],
+        //    onChange: function (changedProps, oldSelector) {
+        //        oldSelector._id = changedProps.client;
+        //        return Contactables.find(oldSelector, {fields: flds});
+        //    }
+        //});
 
         // Publish the three most recent placements
         var placements = Placements.find({job: job._id}, {fields: {'employee': 1, 'job': 1}, sort: {dateCreated: -1}});
@@ -29,13 +29,13 @@ JobView = new View('jobs', {
             to: 'placements'
         });
 
-        // Employees
-        this.publish({
-            cursor: function () {
-                return Contactables.find({_id: {$in: employeeIds}});
-            },
-            to: 'contactables'
-        });
+        //// Employees
+        //this.publish({
+        //    cursor: function () {
+        //        return Contactables.find({_id: {$in: employeeIds}});
+        //    },
+        //    to: 'contactables'
+        //});
 
     }
 });
