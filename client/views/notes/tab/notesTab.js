@@ -346,5 +346,8 @@ Template.linksAutoForm.events({
     },
     'click #editLinks': function () {
         isEditing.set(true);
+    },
+    'click #editLinksDone': function () {
+        isEditing.set(false);
     }
 });
