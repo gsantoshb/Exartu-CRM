@@ -2,19 +2,38 @@
 <template name="contactable">
     <div id="content" class="details">
         {{#with contactable}}
-            <div id="content-header" class="mini">
-                <div class="profile-content-header">
-                    {{>contactable_header}}
-                </div>
-            </div>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="details-menu col-md-2">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <div class="sidebar">
+
+                        <div class="go-back">
+                            <a href="#"><i class="fa fa-chevron-left"></i> Back</a>
+                        </div>
+
+                        {{>contactable_header}}
+
                         {{>contactable_nav}}
                         {{>contactable_actions}}
-                    </div>
-                    <div class="details-view col-md-10">
-                        <div class="details-view-content clearfix">
+                    </div><!-- /.sidebar -->
+
+                </div>
+                <div class="col-md-9">
+                    <div class="box-type-1">
+
+                        <div class="notice-msg-container">
+                            <div class="notice-msg">
+                                <div class="notice-msg-title">
+                                    <i class="fa fa-file-text-o"></i>
+                                    Status note
+                                    <span class="left-decoration"></span>
+                                    <span class="right-decoration"></span>
+                                </div>
+                                <div class="notice-msg-content">{{statusNote}}</div>
+                            </div><!-- /.notice-msg -->
+                        </div><!-- /.notice-msg-container -->
+
+                        <div class="details-view-content box-type-1-content">
                             <div class="tab-pane active">
                                 {{> UI.dynamic template=currentTemplate  data=. }}
                             </div>
@@ -23,7 +42,6 @@
                     </div>
                 </div>
             </div>
-
         {{/with}}
     </div>
 </template>
@@ -31,57 +49,68 @@
 <!-- Headers -->
 
 <template name="contactable_header">
-    {{#if pictureFileId}}
-        <div class="profile-pic">
-            <div class="thumb thumb-md profile-pic-photo" style="cursor: pointer;">
-                <a id="edit-pic" title="Click to Edit" class="pointer">
-                    <img class="" src="{{pictureUrl}}" style="max-height: 40px;max-width: 40px;">
+
+    <div class="head">
+        <div class="item-icon item-icon-network item-icon-lg">
+            <div class="profile-pic">
+                {{#if pictureFileId}}
+
+                    <div class="thumb thumb-md" style="cursor: pointer;">
+                        <a id="edit-pic" title="Click to Edit" class="pointer">
+                            <img class="" src="{{pictureUrl}}" style="max-height: 40px;max-width: 40px;">
+                        </a>
+                    </div>
+                {{else}}
+                    <div id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                        {{#if person}}
+                            <i class="icon-profile-business-man"></i>
+                        {{/if}}
+                        {{#if organization}}
+                            <i class="icon-buildings-1"></i>
+                        {{/if}}
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+        <h1 class="title">{{displayName}}</h1>
+        {{#if person}}
+            {{#if person.jobTitle}}
+            <div class="desc">{{person.jobTitle}}</div>
+            {{/if}}
+        {{/if}}
+
+        {{#if Contact.clientName}}
+            <!--<br>-->
+            <div class="desc">
+                <a href="/contactable/{{Contact.client}}">
+                    <strong class="text text-muted" style="font-size: 25px; color: #A29E9E">
+                        {{Contact.clientName}}
+                        <i class="fa fa-external-link" style="font-size: 14px"></i>
+                    </strong>
                 </a>
             </div>
-        </div>
-    {{else}}
-        <div class="profile-pic">
-            <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
-                {{#if person}}
-                    <i class="icon-profile-business-man"></i>
-                {{/if}}
-                {{#if organization}}
-                    <i class="icon-buildings-1"></i>
-                {{/if}}
-            </div>
-        </div>
-    {{/if}}
+        {{/if}}
+
+        {{#if Client.department}}
+        <div class="desc">{{Client.department}}</div>
+        {{/if}}
+    </div>
+
+    {{#with mainContactMethods}}
+    <ul class="list-type-3">
+        {{#if phone.value}}
+            <li><a href="callto:{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
+        {{/if}}
+        {{#if email.value}}
+            <li><a href="mailto:{{email.value}}"><span class="round-icon-container"><i class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
+        {{/if}}
+    </ul>
+    {{/with}}
+
     <input id="edit-picture" style="visibility:hidden; display: none" name="files" type="file" class="fileUploader"/>
 
 
     <h1 class="profile-name">
-        <strong>
-            {{displayName}}
-
-            {{#if person}}
-                {{#if person.jobTitle}}
-                    <small>— {{person.jobTitle}}</small>
-                {{/if}}
-            {{/if}}
-
-            {{#if Contact.clientName}}
-                <!--<br>-->
-                <small>
-                    <a href="/contactable/{{Contact.client}}">
-                        <strong class="text text-muted" style="font-size: 25px; color: #A29E9E">
-                            {{Contact.clientName}}
-                            <i class="fa fa-external-link" style="font-size: 14px"></i>
-                        </strong>
-                    </a>
-                </small>
-            {{/if}}
-
-            {{#if Client.department}}
-                <small>{{Client.department}}</small>
-            {{/if}}
-        </strong>
-        <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
-
         {{#if isAppCenterUser}}
             <small><span class="label label-info">Applicant Center user</span></small>
         {{/if}}
@@ -93,23 +122,6 @@
             <span>{{getLocationDisplayName}}</span>
         {{/if}}
     </p>
-
-    <div class="profile-btns">
-        {{#with mainContactMethods}}
-            {{#if phone.value}}
-                <a class="btn btn-default btn-custom-with-circle" href="callto:{{phone.value}}">
-                    <span class="btn-round"><i class="fa fa-phone"></i></span>
-                    {{phone.value}}
-                </a>
-            {{/if}}
-            {{#if email.value}}
-                <a class="btn btn-default btn-custom-with-circle" href="mailto:{{email.value}}">
-                    <span class="btn-round"><i class="fa fa-envelope"></i></span>
-                    {{email.value}}
-                </a>
-            {{/if}}
-        {{/with}}
-    </div>
 </template>
 
 <template name="contactable_notes">
@@ -135,24 +147,18 @@
 </template>
 
 <template name="contactable_details">
-    <row>
-        <div class="col-md-6">
-            {{> contactableDetailBox}}
+    {{> contactableDetailBox}}
 
-            {{> contactableContactMethodsBox}}
+    {{> contactableContactMethodsBox}}
 
-            {{#if Contact}}
-                {{> contactClientInfo client=Contact.client path='Contact.client' collection=collection}}
-            {{/if}}
-        </div>
-        <div class="col-md-6">
+    {{#if Contact}}
+        {{> contactClientInfo client=Contact.client path='Contact.client' collection=collection}}
+    {{/if}}
 
-            {{> contactable_contacts}}
-            {{>tagsBox}}
-            {{>hotListMembershipsBox}}
-            {{>addressList}}
-        </div>
-    </row>
+    {{> contactable_contacts}}
+    {{>tagsBox}}
+    {{>hotListMembershipsBox}}
+    {{>addressList}}
 </template>
 <template name="hotListMembershipsBox">
     <div class="box">
@@ -204,104 +210,46 @@
 </template>
 
 <template name="contactable_actions">
-    <div class="hidden-xs hidden-sm">
-        <div class="details-actions row">
-            <ul class="no-padding">
-                {{#unless Employee}}
-                    {{#if Contact}}
-                        <li>
-                            <a id="makeEmployee" class="btn btn-default btn-custom-with-circle action-btn">
-                                <span class="btn-round"><i class="fa fa-exchange"></i></span>
-                                <span style="white-space: normal;"> Make into an Employee</span>
-                            </a>
-                        </li>
-                    {{/if}}
-                {{/unless}}
-                {{#unless Contact}}
-                    {{#if Employee}}
-                        <li>
-                            <a id="makeContact" class="btn btn-default btn-custom-with-circle action-btn">
-                                <span class="btn-round"><i class="fa fa-exchange"></i></span>
-                                <span style="white-space: normal;">Make into a Contact</span>
-                            </a>
-                        </li>
-                    {{/if}}
-                {{/unless}}
-                {{#if Employee}}
-                    <li>
-                        <a id="generate-resume" class="btn btn-default btn-custom-with-circle action-btn">
-                            <span class="btn-round"><i class="fa fa-file"></i></span>
-                            Build resume/cv
-                        </a>
-                        <a id="download-generated-resume" target="_blank"
-                           download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
-                    </li>
+    {{#unless Employee}}
+        {{#if Contact}}
+            <a id="makeEmployee" class="btn-custom-1 btn-block pointer">
+                <i class="fa fa-exchange"></i>&nbsp;
+                <span style="white-space: normal;"> Make into an Employee</span>
+            </a>
+        {{/if}}
+    {{/unless}}
+    {{#unless Contact}}
+        {{#if Employee}}
+            <a id="makeContact" class="btn-custom-1 btn-block pointer">
+                <i class="fa fa-exchange"></i>&nbsp;
+                <span style="white-space: normal;">Make into a Contact</span>
+            </a>
+        {{/if}}
+    {{/unless}}
+    {{#if Employee}}
+        <a id="generate-resume" class="btn-custom-1 btn-block pointer">
+            <i class="fa fa-file"></i>&nbsp;
+            Build resume/cv
+        </a>
+        <a id="download-generated-resume" target="_blank"
+           download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
 
-                    <!-- Applicant Center user status -->
-                    {{#unless isAppCenterUser}}
-                        <li>
-                            <a id="sendAppCenterInvite" class="btn btn-default btn-custom-with-circle action-btn">
-                                <span class="btn-round"><i class="fa fa-envelope"></i></span>
-                                {{#unless alreadyInvited}}
-                                    <span style="white-space: normal;">Invite to App Center</span>
-                                {{else}}
-                                    <span style="white-space: normal;">Resend AC invitation</span>
-                                {{/unless}}
-                            </a>
-                        </li>
-                    {{/unless}}
-                {{/if}}
+        <!-- Applicant Center user status -->
+        {{#unless isAppCenterUser}}
+            <a id="sendAppCenterInvite" class="btn-custom-1 btn-block pointer">
+                <i class="fa fa-envelope"></i>&nbsp;
+                {{#unless alreadyInvited}}
+                    <span style="white-space: normal;">Invite to App Center</span>
+                {{else}}
+                    <span style="white-space: normal;">Resend AC invitation</span>
+                {{/unless}}
+            </a>
+        {{/unless}}
+    {{/if}}
 
-                <li>
-                    {{#if hasEmailAddress}}
-                        {{>sendEmailTemplate emailTemplateContext}}
-                    {{/if}}
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="visible-xs visible-sm pull-right">
-        <div class="details-actions">
-            <div class="btn-group nav-item">
-                <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                    Act
-                </a>
-                <ul class="dropdown-menu pull-right" role="menu">
-                    {{#unless Employee}}
-                        {{#if Contact}}
-                            <li>
-                                <a id="makeEmployee">
-                                    <span><i class="fa fa-exchange"></i></span>
-                                    Make Employee
-                                </a>
-                            </li>
-                        {{/if}}
-                    {{/unless}}
-                    {{#unless Contact}}
-                        {{#if Employee}}
-                            <li>
-                                <a id="makeContact">
-                                    <span><i class="fa fa-exchange"></i></span>
-                                    Make Contact
-                                </a>
-                            </li>
-                        {{/if}}
-                    {{/unless}}
-                    {{#if Employee}}
-                        <li>
-                            <a id="generate-resume">
-                                <span><i class="fa fa-file"></i></span>
-                                Generate resume
-                                <a id="download-generated-resume" target="_blank"
-                                   download="{{person.firstName}}-{{person.lastName}}-Resume.pdf"
-                                   style="display: none"></a>
-                            </a>
-                        </li>
-                    {{/if}}
-                </ul>
-            </div>
-        </div>
-    </div>
+    {{#if hasEmailAddress}}
+        {{>sendEmailTemplate emailTemplateContext}}
+    {{/if}}
 </template>
 
 <template name="contactable_activities">
@@ -333,5 +281,4 @@
 </template>
 
 <template name="link">
-
 </template>
