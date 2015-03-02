@@ -335,11 +335,12 @@ _.extend(DocCenter,{
 
     Accounts.find().forEach(function (account) {
       try{
-        DocCenter.insertMergeField(account._id, mergeField, cb);
+        DocCenter.insertMergeField(account._id, mergeField);
       }catch (e){
         console.error('could not create mergeField ' + mergeField.hey + ' in hier ' + account._id);
       }
     });
+    cb(null);
   })
 });
 
