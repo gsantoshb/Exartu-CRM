@@ -340,6 +340,7 @@ Template.linksAutoForm.events({
     },
     'click .remove-link': function () {
         var ctx = Template.parentData(0);
+        console.log(ctx);
         var links = ctx.links;
         Template.parentData(0).links = _(links).without(this);
         ctx.linkedDep.changed();

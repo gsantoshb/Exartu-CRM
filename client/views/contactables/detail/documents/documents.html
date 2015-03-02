@@ -1,25 +1,16 @@
 <template name="contactableDocumentsAdd">
-    <div class="tab-pane record" id="document">
-        <div class="record-add row">
+    <div id="document">
+        {{#if addForm }}
+            {{>addDocumentForm}}
+        {{else}}
+            {{#dragAndDropZone onDrop=showAddForm}}
+                <div class="line-1">Drop file here</div>
+                <div class="line-2">or, if you preffer... </div>
+                <button class="btn btn-primary add-trigger">Select a file from your computer</button>
+                <input style="visibility: hidden" id="add-file" type="file">
+            {{/dragAndDropZone}}
+        {{/if}}
 
-            <div class="add-box-head add-box-responsive col-xs-12 col-md-3">
-                <div class="add-item-icon"><i class="icon-document-1"></i></div>
-                <div class="add-item-title">Documents</div>
-            </div>
-            <div class="add-box-content col-sm-12 col-md-9">
-                {{#if addForm }}
-                    {{>addDocumentForm}}
-                {{else}}
-                    {{#dragAndDropZone onDrop=showAddForm}}
-                        <h3 class="lead">Drop files here</h3>
-                        <p>or</p>
-                        <br>
-                        <span class="btn btn-default add-trigger"> Upload file </span>
-                        <input style="visibility: hidden" id="add-file" type="file">
-                    {{/dragAndDropZone}}
-                {{/if}}
-            </div>
-        </div>
     </div>
     {{#objectProperty property=query.searchString}}
         <span>
@@ -29,12 +20,75 @@
 </template>
 
 <template name="addDocumentForm">
+{{#with newDocument}}
+    <section class="box-type-2 editable">
+        <div class="box-type-2-content">
+            <div class="row">
+                <div class="col-md-2">
+                    <h3>Add document</h3>
+                    <em>Original name</em><strong class="text-center"> {{originalFileName}} </strong>
+                </div><!-- /.col-md-2 -->
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-type-5">
+                                <li>
+                                    <div class="left-part">Name</div>
+                                    <div class="right-part">
+                                        {{#objectProperty property=name}}
+                                            <input class="form-control input-lg" type="text" placeholder="Name" value="{{value}}">
+                                        {{/objectProperty}}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left-part">Name</div>
+                                    <div class="right-part">
+                                        {{#objectProperty property=description}}
+                                            <input class="form-control input-lg" type="text" placeholder="Description" value="{{value}}">
+                                        {{/objectProperty}}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left-part">Tags</div>
+                                    <div class="right-part">
+                                        <input id="new-tag" type="text" class="form-control input-lg" placeholder="Enter a tag">
+                                        <span class="input-group-btn">
+                                          <button id="add-tag" class="btn btn-success btn-lg" type="button"><span class="fa fa-plus"></span></button>
+                                        </span>
+
+
+                                        <div class="tags-content">
+                                            {{#objectProperty property=newDocument.tags}}
+                                                <button type="button" class="btn btn-xs btn-primary">
+                                                    <span>{{value}}</span>
+                                                    <i id="remove-tag" class="fa fa-times" data-remove></i>
+                                                </button>
+                                            {{/objectProperty}}
+                                        </div>
+
+                                    </div>
+                                </li>
+                            </ul>
+                        </div><!-- /.col-md-6 -->
+                        <div class="col-md-6"></div><!-- /.col-md-6 -->
+                    </div><!-- /.row -->
+
+                    <div class="edit-actions-bar">
+                        <button id="save-document" class="btn btn-primary">Save changes</button>
+                        <button id="cancel-document" class="btn btn-default">Cancel</button>
+                    </div><!-- /.edit-actions-bar -->
+
+                </div><!-- /.col-md-10 -->
+            </div><!-- /.row -->
+        </div><!-- /.box-type-2-content -->
+    </section>
+{{/with}}
     <div class="add-box">
         <div class="add-box-head" style="padding: 25px 10px">
             <div class="add-item-icon"><i class="icon-document-1"></i></div>
             <h1>Add document</h1>
         </div>
-        <div class="add-box-content" style="padding-bottom: 0px">
+        <div class="add-box-content" style="padding-bottom: 0px; display: none;">
             {{#with newDocument}}
                 <form role="form">
                     <div class="form-group">
@@ -44,13 +98,13 @@
 
                     <div class="form-group">
                         {{#objectProperty property=name}}
-                            <input class="form-control input-lg" type="text" placeholder="Name" value="{{value}}">
+                            <input class="form-control input-sm" type="text" placeholder="Name" value="{{value}}">
                         {{/objectProperty}}
                     </div>
 
                     <div class="form-group">
                         {{#objectProperty property=description}}
-                            <input class="form-control input-lg" type="text" placeholder="Description" value="{{value}}">
+                            <input class="form-control input-sm" type="text" placeholder="Description" value="{{value}}">
                         {{/objectProperty}}
                     </div>
 

@@ -54,12 +54,9 @@
         <div class="item-icon item-icon-network item-icon-lg">
             <div class="profile-pic">
                 {{#if pictureFileId}}
-
-                    <div class="thumb thumb-md" style="cursor: pointer;">
-                        <a id="edit-pic" title="Click to Edit" class="pointer">
-                            <img class="" src="{{pictureUrl}}" style="max-height: 40px;max-width: 40px;">
-                        </a>
-                    </div>
+                    <a id="edit-pic" title="Click to Edit" class="pointer">
+                        <img class="" src="{{pictureUrl}}" style="max-height: 40px;max-width: 40px;">
+                    </a>
                 {{else}}
                     <div id="edit-pic" title="Click to Edit" style="cursor: pointer">
                         {{#if person}}
