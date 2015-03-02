@@ -4,7 +4,7 @@
 var entityType = null;
 var isEntitySpecific = false;
 var contactable;
-var searchFields = ['employeeInfo.firstName', 'employeeInfo.lastName', 'employeeInfo.middleName'];
+var searchFields = ['displayName'];
 
 var placementCollection = Placements;
 var PlacementHandler, query;
@@ -217,9 +217,27 @@ Template.placementList.created = function () {
         } else {
             delete options.sort;
         }
+
+        // String search
+        if (query.searchString.value) {
+            var stringSearches = [];
+            _.each(searchFields, function (field) {
+                var aux = {};
+                aux[field] = {
+                    $regex: query.searchString.value,
+                    $options: 'i'
+                };
+                stringSearches.push(aux);
+            });
+            searchQuery.$and.push({
+                $or: stringSearches
+            });
+            urlQuery.addParam('search', query.searchString.value);
+        }
+
         if (searchQuery.$and.length == 0)
             delete searchQuery.$and;
-        PlacementHandler.setFilter(searchQuery, params);
+        PlacementHandler.setFilter(searchQuery);
         PlacementHandler.setOptions(options);
     })
 };

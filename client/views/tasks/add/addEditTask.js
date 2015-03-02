@@ -19,6 +19,7 @@ var errorDep = new Tracker.Dependency;
 
 var addDisabled = new ReactiveVar(false);
 var taskUpdate = function (cb) {
+    var oldTask = Tasks.find({_id : task._id}).fetch()[0];
     if (task._id) {
         Tasks.update({
                 _id: task._id
@@ -38,6 +39,11 @@ var taskUpdate = function (cb) {
                     cb();
             }
         );
+      if(oldTask.assign[0] !== task.assign[0]){
+        Meteor.call('notifyTask', task);
+      }
+
+
     }
 };
 
@@ -197,11 +203,15 @@ Template.addEditTask.events({
             taskUpdate(function () {
                 $('.modal-host').children().modal('toggle')
             });
+
+
         } else {
             Tasks.insert(task, function () {
                 $('.modal-host').children().modal('toggle');
 
             })
+           Meteor.call('notifyTask', task);
+
         }
         addDisabled.set(false);
     },
@@ -232,11 +242,11 @@ Template.addEditTask.events({
         //taskUpdate();
     },
     'change.dp .begin>.date': function (e, ctx) {
-        task.begin = $(e.currentTarget).data().date;
+        task.begin = $(e.currentTarget).data().datetimepicker.date;
         //taskUpdate();
     },
     'change.dp .end>.date': function (e, ctx) {
-        task.end = $(e.currentTarget).data().date;
+        task.end = $(e.currentTarget).data().datetimepicker.date;
         //taskUpdate();
     },
     'change .isCompleted': function (e) {
@@ -254,7 +264,7 @@ Template.addEditTask.events({
     },
     'change .assign': function (e) {
         var newassign = $(e.target).val();
-        task.assign = newassign;
+        task.assign = _.isArray(newassign) ? newassign : [newassign];
         //taskUpdate();
     },
     'blur .msg': function () {

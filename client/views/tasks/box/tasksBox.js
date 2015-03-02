@@ -24,7 +24,7 @@ var loadTaskQueryFromURL = function (params) {
     var ownedByMeQuery = {type: Utils.ReactivePropertyTypes.boolean};
     ownedByMeQuery.default=false;
     if (params.owned) {
-        ownedByMeQuery.default = params.owned ? true: false;
+      ownedByMeQuery.default = params.owned ? true: false;
     }
 
     // Inactive
@@ -79,6 +79,7 @@ Template.tasksBox.created = function () {
         }
 
         if (queryObj.selectedLimit) {
+
             var dateLimit = new Date();
             q.dateCreated = {
                 $gte: dateLimit.getTime() - queryObj.selectedLimit
@@ -190,14 +191,14 @@ var states = [
 
 Template.tasksBox.helpers({
     taskCount: function () {
-        return TasksHandler.totalCount();
+      statusDep.depend();
+      return TasksHandler.totalCount();
     },
     users: function () {
         return Meteor.users.find({}, {sort: {'emails.address': 1}});
     },
     tasks: function () {
-
-        return Tasks.find();
+      return Tasks.find();
     },
     filters: function () {
         return taskQuery;
@@ -210,6 +211,7 @@ Template.tasksBox.helpers({
         return this == status ? 'btn-primary' : 'btn-default';
     },
     isLoading: function () {
+
         return TasksHandler.isLoading();
     }
 });
