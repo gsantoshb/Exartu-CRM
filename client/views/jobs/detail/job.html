@@ -8,23 +8,11 @@
                         <small> at
                             <a  href="/contactable/{{client}}">
                                 <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
-                                    {{clientName}}
+                                    {{clientDisplayName}}
                                     <i class="fa fa-external-link" style="font-size: 14px"></i>
                                 </strong>
                             </a>
                         </small>
-                    <span class="pull-right" style="margin-right: 5px">
-                        {{#with assignment}}
-                            <small> Assigned to
-                                <a href="/contactable/{{_id}}">
-                                    <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'" >
-                                        {{displayName}}
-                                        <i class="fa fa-external-link" style="font-size: 14px"></i>
-                                    </strong>
-                                </a>
-                            </small>
-                        {{/with}}
-                    </span>
                         <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
                     </h1>
                 </div>

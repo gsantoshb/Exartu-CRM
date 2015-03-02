@@ -54,8 +54,8 @@
     <div class="text-center"><h4>{{columnTitle val}}</h4>{{pipelineColumnDescription}}</div>
     <div>
         {{#each columnItems val}}
-            <div class="item-subtitle"><a href="/contactable/{{_id}}">{{>showMore text=displayName limit=20}}
-                {{bDisplayDepartment Client.department}}{{#if bDisplayDepartment Client.department}}{{>showMore text=Client.department limit=20}}{{/if}}</a></div>
+            <div class="item-subtitle"><a href="/contactable/{{_id}}">{{>showMore text=displayName limit=35}}
+                {{#if bDisplayDepartment Client.department}}{{>showMore text=Client.department limit=30}}{{/if}}</a></div>
 
             <div class="item-subtitle-card">
                 {{>showMore text=statusNote limit=35}}

@@ -208,7 +208,7 @@
             <div class="list-item-cell jobs-list-item-title">
                 <div class="item-title single">
                     <a href="/job/{{_id}}">{{displayName}}</a> <span class="item-title-more">&#8212; <a
-                        href="/contactable/{{client}}">{{clientName}}</a></span>
+                        href="/contactable/{{client}}">{{clientDisplayName}}</a></span>
 
                     <span class="item-label prefix-10">{{lookUpName status}}</span>
                     <span class="item-label" data-status="{{lookUpName activeStatus}}">{{lookUpName activeStatus}}</span>
@@ -237,7 +237,7 @@
             </div>
             <div class="list-item-cell jobs-list-item-title">
                 <div class="item-title"><a href="/job/{{_id}}">{{displayName}}</a></div>
-                <div class="item-subtitle"><a href="/contactable/{{client}}">{{clientName}} {{#if departmentName}}
+                <div class="item-subtitle"><a href="/contactable/{{client}}">{{clientDisplayName}} {{#if departmentName}}
                     &#8212; {{departmentName}}{{/if}}</a></div>
             </div>
             <div class="list-item-details jobs-list-item-details">

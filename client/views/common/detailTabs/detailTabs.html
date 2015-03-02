@@ -38,52 +38,15 @@
 </template>
 
 <template name="detailNav">
-    <div class="details-nav">
-        <div class="row hidden-xs hidden-sm">
-            {{#each tabs}}
-                <div class="{{isActive id}} col-xs-4 col-sm-2 col-md-12 details-tab nav-item" style="padding-top: 3px;padding-bottom: 3px;">
-
-                    <a href="/{{../route}}/{{../entityId}}/{{id}}">
-                        {{displayName}}
-                        {{#if isDefined info}}
-                            <span class="custom-badge-2">{{info}}</span>
-                        {{/if}}
-                    </a>
-                </div>
-            {{/each}}
-        </div>
-        <div class="visible-xs visible-sm">
-            {{#each mobileTabs}}
-                <div class="{{isActive id}} details-tab nav-item ">
-
-                    <a class="btn" href="/{{../route}}/{{../entityId}}/{{id}}">
-                        <!--<i class="icon {{icon}}"></i>-->
-                        {{#if mobileDisplayName}}{{mobileDisplayName}}{{else}}{{displayName}}{{/if}}
-                        {{#if isDefined info}}
-                        <br />
-                            <span style="margin-left: 3px" class="custom-badge-2">{{info}}</span>
-                        {{/if}}
-                    </a>
-                </div>
-            {{/each}}
-
-            <!--<div class="btn-group nav-item">-->
-                <!--<a type="button" class="btn dropdown-toggle" data-toggle="dropdown">-->
-                    <!--...-->
-                    <!--&lt;!&ndash;<span class="caret"></span>&ndash;&gt;-->
-                <!--</a>-->
-                <!--<div class="dropdown-menu" role="menu">-->
-                    <!--{{#each otherTabs}}-->
-                        <!--<div class="{{isActive id}} col-xs-12 col-sm-12 col-md-12 details-tab">-->
-
-                            <!--<a href="/{{../route}}/{{../entityId}}/{{id}}">-->
-                                <!--<i class="icon {{icon}}"></i>-->
-                            <!--</a>-->
-                        <!--</div>-->
-                    <!--{{/each}}-->
-                <!--</div>-->
-            <!--</div>-->
-
-        </div>
-    </div>
+    <ul class="list-type-4">
+        {{#each mobileTabs}}
+            <li class="{{isActive id}}">
+                <a href="/{{../route}}/{{../entityId}}/{{id}}">
+                    {{#if mobileDisplayName}}{{mobileDisplayName}}{{else}}{{displayName}}{{/if}}
+                    {{#if isDefined info}}<span class="no">{{info}}</span>{{/if}}
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+            </li>
+        {{/each}}
+    </ul>
 </template>

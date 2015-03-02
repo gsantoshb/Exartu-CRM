@@ -101,7 +101,7 @@ Template.leaderBoardsBox.helpers({
             }
             case Enums.lookUpAction.LeaderBoardType_DealPipeline:
             {
-                lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.client_status, sortOrder: {$gt: 0}}).fetch();
+                lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.client_status, sortOrder: {$gt: 0}},{sort: {sortOrder:1}}).fetch();
 
                 var lkpids = _.pluck(lkps, '_id');
                 var activeid = Utils.getActiveStatusDefaultId();
@@ -111,7 +111,7 @@ Template.leaderBoardsBox.helpers({
             }
             case Enums.lookUpAction.LeaderBoardType_LossReport:
             {
-                lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.client_lostReason}).fetch();
+                lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.client_lostReason},{sort: {sortOrder:1}}).fetch();
                 var lkpids = _.pluck(lkps, '_id');
                 var activeid = Utils.getActiveStatusDefaultId();
                 columnQuery={activeStatus: activeid,'Client.lostReason':{$in: lkpids}};

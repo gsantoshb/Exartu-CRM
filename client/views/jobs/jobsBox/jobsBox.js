@@ -277,17 +277,12 @@ Template.jobList.created = function () {
             urlQuery.addParam('search', query.searchString.value);
         }
 
-        if (SubscriptionHandlers.JobHandler && SubscriptionHandlers.JobHandler._isLoading)
-            SubscriptionHandlers.JobHandler._isLoading.value = false;
         if (searchQuery.$and.length == 0)
             delete searchQuery.$and;
-        setSubscription(searchQuery, options);
-        searchDep.changed();
-        if (SubscriptionHandlers.JobHandler && SubscriptionHandlers.JobHandler._isLoading)
-            SubscriptionHandlers.JobHandler._isLoading.value = false;
 
         urlQuery.apply();
-
+		setSubscription(searchQuery, options);
+        //searchDep.changed();
     })
 };
 var setSubscription = function (searchQuery, options) {
@@ -425,10 +420,7 @@ Template.jobListItem.helpers({
     listViewMode: function () {
         return listViewMode.get();
     },
-    pictureUrl: function (pictureFileId) {
-        var picture = JobsFS.findOne({_id: pictureFileId});
-        return picture ? picture.url('JobsFSThumbs') : undefined;
-    },
+
     jobIcon: function () {
         return helper.getEntityIcon(this);
     },
@@ -438,22 +430,11 @@ Template.jobListItem.helpers({
     placements: function () {
         return Placements.find({job: this._id}, {limit: 3, transform: null});
     },
-    getEmployeeDisplayName: function () {
-        var employee = Contactables.findOne(this.employee);
-        return employee ? employee.displayName : 'Employee information not found!';
-    },
-    clientName: function () {
-        var client = Contactables.findOne(this.client);
-        return client && client.displayName;
-    },
     countPlacements: function () {
         return Placements.find({job: this._id}).count();
     },
     countRequired: function () {
         return this.numberRequired;
-    },
-    morePlacements: function () {
-        return Placements.find({job: this._id}).count() > 3;
     }
 });
 

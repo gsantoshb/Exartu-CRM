@@ -38,88 +38,9 @@ Meteor.paginatedPublish(PlacementView, function () {
         return [];
     return Utils.filterCollectionByUserHier.call(this, PlacementView.find());
 }, {
-    pageSize: 50,
-    publicationName: 'placements',
-    updateSelector: function (selector, params) {
-        if (!params || !params.searchString) return selector;
+    pageSize: 25,
+    publicationName: 'placements'
 
-        var searchStringSelector = {$or: []};
-
-        // Search employees
-        // person properties query
-        var personFields = ['firstName', 'lastName', 'middleName', 'jobTitle', 'salutation'];
-        var employeeQuery = generateQueryFromFields('person', personFields, params.searchString);
-        employeeQuery.objNameArray = 'Employee';
-        // get id of employees that have a placement
-        var employeesId = Utils.filterCollectionByUserHier.call(this, Placements.find()).map(function (placements) {
-            return placements.employee;
-        });
-        employeeQuery._id = {$in: employeesId};
-        // search employees with a placement with properties that match string
-        var employees = Utils.filterCollectionByUserHier.call(this, Contactables.find(employeeQuery)).map(function (employee) {
-            return employee._id;
-        });
-        searchStringSelector.$or.push({employee: {$in: employees}});
-
-        // Search jobs
-        // job properties query
-        var jobFields = ['publicJobTitle'];
-        var jobQuery = generateQueryFromFields(undefined, jobFields, params.searchString);
-        // get id of jobs that have a placement
-        var jobsId = Utils.filterCollectionByUserHier.call(this, Placements.find()).map(function (placements) {
-            return placements.job;
-        });
-        jobQuery._id = {$in: jobsId};
-        // search jobs with a placement with properties that match string
-        var jobs = Utils.filterCollectionByUserHier.call(this, Jobs.find(jobQuery)).map(function (job) {
-            return job._id;
-        });
-        searchStringSelector.$or.push({job: {$in: jobs}});
-
-        // Search client
-        // organization properties query
-        var organizationFields = ['organizationName'];
-        var clientQuery = generateQueryFromFields('organization', organizationFields, params.searchString);
-        clientQuery.objNameArray = 'Client';
-        // get id of jobs' client of those which has a placement
-        var clientIds = Jobs.find({_id: {$in: jobsId}}).map(function (job) {
-            return job.client;
-        });
-        clientQuery._id = {$in: clientIds};
-        // search clients with a placement with properties that match string
-        var clients = Utils.filterCollectionByUserHier.call(this, Contactables.find(clientQuery)).map(function (client) {
-            return client._id;
-        });
-        // now get id of jobs with client id in clients
-        var clientJobsId = Jobs.find({client: {$in: clients}}).map(function (job) {
-            return job._id;
-        });
-        searchStringSelector.$or.push({job: {$in: clientJobsId}});
-
-        // Merge with client selector
-        if (!selector.$or) {
-            selector.$or = searchStringSelector.$or;
-        } else {
-            selector.$and = selector.$and || [];
-            selector.$and.push({$or: selector.$or});
-            selector.$and.push({$or: searchStringSelector.$or});
-            delete selector.$or;
-        }
-        return selector;
-
-        function generateQueryFromFields(root, fields, string) {
-            var q = {$or: []};
-            _.forEach(fields, function (f) {
-                var fq = {};
-                fq[(root ? root + '.' : '') + f] = {
-                    $regex: '.*' + string + '.*',
-                    $options: 'i'
-                };
-                q.$or.push(fq);
-            });
-            return q;
-        }
-    }
 });
 
 Meteor.publish('placementDetails', function (id) {
@@ -171,6 +92,7 @@ Placements.before.insert(function (userId, doc) {
     doc.displayName=doc.employeeDisplayName + ' ' + doc.jobDisplayName;
 
 });
+
 
 Placements.after.insert(function (userId, doc) {
     Contactables.update({
