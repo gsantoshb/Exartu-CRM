@@ -33,7 +33,8 @@ Router.map(function () {
   });
   this.route('calendar', {
         path: '/calendar',
-        template: 'taskCalendar'
+        template: 'taskCalendar',
+        controller: 'CalendarController'
   });
 
 

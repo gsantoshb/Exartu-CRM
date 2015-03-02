@@ -3,15 +3,24 @@
     <section class="box-type-2">
         <div class="box-type-2-content">
             <div class="row">
-                <div class="col-md-2">
-                    <h3>Details</h3>
-                    <div class="edit-btn"><a id="edit-mode" href="#"><i class="fa fa-pencil"></i> Edit </a></div>
-                </div><!-- /.col-md-2 -->
-                <div class="col-md-10">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <ul class="list-type-5">
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        <h3>Details</h3>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="edit-btn"><a id="edit-mode" href="#"><i class="fa fa-pencil"></i>
+                            Edit </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <ul class="list-type-5">
+                            <div class="col-md-6">
                                 {{#with contactable }}
+
                                     {{#if person }}
                                         <li>
                                             <div class="left-part">First name</div>
@@ -73,6 +82,34 @@
                                         </li>
                                     {{/if}}
 
+
+                                    {{#if organization }}
+                                        <li>
+                                            <div class="left-part">Organization</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=organizationName editable=editMode}}
+                                                    <input class="form-control" type="text" value="{{value}}">
+                                                {{else}}
+                                                    <span>{{value}}</span>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+                                    {{/if}}
+
+                                    {{#if Client }}
+                                        <li>
+                                            <div class="left-part">Department</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=department editable=editMode}}
+                                                    <input class="form-control" type="text" value="{{value}}">
+                                                {{else}}
+                                                    <span>{{value}}</span>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+                                    {{/if}}
+
+
                                     <li>
                                         <div class="left-part">Active Status</div>
                                         <div class="right-part">
@@ -98,39 +135,6 @@
                                             {{/objectProperty}}
                                         </div>
                                     </li>
-                                {{/with}}
-                            </ul>
-                        </div>
-
-                        <div class="col-md-6">
-                            <ul class="list-type-5">
-                                {{#with contactable }}
-                                    {{#if organization }}
-                                        <li>
-                                            <div class="left-part">Organization</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=organizationName editable=editMode}}
-                                                    <input class="form-control" type="text" value="{{value}}">
-                                                {{else}}
-                                                    <span>{{value}}</span>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>>
-                                    {{/if}}
-
-                                    {{#if Client }}
-                                        <li>
-                                            <div class="left-part">Departament</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=department editable=editMode}}
-                                                    <input class="form-control" type="text" value="{{value}}">
-                                                {{else}}
-                                                    <span>{{value}}</span>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-                                    {{/if}}
-
                                     {{#if lostClient}}
                                         <li>
                                             <div class="left-part">Lost Reason</div>
@@ -193,7 +197,8 @@
                                             <div class="left-part">WorkerComp</div>
                                             <div class="right-part">
                                                 {{#objectProperty property=workerCompCode editable=editMode}}
-                                                    <input class="form-control" placeholder="Example: TX8810..." type="text"
+                                                    <input class="form-control" placeholder="Example: TX8810..."
+                                                           type="text"
                                                            value="{{value}}">
                                                 {{else}}
                                                     {{value}}
@@ -201,23 +206,27 @@
                                             </div>
                                         </li>
                                     {{/if}}
-                                {{/with}}
 
+
+                                {{/with}}
+                            </div>
+                            <div class="col-md-6">
                                 {{#with originalContactable}}
                                     {{>displayOriginDataInline}}
                                 {{/with}}
-                            </ul>
-                        </div><!-- /.col-md-6 -->
-
-                        {{#if editMode }}
-                            <div class="col-md-12">
-                                <div class="box-header-2">
-                                    <a id="cancel-details" class="btn btn-default"> Cancel </a>
-                                    <a id="save-details" class="btn btn-success pull-right"> Save </a>
-                                </div>
                             </div>
-                        {{/if}}
+                        </ul>
                     </div>
+                    <!-- /.col-md-6 -->
+
+                    {{#if editMode }}
+                        <div class="col-md-12">
+                            <div class="box-header-2">
+                                <a id="cancel-details" class="btn btn-default"> Cancel </a>
+                                <a id="save-details" class="btn btn-success pull-right"> Save </a>
+                            </div>
+                        </div>
+                    {{/if}}
                 </div>
             </div>
         </div>

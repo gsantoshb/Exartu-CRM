@@ -1,4 +1,9 @@
 Accounts = new Meteor.Collection('docCenterAccounts');
+fs = Npm.require('fs') ;
+path = Npm.require('path') ;
+Future = Npm.require("fibers/future");
+request = Npm.require('request');
+
 
 _.extend(DocCenter,{
   _authkey: 'Tw04ksHr5',
@@ -144,7 +149,7 @@ _.extend(DocCenter,{
   insertUser: Meteor.wrapAsync(function (hierId, userData, cb) {
     console.log('insertUser');
 
-    if (! userData.userName || ! userData.email){
+    if (!_.isString(userData.userName) || !_.isString(userData.email)){
       throw new Error('missing fields for argument userData');
     }
 
@@ -219,6 +224,88 @@ _.extend(DocCenter,{
     var api = new DocCenterApi(account);
 
     api.get(self._docCenterUrl + '/api/DocumentInstances?userId=' + externalId, function (err, response) {
+      if (err){
+        console.error(err);
+      }else{
+        cb(null, response.data);
+      }
+    });
+  }),
+
+  renderDocumentInstance: Meteor.wrapAsync(function (hierId, id, cb) {
+
+    var account = getAccount(hierId);
+    var self = this;
+
+    var authString = getAutorizationString(account);
+
+    var api = new DocCenterApi(account);
+
+    var options = {
+      url: self._docCenterUrl + '/api/DocumentsRender?documentInstanceId=' + id,
+      encoding: null,
+      headers: {
+        Authorization: authString
+      }
+    };
+    request.get(options, function (err, result, body){
+      if (err){
+        console.error(err);
+        cb(err)
+      }else{
+        cb(null, body);
+      }
+    });
+
+
+    /////////////
+    //  TEST   //
+    /////////////
+
+    //var options = {
+    //    url: 'http://www.analysis.im/uploads/seminar/pdf-sample.pdf',
+    //    encoding: null
+    //};
+    //// Get raw image binaries
+    //request.get(options, function (error, result, body){
+    //
+    //  if (error) {
+    //    return console.error(error);
+    //  }
+    //
+    //  var myPath = '/home/javier';
+    //  var filePath = path.join(myPath, 'pdf-sample.pdf' );
+    //
+    //  var buffer = new Buffer( body );
+    //  fs.writeFileSync( filePath, buffer );
+    //  cb(null, body);
+    //});
+  }),
+  approveDocument: Meteor.wrapAsync(function (hierId, instanceId, cb) {
+    var account = getAccount(hierId);
+    var self = this;
+
+    var api = new DocCenterApi(account);
+
+    console.log('approving');
+    api.post(self._docCenterUrl + '/api/DocumentInstancesApprove/approve?documentInstanceId=' + instanceId, function (err, response) {
+      if (err){
+        console.error(err);
+      }else{
+        cb(null, response.data);
+      }
+    });
+  }),
+  denyDocument: Meteor.wrapAsync(function (hierId, instanceId, reason, cb) {
+    var account = getAccount(hierId);
+    var self = this;
+
+    var api = new DocCenterApi(account);
+
+    var reasonParameter = reason ? '&reason=' + reason : '';
+
+    console.log('denying', reason);
+    api.post(self._docCenterUrl + '/api/DocumentInstancesApprove/deny?documentInstanceId=' + instanceId + reasonParameter, function (err, response) {
       if (err){
         console.error(err);
       }else{
@@ -331,5 +418,11 @@ Meteor.methods({
   },
   'docCenter.getCredentials': function () {
     return DocCenter.getCredentials(Meteor.user().currentHierId);
+  },
+  'docCenter.approveDocument': function(id){
+    return DocCenter.approveDocument(Meteor.user().currentHierId, id);
+  },
+  'docCenter.denyDocument': function(id, reason){
+    return DocCenter.denyDocument(Meteor.user().currentHierId, id, reason);
   }
 });

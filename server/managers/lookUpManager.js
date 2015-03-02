@@ -37,5 +37,6 @@ LookUpManager={
             isDefault: true,
             hierId: Meteor.user().currentHierId
         })._id;
-    },
+    }
+
 };
