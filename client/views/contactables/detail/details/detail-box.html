@@ -3,24 +3,18 @@
     <section class="box-type-2">
         <div class="box-type-2-content">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-2">
-                        <h3>Details</h3>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="edit-btn"><a id="edit-mode" href="#"><i class="fa fa-pencil"></i>
-                            Edit </a>
-                        </div>
+
+                <div class="col-md-2">
+                    <h3>Details</h3>
+                    <div class="edit-btn"><a id="edit-mode" href="#"><i class="fa fa-pencil"></i>
+                        Edit </a>
                     </div>
                 </div>
-
-                <div class="row">
-
-                    <div class="col-md-12">
-                        <ul class="list-type-5">
-                            <div class="col-md-6">
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-type-5">
                                 {{#with contactable }}
-
                                     {{#if person }}
                                         <li>
                                             <div class="left-part">First name</div>
@@ -32,6 +26,7 @@
                                                 {{/objectProperty}}
                                             </div>
                                         </li>
+
                                         <li>
                                             <div class="left-part">Last name</div>
                                             <div class="right-part">
@@ -42,6 +37,7 @@
                                                 {{/objectProperty}}
                                             </div>
                                         </li>
+                                    
                                         <li>
                                             <div class="left-part">Middle name</div>
                                             <div class="right-part">
@@ -52,6 +48,7 @@
                                                 {{/objectProperty}}
                                             </div>
                                         </li>
+
                                         <li>
                                             <div class="left-part">Job title</div>
                                             <div class="right-part">
@@ -62,20 +59,46 @@
                                                 {{/objectProperty}}
                                             </div>
                                         </li>
+                                        <!--<li>-->
+                                        <!--<div class="left-part">Birth Date</div>-->
+                                        <!--<div class="right-part">-->
+                                            <!--{{#objectProperty property=birthDate editable=editMode}}-->
+                                        <!--{{>bootstrap3DatePicker value=value options=datePickerOptions}}-->
+                                            <!--{{else}}-->
+                                        <!--<strong>-->
+                                            <!--{{#if value}}-->
+                                                <!--{{#formattedDate value=value format='MMMM DD, YYYY'}}-->
+                                                <!--{{date}}-->
+                                                    <!--{{/formattedDate}}-->
+                                                <!--{{else}}-->
+                                            <!--&lt;!&ndash;Not set&ndash;&gt;-->
+                                                <!--{{/if}}-->
+                                        <!--</strong>-->
+                                            <!--{{/objectProperty}}-->
+                                        <!--</div>-->
+                                        <!--</li>-->
+
                                         <li>
-                                            <div class="left-part">Birth Date</div>
+                                            <div class="left-part">Active Status</div>
                                             <div class="right-part">
-                                                {{#objectProperty property=birthDate editable=editMode}}
-                                                    {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                                {{#objectProperty property=activeStatus editable=editMode}}
+                                                    {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                                 {{else}}
                                                     <strong>
-                                                        {{#if value}}
-                                                            {{#formattedDate value=value format='MMMM DD, YYYY'}}
-                                                                {{date}}
-                                                            {{/formattedDate}}
-                                                        {{else}}
-                                                            <!--Not set-->
-                                                        {{/if}}
+                                                        <strong>{{displayName}}</strong>
+                                                    </strong>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <div class="left-part">Process Status</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=status editable=editMode}}
+                                                    {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                                {{else}}
+                                                    <strong>
+                                                        <strong>{{displayName}}</strong>
                                                     </strong>
                                                 {{/objectProperty}}
                                             </div>
@@ -108,33 +131,12 @@
                                             </div>
                                         </li>
                                     {{/if}}
-
-
-                                    <li>
-                                        <div class="left-part">Active Status</div>
-                                        <div class="right-part">
-                                            {{#objectProperty property=activeStatus editable=editMode}}
-                                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                                            {{else}}
-                                                <strong>
-                                                    <strong>{{displayName}}</strong>
-                                                </strong>
-                                            {{/objectProperty}}
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="left-part">Process Status</div>
-                                        <div class="right-part">
-                                            {{#objectProperty property=status editable=editMode}}
-                                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                                            {{else}}
-                                                <strong>
-                                                    <strong>{{displayName}}</strong>
-                                                </strong>
-                                            {{/objectProperty}}
-                                        </div>
-                                    </li>
+                                {{/with}}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-type-5">
+                                {{#with contactable }}
                                     {{#if lostClient}}
                                         <li>
                                             <div class="left-part">Lost Reason</div>
@@ -206,28 +208,22 @@
                                             </div>
                                         </li>
                                     {{/if}}
-
-
                                 {{/with}}
-                            </div>
-                            <div class="col-md-6">
                                 {{#with originalContactable}}
                                     {{>displayOriginDataInline}}
                                 {{/with}}
-                            </div>
-                        </ul>
-                    </div>
-                    <!-- /.col-md-6 -->
-
-                    {{#if editMode }}
-                        <div class="col-md-12">
-                            <div class="box-header-2">
-                                <a id="cancel-details" class="btn btn-default"> Cancel </a>
-                                <a id="save-details" class="btn btn-success pull-right"> Save </a>
-                            </div>
+                            </ul>
                         </div>
-                    {{/if}}
+                    </div>
                 </div>
+                {{#if editMode }}
+                    <div class="col-md-12">
+                        <div class="box-header-2">
+                            <a id="cancel-details" class="btn btn-default"> Cancel </a>
+                            <a id="save-details" class="btn btn-success pull-right"> Save </a>
+                        </div>
+                    </div>
+                {{/if}}
             </div>
         </div>
     </section>
