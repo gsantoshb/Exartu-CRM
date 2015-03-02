@@ -19,6 +19,7 @@ var errorDep = new Tracker.Dependency;
 
 var addDisabled = new ReactiveVar(false);
 var taskUpdate = function (cb) {
+    var oldTask = Tasks.find({_id : task._id}).fetch()[0];
     if (task._id) {
         Tasks.update({
                 _id: task._id
@@ -38,6 +39,11 @@ var taskUpdate = function (cb) {
                     cb();
             }
         );
+      if(oldTask.assign[0] !== task.assign[0]){
+        Meteor.call('notifyTask', task);
+      }
+
+
     }
 };
 
@@ -198,6 +204,7 @@ Template.addEditTask.events({
                 $('.modal-host').children().modal('toggle')
             });
 
+
         } else {
             Tasks.insert(task, function () {
                 $('.modal-host').children().modal('toggle');
@@ -257,7 +264,7 @@ Template.addEditTask.events({
     },
     'change .assign': function (e) {
         var newassign = $(e.target).val();
-        task.assign = newassign;
+        task.assign = _.isArray(newassign) ? newassign : [newassign];
         //taskUpdate();
     },
     'blur .msg': function () {
