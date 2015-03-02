@@ -608,7 +608,7 @@ var loadTasks = function (hierId, usermane, userId) {
     var tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
 
-    for (var i = 0; i < 2500; ++i) {
+    for (var i = 0; i < 100; ++i) {
         var randomDate = new Date(''+(Math.floor(Math.random()*(12-1))+1)+'/'+(Math.floor(Math.random()*(28-1))+1)+'/2015');
 
         var person = employeesFetched[Math.floor(Math.random() * employeesFetched.length)];
