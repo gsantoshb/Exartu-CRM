@@ -8,7 +8,8 @@ DocCenterManager = {
     if (!email) throw new Error('missing email');
 
     // register in docCenter
-    DocCenter.register(hier.name, email, hier._id);
+    var hierName = hier.name.replace(/\s/g, '_');
+    DocCenter.register(hierName, email, hier._id);
 
     // add merge fields
     // todo: improve this, maybe re-using something from email templates merge fields?
