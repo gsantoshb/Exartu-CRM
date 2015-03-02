@@ -197,11 +197,14 @@ Template.addEditTask.events({
             taskUpdate(function () {
                 $('.modal-host').children().modal('toggle')
             });
+
         } else {
             Tasks.insert(task, function () {
                 $('.modal-host').children().modal('toggle');
 
             })
+           Meteor.call('notifyTask', task);
+
         }
         addDisabled.set(false);
     },
