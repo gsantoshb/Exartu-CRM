@@ -337,7 +337,7 @@ _.extend(DocCenter,{
       try{
         DocCenter.insertMergeField(account._id, mergeField);
       }catch (e){
-        console.error('could not create mergeField ' + mergeField.hey + ' in hier ' + account._id);
+        console.error('could not create mergeField ' + mergeField.key + ' in hier ' + account._id);
       }
     });
     cb(null);
