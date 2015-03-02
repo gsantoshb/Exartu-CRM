@@ -1,6 +1,6 @@
 //Search for all tags and add them to the collection tags
 Migrations.add({
-    version: 16,
+    version: 17,
     up: function() {
         var affected = Contactables.update({addresses: {$exists: false}},{$set: {addresses: []}}, {multi: true});
 
