@@ -556,11 +556,13 @@ Utils.showModal = function (templateName) {
 
     modal.on('hidden.bs.modal', function (e) {
         modal.remove();
+
     });
 };
 
 Utils.dismissModal = function () {
     $('.modal-host').children().modal('toggle');
+
 };
 
 Utils.getContactableType = function (obj) {

@@ -304,4 +304,8 @@ Template.addEditTask.created = function () {
     Meteor.subscribe('allJobs');
     Meteor.subscribe('allPlacements');
     task = null;
+
+};
+Template.addEditTask.destroyed = function () {
+ debugger;
 };

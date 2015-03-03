@@ -22,6 +22,7 @@ Template.taskItem.helpers({
 Template.taskItem.events({
     'click .editTask': function (){
         Utils.showModal('addEditTask', this)
+
     }
 });
 

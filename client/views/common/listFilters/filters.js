@@ -142,6 +142,8 @@ var selectedValue = ""
 
 Template.filter_tags.helpers({
     getTags: function () {
+      var templateSelf = this;
+
         return function (string) {
             var self = this;
 
@@ -149,10 +151,12 @@ Template.filter_tags.helpers({
             Meteor.call('apiGetAllTags', string, function (err, result) {
                 if (err)
                     return console.log(err);
-
-                self.ready(_.map(result, function (r) {
-                        return {text: r.tags, id: r.tags};
-                    })
+                var filterResult = _.filter(result, function(t){
+                    return (templateSelf.tags.value.indexOf(t.tags) <0);
+                });
+                self.ready(_.map(filterResult, function (r) {
+                    return {text: r.tags, id: r.tags};
+                })
                 );
             });
         };

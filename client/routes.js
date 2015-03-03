@@ -144,6 +144,11 @@ Router.map(function () {
     controller: 'TasksController'
   });
 
+  this.route('task', {
+    path: '/tasks/:_id',
+    controller: 'TasksController'
+  });
+
   this.route('notes', {
     path: '/notes',
     controller: 'NotesController'
