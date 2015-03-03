@@ -251,11 +251,9 @@ Template.taskCalendar.helpers({
       id: 'myCalendar',
       monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July',
         'August', 'September', 'October', 'November', 'December'],
+      nextDayThreshold: "00:00:00",
       eventLimit: true,
       eventClick: function (calEvent, jsEvent, view) {
-        // change the border color just for fun
-
-        $(this).css('border-color', 'red');
         task = _.find(Tasks.find({}).fetch(), function (t) {
           return t._id == calEvent.id;
         });
@@ -403,6 +401,10 @@ Template.taskCalendar.helpers({
 
 
 Template.taskCalendar.events = {
+  'click #button-addTask': function () {
+     Utils.showModal('addEditTask', null);
+
+  },
   'click #show-mineOnly': function () {
     showMineOnly = !showMineOnly;
     startEndDep.changed();
