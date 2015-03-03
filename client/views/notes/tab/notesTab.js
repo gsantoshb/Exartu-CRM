@@ -1,5 +1,5 @@
 var self = {};
-
+var sortDep=new Deps.Dependency;
 AutoForm.debug();
 NoteSchema = new SimpleSchema({
     msg: {
@@ -72,7 +72,11 @@ AutoForm.hooks({
                 ;
                 return doc;
             }
-        }
+        },
+        onSuccess:
+            function (error, result, template) {
+                sortDep.changed();
+            }
     }
 });
 self.defaultUserNumber = null;
@@ -170,7 +174,8 @@ Template.notesTabList.created = function () {
 ;
 Template.notesTabList.helpers({
     items: function () {
-        return Notes.find();
+        sortDep.depend();
+        return Notes.find({},{sort: {dateCreated:-1}});
     },
     isLoading: function () {
         return !SubscriptionHandlers.NotesHandler.ready();
