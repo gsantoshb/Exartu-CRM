@@ -8,29 +8,23 @@ DocCenterManager = {
     if (!email) throw new Error('missing email');
 
     // register in docCenter
-    DocCenter.register(hier.name, email, hier._id);
+    var hierName = hier.name.replace(/\s/g, '_');
+    DocCenter.register(hierName, email, hier._id);
 
-    // add merge fields
-    // todo: improve this, maybe re-using something from email templates merge fields?
-    _.each([{
-      key: 'firstName',
-      testValue: 'john',
-      type: DocCenter.mergeFieldTypes.string
-    },{
-      key: 'lastName',
-      testValue: 'Doe',
-      type: DocCenter.mergeFieldTypes.string
-    }], function (mf) {
-      DocCenter.insertMergeField(hier._id, mf, function(err, result){
+
+    DocCenterMergeFields.find({}).forEach(function (mf) {
+      DocCenter.insertMergeField(hier._id, {
+        key: mf.key,
+        testValue: mf.testValue,
+        type: mf.type
+      }, function(err, result){
         if (err){
           console.err('error inserting ' + mf.name, err);
         }else{
 
         }
       });
-
-    })
-
+    });
   },
   insertUser: function (employeeId, userData, hierId) {
 
@@ -38,6 +32,18 @@ DocCenterManager = {
 
     Contactables.update(employeeId, { $set: { docCenter: result } });
 
+  },
+  updateMergeFields: function (mergeFieldId) {
+    var mf = DocCenterMergeFields.findOne(mergeFieldId);
+    if (!mf) return;
+
+    DocCenter.updateMergeFieldForAllHiers(mf);
+  },
+  insertMergeFields: function (mergeFieldId) {
+    var mf = DocCenterMergeFields.findOne(mergeFieldId);
+    if (!mf) return;
+
+    DocCenter.insertMergeFieldForAllHiers(mf);
   }
 };
 

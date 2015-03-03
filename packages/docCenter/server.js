@@ -312,6 +312,35 @@ _.extend(DocCenter,{
         cb(null, response.data);
       }
     });
+  }),
+
+
+  updateMergeFieldForAllHiers: Meteor.wrapAsync(function (mergeField, cb) {
+    var self = this;
+
+    Accounts.find().forEach(function (account) {
+
+      var api = new DocCenterApi(account);
+      api.del(self._docCenterUrl + '/api/MergeFields?key=' + mergeField.key, function (err, response) {
+        if (err){
+          console.error(err);
+        }else{
+          DocCenter.insertMergeField(account._id, mergeField, cb);
+        }
+      });
+    })
+  }),
+  insertMergeFieldForAllHiers: Meteor.wrapAsync(function (mergeField, cb) {
+    var self = this;
+
+    Accounts.find().forEach(function (account) {
+      try{
+        DocCenter.insertMergeField(account._id, mergeField);
+      }catch (e){
+        console.error('could not create mergeField ' + mergeField.key + ' in hier ' + account._id);
+      }
+    });
+    cb(null);
   })
 });
 
@@ -320,7 +349,7 @@ var DocCenterApi = function (account) {
   _.extend(self, account);
 };
 
-_.each(['get', 'post'], function (method) {
+_.each(['get', 'post', 'del'], function (method) {
   DocCenterApi.prototype[method] = function (/*arguments*/) {
     var self = this,
       url = arguments[0],
@@ -328,6 +357,7 @@ _.each(['get', 'post'], function (method) {
       cb = _.isFunction(arguments[arguments.length - 1]) ? arguments[arguments.length - 1] : function () {
       };
 
+    console.log('url', url);
     var authString = getAutorizationString(self);
 
     //if no token, get one
@@ -362,7 +392,7 @@ _.each(['get', 'post'], function (method) {
         options.headers.Authorization = authString;
         console.log('>>calling again', options);
 
-        HTTP.get(url, options, function (err, response) {
+        HTTP[method](url, options, function (err, response) {
           if (err) {
             console.log('>>failed again.. quiting');
             cb(err);

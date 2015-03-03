@@ -11,7 +11,9 @@ var isCreatingAccount = new ReactiveVar(false);
 
 Template.docCenterTab.created = function () {
   isCreatingAccount.set(false);
-}
+
+  Meteor.subscribe('docCenterMergeFields');
+};
 
 
 Template.docCenterTab.helpers({
@@ -101,16 +103,52 @@ Template.sendDocumentsModal.events({
   }  
 });
 
-var getMergeFieldsValues = function () {
+getMergeFieldsValues = function () {
   var contactable = Contactables.findOne(Session.get('entityId'));
 
-  return [{
-    key: 'firstName',
-    value: contactable.person.firstName
-  },{
-    key: 'lastName',
-    value: contactable.person.lastName
-  }];
+  var mapped= _.map(DocCenterMergeFields.find().fetch(), function (mf) {
+    var parts = mf.path.split('.');
+    var result = contactable;
+
+    parts.forEach(function (part) {
+      if (!result) return;
+      var arraySelector = part.match(/\[(.+)\]/);
+      if (arraySelector){
+
+        var propPart = part.replace(arraySelector[0],'');
+
+        result = result[propPart];
+
+
+        if (! _.isArray(result)){
+          result = null;
+          return;
+        }
+
+        var index = arraySelector[1];
+
+        if (!isNaN(parseInt(index))){
+          result = result[parseInt(index)]
+        }
+
+      }else{
+        result = result[part];
+      }
+
+
+    });
+
+    if (!result) return;
+
+    return {
+      key: mf.key,
+      value: result
+    };
+  });
+
+  return mapped.filter(function (mfValue) {
+    return mfValue;
+  })
 };
 
 //instances list
