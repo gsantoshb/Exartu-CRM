@@ -95,7 +95,7 @@ Meteor.paginatedPublish(ContactablesList, function () {
         );
     },
     {
-        pageSize: 25,
+        pageSize: 20,
         publicationName: 'auxContactables',
         updateSelector: function (oldSelector, clientParams) {
             console.log('searchcalled2', Date.now(), new Date());
