@@ -96,7 +96,12 @@ Notes.after.insert(function(userId,doc){
     _.forEach(doc.links, function(link) {
         if (link.type==Enums.linkTypes.contactable.value)
         {
+            Contactables.update({_id:link.id},{$set: {zzz: 1}});
+            var c=Contactables.findOne({_id:link.id});
+            console.log('cont23a',JSON.stringify(c));
             Contactables.update({_id:link.id},{$set: {lastNote: doc}});
+            var c=Contactables.findOne({_id:link.id});
+            console.log('cont23b',JSON.stringify(c));
         }
     });
 

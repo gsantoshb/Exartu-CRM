@@ -611,11 +611,8 @@ Template.contactablesListItem.helpers({
         return !_.isEmpty(query.searchString.value);
     },
     getLastNote: function () {
-        var note = Notes.findOne({'links.id': this._id}, {sort: {dateCreated: -1}});
-        if (note && note.msg.length > 50) {
-            note.msg = note.msg.slice(0, 50) + '..';
-        }
-        return note;
+        if (this.lastNote)
+        return this.lastNote;
     },
     isSelected: function () {
         return !!_.findWhere(selected.get(), {id: this._id});

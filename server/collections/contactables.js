@@ -62,13 +62,13 @@ ContactablesList = new View('auxContactables', {
             to: 'jobs'
         });
 
-        // Last note
-        this.publish({
-            cursor: function (contactable) {
-                return Notes.find({'links.id': contactable._id}, {limit: 50, sort: {dateCreated: -1}});
-            },
-            to: 'notes'
-        });
+        //// Last note
+        //this.publish({
+        //    cursor: function (contactable) {
+        //        return Notes.find({'links.id': contactable._id}, {limit: 50, sort: {dateCreated: -1}});
+        //    },
+        //    to: 'notes'
+        //});
 
         this.publish({
             cursor: function (contactable) {
