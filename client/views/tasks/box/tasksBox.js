@@ -198,7 +198,7 @@ Template.tasksBox.helpers({
         return Meteor.users.find({}, {sort: {'emails.address': 1}});
     },
     tasks: function () {
-      return Tasks.find();
+      return Tasks.find({},{sort:{dateCreated:-1}});
     },
     filters: function () {
         return taskQuery;
