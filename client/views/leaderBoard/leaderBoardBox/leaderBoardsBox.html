@@ -11,7 +11,7 @@
                         {{>leaderBoardListSearch}}
                     </div>
 
-                    {{> UI.dynamic template=getLeaderBoardHeaderTemplate}}
+                    {{> UI.dynamic template=getLeaderBoardHeaderTemplate }}
 
 
                 </div>
@@ -35,11 +35,11 @@
     {{> leaderBoardActivityList }}
 </template>
 <template name="pipelineColumn">
-    <div class="text-center"><h4>{{dealColumnTitle val}}</h4></div>
+    <div class="text-center"><h4>{{columnTitle val}}</h4>{{pipelineColumnDescription}}</div>
     <div>
-        {{#each dealColumnItems val}}
+        {{#each columnItems val}}
             <div class="item-subtitle"><a href="/contactable/{{_id}}">{{>showMore text=displayName limit=20}}
-            {{#if Client.department!='Primary'}}{{>showMore text=Client.department limit=20}}{{/if}}</a></div>
+            {{#if bDisplayDepartment Client.department}}{{>showMore text=Client.department limit=20}}{{/if}}</a></div>
 
             <div class="item-subtitle-card">
                 {{>showMore text=statusNote limit=35}}
@@ -50,8 +50,38 @@
         {{/each}}
     </div>
 </template>
-<template name="leaderBoardPipelineListHeader">
-    <h1 class="text-center">Deal Pipeline</h1>
+<template name="lossReportColumn">
+    <div class="text-center"><h4>{{columnTitle val}}</h4>{{pipelineColumnDescription}}</div>
+    <div>
+        {{#each columnItems val}}
+            <div class="item-subtitle"><a href="/contactable/{{_id}}">{{>showMore text=displayName limit=35}}
+                {{#if bDisplayDepartment Client.department}}{{>showMore text=Client.department limit=30}}{{/if}}</a></div>
+
+            <div class="item-subtitle-card">
+                {{>showMore text=statusNote limit=35}}
+            </div>
+            <div class="item-subtitle-card-user">
+                {{displayUserName userId}}
+            </div>
+        {{/each}}
+    </div>
+</template>
+<template name="leaderBoardLossReportListHeader">
+    <h1 class="text-center">{{lossReportName}}</h1>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">{{>lossReportColumn val=0}}</div>
+            <div class="col-md-2">{{>lossReportColumn val=1}}</div>
+            <div class="col-md-2">{{>lossReportColumn val=2}}</div>
+            <div class="col-md-2">{{>lossReportColumn val=3}}</div>
+            <div class="col-md-2">{{>lossReportColumn val=4}}</div>
+            <div class="col-md-2">{{>lossReportColumn val=5}}</div>
+        </div>
+    </div>
+</template>
+<template name="leaderBoardDealPipelineListHeader">
+    <h1 class="text-center">{{pipelineName}}</h1>
 
     <div class="container-fluid">
         <div class="row">

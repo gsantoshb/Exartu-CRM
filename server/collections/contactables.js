@@ -3,10 +3,9 @@ Meteor.publish('singleContactable', function (id) {
     ContactablesList.publishCursor(Utils.filterCollectionByUserHier.call(this, ContactablesList.find({_id: id})), sub, 'contactables');
     sub.ready();
 });
-Meteor.publish('leaderBoardClients', function (activeid,statusids) {
-    var sub = this;
+Meteor.publish('leaderBoardClients', function (q) {
     return Utils.filterCollectionByUserHier.call(this,
-            Contactables.find({Client: {$exists: true},activeStatus: activeid,'Client.status': {$in: statusids}}))
+            Contactables.find(q));
 });
 
 ContactablesList = new View('auxContactables', {

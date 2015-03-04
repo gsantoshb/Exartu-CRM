@@ -1,3 +1,12 @@
+Meteor.startup(function () {
+    if ( ! ExartuConfig.ResumeParserURL ){
+        console.error('ResumeParserURL not set');
+    }
+    if ( ! ExartuConfig.ResumeParserPasscode ){
+        console.error('ResumeParserPasscode not set');
+    }
+});
+
 ResumeManager = {
     parse: function (data) {
         if (typeof data.read == 'function') {
@@ -6,12 +15,13 @@ ResumeManager = {
 
             var headers = _.extend(form.getHeaders(), {
                 'Accept-Encoding': 'gzip,deflate',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'passcode': ExartuConfig.ResumeParserPasscode
             });
 
             var response = Meteor.wrapAsync(form.submit, form)({
-                host: "xr2demo.tempworks.com",
-                path: "/resumeparser/api/Parser/Parse",
+                host: ExartuConfig.ResumeParserURL,
+                path: "/api/Parser/Parse",
                 headers: headers
             });
 

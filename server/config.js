@@ -31,5 +31,7 @@ ExartuConfig = {
   Nodetime_Key: undefined,
   PageSize: 10,
   // Applicant Center URL
-  ApplicantCenter_URL: undefined
+  ApplicantCenter_URL: undefined,
+  ResumeParserURL: undefined,
+  ResumeParserPasscode: ''
 };

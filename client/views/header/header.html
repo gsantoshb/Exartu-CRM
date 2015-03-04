@@ -71,9 +71,6 @@
                                 <a href="/users">Users</a>
                             </li>
 
-                            <li>
-                                <a href="/management/docCenter">DocCenter</a>
-                            </li>
                         {{/if}}
                         <li class="divider"></li>
                         <li>
@@ -109,7 +106,7 @@
         <ul class="navbar navbar-inverse nav-stacked">
             <li class="dashboard {{getActiveClass 'dashboard' null}}">
                 <a href="/">
-                    <span>Dashboard</span>
+                    <span>Activities</span>
                     <span class="i-container"><i class="icon icon-thumbnails-2"></i></span>
                 </a>
             </li>
@@ -162,6 +159,12 @@
                 <a href="/leaderboards">
                     <span>Leaderboard</span>
                     <span class="i-container"><i class="icon icon-cross-shield"></i></span>
+                </a>
+            </li>
+            <li class="calendar {{getActiveClass 'calendar' null}}">
+                <a href="/calendar">
+                    <span>Calendar</span>
+                    <span class="i-container"><i class="icon icon-calendar-2"></i></span>
                 </a>
             </li>
 

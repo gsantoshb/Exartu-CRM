@@ -7,6 +7,15 @@ var createAccountSchema = new SimpleSchema({
   }
 });
 
+var isCreatingAccount = new ReactiveVar(false);
+
+Template.docCenterTab.created = function () {
+  isCreatingAccount.set(false);
+
+  Meteor.subscribe('docCenterMergeFields');
+};
+
+
 Template.docCenterTab.helpers({
   hasAccount: function () {
     var contactable = Contactables.findOne(Session.get('entityId'));
@@ -23,71 +32,142 @@ Template.docCenterTab.helpers({
     });
 
 
+  },
+  isCreatingAccount: function () {
+    return isCreatingAccount.get();
   }
 });
 
 Template.docCenterTab.events({
   'click #createAccount': function (e, ctx) {
-
+    isCreatingAccount.set(true);
     Meteor.call('createDocCenterAccount', Session.get('entityId'), function () {
-
+      isCreatingAccount.set(false);
     });
   }
 });
 
 
-var documents = new ReactiveVar([]);
 
-Template.sendDocument.created = function () {
+Template.sendDocument.events({
+  'click #selectDocuments': function (e, ctx) {
+    Utils.showModal('sendDocumentsModal')
+
+  }
+});
+
+
+// modal
+var documents = new ReactiveVar([]),
+  modalLoading = new ReactiveVar(),
+  isSending = new ReactiveVar();
+
+Template.sendDocumentsModal.created = function () {
+  modalLoading.set(true);
+  isSending.set(false);
   DocCenter.getDocuments(function (data) {
+    modalLoading.set(false);
     documents.set(data)
   })
 };
 
-Template.sendDocument.helpers({
+Template.sendDocumentsModal.helpers({
   documents: function () {
     return documents.get();
+  },
+  isLoading: function () {
+    return modalLoading.get();
+  },
+  isSending: function () {
+    return isSending.get();
   }
 });
-var getMergeFieldsValues = function () {
-  var contactable = Contactables.findOne(Session.get('entityId'));
 
-  return [{
-    key: 'firstName',
-    value: contactable.person.firstName
-  },{
-    key: 'lastName',
-    value: contactable.person.lastName
-  }];
-};
-
-Template.sendDocument.events({
-  'click #send': function (e, ctx) {
-    var selectedId = ctx.$('#documentSelect').val();
+Template.sendDocumentsModal.events({
+  'click .accept': function (e, ctx) {
     var contactable = Contactables.findOne(Session.get('entityId'));
 
-    if (!selectedId){
-      return;
-    }
-    DocCenter.instantiateDocument(selectedId, contactable.docCenter.docCenterId, getMergeFieldsValues(), function () { });
+    var checked = ctx.$('.docCheckbox:checked');
+    checked = _.map(checked, function (checkbox) {
+      return $(checkbox).data('docid');
+    });
+    if (!checked || !checked.length) return;
 
-  }
+    isSending.set(true);
+
+    DocCenter.instantiateDocument(checked, contactable.docCenter.docCenterId, getMergeFieldsValues(), function () {
+      isSending.set(false);
+      Utils.dismissModal();
+      loadInstances();
+    });
+  }  
 });
 
+getMergeFieldsValues = function () {
+  var contactable = Contactables.findOne(Session.get('entityId'));
+
+  var mapped= _.map(DocCenterMergeFields.find().fetch(), function (mf) {
+    var parts = mf.path.split('.');
+    var result = contactable;
+
+    parts.forEach(function (part) {
+      if (!result) return;
+      var arraySelector = part.match(/\[(.+)\]/);
+      if (arraySelector){
+
+        var propPart = part.replace(arraySelector[0],'');
+
+        result = result[propPart];
+
+
+        if (! _.isArray(result)){
+          result = null;
+          return;
+        }
+
+        var index = arraySelector[1];
+
+        if (!isNaN(parseInt(index))){
+          result = result[parseInt(index)]
+        }
+
+      }else{
+        result = result[part];
+      }
+
+
+    });
+
+    if (!result) return;
+
+    return {
+      key: mf.key,
+      value: result
+    };
+  });
+
+  return mapped.filter(function (mfValue) {
+    return mfValue;
+  })
+};
 
 //instances list
 
-var instances = new ReactiveVar([]);
-var gettingInstances = new ReactiveVar(false);
+var instances = new ReactiveVar([]),
+  gettingInstances = new ReactiveVar(false);
 
-Template.documentInstances.created = function () {
+var loadInstances = function () {
   var contactable = Contactables.findOne(Session.get('entityId'));
 
   gettingInstances.set(true);
   DocCenter.getDocumentInstances(contactable.docCenter.docCenterId, function (data) {
+    console.log('data', data);
     instances.set(data);
     gettingInstances.set(false);
   })
+}
+Template.documentInstances.created = function () {
+  loadInstances();
 };
 
 Template.documentInstances.helpers({
@@ -95,9 +175,24 @@ Template.documentInstances.helpers({
     return instances.get();
   },
   getStatus: function (status) {
-    return 'sent'
+    return documentStatusDictionary[status]
   },
   isLoading: function () {
     return gettingInstances.get();
   }
 });
+
+var documentStatus = {
+  InActive: 0,
+  Expired: 1,
+  Denied: 2,
+  PartiallyCompleted: 3,
+  Sent: 4,
+  ExternalSubmitted: 5,
+  Submitted: 6,
+  Approved: 7,
+  ReadOnly: 8,
+  PendingFile: 9
+};
+
+var documentStatusDictionary = _.invert(documentStatus);

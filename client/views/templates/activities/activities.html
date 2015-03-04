@@ -39,6 +39,13 @@
                         <span>{{data.displayName}}</span>
                     </strong>
                 </a>
+                {{#if getClientName}}
+                    <a href="/contactable/{{getClientId}}">
+                        <strong>
+                            <span>@ {{getClientName}}</span>
+                        </strong>
+                    </a>
+                {{/if}}
 
 
                 {{#if data.contactableEmail}}

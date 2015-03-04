@@ -4,7 +4,7 @@
 var entityType = null;
 var isEntitySpecific = false;
 var contactable;
-var searchFields = ['employeeInfo.firstName', 'employeeInfo.lastName', 'employeeInfo.middleName'];
+var searchFields = ['displayName'];
 
 var placementCollection = Placements;
 var PlacementHandler, query;
@@ -38,6 +38,14 @@ var loadqueryFromURL = function (params) {
     if (params.search) {
         searchStringQuery.default = params.search;
     }
+
+    // Mine only
+    var mineQuery = {type: Utils.ReactivePropertyTypes.boolean};
+    if (params.mine) {
+        mineQuery.default = !!params.mine;
+    }
+
+
 
     // CreationDate
     var creationDateQuery = {};
@@ -73,6 +81,7 @@ var loadqueryFromURL = function (params) {
             selectedLimit: creationDateQuery,
             activeStatus: activeStatusQuery,
             tags: tagsQuery,
+            mineOnly: mineQuery,
             statuses: statusQuery
         }
     });
@@ -143,7 +152,9 @@ Template.placementList.created = function () {
 
 
     Meteor.autorun(function () {
-        var searchQuery = {};
+        var searchQuery = {
+            $and: [] // Push each $or operator here
+        };
         var params = {};
         options = {};
         var urlQuery = new URLQuery();
@@ -164,6 +175,12 @@ Template.placementList.created = function () {
         if (!_.isEmpty(query.searchString.value)) {
             params.searchString = query.searchString.value;
             urlQuery.addParam('search', query.searchString.value);
+        }
+
+        //Created by
+        if (query.mineOnly.value) {
+            searchQuery.$and.push({userId: Meteor.userId()});
+            urlQuery.addParam('mine', true);
         }
 
         if (query.selectedLimit.value) {
@@ -201,7 +218,26 @@ Template.placementList.created = function () {
             delete options.sort;
         }
 
-        PlacementHandler.setFilter(searchQuery, params);
+        // String search
+        if (query.searchString.value) {
+            var stringSearches = [];
+            _.each(searchFields, function (field) {
+                var aux = {};
+                aux[field] = {
+                    $regex: query.searchString.value,
+                    $options: 'i'
+                };
+                stringSearches.push(aux);
+            });
+            searchQuery.$and.push({
+                $or: stringSearches
+            });
+            urlQuery.addParam('search', query.searchString.value);
+        }
+
+        if (searchQuery.$and.length == 0)
+            delete searchQuery.$and;
+        PlacementHandler.setFilter(searchQuery);
         PlacementHandler.setOptions(options);
     })
 };

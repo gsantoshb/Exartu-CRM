@@ -24,7 +24,6 @@ Meteor.methods({
     HierarchyManager.setLookupDefault(lookUpCode, valueId);
   },
   saveConfiguration: function(options){
-    console.log('hier config', options);
     HierarchyManager.saveConfiguration(options);
   },
   isWebNameAvailable: function (webName) {

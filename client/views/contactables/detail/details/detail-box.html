@@ -1,243 +1,264 @@
 <template name="contactableDetailBox">
-    <div class="box">
-        <div class="box-header-2">
-            <a class="btn-action pointer" title="Edit"><i id="edit-mode" class="fa fa-pencil"
-                                                          style="color: {{editModeColor}}"></i></a>
 
-            <div class="box-title">
-                Details
-            </div>
-        </div>
-        <div class="box-content-md">
+    <section class="box-type-2">
+        <div class="box-type-2-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        <h3>Details</h3>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="edit-btn"><a id="edit-mode" href="#"><i class="fa fa-pencil"></i>
+                            Edit </a>
+                        </div>
+                    </div>
+                </div>
 
-            <table class="table box-table table-striped">
-                <tbody>
-                {{#with contactable }}
-                    {{#if person }}
-                        <tr>
-                            <td>First Name</td>
-                            <td>
-                                {{#objectProperty property=firstName editable=editMode}}
-                                    <input class="form-control" type="text" value="{{value}}">
-                                {{else}}
-                                    <span>{{value}}</span>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Last Name</td>
-                            <td>
-                                {{#objectProperty property=lastName editable=editMode}}
-                                    <input class="form-control" type="text" value="{{value}}">
-                                {{else}}
-                                    <span>{{value}}</span>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>MiddleName</td>
-                            <td>
-                                {{#objectProperty property=middleName editable=editMode}}
-                                    <input class="form-control" type="text" value="{{value}}">
-                                {{else}}
-                                    <span>{{value}}</span>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Job title</td>
-                            <td>
-                                {{#objectProperty property=jobTitle editable=editMode}}
-                                    <input class="form-control" type="text" value="{{value}}">
-                                {{else}}
-                                    <span>{{value}}</span>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Birth Date</td>
-                            <td>
-                                {{#objectProperty property=birthDate editable=editMode}}
-                                    {{>bootstrap3DatePicker value=value options=datePickerOptions}}
-                                {{else}}
-                                    <strong>
-                                        {{#if value}}
-                                            {{#formattedDate value=value format='MMMM DD, YYYY'}}
-                                                {{date}}
-                                            {{/formattedDate}}
-                                        {{else}}
-                                            <!--Not set-->
-                                        {{/if}}
-                                    </strong>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                    {{/if}}
+                <div class="row">
 
-                    {{#if organization }}
-                        <tr>
-                            <td>Organization</td>
-                            <td>
-                                {{#objectProperty property=organizationName editable=editMode}}
-                                    <input class="form-control" type="text" value="{{value}}">
-                                {{else}}
-                                    <span>{{value}}</span>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                    {{/if}}
+                    <div class="col-md-12">
+                        <ul class="list-type-5">
+                            <div class="col-md-6">
+                                {{#with contactable }}
 
-                    {{#if Client }}
-                        <tr>
-                            <td>Department</td>
-                            <td>
-                                {{#objectProperty property=department editable=editMode}}
-                                    <input class="form-control" type="text" value="{{value}}">
-                                {{else}}
-                                    <span>{{value}}</span>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                    {{/if}}
-
-
-                    <tr>
-                        <td>Active Status</td>
-                        <td>
-                            {{#objectProperty property=activeStatus editable=editMode}}
-                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                            {{else}}
-                                <strong>
-                                    <strong>{{displayName}}</strong>
-                                </strong>
-                            {{/objectProperty}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Process Status</td>
-                        <td>
-                            {{#objectProperty property=status editable=editMode}}
-                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                            {{else}}
-                                <strong>
-                                    <strong>{{displayName}}</strong>
-                                </strong>
-                            {{/objectProperty}}
-                        </td>
-                    </tr>
-                    {{#if lostClient}}
-                        <tr>
-                            <td>Lost Reason</td>
-                            <td>
-                                    {{#objectProperty property=lostReason editable=editMode}}
-                                        {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                                    {{else}}
-                                        <strong>
-                                            <strong>{{displayName}}</strong>
-                                        </strong>
-                                    {{/objectProperty}}
-                            </td>
-                        </tr>
-                    {{/if}}
-                    <tr>
-                        <td>Status note</td>
-                        <td>
-                            {{#objectProperty property=statusNote editable=editMode}}
-                                <input class="form-control" type="text" value="{{value}}">
-                            {{else}}
-                                <span>{{value}}</span>
-                            {{/objectProperty}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>How heard of</td>
-                        <td>
-                            {{#objectProperty property=howHeardOf editable=editMode}}
-                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                            {{else}}
-                                <strong>
-                                    <strong>{{displayName}}</strong>
-                                </strong>
-                            {{/objectProperty}}
-                        </td>
-                    </tr>
-
-                    {{#if Employee }}
-                        <tr>
-                            <td>TaxID/SSN</td>
-                            <td>
-                                {{#objectProperty property=taxID editable=editMode}}
-                                    {{> showTaxIdInput}}
-                                {{else}}
-                                    {{#if hideTaxID}}
-                                        <a class="pointer showHideTaxId">Show</a>
-                                    {{else}}
-                                        {{#if value}}
-                                            <!--<span id="taxid-text">{{value}}</span> <a class="pointer showHideTaxId">Hide</a>-->
-                                            {{> showTaxIdText}}
-                                        {{/if}}
+                                    {{#if person }}
+                                        <li>
+                                            <div class="left-part">First name</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=firstName editable=editMode}}
+                                                    <input class="form-control" type="text" value="{{value}}">
+                                                {{else}}
+                                                    <span>{{value}}</span>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="left-part">Last name</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=lastName editable=editMode}}
+                                                    <input class="form-control" type="text" value="{{value}}">
+                                                {{else}}
+                                                    <span>{{value}}</span>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="left-part">Middle name</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=middleName editable=editMode}}
+                                                    <input class="form-control" type="text" value="{{value}}">
+                                                {{else}}
+                                                    <span>{{value}}</span>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="left-part">Job title</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=jobTitle editable=editMode}}
+                                                    <input class="form-control" type="text" value="{{value}}">
+                                                {{else}}
+                                                    <span>{{value}}</span>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="left-part">Birth Date</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=birthDate editable=editMode}}
+                                                    {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                                {{else}}
+                                                    <strong>
+                                                        {{#if value}}
+                                                            {{#formattedDate value=value format='MMMM DD, YYYY'}}
+                                                                {{date}}
+                                                            {{/formattedDate}}
+                                                        {{else}}
+                                                            <!--Not set-->
+                                                        {{/if}}
+                                                    </strong>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
                                     {{/if}}
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                    {{/if}}
-                    {{#if Client}}
-                        <tr>
-                            <td>WorkerComp</td>
-                            <td>
-                                {{#objectProperty property=workerCompCode editable=editMode}}
-                                    <input class="form-control" placeholder="Example: TX8810..." type="text"
-                                           value="{{value}}">
-                                {{else}}
-                                    {{value}}
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                    {{/if}}
-                {{/with}}
-                {{#with originalContactable}}
-                    {{>displayOriginDataInline}}
-                {{/with}}
-                </tbody>
-            </table>
 
 
-        </div>
-        {{#if editMode }}
-            <div class="box-header-2">
-                <a id="cancel-details" class="btn btn-default"> Cancel </a>
-                <a id="save-details" class="btn btn-success pull-right"> Save </a>
+                                    {{#if organization }}
+                                        <li>
+                                            <div class="left-part">Organization</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=organizationName editable=editMode}}
+                                                    <input class="form-control" type="text" value="{{value}}">
+                                                {{else}}
+                                                    <span>{{value}}</span>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+                                    {{/if}}
+
+                                    {{#if Client }}
+                                        <li>
+                                            <div class="left-part">Department</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=department editable=editMode}}
+                                                    <input class="form-control" type="text" value="{{value}}">
+                                                {{else}}
+                                                    <span>{{value}}</span>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+                                    {{/if}}
+
+
+                                    <li>
+                                        <div class="left-part">Active Status</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=activeStatus editable=editMode}}
+                                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                            {{else}}
+                                                <strong>
+                                                    <strong>{{displayName}}</strong>
+                                                </strong>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="left-part">Process Status</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=status editable=editMode}}
+                                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                            {{else}}
+                                                <strong>
+                                                    <strong>{{displayName}}</strong>
+                                                </strong>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                    {{#if lostClient}}
+                                        <li>
+                                            <div class="left-part">Lost Reason</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=lostReason editable=editMode}}
+                                                    {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                                {{else}}
+                                                    <strong>
+                                                        <strong>{{displayName}}</strong>
+                                                    </strong>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+                                    {{/if}}
+
+                                    <li>
+                                        <div class="left-part">Status note</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=statusNote editable=editMode}}
+                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{else}}
+                                                <span>{{value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="left-part">How heard of</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=howHeardOf editable=editMode}}
+                                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                            {{else}}
+                                                <strong>
+                                                    <strong>{{displayName}}</strong>
+                                                </strong>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+
+                                    {{#if Employee }}
+                                        <li>
+                                            <div class="left-part">TaxID/SSN</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=taxID editable=editMode}}
+                                                    {{> showTaxIdInput}}
+                                                {{else}}
+                                                    {{#if hideTaxID}}
+                                                        <a class="pointer showHideTaxId">Show</a>
+                                                    {{else}}
+                                                        {{#if value}}
+                                                            <!--<span id="taxid-text">{{value}}</span> <a class="pointer showHideTaxId">Hide</a>-->
+                                                            {{> showTaxIdText}}
+                                                        {{/if}}
+                                                    {{/if}}
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+                                    {{/if}}
+                                    {{#if Client}}
+                                        <li>
+                                            <div class="left-part">WorkerComp</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=workerCompCode editable=editMode}}
+                                                    <input class="form-control" placeholder="Example: TX8810..."
+                                                           type="text"
+                                                           value="{{value}}">
+                                                {{else}}
+                                                    {{value}}
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
+                                    {{/if}}
+
+
+                                {{/with}}
+                            </div>
+                            <div class="col-md-6">
+                                {{#with originalContactable}}
+                                    {{>displayOriginDataInline}}
+                                {{/with}}
+                            </div>
+                        </ul>
+                    </div>
+                    <!-- /.col-md-6 -->
+
+                    {{#if editMode }}
+                        <div class="col-md-12">
+                            <div class="box-header-2">
+                                <a id="cancel-details" class="btn btn-default"> Cancel </a>
+                                <a id="save-details" class="btn btn-success pull-right"> Save </a>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
             </div>
-        {{/if}}
-    </div>
+        </div>
+    </section>
 </template>
 <template name="displayOriginDataInline">
-    <tr>
-        <td>User</td>
-        <td>
+    <li>
+        <div class="left-part">User</div>
+        <div class="right-part">
             {{displayUserName userId}}
-        </td>
-    </tr>
-    <tr>
-        <td>Date Created</td>
-        <td>
+        </div>
+    </li>
+    <li>
+        <div class="left-part">Date Created</div>
+        <div class="right-part">
             {{#formattedDate value=dateCreated format='lll'}}
                 {{date}}
             {{/formattedDate}}
-        </td>
-    </tr>
-    <tr>
-        <td>Hierarchy</td>
-        <td>
+        </div>
+    </li>
+    <li>
+        <div class="left-part">Hierarchy</div>
+        <div class="right-part">
             {{displayHierName hierId}} ({{hierId}})
-        </td>
-    </tr>
-    <tr>
-        <td>ExternalId</td>
-        <td>
+        </div>
+    </li>
+    <li>
+        <div class="left-part">ExternalId</div>
+        <div class="right-part">
             {{externalId}}
-        </td>
-    </tr>
+        </div>
+    </li>
 </template>
 <template name="showTaxIdText">
     <span id="taxid-text">{{value}}</span>

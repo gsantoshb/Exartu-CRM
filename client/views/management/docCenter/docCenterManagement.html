@@ -1,13 +1,13 @@
 <template name="docCenterManagement">
     <div id="content" class="lookUps">
         <div id="content-header" class="mini">
-            <h1>DocCenter management</h1>
+            <h1>HRConcourse management</h1>
         </div>
 
 
         <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">Management</a>
-            <a href="/management/docCenter" class="current">DocCenter</a>
+            <a href="/management/hrConcourse" class="current">hrConcourse</a>
         </div>
 
         <div class="container-fluid">
@@ -25,17 +25,17 @@
                                 <a id="showPass" class="pointer">Show Password</a>
                             {{/if}}
                         </div>
+                        <a href="http://hrconcourse.aidacreative.com/" target="_blank">Click here to open HRConcourse and design documents</a>
 
                     {{else}}
                         <div class="alert alert-warning" role="alert">
-                            You have not configured docCenter
+                            You have not configured hrConcourse
+                            <button id="activateDocCenter" class="btn btn-primary" disabled="{{isActivating}}">Activate</button>
                         </div>
 
-                        <button id="activateDocCenter" class="btn btn-primary pull-right" disabled="{{isActivating}}">Activate</button>
                     {{/with}}
                 </div>
 
-                <a href="http://hrconcourse.aidacreative.com/">HRConcourse</a>
             </div>
         </div>
     </div>

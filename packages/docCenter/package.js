@@ -3,7 +3,9 @@ Package.describe({
   name: 'doccenter'
 });
 
-
+Npm.depends({
+  "request": "2.53.0"
+});
 
 Package.on_use(function (api, where) {
   api.use('underscore', 'server');

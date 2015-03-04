@@ -2,11 +2,13 @@
  * Variables
  */
 var jobCollection = Jobs;
-var JobHandler;
+var searchQuery, options;
 var entityId;
+var JobHandler;
 var query;
-var selectedSort =  new ReactiveVar();
-selectedSort.set({field:'dateCreated',value:-1});
+var selectedSort = new ReactiveVar();
+selectedSort.set({field: 'dateCreated', value: -1});
+var searchDep = new Deps.Dependency;
 var selectedSortDep = new Deps.Dependency;
 var sortFields = [
     {field: 'startDate', displayName: 'Start date'},
@@ -50,9 +52,9 @@ var jobTypes = function () {
     return dType.ObjTypes.find({parent: Enums.objGroupType.job});
 };
 
-var searchFields = ['jobTitle', 'publicJobTitle'];
+var searchFields = ['displayName', 'publicJobTitle'];
 
-var setSortField = function(field) {
+var setSortField = function (field) {
     var selected = selectedSort.get();
     if (selected && selected.field == field.field) {
         if (selected.value == 1)
@@ -64,7 +66,6 @@ var setSortField = function(field) {
         selected.value = -1;
     }
     selectedSort.set(selected);
-	console.log(selected);
 };
 
 var loadqueryFromURL = function (params) {
@@ -125,11 +126,10 @@ var loadqueryFromURL = function (params) {
     }
 
     // Status
-    var statusQuery = { type: Utils.ReactivePropertyTypes.array };
+    var statusQuery = {type: Utils.ReactivePropertyTypes.array};
     if (params.status) {
         statusQuery.default = params.status.split(',');
     }
-
 
 
     var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
@@ -153,32 +153,27 @@ var loadqueryFromURL = function (params) {
             status: statusQuery
         }
     });
-
-
 }
-Template.jobsBox.created = function(){
-    if (!SubscriptionHandlers.JobHandler){
-        SubscriptionHandlers.JobHandler = Meteor.paginatedSubscribe('jobs');
-    }
-    JobHandler = SubscriptionHandlers.JobHandler;
+
+Template.jobsBox.created = function () {
     query = query || loadqueryFromURL(Router.current().params.query);
     entityId = Session.get('entityId');
 };
 
+
 Template.jobList.created = function () {
 
     Meteor.autorun(function () {
-        var searchQuery = {
+        searchQuery = {
             $and: [] // Push each $or operator here
         };
-        var options = {};
+        options = {};
         var urlQuery = new URLQuery();
-        if (Session.get('entityId'))
-        {
-            searchQuery.client=Session.get('entityId');
-        };
+        if (Session.get('entityId')) {
+            searchQuery.client = Session.get('entityId');
+        }
+        ;
 
-        selectedSortDep.depend();
 
         // Type
         if (query.objType.value) {
@@ -276,40 +271,58 @@ Template.jobList.created = function () {
                 };
                 stringSearches.push(aux);
             });
-
-            urlQuery.addParam('search', query.searchString.value);
-
-            // Search client using search string in server side and return clients' ids
-            // TODO: find another way to do this kind of search to avoid nested calls
-            Meteor.call('findClient', query.searchString.value, function (err, result) {
-                if (!err)
-                    stringSearches.push({
-                        client: {
-                            $in: _.map(result, function (client) {
-                                return client._id;
-                            })
-                        }
-                    });
-
-                searchQuery.$and.push({
-                    $or: stringSearches
-                });
-                console.log('jsearch1',searchQuery);
-                JobHandler.setFilter(searchQuery);
+            searchQuery.$and.push({
+                $or: stringSearches
             });
+            urlQuery.addParam('search', query.searchString.value);
         }
-        else {
-            if (searchQuery.$and.length == 0)
-                delete searchQuery.$and;
-            if (selectedSort) {
-                JobHandler.setOptions(options);
-            }
-            JobHandler.setFilter(searchQuery);
-        }
-        // Set url query
+
+        if (searchQuery.$and.length == 0)
+            delete searchQuery.$and;
+
         urlQuery.apply();
+		setSubscription(searchQuery, options);
+        //searchDep.changed();
     })
 };
+var setSubscription = function (searchQuery, options) {
+
+    if (SubscriptionHandlers.JobHandler) {
+        SubscriptionHandlers.JobHandler.setFilter(searchQuery);
+        SubscriptionHandlers.JobHandler.setOptions(options);
+        JobHandler = SubscriptionHandlers.JobHandler;
+    }
+    else {
+        SubscriptionHandlers.JobHandler =
+            Meteor.paginatedSubscribe('jobs', {
+                filter: searchQuery,
+                options: options
+            });
+        JobHandler = SubscriptionHandlers.JobHandler;
+    }
+}
+
+// List - Helpers
+Template.jobList.helpers({
+    info: function () {
+        info.isFiltering.value = jobCollection.find().count() != 0;
+        return info;
+    },
+    listViewMode: function () {
+        return listViewMode.get();
+    },
+    jobs: function () {
+        searchDep.depend();
+        selectedSortDep.depend();
+        return jobCollection.find(searchQuery, options);
+    },
+    isLoading: function () {
+        return SubscriptionHandlers.JobHandler.isLoading();
+    },
+    jobTypes: function () {
+        return dType.ObjTypes.find({parent: Enums.objGroupType.job});
+    }
+});
 
 Template.jobList.rendered = function () {
     /**
@@ -330,7 +343,7 @@ Template.jobList.rendered = function () {
 // Page - Helpers
 Template.jobs.helpers({
     isLoading: function () {
-        return JobHandler.isLoading();
+        return SubscriptionHandlers.JobHandler.isLoading();
     }
 });
 
@@ -343,8 +356,8 @@ Template.jobListHeader.helpers({
 
 // List Search - Helpers
 Template.jobListSearch.helpers({
-    showAddButton: function() {
-      return (entityId) ? true : false;
+    showAddButton: function () {
+        return (entityId) ? true : false;
     },
     jobTypes: jobTypes,
     listViewMode: function () {
@@ -381,11 +394,12 @@ Template.jobListSort.helpers({
 Template.jobFilters.helpers({
     information: function () {
         var searchQuery = {};
+        searchDep.depend();
 
         if (query.objType.value)
             searchQuery.objNameArray = query.objType.value;
-
-        info.jobsCount.value = JobHandler.totalCount();
+        if (JobHandler)
+            info.jobsCount.value = JobHandler.totalCount();
 
         return info;
     },
@@ -395,25 +409,6 @@ Template.jobFilters.helpers({
     jobTypes: jobTypes
 });
 
-// List - Helpers
-Template.jobList.helpers({
-    info: function () {
-        info.isFiltering.value = jobCollection.find().count() != 0;
-        return info;
-    },
-    listViewMode: function () {
-        return listViewMode.get();
-    },
-    jobs: function () {
-        return jobCollection.find();
-    },
-    isLoading: function () {
-        return SubscriptionHandlers.JobHandler.isLoading();
-    },
-    jobTypes: function () {
-        return dType.ObjTypes.find({parent: Enums.objGroupType.job});
-    }
-});
 
 // List Items - Helpers
 Template.jobListItem.events({
@@ -425,10 +420,7 @@ Template.jobListItem.helpers({
     listViewMode: function () {
         return listViewMode.get();
     },
-    pictureUrl: function (pictureFileId) {
-        var picture = JobsFS.findOne({_id: pictureFileId});
-        return picture ? picture.url('JobsFSThumbs') : undefined;
-    },
+
     jobIcon: function () {
         return helper.getEntityIcon(this);
     },
@@ -438,22 +430,11 @@ Template.jobListItem.helpers({
     placements: function () {
         return Placements.find({job: this._id}, {limit: 3, transform: null});
     },
-    getEmployeeDisplayName: function () {
-        var employee = Contactables.findOne(this.employee);
-        return employee ? employee.displayName : 'Employee information not found!';
-    },
-    clientName: function () {
-        var client = Contactables.findOne(this.client);
-        return client && client.displayName;
-    },
     countPlacements: function () {
         return Placements.find({job: this._id}).count();
     },
     countRequired: function () {
         return this.numberRequired;
-    },
-    morePlacements: function () {
-        return Placements.find({job: this._id}).count() > 3;
     }
 });
 
@@ -475,9 +456,14 @@ Template.jobInformation.helpers({
  */
 // List Search - Events
 Template.jobListSearch.events = {
-    'keyup #searchString': _.debounce(function(e){
+    'keyup #searchString': _.debounce(function (e) {
         query.searchString.value = e.target.value;
-      },200),
+    }, 200),
+    'click .addJob': function (e) {
+        Session.set('addOptions', {client: entityId});
+        Router.go('/jobAdd/Temporary');
+        e.preventDefault();
+    },
     'click #toggle-filters': function (e) {
         if ($(e.currentTarget).attr('data-view') == 'normal') {
             $('body .network-content #column-filters').addClass('hidden');
@@ -504,6 +490,5 @@ Template.jobListSearch.events = {
 Template.jobListSort.events = {
     'click .sort-field': function () {
         setSortField(this);
-		console.log(JobHandler.isLoading());
     }
 };

@@ -3,7 +3,6 @@ var fs = Meteor.npmRequire('fs');
 Meteor.methods({
     esSynchAll: function(q)
     {
-        console.log('userissysadmin',RoleManager.bUserIsSystemAdmin());
         if (RoleManager.bUserIsSystemAdmin())
         {
             // meaningless update to contactables to force es sync

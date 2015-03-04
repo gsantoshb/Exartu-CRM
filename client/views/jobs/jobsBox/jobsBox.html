@@ -60,8 +60,9 @@
     {{#if showAddButton}}
         <div class="list-actions-cell btn-add-to-list">
             <div class="btn-group">
-                <a href="/jobAdd/Temporary" type="button" class="btn btn-success" title="Add"><span
-                        class="fa fa-plus"></span> Add</a>
+                <button type="button" class="btn btn-success addJob" title="Add">
+                    <span class="fa fa-plus"></span>
+                </button>
             </div>
         </div>
         <!-- /.btn-add-to-list -->
@@ -171,9 +172,9 @@
 </template>
 
 <template name="jobList">
-    {{#if isLoading}}
+{{#if isLoading}}
         <div style="height: 280px;"></div>
-    {{else}}
+{{else}}
         <div class="list-item-section {{#if listViewMode}}simple-view{{/if}}">
             {{#each jobs}}
                 {{> jobListItem }}
@@ -198,7 +199,7 @@
                 {{/if}}
             {{/each}}
         </div>
-    {{/if}}
+{{/if}}
 </template>
 
 <template name="jobListItem">
@@ -207,7 +208,7 @@
             <div class="list-item-cell jobs-list-item-title">
                 <div class="item-title single">
                     <a href="/job/{{_id}}">{{displayName}}</a> <span class="item-title-more">&#8212; <a
-                        href="/contactable/{{client}}">{{clientName}}</a></span>
+                        href="/contactable/{{client}}">{{clientDisplayName}}</a></span>
 
                     <span class="item-label prefix-10">{{lookUpName status}}</span>
                     <span class="item-label" data-status="{{lookUpName activeStatus}}">{{lookUpName activeStatus}}</span>
@@ -236,7 +237,7 @@
             </div>
             <div class="list-item-cell jobs-list-item-title">
                 <div class="item-title"><a href="/job/{{_id}}">{{displayName}}</a></div>
-                <div class="item-subtitle"><a href="/contactable/{{client}}">{{clientName}} {{#if departmentName}}
+                <div class="item-subtitle"><a href="/contactable/{{client}}">{{clientDisplayName}} {{#if departmentName}}
                     &#8212; {{departmentName}}{{/if}}</a></div>
             </div>
             <div class="list-item-details jobs-list-item-details">

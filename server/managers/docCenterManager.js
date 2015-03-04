@@ -8,29 +8,23 @@ DocCenterManager = {
     if (!email) throw new Error('missing email');
 
     // register in docCenter
-    DocCenter.register(hier.name, email, hier._id);
+    var hierName = hier.name.replace(/\s/g, '_');
+    DocCenter.register(hierName, email, hier._id);
 
-    // add merge fields
-    // todo: improve this, maybe re-using something from email templates merge fields?
-    _.each([{
-      key: 'firstName',
-      testValue: 'john',
-      type: DocCenter.mergeFieldTypes.string
-    },{
-      key: 'lastName',
-      testValue: 'Doe',
-      type: DocCenter.mergeFieldTypes.string
-    }], function (mf) {
-      DocCenter.insertMergeField(hier._id, mf, function(err, result){
+
+    DocCenterMergeFields.find({}).forEach(function (mf) {
+      DocCenter.insertMergeField(hier._id, {
+        key: mf.key,
+        testValue: mf.testValue,
+        type: mf.type
+      }, function(err, result){
         if (err){
           console.err('error inserting ' + mf.name, err);
         }else{
 
         }
       });
-
-    })
-
+    });
   },
   insertUser: function (employeeId, userData, hierId) {
 
@@ -79,6 +73,19 @@ DocCenterManager = {
     });
 
     return future.wait();
+  },
+  
+  updateMergeFields: function (mergeFieldId) {
+    var mf = DocCenterMergeFields.findOne(mergeFieldId);
+    if (!mf) return;
+
+    DocCenter.updateMergeFieldForAllHiers(mf);
+  },
+  insertMergeFields: function (mergeFieldId) {
+    var mf = DocCenterMergeFields.findOne(mergeFieldId);
+    if (!mf) return;
+
+    DocCenter.insertMergeFieldForAllHiers(mf);
   }
 };
 
@@ -114,5 +121,52 @@ Meteor.methods({
       email: email.value
     };
     return DocCenterManager.insertUser(employeeID, userData)
+  },
+  documentInstancepdf: function (id) {
+    var user = Meteor.user();
+
+    return DocCenter.renderDocumentInstance(user.currentHierId, id);
   }
+});
+
+Router.map(function() {
+  this.route('documentInstancepdf', {
+    where: 'server',
+    path: 'documentInstancepdf/:token/:id?',
+    action: function() {
+
+      var self = this;
+      var user = Meteor.users.findOne({"services.resume.loginTokens.hashedToken": Accounts._hashLoginToken(self.params.token) });
+
+      self.response.setHeader("Content-Type", "application/pdf");
+      var response = DocCenter.renderDocumentInstance(user.currentHierId, self.params.id, function (err, result) {
+        //
+        //this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        //self.response.setHeader("Content-Length", result.content.length);
+
+        //self.response.statusCode = 200;
+        self.response.end(result);
+      });
+
+
+
+      //this.response.writeHead("Content-Type", "application/pdf");
+      //this.response.writeHead("Accept-Ranges", "bytes");
+      //this.response.writeHead("Content-Length", result.length);
+
+      //console.log('---- seting headers');
+      //self.response.writeHead(response.statusCode, response.headers);
+      //
+      //
+      //setTimeout(function () {
+      //  console.log('---- writing Response');
+      //  self.response.write(response.content);
+      //  console.log('---- ending response');
+      //  self.response.end();
+      //},10000);
+
+      //this.response.end()
+
+    }
+  })
 });

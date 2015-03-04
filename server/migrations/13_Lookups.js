@@ -32,7 +32,7 @@ Migrations.add({
                             displayName: 'Contacts Acquired',lookUpActions:[Enums.lookUpAction.LeaderBoardType_Contacts]
                         },
                         {
-                            displayName: 'Deal Pipeline', lookUpActions:[Enums.lookUpAction.LeaderBoardType_Pipeline]
+                            displayName: 'Deal Pipeline', lookUpActions:[Enums.lookUpAction.LeaderBoardType_DealPipeline]
                         }
                     ],
                     function (item) {
