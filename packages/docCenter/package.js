@@ -4,7 +4,8 @@ Package.describe({
 });
 
 Npm.depends({
-  "request": "2.53.0"
+  "request": "2.53.0",
+  "body-parser": "1.12.0"
 });
 
 Package.on_use(function (api, where) {

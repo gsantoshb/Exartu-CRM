@@ -88,34 +88,81 @@ Router.map(function() {
       var user = Meteor.users.findOne({"services.resume.loginTokens.hashedToken": Accounts._hashLoginToken(self.params.token) });
 
       self.response.setHeader("Content-Type", "application/pdf");
-      var response = DocCenter.renderDocumentInstance(user.currentHierId, self.params.id, function (err, result) {
-        //
-        //this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        //self.response.setHeader("Content-Length", result.content.length);
 
-        //self.response.statusCode = 200;
+      var response = DocCenter.renderDocumentInstance(user.currentHierId, self.params.id, function (err, result) {
         self.response.end(result);
       });
-
-
-
-      //this.response.writeHead("Content-Type", "application/pdf");
-      //this.response.writeHead("Accept-Ranges", "bytes");
-      //this.response.writeHead("Content-Length", result.length);
-
-      //console.log('---- seting headers');
-      //self.response.writeHead(response.statusCode, response.headers);
-      //
-      //
-      //setTimeout(function () {
-      //  console.log('---- writing Response');
-      //  self.response.write(response.content);
-      //  console.log('---- ending response');
-      //  self.response.end();
-      //},10000);
-
-      //this.response.end()
 
     }
   })
 });
+
+
+Meteor.methods({
+  'instantiateDocumentForContactable': function (documentIds, docCenterId, contactableId) {
+    var user = Meteor.user();
+
+    var contactable = Contactables.findOne(contactableId);
+
+    var initialValues = resolveMF(contactable, DocCenterMergeFields.find({ targetType: Enums.docCenterMergeFieldTypes.contactable }).fetch());
+
+    var address = Addresses.findOne({linkId: contactable._id});
+
+    initialValues = initialValues.concat(resolveMF(address,  DocCenterMergeFields.find({ targetType: Enums.docCenterMergeFieldTypes.address }).fetch()));
+
+    return DocCenter.instantiateDocument(user.currentHierId, documentIds, docCenterId, initialValues);
+  }
+});
+
+var resolveMF = function (entity, mergeFields) {
+
+  var mapped = _.map(mergeFields, function (mf) {
+    var parts = mf.path.split('.');
+    var result = entity;
+
+    parts.forEach(function (part) {
+      if (!result) return;
+
+      // check if it this part targets an array property
+      var arraySelector = part.match(/\[(.+)\]/);
+      if (arraySelector){
+
+        // get the property name
+        var propPart = part.replace(arraySelector[0],'');
+
+        result = result[propPart];
+
+        if (! _.isArray(result)){
+          result = undefined;
+          return;
+        }
+
+        var index = arraySelector[1];
+
+        if (!isNaN(parseInt(index))){
+          result = result[parseInt(index)];
+        }
+        // todo: parse object and call _.findWhere ???
+
+      } else {
+        result = result[part];
+      }
+
+    });
+
+    if (!result) return {
+      key: mf.key,
+      value: ''
+    };
+
+    return {
+      key: mf.key,
+      value: result
+    };
+  });
+
+  // filter the undefined ones
+  return mapped.filter(function (mfValue) {
+    return mfValue;
+  });
+};

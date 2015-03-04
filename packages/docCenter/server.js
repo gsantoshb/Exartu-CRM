@@ -3,6 +3,7 @@ fs = Npm.require('fs') ;
 path = Npm.require('path') ;
 Future = Npm.require("fibers/future");
 request = Npm.require('request');
+bodyParser = Npm.require('body-parser');
 
 
 _.extend(DocCenter,{
@@ -18,6 +19,7 @@ _.extend(DocCenter,{
       password : account.password
     };
 
+    console.log('\n\nlogin ' + data.username);
     HTTP.post(this._docCenterUrl + '/token', {
       params: data,
       header: {
@@ -25,10 +27,10 @@ _.extend(DocCenter,{
       }
     }, function (err, response) {
       if (err){
-
+        console.error('login error');
         cb(err);
       }else{
-
+        console.log('login success\n');
         Accounts.update(hierId, {
           $set: {
             accessToken : response.data.access_token,
@@ -64,17 +66,21 @@ _.extend(DocCenter,{
         docCenterUser.UserName = originalUsername + '_' + Random.id(3);
       }
 
-      HTTP.post(self._docCenterUrl + '/api/Account', { data: docCenterUser}, function (err, response) {
+      console.log('\n\nregister ' + docCenterUser.UserName);
+      HTTP.post(self._docCenterUrl + '/api/Account', { params: docCenterUser}, function (err, response) {
+
         if (err){
           //try with a different username
           if (intent >= 3){
             console.error('Max numbers of retries in register to docCenter');
             cb(err);
           }else{
+            console.log('register failed, retrying....');
             tryRegister(++intent, originalUsername);
           }
         }else {
-          console.log('response', response);
+          //console.log('err');
+          console.log('register success\n');
           Accounts.insert({
             _id: hierId,
             userName: docCenterUser.UserName,
@@ -108,13 +114,16 @@ _.extend(DocCenter,{
       decimalPrecision: 1,
       showTime: true
     };
+    console.log('\n\ninsert MF ' + options.key);
 
-    api.post(self._docCenterUrl + '/api/MergeFields', {data: options}, function (err, response) {
+    api.post(self._docCenterUrl + '/api/MergeFields', options, function (err, response) {
       //console.log('cb', response);
 
       if (err){
-        console.error(err);
+        console.err('insert MF failed');
+        cb(err);
       }else{
+        console.log('insert MF success\n');
         cb(null, response.data);
       }
     });
@@ -163,7 +172,7 @@ _.extend(DocCenter,{
       Password: userData.password || generatePassword()
     };
 
-    api.post(self._docCenterUrl + '/api/Users', { data: options }, function (err, response) {
+    api.post(self._docCenterUrl + '/api/Users', options, function (err, response) {
       if (err){
         cb(err);
       }else{
@@ -177,6 +186,7 @@ _.extend(DocCenter,{
   accountExists: function (id) {
     return Accounts.find(id).count();
   },
+
   getCredentials: function (id) {
     console.log('id', id);
     return Accounts.findOne(id);
@@ -206,12 +216,15 @@ _.extend(DocCenter,{
       initialValues: mergeFieldsValues
     };
 
+    console.log('\n\ninstantiate');
     console.log('option', option);
 
-    api.post(self._docCenterUrl + '/api/DocumentInstances', { data: option }, function (err, response) {
+    api.post(self._docCenterUrl + '/api/DocumentInstances', option, function (err, response) {
       if (err){
+        console.error('instantiate failed');
         cb(err);
       }else{
+        console.log('instantiate success\n');
         cb(null, response.data);
       }
     });
@@ -281,6 +294,7 @@ _.extend(DocCenter,{
     //  cb(null, body);
     //});
   }),
+
   approveDocument: Meteor.wrapAsync(function (hierId, instanceId, cb) {
     var account = getAccount(hierId);
     var self = this;
@@ -288,7 +302,7 @@ _.extend(DocCenter,{
     var api = new DocCenterApi(account);
 
     console.log('approving');
-    api.post(self._docCenterUrl + '/api/DocumentInstancesApprove/approve?documentInstanceId=' + instanceId, function (err, response) {
+    api.post(self._docCenterUrl + '/api/DocumentInstancesApprove/approve?documentInstanceId=' + instanceId, null, function (err, response) {
       if (err){
         console.error(err);
       }else{
@@ -296,6 +310,7 @@ _.extend(DocCenter,{
       }
     });
   }),
+
   denyDocument: Meteor.wrapAsync(function (hierId, instanceId, reason, cb) {
     var account = getAccount(hierId);
     var self = this;
@@ -305,7 +320,7 @@ _.extend(DocCenter,{
     var reasonParameter = reason ? '&reason=' + reason : '';
 
     console.log('denying', reason);
-    api.post(self._docCenterUrl + '/api/DocumentInstancesApprove/deny?documentInstanceId=' + instanceId + reasonParameter, function (err, response) {
+    api.post(self._docCenterUrl + '/api/DocumentInstancesApprove/deny?documentInstanceId=' + instanceId + reasonParameter, null,function (err, response) {
       if (err){
         console.error(err);
       }else{
@@ -313,7 +328,6 @@ _.extend(DocCenter,{
       }
     });
   }),
-
 
   updateMergeFieldForAllHiers: Meteor.wrapAsync(function (mergeField, cb) {
     var self = this;
@@ -330,6 +344,7 @@ _.extend(DocCenter,{
       });
     })
   }),
+
   insertMergeFieldForAllHiers: Meteor.wrapAsync(function (mergeField, cb) {
     var self = this;
 
@@ -348,65 +363,103 @@ var DocCenterApi = function (account) {
   var self = this;
   _.extend(self, account);
 };
+DocCenterApi.prototype.get = function (url, cb) {
+  var self = this;
 
-_.each(['get', 'post', 'del'], function (method) {
-  DocCenterApi.prototype[method] = function (/*arguments*/) {
-    var self = this,
-      url = arguments[0],
-      options = arguments[1] && _.isFunction(arguments[1]) ? {} : arguments[1],
-      cb = _.isFunction(arguments[arguments.length - 1]) ? arguments[arguments.length - 1] : function () {
-      };
+  var options = self.getHeaders();
 
-    console.log('url', url);
-    var authString = getAutorizationString(self);
+  HTTP.get(url, options,  function (err, result) {
+    //catch unauthorized error
+    if (err && err.response.statusCode == 401) {
 
-    //if no token, get one
-    if (!authString) {
+      //login again
       DocCenter.login(self._id);
       _.extend(self, Accounts.findOne(self._id));
-      authString = getAutorizationString(self);
+      var authString = getAutorizationString(self);
+
+
+      //change header
+      options.headers.Authorization = authString;
+      //console.log('>>calling again', options);
+
+      HTTP.get(url, options, function (err, result) {
+        if (err) {
+          console.log('>>failed again.. quiting');
+          cb(err);
+        } else {
+          cb(null, result);
+        }
+      });
+
+    } else {
+      cb(err, result);
     }
+  });
 
-    //add Authorization header
+};
+DocCenterApi.prototype.post = function (url, data, cb) {
+  var self = this;
 
-    options.headers = options.headers || {};
-    options.headers.Authorization = authString;
+  var options = self.getHeaders();
 
-    console.log('>>calling', options);
-
-
-    //make the call
-    HTTP[method](url, options, function (err, response) {
-      //catch unauthorized error
-      //console.log('err',err);
-      if (err && err.response.statusCode == 401) {
-        console.log('>>unauthorized.. retrying');
-
-        //login again
-        DocCenter.login(self._id);
-        _.extend(self, Accounts.findOne(self._id));
-        authString = getAutorizationString(self);
-
-
-        //change header
-        options.headers.Authorization = authString;
-        console.log('>>calling again', options);
-
-        HTTP[method](url, options, function (err, response) {
-          if (err) {
-            console.log('>>failed again.. quiting');
-            cb(err);
-          } else {
-            cb(null, response);
-          }
-        });
-
-      } else {
-        cb(null, response);
-      }
-    })
+  if (data){
+    options.form = data
   }
-});
+
+  request.post(url, options, function (err, result) {
+    //catch unauthorized error
+    if (err && err.response.statusCode == 401) {
+
+      //login again
+      DocCenter.login(self._id);
+      _.extend(self, Accounts.findOne(self._id));
+      var authString = getAutorizationString(self);
+
+
+      //change header
+      options.headers.Authorization = authString;
+      //console.log('>>calling again', options);
+
+      request.post(url, options, function (err, result) {
+        if (err) {
+          console.log('>>failed again.. quiting');
+          cb(err);
+        } else {
+          cb(null, result);
+        }
+      });
+
+    } else {
+      cb(err, result);
+    }
+  });
+};
+DocCenterApi.prototype.del = function (url) {
+
+};
+
+DocCenterApi.prototype.getHeaders = function () {
+  var self = this;
+  var authString = getAutorizationString(self);
+
+  //if no token, get one
+  if (!authString) {
+    DocCenter.login(self._id);
+    _.extend(self, Accounts.findOne(self._id));
+    authString = getAutorizationString(self);
+  }
+
+  return {
+    headers:{
+      Authorization: authString
+    }
+  };
+};
+var wrapCB = function (cb, method) {
+
+  return
+}
+
 
 
 var generatePassword = function () {
@@ -432,7 +485,6 @@ Meteor.methods({
     return DocCenter.getDocuments(Meteor.user().currentHierId);
   },
   'docCenter.getDocumentInstances': function (externalId) {
-    console.log('externalId', externalId);
     return DocCenter.getDocumentInstances(Meteor.user().currentHierId, externalId);
   },
 
@@ -456,3 +508,53 @@ Meteor.methods({
     return DocCenter.denyDocument(Meteor.user().currentHierId, id, reason);
   }
 });
+
+
+
+///////////////////////////////////////////////////////
+///  https://gist.github.com/dgs700/4677933  //////////
+///////////////////////////////////////////////////////
+
+
+var objectToQueryString = function (a) {
+  var prefix, s, add, name, r20, output;
+  s = [];
+  r20 = /%20/g;
+  add = function (key, value) {
+    // If value is a function, invoke it and return its value
+    value = ( typeof value == 'function' ) ? value() : ( value == null ? "" : value );
+    s[ s.length ] = encodeURIComponent(key) + "=" + encodeURIComponent(value);
+  };
+  if (a instanceof Array) {
+    for (name in a) {
+      add(name, a[name]);
+    }
+  } else {
+    for (prefix in a) {
+      buildParams(prefix, a[ prefix ], add);
+    }
+  }
+  output = s.join("&").replace(r20, "+");
+  return output;
+};
+function buildParams(prefix, obj, add) {
+  var name, i, l, rbracket;
+  rbracket = /\[\]$/;
+  if (obj instanceof Array) {
+    for (i = 0, l = obj.length; i < l; i++) {
+      if (rbracket.test(prefix)) {
+        add(prefix, obj[i]);
+      } else {
+        buildParams(prefix + "[" + ( typeof obj[i] === "object" ? i : "" ) + "]", obj[i], add);
+      }
+    }
+  } else if (typeof obj == "object") {
+    // Serialize object item.
+    for (name in obj) {
+      buildParams(prefix + "[" + name + "]", obj[ name ], add);
+    }
+  } else {
+    // Serialize scalar item.
+    add(prefix, obj);
+  }
+}
