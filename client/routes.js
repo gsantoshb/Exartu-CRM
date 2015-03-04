@@ -214,6 +214,10 @@ Router.map(function () {
   //  path: '/management/hrconcourse',
   //  controller: 'hrConcourseManagementController'
   //});
+  this.route('hierarchyMail', {
+    path: '/management/hierarchyMail',
+    controller: 'HierarchyMailController'
+  });
 
   this.route('twilioManagement', {
     path: '/management/twilioManagement',

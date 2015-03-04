@@ -17,6 +17,13 @@ ContactableManager = {
         }
         return employeeId;
     },
+    getContactableByMail: function(mail, hierid){
+      //find a contactable in hierarchy:hier with mail: 'mail'
+      //check by hierarchy
+      var visibleHiers = Utils.filterByHiers(hierid);
+
+      return  Contactables.findOne({ 'contactMethods.value': mail,$or: visibleHiers });
+    },
     createFromPlainResume: function (text) {
         var future = new Future();
 
