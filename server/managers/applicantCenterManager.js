@@ -96,6 +96,26 @@ ApplicantCenterManager = {
 
     // Mark invitation as used
     ApplicantCenterInvitations.update({_id: invitationId}, {$set: {used: true}});
+  },
+
+  getDocCenterDocuments: function (userId) {
+    // Validations
+    if (!userId) throw new Error('User ID is required');
+    var user = Meteor.users.findOne(userId);
+    if (!user || !user.contactableId) throw new Error('Invalid user ID');
+
+    // Get documents for this user
+    return DocCenterManager.getUserDocuments(user.contactableId);
+  },
+
+  getDocCenterToken: function (userId) {
+    // Validations
+    if (!userId) throw new Error('User ID is required');
+    var user = Meteor.users.findOne(userId);
+    if (!user || !user.contactableId) throw new Error('Invalid user ID');
+
+    // Get a token for this user
+    return DocCenterManager.getUserToken(user.contactableId);
   }
 };
 

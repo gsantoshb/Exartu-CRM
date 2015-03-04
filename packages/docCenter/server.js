@@ -4,7 +4,6 @@ path = Npm.require('path') ;
 Future = Npm.require("fibers/future");
 request = Npm.require('request');
 
-
 _.extend(DocCenter,{
   _authkey: 'Tw04ksHr5',
   _docCenterUrl: 'http://hrconcourseapi.aidacreative.com',
@@ -25,7 +24,6 @@ _.extend(DocCenter,{
       }
     }, function (err, response) {
       if (err){
-
         cb(err);
       }else{
 
@@ -43,10 +41,9 @@ _.extend(DocCenter,{
   }),
 
   register: Meteor.wrapAsync(function (userName, email, hierId, cb) {
-    //generate a docCenter user
-
     var self = this;
 
+    //generate a docCenter user
     var docCenterUser = {
       UserName: userName,
       Email: email,
@@ -227,6 +224,21 @@ _.extend(DocCenter,{
       if (err){
         console.error(err);
       }else{
+        cb(null, response.data);
+      }
+    });
+  }),
+
+  getUserToken: Meteor.wrapAsync(function (hierId, externalId, cb) {
+    var account = getAccount(hierId);
+    var self = this;
+
+    var api = new DocCenterApi(account);
+
+    api.get(self._docCenterUrl + '/api/Token?userId=' + externalId, function (err, response) {
+      if (err) {
+        console.error(err);
+      } else {
         cb(null, response.data);
       }
     });
@@ -449,6 +461,7 @@ Meteor.methods({
   'docCenter.getCredentials': function () {
     return DocCenter.getCredentials(Meteor.user().currentHierId);
   },
+  
   'docCenter.approveDocument': function(id){
     return DocCenter.approveDocument(Meteor.user().currentHierId, id);
   },

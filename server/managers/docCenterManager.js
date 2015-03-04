@@ -33,6 +33,48 @@ DocCenterManager = {
     Contactables.update(employeeId, { $set: { docCenter: result } });
 
   },
+
+  getUserDocuments: function(employeeId) {
+    // Validations
+    if (!employeeId) throw new Error('Employee ID is required');
+    var employee = Contactables.findOne({_id: employeeId});
+    if (!employee) throw new Error('Invalid employee ID');
+    if (!employee.docCenter) throw new Error('Employee does not have an HR Concourse account');
+
+    var future = new Future();
+
+    DocCenter.getDocumentInstances(employee.hierId, employee.docCenter.docCenterId, function (err, result) {
+      if (err) {
+        console.log(err);
+        future.throw(err);
+      } else {
+        future.return(result);
+      }
+    });
+
+    return future.wait();
+  },
+  getUserToken: function (employeeId) {
+    // Validations
+    if (!employeeId) throw new Error('Employee ID is required');
+    var employee = Contactables.findOne({_id: employeeId});
+    if (!employee) throw new Error('Invalid employee ID');
+    if (!employee.docCenter) throw new Error('Employee does not have an HR Concourse account');
+
+    var future = new Future();
+
+    DocCenter.getUserToken(employee.hierId, employee.docCenter.docCenterId, function (err, result) {
+      if (err) {
+        console.log(err);
+        future.throw(err);
+      } else {
+        future.return(result);
+      }
+    });
+
+    return future.wait();
+  },
+  
   updateMergeFields: function (mergeFieldId) {
     var mf = DocCenterMergeFields.findOne(mergeFieldId);
     if (!mf) return;
@@ -59,9 +101,18 @@ Meteor.methods({
   },
   createDocCenterAccount: function (employeeID) {
     var employee = Contactables.findOne(employeeID);
-    var email = _.find(employee.contactMethods, function(cm){
-      var cmType = LookUps.findOne(cm.type);
-      return _.contains(cmType.lookUpActions, Enums.lookUpAction.ContactMethod_Email);
+
+    var emailCMTypes =  _.pluck(LookUps.find({
+      lookUpCode: Enums.lookUpCodes.contactMethod_types,
+      lookUpActions: {$in: [
+        Enums.lookUpAction.ContactMethod_Email,
+        Enums.lookUpAction.ContactMethod_PersonalEmail,
+        Enums.lookUpAction.ContactMethod_WorkEmail
+      ]}
+    }).fetch(), '_id');
+
+    var email = _.find(employee.contactMethods, function (cm) {
+      return _.indexOf(emailCMTypes, cm.type) != -1
     });
 
     if (!email) throw new Error('no email found for the employee');
