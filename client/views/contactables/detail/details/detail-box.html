@@ -37,7 +37,7 @@
                                                 {{/objectProperty}}
                                             </div>
                                         </li>
-                                    
+
                                         <li>
                                             <div class="left-part">Middle name</div>
                                             <div class="right-part">
@@ -103,6 +103,16 @@
                                                 {{/objectProperty}}
                                             </div>
                                         </li>
+                                        <li>
+                                            <div class="left-part">Status note</div>
+                                            <div class="right-part">
+                                                {{#objectProperty property=statusNote editable=editMode}}
+                                                    <input class="form-control" type="text" value="{{value}}">
+                                                {{else}}
+                                                    <span>{{value}}</span>
+                                                {{/objectProperty}}
+                                            </div>
+                                        </li>
                                     {{/if}}
 
 
@@ -151,17 +161,6 @@
                                             </div>
                                         </li>
                                     {{/if}}
-
-                                    <li>
-                                        <div class="left-part">Status note</div>
-                                        <div class="right-part">
-                                            {{#objectProperty property=statusNote editable=editMode}}
-                                                <input class="form-control" type="text" value="{{value}}">
-                                            {{else}}
-                                                <span>{{value}}</span>
-                                            {{/objectProperty}}
-                                        </div>
-                                    </li>
                                     <li>
                                         <div class="left-part">How heard of</div>
                                         <div class="right-part">

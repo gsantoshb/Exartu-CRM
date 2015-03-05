@@ -76,6 +76,9 @@ Template.addressAddEdit.created= function() {
     var self = this;
     address.addressTypeId=Utils.getAddressTypeDefault()._id;
     if (self.data.location) address=self.data.location;
+
+    console.log(address);
+
     AutoForm.hooks({
         addressAddEditForm: {
             onSubmit: function (insertDoc, updateDoc, currentDoc) {

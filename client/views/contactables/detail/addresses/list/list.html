@@ -4,90 +4,58 @@
             <div class="row">
                 <div class="col-md-2">
                     <h3>Addresses</h3>
-                    <div class="edit-btn"><a id="create-address-mode" href="#"><i class="fa fa-plus"></i> Add </a></div>
+                    <div class="edit-btn">
+                        <a id="create-address-mode" href="#"><i class="fa fa-plus"></i> Add </a>&nbsp;
+                        <a class="editAddressRecord pointer" data-addressId="{{_id}}"><i class="fa fa-edit"></i> Edit</a>
+                    </div>
                 </div><!-- /.col-md-2 -->
 
                 <div class="col-md-10">
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-                    {{#if showLocationAddBox}}
-                        {{>addressAddEdit linkId=linkId callback=setNewAddress }}
-                    {{/if}}
-
-                    {{#each addresses}}
-                    <div class="row">
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="left-part"><h5>{{getAddressTypeDisplayName }}</h5></div>
-                            </div>
-                            <div class="col-md-6">
-                                <ul class="list-type-5">
-                                    <li>
-                                        <div class="left-part">Address 1</div>
-                                        <div class="right-part">{{address}}</div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">Address 2</div>
-                                        <div class="right-part">{{address2}}</div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">City</div>
-                                        <div class="right-part">{{city}}</div>
-                                    </li>
-
-                                </ul>
-                            </div><!-- /.col-md-6 -->
-                            <div class="col-md-6">
-                                <ul class="list-type-5">
-                                    <li>
-                                        <div class="left-part">State</div>
-                                        <div class="right-part">{{state}}</div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">Country</div>
-                                        <div class="right-part">{{country}}</div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">Postal Code</div>
-                                        <div class="right-part">{{postalCode}}</div>
-                                    </li>
-                                </ul>
-                            </div><!-- /.col-md-6 -->
-                        </div><!-- /.row -->
-
-                        <li class="list-3-item">
-                            <div class="list-3-content list-magic">
-                                <div class="list-3-content-wrap">
-                                    <h4 class="list-3-item-meta-top">{{getAddressTypeDisplayName }}</h4>
-                                    <h4 class="list-3-item-title">{{address}} {{city}}, {{state}} {{country}}</h4>
-
-                                    <div class="list-3-actions">
-                                        <a class="editAddressRecord pointer"><i class="fa fa-edit"></i> Edit</a>
-                                        {{#if isAdmin}}
-                                            <span class="bullet-spacer">·</span>
-                                            <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
-                                        {{/if}}
+                        {{#if showLocationAddBox}}
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#address-new" aria-expanded="true" aria-controls="address-new" class="">
+                                            <i class="fa fa-plus"></i>&nbsp;Add new adress
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="address-new" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true">
+                                    <div class="panel-body">
+                                        {{>addressAddEdit linkId=linkId callback=setNewAddress }}
                                     </div>
-                                    {{#if showLocationEditBox}}
-                                        {{>addressAddEdit linkId=linkId  callback=setNewAddress location=.}}
-                                    {{/if}}
-
                                 </div>
                             </div>
-                        </li>
+                        {{/if}}
+
+                        {{#each addresses}}
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="heading-{{_id}}">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#address-{{_id}}" aria-expanded="true" aria-controls="address-{{_id}}" class="">
+                                            {{getAddressTypeDisplayName }}  <span>‐ {{address}}, {{city}}, {{country}}</span>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="address-{{_id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-{{_id}}" aria-expanded="true">
+                                    {{#if isAdmin}}
+                                        <span class="bullet-spacer">·</span>
+                                        <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
+                                    {{/if}}
+
+                                    {{#if showLocationEditBox}}
+                                        <div class="panel-body">
+                                            {{>addressAddEdit linkId=linkId  callback=setNewAddress location=.}}
+                                        </div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        {{/each}}
                     </div>
-                    {{/each}}
                 </div><!-- /.col-md-10 -->
             </div><!-- /.row -->
         </div><!-- /.box-type-2-content -->
     </section>
-
-
-
-    <div class="box">
-
-        <ul class="list-3 stripped">
-
-        </ul>
-    </div>
 </template>

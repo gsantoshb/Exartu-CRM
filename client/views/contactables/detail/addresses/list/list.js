@@ -1,12 +1,13 @@
 /**
  * Created by visualaram on 1/27/15.
  */
-var showLocationEditBox = new ReactiveVar(false);
+var showLocationEditBox = new ReactiveVar(true);
 var showLocationAddBox = new ReactiveVar(false);
 var addressesDep = new Deps.Dependency();
 Template.addressList.helpers({
     addresses: function () {
         var addresses = Addresses.find({'linkId': Session.get('entityId')});
+        console.log(addresses);
         addressesDep.depend();
         return addresses;
     },
@@ -19,7 +20,7 @@ Template.addressList.helpers({
         return lkp.displayName;
     },
     setNewAddress: function () {
-        debugger;
+        //debugger;
         return function () {
             addressesDep.changed();
             showLocationEditBox.set(false);
@@ -69,6 +70,8 @@ Template.addressList.events({
         return false;
     },
     'click .editAddressRecord': function () {
+        var self = this;
+        $('#address-' + $(this).attr('data-addressId')).hide();
         showLocationEditBox.set(!showLocationEditBox.get());
     },
     'click #create-address-mode': function () {
