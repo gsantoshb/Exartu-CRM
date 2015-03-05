@@ -95,61 +95,13 @@ Template.sendDocumentsModal.events({
 
     isSending.set(true);
 
-    DocCenter.instantiateDocument(checked, contactable.docCenter.docCenterId, getMergeFieldsValues(), function () {
+    Meteor.call('instantiateDocumentForContactable', checked, contactable.docCenter.docCenterId, Session.get('entityId'), function () {
       isSending.set(false);
       Utils.dismissModal();
       loadInstances();
     });
   }  
 });
-
-getMergeFieldsValues = function () {
-  var contactable = Contactables.findOne(Session.get('entityId'));
-
-  var mapped= _.map(DocCenterMergeFields.find().fetch(), function (mf) {
-    var parts = mf.path.split('.');
-    var result = contactable;
-
-    parts.forEach(function (part) {
-      if (!result) return;
-      var arraySelector = part.match(/\[(.+)\]/);
-      if (arraySelector){
-
-        var propPart = part.replace(arraySelector[0],'');
-
-        result = result[propPart];
-
-
-        if (! _.isArray(result)){
-          result = null;
-          return;
-        }
-
-        var index = arraySelector[1];
-
-        if (!isNaN(parseInt(index))){
-          result = result[parseInt(index)]
-        }
-
-      }else{
-        result = result[part];
-      }
-
-
-    });
-
-    if (!result) return;
-
-    return {
-      key: mf.key,
-      value: result
-    };
-  });
-
-  return mapped.filter(function (mfValue) {
-    return mfValue;
-  })
-};
 
 //instances list
 
@@ -165,7 +117,8 @@ var loadInstances = function () {
     instances.set(data);
     gettingInstances.set(false);
   })
-}
+};
+
 Template.documentInstances.created = function () {
   loadInstances();
 };

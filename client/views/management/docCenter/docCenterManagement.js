@@ -13,15 +13,19 @@ var isLoading = new ReactiveVar(),
   isActivating = new ReactiveVar(),
   showPass = new ReactiveVar();
 
-Template.docCenterManagement.created = function () {
+
+var getCredentials = function () {
   isLoading.set(true);
-  showPass.set(false);
-  isActivating.set(false);
   DocCenter.getCredentials(function (result) {
-    console.log('result', result);
     isRegistered.set(result);
     isLoading.set(false);
   })
+};
+
+Template.docCenterManagement.created = function () {
+  showPass.set(false);
+  isActivating.set(false);
+  getCredentials();
 };
 
 Template.docCenterManagement.helpers({
@@ -44,16 +48,11 @@ Template.docCenterManagement.events({
     isActivating.set(true);
     Meteor.call('registerOnDocCenter', function (err, result) {
       isActivating.set(false);
-
       if (err){
         console.log(err);
-      }else{
-        isLoading.set(true);
-        DocCenter.getCredentials(function (result) {
-          isRegistered.set(result);
-          isLoading.set(false);
-        })
       }
+      getCredentials();
+
     })
   },
   'click #showPass': function () {

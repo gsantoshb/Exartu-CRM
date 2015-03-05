@@ -1,10 +1,10 @@
 var collection;
-Template.jobClientInfo.helpers({
-  created: function () {
+Template.jobClientInfo.created=function() {
     var clientId = this.data.client;
     Meteor.subscribe('singleContactable', clientId);
     collection = this.data.collection;
-  },
+};
+Template.jobClientInfo.helpers({
   client: function () {
     return Contactables.findOne({_id: this.client});
   },
