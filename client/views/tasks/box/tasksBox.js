@@ -39,6 +39,7 @@ var loadTaskQueryFromURL = function (params) {
     // Assigned to
     var assignedToQuery = {};
     if (params.assignedTo) {
+
         assignedToQuery.default = params.assignedTo;
     }
 
