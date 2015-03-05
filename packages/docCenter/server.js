@@ -2,6 +2,7 @@ Accounts = new Meteor.Collection('docCenterAccounts');
 fs = Npm.require('fs') ;
 path = Npm.require('path') ;
 Future = Npm.require("fibers/future");
+request = Npm.require("request");
 
 _.extend(DocCenter,{
   _authkey: 'Tw04ksHr5',
