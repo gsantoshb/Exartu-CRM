@@ -1,11 +1,13 @@
 var entityType = null;
 var isEntitySpecific = false;
 var NotesHandler, noteQuery, status;
+var searchStringQuery = {};
+var q={};
 var selectedSort = new ReactiveVar();
 $("#userDropdown").prop("selectedIndex", -1);
 var loadNoteQueryFromURL = function (params) {
     // Search string
-    var searchStringQuery = {};
+
 
 
     if (params.search) {
@@ -58,7 +60,7 @@ Template.notesBox.created = function () {
     Meteor.autorun(function () {
         var urlQuery = new URLQuery();
         var queryObj = noteQuery.getObject();
-        var q = {};
+        q = {};
 
         if (queryObj.userId) {
             q.userId = queryObj.userId;
@@ -122,7 +124,7 @@ Template.notesBox.helpers({
         return Meteor.users.find({}, {sort: {'emails.address': 1}});
     },
     notes: function () {
-        return Notes.find({},{sort:{dateCreated:-1}});
+        return Notes.find(q,{sort:{dateCreated:-1}});
     },
     filters: function () {
         return noteQuery;

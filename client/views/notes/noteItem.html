@@ -40,7 +40,7 @@
                         {{#each links}}
                             <a href="{{getHref}}">
                                 {{#with getEntity}}
-                                    <span class="badge item-label">{{displayName}}</span>
+                                    <span class="badge item-label">{{>showMore text=displayName limit=25}}</span>
                                 {{/with}}
 
                             </a>

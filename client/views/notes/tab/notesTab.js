@@ -1,4 +1,5 @@
 var self = {};
+var searchQuery = {};
 var sortDep=new Deps.Dependency;
 AutoForm.debug();
 NoteSchema = new SimpleSchema({
@@ -146,7 +147,7 @@ Template.notesTabList.created = function () {
 
     Meteor.autorun(function () {
             responsesOnlyDep.depend();
-            var searchQuery = {};
+            searchQuery={};
 
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
@@ -175,7 +176,7 @@ Template.notesTabList.created = function () {
 Template.notesTabList.helpers({
     items: function () {
         sortDep.depend();
-        return Notes.find({},{sort: {dateCreated:-1}});
+        return Notes.find(searchQuery,{sort: {dateCreated:-1}});
     },
     isLoading: function () {
         return !SubscriptionHandlers.NotesHandler.ready();
