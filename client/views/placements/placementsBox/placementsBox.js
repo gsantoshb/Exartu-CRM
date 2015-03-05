@@ -2,10 +2,16 @@
  * Variables
  */
 var entityType = null;
+var searchQuery;
 var isEntitySpecific = false;
 var contactable;
 var searchFields = ['displayName'];
-
+var selectedSort = new ReactiveVar();
+selectedSort.set({field: 'dateCreated', value: -1});
+var sortFields = [
+    {field: 'dateCreated', displayName: 'Date'},
+    {field: 'employeeDisplayName', displayName: 'Name'}
+];
 var placementCollection = Placements;
 var PlacementHandler, query;
 
@@ -105,12 +111,8 @@ var getCandidateStatuses = function(objname){
     return ids;
 };
 
-// list sort
-var selectedSort =  new ReactiveVar();
-var sortFields = [
-    {field: 'dateCreated', displayName: 'Date'},
-    {field: 'employeeInfo.lastName', displayName: 'Name'}
-];
+
+
 
 var setSortField = function(field) {
     var selected = selectedSort.get();
@@ -130,10 +132,7 @@ var setSortField = function(field) {
  * Callbacks
  */
 Template.placementsBox.created = function(){
-    if (!SubscriptionHandlers.PlacementHandler){
-        SubscriptionHandlers.PlacementHandler = Meteor.paginatedSubscribe('placements');
-    }
-    PlacementHandler = SubscriptionHandlers.PlacementHandler;
+
     query = query || loadqueryFromURL(Router.current().params.query);
 
     var entityId = Session.get('entityId');
@@ -152,7 +151,7 @@ Template.placementList.created = function () {
 
 
     Meteor.autorun(function () {
-        var searchQuery = {
+        searchQuery = {
             $and: [] // Push each $or operator here
         };
         var params = {};
@@ -237,8 +236,19 @@ Template.placementList.created = function () {
 
         if (searchQuery.$and.length == 0)
             delete searchQuery.$and;
-        PlacementHandler.setFilter(searchQuery);
-        PlacementHandler.setOptions(options);
+        if (SubscriptionHandlers.PlacementHandler) {
+            SubscriptionHandlers.PlacementHandler.setFilter(searchQuery);
+            SubscriptionHandlers.PlacementHandler.setOptions(options);
+            PlacementHandler = SubscriptionHandlers.PlacementHandler;
+        }
+        else {
+            SubscriptionHandlers.PlacementHandler =
+                Meteor.paginatedSubscribe('placements', {
+                    filter: searchQuery,
+                    options: options
+                });
+            PlacementHandler = SubscriptionHandlers.PlacementHandler;
+        }
     })
 };
 
@@ -298,11 +308,7 @@ Template.placementListSort.helpers({
 // List Filters - Helpers
 Template.placementFilters.helpers({
     information: function() {
-        var searchQuery = {};
-
-        //if (query.objType.value)
-        //    searchQuery.objNameArray = query.objType.value;
-
+        if (!PlacementHandler) return;
         info.placementsCount = PlacementHandler.totalCount();
 
         return info;
@@ -328,7 +334,7 @@ Template.placementList.helpers({
         return SubscriptionHandlers.PlacementHandler.isLoading();
     },
     placements: function () {
-        return placementCollection.find({}, options);
+        return placementCollection.find(searchQuery, options);
     },
     placementTypes: function () {
         return dType.ObjTypes.find({parent: Enums.objGroupType.placement});
@@ -340,32 +346,6 @@ Template.placementList.helpers({
 
 // List Item - Helpers
 Template.placementListItem.helpers({
-    employeeDisplayName: function () {
-        var employee = Contactables.findOne(this.employee);
-        return employee && employee.displayName;
-    },
-    jobDisplayName: function () {
-        var job = Jobs.findOne(this.job);
-        return job && job.displayName;
-    },
-    jobLocationDisplayName: function () {
-        var job = Jobs.findOne(this.job);
-        return job && Utils.getLocationDisplayName(job.location);
-    },
-    clientId: function () {
-        var job = Jobs.findOne(this.job);
-        var client = job && Contactables.findOne(job.client);
-        return client && client._id;
-    },
-    clientDisplayName: function () {
-        var job = Jobs.findOne(this.job);
-        var client = job && Contactables.findOne(job.client);
-        return client && client.displayName;
-    },
-    pictureUrl: function (pictureFileId) {
-        var picture = PlacementsFS.findOne({_id: pictureFileId});
-        return picture ? picture.url('PlacementsFSThumbs') : undefined;
-    },
     placementIcon: function () {
         return helper.getEntityIcon(this);
     },
