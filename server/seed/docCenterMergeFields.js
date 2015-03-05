@@ -53,26 +53,21 @@ var mergeFields=[{
   path: 'person.birthDate',
   targetType: Enums.docCenterMergeFieldTypes.contactable
 }];
-//DocCenterMergeFields.after.update(function (userId, doc, fieldNames, modifier, options) {
-//  DocCenterManager.updateMergeFields(doc._id);
-//});
-//
-//DocCenterMergeFields.after.insert(function (userId, doc, fieldNames, modifier, options) {
-//  DocCenterManager.insertMergeFields(doc._id);
-//});
-//
-//_.each(mergeFields, function (mf) {
-//  var oldVersion = DocCenterMergeFields.findOne({ key: mf.key });
-//
-//  if (!oldVersion){
-//    DocCenterMergeFields.insert(mf);
-//  }else{
-//    mf._id = oldVersion._id;
-//    if ( ! EJSON.equals(mf, oldVersion)){
-//      delete mf._id;
-//      DocCenterMergeFields.update(oldVersion._id, { $set: mf });
-//    }
-//  }
-//});
+
+Meteor.startup(function () {
+  _.each(mergeFields, function (mf) {
+    var oldVersion = DocCenterMergeFields.findOne({ key: mf.key });
+
+    if (!oldVersion){
+      DocCenterMergeFields.insert(mf);
+    }else{
+      mf._id = oldVersion._id;
+      if ( ! EJSON.equals(mf, oldVersion)){
+        delete mf._id;
+        DocCenterMergeFields.update(oldVersion._id, { $set: mf });
+      }
+    }
+  });
+});
 
 

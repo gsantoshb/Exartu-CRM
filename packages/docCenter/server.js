@@ -41,7 +41,7 @@ _.extend(DocCenter,{
       }
     })
   }),
-
+  
   register: Meteor.wrapAsync(function (userName, email, hierId, cb) {
     var self = this;
 
@@ -50,9 +50,10 @@ _.extend(DocCenter,{
       UserName: userName,
       Email: email,
       Password: generatePassword(),
-      Hier: hierId,
+      Hier: hierId + '_' + Random.id(),
       Authkey: self._authkey
     };
+
 
 
     var tryRegister = function (intent, originalUsername) {
@@ -63,7 +64,9 @@ _.extend(DocCenter,{
         docCenterUser.UserName = originalUsername + '_' + Random.id(3);
       }
 
+      console.log('docCenterUser.Hier', docCenterUser.Hier);
       console.log('\n\nregister ' + docCenterUser.UserName);
+
       HTTP.post(self._docCenterUrl + '/api/Account', { params: docCenterUser}, function (err, response) {
 
         if (err){
@@ -81,7 +84,8 @@ _.extend(DocCenter,{
           Accounts.insert({
             _id: hierId,
             userName: docCenterUser.UserName,
-            password: docCenterUser.Password //todo: encrypt
+            password: docCenterUser.Password, //todo: encrypt
+            docCenterId: docCenterUser.Hier
           });
           cb(null);
         }
@@ -169,11 +173,12 @@ _.extend(DocCenter,{
       Password: userData.password || generatePassword()
     };
 
-    api.post(self._docCenterUrl + '/api/Users', options, function (err, response) {
+    api.post(self._docCenterUrl + '/api/Users', options, function (err, result) {
       if (err){
         cb(err);
-      }else{
-        options.docCenterId = response.data;
+      } else {
+        console.log('result', result);
+        options.docCenterId = result;
         cb(null, options);
       }
     });
@@ -222,7 +227,7 @@ _.extend(DocCenter,{
         cb(err);
       }else{
         console.log('instantiate success\n');
-        cb(null, response.data);
+        cb(null, response);
       }
     });
   }),
@@ -281,30 +286,6 @@ _.extend(DocCenter,{
         cb(null, body);
       }
     });
-
-
-    /////////////
-    //  TEST   //
-    /////////////
-
-    //var options = {
-    //    url: 'http://www.analysis.im/uploads/seminar/pdf-sample.pdf',
-    //    encoding: null
-    //};
-    //// Get raw image binaries
-    //request.get(options, function (error, result, body){
-    //
-    //  if (error) {
-    //    return console.error(error);
-    //  }
-    //
-    //  var myPath = '/home/javier';
-    //  var filePath = path.join(myPath, 'pdf-sample.pdf' );
-    //
-    //  var buffer = new Buffer( body );
-    //  fs.writeFileSync( filePath, buffer );
-    //  cb(null, body);
-    //});
   }),
 
   approveDocument: Meteor.wrapAsync(function (hierId, instanceId, cb) {
@@ -318,7 +299,7 @@ _.extend(DocCenter,{
       if (err){
         console.error(err);
       }else{
-        cb(null, response.data);
+        cb(null, response);
       }
     });
   }),
@@ -336,7 +317,7 @@ _.extend(DocCenter,{
       if (err){
         console.error(err);
       }else{
-        cb(null, response.data);
+        cb(null, response);
       }
     });
   }),
@@ -392,7 +373,6 @@ DocCenterApi.prototype.get = function (url, cb) {
 
       //change header
       options.headers.Authorization = authString;
-      //console.log('>>calling again', options);
 
       HTTP.get(url, options, function (err, result) {
         if (err) {
@@ -418,10 +398,25 @@ DocCenterApi.prototype.post = function (url, data, cb) {
     options.form = data
   }
 
+  var resolve = function (err, body) {
+    if (err){
+      cb(err);
+    }else{
+      if (body){
+        try{
+          cb(null, JSON.parse(body));
+        } catch (e) {
+          cb(e);
+        }
+      }else{
+        cb(null, {});
+      }
+    }
+  };
+
   request.post(url, options, function (err, result) {
     //catch unauthorized error
-    if (err && err.response.statusCode == 401) {
-
+    if (err && err.response && err.response.statusCode == 401) {
       //login again
       DocCenter.login(self._id);
       _.extend(self, Accounts.findOne(self._id));
@@ -430,19 +425,18 @@ DocCenterApi.prototype.post = function (url, data, cb) {
 
       //change header
       options.headers.Authorization = authString;
-      //console.log('>>calling again', options);
 
       request.post(url, options, function (err, result) {
         if (err) {
-          console.log('>>failed again.. quiting');
+          console.err('>>failed again.. quiting');
           cb(err);
         } else {
-          cb(null, result);
+          resolve(null, result.body);
         }
       });
 
     } else {
-      cb(err, result);
+      resolve(err, result.body);
     }
   });
 };
