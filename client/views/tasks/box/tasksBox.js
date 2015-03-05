@@ -1,6 +1,9 @@
 var entityType = null;
 var isEntitySpecific = false;
-var TasksHandler, taskQuery, status;
+var taskCollection = Tasks;
+var TaskHander, queryObj, status;
+var searchQuery = {};
+
 var statusDep = new Deps.Dependency;
 $("#assignedToDropdown").prop("selectedIndex", -1);
 
@@ -53,68 +56,73 @@ var loadTaskQueryFromURL = function (params) {
 var taskCount = new ReactiveVar();
 
 Template.tasksBox.created = function () {
-    taskQuery = taskQuery || loadTaskQueryFromURL(Router.current().params.query);
+    queryObj = queryObj || loadTaskQueryFromURL(Router.current().params.query);
     var entityId = Session.get('entityId');
-
-    if (!SubscriptionHandlers.TasksHandler) {
-        SubscriptionHandlers.TasksHandler = Meteor.paginatedSubscribe("tasks");
-    }
-    TasksHandler = SubscriptionHandlers.TasksHandler;
     entityType = Utils.getEntityTypeFromRouter();
     isEntitySpecific = false;
     if (entityType != null) isEntitySpecific = true;
 
     Meteor.autorun(function () {
-        var urlQuery = new URLQuery();
-        var queryObj = taskQuery.getObject();
-        var q = {};
 
-        if (!queryObj.inactives) {
-            q.inactive = {
+        var urlQuery = new URLQuery();
+        searchQuery={};
+        if (!queryObj.inactives.value) {
+            searchQuery.inactive = {
                 $ne: true
             };
         }
-        if (queryObj.inactives) {
+        if (queryObj.inactives.value) {
             urlQuery.addParam('inactive', true);
         }
 
-        if (queryObj.selectedLimit) {
+        if (queryObj.selectedLimit.value) {
 
             var dateLimit = new Date();
-            q.dateCreated = {
-                $gte: dateLimit.getTime() - queryObj.selectedLimit
+            searchQuery.dateCreated = {
+                $gte: dateLimit.getTime() - queryObj.selectedLimit.value
             };
-            urlQuery.addParam('creationDate', queryObj.selectedLimit);
+            urlQuery.addParam('creationDate', queryObj.selectedLimit.value);
         }
-        if (queryObj.ownedByMe) {
-            q.assign = Meteor.userId();
+        if (queryObj.ownedByMe.value) {
+            searchQuery.assign = Meteor.userId();
             urlQuery.addParam('owned', true);
         }
 
 
-        if (queryObj.assignedTo) {
-            q.assign = queryObj.assignedTo;
-            urlQuery.addParam('assignedTo', queryObj.assignedTo);
+        if (queryObj.assignedTo.value) {
+            searchQuery.assign = queryObj.assignedTo.value;
+            urlQuery.addParam('assignedTo', queryObj.assignedTo.value);
         }
 
         statusDep.depend();
         if (status) {
-            _.extend(q, status.query());
+            _.extend(searchQuery, status.query());
             urlQuery.addParam('status', status.name);
         }
 
-        if (queryObj.searchString) {
-            q.msg = {
-                $regex: queryObj.searchString,
+        if (queryObj.searchString.value) {
+            searchQuery.msg = {
+                $regex: queryObj.searchString.value,
                 $options: 'i'
             };
             urlQuery.addParam('search', queryObj.searchString);
         }
         if (isEntitySpecific) {
-            q.links = {$elemMatch: {id: entityId}};
+            searchQuery.links = {$elemMatch: {id: entityId}};
         }
         urlQuery.apply();
-        TasksHandler.setFilter(q);
+        if (SubscriptionHandlers.TaskHandler) {
+            SubscriptionHandlers.TaskHandler.setFilter(searchQuery);
+            SubscriptionHandlers.TaskHandler.setOptions();
+            TaskHandler = SubscriptionHandlers.TaskHandler;
+        }
+        else {
+            SubscriptionHandlers.TaskHandler =
+                Meteor.paginatedSubscribe('tasks', {
+                    filter: searchQuery
+                });
+            TaskHandler = SubscriptionHandlers.TaskHandler;
+        }
     })
 };
 
@@ -191,17 +199,17 @@ var states = [
 
 Template.tasksBox.helpers({
     taskCount: function () {
-      statusDep.depend();
-      return TasksHandler.totalCount();
+        if (TaskHandler)
+            return TaskHandler.totalCount();
     },
     users: function () {
         return Meteor.users.find({}, {sort: {'emails.address': 1}});
     },
     tasks: function () {
-      return Tasks.find({},{sort:{dateCreated:-1}});
+      return Tasks.find(searchQuery,{sort:{dateCreated:-1}});
     },
     filters: function () {
-        return taskQuery;
+        return queryObj;
     },
     states: function () {
         return states;
@@ -212,13 +220,13 @@ Template.tasksBox.helpers({
     },
     isLoading: function () {
 
-        return TasksHandler.isLoading();
+        return SubscriptionHandlers.TaskHandler.isLoading();
     }
 });
 
 Template.tasksBox.events({
     'keyup #searchString': _.debounce(function (e) {
-        taskQuery.searchString.value = e.target.value;
+        queryObj.searchString.value = e.target.value;
     }, 200),
     'click .addTask': function () {
         if (!isEntitySpecific)
