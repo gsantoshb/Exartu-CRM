@@ -96,4 +96,19 @@ Meteor.startup(function () {
       appName: 'Exartu'
     });
   }
+
+  //Active all hierarchys mail listener
+  var hierWithSubscription = Hierarchies.find({mailSubscription: {$exists: true}}).fetch();
+  _.forEach(hierWithSubscription, function(h){
+    Meteor.call('emailListener', h.mailSubscription.mail, h.mailSubscription.password,  h.mailSubscription.host, h.mailSubscription.port, h._id, function (err, result) {
+      if(err){
+        throw new Error('something wrong happened on hierarchies mail subscriptions');
+
+      }
+      else{
+        console.log("hierarchy mail listener up", h._id);
+      }
+    });
+  });
+
 });

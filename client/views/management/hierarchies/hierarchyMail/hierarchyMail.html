@@ -14,22 +14,27 @@
                    {{#autoForm schema="SetUpHierEmailSchema" id="setUpHierEmail" validation="blur"}}
                      <fieldset>
                        <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
-                           {{> afFieldInput name='email' class="input-lg" placeholder="Email"}}
+                           {{> afFieldInput name='email' class="" placeholder="Email"}}
                            {{#if afFieldIsInvalid name='email'}}
                                <span class="help-block">{{afFieldMessage name='email'}}</span>
                            {{/if}}
                        </div>
                        <div class="form-group {{#if afFieldIsInvalid name='password'}}has-error{{/if}}">
-                           {{> afFieldInput name='password' class="input-lg" placeholder="Password"  type="password"}}
+                           {{> afFieldInput name='password' class="" placeholder="Password"  type="password"}}
                            {{#if afFieldIsInvalid name='password'}}
                                <span class="help-block">{{afFieldMessage name='password'}}</span>
                            {{/if}}
                        </div>
                        <div class="form-group">
-                           <button type="submit" class="btn btn-primary top-10 btn-lg">Save</button>
+                           <button type="submit" class="btn btn-primary top-10">Save</button>
                        </div>
                      </fieldset>
                    {{/autoForm}}
+                    {{#if error}}
+                       <div class="alert-box alert-danger" style="margin-top: 20px;">
+                           {{error}}
+                       </div>
+                    {{/if}}
                 </div>
             </div>
         </div>
@@ -37,7 +42,9 @@
             <div class="panel panel-default">
                 <!-- Header -->
                 <div class="panel-heading">
-                   <p style="color:#708090">Set an email for your hierarchy, aïda will automatically make a note from every mail received from your network records.</p>
+                   <p style="color:#708090">Set an email for your hierarchy, aïda will automatically make a note from every mail received from your network records.
+                       The webmail provider must be gmail, hotmail or yahoo. For using another webmail provider please contact with aida development.
+                   </p>
                 </div>
             </div>
         </div>
