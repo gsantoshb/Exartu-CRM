@@ -23,7 +23,6 @@ DashboardController = RouteController.extend({
             this.render('loadingContactable');
             return;
         }
-        GAnalytics.pageview();
         this.render();
     },
     onAfterAction: function () {
