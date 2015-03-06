@@ -146,6 +146,8 @@ ContactableManager = {
         if (!employeeId) throw new Error('Employee ID is required');
         var employee = Contactables.findOne({_id: employeeId, Employee: {$exists: true}});
         if (!employee) throw new Error('Invalid employee ID');
+        var appCenterUser = Meteor.users.findOne({_id: employee.user});
+        if (!appCenterUser) throw new Error('Employee does not have an Applicant Center account');
 
         var note = {
             msg: message,
@@ -153,7 +155,8 @@ ContactableManager = {
             contactableId: employeeId,
             dateCreated: new Date(),
             hierId: employee.hierId,
-            userId: employee.userId
+            userId: appCenterUser._id,
+            displayToEmployee: true
         };
 
         // Insert note
