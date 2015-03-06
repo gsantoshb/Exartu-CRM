@@ -13,17 +13,9 @@ DocCenterManager = {
 
 
     DocCenterMergeFields.find({}).forEach(function (mf) {
-      DocCenter.insertMergeField(hier._id, {
-        key: mf.key,
-        testValue: mf.testValue,
-        type: mf.type
-      }, function(err, result){
-        if (err){
-          console.err('error inserting ' + mf.name, err);
-        }else{
 
-        }
-      });
+      DocCenterManager.insertMergeField(hier._id, mf);
+
     });
   },
   insertUser: function (employeeId, userData, hierId) {
@@ -74,18 +66,84 @@ DocCenterManager = {
 
     return future.wait();
   },
-  
-  updateMergeFields: function (mergeFieldId) {
-    var mf = DocCenterMergeFields.findOne(mergeFieldId);
-    if (!mf) return;
 
-    DocCenter.updateMergeFieldForAllHiers(mf);
+  insertMergeField: Meteor.wrapAsync(function (hierId, mf, cb) {
+    DocCenter.insertMergeField(hierId, {
+      key: mf.key,
+      testValue: mf.testValue,
+      type: mf.type
+    }, cb);
+  }),
+
+  removeMergeField: Meteor.wrapAsync(function (hierId, mfKey, cb){
+    //DocCenter.deleteMergeField(hierId, mfKey, cb);
+  }),
+
+  updateMergeField: function (hierId, mf) {
+    //DocCenterManager.removeMergeField(hierId, mf.key);
+    //DocCenterManager.insertMergeField(hierId, mf);
   },
-  insertMergeFields: function (mergeFieldId) {
-    var mf = DocCenterMergeFields.findOne(mergeFieldId);
-    if (!mf) return;
 
-    DocCenter.insertMergeFieldForAllHiers(mf);
+  syncMergeFields: function () {
+    var localMergeFields = DocCenterMergeFields.find().fetch();
+
+    // for all hierarchies that have account
+    Hierarchies.find().forEach(function (hier) {
+
+      try {
+
+        if (! DocCenter.accountExists(hier._id)) return;
+
+        var remoteMergeFields = DocCenter.getMergeFields(hier._id);
+
+        localMergeFields.forEach(function (localMF) {
+          var remoteMF = _.findWhere(remoteMergeFields, {key: localMF.key});
+
+          if (!remoteMF){
+
+            DocCenterManager.insertMergeField(hier._id, localMF);
+
+          }
+        //  else{
+        //
+        //    var areEquals = _.every(['key', 'testValue', {local: 'type', remote: 'fieldType' }], function (prop) {
+        //
+        //      if (_.isString(prop)){
+        //        var localVal = localMF[prop],
+        //          remoteVal = remoteMF[prop];
+        //      }else{
+        //
+        //        var localVal = localMF[prop.local],
+        //          remoteVal = remoteMF[prop.remote];
+        //      }
+        //      if (remoteVal != localVal){
+        //        return false;
+        //      }
+        //
+        //      return true;
+        //    });
+        //
+        //    if (! areEquals){
+        //      DocCenterManager.updateMergeField(hier._id, localMF);
+        //    }
+        //  }
+        //
+        //  // remove it so i can check which ones are not in localMergeFields
+        //  remoteMergeFields.splice(remoteMergeFields.indexOf(remoteMF), 1);
+        //
+        //});
+        //
+        //// if there is any one left in the array then it's not in localMergeFields and it should be removed
+        //remoteMergeFields.forEach(function (remoteMF) {
+        //  DocCenterManager.removeMergeField(hier._id, remoteMF.key);
+        })
+      } catch (e){
+        console.log('failed ' + hier._id );
+        console.error(e);
+      }
+
+    })
+
   }
 };
 
@@ -121,11 +179,6 @@ Meteor.methods({
       email: email.value
     };
     return DocCenterManager.insertUser(employeeID, userData)
-  },
-  documentInstancepdf: function (id) {
-    var user = Meteor.user();
-
-    return DocCenter.renderDocumentInstance(user.currentHierId, id);
   }
 });
 
