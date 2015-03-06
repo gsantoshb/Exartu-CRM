@@ -32,4 +32,9 @@ TasksController = RouteController.extend({
             }
         });
     }
+
 });
+Template.tasks.destroyed = function(){
+    TaskHandler.stop();
+  delete SubscriptionHandlers.TaskHandler;
+}

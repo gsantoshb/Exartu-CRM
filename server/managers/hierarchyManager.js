@@ -98,7 +98,8 @@ HierarchyManager = {
     },
     setCurrentHierarchyMailConf: function(mail, password, host, port){
       if(_.isString(mail)&& _.isString(password) && _.isString(host) && _.isNumber(port)) {
-        var mailSubs = {mail: mail, password: password, host: host, port: port};
+        var encryptedPass =  CryptoJS.AES.encrypt(password, "passWord");
+        var mailSubs = {mail: mail, password: encryptedPass.toString(), host: host, port: port};
         Hierarchies.update({_id: Meteor.user().currentHierId}, {$set: {mailSubscription: mailSubs}});
       }
       else{
