@@ -121,7 +121,7 @@ _.extend(DocCenter,{
       //console.log('cb', response);
 
       if (err){
-        console.err('insert MF failed');
+        console.error('insert MF failed');
         cb(err);
       }else{
         console.log('insert MF success\n');
@@ -135,9 +135,23 @@ _.extend(DocCenter,{
    *
    * @param {string} name
    */
-  deleteMergeField: function (name, cb) {
+  deleteMergeField: Meteor.wrapAsync(function (hierId, key, cb) {
+    var account = getAccount(hierId);
+    var self = this;
 
-  },
+    var api = new DocCenterApi(account);
+    console.log('\n\ndelete MF ' + key);
+
+    api.del(self._docCenterUrl + '/api/MergeFields?key=' + key, function (err, response) {
+      if (err){
+        console.error('delete MF failed');
+        cb(err);
+      }else{
+        console.log('delete MF success\n');
+        cb(null, response.data);
+      }
+    });
+  }),
 
   getDocuments: Meteor.wrapAsync(function (hierId, cb) {
     var account = getAccount(hierId);
@@ -151,7 +165,7 @@ _.extend(DocCenter,{
       if (err){
         console.error(err);
       }else{
-        cb(null, response.data);
+        cb(null, response);
       }
     });
   }),
@@ -242,7 +256,7 @@ _.extend(DocCenter,{
       if (err){
         console.error(err);
       }else{
-        cb(null, response.data);
+        cb(null, response);
       }
     });
   }),
@@ -257,7 +271,7 @@ _.extend(DocCenter,{
       if (err) {
         console.error(err);
       } else {
-        cb(null, response.data);
+        cb(null, response);
       }
     });
   }),
@@ -322,34 +336,23 @@ _.extend(DocCenter,{
     });
   }),
 
-  updateMergeFieldForAllHiers: Meteor.wrapAsync(function (mergeField, cb) {
+  getMergeFields: Meteor.wrapAsync(function (hierId, cb) {
+    var account = getAccount(hierId);
     var self = this;
 
-    Accounts.find().forEach(function (account) {
+    var api = new DocCenterApi(account);
 
-      var api = new DocCenterApi(account);
-      api.del(self._docCenterUrl + '/api/MergeFields?key=' + mergeField.key, function (err, response) {
-        if (err){
-          console.error(err);
-        }else{
-          DocCenter.insertMergeField(account._id, mergeField, cb);
-        }
-      });
-    })
-  }),
 
-  insertMergeFieldForAllHiers: Meteor.wrapAsync(function (mergeField, cb) {
-    var self = this;
-
-    Accounts.find().forEach(function (account) {
-      try{
-        DocCenter.insertMergeField(account._id, mergeField);
-      }catch (e){
-        console.error('could not create mergeField ' + mergeField.key + ' in hier ' + account._id);
+    api.get(self._docCenterUrl + '/api/MergeFields', function (err, response) {
+      if (err){
+        console.error(err);
+      }else{
+        cb(null, response);
       }
     });
-    cb(null);
   })
+
+
 });
 
 var DocCenterApi = function (account) {
@@ -379,12 +382,12 @@ DocCenterApi.prototype.get = function (url, cb) {
           console.log('>>failed again.. quiting');
           cb(err);
         } else {
-          cb(null, result);
+          cb(null, result.data);
         }
       });
 
     } else {
-      cb(err, result);
+      cb(err, result.data);
     }
   });
 
@@ -440,8 +443,36 @@ DocCenterApi.prototype.post = function (url, data, cb) {
     }
   });
 };
-DocCenterApi.prototype.del = function (url) {
+DocCenterApi.prototype.del = function (url, cb) {
+  var self = this;
 
+  var options = self.getHeaders();
+
+  request.del(url, options, function (err, result) {
+    //catch unauthorized error
+    if (err && err.response && err.response.statusCode == 401) {
+      //login again
+      DocCenter.login(self._id);
+      _.extend(self, Accounts.findOne(self._id));
+      var authString = getAutorizationString(self);
+
+
+      //change header
+      options.headers.Authorization = authString;
+
+      request.del(url, options, function (err, result) {
+        if (err) {
+          console.err('>>failed again.. quiting');
+          cb(err);
+        } else {
+          cb(null, result && result.body);
+        }
+      });
+
+    } else {
+      cb(err, result && result.body);
+    }
+  });
 };
 
 DocCenterApi.prototype.getHeaders = function () {

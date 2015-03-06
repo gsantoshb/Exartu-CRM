@@ -61,13 +61,18 @@ Meteor.startup(function () {
     if (!oldVersion){
       DocCenterMergeFields.insert(mf);
     }else{
-      mf._id = oldVersion._id;
-      if ( ! EJSON.equals(mf, oldVersion)){
-        delete mf._id;
-        DocCenterMergeFields.update(oldVersion._id, { $set: mf });
-      }
+      //mf._id = oldVersion._id;
+      //if ( ! EJSON.equals(mf, oldVersion)){
+      //  delete mf._id;
+      //  DocCenterMergeFields.update(oldVersion._id, { $set: mf });
+      //}
     }
   });
+
+  //DocCenterMergeFields.remove({key: {$nin: _.pluck(mergeFields, 'key')}});
+
+
+  DocCenterManager.syncMergeFields();
 });
 
 
