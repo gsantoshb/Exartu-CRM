@@ -125,4 +125,11 @@ Template.registerHelper('listViewMode', function () {
     return listViewMode.get();
 });
 
+Template.dashboard.destroyed = function () {
+  SubscriptionHandlers.ActivitiesHandler.stop();
+  delete SubscriptionHandlers.ActivitiesHandler;
+}
+
 })();
+
+
