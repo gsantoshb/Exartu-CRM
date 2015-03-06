@@ -144,6 +144,11 @@ Router.map(function () {
     controller: 'TasksController'
   });
 
+  this.route('task', {
+    path: '/tasks/:_id',
+    controller: 'TasksController'
+  });
+
   this.route('notes', {
     path: '/notes',
     controller: 'NotesController'
@@ -209,6 +214,10 @@ Router.map(function () {
   //  path: '/management/hrconcourse',
   //  controller: 'hrConcourseManagementController'
   //});
+  this.route('hierarchyMail', {
+    path: '/management/hierarchyMail',
+    controller: 'HierarchyMailController'
+  });
 
   this.route('twilioManagement', {
     path: '/management/twilioManagement',

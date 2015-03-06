@@ -9,7 +9,7 @@ _.extend(Utils, {
         user.picture = UsersFS.getThumbnailUrlForBlaze(user.profilePictureId);
 
         return {
-            username: user.username,
+            username: Utils.getLocalUserName(user),
             picture: user.picture || '/assets/user-photo-placeholder.jpg'
         };
     }
@@ -556,11 +556,13 @@ Utils.showModal = function (templateName) {
 
     modal.on('hidden.bs.modal', function (e) {
         modal.remove();
+
     });
 };
 
 Utils.dismissModal = function () {
     $('.modal-host').children().modal('toggle');
+
 };
 
 Utils.getContactableType = function (obj) {

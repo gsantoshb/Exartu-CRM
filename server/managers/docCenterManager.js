@@ -8,35 +8,141 @@ DocCenterManager = {
     if (!email) throw new Error('missing email');
 
     // register in docCenter
-    DocCenter.register(hier.name, email, hier._id);
+    var hierName = hier.name.replace(/\s/g, '_');
+    DocCenter.register(hierName, email, hier._id);
 
-    // add merge fields
-    // todo: improve this, maybe re-using something from email templates merge fields?
-    _.each([{
-      key: 'firstName',
-      testValue: 'john',
-      type: DocCenter.mergeFieldTypes.string
-    },{
-      key: 'lastName',
-      testValue: 'Doe',
-      type: DocCenter.mergeFieldTypes.string
-    }], function (mf) {
-      DocCenter.insertMergeField(hier._id, mf, function(err, result){
-        if (err){
-          console.err('error inserting ' + mf.name, err);
-        }else{
 
-        }
-      });
+    DocCenterMergeFields.find({}).forEach(function (mf) {
 
-    })
+      DocCenterManager.insertMergeField(hier._id, mf);
 
+    });
   },
   insertUser: function (employeeId, userData, hierId) {
 
     var result = DocCenter.insertUser(hierId || Meteor.user().currentHierId, userData);
 
     Contactables.update(employeeId, { $set: { docCenter: result } });
+
+  },
+
+  getUserDocuments: function(employeeId) {
+    // Validations
+    if (!employeeId) throw new Error('Employee ID is required');
+    var employee = Contactables.findOne({_id: employeeId});
+    if (!employee) throw new Error('Invalid employee ID');
+    if (!employee.docCenter) throw new Error('Employee does not have an HR Concourse account');
+
+    var future = new Future();
+
+    DocCenter.getDocumentInstances(employee.hierId, employee.docCenter.docCenterId, function (err, result) {
+      if (err) {
+        console.log(err);
+        future.throw(err);
+      } else {
+        future.return(result);
+      }
+    });
+
+    return future.wait();
+  },
+  getUserToken: function (employeeId) {
+    // Validations
+    if (!employeeId) throw new Error('Employee ID is required');
+    var employee = Contactables.findOne({_id: employeeId});
+    if (!employee) throw new Error('Invalid employee ID');
+    if (!employee.docCenter) throw new Error('Employee does not have an HR Concourse account');
+
+    var future = new Future();
+
+    DocCenter.getUserToken(employee.hierId, employee.docCenter.docCenterId, function (err, result) {
+      if (err) {
+        console.log(err);
+        future.throw(err);
+      } else {
+        future.return(result);
+      }
+    });
+
+    return future.wait();
+  },
+
+  insertMergeField: Meteor.wrapAsync(function (hierId, mf, cb) {
+    DocCenter.insertMergeField(hierId, {
+      key: mf.key,
+      testValue: mf.testValue,
+      type: mf.type
+    }, cb);
+  }),
+
+  removeMergeField: Meteor.wrapAsync(function (hierId, mfKey, cb){
+    //DocCenter.deleteMergeField(hierId, mfKey, cb);
+  }),
+
+  updateMergeField: function (hierId, mf) {
+    //DocCenterManager.removeMergeField(hierId, mf.key);
+    //DocCenterManager.insertMergeField(hierId, mf);
+  },
+
+  syncMergeFields: function () {
+    var localMergeFields = DocCenterMergeFields.find().fetch();
+
+    // for all hierarchies that have account
+    Hierarchies.find().forEach(function (hier) {
+
+      try {
+
+        if (! DocCenter.accountExists(hier._id)) return;
+
+        var remoteMergeFields = DocCenter.getMergeFields(hier._id);
+
+        localMergeFields.forEach(function (localMF) {
+          var remoteMF = _.findWhere(remoteMergeFields, {key: localMF.key});
+
+          if (!remoteMF){
+
+            DocCenterManager.insertMergeField(hier._id, localMF);
+
+          }
+        //  else{
+        //
+        //    var areEquals = _.every(['key', 'testValue', {local: 'type', remote: 'fieldType' }], function (prop) {
+        //
+        //      if (_.isString(prop)){
+        //        var localVal = localMF[prop],
+        //          remoteVal = remoteMF[prop];
+        //      }else{
+        //
+        //        var localVal = localMF[prop.local],
+        //          remoteVal = remoteMF[prop.remote];
+        //      }
+        //      if (remoteVal != localVal){
+        //        return false;
+        //      }
+        //
+        //      return true;
+        //    });
+        //
+        //    if (! areEquals){
+        //      DocCenterManager.updateMergeField(hier._id, localMF);
+        //    }
+        //  }
+        //
+        //  // remove it so i can check which ones are not in localMergeFields
+        //  remoteMergeFields.splice(remoteMergeFields.indexOf(remoteMF), 1);
+        //
+        //});
+        //
+        //// if there is any one left in the array then it's not in localMergeFields and it should be removed
+        //remoteMergeFields.forEach(function (remoteMF) {
+        //  DocCenterManager.removeMergeField(hier._id, remoteMF.key);
+        })
+      } catch (e){
+        console.log('failed ' + hier._id );
+        console.error(e);
+      }
+
+    })
 
   }
 };
@@ -53,9 +159,18 @@ Meteor.methods({
   },
   createDocCenterAccount: function (employeeID) {
     var employee = Contactables.findOne(employeeID);
-    var email = _.find(employee.contactMethods, function(cm){
-      var cmType = LookUps.findOne(cm.type);
-      return _.contains(cmType.lookUpActions, Enums.lookUpAction.ContactMethod_Email);
+
+    var emailCMTypes =  _.pluck(LookUps.find({
+      lookUpCode: Enums.lookUpCodes.contactMethod_types,
+      lookUpActions: {$in: [
+        Enums.lookUpAction.ContactMethod_Email,
+        Enums.lookUpAction.ContactMethod_PersonalEmail,
+        Enums.lookUpAction.ContactMethod_WorkEmail
+      ]}
+    }).fetch(), '_id');
+
+    var email = _.find(employee.contactMethods, function (cm) {
+      return _.indexOf(emailCMTypes, cm.type) != -1
     });
 
     if (!email) throw new Error('no email found for the employee');
@@ -64,11 +179,6 @@ Meteor.methods({
       email: email.value
     };
     return DocCenterManager.insertUser(employeeID, userData)
-  },
-  documentInstancepdf: function (id) {
-    var user = Meteor.user();
-
-    return DocCenter.renderDocumentInstance(user.currentHierId, id);
   }
 });
 
@@ -82,34 +192,81 @@ Router.map(function() {
       var user = Meteor.users.findOne({"services.resume.loginTokens.hashedToken": Accounts._hashLoginToken(self.params.token) });
 
       self.response.setHeader("Content-Type", "application/pdf");
-      var response = DocCenter.renderDocumentInstance(user.currentHierId, self.params.id, function (err, result) {
-        //
-        //this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        //self.response.setHeader("Content-Length", result.content.length);
 
-        //self.response.statusCode = 200;
+      var response = DocCenter.renderDocumentInstance(user.currentHierId, self.params.id, function (err, result) {
         self.response.end(result);
       });
-
-
-
-      //this.response.writeHead("Content-Type", "application/pdf");
-      //this.response.writeHead("Accept-Ranges", "bytes");
-      //this.response.writeHead("Content-Length", result.length);
-
-      //console.log('---- seting headers');
-      //self.response.writeHead(response.statusCode, response.headers);
-      //
-      //
-      //setTimeout(function () {
-      //  console.log('---- writing Response');
-      //  self.response.write(response.content);
-      //  console.log('---- ending response');
-      //  self.response.end();
-      //},10000);
-
-      //this.response.end()
 
     }
   })
 });
+
+
+Meteor.methods({
+  'instantiateDocumentForContactable': function (documentIds, docCenterId, contactableId) {
+    var user = Meteor.user();
+
+    var contactable = Contactables.findOne(contactableId);
+
+    var initialValues = resolveMF(contactable, DocCenterMergeFields.find({ targetType: Enums.docCenterMergeFieldTypes.contactable }).fetch());
+
+    var address = Addresses.findOne({linkId: contactable._id});
+
+    initialValues = initialValues.concat(resolveMF(address,  DocCenterMergeFields.find({ targetType: Enums.docCenterMergeFieldTypes.address }).fetch()));
+
+    return DocCenter.instantiateDocument(user.currentHierId, documentIds, docCenterId, initialValues);
+  }
+});
+
+var resolveMF = function (entity, mergeFields) {
+
+  var mapped = _.map(mergeFields, function (mf) {
+    var parts = mf.path.split('.');
+    var result = entity;
+
+    parts.forEach(function (part) {
+      if (!result) return;
+
+      // check if it this part targets an array property
+      var arraySelector = part.match(/\[(.+)\]/);
+      if (arraySelector){
+
+        // get the property name
+        var propPart = part.replace(arraySelector[0],'');
+
+        result = result[propPart];
+
+        if (! _.isArray(result)){
+          result = undefined;
+          return;
+        }
+
+        var index = arraySelector[1];
+
+        if (!isNaN(parseInt(index))){
+          result = result[parseInt(index)];
+        }
+        // todo: parse object and call _.findWhere ???
+
+      } else {
+        result = result[part];
+      }
+
+    });
+
+    if (!result) return {
+      key: mf.key,
+      value: ''
+    };
+
+    return {
+      key: mf.key,
+      value: result
+    };
+  });
+
+  // filter the undefined ones
+  return mapped.filter(function (mfValue) {
+    return mfValue;
+  });
+};

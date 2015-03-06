@@ -1,6 +1,6 @@
 //Search for all tags and add them to the collection tags
 Migrations.add({
-    version: 15,
+    version: 16,
     up: function() {
         Tasks.find({$or:[{begin:{$type: 2}},{end:{$type:2}}]}).forEach(
             //search tags in contables

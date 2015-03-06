@@ -1,5 +1,6 @@
 var self = {};
-
+var searchQuery = {};
+var sortDep=new Deps.Dependency;
 AutoForm.debug();
 NoteSchema = new SimpleSchema({
     msg: {
@@ -72,7 +73,11 @@ AutoForm.hooks({
                 ;
                 return doc;
             }
-        }
+        },
+        onSuccess:
+            function (error, result, template) {
+                sortDep.changed();
+            }
     }
 });
 self.defaultUserNumber = null;
@@ -142,7 +147,7 @@ Template.notesTabList.created = function () {
 
     Meteor.autorun(function () {
             responsesOnlyDep.depend();
-            var searchQuery = {};
+            searchQuery={};
 
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
@@ -170,7 +175,8 @@ Template.notesTabList.created = function () {
 ;
 Template.notesTabList.helpers({
     items: function () {
-        return Notes.find();
+        sortDep.depend();
+        return Notes.find(searchQuery,{sort: {dateCreated:-1}});
     },
     isLoading: function () {
         return !SubscriptionHandlers.NotesHandler.ready();

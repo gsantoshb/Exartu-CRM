@@ -28,5 +28,8 @@ Meteor.methods({
   },
   isWebNameAvailable: function (webName) {
     return HierarchyManager.isWebNameAvailable(webName);
+  },
+  setCurrentHierarchyMailConf: function(mail, password, host, port){
+    HierarchyManager.setCurrentHierarchyMailConf(mail, password, host, port);
   }
 });

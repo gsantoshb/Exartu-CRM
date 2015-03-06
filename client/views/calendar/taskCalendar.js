@@ -13,6 +13,70 @@ var init = false;
 var currentDate;
 var loadingCount = false;
 
+var createUrl = function(){
+  var urlQuery = new URLQuery();
+  if(showMineOnly){
+    urlQuery.addParam('owned', true);
+  }
+  else{
+    urlQuery.addParam('owned', false);
+  }
+  //if(showByMonth){
+  //  urlQuery.addParam('view','month');
+  //}
+  //if(showByWeek){
+  //  urlQuery.addParam('view','basicWeek');
+  //}
+  //if(showByDay){
+  //  urlQuery.addParam('view', 'basicDay');
+  //}
+  //urlQuery.addParam('start', start.getTime());
+  //urlQuery.addParam('end', end.getTime());
+
+  urlQuery.apply();
+
+}
+
+var getParamsUrl = function(params){
+  //created by
+  if(params.owned === "false"){
+    showMineOnly = false;
+  }
+  else{
+    showMineOnly = true;
+  }
+  //view
+  //if(params.view === "basicWeek"){
+  //  debugger;
+  //  showByMonth = false;
+  //  showByDay = false;
+  //  showByWeek = true;
+  //
+  //}
+  //else if(params.view === "basicDay"){
+  //  showByMonth = false;
+  //  showByDay = true;
+  //  showByWeek = false;
+  //
+  //}
+  //else{
+  //  showByMonth = true;
+  //  showByDay = false;
+  //  showByWeek = false;
+  //
+  //}
+  ////navigate
+  //if(params.start){
+  //  start = new Date(parseInt(params.start));
+  //
+  //}
+  //if(params.end){
+  //  end = new Date(parseInt(params.end));
+  //}
+
+
+
+ }
 
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
@@ -40,6 +104,10 @@ Meteor.autorun(function () {
   startEndDep.depend();
 
   if (!start || !end || (showMineOnly== null)) return;
+
+
+  createUrl();
+
   loadingCount = true;
   loadingDep.changed();
 
@@ -57,6 +125,8 @@ Meteor.autorun(function () {
 Template.taskCalendar.created=function() {
   var calendarDiv = $('.fc');
 
+   getParamsUrl(Router.current().params.query);
+   startEndDep.changed();
 
    observe = Tasks.find({}).observe({
 
@@ -162,7 +232,7 @@ Template.taskCalendar.created=function() {
 };
 
 Template.taskCalendar.destroyed=function() {
-
+  handler.stop();
   observe.stop();
 };
 
@@ -175,16 +245,15 @@ var rerender = _.debounce(function () {
 },650);
 
 Template.taskCalendar.helpers({
+
   options: function () {
     return {
       id: 'myCalendar',
       monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July',
         'August', 'September', 'October', 'November', 'December'],
+      nextDayThreshold: "00:00:00",
       eventLimit: true,
       eventClick: function (calEvent, jsEvent, view) {
-        // change the border color just for fun
-
-        $(this).css('border-color', 'red');
         task = _.find(Tasks.find({}).fetch(), function (t) {
           return t._id == calEvent.id;
         });
@@ -227,6 +296,7 @@ Template.taskCalendar.helpers({
       viewRender: function (view, element) {
         //searching by class because id isn't working
         var calendarDiv = $('.fc');
+        //getParamsUrl(Router.current().params.query);
         start = view.intervalStart.toDate();
         end = view.intervalEnd.toDate();
         startEndDep.changed();
@@ -267,9 +337,6 @@ Template.taskCalendar.helpers({
       if(loadingCount){
         return ""
       }
-      console.log('title');
-      //Tasks.find().count();
-
       return "tasks";
       },
 
@@ -334,6 +401,10 @@ Template.taskCalendar.helpers({
 
 
 Template.taskCalendar.events = {
+  'click #button-addTask': function () {
+     Utils.showModal('addEditTask', null);
+
+  },
   'click #show-mineOnly': function () {
     showMineOnly = !showMineOnly;
     startEndDep.changed();
@@ -405,7 +476,7 @@ Template.taskCalendar.events = {
     var calendarDiv = $('.fc');
 
 
-      calendarDiv.fullCalendar('changeView', 'month');
+    calendarDiv.fullCalendar('changeView', 'month');
       var today = new Date();
       if((today>start) && (today<end)){
         showToday = true;
@@ -433,9 +504,6 @@ Template.taskCalendar.events = {
   },
   'click #show-byWeek': function () {
     var calendarDiv = $('.fc');
-
-
-
       calendarDiv.fullCalendar('changeView', 'basicWeek');
       var today = new Date();
       if((today>start) && (today<end)){

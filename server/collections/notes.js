@@ -91,7 +91,16 @@ Notes.allow({
     return true;
   }
 });
+Notes.after.insert(function(userId,doc){
+    if (!doc.links) return;
+    _.forEach(doc.links, function(link) {
+        if (link.type==Enums.linkTypes.contactable.value)
+        {
+            Contactables.update({_id:link.id},{$set: {lastNote: doc}});
+        }
+    });
 
+});
 Notes.before.insert(function(userId, doc){
   doc.dateCreated = doc.dateCreated || Date.now();
   if (doc.hierId)

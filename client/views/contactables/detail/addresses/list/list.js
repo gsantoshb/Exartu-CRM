@@ -47,7 +47,7 @@ Template.addressList.events({
         Utils.showModal('basicModal', {
             title: 'Delete?',
             message: 'Delete this address record?',
-            buttons: [{label: 'Cancel', classes: 'btn-default', value: true}, {
+            buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {
                 label: 'Delete',
                 classes: 'btn-success',
                 value: true
