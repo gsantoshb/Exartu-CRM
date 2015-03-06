@@ -69,6 +69,7 @@ var createTask = function (task) {
             links: task.links || []
 //    reactiveProps: {}
         };
+
         if (task._id)
             definition._id = task._id;
         return definition;
@@ -206,6 +207,9 @@ Template.addEditTask.events({
 
 
         } else {
+           //hack, the plugin is wrong so this fix it.
+            task.begin.setTime( task.begin.getTime() + task.begin.getTimezoneOffset()*60*1000 );
+            task.end.setTime( task.end.getTime() + task.end.getTimezoneOffset()*60*1000 );
             Tasks.insert(task, function () {
                 $('.modal-host').children().modal('toggle');
 
@@ -243,10 +247,12 @@ Template.addEditTask.events({
     },
     'change.dp .begin>.date': function (e, ctx) {
         task.begin = $(e.currentTarget).data().datetimepicker.date;
+
         //taskUpdate();
     },
     'change.dp .end>.date': function (e, ctx) {
         task.end = $(e.currentTarget).data().datetimepicker.date;
+
         //taskUpdate();
     },
     'change .isCompleted': function (e) {
@@ -307,5 +313,5 @@ Template.addEditTask.created = function () {
 
 };
 Template.addEditTask.destroyed = function () {
- debugger;
+
 };

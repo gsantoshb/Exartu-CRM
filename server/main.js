@@ -100,7 +100,7 @@ Meteor.startup(function () {
   //Active all hierarchys mail listener
   var hierWithSubscription = Hierarchies.find({mailSubscription: {$exists: true}}).fetch();
   _.forEach(hierWithSubscription, function(h){
-    var decryptedPass = CryptoJS.AES.decrypt(h.mailSubscription.password, "passWord");
+    var decryptedPass = CryptoJS.AES.decrypt(h.mailSubscription.password, ExartuConfig.EncryptCode);
 
     Meteor.call('emailListener', h.mailSubscription.mail, decryptedPass.toString(CryptoJS.enc.Utf8),  h.mailSubscription.host, h.mailSubscription.port, h._id, function (err, result) {
       if(err){

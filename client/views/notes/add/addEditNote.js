@@ -163,9 +163,13 @@ Template.addEditNote.events({
                 $('.modal-host').children().modal('toggle')
             });
         } else {
-            Notes.insert(note, function () {
-                $('.modal-host').children().modal('toggle')
-            })
+            //Notes.insert(note, function () {
+            //    $('.modal-host').children().modal('toggle')
+            //})
+            note.hierId = Meteor.user().currentHierId;
+            note.userId = Meteor.user()._id;
+            Meteor.call('addNote', note);
+          
         }
         ;
 

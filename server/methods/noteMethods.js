@@ -12,5 +12,16 @@ Meteor.methods({
     } catch(err) {
       throw new Meteor.Error(err.message);
     }
+  },
+  addNote: function(note){
+    try {
+      NoteManager.addNote(note);
+    }
+    catch(err){
+      throw new Meteor.Error(err.message);
+    }
+
+
+
   }
 });
