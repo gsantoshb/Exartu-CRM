@@ -232,7 +232,7 @@ Template.taskCalendar.created=function() {
 };
 
 Template.taskCalendar.destroyed=function() {
-
+  handler.stop();
   observe.stop();
 };
 
