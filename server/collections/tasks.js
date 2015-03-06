@@ -81,11 +81,9 @@ Meteor.publish("tasks2",  function (start, end, mineOnly) {
 
 
   if(mineOnly) {
-    console.log("mineOnly", this.userId);
     var prueba = Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]});
   }
   else{
-    console.log("Todos");
     var prueba = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]}))
 
   }

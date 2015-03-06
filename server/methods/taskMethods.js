@@ -27,7 +27,8 @@ Meteor.methods({
   try {
     _.each(task.assign, function(a){
       var u = UserManager.getUserInformation(a);
-      Meteor.call('sendEmail', u.email, "New task assigned", "You have been assigned to a task", false);
+      Meteor.call('sendEmail', u.email, "New task assigned", "Dear user,\n\n  You have been assigned to a task. " +
+      "Please check your tasks list:\n"+Meteor.absoluteUrl("tasks")+"\nThank you,\nAïda team.", false);
     });
 
   } catch(err) {

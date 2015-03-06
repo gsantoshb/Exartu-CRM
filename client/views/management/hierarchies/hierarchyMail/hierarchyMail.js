@@ -41,8 +41,6 @@ AutoForm.hooks({
           break;
       }
       if(imapServer && port) {
-        console.log(imapServer);
-        console.log(port);
         Meteor.call('emailListener', insertDoc.email, insertDoc.password, "imap-mail.outlook.com", 993, Meteor.user().currentHierId, function (err, result) {
           if (result === 'OK') {
 

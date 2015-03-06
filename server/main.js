@@ -101,7 +101,7 @@ Meteor.startup(function () {
   var hierWithSubscription = Hierarchies.find({mailSubscription: {$exists: true}}).fetch();
   _.forEach(hierWithSubscription, function(h){
     var decryptedPass = CryptoJS.AES.decrypt(h.mailSubscription.password, "passWord");
-    console.log(decryptedPass.toString(CryptoJS.enc.Utf8))
+
     Meteor.call('emailListener', h.mailSubscription.mail, decryptedPass.toString(CryptoJS.enc.Utf8),  h.mailSubscription.host, h.mailSubscription.port, h._id, function (err, result) {
       if(err){
         throw new Error('something wrong happened on hierarchies mail subscriptions');
