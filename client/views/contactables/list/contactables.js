@@ -79,10 +79,12 @@ ContactablesController = RouteController.extend({
     template: 'contactables',
     layoutTemplate: 'mainLayout',
     waitOn: function () {
-        if (!SubscriptionHandlers.AuxContactablesHandler) {
-            SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
-        }
-        return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler, Meteor.subscribe('singleHotList', Session.get('hotListId'))];
+        //console.log('waiton cont')
+        //if (!SubscriptionHandlers.AuxContactablesHandler) {
+        //    SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+        //}
+        ////return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler, Meteor.subscribe('singleHotList', Session.get('hotListId'))];
+        //return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler];
     },
     action: function () {
         if (!this.ready()) {
@@ -232,11 +234,11 @@ Template.contactables.isESSearch = function () {
  */
 Template.contactablesList.created = function () {
     Meteor.autorun(function (c) {
+        console.log('autorun cont')
         var urlQuery = new URLQuery();
         var searchQuery = {
             $and: [] // Push each $or operator here
         };
-        var clientParams = {};
 
         // Search string
         if (query.searchString.value) {
@@ -356,14 +358,13 @@ Template.contactablesList.created = function () {
             delete options.sort;
         }
         if (SubscriptionHandlers.AuxContactablesHandler) {
-            SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, clientParams);
+            SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery);
             SubscriptionHandlers.AuxContactablesHandler.setOptions(options);
         }
         else
             SubscriptionHandlers.AuxContactablesHandler =
                 Meteor.paginatedSubscribe('auxContactables', {
                     filter: searchQuery,
-                    params: clientParams,
                     options: options
                 });
     });
