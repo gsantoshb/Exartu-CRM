@@ -99,12 +99,14 @@
 
                     <!-- Entities list -->
                     <div class="list-item-section">
-
-
+						{{#if isLoading}}
+							<div style="height: 678px;">
+							</div>
+						{{else}}
                             {{#each tasks}}
                                 {{>taskItem}}
                             {{/each}}
-
+						{{/if}}
 
                     </div>
                 </div>

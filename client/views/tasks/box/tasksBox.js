@@ -220,11 +220,10 @@ Template.tasksBox.helpers({
     selectedClass: function () {
         statusDep.depend();
         return this == status ? 'btn-primary' : 'btn-default';
+    },
+    isLoading: function () {
+        return SubscriptionHandlers.TaskHandler.isLoading();
     }
-    //isLoading: function () {
-    //
-    //    return SubscriptionHandlers.TaskHandler.isLoading();
-    //}
 });
 
 Template.tasksBox.events({
