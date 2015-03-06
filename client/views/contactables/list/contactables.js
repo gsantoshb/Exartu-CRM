@@ -79,12 +79,11 @@ ContactablesController = RouteController.extend({
     template: 'contactables',
     layoutTemplate: 'mainLayout',
     waitOn: function () {
-        //console.log('waiton cont')
-        //if (!SubscriptionHandlers.AuxContactablesHandler) {
-        //    SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
-        //}
-        ////return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler, Meteor.subscribe('singleHotList', Session.get('hotListId'))];
-        //return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler];
+        console.log('waiton cont');
+        if (!SubscriptionHandlers.AuxContactablesHandler) {
+            SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+	}
+        return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler, Meteor.subscribe('singleHotList', Session.get('hotListId'))];
     },
     action: function () {
         if (!this.ready()) {

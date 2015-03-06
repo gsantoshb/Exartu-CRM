@@ -156,6 +156,9 @@ var loadqueryFromURL = function (params) {
 }
 
 Template.jobsBox.created = function () {
+    if(!JobHandler){
+        JobHandler = SubscriptionHandlers.JobHandler;
+    };
     query = query || loadqueryFromURL(Router.current().params.query);
     entityId = Session.get('entityId');
 };
