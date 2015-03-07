@@ -7,8 +7,9 @@ TasksController = RouteController.extend({
         Session.set('entityId', undefined);
         if (!SubscriptionHandlers.TaskHandler) {
             SubscriptionHandlers.TaskHandler = TaskHandler = Meteor.paginatedSubscribe("tasks");
+
+            return [SubscriptionHandlers.TaskHandler, LookUpsHandler];
         }
-        return [SubscriptionHandlers.TaskHandler,LookUpsHandler];
     },
     action: function () {
         if (this.ready())
