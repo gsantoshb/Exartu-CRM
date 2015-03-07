@@ -141,8 +141,8 @@ Template.tasksBox.rendered = function () {
 
 Template.tasksBox.destroyed = function () {
     $('.popover').popover('destroy');
-  SubscriptionHandlers.TaskHandler.stop();
-  delete SubscriptionHandlers.TaskHandler;
+  //SubscriptionHandlers.TaskHandler.stop();
+  //delete SubscriptionHandlers.TaskHandler;
 };
 
 //todo: improve queries to match with the state in the transform

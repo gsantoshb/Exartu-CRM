@@ -132,9 +132,9 @@ var setSortField = function(field) {
  * Callbacks
  */
 Template.placementsBox.created = function(){
-    if(!PlacementHandler){
-        PlacementHandler = SubscriptionHandlers.PlacementHandler;
-    };
+    //if(!PlacementHandler){
+    //    PlacementHandler = SubscriptionHandlers.PlacementHandler;
+    //};
     query = query || loadqueryFromURL(Router.current().params.query);
 
     var entityId = Session.get('entityId');

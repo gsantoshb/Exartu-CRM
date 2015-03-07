@@ -127,8 +127,8 @@
     });
 
     Template.dashboard.destroyed = function () {
-        SubscriptionHandlers.ActivitiesHandler.stop();
-        delete SubscriptionHandlers.ActivitiesHandler;
+        //SubscriptionHandlers.ActivitiesHandler.stop();
+        //delete SubscriptionHandlers.ActivitiesHandler;
     }
 
 })();
