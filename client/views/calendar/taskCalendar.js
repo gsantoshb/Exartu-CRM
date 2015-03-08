@@ -301,7 +301,7 @@ Template.taskCalendar.helpers({
         end = view.intervalEnd.toDate();
         startEndDep.changed();
 
-        //Meteor.call('apiGetTasksBeetwen', view.intervalStart.toDate() , view.intervalEnd.toDate() , function(error, result){
+        //Meteor.call('apiGetTasksBetween', view.intervalStart.toDate() , view.intervalEnd.toDate() , function(error, result){
         //
         //    allTasks = result;
         //    _.each(result, function(t){
