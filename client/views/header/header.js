@@ -40,6 +40,7 @@ Template.header.helpers({
         return Meteor.user().emails[0].address;
     },
     UnreadMessagesCount: function () {
+        console.log('unreadmess');
         return Messages.find({
             read: false,
             destination: Meteor.userId()

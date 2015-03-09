@@ -19,14 +19,14 @@ var errorDep = new Tracker.Dependency;
 
 var addDisabled = new ReactiveVar(false);
 var taskUpdate = function (cb) {
-    var oldTask = Tasks.find({_id : task._id}).fetch()[0];
+    var oldTask = Tasks.find({_id: task._id}).fetch()[0];
     if (task._id) {
         Tasks.update({
                 _id: task._id
             }, {
                 $set: {
-                    begin: task.begin ? new Date(task.begin): task.begin,
-                    end: task.end ? new Date(task.end): task.end,
+                    begin: task.begin ? new Date(task.begin) : task.begin,
+                    end: task.end ? new Date(task.end) : task.end,
                     assign: task.assign,
                     msg: task.msg,
                     completed: task.completed,
@@ -39,9 +39,9 @@ var taskUpdate = function (cb) {
                     cb();
             }
         );
-      if(oldTask.assign[0] !== task.assign[0]){
-        Meteor.call('notifyTask', task);
-      }
+        if (oldTask.assign[0] !== task.assign[0]) {
+            Meteor.call('notifyTask', task);
+        }
 
 
     }
@@ -49,19 +49,21 @@ var taskUpdate = function (cb) {
 
 
 var createTask = function (task) {
-        if (task && task.links && task.links[0] && task.links.length==1) {
+        if (task && task.links && task.links[0] && task.links.length == 1) {
             var c = Contactables.findOne({_id: task.links[0].id});
             if (c && c.Contact && c.Contact.client) {
                 task.links.push({id: c.Contact.client, type: Enums.linkTypes.contactable.value})
-            };
-        };
+            }
+            ;
+        }
+        ;
 
         addDisabled.set(false);
         var task = task || {};
 
         var definition = {
-            begin: task.begin ? new Date(task.begin): new Date(),
-            end: task.end ? new Date(task.end): new Date(),
+            begin: task.begin ? new Date(task.begin) : new Date(),
+            end: task.end ? new Date(task.end) : new Date(),
             assign: task.assign || [Meteor.userId()],
             msg: task.msg,
             completed: task.completed,
@@ -210,7 +212,7 @@ Template.addEditTask.events({
                 $('.modal-host').children().modal('toggle');
 
             })
-           Meteor.call('notifyTask', task);
+            Meteor.call('notifyTask', task);
 
         }
         addDisabled.set(false);
@@ -230,9 +232,23 @@ Template.addEditTask.events({
             })
         }
     },
+    'click .push-oneday': function () {
+        task.end = task.end || new Date();
+        task.end.setDate(task.end.getDate() + 1);
+        taskUpdate(function () {
+            $('.modal-host').children().modal('toggle')
+        });
+    },
     'click .push-oneweek': function () {
         task.end = task.end || new Date();
         task.end.setDate(task.end.getDate() + 7);
+        taskUpdate(function () {
+            $('.modal-host').children().modal('toggle')
+        });
+    },
+    'click .push-onemonth': function () {
+        task.end = task.end || new Date();
+        task.end.setDate(task.end.getDate() + 30);
         taskUpdate(function () {
             $('.modal-host').children().modal('toggle')
         });
@@ -307,5 +323,5 @@ Template.addEditTask.created = function () {
 
 };
 Template.addEditTask.destroyed = function () {
- debugger;
+    debugger;
 };
