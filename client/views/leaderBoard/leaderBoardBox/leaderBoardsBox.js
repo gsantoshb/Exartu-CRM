@@ -71,6 +71,8 @@ var isSearching = false;
 Template.leaderBoardsBox.created = function () {
     if (!SubscriptionHandlers.LeaderBoardHandler) {
         SubscriptionHandlers.LeaderBoardHandler = Meteor.paginatedSubscribe('leaderBoards');
+
+
     }
     LeaderBoardHandler = SubscriptionHandlers.LeaderBoardHandler;
     query = loadqueryFromURL(Router.current().params.query);
@@ -101,20 +103,23 @@ Template.leaderBoardsBox.helpers({
             }
             case Enums.lookUpAction.LeaderBoardType_DealPipeline:
             {
-                lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.client_status, sortOrder: {$gt: 0}},{sort: {sortOrder:1}}).fetch();
+                lkps = LookUps.find({
+                    lookUpCode: Enums.lookUpCodes.client_status,
+                    sortOrder: {$gt: 0}
+                }, {sort: {sortOrder: 1}}).fetch();
 
                 var lkpids = _.pluck(lkps, '_id');
                 var activeid = Utils.getActiveStatusDefaultId();
-                columnQuery={activeStatus: activeid,'Client.status':{$in: lkpids}};
+                columnQuery = {activeStatus: activeid, 'Client.status': {$in: lkpids}};
                 Meteor.subscribe('leaderBoardClients', columnQuery);
                 return 'leaderBoardDealPipelineListHeader';
             }
             case Enums.lookUpAction.LeaderBoardType_LossReport:
             {
-                lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.client_lostReason},{sort: {sortOrder:1}}).fetch();
+                lkps = LookUps.find({lookUpCode: Enums.lookUpCodes.client_lostReason}, {sort: {sortOrder: 1}}).fetch();
                 var lkpids = _.pluck(lkps, '_id');
                 var activeid = Utils.getActiveStatusDefaultId();
-                columnQuery={activeStatus: activeid,'Client.lostReason':{$in: lkpids}};
+                columnQuery = {activeStatus: activeid, 'Client.lostReason': {$in: lkpids}};
                 Meteor.subscribe('leaderBoardClients', columnQuery);
                 return 'leaderBoardLossReportListHeader';
             }
@@ -141,10 +146,14 @@ Template.leaderBoardsBox.helpers({
     }
 });
 Template.leaderBoardDealPipelineListHeader.helpers({
-    pipelineName: function() { return getBoard();}
+    pipelineName: function () {
+        return getBoard();
+    }
 });
 Template.leaderBoardLossReportListHeader.helpers({
-    pipelineName: function() { return getBoard();}
+    pipelineName: function () {
+        return getBoard();
+    }
 });
 Template.pipelineColumn.helpers({
     bDisplayDepartment: function (e) {
@@ -160,9 +169,10 @@ Template.pipelineColumn.helpers({
     },
     columnItems: function () {
         if (lkps[this.val]) {
-            var q={'Client.status':lkps[this.val]._id,activeStatus:Utils.getActiveStatusDefaultId()}
+            var q = {'Client.status': lkps[this.val]._id, activeStatus: Utils.getActiveStatusDefaultId()}
             return Contactables.find(q);
-        };
+        }
+        ;
     }
 });
 Template.lossReportColumn.helpers({
@@ -179,9 +189,10 @@ Template.lossReportColumn.helpers({
     },
     columnItems: function () {
         if (lkps[this.val]) {
-            var q={'Client.lostReason':lkps[this.val]._id,activeStatus:Utils.getActiveStatusDefaultId()}
+            var q = {'Client.lostReason': lkps[this.val]._id, activeStatus: Utils.getActiveStatusDefaultId()}
             return Contactables.find(q);
-        };
+        }
+        ;
     }
 });
 

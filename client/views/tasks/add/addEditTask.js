@@ -69,7 +69,6 @@ var createTask = function (task) {
             links: task.links || []
 //    reactiveProps: {}
         };
-
         if (task._id)
             definition._id = task._id;
         return definition;
@@ -234,9 +233,23 @@ Template.addEditTask.events({
             })
         }
     },
+    'click .push-oneday': function () {
+        task.end = task.end || new Date();
+        task.end.setDate(task.end.getDate() + 1);
+        taskUpdate(function () {
+            $('.modal-host').children().modal('toggle')
+        });
+    },
     'click .push-oneweek': function () {
         task.end = task.end || new Date();
         task.end.setDate(task.end.getDate() + 7);
+        taskUpdate(function () {
+            $('.modal-host').children().modal('toggle')
+        });
+    },
+    'click .push-onemonth': function () {
+        task.end = task.end || new Date();
+        task.end.setDate(task.end.getDate() + 30);
         taskUpdate(function () {
             $('.modal-host').children().modal('toggle')
         });
@@ -247,12 +260,10 @@ Template.addEditTask.events({
     },
     'change.dp .begin>.date': function (e, ctx) {
         task.begin = $(e.currentTarget).data().datetimepicker.date;
-
         //taskUpdate();
     },
     'change.dp .end>.date': function (e, ctx) {
         task.end = $(e.currentTarget).data().datetimepicker.date;
-
         //taskUpdate();
     },
     'change .isCompleted': function (e) {
@@ -313,5 +324,5 @@ Template.addEditTask.created = function () {
 
 };
 Template.addEditTask.destroyed = function () {
-
+ debugger;
 };

@@ -1,6 +1,3 @@
-var registerPageView = function() {
-//  GAnalytics.pageview(this.path);
-};
 
 Router.configure({
   disableProgressSpinner: true,
@@ -71,7 +68,6 @@ Router.map(function () {
   this.route('jobs', {
     path: '/jobs/:type?',
     controller: 'JobsController',
-    onRun: registerPageView
   });
 
   this.route('job', {
@@ -83,7 +79,6 @@ Router.map(function () {
     this.route('deals', {
         path: '/deals',
         controller: 'DealsController',
-        onRun: registerPageView
     });
 
     this.route('addDealPage', {

@@ -79,19 +79,19 @@ ContactablesController = RouteController.extend({
     template: 'contactables',
     layoutTemplate: 'mainLayout',
     waitOn: function () {
-        //console.log('waiton cont')
-        //if (!SubscriptionHandlers.AuxContactablesHandler) {
-        //    SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
-        //}
-        ////return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler, Meteor.subscribe('singleHotList', Session.get('hotListId'))];
-        //return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler];
+        if (!SubscriptionHandlers.AuxContactablesHandler) {
+            console.log('auxcont')
+            SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
+
+            return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler, Meteor.subscribe('singleHotList', Session.get('hotListId'))];
+        }
     },
     action: function () {
         if (!this.ready()) {
             this.render('loadingContactable');
             return;
         }
-        var params=this.params.query;
+        var params = this.params.query;
         var objTypeQuery = {};
         var type = params.hash || params.type;
         if (type != undefined && type != 'all') {
@@ -347,7 +347,7 @@ Template.contactablesList.created = function () {
         }
         // Set url query
         urlQuery.apply();
-		isSearching = false;
+        isSearching = false;
         // Avoid update handler's filter when an Elasticsearch query will be performed
         if (query.searchString.value) return;
         if (selectedSort.get()) {
@@ -403,10 +403,10 @@ Template.contactablesList.rendered = function () {
 
 // hack: because the handler is created on the created hook, the SubscriptionHandlers 'cleaner' can't find it
 Template.contactablesList.destroyed = function () {
-    if (SubscriptionHandlers.AuxContactablesHandler) {
-        SubscriptionHandlers.AuxContactablesHandler.stop();
-        delete SubscriptionHandlers.AuxContactablesHandler;
-    }
+    //if (SubscriptionHandlers.AuxContactablesHandler) {
+    //    SubscriptionHandlers.AuxContactablesHandler.stop();
+    //    delete SubscriptionHandlers.AuxContactablesHandler;
+    //}
 
     $('.popover').hide().popover('destroy');
 };
@@ -613,7 +613,7 @@ Template.contactablesListItem.helpers({
     },
     getLastNote: function () {
         if (this.lastNote)
-        return this.lastNote;
+            return this.lastNote;
     },
     isSelected: function () {
         return !!_.findWhere(selected.get(), {id: this._id});
@@ -719,12 +719,11 @@ Template.contactablesListHeader.events({
     'click .addHotList': function (e, ctx) {
         var id = Session.get('hotListId');
         var hotlist = HotLists.findOne({_id: id});
-        var inc=0
+        var inc = 0
         _.forEach(selected.get(), function (item) {
-            if (hotlist.members.indexOf(item.id)<0)
-            {
+            if (hotlist.members.indexOf(item.id) < 0) {
                 hotlist.members.push(item.id);
-                inc=inc+1;
+                inc = inc + 1;
             }
         });
         HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
@@ -816,9 +815,9 @@ Template.contactablesListHeader.events({
 
 // List Search - Events
 Template.contactablesListSearch.events({
-    'keyup #searchString': _.debounce(function(e){
+    'keyup #searchString': _.debounce(function (e) {
         query.searchString.value = e.target.value;
-      },100),
+    }, 100),
     'click #toggle-filters': function (e) {
         if ($(e.currentTarget).attr('data-view') == 'normal') {
             $('body .network-content #column-filters').addClass('hidden');

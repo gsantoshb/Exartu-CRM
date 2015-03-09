@@ -141,8 +141,8 @@ Template.tasksBox.rendered = function () {
 
 Template.tasksBox.destroyed = function () {
     $('.popover').popover('destroy');
-  SubscriptionHandlers.TaskHandler.stop();
-  delete SubscriptionHandlers.TaskHandler;
+  //SubscriptionHandlers.TaskHandler.stop();
+  //delete SubscriptionHandlers.TaskHandler;
 };
 
 //todo: improve queries to match with the state in the transform
@@ -220,11 +220,10 @@ Template.tasksBox.helpers({
     selectedClass: function () {
         statusDep.depend();
         return this == status ? 'btn-primary' : 'btn-default';
+    },
+    isLoading: function () {
+        return SubscriptionHandlers.TaskHandler.isLoading();
     }
-    //isLoading: function () {
-    //
-    //    return SubscriptionHandlers.TaskHandler.isLoading();
-    //}
 });
 
 Template.tasksBox.events({
