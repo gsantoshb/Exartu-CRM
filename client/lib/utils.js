@@ -549,14 +549,15 @@ Utils.showModal = function (templateName) {
 
     var template = Template[templateName];
 
-    UI.insert(UI.renderWithData(template, parameters), host[0]);
+    var instance = UI.renderWithData(template, parameters);
+    UI.insert(instance, host[0]);
     var modal = host.children();
 
     modal.modal('show');
 
     modal.on('hidden.bs.modal', function (e) {
         modal.remove();
-
+        UI.remove(instance);
     });
 };
 
