@@ -1,5 +1,5 @@
 var TaskHandler, query, statusName;
-
+var idTask, singleTaskHandler;
 TasksController = RouteController.extend({
     template: 'Tasks',
     layoutTemplate: 'mainLayout',
@@ -16,10 +16,21 @@ TasksController = RouteController.extend({
             this.render();
         else
             this.render('loadingContactable');
+
+        if(this.params._id){
+          //show the task
+          idTask = this.params._id;
+
+        };
         this.render();
+      if(idTask) {
+        Utils.showModal('addEditTask', idTask);
+
+      }
 
     },
     onAfterAction: function () {
+
         var title = 'Task',
             description = 'Manage your Task here';
         SEO.set({
@@ -38,3 +49,8 @@ TasksController = RouteController.extend({
 //Template.tasks.destroyed = function(){
 //
 //}
+Template.tasks.rendered = function(){
+
+
+
+};

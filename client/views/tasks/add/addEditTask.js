@@ -1,5 +1,7 @@
 var task;
 var Error = {};
+var param;
+var singleTaskHandler;
 
 //todo: the logic for the linked entities is almost the same in msgs and taskAdd. We should do some template to use it in both places.
 var typeDep = new Tracker.Dependency();
@@ -85,15 +87,33 @@ Template.addEditTask.helpers({
         return !!task._id;
     },
     task: function () {
-        if (!task) {
-            var param = {};
-            if (this) {
-                param = this[0]
-            }
-            task = createTask(param);
-        }
+        //if (!task) {
+        //    param = {};
+        //    if (this) {
+        //        param = this[0];
+        //
+        //
+        //
+        //    }
+        //
+        //  //debugger;
+        //  if (singleTaskHandler.ready()){}
+        //
+        //  else{
+        //    return
+        //  }
+        //}
         taskDep.depend();
         return task;
+    },
+    isReady: function(){
+       taskDep.depend();
+       if (singleTaskHandler) {
+         return singleTaskHandler.ready();
+       }
+       else{
+         return true;
+       }
     },
     users: function () {
         return Meteor.users.find({});
@@ -321,6 +341,32 @@ Template.addEditTask.created = function () {
     Meteor.subscribe('allJobs');
     Meteor.subscribe('allPlacements');
     task = null;
+    param = this.data[0];
+    if((typeof param)==="string"){
+      singleTaskHandler = Meteor.subscribe("editTask", param, function () {
+        if(EditTask.find({}).count()<1){
+          taskDep.changed()
+          return;
+        }
+        else{
+        param = EditTask.find({}).fetch()[0];
+        task = createTask(param);
+        taskDep.changed()
+
+      }
+    });
+  }
+  else if((typeof param)==="object"){
+      task = createTask(param);
+      taskDep.changed()
+  }
+  else{
+      task = createTask();
+      taskDep.changed()
+  }
+  //var urlQuery = new URLQuery();
+  //urlQuery.addParam('id', 312412335);
+  //urlQuery.apply();
 
 };
 Template.addEditTask.destroyed = function () {

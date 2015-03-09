@@ -168,8 +168,10 @@ Template.addEditNote.events({
             //})
             note.hierId = Meteor.user().currentHierId;
             note.userId = Meteor.user()._id;
-            Meteor.call('addNote', note);
-          
+            Meteor.call('addNote', note, function(){
+              $('.modal-host').children().modal('toggle');
+            });
+
         }
         ;
 
@@ -226,4 +228,7 @@ Template.addEditNote.created = function () {
     Meteor.subscribe('allPlacements');
     Meteor.subscribe('allNotes');
     note = null;
+    var urlQuery = new URLQuery();
+    urlQuery.addParam('id', 312412335);
+    urlQuery.apply();
 };

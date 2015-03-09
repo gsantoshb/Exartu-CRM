@@ -81,13 +81,23 @@ Meteor.publish("tasks2",  function (start, end, mineOnly) {
 
 
   if(mineOnly) {
-    var prueba = Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]});
+    var tasks = Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]});
   }
   else{
-    var prueba = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]}))
+    var tasks = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]}))
 
   }
-    return prueba;
+    return tasks;
+});
+
+
+
+Meteor.publish('editTask', function(id) {
+  var self = this;
+  var taskCursor = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({_id:id}));
+  Mongo.Collection._publishCursor(taskCursor, self, 'editTask');
+// _publishCursor doesn't call this for us in case we do this more than once.
+  self.ready();
 });
 
 Tasks.allow({
