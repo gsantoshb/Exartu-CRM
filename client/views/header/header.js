@@ -158,10 +158,10 @@ Template.header.rendered = function () {
 
         switcherBtn.click(function () {
             if (switcherPanel.hasClass('open')) {
-                switcherPanel.hide(300);
+                switcherPanel.hide(75);
                 switcherPanel.removeClass('open');
             } else {
-                switcherPanel.show(300);
+                switcherPanel.show(75);
                 switcherPanel.addClass('open');
             }
         });
