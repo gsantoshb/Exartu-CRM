@@ -5,7 +5,7 @@
                 <div class="col-md-2">
                     <h3>Addresses</h3>
                     <div class="edit-btn">
-                        <a id="create-address-mode" href="#"><i class="fa fa-plus"></i> Add </a>&nbsp;
+                        <a id="create-address-mode" class="pointer"><i class="fa fa-plus"></i> Add </a>&nbsp;
                         <a class="editAddressRecord pointer" data-addressId="{{_id}}"><i class="fa fa-edit"></i> Edit</a>
                     </div>
                 </div><!-- /.col-md-2 -->
@@ -15,14 +15,7 @@
 
                         {{#if showLocationAddBox}}
                             <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingOne">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#address-new" aria-expanded="true" aria-controls="address-new" class="">
-                                            <i class="fa fa-plus"></i>&nbsp;Add new adress
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="address-new" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true">
+                                <div id="address-new" role="tabpanel" aria-labelledby="headingOne">
                                     <div class="panel-body">
                                         {{>addressAddEdit linkId=linkId callback=setNewAddress }}
                                     </div>
@@ -34,22 +27,20 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="heading-{{_id}}">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#address-{{_id}}" aria-expanded="true" aria-controls="address-{{_id}}" class="">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#address-{{_id}}" aria-expanded="false" aria-controls="address-{{_id}}" class="">
                                             {{getAddressTypeDisplayName }}  <span>‐ {{address}}, {{city}}, {{country}}</span>
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="address-{{_id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-{{_id}}" aria-expanded="true">
+                                <div id="address-{{_id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{_id}}" aria-expanded="false">
                                     {{#if isAdmin}}
                                         <span class="bullet-spacer">·</span>
                                         <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
                                     {{/if}}
 
-                                    {{#if showLocationEditBox}}
-                                        <div class="panel-body">
-                                            {{>addressAddEdit linkId=linkId  callback=setNewAddress location=.}}
-                                        </div>
-                                    {{/if}}
+                                    <div class="panel-body">
+                                        {{>addressAddEdit linkId=linkId  callback=setNewAddress location=.}}
+                                    </div>
                                 </div>
                             </div>
                         {{/each}}

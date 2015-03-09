@@ -23,7 +23,7 @@ Template.addressList.helpers({
         //debugger;
         return function () {
             addressesDep.changed();
-            showLocationEditBox.set(false);
+            showLocationEditBox.set(true);
             showLocationAddBox.set(false);
         }
     },
@@ -69,11 +69,11 @@ Template.addressList.events({
         });
         return false;
     },
-    'click .editAddressRecord': function () {
-        var self = this;
-        $('#address-' + $(this).attr('data-addressId')).hide();
-        showLocationEditBox.set(!showLocationEditBox.get());
-    },
+    //'click .editAddressRecord': function () {
+    //    var self = this;
+    //    $('#address-' + $(this).attr('data-addressId')).hide();
+    //    showLocationEditBox.set(!showLocationEditBox.get());
+    //},
     'click #create-address-mode': function () {
         showLocationAddBox.set(!showLocationAddBox.get());
     }
