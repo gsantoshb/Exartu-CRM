@@ -85,7 +85,7 @@ Template.tasksBox.created = function () {
             urlQuery.addParam('creationDate', queryObj.selectedLimit.value);
         }
         if (queryObj.ownedByMe.value) {
-            searchQuery.assign = Meteor.userId();
+            searchQuery.userId = Meteor.userId();
             urlQuery.addParam('owned', true);
         }
 
@@ -141,6 +141,8 @@ Template.tasksBox.rendered = function () {
 
 Template.tasksBox.destroyed = function () {
     $('.popover').popover('destroy');
+  //SubscriptionHandlers.TaskHandler.stop();
+  //delete SubscriptionHandlers.TaskHandler;
 };
 
 //todo: improve queries to match with the state in the transform
@@ -207,7 +209,7 @@ Template.tasksBox.helpers({
         return Meteor.users.find({}, {sort: {'emails.address': 1}});
     },
     tasks: function () {
-      return Tasks.find(searchQuery,{sort:{dateCreated:-1}});
+      return Tasks.find({},{sort:{dateCreated:-1}});
     },
     filters: function () {
         return queryObj;
@@ -220,7 +222,6 @@ Template.tasksBox.helpers({
         return this == status ? 'btn-primary' : 'btn-default';
     },
     isLoading: function () {
-
         return SubscriptionHandlers.TaskHandler.isLoading();
     }
 });

@@ -20,7 +20,6 @@ Template.tagsBox.helpers({
           cb: {
             onInsert: function (newValue) {
               coll.update({_id: objdef._id}, {$addToSet: {tags: newValue}});
-              GAnalytics.event("/objdef", "tags", "add");
             },
             onRemove: function (value) {
               coll.update({_id: objdef._id}, {$pull: {tags: value}});

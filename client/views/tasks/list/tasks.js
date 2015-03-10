@@ -7,8 +7,9 @@ TasksController = RouteController.extend({
         Session.set('entityId', undefined);
         if (!SubscriptionHandlers.TaskHandler) {
             SubscriptionHandlers.TaskHandler = TaskHandler = Meteor.paginatedSubscribe("tasks");
+
+            return [SubscriptionHandlers.TaskHandler, LookUpsHandler];
         }
-        return [SubscriptionHandlers.TaskHandler,LookUpsHandler];
     },
     action: function () {
         if (this.ready())
@@ -34,7 +35,6 @@ TasksController = RouteController.extend({
     }
 
 });
-Template.tasks.destroyed = function(){
-    TaskHandler.stop();
-  delete SubscriptionHandlers.TaskHandler;
-}
+//Template.tasks.destroyed = function(){
+//
+//}

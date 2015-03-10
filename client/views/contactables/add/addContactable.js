@@ -213,7 +213,6 @@ Template.addContactablePage.events({
         alert('Error adding record:'+ err);
         console.dir(err);
       }else{
-        GAnalytics.event("/contactableAdd", Session.get('objType'));
         Router.go('/contactable/' + result + '#tasks');
       };
     });

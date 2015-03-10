@@ -41,6 +41,7 @@ JobView = new View('jobs', {
 });
 
 Meteor.paginatedPublish(JobView, function () {
+    console.log("jobs pag pub")
     var user = Meteor.users.findOne({
         _id: this.userId
     });

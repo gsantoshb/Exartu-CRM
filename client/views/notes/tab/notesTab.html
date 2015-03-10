@@ -41,6 +41,13 @@
                         {{/unless}}
                     {{/unless}}
 
+                    <!-- Display note to employee -->
+                    <div class="add-note-actions-cell">
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
+                        </div>
+                    </div>
+
                     <div class="add-note-actions-cell last" style="visibility:{{isContactableNote}}">
                         <div class="item-icon item-icon-network item-icon-sm"><i class="icon-profile-business-man"></i></div>
                         {{> linksAutoForm name='links'}}

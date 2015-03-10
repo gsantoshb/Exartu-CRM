@@ -1,11 +1,14 @@
+var handlerContactalbeCounters;
 ContactableController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function () {
+        handlerContactalbeCounters = Meteor.subscribe('contactableCounters', this.params._id)
+
         return [Meteor.subscribe('singleContactable', this.params._id),
             Meteor.subscribe('linkedAddresses', this.params._id),
             Meteor.subscribe('auxHotLists', this.params._id),
             GoogleMapsHandler,
-            Meteor.subscribe('contactableCounters', this.params._id),
+            handlerContactalbeCounters,
             Meteor.subscribe('singleHotList', Session.get('hotListId'))]
     },
     data: function () {
@@ -40,6 +43,12 @@ ContactableController = RouteController.extend({
 Template.contactable.rendered = function () {
     $('body').scrollTop(0);
 };
+
+Template.contactable.destroy = function(){
+  console.log("onDestroyed",handlerContactalbeCounters );
+  handlerContactalbeCounters.stop();
+};
+
 
 var contactable;
 Template.contactable.helpers({
