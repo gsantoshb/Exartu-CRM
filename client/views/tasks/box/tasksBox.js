@@ -8,6 +8,7 @@ var statusDep = new Deps.Dependency;
 $("#assignedToDropdown").prop("selectedIndex", -1);
 
 var loadTaskQueryFromURL = function (params) {
+
     // Search string
     var searchStringQuery = {};
     if (params.search) {
@@ -64,7 +65,6 @@ Template.tasksBox.created = function () {
     if (entityType != null) isEntitySpecific = true;
 
     Meteor.autorun(function () {
-
         var urlQuery = new URLQuery();
         searchQuery={};
         if (!queryObj.inactives.value) {
@@ -96,6 +96,7 @@ Template.tasksBox.created = function () {
         }
 
         statusDep.depend();
+
         if (status) {
             _.extend(searchQuery, status.query());
             urlQuery.addParam('status', status.name);
@@ -228,6 +229,7 @@ Template.tasksBox.helpers({
 
 Template.tasksBox.events({
     'keyup #searchString': _.debounce(function (e) {
+
         queryObj.searchString.value = e.target.value;
     }, 200),
     'click .addTask': function () {
@@ -242,6 +244,7 @@ Template.tasksBox.events({
             })
     },
     'click .selectState': function () {
+
         if (status == this) {
             status = null;
         } else {
@@ -250,6 +253,7 @@ Template.tasksBox.events({
         statusDep.changed()
     },
     'click .clearState': function () {
+
         status = null;
         statusDep.changed()
     }

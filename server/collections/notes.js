@@ -113,6 +113,13 @@ Notes.before.insert(function(userId, doc){
   return doc;
 });
 
+Meteor.publish('editNote', function(id) {
+  var self = this;
+  var notesCursor = Utils.filterCollectionByUserHier.call({userId: this.userId}, Notes.find({_id:id}));
+  Mongo.Collection._publishCursor(notesCursor, self, 'editNote');
+// _publishCursor doesn't call this for us in case we do this more than once.
+  self.ready();
+});
 // Indexes
 
 Notes._ensureIndex({hierId: 1});

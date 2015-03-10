@@ -139,7 +139,7 @@ Router.map(function () {
     controller: 'TasksController'
   });
   this.route('notes', {
-    path: '/notes',
+    path: '/notes/:_id?',
     controller: 'NotesController'
   });
 

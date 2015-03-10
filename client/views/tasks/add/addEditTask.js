@@ -1,7 +1,10 @@
-var task;
 var Error = {};
+var task;
 var param;
 var singleTaskHandler;
+var currentUrl;
+
+
 
 //todo: the logic for the linked entities is almost the same in msgs and taskAdd. We should do some template to use it in both places.
 var typeDep = new Tracker.Dependency();
@@ -57,7 +60,6 @@ var createTask = function (task) {
                 task.links.push({id: c.Contact.client, type: Enums.linkTypes.contactable.value})
             };
         };
-
         addDisabled.set(false);
         var task = task || {};
 
@@ -84,25 +86,10 @@ Template.addEditTask.helpers({
         return addDisabled.get();
     },
     isEditing: function () {
-        return !!task._id;
+
+        return task && task._id ;
     },
     task: function () {
-        //if (!task) {
-        //    param = {};
-        //    if (this) {
-        //        param = this[0];
-        //
-        //
-        //
-        //    }
-        //
-        //  //debugger;
-        //  if (singleTaskHandler.ready()){}
-        //
-        //  else{
-        //    return
-        //  }
-        //}
         taskDep.depend();
         return task;
     },
@@ -337,38 +324,67 @@ Template.addEditTask.events({
 });
 
 Template.addEditTask.created = function () {
+
     Meteor.subscribe('allContactables');
     Meteor.subscribe('allJobs');
     Meteor.subscribe('allPlacements');
+    currentUrl = window.location.pathname;
     task = null;
+    param = null;
     param = this.data[0];
-    if((typeof param)==="string"){
+
+
+    if((typeof param)==="object"){
+
+       task = createTask(param);
+       if(param._id) {
+         var url = '/tasks/' + param._id;
+       }
+       else{
+         var url = '/tasks/';
+       }
+       //hack, there is a bug in replaceState/tasks/ironRoute
+       setTimeout(function(){window.history.replaceState(null, null, url)},500);
+
+       taskDep.changed()
+    }
+    else if((typeof param)==="string"){
+      if(singleTaskHandler){
+        singleTaskHandler.stop();
+      }
       singleTaskHandler = Meteor.subscribe("editTask", param, function () {
         if(EditTask.find({}).count()<1){
           taskDep.changed()
           return;
         }
         else{
-        param = EditTask.find({}).fetch()[0];
-        task = createTask(param);
-        taskDep.changed()
+          param = EditTask.findOne({});
+          task = createTask(param);
+          taskDep.changed()
 
       }
     });
-  }
-  else if((typeof param)==="object"){
-      task = createTask(param);
-      taskDep.changed()
+
   }
   else{
+
       task = createTask();
       taskDep.changed()
   }
-  //var urlQuery = new URLQuery();
-  //urlQuery.addParam('id', 312412335);
-  //urlQuery.apply();
+
 
 };
 Template.addEditTask.destroyed = function () {
- debugger;
+  if(singleTaskHandler) {
+    singleTaskHandler.stop();
+    singleTaskHandler = null;
+  }
+  if(currentUrl === window.location.pathname){
+    history.replaceState(null, 'edit','/tasks');
+  }
+  else{
+    history.replaceState(null, 'edit',currentUrl);
+  }
+
+
 };

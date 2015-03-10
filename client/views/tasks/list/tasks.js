@@ -25,7 +25,7 @@ TasksController = RouteController.extend({
         this.render();
       if(idTask) {
         Utils.showModal('addEditTask', idTask);
-
+        idTask = null;
       }
 
     },
@@ -49,8 +49,3 @@ TasksController = RouteController.extend({
 //Template.tasks.destroyed = function(){
 //
 //}
-Template.tasks.rendered = function(){
-
-
-
-};
