@@ -25,7 +25,7 @@
                                 <!--loading-->
                             <!--{{else}}-->
                                 {{#unless isESSearch}}
-                                    {{>fastPagination name="auxContactables" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                                    {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
                                 {{/unless}}
                             <!--{{/if}}-->
                         </div>
@@ -156,7 +156,7 @@
         <!--loading-->
     <!--{{else}}-->
         {{#unless isESSearch}}
-            {{>fastPagination name="auxContactables" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+            {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
         {{/unless}}
     <!--{{/if}}-->
 </template>
