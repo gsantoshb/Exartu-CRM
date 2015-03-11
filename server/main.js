@@ -97,6 +97,9 @@ Meteor.startup(function () {
     });
   }
 
+  // Make Applicant Center url available to the client
+  __meteor_runtime_config__.applicantCenterUrl = ExartuConfig.ApplicantCenter_URL;
+
   //Active all hierarchys mail listener
   var hierWithSubscription = Hierarchies.find({mailSubscription: {$exists: true}}).fetch();
   _.forEach(hierWithSubscription, function(h){
