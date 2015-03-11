@@ -114,7 +114,7 @@ Meteor.autorun(function () {
   handler && handler.stop();
 
   init = false;
-  handler = Meteor.subscribe("tasks2", start, end, showMineOnly , function () {
+  handler = Meteor.subscribe("tasksCalendar", start, end, showMineOnly , function () {
     rerender();
     loadingCount = false;
     loadingDep.changed();

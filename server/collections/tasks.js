@@ -77,7 +77,7 @@ Meteor.paginatedPublish(TaskView, function () {
     publicationName: 'tasks'
 });
 
-Meteor.publish("tasks2",  function (start, end, mineOnly) {
+Meteor.publish("tasksCalendar",  function (start, end, mineOnly) {
 
 
   if(mineOnly) {
