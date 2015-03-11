@@ -114,7 +114,7 @@ Meteor.autorun(function () {
   handler && handler.stop();
 
   init = false;
-  handler = Meteor.subscribe("tasksCalendar", start, end, showMineOnly , function () {
+  handler = Meteor.subscribe("calendarTasks", start, end, showMineOnly , function () {
     rerender();
     loadingCount = false;
     loadingDep.changed();
@@ -128,7 +128,7 @@ Template.taskCalendar.created=function() {
    getParamsUrl(Router.current().params.query);
    startEndDep.changed();
 
-   observe = Tasks.find({}).observe({
+   observe = CalendarTasks.find({}).observe({
 
     added: function (document) {
 
@@ -232,8 +232,8 @@ Template.taskCalendar.created=function() {
 };
 
 Template.taskCalendar.destroyed=function() {
-  handler.stop();
-  observe.stop();
+  //handler.stop();
+  //observe.stop();
 };
 
 
@@ -254,7 +254,7 @@ Template.taskCalendar.helpers({
       nextDayThreshold: "00:00:00",
       eventLimit: true,
       eventClick: function (calEvent, jsEvent, view) {
-        task = _.find(Tasks.find({}).fetch(), function (t) {
+        task = _.find(CalendarTasks.find({}).fetch(), function (t) {
           return t._id == calEvent.id;
         });
         Utils.showModal('addEditTask', task)
@@ -275,7 +275,7 @@ Template.taskCalendar.helpers({
 
 
       events: function (start, end, timezone, callback) {
-        callback(_.map(Tasks.find().fetch(), function (t) {
+        callback(_.map(CalendarTasks.find({}).fetch(), function (t) {
             switch(t.state) {
                         case Enums.taskState.future:
                              return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future  pointer'  } ;
@@ -296,9 +296,10 @@ Template.taskCalendar.helpers({
       viewRender: function (view, element) {
         //searching by class because id isn't working
         var calendarDiv = $('.fc');
-        //getParamsUrl(Router.current().params.query);
         start = view.intervalStart.toDate();
-        end = view.intervalEnd.toDate();
+        var endAux = view.intervalEnd.toDate();
+        //this correct the calendar end date
+        end = new Date(endAux.setDate(endAux.getDate()+1));
         startEndDep.changed();
 
         //Meteor.call('apiGetTasksBetween', view.intervalStart.toDate() , view.intervalEnd.toDate() , function(error, result){
@@ -348,7 +349,7 @@ Template.taskCalendar.helpers({
         return "loading..."
       }
 
-      return Tasks.find({}).count();
+      return CalendarTasks.find({}).count();
     }
    },
 

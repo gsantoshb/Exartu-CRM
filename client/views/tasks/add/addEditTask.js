@@ -332,9 +332,7 @@ Template.addEditTask.created = function () {
     task = null;
     param = null;
     param = this.data[0];
-
-
-    if((typeof param)==="object"){
+    if(((typeof param)==="object")&&(param != null)){
 
        task = createTask(param);
        if(param._id) {
@@ -367,7 +365,6 @@ Template.addEditTask.created = function () {
 
   }
   else{
-
       task = createTask();
       taskDep.changed()
   }
