@@ -297,9 +297,9 @@ Template.taskCalendar.helpers({
         //searching by class because id isn't working
         var calendarDiv = $('.fc');
         start = view.intervalStart.toDate();
-        var endAux = view.intervalEnd.toDate();
+        end = view.intervalEnd.toDate();
         //this correct the calendar end date
-        end = new Date(endAux.setDate(endAux.getDate()+1));
+        //end = new Date(endAux.setDate(endAux.getDate()+1));
         startEndDep.changed();
 
         //Meteor.call('apiGetTasksBetween', view.intervalStart.toDate() , view.intervalEnd.toDate() , function(error, result){

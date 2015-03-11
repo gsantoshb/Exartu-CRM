@@ -214,8 +214,9 @@ Template.addEditTask.events({
 
         } else {
            //hack, the plugin is wrong so this fix it.
-            task.begin.setTime( task.begin.getTime() + task.begin.getTimezoneOffset()*60*1000 );
-            task.end.setTime( task.end.getTime() + task.end.getTimezoneOffset()*60*1000 );
+            task.begin.setTime( task.begin.getTime());
+            task.end.setTime( task.end.getTime());
+          // task.begin.getTimezoneOffset()*60*1000
             Tasks.insert(task, function () {
                 $('.modal-host').children().modal('toggle');
 
