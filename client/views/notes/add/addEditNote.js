@@ -1,5 +1,8 @@
 var note;
 var Error = {};
+var currentUrl;
+var param;
+var singleNoteHandler;
 
 var typeDep = new Tracker.Dependency();
 var linkedDep = new Tracker.Dependency();
@@ -56,13 +59,13 @@ Template.addEditNote.helpers({
         return !!note._id;
     },
     note: function () {
-        if (!note) {
-            var param = {};
-            if (this) {
-                param = this[0]
-            }
-            note = createNote(param);
-        }
+        //if (!note) {
+        //    var param = {};
+        //    if (this) {
+        //        param = this[0]
+        //    }
+        //    note = createNote(param);
+        //}
         noteDep.depend();
         return note;
     },
@@ -163,9 +166,15 @@ Template.addEditNote.events({
                 $('.modal-host').children().modal('toggle')
             });
         } else {
-            Notes.insert(note, function () {
-                $('.modal-host').children().modal('toggle')
-            })
+            //Notes.insert(note, function () {
+            //    $('.modal-host').children().modal('toggle')
+            //})
+            note.hierId = Meteor.user().currentHierId;
+            note.userId = Meteor.user()._id;
+            Meteor.call('addNote', note, function(){
+              $('.modal-host').children().modal('toggle');
+            });
+
         }
         ;
 
@@ -217,9 +226,65 @@ Template.addEditNote.events({
 });
 
 Template.addEditNote.created = function () {
-    Meteor.subscribe('allContactables');
-    Meteor.subscribe('allJobs');
-    Meteor.subscribe('allPlacements');
-    Meteor.subscribe('allNotes');
-    note = null;
+  Meteor.subscribe('allContactables');
+  Meteor.subscribe('allJobs');
+  Meteor.subscribe('allPlacements');
+  Meteor.subscribe('allNotes');
+  currentUrl = window.location.pathname;
+  note = null;
+  //por aca
+  param = null;
+  param = this.data[0];
+
+
+  if ((typeof param) === "object") {
+
+    note = createNote(param);
+    if (param._id) {
+      var url = '/notes/' + param._id;
+    }
+    else {
+      var url = '/notes/';
+    }
+    //hack, there is a bug in replaceState/notes/ironRoute
+    setTimeout(function () {
+      window.history.replaceState(null, null, url)
+    }, 500);
+
+    noteDep.changed()
+  }
+  else if ((typeof param) === "string") {
+    if (singleNoteHandler) {
+      singleNoteHandler.stop();
+    }
+    singleNoteHandler = Meteor.subscribe("editNote", param, function () {
+      if (EditNote.find({}).count() < 1) {
+        noteDep.changed()
+        return;
+      }
+      else {
+        param = EditNote.findOne({});
+        note = createNote(param);
+        noteDep.changed()
+
+      }
+    });
+  }
+  ;
+}
+
+Template.addEditNote.destroyed = function () {
+  if(singleNoteHandler) {
+    singleNoteHandler.stop();
+    singleNoteHandler = null;
+  }
+  if(currentUrl === window.location.pathname){
+    history.replaceState(null, 'edit','/notes');
+  }
+  else{
+    history.replaceState(null, 'edit',currentUrl);
+  }
+
+
 };
+

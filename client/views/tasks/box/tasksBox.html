@@ -87,7 +87,7 @@
                         </div>
                         <!-- /.search-list -->
 
-                        {{>fastPagination name="tasks" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                        {{>fastPagination name="tasks" useKeys="true" containerClass="magic-pager"}}
                     </div>
 
                     <div class="list-header tasks-list-header">
@@ -100,7 +100,7 @@
                     <!-- Entities list -->
                     <div class="list-item-section">
 						{{#if isLoading}}
-							<div style="height: 678px;">
+							<div style="height: 500px;">
 							</div>
 						{{else}}
                             {{#each tasks}}

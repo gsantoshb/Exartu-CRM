@@ -52,7 +52,6 @@ node-form-data
 npm-container
 shammar13:busboy
 aida:mongo-view
-aida:pagination
 aida:dtype
 aida:es
 
@@ -66,3 +65,4 @@ fullcalendar
 date-time-picker
 cscottnet:mail-listener2
 jparker:crypto-aes
+aida:pagination

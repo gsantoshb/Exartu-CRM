@@ -33,5 +33,6 @@ ExartuConfig = {
   // Applicant Center URL
   ApplicantCenter_URL: undefined,
   ResumeParserURL: undefined,
-  ResumeParserPasscode: ''
+  ResumeParserPasscode: '',
+  EncryptCode: undefined
 };

@@ -114,7 +114,7 @@ Meteor.autorun(function () {
   handler && handler.stop();
 
   init = false;
-  handler = Meteor.subscribe("tasks2", start, end, showMineOnly , function () {
+  handler = Meteor.subscribe("tasksCalendar", start, end, showMineOnly , function () {
     rerender();
     loadingCount = false;
     loadingDep.changed();
@@ -145,7 +145,7 @@ Template.taskCalendar.created=function() {
             start: document.begin,
             end: document.end,
             description: "",
-            className: 'item-label-2 label-future'
+            className: 'item-label-2 label-future pointer'
           });
           break;
         case Enums.taskState.completed:
@@ -155,7 +155,7 @@ Template.taskCalendar.created=function() {
             start: document.begin,
             end: document.end,
             description: "",
-            className: 'item-label-2 label-completed'
+            className: 'item-label-2 label-completed pointer'
           });
           break;
         case Enums.taskState.overDue:
@@ -165,7 +165,7 @@ Template.taskCalendar.created=function() {
             start: document.begin,
             end: document.end,
             description: "",
-            className: 'item-label-2 label-overDue'
+            className: 'item-label-2 label-overDue pointer'
           });
           break;
         case Enums.taskState.pending:
@@ -175,7 +175,7 @@ Template.taskCalendar.created=function() {
             start: document.begin,
             end: document.end,
             description: "",
-            className: 'item-label-2 label-pending'
+            className: 'item-label-2 label-pending pointer'
           });
           break;
       }
@@ -206,16 +206,16 @@ Template.taskCalendar.created=function() {
 
       switch (newDocument.state) {
         case Enums.taskState.future:
-          event.className = 'item-label-2 label-future';
+          event.className = 'item-label-2 label-future pointer';
           break;
         case Enums.taskState.completed:
-          event.className = 'item-label-2 label-completed';
+          event.className = 'item-label-2 label-completed pointer';
           break;
         case Enums.taskState.overDue:
-          event.className = 'item-label-2 label-overDue';
+          event.className = 'item-label-2 label-overDue pointer';
           break;
         case Enums.taskState.pending:
-          event.className = 'item-label-2 label-pending';
+          event.className = 'item-label-2 label-pending pointer';
           break;
 
       }
@@ -278,16 +278,16 @@ Template.taskCalendar.helpers({
         callback(_.map(Tasks.find().fetch(), function (t) {
             switch(t.state) {
                         case Enums.taskState.future:
-                             return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future'  } ;
+                             return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future  pointer'  } ;
                              break;
                         case Enums.taskState.completed:
-                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-completed'  } ;
+                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-completed  pointer'  } ;
                              break;
                         case Enums.taskState.overDue:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-overDue'  } ;
+                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-overDue  pointer'  } ;
                             break;
                         case Enums.taskState.pending:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-pending'  };
+                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-pending  pointer'  };
                             break;
            }
 

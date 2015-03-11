@@ -24,7 +24,7 @@
                             loading
                         {{else}}
                             {{#unless isESSearch}}
-                                {{>fastPagination name="jobs" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                                {{>fastPagination name="jobs" useKeys="true" containerClass="magic-pager"}}
                             {{/unless}}
                         {{/if}}
                     </div>
@@ -106,7 +106,7 @@
         loading
     {{else}}
         {{#unless isESSearch}}
-            {{>fastPagination name="jobs" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+            {{>fastPagination name="jobs" useKeys="true" containerClass="magic-pager"}}
         {{/unless}}
     {{/if}}
 </template>
