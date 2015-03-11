@@ -81,13 +81,46 @@ Meteor.methods({
 
     // Education
     addEducationRecord: function (contactableId, educationInfo) {
-        ContactableManager.addEducationRecord(contactableId, educationInfo);
+      // Validate data
+      check(contactableId, String);
+      check(educationInfo, {
+        institution: String,
+        description: String,
+        degreeAwarded: Match.Optional(String),
+        start: Date,
+        end: Match.Optional(Date)
+      });
+
+      try {
+        return ContactableManager.addEducationRecord(contactableId, educationInfo);
+      } catch (err) {
+        throw new Meteor.Error(err.message);
+      }
     },
-    editEducationRecord: function (contactableId, oldEducationInfo, newEducationInfo) {
-        ContactableManager.editEducationRecord(contactableId, oldEducationInfo, newEducationInfo);
+    editEducationRecord: function (contactableId, educationId, educationInfo) {
+      // Validate data
+      check(contactableId, String);
+      check(educationId, String);
+      check(educationInfo, {
+        institution: String,
+        description: String,
+        degreeAwarded: Match.Optional(String),
+        start: Date,
+        end: Match.Optional(Date)
+      });
+
+      ContactableManager.editEducationRecord(contactableId, educationId, educationInfo);
     },
-    deleteEducationRecord: function (contactableId, educationInfo) {
-        ContactableManager.deleteEducationRecord(contactableId, educationInfo);
+    deleteEducationRecord: function (contactableId, educationId) {
+      // Validate data
+      check(contactableId, String);
+      check(educationId, String);
+
+      try {
+        ContactableManager.deleteEducationRecord(contactableId, educationId);
+      } catch (err) {
+        throw new Meteor.Error(err.message);
+      }
     },
 
     // Past jobs
