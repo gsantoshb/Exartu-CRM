@@ -222,9 +222,7 @@
                 </div>
                 <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell jobs-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
+                    {{formattedDate dateCreated "fromNow"}}
                 </div>
             </div>
             <!-- /.list-item-cell -->
@@ -252,9 +250,7 @@
                 <div class="list-item-cell jobs-list-item-code ">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell jobs-list-item-time">
-                   {{#formattedDate value=dateCreated format='fromNow'}}
-                       {{date}}
-                   {{/formattedDate}}
+                    {{formattedDate dateCreated "fromNow"}}
                 </div>
                 <div class="list-item-cell item-overflow jobs-item-overflow">
                     <a href="#">

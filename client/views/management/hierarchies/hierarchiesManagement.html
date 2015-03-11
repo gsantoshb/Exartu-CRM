@@ -100,9 +100,8 @@
                         {{/if}}
                     </btn>
                     <div class="pull-right task-author">
-                        {{#formattedDate value=dateCreated format='lll'}}
-                            {{date}}
-                        {{/formattedDate}}<br/>
+                        {{formattedDate dateCreated "lll"}}
+                        <br/>
                         <!-- /.table-item-cell-container -->
                         {{_id}}<br/>
                         {{#if isInactive}}Inactive{{/if}}
