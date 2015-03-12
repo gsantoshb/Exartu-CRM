@@ -1,124 +1,30 @@
-PastJobSchema = new SimpleSchema({
-  company: {
-    type: String,
-    label: 'Company name'
-  },
-  position: {
-    type: String,
-    label: 'Position'
-  },
-  reasonForLeaving: {
-    type: String,
-    label: 'Reason for Leaving',
-    optional: true
-  },
-  ok2Contact: {
-    type: Boolean,
-    label: 'Ok to contact',
-    optional: true
-  },
-  payRate: {
-    type: Number,
-    label: 'Pay rate',
-    optional: true
-  },
-  duties: {
-    type: String,
-    label: 'Duties',
-    optional: true
-  },
-  supervisor: {
-    type: String,
-    label: 'Supervisor',
-    optional: true
-  },
-  location: {
-    type: String,
-    label: 'Location'
-  },
-  start: {
-    type: Date,
-    label: 'Start date'
-  },
-  end: {
-    type: Date,
-    label: 'End date',
-    optional: true,
-    custom: function () {
-      if (Meteor.isClient && this.isSet) {
-        if (this.field('start').value > this.value){
-          return 'endGreaterThanStart';
-        }
-      }
-    }
-  }
-});
-PastJobSchema.messages({
-  endGreaterThanStart: 'End date should be grater than start date'
-});
 
+var error = new ReactiveVar(''),
+    isSubmitting = new ReactiveVar(false);
 
-var toPresent = ReactiveVar(false);
-
-AutoForm.hooks({
-  AddPastJobRecord: {
-    onSubmit: function(pastJobRecord) {
-      var self = this;
-
-      // Get contactableId
-      var contactableId = Session.get('entityId');
-
-      if (toPresent.get())
-        pastJobRecord.end = undefined;
-
-      Meteor.call('addPastJobRecord', contactableId, pastJobRecord, function () {
-        self.done();
-        self.resetForm();
-      });
-
-      return false;
-    }
-  }
-});
-
-// Add
-Template.employeePastJobAdd.helpers({
-  endDateClass: function () {
-    return toPresent.get() ? 'disabled' : '';
-  }
-});
-
-Template.employeePastJobAdd.events({
-  'change .toPresent': function (event, template) {
-    toPresent.set(!toPresent.get());
-    $(template.find('[data-schema-key=end]')).val("");
-  },
-  'reset form': function () {
-    toPresent.set(false);
-  }
-});
-
-// List
-Template.employeePastJobsList.helpers({
+// Main template
+Template.employeePastJobs.helpers({
   items: function() {
     if (this.pastJobs && this.pastJobs.length > 1)
-      return this.pastJobs.sort(function(d1, d2) {
-        return d1.start - d2.start;
-      });
-
+      return this.pastJobs.sort(function(d1, d2) { return d1.start - d2.start; });
     return this.pastJobs;
+  },
+  isSubmitting: function () {
+    return isSubmitting.get();
+  },
+  error: function () {
+    return error.get();
   }
 });
 
-// Record
+
+// Past Job Item template
 Template.employeePastJobItem.helpers({
   getCtx: function () {
-    var self = this;
-    return {
-      pastJobRecord: self,
-      isEditing: new ReactiveVar(false),
-      toPresent: new ReactiveVar(!self.end)
-    };
+    this.isEditing = new ReactiveVar(false);
+    this.isSubmitting = new ReactiveVar(false);
+    this.error = new ReactiveVar('');
+    return this;
   },
   isEditing: function () {
     return this.isEditing.get();
@@ -127,73 +33,122 @@ Template.employeePastJobItem.helpers({
 
 Template.employeePastJobItem.events({
   'click .deletePastJobRecord': function () {
+    var self = this;
+
     // Get contactableId
     var contactableId = Session.get('entityId');
-    var pastJobRecord = this.pastJobRecord;
 
     Utils.showModal('basicModal', {
       title: 'Delete past job record',
-      message: 'Are you sure you want to delete this past job record?',
+      message: '<p>Are you sure you want to delete this past job record?</p>' +
+      '<p>' + self.company + ' - ' + self.position + '</p>',
       buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {label: 'Delete', classes: 'btn-danger', value: true}],
       callback: function (result) {
         if (result) {
-          Meteor.call('deletePastJobRecord', contactableId, pastJobRecord);
+          Meteor.call('deletePastJobRecord', contactableId, self.id);
         }
       }
     });
   },
   'click .editPastJobRecord': function () {
     // Open edit mode
-    this.isEditing.set(!this.isEditing.get());
+    this.isEditing.set(true);
   }
 });
 
-// Edit record
+
+// Edit record template
+Template.employeePastJobEditItem.rendered = function () {
+  // Generate an AutoForm ID and create a hook for each record form using the record ID
+  var formId = 'editPastJob_' + this.data.id;
+  addAutoFormEditHook(formId);
+};
+
 Template.employeePastJobEditItem.helpers({
-  created: function () {
-    var self = this;
-
-    // Get contactableId
-    var contactableId = Session.get('entityId');
-
-    // Generate an AutoForm ID and create a hook for each record form
-    self.data.formId = 'editPastJob_' + Random.hexString(10);
-    AutoForm.addHooks(self.data.formId, {
-      onSubmit: function(pastJobRecord, setSelector, oldRecord) {
-        var self = this;
-        var ctx = Template.parentData(2);
-        pastJobRecord.end = ctx.toPresent.get() ? undefined: pastJobRecord.end;
-
-        Meteor.call('editPastJobRecord', contactableId, oldRecord, pastJobRecord, function (err) {
-          if (!err) {
-            // Close edit mode
-            ctx.isEditing.set(!ctx.isEditing.get());
-            self.done();
-          }
-        });
-
-        return false;
-      }
-    });
+  formId: function () {
+    return 'editPastJob_' + this.id;
   },
-  endDateClass: function() {
-    var ctx = Template.parentData(2);
-    return ctx.toPresent.get() ? 'disabled' : '';
+  pastJob: function () {
+    return this;
   },
-  checked: function() {
-    var ctx = Template.parentData(2);
-    return ctx.toPresent.get() ? 'checked' : undefined;
+  isSubmitting: function () {
+    return this.isSubmitting.get();
+  },
+  error: function () {
+    return this.error.get();
   }
 });
 
-Template.employeePastJobEditItem.events({
-  'change .toPresent': function() {
-    var ctx = Template.parentData(1);
-    ctx.toPresent.set(!ctx.toPresent.get());
-  },
-  'click .cancelPastJobRecordChanges': function () {
+Template.employeeEducationEditItem.events({
+  'click .cancel': function () {
     // Close edit mode
-    var ctx = Template.parentData(1);
-    ctx.isEditing.set(!ctx.isEditing.get());
+    this.isEditing.set(false);
   }
 });
+
+
+AutoForm.hooks({
+  addPastJobForm: {
+    onSubmit: function(insertDoc) {
+      var self = this;
+
+      // Clean schema for auto and default values
+      PastJobSchema.clean(insertDoc);
+
+      // Clear error message
+      error.set('');
+
+      // Get contactableId
+      var contactableId = Session.get('entityId');
+
+      // Insert past job
+      isSubmitting.set(true);
+      Meteor.call('addPastJobRecord', contactableId, insertDoc, function (err) {
+        isSubmitting.set(false);
+        if (err) {
+          var msg = err.reason ? err.reason : err.error;
+          error.set('Server error. ' + msg);
+        } else {
+          self.done();
+        }
+      });
+
+      return false;
+    }
+  }
+});
+
+var addAutoFormEditHook = function (formId) {
+  AutoForm.addHooks(formId, {
+    onSubmit: function(insertDoc, updateDoc, oldDoc) {
+      var self = this;
+      // Obtain the past job record context
+      var ctx = Template.parentData(2);
+
+      // Clean schema for auto and default values
+      PastJobSchema.clean(insertDoc);
+
+      // Clear error message
+      ctx.error.set('');
+
+      // Get contactableId
+      var contactableId = Session.get('entityId');
+
+      // Update past job
+      ctx.isSubmitting.set(true);
+      Meteor.call('editPastJobRecord', contactableId, oldDoc.id, insertDoc, function (err) {
+        ctx.isSubmitting.set(false);
+        if (err) {
+          var msg = err.reason ? err.reason : err.error;
+          ctx.error.set('Server error. ' + msg);
+        } else {
+          // Mark as done in try catch block since we are removing the template from the view
+          try { self.done(); } catch (err) {}
+          ctx.isEditing.set(false);
+        }
+      });
+
+      return false;
+    }
+  }, true); //third argument to replace existing hooks and avoid multiples onSubmit hooks per form
+};

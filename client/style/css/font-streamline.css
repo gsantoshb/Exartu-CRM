@@ -1005,7 +1005,6 @@
 }
 .icon-connection-1:before {
 	content: "\e0e6";
-    color: rgb(201, 95, 208);
 }
 .icon-connection-2:before {
 	content: "\e0e7";
@@ -1942,7 +1941,6 @@
 }
 .icon-note-paper-1:before {
 	content: "\e21e";
-    color: #FFCD5A;
 }
 .icon-note-paper-2:before {
 	content: "\e21f";
@@ -2351,7 +2349,6 @@
 }
 .icon-check-list:before {
 	content: "\e2a6";
-    color: aquamarine
 }
 .icon-check-shield:before {
 	content: "\e2a7";
@@ -2367,7 +2364,6 @@
 }
 .icon-briefcase:before {
 	content: "\e2ab";
-    color: rgb(49, 232, 49);
 }
 .icon-brightness-high:before {
 	content: "\e2ac";
@@ -2443,7 +2439,6 @@
 }
 .icon-clock-3:before {
 	content: "\e2c4";
-    color: red;
 }
 .icon-hourglass-1:before {
 	content: "\e2c5";
