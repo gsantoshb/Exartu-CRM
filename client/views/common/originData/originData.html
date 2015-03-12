@@ -9,8 +9,6 @@
         <span> in hierarchy </span>
         <strong> {{hierName}} </strong>
         <span> at </span>
-        {{#formattedDate value=dateCreated format='lll'}}
-            <strong> {{date}} </strong>
-        {{/formattedDate}}
+        <strong> {{formattedDate dateCreated "lll"}} </strong>
     </div>
 </template>

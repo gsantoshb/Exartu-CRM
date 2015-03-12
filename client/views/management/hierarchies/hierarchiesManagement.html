@@ -1,48 +1,73 @@
 <template name="hierarchiesManagement">
     <div id="content" class="lookUps">
+        <!-- Title -->
         <div id="content-header" class="mini">
-            <h1>hierarchies management</h1>
+            <h1>Hierarchies Management</h1>
         </div>
 
-
+        <!-- Breadcrumb -->
         <div id="breadcrumb">
-            <a href="/" title="Go to Home" class="tip-bottom">Management</a>
-            <a href="/hierarchyManagement" class="current">hierarchies</a>
+            <a href="/" title="Go to Home" class="tip-bottom">
+                <i class="fa fa-home"></i>Home
+            </a>
+            <a href="/hierarchyManagement" class="current">Hierarchies</a>
         </div>
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="input-group">
-                        {{#objectProperty property=filters.searchString}}
-                            <input type="text" class="form-control" placeholder="Search Hierarchies" value="{{value}}">
-                        {{/objectProperty}}
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
+        <!-- Content box -->
+        <div class="box-type-1" style="margin: 0px 15px;">
+            <div class="box-type-1-content">
+                <div class="row">
+                    <!-- Hierarchy Trees -->
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            {{#objectProperty property=filters.searchString}}
+                                <input type="text" class="form-control" placeholder="Search Hierarchies" value="{{value}}">
+                            {{/objectProperty}}
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <div>
+                            <span>&nbsp;</span>
+                            {{>showHierarchyTree hierarchies=hierarchies}}
+                        </div>
                     </div>
-                    <div>
-                        <span>&nbsp;</span>
-                        {{>showHierarchyTree hierarchies=hierarchies}}
+
+                    <!-- New Hierarchy -->
+                    <div class="col-md-4" style="border-left: solid 2px #979797; min-height: 300px;">
+                        {{#with selected}}
+                            {{#if isAdmin}}
+                                {{>quickForm schema=hierarchySchema id='hierarchyEdit' doc=. buttonContent="Save" autocomplete="off" }}
+                            {{/if}}
+                        {{else}}
+                            <div class="box-v-msg">
+                                <h3>Select a Hierarchy</h3>
+                            </div>
+                        {{/with}}
                     </div>
                 </div>
-                <div class="col-md-4" style="border-left: solid 2px #979797; min-height: 300px;">
-                    {{#with selected}}
-                        {{#if isAdmin}}
-                            {{>quickForm schema=hierarchySchema id='hierarchyEdit' doc=. buttonContent="Save" autocomplete="off" }}
-                        {{/if}}
-                    {{else}}
-                        <div class="box-v-msg">
-                            <h3>Select a Hierarchy</h3>
-                        </div>
-                    {{/with}}
 
+                <!-- Applicant Center -->
+                <div class="row margin-top-15">
+                    <div class="box-type-2-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Applicant Center</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>Your Applicant Center url for the current hierarchy is:
+                                    <a href="{{applicantCenterUrl}}" target="_blank">{{applicantCenterUrl}}</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
 
     </div>
 </template>
@@ -75,9 +100,8 @@
                         {{/if}}
                     </btn>
                     <div class="pull-right task-author">
-                        {{#formattedDate value=dateCreated format='lll'}}
-                            {{date}}
-                        {{/formattedDate}}<br/>
+                        {{formattedDate dateCreated "lll"}}
+                        <br/>
                         <!-- /.table-item-cell-container -->
                         {{_id}}<br/>
                         {{#if isInactive}}Inactive{{/if}}

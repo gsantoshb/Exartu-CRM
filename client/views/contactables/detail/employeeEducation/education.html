@@ -1,6 +1,6 @@
 
 <template name="employeeEducation">
-    <div class="record">
+    <div class="row">
         <div class="col-md-6">
             {{> employeeEducationAdd}}
         </div>
@@ -114,9 +114,9 @@
                         </h4>
                         <small class="text-muted">
                             <i class="fa fa-calendar"></i>
-                            Start: {{#formattedDate value=start format="MMMM YYYY"}} {{date}}{{/formattedDate}} -
+                            Start: {{formattedDate start "MMMM YYYY"}} -
                             {{#if end}}
-                                End: {{#formattedDate value=end format="MMMM YYYY"}} {{date}}{{/formattedDate}}
+                                End: {{formattedDate end "MMMM YYYY"}}
                             {{else}}
                                 to present
                             {{/if}}

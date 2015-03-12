@@ -1,13 +1,12 @@
-UI.registerHelper('formattedDate', function() {
-  switch(this.format){
+
+UI.registerHelper('formattedDate', function(date, format) {
+  switch(format) {
     case 'fromNow':
-      this.date=moment(this.value).fromNow();
+      return moment(date).fromNow();
       break;
     default:
-      this.date = moment(this.value).format(this.format || 'll');
-
+      return moment(date).format(format || 'll');
   }
-  return Template.formatted_date;
 });
 
 UI.registerHelper('htmlEditor', function() {

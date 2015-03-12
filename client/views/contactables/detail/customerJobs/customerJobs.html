@@ -34,9 +34,7 @@
                                 <div class="list-item-cell jobs-list-item-code ">{{displaySearchKey _id}}</div>
                                 <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
                                 <div class="list-item-cell jobs-list-item-time">
-                                    {{#formattedDate value=dateCreated format='fromNow'}}
-                                        {{date}}
-                                    {{/formattedDate}}
+                                    {{formattedDate dateCreated "fromNow"}}
                                 </div>
                                 <div class="list-item-cell item-overflow jobs-item-overflow">
                                     <a href="#">
@@ -60,14 +58,9 @@
 <template name="jobDate">
     <div class="table-item-cell">
         <div class="table-item-cell-container date">
-            {{#formattedDate value=startDate}}
-                {{date}}
-            {{/formattedDate}}-
-
+            {{formattedDate startDate}}
             {{#if endDate}}
-                {{#formattedDate value=endDate}}
-                    {{date}}
-                {{/formattedDate}}
+                - {{formattedDate endDate}}
             {{/if}}
             <br/><i class="glyphicon glyphicon-search"></i>{{displaySearchKey _id}}
         </div>

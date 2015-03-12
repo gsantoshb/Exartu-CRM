@@ -90,10 +90,9 @@
                         <small class="text-muted">
                             {{pastJobRecord.location}}
                             <i class="fa fa-calendar"></i>
-                            Start: {{#formattedDate value=pastJobRecord.start format="MMMM YYYY"}} {{date}}{{/formattedDate}}
-                            -
+                            Start: {{formattedDate pastJobRecord.start "MMMM YYYY"}} -
                             {{#if pastJobRecord.end}}
-                                End: {{#formattedDate value=pastJobRecord.end format="MMMM YYYY"}} {{date}}{{/formattedDate}}
+                                End: {{formattedDate pastJobRecord.end "MMMM YYYY"}}
                             {{else}}
                                 to present
                             {{/if}}
