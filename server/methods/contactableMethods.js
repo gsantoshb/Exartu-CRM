@@ -125,13 +125,56 @@ Meteor.methods({
 
     // Past jobs
     addPastJobRecord: function (contactableId, pastJobInfo) {
-        ContactableManager.addPastJobRecord(contactableId, pastJobInfo);
+      // Validate data
+      check(contactableId, String);
+      check(pastJobInfo, {
+        company: String,
+        location: String,
+        position: String,
+        duties: Match.Optional(String),
+        payRate: Match.Optional(Number),
+        supervisor: Match.Optional(String),
+        reasonForLeaving: Match.Optional(String),
+        start: Date,
+        end: Match.Optional(Date),
+        ok2Contact: Boolean
+      });
+
+      try {
+        return ContactableManager.addPastJobRecord(contactableId, pastJobInfo);
+      } catch (err) {
+        throw new Meteor.Error(err.message);
+      }
     },
-    editPastJobRecord: function (contactableId, oldPastJobInfo, newPastJobInfo) {
-        ContactableManager.editPastJobRecord(contactableId, oldPastJobInfo, newPastJobInfo);
+    editPastJobRecord: function (contactableId, pastJobId, pastJobInfo) {
+      // Validate data
+      check(contactableId, String);
+      check(pastJobId, String);
+      check(pastJobInfo, {
+        company: String,
+        location: String,
+        position: String,
+        duties: Match.Optional(String),
+        payRate: Match.Optional(Number),
+        supervisor: Match.Optional(String),
+        reasonForLeaving: Match.Optional(String),
+        start: Date,
+        end: Match.Optional(Date),
+        ok2Contact: Boolean
+      });
+
+      ContactableManager.editPastJobRecord(contactableId, pastJobId, pastJobInfo);
     },
-    deletePastJobRecord: function (contactableId, pastJobInfo) {
-        ContactableManager.deletePastJobRecord(contactableId, pastJobInfo);
+    deletePastJobRecord: function (contactableId, pastJobId) {
+      // Validate data
+      check(contactableId, String);
+      check(pastJobId, String);
+
+      try {
+        ContactableManager.deletePastJobRecord(contactableId, pastJobId);
+      } catch (err) {
+        throw new Meteor.Error(err.message);
+      }
     },
     findClient: function (query) {
         return Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Contactables.find({
