@@ -85,7 +85,6 @@ ActivityViews = new View('activities', {
                 }
             });
         }
-        ;
 
 
         // Notes
@@ -189,13 +188,12 @@ ActivityViews = new View('activities', {
                     to: 'contactables'
                 });
             }
-            ;
         }
         this.publish({
             cursor: function (activity) {
                 return c;
             },
-            to: 'notes'
+            to: 'tasks'
         });
         // Placements
         if (activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) {

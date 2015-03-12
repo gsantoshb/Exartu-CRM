@@ -72,15 +72,15 @@ var resetAddress = function () {
 var addressCreatedCallback;
 
 var addDisabled = new ReactiveVar(false);
-Template.addressAddEdit.created= function() {
+Template.addressAddEdit.created = function() {
     var self = this;
-    address.addressTypeId=Utils.getAddressTypeDefault()._id;
+    address.addressTypeId = Utils.getAddressTypeDefault()._id;
     if (self.data.location) address=self.data.location;
     AutoForm.hooks({
         addressAddEditForm: {
             onSubmit: function (insertDoc, updateDoc, currentDoc) {
                 addDisabled.set(true);
-                var selfautoform=this;
+                var selfautoform = this;
                 //Copy properties from insert doc into current doc which has lat lng
                 for (var k in insertDoc) currentDoc[k] = insertDoc[k];
                 //Set the contactable id on the current doc
@@ -107,6 +107,7 @@ Template.addressAddEdit.rendered = function () {
 
     resetAddress();
     var inputElement = this.$('.locationSearchInput')[0];
+
     var autocomplete = new google.maps.places.Autocomplete(inputElement, {types: ['geocode']});
     // When the user selects an address from the dropdown this event is raised
     google.maps.event.addListener(autocomplete, 'place_changed', function () {
@@ -158,7 +159,7 @@ Template.addressAddEdit.rendered = function () {
                 }
             }
         }
-        ;
+
         address.lat = place.geometry.location.lat();
         address.lng = place.geometry.location.lng();
     };
@@ -167,13 +168,20 @@ Template.addressAddEdit.helpers({
     address: function () {
         return address;
     },
-    getAddressTypes: function () {
-        addressTypes = Utils.getAddressTypes();
-        return _.map(addressTypes, function (addresstype) {
-            return {label: addresstype.displayName, value: addresstype._id};
-        });
-    },addDisabled: function () {
+    addDisabled: function () {
         return addDisabled.get();
     }
 });
+
+Template.addressAddEditFormContent.helpers({
+    getAddressTypes: function () {
+        if (this.addressTypes){
+            return this.addressTypes;
+        }
+        var addressTypes = Utils.getAddressTypes();
+        return _.map(addressTypes, function (addresstype) {
+            return { label: addresstype.displayName, value: addresstype._id };
+        });
+    }
+})
 

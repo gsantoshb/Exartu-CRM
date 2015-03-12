@@ -84,5 +84,39 @@ JobManager = {
 
     // Update job client
     Jobs.update({_id: jobId}, {$set: { client: clientId}});
+  },
+
+  //address
+  setJobAddress: function (job, address) {
+
+    if (_.isString(job)){
+      job = Jobs.findOne(job);
+    }
+
+    if (! job){
+      throw new Error('job not found');
+    }
+
+    if (_.isString(address)) {
+
+      address = Addresses.findOne(address);
+
+      if (! address){
+        throw new Error('address not found');
+      }
+    }else {
+
+      address.linkId = job._id;
+      address._id = AddressManager.addEditAddress(address);
+    }
+
+    if (job.address && job.address != address._id){
+      var oldAddress = Addresses.findOne(job.address);
+      if (oldAddress.linkId == job._id){
+        Addresses.remove({_id: oldAddress._id});
+      }
+    }
+
+    Jobs.update({ _id: job._id }, { $set: { address: address._id } });
   }
 };

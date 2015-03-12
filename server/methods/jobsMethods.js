@@ -58,5 +58,10 @@ Meteor.methods({
   // Client
   setJobClient: function (jobId, clientId) {
     return JobManager.setClient(jobId, clientId);
+  },
+
+  // address
+  setJobAddress: function (jobId, addressId) {
+    return JobManager.setJobAddress(jobId, addressId);
   }
 });
