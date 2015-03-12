@@ -23,5 +23,14 @@ Meteor.methods({
 
 
 
+  },
+  updateNote: function(note){
+    try{
+      NoteManager.updateNote(note);
+    }
+    catch(err){
+      throw new Meteor.Error(err.message);
+    }
+
   }
 });
