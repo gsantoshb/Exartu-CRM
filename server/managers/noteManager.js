@@ -145,6 +145,11 @@ NoteManager = {
       }
     }
     return Notes.update({_id:note._id},{$set:{msg: note.msg, links: note.links}});
+  },
+  removeNote: function (id) {
+
+    //we have to check if the user have the permissions to remove this note.
+    return Notes.remove({_id:id});
   }
 };
 

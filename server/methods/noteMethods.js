@@ -32,5 +32,14 @@ Meteor.methods({
       throw new Meteor.Error(err.message);
     }
 
+  },
+  removeNote: function(id){
+    try{
+      NoteManager.removeNote(id);
+    }
+    catch(err){
+      throw new Meteor.Error(err.message);
+    }
+
   }
 });

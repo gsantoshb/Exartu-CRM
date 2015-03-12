@@ -58,12 +58,11 @@ Template.noteItem.events({
             }],
             callback: function (result) {
                 if (result) {
-                    //falta hacer el remove bien
-                    Notes.remove({_id: id});
+                    Meteor.call('removeNote', id);
                 }
             }
         });
-    },
+    }
     //'click .editNoteRecord': function () {
     //    // Open edit mode
     //    this.isEditing.set(!this.isEditing.get());
