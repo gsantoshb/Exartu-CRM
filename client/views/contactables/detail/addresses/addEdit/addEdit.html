@@ -1,91 +1,62 @@
 <template name="addressAddEdit">
 
-    <form class="list-type-5-sub-header" style="margin-bottom: 20px;" role="form">
+    <form class="box-content-form" style="margin-bottom: 20px;" role="form">
         <input class="form-control locationSearchInput" placeholder="Search for an address" autocomplete="off" />
     </form>
 
     {{#autoForm id="addressAddEditForm" schema="LocationSchema" validation="blur" doc=address}}
-        <div class="row">
 
-            <div class="col-md-6">
-                <ul class="list-type-5">
-                    <li>
-                        <div class="left-part {{#if afFieldIsInvalid name='address'}}has-error{{/if}}">Address 1</div>
-                        <div class="right-part">
-                            {{> afFieldInput name='address' class="form-control " placeholder="Address 1"}}
-                            {{#if afFieldIsInvalid name='address'}}
-                                <span class="help-block">{{afFieldMessage name='address'}}</span>
-                            {{/if}}
-                        </div>
-                    </li>
-                    <li>
-                        <div class="left-part {{#if afFieldIsInvalid name='address2'}}has-error{{/if}}">Address 2</div>
-                        <div class="right-part">
-                            {{> afFieldInput name='address2' class="form-control " placeholder="Address 2"}}
-                            {{#if afFieldIsInvalid name='address2'}}
-                                <span class="help-block">{{afFieldMessage name='address2'}}</span>
-                            {{/if}}
-                        </div>
-                    </li>
-                    <li>
-                        <div class="left-part {{#if afFieldIsInvalid name='postalCode'}}has-error{{/if}}">City</div>
-                        <div class="right-part">
-                            {{> afFieldInput name='postalCode' class="form-control " placeholder="Postalcode/Zip"}}
-                            {{#if afFieldIsInvalid name='postalCode'}}
-                                <span class="help-block">{{afFieldMessage name='postalCode'}}</span>
-                            {{/if}}
-                        </div>
-                    </li>
-                    <li>
-                        <div class="left-part {{#if afFieldIsInvalid name='city'}}has-error{{/if}}">City</div>
-                        <div class="right-part">
-                            {{> afFieldInput name='city' class="form-control " placeholder="City"}}
-                            {{#if afFieldIsInvalid name='city'}}
-                                <span class="help-block">{{afFieldMessage name='city'}}</span>
-                            {{/if}}
-                        </div>
-                    </li>
-                </ul>
-            </div><!-- /.col-md-6 -->
-
-            <div class="col-md-6">
-                <ul class="list-type-5">
-                    <li>
-                        <div class="left-part {{#if afFieldIsInvalid name='state'}}has-error{{/if}}">State</div>
-                        <div class="right-part">
-                            {{> afFieldInput name='state' class="form-control " placeholder="State"}}
-                            {{#if afFieldIsInvalid name='state'}}
-                                <span class="help-block">{{afFieldMessage name='state'}}</span>
-                            {{/if}}
-                        </div>
-                    </li>
-                    <li>
-                        <div class="left-part {{#if afFieldIsInvalid name='country'}}has-error{{/if}}">Country</div>
-                        <div class="right-part">
-                            {{> afFieldInput name='country' class="form-control " placeholder="Country"}}
-                            {{#if afFieldIsInvalid name='country'}}
-                                <span class="help-block">{{afFieldMessage name='country'}}</span>
-                            {{/if}}
-                        </div>
-                    </li>
-                    <li>
-                        <div class="left-part {{#if afFieldIsInvalid name='addressTypeId'}}has-error{{/if}}">Address Type</div>
-                        <div class="right-part">
-                            {{> afFieldInput name='addressTypeId' class="form-control "  options=getAddressTypes
-                            firstOption="Select a type"  }}
-                            {{#if afFieldIsInvalid name='addressTypeId'}}
-                                <span class="help-block">{{afFieldMessage name='addressTypeId'}}</span>
-                            {{/if}}
-                        </div>
-                    </li>
-                </ul>
-            </div><!-- /.col-md-6 -->
-
+        <div class="form-group {{#if afFieldIsInvalid name='address'}}has-error{{/if}}">
+            {{> afFieldInput name='address' class="form-control" placeholder="Address"}}
+            {{#if afFieldIsInvalid name='address'}}
+                <span class="help-block">{{afFieldMessage name='address'}}</span>
+            {{/if}}
         </div>
-        <div class="edit-actions-bar">
-            <button class="btn btn-primary" disabled="{{addDisabled}}">Save</button>
-            <button class="btn btn-default">Cancel</button>
+        <div class="form-group {{#if afFieldIsInvalid name='address2'}}has-error{{/if}}">
+            {{> afFieldInput name='address2' class="form-control" placeholder="Address 2"}}
+            {{#if afFieldIsInvalid name='address2'}}
+                <span class="help-block">{{afFieldMessage name='address2'}}</span>
+            {{/if}}
+        </div>
+        <div class="form-group {{#if afFieldIsInvalid name='city'}}has-error{{/if}}">
+            {{> afFieldInput name='city' class="form-control " placeholder="City"}}
+            {{#if afFieldIsInvalid name='city'}}
+                <span class="help-block">{{afFieldMessage name='city'}}</span>
+            {{/if}}
+        </div>
+        <div class="form-group {{#if afFieldIsInvalid name='state'}}has-error{{/if}}">
+            {{> afFieldInput name='state' class="form-control " placeholder="State"}}
+            {{#if afFieldIsInvalid name='state'}}
+                <span class="help-block">{{afFieldMessage name='state'}}</span>
+            {{/if}}
+        </div>
+        <div class="form-group {{#if afFieldIsInvalid name='country'}}has-error{{/if}}">
+            {{> afFieldInput name='country' class="form-control " placeholder="Country"}}
+            {{#if afFieldIsInvalid name='country'}}
+                <span class="help-block">{{afFieldMessage name='country'}}</span>
+            {{/if}}
+        </div>
+        <div class="form-group {{#if afFieldIsInvalid name='postalCode'}}has-error{{/if}}">
+            {{> afFieldInput name='postalCode' class="form-control " placeholder="Postal Code"}}
+            {{#if afFieldIsInvalid name='postalCode'}}
+                <span class="help-block">{{afFieldMessage name='postalCode'}}</span>
+            {{/if}}
+        </div>
+
+        <div class="form-group {{#if afFieldIsInvalid name='addressTypeId'}}has-error{{/if}}">
+            {{> afFieldInput name='addressTypeId' class="form-control "  options=getAddressTypes
+            firstOption="Select a type"  }}
+            {{#if afFieldIsInvalid name='addressTypeId'}}
+                <span class="help-block">{{afFieldMessage name='addressTypeId'}}</span>
+            {{/if}}
+        </div>
+
+
+
+
+
+        <div class="form-group">
+            <button class="btn btn-block btn-primary" disabled="{{addDisabled}}">Save changes</button>
         </div>
     {{/autoForm}}
-
 </template>

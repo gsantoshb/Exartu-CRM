@@ -61,7 +61,7 @@ var address = {
 var resetAddress = function () {
     address.addressTypeId = Utils.getAddressTypeDefault()._id;
     address.linkId = undefined;
-    address.address = '';
+    address.address = 'test';
     address.address2 = '';
     address.city = '';
     address.state = '';
@@ -76,9 +76,6 @@ Template.addressAddEdit.created= function() {
     var self = this;
     address.addressTypeId=Utils.getAddressTypeDefault()._id;
     if (self.data.location) address=self.data.location;
-
-    console.log(address);
-
     AutoForm.hooks({
         addressAddEditForm: {
             onSubmit: function (insertDoc, updateDoc, currentDoc) {
@@ -175,8 +172,8 @@ Template.addressAddEdit.helpers({
         return _.map(addressTypes, function (addresstype) {
             return {label: addresstype.displayName, value: addresstype._id};
         });
-    },addDisabled: function () {
+    },
+    addDisabled: function () {
         return addDisabled.get();
     }
 });
-

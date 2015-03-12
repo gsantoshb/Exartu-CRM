@@ -353,7 +353,9 @@
                     {{#if Client}}Client<br>{{/if}}{{#if Employee}}Employee<br>{{/if}}{{#if Contact}}Contact{{/if}}
                 </div>
                 <div class="list-item-cell network-list-item-status">
+                    {{#if getProcessStatus}}
                     <span class="item-label">{{lookUpName getProcessStatus}}</span>
+                    {{/if}}
                     <span class="item-label"
                           data-status="{{lookUpName activeStatus}}">{{lookUpName activeStatus}}</span>
                 </div>

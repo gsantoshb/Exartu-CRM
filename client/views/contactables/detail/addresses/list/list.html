@@ -3,11 +3,10 @@
         <div class="box-type-2-content">
             <div class="row">
                 <div class="col-md-2">
-                    <h3>Addresses</h3>
-                    <div class="edit-btn">
-                        <a id="create-address-mode" class="pointer"><i class="fa fa-plus"></i> Add </a>&nbsp;
-                        <a class="editAddressRecord pointer" data-addressId="{{_id}}"><i class="fa fa-edit"></i> Edit</a>
+                    <div class="box-options">
+                        <a id="create-address-mode" class="action-btn"><i class="fa fa-plus"></i></a>&nbsp;
                     </div>
+                    <h3>Addresses</h3>
                 </div><!-- /.col-md-2 -->
 
                 <div class="col-md-10">
@@ -26,18 +25,17 @@
                         {{#each addresses}}
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="heading-{{_id}}">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#address-{{_id}}" aria-expanded="false" aria-controls="address-{{_id}}" class="">
-                                            {{getAddressTypeDisplayName }}  <span>‐ {{address}}, {{city}}, {{country}}</span>
-                                        </a>
+                                    <h4 class="panel-title edit">
+                                        {{getAddressTypeDisplayName }}  <span>&dash; {{address}}, {{city}}, {{country}}</span>
+                                        <span class="pull-right">
+                                            <a class="editAddressRecord pointer" data-toggle="collapse" data-parent="#accordion" href="#address-{{_id}}" aria-expanded="false" aria-controls="address-{{_id}}"><i class="fa fa-pencil"></i></a>
+                                            {{#if isAdmin}}
+                                                &nbsp;<a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i></a>
+                                            {{/if}}
+                                        </span>
                                     </h4>
                                 </div>
                                 <div id="address-{{_id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{_id}}" aria-expanded="false">
-                                    {{#if isAdmin}}
-                                        <span class="bullet-spacer">·</span>
-                                        <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
-                                    {{/if}}
-
                                     <div class="panel-body">
                                         {{>addressAddEdit linkId=linkId  callback=setNewAddress location=.}}
                                     </div>
