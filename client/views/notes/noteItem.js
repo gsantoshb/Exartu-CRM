@@ -58,6 +58,7 @@ Template.noteItem.events({
             }],
             callback: function (result) {
                 if (result) {
+                    //falta hacer el remove bien
                     Notes.remove({_id: id});
                 }
             }

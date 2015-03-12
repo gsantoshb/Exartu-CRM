@@ -77,18 +77,18 @@ Meteor.paginatedPublish(TaskView, function () {
     publicationName: 'tasks'
 });
 
-Meteor.publish("tasksCalendar",  function (start, end, mineOnly) {
-
-
-  if(mineOnly) {
-    var tasks = Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]});
-  }
-  else{
-    var tasks = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]}))
-
-  }
-    return tasks;
-});
+//Meteor.publish("tasksCalendar",  function (start, end, mineOnly) {
+//
+//
+//  if(mineOnly) {
+//    var tasks = Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]});
+//  }
+//  else{
+//    var tasks = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]}))
+//
+//  }
+//    return tasks;
+//});
 
 
 
@@ -96,6 +96,22 @@ Meteor.publish('editTask', function(id) {
   var self = this;
   var taskCursor = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({_id:id}));
   Mongo.Collection._publishCursor(taskCursor, self, 'editTask');
+// _publishCursor doesn't call this for us in case we do this more than once.
+  self.ready();
+});
+
+Meteor.publish('calendarTasks', function(start, end, mineOnly) {
+  var self = this;
+  var taskCursor;
+  var Auxend = new Date(end.setDate(end.getDate()+1));
+  if(mineOnly) {
+    taskCursor = Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: Auxend}}]}, {inactive: {$ne: true}}]});
+  }
+  else{
+    taskCursor = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{end: {$gte: start}}, {begin: {$lte: Auxend}}]}, {inactive: {$ne: true}}]}))
+
+  }
+  Mongo.Collection._publishCursor(taskCursor, self, 'calendarTasks');
 // _publishCursor doesn't call this for us in case we do this more than once.
   self.ready();
 });

@@ -214,8 +214,9 @@ Template.addEditTask.events({
 
         } else {
            //hack, the plugin is wrong so this fix it.
-            task.begin.setTime( task.begin.getTime() + task.begin.getTimezoneOffset()*60*1000 );
-            task.end.setTime( task.end.getTime() + task.end.getTimezoneOffset()*60*1000 );
+            task.begin.setTime( task.begin.getTime());
+            task.end.setTime( task.end.getTime());
+          // task.begin.getTimezoneOffset()*60*1000
             Tasks.insert(task, function () {
                 $('.modal-host').children().modal('toggle');
 
@@ -266,11 +267,12 @@ Template.addEditTask.events({
         //taskUpdate();
     },
     'change.dp .begin>.date': function (e, ctx) {
-        task.begin = $(e.currentTarget).data().datetimepicker.date;
+        task.begin = $(e.currentTarget).data().datetimepicker.getDate();
+
         //taskUpdate();
     },
     'change.dp .end>.date': function (e, ctx) {
-        task.end = $(e.currentTarget).data().datetimepicker.date;
+        task.end = $(e.currentTarget).data().datetimepicker.getDate();
         //taskUpdate();
     },
     'change .isCompleted': function (e) {
@@ -332,9 +334,7 @@ Template.addEditTask.created = function () {
     task = null;
     param = null;
     param = this.data[0];
-
-
-    if((typeof param)==="object"){
+    if(((typeof param)==="object")&&(param != null)){
 
        task = createTask(param);
        if(param._id) {
@@ -367,7 +367,6 @@ Template.addEditTask.created = function () {
 
   }
   else{
-
       task = createTask();
       taskDep.changed()
   }
