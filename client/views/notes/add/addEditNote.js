@@ -273,6 +273,10 @@ Template.addEditNote.created = function () {
       }
     });
   }
+  else{
+    note = createNote();
+    noteDep.changed()
+  }
   ;
 }
 
