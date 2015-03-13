@@ -5,7 +5,9 @@ var error = new ReactiveVar(''),
 // Main template
 Template.employeeEducation.helpers({
   items: function() {
-    return this.education.sort(function(d1, d2) { return d1.start - d2.start; });
+    if (this.education && this.education.length > 1)
+      return this.education.sort(function(d1, d2) { return d1.start - d2.start; });
+    return this.education;
   },
   isSubmitting: function () {
     return isSubmitting.get();
@@ -31,25 +33,26 @@ Template.employeeEducationItem.helpers({
 
 Template.employeeEducationItem.events({
   'click .deleteEducationRecord': function () {
+    var self = this;
+
     // Get contactableId
     var contactableId = Session.get('entityId');
-    var educationRecord = this.educationRecord;
 
     Utils.showModal('basicModal', {
       title: 'Delete education record',
       message: '<p>Are you sure you want to delete this education record?</p>' +
-      '<p>' + educationRecord.institution + ' - ' + educationRecord.description + '</p>',
+      '<p>' + self.institution + ' - ' + self.description + '</p>',
       buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {label: 'Delete', classes: 'btn-danger', value: true}],
       callback: function (result) {
         if (result) {
-          Meteor.call('deleteEducationRecord', contactableId, educationRecord.id);
+          Meteor.call('deleteEducationRecord', contactableId, self.id);
         }
       }
     });
   },
   'click .editEducationRecord': function () {
     // Open edit mode
-    this.isEditing.set(!this.isEditing.get());
+    this.isEditing.set(true);
   }
 });
 
