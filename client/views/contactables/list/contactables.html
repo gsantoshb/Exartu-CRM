@@ -40,21 +40,21 @@
 <template name="contactablesListHeader">
     {{#if listViewMode}}
         <div class="list-header network-list-header simple-view">
-            <div class="list-header-cell network-list-header-title">Title</div>
-            <div class="list-header-cell network-list-header-owner">Owner</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
+            <div class="list-header-cell network-list-header-title">{{_ "Title"}}</div>
+            <div class="list-header-cell network-list-header-owner">{{_ "Owner"}}</div>
+            <div class="list-header-cell network-list-header-time">{{_ "Date"}}</div>
         </div>
         <!-- /.list-header -->
     {{else}}
         <div class="list-header network-list-header">
             <div class="list-header-cell network-list-header-checkbox"><input type="checkbox" id="selectAll"></div>
-            <div class="list-header-cell network-list-header-title">Title</div>
-            <div class="list-header-cell network-list-header-contact">Contact</div>
-            <div class="list-header-cell network-list-header-type">Type</div>
-            <div class="list-header-cell network-list-header-status">Status</div>
-            <div class="list-header-cell network-list-header-code">Code</div>
-            <div class="list-header-cell network-list-header-owner">Owner</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
+            <div class="list-header-cell network-list-header-title">{{_ "Title"}}</div>
+            <div class="list-header-cell network-list-header-contact">{{_ "Contact"}}</div>
+            <div class="list-header-cell network-list-header-type">{{_ "Type"}}</div>
+            <div class="list-header-cell network-list-header-status">{{_ "Status"}}</div>
+            <div class="list-header-cell network-list-header-code">{{_ "Code"}}</div>
+            <div class="list-header-cell network-list-header-owner">{{_ "Owner"}}</div>
+            <div class="list-header-cell network-list-header-time">{{_ "Date"}}</div>
         </div>
     {{/if}}
 
@@ -99,11 +99,11 @@
         <div class="btn-group">
             <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
                     title="Add">
-                <span class="fa fa-plus"></span> Add
+                <span class="fa fa-plus"></span>  {{_ "Add"}}
             </button>
             <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
                 {{#each contactableTypes}}
-                    <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
+                    <li><a href="/contactableAdd/{{name}}">{{_ "Add"}} {{name}}</a></li>
                 {{/each}}
                 <li>
                     <a type="button" title="Create employee from resume/CV"
@@ -164,7 +164,7 @@
 <template name="contactableListSort">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Sort
+            {{_ "Sort"}}
             {{#with selectedSort}}
                 <strong>{{displayName}}</strong>
                 {{#if isAscSort .}}
@@ -197,7 +197,7 @@
 <template name="contactablesFilters">
     {{#with information}}
         <div class="page-title">
-            <h1><span>{{contactablesCount.value}}</span> network records</h1>
+            <h1><span>{{contactablesCount.value}}</span> {{_ "network"}}</h1>
         </div>
     {{/with}}
 
@@ -245,7 +245,7 @@
                             <i class="icon-connection-1 text-large"></i>
 
                             <h1>
-                                No records Found
+                                {{_ "No records Found"}}
                             </h1>
                         </div>
                     </div>
