@@ -19,7 +19,6 @@ Template.addressList.helpers({
         return lkp.displayName;
     },
     setNewAddress: function () {
-        debugger;
         return function () {
             addressesDep.changed();
             showLocationEditBox.set(false);
@@ -27,7 +26,7 @@ Template.addressList.helpers({
         }
     },
     showLocationEditBox: function () {
-        return showLocationEditBox.get();
+        return showLocationEditBox.get() == this._id;
     },
     showLocationAddBox: function () {
         return showLocationAddBox.get();
@@ -69,7 +68,11 @@ Template.addressList.events({
         return false;
     },
     'click .editAddressRecord': function () {
-        showLocationEditBox.set(!showLocationEditBox.get());
+        if (showLocationEditBox.get() != this._id){
+            showLocationEditBox.set(this._id);
+        }else{
+            showLocationEditBox.set(null);
+        }
     },
     'click #create-address-mode': function () {
         showLocationAddBox.set(!showLocationAddBox.get());

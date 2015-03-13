@@ -112,7 +112,7 @@ JobManager = {
 
     if (job.address && job.address != address._id){
       var oldAddress = Addresses.findOne(job.address);
-      if (oldAddress.linkId == job._id){
+      if (oldAddress && (oldAddress.linkId == job._id)){
         Addresses.remove({_id: oldAddress._id});
       }
     }

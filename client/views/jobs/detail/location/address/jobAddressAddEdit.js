@@ -52,8 +52,11 @@ Template.jobAddressAddEdit.created = function () {
 Template.jobAddressAddEdit.helpers({
   searchInputOptions: function () {
     return {
-      onChange: function (add) {
-        address.set(add);
+      onChange: function (selectedAddress) {
+        // keep address type
+        selectedAddress.addressTypeId = address.get().addressTypeId;
+
+        address.set(selectedAddress);
       }
     };
   },
