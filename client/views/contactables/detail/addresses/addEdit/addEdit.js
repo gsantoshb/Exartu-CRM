@@ -47,6 +47,7 @@ LocationSchema = new SimpleSchema({
         optional: true
     }
 });
+
 var address = {
     _id: undefined,
     addressTypeId: undefined,
@@ -58,10 +59,11 @@ var address = {
     country: '',
     postalCode: ''
 };
+
 var resetAddress = function () {
     address.addressTypeId = Utils.getAddressTypeDefault()._id;
     address.linkId = undefined;
-    address.address = 'test';
+    address.address = '';
     address.address2 = '';
     address.city = '';
     address.state = '';
@@ -72,29 +74,41 @@ var resetAddress = function () {
 var addressCreatedCallback;
 
 var addDisabled = new ReactiveVar(false);
+var formId = new ReactiveVar('addressAddEditForm');
+var formType = new ReactiveVar('insert');
+
 Template.addressAddEdit.created= function() {
     var self = this;
     address.addressTypeId=Utils.getAddressTypeDefault()._id;
     if (self.data.location) address=self.data.location;
+
+    formId = 'addressAddEditForm-' + self.data.formId;
+
     AutoForm.hooks({
         addressAddEditForm: {
             onSubmit: function (insertDoc, updateDoc, currentDoc) {
                 addDisabled.set(true);
                 var selfautoform=this;
+                var doFormReset = true;
                 //Copy properties from insert doc into current doc which has lat lng
                 for (var k in insertDoc) currentDoc[k] = insertDoc[k];
                 //Set the contactable id on the current doc
                 currentDoc.linkId = Session.get("entityId");
+
+                if(currentDoc._id)
+                    doFormReset = false;
+
                 Meteor.call('addEditAddress', currentDoc, function (err, result) {
                     if (err) {
                         console.log(err);
                     } else {
-                        resetAddress();
-                        selfautoform.resetForm();
+                        if(doFormReset){
+                            resetAddress();
+                            selfautoform.resetForm();
+                        }
                         self.data.callback && self.data.callback();
                     }
                     selfautoform.done();
-
                 });
                 addDisabled.set(false);
                 return false;
@@ -102,10 +116,11 @@ Template.addressAddEdit.created= function() {
         }
     });
 };
+
 Template.addressAddEdit.rendered = function () {
     var self = this;
 
-    resetAddress();
+    //resetAddress();
     var inputElement = this.$('.locationSearchInput')[0];
     var autocomplete = new google.maps.places.Autocomplete(inputElement, {types: ['geocode']});
     // When the user selects an address from the dropdown this event is raised
@@ -130,6 +145,7 @@ Template.addressAddEdit.rendered = function () {
             country: 'long_name',
             postal_code: 'short_name'
         };
+
         // Get each component of the address from the place details
         // and fill the corresponding field on the form.
         for (var i = 0; i < place.address_components.length; i++) {
@@ -157,16 +173,34 @@ Template.addressAddEdit.rendered = function () {
                         break;
                 }
             }
-        }
-        ;
+        };
+
         address.lat = place.geometry.location.lat();
         address.lng = place.geometry.location.lng();
     };
 };
+
 Template.addressAddEdit.helpers({
     address: function () {
+        //testAddress.set( Session.get( 'address' ) );
+        //return testAddress.get();
+        address = Session.get( 'address' );
         return address;
     },
+    formId: function () {
+        return formId;
+    },
+    formType: function () {
+        if (address._id) {
+            return "update";
+        } else {
+            return "insert";
+        }
+    },
+    //testAddress: function(){
+    //    testAddress.set( Session.get( 'address' ) );
+    //    return testAddress.get();
+    //},
     getAddressTypes: function () {
         addressTypes = Utils.getAddressTypes();
         return _.map(addressTypes, function (addresstype) {
