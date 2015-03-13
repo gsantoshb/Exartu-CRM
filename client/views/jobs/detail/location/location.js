@@ -49,6 +49,10 @@ Template.displayJobAddress.created = function () {
 Template.displayJobAddress.helpers({
   addresses: function () {
     return Addresses.find({_id: addressId.get()});
+  },
+  canEdit: function () {
+    var templateContext = Template.instance();
+    return Utils.adminSettings.isAdmin() && (this.linkId == templateContext.data.jobId);
   }
 });
 

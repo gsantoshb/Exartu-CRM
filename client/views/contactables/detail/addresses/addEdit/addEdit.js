@@ -75,8 +75,13 @@ var addressCreatedCallback;
 
 var addDisabled = new ReactiveVar(false);
 Template.addressAddEdit.created = function() {
+
     var self = this;
-    address.addressTypeId = Utils.getAddressTypeDefault()._id;
+    if (this.data.location){
+        address = this.data.location;
+    }else{
+        address.addressTypeId = Utils.getAddressTypeDefault()._id;
+    }
     if (self.data.location) address=self.data.location;
     AutoForm.hooks({
         addressAddEditForm: {
