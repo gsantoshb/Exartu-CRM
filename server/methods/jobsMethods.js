@@ -63,5 +63,9 @@ Meteor.methods({
   // address
   setJobAddress: function (jobId, addressId) {
     return JobManager.setJobAddress(jobId, addressId);
+  },
+
+  removeJobAddress: function (addressId) {
+    return JobManager.removeJobAddress(addressId);
   }
 });

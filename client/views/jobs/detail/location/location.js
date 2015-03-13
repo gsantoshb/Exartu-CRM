@@ -57,7 +57,30 @@ Template.displayJobAddress.helpers({
 });
 
 Template.displayJobAddress.events({
+  'click .deleteAddressRecord': function () {
+    var self = this;
+    Utils.showModal('basicModal', {
+      title: 'Delete?',
+      message: 'Delete this address record?',
+      buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {
+        label: 'Delete',
+        classes: 'btn-success',
+        value: true
+      }],
+      callback: function (result) {
 
+        if (result) {
+
+          Meteor.call('removeJobAddress', self._id, function (err, result) {
+            if (err) {
+              console.log(err);
+            }
+          });
+        }
+      }
+    });
+    return false;
+  }
 });
 
 Template.displayJobAddress.destroyed = function () {

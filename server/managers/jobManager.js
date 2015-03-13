@@ -118,5 +118,24 @@ JobManager = {
     }
 
     Jobs.update({ _id: job._id }, { $set: { address: address._id } });
+  },
+  removeJobAddress: function (address) {
+    if (_.isString(address)){
+      address = Addresses.findOne(address);
+    }
+
+    if (! address){
+      throw new Error('address not found');
+    }
+
+    var job = Jobs.findOne(address.linkId);
+
+    if (! job){
+      throw new Error('job not found');
+    }
+
+    Jobs.update({ _id: job._id }, { $unset: { address: '' } });
+
+    Addresses.remove({_id: address._id});
   }
 };
