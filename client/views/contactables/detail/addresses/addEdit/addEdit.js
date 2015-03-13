@@ -74,6 +74,32 @@ var resetAddress = function () {
 var addressCreatedCallback;
 
 var addDisabled = new ReactiveVar(false);
+
+AutoForm.hooks({
+    addressAddEditForm: {
+        onSubmit: function (insertDoc, updateDoc, currentDoc) {
+            addDisabled.set(true);
+            var selfautoform = this;
+            //Copy properties from insert doc into current doc which has lat lng
+            for (var k in insertDoc) currentDoc[k] = insertDoc[k];
+            //Set the contactable id on the current doc
+            currentDoc.linkId = Session.get("entityId");
+            Meteor.call('addEditAddress', currentDoc, function (err, result) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    resetAddress();
+                    selfautoform.resetForm();
+                    addressCreatedCallback && addressCreatedCallback();
+                }
+                selfautoform.done();
+
+            });
+            addDisabled.set(false);
+            return false;
+        }
+    }
+});
 Template.addressAddEdit.created = function() {
 
     var self = this;
@@ -83,31 +109,9 @@ Template.addressAddEdit.created = function() {
         address.addressTypeId = Utils.getAddressTypeDefault()._id;
     }
     if (self.data.location) address=self.data.location;
-    AutoForm.hooks({
-        addressAddEditForm: {
-            onSubmit: function (insertDoc, updateDoc, currentDoc) {
-                addDisabled.set(true);
-                var selfautoform = this;
-                //Copy properties from insert doc into current doc which has lat lng
-                for (var k in insertDoc) currentDoc[k] = insertDoc[k];
-                //Set the contactable id on the current doc
-                currentDoc.linkId = Session.get("entityId");
-                Meteor.call('addEditAddress', currentDoc, function (err, result) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        resetAddress();
-                        selfautoform.resetForm();
-                        self.data.callback && self.data.callback();
-                    }
-                    selfautoform.done();
 
-                });
-                addDisabled.set(false);
-                return false;
-            }
-        }
-    });
+    addressCreatedCallback = self.data.callback;
+
 };
 Template.addressAddEdit.rendered = function () {
     resetAddress();
@@ -123,7 +127,6 @@ Template.addressAddEdit.helpers({
     searchInputOptions: function () {
         return {
             onChange: function (selectedAddress) {
-                debugger;
                 //resetAddress();
                 // keep address type
                 selectedAddress.addressTypeId = address.addressTypeId;
