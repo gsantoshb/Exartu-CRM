@@ -1,99 +1,30 @@
-EducationSchema = new SimpleSchema({
-  institution: {
-    type: String,
-    label: 'Institution name'
-  },
-  description: {
-    type: String,
-    label: 'Description'
-  },
-  degreeAwarded: {
-    type: String,
-    label: 'Degree Awarded',
-    optional: true
-  },
-  start: {
-    type: Date,
-    label: 'Start date'
-  },
-  end: {
-    type: Date,
-    label: 'End date',
-    optional: true,
-    custom: function () {
-      if (Meteor.isClient && this.isSet) {
-        if (this.field('start').value > this.value){
-          return 'endGreaterThanStart';
-        }
-      }
-    }
-  }
-});
-EducationSchema.messages({
-  endGreaterThanStart: 'End date should be grater than start date'
-});
 
-var toPresent = ReactiveVar(false);
+var error = new ReactiveVar(''),
+    isSubmitting = new ReactiveVar(false);
 
-AutoForm.hooks({
-  AddEducationRecord: {
-    onSubmit: function(educationRecord) {
-      var self = this;
-
-      // Get contactableId
-      var contactableId = Session.get('entityId');
-
-      if (toPresent.get())
-        educationRecord.end = undefined;
-
-      Meteor.call('addEducationRecord', contactableId, educationRecord, function () {
-        self.done();
-        self.resetForm();
-      });
-
-      return false;
-    }
-  }
-});
-
-// Add
-Template.employeeEducationAdd.helpers({
-  endDateClass: function() {
-    return toPresent.get() ? 'disabled' : '';
-  }
-});
-
-Template.employeeEducationAdd.events({
-  'change .toPresent': function() {
-    toPresent.set(!toPresent.get());
-  },
-  'reset form': function () {
-    toPresent.set(false);
-  }
-});
-
-
-// List
-Template.employeeEducationList.helpers({
+// Main template
+Template.employeeEducation.helpers({
   items: function() {
     if (this.education && this.education.length > 1)
-      return this.education.sort(function(d1, d2) {
-        return d1.start - d2.start;
-      });
-
+      return this.education.sort(function(d1, d2) { return d1.start - d2.start; });
     return this.education;
+  },
+  isSubmitting: function () {
+    return isSubmitting.get();
+  },
+  error: function () {
+    return error.get();
   }
 });
 
-// Record
+
+// Education Item template
 Template.employeeEducationItem.helpers({
   getCtx: function () {
-    var self = this;
-    return {
-      educationRecord: self,
-      isEditing: new ReactiveVar(false),
-      toPresent: new ReactiveVar(!self.end)
-    };
+    this.isEditing = new ReactiveVar(false);
+    this.isSubmitting = new ReactiveVar(false);
+    this.error = new ReactiveVar('');
+    return this;
   },
   isEditing: function () {
     return this.isEditing.get();
@@ -102,73 +33,122 @@ Template.employeeEducationItem.helpers({
 
 Template.employeeEducationItem.events({
   'click .deleteEducationRecord': function () {
+    var self = this;
+
     // Get contactableId
     var contactableId = Session.get('entityId');
-    var educationRecord = this.educationRecord;
 
     Utils.showModal('basicModal', {
       title: 'Delete education record',
-      message: 'Are you sure you want to delete this education record?',
+      message: '<p>Are you sure you want to delete this education record?</p>' +
+      '<p>' + self.institution + ' - ' + self.description + '</p>',
       buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {label: 'Delete', classes: 'btn-danger', value: true}],
       callback: function (result) {
         if (result) {
-          Meteor.call('deleteEducationRecord', contactableId, educationRecord);
+          Meteor.call('deleteEducationRecord', contactableId, self.id);
         }
       }
     });
   },
   'click .editEducationRecord': function () {
     // Open edit mode
-    this.isEditing.set(!this.isEditing.get());
+    this.isEditing.set(true);
   }
 });
 
-// Edit record
+
+// Edit record template
+Template.employeeEducationEditItem.rendered = function () {
+  // Generate an AutoForm ID and create a hook for each record form using the record ID
+  var formId = 'editEducation_' + this.data.id;
+  addAutoFormEditHook(formId);
+};
+
 Template.employeeEducationEditItem.helpers({
-  created: function () {
-    var self = this;
-
-    // Get contactableId
-    var contactableId = Session.get('entityId');
-
-    // Generate an AutoForm ID and create a hook for each record form
-    self.data.formId = 'editEducation_' + Random.hexString(10);
-    AutoForm.addHooks(self.data.formId, {
-      onSubmit: function(educationRecord, setSelector, oldRecord) {
-        var self = this;
-        var ctx = Template.parentData(2);
-        educationRecord.end = ctx.toPresent.get() ? undefined: educationRecord.end;
-
-        Meteor.call('editEducationRecord', contactableId, oldRecord, educationRecord, function (err) {
-          if (!err) {
-            // Close edit mode
-            ctx.isEditing.set(!ctx.isEditing.get());
-            self.done();
-          }
-        });
-
-        return false;
-      }
-    });
+  formId: function () {
+    return 'editEducation_' + this.id;
   },
-  endDateClass: function() {
-    var ctx = Template.parentData(2);
-    return ctx.toPresent.get() ? 'disabled' : '';
+  education: function () {
+    return this;
   },
-  checked: function() {
-    var ctx = Template.parentData(2);
-    return ctx.toPresent.get() ? 'checked' : undefined;
+  isSubmitting: function () {
+    return this.isSubmitting.get();
+  },
+  error: function () {
+    return this.error.get();
   }
 });
 
 Template.employeeEducationEditItem.events({
-  'change .toPresent': function() {
-    var ctx = Template.parentData(1);
-    ctx.toPresent.set(!ctx.toPresent.get());
-  },
-  'click .cancelEducationRecordChanges': function () {
+  'click .cancel': function () {
     // Close edit mode
-    var ctx = Template.parentData(1);
-    ctx.isEditing.set(!ctx.isEditing.get());
+    this.isEditing.set(false);
   }
 });
+
+
+AutoForm.hooks({
+  addEducationForm: {
+    onSubmit: function(insertDoc) {
+      var self = this;
+
+      // Clean schema for auto and default values
+      EducationSchema.clean(insertDoc);
+
+      // Clear error message
+      error.set('');
+
+      // Get contactableId
+      var contactableId = Session.get('entityId');
+
+      // Insert education
+      isSubmitting.set(true);
+      Meteor.call('addEducationRecord', contactableId, insertDoc, function (err) {
+        isSubmitting.set(false);
+        if (err) {
+          var msg = err.reason ? err.reason : err.error;
+          error.set('Server error. ' + msg);
+        } else {
+          self.done();
+        }
+      });
+
+      return false;
+    }
+  }
+});
+
+var addAutoFormEditHook = function (formId) {
+  AutoForm.addHooks(formId, {
+    onSubmit: function(insertDoc, updateDoc, oldDoc) {
+      var self = this;
+      // Obtain the education record context
+      var ctx = Template.parentData(2);
+
+      // Clean schema for auto and default values
+      EducationSchema.clean(insertDoc);
+
+      // Clear error message
+      ctx.error.set('');
+
+      // Get contactableId
+      var contactableId = Session.get('entityId');
+
+      // Update education
+      ctx.isSubmitting.set(true);
+      Meteor.call('editEducationRecord', contactableId, oldDoc.id, insertDoc, function (err) {
+        ctx.isSubmitting.set(false);
+        if (err) {
+          var msg = err.reason ? err.reason : err.error;
+          ctx.error.set('Server error. ' + msg);
+        } else {
+          // Mark as done in try catch block since we are removing the template from the view
+          try { self.done(); } catch (err) {}
+          ctx.isEditing.set(false);
+        }
+      });
+
+      return false;
+    }
+  }, true); //third argument to replace existing hooks and avoid multiples onSubmit hooks per form
+};

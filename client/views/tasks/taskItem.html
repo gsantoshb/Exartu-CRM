@@ -12,9 +12,7 @@
             </div>
             <div class="item-subtitle-more">
                 by {{displayUserName userId}} &nbsp;&nbsp;
-                {{#formattedDate value=dateCreated format='fromNow'}}
-                    {{date}}
-                {{/formattedDate}}
+                {{formattedDate dateCreated "fromNow"}}
             </div>
         </div>
         <div class="list-item-details tasks-list-item-details">
@@ -32,9 +30,7 @@
                 {{/if}}
             </div>
             <div class="list-item-cell tasks-list-item-startdate">
-                {{#formattedDate value=begin format='lll'}}
-                    {{date}}
-                {{/formattedDate}}
+                {{formattedDate begin "lll"}}
             </div>
             <div class="list-item-cell tasks-list-item-status">{{>taskLabel}}</div>
             <div class="list-item-cell item-overflow tasks-item-overflow">
@@ -59,22 +55,16 @@
 
         {{#if statusIs 'pending'}}
             {{#if end}}
-                {{#formattedDate value=end format='lll'}}
-                    {{date}}
-                {{/formattedDate}}
+                {{formattedDate end "lll"}}
             {{else}}
                 <em>no end date</em>
             {{/if}}
         {{/if}}
         {{#if statusIs 'completed'}}
-            {{#formattedDate value=completed format='lll'}}
-                {{date}}
-            {{/formattedDate}}
+            {{formattedDate completed "lll"}}
         {{/if}}
         {{#if statusIs 'overDue'}}
-            {{#formattedDate value=end format='lll'}}
-                {{date}}
-            {{/formattedDate}}
+            {{formattedDate end "lll"}}
         {{/if}}
     {{/if}}
 

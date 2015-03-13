@@ -57,9 +57,7 @@
                                 {{else}}
                                     <strong>
                                         {{#if value}}
-                                            {{#formattedDate value=value format='ddd, MMMM DD, YYYY'}}
-                                                {{date}}
-                                            {{/formattedDate}}
+                                            {{formattedDate value "ddd, MMMM DD, YYYY"}}
                                         {{else}}
                                             Not set
                                         {{/if}}
@@ -77,9 +75,7 @@
                                 {{else}}
                                     <strong>
                                         {{#if value}}
-                                            {{#formattedDate value=value format='ddd, MMMM DD, YYYY'}}
-                                                {{date}}
-                                            {{/formattedDate}}
+                                            {{formattedDate value "ddd, MMMM DD, YYYY"}}
                                         {{else}}
                                             Not set
                                         {{/if}}

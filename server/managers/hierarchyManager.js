@@ -98,12 +98,13 @@ HierarchyManager = {
     },
     setCurrentHierarchyMailConf: function(mail, password, host, port){
       if(_.isString(mail)&& _.isString(password) && _.isString(host) && _.isNumber(port)) {
-        var encryptedPass =  CryptoJS.AES.encrypt(password, "passWord");
+        var encryptedPass =  CryptoJS.AES.encrypt(password, ExartuConfig.EncryptCode);
         var mailSubs = {mail: mail, password: encryptedPass.toString(), host: host, port: port};
         Hierarchies.update({_id: Meteor.user().currentHierId}, {$set: {mailSubscription: mailSubs}});
       }
       else{
         throw new Meteor.Error('Invalid parameters type on hierachy mail config');
+
       }
     }
 };

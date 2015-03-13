@@ -5,9 +5,7 @@
                   {{displayUserName userId}}
 
             <br/>
-            {{#formattedDate value=dateCreated format='fromNow'}}
-                {{date}}
-            {{/formattedDate}}
+            {{formattedDate dateCreated "fromNow"}}
             {{data.dateCreated}}
         </span>
 
@@ -17,12 +15,8 @@
     <div class="pull-right">
       <span class="task-author">
         {{displayUserName userId}}
-
-          {{#formattedDate value=data.dateCreated format='fromNow'}}
-              {{date}}
-          {{/formattedDate}}
+          {{formattedDate data.dateCreated "fromNow"}}
           {{data.dateCreated}}
-
       </span>
     </div>
 </template>
@@ -161,9 +155,7 @@
                                 <i class="fa fa-calendar"></i>
                                 Start:
                                 <span>
-                                    {{#formattedDate value=task.begin format='lll'}}
-                                        {{date}}
-                                    {{/formattedDate}}
+                                    {{formattedDate task.begin "lll"}}
                                 </span>
                             </a>
                             {{#if task.end}}
@@ -171,9 +163,7 @@
                                     <i class="fa fa-calendar"></i>
                                     End:
                                     <span>
-                                        {{#formattedDate value=task.end format='lll'}}
-                                            {{date}}
-                                        {{/formattedDate}}
+                                        {{formattedDate task.end "lll"}}
                                     </span>
                                 </a>
                             {{/if}}
@@ -210,9 +200,7 @@
 
 
                 <div class="pull-right">
-                    {{#formattedDate value=data.dateCreated format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
+                    {{formattedDate data.dateCreated "fromNow"}}
                 </div>
             </td>
         </tr>
@@ -317,9 +305,7 @@
         <div class="item-info">
             <div class="time">
                 <i class="icon icon-clock-3"></i><span>
-                {{#formattedDate value=data.dateCreated format='fromNow'}}
-                    {{date}}
-                {{/formattedDate}}
+                {{formattedDate data.dateCreated "fromNow"}}
             </span>
             </div>
 
@@ -578,9 +564,7 @@
                             <a class="btn btn-default tip-bottom pointer" title="Task Start Date">
                                 <i class="fa fa-calendar"></i>
                                 <span>
-                                    {{#formattedDate value=data.dateCreated format='lll'}}
-                                        {{date}}
-                                    {{/formattedDate}}
+                                    {{formattedDate data.dateCreated "lll"}}
                                 </span>
                             </a>
                         </div>
@@ -703,9 +687,7 @@
                             <a class="btn btn-default tip-bottom pointer">
                                 <i class="fa fa-calendar"></i>
                                 <span>
-                                    {{#formattedDate value=data.dateCreated format='lll'}}
-                                        {{date}}
-                                    {{/formattedDate}}
+                                    {{formattedDate data.dateCreated "lll"}}
                                 </span>
                             </a>
                         </div>

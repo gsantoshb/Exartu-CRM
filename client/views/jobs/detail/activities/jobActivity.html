@@ -19,9 +19,7 @@
                                 <div class="time">
                                     <i class="icon icon-clock-3"></i>
                                     <span>
-                                        {{#formattedDate value=data.dateCreated format='fromNow'}}
-                                            {{date}}
-                                        {{/formattedDate}}
+                                        {{formattedDate data.dateCreated "fromNow"}}
                                     </span>
                                 </div>
                                 <div class="type" style="background: #ffd42a;">

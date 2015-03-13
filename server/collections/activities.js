@@ -85,6 +85,7 @@ ActivityViews = new View('activities', {
                 }
             });
         }
+        ;
 
 
         // Notes
@@ -126,13 +127,19 @@ ActivityViews = new View('activities', {
                     }
                 });
             }
-        }
-        this.publish({
+          this.publish({
             cursor: function (activity) {
-                return c;
+              return c;
             },
             to: 'notes'
-        });
+          });
+        }
+        //this.publish({
+        //    cursor: function (activity) {
+        //        return c;
+        //    },
+        //    to: 'tasks'
+        //});
 
         if (activity.type === Enums.activitiesType.taskAdd) {
             var c = Tasks.find({_id: activity.entityId});
@@ -172,6 +179,12 @@ ActivityViews = new View('activities', {
                     }
                 });
             }
+          this.publish({
+            cursor: function (activity) {
+              return c;
+            },
+            to: 'tasks'
+          });
         }
 
         if (activity.type === Enums.activitiesType.fileAdd) {
@@ -188,14 +201,16 @@ ActivityViews = new View('activities', {
                     to: 'contactables'
                 });
             }
+            ;
+            this.publish({
+               cursor: function (activity) {
+                   return c;
+               },
+               to: 'contactablesFiles'
+            });
         }
-        this.publish({
-            cursor: function (activity) {
-                return c;
-            },
-            to: 'tasks'
-        });
-        // Placements
+
+        //Placements
         if (activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) {
             var placementCursor = Placements.find(activity.entityId);
             var placement = placementCursor.fetch()[0];
