@@ -263,7 +263,6 @@ Template.linksAutoForm.created = function () {
         id: Session.get('entityId'),
         type: Utils.getEntityTypeFromRouter()
     };
-  debugger;
 
     links = self.data.value || [initialLink];
     typeDep = new Tracker.Dependency();
