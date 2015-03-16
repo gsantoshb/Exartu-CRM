@@ -2,7 +2,7 @@
     <div class="filter-item">
         <div class="filter-title">
             <i class="fa fa-group"></i>
-            Types
+            {{_ "Types"}}
         </div>
 
         {{#each types}}
@@ -15,9 +15,9 @@
     <div class="filter-item">
         <div class="filter-title">
             {{#if title}}
-                {{title}}
+                {{_ title}}
             {{else}}
-                Status
+                {{_ "Status"}}
             {{/if}}
         </div>
 
@@ -53,28 +53,28 @@
     <div class="filter-item">
         <div class="filter-title">
             <i class="fa fa-calendar"></i>
-            Creation date
+            {{_ "Creation date"}}
         </div>
 
-        <button type="button" class="{{recentOptionClass recentOptions.day}}" style="margin-bottom: 3px" id="recent-day">Recent day</button>
-        <button type="button" class="{{recentOptionClass recentOptions.week}}" style="margin-bottom: 3px" id="recent-week">week</button>
-        <button type="button" class="{{recentOptionClass recentOptions.month}}" style="margin-bottom: 3px" id="recent-month">month</button>
-        <button type="button" class="{{recentOptionClass recentOptions.quarter}}" style="margin-bottom: 3px" id="recent-quarter">quarter</button>
-        <button type="button" class="{{recentOptionClass recentOptions.year}}" style="margin-bottom: 3px" id="recent-year">year</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.day}}" style="margin-bottom: 3px" id="recent-day">{{_ "Recent day"}}</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.week}}" style="margin-bottom: 3px" id="recent-week">{{_ "week"}}</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.month}}" style="margin-bottom: 3px" id="recent-month">{{_ "month"}}</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.quarter}}" style="margin-bottom: 3px" id="recent-month">{{_ "quarter"}}</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.year}}" style="margin-bottom: 3px" id="recent-year">{{_ "year"}}</button>
     </div>
 </template>
 <template name="filter_dateCreatedISO">
     <div class="filter-item">
         <div class="filter-title">
             <i class="fa fa-calendar"></i>
-            Creation date
+            {{_ "Creation date"}}
         </div>
 
-        <button type="button" class="{{recentOptionClass recentOptionsISO.day}}" style="margin-bottom: 3px" id="recent-day">Recent day</button>
-        <button type="button" class="{{recentOptionClass recentOptionsISO.week}}" style="margin-bottom: 3px" id="recent-week">week</button>
-        <button type="button" class="{{recentOptionClass recentOptionsISO.month}}" style="margin-bottom: 3px" id="recent-month">month</button>
-        <button type="button" class="{{recentOptionClass recentOptionsISO.quarter}}" style="margin-bottom: 3px" id="recent-month">quarter</button>
-        <button type="button" class="{{recentOptionClass recentOptionsISO.year}}" style="margin-bottom: 3px" id="recent-year">year</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.day}}" style="margin-bottom: 3px" id="recent-day">{{_ "Recent day"}}</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.week}}" style="margin-bottom: 3px" id="recent-week">{{_ "week"}}</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.month}}" style="margin-bottom: 3px" id="recent-month">{{_ "month"}}</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.quarter}}" style="margin-bottom: 3px" id="recent-month">{{_ "quarter"}}</button>
+        <button type="button" class="{{recentOptionClass recentOptionsISO.year}}" style="margin-bottom: 3px" id="recent-year">{{_ "year"}}</button>
     </div>
 </template>
 
@@ -82,7 +82,7 @@
     <div class="filter-item">
         <div class="filter-title">
             <i class="fa fa-tags"></i>
-            Tags
+            {{_ "Tags"}}
         </div>
 
         <div class="input-group" style="margin-bottom: 10px">
@@ -105,7 +105,7 @@
     <div class="filter-item">
         <div class="filter-title">
             <i class="fa fa-map-marker"></i>
-            Location
+            {{_ "Location"}}
         </div>
 
         <div class="input-group">
@@ -122,7 +122,7 @@
     <div class="filter-item">
         <div class="filter-title">
             <i class="fa fa-map-marker"></i>
-            SSN/Phone/Email
+            {{_ "SSN/Phone/Email"}}
         </div>
 
         <div class="input-group">
@@ -141,9 +141,9 @@
     <div class="filter-item">
         <div class="filter-title">
             <i class="fa fa-user"></i>
-            Created by
+            {{_ "Created by"}}
         </div>
 
-        <button id="show-mineOnly" type="button" class="{{showMineOnly}}">Mine Only</button>
+        <button id="show-mineOnly" type="button" class="{{showMineOnly}}">{{_ "Mine Only"}}</button>
     </div>
 </template>
