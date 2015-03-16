@@ -16,7 +16,7 @@ Template.addressList.helpers({
     addresses: function () {
         var addresses = Addresses.find({'linkId': Session.get('entityId')});
         addressesDep.depend();
-        console.log(addresses);
+        //console.log(addresses);
         return addresses;
     },
     getAddressTypeDisplayName: function () {
@@ -47,6 +47,9 @@ Template.addressList.helpers({
     newLocationButtonIcon: function() {
         return newLocationButtonIcon.get();
     },
+    formId: function(){
+        return formId.get();
+    },
     loadedAddress: function() {
         Session.set( 'address', loadedAddress.get() );
         return loadedAddress.get();
@@ -72,11 +75,10 @@ Template.addressList.events({
         return false;
     },
     'click .editAddressRecord': function () {
-        //showLocationEditBox.set(!showLocationEditBox.get());
         var location = this;
-//console.log(location);
+        newLocationButtonIcon.set('fa-plus');
 
-        console.log( Session.get( 'address' ) );
+        //console.log( Session.get( 'address' ) );
 
         if( locationFormBoxType.get() == 'update' ){
             locationFormBoxType.set(undefined);
@@ -91,7 +93,6 @@ Template.addressList.events({
     'click #create-address-mode': function () {
         //showLocationAddBox.set(!showLocationAddBox.get());
         //showLocationAddBox.set(true);
-
         if( locationFormBoxType.get() == 'insert' ){
             locationFormBoxType.set(undefined);
             showLocationFromBox.set(false);

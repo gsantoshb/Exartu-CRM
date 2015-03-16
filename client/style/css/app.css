@@ -1898,8 +1898,8 @@ html {
 body {
     overflow-x: hidden;
     overflow-y: auto;
-    margin-top: -20px;
-    position: relative;
+    /*margin-top: -20px;*/
+    /*position: relative;*/
 }
 
 @media(max-width: 767px) {
@@ -2587,7 +2587,8 @@ a,a:hover {
     height: 77px;
     position: relative;
     width: 100%;
-    z-index: 0
+    z-index: 0;
+    margin-top: -20px;
 }
 
 #header h1 {

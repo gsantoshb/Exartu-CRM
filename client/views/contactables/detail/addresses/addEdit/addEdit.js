@@ -79,10 +79,11 @@ var formType = new ReactiveVar('insert');
 
 Template.addressAddEdit.created= function() {
     var self = this;
-    address.addressTypeId=Utils.getAddressTypeDefault()._id;
-    if (self.data.location) address=self.data.location;
 
-    formId = 'addressAddEditForm-' + self.data.formId;
+    address.addressTypeId = Utils.getAddressTypeDefault()._id;
+    if (self.data.location) address = self.data.location;
+
+    console.log('trying to add hooks');
 
     AutoForm.hooks({
         addressAddEditForm: {
@@ -90,8 +91,14 @@ Template.addressAddEdit.created= function() {
                 addDisabled.set(true);
                 var selfautoform=this;
                 var doFormReset = true;
+
+                console.log(insertDoc);
+                console.log(updateDoc);
+                console.log(currentDoc);
+
                 //Copy properties from insert doc into current doc which has lat lng
                 for (var k in insertDoc) currentDoc[k] = insertDoc[k];
+
                 //Set the contactable id on the current doc
                 currentDoc.linkId = Session.get("entityId");
 
@@ -111,6 +118,8 @@ Template.addressAddEdit.created= function() {
                     selfautoform.done();
                 });
                 addDisabled.set(false);
+
+                this.event.preventDefault()
                 return false;
             }
         }
@@ -119,21 +128,22 @@ Template.addressAddEdit.created= function() {
 
 Template.addressAddEdit.rendered = function () {
     var self = this;
-
-    //resetAddress();
+    resetAddress();
+console.log('re-rendering');
     var inputElement = this.$('.locationSearchInput')[0];
     var autocomplete = new google.maps.places.Autocomplete(inputElement, {types: ['geocode']});
     // When the user selects an address from the dropdown this event is raised
     google.maps.event.addListener(autocomplete, 'place_changed', function () {
         var place = autocomplete.getPlace();
-        //Convert the place from google to our address
 
+        //Convert the place from google to our address
         placeToAddress(place);
 
         //Invalidate form to refresh bindings
         AutoForm.invalidateFormContext("addressAddEditForm");
         inputElement.value = '';
     });
+
     //gets an object containing the address data from the autocomplete place result
     var placeToAddress = function (place) {
         resetAddress();
@@ -188,7 +198,10 @@ Template.addressAddEdit.helpers({
         return address;
     },
     formId: function () {
-        return formId;
+        if(address._id)
+            return 'addressAddEditForm-' + address._id;
+        else
+            return 'addressAddEditForm-new';
     },
     formType: function () {
         if (address._id) {
