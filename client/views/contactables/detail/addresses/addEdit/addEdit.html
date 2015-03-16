@@ -45,7 +45,7 @@
                     {{/if}}
                 </div>
                 <div class="form-group {{#if afFieldIsInvalid name='addressTypeId'}}has-error{{/if}}">
-                    {{> afFieldInput name='addressTypeId' class="form-control "  options=getAddressTypes
+                    {{> afFieldInput name='addressTypeId' class="form-control"  options=getAddressTypes
                     firstOption="Select a type"  }}
                     {{#if afFieldIsInvalid name='addressTypeId'}}
                         <span class="help-block">{{afFieldMessage name='addressTypeId'}}</span>
