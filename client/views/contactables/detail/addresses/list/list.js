@@ -88,7 +88,6 @@ Template.addressList.events({
         locationFormBoxType.set('update');
         loadedAddress.set(location);
         showLocationFromBox.set(true);
-
     },
     'click #create-address-mode': function () {
         //showLocationAddBox.set(!showLocationAddBox.get());

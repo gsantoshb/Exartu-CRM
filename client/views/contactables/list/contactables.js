@@ -595,7 +595,7 @@ Template.contactablesList.helpers({
     },
     listViewMode: function () {
         return listViewMode.get();
-    },
+    }
 });
 
 // List Item - Helpers

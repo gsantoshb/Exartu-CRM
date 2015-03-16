@@ -1,6 +1,7 @@
 var self = {};
 var searchQuery = {};
 var sortDep=new Deps.Dependency;
+var NotesHandler;
 AutoForm.debug();
 NoteSchema = new SimpleSchema({
   msg: {
@@ -143,7 +144,7 @@ Template.notesTabAdd.helpers({
 ;
 
 // List
-var NotesHandler;
+
 
 Template.notesTabList.created = function () {
     var self = this;
@@ -166,12 +167,12 @@ Template.notesTabList.created = function () {
                     }
                 };
             }
-            if (!SubscriptionHandlers.NotesHandler) {
-                SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+            if (!NotesHandler) {
+              NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
             } else {
-                SubscriptionHandlers.NotesHandler.setFilter(searchQuery);
+              NotesHandler.setFilter(searchQuery);
             }
-            NotesHandler = SubscriptionHandlers.NotesHandler;
+
         }
     )
     ;
@@ -183,7 +184,7 @@ Template.notesTabList.helpers({
         return Notes.find(searchQuery,{sort: {dateCreated:-1}});
     },
     isLoading: function () {
-        return !SubscriptionHandlers.NotesHandler.ready();
+        return !NotesHandler.ready();
     }
 });
 

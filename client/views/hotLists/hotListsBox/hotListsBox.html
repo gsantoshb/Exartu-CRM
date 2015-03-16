@@ -24,7 +24,7 @@
                             loading
                         {{else}}
                             {{#unless isESSearch}}
-                                {{>fastPagination name="hotLists" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                                {{>fastPagination name="hotLists" useKeys="true" containerClass="magic-pager"}}
                             {{/unless}}
                         {{/if}}
                     </div>
@@ -103,7 +103,7 @@
         loading
     {{else}}
         {{#unless isESSearch}}
-            {{>fastPagination name="hotLists" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+            {{>fastPagination name="hotLists" useKeys="true" containerClass="magic-pager"}}
         {{/unless}}
     {{/if}}
 </template>
@@ -194,9 +194,7 @@
                 <div class="list-item-cell hotLists-list-item-code ">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell hotLists-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell hotLists-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
+                    {{formattedDate dateCreated "fromNow"}}
                 </div>
             </div>
             <!-- /.list-item-cell -->
@@ -218,9 +216,8 @@
                 <div class="list-item-cell hotLists-list-item-code ">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell hotLists-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell hotLists-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        <span>{{date}}</span><br>
-                    {{/formattedDate}}
+                    <span>{{formattedDate dateCreated "fromNow"}}</span>
+                    <br>
                 </div>
                 <div class="list-item-cell item-overflow hotLists-item-overflow">
                     <a href="#">

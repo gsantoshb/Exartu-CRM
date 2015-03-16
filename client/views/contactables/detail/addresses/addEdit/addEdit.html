@@ -1,12 +1,6 @@
 <template name="addressAddEdit">
 
-    <div class="row">
-        <div class="col-md-12">
-            <form class="box-content-form" style="margin-bottom: 20px;" role="form">
-                <input class="form-control locationSearchInput" placeholder="Search for an address" autocomplete="off" />
-            </form>
-        </div>
-    </div>
+    {{>locationSearchInput searchInputOptions}}
 
     {{#autoForm id='addressAddEditForm' type=formType schema="LocationSchema" collection="Addresses" validation="blur" doc=address}}
         <div class="row">

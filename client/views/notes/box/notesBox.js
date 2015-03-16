@@ -49,7 +49,7 @@ Template.notesBox.created = function () {
     var entityId = Session.get('entityId');
 
     if (!SubscriptionHandlers.NotesHandler) {
-        SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe("notes");
+        SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe("noteList");
     }
     NotesHandler = SubscriptionHandlers.NotesHandler;
 
@@ -124,7 +124,7 @@ Template.notesBox.helpers({
         return Meteor.users.find({}, {sort: {'emails.address': 1}});
     },
     notes: function () {
-        return Notes.find(q,{sort:{dateCreated:-1}});
+        return NoteList.find(q,{sort:{dateCreated:-1}});
     },
     filters: function () {
         return noteQuery;

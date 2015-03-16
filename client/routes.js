@@ -67,7 +67,7 @@ Router.map(function () {
 
   this.route('jobs', {
     path: '/jobs/:type?',
-    controller: 'JobsController',
+    controller: 'JobsController'
   });
 
   this.route('job', {
@@ -78,7 +78,7 @@ Router.map(function () {
 
     this.route('deals', {
         path: '/deals',
-        controller: 'DealsController',
+        controller: 'DealsController'
     });
 
     this.route('addDealPage', {
@@ -135,17 +135,11 @@ Router.map(function () {
   });
 
   this.route('tasks', {
-    path: '/tasks',
+    path: '/tasks/:_id?',
     controller: 'TasksController'
   });
-
-  this.route('task', {
-    path: '/tasks/:_id',
-    controller: 'TasksController'
-  });
-
   this.route('notes', {
-    path: '/notes',
+    path: '/notes/:_id?',
     controller: 'NotesController'
   });
 

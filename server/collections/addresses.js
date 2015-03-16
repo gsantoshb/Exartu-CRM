@@ -1,6 +1,12 @@
 Meteor.publish("linkedAddresses", function (linkid) {
     return Addresses.find({linkId: linkid});
 });
+
+Meteor.publish("singleAddress", function (id) {
+    console.log('singleAddress', id);
+    return Addresses.find({ _id: id });
+});
+
 Addresses.allow({
     insert: function (userId, doc) {
         return true;

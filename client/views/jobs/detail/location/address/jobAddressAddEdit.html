@@ -1,0 +1,11 @@
+<template name="jobAddressAddEdit">
+    {{>locationSearchInput searchInputOptions}}
+
+    {{#autoForm id="jobAddressAddEditForm" schema="LocationSchema" validation="blur" doc=address}}
+        {{> addressAddEditFormContent addressTypes=jobAddressTypes}}
+        <div class="form-group">
+            <button class="btn btn-block btn-primary" disabled="{{addDisabled}}"><strong>Ok</strong>
+            </button>
+        </div>
+    {{/autoForm}}
+</template>

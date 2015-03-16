@@ -1,71 +1,139 @@
+
 <template name="employeePastJobs">
-    <div class="col-md-6">
-        {{> employeePastJobAdd}}
-    </div>
-    <div class="record hidden">
+    <div class="row">
         <div class="col-md-6">
-            {{> employeePastJobsList}}
+            {{> employeePastJobAdd}}
         </div>
-
-
+        <div class="record">
+            <div class="col-md-6">
+                <ul class="record-list list-3 stripped has-thumb">
+                    {{#each items}}
+                        {{> employeePastJobItem}}
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
 
+
+<!-- New Past Job Record -->
 <template name="employeePastJobAdd">
     <div class="record-add row">
-        <div class="add-box-head col-xs-12 col-md-12 col-lg-3">
+        <div class="add-box-head col-xs-12 col-md-12 col-lg-12">
             <div class="add-item-icon"><i class="icon-profile-business-man"></i></div>
             <h2>Past Jobs</h2>
         </div>
 
-        <div class="add-box-content col-xs-12 col-md-12 col-lg-9">
-            {{#autoForm id="AddPastJobRecord" schema="PastJobSchema"}}
+        <div class="add-box-content col-xs-12 col-md-12">
+            {{#autoForm schema="PastJobSchema" id="addPastJobForm" class="m-t" validation="blur"}}
                 <fieldset>
-                    {{> afQuickField name='company'}}
-                    {{> afQuickField name='position'}}
-                    {{> afQuickField name='supervisor'}}
-                    {{> afQuickField name='location'}}
-                    {{> afQuickField name='duties' rows=2}}
-                    {{> afQuickField name='ok2Contact'}}
-                    {{> afQuickField name='payRate'}}
-                    {{> afQuickField name='reasonForLeaving' rows=2}}
+                    <!-- Company Name -->
+                    <div class="form-group {{#if afFieldIsInvalid name='company'}}has-error{{/if}}">
+                        <label class="control-label">{{afFieldLabelText name='company'}}</label>
+                        {{> afFieldInput name='company' placeholder="Company Name"}}
+                        {{#if afFieldIsInvalid name='company'}}
+                            <span class="help-block">{{afFieldMessage name='company'}}</span>
+                        {{/if}}
+                    </div>
+
+                    <!-- Location -->
+                    <div class="form-group {{#if afFieldIsInvalid name='location'}}has-error{{/if}}">
+                        <label class="control-label">{{afFieldLabelText name='location'}}</label>
+                        {{> afFieldInput name='location' placeholder="Location"}}
+                        {{#if afFieldIsInvalid name='location'}}
+                            <span class="help-block">{{afFieldMessage name='location'}}</span>
+                        {{/if}}
+                    </div>
+
+                    <!-- Position -->
+                    <div class="form-group {{#if afFieldIsInvalid name='position'}}has-error{{/if}}">
+                        <label class="control-label">{{afFieldLabelText name='position'}}</label>
+                        {{> afFieldInput name='position' placeholder="Position"}}
+                        {{#if afFieldIsInvalid name='position'}}
+                            <span class="help-block">{{afFieldMessage name='position'}}</span>
+                        {{/if}}
+                    </div>
+
+                    <!-- Duties -->
+                    <div class="form-group {{#if afFieldIsInvalid name='duties'}}has-error{{/if}}">
+                        <label class="control-label">{{afFieldLabelText name='duties'}}</label>
+                        {{> afFieldInput name='duties' rows=3 placeholder="Duties"}}
+                        {{#if afFieldIsInvalid name='duties'}}
+                            <span class="help-block">{{afFieldMessage name='duties'}}</span>
+                        {{/if}}
+                    </div>
+
+                    <!-- Pay Rate -->
+                    <div class="form-group {{#if afFieldIsInvalid name='payRate'}}has-error{{/if}}">
+                        <label class="control-label">{{afFieldLabelText name='payRate'}}</label>
+                        {{> afFieldInput name='payRate' placeholder="Pay Rate"}}
+                        {{#if afFieldIsInvalid name='payRate'}}
+                            <span class="help-block">{{afFieldMessage name='payRate'}}</span>
+                        {{/if}}
+                    </div>
+
+                    <!-- Supervisor -->
+                    <div class="form-group {{#if afFieldIsInvalid name='supervisor'}}has-error{{/if}}">
+                        <label class="control-label">{{afFieldLabelText name='supervisor'}}</label>
+                        {{> afFieldInput name='supervisor' placeholder="Supervisor"}}
+                        {{#if afFieldIsInvalid name='supervisor'}}
+                            <span class="help-block">{{afFieldMessage name='supervisor'}}</span>
+                        {{/if}}
+                    </div>
+
+                    <!-- Reason For Leaving -->
+                    <div class="form-group {{#if afFieldIsInvalid name='reasonForLeaving'}}has-error{{/if}}">
+                        <label class="control-label">{{afFieldLabelText name='reasonForLeaving'}}</label>
+                        {{> afFieldInput name='reasonForLeaving' rows=3 placeholder="Reason For Leaving"}}
+                        {{#if afFieldIsInvalid name='reasonForLeaving'}}
+                            <span class="help-block">{{afFieldMessage name='reasonForLeaving'}}</span>
+                        {{/if}}
+                    </div>
 
                     <div class="row">
                         <!-- Start Date -->
                         <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='start'}}has-error{{/if}}">
-                            {{> afB3DatePicker name='start' format="MM yyyy" minViewMode="months" startView="decade" }}
+                            {{> afB3DatePicker name='start' placeholder="Start Date" format="MM yyyy" minViewMode="months" startView="decade" }}
                         </div>
 
                         <!-- End Date -->
                         <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='end'}}has-error{{/if}}">
-                            <div class="{{endDateClass}}">
-                                {{> afB3DatePicker name='end' format="MM yyyy" minViewMode="months" startView="decade" }}
-                            </div>
-
-                            <!-- To present -->
-                            <div class="checkbox">
-                                <label>
-                                    <input class="editable toPresent" type="checkbox"> To present
-                                </label>
-                            </div>
+                            {{> afB3DatePicker name='end' placeholder="End Date" format="MM yyyy" minViewMode="months" startView="decade" }}
                         </div>
+                    </div>
+
+                    <!-- Can we Contact them? -->
+                    <div class="form-group {{#if afFieldIsInvalid name='ok2Contact'}}has-error{{/if}}">
+                        {{> afFieldInput name='ok2Contact'}}
                     </div>
                 </fieldset>
 
-                <button class="btn btn-success pull-right"> Save </button>
+                {{#unless isSubmitting}}
+                    <!-- Error message -->
+                    {{#if error}}
+                        <div class="alert-box alert-danger" style="margin-bottom: 15px;">
+                            {{error}}
+                        </div>
+                    {{/if}}
+
+                    <!-- Save button -->
+                    <button type="submit" class="btn btn-success pull-right block m-b">Add past job</button>
+                {{else}}
+                    <!-- Submitting feedback -->
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="progress progress-striped active">
+                            <div style="width: 100%;" class="progress-bar progress-bar-info">Adding record...</div>
+                        </div>
+                    </div>
+                {{/unless}}
             {{/autoForm}}
         </div>
     </div>
 </template>
 
-<template name="employeePastJobsList">
-    <ul class="record-list list-3 stripped has-thumb">
-        {{#each items}}
-            {{> employeePastJobItem}}
-        {{/each}}
-    </ul>
-</template>
 
+<!-- Past Job Items -->
 <template name="employeePastJobItem">
     <li class="record-record list-3-item">
         <div class="list-thumb"><i class="icon-briefcase"></i></div>
@@ -73,27 +141,24 @@
             <div class="list-3-content-wrap">
                 {{#with getCtx}}
                     {{#if isEditing}}
-                        {{> employeePastJobEditItem doc=pastJobRecord}}
+                        {{> employeePastJobEditItem}}
                     {{else}}
                         <div class="list-3-actions">
                             <a class="editPastJobRecord pointer"><i class="fa fa-edit"></i> Details</a>
                             <span class="bullet-spacer">·</span>
                             <a class="deletePastJobRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
                         </div>
-                        <div class="list-3-item-meta-top">
-                            {{pastJobRecord.company}}
-                            {{#if pastJobRecord.supervisor}}
-                                - Supervised by {{pastJobRecord.supervisor}}
-                            {{/if}}
-                        </div>
-                        <h4 class="list-3-item-title">{{pastJobRecord.position}}</h4>
+                        <div class="list-3-item-meta-top">{{company}}</div>
+                        {{#if supervisor}}
+                            <div class="list-3-item-meta-top">Supervised by {{supervisor}}</div>
+                        {{/if}}
+                        <h4 class="list-3-item-title">{{position}}</h4>
+                        <div class="list-3-item-meta-top">{{location}}</div>
                         <small class="text-muted">
-                            {{pastJobRecord.location}}
                             <i class="fa fa-calendar"></i>
-                            Start: {{#formattedDate value=pastJobRecord.start format="MMMM YYYY"}} {{date}}{{/formattedDate}}
-                            -
-                            {{#if pastJobRecord.end}}
-                                End: {{#formattedDate value=pastJobRecord.end format="MMMM YYYY"}} {{date}}{{/formattedDate}}
+                            Start: {{formattedDate start "MMMM YYYY"}} -
+                            {{#if end}}
+                                End: {{formattedDate end "MMMM YYYY"}}
                             {{else}}
                                 to present
                             {{/if}}
@@ -105,43 +170,112 @@
     </li>
 </template>
 
+
+<!-- Edit Past Job Record -->
 <template name="employeePastJobEditItem">
-    {{#autoForm id=formId schema="PastJobSchema" doc=doc}}
+    {{#autoForm schema="PastJobSchema" id=formId doc=pastJob validation="blur"}}
         <fieldset>
-            {{> afQuickField name='company'}}
-            {{> afQuickField name='position'}}
-            {{> afQuickField name='supervisor'}}
-            {{> afQuickField name='location'}}
-            {{> afQuickField name='duties' rows=2}}
-            {{> afQuickField name='ok2Contact'}}
-            {{> afQuickField name='payRate'}}
-            {{> afQuickField name='reasonForLeaving' rows=2}}
+            <!-- Company Name -->
+            <div class="form-group {{#if afFieldIsInvalid name='company'}}has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='company'}}</label>
+                {{> afFieldInput name='company' placeholder="Company Name"}}
+                {{#if afFieldIsInvalid name='company'}}
+                    <span class="help-block">{{afFieldMessage name='company'}}</span>
+                {{/if}}
+            </div>
+
+            <!-- Location -->
+            <div class="form-group {{#if afFieldIsInvalid name='location'}}has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='location'}}</label>
+                {{> afFieldInput name='location' placeholder="Location"}}
+                {{#if afFieldIsInvalid name='location'}}
+                    <span class="help-block">{{afFieldMessage name='location'}}</span>
+                {{/if}}
+            </div>
+
+            <!-- Position -->
+            <div class="form-group {{#if afFieldIsInvalid name='position'}}has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='position'}}</label>
+                {{> afFieldInput name='position' placeholder="Position"}}
+                {{#if afFieldIsInvalid name='position'}}
+                    <span class="help-block">{{afFieldMessage name='position'}}</span>
+                {{/if}}
+            </div>
+
+            <!-- Duties -->
+            <div class="form-group {{#if afFieldIsInvalid name='duties'}}has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='duties'}}</label>
+                {{> afFieldInput name='duties' rows=3 placeholder="Duties"}}
+                {{#if afFieldIsInvalid name='duties'}}
+                    <span class="help-block">{{afFieldMessage name='duties'}}</span>
+                {{/if}}
+            </div>
+
+            <!-- Pay Rate -->
+            <div class="form-group {{#if afFieldIsInvalid name='payRate'}}has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='payRate'}}</label>
+                {{> afFieldInput name='payRate' placeholder="Pay Rate"}}
+                {{#if afFieldIsInvalid name='payRate'}}
+                    <span class="help-block">{{afFieldMessage name='payRate'}}</span>
+                {{/if}}
+            </div>
+
+            <!-- Supervisor -->
+            <div class="form-group {{#if afFieldIsInvalid name='supervisor'}}has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='supervisor'}}</label>
+                {{> afFieldInput name='supervisor' placeholder="Supervisor"}}
+                {{#if afFieldIsInvalid name='supervisor'}}
+                    <span class="help-block">{{afFieldMessage name='supervisor'}}</span>
+                {{/if}}
+            </div>
+
+            <!-- Reason For Leaving -->
+            <div class="form-group {{#if afFieldIsInvalid name='reasonForLeaving'}}has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='reasonForLeaving'}}</label>
+                {{> afFieldInput name='reasonForLeaving' rows=3 placeholder="Reason For Leaving"}}
+                {{#if afFieldIsInvalid name='reasonForLeaving'}}
+                    <span class="help-block">{{afFieldMessage name='reasonForLeaving'}}</span>
+                {{/if}}
+            </div>
 
             <div class="row">
                 <!-- Start Date -->
                 <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='start'}}has-error{{/if}}">
-                    {{> afB3DatePicker name='start' value=doc.start format="MM yyyy" minViewMode="months" startView="decade" }}
+                    {{> afB3DatePicker name='start' placeholder="Start Date" format="MM yyyy" minViewMode="months" startView="decade" }}
                 </div>
 
-                <div class="form-group col-xs-6 {{#if afFieldIsInvalid name='end'}}has-error{{/if}}">
-                    <!-- End Date -->
-                    <div class="{{endDateClass}}">
-                        {{> afB3DatePicker name='end' value=doc.end format="MM yyyy" minViewMode="months" startView="decade" }}
-                    </div>
-
-                    <!-- To present -->
-                    <div class="checkbox">
-                        <label>
-                            <input class="editable toPresent" type="checkbox" {{checked}}> To present
-                        </label>
-                    </div>
+                <!-- End Date -->
+                <div class="form-group col-lg-6 {{#if afFieldIsInvalid name='end'}}has-error{{/if}}">
+                    {{> afB3DatePicker name='end' placeholder="End Date" format="MM yyyy" minViewMode="months" startView="decade" }}
                 </div>
+            </div>
+
+            <!-- Can we Contact them? -->
+            <div class="form-group {{#if afFieldIsInvalid name='ok2Contact'}}has-error{{/if}}">
+                {{> afFieldInput name='ok2Contact'}}
             </div>
         </fieldset>
 
-        <div class="pull-right">
-            <span class="btn btn-default cancelPastJobRecordChanges"> Cancel </span>
-            <button class="btn btn-success"> Save </button>
-        </div>
+        {{#unless isSubmitting}}
+            <!-- Error message -->
+            {{#if error}}
+                <div class="alert-box alert-danger" style="margin-bottom: 15px;">
+                    {{error}}
+                </div>
+            {{/if}}
+
+            <!-- Action buttons -->
+            <div class="pull-right">
+                <span class="btn btn-default cancel">Cancel</span>
+                <button class="btn btn-success">Save changes</button>
+            </div>
+        {{else}}
+            <!-- Submitting feedback -->
+            <div class="col-md-10 col-md-offset-1">
+                <div class="progress progress-striped active">
+                    <div style="width: 100%;" class="progress-bar progress-bar-info">Saving changes...</div>
+                </div>
+            </div>
+        {{/unless}}
     {{/autoForm}}
 </template>

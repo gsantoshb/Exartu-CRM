@@ -214,7 +214,28 @@ Meteor.methods({
 
     initialValues = initialValues.concat(resolveMF(address,  DocCenterMergeFields.find({ targetType: Enums.docCenterMergeFieldTypes.address }).fetch()));
 
-    return DocCenter.instantiateDocument(user.currentHierId, documentIds, docCenterId, initialValues);
+    var docInstance = DocCenter.instantiateDocument(user.currentHierId, documentIds, docCenterId, initialValues);
+
+
+    var hier = Hierarchies.findOne({_id: user.currentHierId});
+    var webName = hier.configuration.webName;
+    var url = ExartuConfig.ApplicantCenter_URL + webName;
+    var doclist = '';
+    _.forEach(docInstance, function(d){
+       doclist = doclist + d.documentName + '\n';
+    })
+    var text = "Dear "+contactable.displayName +",\n\n"
+      +"This is an automated reminder from your Aida software system.  You have the following documents to fill:\n\n"
+        + doclist
+      +"\nPlease log into Applicant Center to fill, using the following URL:\n"
+      + url
+      + "\n\nThank you,"
+      + "Aïda team";
+
+    EmailManager.sendEmail(contactable.docCenter.Email, "New documents to fill", text, false);
+
+
+    return docInstance;
   }
 });
 

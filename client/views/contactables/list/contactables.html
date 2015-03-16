@@ -21,6 +21,7 @@
                         {{/if}}
 
                         <div class="list-actions last">
+<<<<<<< HEAD
                         <!--{{#if listIsLoading}}-->
                             <!--loading-->
                                 <!--{{else}}-->
@@ -28,6 +29,15 @@
                                 {{>fastPagination name="auxContactables" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
                             {{/unless}}
                                 <!--{{/if}}-->
+=======
+                            <!--{{#if listIsLoading}}-->
+                                <!--loading-->
+                            <!--{{else}}-->
+                                {{#unless isESSearch}}
+                                    {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
+                                {{/unless}}
+                            <!--{{/if}}-->
+>>>>>>> 2d7d0ee979a5cb4ac89ba6af87f8d8576c446f29
                         </div>
 
                     </div>
@@ -40,21 +50,21 @@
 <template name="contactablesListHeader">
     {{#if listViewMode}}
         <div class="list-header network-list-header simple-view">
-            <div class="list-header-cell network-list-header-title">Title</div>
-            <div class="list-header-cell network-list-header-owner">Owner</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
+            <div class="list-header-cell network-list-header-title">{{_ "Title"}}</div>
+            <div class="list-header-cell network-list-header-owner">{{_ "Owner"}}</div>
+            <div class="list-header-cell network-list-header-time">{{_ "Date"}}</div>
         </div>
         <!-- /.list-header -->
     {{else}}
         <div class="list-header network-list-header">
             <div class="list-header-cell network-list-header-checkbox"><input type="checkbox" id="selectAll"></div>
-            <div class="list-header-cell network-list-header-title">Title</div>
-            <div class="list-header-cell network-list-header-contact">Contact</div>
-            <div class="list-header-cell network-list-header-type">Type</div>
-            <div class="list-header-cell network-list-header-status">Status</div>
-            <div class="list-header-cell network-list-header-code">Code</div>
-            <div class="list-header-cell network-list-header-owner">Owner</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
+            <div class="list-header-cell network-list-header-title">{{_ "Title"}}</div>
+            <div class="list-header-cell network-list-header-contact">{{_ "Contact"}}</div>
+            <div class="list-header-cell network-list-header-type">{{_ "Type"}}</div>
+            <div class="list-header-cell network-list-header-status">{{_ "Status"}}</div>
+            <div class="list-header-cell network-list-header-code">{{_ "Code"}}</div>
+            <div class="list-header-cell network-list-header-owner">{{_ "Owner"}}</div>
+            <div class="list-header-cell network-list-header-time">{{_ "Date"}}</div>
         </div>
     {{/if}}
 
@@ -99,11 +109,11 @@
         <div class="btn-group">
             <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
                     title="Add">
-                <span class="fa fa-plus"></span> Add
+                <span class="fa fa-plus"></span>  {{_ "Add"}}
             </button>
             <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
                 {{#each contactableTypes}}
-                    <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
+                    <li><a href="/contactableAdd/{{name}}">{{_ "Add"}} {{name}}</a></li>
                 {{/each}}
                 <li>
                     <a type="button" title="Create employee from resume/CV"
@@ -152,19 +162,19 @@
     </div>
     <!-- ./order-list -->
 
-        <!--{{#if listIsLoading}}-->
-    <!--loading-->
-        <!--{{else}}-->
-    {{#unless isESSearch}}
-        {{>fastPagination name="auxContactables" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
-    {{/unless}}
-        <!--{{/if}}-->
+    <!--{{#if listIsLoading}}-->
+        <!--loading-->
+    <!--{{else}}-->
+        {{#unless isESSearch}}
+            {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
+        {{/unless}}
+    <!--{{/if}}-->
 </template>
 
 <template name="contactableListSort">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Sort
+            {{_ "Sort"}}
             {{#with selectedSort}}
                 <strong>{{displayName}}</strong>
                 {{#if isAscSort .}}
@@ -197,7 +207,7 @@
 <template name="contactablesFilters">
     {{#with information}}
         <div class="page-title">
-            <h1><span>{{contactablesCount.value}}</span> network records</h1>
+            <h1><span>{{contactablesCount.value}}</span> {{_ "network"}}</h1>
         </div>
     {{/with}}
 
@@ -245,7 +255,7 @@
                             <i class="icon-connection-1 text-large"></i>
 
                             <h1>
-                                No records Found
+                                {{_ "No records Found"}}
                             </h1>
                         </div>
                     </div>
@@ -279,9 +289,7 @@
             <div class="list-item-details network-list-item-details">
                 <div class="list-item-cell network-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell network-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
+                    {{formattedDate dateCreated "fromNow"}}
                 </div>
             </div>
             <!-- /.list-item-cell -->
@@ -362,9 +370,7 @@
                 <div class="list-item-cell network-list-item-code">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell network-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell network-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        <span>{{date}}</span>
-                    {{/formattedDate}}
+                    <span>{{formattedDate dateCreated "fromNow"}}</span>
                 </div>
                 <div class="list-item-cell item-overflow network-item-overflow">
                     <a href="#">
@@ -384,9 +390,7 @@
                         <div class="list-item-more-entry-content">
                             <div class="list-item-more-ico item-icon-notes"><i class="icon icon-pencil-3"></i></div>
                             <div class="time">
-                                {{#formattedDate value=dateCreated format='fromNow'}}
-                                    {{date}}
-                                {{/formattedDate}}
+                                {{formattedDate dateCreated "fromNow"}}
                             </div>
                             <a href="#">{{displayUserName userId}}</a> - {{>showMore text=msg limit=60}}
                         </div>

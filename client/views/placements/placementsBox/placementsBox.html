@@ -24,7 +24,7 @@
                             loading
                         {{else}}
                             {{#unless isESSearch}}
-                                {{>fastPagination name="placements" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                                {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}
                             {{/unless}}
                         {{/if}}
                     </div>
@@ -105,7 +105,7 @@
         loading
     {{else}}
         {{#unless isESSearch}}
-            {{>fastPagination name="placements" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+            {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}
         {{/unless}}
     {{/if}}
 </template>
@@ -203,15 +203,11 @@
             <div class="list-item-cell placements-list-item-owner">{{displayUserName userId}}</div>
             <div class="list-item-cell placements-list-item-time">
                 {{#if startDate}}
-                    {{#formattedDate value=startDate}}
-                        {{date}}
-                    {{/formattedDate}}
+                    {{formattedDate startDate}}
                 {{/if}}
                 {{#if endDate}}
                     {{#if startDate}}&nbsp;&mdash;&nbsp;{{/if}}
-                    {{#formattedDate value=endDate}}
-                        {{date}}
-                    {{/formattedDate}}
+                    {{formattedDate endDate}}
                 {{/if}}
             </div>
         </div>
@@ -236,9 +232,7 @@
                 <div class="list-item-cell placements-list-item-code ">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell placements-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell placements-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        <span>{{date}}</span><br>
-                    {{/formattedDate}}
+                    <span>{{formattedDate dateCreated "fromNow"}}</span><br>
                 </div>
                 <div class="list-item-cell item-overflow placements-item-overflow">
                     <a href="#">
@@ -259,9 +253,7 @@
     <span>
         {{#if startDate}}
             <i class="fa fa-calendar-o"></i>&nbsp;
-            {{#formattedDate value=startDate}}
-                {{date}}
-            {{/formattedDate}}
+            {{formattedDate startDate}}
         {{/if}}
 
         {{#if endDate}}
@@ -270,9 +262,7 @@
             {{else}}
                 &mdash;
             {{/unless}}
-            {{#formattedDate value=endDate}}
-                {{date}}
-            {{/formattedDate}}
+            {{formattedDate endDate}}
         {{/if}}
     </span>
     <br>

@@ -87,9 +87,7 @@
                                                 {{#objectProperty property=activeStatus editable=editMode}}
                                                     {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                                 {{else}}
-                                                    <strong>
                                                         <strong>{{displayName}}</strong>
-                                                    </strong>
                                                 {{/objectProperty}}
                                             </div>
                                         </li>
@@ -102,6 +100,11 @@
                                                 {{else}}
                                                     <strong>
                                                         <strong>{{displayName}}</strong>
+                                                        {{#if value}}
+                                                            {{formattedDate value "MMMM DD, YYYY"}}
+                                                        {{else}}
+                                                            <!--Not set-->
+                                                        {{/if}}
                                                     </strong>
                                                 {{/objectProperty}}
                                             </div>
@@ -240,9 +243,7 @@
     <li>
         <div class="left-part">Date Created</div>
         <div class="right-part">
-            {{#formattedDate value=dateCreated format='lll'}}
-                {{date}}
-            {{/formattedDate}}
+            {{formattedDate dateCreated "lll"}}
         </div>
     </li>
     <li>

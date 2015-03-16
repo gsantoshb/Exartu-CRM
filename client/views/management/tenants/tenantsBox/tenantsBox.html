@@ -103,9 +103,7 @@
                 <div class="list-item-cell network-list-item-code">{{_id}}</div>
                 <div class="list-item-cell network-list-item-code">{{configuration.title}}</div>
                 <div class="list-item-cell network-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
+                    {{formattedDate dateCreated "fromNow"}}
                 </div>
             </div>
             <!-- /.list-item-cell -->
@@ -135,9 +133,7 @@
 
                 </div>
                 <div class="list-item-cell network-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        <span>{{date}}</span>
-                    {{/formattedDate}}
+                    <span>{{formattedDate dateCreated "fromNow"}}</span>
                 </div>
                 <div class="list-item-cell item-overflow network-item-overflow">
                     <a href="#">

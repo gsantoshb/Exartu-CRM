@@ -60,6 +60,9 @@ var address = {
     postalCode: ''
 };
 
+
+var addressDep = new Deps.Dependency();
+
 var resetAddress = function () {
     address.addressTypeId = Utils.getAddressTypeDefault()._id;
     address.linkId = undefined;
@@ -74,112 +77,59 @@ var resetAddress = function () {
 var addressCreatedCallback;
 
 var addDisabled = new ReactiveVar(false);
+
 var formId = new ReactiveVar('addressAddEditForm');
 var formType = new ReactiveVar('insert');
 
-Template.addressAddEdit.created= function() {
-    var self = this;
-
-    address.addressTypeId = Utils.getAddressTypeDefault()._id;
-    if (self.data.location) address = self.data.location;
-
-    AutoForm.hooks({
-        addressAddEditForm: {
-            onSubmit: function (insertDoc, updateDoc, currentDoc) {
-                addDisabled.set(true);
-                var selfautoform = this;
-                //Copy properties from insert doc into current doc which has lat lng
-                for (var k in insertDoc) currentDoc[k] = insertDoc[k];
-                //Set the contactable id on the current doc
-                currentDoc.linkId = Session.get("entityId");
-                Meteor.call('addEditAddress', currentDoc, function (err, result) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        resetAddress();
-                        selfautoform.resetForm();
-                        addressCreatedCallback && addressCreatedCallback();
-                    }
-                    selfautoform.done();
-
-                });
-                addDisabled.set(false);
-                return false;
-            }
-        }
-    });
-};
-
-Template.addressAddEdit.rendered = function () {
-    var self = this;
-    resetAddress();
-
-    var inputElement = this.$('.locationSearchInput')[0];
-    var autocomplete = new google.maps.places.Autocomplete(inputElement, {types: ['geocode']});
-    // When the user selects an address from the dropdown this event is raised
-    google.maps.event.addListener(autocomplete, 'place_changed', function () {
-        var place = autocomplete.getPlace();
-
-        //Convert the place from google to our address
-        placeToAddress(place);
-
-        //Invalidate form to refresh bindings
-        AutoForm.invalidateFormContext("addressAddEditForm");
-        inputElement.value = '';
-    });
-
-    //gets an object containing the address data from the autocomplete place result
-    var placeToAddress = function (place) {
-        resetAddress();
-        var componentForm = {
-            street_number: 'short_name',
-            route: 'long_name',
-            locality: 'long_name',
-            administrative_area_level_1: 'short_name',
-            country: 'long_name',
-            postal_code: 'short_name'
-        };
-
-        // Get each component of the address from the place details
-        // and fill the corresponding field on the form.
-        for (var i = 0; i < place.address_components.length; i++) {
-            var componentType = place.address_components[i].types[0];
-            if (componentForm[componentType]) {
-                var val = place.address_components[i][componentForm[componentType]];
-                switch (componentType) {
-                    case 'street_number':
-                        address.address = val;
-                        break;
-                    case 'route':
-                        address.address = address.address + ' ' + val;
-                        break;
-                    case 'locality':
-                        address.city = val;
-                        break;
-                    case 'administrative_area_level_1':
-                        address.state = val;
-                        break;
-                    case 'country':
-                        address.country = val;
-                        break;
-                    case 'postal_code':
-                        address.postalCode = val;
-                        break;
+AutoForm.hooks({
+    addressAddEditForm: {
+        onSubmit: function (insertDoc, updateDoc, currentDoc) {
+            addDisabled.set(true);
+            var selfautoform = this;
+            //Copy properties from insert doc into current doc which has lat lng
+            for (var k in insertDoc) currentDoc[k] = insertDoc[k];
+            //Set the contactable id on the current doc
+            currentDoc.linkId = Session.get("entityId");
+            Meteor.call('addEditAddress', currentDoc, function (err, result) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    resetAddress();
+                    selfautoform.resetForm();
+                    addressCreatedCallback && addressCreatedCallback();
                 }
-            }
-        };
+                selfautoform.done();
 
-        address.lat = place.geometry.location.lat();
-        address.lng = place.geometry.location.lng();
-    };
+            });
+            addDisabled.set(false);
+            return false;
+        }
+    }
+});
+
+Template.addressAddEdit.created = function() {
+
+    var self = this;
+    if (this.data.location){
+        address = this.data.location;
+    }else{
+        address.addressTypeId = Utils.getAddressTypeDefault()._id;
+    }
+    if (self.data.location) address=self.data.location;
+
+    addressCreatedCallback = self.data.callback;
+
+};
+Template.addressAddEdit.rendered = function () {
+    resetAddress();
 };
 
 Template.addressAddEdit.helpers({
     address: function () {
-        //testAddress.set( Session.get( 'address' ) );
-        //return testAddress.get();
         address = Session.get( 'address' );
         return address;
+        //addressDep.depend();
+        //return address;
     },
     formId: function () {
         if(address._id)
@@ -202,6 +152,20 @@ Template.addressAddEdit.helpers({
     },
     addDisabled: function () {
         return addDisabled.get();
+    },
+    searchInputOptions: function () {
+        return {
+            onChange: function (selectedAddress) {
+                //resetAddress();
+                // keep address type
+                selectedAddress.addressTypeId = address.addressTypeId;
+                address = selectedAddress;
+                addressDep.changed();
+
+                //AutoForm.invalidateFormContext("addressAddEditForm");
+
+            }
+        };
     }
 });
 
