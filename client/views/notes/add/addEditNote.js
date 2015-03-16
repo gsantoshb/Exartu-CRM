@@ -17,12 +17,28 @@ var link = function (link) {
 var noteDep = new Tracker.Dependency;
 var errorDep = new Tracker.Dependency;
 var addDisabled = new ReactiveVar(false);
+//
+//var noteUpdate = function (cb) {
+//  if (note._id) {
+    //hacer el update a mano
 
-var noteUpdate = function (cb) {
-  if (note._id) {
-    Meteor.call('updateNote', note);
-  }
-};
+    //Notes.update({
+    //        _id: note._id
+    //    }, {
+    //        $set: {
+    //            msg: note.msg,
+    //            links: note.links
+    //        }
+    //    },
+    //    function () {
+    //        if (cb)
+    //            cb();
+    //    }
+    //);
+//    debugger;
+//    Meteor.call('updateNote', note);
+//  }
+//};
 
 
 var createNote = function (note) {
@@ -30,7 +46,9 @@ var createNote = function (note) {
   var note = note || {};
   var definition = {
     msg: note.msg,
-    links: note.links || []
+    links: note.links || [],
+    hierId: note.hierId,
+    userId: note.userId
 //    reactiveProps: {}
   };
   if (note._id)
@@ -144,10 +162,11 @@ Template.addEditNote.events({
 
     if (note._id) {
       addDisabled.set(true);
-      noteUpdate(function () {
+      Meteor.call('updateNote', note, function(err, res){
         $('.modal-host').children().modal('toggle');
         addDisabled.set(false);
       });
+
     } else {
       //Notes.insert(note, function () {
       //    $('.modal-host').children().modal('toggle')
@@ -167,7 +186,7 @@ Template.addEditNote.events({
 
   'change .msg': function (e) {
     note.msg = e.target.value;
-    noteUpdate();
+    //noteUpdate();
   },
 
   'blur .msg': function () {
@@ -181,20 +200,21 @@ Template.addEditNote.events({
     typeDep.changed();
   }
 
-  ,
-  'click #noteLinkEntity': function () {
-    var type = $('#noteTypeSelect').val();
-    type = parseInt(type);
-    var entity = $('#noteEntitySelect').val();
-    if (!_.isNumber(type) || !entity) return;
-
-    link({
-      type: type,
-      id: entity
-    });
-    linkedDep.changed();
-    noteUpdate();
-  }
+  //,
+  //'click #noteLinkEntity': function () {
+  //  var type = $('#noteTypeSelect').val();
+  //  type = parseInt(type);
+  //  var entity = $('#noteEntitySelect').val();
+  //  if (!_.isNumber(type) || !entity) return;
+  //
+  //  link({
+  //    type: type,
+  //    id: entity
+  //  });
+  //  linkedDep.changed();
+  //  //esto no tendria que estar?
+  //  noteUpdate();
+  //}
 
   ,
   'click .remove-link': function () {
