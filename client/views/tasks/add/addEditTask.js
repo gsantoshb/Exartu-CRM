@@ -403,6 +403,8 @@ Template.addEditTask.destroyed = function () {
   else{
     history.replaceState(null, 'edit',currentUrl);
   }
+  collapsedAdvanced = false;
+  collapseDep.changed();
 
 
 };
