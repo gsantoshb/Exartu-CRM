@@ -9,7 +9,7 @@ _.extend(Utils, {
         user.picture = UsersFS.getThumbnailUrlForBlaze(user.profilePictureId);
 
         return {
-            username: user.username,
+            username: Utils.getLocalUserName(user),
             picture: user.picture || '/assets/user-photo-placeholder.jpg'
         };
     }
@@ -549,18 +549,21 @@ Utils.showModal = function (templateName) {
 
     var template = Template[templateName];
 
-    UI.insert(UI.renderWithData(template, parameters), host[0]);
+    var instance = UI.renderWithData(template, parameters);
+    UI.insert(instance, host[0]);
     var modal = host.children();
 
     modal.modal('show');
 
     modal.on('hidden.bs.modal', function (e) {
         modal.remove();
+        UI.remove(instance);
     });
 };
 
 Utils.dismissModal = function () {
     $('.modal-host').children().modal('toggle');
+
 };
 
 Utils.getContactableType = function (obj) {

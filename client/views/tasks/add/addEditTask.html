@@ -8,6 +8,7 @@
                 </div>
                 <div class="modal-body">
                     <div>
+                      {{#if isReady}}
                         {{#with task}}
                             <fieldset>
                                 <div class="form-group {{hasError 'msg'}}">
@@ -63,7 +64,14 @@
                                 {{/if}}
                             </fieldset>
 
+                            {{else}}
+                            not found
                         {{/with}}
+                      {{else}}
+                          loading...
+                       {{/if}}
+
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -77,8 +85,14 @@
                                 Archive
                             </a>
                         {{/if}}
+                        <a class="btn btn-info pull-left push-oneday">
+                            Push 1 day
+                        </a>
                         <a class="btn btn-info pull-left push-oneweek">
-                            Push one week
+                            week
+                        </a>
+                        <a class="btn btn-info pull-left push-onemonth">
+                            month
                         </a>
                     {{/if}}
 

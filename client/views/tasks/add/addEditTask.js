@@ -1,5 +1,10 @@
-var task;
 var Error = {};
+var task;
+var param;
+var singleTaskHandler;
+var currentUrl;
+
+
 
 //todo: the logic for the linked entities is almost the same in msgs and taskAdd. We should do some template to use it in both places.
 var typeDep = new Tracker.Dependency();
@@ -19,6 +24,7 @@ var errorDep = new Tracker.Dependency;
 
 var addDisabled = new ReactiveVar(false);
 var taskUpdate = function (cb) {
+    var oldTask = Tasks.find({_id : task._id}).fetch()[0];
     if (task._id) {
         Tasks.update({
                 _id: task._id
@@ -38,6 +44,11 @@ var taskUpdate = function (cb) {
                     cb();
             }
         );
+      if(oldTask.assign[0] !== task.assign[0]){
+        Meteor.call('notifyTask', task);
+      }
+
+
     }
 };
 
@@ -49,7 +60,6 @@ var createTask = function (task) {
                 task.links.push({id: c.Contact.client, type: Enums.linkTypes.contactable.value})
             };
         };
-
         addDisabled.set(false);
         var task = task || {};
 
@@ -76,18 +86,21 @@ Template.addEditTask.helpers({
         return addDisabled.get();
     },
     isEditing: function () {
-        return !!task._id;
+
+        return task && task._id ;
     },
     task: function () {
-        if (!task) {
-            var param = {};
-            if (this) {
-                param = this[0]
-            }
-            task = createTask(param);
-        }
         taskDep.depend();
         return task;
+    },
+    isReady: function(){
+       taskDep.depend();
+       if (singleTaskHandler) {
+         return singleTaskHandler.ready();
+       }
+       else{
+         return true;
+       }
     },
     users: function () {
         return Meteor.users.find({});
@@ -197,11 +210,19 @@ Template.addEditTask.events({
             taskUpdate(function () {
                 $('.modal-host').children().modal('toggle')
             });
+
+
         } else {
+           //hack, the plugin is wrong so this fix it.
+            task.begin.setTime( task.begin.getTime());
+            task.end.setTime( task.end.getTime());
+          // task.begin.getTimezoneOffset()*60*1000
             Tasks.insert(task, function () {
                 $('.modal-host').children().modal('toggle');
 
             })
+           Meteor.call('notifyTask', task);
+
         }
         addDisabled.set(false);
     },
@@ -220,9 +241,23 @@ Template.addEditTask.events({
             })
         }
     },
+    'click .push-oneday': function () {
+        task.end = task.end || new Date();
+        task.end.setDate(task.end.getDate() + 1);
+        taskUpdate(function () {
+            $('.modal-host').children().modal('toggle')
+        });
+    },
     'click .push-oneweek': function () {
         task.end = task.end || new Date();
         task.end.setDate(task.end.getDate() + 7);
+        taskUpdate(function () {
+            $('.modal-host').children().modal('toggle')
+        });
+    },
+    'click .push-onemonth': function () {
+        task.end = task.end || new Date();
+        task.end.setDate(task.end.getDate() + 30);
         taskUpdate(function () {
             $('.modal-host').children().modal('toggle')
         });
@@ -232,11 +267,12 @@ Template.addEditTask.events({
         //taskUpdate();
     },
     'change.dp .begin>.date': function (e, ctx) {
-        task.begin = $(e.currentTarget).data().date;
+        task.begin = $(e.currentTarget).data().datetimepicker.getDate();
+
         //taskUpdate();
     },
     'change.dp .end>.date': function (e, ctx) {
-        task.end = $(e.currentTarget).data().date;
+        task.end = $(e.currentTarget).data().datetimepicker.getDate();
         //taskUpdate();
     },
     'change .isCompleted': function (e) {
@@ -254,7 +290,7 @@ Template.addEditTask.events({
     },
     'change .assign': function (e) {
         var newassign = $(e.target).val();
-        task.assign = newassign;
+        task.assign = _.isArray(newassign) ? newassign : [newassign];
         //taskUpdate();
     },
     'blur .msg': function () {
@@ -290,8 +326,64 @@ Template.addEditTask.events({
 });
 
 Template.addEditTask.created = function () {
+
     Meteor.subscribe('allContactables');
     Meteor.subscribe('allJobs');
     Meteor.subscribe('allPlacements');
+    currentUrl = window.location.pathname;
     task = null;
+    param = null;
+    param = this.data[0];
+    if(((typeof param)==="object")&&(param != null)){
+
+       task = createTask(param);
+       if(param._id) {
+         var url = '/tasks/' + param._id;
+       }
+       else{
+         var url = '/tasks/';
+       }
+       //hack, there is a bug in replaceState/tasks/ironRoute
+       setTimeout(function(){window.history.replaceState(null, null, url)},500);
+
+       taskDep.changed()
+    }
+    else if((typeof param)==="string"){
+      if(singleTaskHandler){
+        singleTaskHandler.stop();
+      }
+      singleTaskHandler = Meteor.subscribe("editTask", param, function () {
+        if(EditTask.find({}).count()<1){
+          taskDep.changed()
+          return;
+        }
+        else{
+          param = EditTask.findOne({});
+          task = createTask(param);
+          taskDep.changed()
+
+      }
+    });
+
+  }
+  else{
+      task = createTask();
+      taskDep.changed()
+  }
+
+
+};
+Template.addEditTask.destroyed = function () {
+  if(singleTaskHandler) {
+    singleTaskHandler.stop();
+    singleTaskHandler = null;
+  }
+  if(currentUrl === window.location.pathname){
+    history.replaceState(null, 'edit','/tasks');
+  }
+  else{
+    history.replaceState(null, 'edit',currentUrl);
+  }
+
+
 };

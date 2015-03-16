@@ -40,6 +40,7 @@ Template.header.helpers({
         return Meteor.user().emails[0].address;
     },
     UnreadMessagesCount: function () {
+        console.log('unreadmess');
         return Messages.find({
             read: false,
             destination: Meteor.userId()
@@ -131,7 +132,7 @@ Template.header.rendered = function () {
                 if (($(window).width() > 768) || ($(window).width() <= 480)) {
                     submenu.slideUp();
                 } else {
-                    submenu.fadeOut(250);
+                    submenu.fadeOut(75);
                 }
                 li.removeClass('open');
             } else {
@@ -141,8 +142,8 @@ Template.header.rendered = function () {
                     $('#sidebar').on('click', hideIfClickOutside);
 
                 } else {
-                    submenus.fadeOut(250);
-                    submenu.fadeIn(250);
+                    submenus.fadeOut(75);
+                    submenu.fadeIn(75);
                 }
                 submenus_parents.removeClass('open');
                 li.addClass('open');
@@ -158,10 +159,10 @@ Template.header.rendered = function () {
 
         switcherBtn.click(function () {
             if (switcherPanel.hasClass('open')) {
-                switcherPanel.hide(300);
+                switcherPanel.hide(75);
                 switcherPanel.removeClass('open');
             } else {
-                switcherPanel.show(300);
+                switcherPanel.show(75);
                 switcherPanel.addClass('open');
             }
         });

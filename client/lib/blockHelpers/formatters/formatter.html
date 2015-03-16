@@ -1,6 +1,3 @@
-<template name="formatted_date">
-    {{> UI.contentBlock . }}
-</template>
 
 <template name="htmlEditorTemplate">
     <textarea class="editor" style="height: 400px">
@@ -20,7 +17,7 @@
 
 <template name="bootstrap3DatePicker">
     <div class="input-group date">
-        <input type="text" class="form-control afDateTimePicker" data-schema-key="{{dataSchemaKey}}" />
+        <input type="text" class="form-control afDateTimePicker" placeholder="{{placeholder}}" data-schema-key="{{dataSchemaKey}}" />
         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
     </div>
 </template>

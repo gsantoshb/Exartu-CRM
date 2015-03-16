@@ -10,7 +10,73 @@ var showByDay = false;
 var start;
 var end;
 var init = false;
+var currentDate;
+var loadingCount = false;
 
+var createUrl = function(){
+  var urlQuery = new URLQuery();
+  if(showMineOnly){
+    urlQuery.addParam('owned', true);
+  }
+  else{
+    urlQuery.addParam('owned', false);
+  }
+  //if(showByMonth){
+  //  urlQuery.addParam('view','month');
+  //}
+  //if(showByWeek){
+  //  urlQuery.addParam('view','basicWeek');
+  //}
+  //if(showByDay){
+  //  urlQuery.addParam('view', 'basicDay');
+  //}
+  //urlQuery.addParam('start', start.getTime());
+  //urlQuery.addParam('end', end.getTime());
+
+  urlQuery.apply();
+
+}
+
+var getParamsUrl = function(params){
+  //created by
+  if(params.owned === "false"){
+    showMineOnly = false;
+  }
+  else{
+    showMineOnly = true;
+  }
+  //view
+  //if(params.view === "basicWeek"){
+  //  debugger;
+  //  showByMonth = false;
+  //  showByDay = false;
+  //  showByWeek = true;
+  //
+  //}
+  //else if(params.view === "basicDay"){
+  //  showByMonth = false;
+  //  showByDay = true;
+  //  showByWeek = false;
+  //
+  //}
+  //else{
+  //  showByMonth = true;
+  //  showByDay = false;
+  //  showByWeek = false;
+  //
+  //}
+  ////navigate
+  //if(params.start){
+  //  start = new Date(parseInt(params.start));
+  //
+  //}
+  //if(params.end){
+  //  end = new Date(parseInt(params.end));
+  //}
+
+
+
+ }
 
 var info = new Utils.ObjectDefinition({
   reactiveProps: {
@@ -30,24 +96,39 @@ CalendarController = RouteController.extend({
 });
 
 var startEndDep = new Deps.Dependency();
+var loadingDep = new Deps.Dependency();
 
+var handler;
 Meteor.autorun(function () {
   // depend start, end
   startEndDep.depend();
 
   if (!start || !end || (showMineOnly== null)) return;
 
+
+  createUrl();
+
+  loadingCount = true;
+  loadingDep.changed();
+
+  handler && handler.stop();
+
   init = false;
-  Meteor.subscribe("tasks2", start, end, showMineOnly , function () {
+  handler = Meteor.subscribe("calendarTasks", start, end, showMineOnly , function () {
     rerender();
+    loadingCount = false;
+    loadingDep.changed();
   });
 
 });
 
 Template.taskCalendar.created=function() {
+  var calendarDiv = $('.fc');
 
+   getParamsUrl(Router.current().params.query);
+   startEndDep.changed();
 
-   observe = Tasks.find({}).observe({
+   observe = CalendarTasks.find({}).observe({
 
     added: function (document) {
 
@@ -55,7 +136,7 @@ Template.taskCalendar.created=function() {
 
       //document = Utils.clasifyTags(document);
 
-      var calendarDiv = $('.fc');
+
       switch (document.state) {
         case Enums.taskState.future:
           calendarDiv.fullCalendar('renderEvent', {
@@ -64,7 +145,7 @@ Template.taskCalendar.created=function() {
             start: document.begin,
             end: document.end,
             description: "",
-            className: 'item-label-2 label-future'
+            className: 'item-label-2 label-future pointer'
           });
           break;
         case Enums.taskState.completed:
@@ -74,7 +155,7 @@ Template.taskCalendar.created=function() {
             start: document.begin,
             end: document.end,
             description: "",
-            className: 'item-label-2 label-completed'
+            className: 'item-label-2 label-completed pointer'
           });
           break;
         case Enums.taskState.overDue:
@@ -84,7 +165,7 @@ Template.taskCalendar.created=function() {
             start: document.begin,
             end: document.end,
             description: "",
-            className: 'item-label-2 label-overDue'
+            className: 'item-label-2 label-overDue pointer'
           });
           break;
         case Enums.taskState.pending:
@@ -94,7 +175,7 @@ Template.taskCalendar.created=function() {
             start: document.begin,
             end: document.end,
             description: "",
-            className: 'item-label-2 label-pending'
+            className: 'item-label-2 label-pending pointer'
           });
           break;
       }
@@ -122,19 +203,19 @@ Template.taskCalendar.created=function() {
       var event = _.find(calendarDiv.fullCalendar('clientEvents'), function (ev) {
         return oldDocument._id == ev.id;
       });
-      newDocument = Utils.clasifyTags(newDocument);
+
       switch (newDocument.state) {
         case Enums.taskState.future:
-          event.className = 'item-label-2 label-future';
+          event.className = 'item-label-2 label-future pointer';
           break;
         case Enums.taskState.completed:
-          event.className = 'item-label-2 label-completed';
+          event.className = 'item-label-2 label-completed pointer';
           break;
         case Enums.taskState.overDue:
-          event.className = 'item-label-2 label-overDue';
+          event.className = 'item-label-2 label-overDue pointer';
           break;
         case Enums.taskState.pending:
-          event.className = 'item-label-2 label-pending';
+          event.className = 'item-label-2 label-pending pointer';
           break;
 
       }
@@ -151,8 +232,8 @@ Template.taskCalendar.created=function() {
 };
 
 Template.taskCalendar.destroyed=function() {
-
-  observe.stop();
+  //handler.stop();
+  //observe.stop();
 };
 
 
@@ -164,41 +245,49 @@ var rerender = _.debounce(function () {
 },650);
 
 Template.taskCalendar.helpers({
+
   options: function () {
     return {
       id: 'myCalendar',
       monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July',
         'August', 'September', 'October', 'November', 'December'],
-      eventLimit: 5,
+      nextDayThreshold: "00:00:00",
+      eventLimit: true,
       eventClick: function (calEvent, jsEvent, view) {
-        // change the border color just for fun
-
-        $(this).css('border-color', 'red');
-        task = _.find(Tasks.find({}).fetch(), function (t) {
+        task = _.find(CalendarTasks.find({}).fetch(), function (t) {
           return t._id == calEvent.id;
         });
         Utils.showModal('addEditTask', task)
       },
-      header: {
-        left: 'title',
-        center: 'month,basicWeek,basicDay',
-        right: 'prev,today,next'
+      header:false,
+      timeFormat:'HH:mm',
+      views:{
+        basicDay:{
+          eventLimit:38
+        },
+        basicWeek:{
+          eventLimit:38
+        },
+        month:{
+          eventLimit:5
+        }
       },
 
+
       events: function (start, end, timezone, callback) {
-        callback(_.map(Tasks.find().fetch(), function (t) {
+        callback(_.map(CalendarTasks.find({}).fetch(), function (t) {
             switch(t.state) {
                         case Enums.taskState.future:
-                             return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future'  } ;
+                             return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future  pointer'  } ;
                              break;
                         case Enums.taskState.completed:
-                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-completed'  } ;
+                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-completed  pointer'  } ;
                              break;
                         case Enums.taskState.overDue:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-overDue'  } ;
+                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-overDue  pointer'  } ;
                             break;
                         case Enums.taskState.pending:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-pending'  };
+                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-pending  pointer'  };
                             break;
            }
 
@@ -209,9 +298,11 @@ Template.taskCalendar.helpers({
         var calendarDiv = $('.fc');
         start = view.intervalStart.toDate();
         end = view.intervalEnd.toDate();
+        //this correct the calendar end date
+        //end = new Date(endAux.setDate(endAux.getDate()+1));
         startEndDep.changed();
 
-        //Meteor.call('apiGetTasksBeetwen', view.intervalStart.toDate() , view.intervalEnd.toDate() , function(error, result){
+        //Meteor.call('apiGetTasksBetween', view.intervalStart.toDate() , view.intervalEnd.toDate() , function(error, result){
         //
         //    allTasks = result;
         //    _.each(result, function(t){
@@ -241,9 +332,31 @@ Template.taskCalendar.helpers({
       }
     }
   },
-  taskCount: function () {
-    return Tasks.find({}).count();
-  },
+  taskCount: {
+    title:function(){
+      loadingDep.depend();
+      if(loadingCount){
+        return ""
+      }
+      return "tasks";
+      },
+
+
+
+    count: function(){
+      loadingDep.depend();
+      if(loadingCount){
+        return "loading..."
+      }
+
+      return CalendarTasks.find({}).count();
+    }
+   },
+
+
+
+
+
   query: function () {
     return query;
   },
@@ -278,12 +391,21 @@ Template.taskCalendar.helpers({
   showByDay: function(){
     startEndDep.depend();
     return showByDay ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+  },
+  currentDate: function(){
+    startEndDep.depend();
+    var calendarDiv = $('.fc');
+    return calendarDiv.fullCalendar( 'getView').title;
   }
 
 });
 
 
 Template.taskCalendar.events = {
+  'click #button-addTask': function () {
+     Utils.showModal('addEditTask', null);
+
+  },
   'click #show-mineOnly': function () {
     showMineOnly = !showMineOnly;
     startEndDep.changed();
@@ -295,6 +417,7 @@ Template.taskCalendar.events = {
     showPrev = false;
     var calendarDiv = $('.fc');
     calendarDiv.fullCalendar('today');
+
     startEndDep.changed();
 
 
@@ -353,8 +476,8 @@ Template.taskCalendar.events = {
   'click #show-byMonth': function () {
     var calendarDiv = $('.fc');
 
-    if(calendarDiv.fullCalendar( 'getView').title != 'month') {
-      calendarDiv.fullCalendar('changeView', 'month');
+
+    calendarDiv.fullCalendar('changeView', 'month');
       var today = new Date();
       if((today>start) && (today<end)){
         showToday = true;
@@ -376,16 +499,13 @@ Template.taskCalendar.events = {
       showByWeek = false;
 
       startEndDep.changed();
-    }
+
 
 
   },
   'click #show-byWeek': function () {
     var calendarDiv = $('.fc');
-
-    if(calendarDiv.fullCalendar( 'getView').title != 'agendaWeek') {
-
-      calendarDiv.fullCalendar('changeView', 'agendaWeek');
+      calendarDiv.fullCalendar('changeView', 'basicWeek');
       var today = new Date();
       if((today>start) && (today<end)){
         showToday = true;
@@ -406,13 +526,13 @@ Template.taskCalendar.events = {
       showByDay = false;
       showByWeek = true;
       startEndDep.changed();
-    }
+
   },
   'click #show-byDay': function () {
     var calendarDiv = $('.fc');
 
-    if(calendarDiv.fullCalendar( 'getView').title != 'agendaDay') {
-      calendarDiv.fullCalendar('changeView', 'agendaDay');
+
+      calendarDiv.fullCalendar('changeView', 'basicDay');
       var today = new Date();
       if((today>start) && (today<end)){
         showToday = true;
@@ -432,9 +552,8 @@ Template.taskCalendar.events = {
       showByMonth = false;
       showByDay = true;
       showByWeek = false;
-
       startEndDep.changed();
-    }
+
 
   }
 

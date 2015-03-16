@@ -32,6 +32,8 @@ ExartuConfig = {
   PageSize: 10,
   // Applicant Center URL
   ApplicantCenter_URL: undefined,
+  HrConcourseURL: 'http://hrconcourse.aidacreative.com/',
   ResumeParserURL: undefined,
-  ResumeParserPasscode: ''
+  ResumeParserPasscode: '',
+  EncryptCode: undefined
 };

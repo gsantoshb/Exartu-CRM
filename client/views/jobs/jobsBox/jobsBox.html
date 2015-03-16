@@ -24,7 +24,7 @@
                             loading
                         {{else}}
                             {{#unless isESSearch}}
-                                {{>fastPagination name="jobs" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                                {{>fastPagination name="jobs" useKeys="true" containerClass="magic-pager"}}
                             {{/unless}}
                         {{/if}}
                     </div>
@@ -106,7 +106,7 @@
         loading
     {{else}}
         {{#unless isESSearch}}
-            {{>fastPagination name="jobs" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+            {{>fastPagination name="jobs" useKeys="true" containerClass="magic-pager"}}
         {{/unless}}
     {{/if}}
 </template>
@@ -172,7 +172,9 @@
 </template>
 
 <template name="jobList">
-
+{{#if isLoading}}
+        <div style="height: 280px;"></div>
+{{else}}
         <div class="list-item-section {{#if listViewMode}}simple-view{{/if}}">
             {{#each jobs}}
                 {{> jobListItem }}
@@ -197,6 +199,7 @@
                 {{/if}}
             {{/each}}
         </div>
+{{/if}}
 </template>
 
 <template name="jobListItem">
@@ -205,7 +208,7 @@
             <div class="list-item-cell jobs-list-item-title">
                 <div class="item-title single">
                     <a href="/job/{{_id}}">{{displayName}}</a> <span class="item-title-more">&#8212; <a
-                        href="/contactable/{{client}}">{{clientName}}</a></span>
+                        href="/contactable/{{client}}">{{clientDisplayName}}</a></span>
 
                     <span class="item-label prefix-10">{{lookUpName status}}</span>
                     <span class="item-label" data-status="{{lookUpName activeStatus}}">{{lookUpName activeStatus}}</span>
@@ -219,9 +222,7 @@
                 </div>
                 <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell jobs-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
+                    {{formattedDate dateCreated "fromNow"}}
                 </div>
             </div>
             <!-- /.list-item-cell -->
@@ -234,7 +235,7 @@
             </div>
             <div class="list-item-cell jobs-list-item-title">
                 <div class="item-title"><a href="/job/{{_id}}">{{displayName}}</a></div>
-                <div class="item-subtitle"><a href="/contactable/{{client}}">{{clientName}} {{#if departmentName}}
+                <div class="item-subtitle"><a href="/contactable/{{client}}">{{clientDisplayName}} {{#if departmentName}}
                     &#8212; {{departmentName}}{{/if}}</a></div>
             </div>
             <div class="list-item-details jobs-list-item-details">
@@ -249,9 +250,7 @@
                 <div class="list-item-cell jobs-list-item-code ">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell jobs-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell jobs-list-item-time">
-                   {{#formattedDate value=dateCreated format='fromNow'}}
-                       {{date}}
-                   {{/formattedDate}}
+                    {{formattedDate dateCreated "fromNow"}}
                 </div>
                 <div class="list-item-cell item-overflow jobs-item-overflow">
                     <a href="#">

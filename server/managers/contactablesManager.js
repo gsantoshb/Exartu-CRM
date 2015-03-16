@@ -17,6 +17,13 @@ ContactableManager = {
         }
         return employeeId;
     },
+    getContactableByMail: function(mail, hierid){
+      //find a contactable in hierarchy:hier with mail: 'mail'
+      //check by hierarchy
+      var visibleHiers = Utils.filterByHiers(hierid);
+
+      return  Contactables.findOne({ 'contactMethods.value': mail,$or: visibleHiers });
+    },
     createFromPlainResume: function (text) {
         var future = new Future();
 
@@ -139,6 +146,8 @@ ContactableManager = {
         if (!employeeId) throw new Error('Employee ID is required');
         var employee = Contactables.findOne({_id: employeeId, Employee: {$exists: true}});
         if (!employee) throw new Error('Invalid employee ID');
+        var appCenterUser = Meteor.users.findOne({_id: employee.user});
+        if (!appCenterUser) throw new Error('Employee does not have an Applicant Center account');
 
         var note = {
             msg: message,
@@ -146,75 +155,92 @@ ContactableManager = {
             contactableId: employeeId,
             dateCreated: new Date(),
             hierId: employee.hierId,
-            userId: employee.userId
+            userId: appCenterUser._id,
+            displayToEmployee: true
         };
 
         // Insert note
         return Notes.insert(note);
     },
 
-    // Education record
-    addEducationRecord: function (contactableId, educationInfo) {
-        // TODO: Validate
-        Contactables.update({_id: contactableId},
-            {
-                $addToSet: {
-                    education: educationInfo
-                }
-            }
-        );
-    },
-    editEducationRecord: function (contactableId, oldEducationInfo, newEducationInfo) {
-        // TODO: Validate
-        Contactables.update({
-                _id: contactableId,
-                education: oldEducationInfo
-            }, {
-                $set: {
-                    'education.$': newEducationInfo
-                }
-            }
-        );
-    },
-    deleteEducationRecord: function (contactableId, educationInfo) {
-        // TODO: Validate
-        Contactables.update({_id: contactableId}, {
-            $pull: {
-                'education': educationInfo
-            }
-        });
-    },
+  // Education record
+  addEducationRecord: function (contactableId, educationInfo) {
+    // Validations
+    if (!contactableId) throw new Error('Contactable ID is required');
+    if (!educationInfo.institution) throw new Error('Institution name is required');
+    if (!educationInfo.description) throw new Error('Description is required');
+    if (!educationInfo.start) throw new Error('Start date is required');
+
+    // Generate a new ID for the education record for easier manipulation
+    educationInfo.id = Random.id();
+
+    // Update the contactable with the new education record
+    return Contactables.update({_id: contactableId}, {$addToSet: {education: educationInfo}});
+  },
+  editEducationRecord: function (contactableId, educationId, educationInfo) {
+    // Validations
+    if (!contactableId) throw new Error('Contactable ID is required');
+    if (!educationId) throw new Error('Education ID is required');
+    if (!educationInfo.institution) throw new Error('Institution name is required');
+    if (!educationInfo.description) throw new Error('Description is required');
+    if (!educationInfo.start) throw new Error('Start date is required');
+
+    // Make the ID available in the new record
+    educationInfo.id = educationId;
+
+    // Update the contactable with the new education record
+    return Contactables.update({_id: contactableId, 'education.id': educationId},
+      {$set: {'education.$': educationInfo}}
+    );
+  },
+  deleteEducationRecord: function (contactableId, educationId) {
+    // Validations
+    if (!contactableId) throw new Error('Contactable ID is required');
+    if (!educationId) throw new Error('Education ID is required');
+
+    // Remove the education record from the contactable
+    return Contactables.update({_id: contactableId}, {$pull: {education: {id: educationId}}});
+  },
 
     // Past jobs record
     addPastJobRecord: function (contactableId, pastJobInfo) {
-        // TODO: Validate
-        Contactables.update({_id: contactableId},
-            {
-                $addToSet: {
-                    pastJobs: pastJobInfo
-                }
-            }
-        );
+      // Validations
+      if (!contactableId) throw new Error('Contactable ID is required');
+      if (!pastJobInfo.company) throw new Error('Company name is required');
+      if (!pastJobInfo.location) throw new Error('Location is required');
+      if (!pastJobInfo.position) throw new Error('Position is required');
+      if (!pastJobInfo.start) throw new Error('Start date is required');
+
+      // Generate a new ID for the past job record for easier manipulation
+      pastJobInfo.id = Random.id();
+
+      // Update the contactable with the new education record
+      return Contactables.update({_id: contactableId}, {$addToSet: {pastJobs: pastJobInfo}});
     },
-    editPastJobRecord: function (contactableId, oldPastJobInfo, newPastJobInfo) {
-        // TODO: Validate
-        Contactables.update({
-                _id: contactableId,
-                pastJobs: oldPastJobInfo
-            }, {
-                $set: {
-                    'pastJobs.$': newPastJobInfo
-                }
-            }
-        );
+    editPastJobRecord: function (contactableId, pastJobId, pastJobInfo) {
+      // Validations
+      if (!contactableId) throw new Error('Contactable ID is required');
+      if (!pastJobId) throw new Error('Past Job ID is required');
+      if (!pastJobInfo.company) throw new Error('Company name is required');
+      if (!pastJobInfo.location) throw new Error('Location is required');
+      if (!pastJobInfo.position) throw new Error('Position is required');
+      if (!pastJobInfo.start) throw new Error('Start date is required');
+
+      // Make the ID available in the new record
+      pastJobInfo.id = pastJobId;
+
+      // Update the contactable with the new education record
+      return Contactables.update({_id: contactableId, 'pastJobs.id': pastJobId},
+        {$set: {'pastJobs.$': pastJobInfo}}
+      );
     },
-    deletePastJobRecord: function (contactableId, pastJobInfo) {
-        // TODO: Validate
-        Contactables.update({_id: contactableId}, {
-            $pull: {
-                'pastJobs': pastJobInfo
-            }
-        });
+    deletePastJobRecord: function (contactableId, pastJobId) {
+      // Validations
+      if (!contactableId) throw new Error('Contactable ID is required');
+      if (!pastJobId) throw new Error('Past Job ID is required');
+
+      // Remove the education record from the contactable
+      return Contactables.update({_id: contactableId}, {$pull: {pastJobs: {id: pastJobId}}});
     },
 
     // Client relations

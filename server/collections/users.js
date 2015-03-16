@@ -39,7 +39,7 @@ UserInvitations.allow({
 
 Meteor.users.allow({
     update: function (userId, file, fields, modifier) {
-        console.log('uhr1',userId,file,fields,modifier);
+        //console.log('uhr1',userId,file,fields,modifier);
         var user = Meteor.users.findOne({
             _id: userId
         });

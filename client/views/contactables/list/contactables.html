@@ -25,7 +25,7 @@
                                 <!--loading-->
                             <!--{{else}}-->
                                 {{#unless isESSearch}}
-                                    {{>fastPagination name="auxContactables" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                                    {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
                                 {{/unless}}
                             <!--{{/if}}-->
                         </div>
@@ -156,7 +156,7 @@
         <!--loading-->
     <!--{{else}}-->
         {{#unless isESSearch}}
-            {{>fastPagination name="auxContactables" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+            {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
         {{/unless}}
     <!--{{/if}}-->
 </template>
@@ -279,9 +279,7 @@
             <div class="list-item-details network-list-item-details">
                 <div class="list-item-cell network-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell network-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        {{date}}
-                    {{/formattedDate}}
+                    {{formattedDate dateCreated "fromNow"}}
                 </div>
             </div>
             <!-- /.list-item-cell -->
@@ -360,9 +358,7 @@
                 <div class="list-item-cell network-list-item-code">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell network-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell network-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        <span>{{date}}</span>
-                    {{/formattedDate}}
+                    <span>{{formattedDate dateCreated "fromNow"}}</span>
                 </div>
                 <div class="list-item-cell item-overflow network-item-overflow">
                     <a href="#">
@@ -382,11 +378,9 @@
                         <div class="list-item-more-entry-content">
                             <div class="list-item-more-ico item-icon-notes"><i class="icon icon-pencil-3"></i></div>
                             <div class="time">
-                                {{#formattedDate value=dateCreated format='fromNow'}}
-                                    {{date}}
-                                {{/formattedDate}}
+                                {{formattedDate dateCreated "fromNow"}}
                             </div>
-                            <a href="#">{{displayUserName userId}}</a> - {{msg}}
+                            <a href="#">{{displayUserName userId}}</a> - {{>showMore text=msg limit=60}}
                         </div>
                     </div>
                     <!-- /.list-item-more-entry -->

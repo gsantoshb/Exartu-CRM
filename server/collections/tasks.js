@@ -71,23 +71,49 @@ TaskView = new View('tasks', {
 });
 
 Meteor.paginatedPublish(TaskView, function () {
-    return Utils.filterCollectionByUserHier.call(this, TaskView.find({}, { sort: { dateCreated: -1 } }));
+  return Utils.filterCollectionByUserHier.call(this, TaskView.find({}, {sort: {dateCreated: -1}}));
 }, {
     pageSize: 50,
     publicationName: 'tasks'
 });
 
-Meteor.publish("tasks2",  function (start, end, mineOnly) {
+//Meteor.publish("tasksCalendar",  function (start, end, mineOnly) {
+//
+//
+//  if(mineOnly) {
+//    var tasks = Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]});
+//  }
+//  else{
+//    var tasks = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]}))
+//
+//  }
+//    return tasks;
+//});
 
 
+
+Meteor.publish('editTask', function(id) {
+  var self = this;
+  var taskCursor = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({_id:id}));
+  Mongo.Collection._publishCursor(taskCursor, self, 'editTask');
+// _publishCursor doesn't call this for us in case we do this more than once.
+  self.ready();
+});
+
+Meteor.publish('calendarTasks', function(start, end, mineOnly) {
+  var self = this;
+  var taskCursor;
+  var Auxend = new Date(end.setDate(end.getDate()+1));
   if(mineOnly) {
-    var prueba = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]}))
+    taskCursor = Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: Auxend}}]}, {inactive: {$ne: true}}]});
   }
   else{
-    var prueba = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]}))
+    taskCursor = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{end: {$gte: start}}, {begin: {$lte: Auxend}}]}, {inactive: {$ne: true}}]}))
 
   }
-    return prueba;
+  Mongo.Collection._publishCursor(taskCursor, self, 'calendarTasks');
+// _publishCursor doesn't call this for us in case we do this more than once.
+  self.ready();
 });
 
 Tasks.allow({

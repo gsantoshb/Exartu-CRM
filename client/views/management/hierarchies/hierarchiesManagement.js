@@ -88,6 +88,12 @@ Template.hierarchiesManagement.helpers({
     },
     isInactive: function () {
         return this && this.inactive;
+    },
+
+    applicantCenterUrl: function () {
+      var hier = Hierarchies.findOne({_id: Meteor.user().currentHierId});
+      var webName = hier.configuration.webName;
+      return __meteor_runtime_config__.applicantCenterUrl + webName;
     }
 });
 Template.hierarchiesManagement.events({

@@ -96,4 +96,24 @@ Meteor.startup(function () {
       appName: 'Exartu'
     });
   }
+
+  // Make Applicant Center url available to the client
+  __meteor_runtime_config__.applicantCenterUrl = ExartuConfig.ApplicantCenter_URL;
+
+  //Active all hierarchys mail listener
+  var hierWithSubscription = Hierarchies.find({mailSubscription: {$exists: true}}).fetch();
+  _.forEach(hierWithSubscription, function(h){
+    var decryptedPass = CryptoJS.AES.decrypt(h.mailSubscription.password, ExartuConfig.EncryptCode);
+
+    Meteor.call('emailListener', h.mailSubscription.mail, decryptedPass.toString(CryptoJS.enc.Utf8),  h.mailSubscription.host, h.mailSubscription.port, h._id, function (err, result) {
+      if(err){
+        throw new Error('something wrong happened on hierarchies mail subscriptions');
+
+      }
+      else{
+        console.log("hierarchy mail listener up", h._id);
+      }
+    });
+  });
+
 });

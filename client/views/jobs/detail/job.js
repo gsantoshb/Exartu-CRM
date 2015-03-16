@@ -117,28 +117,6 @@ Template.job.helpers({
     tags: function () {
         return services.tags;
     },
-    assignment: function () {
-        var activeStatuses = getPlacementStatuses('placement', Enums.lookUpAction.Implies_Active);
-        var placedStatuses = getPlacementStatuses('candidate', Enums.lookUpAction.Candidate_Placed);
-        var placementsAssignment = Placements.findOne({
-            job: this._id,
-            placementStatus: {$in: activeStatuses},
-            candidateStatus: {$in: placedStatuses}
-        });
-
-        if (!placementsAssignment)
-            return undefined;
-
-        return Contactables.findOne(placementsAssignment.employee);
-    },
-    clientName: function () {
-        client = Contactables.findOne(this.client);
-        if (originalJob) {
-            Session.set('jobDisplayName', originalJob.displayName + ' ' + client.displayName);
-        }
-        ;
-        return client && client.displayName;
-    },
     currentTemplate: function () {
         var selected = _.findWhere(tabs, {id: Session.get('activeTab')});
         return selected && selected.template;

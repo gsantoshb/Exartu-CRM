@@ -1,48 +1,53 @@
 var self = {};
-
+var searchQuery = {};
+var sortDep=new Deps.Dependency;
 AutoForm.debug();
 NoteSchema = new SimpleSchema({
-    msg: {
-        type: String,
-        label: 'Message'
-    },
-    links: {
-        type: [Object],
-        label: 'Entities linked'
-    },
-    'links.$.id': {
-        type: String
-    },
-    'links.$.type': {
-        type: Number,
-        allowedValues: _.map(Enums.linkTypes, function (type) {
-            return type.value;
-        })
-    },
-    sendAsSMS: {
-        type: Boolean,
-        label: 'Send SMS/Text',
-        optional: true
-    },
-    hotListFirstName: {
-        type: Boolean,
-        label: 'Preface with first name?',
-        optional: true
-    },
-    userNumber: {
-        type: String,
-        optional: true,
-        label: 'SMS/Text origin number(s)'
-    },
-    contactableNumber: {
-        type: String,
-        optional: true,
-        label: 'SMS/Text destination number'
-    },
-    contactableId: {
-        type: String,
-        label: 'Entity'
-    }
+  msg: {
+    type: String,
+    label: 'Message'
+  },
+  links: {
+    type: [Object],
+    label: 'Entities linked'
+  },
+  'links.$.id': {
+    type: String
+  },
+  'links.$.type': {
+    type: Number,
+    allowedValues: _.map(Enums.linkTypes, function (type) {
+      return type.value;
+    })
+  },
+  sendAsSMS: {
+    type: Boolean,
+    label: 'Send SMS/Text',
+    optional: true
+  },
+  hotListFirstName: {
+    type: Boolean,
+    label: 'Preface with first name?',
+    optional: true
+  },
+  userNumber: {
+    type: String,
+    optional: true,
+    label: 'SMS/Text origin number(s)'
+  },
+  contactableNumber: {
+    type: String,
+    optional: true,
+    label: 'SMS/Text destination number'
+  },
+  contactableId: {
+    type: String,
+    label: 'Entity'
+  },
+  displayToEmployee: {
+    type: Boolean,
+    optional: true
+  }
 });
 
 
@@ -72,7 +77,11 @@ AutoForm.hooks({
                 ;
                 return doc;
             }
-        }
+        },
+        onSuccess:
+            function (error, result, template) {
+                sortDep.changed();
+            }
     }
 });
 self.defaultUserNumber = null;
@@ -142,7 +151,7 @@ Template.notesTabList.created = function () {
 
     Meteor.autorun(function () {
             responsesOnlyDep.depend();
-            var searchQuery = {};
+            searchQuery={};
 
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
@@ -170,7 +179,8 @@ Template.notesTabList.created = function () {
 ;
 Template.notesTabList.helpers({
     items: function () {
-        return Notes.find();
+        sortDep.depend();
+        return Notes.find(searchQuery,{sort: {dateCreated:-1}});
     },
     isLoading: function () {
         return !SubscriptionHandlers.NotesHandler.ready();
@@ -346,5 +356,8 @@ Template.linksAutoForm.events({
     },
     'click #editLinks': function () {
         isEditing.set(true);
+    },
+    'click #editLinksDone': function () {
+        isEditing.set(false);
     }
 });

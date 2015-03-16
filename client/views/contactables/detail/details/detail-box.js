@@ -96,11 +96,13 @@ Template.contactableDetailBox.events = {
         }
 
         contactable.save(function (err) {
-            if (!err) {
-                EditMode.hide();
-//        contactable.reset();
-                GAnalytics.event("/contactable", "Edit contactable details", contactable.getUpdate() != {} ? 'With changes' : 'Without changes');
-            }
+                if (!err) {
+                    EditMode.hide();
+                }
+                else {
+                    alert('contactable save error' + err);
+                    console.log('contactable', contactable);
+                }
         });
     },
     'click #cancel-details': function () {

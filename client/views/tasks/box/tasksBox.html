@@ -2,12 +2,15 @@
     <div class="row">
         <div class="col-md-3">
             <div class="page-title">
-                <h1><span>{{taskCount}}</span> tasks</h1>
+
+                    <h1><span>{{taskCount}}</span> tasks</h1>
+
             </div>
             <div class="filter">
                 <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
                     <strong><i class="fa fa-filter"></i></strong>
                 </a>
+
                 <div class="filter-list" id="filter-body">
                     <div class="filter-item">
                         <div class="filter-title">
@@ -30,7 +33,7 @@
                         <div class="checkbox">
                             <label>
                                 {{#objectProperty property=filters.inactives}}
-                                    <input type="checkbox" checked="{{value}}" />Archived
+                                    <input type="checkbox" checked="{{value}}"/>Archived
                                 {{/objectProperty}}
                             </label>
                         </div>
@@ -70,7 +73,8 @@
                             <div class="input-group">
                             <span class="prop-input">
                                 {{#objectProperty property=filters.searchString editable=true}}
-                                    <input id="searchString" type="text" class="form-control" placeholder="Search network">
+                                    <input id="searchString" type="text" class="form-control"
+                                           placeholder="Search network">
                                     <span class="text" data-status="Inactive"></span>
                                 {{/objectProperty}}
                             </span>
@@ -80,9 +84,10 @@
                                 </button>
                             </span>
                             </div>
-                        </div><!-- /.search-list -->
+                        </div>
+                        <!-- /.search-list -->
 
-                        {{>fastPagination name="tasks" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                        {{>fastPagination name="tasks" useKeys="true" containerClass="magic-pager"}}
                     </div>
 
                     <div class="list-header tasks-list-header">
@@ -94,14 +99,15 @@
 
                     <!-- Entities list -->
                     <div class="list-item-section">
-                        {{#if isLoading}}
-                            <div style="height: 678px;">
-                            </div>
-                        {{else}}
+						{{#if isLoading}}
+							<div style="height: 500px;">
+							</div>
+						{{else}}
                             {{#each tasks}}
                                 {{>taskItem}}
                             {{/each}}
-                        {{/if}}
+						{{/if}}
+
                     </div>
                 </div>
             </div>

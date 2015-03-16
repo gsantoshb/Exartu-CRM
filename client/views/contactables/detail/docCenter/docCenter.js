@@ -11,7 +11,9 @@ var isCreatingAccount = new ReactiveVar(false);
 
 Template.docCenterTab.created = function () {
   isCreatingAccount.set(false);
-}
+
+  Meteor.subscribe('docCenterMergeFields');
+};
 
 
 Template.docCenterTab.helpers({
@@ -93,25 +95,13 @@ Template.sendDocumentsModal.events({
 
     isSending.set(true);
 
-    DocCenter.instantiateDocument(checked, contactable.docCenter.docCenterId, getMergeFieldsValues(), function () {
+    Meteor.call('instantiateDocumentForContactable', checked, contactable.docCenter.docCenterId, Session.get('entityId'), function () {
       isSending.set(false);
       Utils.dismissModal();
       loadInstances();
     });
   }  
 });
-
-var getMergeFieldsValues = function () {
-  var contactable = Contactables.findOne(Session.get('entityId'));
-
-  return [{
-    key: 'firstName',
-    value: contactable.person.firstName
-  },{
-    key: 'lastName',
-    value: contactable.person.lastName
-  }];
-};
 
 //instances list
 
@@ -127,7 +117,8 @@ var loadInstances = function () {
     instances.set(data);
     gettingInstances.set(false);
   })
-}
+};
+
 Template.documentInstances.created = function () {
   loadInstances();
 };

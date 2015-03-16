@@ -2,8 +2,7 @@ Accounts = new Meteor.Collection('docCenterAccounts');
 fs = Npm.require('fs') ;
 path = Npm.require('path') ;
 Future = Npm.require("fibers/future");
-request = Npm.require('request');
-
+request = Npm.require("request");
 
 _.extend(DocCenter,{
   _authkey: 'Tw04ksHr5',
@@ -18,6 +17,7 @@ _.extend(DocCenter,{
       password : account.password
     };
 
+    console.log('\n\nlogin ' + data.username);
     HTTP.post(this._docCenterUrl + '/token', {
       params: data,
       header: {
@@ -25,10 +25,10 @@ _.extend(DocCenter,{
       }
     }, function (err, response) {
       if (err){
-
+        console.error('login error');
         cb(err);
       }else{
-
+        console.log('login success\n');
         Accounts.update(hierId, {
           $set: {
             accessToken : response.data.access_token,
@@ -41,19 +41,19 @@ _.extend(DocCenter,{
       }
     })
   }),
-
+  
   register: Meteor.wrapAsync(function (userName, email, hierId, cb) {
-    //generate a docCenter user
-
     var self = this;
 
+    //generate a docCenter user
     var docCenterUser = {
       UserName: userName,
       Email: email,
       Password: generatePassword(),
-      Hier: hierId,
+      Hier: hierId + '_' + Random.id(),
       Authkey: self._authkey
     };
+
 
 
     var tryRegister = function (intent, originalUsername) {
@@ -64,21 +64,28 @@ _.extend(DocCenter,{
         docCenterUser.UserName = originalUsername + '_' + Random.id(3);
       }
 
-      HTTP.post(self._docCenterUrl + '/api/Account', { data: docCenterUser}, function (err, response) {
+      console.log('docCenterUser.Hier', docCenterUser.Hier);
+      console.log('\n\nregister ' + docCenterUser.UserName);
+
+      HTTP.post(self._docCenterUrl + '/api/Account', { params: docCenterUser}, function (err, response) {
+
         if (err){
           //try with a different username
           if (intent >= 3){
             console.error('Max numbers of retries in register to docCenter');
             cb(err);
           }else{
+            console.log('register failed, retrying....');
             tryRegister(++intent, originalUsername);
           }
         }else {
-          console.log('response', response);
+          //console.log('err');
+          console.log('register success\n');
           Accounts.insert({
             _id: hierId,
             userName: docCenterUser.UserName,
-            password: docCenterUser.Password //todo: encrypt
+            password: docCenterUser.Password, //todo: encrypt
+            docCenterId: docCenterUser.Hier
           });
           cb(null);
         }
@@ -108,13 +115,16 @@ _.extend(DocCenter,{
       decimalPrecision: 1,
       showTime: true
     };
+    console.log('\n\ninsert MF ' + options.key);
 
-    api.post(self._docCenterUrl + '/api/MergeFields', {data: options}, function (err, response) {
+    api.post(self._docCenterUrl + '/api/MergeFields', options, function (err, response) {
       //console.log('cb', response);
 
       if (err){
-        console.error(err);
+        console.error('insert MF failed');
+        cb(err);
       }else{
+        console.log('insert MF success\n');
         cb(null, response.data);
       }
     });
@@ -125,9 +135,23 @@ _.extend(DocCenter,{
    *
    * @param {string} name
    */
-  deleteMergeField: function (name, cb) {
+  deleteMergeField: Meteor.wrapAsync(function (hierId, key, cb) {
+    var account = getAccount(hierId);
+    var self = this;
 
-  },
+    var api = new DocCenterApi(account);
+    console.log('\n\ndelete MF ' + key);
+
+    api.del(self._docCenterUrl + '/api/MergeFields?key=' + key, function (err, response) {
+      if (err){
+        console.error('delete MF failed');
+        cb(err);
+      }else{
+        console.log('delete MF success\n');
+        cb(null, response.data);
+      }
+    });
+  }),
 
   getDocuments: Meteor.wrapAsync(function (hierId, cb) {
     var account = getAccount(hierId);
@@ -141,7 +165,7 @@ _.extend(DocCenter,{
       if (err){
         console.error(err);
       }else{
-        cb(null, response.data);
+        cb(null, response);
       }
     });
   }),
@@ -163,11 +187,12 @@ _.extend(DocCenter,{
       Password: userData.password || generatePassword()
     };
 
-    api.post(self._docCenterUrl + '/api/Users', { data: options }, function (err, response) {
+    api.post(self._docCenterUrl + '/api/Users', options, function (err, result) {
       if (err){
         cb(err);
-      }else{
-        options.docCenterId = response.data;
+      } else {
+        console.log('result', result);
+        options.docCenterId = result;
         cb(null, options);
       }
     });
@@ -177,6 +202,7 @@ _.extend(DocCenter,{
   accountExists: function (id) {
     return Accounts.find(id).count();
   },
+
   getCredentials: function (id) {
     console.log('id', id);
     return Accounts.findOne(id);
@@ -206,13 +232,16 @@ _.extend(DocCenter,{
       initialValues: mergeFieldsValues
     };
 
+    console.log('\n\ninstantiate');
     console.log('option', option);
 
-    api.post(self._docCenterUrl + '/api/DocumentInstances', { data: option }, function (err, response) {
+    api.post(self._docCenterUrl + '/api/DocumentInstances', option, function (err, response) {
       if (err){
+        console.error('instantiate failed');
         cb(err);
       }else{
-        cb(null, response.data);
+        console.log('instantiate success\n');
+        cb(null, response);
       }
     });
   }),
@@ -227,7 +256,22 @@ _.extend(DocCenter,{
       if (err){
         console.error(err);
       }else{
-        cb(null, response.data);
+        cb(null, response);
+      }
+    });
+  }),
+
+  getUserToken: Meteor.wrapAsync(function (hierId, externalId, cb) {
+    var account = getAccount(hierId);
+    var self = this;
+
+    var api = new DocCenterApi(account);
+
+    api.get(self._docCenterUrl + '/api/Token?userId=' + externalId, function (err, response) {
+      if (err) {
+        console.error(err);
+      } else {
+        cb(null, response);
       }
     });
   }),
@@ -256,31 +300,8 @@ _.extend(DocCenter,{
         cb(null, body);
       }
     });
-
-
-    /////////////
-    //  TEST   //
-    /////////////
-
-    //var options = {
-    //    url: 'http://www.analysis.im/uploads/seminar/pdf-sample.pdf',
-    //    encoding: null
-    //};
-    //// Get raw image binaries
-    //request.get(options, function (error, result, body){
-    //
-    //  if (error) {
-    //    return console.error(error);
-    //  }
-    //
-    //  var myPath = '/home/javier';
-    //  var filePath = path.join(myPath, 'pdf-sample.pdf' );
-    //
-    //  var buffer = new Buffer( body );
-    //  fs.writeFileSync( filePath, buffer );
-    //  cb(null, body);
-    //});
   }),
+
   approveDocument: Meteor.wrapAsync(function (hierId, instanceId, cb) {
     var account = getAccount(hierId);
     var self = this;
@@ -288,14 +309,15 @@ _.extend(DocCenter,{
     var api = new DocCenterApi(account);
 
     console.log('approving');
-    api.post(self._docCenterUrl + '/api/DocumentInstancesApprove/approve?documentInstanceId=' + instanceId, function (err, response) {
+    api.post(self._docCenterUrl + '/api/DocumentInstancesApprove/approve?documentInstanceId=' + instanceId, null, function (err, response) {
       if (err){
         console.error(err);
       }else{
-        cb(null, response.data);
+        cb(null, response);
       }
     });
   }),
+
   denyDocument: Meteor.wrapAsync(function (hierId, instanceId, reason, cb) {
     var account = getAccount(hierId);
     var self = this;
@@ -305,78 +327,171 @@ _.extend(DocCenter,{
     var reasonParameter = reason ? '&reason=' + reason : '';
 
     console.log('denying', reason);
-    api.post(self._docCenterUrl + '/api/DocumentInstancesApprove/deny?documentInstanceId=' + instanceId + reasonParameter, function (err, response) {
+    api.post(self._docCenterUrl + '/api/DocumentInstancesApprove/deny?documentInstanceId=' + instanceId + reasonParameter, null,function (err, response) {
       if (err){
         console.error(err);
       }else{
-        cb(null, response.data);
+        cb(null, response);
+      }
+    });
+  }),
+
+  getMergeFields: Meteor.wrapAsync(function (hierId, cb) {
+    var account = getAccount(hierId);
+    var self = this;
+
+    var api = new DocCenterApi(account);
+
+
+    api.get(self._docCenterUrl + '/api/MergeFields', function (err, response) {
+      if (err){
+        console.error(err);
+      }else{
+        cb(null, response);
       }
     });
   })
+
+
 });
 
 var DocCenterApi = function (account) {
   var self = this;
   _.extend(self, account);
 };
+DocCenterApi.prototype.get = function (url, cb) {
+  var self = this;
 
-_.each(['get', 'post'], function (method) {
-  DocCenterApi.prototype[method] = function (/*arguments*/) {
-    var self = this,
-      url = arguments[0],
-      options = arguments[1] && _.isFunction(arguments[1]) ? {} : arguments[1],
-      cb = _.isFunction(arguments[arguments.length - 1]) ? arguments[arguments.length - 1] : function () {
-      };
+  var options = self.getHeaders();
 
-    var authString = getAutorizationString(self);
+  HTTP.get(url, options,  function (err, result) {
+    //catch unauthorized error
+    if (err && err.response.statusCode == 401) {
 
-    //if no token, get one
-    if (!authString) {
+      //login again
       DocCenter.login(self._id);
       _.extend(self, Accounts.findOne(self._id));
-      authString = getAutorizationString(self);
+      var authString = getAutorizationString(self);
+
+
+      //change header
+      options.headers.Authorization = authString;
+
+      HTTP.get(url, options, function (err, result) {
+        if (err) {
+          console.log('>>failed again.. quiting');
+          cb(err);
+        } else {
+          cb(null, result.data);
+        }
+      });
+
+    } else {
+      cb(err, result.data);
     }
+  });
 
-    //add Authorization header
+};
+DocCenterApi.prototype.post = function (url, data, cb) {
+  var self = this;
 
-    options.headers = options.headers || {};
-    options.headers.Authorization = authString;
+  var options = self.getHeaders();
 
-    console.log('>>calling', options);
-
-
-    //make the call
-    HTTP[method](url, options, function (err, response) {
-      //catch unauthorized error
-      //console.log('err',err);
-      if (err && err.response.statusCode == 401) {
-        console.log('>>unauthorized.. retrying');
-
-        //login again
-        DocCenter.login(self._id);
-        _.extend(self, Accounts.findOne(self._id));
-        authString = getAutorizationString(self);
-
-
-        //change header
-        options.headers.Authorization = authString;
-        console.log('>>calling again', options);
-
-        HTTP.get(url, options, function (err, response) {
-          if (err) {
-            console.log('>>failed again.. quiting');
-            cb(err);
-          } else {
-            cb(null, response);
-          }
-        });
-
-      } else {
-        cb(null, response);
-      }
-    })
+  if (data){
+    options.form = data
   }
-});
+
+  var resolve = function (err, body) {
+    if (err){
+      cb(err);
+    }else{
+      if (body){
+        try{
+          cb(null, JSON.parse(body));
+        } catch (e) {
+          cb(e);
+        }
+      }else{
+        cb(null, {});
+      }
+    }
+  };
+
+  request.post(url, options, function (err, result) {
+    //catch unauthorized error
+    if (err && err.response && err.response.statusCode == 401) {
+      //login again
+      DocCenter.login(self._id);
+      _.extend(self, Accounts.findOne(self._id));
+      var authString = getAutorizationString(self);
+
+
+      //change header
+      options.headers.Authorization = authString;
+
+      request.post(url, options, function (err, result) {
+        if (err) {
+          console.err('>>failed again.. quiting');
+          cb(err);
+        } else {
+          resolve(null, result.body);
+        }
+      });
+
+    } else {
+      resolve(err, result.body);
+    }
+  });
+};
+DocCenterApi.prototype.del = function (url, cb) {
+  var self = this;
+
+  var options = self.getHeaders();
+
+  request.del(url, options, function (err, result) {
+    //catch unauthorized error
+    if (err && err.response && err.response.statusCode == 401) {
+      //login again
+      DocCenter.login(self._id);
+      _.extend(self, Accounts.findOne(self._id));
+      var authString = getAutorizationString(self);
+
+
+      //change header
+      options.headers.Authorization = authString;
+
+      request.del(url, options, function (err, result) {
+        if (err) {
+          console.err('>>failed again.. quiting');
+          cb(err);
+        } else {
+          cb(null, result && result.body);
+        }
+      });
+
+    } else {
+      cb(err, result && result.body);
+    }
+  });
+};
+
+DocCenterApi.prototype.getHeaders = function () {
+  var self = this;
+  var authString = getAutorizationString(self);
+
+  //if no token, get one
+  if (!authString) {
+    DocCenter.login(self._id);
+    _.extend(self, Accounts.findOne(self._id));
+    authString = getAutorizationString(self);
+  }
+
+  return {
+    headers:{
+      Authorization: authString
+    }
+  };
+};
 
 
 var generatePassword = function () {
@@ -402,7 +517,6 @@ Meteor.methods({
     return DocCenter.getDocuments(Meteor.user().currentHierId);
   },
   'docCenter.getDocumentInstances': function (externalId) {
-    console.log('externalId', externalId);
     return DocCenter.getDocumentInstances(Meteor.user().currentHierId, externalId);
   },
 
@@ -419,6 +533,7 @@ Meteor.methods({
   'docCenter.getCredentials': function () {
     return DocCenter.getCredentials(Meteor.user().currentHierId);
   },
+  
   'docCenter.approveDocument': function(id){
     return DocCenter.approveDocument(Meteor.user().currentHierId, id);
   },

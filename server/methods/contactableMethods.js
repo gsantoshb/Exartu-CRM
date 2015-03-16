@@ -81,24 +81,100 @@ Meteor.methods({
 
     // Education
     addEducationRecord: function (contactableId, educationInfo) {
-        ContactableManager.addEducationRecord(contactableId, educationInfo);
+      // Validate data
+      check(contactableId, String);
+      check(educationInfo, {
+        institution: String,
+        description: String,
+        degreeAwarded: Match.Optional(String),
+        start: Date,
+        end: Match.Optional(Date)
+      });
+
+      try {
+        return ContactableManager.addEducationRecord(contactableId, educationInfo);
+      } catch (err) {
+        throw new Meteor.Error(err.message);
+      }
     },
-    editEducationRecord: function (contactableId, oldEducationInfo, newEducationInfo) {
-        ContactableManager.editEducationRecord(contactableId, oldEducationInfo, newEducationInfo);
+    editEducationRecord: function (contactableId, educationId, educationInfo) {
+      // Validate data
+      check(contactableId, String);
+      check(educationId, String);
+      check(educationInfo, {
+        institution: String,
+        description: String,
+        degreeAwarded: Match.Optional(String),
+        start: Date,
+        end: Match.Optional(Date)
+      });
+
+      ContactableManager.editEducationRecord(contactableId, educationId, educationInfo);
     },
-    deleteEducationRecord: function (contactableId, educationInfo) {
-        ContactableManager.deleteEducationRecord(contactableId, educationInfo);
+    deleteEducationRecord: function (contactableId, educationId) {
+      // Validate data
+      check(contactableId, String);
+      check(educationId, String);
+
+      try {
+        ContactableManager.deleteEducationRecord(contactableId, educationId);
+      } catch (err) {
+        throw new Meteor.Error(err.message);
+      }
     },
 
     // Past jobs
     addPastJobRecord: function (contactableId, pastJobInfo) {
-        ContactableManager.addPastJobRecord(contactableId, pastJobInfo);
+      // Validate data
+      check(contactableId, String);
+      check(pastJobInfo, {
+        company: String,
+        location: String,
+        position: String,
+        duties: Match.Optional(String),
+        payRate: Match.Optional(Number),
+        supervisor: Match.Optional(String),
+        reasonForLeaving: Match.Optional(String),
+        start: Date,
+        end: Match.Optional(Date),
+        ok2Contact: Boolean
+      });
+
+      try {
+        return ContactableManager.addPastJobRecord(contactableId, pastJobInfo);
+      } catch (err) {
+        throw new Meteor.Error(err.message);
+      }
     },
-    editPastJobRecord: function (contactableId, oldPastJobInfo, newPastJobInfo) {
-        ContactableManager.editPastJobRecord(contactableId, oldPastJobInfo, newPastJobInfo);
+    editPastJobRecord: function (contactableId, pastJobId, pastJobInfo) {
+      // Validate data
+      check(contactableId, String);
+      check(pastJobId, String);
+      check(pastJobInfo, {
+        company: String,
+        location: String,
+        position: String,
+        duties: Match.Optional(String),
+        payRate: Match.Optional(Number),
+        supervisor: Match.Optional(String),
+        reasonForLeaving: Match.Optional(String),
+        start: Date,
+        end: Match.Optional(Date),
+        ok2Contact: Boolean
+      });
+
+      ContactableManager.editPastJobRecord(contactableId, pastJobId, pastJobInfo);
     },
-    deletePastJobRecord: function (contactableId, pastJobInfo) {
-        ContactableManager.deletePastJobRecord(contactableId, pastJobInfo);
+    deletePastJobRecord: function (contactableId, pastJobId) {
+      // Validate data
+      check(contactableId, String);
+      check(pastJobId, String);
+
+      try {
+        ContactableManager.deletePastJobRecord(contactableId, pastJobId);
+      } catch (err) {
+        throw new Meteor.Error(err.message);
+      }
     },
     findClient: function (query) {
         return Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Contactables.find({

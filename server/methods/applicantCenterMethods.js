@@ -39,5 +39,27 @@ Meteor.methods({
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
+  },
+
+  getDocCenterDocuments: function (userId) {
+  // Validate parameters
+    check(userId, String);
+
+    try {
+      return ApplicantCenterManager.getDocCenterDocuments(userId);
+    } catch (err) {
+      throw new Meteor.Error(err.message);
+    }
+  },
+
+  getDocCenterToken: function (userId) {
+    // Validate parameters
+    check(userId, String);
+
+    try {
+      return ApplicantCenterManager.getDocCenterToken(userId);
+    } catch (err) {
+      throw new Meteor.Error(err.message);
+    }
   }
 });

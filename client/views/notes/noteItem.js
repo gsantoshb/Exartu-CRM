@@ -20,10 +20,20 @@ Template.noteItem.helpers({
         return lastWord === -1 ? this.msg : this.msg.substring(0, lastWord) + '...';
     },
     fromEmployee: function () {
-        var e = Contactables.findOne({_id: Session.get('entityId')});
-        if (!e) return false;
-        var empUser= e.userId;
-        return empUser && empUser === this.userId;
+        if (Session.get('entityId'))
+        {
+            var c = Contactables.findOne({_id: Session.get('entityId')});
+            if (c) {
+                var empUser = c.user;
+                return empUser && empUser === this.userId;
+            }
+        }
+
+
+        //var e = Contactables.findOne({_id: Session.get('entityId')});
+        //if (!e) return false;
+        //var empUser= e.userId;
+        //return empUser && empUser === this.userId;
     },
     displayEmployeeName: function () {
         var emp = Contactables.findOne({_id: Session.get('entityId')});
@@ -48,11 +58,11 @@ Template.noteItem.events({
             }],
             callback: function (result) {
                 if (result) {
-                    Notes.remove({_id: id});
+                    Meteor.call('removeNote', id);
                 }
             }
         });
-    },
+    }
     //'click .editNoteRecord': function () {
     //    // Open edit mode
     //    this.isEditing.set(!this.isEditing.get());

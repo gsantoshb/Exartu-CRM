@@ -90,7 +90,6 @@ var addNewContactMethod = function() {
       $('#add-contact-method-error').text('There was an error inserting the contact method. Please try again.');
     } else {
       newContactMethodValue.val('');
-      GAnalytics.event("/contactable", "Add contact method");
     }
   });
 };

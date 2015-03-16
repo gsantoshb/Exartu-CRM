@@ -1,6 +1,3 @@
-var registerPageView = function() {
-//  GAnalytics.pageview(this.path);
-};
 
 Router.configure({
   disableProgressSpinner: true,
@@ -70,8 +67,7 @@ Router.map(function () {
 
   this.route('jobs', {
     path: '/jobs/:type?',
-    controller: 'JobsController',
-    onRun: registerPageView
+    controller: 'JobsController'
   });
 
   this.route('job', {
@@ -82,8 +78,7 @@ Router.map(function () {
 
     this.route('deals', {
         path: '/deals',
-        controller: 'DealsController',
-        onRun: registerPageView
+        controller: 'DealsController'
     });
 
     this.route('addDealPage', {
@@ -140,12 +135,11 @@ Router.map(function () {
   });
 
   this.route('tasks', {
-    path: '/tasks',
+    path: '/tasks/:_id?',
     controller: 'TasksController'
   });
-
   this.route('notes', {
-    path: '/notes',
+    path: '/notes/:_id?',
     controller: 'NotesController'
   });
 
@@ -209,6 +203,10 @@ Router.map(function () {
   //  path: '/management/hrconcourse',
   //  controller: 'hrConcourseManagementController'
   //});
+  this.route('hierarchyMail', {
+    path: '/management/hierarchyMail',
+    controller: 'HierarchyMailController'
+  });
 
   this.route('twilioManagement', {
     path: '/management/twilioManagement',

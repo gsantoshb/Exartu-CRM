@@ -83,6 +83,31 @@ _.extend( Utils, {
 
     return c;
   },
+  //filterCollectionByHier: function(hierId, c, options) {
+  //  options = options || {};
+  //
+  //  var currentHier = hierId;
+  //  if (!currentHier) {
+  //    return [];
+  //  }
+  //
+  //  var hierarchiesQuery = {
+  //    $or: Utils.filterByHiers(currentHier, options.hierIdKeyName)
+  //  };
+  //
+  //  var selector =
+  //    c._cursorDescription.selector;
+  //  if (selector.$or) {
+  //    selector.$and = [];
+  //    selector.$and.push({ $or: selector.$or });
+  //    selector.$and.push(hierarchiesQuery);
+  //    delete selector.$or;
+  //  } else {
+  //    _.extend(selector, hierarchiesQuery);
+  //  }
+  //
+  //  return c;
+  //},
   getLocationDisplayName: function (address) {
     return !address ? '' : (
     (address.address  || '' ) + ' '  +

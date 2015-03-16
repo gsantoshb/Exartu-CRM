@@ -24,7 +24,7 @@
                             loading
                         {{else}}
                             {{#unless isESSearch}}
-                                {{>fastPagination name="placements" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+                                {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}
                             {{/unless}}
                         {{/if}}
                     </div>
@@ -70,7 +70,8 @@
         <div class="input-group">
             <span class="prop-input">
                 {{#objectProperty property=searchString}}
-                    <input id="searchString" type="text" class="form-control" placeholder="Search placements" value="{{value}}">
+                    <input id="searchString" type="text" class="form-control" placeholder="Search placements"
+                           value="{{value}}">
                 {{/objectProperty}}
                 <span class="text text-danger"></span>
             </span>
@@ -104,7 +105,7 @@
         loading
     {{else}}
         {{#unless isESSearch}}
-            {{>fastPagination name="placements" useKeys="true" postRenderCallback="$('.pagination-container').addClass('magic-pager');"}}
+            {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}
         {{/unless}}
     {{/if}}
 </template>
@@ -189,31 +190,28 @@
     {{#if listViewMode}}
         <div class="list-item placements-list-item">
             <div class="list-item-cell placements-list-item-title">
-                <div class="item-title"><a href="/placement/{{_id}}">{{employeeDisplayName}} <i
-                        class="fa fa-long-arrow-right"></i> {{jobDisplayName}}
-                    <span class="item-title-more prefix-10">@ {{clientDisplayName}}</span></a>
-                    <span class="item-label prefix-10">{{lookUpName candidateStatus}}</span>
-                    <span class="item-label">{{lookUpName activeStatus}}</span>
+                <div class="item-title">
+                    <a href="/contactable/{{employee}}">{{employeeDisplayName}}</a>
+                    <i class="fa fa-long-arrow-right"></i>
+                    <a href="/job/{{job}}">{{jobDisplayName}}</a>
                 </div>
+                <span class="item-label prefix-10">{{lookUpName candidateStatus}}</span>
+                <span class="item-label">{{lookUpName activeStatus}}</span>
             </div>
-            <div class="list-item-details placements-list-item-details">
-                <div class="list-item-cell placements-list-item-owner">{{displayUserName userId}}</div>
-                <div class="list-item-cell placements-list-item-time">
-                    {{#if startDate}}
-                            {{#formattedDate value=startDate}}
-                                {{date}}
-                            {{/formattedDate}}
-                    {{/if}}
-                    {{#if endDate}}
-                        {{#if startDate}}&nbsp;&mdash;&nbsp;{{/if}}
-                        {{#formattedDate value=endDate}}
-                            {{date}}
-                        {{/formattedDate}}
-                    {{/if}}
-                </div>
-            </div>
-            <!-- /.list-item-cell -->
         </div>
+        <div class="list-item-details placements-list-item-details">
+            <div class="list-item-cell placements-list-item-owner">{{displayUserName userId}}</div>
+            <div class="list-item-cell placements-list-item-time">
+                {{#if startDate}}
+                    {{formattedDate startDate}}
+                {{/if}}
+                {{#if endDate}}
+                    {{#if startDate}}&nbsp;&mdash;&nbsp;{{/if}}
+                    {{formattedDate endDate}}
+                {{/if}}
+            </div>
+        </div>
+        <!-- /.list-item-cell -->
     {{else}}
         <div class="list-item placements-list-item">
             <div class="list-item-cell list-item-icon">
@@ -222,7 +220,6 @@
             <div class="list-item-cell placements-list-item-title">
                 <div class="item-title"><a href="/contactable/{{employee}}">{{employeeDisplayName}}</a> <i
                         class="fa fa-long-arrow-right"></i> <a href="/job/{{job}}">{{jobDisplayName}}</a></div>
-                <div class="item-subtitle"><a href="/contactable/{{clientId}}">{{clientDisplayName}}</a></div>
                 <div class="item-subtitle-more">
                     {{> placementInformation}}
                 </div>
@@ -235,9 +232,7 @@
                 <div class="list-item-cell placements-list-item-code ">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell placements-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell placements-list-item-time">
-                    {{#formattedDate value=dateCreated format='fromNow'}}
-                        <span>{{date}}</span><br>
-                    {{/formattedDate}}
+                    <span>{{formattedDate dateCreated "fromNow"}}</span><br>
                 </div>
                 <div class="list-item-cell item-overflow placements-item-overflow">
                     <a href="#">
@@ -258,9 +253,7 @@
     <span>
         {{#if startDate}}
             <i class="fa fa-calendar-o"></i>&nbsp;
-            {{#formattedDate value=startDate}}
-                {{date}}
-            {{/formattedDate}}
+            {{formattedDate startDate}}
         {{/if}}
 
         {{#if endDate}}
@@ -269,9 +262,7 @@
             {{else}}
                 &mdash;
             {{/unless}}
-            {{#formattedDate value=endDate}}
-                {{date}}
-            {{/formattedDate}}
+            {{formattedDate endDate}}
         {{/if}}
     </span>
     <br>

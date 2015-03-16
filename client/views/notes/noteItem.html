@@ -28,9 +28,7 @@
                         {{displayUserName userId}}
                     {{/if}}
                 </a>&nbsp;&nbsp;
-                {{#formattedDate value=dateCreated format='fromNow'}}
-                    {{date}}
-                {{/formattedDate}}
+                {{formattedDate dateCreated "fromNow"}}
             </div>
         </div>
         <div class="list-item-details notes-list-item-details">
@@ -40,7 +38,7 @@
                         {{#each links}}
                             <a href="{{getHref}}">
                                 {{#with getEntity}}
-                                    <span class="badge item-label">{{displayName}}</span>
+                                    <span class="badge item-label">{{>showMore text=displayName limit=25}}</span>
                                 {{/with}}
 
                             </a>
@@ -50,9 +48,7 @@
             </div>
             <div class="list-item-cell notes-list-item-edit">
                 <i class="fa fa-clock-o"></i>&nbsp;
-                {{#formattedDate value=dateCreated format='lll'}}
-                    {{date}}
-                {{/formattedDate}}
+                {{formattedDate dateCreated "lll"}}
             </div>
             <div class="list-item-cell item-overflow notes-item-overflow">
 

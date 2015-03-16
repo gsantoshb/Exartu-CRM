@@ -7,27 +7,29 @@
 </template>
 
 <template name="notesTabAdd">
-    <div class="record-add row">
-        <div class="add-box-head add-box-responsive col-xs-12 col-md-3">
-            <div class="add-item-icon"><i class="icon-note-paper-1"></i></div>
-            <div class="add-item-title">Notes</div>
-        </div>
 
-        <div class="add-box-content col-sm-12 col-md-9">
-            {{#autoForm id="AddNoteRecord" schema="NoteSchema" meteormethod="addContactableNote" type="method" resetOnSuccess=true}}
-                {{> afQuickField name='msg' rows=3}}
+    {{#autoForm id="AddNoteRecord" schema="NoteSchema" meteormethod="addContactableNote" type="method" resetOnSuccess=true}}
+        <div class="add-note on-focus" style="margin: 0 !important;">
+            <div class="add-note-header">
+                <div class="item-icon item-icon-xs item-icon-notes"><i class="icon icon-pencil-3"></i></div> <div class="title">Add Note</div>
+            </div><!-- /.add-note-header -->
+
+            {{> afQuickField name='msg' rows=3 placeholder='Write your note here ...' label=false style='box-shadow: none;'}}
+            <div class="add-note-actions">
+                <div class="add-note-actions-cell">
+                    <button class="btn btn-custom-2" type="submit">Save note</button>
+                </div>
+
                 {{#if isContactableNote}}
-                    <div style="visibility:{{isContactableNote}}">
-                        {{> linksAutoForm name='links'}}
-                    </div>
-                    <br/>
-
                     {{#unless userNumbers}}
-                        <small class="text-muted"><a href="/management/twilioManagement">Enable SMS/Texting</a></small>
+                        <div class="add-note-actions-cell">
+                            <a href="/management/twilioManagement"><i class="fa fa-mobile"></i> Enable SMS / Texting</a>
+                        </div>
                     {{else}}
                         {{#unless mobileNumbers}}
-                            <small class="text-muted"> This record has no mobile phone, so SMS/text is not possible
-                            </small>
+                            <div class="add-note-actions-cell">
+                                <small class="text-muted"> This record has no mobile phone, so SMS/text is not possible</small>
+                            </div>
                         {{else}}
                             {{> afQuickField name="sendAsSMS"}}
 
@@ -38,6 +40,18 @@
                             {{/if}}
                         {{/unless}}
                     {{/unless}}
+
+                    <!-- Display note to employee -->
+                    <div class="add-note-actions-cell">
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
+                        </div>
+                    </div>
+
+                    <div class="add-note-actions-cell last" style="visibility:{{isContactableNote}}">
+                        <div class="item-icon item-icon-network item-icon-sm"><i class="icon-profile-business-man"></i></div>
+                        {{> linksAutoForm name='links'}}
+                    </div>
                 {{/if}}
 
                 {{#if isHotListNote}}
@@ -53,10 +67,9 @@
                     {{/unless}}
                 {{/if}}
 
-                <button type="submit" class="btn btn-success pull-right"> Save</button>
-            {{/autoForm}}
+            </div><!-- /.add-note-actions -->
         </div>
-    </div>
+    {{/autoForm}}
 </template>
 
 <template name="notesTabList">
@@ -64,13 +77,13 @@
         {{> fastPagination name="notes"}}
     </div>
 
-        {{#if isLoading}}
-            <div style="min-height: 350px; background: url('/img/spinner.gif') no-repeat center;"></div>
-        {{else}}
-            {{#each items}}
-                {{> notesTabItem}}
-            {{/each}}
-        {{/if}}
+    {{#if isLoading}}
+        <div style="min-height: 350px; background: url('/img/spinner.gif') no-repeat center;"></div>
+    {{else}}
+        {{#each items}}
+            {{> notesTabItem}}
+        {{/each}}
+    {{/if}}
 
 </template>
 
@@ -120,16 +133,14 @@
                     <span id="noteLinkEntity" class="btn btn-md btn-default pull-right">Link</span>
                 </div>
             </div>
-            <br/>
 
             {{#each links}}
-                <button type="button" class="tag btn btn-xs btn-primary">
-                    {{#with getEntity .}}
-                        <span> {{displayName}} </span>
-                    {{/with}}
-                    <i class="remove-link fa fa-times"></i>
-                </button>
+                {{#with getEntity .}}
+                    {{displayName}}
+                    <a class="remove-link" href="javscript:;"><i class="fa fa-times"></i></a>
+                {{/with}}
             {{/each}}
+            <a id="editLinksDone" class="pointer"><strong>Done</strong></a>
 
             {{#if afFieldIsInvalid name=name}}
                 <span class="help-block">{{afFieldMessage name=name}}</span>
@@ -137,15 +148,11 @@
         </div>
 
     {{else}}
-        <div style="padding: 10px 0px;">
-            <a id="editLinks" class="pointer pull-right">Edit links</a>
-            {{#each links}}
-                <button type="button" class="tag btn btn-xs btn-primary">
-                    {{#with getEntity .}}
-                        <span> {{displayName}} </span>
-                    {{/with}}
-                </button>
-            {{/each}}
-        </div>
+        {{#each links}}
+            {{#with getEntity .}}
+                {{displayName}}
+            {{/with}}
+        {{/each}}
+        <a id="editLinks" class="pointer"><strong>Edit links</strong></a>
     {{/if}}
 </template>

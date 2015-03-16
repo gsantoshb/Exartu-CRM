@@ -68,7 +68,6 @@ AutoForm.hooks({
         else {
           Meteor.call('userLoginActivity');
           notVerified.set(false);
-          GAnalytics.event("account","signin");
           if (Router.current().route.getName() === 'login') {
             return Router.go('/');
           }
@@ -111,7 +110,6 @@ Template.login.events({
         else{
           Meteor.call('userLoginActivity');
           Router.go('/');
-          GAnalytics.event("account","signin");
         }
       });
   },
