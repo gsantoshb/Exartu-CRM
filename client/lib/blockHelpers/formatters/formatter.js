@@ -5,7 +5,7 @@ UI.registerHelper('formattedDate', function(date, format) {
       return moment(date).fromNow();
       break;
     default:
-      return moment(date).format(format || 'll');
+      return moment(date).format(_.isString(format) ? format : 'll');
   }
 });
 
