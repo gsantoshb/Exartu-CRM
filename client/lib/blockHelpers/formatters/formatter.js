@@ -5,7 +5,7 @@ UI.registerHelper('formattedDate', function(date, format) {
       return moment(date).fromNow();
       break;
     default:
-      return moment(date).format(format || 'll');
+      return moment(date).format(_.isString(format) ? format : 'll');
   }
 });
 
@@ -15,7 +15,7 @@ UI.registerHelper('htmlEditor', function() {
   template.rendered= function(){
     var editor=this.$('.editor');
 
-    editorInstance = editor.wysihtml5({
+    var editorInstance = editor.wysihtml5({
       "color": true,
       "size": 'xs',
       'html': true,

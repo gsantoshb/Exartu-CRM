@@ -3,12 +3,14 @@ var task;
 var param;
 var singleTaskHandler;
 var currentUrl;
+var collapsedAdvanced;
 
 
 
 //todo: the logic for the linked entities is almost the same in msgs and taskAdd. We should do some template to use it in both places.
 var typeDep = new Tracker.Dependency();
 var linkedDep = new Tracker.Dependency();
+var collapseDep = new Tracker.Dependency();
 var link = function (link) {
     if (_.findWhere(task.links, {
             id: link.id
@@ -81,7 +83,15 @@ var createTask = function (task) {
     ;
 
 Template.addEditTask.helpers({
-
+    iconCollapsed: function(){
+      collapseDep.depend();
+      if(collapsedAdvanced) {
+        return"fa fa-minus";
+      }
+      else{
+        return"fa fa-plus";
+      }
+    },
     addDisabled: function () {
         return addDisabled.get();
     },
@@ -200,6 +210,15 @@ var isValid = function (task, key) {
 };
 
 Template.addEditTask.events({
+    'click #collapsed-btn-group': function(e,ctx){
+      if($('#advanced-info').hasClass("collapse in")){
+        collapsedAdvanced = false;
+      }
+      else if($('#advanced-info').hasClass("collapse")){
+        collapsedAdvanced = true;
+      }
+      collapseDep.changed()
+    },
     'click .accept': function (e, ctx) {
         if (!isValid(task)) {
             return;

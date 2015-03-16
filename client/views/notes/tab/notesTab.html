@@ -50,7 +50,7 @@
 
                     <div class="add-note-actions-cell last" style="visibility:{{isContactableNote}}">
                         <div class="item-icon item-icon-network item-icon-sm"><i class="icon-profile-business-man"></i></div>
-                        {{> linksAutoForm name='links'}}
+                        {{> afFieldInput name='links' type='linkInput'}}
                     </div>
                 {{/if}}
 
@@ -108,9 +108,8 @@
 </template>
 
 <template name="linksAutoForm">
-    {{#if isEditing}}
-        <div data-schema-key="{{name}}" id="links-value"
-             class="{{name}} {{#if afFieldIsInvalid name=name}}has-error{{/if}}">
+    <div data-schema-key="{{name}}" id="links-value" class="{{name}} {{#if afFieldIsInvalid name=name}}has-error{{/if}}">
+        {{#if isEditing}}
             <div class="row">
                 <div class="col-md-5">
                     <select class="form-control" id="noteTypeSelect"
@@ -145,14 +144,16 @@
             {{#if afFieldIsInvalid name=name}}
                 <span class="help-block">{{afFieldMessage name=name}}</span>
             {{/if}}
-        </div>
 
-    {{else}}
-        {{#each links}}
-            {{#with getEntity .}}
-                {{displayName}}&nbsp;&nbsp;
-            {{/with}}
-        {{/each}}
-        <a id="editLinks" class="pointer"><strong>Edit links</strong></a>
-    {{/if}}
+        {{else}}
+            {{#each links}}
+                {{#with getEntity .}}
+                    {{displayName}}&nbsp;&nbsp;
+                {{/with}}
+            {{/each}}
+            <a id="editLinks" class="pointer"><strong>Edit links</strong></a>
+        {{/if}}
+    </div>
+
+>>>>>>> f617022a4e9022d7c90ab5c019f7ba95036de3ee
 </template>
