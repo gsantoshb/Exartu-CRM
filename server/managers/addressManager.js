@@ -4,42 +4,18 @@ AddressManager = {
         if (!addr) {
             throw new Error('Address information is required');
         }
-        console.log('addr', addr);
-        if (addr._id){
-            
-            Contactables.update({
-                _id: addr.linkId,
-                'addresses._id': addr._id
-            }, {
-                $set: {
-                 'addresses.$': addr
-                }
-            });
-
-        } else {
-            console.log('insert');
-
-            addr._id = Meteor.uuid();
-            Contactables.update({
-                _id: addr.linkId
-            },{
-                $push: {
-                    addresses: addr
-                }
-            });
-        }
+        if (addr._id)
+            Addresses.update({_id: addr._id},addr);
+        else
+            return Addresses.insert(addr);
 
     },
     removeAddress: function (id) {
-        if (!id){
-            throw new Error('id is required');
-        }
-        Contactables.update({ 'addresses._id': id }, { $pull: { addresses: { _id: id } } });
+        Addresses.remove({_id: id});
     },
-    getAddress: function (contactableid, addresstype) {
-        var contactable = Contactables.findOne({linkId: contactableid}); // ignore type check for now
-        return contactable.addresses.length ? contactable.addresses[0] : undefined;
+    getAddress: function (contactableid,addresstype) {
+        var addr = Addresses.findOne({linkId:contactableid}); // ignore type check for now
+        return addr;
     }
-
 };
 

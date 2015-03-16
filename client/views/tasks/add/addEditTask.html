@@ -14,7 +14,7 @@
                                 <div class="form-group {{hasError 'msg'}}">
                                     <label class="control-label">Note:</label>
                                     <textarea id="note-input" value="{{msg}}" class="form-control msg input-lg"
-                                              rows="3" placeholder="Add note here..."></textarea>
+                                              rows="6" placeholder="Add note here..."></textarea>
                                     <span>{{error.msg}}</span>
                                 </div>
                             </fieldset>
@@ -26,6 +26,11 @@
                                     {{/dateTimePicker}}
                                 </div>
                             </fieldset>
+                            <div id="collapsed-btn-group" >
+                                <button class="btn btn-sm btn-link" type="button"  data-toggle="collapse" data-target="#advanced-info"><span class={{iconCollapsed}}></span> Advanced</button>
+                            </div>
+                            <br>
+                            <div id="advanced-info" class="collapse">
                             <fieldset>
                                 <div class="form-group end">
                                     <label class="control-label">End:</label>
@@ -63,6 +68,7 @@
                                     </div>
                                 {{/if}}
                             </fieldset>
+                            </div>
 
                             {{else}}
                             not found
