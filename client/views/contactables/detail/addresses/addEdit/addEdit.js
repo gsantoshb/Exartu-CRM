@@ -83,43 +83,27 @@ Template.addressAddEdit.created= function() {
     address.addressTypeId = Utils.getAddressTypeDefault()._id;
     if (self.data.location) address = self.data.location;
 
-    console.log('trying to add hooks');
-
     AutoForm.hooks({
         addressAddEditForm: {
             onSubmit: function (insertDoc, updateDoc, currentDoc) {
                 addDisabled.set(true);
-                var selfautoform=this;
-                var doFormReset = true;
-
-                console.log(insertDoc);
-                console.log(updateDoc);
-                console.log(currentDoc);
-
+                var selfautoform = this;
                 //Copy properties from insert doc into current doc which has lat lng
                 for (var k in insertDoc) currentDoc[k] = insertDoc[k];
-
                 //Set the contactable id on the current doc
                 currentDoc.linkId = Session.get("entityId");
-
-                if(currentDoc._id)
-                    doFormReset = false;
-
                 Meteor.call('addEditAddress', currentDoc, function (err, result) {
                     if (err) {
                         console.log(err);
                     } else {
-                        if(doFormReset){
-                            resetAddress();
-                            selfautoform.resetForm();
-                        }
-                        self.data.callback && self.data.callback();
+                        resetAddress();
+                        selfautoform.resetForm();
+                        addressCreatedCallback && addressCreatedCallback();
                     }
                     selfautoform.done();
+
                 });
                 addDisabled.set(false);
-
-                this.event.preventDefault()
                 return false;
             }
         }
@@ -222,7 +206,7 @@ Template.addressAddEdit.helpers({
 });
 
 Template.addressAddEdit.events({
-   'click .cancel-edit': function(e){
+   'click .cancel-edit': function(){
        $('#addressAddEdit-template').remove();
        return false;
    }

@@ -71,6 +71,8 @@ var setSortField = function (field) {
     selectedSort.set(selected);
 };
 
+var showOnlyName = new ReactiveVar(false);
+
 /**
  * Controller
  */
@@ -637,6 +639,9 @@ Template.contactablesListItem.helpers({
             //dept=" - " + dept
         }
         return dept;
+    },
+    showOnlyName: function(){
+        return (!this.Employee && this.Contact);
     }
 });
 

@@ -11,21 +11,21 @@
 
                 <div class="col-md-10">
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div id="addressAddEdit-template">
+                            {{#if showLocationFromBox}}
 
-                        {{#if showLocationFromBox}}
-                            <div class="panel panel-default">
-                                <div id="address-box" role="tabpanel">
-                                    <div class="panel-body">
-                                        <div id="addressAddEdit-template">
-                                        box type: {{locationFormBoxType}}<br>
-                                        address id:{{loadedAddress._id}}<br>
-                                        {{>addressAddEdit linkId=linkId callback=setNewAddress location=loadedAddress type=locationFormBoxType}}
+                                <div class="panel panel-default">
+                                    <div id="address-box" role="tabpanel">
+                                        <div class="panel-body">
+                                            box type: {{locationFormBoxType}}<br>
+                                            address id:{{loadedAddress._id}}<br>
+                                            {{>addressAddEdit linkId=linkId callback=setNewAddress location=loadedAddress type=locationFormBoxType}}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        {{/if}}
 
+                            {{/if}}
+                        </div>
                         {{#each addresses}}
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="heading-{{_id}}">
