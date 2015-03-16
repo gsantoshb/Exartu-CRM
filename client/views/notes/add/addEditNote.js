@@ -20,21 +20,6 @@ var addDisabled = new ReactiveVar(false);
 
 var noteUpdate = function (cb) {
   if (note._id) {
-    //hacer el update a mano
-
-    //Notes.update({
-    //        _id: note._id
-    //    }, {
-    //        $set: {
-    //            msg: note.msg,
-    //            links: note.links
-    //        }
-    //    },
-    //    function () {
-    //        if (cb)
-    //            cb();
-    //    }
-    //);
     Meteor.call('updateNote', note);
   }
 };
@@ -62,13 +47,6 @@ Template.addEditNote.helpers({
     return !!note._id;
   },
   note: function () {
-    //if (!note) {
-    //    var param = {};
-    //    if (this) {
-    //        param = this[0]
-    //    }
-    //    note = createNote(param);
-    //}
     noteDep.depend();
     return note;
   },
