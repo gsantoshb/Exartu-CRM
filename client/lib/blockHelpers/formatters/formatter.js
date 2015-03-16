@@ -15,7 +15,7 @@ UI.registerHelper('htmlEditor', function() {
   template.rendered= function(){
     var editor=this.$('.editor');
 
-    editorInstance = editor.wysihtml5({
+    var editorInstance = editor.wysihtml5({
       "color": true,
       "size": 'xs',
       'html': true,
