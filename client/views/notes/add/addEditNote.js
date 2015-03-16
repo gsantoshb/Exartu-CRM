@@ -65,13 +65,6 @@ Template.addEditNote.helpers({
     return !!note._id;
   },
   note: function () {
-    //if (!note) {
-    //    var param = {};
-    //    if (this) {
-    //        param = this[0]
-    //    }
-    //    note = createNote(param);
-    //}
     noteDep.depend();
     return note;
   },
