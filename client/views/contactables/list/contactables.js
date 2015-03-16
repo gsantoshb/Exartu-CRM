@@ -82,7 +82,6 @@ ContactablesController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function () {
         if (!SubscriptionHandlers.AuxContactablesHandler) {
-            console.log('auxcont')
             SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
 
             return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler, Meteor.subscribe('singleHotList', Session.get('hotListId'))];
@@ -236,7 +235,6 @@ Template.contactables.isESSearch = function () {
  */
 Template.contactablesList.created = function () {
     Meteor.autorun(function (c) {
-        console.log('autorun cont')
         var urlQuery = new URLQuery();
         var searchQuery = {
             $and: [] // Push each $or operator here

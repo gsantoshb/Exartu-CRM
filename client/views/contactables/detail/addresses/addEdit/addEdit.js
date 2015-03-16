@@ -109,8 +109,6 @@ Template.addressAddEdit.created = function() {
     }else{
         address.addressTypeId = Utils.getAddressTypeDefault()._id;
     }
-    //if (self.data.location) address=self.data.location;
-console.log('form created');
     addressCreatedCallback = self.data.callback;
 };
 

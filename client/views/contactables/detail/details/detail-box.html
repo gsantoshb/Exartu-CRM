@@ -18,6 +18,28 @@
                         <div class="col-md-6">
                             <ul class="list-type-5">
                                 {{#with contactable }}
+                                    <li>
+                                        <div class="left-part">Process Status</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=status editable=editMode}}
+                                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                            {{else}}
+                                                <strong>
+                                                    <strong>{{displayName}}</strong>
+                                                </strong>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="left-part">Status note</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=statusNote editable=editMode}}
+                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{else}}
+                                                <span>{{value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
                                     {{#if person }}
                                         <li>
                                             <div class="left-part">First name</div>
@@ -92,33 +114,7 @@
                                             </div>
                                         </li>
 
-                                        <li>
-                                            <div class="left-part">Process Status</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=status editable=editMode}}
-                                                    {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                                                {{else}}
-                                                    <strong>
-                                                        <strong>{{displayName}}</strong>
-                                                        {{#if value}}
-                                                            {{formattedDate value "MMMM DD, YYYY"}}
-                                                        {{else}}
-                                                            <!--Not set-->
-                                                        {{/if}}
-                                                    </strong>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="left-part">Status note</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=statusNote editable=editMode}}
-                                                    <input class="form-control" type="text" value="{{value}}">
-                                                {{else}}
-                                                    <span>{{value}}</span>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
+
                                     {{/if}}
 
 
