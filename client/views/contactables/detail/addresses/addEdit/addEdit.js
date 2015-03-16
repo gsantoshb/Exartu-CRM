@@ -129,7 +129,7 @@ Template.addressAddEdit.created= function() {
 Template.addressAddEdit.rendered = function () {
     var self = this;
     resetAddress();
-console.log('re-rendering');
+
     var inputElement = this.$('.locationSearchInput')[0];
     var autocomplete = new google.maps.places.Autocomplete(inputElement, {types: ['geocode']});
     // When the user selects an address from the dropdown this event is raised
@@ -210,10 +210,6 @@ Template.addressAddEdit.helpers({
             return "insert";
         }
     },
-    //testAddress: function(){
-    //    testAddress.set( Session.get( 'address' ) );
-    //    return testAddress.get();
-    //},
     getAddressTypes: function () {
         addressTypes = Utils.getAddressTypes();
         return _.map(addressTypes, function (addresstype) {
@@ -223,4 +219,11 @@ Template.addressAddEdit.helpers({
     addDisabled: function () {
         return addDisabled.get();
     }
+});
+
+Template.addressAddEdit.events({
+   'click .cancel-edit': function(e){
+       $('#addressAddEdit-template').remove();
+       return false;
+   }
 });

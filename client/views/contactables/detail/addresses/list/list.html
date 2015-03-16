@@ -16,9 +16,11 @@
                             <div class="panel panel-default">
                                 <div id="address-box" role="tabpanel">
                                     <div class="panel-body">
+                                        <div id="addressAddEdit-template">
                                         box type: {{locationFormBoxType}}<br>
                                         address id:{{loadedAddress._id}}<br>
                                         {{>addressAddEdit linkId=linkId callback=setNewAddress location=loadedAddress type=locationFormBoxType}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
