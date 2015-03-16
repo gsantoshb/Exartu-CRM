@@ -8,7 +8,6 @@ Template.locationSearchInput.rendered = function () {
   google.maps.event.addListener(autocomplete, 'place_changed', function () {
     var place = autocomplete.getPlace();
     //Convert the place from google to our address and call the callback
-
     self.data.onChange(placeToAddress(place));
 
   });

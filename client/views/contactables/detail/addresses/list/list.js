@@ -1,11 +1,8 @@
 /**
  * Created by visualaram on 1/27/15.
  */
-//var showLocationEditBox = new ReactiveVar(false);
-//var showLocationAddBox = new ReactiveVar(false);
-
 var locationFormBoxType = new ReactiveVar(); // possible values: insert & update
-var showLocationFromBox = new ReactiveVar(false);
+var showLocationFormBox = new ReactiveVar(false);
 var newLocationButtonIcon = new ReactiveVar('fa-plus');
 
 var loadedAddress = new ReactiveVar({});
@@ -16,33 +13,23 @@ Template.addressList.helpers({
     addresses: function () {
         var addresses = Addresses.find({'linkId': Session.get('entityId')});
         addressesDep.depend();
-        //console.log(addresses);
         return addresses;
     },
     getAddressTypeDisplayName: function () {
         var lkp = LookUps.findOne({_id: this.addressTypeId});
         return lkp.displayName;
     },
-    setNewAddress: function () {
-        //debugger;
+    setNewAddress: function (error, result) {
         return function () {
             addressesDep.changed();
-            //showLocationEditBox.set(false);
-            //showLocationAddBox.set(false);
             locationFormBoxType.set('update');
         }
     },
-    //showLocationEditBox: function () {
-    //    return showLocationEditBox.get();
-    //},
-    //showLocationAddBox: function () {
-    //    return showLocationAddBox.get();
-    //},
     locationFormBoxType: function() {
       return locationFormBoxType.get();
     },
-    showLocationFromBox: function() {
-        return showLocationFromBox.get();
+    showLocationFormBox: function() {
+        return Session.get( 'showLocationFormBox' );
     },
     newLocationButtonIcon: function() {
         return newLocationButtonIcon.get();
@@ -78,8 +65,6 @@ Template.addressList.events({
         var location = this;
         newLocationButtonIcon.set('fa-plus');
 
-        //console.log( Session.get( 'address' ) );
-
         if( locationFormBoxType.get() == 'update' ){
             locationFormBoxType.set(undefined);
             loadedAddress.set({});
@@ -87,22 +72,25 @@ Template.addressList.events({
 
         locationFormBoxType.set('update');
         loadedAddress.set(location);
-        showLocationFromBox.set(true);
+        //showLocationFormBox.set(true);
+        Session.set( 'showLocationFormBox',  true);
     },
     'click #create-address-mode': function () {
-        //showLocationAddBox.set(!showLocationAddBox.get());
-        //showLocationAddBox.set(true);
         if( locationFormBoxType.get() == 'insert' ){
             locationFormBoxType.set(undefined);
-            showLocationFromBox.set(false);
+            //showLocationFormBox.set(false);
+            Session.set( 'showLocationFormBox',  false);
             newLocationButtonIcon.set('fa-plus');
         }
         else{
+
             locationFormBoxType.set('insert');
-            showLocationFromBox.set(true);
+            //showLocationFormBox.set(true);
+            Session.set( 'showLocationFormBox',  true);
             newLocationButtonIcon.set('fa-remove');
             loadedAddress.set({});
         }
 
+        Session.set( 'address', loadedAddress.get() );
     }
 });

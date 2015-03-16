@@ -3,6 +3,7 @@
     {{>locationSearchInput searchInputOptions}}
 
     {{#autoForm id='addressAddEditForm' type=formType schema="LocationSchema" collection="Addresses" validation="blur" doc=address}}
+        and type is: {{formType}}<br>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group {{#if afFieldIsInvalid name='address'}}has-error{{/if}}">

@@ -170,29 +170,35 @@
                     <h3>Hotlists</h3>
                 </div><!-- /.col-md-2 -->
                 <div class="col-md-10">
+                    {{#if hotListMemberships}}
+                        <div class="row">
+                            {{#each hotListMemberships}}
+                                <div class="col-md-6">
+                                    <div class="card-item">
+                                        {{#if editHotlistMode}}
+                                            <div class="card-options">
+                                                <a class="remove-tag removeHotList pointer"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        {{/if}}
+
+                                        <a class="item-icon item-icon-hotlist item-icon-sm" href="/hotlist/{{_id}}">
+                                            <i class="icon-list-4"></i>
+                                        </a>
+                                        <div class="card-title">
+                                            <a href="/hotlist/{{_id}}">{{displayName}} <span>– {{_id}} </span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{/if}}
+
                     <div class="row">
                         {{#with recentHotList}}
                             <button type="button" class="btn btn-success addHotList" title="Add">
                                 <span class="fa fa-plus"></span> Add: {{hotListDisplayName}} ({{hotListId}})
                             </button>
                         {{/with}}
-                    </div>
-
-                    <div class="row">
-                        <ul class="list-3 stripped">
-                            {{#each hotListMemberships}}
-                                <li>
-                                    <span class="btn btn-custom-1 btn-custom-sm">
-                                        <a href="/hotlist/{{_id}}">
-                                            <span><strong>{{displayName}}</strong> @ {{_id}}</span>
-                                        </a>
-                                        {{#if editHotlistMode}}
-                                            &nbsp;<i class="fa fa-times remove-tag removeHotList"></i>
-                                        {{/if}}
-                                    </span>
-                                </li>
-                            {{/each}}
-                        </ul>
                     </div>
                 </div>
             </div>
