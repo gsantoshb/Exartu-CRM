@@ -333,6 +333,13 @@
     {{#if listViewMode}}
         <tr>
             <td>
+            {{#if isNullNote}}
+                <i class="fa fa-trash-o"></i>
+
+                     <strong>Deleted note</strong>
+
+                {{>suffixListDisplay}}
+            {{else}}
 
                 <i class="icon icon-note-paper-1"></i>
 
@@ -349,8 +356,10 @@
                 {{/with}}
 
                 {{>suffixListDisplay}}
+            {{/if}}
             </td>
         </tr>
+
     {{else}}
         <div class="item item-task">
             <div class="item-info">

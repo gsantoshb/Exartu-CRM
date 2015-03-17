@@ -27,6 +27,9 @@ Template.newContactableActivity.helpers({
 });
 
 Template.newNoteActivity.helpers({
+    isNullNote: function(){
+        return Notes.findOne(this.entityId) == null;
+    },
     note: function () {
         return Notes.findOne(this.entityId);
     },
