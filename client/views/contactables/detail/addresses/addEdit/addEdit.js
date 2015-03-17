@@ -109,6 +109,8 @@ Template.addressAddEdit.created = function() {
     }else{
         address.addressTypeId = Utils.getAddressTypeDefault()._id;
     }
+    if (self.data.location) address=self.data.location;
+
     addressCreatedCallback = self.data.callback;
 };
 
@@ -118,22 +120,8 @@ Template.addressAddEdit.rendered = function () {
 
 Template.addressAddEdit.helpers({
     address: function () {
-        address = Session.get( 'address' );
+        addressDep.depend();
         return address;
-    },
-    formType: function () {
-        if (address._id) {
-            formType.set("update");
-        } else {
-            formType.set("insert");
-        }
-        return formType.get();
-    },
-    getAddressTypes: function () {
-        addressTypes = Utils.getAddressTypes();
-        return _.map(addressTypes, function (addresstype) {
-            return {label: addresstype.displayName, value: addresstype._id};
-        });
     },
     addDisabled: function () {
         return addDisabled.get();
@@ -141,12 +129,14 @@ Template.addressAddEdit.helpers({
     searchInputOptions: function () {
         return {
             onChange: function (selectedAddress) {
-                resetAddress();
+                //resetAddress();
                 // keep address type
                 selectedAddress.addressTypeId = address.addressTypeId;
                 address = selectedAddress;
                 addressDep.changed();
+
                 //AutoForm.invalidateFormContext("addressAddEditForm");
+
             }
         };
     }
