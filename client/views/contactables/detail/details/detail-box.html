@@ -3,170 +3,142 @@
     <section class="box-type-2">
         <div class="box-type-2-content">
             <div class="row">
-
                 <div class="col-md-2">
                     <div class="box-options">
                         <a class="action-btn" id="edit-mode" href="#"><i class="fa fa-pencil"></i></a>
                     </div>
                     <h3>Details</h3>
-                    <!--<div class="edit-btn"><a id="edit-mode" href="#"><i class="fa fa-pencil"></i>-->
-                        <!--Edit </a>-->
-                    <!--</div>-->
+
+
                 </div>
+
                 <div class="col-md-10">
                     <div class="row">
-                        <div class="col-md-6">
-                            <ul class="list-type-5">
-                                {{#with contactable }}
+                        {{#with contactable }}
+                            <div class="col-md-6">
+                        <ul class="list-type-5">
+
+                                {{#if person }}
                                     <li>
-                                        <div class="left-part">Process Status</div>
+                                        <div class="left-part">First name</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=status editable=editMode}}
-                                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                                            {{else}}
-                                                <strong>
-                                                    <strong>{{displayName}}</strong>
-                                                </strong>
-                                            {{/objectProperty}}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">Status note</div>
-                                        <div class="right-part">
-                                            {{#objectProperty property=statusNote editable=editMode}}
+                                            {{#objectProperty property=firstName editable=editMode}}
                                                 <input class="form-control" type="text" value="{{value}}">
                                             {{else}}
                                                 <span>{{value}}</span>
                                             {{/objectProperty}}
                                         </div>
                                     </li>
-                                    {{#if person }}
-                                        <li>
-                                            <div class="left-part">First name</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=firstName editable=editMode}}
-                                                    <input class="form-control" type="text" value="{{value}}">
-                                                {{else}}
-                                                    <span>{{value}}</span>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-
-                                        <li>
-                                            <div class="left-part">Last name</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=lastName editable=editMode}}
-                                                    <input class="form-control" type="text" value="{{value}}">
-                                                {{else}}
-                                                    <span>{{value}}</span>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-
-                                        <li>
-                                            <div class="left-part">Middle name</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=middleName editable=editMode}}
-                                                    <input class="form-control" type="text" value="{{value}}">
-                                                {{else}}
-                                                    <span>{{value}}</span>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-
-                                        <li>
-                                            <div class="left-part">Job title</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=jobTitle editable=editMode}}
-                                                    <input class="form-control" type="text" value="{{value}}">
-                                                {{else}}
-                                                    <span>{{value}}</span>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-                                        <!--<li>-->
-                                        <!--<div class="left-part">Birth Date</div>-->
-                                        <!--<div class="right-part">-->
-                                            <!--{{#objectProperty property=birthDate editable=editMode}}-->
-                                        <!--{{>bootstrap3DatePicker value=value options=datePickerOptions}}-->
-                                            <!--{{else}}-->
-                                        <!--<strong>-->
-                                            <!--{{#if value}}-->
-                                                <!--{{#formattedDate value=value format='MMMM DD, YYYY'}}-->
-                                                <!--{{date}}-->
-                                                    <!--{{/formattedDate}}-->
-                                                <!--{{else}}-->
-                                            <!--&lt;!&ndash;Not set&ndash;&gt;-->
-                                                <!--{{/if}}-->
-                                        <!--</strong>-->
-                                            <!--{{/objectProperty}}-->
-                                        <!--</div>-->
-                                        <!--</li>-->
-
-                                        <li>
-                                            <div class="left-part">Active Status</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=activeStatus editable=editMode}}
-                                                    {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                                                {{else}}
-                                                        <strong>{{displayName}}</strong>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-
-
-                                    {{/if}}
-
-
-                                    {{#if organization }}
-                                        <li>
-                                            <div class="left-part">Organization</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=organizationName editable=editMode}}
-                                                    <input class="form-control" type="text" value="{{value}}">
-                                                {{else}}
-                                                    <span>{{value}}</span>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-                                    {{/if}}
-
-                                    {{#if Client }}
-                                        <li>
-                                            <div class="left-part">Department</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=department editable=editMode}}
-                                                    <input class="form-control" type="text" value="{{value}}">
-                                                {{else}}
-                                                    <span>{{value}}</span>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-                                    {{/if}}
-                                {{/with}}
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <ul class="list-type-5">
-                                {{#with contactable }}
-                                    {{#if lostClient}}
-                                        <li>
-                                            <div class="left-part">Lost Reason</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=lostReason editable=editMode}}
-                                                    {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                                                {{else}}
-                                                    <strong>
-                                                        <strong>{{displayName}}</strong>
-                                                    </strong>
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-                                    {{/if}}
                                     <li>
-                                        <div class="left-part">How heard of</div>
+                                        <div class="left-part">Last name</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=howHeardOf editable=editMode}}
+                                            {{#objectProperty property=lastName editable=editMode}}
+                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{else}}
+                                                <span>{{value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="left-part">Middle name</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=middleName editable=editMode}}
+                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{else}}
+                                                <span>{{value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="left-part">Job title</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=jobTitle editable=editMode}}
+                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{else}}
+                                                <span>{{value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="left-part">Birth Date</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=birthDate editable=editMode}}
+                                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                            {{else}}
+                                                <strong>
+                                                    {{#if value}}
+                                                        {{formattedDate value "MMMM DD, YYYY"}}
+                                                    {{else}}
+                                                        <!--Not set-->
+                                                    {{/if}}
+                                                </strong>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                {{/if}}
+
+
+                                {{#if organization }}
+                                    <li>
+                                        <div class="left-part">Organization</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=organizationName editable=editMode}}
+                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{else}}
+                                                <span>{{value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                {{/if}}
+
+                                {{#if Client }}
+                                    <li>
+                                        <div class="left-part">Department</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=department editable=editMode}}
+                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{else}}
+                                                <span>{{value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                {{/if}}
+
+
+                                <li>
+                                    <div class="left-part">Active Status</div>
+                                    <div class="right-part">
+                                        {{#objectProperty property=activeStatus editable=editMode}}
+                                            {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                        {{else}}
+                                            <strong>
+                                                <strong>{{displayName}}</strong>
+                                            </strong>
+                                        {{/objectProperty}}
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="left-part">Process Status</div>
+                                    <div class="right-part">
+                                        {{#objectProperty property=status editable=editMode}}
+                                            {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                        {{else}}
+                                            <strong>
+                                                <strong>{{displayName}}</strong>
+                                            </strong>
+                                        {{/objectProperty}}
+                                    </div>
+                                </li>
+                        </ul>
+                    </div>
+                            <div class="col-md-6">
+                            <ul class="list-type-5">
+                                {{#if lostClient}}
+                                    <li>
+                                        <div class="left-part">Lost Reason</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=lostReason editable=editMode}}
                                                 {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                             {{else}}
                                                 <strong>
@@ -175,56 +147,87 @@
                                             {{/objectProperty}}
                                         </div>
                                     </li>
+                                {{/if}}
 
-                                    {{#if Employee }}
-                                        <li>
-                                            <div class="left-part">TaxID/SSN</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=taxID editable=editMode}}
-                                                    {{> showTaxIdInput}}
+                                <li>
+                                    <div class="left-part">Status note</div>
+                                    <div class="right-part">
+                                        {{#objectProperty property=statusNote editable=editMode}}
+                                            <input class="form-control" type="text" value="{{value}}">
+                                        {{else}}
+                                            <span>{{value}}</span>
+                                        {{/objectProperty}}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="left-part">How heard of</div>
+                                    <div class="right-part">
+                                        {{#objectProperty property=howHeardOf editable=editMode}}
+                                            {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                        {{else}}
+                                            <strong>
+                                                <strong>{{displayName}}</strong>
+                                            </strong>
+                                        {{/objectProperty}}
+                                    </div>
+                                </li>
+
+                                {{#if Employee }}
+                                    <li>
+                                        <div class="left-part">TaxID/SSN</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=taxID editable=editMode}}
+                                                {{> showTaxIdInput}}
+                                            {{else}}
+                                                {{#if hideTaxID}}
+                                                    <a class="pointer showHideTaxId">Show</a>
                                                 {{else}}
-                                                    {{#if hideTaxID}}
-                                                        <a class="pointer showHideTaxId">Show</a>
-                                                    {{else}}
-                                                        {{#if value}}
-                                                            <!--<span id="taxid-text">{{value}}</span> <a class="pointer showHideTaxId">Hide</a>-->
-                                                            {{> showTaxIdText}}
-                                                        {{/if}}
+                                                    {{#if value}}
+                                                        <!--<span id="taxid-text">{{value}}</span> <a class="pointer showHideTaxId">Hide</a>-->
+                                                        {{> showTaxIdText}}
                                                     {{/if}}
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-                                    {{/if}}
-                                    {{#if Client}}
-                                        <li>
-                                            <div class="left-part">WorkerComp</div>
-                                            <div class="right-part">
-                                                {{#objectProperty property=workerCompCode editable=editMode}}
-                                                    <input class="form-control" placeholder="Example: TX8810..."
-                                                           type="text"
-                                                           value="{{value}}">
-                                                {{else}}
-                                                    {{value}}
-                                                {{/objectProperty}}
-                                            </div>
-                                        </li>
-                                    {{/if}}
-                                {{/with}}
-                                {{#with originalContactable}}
-                                    {{>displayOriginDataInline}}
-                                {{/with}}
-                            </ul>
+                                                {{/if}}
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                {{/if}}
+                                {{#if Client}}
+                                    <li>
+                                        <div class="left-part">WorkerComp</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=workerCompCode editable=editMode}}
+                                                <input class="form-control" placeholder="Example: TX8810..."
+                                                       type="text"
+                                                       value="{{value}}">
+                                            {{else}}
+                                                {{value}}
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                {{/if}}
+
+
+                                    {{#with originalContactable}}
+                                        {{>displayOriginDataInline}}
+                                    {{/with}}
+                                </ul>
                         </div>
+                        {{/with}}
+
+
                     </div>
+                    <!-- /.col-md-6 -->
+
+                    {{#if editMode }}
+                        <div class="col-md-12">
+                            <div class="box-header-2">
+                                <a id="cancel-details" class="btn btn-default"> Cancel </a>
+                                <a id="save-details" class="btn btn-success pull-right"> Save </a>
+                            </div>
+                        </div>
+                    {{/if}}
                 </div>
-                {{#if editMode }}
-                    <div class="col-md-12">
-                        <div class="box-header-2">
-                            <a id="cancel-details" class="btn btn-default"> Cancel </a>
-                            <a id="save-details" class="btn btn-success pull-right"> Save </a>
-                        </div>
-                    </div>
-                {{/if}}
+
             </div>
         </div>
     </section>
