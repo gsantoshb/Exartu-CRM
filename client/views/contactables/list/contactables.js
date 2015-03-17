@@ -226,9 +226,11 @@ ContactablesController = RouteController.extend({
     }
 });
 
-Template.contactables.isESSearch = function () {
-    return !_.isEmpty(query.searchString.value);
-};
+Template.contactables.helpers({
+    isESSearch: function () {
+        return !_.isEmpty(query.searchString.value);
+    }
+});
 
 /**
  * Callbacks
