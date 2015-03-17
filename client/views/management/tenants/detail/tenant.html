@@ -37,15 +37,15 @@
                 <h1 class="box-title">Tenant Users: ({{usersCount}})</h1>
                 {{#each users}}
                     <div class="table-items-box">
-                        <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
+                        <div class="table-item">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <div class="table-item-cell" data-bind="foreach: $data.emails">
+                                    <div class="table-item-cell">
                                         <a href="/tenantUser/{{_id}}">{{_id}}</a>
                                     </div>
                                 </div>
                                 <div class="col-xs-3">
-                                    <div class="table-item-cell" data-bind="foreach: $data.emails">
+                                    <div class="table-item-cell">
                                         {{#each emails}}
                                             <a href="mailto:{{address}}">
                                                 {{address}}
@@ -76,7 +76,7 @@
                 <div class="table-items-box">
 
                     {{#each activities}}
-                        <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
+                        <div class="table-item">
                             <div class="row">
                                 <div class="col-xs-6">
                                     {{#with data}}

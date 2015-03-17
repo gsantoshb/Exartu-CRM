@@ -101,7 +101,7 @@
                     title="Add">
                 <span class="fa fa-plus"></span>  {{_ "Add"}}
             </button>
-            <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
+            <ul class="dropdown-menu" role="menu">
                 {{#each contactableTypes}}
                     <li><a href="/contactableAdd/{{name}}">{{_ "Add"}} {{name}}</a></li>
                 {{/each}}
@@ -254,10 +254,8 @@
                         <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                             <i class="icon-connection-1 text-large"></i>
 
-                            <a href="#"
-                               data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
-                        <span class="bullet-spacer"
-                              data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
+                            <a href="#" ></a>
+                        <span class="bullet-spacer">·</span>
                         </div>
                     </div>
                 {{/if}}
