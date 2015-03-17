@@ -9,48 +9,48 @@ UI.registerHelper('objectProperty', function() {
   switch(self.property.fieldType) {
     case Utils.ReactivePropertyTypes.array:
       template = Template.object_property_multiple;
-      template.values = function() {
+      template.helpers({values: function() {
         return this.property.value;
-      };
+      }});
       break;
     case  Utils.ReactivePropertyTypes.lookUp:
       template = Template.object_property_lookup;
-      template.isEditable = function() {
+      template.helpers({isEditable: function() {
         return self.editable;
-      }
+      }});
       break;
     case  Utils.ReactivePropertyTypes.date:
       template = Template.object_property_date;
-      template.isEditable = function() {
+      template.helpers({isEditable: function() {
         return self.editable;
-      }
+      }});
       break;
     case Utils.ReactivePropertyTypes.boolean:
       template = Template.object_property_checkbox;
-      template.value = function() {
+      template.helpers({value: function() {
         return this.property.value;
-      };
+      }});
       break;
     default:{
       if (self.editable !== undefined) {
         template = Template.object_property_single_editable;
-        template.isEditable = function() {
+        template.helpers({isEditable: function() {
           return self.editable;
-        }
+        }});
       }
       else
         template = Template.object_property_single;
       }
-      template.error = function() {
+      template.helpers({error: function() {
         if (_.isObject(this.property.error)){
           return this.property.error.hasError? this.property.error.message : ''
         }else{
           return this.property.error;
         }
-      };
-      template.hasError= function(){
+      }});
+      template.helpers({hasError: function(){
         return !this.property.error.hasError? '': 'object-property-error';
-      };
+      }});
   }
 
   return template;
