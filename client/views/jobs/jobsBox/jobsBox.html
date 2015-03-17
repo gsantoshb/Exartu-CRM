@@ -106,7 +106,9 @@
         loading
     {{else}}
         {{#unless isESSearch}}
-            {{>fastPagination name="jobs" useKeys="true" containerClass="magic-pager"}}
+            {{#if initialized}}
+                {{>fastPagination name="jobs" useKeys="true" containerClass="magic-pager"}}
+            {{/if}}
         {{/unless}}
     {{/if}}
 </template>
