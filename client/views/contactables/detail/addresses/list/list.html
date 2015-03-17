@@ -3,91 +3,45 @@
         <div class="box-type-2-content">
             <div class="row">
                 <div class="col-md-2">
+                    <div class="box-options">
+                        <a id="create-address-mode" class="action-btn pointer"><i class="fa {{newLocationButtonIcon}}"></i></a>&nbsp;
+                    </div>
                     <h3>Addresses</h3>
-                    <div class="edit-btn"><a id="create-address-mode" href="#"><i class="fa fa-pencil"></i> Edit </a></div>
                 </div><!-- /.col-md-2 -->
 
                 <div class="col-md-10">
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div id="addressAddEdit-template">
+                            {{#if showLocationFormBox}}
 
-                    {{#if showLocationAddBox}}
-                        {{>addressAddEdit linkId=linkId callback=setNewAddress }}
-                    {{/if}}
-
-                    {{#each addresses}}
-                    <div class="row">
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="left-part"><h5>{{getAddressTypeDisplayName }}</h5></div>
-                            </div>
-                            <div class="col-md-6">
-                                <ul class="list-type-5">
-                                    <li>
-                                        <div class="left-part">Address 1</div>
-                                        <div class="right-part">{{address}}</div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">Address 2</div>
-                                        <div class="right-part">{{address2}}</div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">City</div>
-                                        <div class="right-part">{{city}}</div>
-                                    </li>
-
-                                </ul>
-                            </div><!-- /.col-md-6 -->
-                            <div class="col-md-6">
-                                <ul class="list-type-5">
-                                    <li>
-                                        <div class="left-part">State</div>
-                                        <div class="right-part">{{state}}</div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">Country</div>
-                                        <div class="right-part">{{country}}</div>
-                                    </li>
-                                    <li>
-                                        <div class="left-part">Postal Code</div>
-                                        <div class="right-part">{{postalCode}}</div>
-                                    </li>
-                                </ul>
-                            </div><!-- /.col-md-6 -->
-                        </div><!-- /.row -->
-
-                        <li class="list-3-item">
-                            <div class="list-3-content list-magic">
-                                <div class="list-3-content-wrap">
-                                    <h4 class="list-3-item-meta-top">{{getAddressTypeDisplayName }}</h4>
-                                    <h4 class="list-3-item-title">{{address}} {{city}}, {{state}} {{country}}</h4>
-
-                                    <div class="list-3-actions">
-                                        <a class="editAddressRecord pointer"><i class="fa fa-edit"></i> Edit</a>
-                                        {{#if isAdmin}}
-                                            <span class="bullet-spacer">·</span>
-                                            <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
-                                        {{/if}}
+                                <div class="panel panel-default">
+                                    <div id="address-box" role="tabpanel">
+                                        <div class="panel-body">
+                                            {{>addressAddEdit linkId=linkId callback=setNewAddress location=loadedAddress type=locationFormBoxType}}
+                                        </div>
                                     </div>
-                                    {{#if showLocationEditBox}}
-                                        {{>addressAddEdit linkId=linkId  callback=setNewAddress location=.}}
-                                    {{/if}}
+                                </div>
 
+                            {{/if}}
+                        </div>
+                        {{#each addresses}}
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="heading-{{_id}}">
+                                    <h4 class="panel-title edit">
+                                        {{getAddressTypeDisplayName }}  <span>&dash; {{address}}, {{city}}, {{country}}</span>
+                                        <span class="pull-right">
+                                            <a class="editAddressRecord pointer" href="#address-box"><i class="fa fa-pencil"></i></a>
+                                            {{#if isAdmin}}
+                                                &nbsp;<a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i></a>
+                                            {{/if}}
+                                        </span>
+                                    </h4>
                                 </div>
                             </div>
-                        </li>
+                        {{/each}}
                     </div>
-                    {{/each}}
                 </div><!-- /.col-md-10 -->
             </div><!-- /.row -->
         </div><!-- /.box-type-2-content -->
     </section>
-
-
-
-    <div class="box">
-
-        <ul class="list-3 stripped">
-
-        </ul>
-    </div>
 </template>

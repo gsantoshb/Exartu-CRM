@@ -47,6 +47,7 @@ LocationSchema = new SimpleSchema({
         optional: true
     }
 });
+
 var address = {
     _id: undefined,
     addressTypeId: undefined,
@@ -59,7 +60,6 @@ var address = {
     postalCode: ''
 };
 
-var addressDep = new Deps.Dependency();
 var resetAddress = function () {
     address.addressTypeId = Utils.getAddressTypeDefault()._id;
     address.linkId = undefined;
@@ -71,9 +71,10 @@ var resetAddress = function () {
     address.postalCode = '';
 };
 
+var addressDep = new Deps.Dependency();
 var addressCreatedCallback;
-
 var addDisabled = new ReactiveVar(false);
+var formType = new ReactiveVar('insert');
 
 AutoForm.hooks({
     addressAddEditForm: {
@@ -100,26 +101,39 @@ AutoForm.hooks({
         }
     }
 });
-Template.addressAddEdit.created = function() {
 
+Template.addressAddEdit.created = function() {
     var self = this;
     if (this.data.location){
         address = this.data.location;
     }else{
         address.addressTypeId = Utils.getAddressTypeDefault()._id;
     }
-    if (self.data.location) address=self.data.location;
-
     addressCreatedCallback = self.data.callback;
-
 };
+
 Template.addressAddEdit.rendered = function () {
     resetAddress();
 };
+
 Template.addressAddEdit.helpers({
     address: function () {
-        addressDep.depend();
+        address = Session.get( 'address' );
         return address;
+    },
+    formType: function () {
+        if (address._id) {
+            formType.set("update");
+        } else {
+            formType.set("insert");
+        }
+        return formType.get();
+    },
+    getAddressTypes: function () {
+        addressTypes = Utils.getAddressTypes();
+        return _.map(addressTypes, function (addresstype) {
+            return {label: addresstype.displayName, value: addresstype._id};
+        });
     },
     addDisabled: function () {
         return addDisabled.get();
@@ -127,17 +141,21 @@ Template.addressAddEdit.helpers({
     searchInputOptions: function () {
         return {
             onChange: function (selectedAddress) {
-                //resetAddress();
+                resetAddress();
                 // keep address type
                 selectedAddress.addressTypeId = address.addressTypeId;
                 address = selectedAddress;
                 addressDep.changed();
-
                 //AutoForm.invalidateFormContext("addressAddEditForm");
-
             }
         };
     }
 });
 
-
+Template.addressAddEdit.events({
+   'click .cancel-edit': function(){
+       //$('#addressAddEdit-template').remove();
+       Session.set( 'showLocationFormBox',  false);
+       return false;
+   }
+});

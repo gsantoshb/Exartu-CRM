@@ -8,7 +8,6 @@ AddressManager = {
             Addresses.update({_id: addr._id},addr);
         else
             return Addresses.insert(addr);
-
     },
     removeAddress: function (id) {
         Addresses.remove({_id: id});

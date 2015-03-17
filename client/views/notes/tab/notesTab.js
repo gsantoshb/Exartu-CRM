@@ -358,7 +358,6 @@ Template.linksAutoForm.events({
         linkedDep.changed();
     },
     'click .remove-link': function () {
-
         Template.parentData(0).links = _(links).without(this);
         linkedDep.changed();
     },

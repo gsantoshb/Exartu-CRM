@@ -4,8 +4,10 @@
         <div class="box-type-2-content">
             <div class="row">
                 <div class="col-md-2">
+                    <div class="box-options">
+                        <a class="action-btn editTags" id="edit-mode" href="#"><i class="fa fa-pencil"></i></a>
+                    </div>
                     <h3>Tags</h3>
-                    <div class="editTags edit-btn"><a id="edit-mode" href="#"><i class="fa fa-pencil"></i> Edit </a></div>
                 </div><!-- /.col-md-2 -->
                 <div class="col-md-10">
 
@@ -29,7 +31,7 @@
                         <button type="button" class="tag btn-custom-1 btn-custom-sm">
                             <span >{{value}}</span>
                             {{#if editMode}}
-                                <i class="remove-tag fa fa-times"></i>
+                                &nbsp;<i class="remove-tag fa fa-times"></i>
                             {{/if}}
                         </button>
                     {{/objectProperty}}

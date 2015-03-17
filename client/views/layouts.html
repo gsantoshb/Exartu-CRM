@@ -2,18 +2,27 @@
 <template name="mainLayout">
     <div class="">
         {{>yield}}
+        {{>mainFooter}}
     </div>
 </template>
 
 <template name="usersLayout">
     <div id="content" class="">
         {{>yield}}
-    </div>
-</template>
-<template name="dealsLayout">
-    <div class="">
-        {{>yield}}
+        {{>mainFooter}}
     </div>
 </template>
 
+<template name="dealsLayout">
+    <div class="">
+        {{>yield}}
+        {{>mainFooter}}
+    </div>
+</template>
+
+<template name="mainFooter">
+    <div id="footer">
+        <span class="pull-right" style="color: #B8B8B8; margin-right: 10px;">&copy; 2015 <a href="http://aidacreative.com/" target="_blank">Aïda Creative Group</a>{{#if ExartuVersion}} | {{ExartuVersion}} {{/if}}</span>
+    </div>
+</template>
 

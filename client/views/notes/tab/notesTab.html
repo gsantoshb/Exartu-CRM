@@ -136,7 +136,7 @@
             {{#each links}}
                 {{#with getEntity .}}
                     {{displayName}}
-                    <a class="remove-link" href="javscript:;"><i class="fa fa-times"></i></a>
+                    <a class="remove-link pointer"><i class="fa fa-times"></i></a>
                 {{/with}}
             {{/each}}
             <a id="editLinksDone" class="pointer"><strong>Done</strong></a>
@@ -148,11 +148,10 @@
         {{else}}
             {{#each links}}
                 {{#with getEntity .}}
-                    {{displayName}}
+                    {{displayName}}&nbsp;&nbsp;
                 {{/with}}
             {{/each}}
             <a id="editLinks" class="pointer"><strong>Edit links</strong></a>
         {{/if}}
     </div>
-
 </template>
