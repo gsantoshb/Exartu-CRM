@@ -103,9 +103,9 @@ Meteor.publish('editTask', function(id) {
 Meteor.publish('calendarTasks', function(start, end, mineOnly) {
   var self = this;
   var taskCursor;
-  var Auxend = new Date(end.setDate(end.getDate()+1));
+  //var Auxend = new Date(end.setDate(end.getDate()+1));
   if(mineOnly) {
-    taskCursor = Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: Auxend}}]}, {inactive: {$ne: true}}]});
+    taskCursor = Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]});
   }
   else{
     taskCursor = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{end: {$gte: start}}, {begin: {$lte: Auxend}}]}, {inactive: {$ne: true}}]}))
