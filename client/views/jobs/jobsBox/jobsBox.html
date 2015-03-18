@@ -156,6 +156,9 @@
 
 
     <div class="filter">
+        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+            <strong><i class="fa fa-filter"></i></strong>
+        </a>
         <div class="filter-list" id="filter-body">
             {{> filter_entityType title="Job type" types=jobTypes selected=query.objType}}
 
