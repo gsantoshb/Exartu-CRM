@@ -1898,8 +1898,8 @@ html {
 body {
     overflow-x: hidden;
     overflow-y: auto;
-    margin-top: -20px;
-    position: relative;
+    /*margin-top: -20px;*/
+    /*position: relative;*/
 }
 
 @media(max-width: 767px) {
@@ -2584,10 +2584,11 @@ a,a:hover {
 }
 
 #header {
-    height: 77px;
+    height: 38px;
     position: relative;
     width: 100%;
-    z-index: 0
+    z-index: 0;
+    margin-top: -20px;
 }
 
 #header h1 {
@@ -3382,7 +3383,6 @@ a,a:hover {
 #content {
     margin-left: 160px;
     margin-right: 0;
-    margin-top: -39px;
     position: relative;
     min-height: 500px;
     width: auto;
@@ -3412,9 +3412,11 @@ a,a:hover {
 }
 
 @media(min-width: 768px) and (max-width:991px) {
+    body {padding:0;}
+    #header h1 {margin-top:3px;}
     #content {
         margin-left:43px;
-        margin-top: 38px
+        margin-top: 0px
     }
 }
 
@@ -3424,7 +3426,6 @@ a,a:hover {
     min-height: 92px;
     padding-top: 5px;
     width: 100%;
-    margin-top: -38px;
     z-index: 20
 }
 
@@ -3664,7 +3665,8 @@ a,a:hover {
     text-shadow: 0 1px 0 #000;
     font-size: 12px;
     font-weight: 200;
-    padding: 10px 0 10px 180px
+    display: block;
+    line-height: 25px;
 }
 
 #footer a {
@@ -7233,7 +7235,7 @@ body[data-color="dark"].flat .widget-title,body[data-color="dark"].flat .modal-h
 .navbar-inverse { background: #4c5353; }
 
 @media (min-width: 992px) { 
-  .navbar.navbar-inverse.nav-stacked { padding-top: 25px!important; }
+  .navbar.navbar-inverse.nav-stacked { margin-top: 50px!important; }
 }
 
 #sidebar>ul>li>a  { padding-right: 57px;} 

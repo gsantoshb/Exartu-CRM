@@ -73,14 +73,14 @@ ActivityViews = new View('activities', {
             var note = c.fetch()[0];
 
             if (note) {
-                var links= _.pluck(note.links,'id');
-                var types= _.pluck(note.links,'type');
+                var links = _.pluck(note.links, 'id');
+                var types = _.pluck(note.links, 'type');
                 _.forEach(types, function (t) {
                     switch (t) {
                         case Enums.linkTypes.contactable.value:
                             self.publish({
                                 cursor: function () {
-                                    return Contactables.find({_id: { $in: links}});
+                                    return Contactables.find({_id: {$in: links}});
                                 },
                                 to: 'contactables'
                             });
@@ -88,7 +88,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.job.value:
                             self.publish({
                                 cursor: function () {
-                                    return Jobs.find({_id: { $in: links}});
+                                    return Jobs.find({_id: {$in: links}});
                                 },
                                 to: 'jobs'
                             });
@@ -96,7 +96,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.placement.value:
                             self.publish({
                                 cursor: function () {
-                                    return Placements.find({_id: { $in: links}});
+                                    return Placements.find({_id: {$in: links}});
                                 },
                                 to: 'placements'
                             });
@@ -104,12 +104,12 @@ ActivityViews = new View('activities', {
                     }
                 });
             }
-          this.publish({
-            cursor: function (activity) {
-              return c;
-            },
-            to: 'notes'
-          });
+            this.publish({
+                cursor: function (activity) {
+                    return c;
+                },
+                to: 'notes'
+            });
         }
 
         if (activity.type === Enums.activitiesType.taskAdd) {
@@ -119,14 +119,14 @@ ActivityViews = new View('activities', {
             var task = c.fetch()[0];
 
             if (task) {
-                var links= _.pluck(task.links,'id');
-                var types= _.pluck(task.links,'type');
+                var links = _.pluck(task.links, 'id');
+                var types = _.pluck(task.links, 'type');
                 _.forEach(types, function (t) {
                     switch (t) {
                         case Enums.linkTypes.contactable.value:
                             self.publish({
                                 cursor: function () {
-                                    return Contactables.find({_id: { $in: links}}); //try all keys regardless of type since doesn't matter
+                                    return Contactables.find({_id: {$in: links}}); //try all keys regardless of type since doesn't matter
                                 },
                                 to: 'contactables'
                             });
@@ -134,7 +134,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.job.value:
                             self.publish({
                                 cursor: function () {
-                                    return Jobs.find({_id:links});
+                                    return Jobs.find({_id: links});
                                 },
                                 to: 'jobs'
                             });
@@ -142,7 +142,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.placement.value:
                             self.publish({
                                 cursor: function () {
-                                    return Placements.find({_id:links});
+                                    return Placements.find({_id: links});
                                 },
                                 to: 'placements'
                             });
@@ -150,12 +150,12 @@ ActivityViews = new View('activities', {
                     }
                 });
             }
-          this.publish({
-            cursor: function (activity) {
-              return c;
-            },
-            to: 'tasks'
-          });
+            this.publish({
+                cursor: function (activity) {
+                    return c;
+                },
+                to: 'tasks'
+            });
         }
 
         if (activity.type === Enums.activitiesType.fileAdd) {
@@ -174,10 +174,10 @@ ActivityViews = new View('activities', {
             }
             ;
             this.publish({
-               cursor: function (activity) {
-                   return c;
-               },
-               to: 'contactablesFiles'
+                cursor: function (activity) {
+                    return c;
+                },
+                to: 'contactablesFiles'
             });
         }
 
@@ -335,10 +335,12 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
             {
                 field: 'client', displayName: 'Client', displayValue: function (clientId) {
                 var client = Contactables.findOne(clientId);
-                if (client.person)
-                    return client.person.lastName + ', ' + client.person.firstName + ' ' + client.person.middleName;
-                if (client.organization)
-                    return client.organization.organizationName;
+                if (client) {
+                    if (client.person)
+                        return client.person.lastName + ', ' + client.person.firstName + ' ' + client.person.middleName;
+                    if (client.organization)
+                        return client.organization.organizationName;
+                }
             }
             },
             {

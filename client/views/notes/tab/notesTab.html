@@ -8,7 +8,7 @@
 
 <template name="notesTabAdd">
 
-    {{#autoForm id="AddNoteRecord" schema="NoteSchema" meteormethod="addContactableNote" type="method" resetOnSuccess=true}}
+    {{#autoForm id="AddNoteRecord" schema="NoteSchema" resetOnSuccess=true}}
         <div class="add-note on-focus" style="margin: 0 !important;">
             <div class="add-note-header">
                 <div class="item-icon item-icon-xs item-icon-notes"><i class="icon icon-pencil-3"></i></div> <div class="title">Add Note</div>
@@ -31,7 +31,9 @@
                                 <small class="text-muted"> This record has no mobile phone, so SMS/text is not possible</small>
                             </div>
                         {{else}}
-                            {{> afQuickField name="sendAsSMS"}}
+                            <div style="margin-left: 126px">
+                                {{> afQuickField name="sendAsSMS"}}
+                            </div>
 
 
                             {{#if afFieldValueIs name='sendAsSMS' value=true}}
@@ -50,7 +52,7 @@
 
                     <div class="add-note-actions-cell last" style="visibility:{{isContactableNote}}">
                         <div class="item-icon item-icon-network item-icon-sm"><i class="icon-profile-business-man"></i></div>
-                        {{> linksAutoForm name='links'}}
+                        {{> afFieldInput name='links' type='linkInput'}}
                     </div>
                 {{/if}}
 
@@ -108,9 +110,8 @@
 </template>
 
 <template name="linksAutoForm">
-    {{#if isEditing}}
-        <div data-schema-key="{{name}}" id="links-value"
-             class="{{name}} {{#if afFieldIsInvalid name=name}}has-error{{/if}}">
+    <div data-schema-key="{{name}}" id="links-value" class="{{name}} {{#if afFieldIsInvalid name=name}}has-error{{/if}}">
+        {{#if isEditing}}
             <div class="row">
                 <div class="col-md-5">
                     <select class="form-control" id="noteTypeSelect"
@@ -137,7 +138,7 @@
             {{#each links}}
                 {{#with getEntity .}}
                     {{displayName}}
-                    <a class="remove-link" href="javscript:;"><i class="fa fa-times"></i></a>
+                    <a class="remove-link pointer"><i class="fa fa-times"></i></a>
                 {{/with}}
             {{/each}}
             <a id="editLinksDone" class="pointer"><strong>Done</strong></a>
@@ -145,14 +146,14 @@
             {{#if afFieldIsInvalid name=name}}
                 <span class="help-block">{{afFieldMessage name=name}}</span>
             {{/if}}
-        </div>
 
-    {{else}}
-        {{#each links}}
-            {{#with getEntity .}}
-                {{displayName}}
-            {{/with}}
-        {{/each}}
-        <a id="editLinks" class="pointer"><strong>Edit links</strong></a>
-    {{/if}}
+        {{else}}
+            {{#each links}}
+                {{#with getEntity .}}
+                    {{displayName}}&nbsp;&nbsp;
+                {{/with}}
+            {{/each}}
+            <a id="editLinks" class="pointer"><strong>Edit links</strong></a>
+        {{/if}}
+    </div>
 </template>

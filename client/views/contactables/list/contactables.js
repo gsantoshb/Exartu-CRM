@@ -71,6 +71,8 @@ var setSortField = function (field) {
     selectedSort.set(selected);
 };
 
+var showOnlyName = new ReactiveVar(false);
+
 /**
  * Controller
  */
@@ -80,7 +82,6 @@ ContactablesController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function () {
         if (!SubscriptionHandlers.AuxContactablesHandler) {
-            console.log('auxcont')
             SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
 
             return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler, Meteor.subscribe('singleHotList', Session.get('hotListId'))];
@@ -225,16 +226,17 @@ ContactablesController = RouteController.extend({
     }
 });
 
-Template.contactables.isESSearch = function () {
-    return !_.isEmpty(query.searchString.value);
-};
+Template.contactables.helpers({
+    isESSearch: function () {
+        return !_.isEmpty(query.searchString.value);
+    }
+});
 
 /**
  * Callbacks
  */
 Template.contactablesList.created = function () {
     Meteor.autorun(function (c) {
-        console.log('autorun cont')
         var urlQuery = new URLQuery();
         var searchQuery = {
             $and: [] // Push each $or operator here
@@ -637,6 +639,9 @@ Template.contactablesListItem.helpers({
             //dept=" - " + dept
         }
         return dept;
+    },
+    showOnlyName: function(){
+        return (!this.Employee && this.Contact);
     }
 });
 

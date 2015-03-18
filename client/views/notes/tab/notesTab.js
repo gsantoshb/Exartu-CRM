@@ -43,7 +43,10 @@ NoteSchema = new SimpleSchema({
   },
   contactableId: {
     type: String,
-    label: 'Entity'
+    label: 'Entity',
+    autoValue: function () {
+      return Session.get('entityId');
+    }
   },
   displayToEmployee: {
     type: Boolean,
@@ -53,38 +56,52 @@ NoteSchema = new SimpleSchema({
 
 
 AutoForm.hooks({
-    AddNoteRecord: {
-        before: {
-            addContactableNote: function (doc) {
-                var initialLink = [{
-                    id: Session.get('entityId'),
-                    type: Utils.getEntityTypeFromRouter()
-                }];
+  AddNoteRecord: {
+    onSubmit: function (insertDoc, updateDoc, currentDoc) {
+      var self = this;
+      //for some reason autoValue doesn't work
+      insertDoc.contactableId = Session.get('entityId');
 
-                var c = Contactables.findOne({_id: Session.get('entityId')});
-                if (c && c.Contact && c.Contact.client) {
-                    initialLink.push({id: c.Contact.client, type: Enums.linkTypes.contactable.value})
-                }
-                ;
-                doc.links = doc.links || initialLink;
-                doc.contactableId = Session.get('entityId');
-                if (doc.sendAsSMS && Session.get('entityId') == Session.get('hotListId')) {
-                    var hotlist = HotLists.findOne(Session.get('hotListId'));
-                    if (!hotlist || !hotlist.members) return false;
-                    var message = 'Send to the ' + hotlist.members.length + ' members of hot list \'' + hotlist.displayName + '\'.  Continue?';
-                    return (confirm(message)) ? doc : false;
-
-                }
-                ;
-                return doc;
-            }
-        },
-        onSuccess:
-            function (error, result, template) {
-                sortDep.changed();
-            }
+      Meteor.call('addContactableNote',insertDoc, function () {
+        self.done();
+      })
+      return false;
     }
+  }
 });
+//AutoForm.hooks({
+//    AddNoteRecord: {
+//        before: {
+//            addContactableNote: function (doc) {
+//                var initialLink = [{
+//                    id: Session.get('entityId'),
+//                    type: Utils.getEntityTypeFromRouter()
+//                }];
+//
+//                var c = Contactables.findOne({_id: Session.get('entityId')});
+//                if (c && c.Contact && c.Contact.client) {
+//                    initialLink.push({id: c.Contact.client, type: Enums.linkTypes.contactable.value})
+//                }
+//                ;
+//                doc.links = doc.links || initialLink;
+//                doc.contactableId = Session.get('entityId');
+//                if (doc.sendAsSMS && Session.get('entityId') == Session.get('hotListId')) {
+//                    var hotlist = HotLists.findOne(Session.get('hotListId'));
+//                    if (!hotlist || !hotlist.members) return false;
+//                    var message = 'Send to the ' + hotlist.members.length + ' members of hot list \'' + hotlist.displayName + '\'.  Continue?';
+//                    return (confirm(message)) ? doc : false;
+//
+//                }
+//                ;
+//                return doc;
+//            }
+//        },
+//        onSuccess:
+//            function (error, result, template) {
+//                sortDep.changed();
+//            }
+//    }
+//});
 self.defaultUserNumber = null;
 self.defaultMobileNumber = null;
 var hotlist = null;
@@ -207,8 +224,7 @@ Template.notesTabItem.helpers({
 
 Template.notesTabItem.events({
     'click .deleteNoteRecord': function () {
-        var id = this.noteRecord._id;
-
+        var self = this;
         Utils.showModal('basicModal', {
             title: 'Delete note',
             message: 'Are you sure you want to delete this note?',
@@ -219,7 +235,7 @@ Template.notesTabItem.events({
             }],
             callback: function (result) {
                 if (result) {
-                    Notes.remove({_id: id});
+                  Meteor.call('removeNote', self._id);
                 }
             }
         });
@@ -251,20 +267,20 @@ Template.notesTabEditItem.events({
 // Links
 
 
-var isEditing = new ReactiveVar(false);
+var isEditing = new ReactiveVar(false), links, typeDep, linkedDep;
+
 
 Template.linksAutoForm.created = function () {
     var self = this;
-    var ctx = Template.parentData(1);
 
     var initialLink = {
-        id: ctx._id,
+        id: Session.get('entityId'),
         type: Utils.getEntityTypeFromRouter()
     };
 
-    self.data.links = self.data.value || [initialLink];
-    self.data.typeDep = new Tracker.Dependency();
-    self.data.linkedDep = new Tracker.Dependency();
+    links = self.data.value || [initialLink];
+    typeDep = new Tracker.Dependency();
+    linkedDep = new Tracker.Dependency();
 
     Meteor.subscribe('allContactables');
     Meteor.subscribe('allJobs');
@@ -286,10 +302,18 @@ Template.linksAutoForm.created = function () {
     isEditing.set(false);
 }
 
+AutoForm.addInputType('linkInput',{
+  template: 'linksAutoForm',
+  valueOut: function () {
+    console.log('links', links);
+    return links
+  }
+});
+
 Template.linksAutoForm.helpers({
     links: function () {
-        this.linkedDep.depend();
-        return this.links;
+        linkedDep.depend();
+        return links;
     },
     types: function () {
         return _.map(_.filter(_.keys(Enums.linkTypes), function (key) {
@@ -299,7 +323,7 @@ Template.linksAutoForm.helpers({
         });
     },
     entities: function () {
-        this.typeDep.depend();
+        typeDep.depend();
         var DOM = UI.getView()._domrange;
         if (!DOM)
             return;
@@ -329,11 +353,9 @@ var link = function (ctx, link) {
 
 Template.linksAutoForm.events({
     'change #noteTypeSelect': function () {
-        var ctx = Template.parentData(0);
-        ctx.typeDep.changed();
+        typeDep.changed();
     },
     'click #noteLinkEntity': function () {
-        var ctx = Template.parentData(0);
         var type = UI.getView()._templateInstance.$('#noteTypeSelect').val();
         type = parseInt(type);
         var entity = UI.getView()._templateInstance.$('#noteEntitySelect').val();
@@ -344,16 +366,14 @@ Template.linksAutoForm.events({
             id: entity
         };
 
-        if (_.findWhere(ctx.links, {id: link.id})) return;
+        if (_.findWhere(links, {id: link.id})) return;
 
-        ctx.links.push(link);
-        ctx.linkedDep.changed();
+        links.push(link);
+        linkedDep.changed();
     },
     'click .remove-link': function () {
-        var ctx = Template.parentData(0);
-        var links = ctx.links;
         Template.parentData(0).links = _(links).without(this);
-        ctx.linkedDep.changed();
+        linkedDep.changed();
     },
     'click #editLinks': function () {
         isEditing.set(true);

@@ -1628,6 +1628,7 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
         position: fixed;
         top: 0;
         z-index: 10;
+        margin-top: 0px;
     }
     #menu-trigger{
         position: fixed;
@@ -1645,6 +1646,9 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
         z-index: 11;
         right: 0px;
         left: inherit;
+    }
+    body {
+        padding: 0px 0 0!important;
     }
 
 }

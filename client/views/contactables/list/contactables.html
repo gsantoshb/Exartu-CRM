@@ -21,13 +21,13 @@
                         {{/if}}
 
                         <div class="list-actions last">
-                            <!--{{#if listIsLoading}}-->
-                                <!--loading-->
-                            <!--{{else}}-->
-                                {{#unless isESSearch}}
-                                    {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
-                                {{/unless}}
-                            <!--{{/if}}-->
+                        <!--{{#if listIsLoading}}-->
+                            <!--loading-->
+                                <!--{{else}}-->
+                            {{#unless isESSearch}}
+                                {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
+                            {{/unless}}
+                                <!--{{/if}}-->
                         </div>
 
                     </div>
@@ -40,21 +40,21 @@
 <template name="contactablesListHeader">
     {{#if listViewMode}}
         <div class="list-header network-list-header simple-view">
-            <div class="list-header-cell network-list-header-title">Title</div>
-            <div class="list-header-cell network-list-header-owner">Owner</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
+            <div class="list-header-cell network-list-header-title">{{_ "Title"}}</div>
+            <div class="list-header-cell network-list-header-owner">{{_ "Owner"}}</div>
+            <div class="list-header-cell network-list-header-time">{{_ "Date"}}</div>
         </div>
         <!-- /.list-header -->
     {{else}}
         <div class="list-header network-list-header">
             <div class="list-header-cell network-list-header-checkbox"><input type="checkbox" id="selectAll"></div>
-            <div class="list-header-cell network-list-header-title">Title</div>
-            <div class="list-header-cell network-list-header-contact">Contact</div>
-            <div class="list-header-cell network-list-header-type">Type</div>
-            <div class="list-header-cell network-list-header-status">Status</div>
-            <div class="list-header-cell network-list-header-code">Code</div>
-            <div class="list-header-cell network-list-header-owner">Owner</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
+            <div class="list-header-cell network-list-header-title">{{_ "Title"}}</div>
+            <div class="list-header-cell network-list-header-contact">{{_ "Contact"}}</div>
+            <div class="list-header-cell network-list-header-type">{{_ "Type"}}</div>
+            <div class="list-header-cell network-list-header-status">{{_ "Status"}}</div>
+            <div class="list-header-cell network-list-header-code">{{_ "Code"}}</div>
+            <div class="list-header-cell network-list-header-owner">{{_ "Owner"}}</div>
+            <div class="list-header-cell network-list-header-time">{{_ "Date"}}</div>
         </div>
     {{/if}}
 
@@ -99,11 +99,11 @@
         <div class="btn-group">
             <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
                     title="Add">
-                <span class="fa fa-plus"></span> Add
+                <span class="fa fa-plus"></span>  {{_ "Add"}}
             </button>
-            <ul class="dropdown-menu" role="menu" data-bind="foreach: contactableTypes">
+            <ul class="dropdown-menu" role="menu">
                 {{#each contactableTypes}}
-                    <li><a href="/contactableAdd/{{name}}">Add {{name}}</a></li>
+                    <li><a href="/contactableAdd/{{name}}">{{_ "Add"}} {{name}}</a></li>
                 {{/each}}
                 <li>
                     <a type="button" title="Create employee from resume/CV"
@@ -152,19 +152,19 @@
     </div>
     <!-- ./order-list -->
 
-    <!--{{#if listIsLoading}}-->
-        <!--loading-->
-    <!--{{else}}-->
-        {{#unless isESSearch}}
-            {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
-        {{/unless}}
-    <!--{{/if}}-->
+        <!--{{#if listIsLoading}}-->
+    <!--loading-->
+        <!--{{else}}-->
+    {{#unless isESSearch}}
+        {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
+    {{/unless}}
+        <!--{{/if}}-->
 </template>
 
 <template name="contactableListSort">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Sort
+            {{_ "Sort"}}
             {{#with selectedSort}}
                 <strong>{{displayName}}</strong>
                 {{#if isAscSort .}}
@@ -197,11 +197,14 @@
 <template name="contactablesFilters">
     {{#with information}}
         <div class="page-title">
-            <h1><span>{{contactablesCount.value}}</span> network records</h1>
+            <h1><span>{{contactablesCount.value}}</span> {{_ "network"}}</h1>
         </div>
     {{/with}}
 
     <div class="filter">
+        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+            <strong><i class="fa fa-filter"></i></strong>
+        </a>
         <div class="filter-list" id="filter-body">
             {{> filter_entityType types=contactableTypes selected=query.objType}}
 
@@ -245,7 +248,7 @@
                             <i class="icon-connection-1 text-large"></i>
 
                             <h1>
-                                No records Found
+                                {{_ "No records Found"}}
                             </h1>
                         </div>
                     </div>
@@ -254,10 +257,8 @@
                         <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                             <i class="icon-connection-1 text-large"></i>
 
-                            <a href="#"
-                               data-bind="attr: { href: '/contactableAdd/'+name() }, text: 'New ' + name()"></a>
-                        <span class="bullet-spacer"
-                              data-bind="visible: $index()< $parent.contactableTypes().length-1">·</span>
+                            <a href="#" ></a>
+                        <span class="bullet-spacer">·</span>
                         </div>
                     </div>
                 {{/if}}
@@ -291,28 +292,26 @@
                 <input type="checkbox" class="select" checked="{{isSelected}}">
             </div>
             <div class="list-item-cell list-item-icon">
-                <a class="" href="/contactable/{{_id}}">
-                    {{#if pictureFileId }}
+
+                {{#if pictureFileId }}
+                    <a class="item-icon" href="/contactable/{{_id}}" style="padding-top: 0;">
                         {{#with pictureUrl pictureFileId}}
-                            <div class="profile-pic">
-                                <div class="thumb thumb-md profile-pic-photo" style="cursor: pointer;">
-                                    <a id="edit-pic" title="Click to Edit" class="pointer">
-                                        <img class="" src="{{.}}" style="max-height: 40px;max-width: 40px;">
-                                    </a>
-                                </div>
+                            <div class="thumb thumb-md profile-pic-photo" style="cursor: pointer;">
+                                <img src="{{.}}" style="max-height: 36px; max-width: 36px;">
                             </div>
                         {{/with}}
-                    {{else}}
-                        <div class="item-icon item-icon-network">
-                            {{#if organization }}<i class="icon-buildings-1"></i>{{/if}}
-                            {{#if person }}<i class="icon-profile-business-man"></i>{{/if}}
-                        </div>
-                    {{/if}}
-                </a>
+                    </a>
+                {{else}}
+                    <a class="item-icon item-icon-network" href="/contactable/{{_id}}">
+                        {{#if organization }}<i class="icon-buildings-1"></i>{{/if}}
+                        {{#if person }}<i class="icon-profile-business-man"></i>{{/if}}
+                    </a>
+                {{/if}}
+
             </div>
 
             <div class="list-item-cell network-list-item-title">
-                <div class="item-title {{#if Client}}single{{/if}}{{#if getDepartment}}single{{/if}}"><a
+                <div class="item-title {{#if showOnlyName}}single{{/if}}"><a
                         href="/contactable/{{_id}}">{{displayName}}</a></div>
                 <div class="item-subtitle">
                     {{#if Client}}
@@ -351,7 +350,9 @@
                     {{#if Client}}Client<br>{{/if}}{{#if Employee}}Employee<br>{{/if}}{{#if Contact}}Contact{{/if}}
                 </div>
                 <div class="list-item-cell network-list-item-status">
-                    <span class="item-label">{{lookUpName getProcessStatus}}</span>
+                    {{#if getProcessStatus}}
+                        <span class="item-label">{{lookUpName getProcessStatus}}</span>
+                    {{/if}}
                     <span class="item-label"
                           data-status="{{lookUpName activeStatus}}">{{lookUpName activeStatus}}</span>
                 </div>
@@ -406,7 +407,6 @@
             {{/if}}
         {{/if}}
     {{/if}}
-    <br/>
 </template>
 
 <template name="contactInformation">

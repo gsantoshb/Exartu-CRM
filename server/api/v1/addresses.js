@@ -45,7 +45,6 @@ Router.map(function () {
                 case 'POST':
                     var data = this.request.bodyFields;
                     try {
-                        data.linkId = contactableId;
                         var addressInfo = mapper.create(data);
                         connection.call('addEditAddress', addressInfo);
                         response.end(data);
@@ -68,7 +67,7 @@ Router.map(function () {
 var mapper = {
     create: function (data) {
         return {
-            linkId: data.linkId,
+            linkId: data.contactableId,
             address: data.addressLine1,
             address2: data.addressLine2,
             city: data.city,

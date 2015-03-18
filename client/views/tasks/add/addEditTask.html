@@ -26,6 +26,11 @@
                                     {{/dateTimePicker}}
                                 </div>
                             </fieldset>
+                            <div id="collapsed-btn-group" >
+                                <button class="btn btn-sm btn-link" type="button"  data-toggle="collapse" data-target="#advanced-info"><span class={{iconCollapsed}}></span> Advanced</button>
+                            </div>
+                            <br>
+                            <div id="advanced-info" class="collapse">
                             <fieldset>
                                 <div class="form-group end">
                                     <label class="control-label">End:</label>
@@ -63,6 +68,7 @@
                                     </div>
                                 {{/if}}
                             </fieldset>
+                            </div>
 
                             {{else}}
                             not found
@@ -96,7 +102,7 @@
                         </a>
                     {{/if}}
 
-                    <a class="btn btn-success accept" data-dismiss="modal" disabled="{{addDisabled}}">Save {{objTypeName}}</a>
+                    <a class="btn btn-success accept"  disabled="{{addDisabled}}">Save {{objTypeName}}</a>
                     <a href="#" class="btn" data-dismiss="modal">Close</a>
                 </div>
             </div>

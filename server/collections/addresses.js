@@ -3,7 +3,6 @@ Meteor.publish("linkedAddresses", function (linkid) {
 });
 
 Meteor.publish("singleAddress", function (id) {
-    console.log('singleAddress', id);
     return Addresses.find({ _id: id });
 });
 

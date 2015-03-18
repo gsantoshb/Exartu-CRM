@@ -63,10 +63,10 @@
 
 <template name="usersList">
     {{#each users}}
-        <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
+        <div class="table-item">
             <div class="row">
                 <div class="col-xs-4">
-                    <div class="table-item-cell" data-bind="foreach: $data.emails">
+                    <div class="table-item-cell">
                         {{#each emails}}
                             <a href="mailto:{{address}}">
                                 <strong>{{address}}</strong>
@@ -105,10 +105,10 @@
 
 <template name="userInvitationsList">
     {{#each invitations}}
-        <div class="table-item" data-bind="css:{'odd': $index() % 2 == 0, 'even': $index() % 2 == 1}">
+        <div class="table-item">
             <div class="row">
                 <div class="col-xs-4">
-                    <div class="table-item-cell" data-bind="foreach: $data.emails">
+                    <div class="table-item-cell">
                         <a href="mailto:{{email}}">
                             <strong>{{email}}</strong>
                         </a>

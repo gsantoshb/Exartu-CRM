@@ -39,14 +39,19 @@ ContactableController = RouteController.extend({
         });
     }
 });
+//
+//Utils.reactiveProp(self, 'editHotlistMode', false);
+//Template.contactable.created = function () {
+//    self.editHotlistMode=false;
+//};
 
 Template.contactable.rendered = function () {
     $('body').scrollTop(0);
 };
 
 Template.contactable.destroy = function(){
-  console.log("onDestroyed",handlerContactalbeCounters );
-  handlerContactalbeCounters.stop();
+    console.log("onDestroyed",handlerContactalbeCounters );
+    handlerContactalbeCounters.stop();
 };
 
 
@@ -401,9 +406,15 @@ Template.hotListMembershipsBox.helpers({
             obj.hotListDisplayName = Session.get('hotListDisplayName')
         }
         return obj;
+    //},
+    //editHotlistMode: function () {
+    //    return self.editHotlistMode;
     }
 });
 Template.hotListMembershipsBox.events({
+    //'click #edit-mode':function(e, ctx) {
+    //    self.editHotlistMode = ! self.editHotlistMode;
+    //},
     'click .removeHotList': function (e, ctx) {
         var hotlist = HotLists.findOne({_id: this._id});
         hotlist.members.splice(hotlist.members.indexOf(contactable._id), 1);
