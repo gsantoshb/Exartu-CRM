@@ -55,6 +55,20 @@ NoteSchema = new SimpleSchema({
 });
 
 
+AutoForm.hooks({
+  AddNoteRecord: {
+    onSubmit: function (insertDoc, updateDoc, currentDoc) {
+      var self = this;
+      //for some reason autoValue doesn't work
+      insertDoc.contactableId = Session.get('entityId');
+
+      Meteor.call('addContactableNote',insertDoc, function () {
+        self.done();
+      })
+      return false;
+    }
+  }
+});
 //AutoForm.hooks({
 //    AddNoteRecord: {
 //        before: {
