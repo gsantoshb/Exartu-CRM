@@ -18,6 +18,3 @@
 [submodule "Exartu-Pagination"]
 	path = Exartu-Pagination
 	url = https://github.com/Exartu/Exartu-Pagination.git
-[submodule "packages/Exartu-Pagination"]
-	path = packages/Exartu-Pagination
-	url = https://github.com/Exartu/Exartu-Pagination.git
