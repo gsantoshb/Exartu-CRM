@@ -141,16 +141,15 @@
                         </h4>
 
                         <div class="item-actions">
-                            <!-- Links -->
-                            {{#each links}}
-                                <a href="{{getHref}}">
-                                    {{#with getEntity}}
-                                        <span class="badge">{{displayName}}</span>
-                                    {{/with}}
-                                </a>
-                            {{/each}}
-
                             {{#with task}}
+                                {{#each links}}
+                                    <a href="{{getHref}}">
+                                        {{#with getEntity}}
+                                            <span class="badge">{{displayName}}</span>
+                                        {{/with}}
+                                    </a>
+                                {{/each}}
+
                                 <a class="btn btn-default tip-bottom" title="Task Owner">assigned
                                     <span> {{displayUserName userAssigned}} </span>
                                 </a>
@@ -261,7 +260,7 @@
                                 {{#with note}}
                                     <strong>{{>showMore text=msg limit=100}}</strong>
                                     <br/>
-                                    {{#each this.links}}
+                                    {{#each links}}
                                         <a href="{{getHref}}">
                                             {{#with getEntity}}
                                                 <span class="badge">{{displayName}}</span>
