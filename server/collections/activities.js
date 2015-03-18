@@ -7,51 +7,30 @@ ActivityViews = new View('activities', {
         this.publish({
             cursor: function (activity) {
                 if (activity.type === Enums.activitiesType.contactableAdd) {
-                    return Contactables.find({
-                        _id: activity.entityId,
-                        auxType: {$ne: Enums.activitiesType.contactableAdd}
-                    }); // hack to obtain the type in the onChange event
+                    return Contactables.find({_id: activity.entityId});
                 }
             },
-            to: 'contactables',
-            observedProperties: ['entityId'],
-            onChange: function (changedProps, oldSelector) {
-                if (oldSelector.auxType.$ne === Enums.activitiesType.contactableAdd) {
-                    return Contactables.find({_id: changedProps, auxType: {$ne: Enums.activitiesType.contactableAdd}}); // hack to obtain the type in the onChange event
-                }
-            }
+            to: 'contactables'
         });
 
         // Tasks
         this.publish({
             cursor: function (activity) {
                 if (activity.type === Enums.activitiesType.taskAdd) {
-                    return Tasks.find({_id: activity.data.taskId, auxType: {$ne: Enums.activitiesType.taskAdd}}); // hack to obtain the type in the onChange event
+                    return Tasks.find({_id: activity.data.taskId});
                 }
             },
-            to: 'tasks',
-            observedProperties: ['entityId'],
-            onChange: function (changedProps, oldSelector) {
-                if (oldSelector.auxType.$ne === Enums.activitiesType.taskAdd) {
-                    return Tasks.find({_id: changedProps, auxType: {$ne: Enums.activitiesType.taskAdd}}); // hack to obtain the type in the onChange event
-                }
-            }
+            to: 'tasks'
         });
 
         // Jobs
         this.publish({
             cursor: function (activity) {
                 if (activity.type === Enums.activitiesType.jobAdd) {
-                    return Jobs.find({_id: activity.entityId, auxType: {$ne: Enums.activitiesType.jobAdd}}); // hack to obtain the type in the onChange event
+                    return Jobs.find({_id: activity.entityId});
                 }
             },
-            to: 'jobs',
-            observedProperties: ['entityId'],
-            onChange: function (changedProps, oldSelector) {
-                if (oldSelector.auxType.$ne === Enums.activitiesType.jobAdd) {
-                    return Jobs.find({_id: changedProps, auxType: {$ne: Enums.activitiesType.jobAdd}}); // hack to obtain the type in the onChange event
-                }
-            }
+            to: 'jobs'
         });
 
         // File uploads
@@ -61,7 +40,7 @@ ActivityViews = new View('activities', {
                     case Enums.linkTypes.contactable.value:
                         self.publish({
                             cursor: function () {
-                                return Contactables.find(link.id);
+                                return Contactables.find({_id: link.id});
                             },
                             to: 'contactables'
                         });
@@ -69,7 +48,7 @@ ActivityViews = new View('activities', {
                     case Enums.linkTypes.job.value:
                         self.publish({
                             cursor: function () {
-                                return Jobs.find(link.id);
+                                return Jobs.find({_id: link.id});
                             },
                             to: 'jobs'
                         });
@@ -77,7 +56,7 @@ ActivityViews = new View('activities', {
                     case Enums.linkTypes.placement.value:
                         self.publish({
                             cursor: function () {
-                                return Placements.find(link.id);
+                                return Placements.find({_id: link.id});
                             },
                             to: 'placements'
                         });
@@ -85,8 +64,6 @@ ActivityViews = new View('activities', {
                 }
             });
         }
-        ;
-
 
         // Notes
         if (activity.type === Enums.activitiesType.noteAdd) {
@@ -96,14 +73,14 @@ ActivityViews = new View('activities', {
             var note = c.fetch()[0];
 
             if (note) {
-                var links= _.pluck(note.links,'id');
-                var types= _.pluck(note.links,'type');
+                var links = _.pluck(note.links, 'id');
+                var types = _.pluck(note.links, 'type');
                 _.forEach(types, function (t) {
                     switch (t) {
                         case Enums.linkTypes.contactable.value:
                             self.publish({
                                 cursor: function () {
-                                    return Contactables.find({_id: { $in: links}});
+                                    return Contactables.find({_id: {$in: links}});
                                 },
                                 to: 'contactables'
                             });
@@ -111,7 +88,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.job.value:
                             self.publish({
                                 cursor: function () {
-                                    return Jobs.find({_id: { $in: links}});
+                                    return Jobs.find({_id: {$in: links}});
                                 },
                                 to: 'jobs'
                             });
@@ -119,7 +96,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.placement.value:
                             self.publish({
                                 cursor: function () {
-                                    return Placements.find({_id: { $in: links}});
+                                    return Placements.find({_id: {$in: links}});
                                 },
                                 to: 'placements'
                             });
@@ -127,19 +104,13 @@ ActivityViews = new View('activities', {
                     }
                 });
             }
-          this.publish({
-            cursor: function (activity) {
-              return c;
-            },
-            to: 'notes'
-          });
+            this.publish({
+                cursor: function (activity) {
+                    return c;
+                },
+                to: 'notes'
+            });
         }
-        //this.publish({
-        //    cursor: function (activity) {
-        //        return c;
-        //    },
-        //    to: 'tasks'
-        //});
 
         if (activity.type === Enums.activitiesType.taskAdd) {
             var c = Tasks.find({_id: activity.entityId});
@@ -148,14 +119,14 @@ ActivityViews = new View('activities', {
             var task = c.fetch()[0];
 
             if (task) {
-                var links= _.pluck(task.links,'id');
-                var types= _.pluck(task.links,'type');
+                var links = _.pluck(task.links, 'id');
+                var types = _.pluck(task.links, 'type');
                 _.forEach(types, function (t) {
                     switch (t) {
                         case Enums.linkTypes.contactable.value:
                             self.publish({
                                 cursor: function () {
-                                    return Contactables.find({_id: { $in: links}}); //try all keys regardless of type since doesn't matter
+                                    return Contactables.find({_id: {$in: links}}); //try all keys regardless of type since doesn't matter
                                 },
                                 to: 'contactables'
                             });
@@ -163,7 +134,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.job.value:
                             self.publish({
                                 cursor: function () {
-                                    return Jobs.find({_id:links});
+                                    return Jobs.find({_id: links});
                                 },
                                 to: 'jobs'
                             });
@@ -171,7 +142,7 @@ ActivityViews = new View('activities', {
                         case Enums.linkTypes.placement.value:
                             self.publish({
                                 cursor: function () {
-                                    return Placements.find({_id:links});
+                                    return Placements.find({_id: links});
                                 },
                                 to: 'placements'
                             });
@@ -179,12 +150,12 @@ ActivityViews = new View('activities', {
                     }
                 });
             }
-          this.publish({
-            cursor: function (activity) {
-              return c;
-            },
-            to: 'tasks'
-          });
+            this.publish({
+                cursor: function (activity) {
+                    return c;
+                },
+                to: 'tasks'
+            });
         }
 
         if (activity.type === Enums.activitiesType.fileAdd) {
@@ -203,10 +174,10 @@ ActivityViews = new View('activities', {
             }
             ;
             this.publish({
-               cursor: function (activity) {
-                   return c;
-               },
-               to: 'contactablesFiles'
+                cursor: function (activity) {
+                    return c;
+                },
+                to: 'contactablesFiles'
             });
         }
 
@@ -252,11 +223,25 @@ ActivityViews = new View('activities', {
 
 Meteor.paginatedPublish(ActivityViews, function () {
     return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({}, {sort: {'data.dateCreated': -1}}));
-}, {
-    //infiniteScroll: true,
+  },
+  {
     pageSize: 50,
-    publicationName: 'activities'
-});
+    publicationName: 'activities',
+    updateSelector: function (oldSelector, clientParams) {
+      var newSelector = EJSON.clone(oldSelector);
+      delete newSelector.entityId;  // hack since pagination plugin is not correctly using the original cursor selector
+
+      if (clientParams && clientParams.searchString) {
+        // Get ids of entities that match the searchString
+        var userHier = Utils.getUserHierId(this.userId);
+        var ids = ActivityManager.searchActivities(clientParams.searchString, userHier);
+        newSelector.entityId = { $in: ids };
+      }
+
+      return newSelector;
+    }
+  }
+);
 
 var mainTypes = ['Employee', 'Contact', 'Client'];
 
@@ -350,10 +335,12 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
             {
                 field: 'client', displayName: 'Client', displayValue: function (clientId) {
                 var client = Contactables.findOne(clientId);
-                if (client.person)
-                    return client.person.lastName + ', ' + client.person.firstName + ' ' + client.person.middleName;
-                if (client.organization)
-                    return client.organization.organizationName;
+                if (client) {
+                    if (client.person)
+                        return client.person.lastName + ', ' + client.person.firstName + ' ' + client.person.middleName;
+                    if (client.organization)
+                        return client.organization.organizationName;
+                }
             }
             },
             {
@@ -444,7 +431,6 @@ Notes.after.insert(function (userId, doc) {
 });
 
 // Tasks
-
 Tasks.after.insert(function (userId, doc) {
     var obj = {
         userId: doc.userId,

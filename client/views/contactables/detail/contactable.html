@@ -54,12 +54,9 @@
         <div class="item-icon item-icon-network item-icon-lg">
             <div class="profile-pic">
                 {{#if pictureFileId}}
-
-                    <div class="thumb thumb-md" style="cursor: pointer;">
-                        <a id="edit-pic" title="Click to Edit" class="pointer">
-                            <img class="" src="{{pictureUrl}}" style="max-height: 40px;max-width: 40px;">
-                        </a>
-                    </div>
+                    <a id="edit-pic" title="Click to Edit" class="pointer">
+                        <img class="" src="{{pictureUrl}}" style="max-height: 48px;max-width: 48px;">
+                    </a>
                 {{else}}
                     <div id="edit-pic" title="Click to Edit" style="cursor: pointer">
                         {{#if person}}
@@ -75,7 +72,7 @@
         <h1 class="title">{{displayName}}</h1>
         {{#if person}}
             {{#if person.jobTitle}}
-            <div class="desc">{{person.jobTitle}}</div>
+                <div class="desc">{{person.jobTitle}}</div>
             {{/if}}
         {{/if}}
 
@@ -92,19 +89,19 @@
         {{/if}}
 
         {{#if Client.department}}
-        <div class="desc">{{Client.department}}</div>
+            <div class="desc">{{Client.department}}</div>
         {{/if}}
     </div>
 
     {{#with mainContactMethods}}
-    <ul class="list-type-3">
-        {{#if phone.value}}
-            <li><a href="callto:{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
-        {{/if}}
-        {{#if email.value}}
-            <li><a href="mailto:{{email.value}}"><span class="round-icon-container"><i class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
-        {{/if}}
-    </ul>
+        <ul class="list-type-3">
+            {{#if phone.value}}
+                <li><a href="callto:{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
+            {{/if}}
+            {{#if email.value}}
+                <li><a href="mailto:{{email.value}}"><span class="round-icon-container"><i class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
+            {{/if}}
+        </ul>
     {{/with}}
 
     <input id="edit-picture" style="visibility:hidden; display: none" name="files" type="file" class="fileUploader"/>
@@ -160,44 +157,53 @@
     {{>hotListMembershipsBox}}
     {{>addressList}}
 </template>
+
 <template name="hotListMembershipsBox">
-    <div class="box">
-        <div class="box-header-2">
-            <a class="btn-action editHotList pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i
-                    class="fa fa-pencil"></i></a>
 
+    <section class="box-type-2">
+        <div class="box-type-2-content">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="box-options">
+                        <a class="action-btn" id="edit-mode" href="#"><i class="fa fa-pencil"></i></a>
+                    </div>
+                    <h3>Hotlists</h3>
+                </div><!-- /.col-md-2 -->
+                <div class="col-md-10">
+                    {{#if hotListMemberships}}
+                        <div class="row">
+                            {{#each hotListMemberships}}
+                                <div class="col-md-6">
+                                    <div class="card-item">
+                                        {{#if editHotlistMode}}
+                                            <div class="card-options">
+                                                <a class="remove-tag removeHotList pointer"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        {{/if}}
 
-            <div class="box-title">HotList Memberships</div>
-        </div>
-        <div class="box-content-md">
-            <div class="panel-body no-padding">
-                <div class="row">
-                    {{#with recentHotList}}
-                        <button type="button" class="btn btn-success addHotList" title="Add">
-                            <span class="fa fa-plus"></span> Add: {{hotListDisplayName}} ({{hotListId}})
-                        </button>
-                    {{/with}}
+                                        <a class="item-icon item-icon-hotlist item-icon-sm" href="/hotlist/{{_id}}">
+                                            <i class="icon-list-4"></i>
+                                        </a>
+                                        <div class="card-title">
+                                            <a href="/hotlist/{{_id}}">{{displayName}} <span>– {{_id}} </span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{/if}}
+
+                    <div class="row">
+                        {{#with recentHotList}}
+                            <button type="button" class="btn btn-success addHotList" title="Add">
+                                <span class="fa fa-plus"></span> Add: {{hotListDisplayName}} ({{hotListId}})
+                            </button>
+                        {{/with}}
+                    </div>
                 </div>
-                <ul class="list-3 stripped">
-                    {{#each hotListMemberships}}
-                        <li>
-                            <!-- Name -->
-                            <div class="col-xs-12 no-padding">
-                                <a href="/hotlist/{{_id}}">
-                                    <strong>
-                                        <span class="badge">{{displayName}}</span>
-                                    </strong>
-                                </a>
-                                <span class="task-author text-center">{{_id}}</span>
-                                <button class="btn btn-xs btn-default removeHotList"><i class="fa fa-times"></i> remove
-                                </button>
-                            </div>
-                        </li>
-                    {{/each}}
-                </ul>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <template name="contactable_HRConcourse">

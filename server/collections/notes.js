@@ -188,6 +188,22 @@ Notes.after.insert(function(userId,doc){
     });
 
 });
+
+Notes.after.remove(function(userId,doc){
+  if(doc.links) {
+    _.forEach(doc.links, function(link){
+      if (link.type==Enums.linkTypes.contactable.value)
+      {
+        //find last note
+        var n = Notes.findOne({'links.id':link.id},{$sort:{dateCreated:-1} });
+        Contactables.update({_id:link.id},{$set: {lastNote: n}});
+      }
+    });
+
+  }
+});
+
+
 Notes.before.insert(function(userId, doc){
   doc.dateCreated = doc.dateCreated || Date.now();
   if (doc.hierId)

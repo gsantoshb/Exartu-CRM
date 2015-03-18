@@ -47,6 +47,7 @@ LocationSchema = new SimpleSchema({
         optional: true
     }
 });
+
 var address = {
     _id: undefined,
     addressTypeId: undefined,
@@ -59,7 +60,6 @@ var address = {
     postalCode: ''
 };
 
-var addressDep = new Deps.Dependency();
 var resetAddress = function () {
     address.addressTypeId = Utils.getAddressTypeDefault()._id;
     address.linkId = undefined;
@@ -71,9 +71,10 @@ var resetAddress = function () {
     address.postalCode = '';
 };
 
+var addressDep = new Deps.Dependency();
 var addressCreatedCallback;
-
 var addDisabled = new ReactiveVar(false);
+var formType = new ReactiveVar('insert');
 
 AutoForm.hooks({
     addressAddEditForm: {
@@ -100,8 +101,8 @@ AutoForm.hooks({
         }
     }
 });
-Template.addressAddEdit.created = function() {
 
+Template.addressAddEdit.created = function() {
     var self = this;
     if (this.data.location){
         address = this.data.location;
@@ -111,11 +112,12 @@ Template.addressAddEdit.created = function() {
     if (self.data.location) address=self.data.location;
 
     addressCreatedCallback = self.data.callback;
-
 };
+
 Template.addressAddEdit.rendered = function () {
     resetAddress();
 };
+
 Template.addressAddEdit.helpers({
     address: function () {
         addressDep.depend();
@@ -140,4 +142,10 @@ Template.addressAddEdit.helpers({
     }
 });
 
-
+Template.addressAddEdit.events({
+   'click .cancel-edit': function(){
+       //$('#addressAddEdit-template').remove();
+       Session.set( 'showLocationFormBox',  false);
+       return false;
+   }
+});

@@ -1,43 +1,40 @@
 ActivityManager = {
-  searchActivities: function (searchString) {
-    var userHiers = Utils.getUserHierId(Meteor.userId());
+  searchActivities: function (searchString, hier) {
 
-    var hierarchiesQuery = {
-      $or: Utils.filterByHiers(userHiers)
-    };
+    var hierarchiesQuery = { $or: Utils.filterByHiers(hier) };
 
     var regexObject = {
       $regex: searchString,
-      $options : 'i'
+      $options: 'i'
     };
 
     // Contactables
-    var contQuery = { $or: [] };
+    var contQuery = {$or: []};
     var aux = {};
-    _.each(['person.firstName', 'person.lastName', 'person.jobTitle', 'organization.organizationName', 'organization.department'],function(name){
+    _.each(['person.firstName', 'person.lastName', 'person.jobTitle', 'organization.organizationName', 'organization.department'], function (name) {
       aux = {};
-      aux[name]=regexObject;
+      aux[name] = regexObject;
       contQuery.$or.push(aux);
     });
-    var contactables = _.map(Contactables.find({$and: [hierarchiesQuery, contQuery]}).fetch(), function(doc){ return doc._id});
+    var contactables = _.pluck(Contactables.find({$and: [hierarchiesQuery, contQuery]}, {fields: {_id: 1}}).fetch(), '_id');
 
     // Jobs
-    var jobQuery={ $or: [] };
-    _.each(['publicJobTitle'],function(name){
+    var jobQuery = {$or: []};
+    _.each(['publicJobTitle'], function (name) {
       aux = {};
-      aux[name]=regexObject;
+      aux[name] = regexObject;
       jobQuery.$or.push(aux);
     });
-    var jobs = _.map(Jobs.find({$and: [hierarchiesQuery, jobQuery]}).fetch(), function(doc){ return doc._id});
+    var jobs = _.pluck(Jobs.find({$and: [hierarchiesQuery, jobQuery]}, {fields: {_id: 1}}).fetch(), '_id');
 
     // Tasks
-    var taskQuery={ $or: [] };
-    _.each(['msg'],function(name){
+    var taskQuery = {$or: []};
+    _.each(['msg'], function (name) {
       aux = {};
-      aux[name]=regexObject;
+      aux[name] = regexObject;
       taskQuery.$or.push(aux);
     });
-    var task = _.map(Tasks.find({$and: [hierarchiesQuery, taskQuery]}).fetch(), function(doc){ return doc._id});
+    var task = _.pluck(Tasks.find({$and: [hierarchiesQuery, taskQuery]}, {fields: {_id: 1}}).fetch(), '_id');
 
     return contactables.concat(jobs).concat(task);
   }

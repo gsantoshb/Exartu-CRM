@@ -55,6 +55,20 @@ NoteSchema = new SimpleSchema({
 });
 
 
+AutoForm.hooks({
+  AddNoteRecord: {
+    onSubmit: function (insertDoc, updateDoc, currentDoc) {
+      var self = this;
+      //for some reason autoValue doesn't work
+      insertDoc.contactableId = Session.get('entityId');
+
+      Meteor.call('addContactableNote',insertDoc, function () {
+        self.done();
+      })
+      return false;
+    }
+  }
+});
 //AutoForm.hooks({
 //    AddNoteRecord: {
 //        before: {
@@ -210,8 +224,7 @@ Template.notesTabItem.helpers({
 
 Template.notesTabItem.events({
     'click .deleteNoteRecord': function () {
-        var id = this.noteRecord._id;
-
+        var self = this;
         Utils.showModal('basicModal', {
             title: 'Delete note',
             message: 'Are you sure you want to delete this note?',
@@ -222,7 +235,7 @@ Template.notesTabItem.events({
             }],
             callback: function (result) {
                 if (result) {
-                    Notes.remove({_id: id});
+                  Meteor.call('removeNote', self._id);
                 }
             }
         });
@@ -359,7 +372,6 @@ Template.linksAutoForm.events({
         linkedDep.changed();
     },
     'click .remove-link': function () {
-
         Template.parentData(0).links = _(links).without(this);
         linkedDep.changed();
     },

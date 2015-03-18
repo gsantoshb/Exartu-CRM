@@ -29,10 +29,6 @@ var info = new Utils.ObjectDefinition({
     }
 });
 
-// register list view mode helper
-Template.registerHelper('listViewMode', function () {
-    return listViewMode.get();
-});
 var listViewDefault = Session.get('tenantListViewMode');
 if (!listViewDefault) {
     listViewDefault = false;

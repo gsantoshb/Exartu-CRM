@@ -24,15 +24,12 @@ Object.defineProperty(EditMode, "value", {
 
 var contactable = {};
 var hideTaxID = new ReactiveVar(true);
-var statusDep=new Deps.Dependency;
+var statusDep = new Deps.Dependency;
+var userSelected = new ReactiveVar(true);
 
 Template.contactableDetailBox.helpers({
     created: function () {
         EditMode.hide();
-    },
-    rendered: function () {
-        // Set up masks
-        //this.$('#taxid-text').mask('000-00-0000');
     },
     isSelected: function (value1, value2) {
         return value1 == value2
@@ -42,10 +39,13 @@ Template.contactableDetailBox.helpers({
         return contactable;
     },
     originalContactable: function () {
-        return this;
+        return Contactables.findOne(this._id);
     },
     editMode: function () {
         return EditMode.value;
+    },
+    isAdmin: function () {
+        return Utils.adminSettings.isAdmin();
     },
     editModeColor: function () {
         return EditMode.value ? '#008DFC' : '';
@@ -77,6 +77,13 @@ Template.contactableDetailBox.helpers({
             minViewMode: "days",
             startView: "months"
         }
+    },
+    users: function () {
+        return Meteor.users.find();
+    },
+    isSelectedUser: function () {
+        var c = Contactables.findOne(contactable._id);
+        return c.userId == this._id;
     }
 });
 
@@ -104,6 +111,13 @@ Template.contactableDetailBox.events = {
                     console.log('contactable', contactable);
                 }
         });
+
+        var originalContactable = Contactables.findOne(contactable._id);
+        if (originalContactable.userId != userSelected.get()){
+            Meteor.call('changeContactableUserId', contactable._id, userSelected.get(), function (err) {
+                err && console.log(err);
+            })
+        }
     },
     'click #cancel-details': function () {
         EditMode.hide();
@@ -111,21 +125,8 @@ Template.contactableDetailBox.events = {
     },
     'click .showHideTaxId': function () {
         hideTaxID.set(!hideTaxID.get());
+    },
+    'change #userSelect': function (e, ctx) {
+        userSelected.set(e.target.value)
     }
 };
-
-Template.showTaxIdText.helpers({
-    rendered: function () {
-        //this.$('#taxid-text').mask('000-000-000');
-    }
-});
-
-Template.showTaxIdInput.helpers({
-    rendered: function () {
-        //this.$('#taxid-input').mask('000-000-000', {
-        //  onKeyPress: function (val, e, dom) {
-        //    dom.trigger('change');
-        //  }
-        //});
-    }
-});

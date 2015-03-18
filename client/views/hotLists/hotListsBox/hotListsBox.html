@@ -147,6 +147,9 @@
     </div>
 
     <div class="filter">
+        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+            <strong><i class="fa fa-filter"></i></strong>
+        </a>
         <div class="filter-list" id="filter-body">
 
             {{> filter_lookUp title="Active status" code=13 lookUpValue=query.activeStatus multi=true}}

@@ -13,23 +13,22 @@ var jobDescriptionEditModeDep = new Deps.Dependency;
 var descriptionSelf={};
 Utils.reactiveProp(descriptionSelf, 'previewMode', false);
 
-Template.jobDescription.colorPreviewMode= function(){
-  return descriptionSelf.previewMode ? '#008DFC' : ''
-}
-
-Template.jobDescription.previewMode= function(){
-  return descriptionSelf.previewMode;
-}
-
-Template.jobDescription.editMode = function() {
-  jobDescriptionEditModeDep.depend();
-  return jobDescriptionEditMode;
-};
-
-Template.jobDescription.colorDescriptionEdit = function() {
-  jobDescriptionEditModeDep.depend();
-  return jobDescriptionEditMode ? '#008DFC' : '';
-};
+Template.jobDescription.helpers({
+  colorPreviewMode: function () {
+    return descriptionSelf.previewMode ? '#008DFC' : ''
+  },
+  previewMode: function () {
+    return descriptionSelf.previewMode;
+  },
+  editMode: function () {
+    jobDescriptionEditModeDep.depend();
+    return jobDescriptionEditMode;
+  },
+  colorDescriptionEdit: function () {
+    jobDescriptionEditModeDep.depend();
+    return jobDescriptionEditMode ? '#008DFC' : '';
+  }
+});
 
 Template.jobDescription.events = {
   'click .editJobDescription': function(){

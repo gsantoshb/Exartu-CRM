@@ -105,7 +105,10 @@
         loading
     {{else}}
         {{#unless isESSearch}}
-            {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}
+            {{#if initialized}}
+                {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}
+            {{/if}}
+
         {{/unless}}
     {{/if}}
 </template>
@@ -151,6 +154,9 @@
     {{/with}}
 
     <div class="filter">
+        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+            <strong><i class="fa fa-filter"></i></strong>
+        </a>
         <div class="filter-list" id="filter-body">
             {{> filter_lookUp title="Process status" code=10 lookUpValue=query.statuses multi=true}}
 

@@ -8,7 +8,7 @@
 
 <template name="notesTabAdd">
 
-    {{#autoForm id="AddNoteRecord" schema="NoteSchema" meteormethod="addContactableNote" type="method" resetOnSuccess=true}}
+    {{#autoForm id="AddNoteRecord" schema="NoteSchema" resetOnSuccess=true}}
         <div class="add-note on-focus" style="margin: 0 !important;">
             <div class="add-note-header">
                 <div class="item-icon item-icon-xs item-icon-notes"><i class="icon icon-pencil-3"></i></div> <div class="title">Add Note</div>
@@ -31,7 +31,9 @@
                                 <small class="text-muted"> This record has no mobile phone, so SMS/text is not possible</small>
                             </div>
                         {{else}}
-                            {{> afQuickField name="sendAsSMS"}}
+                            <div style="margin-left: 126px">
+                                {{> afQuickField name="sendAsSMS"}}
+                            </div>
 
 
                             {{#if afFieldValueIs name='sendAsSMS' value=true}}
@@ -136,7 +138,7 @@
             {{#each links}}
                 {{#with getEntity .}}
                     {{displayName}}
-                    <a class="remove-link" href="javscript:;"><i class="fa fa-times"></i></a>
+                    <a class="remove-link pointer"><i class="fa fa-times"></i></a>
                 {{/with}}
             {{/each}}
             <a id="editLinksDone" class="pointer"><strong>Done</strong></a>
@@ -148,11 +150,10 @@
         {{else}}
             {{#each links}}
                 {{#with getEntity .}}
-                    {{displayName}}
+                    {{displayName}}&nbsp;&nbsp;
                 {{/with}}
             {{/each}}
             <a id="editLinks" class="pointer"><strong>Edit links</strong></a>
         {{/if}}
     </div>
-
 </template>

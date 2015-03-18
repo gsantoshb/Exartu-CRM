@@ -296,8 +296,8 @@ Template.taskCalendar.helpers({
       viewRender: function (view, element) {
         //searching by class because id isn't working
         var calendarDiv = $('.fc');
-        start = view.intervalStart.toDate();
-        end = view.intervalEnd.toDate();
+        start = view.start.local().toDate();
+        end = view.end.local().toDate();
         //this correct the calendar end date
         //end = new Date(endAux.setDate(endAux.getDate()+1));
         startEndDep.changed();

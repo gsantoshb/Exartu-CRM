@@ -149,8 +149,10 @@ Template.placementsBox.created = function(){
     }
 };
 
-Template.placementList.created = function () {
+var initialized = new ReactiveVar(false);
 
+Template.placementList.created = function () {
+    initialized.set(false);
 
     Meteor.autorun(function () {
         searchQuery = {
@@ -238,6 +240,7 @@ Template.placementList.created = function () {
 
         if (searchQuery.$and.length == 0)
             delete searchQuery.$and;
+
         if (SubscriptionHandlers.PlacementHandler) {
             SubscriptionHandlers.PlacementHandler.setFilter(searchQuery);
             SubscriptionHandlers.PlacementHandler.setOptions(options);
@@ -251,6 +254,8 @@ Template.placementList.created = function () {
                 });
             PlacementHandler = SubscriptionHandlers.PlacementHandler;
         }
+        initialized.set(true);
+
     })
 };
 
@@ -343,6 +348,9 @@ Template.placementList.helpers({
     },
     listViewMode: function () {
         return listViewMode.get();
+    },
+    initialized: function () {
+        return initialized.get();
     }
 });
 

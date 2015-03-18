@@ -53,9 +53,11 @@ var query = new Utils.ObjectDefinition({
         searchString: {}
     }
 });
-Template.hierarchiesManagement.filters = function () {
-    return query;
-};
+Template.hierarchiesManagement.helpers({
+    filters: function () {
+        return query;
+    }
+});
 
 Template.hierarchiesManagement.helpers({
     isAdmin: function () {
