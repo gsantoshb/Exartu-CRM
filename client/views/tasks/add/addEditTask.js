@@ -189,6 +189,15 @@ var isValid = function (task, key) {
                 Error.assign = '';
             }
         }
+      if(key == 'end'){
+         if(task.end < task.begin){
+           Error.end = 'Error, end date can\'t be lower than begin date';
+           result = false;
+         }
+         else{
+           Error.end = '';
+         }
+      }
     }
     else {
         if (!task.msg) {
@@ -203,6 +212,14 @@ var isValid = function (task, key) {
             result = false;
         } else {
             Error.assign = '';
+        }
+
+        if(task.end < task.begin){
+            Error.end = 'Error, end date can\'t be lower than begin date';
+            result = false;
+        }
+        else{
+            Error.end = '';
         }
     }
     errorDep.changed();
@@ -287,12 +304,17 @@ Template.addEditTask.events({
     },
     'change.dp .begin>.date': function (e, ctx) {
         task.begin = $(e.currentTarget).data().datetimepicker.getDate();
+        if(task.begin > task.end){
+          task.end = task.begin;
+        }
+        taskDep.changed();
 
         //taskUpdate();
     },
     'change.dp .end>.date': function (e, ctx) {
         task.end = $(e.currentTarget).data().datetimepicker.getDate();
-        //taskUpdate();
+        isValid(task, 'end');
+      //taskUpdate();
     },
     'change .isCompleted': function (e) {
         if (e.target.checked) {
