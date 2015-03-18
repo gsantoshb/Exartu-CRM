@@ -12,9 +12,9 @@
                         {{#with task}}
                             <fieldset>
                                 <div class="form-group {{hasError 'msg'}}">
-                                    <label class="control-label">Note:</label>
-                                    <textarea id="note-input" value="{{msg}}" class="form-control msg input-lg"
-                                              rows="6" placeholder="Add note here..."></textarea>
+                                    <label class="control-label">Task:</label>
+                                    <textarea id="task-input" value="{{msg}}" class="form-control msg input-lg"
+                                              rows="6" placeholder="Add task here..."></textarea>
                                     <span>{{error.msg}}</span>
                                 </div>
                             </fieldset>
@@ -32,11 +32,12 @@
                             <br>
                             <div id="advanced-info" class="collapse">
                             <fieldset>
-                                <div class="form-group end">
+                                <div class="form-group end {{hasError 'end'}}">
                                     <label class="control-label">End:</label>
                                     <br/>
                                     {{#dateTimePicker value=end options=datepickerOptions}}
                                     {{/dateTimePicker}}
+                                    <span>{{error.end}}</span>
                                 </div>
                             </fieldset>
 
