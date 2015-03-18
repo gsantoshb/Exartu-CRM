@@ -1,6 +1,6 @@
 ContactableManager = {
     create: function (contactable) {
-        return Contactables.insert(contactable);
+      return Contactables.insert(contactable);
     },
     createFromResume: function (stream) {
         var result = ResumeManager.parse(stream);
@@ -266,5 +266,15 @@ ContactableManager = {
 
         // Update job client
         Contactables.update({_id: contactId}, {$set: {'Contact.client': clientId}});
+    },
+
+  changeContactableUserId: function (contactableId, userId) {
+    //todo: if isAdmin
+
+    if (! Meteor.users.find(userId).count()){
+      throw new Error('userNot found');
     }
+
+    Contactables.update(contactableId, { $set: {userId: userId} });
+  }
 };
