@@ -406,18 +406,18 @@ Utils.getCollectionFromType = function (type) {
 };
 
 Utils.getHrefFromLink = function (link) {
-    switch (link.type) {
-        case Enums.linkTypes.contactable.value:
-            return '/contactable/' + link.id;
-        case Enums.linkTypes.job.value:
-            return '/job/' + link.id;
-        case Enums.linkTypes.deal.value:
-            return '/deal/' + link.id;
-        case Enums.linkTypes.placement.value:
-            return '/placement/' + link.id;
-        case Enums.linkTypes.hotList.value:
-            return '/hotList/' + link.id;
-    }
+  switch (link.type) {
+    case Enums.linkTypes.contactable.value:
+      return '/contactable/' + link.id;
+    case Enums.linkTypes.job.value:
+      return '/job/' + link.id;
+    case Enums.linkTypes.deal.value:
+      return '/deal/' + link.id;
+    case Enums.linkTypes.placement.value:
+      return '/placement/' + link.id;
+    case Enums.linkTypes.hotList.value:
+      return '/hotList/' + link.id;
+  }
 };
 
 Utils.updateModel = function (model, key, val) {

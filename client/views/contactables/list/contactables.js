@@ -698,11 +698,6 @@ Template.contactablesFilters.helpers({
     contactableTypes: contactableTypes
 });
 
-// register list view mode helper
-Template.registerHelper('listViewMode', function () {
-    return listViewMode.get();
-});
-
 /**
  * Events
  */
