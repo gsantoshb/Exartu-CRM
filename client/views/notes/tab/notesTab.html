@@ -31,7 +31,9 @@
                                 <small class="text-muted"> This record has no mobile phone, so SMS/text is not possible</small>
                             </div>
                         {{else}}
-                            {{> afQuickField name="sendAsSMS"}}
+                            <div style="margin-left: 126px">
+                                {{> afQuickField name="sendAsSMS"}}
+                            </div>
 
 
                             {{#if afFieldValueIs name='sendAsSMS' value=true}}
