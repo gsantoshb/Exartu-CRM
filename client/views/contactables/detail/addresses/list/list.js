@@ -11,9 +11,7 @@ var addressesDep = new Deps.Dependency();
 
 Template.addressList.helpers({
     addresses: function () {
-        var contactable = Contactables.findOne({_id: Session.get('entityId')});
-        addressesDep.depend();
-        return contactable.addresses;
+        return Addresses.find({linkId: Session.get('entityId')});
     },
     getAddressTypeDisplayName: function () {
         var lkp = LookUps.findOne({_id: this.addressTypeId});
