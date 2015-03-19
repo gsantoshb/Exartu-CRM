@@ -222,6 +222,10 @@ Meteor.methods({
     // Client relations
     setContactClient: function (contactId, clientId) {
         return ContactableManager.setClient(contactId, clientId);
+    },
+
+    changeContactableUserId: function (contactableId, userId) {
+      ContactableManager.changeContactableUserId(contactableId, userId);
     }
 });
 

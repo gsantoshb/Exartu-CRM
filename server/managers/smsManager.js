@@ -38,7 +38,9 @@ SMSManager = {
         // Validate user phone number
         // Simpleschema messes up and does an unasked for conversion of the twilio # (from) which
         // wipes out the '+' sign from the front of the number...add it back here
-        from = '+' + from;
+        if (from[0] != '+'){
+            from = '+' + from;
+        }
         _.each(ids, function (contactableid) {
 
             var userHierarchies = Utils.getUserHiers();
@@ -49,6 +51,7 @@ SMSManager = {
                     phoneNumberHier = userHier;
                 }
             });
+
 
             if (!phoneNumberHier) {
                 console.log('invalid user phone number on sms send');
@@ -103,6 +106,7 @@ SMSManager = {
                     console.log('sms send error', err);
                 }
             });
+
         });
     },
     processSMSReply: function (reply) {

@@ -16,7 +16,7 @@
                     <div class="row">
                         {{#with contactable }}
                             <div class="col-md-6">
-                        <ul class="list-type-5">
+                                <ul class="list-type-5">
 
                                 {{#if person }}
                                     <li>
@@ -131,9 +131,9 @@
                                     </div>
                                 </li>
                         </ul>
-                    </div>
+                            </div>
                             <div class="col-md-6">
-                            <ul class="list-type-5">
+                                <ul class="list-type-5">
                                 {{#if lostClient}}
                                     <li>
                                         <div class="left-part">Lost Reason</div>
@@ -205,13 +205,28 @@
                                         </div>
                                     </li>
                                 {{/if}}
+                                <li>
+                                    <div class="left-part">User</div>
+                                    <div class="right-part">
+                                        {{#if editMode}}
+                                            {{#if isAdmin}}
+                                                <select class="form-control" id="userSelect">
+                                                    {{#each users}}
+                                                        <option value="{{_id}}" selected="{{isSelectedUser}}">{{displayUserName _id}}</option>
+                                                    {{/each}}
+                                                </select>
+                                            {{/if}}
+                                        {{else}}
+                                            {{displayUserName originalContactable.userId}}
+                                        {{/if}}
+                                    </div>
+                                </li>
 
-
-                                    {{#with originalContactable}}
-                                        {{>displayOriginDataInline}}
-                                    {{/with}}
+                                {{#with originalContactable}}
+                                    {{>displayOriginDataInline}}
+                                {{/with}}
                                 </ul>
-                        </div>
+                            </div>
                         {{/with}}
 
 
@@ -233,12 +248,12 @@
     </section>
 </template>
 <template name="displayOriginDataInline">
-    <li>
-        <div class="left-part">User</div>
-        <div class="right-part">
-            {{displayUserName userId}}
-        </div>
-    </li>
+    <!--<li>-->
+        <!--<div class="left-part">User</div>-->
+        <!--<div class="right-part">-->
+            <!--{{displayUserName userId}}-->
+        <!--</div>-->
+    <!--</li>-->
     <li>
         <div class="left-part">Date Created</div>
         <div class="right-part">
