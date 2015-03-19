@@ -35,6 +35,7 @@ Template.jobLocation.events({
 //////////////////////////
 
 var subHandler,
+  editing = new ReactiveVar(null),
   addressId = new ReactiveVar(null);
 Template.displayJobAddress.created = function () {
   var data = this.data;
@@ -53,6 +54,17 @@ Template.displayJobAddress.helpers({
   canEdit: function () {
     var templateContext = Template.instance();
     return Utils.adminSettings.isAdmin() && (this.linkId == templateContext.data.jobId);
+  },
+  isEditing: function () {
+    return this._id == editing.get();
+  },
+  editOptions: function () {
+    return {
+      address: this,
+      callback: function () {
+        editing.set(null);
+      }
+    };
   }
 });
 
@@ -80,6 +92,13 @@ Template.displayJobAddress.events({
       }
     });
     return false;
+  },
+  'click .editAddressRecord': function () {
+    if (this._id == editing.get()){
+      editing.set(null);
+    } else {
+      editing.set(this._id);
+    }
   }
 });
 
