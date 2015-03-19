@@ -96,7 +96,7 @@
     {{#with mainContactMethods}}
         <ul class="list-type-3">
             {{#if phone.value}}
-                <li><a href="{{contactMethodTypePrefix type}}{{value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
+                <li><a href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
             {{/if}}
             {{#if email.value}}
                 <li><a href="mailto:{{email.value}}"><span class="round-icon-container"><i class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
