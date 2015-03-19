@@ -73,7 +73,7 @@ TaskView = new View('tasks', {
 Meteor.paginatedPublish(TaskView, function () {
   return Utils.filterCollectionByUserHier.call(this, TaskView.find({}, {sort: {dateCreated: -1}}));
 }, {
-    pageSize: 50,
+    pageSize: 15,
     publicationName: 'tasks'
 });
 

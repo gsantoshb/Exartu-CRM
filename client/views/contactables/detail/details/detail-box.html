@@ -273,6 +273,49 @@
         </div>
     </li>
 </template>
+
+<template name="displayOriginDataInTable">
+    <tr>
+        <td>
+            <div class="left-part">User</div>
+        </td>
+        <td>
+            <div class="right-part">
+                {{displayUserName userId}}
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="left-part">Date Created</div>
+        </td>
+        <td>
+            <div class="right-part">
+                {{formattedDate dateCreated "lll"}}
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="left-part">Hierarchy</div>
+        </td>
+        <td>
+            <div class="right-part">
+                {{displayHierName hierId}} ({{hierId}})
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="left-part">ExternalId</div>
+        </td>
+        <td>
+            <div class="right-part">
+                {{externalId}}
+            </div>
+        </td>
+    </tr>
+</template>
 <template name="showTaxIdText">
     <span id="taxid-text">{{value}}</span>
 </template>
