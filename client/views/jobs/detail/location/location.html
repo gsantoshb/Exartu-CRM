@@ -51,6 +51,10 @@
     {{#each addresses}}
         <div class="row">
 
+        {{#if isEditing}}
+            {{> jobAddressAddEdit editOptions}}
+        {{/if}}
+
            {{>address .}}
 
             <li class="list-3-item">

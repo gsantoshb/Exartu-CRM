@@ -1,6 +1,7 @@
 var address = new ReactiveVar(),
   addDisabled = new ReactiveVar(false),
-  worksiteAddress = new ReactiveVar();
+  worksiteAddress = new ReactiveVar(),
+  callback;
 
 var resetAddress = function () {
   address.set({
@@ -8,8 +9,41 @@ var resetAddress = function () {
   });
 };
 
+AutoForm.hooks({
+  jobAddressAddEditForm: {
+    onSubmit: function (insertDoc, updateDoc, currentDoc) {
+      addDisabled.set(true);
+      var selfautoform = this;
+
+      //Copy properties from insert doc into current doc which has lat lng
+      for (var k in insertDoc) currentDoc[k] = insertDoc[k];
+      //Set the contactable id on the current doc
+      currentDoc.linkId = Session.get("entityId");
+
+
+      Meteor.call('setJobAddress', Session.get("entityId"), currentDoc, function (err, result) {
+        if (err) {
+          console.log(err);
+        } else {
+          resetAddress();
+
+          selfautoform.resetForm();
+
+          callback && callback();
+        }
+        selfautoform.done();
+        addDisabled.set(false);
+      });
+      return false;
+    }
+  }
+});
+
+
 Template.jobAddressAddEdit.created = function () {
   var self = this;
+
+  callback = self.data.callback;
 
   var addressTypes = Utils.getAddressTypes();
   var addressType = _.find(addressTypes, function (addType) {
@@ -17,36 +51,13 @@ Template.jobAddressAddEdit.created = function () {
   });
   worksiteAddress.set({ label: addressType.displayName, value: addressType._id });
 
-  resetAddress();
+  if (self.data && self.data.address){
+    address.set(self.data.address);
 
-  AutoForm.hooks({
-    jobAddressAddEditForm: {
-      onSubmit: function (insertDoc, updateDoc, currentDoc) {
-        addDisabled.set(true);
-        var selfautoform = this;
+  } else {
+    resetAddress();
+  }
 
-        //Copy properties from insert doc into current doc which has lat lng
-        for (var k in insertDoc) currentDoc[k] = insertDoc[k];
-        //Set the contactable id on the current doc
-        currentDoc.linkId = Session.get("entityId");
-
-        Meteor.call('setJobAddress', Session.get("entityId"), currentDoc, function (err, result) {
-          if (err) {
-            console.log(err);
-          } else {
-            resetAddress();
-
-            selfautoform.resetForm();
-
-            self.data.callback && self.data.callback();
-          }
-          selfautoform.done();
-          addDisabled.set(false);
-        });
-        return false;
-      }
-    }
-  });
 };
 
 Template.jobAddressAddEdit.helpers({
