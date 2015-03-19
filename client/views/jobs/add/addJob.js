@@ -75,6 +75,7 @@ Template.addJobPage.events({
             dType.displayAllMessages(model);
             return;
         }
+
         var obj = dType.buildAddModel(model);
         addDisabled.set(true);
         Meteor.call('addJob', obj, function (err, result) {
@@ -82,9 +83,11 @@ Template.addJobPage.events({
                 console.dir(err)
             }
             else {
-                Meteor.call('setLastClientUsed', obj.client, function () {
+                Meteor.call('setLastClientUsed', obj.client, function (err) {
                     if (err)
                         console.dir(err);
+
+
                 });
                 addDisabled.set(false);
                 Router.go('/job/' + result);

@@ -1,7 +1,7 @@
 /**
  * Variables
  */
-var jobCollection = Jobs;
+var jobCollection = JobsList;
 var searchQuery, options;
 var entityId;
 var JobHandler;
@@ -303,7 +303,7 @@ var setSubscription = function (searchQuery, options) {
   }
   else {
     SubscriptionHandlers.JobHandler =
-      Meteor.paginatedSubscribe('jobs', {
+      Meteor.paginatedSubscribe('jobsList', {
         filter: searchQuery,
         options: options
       });
