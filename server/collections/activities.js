@@ -1,228 +1,349 @@
 ActivityViews = new View('activities', {
     collection: Activities,
     cursors: function (activity) {
-        var self = this;
-
-        // Contactables
-        this.publish({
-            cursor: function (activity) {
-                if (activity.type === Enums.activitiesType.contactableAdd) {
-                    return Contactables.find({_id: activity.entityId});
-                }
-            },
-            to: 'contactables'
-        });
-
-        // Tasks
-        this.publish({
-            cursor: function (activity) {
-                if (activity.type === Enums.activitiesType.taskAdd) {
-                    return Tasks.find({_id: activity.data.taskId});
-                }
-            },
-            to: 'tasks'
-        });
-
-        // Jobs
-        this.publish({
-            cursor: function (activity) {
-                if (activity.type === Enums.activitiesType.jobAdd) {
-                    return Jobs.find({_id: activity.entityId});
-                }
-            },
-            to: 'jobs'
-        });
-
-        // File uploads
-        if (activity.type === Enums.activitiesType.fileAdd) {
-            _.forEach(activity.links, function (link) {
-                switch (link.type) {
-                    case Enums.linkTypes.contactable.value:
-                        self.publish({
-                            cursor: function () {
-                                return Contactables.find({_id: link.id});
-                            },
-                            to: 'contactables'
-                        });
-                        break;
-                    case Enums.linkTypes.job.value:
-                        self.publish({
-                            cursor: function () {
-                                return Jobs.find({_id: link.id});
-                            },
-                            to: 'jobs'
-                        });
-                        break;
-                    case Enums.linkTypes.placement.value:
-                        self.publish({
-                            cursor: function () {
-                                return Placements.find({_id: link.id});
-                            },
-                            to: 'placements'
-                        });
-                        break;
-                }
-            });
+      var self = this;
+      var contactablesToPublish = [];
+      var tasksToPublish = [];
+      var jobsToPublish = [];
+      var placementsToPublish = [];
+      var notesToPublish = [];
+      var filesToPublish = [];
+      //clasify by activity type and add to the array if it wasn't added yet
+      if ((activity.type === Enums.activitiesType.contactableAdd) && (contactablesToPublish.lastIndexOf(activity.entityId) === -1)) {
+        contactablesToPublish.push(activity.entityId);
+      }
+      else if ((activity.type === Enums.activitiesType.taskAdd) && (tasksToPublish.lastIndexOf(activity.entityId) === -1)) {
+        tasksToPublish.push(activity.entityId);
+      }
+      else if ((activity.type === Enums.activitiesType.noteAdd) && (notesToPublish.lastIndexOf(activity.entityId) === -1)) {
+        notesToPublish.push(activity.entityId);
+      }
+      else if ((activity.type === Enums.activitiesType.jobAdd) && (jobsToPublish.lastIndexOf(activity.entityId) === -1)) {
+        jobsToPublish.push(activity.entityId);
+      }
+      else if ((activity.type === Enums.activitiesType.fileAdd) && (filesToPublish.lastIndexOf(activity.entityId) === -1)) {
+        filesToPublish.push(activity.entityId);
+        if (contactablesToPublish.lastIndexOf(activity.links[0]) === -1) {
+          contactablesToPublish.push(activity.links[0].id);
+        }
+      }
+      else if ((activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) && (placementsToPublish.lastIndexOf(activity.entityId) === -1)) {
+        placementsToPublish.push(activity.entityId);
+        if (jobsToPublish.lastIndexOf(activity.links[1]) === -1) {
+          jobsToPublish.push(activity.links[1]);
+        }
+        if (contactablesToPublish.lastIndexOf(activity.links[2]) === -1) {
+          contactablesToPublish.push(activity.links[0].id);
         }
 
-        // Notes
-        if (activity.type === Enums.activitiesType.noteAdd) {
-            var c = Notes.find({_id: activity.entityId});
+      }
+      //now resolve links and publish:
 
-            // Publish links
-            var note = c.fetch()[0];
+      //tasks Cursor
+      var tasksCursor = Tasks.find({_id: {$in: tasksToPublish}});
+      var tasksArray = tasksCursor.fetch();
+      _.forEach(tasksArray, function (t) {
+        _.forEach(t.links, function (link) {
+          switch (link.type) {
+            case Enums.linkTypes.contactable.value:
+              if (contactablesToPublish.lastIndexOf(link.id) === -1) {
+                contactablesToPublish.push(link.id);
+              }
+              break;
+            case Enums.linkTypes.job.value:
+              if (jobsToPublish.lastIndexOf(link.id) === -1) {
+                jobsToPublish.push(link.id);
+              }
+              break;
+            case Enums.linkTypes.placement.value:
+              if (placementsToPublish.lastIndexOf(link.id) === -1) {
+                placementsToPublish.push(link.id);
+              }
+              break;
+          }
+        })
+      });
+      self.publish({cursor: tasksCursor, to: 'tasks'});
 
-            if (note) {
-                var links = _.pluck(note.links, 'id');
-                var types = _.pluck(note.links, 'type');
-                _.forEach(types, function (t) {
-                    switch (t) {
-                        case Enums.linkTypes.contactable.value:
-                            self.publish({
-                                cursor: function () {
-                                    return Contactables.find({_id: {$in: links}});
-                                },
-                                to: 'contactables'
-                            });
-                            break;
-                        case Enums.linkTypes.job.value:
-                            self.publish({
-                                cursor: function () {
-                                    return Jobs.find({_id: {$in: links}});
-                                },
-                                to: 'jobs'
-                            });
-                            break;
-                        case Enums.linkTypes.placement.value:
-                            self.publish({
-                                cursor: function () {
-                                    return Placements.find({_id: {$in: links}});
-                                },
-                                to: 'placements'
-                            });
-                            break;
-                    }
-                });
-            }
-            this.publish({
-                cursor: function (activity) {
-                    return c;
-                },
-                to: 'notes'
-            });
-        }
+      //notes cursor
+      var notesCursor = Notes.find({_id: {$in: notesToPublish}});
+      var notesArray = notesCursor.fetch();
+      _.forEach(notesArray, function (n) {
+        _.forEach(n.links, function (link) {
+          switch (link.type) {
+            case Enums.linkTypes.contactable.value:
+              if (contactablesToPublish.lastIndexOf(link.id) === -1) {
+                contactablesToPublish.push(link.id);
+              }
+              break;
+            case Enums.linkTypes.job.value:
+              if (jobsToPublish.lastIndexOf(link.id) === -1) {
+                jobsToPublish.push(link.id);
+              }
+              break;
+            case Enums.linkTypes.placement.value:
+              if (placementsToPublish.lastIndexOf(link.id) === -1) {
+                placementsToPublish.push(link.id);
+              }
+              break;
+          }
+        })
+      });
+      self.publish({cursor: notesCursor, to: 'notes'});
 
-        if (activity.type === Enums.activitiesType.taskAdd) {
-            var c = Tasks.find({_id: activity.entityId});
+      //contactablesFiles cursor
+      var contactablesFilesCursor = ContactablesFiles.find({_id: {$in: filesToPublish}});
+      self.publish({cursor: contactablesFilesCursor, to: 'contactablesFiles'});
 
-            // Publish links
-            var task = c.fetch()[0];
 
-            if (task) {
-                var links = _.pluck(task.links, 'id');
-                var types = _.pluck(task.links, 'type');
-                _.forEach(types, function (t) {
-                    switch (t) {
-                        case Enums.linkTypes.contactable.value:
-                            self.publish({
-                                cursor: function () {
-                                    return Contactables.find({_id: {$in: links}}); //try all keys regardless of type since doesn't matter
-                                },
-                                to: 'contactables'
-                            });
-                            break;
-                        case Enums.linkTypes.job.value:
-                            self.publish({
-                                cursor: function () {
-                                    return Jobs.find({_id: links});
-                                },
-                                to: 'jobs'
-                            });
-                            break;
-                        case Enums.linkTypes.placement.value:
-                            self.publish({
-                                cursor: function () {
-                                    return Placements.find({_id: links});
-                                },
-                                to: 'placements'
-                            });
-                            break;
-                    }
-                });
-            }
-            this.publish({
-                cursor: function (activity) {
-                    return c;
-                },
-                to: 'tasks'
-            });
-        }
+      //placements cursor
+      var placementsFilesCursor = Placements.find({_id: {$in: placementsToPublish}});
+      self.publish({cursor: placementsFilesCursor, to: 'placements'});
 
-        if (activity.type === Enums.activitiesType.fileAdd) {
-            var c = ContactablesFiles.find({_id: activity.entityId});
+      //jobs cursor
+      var jobsFilesCursor = Jobs.find({_id: {$in: jobsToPublish}});
+      self.publish({cursor: jobsFilesCursor, to: 'jobs'});
 
-            // Publish links
-            var file = c.fetch()[0];
+      //contactable cursor
+      var contactablesCursor = Contactables.find({_id: {$in: contactablesToPublish}});
+      self.publish({cursor: contactablesCursor, to: 'contactables'});
 
-            if (file) {
-                self.publish({
-                    cursor: function () {
-                        return Contactables.find(file.entityId);
-                    },
-                    to: 'contactables'
-                });
-            }
-            ;
-            this.publish({
-                cursor: function (activity) {
-                    return c;
-                },
-                to: 'contactablesFiles'
-            });
-        }
 
-        //Placements
-        if (activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) {
-            var placementCursor = Placements.find(activity.entityId);
-            var placement = placementCursor.fetch()[0];
-            var jobCursor = Jobs.find(placement.job);
-            var job = jobCursor.fetch()[0];
-            var clientCursor = Contactables.find(job.client);
-            var employeeCursor = Contactables.find(placement.employee);
+      //place
 
-            this.publish({
-                cursor: function () {
-                    return placementCursor;
-                },
-                to: 'placements'
-            });
 
-            this.publish({
-                cursor: function () {
-                    return jobCursor;
-                },
-                to: 'jobs'
-            });
 
-            this.publish({
-                cursor: function () {
-                    return clientCursor;
-                },
-                to: 'contactables'
-            });
 
-            this.publish({
-                cursor: function () {
-                    return employeeCursor;
-                },
-                to: 'contactables'
-            });
-        }
+
+
+
+        //var self = this;
+        //
+        //// Contactables
+        //this.publish({
+        //    cursor: function (activity) {
+        //        if (activity.type === Enums.activitiesType.contactableAdd) {
+        //            return Contactables.find({_id: activity.entityId});
+        //        }
+        //    },
+        //    to: 'contactables'
+        //});
+        //
+        //// Tasks
+        //this.publish({
+        //    cursor: function (activity) {
+        //        if (activity.type === Enums.activitiesType.taskAdd) {
+        //            return Tasks.find({_id: activity.data.taskId});
+        //        }
+        //    },
+        //    to: 'tasks'
+        //});
+        //
+        //// Jobs
+        //this.publish({
+        //    cursor: function (activity) {
+        //        if (activity.type === Enums.activitiesType.jobAdd) {
+        //            return Jobs.find({_id: activity.entityId});
+        //        }
+        //    },
+        //    to: 'jobs'
+        //});
+        //
+        //// File uploads
+        //if (activity.type === Enums.activitiesType.fileAdd) {
+        //    _.forEach(activity.links, function (link) {
+        //        switch (link.type) {
+        //            case Enums.linkTypes.contactable.value:
+        //                self.publish({
+        //                    cursor: function () {
+        //                        return Contactables.find({_id: link.id});
+        //                    },
+        //                    to: 'contactables'
+        //                });
+        //                break;
+        //            case Enums.linkTypes.job.value:
+        //                self.publish({
+        //                    cursor: function () {
+        //                        return Jobs.find({_id: link.id});
+        //                    },
+        //                    to: 'jobs'
+        //                });
+        //                break;
+        //            case Enums.linkTypes.placement.value:
+        //                self.publish({
+        //                    cursor: function () {
+        //                        return Placements.find({_id: link.id});
+        //                    },
+        //                    to: 'placements'
+        //                });
+        //                break;
+        //        }
+        //    });
+        //}
+        //
+        //// Notes
+        //if (activity.type === Enums.activitiesType.noteAdd) {
+        //    var c = Notes.find({_id: activity.entityId});
+        //
+        //    // Publish links
+        //    var note = c.fetch()[0];
+        //
+        //    if (note) {
+        //        var links = _.pluck(note.links, 'id');
+        //        var types = _.pluck(note.links, 'type');
+        //        _.forEach(types, function (t) {
+        //            switch (t) {
+        //                case Enums.linkTypes.contactable.value:
+        //                    self.publish({
+        //                        cursor: function () {
+        //                            return Contactables.find({_id: {$in: links}});
+        //                        },
+        //                        to: 'contactables'
+        //                    });
+        //                    break;
+        //                case Enums.linkTypes.job.value:
+        //                    self.publish({
+        //                        cursor: function () {
+        //                            return Jobs.find({_id: {$in: links}});
+        //                        },
+        //                        to: 'jobs'
+        //                    });
+        //                    break;
+        //                case Enums.linkTypes.placement.value:
+        //                    self.publish({
+        //                        cursor: function () {
+        //                            return Placements.find({_id: {$in: links}});
+        //                        },
+        //                        to: 'placements'
+        //                    });
+        //                    break;
+        //            }
+        //        });
+        //    }
+        //    this.publish({
+        //        cursor: function (activity) {
+        //            return c;
+        //        },
+        //        to: 'notes'
+        //    });
+        //}
+        //
+        //if (activity.type === Enums.activitiesType.taskAdd) {
+        //    var c = Tasks.find({_id: activity.entityId});
+        //
+        //    // Publish links
+        //    var task = c.fetch()[0];
+        //
+        //    if (task) {
+        //        var links = _.pluck(task.links, 'id');
+        //        var types = _.pluck(task.links, 'type');
+        //        _.forEach(types, function (t) {
+        //            switch (t) {
+        //                case Enums.linkTypes.contactable.value:
+        //                    self.publish({
+        //                        cursor: function () {
+        //                            return Contactables.find({_id: {$in: links}}); //try all keys regardless of type since doesn't matter
+        //                        },
+        //                        to: 'contactables'
+        //                    });
+        //                    break;
+        //                case Enums.linkTypes.job.value:
+        //                    self.publish({
+        //                        cursor: function () {
+        //                            return Jobs.find({_id: links});
+        //                        },
+        //                        to: 'jobs'
+        //                    });
+        //                    break;
+        //                case Enums.linkTypes.placement.value:
+        //                    self.publish({
+        //                        cursor: function () {
+        //                            return Placements.find({_id: links});
+        //                        },
+        //                        to: 'placements'
+        //                    });
+        //                    break;
+        //            }
+        //        });
+        //    }
+        //    this.publish({
+        //        cursor: function (activity) {
+        //            return c;
+        //        },
+        //        to: 'tasks'
+        //    });
+        //}
+        //
+        //if (activity.type === Enums.activitiesType.fileAdd) {
+        //    var c = ContactablesFiles.find({_id: activity.entityId});
+        //
+        //    // Publish links
+        //    var file = c.fetch()[0];
+        //
+        //    if (file) {
+        //        self.publish({
+        //            cursor: function () {
+        //                return Contactables.find(file.entityId);
+        //            },
+        //            to: 'contactables'
+        //        });
+        //    }
+        //    ;
+        //    this.publish({
+        //        cursor: function (activity) {
+        //            return c;
+        //        },
+        //        to: 'contactablesFiles'
+        //    });
+        //}
+        //
+        ////Placements
+        //if (activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) {
+        //    var placementCursor = Placements.find(activity.entityId);
+        //    var placement = placementCursor.fetch()[0];
+        //    var jobCursor = Jobs.find(placement.job);
+        //    var job = jobCursor.fetch()[0];
+        //    var clientCursor = Contactables.find(job.client);
+        //    var employeeCursor = Contactables.find(placement.employee);
+        //
+        //    this.publish({
+        //        cursor: function () {
+        //            return placementCursor;
+        //        },
+        //        to: 'placements'
+        //    });
+        //
+        //    this.publish({
+        //        cursor: function () {
+        //            return jobCursor;
+        //        },
+        //        to: 'jobs'
+        //    });
+        //
+        //    this.publish({
+        //        cursor: function () {
+        //            return clientCursor;
+        //        },
+        //        to: 'contactables'
+        //    });
+        //
+        //    this.publish({
+        //        cursor: function () {
+        //            return employeeCursor;
+        //        },
+        //        to: 'contactables'
+        //    });
+        //}
+
+
+
+
     }
 });
 
 Meteor.paginatedPublish(ActivityViews, function () {
     return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({}, {sort: {'data.dateCreated': -1}}));
+
   },
   {
     pageSize: 50,
