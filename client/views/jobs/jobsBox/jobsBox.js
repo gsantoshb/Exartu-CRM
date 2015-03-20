@@ -431,15 +431,8 @@ Template.jobListSort.helpers({
 
 // List Filters - Helpers
 Template.jobFilters.helpers({
-  information: function () {
-    var searchQuery = {};
-    searchDep.depend();
-
-    if (query.objType.value)
-      searchQuery.objNameArray = query.objType.value;
-    if (JobHandler)
-      info.jobsCount.value = JobHandler.totalCount();
-    return info;
+  jobsCount: function () {
+    return SubscriptionHandlers.JobHandler.totalCount();
   },
   query: function () {
     return query;
