@@ -6,6 +6,10 @@ var searchFields = ['displayName', 'description'];
 var hotListCollection = HotLists;
 var HotListHandler, query;
 
+var  leftSectionTitle = new ReactiveVar();
+var hotListCount = new ReactiveVar();
+
+
 var info = new Utils.ObjectDefinition({
     reactiveProps: {
         hotListsCount: {},
@@ -120,6 +124,8 @@ Template.hotListList.created = function () {
         SubscriptionHandlers.HotListHandler = Meteor.paginatedSubscribe('hotLists');
     }
     HotListHandler = SubscriptionHandlers.HotListHandler;
+    hotListCount.set( HotListHandler.totalCount() );
+
     Meteor.autorun(function () {
         var searchQuery = {};
         var params = {};
@@ -167,6 +173,8 @@ Template.hotListList.created = function () {
         }
         HotListHandler.setFilter(searchQuery, params);
         HotListHandler.setOptions(options);
+
+        hotListCount.set( HotListHandler.totalCount() );
     })
 };
 
@@ -196,7 +204,11 @@ Template.hotListFilters.helpers({
     query: function () {
         return query;
     },
-
+    leftSectionTitle: function() {
+        if( hotListCount.get() > 1) leftSectionTitle.set('Hot Lists');
+        else leftSectionTitle.set('Hot List');
+        return leftSectionTitle.get();
+    },
     contactableTypes: function () {
         return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
     },

@@ -46,11 +46,10 @@
         <!-- /.list-header -->
     {{else}}
         <div class="list-header hotLists-list-header">
-            <div class="list-header-cell hotLists-list-header-title">Title</div>
-            <div class="list-header-cell hotLists-list-header-status">Status</div>
-            <div class="list-header-cell hotLists-list-header-code">Code</div>
-            <div class="list-header-cell hotLists-list-header-owner">Owner</div>
-            <div class="list-header-cell hotLists-list-header-time">Date</div>
+            <div class="list-header-cell hotlists-list-header-title">Title</div>
+            <div class="list-header-cell hotlists-list-header-code">Code</div>
+            <div class="list-header-cell hotlists-list-header-owner">Owner</div>
+            <div class="list-header-cell hotlists-list-header-time">Date</div>
         </div>
     {{/if}}
 </template>
@@ -143,7 +142,7 @@
 
 <template name="hotListFilters">
     <div class="page-title">
-        <h1><span>{{hotListCount}}</span> hotlists</h1>
+        <h1><span>{{hotListCount}}</span> {{leftSectionTitle}}</h1>
     </div>
 
     <div class="filter">
