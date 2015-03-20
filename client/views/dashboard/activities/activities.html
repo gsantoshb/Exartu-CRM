@@ -119,6 +119,13 @@
             <i class="icon icon-clock-3"></i>
             <span class="task-author">{{displayUserName userAssigned}}</span>
             <strong>{{>showMore text=msg limit=60}}</strong>
+            {{#each links}}
+                <a href="{{getHref}}">
+                    {{#with getEntity}}
+                        <span class="badge">{{displayName}}</span>
+                    {{/with}}
+                </a>
+            {{/each}}
         {{/with}}
 
         {{>suffixListDisplay}}

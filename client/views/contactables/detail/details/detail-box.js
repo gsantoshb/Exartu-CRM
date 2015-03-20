@@ -107,7 +107,7 @@ Template.contactableDetailBox.events = {
                     EditMode.hide();
                 }
                 else {
-                    alert('contactable save error' + err);
+                    //alert('contactable save error' + err);
                     console.log('contactable', contactable);
                 }
         });
