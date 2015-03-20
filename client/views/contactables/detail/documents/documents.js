@@ -22,15 +22,11 @@ Object.defineProperty(AddForm, "value", {
 });
 
 var startParsing = function () {
-    $('#parsing')[0].style.display = 'block';
-    $('.add-box')[0].style['pointer-events'] = 'none';
-    $('.add-box')[0].style.opacity = '0.5';
+  $('#parsing')[0].style.display = 'block';
 };
 
 var endParsing = function () {
-    $('#parsing')[0].style.display = 'none';
-    $('.add-box')[0].style['pointer-events'] = 'auto';
-    $('.add-box')[0].style.opacity = '1';
+  $('#parsing')[0].style.display = 'none';
 };
 
 
