@@ -195,11 +195,9 @@
 </template>
 
 <template name="contactablesFilters">
-    {{#with information}}
-        <div class="page-title">
-            <h1><span>{{contactablesCount.value}}</span> {{_ "network"}}</h1>
-        </div>
-    {{/with}}
+    <div class="page-title">
+        <h1><span>{{contactablesCount}}</span> {{_ "network"}}</h1>
+    </div>
 
     <div class="filter">
         <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
