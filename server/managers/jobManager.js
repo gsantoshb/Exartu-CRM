@@ -6,6 +6,9 @@ JobManager = {
 
     // Hack to keep both titles the same
     var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
+    console.log("id", job.jobTitle);
+    console.log("hierId", rootHier);
+    console.log("lookup", Enums.lookUpTypes.job.titles.lookUpCode);
     job.publicJobTitle = LookUps.findOne({ _id: job.jobTitle, hierId: rootHier, lookUpCode: Enums.lookUpTypes.job.titles.lookUpCode }).displayName;
 
     return Jobs.insert(job);
