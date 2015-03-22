@@ -3,7 +3,7 @@
         <div class="col-md-3">
             <div class="page-title">
 
-                    <h1><span>{{taskCount}}</span> tasks</h1>
+                    <h1><span>{{taskCount}}</span> {{_ "tasks"}}</h1>
 
             </div>
             <div class="filter">
@@ -14,7 +14,7 @@
                 <div class="filter-list" id="filter-body">
                     <div class="filter-item">
                         <div class="filter-title">
-                            Status
+                            {{_ "Status"}}
                         </div>
 
                         <div>
@@ -27,7 +27,7 @@
                     <div class="filter-item">
                         <div class="filter-title">
                             <i class="fa fa-eye"></i>
-                            Visibility
+                            {{_ "Visibility"}}
                         </div>
 
                         <div class="checkbox">
@@ -43,12 +43,12 @@
                     <div class="filter-item">
                         <div class="filter-title">
                             <i class="fa fa-user"></i>
-                            Owner
+                            {{_ "Owner"}}
                         </div>
 
                         {{#objectProperty property=filters.assignedTo}}
                             <select id="assignedToDropdown" class="form-control">
-                                <option value="">--select--</option>
+                                <option value="">--{{_ "select"}}--</option>
                                 {{#each users}}
                                     <option value="{{_id}}">{{displayUserName _id}}</option>
                                 {{/each}}
@@ -65,7 +65,7 @@
                     <div class="list-actions">
                         <div class="list-actions-cell btn-add-to-list">
                             <button type="button" class="btn btn-success addTask" title="Add">
-                                <span class="fa fa-plus"></span> Add
+                                <span class="fa fa-plus"></span> {{_ "Add"}}
                             </button>
                         </div>
 
@@ -74,7 +74,7 @@
                             <span class="prop-input">
                                 {{#objectProperty property=filters.searchString editable=true}}
                                     <input id="searchString" type="text" class="form-control"
-                                           placeholder="Search network">
+                                           placeholder={{_ "Search tasks"}}>
                                     <span class="text" data-status="Inactive"></span>
                                 {{/objectProperty}}
                             </span>
@@ -91,10 +91,10 @@
                     </div>
 
                     <div class="list-header tasks-list-header">
-                        <div class="list-header-cell tasks-list-header-title">Title</div>
-                        <div class="list-header-cell tasks-list-header-linked">Linked</div>
-                        <div class="list-header-cell tasks-list-header-startdate">Start Date</div>
-                        <div class="list-header-cell tasks-list-header-status">Status</div>
+                        <div class="list-header-cell tasks-list-header-title">{{_ "Title"}}</div>
+                        <div class="list-header-cell tasks-list-header-linked">{{_ "Linked"}}</div>
+                        <div class="list-header-cell tasks-list-header-startdate">{{_ "Start Date"}}</div>
+                        <div class="list-header-cell tasks-list-header-status">{{_ "Status"}}</div>
                     </div>
 
                     <!-- Entities list -->

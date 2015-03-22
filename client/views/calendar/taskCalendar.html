@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-3 col-lg-3" id="column-filters">
                 <div class="page-title">
-                    <h1><span>{{taskCount.count}}</span> {{taskCount.title}}</h1>
+                    <h1><span>{{taskCount.count}}</span> {{_ taskCount.title}}</h1>
                 </div>
 
 
@@ -15,26 +15,26 @@
                        <div class="filter-item">
                            <div class="filter-title">
                              <i class="fa fa-user"></i>
-                             Created by
+                             {{_ "Created by"}}
                           </div>
-                          <button id="show-mineOnly" type="button" class="{{showMineOnly}}">Mine Only</button>
+                          <button id="show-mineOnly" type="button" class="{{showMineOnly}}">{{_ "Mine Only"}}</button>
                        </div>
                        <div class="filter-item">
                             <div class="filter-title">
                                 <i class="fa fa-eye"></i>
-                                View
+                                {{_ "View"}}
                             </div>
-                            <button id="show-byMonth" type="button" class="{{showByMonth}}">Month</button>
-                            <button id="show-byWeek" type="button" class="{{showByWeek}}">Week</button>
-                            <button id="show-byDay" type="button" class="{{showByDay}}">Day</button>
+                            <button id="show-byMonth" type="button" class="{{showByMonth}}">{{_ "Month"}}</button>
+                            <button id="show-byWeek" type="button" class="{{showByWeek}}">{{_ "Week"}}</button>
+                            <button id="show-byDay" type="button" class="{{showByDay}}">{{_ "Day"}}</button>
                         </div>
                         <div class="filter-item">
                             <div class="filter-title">
                                 <i class="fa fa-calendar-o"></i>
-                                Navigate
+                                {{_ "Navigate"}}
                             </div>
                             <button id="show-Prev" type="button" class="{{showPrev}}"><i class="fa fa-arrow-circle-left"></i></button>
-                            <button id="show-Today" type="button" class="{{showToday}}">Today</button>
+                            <button id="show-Today" type="button" class="{{showToday}}">{{_ "Today"}}</button>
                             <button id="show-Next" type="button" class="{{showNext}}"><i class="fa fa-arrow-circle-right"></i></button>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                             </div>
                             <div class="list-actions-cell btn-add-to-list" style="float:right; margin-right: 55%; margin-top:2%">
                                 <button type="button" class="btn btn-success addTask" id="button-addTask" title="Add">
-                                    <span class="fa fa-plus"></span> Add
+                                    <span class="fa fa-plus"></span> {{_ "Add"}}
                                 </button>
                             </div>
 

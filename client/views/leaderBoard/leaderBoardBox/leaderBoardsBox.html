@@ -21,17 +21,17 @@
 </template>
 
 <template name="leaderBoardActivityListHeader">
-    <h1 class="text-center">Sales Activity</h1>
+    <h1 class="text-center">{{_ "Sales Activity"}}</h1>
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3">Leader</div>
+            <div class="col-md-3">{{_ "Leader"}}</div>
             <div class="col-md-9">
-                <div class="col-md-2">Day</div>
-                <div class="col-md-2">Week</div>
-                <div class="col-md-2">Month</div>
-                <div class="col-md-2">Quarter</div>
-                <div class="col-md-2">Year</div>
+                <div class="col-md-2">{{_ "Day"}}</div>
+                <div class="col-md-2">{{_ "Week"}}</div>
+                <div class="col-md-2">{{_ "Month"}}</div>
+                <div class="col-md-2">{{_ "Quarter"}}</div>
+                <div class="col-md-2">{{_ "Year"}}</div>
             </div>
         </div>
 
@@ -52,7 +52,7 @@
                         <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                             <i class="icon-connection-1 text-large"></i>
 
-                            <h1>No records Found</h1>
+                            <h1>{{_ "No records Found"}}</h1>
                         </div>
                     </div>
                 {{/if}}
@@ -169,7 +169,7 @@
 <template name="leaderBoardListSort">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Sort
+            {{_ "Sort"}}
             {{#with selectedSort}}
                 <strong>{{displayName}}</strong>
                 {{#if isAscSort .}}
@@ -201,7 +201,7 @@
 
 <template name="leaderBoardFilters">
     <div class="page-title">
-        <h1>Leaderboards</h1>
+        <h1>{{_ "Leaderboards"}}</h1>
     </div>
 
     <div class="filter">
@@ -219,17 +219,17 @@
 
 </template>
 <template name="leaderBoardContactListHeader">
-    <h1 class="text-center">Contact Pipeline</h1>
+    <h1 class="text-center">{{_ "Contact Pipeline"}}</h1>
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3">Leader</div>
+            <div class="col-md-3">{{_ "Leader"}}</div>
             <div class="col-md-9">
-                <div class="col-md-2">Day</div>
-                <div class="col-md-2">Week</div>
-                <div class="col-md-2">Month</div>
-                <div class="col-md-2">Quarter</div>
-                <div class="col-md-2">Year</div>
+                <div class="col-md-2">{{_ "Day"}}</div>
+                <div class="col-md-2">{{_ "Week"}}</div>
+                <div class="col-md-2">{{_ "Month"}}</div>
+                <div class="col-md-2">{{_ "Quarter"}}</div>
+                <div class="col-md-2">{{_ "Year"}}</div>
             </div>
         </div>
     </div>

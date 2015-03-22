@@ -14,14 +14,14 @@
                     {{>hotListListHeader}}
 
                     {{#if isSearching}}
-                        searching
+                        {{_ "searching"}}
                     {{else}}
                         {{> hotListList }}
                     {{/if}}
 
                     <div class="list-actions last">
                         {{#if listIsLoading}}
-                            loading
+                            {{_ "loading"}}
                         {{else}}
                             {{#unless isESSearch}}
                                 {{>fastPagination name="hotLists" useKeys="true" containerClass="magic-pager"}}
@@ -38,19 +38,19 @@
 <template name="hotListListHeader">
     {{#if listViewMode}}
         <div class="list-header hotLists-list-header simple-view">
-            <div class="list-header-cell hotLists-list-header-title">Title</div>
-            <div class="list-header-cell hotLists-list-header-code">Code</div>
-            <div class="list-header-cell hotLists-list-header-owner">Owner</div>
-            <div class="list-header-cell hotLists-list-header-time">Date</div>
+            <div class="list-header-cell hotLists-list-header-title">{{_ "Title"}}</div>
+            <div class="list-header-cell hotLists-list-header-code">{{_ "Code"}}</div>
+            <div class="list-header-cell hotLists-list-header-owner">{{_ "Owner"}}</div>
+            <div class="list-header-cell hotLists-list-header-time">{{_ "Date"}}</div>
         </div>
         <!-- /.list-header -->
     {{else}}
         <div class="list-header hotLists-list-header">
-            <div class="list-header-cell hotLists-list-header-title">Title</div>
-            <div class="list-header-cell hotLists-list-header-status">Status</div>
-            <div class="list-header-cell hotLists-list-header-code">Code</div>
-            <div class="list-header-cell hotLists-list-header-owner">Owner</div>
-            <div class="list-header-cell hotLists-list-header-time">Date</div>
+            <div class="list-header-cell hotLists-list-header-title">{{_ "Title"}}</div>
+            <div class="list-header-cell hotLists-list-header-status">{{_ "Status"}}</div>
+            <div class="list-header-cell hotLists-list-header-code">{{_ "Code"}}</div>
+            <div class="list-header-cell hotLists-list-header-owner">{{_ "Owner"}}</div>
+            <div class="list-header-cell hotLists-list-header-time">{{_ "Date"}}</div>
         </div>
     {{/if}}
 </template>
@@ -59,7 +59,7 @@
     <div class="list-actions-cell btn-add-to-list">
         <div class="btn-group">
             <button type="button" class="btn btn-success addHotList" title="Add">
-                <span class="fa fa-plus"></span> Add
+                <span class="fa fa-plus"></span> {{_ "Add"}}
             </button>
         </div>
     </div>
@@ -100,7 +100,7 @@
     <!-- ./order-list -->
 
     {{#if listIsLoading}}
-        loading
+        {{_ "loading"}}
     {{else}}
         {{#unless isESSearch}}
             {{>fastPagination name="hotLists" useKeys="true" containerClass="magic-pager"}}
@@ -111,7 +111,7 @@
 <template name="hotListListSort">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Sort
+            {{_ "Sort"}}
             {{#with selectedSort}}
                 <strong>{{displayName}}</strong>
                 {{#if isAscSort .}}
@@ -143,7 +143,7 @@
 
 <template name="hotListFilters">
     <div class="page-title">
-        <h1><span>{{hotListCount}}</span> hotlists</h1>
+        <h1><span>{{hotListCount}}</span> {{_ "hotlists"}}</h1>
     </div>
 
     <div class="filter">
@@ -174,7 +174,7 @@
                         <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                             <i class="icon-connection-1 text-large"></i>
 
-                            <h1>No records Found</h1>
+                            <h1>{{_ "No records Found"}}</h1>
                         </div>
                     </div>
                 {{/if}}

@@ -14,7 +14,7 @@
                     {{>placementListHeader}}
 
                     {{#if isSearching}}
-                        searching
+                        {{_ "searching"}}
                     {{else}}
                         {{> placementList }}
                     {{/if}}
@@ -38,18 +38,18 @@
 <template name="placementListHeader">
     {{#if listViewMode}}
         <div class="list-header placements-list-header simple-view">
-            <div class="list-header-cell placements-list-header-title">Title</div>
-            <div class="list-header-cell placements-list-header-owner">Owner</div>
-            <div class="list-header-cell placements-list-header-time">Date</div>
+            <div class="list-header-cell placements-list-header-title">{{_ "Title"}}</div>
+            <div class="list-header-cell placements-list-header-owner">{{_ "Owner"}}</div>
+            <div class="list-header-cell placements-list-header-time">{{_ "Date"}}</div>
         </div>
         <!-- /.list-header -->
     {{else}}
         <div class="list-header placements-list-header">
-            <div class="list-header-cell placements-list-header-title">Title</div>
-            <div class="list-header-cell placements-list-header-status">Status</div>
-            <div class="list-header-cell placements-list-header-code">Code</div>
-            <div class="list-header-cell placements-list-header-owner">Owner</div>
-            <div class="list-header-cell placements-list-header-time">Date</div>
+            <div class="list-header-cell placements-list-header-title">{{_ "Title"}}</div>
+            <div class="list-header-cell placements-list-header-status">{{_ "Status"}}</div>
+            <div class="list-header-cell placements-list-header-code">{{_ "Code"}}</div>
+            <div class="list-header-cell placements-list-header-owner">{{_ "Owner"}}</div>
+            <div class="list-header-cell placements-list-header-time">{{_ "Date"}}</div>
         </div>
     {{/if}}
 </template>
@@ -102,13 +102,10 @@
     <!-- ./order-list -->
 
     {{#if listIsLoading}}
-        loading
+        {{_ "loading"}}
     {{else}}
         {{#unless isESSearch}}
-            {{#if initialized}}
-                {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}
-            {{/if}}
-
+            {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}
         {{/unless}}
     {{/if}}
 </template>
@@ -116,7 +113,7 @@
 <template name="placementListSort">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Sort
+            {{_ "Sort"}}
             {{#with selectedSort}}
                 <strong>{{displayName}}</strong>
                 {{#if isAscSort .}}
@@ -149,14 +146,11 @@
 <template name="placementFilters">
     {{#with information}}
         <div class="page-title">
-            <h1><span>{{placementsCount}}</span> records</h1>
+            <h1><span>{{placementsCount}}</span> {{_ "records"}}</h1>
         </div>
     {{/with}}
 
     <div class="filter">
-        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
-            <strong><i class="fa fa-filter"></i></strong>
-        </a>
         <div class="filter-list" id="filter-body">
             {{> filter_lookUp title="Process status" code=10 lookUpValue=query.statuses multi=true}}
 
@@ -183,7 +177,7 @@
                         <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                             <i class="icon-connection-1 text-large"></i>
 
-                            <h1>No records Found</h1>
+                            <h1>{{_ "No records Found"}}</h1>
                         </div>
                     </div>
                 {{/if}}
