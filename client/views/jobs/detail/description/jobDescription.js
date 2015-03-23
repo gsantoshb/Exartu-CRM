@@ -1,6 +1,6 @@
 Template.jobDescription.created=function() {
   self.editMode = false;
-  var originalJob = Jobs.findOne({ _id: Session.get('entityId') });
+  var originalJob = JobsList.findOne({ _id: Session.get('entityId') });
 };
 
 Template.jobDescription.rendered = function() {
@@ -51,7 +51,7 @@ Template.jobDescription.events = {
       return; // Nothing to update
     }
 
-    Jobs.update({_id: Session.get('entityId')}, {$set: { jobDescription: update.$set.jobDescription }}, function (err, result) {
+    JobsList.update({_id: Session.get('entityId')}, {$set: { jobDescription: update.$set.jobDescription }}, function (err, result) {
       if (!err) {
         jobDescriptionEditMode = false;
         jobDescriptionEditModeDep.changed();

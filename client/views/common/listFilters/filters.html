@@ -28,9 +28,9 @@
     <div class="filter-item">
         <div class="filter-title">
             {{#if title}}
-            {{title}}
+            {{_ title}}
             {{else}}
-            Sort
+            {{_ "Sort"}}
             {{/if}}
         </div>
 
@@ -42,10 +42,10 @@
     <div class="filter-item">
         <div class="filter-title">
             <i class="fa fa-eye"></i>
-            Visibility
+            {{_ "Visibility"}}
         </div>
 
-        <button id="show-inactives" type="button" class="{{showInactive}}">Inactives</button>
+        <button id="show-inactives" type="button" class="{{showInactive}}">{{_ "Inactives"}}</button>
     </div>
 </template>
 

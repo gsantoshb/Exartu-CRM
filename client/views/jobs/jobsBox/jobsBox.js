@@ -1,7 +1,7 @@
 /**
  * Variables
  */
-var jobCollection = Jobs;
+var jobCollection = JobsList;
 var searchQuery, options;
 var entityId;
 var JobHandler;
@@ -164,18 +164,33 @@ Template.jobsBox.created = function () {
   }
   ;
   query = query || loadqueryFromURL(Router.current().params.query);
+
   entityId = Session.get('entityId');
+
 };
 
 
 Template.jobList.created = function () {
   initialized.set(false);
+  /////////////hack/////////
+  searchQuery = {
+
+  };
+  options = {};
+  var urlQuery = new URLQuery();
+  var selected = selectedSort.get();
+  options.sort = {};
+  options.sort[selected.field] = selected.value;
+  urlQuery.apply();
+  setSubscription(searchQuery, options);
+  /////////////////////////
+
   Meteor.autorun(function () {
     searchQuery = {
       $and: [] // Push each $or operator here
     };
     options = {};
-    var urlQuery = new URLQuery();
+     var urlQuery = new URLQuery();
     if (Session.get('entityId')) {
       searchQuery.client = Session.get('entityId');
     }
@@ -255,11 +270,13 @@ Template.jobList.created = function () {
     }
 
     if (!_.isEmpty(query.status.value)) {
+
       searchQuery.status = {$in: query.status.value};
       urlQuery.addParam('status', query.status.value);
     }
 
     if (selectedSort.get()) {
+
       var selected = selectedSort.get();
       options.sort = {};
       options.sort[selected.field] = selected.value;
@@ -268,6 +285,7 @@ Template.jobList.created = function () {
     }
     // String search
     if (query.searchString.value) {
+
       var stringSearches = [];
       _.each(searchFields, function (field) {
         var aux = {};
@@ -283,30 +301,39 @@ Template.jobList.created = function () {
       urlQuery.addParam('search', query.searchString.value);
     }
 
-    if (searchQuery.$and.length == 0)
+    if (searchQuery.$and.length == 0){
+
       delete searchQuery.$and;
+    }
+
 
     urlQuery.apply();
     setSubscription(searchQuery, options);
-    //searchDep.changed();
+
+
 
     initialized.set(true);
 
   })
 };
 var setSubscription = function (searchQuery, options) {
+   if (SubscriptionHandlers.JobHandler) {
 
-  if (SubscriptionHandlers.JobHandler) {
     SubscriptionHandlers.JobHandler.setFilter(searchQuery);
     SubscriptionHandlers.JobHandler.setOptions(options);
     JobHandler = SubscriptionHandlers.JobHandler;
+
+
   }
   else {
     SubscriptionHandlers.JobHandler =
-      Meteor.paginatedSubscribe('jobs', {
-        filter: searchQuery,
-        options: options
-      });
+      //Meteor.paginatedSubscribe('jobsList', {
+      //  filter: searchQuery,
+      //  options: options
+      //});
+    Meteor.paginatedSubscribe('jobsList', {});
+    SubscriptionHandlers.JobHandler.setFilter(searchQuery);
+    SubscriptionHandlers.JobHandler.setOptions(options);
     JobHandler = SubscriptionHandlers.JobHandler;
   }
 }
@@ -323,7 +350,7 @@ Template.jobList.helpers({
   jobs: function () {
     searchDep.depend();
     selectedSortDep.depend();
-    return jobCollection.find(searchQuery, options);
+    return jobCollection.find({}, options);
   },
   isLoading: function () {
     return SubscriptionHandlers.JobHandler.isLoading();
@@ -404,16 +431,8 @@ Template.jobListSort.helpers({
 
 // List Filters - Helpers
 Template.jobFilters.helpers({
-  information: function () {
-    var searchQuery = {};
-    searchDep.depend();
-
-    if (query.objType.value)
-      searchQuery.objNameArray = query.objType.value;
-    if (JobHandler)
-      info.jobsCount.value = JobHandler.totalCount();
-
-    return info;
+  jobsCount: function () {
+    return SubscriptionHandlers.JobHandler.totalCount();
   },
   query: function () {
     return query;

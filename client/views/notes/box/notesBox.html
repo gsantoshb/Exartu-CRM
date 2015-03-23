@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="page-title">
-                <h1><span>{{noteCount}}</span> notes</h1>
+                <h1><span>{{noteCount}}</span> {{_ "notes"}}</h1>
             </div>
             <div class="filter">
                 <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
@@ -14,12 +14,12 @@
                     <div class="filter-item">
                         <div class="filter-title">
                             <i class="fa fa-user"></i>
-                            User
+                            {{_ "User"}}
                         </div>
 
                         {{#objectProperty property=filters.userId}}
                             <select id="userDropdown" class="form-control">
-                                <option value="">--select--</option>
+                                <option value="">--{{_ "select"}}--</option>
                                 {{#each users}}
                                     <option value="{{_id}}">{{displayUserName _id}}</option>
                                 {{/each}}
@@ -29,7 +29,7 @@
                         <div class="filter-item">
                             <div class="filter-title">
                                 <i class="fa fa-eye"></i>
-                                Visibility
+                                {{_ "Visibility"}}
                             </div>
                             {{> filter_createdBy showMineOnly=filters.ownedByMe}}
                         </div>
@@ -44,14 +44,14 @@
                     <div class="list-actions">
                         <div class="list-actions-cell btn-add-to-list">
                             <button type="button" class="btn btn-success addNote" title="Add">
-                                <span class="fa fa-plus"></span> Add
+                                <span class="fa fa-plus"></span> {{_ "Add"}}
                             </button>
                         </div>
 
                         <div class="list-actions-cell search-list">
                             <div class="input-group">
                                 {{#objectProperty property=filters.searchString editable=true}}
-                                    <input id="searchString" type="text" class="form-control" placeholder="Search notes"
+                                    <input id="searchString" type="text" class="form-control" placeholder= {{_ "Search notes"}}
                                            value="{{value}}">
                                 {{/objectProperty}}
 
@@ -71,9 +71,9 @@
                     </div>
 
                     <div class="list-header notes-list-header">
-                        <div class="list-header-cell notes-list-header-title">Title</div>
-                        <div class="list-header-cell notes-list-header-linked">Linked</div>
-                        <div class="list-header-cell notes-list-header-edit">Last Edit</div>
+                        <div class="list-header-cell notes-list-header-title">{{_ "Title"}}</div>
+                        <div class="list-header-cell notes-list-header-linked">{{_ "Linked"}}</div>
+                        <div class="list-header-cell notes-list-header-edit">{{_ "Last Edit"}}</div>
                     </div>
 
                     <!-- Entities list -->
@@ -96,7 +96,7 @@
 <template name="noteListSort">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Sort
+            {{_ "Sort"}}
             {{#with selectedSort}}
                 <strong>{{displayName}}</strong>
                 {{#if isAscSort .}}

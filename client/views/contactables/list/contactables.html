@@ -15,7 +15,7 @@
                         {{>contactablesListHeader}}
 
                         {{#if isSearching}}
-                            searching
+                            {{_ "searching"}}
                         {{else}}
                             {{> contactablesList }}
                         {{/if}}
@@ -107,11 +107,11 @@
                 {{/each}}
                 <li>
                     <a type="button" title="Create employee from resume/CV"
-                       href="/resumeparser">Create employee from resume/CV file</a>
+                       href="/resumeparser">{{_ "Create employee from resume/CV file"}}</a>
                 </li>
                 <li>
                     <a class="parseText"
-                       title="Create employee from plain text">Create employee from resume/CV text</a>
+                       title="Create employee from plain text">{{_ "Create employee from resume/CV text"}}</a>
                 </li>
             </ul>
         </div>
@@ -122,7 +122,7 @@
         <div class="input-group">
                 <span class="prop-input">
                     {{#objectProperty property=searchString}}
-                        <input id="searchString" type="text" class="form-control" placeholder="Search network" >
+                        <input id="searchString" type="text" class="form-control" placeholder={{_ "Search network"}} >
                     {{/objectProperty}}
                     <span class="text text-danger"></span>
                 </span>
@@ -195,11 +195,9 @@
 </template>
 
 <template name="contactablesFilters">
-    {{#with information}}
-        <div class="page-title">
-            <h1><span>{{contactablesCount.value}}</span> {{_ "network"}}</h1>
-        </div>
-    {{/with}}
+    <div class="page-title">
+        <h1><span>{{contactablesCount}}</span> {{_ "network"}}</h1>
+    </div>
 
     <div class="filter">
         <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
