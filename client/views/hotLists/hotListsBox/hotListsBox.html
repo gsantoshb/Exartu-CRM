@@ -37,16 +37,16 @@
 
 <template name="hotListListHeader">
     {{#if listViewMode}}
-        <div class="list-header hotLists-list-header simple-view">
-            <div class="list-header-cell hotLists-list-header-title">Title</div>
-            <div class="list-header-cell hotLists-list-header-code">Code</div>
-            <div class="list-header-cell hotLists-list-header-owner">Owner</div>
-            <div class="list-header-cell hotLists-list-header-time">Date</div>
+        <div class="list-header hotlists-list-header simple-view">
+            <div class="list-header-cell hotlists-list-header-title">Title</div>
+            <div class="list-header-cell hotlists-list-header-owner">Owner</div>
+            <div class="list-header-cell hotlists-list-header-time">Date</div>
         </div>
         <!-- /.list-header -->
     {{else}}
-        <div class="list-header hotLists-list-header">
+        <div class="list-header hotlists-list-header">
             <div class="list-header-cell hotlists-list-header-title">Title</div>
+            <div class="list-header-cell hotlists-list-header-status">Status</div>
             <div class="list-header-cell hotlists-list-header-code">Code</div>
             <div class="list-header-cell hotlists-list-header-owner">Owner</div>
             <div class="list-header-cell hotlists-list-header-time">Date</div>
@@ -172,7 +172,6 @@
                     <div class="v-wrapper">
                         <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
                             <i class="icon-connection-1 text-large"></i>
-
                             <h1>No records Found</h1>
                         </div>
                     </div>
@@ -184,44 +183,36 @@
 
 <template name="hotListListItem">
     {{#if listViewMode}}
-        <div class="list-item hotLists-list-item">
-            <div class="list-item-cell hotLists-list-item-title">
-                <div class="item-title">
-                    <div class="item-title"><a href="/hotList/{{_id}}">{{displayName}} </a></div>
-                </div>
-                <div class="item-subtitle">
-                </div>
-            </div>
-            <div class="list-item-details hotLists-list-item-details">
-                <div class="list-item-cell hotLists-list-item-code ">{{displaySearchKey _id}}</div>
-                <div class="list-item-cell hotLists-list-item-owner">{{displayUserName userId}}</div>
-                <div class="list-item-cell hotLists-list-item-time">
-                    {{formattedDate dateCreated "fromNow"}}
-                </div>
-            </div>
-            <!-- /.list-item-cell -->
-        </div>
-    {{else}}
-        <div class="list-item hotLists-list-item">
-            <div class="list-item-cell list-item-icon">
 
-            </div>
-            <div class="list-item-cell hotLists-list-item-title">
-                <div class="item-title"><a href="/hotList/{{_id}}">{{displayName}} </a></div>
-            </div>
-            <div class="list-item-details hotLists-list-item-details">
-                <div class="list-item-cell hotLists-list-item-status">
-                    <div class="list-item-cell hotLists-list-item-status ">{{lookUpName activeStatus}} ({{memberCount}}
-                        )
-                    </div>
+        <div class="list-item hotlist-list-item">
+            <div class="list-item-cell hotlist-list-item-title">
+                <div class="item-title single">
+                    <a href="/hotList/{{_id}}">{{displayName}} </a>
+                    <span class="item-title-more">&ndash; {{lookUpName activeStatus}} ({{memberCount}})</span>
+                    <span class="item-label prefix-10">{{displaySearchKey _id}}</span>
                 </div>
-                <div class="list-item-cell hotLists-list-item-code ">{{displaySearchKey _id}}</div>
-                <div class="list-item-cell hotLists-list-item-owner">{{displayUserName userId}}</div>
-                <div class="list-item-cell hotLists-list-item-time">
-                    <span>{{formattedDate dateCreated "fromNow"}}</span>
-                    <br>
-                </div>
-                <div class="list-item-cell item-overflow hotLists-item-overflow">
+            </div>
+            <div class="list-item-details hotlist-list-item-details">
+                <div class="list-item-cell hotlist-list-item-owner">{{displayUserName userId}}</div>
+                <div class="list-item-cell hotlist-list-item-time">{{formattedDate dateCreated "fromNow"}}</div>
+            </div><!-- /.list-item-cell -->
+        </div><!-- /.hotlist-list-item -->
+
+    {{else}}
+
+        <div class="list-item hotlist-list-item">
+            <div class="list-item-cell list-item-icon">
+                <a class="item-icon item-icon-hotlist" href="#"><i class="icon-list-4"></i></a>
+            </div>
+            <div class="list-item-cell hotlist-list-item-title">
+                <div class="item-title single"><a href="/hotList/{{_id}}">{{displayName}}</a> </div>
+            </div>
+            <div class="list-item-details hotlist-list-item-details">
+                <div class="list-item-cell hotlist-list-item-status">{{lookUpName activeStatus}} ({{memberCount}})</div>
+                <div class="list-item-cell hotlist-list-item-code">{{displaySearchKey _id}}</div>
+                <div class="list-item-cell hotlist-list-item-owner">{{displayUserName userId}}</div>
+                <div class="list-item-cell hotlist-list-item-time">{{formattedDate dateCreated "fromNow"}}</div>
+                <div class="list-item-cell item-overflow hotlist-item-overflow">
                     <a href="#">
                         <span class="ico-more">
                           <span class="dot-1"></span>
@@ -230,9 +221,9 @@
                         </span>
                     </a>
                 </div>
-            </div>
-            <!-- /.list-item-cell -->
-        </div>
+            </div><!-- /.list-item-cell -->
+        </div><!-- /.hotlists-list-item -->
+
     {{/if}}
 </template>
 

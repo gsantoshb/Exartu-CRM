@@ -253,6 +253,12 @@ Template.hotListListSearch.events = {
     }
 };
 
+Template.hotListListHeader.helpers({
+    listViewMode: function () {
+        return listViewMode.get();
+    }
+});
+
 // Item
 
 Template.hotListListItem.helpers({
