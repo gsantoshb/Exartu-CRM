@@ -5,8 +5,8 @@
     {{#autoForm id="addressAddEditForm" schema="LocationSchema" validation="blur" doc=address}}
         {{> addressAddEditFormContent}}
         <div class="edit-actions-bar" style="margin-top: 0;">
-            <button class="btn btn-primary btn-sm" type="submit" disabled="{{addDisabled}}">Save</button>
-            <button class="btn btn-default btn-sm cancel-edit" type="reset" disabled="{{addDisabled}}">Cancel</button>
+            <button class="btn btn-primary btn-sm" type="submit" disabled="{{addDisabled}}">{{_ "Save"}}</button>
+            <button class="btn btn-default btn-sm cancel-edit" type="reset" disabled="{{addDisabled}}">{{_ "Cancel"}}</button>
         </div>
     {{/autoForm}}
 </template>

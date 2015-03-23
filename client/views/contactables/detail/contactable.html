@@ -8,7 +8,7 @@
                     <div class="sidebar">
 
                         <div class="go-back">
-                            <a href="#"><i class="fa fa-chevron-left"></i> Back</a>
+                            <a href="#"><i class="fa fa-chevron-left"></i> {{_ "Back"}}</a>
                         </div>
 
                         {{>contactable_header}}
@@ -25,7 +25,7 @@
                             <div class="notice-msg">
                                 <div class="notice-msg-title">
                                     <i class="fa fa-file-text-o"></i>
-                                    Status note
+                                    {{_ "Status note"}}
                                     <span class="left-decoration"></span>
                                     <span class="right-decoration"></span>
                                 </div>
@@ -109,7 +109,7 @@
 
     <h1 class="profile-name">
         {{#if isAppCenterUser}}
-            <small><span class="label label-info">Applicant Center user</span></small>
+            <small><span class="label label-info">{{_ "Applicant Center user"}}</span></small>
         {{/if}}
     </h1>
     <p class="profile-address">
@@ -167,7 +167,7 @@
                     <div class="box-options">
                         <a class="action-btn" id="edit-mode" href="#"><i class="fa fa-pencil"></i></a>
                     </div>
-                    <h3>Hotlists</h3>
+                    <h3>{{_ "Hotlists"}}</h3>
                 </div><!-- /.col-md-2 -->
                 <div class="col-md-10">
                     {{#if hotListMemberships}}
@@ -196,7 +196,7 @@
                     <div class="row">
                         {{#with recentHotList}}
                             <button type="button" class="btn btn-success addHotList" title="Add">
-                                <span class="fa fa-plus"></span> Add: {{hotListDisplayName}} ({{hotListId}})
+                                <span class="fa fa-plus"></span> {{_ "Add"}}: {{hotListDisplayName}} ({{hotListId}})
                             </button>
                         {{/with}}
                     </div>
@@ -220,7 +220,7 @@
         {{#if Contact}}
             <a id="makeEmployee" class="btn-custom-1 btn-block pointer">
                 <i class="fa fa-exchange"></i>&nbsp;
-                <span style="white-space: normal;"> Make into an Employee</span>
+                <span style="white-space: normal;"> {{_ "Make into an Employee"}}</span>
             </a>
         {{/if}}
     {{/unless}}
@@ -228,14 +228,14 @@
         {{#if Employee}}
             <a id="makeContact" class="btn-custom-1 btn-block pointer">
                 <i class="fa fa-exchange"></i>&nbsp;
-                <span style="white-space: normal;">Make into a Contact</span>
+                <span style="white-space: normal;">{{_ "Make into a Contact"}}</span>
             </a>
         {{/if}}
     {{/unless}}
     {{#if Employee}}
         <a id="generate-resume" class="btn-custom-1 btn-block pointer">
             <i class="fa fa-file"></i>&nbsp;
-            Build resume/cv
+            {{_ "Build resume/CV"}}
         </a>
         <a id="download-generated-resume" target="_blank"
            download="{{person.firstName}}-{{person.lastName}}-Resume.pdf" style="display: none"></a>
@@ -245,9 +245,9 @@
             <a id="sendAppCenterInvite" class="btn-custom-1 btn-block pointer">
                 <i class="fa fa-envelope"></i>&nbsp;
                 {{#unless alreadyInvited}}
-                    <span style="white-space: normal;">Invite to App Center</span>
+                    <span style="white-space: normal;">{{_ "Invite to App Center"}}</span>
                 {{else}}
-                    <span style="white-space: normal;">Resend AC invitation</span>
+                    <span style="white-space: normal;">{{_ "Resend AC invitation"}}</span>
                 {{/unless}}
             </a>
         {{/unless}}
@@ -268,7 +268,7 @@
     <div id="content">
         <div id="content-header" class="mini">
             <div class="profile-content-header">
-                <h1>Loading</h1>
+                <h1>{{_ "Loading"}}</h1>
             </div>
         </div>
         <!--<div id="breadcrumb">-->

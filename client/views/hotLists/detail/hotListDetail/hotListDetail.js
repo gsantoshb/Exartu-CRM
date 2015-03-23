@@ -99,7 +99,6 @@ Template.hotListDetail.events({
   }
 });
 
-
 Template.hotListDetail.helpers({
   getType: function(){
     return Enums.linkTypes.hotList;
