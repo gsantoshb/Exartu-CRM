@@ -1,33 +1,52 @@
 <template name="hotList">
-    <div id="content" class="details">
-        {{#with originalHotList}}
-            <div id="content-header" class="mini">
-                <div class="profile-content-header">
-                    <h1 class="profile-name">
-                        <a href="/hotlist/{{_id}}"> {{displayName}} </a>
-                        <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
-                    </h1>
-                </div>
-            </div>
-        {{/with}}
+    <div id="content" class="network-content nicer-filters">
 
-        <div class="container-fluid">
             <div class="row">
-                <div class="col-md-2">
-                    {{>hotList_nav}}
-                    {{>hotList_actions}}
+
+                <div class="col-md-3">
+                    <div class="sidebar">
+                        <div class="go-back">
+                            <a class="pointer goBack"><i class="fa fa-chevron-left"></i> Back</a>
+                        </div>
+
+                        {{#with originalHotList}}  {{> hotListHeader}}  {{/with}}
+
+                        {{>hotList_nav}}
+
+                        {{>hotList_actions}}
+
+                        {{#with originalHotList}}  {{> hotListOriginData}}  {{/with}}
+                    </div><!-- /.sidebar -->
                 </div>
-                <div class="details-view col-md-10">
+
+                <div class="details-view col-md-9">
                     <div class="details-view-content clearfix">
                         <div class="tab-pane active">
                             {{> UI.dynamic template=currentTemplate  data=hotList  }}
                         </div>
                     </div>
-
                 </div>
             </div>
-        </div>
     </div>
+</template>
+
+<template name="hotListHeader">
+    <div class="head">
+        <div class="profile-pic">
+            <div class="item-icon item-icon-hotlist item-icon-lg"><i class="icon-list-4"></i></div>
+        </div>
+        <h1 class="title">{{displayName}} <span class="pointer label-title {{statusClass activeStatus}}" id="toggle-status" data-status="{{activeStatus}}">{{lookUpName activeStatus}}</span></h1>
+    </div>
+    <div class="status-note-1"><span>Status note –</span> {{statusNote}}  <a class="edit" href="#">– <i class="fa fa-pencil"></i> edit</a> </div>
+</template>
+
+<template name="hotListOriginData">
+    <ul class="list-type-3 small">
+        <li>User: <span><a href="#">{{displayUserName userId}}</a></span></li>
+        <li>Date created: <span>{{formattedDate dateCreated "lll"}}</span></li>
+        <li>Hierarchy: <span>{{displayHierName hierId}} ({{hierId}})</span></li>
+        <li>External ID: <span>{{externalId}}</span></li>
+    </ul>
 </template>
 
 <template name="hotList_nav">
@@ -38,10 +57,10 @@
     {{> tasksBox}}
 </template>
 
-
 <template name="hotList_notes">
     {{> notesTab}}
 </template>
+
 <template name="hotList_responses">
     {{> notesTab  }}
 </template>
@@ -52,45 +71,43 @@
     </div>
     <div class="col-sm-6">
         {{> contactableContactsBox}}
-
     </div>
 
     <div class="col-sm-6">
-        {{>hotListMembers  }}
+        {{>hotListMembers}}
     </div>
 </template>
+
+<template name="hotList_members">
+    {{>hotListMembers}}
+</template>
+
 <template name="hotListMembers">
-    <div class="box">
-        <div class="box-header-2">
-            <a class="btn-action editHotList pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i
-                    class="fa fa-pencil"></i></a>
-
-            <div class="box-title">HotList Members ({{memberCount}})</div>
-        </div>
-        <div class="box-content-md">
-            <div class="panel-body no-padding">
-                <ul class="list-3 stripped">
-                    {{#each hotListMembers}}
-                        <li>
-                            <!-- Name -->
-                            <div class="col-xs-12 no-padding">
-                                    <a href="/contactable/{{_id}}">
-                                        <strong>
-                                            <span class="badge">{{displayName}}</span>
-                                        </strong>
-                                    </a>
-                                    <span class="task-author text-center">{{_id}}</span>
-                                    <button class="btn btn-xs btn-default remove"><i class="fa fa-times"></i> remove
-                                    </button>
-                            </div>
-                        </li>
-                    {{/each}}
-                </ul>
-            </div>
-        </div>
+    <div class="list-container">
+        <div class="list-holder">
+            <div class="list-header contacts-list-header">
+                <div class="list-header-cell contacts-list-header-title">HotList Members – ({{memberCount}})</div>
+                <div class="list-header-cell contacts-list-header-code">Id</div>
+                <div class="list-header-cell contacts-list-header-actions">Actions</div>
+            </div><!-- /.list-header -->
+            <div class="list-item-section">
+                {{#each hotListMembers}}
+                    <div class="list-item contact-list-item">
+                        <div class="list-item-cell list-item-icon">
+                            <a class="item-icon item-icon-contact" href="/contactable/{{_id}}">{{getAcronym displayName}}</a>
+                        </div>
+                        <div class="list-item-cell contact-list-item-title">
+                            <div class="item-title single"><a href="/contactable/{{_id}}">{{displayName}}</a></div>
+                        </div>
+                        <div class="list-item-details contact-list-item-details">
+                            <div class="list-item-cell contact-list-item-code">{{_id}}</div>
+                            <div class="list-item-cell contact-list-item-actions"><a class="pointer remove"><i class="fa fa-times"></i> Remove</a></div>
+                        </div><!-- /.list-item-cell -->
+                    </div><!-- /.contact-list-item -->
+                {{/each}}
+            </div><!-- /.list-item-section -->
+        </div><!-- /.list-holder -->
     </div>
 </template>
 
-<template name="hotList_actions">
-
-</template>
+<template name="hotList_actions"></template>

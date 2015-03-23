@@ -15,7 +15,7 @@ HotListController = RouteController.extend({
             return;
         }
         this.render('hotList');
-        Session.set('activeTab', this.params.tab || 'details');
+        Session.set('activeTab', this.params.tab || 'members');
     },
     onAfterAction: function () {
         var title = Session.get('displayName'),
@@ -106,6 +106,28 @@ Template.hotList.events({
     }
 });
 
+Template.hotListHeader.helpers({
+    statusClass: function (statusId) {
+        var lu = LookUps.findOne(statusId);
+        if(lu && lu.displayName == 'Active') return 'success';
+        else return 'error';
+    }
+});
+Template.hotListHeader.events({
+    'click #toggle-status': function(e, ctx){
+        var hotList = hotListCollection.findOne({_id: Session.get('entityId')});
+        var statuses = LookUps.find({lookUpCode: 13, hierId : "sys-x3s"}).fetch();
+        var status = undefined;
+
+        if(hotList.activeStatus == statuses[0]['_id'])
+            status = statuses[1]['_id'];
+        else
+            status = statuses[0]['_id'];
+
+        hotListCollection.update({_id: hotList._id}, {$set: {activeStatus: status}}, function(err, result) {});
+    }
+});
+
 // Tabs
 Template.hotList_nav.helpers({
     isActive: function (id) {
@@ -117,7 +139,8 @@ Template.hotList_nav.helpers({
     tabs: function () {
         tabs = [
 //      {id: 'activities', displayName: 'Activities', template: 'entityActivities'},
-            {id: 'details', displayName: 'Details', template: 'hotList_details'},
+//            {id: 'details', displayName: 'Details', template: 'hotList_details'},
+            {id: 'members', displayName: 'Members', template: 'hotList_members'},
             {id: 'notes', displayName: 'Notes', template: 'hotList_notes'},
 
             {id: 'responses', displayName: 'Responses', template: 'hotList_responses'},
@@ -147,6 +170,11 @@ Template.hotListMembers.helpers({
     },
     memberCount: function() {
         return originalHotList.members.length;
+    },
+    getAcronym: function(str) {
+        //var str     = "Java Script Object Notation";
+        var matches = str.match(/\b(\w)/g);
+        return matches.join('');
     }
 });
 Template.hotList.events({
@@ -154,6 +182,8 @@ Template.hotList.events({
         originalHotList.members.splice(originalHotList.members.indexOf(this._id), 1);
         hotListMembersDep.changed();
         hotListCollection.update({_id: hotList._id}, {$set: {members: originalHotList.members}});
-
+    },
+    'click .goBack': function () {
+        history.back();
     }
 });
