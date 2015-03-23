@@ -107,12 +107,20 @@ Template.hotList.events({
 });
 
 Template.hotListHeader.helpers({
+    hotList: function(){
+        //var originalHotList = HotLists.findOne({ _id: Session.get('entityId') });
+        return new dType.objInstance(originalHotList, HotLists);
+    },
     statusClass: function (statusId) {
         var lu = LookUps.findOne(statusId);
         if(lu && lu.displayName == 'Active') return 'success';
         else return 'error';
+    },
+    editMode: function () {
+        return self.editMode;
     }
 });
+
 Template.hotListHeader.events({
     'click #toggle-status': function(e, ctx){
         var hotList = hotListCollection.findOne({_id: Session.get('entityId')});
@@ -125,6 +133,24 @@ Template.hotListHeader.events({
             status = statuses[0]['_id'];
 
         hotListCollection.update({_id: hotList._id}, {$set: {activeStatus: status}}, function(err, result) {});
+    },
+    'click .toggle-edit-mode': function () {
+        self.editMode = !self.editMode;
+    },
+    'click .saveButton': function () {
+        var statusNote = $('#statusNote').val();
+
+        hotListCollection.update({_id: hotList._id}, {$set: {statusNote: statusNote}}, function (err, result) {
+            if (!err) {
+                self.editMode = false;
+            }
+            else{
+                alert(err);
+            }
+        });
+    },
+    'click .cancelButton': function () {
+        self.editMode = false;
     }
 });
 

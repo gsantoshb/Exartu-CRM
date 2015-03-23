@@ -37,7 +37,18 @@
         </div>
         <h1 class="title">{{displayName}} <span class="pointer label-title {{statusClass activeStatus}}" id="toggle-status" data-status="{{activeStatus}}">{{lookUpName activeStatus}}</span></h1>
     </div>
-    <div class="status-note-1"><span>Status note –</span> {{statusNote}}  <a class="edit" href="#">– <i class="fa fa-pencil"></i> edit</a> </div>
+    <div class="status-note-1">
+        {{#if editMode}}
+                <textarea class="form-control input-block" style="margin-bottom: 8px;" id="statusNote">{{statusNote}}</textarea>
+                <div class="pull-right">
+                    <span class="btn btn-primary saveButton"><i class="fa fa-check"></i> Save</span>
+                    <span class="btn btn-default cancelButton"><i class="fa fa-close"></i> Cancel</span>
+                </div>
+            {{else}}
+                <span>Status note –</span> {{statusNote}}  <a class="edit toggle-edit-mode" href="#">– <i class="fa fa-pencil"></i> edit</a>
+        {{/if}}
+    </div>
+
 </template>
 
 <template name="hotListOriginData">
