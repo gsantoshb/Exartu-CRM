@@ -1,32 +1,32 @@
 <template name="hotList">
     <div id="content" class="network-content nicer-filters">
 
-            <div class="row">
+        <div class="row">
 
-                <div class="col-md-3">
-                    <div class="sidebar">
-                        <div class="go-back">
-                            <a class="pointer goBack"><i class="fa fa-chevron-left"></i> Back</a>
-                        </div>
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <div class="go-back">
+                        <a class="pointer goBack"><i class="fa fa-chevron-left"></i> Back</a>
+                    </div>
 
-                        {{#with originalHotList}}  {{> hotListHeader}}  {{/with}}
+                    {{#with originalHotList}}  {{> hotListHeader}}  {{/with}}
 
-                        {{>hotList_nav}}
+                    {{>hotList_nav}}
 
-                        {{>hotList_actions}}
+                    {{>hotList_actions}}
 
-                        {{#with originalHotList}}  {{> hotListOriginData}}  {{/with}}
-                    </div><!-- /.sidebar -->
-                </div>
+                    {{#with originalHotList}}  {{> hotListOriginData}}  {{/with}}
+                </div><!-- /.sidebar -->
+            </div>
 
-                <div class="details-view col-md-9">
-                    <div class="details-view-content clearfix">
-                        <div class="tab-pane active">
-                            {{> UI.dynamic template=currentTemplate  data=hotList  }}
-                        </div>
+            <div class="details-view col-md-9">
+                <div class="details-view-content clearfix">
+                    <div class="tab-pane active">
+                        {{> UI.dynamic template=currentTemplate  data=hotList  }}
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </template>
 
@@ -39,13 +39,15 @@
     </div>
     <div class="status-note-1">
         {{#if editMode}}
+            <div style="display: block; overflow: hidden">
                 <textarea class="form-control input-block" style="margin-bottom: 8px;" id="statusNote">{{statusNote}}</textarea>
                 <div class="pull-right">
                     <span class="btn btn-primary saveButton"><i class="fa fa-check"></i> Save</span>
                     <span class="btn btn-default cancelButton"><i class="fa fa-close"></i> Cancel</span>
                 </div>
-            {{else}}
-                <span>Status note –</span> {{statusNote}}  <a class="edit toggle-edit-mode" href="#">– <i class="fa fa-pencil"></i> edit</a>
+            </div>
+        {{else}}
+            <span>Status note –</span> {{statusNote}}  <a class="edit toggle-edit-mode" href="#">– <i class="fa fa-pencil"></i> edit</a>
         {{/if}}
     </div>
 
