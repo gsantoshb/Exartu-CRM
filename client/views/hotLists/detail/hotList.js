@@ -124,7 +124,7 @@ Template.hotListHeader.helpers({
 Template.hotListHeader.events({
     'click #toggle-status': function(e, ctx){
         var hotList = hotListCollection.findOne({_id: Session.get('entityId')});
-        var statuses = LookUps.find({lookUpCode: 13, hierId : "sys-x3s"}).fetch();
+        var statuses = LookUps.find({lookUpCode: 13}).fetch();
         var status = undefined;
 
         if(hotList.activeStatus == statuses[0]['_id'])
