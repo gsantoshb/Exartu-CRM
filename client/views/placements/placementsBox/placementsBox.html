@@ -21,7 +21,7 @@
 
                     <div class="list-actions last">
                         {{#if listIsLoading}}
-                            loading
+                            {{_ "loading"}}
                         {{else}}
                             {{#unless isESSearch}}
                                 {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}
@@ -70,7 +70,7 @@
         <div class="input-group">
             <span class="prop-input">
                 {{#objectProperty property=searchString}}
-                    <input id="searchString" type="text" class="form-control" placeholder="Search placements"
+                    <input id="searchString" type="text" class="form-control" placeholder= {{_ "Search placements"}}
                            value="{{value}}">
                 {{/objectProperty}}
                 <span class="text text-danger"></span>
