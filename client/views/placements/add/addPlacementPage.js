@@ -89,7 +89,8 @@ Template.addPlacementPage.helpers({
                         return aux;
                     })
                 };
-                AllEmployees.find(query, {sort: {'person.lastName': 1}}).forEach(function (doc) {
+                var Status = LookUps.findOne({lookUpCode: Enums.lookUpCodes.active_status, lookUpActions: Enums.lookUpAction.Implies_Active});
+                AllEmployees.find({$and: [query,{activeStatus: Status._id } ]}, {sort: {'person.lastName': 1}}).forEach(function (doc) {
                     employees.push({id: doc._id, text: doc.displayName + '      [' + doc._id + ']'});
                 });
                 self.ready(employees);

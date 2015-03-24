@@ -209,10 +209,13 @@ UserManager = {
             case Enums.lastUsedType.employee:
                 if (!user.lastUsed || !user.lastUsed.employee)
                     return [];
+                var rootHier = Utils.getHierTreeRoot(user.currentHierId)
+                var Status = LookUps.findOne({lookUpCode: Enums.lookUpCodes.active_status, lookUpActions: Enums.lookUpAction.Implies_Active, hierId: rootHier});
                 return _.filter(_.map(user.lastUsed.employee, function (employeeId) {
                     to_return =  Contactables.findOne({
                         objNameArray: 'Employee',
                         _id: employeeId,
+                        activeStatus: Status._id,
                         $or: Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()))
                     });
                     return to_return;
