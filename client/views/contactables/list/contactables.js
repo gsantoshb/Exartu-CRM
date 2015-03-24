@@ -262,7 +262,7 @@ Template.contactablesList.created = function () {
         }
 
         // Created by
-        if (query.mineOnly.val) {
+        if (query.mineOnly.value) {
             searchQuery.userId = Meteor.userId();
             urlQuery.addParam('mine', true);
         }
@@ -869,6 +869,7 @@ var esResult = [];
 
 var runESComputation = function () {
     Meteor.autorun(function () {
+
         if (_.isEmpty(query.searchString.value))
             return;
 
@@ -934,7 +935,7 @@ var runESComputation = function () {
         searchDep.changed();
         Contactables.esSearch('.*' + query.searchString.value + '.*', filters, function (err, result) {
             if (!err) {
-                esResult = _.map(result.hits, function (hit) {
+              esResult = _.map(result.hits, function (hit) {
                     var contactable = Contactables._transform(hit._source);
                     contactable._match = {
                         score: (hit._score / result.max_score) * 100,
