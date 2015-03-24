@@ -5,7 +5,7 @@ _.forEach([
             weight: 2
         },
         {
-            displayName: 'Inactive', lookUpActions: [Enums.lookUpAction.Implies_Active],sortOrder:20,
+            displayName: 'Inactive', lookUpActions: [Enums.lookUpAction.Implies_Inactive],sortOrder:20,
             weight: 3,
             dependencies: [0]
         }

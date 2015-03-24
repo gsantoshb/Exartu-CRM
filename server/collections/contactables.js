@@ -130,7 +130,8 @@ Meteor.publish('allEmployees', function () {
         fields: {
             'person.lastName': 1,
             'person.middleName': 1,
-            'person.firstName': 1
+            'person.firstName': 1,
+            'activeStatus': 1
         }
     })), sub, 'allEmployees');
     sub.ready();
