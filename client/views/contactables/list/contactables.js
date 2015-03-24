@@ -389,18 +389,18 @@ Template.contactablesList.rendered = function () {
      * @todo review code, this ia a small hack to make ti work.
      * This particular plugin doesn't seem to behave quite right if you initialize it more than once so we're doing it on each first click event.
      */
-    $(document).on('click', 'button[data-toggle="popover"]', function (e) {
-        var object = e.currentTarget;
-        // destroy any other popovers open on page
-        $('.popover').popover('destroy');
-
-        if ($(object).attr('data-init') == 'off') {
-            // we set all other popovers besides this one to off so that we can open them next time
-            $('button[data-toggle="popover"]').attr('data-init', 'off');
-            $(object).popover('show');
-            $(object).attr('data-init', 'on');
-        }
-    });
+    //$(document).on('click', 'button[data-toggle="popover"]', function (e) {
+    //    var object = e.currentTarget;
+    //    // destroy any other popovers open on page
+    //    $('.popover').popover('destroy');
+    //
+    //    if ($(object).attr('data-init') == 'off') {
+    //        // we set all other popovers besides this one to off so that we can open them next time
+    //        $('button[data-toggle="popover"]').attr('data-init', 'off');
+    //        $(object).popover('show');
+    //        $(object).attr('data-init', 'on');
+    //    }
+    //});
 };
 
 // hack: because the handler is created on the created hook, the SubscriptionHandlers 'cleaner' can't find it
@@ -701,6 +701,19 @@ Template.contactablesFilters.helpers({
 Template.contactables.events({
     'click .parseText': function () {
         Utils.showModal('textParser');
+    },
+    'click button[data-toggle="popover"]': function (e, ctx) {
+        var object = e.currentTarget;
+        // destroy any other popovers open on page
+        $('.popover').popover('destroy');
+
+        if ($(object).attr('data-init') == 'off') {
+            // we set all other popovers besides this one to off so that we can open them next time
+            $('button[data-toggle="popover"]').attr('data-init', 'off');
+            $(object).popover('show');
+            console.log('show');
+            $(object).attr('data-init', 'on');
+        }
     }
 });
 
