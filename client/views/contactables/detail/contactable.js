@@ -12,7 +12,7 @@ ContactableController = RouteController.extend({
             Meteor.subscribe('singleHotList', Session.get('hotListId'))]
     },
     data: function () {
-        Session.set('entityId', this.params._id);
+           Session.set('entityId', this.params._id);
     },
     action: function () {
         if (!this.ready()) {
