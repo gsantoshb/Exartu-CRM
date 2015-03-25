@@ -89,11 +89,11 @@ UserManager = {
 
             // Create account
             //var userId = Accounts.createUser({ username: document.username, email: document.email, password: document.password });
-
             var user = {
                 email: document.email.toLowerCase(),
                 password: document.password,
-                hierRoles: []
+                hierRoles: [],
+				language: document.language
             };
 
             if (document.currentHierId) {
@@ -328,6 +328,7 @@ Accounts.onCreateUser(function (options, user) {
     } else {
         hierId = options.currentHierId;
     }
+	user.language = options.language;
     user.hierarchies = [hierId];
     user.currentHierId = hierId;
     user.hierId = hierId; //temp...need to remove user.hierId references from submodules first

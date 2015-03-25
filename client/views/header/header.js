@@ -5,6 +5,8 @@ Utils.reactiveProp(Utils.adminSettings, 'isAdmin', function () {
     return Utils.adminSettings.isClientAdmin || Utils.adminSettings.isSystemAdmin;
 });
 
+var currentLanguageLabel = new ReactiveVar();
+
 Meteor.call('bUserIsClientAdmin', null, function (err, result) {
     if (err)
         return console.log(err);
@@ -76,6 +78,11 @@ Template.header.helpers({
     currentHierName: function () {
         var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
         return hier ? hier.name : '';
+    },
+    currentLanguageLabel: function() {
+        var languages = TAPi18n.getLanguages();
+        currentLanguageLabel.set( languages[TAPi18n.getLanguage()].name );
+        return currentLanguageLabel.get();
     }
 });
 Template.header.events({
@@ -83,6 +90,27 @@ Template.header.events({
         Meteor.logout(function () {
             Router.go('/login');
         });
+    },
+    'click #menu-settings > a[data-target="#menu-settings"]': function(e, ctx) {
+        $('#menu-settings .sub-menu').hide();
+    },
+    'click .dropdown-menu > li > a.trigger': function(e, ctx){
+        var current = $(e.currentTarget).next();
+        var grandparent = $(e.currentTarget).parent().parent();
+
+        if( $(e.currentTarget).hasClass('left-caret') || $(e.currentTarget).hasClass('right-caret') )
+            $(e.currentTarget).toggleClass('right-caret left-caret');
+
+        grandparent.find('.left-caret').not(e.currentTarget).toggleClass('right-caret left-caret');
+        grandparent.find(".sub-menu:visible").not(current).hide();
+
+        current.toggle();
+        e.stopPropagation();
+    },
+    'click .dropdown-menu > li > a:not(.trigger)': function(e, ctx){
+        var root = $(e.currentTarget).closest('.dropdown');
+        root.find('.left-caret').toggleClass('right-caret left-caret');
+        root.find('.sub-menu:visible').hide();
     }
 });
 
