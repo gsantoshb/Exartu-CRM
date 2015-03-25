@@ -13,6 +13,9 @@ var OnBeforeActions = {
     if (!Meteor.userId()) {
       this.render('login');
     }else{
+      userInfo = Utils.getUserInformation(Meteor.userId());
+	  console.log(userInfo);
+      TAPi18n.setLanguage(userInfo.language);
       this.next();
     }
   }
