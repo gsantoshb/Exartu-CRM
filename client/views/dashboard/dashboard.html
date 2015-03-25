@@ -49,6 +49,7 @@
                     {{#if listViewMode}}
                         <table class="table table-striped">
                             <tbody>
+                            {{#if isReady}}
                             {{#each activities}}
                                 <tr>
                                     <td>
@@ -58,16 +59,19 @@
                                     </td>
                                 </tr>
                             {{/each}}
+                            {{/if}}
                             </tbody>
                         </table>
                     {{else}}
                         <section class="timeline">
                             <div class="activity-container scroll-container">
+                        {{#if isReady}}
                                 {{#each activities}}
                                     {{#with getCtx}}
                                         {{> Template.dynamic template=getTemplateForActivity}}
                                     {{/with}}
                                 {{/each}}
+                                    {{/if}}
                             </div>
                         </section>
                     {{/if}}

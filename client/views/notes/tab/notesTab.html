@@ -50,11 +50,12 @@
                         </div>
                     </div>
 
-                    <div class="add-note-actions-cell last" style="visibility:{{isContactableNote}}">
-                        <div class="item-icon item-icon-network item-icon-sm"><i class="icon-profile-business-man"></i></div>
-                        {{> afFieldInput name='links' type='linkInput'}}
-                    </div>
+
                 {{/if}}
+                <div class="add-note-actions-cell last" style="visibility:{{isContactableNote}}">
+                    <div class="item-icon item-icon-network item-icon-sm"><i class="icon-profile-business-man"></i></div>
+                    {{> afFieldInput name='links' type='linkInput'}}
+                </div>
 
                 {{#if isHotListNote}}
                     {{#unless userNumbers}}

@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
-                    <div class="pull-right"><a class="btn btn-primary top-10" href="/login">Sign In</a></div>
+                    <div class="pull-right"><a class="btn btn-primary top-10" href="/login">{{_ "Sign In"}}</a></div>
                     <a href="#"><img alt="Exartu" src="img/logo.png"></a>
                 </div>
             </div>
@@ -15,7 +15,7 @@
 
 
                 {{#if isRegistering}}
-                <h1>Sign Up</h1>
+                <h1>{{_ "Sign Up"}}</h1>
                 {{#autoForm schema="RegisterSchema" id="registerForm" validation="blur"}}
                     <fieldset>
                         <!--<div class="form-group {{#if afFieldIsInvalid name='username'}}has-error{{/if}}">-->
@@ -24,7 +24,9 @@
                             <!--<span class="help-block">{{afFieldMessage name='username'}}</span>-->
                             <!--{{/if}}-->
                         <!--</div>-->
-
+                        <div class="form-group">
+							{{> afFieldInput name='language' class="input-lg" type="select" options=languageOptions onChange="TAPi18n.setLanguage(this.value);"}}
+						</div>
                         <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
                             {{> afFieldInput name='email' class="input-lg" placeholder="Email"}}
                             {{#if afFieldIsInvalid name='email'}}
@@ -61,11 +63,11 @@
                         </div>
                     {{/if}}
                 {{else}}
-                <h1>Thank you</h1>
+                <h1>{{_ "Thank you"}}</h1>
                 <div class="col-md-8 text-center" style="margin-bottom: 150px">
                     <br><br>
-                    <h4>Your registration is complete</h4>
-                    <p>Please verify your account via the email we just sent you.  </p>
+                    <h4>{{_ "Your registration is complete"}}</h4>
+                    <p>{{_ "Please verify your account via the email we just sent you.  "}}</p>
                 </div>
                 {{/if}}
 

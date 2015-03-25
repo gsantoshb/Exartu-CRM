@@ -57,6 +57,7 @@
 	"Notes": "笔记",
 	"Owner": "拥有者",
 	"Placements": "申请",
+	"Please verify your account via the email we just sent you.  ": "请认证邮件",
 	"Process status": "申请状态",
 	"Process Status": "申请状态",
 	"quarter": "本季度",
@@ -77,6 +78,8 @@
 	"searching": "搜索中",
 	"select": "选择",
 	"Settings": "设置",
+	"Sign In": "登陆",
+	"Sign Up": "注册",
 	"Sort": "排序",
 	"SSN/Phone/Email": "社保号/电话/邮箱",
 	"Start Date": "开始时间",
@@ -86,6 +89,7 @@
 	"tasks": "任务",
 	"Tasks": "任务",
 	"TaxID/SSN": "税号/社保号",
+	"Thank you": "谢谢",
 	"Title": "名称",
 	"Today": "今天",
 	"Type": "类型",
@@ -97,5 +101,6 @@
 	"Week": "本周",
 	"WorkerComp": "工作组",
 	"year": "今年",
-	"Year": "今年"
+	"Year": "今年",
+	"Your registration is complete": "您已成功注册"
 }
