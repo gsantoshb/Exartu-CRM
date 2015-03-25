@@ -1,13 +1,13 @@
 <!-- Details view layout -->
 <template name="contactable">
-    <div id="content" class="details">
+    <div id="content" class="details network-content">
         {{#with contactable}}
             <div class="row">
                 <div class="col-md-3">
 
                     <div class="sidebar">
 
-                        <div class="go-back">
+                        <div class="go-back goBack">
                             <a href="#"><i class="fa fa-chevron-left"></i> {{_ "Back"}}</a>
                         </div>
 
@@ -51,46 +51,40 @@
 <template name="contactable_header">
 
     <div class="head">
-        <div class="item-icon item-icon-network item-icon-lg">
+        {{#if pictureFileId}}
             <div class="profile-pic">
-                {{#if pictureFileId}}
-                    <a id="edit-pic" title="Click to Edit" class="pointer">
-                        <img class="" src="{{pictureUrl}}" style="max-height: 48px;max-width: 48px;">
-                    </a>
-                {{else}}
-                    <div id="edit-pic" title="Click to Edit" style="cursor: pointer">
-                        {{#if person}}
-                            <i class="icon-profile-business-man"></i>
-                        {{/if}}
-                        {{#if organization}}
-                            <i class="icon-buildings-1"></i>
-                        {{/if}}
-                    </div>
-                {{/if}}
-            </div>
-        </div>
-        <h1 class="title">{{displayName}}</h1>
-        {{#if person}}
-            {{#if person.jobTitle}}
-                <div class="desc">{{person.jobTitle}}</div>
-            {{/if}}
-        {{/if}}
-
-        {{#if Contact.clientName}}
-            <!--<br>-->
-            <div class="desc">
-                <a href="/contactable/{{Contact.client}}">
-                    <strong class="text text-muted" style="font-size: 25px; color: #A29E9E">
-                        {{Contact.clientName}}
-                        <i class="fa fa-external-link" style="font-size: 14px"></i>
-                    </strong>
+                <a id="edit-pic" title="Click to Edit" class="pointer">
+                    <img class="" src="{{pictureUrl}}" style="max-height: 48px;max-width: 48px;">
                 </a>
             </div>
+        {{else}}
+            <div class="item-icon item-icon-network item-icon-lg">
+                <div id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                    {{#if person}}
+                        <i class="icon-profile-business-man"></i>
+                    {{/if}}
+                    {{#if organization}}
+                        <i class="icon-buildings-1"></i>
+                    {{/if}}
+                </div>
+            </div>
         {{/if}}
 
-        {{#if Client.department}}
-            <div class="desc">{{Client.department}}</div>
-        {{/if}}
+        <h1 class="title">{{displayName}}</h1>
+
+        <div class="desc">
+            {{#if person}}
+                {{#if person.jobTitle}}
+                    {{person.jobTitle}}
+                {{/if}}
+            {{/if}}
+
+            {{#if Contact.clientName}}
+                @&nbsp;<a href="/contactable/{{Contact.client}}">{{Contact.clientName}}</a>
+            {{/if}}
+
+            {{#if Client.department}}<br>{{Client.department}}{{/if}}
+        </div>
     </div>
 
     {{#with mainContactMethods}}

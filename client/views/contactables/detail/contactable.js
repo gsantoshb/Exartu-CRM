@@ -142,6 +142,9 @@ Template.contactable.events({
                 downloadLink[0].click();
             }
         });
+    },
+    'click .goBack': function () {
+        history.back();
     }
 });
 var doTransform = function (type) {

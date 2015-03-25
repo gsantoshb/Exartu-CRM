@@ -384,24 +384,7 @@ Template.contactablesList.created = function () {
     });
 };
 
-Template.contactablesList.rendered = function () {
-    /**
-     * @todo review code, this ia a small hack to make ti work.
-     * This particular plugin doesn't seem to behave quite right if you initialize it more than once so we're doing it on each first click event.
-     */
-    $(document).on('click', 'button[data-toggle="popover"]', function (e) {
-        var object = e.currentTarget;
-        // destroy any other popovers open on page
-        $('.popover').popover('destroy');
-
-        if ($(object).attr('data-init') == 'off') {
-            // we set all other popovers besides this one to off so that we can open them next time
-            $('button[data-toggle="popover"]').attr('data-init', 'off');
-            $(object).popover('show');
-            $(object).attr('data-init', 'on');
-        }
-    });
-};
+Template.contactablesList.rendered = function () {};
 
 // hack: because the handler is created on the created hook, the SubscriptionHandlers 'cleaner' can't find it
 Template.contactablesList.destroyed = function () {
@@ -410,10 +393,12 @@ Template.contactablesList.destroyed = function () {
     //    delete SubscriptionHandlers.AuxContactablesHandler;
     //}
 
+    $('button[data-toggle="popover"]').attr('data-init', 'off');
     $('.popover').hide().popover('destroy');
 };
 
 Template.contactablesListItem.destroyed = function () {
+    $('button[data-toggle="popover"]').attr('data-init', 'off');
     $('.popover').hide().popover('destroy');
 };
 
@@ -701,6 +686,17 @@ Template.contactablesFilters.helpers({
 Template.contactables.events({
     'click .parseText': function () {
         Utils.showModal('textParser');
+    },
+    'click button[data-toggle="popover"]': function (e, ctx) {
+        var object = e.currentTarget;
+        var attr = $(object).attr('aria-describedby');
+        // destroy any other popovers open on page
+        $('.popover').popover('destroy');
+
+        if ( !(typeof attr !== typeof undefined && attr !== false) ) {
+            // we set all other popovers besides this one to off so that we can open them next time
+            $(object).popover('show');
+        }
     }
 });
 
