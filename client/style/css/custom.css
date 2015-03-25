@@ -217,13 +217,9 @@
     body[data-color="enterprise-dark"] #header h1{
         height: 30px;
     }
-    #user-nav {
-        top: 7px;
-        width: initial;
-        left: 0;
-    }
+
     #header{
-        height: 50px;
+        height: 48px;
     }
 }
 @media (min-width: 768px) {
