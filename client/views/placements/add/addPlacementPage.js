@@ -78,20 +78,25 @@ Template.addPlacementPage.helpers({
                 });
             } else {
                 var employees = [];
+                var stringWord = _.compact(string.replace(",", "").split(" "));
                 var searchFields = ['person.firstName', 'person.lastName', 'person.middleName'];
                 var query = {
                     $or: _.map(searchFields, function (field) {
-                        var aux = {};
-                        aux[field] = {
-                            $regex: '.*' + string + '.*',
+                        var aux = {$or:   _.map(stringWord, function(word){
+                          var aux2={};
+                          aux2[field] = {
+                            $regex: '(.)*' + word + '(.)*',
                             $options: 'i'
-                        };
+                          };
+                          return aux2;
+                        }) };
+
                         return aux;
                     })
                 };
                 var Status = LookUps.findOne({lookUpCode: Enums.lookUpCodes.active_status, lookUpActions: Enums.lookUpAction.Implies_Active});
                 AllEmployees.find({$and: [query,{activeStatus: Status._id } ]}, {sort: {'person.lastName': 1}}).forEach(function (doc) {
-                    employees.push({id: doc._id, text: doc.displayName + '      [' + doc._id + ']'});
+                    employees.push({id: doc._id, text: doc.displayName});
                 });
                 self.ready(employees);
             }
