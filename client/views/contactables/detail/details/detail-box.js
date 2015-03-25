@@ -1,3 +1,27 @@
+EditDirectDepositMode = {
+  val: false,
+  dep: new Tracker.Dependency,
+  show: function () {
+    this.val = true;
+    this.dep.changed();
+  },
+  hide: function () {
+    this.val = false;
+    this.dep.changed();
+  }
+};
+
+Object.defineProperty(EditDirectDepositMode, "value", {
+  get: function () {
+    this.dep.depend();
+    return this.val;
+  },
+  set: function (newValue) {
+    this.val = newValue;
+    this.dep.changed();
+  }
+});
+
 EditMode = {
     val: false,
     dep: new Deps.Dependency,
@@ -130,3 +154,33 @@ Template.contactableDetailBox.events = {
         userSelected.set(e.target.value)
     }
 };
+
+Template.displayDirectDeposit.events = {
+  'click #edit-deposit-method-mode': function() {
+    if (EditDirectDepositMode.value) {
+      EditDirectDepositMode.hide();
+    }
+    else{
+      EditDirectDepositMode.show();
+    }
+  },
+  'click #save-changes-method': function(){
+    var routingNumber = $('#routingNumber').val();
+    var accountNumber = $('#accountNumber').val();
+    Contactables.update({_id: contactable._id},
+      {$set:{'Employee.routingNumber': routingNumber, 'Employee.accountNumber': accountNumber }
+
+      });
+    EditDirectDepositMode.hide();
+
+  },
+  'click #cancel-deposit-method': function(){
+    EditDirectDepositMode.hide();
+  }
+}
+
+Template.displayDirectDeposit.helpers({
+  editMode: function () {
+    return EditDirectDepositMode.value;
+  }
+})

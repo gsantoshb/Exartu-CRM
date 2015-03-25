@@ -12,11 +12,10 @@ var activityTypes = [
 DashboardController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
-    if (!SubscriptionHandlers.ActivitiesHandler) {
-      SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes}}});
-
-      return [HierarchiesHandler, SubscriptionHandlers.ActivitiesHandler];
-    }
+    //if (!SubscriptionHandlers.ActivitiesHandler) {
+    //  SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes}}});
+    //  return [HierarchiesHandler, SubscriptionHandlers.ActivitiesHandler];
+    //}
   },
   onAfterAction: function () {
     var title = 'Dashboard',
@@ -51,10 +50,15 @@ var listViewMode = new ReactiveVar(true);
 // Main template
 Template.dashboard.created = function () {
   Meteor.autorun(function () {
-    queryDep.depend();
-    if (ActivitiesHandler) {
-      ActivitiesHandler.setFilter({type: {$in: activityTypes}}, {searchString: query.filter.searchString});
-    }
+
+      queryDep.depend();
+      if (ActivitiesHandler) {
+        ActivitiesHandler.setFilter({type: {$in: activityTypes}}, {searchString: query.filter.searchString});
+      }
+      else{
+        SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes}}});
+      }
+
   });
 };
 
@@ -84,6 +88,11 @@ Template.dashboard.helpers({
   getCtx: function () {
     this.listViewMode = listViewMode.get();
     return this;
+  },
+  isReady: function(){
+
+      return ActivitiesHandler.ready();
+
   }
 });
 

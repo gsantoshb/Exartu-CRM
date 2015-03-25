@@ -58,13 +58,28 @@ NoteSchema = new SimpleSchema({
 AutoForm.hooks({
   AddNoteRecord: {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
-      var self = this;
-      //for some reason autoValue doesn't work
-      insertDoc.contactableId = Session.get('entityId');
+      if(!hotlist) {
+        debugger;
+        var self = this;
+        //for some reason autoValue doesn't work
 
-      Meteor.call('addContactableNote',insertDoc, function () {
-        self.done();
-      })
+        insertDoc.contactableId = Session.get('entityId');
+
+        Meteor.call('addContactableNote', insertDoc, function () {
+          self.done();
+        })
+      }
+      else if(hotlist){
+        var self = this;
+        insertDoc.hierId = Meteor.user().currentHierId;
+        insertDoc.userId = Meteor.user()._id;
+        Meteor.call('addNote', insertDoc, function () {
+          self.done();
+        })
+      }
+      else{
+
+      }
       return false;
     }
   }
@@ -118,8 +133,8 @@ Template.notesTab.created = function () {
 }
 Template.notesTabAdd.helpers({
     isHotListNote: function () {
-        hotlist = HotLists.findOne(this._id);
-        return (hotlist) ? true : false; // hide numbers if hotlist
+      hotlist = HotLists.findOne(this._id);
+      return (hotlist) ? true : false; // hide numbers if hotlist
     },
     isContactableNote: function () {
         var contactable = Contactables.findOne(this._id);
@@ -176,6 +191,7 @@ Template.notesTabList.created = function () {
                 searchQuery['links.id'] = {
                     $in: hotlist.members
                 };
+                searchQuery['isReply'] = true;
             }
             else {
                 searchQuery.links = {
@@ -183,6 +199,7 @@ Template.notesTabList.created = function () {
                         id: Session.get('entityId')
                     }
                 };
+
             }
             if (!NotesHandler) {
               NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});

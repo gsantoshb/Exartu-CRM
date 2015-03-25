@@ -231,6 +231,7 @@
 
 
                     </div>
+
                     <!-- /.col-md-6 -->
 
                     {{#if editMode }}
@@ -243,6 +244,74 @@
                     {{/if}}
                 </div>
 
+            </div>
+
+        </div>
+    </section>
+    {{#with originalContactable}}
+       {{>displayDirectDeposit}}
+    {{/with}}
+
+
+
+</template>
+<template name="displayDirectDeposit">
+    <section class="box-type-2">
+        <div class="box-type-2-content">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="box-options">
+                        <a class="action-btn" id="edit-deposit-method-mode" href="#"><i class="fa fa-pencil"></i></a>
+                    </div>
+                    <h3>Direct Deposit</h3>
+                    <!--<a class="btn-action pointer" title="Edit"><i id="edit-contact-method-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>-->
+                </div><!-- /.col-md-2 -->
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-type-5">
+
+                                <li>
+                                    <div class="left-part">Routing Number</div>
+                                    <div class="right-part">
+                                        {{#if editMode}}
+                                            <div class="form-group {{hasError}}">
+                                                <input id="routingNumber" class="form-control" type="text" value="{{Employee.routingNumber}}"  >
+                                                <span>{{error}}</span>
+                                            </div>
+                                        {{else}}
+                                            {{Employee.routingNumber}}
+                                        {{/if}}
+                                    </div>
+
+                                </li>
+                                <li>
+                                    <div class="left-part">Account number</div>
+                                    <div class="right-part">
+                                        {{#if editMode}}
+                                            <div class="form-group {{hasError}}">
+                                                <input id="accountNumber" class="form-control" type="text" value="{{Employee.accountNumber}}"  >
+                                                <span>{{error}}</span>
+                                            </div>
+                                        {{else}}
+                                            {{Employee.accountNumber}}
+                                        {{/if}}
+                                    </div>
+
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                        {{#if editMode }}
+                            <div class="edit-actions-bar">
+                                <span id="add-contact-method-error" class="label label-danger" style="float: right;"></span>
+                                <button id="save-changes-method"  type="button" class="btn btn-primary" title="Add">Save</button>
+                                <a id="cancel-deposit-method" class="btn btn-default">Cancel</a>
+                            </div>
+                        {{/if}}
+                </div>
             </div>
         </div>
     </section>

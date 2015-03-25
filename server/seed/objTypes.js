@@ -142,7 +142,20 @@ newObjType({
       displayName: 'TaxID/SSN',
       showInAdd: true,
       required: false
-    }
+    },
+    {
+      name: 'routingNumber',
+      displayName: 'Routing number',
+      showInAdd: true,
+      required: false
+    },
+    {
+      name: 'accountNumber',
+      displayName: 'Account number',
+      showInAdd: true,
+      required: false
+    },
+
   ]
 });
 
