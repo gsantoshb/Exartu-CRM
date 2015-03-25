@@ -219,19 +219,13 @@ ContactablesFiles.allow({
 // Employee resumes
 Resumes = new Mongo.Collection('resumes');
 Meteor.publish('resumes', function () {
-    return Resumes.find({userId: this.userId});
+  return Utils.filterCollectionByUserHier.call(this, Resumes.find({}));
 });
 
 Resumes.allow({
-    insert: function (userId, file) {
-        return false;
-    },
-    update: function (userId, file, fields, modifier) {
-        return false;
-    },
-    remove: function (userId, file) {
-        return (RoleManager.bUserIsClientAdmin() || RoleManager.bUserIsSystemAdmin()) ? true : false;
-    }
+  remove: function (userId, file) {
+    return (RoleManager.bUserIsClientAdmin() || RoleManager.bUserIsSystemAdmin()) ? true : false;
+  }
 });
 
 // Indexes
@@ -243,4 +237,4 @@ Contactables._ensureIndex({'Employee.status': 1});
 Contactables._ensureIndex({'Client.status': 1});
 Contactables._ensureIndex({'Contact.status': 1});
 Contactables._ensureIndex({'activeStatus': 1});
-Contactables._ensureIndex({userId: 1})
+Contactables._ensureIndex({userId: 1});
