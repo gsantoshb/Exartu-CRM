@@ -3237,6 +3237,7 @@ a,a:hover {
         top: 0;
         left: 0;
         z-index: 0
+
     }
 
     #sidebar>a {
@@ -3269,7 +3270,9 @@ a,a:hover {
 
 @media(min-width: 768px) and (max-width:991px) {
     #sidebar,#sidebar>ul {
-        width:43px
+        width:43px;
+        height:100%;
+        left:0;
     }
 
     #sidebar>ul {
@@ -7213,11 +7216,7 @@ body[data-color="dark"].flat .widget-title,body[data-color="dark"].flat .modal-h
 
 @media (max-width: 768px) {
     #header { height: 50px; }
-    #user-nav {
-      top: 7px;
-      width: initial;
-      left: 0;
-    }
+
   }
 
 
