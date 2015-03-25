@@ -58,7 +58,6 @@ NoteSchema = new SimpleSchema({
 AutoForm.hooks({
   AddNoteRecord: {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
-      debugger;
       if(!hotlist) {
         debugger;
         var self = this;
@@ -71,7 +70,6 @@ AutoForm.hooks({
         })
       }
       else if(hotlist){
-        debugger;
         var self = this;
         insertDoc.hierId = Meteor.user().currentHierId;
         insertDoc.userId = Meteor.user()._id;
@@ -80,9 +78,8 @@ AutoForm.hooks({
         })
       }
       else{
-        debugger;
+
       }
-      debugger;
       return false;
     }
   }
@@ -136,9 +133,8 @@ Template.notesTab.created = function () {
 }
 Template.notesTabAdd.helpers({
     isHotListNote: function () {
-      debugger;
-        hotlist = HotLists.findOne(this._id);
-        return (hotlist) ? true : false; // hide numbers if hotlist
+      hotlist = HotLists.findOne(this._id);
+      return (hotlist) ? true : false; // hide numbers if hotlist
     },
     isContactableNote: function () {
         var contactable = Contactables.findOne(this._id);
@@ -195,6 +191,7 @@ Template.notesTabList.created = function () {
                 searchQuery['links.id'] = {
                     $in: hotlist.members
                 };
+                searchQuery['isReply'] = true;
             }
             else {
                 searchQuery.links = {
