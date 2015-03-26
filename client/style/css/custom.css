@@ -1656,11 +1656,11 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 /* Sticky footer styles
 -------------------------------------------------- */
 
-html,
-body {
-  height: 100%;
+/*html,*/
+/*body {*/
+  /*height: 100%;*/
   /* The html and body elements cannot have any padding or margin. */
-}
+/*}*/
 
 
 
