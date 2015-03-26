@@ -1,5 +1,4 @@
 Meteor.publish('emailTemplates',  function (searchQuery) {
-  console.log(searchQuery);
   if(searchQuery) {
     var prueba = Utils.filterCollectionByUserHier.call(this, EmailTemplates.find(searchQuery));
     return prueba;
