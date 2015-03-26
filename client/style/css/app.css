@@ -7371,3 +7371,23 @@ body.menu-open {
     top: 16px;
     left: 20px;
 }
+
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 568px)
+and (orientation : landscape) {
+    .spanel-menu.in ul {
+        overflow-y: auto;
+        z-index: 9999999;
+        position: absolute;
+        height: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    #user-nav {
+        width: initial;
+        top: 7px;
+        left: 0;
+    }
+}
