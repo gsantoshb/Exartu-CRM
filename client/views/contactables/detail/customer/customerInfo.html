@@ -1,70 +1,63 @@
 <template name="contactClientInfo">
-    {{#if client}}
-        <div class="box">
-            {{#with client}}
+    <section class="box-type-2">
+        <div class="box-type-2-content">
+            {{#if client}}
+                {{#with client}}
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="box-options">
+                                <a class="action-btn" href="#"><i class="fa fa-pencil"></i></a>
+                            </div>
+                            <h3>Client</h3>
+                        </div><!-- /.col-md-2 -->
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-12 col-lg-6">
+                                    <div class="client-box">
+                                        <div class="client-logo pull-left sufix-10"><a href="#"><img src="{{pictureUrl}}" alt="{{displayName}} - logo"></a></div>
+                                        <div class="client-content">
+                                            <a href="/contactable/{{_id}}"><h4>{{displayName}}</h4></a>
+                                            {{#with contactMethod 0}}
+                                                <p><a cursor="pointer"><i class="fa {{contactMethodIcon type}}"></i> {{value}}</a></p>
+                                            {{/with}}
+
+                                            {{#with contactMethod 1}}
+                                                <p><a cursor="pointer"><i class="fa {{contactMethodIcon type}}"></i> {{value}}</a></p>
+                                            {{/with}}
+                                        </div><!-- /.client-content -->
+                                    </div><!-- /.client-box -->
+                                </div><!-- /.col-md-6 -->
+                                <div class="col-sm-6 col-md-12 col-lg-6">
+                                    <div class="client-box-note">{{statusNote}}</div>
+                                    {{#if location}}
+                                        <tr>
+                                            <td>Location</td>
+                                            <td>{{location.address}}{{#if location.address2}}, {{location.address2}}{{/if}}, {{location.city}}</td>
+                                        </tr>
+                                    {{/if}}
+                                </div><!-- /.col-md-6 -->
+                            </div><!-- /.row -->
+                        </div><!-- /.col-md-10 -->
+                    </div><!-- /.row -->
+                {{/with}}
+
+            {{else}}
                 <div class="box-header-2">
-                    <a class="btn-action addEdit pointer" title="Edit"><i class="fa fa-pencil"></i></a>
+                    <a class="btn-action addEdit" href="#"><i class="fa fa-pencil"></i></a>
                     <div class="box-title">
-                        <a href="/contactable/{{_id}}" style="color: #777;">
-                            <span>{{displayName}}</span>
+                        <a style="color: #777;">
+                            <span>No Client2</span>
                         </a>
-                        <!--<a class="box-title visible-sm visible-xs" href="#client-body" data-toggle="collapse" >-->
-                            <!--Client-->
-                        <!--</a>-->
                     </div>
                 </div>
-                <div class="" id="client-body">
-                    <a href="/contactable/{{_id}}">
-                        <h5 class="visible-sm visible-xs" style="text-align: center">{{displayName}}</h5>
-                        <p class="text-center">
-                            <img style="max-heigth:40px; max-width:40px;" src="{{pictureUrl}}">
+                <div class="box-v-msg">
+                    <div class="box-v-msg-content">
+                        <i class="icon-buildings-1"></i>
+                        <p>No Client linked<br>
                         </p>
-                    </a>
-                    <p>{{statusNote}}</p>
-                    <table class="table table-striped ">
-                        <tbody>
-                        {{#if location}}
-                            <tr>
-                                <td>Location</td>
-                                <td>{{location.address}}{{#if location.address2}}, {{location.address2}}{{/if}}, {{location.city}}</td>
-                            </tr>
-                        {{/if}}
-                        {{#with contactMethod 0}}
-                            <tr>
-                                <td>{{typeName}}</td>
-                                <td>{{value}}</td>
-                            </tr>
-                        {{/with}}
-
-                        {{#with contactMethod 1}}
-                            <tr>
-                                <td>{{typeName}}</td>
-                                <td>{{value}}</td>
-                            </tr>
-                        {{/with}}
-                        </tbody>
-                    </table>
+                    </div><!-- /.box-v-msg-content -->
                 </div>
-                <!-- /.box-content -->
-            {{/with}}
-        </div>
-    {{else}}
-        <div class="box">
-            <div class="box-header-2">
-                <a class="btn-action addEdit" href="#"><i class="fa fa-pencil"></i></a>
-                <div class="box-title">
-                    <a style="color: #777;">
-                        <span>No Client2</span>
-                    </a>
-                </div>
-            </div>
-            <div class="box-v-msg">
-                <div class="box-v-msg-content">
-                    <i class="icon-buildings-1"></i>
-                    <p>No Client linked<br>
-                    </p>
-                </div><!-- /.box-v-msg-content -->
-            </div>
-        </div>
-    {{/if}}
+            {{/if}}
+        </div><!-- /.box-type-2-content -->
+    </section>
 </template>
