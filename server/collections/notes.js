@@ -154,14 +154,9 @@ Meteor.paginatedPublish(NoteView, function () {
   pageSize: 50,
   publishName: 'notes',
   updateSelector: function (oldSelector, clientParams) {
-    console.log('clientParams', clientParams);
-    console.log('oldSelector', oldSelector);
-
     var newSelector = EJSON.clone(oldSelector);
     delete newSelector['links.id'];
-
     if (clientParams && clientParams.hotlist) {
-
       var hotlistMembers = clientParams.hotlist.members;
       var validMembers = [];
       _.forEach(hotlistMembers, function(m){
@@ -170,13 +165,11 @@ Meteor.paginatedPublish(NoteView, function () {
           validMembers.push(m);
         }
       })
-      console.log('validMembers', validMembers);
       newSelector['links.id']= {
           $in: validMembers
       }
       };
-     console.log('newSelector', newSelector);
-      return newSelector;
+     return newSelector;
   }
 
 });
