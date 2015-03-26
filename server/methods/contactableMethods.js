@@ -245,6 +245,7 @@ FileUploader.createEndpoint('uploadResume', {
                 employeeId: employee,
                 resumeId: resumeId,
                 userId: Meteor.userId(),
+                hierId: Meteor.user().currentHierId,
                 name: metadata.name,
                 type: metadata.type,
                 extension: metadata.extension,

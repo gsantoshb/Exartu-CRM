@@ -152,7 +152,26 @@ Meteor.paginatedPublish(NoteView, function () {
   return Utils.filterCollectionByUserHier.call(this, NoteView.find({}, { sort: { dateCreated: -1 } }));
 },{
   pageSize: 50,
-  publishName: 'notes'
+  publishName: 'notes',
+  updateSelector: function (oldSelector, clientParams) {
+    var newSelector = EJSON.clone(oldSelector);
+    delete newSelector['links.id'];
+    if (clientParams && clientParams.hotlist) {
+      var hotlistMembers = clientParams.hotlist.members;
+      var validMembers = [];
+      _.forEach(hotlistMembers, function(m){
+        var result = HotLists.findOne({_id:{$ne: clientParams.hotlist._id},dateCreated:{$gte:  clientParams.hotlist.dateCreated}, members:{$in: [m]}  })
+        if(!result){
+          validMembers.push(m);
+        }
+      })
+      newSelector['links.id']= {
+          $in: validMembers
+      }
+      };
+     return newSelector;
+  }
+
 });
 
 Meteor.paginatedPublish(NoteListView, function () {

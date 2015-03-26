@@ -2,6 +2,8 @@ var self = {};
 var searchQuery = {};
 var sortDep=new Deps.Dependency;
 var NotesHandler;
+
+
 AutoForm.debug();
 NoteSchema = new SimpleSchema({
   msg: {
@@ -59,7 +61,6 @@ AutoForm.hooks({
   AddNoteRecord: {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
       if(!hotlist) {
-        debugger;
         var self = this;
         //for some reason autoValue doesn't work
 
@@ -121,10 +122,10 @@ self.defaultUserNumber = null;
 self.defaultMobileNumber = null;
 var hotlist = null;
 var responsesOnly = false;
-var responsesOnlyDep = new Deps.Dependency;
 Template.notesTabAdd.events({});
 Template.notesTab.created = function () {
-    if (this.view && this.view.parentView && this.view.parentView.name == "Template.hotList_responses") {
+    hotlist = HotLists.findOne({_id:Session.get('entityId')});
+    if (this.data && this.data.responseOnly) {
         responsesOnly = true;
     }
     else {
@@ -133,7 +134,6 @@ Template.notesTab.created = function () {
 }
 Template.notesTabAdd.helpers({
     isHotListNote: function () {
-      hotlist = HotLists.findOne(this._id);
       return (hotlist) ? true : false; // hide numbers if hotlist
     },
     isContactableNote: function () {
@@ -183,15 +183,29 @@ Template.notesTabList.created = function () {
 
 
     Meteor.autorun(function () {
-            responsesOnlyDep.depend();
             searchQuery={};
 
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
-                searchQuery['links.id'] = {
-                    $in: hotlist.members
-                };
-                searchQuery['isReply'] = true;
+              searchQuery['isReply'] = true;
+              if (!NotesHandler) {
+                NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                NotesHandler.setFilter(searchQuery, {hotlist: hotlist});
+
+
+              } else {
+
+                NotesHandler.setFilter(searchQuery, {hotlist: hotlist});
+                NotesHandler.setOptions(hotlist);
+
+              }
+
+
+
+
+
+
+
             }
             else {
                 searchQuery.links = {
@@ -199,13 +213,26 @@ Template.notesTabList.created = function () {
                         id: Session.get('entityId')
                     }
                 };
+              if (!NotesHandler) {
+                NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                NotesHandler.setFilter(searchQuery);
+
+
+              } else {
+
+                NotesHandler.setFilter(searchQuery);
+
+
+              }
+
 
             }
-            if (!NotesHandler) {
-              NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-            } else {
-              NotesHandler.setFilter(searchQuery);
-            }
+
+            //if (!NotesHandler) {
+            //    NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+            //} else if(NotesHandler.ready()){
+            //    NotesHandler.setFilter(searchQuery);
+            //}
 
         }
     )
@@ -218,7 +245,7 @@ Template.notesTabList.helpers({
         return Notes.find(searchQuery,{sort: {dateCreated:-1}});
     },
     isLoading: function () {
-        return !NotesHandler.ready();
+       return NotesHandler.isLoading();
     }
 });
 
@@ -322,7 +349,6 @@ Template.linksAutoForm.created = function () {
 AutoForm.addInputType('linkInput',{
   template: 'linksAutoForm',
   valueOut: function () {
-    console.log('links', links);
     return links
   }
 });

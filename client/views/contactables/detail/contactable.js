@@ -330,7 +330,7 @@ Template.contactable_nav.helpers({
                 template: 'contactable_documents',
                 icon: 'icon-document-1',
                 info: function () {
-                    return ContactableCounter.findOne('contactablesFiles').count;
+                  return ContactableCounter.findOne('contactablesFiles').count + Resumes.find({employeeId: contactable._id}).count();
                 }
             },
             {
