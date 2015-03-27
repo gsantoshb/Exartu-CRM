@@ -1,9 +1,16 @@
 var hotListCollection = HotLists;
+var HotListMembersHandler;
 
 HotListController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function () {
-        return [Meteor.subscribe('hotListDetails', this.params._id), GoogleMapsHandler]
+        if (!SubscriptionHandlers.HotListMembersHandler) {
+            SubscriptionHandlers.HotListMembersHandler = Meteor.paginatedSubscribe( 'hotListMembers', {pubArguments: this.params._id});
+        }
+        HotListMembersHandler = SubscriptionHandlers.HotListMembersHandler;
+
+        return [Meteor.subscribe('hotListDetails', this.params._id), GoogleMapsHandler, HotListMembersHandler]
+        //return [Meteor.subscribe('hotListDetails', this.params._id), GoogleMapsHandler];
     },
     data: function () {
         Session.set('entityId', this.params._id);
@@ -182,6 +189,15 @@ Template.hotList_nav.helpers({
 Template.hotList_details.helpers({
     originalHotList: function () {
         return hotListCollection.findOne({_id: Session.get('entityId')});
+    }
+});
+
+Template.hotList_members.helpers({
+    //handler: function () {
+    //    return HotListMembersHandler;
+    //},
+    originalHotList: function () {
+        return originalHotList;
     }
 });
 
