@@ -332,14 +332,14 @@
                         <button class="btn-round" type="button"
                                 data-container="body" data-toggle="popover" data-placement="top" data-html="true"
                                 data-content='<a href="{{contactMethodTypePrefix type}}{{value}}">{{value}}</a>'
-                                data-init="off">
+                                data-init="on">
                             <i class="{{contactMethodTypeIcon type}}"></i>
                         </button>
                     {{/each}}
                     {{#if location.displayName}}
                         <button class="btn-round" type="button"
                                 data-container="body" data-toggle="popover" data-placement="top" data-html="true"
-                                data-content='{{location.displayName}}' data-init="off">
+                                data-content='{{location.displayName}}' data-init="on">
                             <i class="fa fa-map-marker"></i>
                         </button>
                     {{/if}}
