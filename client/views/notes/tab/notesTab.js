@@ -1,10 +1,9 @@
 var self = {};
 var searchQuery = {};
 var sortDep=new Deps.Dependency;
+var checkSMSDep = new Deps.Dependency;
 var NotesHandler;
 
-
-AutoForm.debug();
 NoteSchema = new SimpleSchema({
   msg: {
     type: String,
@@ -83,6 +82,7 @@ AutoForm.hooks({
       }
       return false;
     }
+
   }
 });
 //AutoForm.hooks({
@@ -122,7 +122,11 @@ self.defaultUserNumber = null;
 self.defaultMobileNumber = null;
 var hotlist = null;
 var responsesOnly = false;
-Template.notesTabAdd.events({});
+Template.notesTabAdd.events({
+  'change #sendAsSMS': function(){
+    checkSMSDep.changed();
+  }
+});
 Template.notesTab.created = function () {
     hotlist = HotLists.findOne({_id:Session.get('entityId')});
     if (this.data && this.data.responseOnly) {
@@ -141,6 +145,7 @@ Template.notesTabAdd.helpers({
         return (contactable) ? true : false; // hide numbers if hotlist
     },
     mobileNumbers: function () {
+
         var contactable = Contactables.findOne(this._id);
         if (!contactable) return;
         return Utils.getContactableMobilePhones(contactable).map(function (number) {
@@ -171,9 +176,21 @@ Template.notesTabAdd.helpers({
     ,
     defaultUserNumber: function () {
         return self.defaultUserNumber;
+    },
+    ischeckedSMS: function(){
+      checkSMSDep.depend();
+      var field = $("#sendAsSMS");
+      if(field[0] && field[0].checked){
+        return true;
+      }
+      else{
+        return false;
+      }
+
     }
-})
-;
+});
+
+
 
 // List
 
@@ -184,7 +201,6 @@ Template.notesTabList.created = function () {
 
     Meteor.autorun(function () {
             searchQuery={};
-
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
               searchQuery['isReply'] = true;
@@ -194,18 +210,10 @@ Template.notesTabList.created = function () {
 
 
               } else {
-
                 NotesHandler.setFilter(searchQuery, {hotlist: hotlist});
-                NotesHandler.setOptions(hotlist);
+                //NotesHandler.setOptions(hotlist);
 
               }
-
-
-
-
-
-
-
             }
             else {
                 searchQuery.links = {
@@ -215,30 +223,23 @@ Template.notesTabList.created = function () {
                 };
               if (!NotesHandler) {
                 NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-                NotesHandler.setFilter(searchQuery);
-
+                NotesHandler.setFilter(searchQuery, {hotlist: null});
 
               } else {
-
-                NotesHandler.setFilter(searchQuery);
+                NotesHandler.setFilter(searchQuery,{hotlist: null});
 
 
               }
-
-
             }
-
-            //if (!NotesHandler) {
-            //    NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-            //} else if(NotesHandler.ready()){
-            //    NotesHandler.setFilter(searchQuery);
-            //}
-
-        }
+         }
     )
     ;
 }
 ;
+Template.notesTabList.destroyed = function () {
+  //NotesHandler.stop();
+  //delete NotesHandler;
+}
 Template.notesTabList.helpers({
     items: function () {
         sortDep.depend();
