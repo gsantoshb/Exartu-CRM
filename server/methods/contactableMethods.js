@@ -176,6 +176,31 @@ Meteor.methods({
         throw new Meteor.Error(err.message);
       }
     },
+    findContact: function (query) {
+        return Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Contactables.find({
+            $or: [{
+                'person.firstName': {
+                    $regex: query,
+                    $options: 'i'
+                }
+            }, {
+                'person.lastName': {
+                    $regex: query,
+                    $options: 'i'
+                }
+            }, {
+                'person.middleName': {
+                    $regex: query,
+                    $options: 'i'
+                }
+            }, {
+                'organization.organizationName': {
+                    $regex: '.*' + query + '.*',
+                    $options: 'i'
+                }
+            }]
+        }, {fields: {'person': 1, 'organization.organizationName': 1}})).fetch();
+    },
     findClient: function (query) {
         return Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Contactables.find({
             'organization.organizationName': {

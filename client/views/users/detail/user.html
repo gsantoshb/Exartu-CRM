@@ -8,8 +8,8 @@
             </div>
             <div id="breadcrumb" class="breadcrumb-top">
                 <a href="/" title="Go to Home" class="tip-bottom">
-                    <i class="fa fa-home"></i>Home</a>
-                <a href="/users" class="current">User</a>{{displayUserName user._id }}
+                    <i class="fa fa-home"></i>{{_ "Home"}}</a>
+                <a href="/users" class="current">{{_ "User"}}</a>{{displayUserName user._id }}
 
             </div>
 
@@ -31,9 +31,9 @@
     <div class="col-xs-12 col-md-12">
         <div class="col-xs-12 col-md-3">
             <select class="form-control newRole input-lg" type="text">
-                <option disabled selected> -- select a role --</option>
+                <option disabled selected> -- {{_ "select a role"}} --</option>
                 {{#each availableRoles}}
-                    <option value="{{_id}}">{{name}}</option>
+                    <option value="{{_id}}">{{_ name}}</option>
                 {{/each}}
             </select>
         </div>
@@ -59,7 +59,7 @@
     <!--</div>-->
 
 
-    <h2 class="box-title">Roles:</h2>
+    <h2 class="box-title">{{_ "Roles"}}:</h2>
 
     <div class="table-items-box">
 
@@ -75,7 +75,21 @@
                             {{#each roles}}
                                 <li>
                                     <div>
-                                        {{getRoleName .}}
+                                        {{#if is_System_Administrator .}}
+											{{_ "System_Administrator"}}
+										{{/if}}
+                                        {{#if is_Client_Administrator .}}
+											{{_ "Client_Administrator"}}
+										{{/if}}
+                                        {{#if is_Recruiter_Consultant .}}
+											{{_ "Recruiter_Consultant"}}
+										{{/if}}
+                                        {{#if is_Sales_Executive .}}
+											{{_ "Sales_Executive"}}
+										{{/if}}
+                                        {{#if is_Sales_Manager .}}
+											{{_ "Sales_Manager"}}
+										{{/if}}
                                         <button class="btn btn-xs btn-default removeRole"><i class="fa fa-times"></i>
                                         </button>
                                     </div>

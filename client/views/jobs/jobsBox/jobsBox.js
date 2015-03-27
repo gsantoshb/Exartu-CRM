@@ -169,8 +169,6 @@ Template.jobsBox.created = function () {
   ;
   query = query || loadqueryFromURL(Router.current().params.query);
   entityId = Session.get('entityId');
-
-
 };
 
 Template.jobsBox.destroyed = function(){

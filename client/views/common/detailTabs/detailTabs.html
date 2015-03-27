@@ -42,7 +42,7 @@
         {{#each mobileTabs}}
             <li class="{{isActive id}}">
                 <a href="/{{../route}}/{{../entityId}}/{{id}}">
-                    {{#if mobileDisplayName}}{{mobileDisplayName}}{{else}}{{displayName}}{{/if}}
+                    {{#if mobileDisplayName}}{{_ mobileDisplayName}}{{else}}{{_ displayName}}{{/if}}
                     {{#if isDefined info}}<span class="no">{{info}}</span>{{/if}}
                     <i class="fa fa-chevron-right"></i>
                 </a>

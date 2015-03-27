@@ -140,19 +140,42 @@ SMSManager = {
         if (!contactable)
             throw new Error('There is no contactable with phone number ' + reply.From + ' in hierarchy ' + hier.name);
 
-        // Create note
-        var note = {
+        var hotlist = HotLists.findOne({members: contactable._id}, {$sort:{dateCreated: -1}});
+        var note = {}
+        if(hotlist){
+          note = {
             msg: reply.Body,
             sendAsSMS: true,
             contactableNumber: reply.From,
             userNumber: reply.To,
             links: [{
-                id: contactable._id,
-                type: Enums.linkTypes.contactable.value
+              id: contactable._id,
+              type: Enums.linkTypes.contactable.value
+            },
+              {
+              id:hotlist._id,
+              type: Enums.linkTypes.hotList.value
+              }
+            ],
+            hierId: hier._id,
+            isReply: true
+          };
+        }
+        else {
+          // Create note
+          note = {
+            msg: reply.Body,
+            sendAsSMS: true,
+            contactableNumber: reply.From,
+            userNumber: reply.To,
+            links: [{
+              id: contactable._id,
+              type: Enums.linkTypes.contactable.value
             }],
             hierId: hier._id,
             isReply: true
-        };
+          };
+        }
 
         Notes.insert(note);
     }

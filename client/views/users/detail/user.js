@@ -99,9 +99,35 @@ Template.user_tabs.helpers({
         var activeTab = Session.get('activeTab') || 'details';
         return (name == activeTab) ? 'active' : '';
     },
-    getRoleName: function (id) {
+    is_System_Administrator: function (id) {
         var role = roles.findOne({_id: id});
-        if (role) return role.name; else return "role not found";
+        if (role && role.name == 'System_Administrator') 
+			return true;
+		else return false;
+    },
+    is_Client_Administrator: function (id) {
+        var role = roles.findOne({_id: id});
+        if (role && role.name == 'Client_Administrator') 
+			return true;
+		else return false;
+    },
+    is_Recruiter_Consultant: function (id) {
+        var role = roles.findOne({_id: id});
+        if (role && role.name == 'Recruiter_Consultant') 
+			return true;
+		else return false;
+    },
+    is_Sales_Executive: function (id) {
+        var role = roles.findOne({_id: id});
+        if (role && role.name == 'Sales_Executive') 
+			return true;
+		else return false;
+    },
+    is_Sales_Manager: function (id) {
+        var role = roles.findOne({_id: id});
+        if (role && role.name == 'Sales_Manager') 
+			return true;
+		else return false;
     },
     roles: function() {
         var user = Meteor.users.findOne({_id: Session.get('entityId')});
