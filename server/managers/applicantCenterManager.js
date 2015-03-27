@@ -30,16 +30,8 @@ ApplicantCenterManager = {
 
     if (!empId) throw new Error('An error occurred while creating the corresponding employee');
 
-    try{
-      var email = user.userEmail;
-
-       DocCenterManager.insertUser(empId, {
-         userName: email,
-         email: email
-       }, user.hierId);
-    }catch (e){
-      console.log('error', e);
-    }
+    // Set up HR Concourse account
+    DocCenterManager.setUpEmployeeAccount(empId, user.userEmail, user.hierId);
 
     return empId;
   },
@@ -76,6 +68,12 @@ ApplicantCenterManager = {
 
     // Send invitation email
     sendAppCenterInvitation(invitation.email, invitation.hierId, invitation.token);
+
+    // Set up HR Concourse account
+    // Check that the employee is not registered already
+    if (!employee.docCenter) {
+      DocCenterManager.setUpEmployeeAccount(employeeId, invitation.email, employee.hierId);
+    }
   },
 
   syncEmployeeFromInvitation: function (userId, firstName, lastName, invitationId) {

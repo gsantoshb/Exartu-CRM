@@ -18,12 +18,27 @@ DocCenterManager = {
 
     });
   },
-  insertUser: function (employeeId, userData, hierId) {
 
+  setUpEmployeeAccount: function (employeeId, email, hierId) {
+    // Validate parameters
+    if (!employeeId) throw new Error('Employee ID is required');
+    if (!email) throw new Error('Email is required');
+
+    var employee = Contactables.findOne({_id: employeeId});
+    if (!employee) throw new Error('Invalid employee ID');
+
+    var userData = {
+      userName: email,
+      email: email
+    };
+
+    console.log('userdata', userData);
+
+    // Create the user in doc center
     var result = DocCenter.insertUser(hierId || Meteor.user().currentHierId, userData);
 
-    Contactables.update(employeeId, { $set: { docCenter: result } });
-
+    // Update the employee with the account information
+    return Contactables.update(employeeId, { $set: { docCenter: result } });
   },
 
   getUserDocuments: function(employeeId) {
@@ -157,8 +172,8 @@ Meteor.methods({
 
     return DocCenterManager.registerHier(user.currentHierId, email)
   },
-  createDocCenterAccount: function (employeeID) {
-    var employee = Contactables.findOne(employeeID);
+  createDocCenterAccount: function (employeeId) {
+    var employee = Contactables.findOne(employeeId);
 
     var emailCMTypes =  _.pluck(LookUps.find({
       lookUpCode: Enums.lookUpCodes.contactMethod_types,
@@ -174,11 +189,8 @@ Meteor.methods({
     });
 
     if (!email) throw new Error('no email found for the employee');
-    var userData = {
-      userName: email.value,
-      email: email.value
-    };
-    return DocCenterManager.insertUser(employeeID, userData)
+
+    return DocCenterManager.setUpEmployeeAccount(employeeId, email.value, employee.hierId);
   }
 });
 
