@@ -61,32 +61,32 @@
     {{#if selectedCount}}
         <div class="list-interactive-msg">
             <span class="text">
-                <strong>{{selectedCount}}</strong> selected.
+                <strong>{{selectedCount}}</strong> {{_ "selected"}}.
                 {{#if showSelectAll}}
-                    <a id="selectAllRemotes" class="pointer">&nbsp;Select all {{totalCount}}?</a>
+                    <a id="selectAllRemotes" class="pointer">&nbsp;{{_ "Select all"}} {{totalCount}}?</a>
                 {{/if}}
             </span>
             {{#if areAllSelectedTheSameType}}
                 {{#if withoutEmail}}
-                    <span class="text-info">- {{withoutEmail}} have no email address</span>
+                    <span class="text-info">- {{withoutEmail}} {{_ "have no email address"}}</span>
                 {{else}}
                     <i class="fa fa-long-arrow-right"></i>
-                    <button class="btn btn-sm btn-primary" id="sendEmailTemplate"> send email template</button>
+                    <button class="btn btn-sm btn-primary" id="sendEmailTemplate"> {{_ "send email template"}}</button>
 
                 {{/if}}
             {{else}}
                 <div class="list-interactive-msg-options">
-                    Select desired type: &nbsp;
+                    {{_ "Select desired type"}}: &nbsp;
                     <div class="btn-group" role="group">
                         {{#each differentTypesSelected}}
-                            <a class="pointer selectOneType btn btn-default"> {{name}} - <strong>{{count}}</strong> </a>
+                            <a class="pointer selectOneType btn btn-default"> {{_ name}} - <strong>{{count}}</strong> </a>
                         {{/each}}
                     </div>
                 </div>
             {{/if}}
             {{#with recentHotList}}
                 <button type="button" class="btn btn-success addHotList" title="Add">
-                    <span class="fa fa-plus"></span> Add selected to HotList: {{displayName}}
+                    <span class="fa fa-plus"></span> {{_ "Add selected to HotList"}}: {{displayName}}
                 </button>
             {{/with}}
         </div>
@@ -179,7 +179,7 @@
             {{#each sortFields}}
                 <li>
                     <a class="sort-field" href="#">
-                        {{displayName}}
+                        {{_ displayName}}
                         {{#if isFieldSelected .}}
                             {{#if isAscSort .}}
                                 <i class="fa fa-sort-amount-asc"> </i>
@@ -345,7 +345,7 @@
                     {{/if}}
                 </div>
                 <div class="list-item-cell network-list-item-type">
-                    {{#if Client}}Client<br>{{/if}}{{#if Employee}}Employee<br>{{/if}}{{#if Contact}}Contact{{/if}}
+                    {{#if Client}}{{_ "Client"}}<br>{{/if}}{{#if Employee}}{{_ "Employee"}}<br>{{/if}}{{#if Contact}}{{_ "Contact"}}{{/if}}
                 </div>
                 <div class="list-item-cell network-list-item-status">
                     {{#if getProcessStatus}}

@@ -19,7 +19,7 @@
 
                         <div>
                             {{#each states}}
-                                <button type="button" class="btn btn-sm selectState {{selectedClass}}">{{name}}</button>
+                                <button type="button" class="btn btn-sm selectState {{selectedClass}}">{{_ name}}</button>
                             {{/each}}
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                         <div class="checkbox">
                             <label>
                                 {{#objectProperty property=filters.inactives}}
-                                    <input type="checkbox" checked="{{value}}"/>Archived
+                                    <input type="checkbox" checked="{{value}}"/>{{_ "Archived"}}
                                 {{/objectProperty}}
                             </label>
                         </div>

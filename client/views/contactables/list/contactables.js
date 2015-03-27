@@ -485,6 +485,9 @@ Template.contactablesListSearch.helpers({
     listIsLoading: function () {
         return SubscriptionHandlers.AuxContactablesHandler ? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
     },
+    isESSearch: function () {
+        return !_.isEmpty(query.searchString.value);
+    },
     contactableTypes: contactableTypes,
     info: function () {
         info.isFiltering.value = AuxContactables.find().count() != 0;

@@ -6,7 +6,7 @@
         </div>
 
         {{#each types}}
-            <button type="button" class="typeSelect {{typeOptionClass .}}">{{name}}</button>
+            <button type="button" class="typeSelect {{typeOptionClass .}}">{{_ name}}</button>
         {{/each}}
     </div>
 </template>
@@ -110,7 +110,7 @@
 
         <div class="input-group">
             {{#objectProperty property=location}}
-                <input type="text" class="form-control" placeholder="Rio, Paris, New York ..." value="{{value}}">
+                <input type="text" class="form-control" placeholder= {{_ "Rio, Paris, New York, etc"}} value="{{value}}">
             {{/objectProperty}}
             <span class="input-group-btn">
               <button class="add-tag btn btn-default" type="button"><span class="fa fa-map-marker"></span></button>
@@ -127,7 +127,7 @@
 
         <div class="input-group">
             {{#objectProperty property=taxId}}
-                <input type="text" class="form-control" placeholder="SSN etc" value="{{value}}">
+                <input type="text" class="form-control" placeholder= {{_ "SSN etc"}} value="{{value}}">
             {{/objectProperty}}
             <span class="input-group-btn">
               <button class="add-tag btn btn-default" type="button"><span class="fa fa-map-marker"></span></button>

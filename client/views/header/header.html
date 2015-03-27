@@ -79,9 +79,9 @@
                         <li>
                             <a class="pointer trigger"><i class="fa fa-flag"></i> {{currentLanguageLabel}}</a>
                             <ul class="dropdown-menu sub-menu">
-                                <li><a class="pointer" onClick="TAPi18n.setLanguage('en');">English</a></li>
-                                <li><a class="pointer" onClick="TAPi18n.setLanguage('es');">Español</a></li>
-                                <li><a class="pointer" onClick="TAPi18n.setLanguage('cn');">简体中文</a></li>
+                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'en'}});">English</a></li>
+                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'es'}});">Español</a></li>
+                                <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'cn'}});">简体中文</a></li>
                                 <!--<li>-->
                                 <!--<select class="form-control" onChange="TAPi18n.setLanguage(this.value);" style="margin-top: 3px;">-->
                                 <!--<option value="en">English</option>-->

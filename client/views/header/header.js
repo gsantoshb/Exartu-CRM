@@ -80,9 +80,16 @@ Template.header.helpers({
         return hier ? hier.name : '';
     },
     currentLanguageLabel: function() {
-        var languages = TAPi18n.getLanguages();
-        currentLanguageLabel.set( languages[TAPi18n.getLanguage()].name );
-        return currentLanguageLabel.get();
+        var user = Meteor.users.findOne({_id: Meteor.userId()});
+        switch (user.language) {
+		case 'es':
+			return 'Español';
+		case 'cn':
+			return '简体中文';
+		default:
+			return 'English';
+        }
+		
     }
 });
 Template.header.events({
