@@ -13,7 +13,8 @@ Meteor.publish(null, function () {
             'lastClientUsed': 1,
             'inactive': 1,
             'hierarchies': 1,
-            'currentHierId': 1
+            'currentHierId': 1,
+			'language': 1
         }
     }), {
         hierIdKeyName: 'hierarchies'
