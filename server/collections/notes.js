@@ -153,31 +153,31 @@ Meteor.paginatedPublish(NoteView, function () {
 },{
   pageSize: 50,
   publishName: 'notes',
-  updateSelector: function (oldSelector, clientParams) {
-    var newSelector = EJSON.clone(oldSelector);
-    delete newSelector['links.id'];
-    if (clientParams && clientParams.hotlist) {
-      var hotlistMembers = clientParams.hotlist.members;
-      var validMembers = [];
-      _.forEach(hotlistMembers, function(m){
-        var result = HotLists.findOne({_id:{$ne: clientParams.hotlist._id},dateCreated:{$gte:  clientParams.hotlist.dateCreated}, members:{$in: [m]}  })
-        if(!result){
-          validMembers.push(m);
-        }
-      })
-      newSelector['links.id']= {
-          $in: validMembers
-      }
-      };
-     return newSelector;
-  }
+  //updateSelector: function (oldSelector, clientParams) {
+  //  var newSelector = EJSON.clone(oldSelector);
+  //  delete newSelector['links.id'];
+  //  if (clientParams && clientParams.hotlist) {
+  //    var hotlistMembers = clientParams.hotlist.members;
+  //    var validMembers = [];
+  //    _.forEach(hotlistMembers, function(m){
+  //      var result = HotLists.findOne({_id:{$ne: clientParams.hotlist._id},dateCreated:{$gte:  clientParams.hotlist.dateCreated}, members:{$in: [m]}  })
+  //      if(!result){
+  //        validMembers.push(m);
+  //      }
+  //    })
+  //    newSelector['links.id']= {
+  //        $in: validMembers
+  //    }
+  //    };
+  //   return newSelector;
+  //}
 
 });
 
 Meteor.paginatedPublish(NoteListView, function () {
   //var self = this;
-  var prueba = Utils.filterCollectionByUserHier.call(this, NoteListView.find({}, { sort: { dateCreated: -1 } }));
-  return prueba;
+  return Utils.filterCollectionByUserHier.call(this, NoteListView.find({}, { sort: { dateCreated: -1 } }));
+
 
   //Mongo.Collection._publishCursor(cursor, self, 'noteList');
   //self.ready();
