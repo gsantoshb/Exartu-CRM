@@ -149,10 +149,10 @@ Template.hotListMembersSearch.events({
                 email: Utils.getContactableEmail(contactable)
             });
         });
-//console.log(selected);
+
         // get the common type that all selected entities have, ignoring contactable, person and organization
         var commonType = _.without(_.pluck(selected, 'type'), 'contactable', 'person', 'organization');
-//console.log(commonType);return;
+
         if (!commonType || !commonType.length) return;
         commonType = commonType[0];
 
@@ -160,7 +160,7 @@ Template.hotListMembersSearch.events({
         var filtered = _.filter(selected, function (item) {
             return item.email;
         });
-//        console.log(selected);
+
         var context = {
             recipient: _.map(filtered, function (item) {
                 return {
@@ -171,7 +171,7 @@ Template.hotListMembersSearch.events({
         };
 
         context[commonType] = _.pluck(filtered, 'id');
-//        console.log(context);return;
+
         Utils.showModal('sendEmailTemplateModal', context);
     }
 });
