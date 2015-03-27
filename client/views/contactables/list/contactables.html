@@ -79,7 +79,7 @@
                     {{_ "Select desired type"}}: &nbsp;
                     <div class="btn-group" role="group">
                         {{#each differentTypesSelected}}
-                            <a class="pointer selectOneType btn btn-default"> {{name}} - <strong>{{count}}</strong> </a>
+                            <a class="pointer selectOneType btn btn-default"> {{_ name}} - <strong>{{count}}</strong> </a>
                         {{/each}}
                     </div>
                 </div>
@@ -345,7 +345,7 @@
                     {{/if}}
                 </div>
                 <div class="list-item-cell network-list-item-type">
-                    {{#if Client}}Client<br>{{/if}}{{#if Employee}}Employee<br>{{/if}}{{#if Contact}}Contact{{/if}}
+                    {{#if Client}}{{_ "Client"}}<br>{{/if}}{{#if Employee}}{{_ "Employee"}}<br>{{/if}}{{#if Contact}}{{_ "Contact"}}{{/if}}
                 </div>
                 <div class="list-item-cell network-list-item-status">
                     {{#if getProcessStatus}}
