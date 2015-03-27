@@ -1,0 +1,26 @@
+<template name="hotListMemberAdd">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Member</h4>
+                </div>
+                <div class="modal-body" style="min-height: 100px;">
+                    <form role="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{_ "Search"}}</label>
+                            <div class="col-sm-10">
+                                {{>asyncSelect query=getMember placeholder="member" onChange=memberChanged width='200px'}}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-success add">{{_ "Save"}}</a>
+                    <a href="#" class="btn" data-dismiss="modal">{{_ "Close"}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
