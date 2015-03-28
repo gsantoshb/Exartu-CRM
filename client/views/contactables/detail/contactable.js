@@ -384,16 +384,23 @@ Template.contactable_nav.helpers({
                     return Template.parentData(2).pastJobs ? Template.parentData(2).pastJobs.length : 0;
                 }
             });
+
+
+          // Check if it has a doc Center account or has been invited to Applicant Center or is already a user
+          if (!!contactable.docCenter || contactable.invitation || contactable.user) {
             tabs.push({
-                id: 'docCenter',
-                mobileDisplayName: 'HRConcourse',
-                displayName: 'HRConcourse',
-                template: 'docCenterTab'
+              id: 'docCenter',
+              mobileDisplayName: 'App. Center',
+              displayName: 'Applicant Center',
+              template: 'docCenterTab'
             });
+          }
         }
         return tabs;
     }
 });
+
+
 var hotListMembershipsDep = new Deps.Dependency;
 
 Template.hotListMembershipsBox.helpers({

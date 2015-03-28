@@ -204,18 +204,24 @@ Template.notesTabList.created = function () {
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
               searchQuery['isReply'] = true;
+              searchQuery.links = {
+                $elemMatch: {
+                  id: Session.get('entityId')
+                }
+              };
               if (!NotesHandler) {
                 NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-                NotesHandler.setFilter(searchQuery, {hotlist: hotlist});
+                NotesHandler.setFilter(searchQuery);
 
 
               } else {
-                NotesHandler.setFilter(searchQuery, {hotlist: hotlist});
+                NotesHandler.setFilter(searchQuery);
                 //NotesHandler.setOptions(hotlist);
 
               }
             }
-            else {
+            else if(hotlist) {
+                searchQuery['isReply'] = {$exists: false};
                 searchQuery.links = {
                     $elemMatch: {
                         id: Session.get('entityId')
@@ -223,10 +229,27 @@ Template.notesTabList.created = function () {
                 };
               if (!NotesHandler) {
                 NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-                NotesHandler.setFilter(searchQuery, {hotlist: null});
+                NotesHandler.setFilter(searchQuery);
 
               } else {
-                NotesHandler.setFilter(searchQuery,{hotlist: null});
+                NotesHandler.setFilter(searchQuery);
+
+
+              }
+            }
+            else{
+              //contactable
+               searchQuery.links = {
+                $elemMatch: {
+                  id: Session.get('entityId')
+                }
+              };
+              if (!NotesHandler) {
+                NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                NotesHandler.setFilter(searchQuery);
+
+              } else {
+                NotesHandler.setFilter(searchQuery);
 
 
               }

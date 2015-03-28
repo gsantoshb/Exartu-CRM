@@ -1,5 +1,5 @@
 <template name="sendEmailTemplate">
-    <a class="btn btn-custom-1 btn-block pointer"><i class="fa fa-envelope"></i>&nbsp;Send email</a>
+    <a class="btn btn-custom-1 btn-block pointer"><i class="fa fa-envelope"></i>&nbsp;{{_ "Send email"}}</a>
 </template>
 
 <template name="sendEmailTemplateModal">
@@ -7,23 +7,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Send email</h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{_ "Close"}}</span></button>
+                    <h4 class="modal-title">{{_ "Send email"}}</h4>
                 </div>
                 <div class="modal-body" style="overflow: auto; max-height: 80vh;">
                     {{#each missingTypes}}
                         <div>
-                            <span> This template includes {{objType}} fields.  Select one here: &nbsp; </span>
+                            <span> {{_ "This template includes"}} {{objType}} {{_ "fields"}}.  {{_ "Select one here"}}: &nbsp; </span>
                             {{>asyncSelect query=objTypeQuery placeholder="Search Entity" onChange=entitySelected width='200px'}}
                         </div>
                     {{else}}
                         <select id="template" class="form-control">
-                            <option>--template--</option>
+                            <option>--{{_ "templates"}}--</option>
                             {{#each templates}}
-                                <option value="{{_id}}">{{name}}</option>
+                                <option value="{{_id}}">{{_ name}}</option>
                             {{/each}}
                         </select>
-                        <a href="/emailTemplates" id="manageTemplate">Manage templates</a>
+                        <a href="/emailTemplates" id="manageTemplate">{{_ "Manage templates"}}</a>
                     {{/each}}
 
                     <div>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" disabled="{{disableSend}}" id="send">Send</button>
+                    <button class="btn btn-primary" disabled="{{disableSend}}" id="send">{{_ "Send"}}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
