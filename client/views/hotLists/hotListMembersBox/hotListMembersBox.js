@@ -20,10 +20,11 @@ var isSearching = false;
 // Reactive vars
 //var hotListMembers = new ReactiveVar();
 var membersCount = new ReactiveVar();
+var members = new ReactiveVar();
 
 // Dependencies
 var searchDep = new Deps.Dependency;
-//var hotListMembersDep = new Deps.Dependency();
+var hotListMembersDep = new Deps.Dependency();
 
 
 var loadqueryFromURL = function (params) {
@@ -42,6 +43,9 @@ var loadqueryFromURL = function (params) {
 
 
 var setSubscription = function (searchQuery, options) {
+    hotList.members = members.get();
+    searchQuery = {_id: { $in : hotList.members } };
+
     if (SubscriptionHandlers.HotListMembersHandler) {
         SubscriptionHandlers.HotListMembersHandler.setFilter(searchQuery);
         SubscriptionHandlers.HotListMembersHandler.setOptions(options);
@@ -58,7 +62,12 @@ var setSubscription = function (searchQuery, options) {
     HotListMembersHandler = SubscriptionHandlers.HotListMembersHandler;
 
     //membersCount.set( HotListMembersHandler.totalCount() );
-    searchDep.changed();
+    var skip = (HotListMembersHandler.currentPage()-1)*pageLimit;
+    options.limit = pageLimit;
+    options.skip = skip;
+
+    searchDep.depend();
+    return;
 }
 
 
@@ -72,6 +81,7 @@ Template.hotListMembersBox.created = function () {
     if(this.data.hotList) hotList = this.data.hotList;
     else hotList = HotLists.findOne({_id: Session.get('entityId')});
 
+    members.set(hotList.members);
     membersCount.set( hotList.members.length );
 
     searchQuery = {_id: { $in : hotList.members } };
@@ -90,7 +100,6 @@ Template.hotListMembersBox.destroyed = function(){
 
 Template.hotListMembersBox.helpers({
     isSearching: function () {
-        searchDep.depend();
         return isSearching;
     }
 });
@@ -121,6 +130,7 @@ Template.hotListMembersSearch.helpers({
 Template.hotListMembersSearch.events({
     'keyup #searchString': _.debounce(function (e) {
         query.searchString.value = e.target.value;
+        setSubscription(searchQuery, options);
     }, 200),
 
     'click .addHotListMember': function (e, ctx) {
@@ -131,18 +141,21 @@ Template.hotListMembersSearch.events({
                 hotList.members.push(memberId);
                 HotLists.update({_id: hotListId}, {$set: {members: hotList.members}});
                 membersCount.set( hotList.members.length );
+
+                members.set( hotList.members );
+                setSubscription(searchQuery, options);
+                searchDep.changed();
+                return;
             }
         );
-
-
     },
 
     'click #sendEmailTemplate': function () {
         var hotlist = HotLists.findOne({_id: Session.get('entityId')});
-        var members = Contactables.find({_id: { $in : hotlist.members } }, {sort: {displayName: 1}}).fetch();
+        var contacts = Contactables.find({_id: { $in : hotlist.members } }, {sort: {displayName: 1}}).fetch();
         var selected = [];
 
-        _.forEach(members, function (contactable) {
+        _.forEach(contacts, function (contactable) {
             selected.push({
                 id: contactable._id,
                 type: contactable.objNameArray,
@@ -171,7 +184,6 @@ Template.hotListMembersSearch.events({
         };
 
         context[commonType] = _.pluck(filtered, 'id');
-
         Utils.showModal('sendEmailTemplateModal', context);
     }
 });
@@ -238,12 +250,6 @@ Template.hotListMembersList.helpers({
         return HotListMembersHandler.isLoading();
     },
     hotListMembers: function () {
-        //return hotListMembers.get();
-        var skip = (HotListMembersHandler.currentPage()-1)*pageLimit;
-        options.limit = pageLimit;
-        options.skip = skip;
-
-        //hotListMembers.set( membersCollection.find(searchQuery, options) );
         return membersCollection.find(searchQuery, options);
     }
 });
@@ -255,9 +261,13 @@ Template.hotListMembersList.events({
         hotListCollection.update({_id: tempHotList._id}, {$set: {members: tempHotList.members}});
 
         membersCount.set( tempHotList.members.length );
+
+        members.set( hotList.members );
         setSubscription(searchQuery, options);
 
         e.preventDefault();
+        searchDep.changed();
+        return;
     }
 });
 
