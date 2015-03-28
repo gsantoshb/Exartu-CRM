@@ -34,13 +34,19 @@
             </div>
             <div class="list-item-cell tasks-list-item-status">{{>taskLabel}}</div>
             <div class="list-item-cell item-overflow tasks-item-overflow">
-                <a href="#">
-                    <span class="ico-more">
-                      <span class="dot-1"></span>
-                      <span class="dot-2"></span>
-                      <span class="dot-3"></span>
-                    </span>
-                </a>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                          <span class="ico-more">
+                            <span class="dot-1"></span>
+                            <span class="dot-2"></span>
+                            <span class="dot-3"></span>
+                          </span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="arrow"></li>
+                        <li><a class="editTask pointer"><i class="fa fa-edit"></i> Edit</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
