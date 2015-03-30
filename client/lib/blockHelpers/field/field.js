@@ -183,37 +183,3 @@ Template.relInput.helpers({
         return this.cardinality.min == 0;
     }
 });
-var availabilityDep = new Deps.Dependency();
-
-Template.availabilityFieldInput.helpers({
-  availabilityHelper: function (){
-    availabilityDep.depend();
-    var self = this;
-    var toReturn = {
-      Sunday: _.contains(self.value, "Sunday") ? "primary" : "default",
-      Monday: _.contains(self.value,"Monday")  ? "primary" : "default",
-      Tuesday: _.contains(self.value,"Tuesday")  ? "primary" : "default",
-      Wednesday: _.contains(self.value,"Wednesday")  ? "primary" : "default",
-      Thursday: _.contains(self.value,"Thursday") ? "primary" : "default",
-      Friday: _.contains(self.value,"Friday") ? "primary" : "default",
-      Saturday: _.contains(self.value,"Saturday") ? "primary" : "default"
-    }
-    return toReturn;
-  }
-
-});
-
-Template.availabilityFieldInput.events({
-  'click #availability-buttons': function(e){
-    if(e.target.value){
-      var index = this.value.lastIndexOf(e.target.value);
-      if(index != -1){
-        this.value.splice(index, 1);
-      }
-      else{
-        this.value.push(e.target.value);
-      }
-      availabilityDep.changed();
-    }
-  }
-})

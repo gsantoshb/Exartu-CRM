@@ -41,8 +41,7 @@ Utils.ReactivePropertyTypes = {
     array: 'array',
     date: 'date',
     boolean: 'boolean',
-    lookUp: 'lookUp',
-    availability: 'availability'
+    lookUp: 'lookUp'
 };
 
 Utils.ObjectDefinition = function (definition) {
@@ -207,9 +206,6 @@ Utils.ObjectDefinition = function (definition) {
                         self[propName].value = defaultValue || 0;
                         break;
                     case Utils.ReactivePropertyTypes.array:
-                        self[propName].value = defaultValue || [];
-                        break;
-                    case Utils.ReactivePropertyTypes.availability:
                         self[propName].value = defaultValue || [];
                         break;
                     default:
@@ -486,9 +482,6 @@ var getDefinitionFromField = function (field, obj, path) {
             break;
         case 'lookUp':
             type = Utils.ReactivePropertyTypes.lookUp;
-            break;
-        case 'availability':
-            type = Utils.ReactivePropertyTypes.availability;
             break;
 
     }

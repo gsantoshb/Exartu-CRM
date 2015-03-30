@@ -12,6 +12,7 @@ Contactables.after.insert(function (userId, doc) {
 });
 
 Contactables.after.update(function (userId, doc, fieldNames, modifier, options) {
+    console.log("por aca");
     // in case you delete a tag, it wouldn't be deleted from the tag collection
     if (fieldNames.indexOf('tags') != -1) {
         if (doc.tags != null) {

@@ -233,6 +233,7 @@ Template.addEditNote.created = function () {
   Meteor.subscribe('allNotes');
   currentUrl = window.location.pathname;
   note = null;
+  //por aca
   param = null;
   param = this.data[0];
 
