@@ -31,6 +31,13 @@ UI.registerHelper('objectProperty', function() {
         return this.property.value;
       }});
       break;
+    case Utils.ReactivePropertyTypes.availability:
+      debugger;
+      template = Template.object_property_availability;
+      template.helpers({values: function() {
+        return this.property.value;
+      }});
+      break;
     default:{
       if (self.editable !== undefined) {
         template = Template.object_property_single_editable;

@@ -146,15 +146,22 @@ newObjType({
     {
       name: 'routingNumber',
       displayName: 'Routing number',
-      showInAdd: true,
+      showInAdd: false,
       required: false
     },
     {
       name: 'accountNumber',
       displayName: 'Account number',
-      showInAdd: true,
+      showInAdd: false,
       required: false
     },
+    { name: 'availability',
+      displayName: 'Employee availability',
+      fieldType:'availability',
+      defaultValue: null,
+      showInAdd: false,
+      required: false
+    }
 
   ]
 });

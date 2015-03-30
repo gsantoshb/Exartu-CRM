@@ -176,6 +176,7 @@ Template.addContactablePage.events({
   'change #personType': function(e){
     setPersonType(e.target.value, contactable)
   },
+
   'click .btn-success': function(){
     if (!dType.isValid(this)){
       dType.displayAllMessages(this);
@@ -204,7 +205,6 @@ Template.addContactablePage.events({
         value: extraInformation.phoneNumber.value
       });
     }
-
     extraInformation.reset();
     addDisabled.set(true);
     Meteor.call('addContactable', cont, function(err, result){

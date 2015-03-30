@@ -1,3 +1,27 @@
+EditAvailabilityMode = {
+  val: false,
+  dep: new Tracker.Dependency,
+  show: function () {
+    this.val = true;
+    this.dep.changed();
+  },
+  hide: function () {
+    this.val = false;
+    this.dep.changed();
+  }
+};
+
+Object.defineProperty(EditAvailabilityMode, "value", {
+  get: function () {
+    this.dep.depend();
+    return this.val;
+  },
+  set: function (newValue) {
+    this.val = newValue;
+    this.dep.changed();
+  }
+});
+
 EditDirectDepositMode = {
   val: false,
   dep: new Tracker.Dependency,
@@ -154,13 +178,14 @@ Template.contactableDetailBox.events = {
         userSelected.set(e.target.value)
     }
 };
-
+///////directDeposit///////////
 Template.displayDirectDeposit.events = {
   'click #edit-deposit-method-mode': function() {
     if (EditDirectDepositMode.value) {
       EditDirectDepositMode.hide();
     }
     else{
+
       EditDirectDepositMode.show();
     }
   },
@@ -184,3 +209,81 @@ Template.displayDirectDeposit.helpers({
     return EditDirectDepositMode.value;
   }
 })
+
+///////////Availability/////////////
+var availabilityDep = new Deps.Dependency();
+var availabilityArray = [];
+Template.displayAvailability.helpers({
+  editMode: function () {
+    return EditAvailabilityMode.value;
+  },
+  availabilityHelper: function (){
+    availabilityDep.depend();
+    var toReturn = {
+      Sunday: _.contains(availabilityArray, "Sunday") ? "primary" : "default",
+      Monday: _.contains(availabilityArray,"Monday")  ? "primary" : "default",
+      Tuesday: _.contains(availabilityArray,"Tuesday")  ? "primary" : "default",
+      Wednesday: _.contains(availabilityArray,"Wednesday")  ? "primary" : "default",
+      Thursday: _.contains(availabilityArray,"Thursday") ? "primary" : "default",
+      Friday: _.contains(availabilityArray,"Friday") ? "primary" : "default",
+      Saturday: _.contains(availabilityArray,"Saturday") ? "primary" : "default"
+    }
+    return toReturn;
+  },
+  booleanAvailabilityHelper: function (){
+    availabilityDep.depend();
+    var toReturn = {
+      Sunday: _.contains(availabilityArray, "Sunday") ? true : false,
+      Monday: _.contains(availabilityArray,"Monday")  ? true : false,
+      Tuesday: _.contains(availabilityArray,"Tuesday")  ? true : false,
+      Wednesday: _.contains(availabilityArray,"Wednesday")  ? true : false,
+      Thursday: _.contains(availabilityArray,"Thursday") ? true : false,
+      Friday: _.contains(availabilityArray,"Friday") ? true : false,
+      Saturday: _.contains(availabilityArray,"Saturday") ? true : false
+    }
+    return toReturn;
+  }
+})
+
+Template.displayAvailability.created=function() {
+  availabilityArray = contactable.availability._value;
+  availabilityDep.changed();
+}
+
+Template.displayAvailability.events = {
+  'click #edit-availability-method-mode': function() {
+    if (EditAvailabilityMode.value) {
+      EditAvailabilityMode.hide();
+    }
+    else{
+      availabilityArray = contactable.availability._value;
+      availabilityDep.changed();
+      EditAvailabilityMode.show();
+    }
+  },
+  'click #save-changes-method': function(){
+      Contactables.update({_id: contactable._id},
+      {$set:{'Employee.availability': availabilityArray}
+
+      });
+    EditAvailabilityMode.hide();
+
+  },
+  'click #cancel-deposit-method': function(){
+    EditAvailabilityMode.hide();
+  },
+  'click #availability-buttons': function(e){
+    if(e.target.value){
+      var index = availabilityArray.lastIndexOf(e.target.value);
+      if(index != -1){
+        availabilityArray.splice(index, 1);
+      }
+      else{
+        availabilityArray.push(e.target.value);
+      }
+      availabilityDep.changed();
+    }
+  }
+}
+
+

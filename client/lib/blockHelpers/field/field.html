@@ -52,3 +52,18 @@
         <span>{{error}}</span>
     </div><!-- /.form-group -->
 </template>
+
+<template name="availabilityFieldInput">
+    <span>{{displayName}} :</span>
+    <br>
+    <div id="availability-buttons">
+        <button type="button" class="rounded typeSelect btn btn-sm btn-{{availabilityHelper.Sunday}}" name="group1" value="Sunday">Sunday</button>
+        <button type="button" class="rounded typeSelect btn btn-sm btn-{{availabilityHelper.Monday}}" name="group1" value="Monday" >Monday</button>
+        <button type="button" class="rounded typeSelect btn btn-sm btn-{{availabilityHelper.Tuesday}}" name="group1" value="Tuesday">Tuesday</button>
+        <button type="button" class="rounded typeSelect btn btn-sm btn-{{availabilityHelper.Wednesday}}" name="group1" value="Wednesday">Wednesday</button>
+        <button type="button" class="rounded typeSelect btn btn-sm btn-{{availabilityHelper.Thursday}}" name="group1" value="Thursday">Thursday</button>
+        <button type="button" class="rounded typeSelect btn btn-sm btn-{{availabilityHelper.Friday}}" name="group1" value="Friday">Friday</button>
+        <button type="button" class="rounded typeSelect btn btn-sm btn-{{availabilityHelper.Saturday}}" name="group1" value="Saturday">Saturday</button>
+    </div>
+    <br>
+</template>

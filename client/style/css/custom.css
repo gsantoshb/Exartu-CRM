@@ -21,6 +21,12 @@
     -webkit-animation-name: fadeIn;
 }
 
+.rounded {
+    -webkit-border-radius: 18px;
+    -moz-border-radius: 18px;
+    border-radius: 18px;
+}
+
 .search-row { height: 30px }
 .pagination-row { min-height: 58px }
 .pagination > li { display: inline-block; margin: 0 -2px; }
