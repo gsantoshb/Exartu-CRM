@@ -13,6 +13,10 @@
                 <input class="form-control templateName" placeholder= {{_ "Name"}} value="{{templateName}}">
             </div>
             <div class="form-group">
+                <span>{{_ "Subject"}}:</span>
+                <input class="form-control templateSubject" placeholder= {{_ "Subject"}} value="{{templateSubject}}">
+            </div>
+            <div class="form-group">
                 <span>{{_ "Category"}}:</span>
                 <select class="form-control" id="category" multiple>
                     {{#each categoryTypes}}

@@ -68,7 +68,6 @@ if(window.wysihtml5){
   wysihtml5.commands.foo = {
    //similar to wysihtml5 link command
     exec: function(composer, command, value) {
-      //debugger;
       var anchors = this.state(composer, command);
       if (anchors) {
         // Selection contains links
@@ -116,6 +115,9 @@ Template.emailTemplate.helpers({
   templateName: function () {
     return  Session.get('templateId') ? EmailTemplates.findOne(Session.get('templateId')).name : '';
   },
+  templateSubject: function () {
+    return Session.get('templateId') ? EmailTemplates.findOne(Session.get('templateId')).subject : '';
+  },
   isCategorySelected: function () {
     if (Session.get('templateId')){
       var template = EmailTemplates.findOne(Session.get('templateId'));
@@ -142,6 +144,7 @@ Template.emailTemplate.events({
   'click #add': function (e, ctx) {
     var template ={
       name: $('.templateName').val(),
+      subject: $('.templateSubject').val(),
       text: $('.editor').data('wysihtml5').editor.composer.getValue(),
       category: $('#category').val()
     };

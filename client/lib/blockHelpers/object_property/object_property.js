@@ -32,7 +32,6 @@ UI.registerHelper('objectProperty', function() {
       }});
       break;
     case Utils.ReactivePropertyTypes.availability:
-      debugger;
       template = Template.object_property_availability;
       template.helpers({values: function() {
         return this.property.value;
