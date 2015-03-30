@@ -1,7 +1,7 @@
 <template name="hotListMembersBox">
     <div class="row">
         <div class="col-md-12" id="column-list">
-            <div class="list-container">
+            <div class="list-container" style="margin-top: -20px;">
                 <div class="list-holder">
 
                     <div class="list-actions">
@@ -13,7 +13,7 @@
                     {{#if isSearching}}
                         {{_ "searching"}}
                     {{else}}
-                        {{> hotListMembersList }}
+                        {{> hotListMembersList}}
                     {{/if}}
 
                     <div class="list-actions last">

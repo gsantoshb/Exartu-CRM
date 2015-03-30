@@ -264,6 +264,9 @@ Template.notesTabList.destroyed = function () {
   //delete NotesHandler;
 }
 Template.notesTabList.helpers({
+    hasItems: function () {
+        return (Notes.find(searchQuery,{sort: {dateCreated:-1}}).fetch().length > 0);
+    },
     items: function () {
         sortDep.depend();
         return Notes.find(searchQuery,{sort: {dateCreated:-1}});
