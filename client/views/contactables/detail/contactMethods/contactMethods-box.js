@@ -72,6 +72,7 @@ var addNewContactMethod = function() {
       $('#add-contact-method-error').text('Invalid email format');
       return;
     }
+
   }
 
   // Format phone number
@@ -87,7 +88,12 @@ var addNewContactMethod = function() {
 
   Meteor.call('addContactMethod', Session.get('entityId'), selectedType._id, value, function(err) {
     if (err) {
-      $('#add-contact-method-error').text('There was an error inserting the contact method. Please try again.');
+      if(err.error === "Error, Contact email must be unique"){
+        $('#add-contact-method-error').text(err.error);
+      }
+      else {
+        $('#add-contact-method-error').text('There was an error inserting the contact method. Please try again.');
+      }
     } else {
       newContactMethodValue.val('');
     }
