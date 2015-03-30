@@ -146,13 +146,13 @@ newObjType({
     {
       name: 'routingNumber',
       displayName: 'Routing number',
-      showInAdd: true,
+      showInAdd: false,
       required: false
     },
     {
       name: 'accountNumber',
       displayName: 'Account number',
-      showInAdd: true,
+      showInAdd: false,
       required: false
     },
 
