@@ -72,7 +72,7 @@
             <div class="clearfix">
                 <div class="pull-right">
                     <button id="preview" class="btn {{#if editMode}} btn-default {{else}} btn-success {{/if}}">{{#if editMode}} {{_ "Preview"}}  {{else}} {{_ "Edit"}} {{/if}}</button>
-                    <button id="add" class="btn btn-primary">{{_ "Save"}}</button>
+                    <button id="add" class="btn btn-primary {{#if isSaving}}disabled{{/if}}">{{_ "Save"}}</button>
                 </div>
             </div>
         </div>

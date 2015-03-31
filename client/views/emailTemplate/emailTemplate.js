@@ -28,7 +28,8 @@ Template.emailTemplate.rendered = function () {
 var editMode = new ReactiveVar(true),
     preview = new ReactiveVar(''),
     errorName = new ReactiveVar(''),
-    errorSubject = new ReactiveVar('');
+    errorSubject = new ReactiveVar(''),
+    isSaving = new ReactiveVar(false);
 
 Template.emailTemplate.helpers({
   templateName: function () {
@@ -63,6 +64,9 @@ Template.emailTemplate.helpers({
   },
   preview: function () {
     return preview.get();
+  },
+  isSaving: function () {
+    return isSaving.get();
   }
 });
 
@@ -119,6 +123,8 @@ Template.emailTemplate.events({
     }
   },
   'click #add': function () {
+    isSaving.set(true);
+
     // Clear errors
     errorName.set('');
     errorSubject.set('');
@@ -146,6 +152,8 @@ Template.emailTemplate.events({
         template = EmailTemplates.findOne({_id: templateId});
       }
     }
+
+    isSaving.set(false);
   }
 });
 
