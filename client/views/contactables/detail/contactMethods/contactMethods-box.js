@@ -98,7 +98,7 @@ var addNewContactMethod = function() {
           var listaString = "";
           _.forEach(res, function(r){
             var link = ""+window.location.origin+"/contactable/"+ r._id;
-            listaString = listaString + r.displayName + "   <a style='float: right' target='_blank' href="+link+">"+link+"</a>"+"<br/>";
+            listaString = listaString +"<a target='_blank' href="+link+">"+r.displayName+"</a>"+"<br/>";
           });
           Utils.showModal('basicModal', {
             title: 'Existing email',
