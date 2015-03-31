@@ -317,7 +317,6 @@ var extractInformation = function (parseResult) {
         // Past jobs
         var pastJobs = [];
         try {
-            debugger;
             if (structuredResult.EmploymentHistory) {
                 _.each(structuredResult.EmploymentHistory[0].EmployerOrg, function (employerOrg) {
                     var employerName = employerOrg.EmployerOrgName && employerOrg.EmployerOrgName[0];

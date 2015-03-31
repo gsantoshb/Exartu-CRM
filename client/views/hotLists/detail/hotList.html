@@ -20,9 +20,11 @@
             </div>
 
             <div class="details-view col-md-9">
-                <div class="details-view-content clearfix">
-                    <div class="tab-pane active">
-                        {{> UI.dynamic template=currentTemplate  data=hotList  }}
+                <div class="box-type-1">
+                    <div class="details-view-content clearfix">
+                        <div class="tab-pane active">
+                            {{> UI.dynamic template=currentTemplate  data=hotList  }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,11 +73,11 @@
 </template>
 
 <template name="hotList_notes">
-    {{> notesTab}}
+    {{> notesTab responseOnly=false}}
 </template>
 
 <template name="hotList_responses">
-    {{> notesTab  }}
+    {{> notesTab responseOnly=true}}
 </template>
 
 <template name="hotList_details">
@@ -92,7 +94,10 @@
 </template>
 
 <template name="hotList_members">
-    {{>hotListMembers}}
+    <!--{{>hotListMembers}}-->
+
+    <!--{{> hotListMembersBox handler=handler hotList=originalHotList}}-->
+    {{> hotListMembersBox hotList=originalHotList}}
 </template>
 
 <template name="hotListMembers">

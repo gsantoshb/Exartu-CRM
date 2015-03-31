@@ -1,4 +1,3 @@
-
 HotListView = new View('hotLists', {
   collection: HotLists,
   cursors: function(hotList)
@@ -18,7 +17,6 @@ HotListView = new View('hotLists', {
       });
   }
 });
-
 
 Meteor.paginatedPublish(HotListView, function()
   {
@@ -42,6 +40,17 @@ Meteor.publish('auxHotLists', function (id) {
     return  HotListView.find({members: id});
 });
 
+Meteor.paginatedPublish(Contactables, function(hotListId)
+    {
+        if (!hotListId) return [];
+
+        var hotlist = HotLists.findOne({_id: hotListId});
+        return Contactables.find({_id: { $in : hotlist.members } }, {sort: {displayName: 1}} );
+    }, {
+        pageSize: 10,
+        publicationName: 'hotListMembers'
+    }
+);
 
 Meteor.publish('hotListDetails', function (id) {
   return Utils.filterCollectionByUserHier.call(this, HotListView.find(id));
@@ -79,19 +88,9 @@ HotLists.before.insert(function (userId, doc) {
 
 });
 
-HotLists.after.insert(function(userId, doc){
-
-});
-
-HotLists.after.update(function(userId, doc){
-
-
-});
-
+HotLists.after.insert(function(userId, doc){})
+HotLists.after.update(function(userId, doc){});
 
 // add some employee fields for hotList sorting
-HotLists.before.insert(function (userId, doc) {
-});
-HotLists.after.update(function (userId, doc) {
-
-});
+HotLists.before.insert(function (userId, doc) {});
+HotLists.after.update(function (userId, doc) {});

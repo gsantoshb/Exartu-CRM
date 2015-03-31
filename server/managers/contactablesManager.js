@@ -95,6 +95,18 @@ ContactableManager = {
         if (!contactMethodType) {
             throw new Error('Invalid contact method type');
         }
+        //check if email is unique
+        //if((contactMethodType.lookUpCode === Enums.lookUpCodes.contactMethod_types)&&(_.contains(contactMethodType.lookUpActions, Enums.lookUpAction.ContactMethod_Email))){
+        //  var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
+        //  var arrayEmail = LookUps.find({hierId: rootHier, lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions:Enums.lookUpAction.ContactMethod_Email }).fetch();
+        //  var pluckedArrayEmail = _.pluck(arrayEmail, '_id');
+        //  var c = Contactables.findOne({'contactMethods.type': {$in:pluckedArrayEmail}, 'contactMethods.value':value})
+        //  if(c){
+        //    throw new Error("Error, Contact email must be unique");
+        //  }
+        //}
+
+
 
         // Conctact method insertion
         Contactables.update({_id: contactableId}, {
@@ -276,5 +288,9 @@ ContactableManager = {
     }
 
     Contactables.update(contactableId, { $set: {userId: userId} });
+  },
+  checkContactableEmail: function(email){
+    var userHierarchiesFilter = Utils.filterByHiers(Utils.getUserHierId(Meteor.userId()));
+    return Contactables.find({ 'contactMethods.value': email,$or: userHierarchiesFilter }).fetch();
   }
 };

@@ -9,7 +9,7 @@
 <template name="notesTabAdd">
 
     {{#autoForm id="AddNoteRecord" schema="NoteSchema" resetOnSuccess=true}}
-        <div class="add-note on-focus" style="margin: 0 !important;">
+        <div class="add-note on-focus">
             <div class="add-note-header">
                 <div class="item-icon item-icon-xs item-icon-notes"><i class="icon icon-pencil-3"></i></div> <div class="title">Add Note</div>
             </div><!-- /.add-note-header -->
@@ -32,38 +32,42 @@
                             </div>
                         {{else}}
                             <div style="margin-left: 126px">
-                                {{> afQuickField name="sendAsSMS"}}
+                                {{> afQuickField name="sendAsSMS" id="sendAsSMS"}}
                             </div>
-
-
-                            {{#if afFieldValueIs name='sendAsSMS' value=true}}
+                            {{#if ischeckedSMS}}
                                 {{> afFormGroup name="userNumber" value=defaultUserNumber options=userNumbers}}
                                 {{> afFormGroup name="contactableNumber" value=defaultMobileNumber options=mobileNumbers}}
                             {{/if}}
+
                         {{/unless}}
                     {{/unless}}
 
-                    <!-- Display note to employee -->
-                    <div class="add-note-actions-cell">
-                        <div class="form-group" style="margin-bottom: 0px;">
-                            {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
+                    {{#if isEmployee}}
+                        <!-- Display note to employee -->
+                        <div class="add-note-actions-cell">
+                            <div class="form-group" style="margin-bottom: 0px;">
+                                {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
+                            </div>
                         </div>
-                    </div>
+                    {{/if}}
 
-                    <div class="add-note-actions-cell last" style="visibility:{{isContactableNote}}">
-                        <div class="item-icon item-icon-network item-icon-sm"><i class="icon-profile-business-man"></i></div>
-                        {{> afFieldInput name='links' type='linkInput'}}
-                    </div>
+
                 {{/if}}
+                <div class="add-note-actions-cell last" style="visibility:{{isContactableNote}}">
+                    <div class="item-icon item-icon-network item-icon-sm"><i class="icon-profile-business-man"></i></div>
+                    {{> afFieldInput name='links' type='linkInput'}}
+                </div>
 
                 {{#if isHotListNote}}
                     {{#unless userNumbers}}
                         <small class="text-muted"><a href="/management/twilioManagement">Enable SMS/Texting</a></small>
                     {{else}}
-                        {{> afQuickField name="sendAsSMS"}}
+                        <div style="margin-left: 126px">
+                            {{> afQuickField name="sendAsSMS" id="sendAsSMS"}}
+                        </div>
                         {{> afQuickField name="hotListFirstName"}}
 
-                        {{#if afFieldValueIs name='sendAsSMS' value=true}}
+                        {{#if ischeckedSMS}}
                             {{> afFormGroup name="userNumber" value=defaultUserNumber options=userNumbers}}
                         {{/if}}
                     {{/unless}}
@@ -76,15 +80,23 @@
 
 <template name="notesTabList">
     <div class="record-list-pagination">
-        {{> fastPagination name="notes"}}
+        {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
     </div>
 
     {{#if isLoading}}
         <div style="min-height: 350px; background: url('/img/spinner.gif') no-repeat center;"></div>
     {{else}}
-        {{#each items}}
-            {{> notesTabItem}}
-        {{/each}}
+        {{#if hasItems}}
+            <div class="list-header notes-list-header">
+                <div class="list-header-cell notes-list-header-title">Title</div>
+                <div class="list-header-cell notes-list-header-linked">Linked</div>
+                <div class="list-header-cell notes-list-header-edit">Last Edit</div>
+            </div>
+
+            {{#each items}}
+                {{> notesTabItem}}
+            {{/each}}
+        {{/if}}
     {{/if}}
 
 </template>

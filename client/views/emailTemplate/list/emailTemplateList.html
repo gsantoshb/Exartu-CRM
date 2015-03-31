@@ -3,15 +3,15 @@
         <div id="content-header" class="mini">
             <h1>
                 <span class="prop-input">
-                    <span> Templates </span>
+                    <span> {{_ "Templates"}} </span>
                 </span>
             </h1>
         </div>
         <div id="breadcrumb">
-            <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+            <a href="/" title="Go to Home" class="tip-bottom">{{_ "Home"}}</a>
             <a href="/emailTemplates" class="current">
                 <span class="prop-input">
-                    <strong> template(s) </strong>
+                    <strong> {{_ "templates"}} </strong>
                     <span class="text text-danger"></span>
                 </span>
             </a>
@@ -26,10 +26,10 @@
                         <div class="filter-item">
                             <div class="filter-title">
                                 <i class="fa fa-group"></i>
-                                Category
+                                {{_ "Category"}}
                             </div>
                             {{#each categories}}
-                                <button type="button" class="categorySelect btn btn-sm {{isSelectedClass}}">{{name}}</button>
+                                <button type="button" class="categorySelect btn btn-sm {{isSelectedClass}}">{{_ name}}</button>
                             {{/each}}
                         </div>
                     </div>
@@ -51,7 +51,7 @@
 
                             <div class="input-group">
                                 <span class="prop-input">
-                                    <input type="text" class="form-control" placeholder="Search Templates">
+                                    <input id="search-template-field" type="text" class="form-control" placeholder= {{_ "Search Templates"}}>
                                     <span class="text text-danger"></span>
                                 </span>
                                 <span class="input-group-btn">
@@ -69,7 +69,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="table-item-cell">
-                                        <a href="/emailTemplate/{{_id}}">{{name}}</a>
+                                        <a href="/emailTemplate/{{_id}}">{{_ name}}</a>
                                     </div>
                                 </div>
                             </div>

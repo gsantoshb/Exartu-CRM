@@ -8,10 +8,10 @@
                 {{> documentInstances}}
             {{else}}
                 <div style="padding: 10px">
-                    <p class="alert alert-warning">The Employee has not an account on HRConcourse yet</p>
+                    <p class="alert alert-warning">The Employee does not have an account on HRConcourse yet</p>
 
                     {{#if hasEmail}}
-                        <button class="btn" id="createAccount" disabled="{{isCreatingAccount}}">Create one for him</button>
+                        <button class="btn" id="createAccount" disabled="{{isCreatingAccount}}">Create one for them</button>
                     {{else}}
                         <span class="text-danger">You must add an email for this employee</span>
                     {{/if}}

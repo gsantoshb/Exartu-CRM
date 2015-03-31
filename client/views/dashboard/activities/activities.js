@@ -28,7 +28,10 @@ Template.contactableAddActivity.helpers({
 // Task Add Template
 Template.taskAddActivity.helpers({
   task: function () {
-    return Tasks.findOne(this.entityId);
+    var task = Tasks.findOne(this.entityId);
+    if(task) {
+      return task;
+    }
   },
   getHref: function () {
     return Utils.getHrefFromLink(this);
@@ -56,7 +59,11 @@ Template.placementAddActivity.helpers({
 // Note Add Template
 Template.noteAddActivity.helpers({
   note: function () {
-    return Notes.findOne(this.entityId);
+
+    var note = Notes.findOne(this.entityId);
+    if(note) {
+      return note;
+    }
   },
   getHref: function () {
     return Utils.getHrefFromLink(this);

@@ -217,13 +217,9 @@
     body[data-color="enterprise-dark"] #header h1{
         height: 30px;
     }
-    #user-nav {
-        top: 7px;
-        width: initial;
-        left: 0;
-    }
+
     #header{
-        height: 50px;
+        height: 48px;
     }
 }
 @media (min-width: 768px) {
@@ -1660,8 +1656,54 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 /* Sticky footer styles
 -------------------------------------------------- */
 
-html,
-body {
-  height: 100%;
+/*html,*/
+/*body {*/
+  /*height: 100%;*/
   /* The html and body elements cannot have any padding or margin. */
+/*}*/
+
+
+
+
+/********************************** Settings custom dropdown menu ***************************************/
+.dropdown-menu > li {	position:relative;
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
+    cursor:pointer;
 }
+.dropdown-menu .sub-menu {
+    right: 100%;
+    width: auto !important;
+    position: absolute;
+    top: 0;
+    display:none;
+    margin-top: -1px;
+    border-top-right-radius:0;
+    border-bottom-right-radius:0;
+    box-shadow:none;
+}
+
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 568px) {
+    .dropdown-menu .sub-menu {
+        left: -100%;
+    }
+}
+
+.right-caret:after,.left-caret:after {
+    content:"";
+    border-bottom: 5px solid transparent;
+    border-top: 5px solid transparent;
+    display: inline-block;
+    height: 0;
+    vertical-align: middle;
+    width: 0;
+    margin-left:5px;
+}
+.right-caret:after { border-left: 5px solid #ffaf46;}
+.left-caret:after {	border-right: 5px solid #ffaf46;}

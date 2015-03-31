@@ -9,6 +9,7 @@ _.extend(Utils, {
         user.picture = UsersFS.getThumbnailUrlForBlaze(user.profilePictureId);
 
         return {
+			language: user.language,
             username: Utils.getLocalUserName(user),
             picture: user.picture || '/assets/user-photo-placeholder.jpg'
         };

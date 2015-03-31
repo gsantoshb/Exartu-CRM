@@ -1,5 +1,13 @@
 AddUserController = RouteController.extend({
   template: 'addUser',
+  onBeforeAction: function () {
+    if (Meteor.user()) {
+      alert("You can't accept an invitation for a new user while logged in. Please log out and try again.");
+      this.redirect('dashboard');
+    }else{
+      this.next();
+    }
+  },
   data: function() {
     email = this.params.query.email;
     token = this.params.query.token;

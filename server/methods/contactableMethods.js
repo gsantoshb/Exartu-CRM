@@ -77,6 +77,13 @@ Meteor.methods({
     IsTaxIdUnused: function (taxid, hierid) {
         return ContactableManager.isTaxIdUnused(taxid, hierid);
     },
+    checkContactableEmail: function(value){
+        try{
+          return ContactableManager.checkContactableEmail(value);
+        }catch(err){
+          throw new Meteor.Error(err.message);
+        }
+    },
 
 
     // Education
@@ -176,6 +183,31 @@ Meteor.methods({
         throw new Meteor.Error(err.message);
       }
     },
+    findContact: function (query) {
+        return Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Contactables.find({
+            $or: [{
+                'person.firstName': {
+                    $regex: query,
+                    $options: 'i'
+                }
+            }, {
+                'person.lastName': {
+                    $regex: query,
+                    $options: 'i'
+                }
+            }, {
+                'person.middleName': {
+                    $regex: query,
+                    $options: 'i'
+                }
+            }, {
+                'organization.organizationName': {
+                    $regex: '.*' + query + '.*',
+                    $options: 'i'
+                }
+            }]
+        }, {fields: {'person': 1, 'organization.organizationName': 1}})).fetch();
+    },
     findClient: function (query) {
         return Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Contactables.find({
             'organization.organizationName': {
@@ -245,6 +277,7 @@ FileUploader.createEndpoint('uploadResume', {
                 employeeId: employee,
                 resumeId: resumeId,
                 userId: Meteor.userId(),
+                hierId: Meteor.user().currentHierId,
                 name: metadata.name,
                 type: metadata.type,
                 extension: metadata.extension,

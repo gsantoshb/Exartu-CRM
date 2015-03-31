@@ -37,6 +37,13 @@ Template.register.helpers({
   },
   error: function () {
     return error.get();
+  },
+  languageOptions: function() {
+      return [
+          {label: "English", value: "en"},
+          {label: "Español", value: "es"},
+          {label: "简体中文", value: "cn"}
+      ];
   }
 });
 

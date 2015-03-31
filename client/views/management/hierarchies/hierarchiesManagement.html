@@ -2,15 +2,15 @@
     <div id="content" class="lookUps">
         <!-- Title -->
         <div id="content-header" class="mini">
-            <h1>Hierarchies Management</h1>
+            <h1>{{_ "Hierarchies Management"}}</h1>
         </div>
 
         <!-- Breadcrumb -->
         <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">
-                <i class="fa fa-home"></i>Home
+                <i class="fa fa-home"></i>{{_ "Home"}}
             </a>
-            <a href="/hierarchyManagement" class="current">Hierarchies</a>
+            <a href="/hierarchyManagement" class="current">{{_ "Hierarchies"}}</a>
         </div>
 
         <!-- Content box -->
@@ -21,7 +21,7 @@
                     <div class="col-md-8">
                         <div class="input-group">
                             {{#objectProperty property=filters.searchString}}
-                                <input type="text" class="form-control" placeholder="Search Hierarchies" value="{{value}}">
+                                <input type="text" class="form-control" placeholder= {{_ "Search Hierarchies"}} value="{{value}}">
                             {{/objectProperty}}
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="button">
@@ -43,7 +43,7 @@
                             {{/if}}
                         {{else}}
                             <div class="box-v-msg">
-                                <h3>Select a Hierarchy</h3>
+                                <h3>{{_ "Select a Hierarchy"}}</h3>
                             </div>
                         {{/with}}
                     </div>
@@ -54,12 +54,12 @@
                     <div class="box-type-2-content">
                         <div class="row">
                             <div class="col-md-12">
-                                <h4>Applicant Center</h4>
+                                <h4>{{_ "Applicant Center"}}</h4>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <p>Your Applicant Center url for the current hierarchy is:
+                                <p>{{_ "Your Applicant Center url for the current hierarchy is"}}:
                                     <a href="{{applicantCenterUrl}}" target="_blank">{{applicantCenterUrl}}</a>
                                 </p>
                             </div>
@@ -95,7 +95,7 @@
                     <btn class="makeCurrent hierarchyItem {{isSelectedClass}} tree-item">
                         {{name}}
                         {{#if isCurrent}}
-                            <b>(current)</b>
+                            <b>({{_ "current"}})</b>
                         {{else}}
                         {{/if}}
                     </btn>

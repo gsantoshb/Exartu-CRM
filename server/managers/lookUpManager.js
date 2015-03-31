@@ -32,11 +32,14 @@ LookUpManager={
         });
     },
     getAddressTypeDefaultId: function() {
-        return LookUps.findOne({
-            lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
-            isDefault: true,
-            hierId: Meteor.user().currentHierId
-        })._id;
+      var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
+      var addressType = LookUps.findOne({
+        lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
+        isDefault: true,
+        hierId: rootHier
+      });
+
+      return addressType ? addressType._id : undefined;
     }
 
 };

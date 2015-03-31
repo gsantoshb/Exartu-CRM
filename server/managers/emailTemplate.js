@@ -56,13 +56,15 @@ EmailTemplateManager = {
       _.each(recipient, function (rec) {
 
         var text = self.instantiateTemplate(templateId, entities, rec.id);
-        sendAndSave(rec.email, template.name, text);
+        var subject = template.subject ? template.subject : template.name;
+        sendAndSave(rec.email, subject, text);
 
       })
 
     }else {
       var text = self.instantiateTemplate(templateId, entities);
-      sendAndSave(recipient, template.name, text);
+      var subject = template.subject ? template.subject : template.name;
+      sendAndSave(recipient, subject, text);
     }
   }
 };

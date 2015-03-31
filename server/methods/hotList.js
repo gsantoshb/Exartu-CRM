@@ -8,5 +8,18 @@ Meteor.methods({
     },
     'hotListTextMessageSend': function (msg, id) {
         return HotListManager.hotListTextMessageSend(msg,id);
+    },
+    'getValidResponseMembers': function(hotlist){
+       var hotlistMembers = hotlist.members;
+       var validMembers = [];
+       _.forEach(hotlistMembers, function(m){
+         var result = HotLists.findOne({_id:{$ne: hotlist._id},dateCreated:{$gte:  hotlist.dateCreated}, members:{$in: [m]}  })
+         if(!result){
+           validMembers.push(m);
+         }
+       })
+      return validMembers;
+
+
     }
 });

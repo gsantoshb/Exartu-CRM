@@ -41,6 +41,7 @@ ActivityViews = new View('activities', {
 
       //tasks Cursor
       var tasksCursor = Tasks.find({_id: {$in: tasksToPublish}});
+      self.publish({cursor: tasksCursor, to: 'tasks'});
       var tasksArray = tasksCursor.fetch();
       _.forEach(tasksArray, function (t) {
         _.forEach(t.links, function (link) {
@@ -63,10 +64,11 @@ ActivityViews = new View('activities', {
           }
         })
       });
-      self.publish({cursor: tasksCursor, to: 'tasks'});
+
 
       //notes cursor
       var notesCursor = Notes.find({_id: {$in: notesToPublish}});
+      self.publish({cursor: notesCursor, to: 'notes'});
       var notesArray = notesCursor.fetch();
       _.forEach(notesArray, function (n) {
         _.forEach(n.links, function (link) {
@@ -89,7 +91,7 @@ ActivityViews = new View('activities', {
           }
         })
       });
-      self.publish({cursor: notesCursor, to: 'notes'});
+
 
       //contactablesFiles cursor
       var contactablesFilesCursor = ContactablesFiles.find({_id: {$in: filesToPublish}});
@@ -343,7 +345,6 @@ ActivityViews = new View('activities', {
 
 Meteor.paginatedPublish(ActivityViews, function () {
     return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({}, {sort: {'data.dateCreated': -1}}));
-
   },
   {
     pageSize: 50,
