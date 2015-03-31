@@ -77,6 +77,13 @@ Meteor.methods({
     IsTaxIdUnused: function (taxid, hierid) {
         return ContactableManager.isTaxIdUnused(taxid, hierid);
     },
+    checkContactableEmail: function(value){
+        try{
+          return ContactableManager.checkContactableEmail(value);
+        }catch(err){
+          throw new Meteor.Error(err.message);
+        }
+    },
 
 
     // Education

@@ -60,6 +60,7 @@ Template.contactableContactMethodsBox.helpers({
 });
 
 var addNewContactMethod = function() {
+
   var newContactMethodValue = $('#new-contact-method-value');
   var value = newContactMethodValue.val();
   $('#new-contact-method-value').val = null;
@@ -85,19 +86,66 @@ var addNewContactMethod = function() {
       return;
     }
   }
+  if ((selectedType.lookUpActions)&&(_.contains(selectedType.lookUpActions, Enums.lookUpAction.ContactMethod_Email))){
+    Meteor.call('checkContactableEmail',value, function(err, res){
+      if(err){
+        console.log("Error checking email");
 
-  Meteor.call('addContactMethod', Session.get('entityId'), selectedType._id, value, function(err) {
-    if (err) {
-      if(err.error === "Error, Contact email must be unique"){
-        $('#add-contact-method-error').text(err.error);
       }
-      else {
-        $('#add-contact-method-error').text('There was an error inserting the contact method. Please try again.');
+      else{
+        if(res.length > 0){
+          //there is some contactables with same email
+          var listaString = "";
+          _.forEach(res, function(r){
+            var link = ""+window.location.origin+"/contactable/"+ r._id;
+            listaString = listaString + r.displayName + "   <a style='float: right' target='_blank' href="+link+">"+link+"</a>"+"<br/>";
+          });
+          Utils.showModal('basicModal', {
+            title: 'Existing email',
+            message: 'The following contactables have the same email you are trying to use:<br/><br/>'+listaString,
+            buttons: [{label: 'Cancel', classes: 'btn-info', value: false}, {
+              label: 'Continue',
+              classes: 'btn-success',
+              value: true
+            }],
+            callback: function (result) {
+              if(result){
+                Meteor.call('addContactMethod', Session.get('entityId'), selectedType._id, value, function (err) {
+                  if (err) {
+                      $('#add-contact-method-error').text('There was an error inserting the contact method. Please try again.');
+                  } else {
+                    newContactMethodValue.val('');
+                  }
+                });
+              }
+            }
+          });
+        }else{
+          Meteor.call('addContactMethod', Session.get('entityId'), selectedType._id, value, function (err) {
+            if (err) {
+              $('#add-contact-method-error').text('There was an error inserting the contact method. Please try again.');
+            } else {
+              newContactMethodValue.val('');
+            }
+          });
+        }
       }
-    } else {
-      newContactMethodValue.val('');
-    }
-  });
+    })
+  }
+  else {
+    Meteor.call('addContactMethod', Session.get('entityId'), selectedType._id, value, function (err) {
+      if (err) {
+        if (err.error === "Error, Contact email must be unique") {
+          $('#add-contact-method-error').text(err.error);
+        }
+        else {
+          $('#add-contact-method-error').text('There was an error inserting the contact method. Please try again.');
+        }
+      } else {
+        newContactMethodValue.val('');
+      }
+    });
+  }
 };
 
 // Item
