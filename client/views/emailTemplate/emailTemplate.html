@@ -10,11 +10,13 @@
         <div class="container-fluid">
             <div class="form-group">
                 <span>{{_ "Name"}}:</span>
-                <input class="form-control templateName" placeholder= {{_ "Name"}} value="{{templateName}}">
+                <input id="name-input" class="form-control templateName" placeholder= {{_ "Name"}} value="{{templateName}}">
+                <span class="label label-danger">{{errorName}}</span>
             </div>
             <div class="form-group">
                 <span>{{_ "Subject"}}:</span>
-                <input class="form-control templateSubject" placeholder= {{_ "Subject"}} value="{{templateSubject}}">
+                <input id="subject-input" class="form-control templateSubject" placeholder= {{_ "Subject"}} value="{{templateSubject}}">
+                <span class="label label-danger">{{errorSubject}}</span>
             </div>
             <div class="form-group">
                 <span>{{_ "Category"}}:</span>

@@ -42,12 +42,14 @@
                         {{/unless}}
                     {{/unless}}
 
-                    <!-- Display note to employee -->
-                    <div class="add-note-actions-cell">
-                        <div class="form-group" style="margin-bottom: 0px;">
-                            {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
+                    {{#if isEmployee}}
+                        <!-- Display note to employee -->
+                        <div class="add-note-actions-cell">
+                            <div class="form-group" style="margin-bottom: 0px;">
+                                {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
+                            </div>
                         </div>
-                    </div>
+                    {{/if}}
 
 
                 {{/if}}

@@ -66,7 +66,7 @@ if(window.wysihtml5){
   }
 
   wysihtml5.commands.foo = {
-   //similar to wysihtml5 link command
+    //similar to wysihtml5 link command
     exec: function(composer, command, value) {
       var anchors = this.state(composer, command);
       if (anchors) {
@@ -92,6 +92,9 @@ if(window.wysihtml5){
 }
 var editMode = new ReactiveVar(true);
 var preview = new ReactiveVar('');
+var errorDep = new Deps.Dependency();
+var errorName = "";
+var errorSubject = "";
 
 Template.emailTemplate.helpers({
   mergeField: function () {
@@ -129,6 +132,14 @@ Template.emailTemplate.helpers({
   },
   editMode: function () {
     return editMode.get();
+  },
+  errorName: function(){
+    errorDep.depend();
+    return errorName;
+  },
+  errorSubject: function(){
+    errorDep.depend();
+    return errorSubject;
   }
 });
 
@@ -142,20 +153,56 @@ Template.emailTemplate.rendered = function () {
 
 Template.emailTemplate.events({
   'click #add': function (e, ctx) {
-    var template ={
-      name: $('.templateName').val(),
-      subject: $('.templateSubject').val(),
-      text: $('.editor').data('wysihtml5').editor.composer.getValue(),
-      category: $('#category').val()
-    };
+    errorName = "";
+    errorSubject = "";
+    var name = $('.templateName').val();
+    var subject = $('.templateSubject').val();
 
-    if (Session.get('templateId')){
-      EmailTemplates.update(Session.get('templateId'), {$set: template})
-    }else{
-      Session.set('templateId', EmailTemplates.insert(template));
+    if(name && subject) {
+      var template = {
+        name: name,
+        subject: subject,
+        text: $('.editor').data('wysihtml5').editor.composer.getValue(),
+        category: $('#category').val()
+      };
+
+      if (Session.get('templateId')) {
+        EmailTemplates.update(Session.get('templateId'), {$set: template})
+      } else {
+        Session.set('templateId', EmailTemplates.insert(template));
+      }
+      Router.go('/emailTemplates');
     }
-    Router.go('/emailTemplates');
+    else{
+      if(!name){
+        errorName = "Error, name is required."
 
+      }
+      if(!subject){
+        errorSubject = "Error, subject is required."
+      }
+    }
+    errorDep.changed();
+  },
+  'change #name-input': function(e, ctx){
+    var name = $('.templateName').val();
+    if(name){
+      errorName = "";
+    }
+    else{
+      errorName = "Error, name is required."
+    }
+    errorDep.changed();
+  },
+  'change #subject-input': function(e, ctx){
+    var subject = $('.templateSubject').val();
+    if(subject){
+      errorSubject = "";
+    }
+    else{
+      errorSubject = "Error, name is required."
+    }
+    errorDep.changed();
   },
   'change #mergeFields': function (e, ctx) {
     var mf = EmailTemplateMergeFields.findOne(e.val);
