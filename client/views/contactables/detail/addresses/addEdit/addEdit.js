@@ -106,13 +106,13 @@ AutoForm.hooks({
 });
 
 Template.addressAddEdit.created = function() {
-    var self = this;
-    if (this.data.location){
+  var self = this;
+  if (this.data.location){
         address = this.data.location;
-    }else{
+  }else{
         address.addressTypeId = Utils.getAddressTypeDefault()._id;
-    }
-    if (self.data.location) address=self.data.location;
+  }
+  if (self.data.location) address=self.data.location;
 
     addressCreatedCallback = self.data.callback;
   if(!(this.data.type === "update")) {
@@ -130,6 +130,24 @@ Template.addressAddEdit.helpers({
     address: function () {
         addressDep.depend();
         return address;
+    },
+    title: function() {
+       if(this.type === "update"){
+         var StringDire = "Update address:";
+         if (this.location.address){
+           StringDire = StringDire + this.location.address+", ";
+         }
+         if (this.location.city){
+           StringDire = StringDire + this.location.city+", ";
+         }
+         if(this.location.country){
+           StringDire = StringDire + this.location.country;
+         }
+         return StringDire;
+       }
+       else if(this.type === "insert"){
+         return "New address";
+       }
     },
     addDisabled: function () {
         return addDisabled.get();

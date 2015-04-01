@@ -71,6 +71,7 @@ Template.addressList.events({
         if( locationFormBoxType.get() == 'update' ){
             locationFormBoxType.set(undefined);
             loadedAddress.set({});
+            Session.set( 'showLocationFormBox',  false);
         }
         else if( locationFormBoxType.get() == 'insert' ){
            locationFormBoxType.set(undefined);
