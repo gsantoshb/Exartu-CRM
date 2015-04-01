@@ -1,0 +1,30 @@
+<template name="cardReader">
+    <div id="content">
+        <div id="content-header">
+            <h1>Card Reader</h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Management</a>
+            <a href="/cardReader" class="current">cardReader</a>
+        </div>
+
+        <div class="panel panel-default" style="margin: 15px">
+            <div class="panel-body">
+                <h3>
+                    Insert your credentials from <a href="https://cloud.ocrsdk.com/" target="_blank">ABBYY Cloud OCR SDK</a>
+                </h3>
+                <hr>
+
+                {{#autoForm id="editCardReaderConf" schema=getSchema}}
+                    <fieldset>
+                        {{> afQuickField name='appId'}}
+                        {{> afQuickField name='password' type="password"}}
+                    </fieldset>
+                    <button type="submit" class="btn btn-primary" disabled="{{loading}}">Save</button>
+                {{/autoForm}}
+
+                <span class="text-danger">{{error}}</span>
+            </div>
+        </div>
+    </div>
+</template>
