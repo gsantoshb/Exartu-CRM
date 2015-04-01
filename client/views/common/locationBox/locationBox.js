@@ -39,7 +39,7 @@ LocationSchema = new SimpleSchema({
     address: {
         type: String,
         label: 'Address line 1',
-        optional: true
+        optional: false
     },
     address2: {
         type: String,
@@ -54,7 +54,7 @@ LocationSchema = new SimpleSchema({
     city: {
         type: String,
         label: 'City',
-        optional: true
+        optional: false
     },
     state: {
         type: String,
@@ -64,7 +64,7 @@ LocationSchema = new SimpleSchema({
     country: {
         type: String,
         label: 'Country',
-        optional: true
+        optional: false
     },
     postalCode: {
         type: String,
