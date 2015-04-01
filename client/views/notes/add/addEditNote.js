@@ -151,7 +151,7 @@ var isValid = function (note, key) {
 };
 
 Template.addEditNote.events({
-  'click .accept': function () {
+  'click .accept': _.debounce(function () {
     if (!isValid(note)) {
       return;
     }
@@ -179,7 +179,7 @@ Template.addEditNote.events({
         addDisabled.set(false);
       });
 
-    }
+    }, 200),
 
 
   },
