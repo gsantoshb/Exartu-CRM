@@ -151,7 +151,7 @@ var isValid = function (note, key) {
 };
 
 Template.addEditNote.events({
-  'click .accept': _.debounce(function () {
+  'click .accept': function () {
     if (!isValid(note)) {
       return;
     }
@@ -178,12 +178,8 @@ Template.addEditNote.events({
         $('.modal-host').children().modal('toggle');
         addDisabled.set(false);
       });
-
-    }, 200),
-
-
-  },
-
+     }
+    },
   'change .msg': function (e) {
     note.msg = e.target.value;
     //noteUpdate();
