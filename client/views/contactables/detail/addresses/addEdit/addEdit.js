@@ -95,8 +95,11 @@ AutoForm.hooks({
                 }
                 selfautoform.done();
 
+
+
             });
             addDisabled.set(false);
+
             return false;
         }
     }
@@ -112,10 +115,15 @@ Template.addressAddEdit.created = function() {
     if (self.data.location) address=self.data.location;
 
     addressCreatedCallback = self.data.callback;
+  if(!(this.data.type === "update")) {
+    resetAddress();
+  }
+  addressDep.changed();
+
 };
 
 Template.addressAddEdit.rendered = function () {
-    resetAddress();
+
 };
 
 Template.addressAddEdit.helpers({
@@ -132,7 +140,9 @@ Template.addressAddEdit.helpers({
                 //resetAddress();
                 // keep address type
                 selectedAddress.addressTypeId = address.addressTypeId;
+                selectedAddress._id = address._id;
                 address = selectedAddress;
+
                 addressDep.changed();
 
                 //AutoForm.invalidateFormContext("addressAddEditForm");
