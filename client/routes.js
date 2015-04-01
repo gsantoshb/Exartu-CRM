@@ -307,6 +307,11 @@ Router.map(function () {
     path: '/documentInstance/:id',
     controller: 'InstanceController'
   });
+
+  this.route('cardReader', {
+    path: '/management/cardReader',
+    controller: 'CardReaderController'
+  });
 });
 
 

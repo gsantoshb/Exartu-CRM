@@ -3,6 +3,9 @@
     "git-rev": {
       "version": "0.2.1"
     },
+    "iconv-lite": {
+      "version": "0.4.7"
+    },
     "imagemagick": {
       "version": "0.1.3"
     },
