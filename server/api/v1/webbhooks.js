@@ -15,7 +15,7 @@ Router.map(function() {
         response.error("user not found");
         return;
       }
-      var email = this.params.query.email;
+      var email = this.request.bodyFields.email;
       if(email == undefined){
         response.error("no email");
         return;
@@ -24,8 +24,8 @@ Router.map(function() {
       var connection = new RESTAPI.connection(user);
       //Hierarchy found, lets see if the funnel has enough info to insert the contact
 
-      var firstName = this.params.query.first_name || this.params.query.name || email ;
-      var lastName = this.params.query.last_name || "Unknown";
+      var firstName = this.request.bodyFields.first_name || this.request.bodyFields.name || email ;
+      var lastName = this.request.bodyFields.last_name || "Unknown";
       var contact = {
         firstName : firstName,
         lastName : lastName
