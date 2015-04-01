@@ -9,6 +9,6 @@ clickFunnelController = RouteController.extend({
 Template.clickFunnel.helpers({
   link: function(){
     debugger;
-    return  ""+window.location.origin+"/API/1/ClickFunnelHook/"+Meteor.user().currentHierId;
+    return  ""+window.location.origin+"/API/1/ClickFunnelsHook/"+Meteor.user()._id;
   }
 });
