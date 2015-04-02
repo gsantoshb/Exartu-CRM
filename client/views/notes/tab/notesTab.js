@@ -185,29 +185,32 @@ Template.notesTabAdd.helpers({
     defaultUserNumber: function () {
         return self.defaultUserNumber;
     },
-    ischeckedSMS: function(){
+    ischeckedSMS: function() {
         checkSMSDep.depend();
         var field = $("#sendAsSMS");
-        if(field[0] && field[0].checked){
+        if (field[0] && field[0].checked) {
             return true;
         }
-        else{
+        else {
             return false;
-        },
+        }
+        ,
         defaultUserNumber: function () {
             return self.defaultUserNumber;
-        },
-        ischeckedSMS: function(){
+        }
+        ,
+        ischeckedSMS: function () {
             checkSMSDep.depend();
             var field = $("#sendAsSMS");
-            if(field[0] && field[0].checked){
+            if (field[0] && field[0].checked) {
                 return true;
             }
-            else{
+            else {
                 return false;
             }
         }
-    });
+    }
+});
 
 
 
