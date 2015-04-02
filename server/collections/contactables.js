@@ -201,14 +201,24 @@ ContactablesFS = new Document.Collection({
 });
 ContactablesFS.publish();
 
-
-Meteor.publish('contactablesFiles', function () {
+/** old code **/
+/*
+ Meteor.publish('contactablesFiles', function () {
+ return ContactablesFiles.find();
+ });
+ */
+Meteor.paginatedPublish(ContactablesFiles, function() {
     return ContactablesFiles.find();
+}, {
+    pageSize: 10,
+    publicationName: 'contactablesDocs'
 });
+
 ContactablesFiles.before.insert(function(userId,doc){
     doc.dateCreated=Date.now();
 
 });
+
 ContactablesFiles.allow({
     remove: function (userId, file) {
         var user = Meteor.users.findOne({_id: userId});

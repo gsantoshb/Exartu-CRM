@@ -347,8 +347,9 @@ Meteor.paginatedPublish(ActivityViews, function () {
     return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({}, {sort: {'data.dateCreated': -1}}));
   },
   {
-    pageSize: 50,
+    //pageSize: 50,
     publicationName: 'activities',
+    infiniteScroll: true,
     updateSelector: function (oldSelector, clientParams) {
       var newSelector = EJSON.clone(oldSelector);
       delete newSelector.entityId;  // hack since pagination plugin is not correctly using the original cursor selector

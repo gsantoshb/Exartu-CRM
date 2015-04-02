@@ -1,83 +1,140 @@
-
 <template name="dashboard">
-    <div id="content">
-        <div class="hidden-xs">
-            <!-- Title -->
-            <div id="content-header" class="mini">
-                <h1>{{_ "Dashboard"}}</h1>
-            </div>
 
-            <!-- Breadcrumb -->
-            <div id="breadcrumb">
-                <a href="/" title="Go to Home" class="tip-bottom">
-                    <i class="fa fa-home"></i>{{_ "Home"}}
-                </a>
-                <a href="/" class="current">{{_ "Dashboard"}}</a>
-            </div>
-        </div>
+    <div class="network-content nicer-filters" id="content">
+        <div class="row">
 
-        <!-- Content box -->
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Search bar -->
-                <div class="col-xs-9">
-                    <div class="input-group">
-                        <input id="searchString" class="form-control" placeholder= {{_ "Search activity"}}>
-                        <a class="input-group-addon btn btn-primary"><i class="fa fa-search"></i></a>
-                    </div>
-                </div>
+            <div class="col-md-3">
 
-                <!-- List / Detail view modes -->
-                <div class="col-xs-3">
-                    <span class="pointer" style="font-size: 20px;">
-                        {{#if listViewMode}}
-                            <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
-                            <i class="fa fa-bars"></i>
-                        {{else}}
-                            <i class="fa fa-th-large"></i>
-                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
-                        {{/if}}
-                    </span>
-                </div>
-            </div>
+                <aside class="sidebar">
 
-            <!-- Activity list -->
-            <div class="row margin-top-15">
-                <div class="col-md-12">
-                    {{>fastPagination name="activities" loadingTemplate='loadingActivities' container='body' content='#content'}}
-
-                    {{#if listViewMode}}
-                        <table class="table table-striped">
-                            <tbody>
-                            {{#if isReady}}
-                            {{#each activities}}
-                                <tr>
-                                    <td>
-                                        {{#with getCtx}}
-                                            {{> Template.dynamic template=getTemplateForActivity}}
-                                        {{/with}}
-                                    </td>
-                                </tr>
-                            {{/each}}
+                    <div class="page-title-2">
+                        <h1 class="welcome">
+                            {{_ "Hi"}}&nbsp;
+                            {{#if userName}}
+                                {{userName}},
+                            {{else}}
+                                {{#if currentHierName}}
+                                    {{currentHierName}},
+                                {{else}}
+                                    {{userEmail}},
+                                {{/if}}
                             {{/if}}
-                            </tbody>
-                        </table>
-                    {{else}}
-                        <section class="timeline">
-                            <div class="activity-container scroll-container">
-                        {{#if isReady}}
-                                {{#each activities}}
-                                    {{#with getCtx}}
-                                        {{> Template.dynamic template=getTemplateForActivity}}
-                                    {{/with}}
-                                {{/each}}
-                                    {{/if}}
+                        </h1>
+                    </div>
+
+                    <section class="box-type-3">
+                        <header>
+                            <a class="more" href="#">View reports</a>
+                            <div class="title">In the last 30 days</div>
+                        </header>
+                        <div class="box-body">
+                            <ul class="list-type-6">
+                                <li><span class="hightlight-1">250</span> Won</li>
+                                <li><span class="hightlight-1">27</span> Lost</li>
+                                <li><span class="hightlight-1">35</span> Unqualified</li>
+                            </ul>
+                        </div><!-- /.box-body -->
+                    </section><!-- /.box-type-3 -->
+
+                    <section class="box-type-3">
+                        <header>
+                            <a class="more" href="#">View reports</a>
+                            <div class="title">Team Deal Load</div>
+                        </header>
+                        <div class="box-body">
+                            <ul class="list-type-6">
+                                <li><span class="hightlight-1">2</span> Martin Cook</li>
+                                <li><span class="hightlight-1">27</span> Aram Gugusian</li>
+                                <li><span class="hightlight-1">35</span> Brad Novelli</li>
+                                <li><span class="hightlight-1">100</span> Marta Stew</li>
+                                <li><span class="hightlight-1">42</span> Goga Rem</li>
+                            </ul>
+                            <a href="#"></a>
+                        </div><!-- /.box-body -->
+                    </section><!-- /.box-type-3 -->
+
+                    <div class="chart-box-1 text-center"><img class="img-responsive" src="assets/chart.png" alt=""></div><!-- /.chart-box-1 -->
+
+                </aside><!-- /.sidebar -->
+
+
+            </div><!-- /.col-md-3 -->
+
+
+            <div class="col-md-6">
+                <div class="list-container">
+                    <div class="list-holder">
+
+                        <div class="list-actions">
+                            <div class="list-actions-cell search-list">
+                                <div class="input-group">
+                    <span class="prop-input">
+                    <input id="searchString" class="form-control" placeholder= {{_ "Search activity"}}>
+                    <span class="text text-danger"></span>
+                    </span>
+                    <span class="input-group-btn">
+                    <button class="btn btn-search" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    </span>
+                                </div>
+                            </div><!-- /.search-list -->
+                            <div class="list-actions-cell view-mode-list">
+                                {{#if listViewMode}}
+                                    <i id="detail-view" class="fa fa-th-list pointer" style="opacity: 0.4"></i>
+                                    <i class="fa fa-bars pointer"></i>
+                                {{else}}
+                                    <i class="fa fa-th-large pointer"></i>
+                                    <i id="list-view" class="fa fa-bars pointer" style="opacity: 0.4"></i>
+                                {{/if}}
+                            </div><!-- /.view-mode-list -->
+
+                            <div class="list-actions-cell order-list filter-list">
+                                {{>fastPagination name="activities" loadingTemplate='loadingActivities' container='body' content='#content'}}
                             </div>
-                        </section>
-                    {{/if}}
-                </div>
-            </div>
-        </div>
+                        </div><!-- .list-actions -->
+
+
+
+                        <div class="list-item-section">
+
+                            <ul class="list-type-7 activity-feed">
+
+                                {{#if listViewMode}}
+                                    {{#if isReady}}
+                                        {{#each activities}}
+                                            {{#with getCtx}}
+                                                {{> Template.dynamic template=getTemplateForActivity}}
+                                            {{/with}}
+                                        {{/each}}
+                                    {{/if}}
+                                {{else}}
+                                    <section class="timeline">
+                                        <div class="activity-container scroll-container">
+                                            {{#if isReady}}
+                                                {{#each activities}}
+                                                    {{#with getCtx}}
+                                                        {{> Template.dynamic template=getTemplateForActivity}}
+                                                    {{/with}}
+                                                {{/each}}
+                                            {{/if}}
+                                        </div>
+                                    </section>
+                                {{/if}}
+                            </ul><!-- /.list-type-7 -->
+                        </div><!-- /.list-item-section -->
+
+                    </div><!-- /.list-holder -->
+                </div><!-- /.list-container -->
+            </div><!-- /.col-md-6 -->
+
+            <div class="col-md-3">
+                <div class="sidebar-right">
+                    {{> agendaBox}}
+                </div><!-- /.sidebar-right -->
+            </div><!-- /.col-md-3 -->
+
+        </div><!-- /.row -->
 
     </div>
 </template>

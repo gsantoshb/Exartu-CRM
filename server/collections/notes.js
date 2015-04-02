@@ -151,8 +151,8 @@ NoteListView = new View('noteList', {
 Meteor.paginatedPublish(NoteView, function () {
   return Utils.filterCollectionByUserHier.call(this, NoteView.find({}, { sort: { dateCreated: -1 } }));
 },{
-  pageSize: 50,
-  publishName: 'notes',
+  pageSize: 10,
+  publishName: 'notes'
   //updateSelector: function (oldSelector, clientParams) {
   //  var newSelector = EJSON.clone(oldSelector);
   //  delete newSelector['links.id'];
