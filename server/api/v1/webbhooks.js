@@ -1,3 +1,6 @@
+
+
+
 Router.map(function() {
   this.route('clickfunnelshook' + api_version, {
     where: 'server',
@@ -15,20 +18,29 @@ Router.map(function() {
         response.error("user not found");
         return;
       }
-      var email = this.request.bodyFields.email;
+      var email = this.request.body.email;
       if(email == undefined){
         response.error("no email");
         return;
       }
 
-      var connection = new RESTAPI.connection(user);
-      //Hierarchy found, lets see if the funnel has enough info to insert the contact
 
-      var firstName = this.request.bodyFields.first_name || this.request.bodyFields.name || email ;
-      var lastName = this.request.bodyFields.last_name || "Unknown";
+      var connection = new RESTAPI.connection(user);
+      //check if email already exists
+      var existingEmail = connection.call('checkContactableEmail', email);
+      if(existingEmail.length > 0)
+      {
+        connection.close();
+        response.end("ok");
+        return;
+      }
+
+      var firstName = this.request.body.first_name || this.request.body.name || email ;
+      var lastName = this.request.body.last_name || "Unknown";
       var contact = {
         firstName : firstName,
-        lastName : lastName
+        lastName : lastName,
+        tags : ["Funnel"]
       }
       var contactable = mapper.create(contact, 'Contact');
       var contactableId = connection.call('addContactable', contactable);
