@@ -64,7 +64,6 @@ Template.dashboard.created = function () {
 
 Template.dashboard.helpers({
     activities: function () {
-        console.log( 'is infinite scroll : '+SubscriptionHandlers.ActivitiesHandler.isInfiniteScroll() );
         return Activities.find({}, {sort: {'data.dateCreated': -1}});
     },
     listViewMode: function () {
@@ -94,16 +93,6 @@ Template.dashboard.helpers({
 
         return ActivitiesHandler.ready();
 
-    },
-    userName: function () {
-        return Meteor.user().username;
-    },
-    userEmail: function () {
-        return Meteor.user().emails[0].address;
-    },
-    currentHierName: function () {
-        var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
-        return hier ? hier.name : '';
     }
 });
 

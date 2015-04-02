@@ -1,27 +1,14 @@
 
 // Contactable Add Template
 Template.contactableAddActivity.helpers({
-    isClient: function () {
-        return (this.data.objTypeName == 'Client' || this.data.objTypeName == 'Customer');
-    },
-    isContact: function () {
-        return (this.data.objTypeName == 'Contact');
-    },
-    isEmployee: function () {
-        return (this.data.objTypeName == 'Employee');
-    },
-    getObjectTypeName: function() {
-        return this.data.objTypeName;
-    },
     getActivityIcon: function () {
         switch (this.data.objTypeName) {
             case 'Client':
-            case 'Customer':
                 return 'icon-buildings-1';
             case 'Contact':
-                return 'icon-contact-book-4';
+                return 'icon-address-1';
             case 'Employee':
-                return 'icon-profile-business-man';
+                return 'icon-connection-1';
         }
     },
     getClientName: function () {

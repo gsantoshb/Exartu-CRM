@@ -1,117 +1,117 @@
 ActivityViews = new View('activities', {
     collection: Activities,
     cursors: function (activity) {
-      var self = this;
-      var contactablesToPublish = [];
-      var tasksToPublish = [];
-      var jobsToPublish = [];
-      var placementsToPublish = [];
-      var notesToPublish = [];
-      var filesToPublish = [];
-      //clasify by activity type and add to the array if it wasn't added yet
-      if ((activity.type === Enums.activitiesType.contactableAdd) && (contactablesToPublish.lastIndexOf(activity.entityId) === -1)) {
-        contactablesToPublish.push(activity.entityId);
-      }
-      else if ((activity.type === Enums.activitiesType.taskAdd) && (tasksToPublish.lastIndexOf(activity.entityId) === -1)) {
-        tasksToPublish.push(activity.entityId);
-      }
-      else if ((activity.type === Enums.activitiesType.noteAdd) && (notesToPublish.lastIndexOf(activity.entityId) === -1)) {
-        notesToPublish.push(activity.entityId);
-      }
-      else if ((activity.type === Enums.activitiesType.jobAdd) && (jobsToPublish.lastIndexOf(activity.entityId) === -1)) {
-        jobsToPublish.push(activity.entityId);
-      }
-      else if ((activity.type === Enums.activitiesType.fileAdd) && (filesToPublish.lastIndexOf(activity.entityId) === -1)) {
-        filesToPublish.push(activity.entityId);
-        if (contactablesToPublish.lastIndexOf(activity.links[0]) === -1) {
-          contactablesToPublish.push(activity.links[0].id);
+        var self = this;
+        var contactablesToPublish = [];
+        var tasksToPublish = [];
+        var jobsToPublish = [];
+        var placementsToPublish = [];
+        var notesToPublish = [];
+        var filesToPublish = [];
+        //clasify by activity type and add to the array if it wasn't added yet
+        if ((activity.type === Enums.activitiesType.contactableAdd) && (contactablesToPublish.lastIndexOf(activity.entityId) === -1)) {
+            contactablesToPublish.push(activity.entityId);
         }
-      }
-      else if ((activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) && (placementsToPublish.lastIndexOf(activity.entityId) === -1)) {
-        placementsToPublish.push(activity.entityId);
-        if (jobsToPublish.lastIndexOf(activity.links[1]) === -1) {
-          jobsToPublish.push(activity.links[1]);
+        else if ((activity.type === Enums.activitiesType.taskAdd) && (tasksToPublish.lastIndexOf(activity.entityId) === -1)) {
+            tasksToPublish.push(activity.entityId);
         }
-        if (contactablesToPublish.lastIndexOf(activity.links[2]) === -1) {
-          contactablesToPublish.push(activity.links[0].id);
+        else if ((activity.type === Enums.activitiesType.noteAdd) && (notesToPublish.lastIndexOf(activity.entityId) === -1)) {
+            notesToPublish.push(activity.entityId);
         }
+        else if ((activity.type === Enums.activitiesType.jobAdd) && (jobsToPublish.lastIndexOf(activity.entityId) === -1)) {
+            jobsToPublish.push(activity.entityId);
+        }
+        else if ((activity.type === Enums.activitiesType.fileAdd) && (filesToPublish.lastIndexOf(activity.entityId) === -1)) {
+            filesToPublish.push(activity.entityId);
+            if (contactablesToPublish.lastIndexOf(activity.links[0]) === -1) {
+                contactablesToPublish.push(activity.links[0].id);
+            }
+        }
+        else if ((activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) && (placementsToPublish.lastIndexOf(activity.entityId) === -1)) {
+            placementsToPublish.push(activity.entityId);
+            if (jobsToPublish.lastIndexOf(activity.links[1]) === -1) {
+                jobsToPublish.push(activity.links[1]);
+            }
+            if (contactablesToPublish.lastIndexOf(activity.links[2]) === -1) {
+                contactablesToPublish.push(activity.links[0].id);
+            }
 
-      }
-      //now resolve links and publish:
+        }
+        //now resolve links and publish:
 
-      //tasks Cursor
-      var tasksCursor = Tasks.find({_id: {$in: tasksToPublish}});
-      self.publish({cursor: tasksCursor, to: 'tasks'});
-      var tasksArray = tasksCursor.fetch();
-      _.forEach(tasksArray, function (t) {
-        _.forEach(t.links, function (link) {
-          switch (link.type) {
-            case Enums.linkTypes.contactable.value:
-              if (contactablesToPublish.lastIndexOf(link.id) === -1) {
-                contactablesToPublish.push(link.id);
-              }
-              break;
-            case Enums.linkTypes.job.value:
-              if (jobsToPublish.lastIndexOf(link.id) === -1) {
-                jobsToPublish.push(link.id);
-              }
-              break;
-            case Enums.linkTypes.placement.value:
-              if (placementsToPublish.lastIndexOf(link.id) === -1) {
-                placementsToPublish.push(link.id);
-              }
-              break;
-          }
-        })
-      });
-
-
-      //notes cursor
-      var notesCursor = Notes.find({_id: {$in: notesToPublish}});
-      self.publish({cursor: notesCursor, to: 'notes'});
-      var notesArray = notesCursor.fetch();
-      _.forEach(notesArray, function (n) {
-        _.forEach(n.links, function (link) {
-          switch (link.type) {
-            case Enums.linkTypes.contactable.value:
-              if (contactablesToPublish.lastIndexOf(link.id) === -1) {
-                contactablesToPublish.push(link.id);
-              }
-              break;
-            case Enums.linkTypes.job.value:
-              if (jobsToPublish.lastIndexOf(link.id) === -1) {
-                jobsToPublish.push(link.id);
-              }
-              break;
-            case Enums.linkTypes.placement.value:
-              if (placementsToPublish.lastIndexOf(link.id) === -1) {
-                placementsToPublish.push(link.id);
-              }
-              break;
-          }
-        })
-      });
+        //tasks Cursor
+        var tasksCursor = Tasks.find({_id: {$in: tasksToPublish}});
+        self.publish({cursor: tasksCursor, to: 'tasks'});
+        var tasksArray = tasksCursor.fetch();
+        _.forEach(tasksArray, function (t) {
+            _.forEach(t.links, function (link) {
+                switch (link.type) {
+                    case Enums.linkTypes.contactable.value:
+                        if (contactablesToPublish.lastIndexOf(link.id) === -1) {
+                            contactablesToPublish.push(link.id);
+                        }
+                        break;
+                    case Enums.linkTypes.job.value:
+                        if (jobsToPublish.lastIndexOf(link.id) === -1) {
+                            jobsToPublish.push(link.id);
+                        }
+                        break;
+                    case Enums.linkTypes.placement.value:
+                        if (placementsToPublish.lastIndexOf(link.id) === -1) {
+                            placementsToPublish.push(link.id);
+                        }
+                        break;
+                }
+            })
+        });
 
 
-      //contactablesFiles cursor
-      var contactablesFilesCursor = ContactablesFiles.find({_id: {$in: filesToPublish}});
-      self.publish({cursor: contactablesFilesCursor, to: 'contactablesFiles'});
+        //notes cursor
+        var notesCursor = Notes.find({_id: {$in: notesToPublish}});
+        self.publish({cursor: notesCursor, to: 'notes'});
+        var notesArray = notesCursor.fetch();
+        _.forEach(notesArray, function (n) {
+            _.forEach(n.links, function (link) {
+                switch (link.type) {
+                    case Enums.linkTypes.contactable.value:
+                        if (contactablesToPublish.lastIndexOf(link.id) === -1) {
+                            contactablesToPublish.push(link.id);
+                        }
+                        break;
+                    case Enums.linkTypes.job.value:
+                        if (jobsToPublish.lastIndexOf(link.id) === -1) {
+                            jobsToPublish.push(link.id);
+                        }
+                        break;
+                    case Enums.linkTypes.placement.value:
+                        if (placementsToPublish.lastIndexOf(link.id) === -1) {
+                            placementsToPublish.push(link.id);
+                        }
+                        break;
+                }
+            })
+        });
 
 
-      //placements cursor
-      var placementsFilesCursor = Placements.find({_id: {$in: placementsToPublish}});
-      self.publish({cursor: placementsFilesCursor, to: 'placements'});
-
-      //jobs cursor
-      var jobsFilesCursor = Jobs.find({_id: {$in: jobsToPublish}});
-      self.publish({cursor: jobsFilesCursor, to: 'jobs'});
-
-      //contactable cursor
-      var contactablesCursor = Contactables.find({_id: {$in: contactablesToPublish}});
-      self.publish({cursor: contactablesCursor, to: 'contactables'});
+        //contactablesFiles cursor
+        var contactablesFilesCursor = ContactablesFiles.find({_id: {$in: filesToPublish}});
+        self.publish({cursor: contactablesFilesCursor, to: 'contactablesFiles'});
 
 
-      //place
+        //placements cursor
+        var placementsFilesCursor = Placements.find({_id: {$in: placementsToPublish}});
+        self.publish({cursor: placementsFilesCursor, to: 'placements'});
+
+        //jobs cursor
+        var jobsFilesCursor = Jobs.find({_id: {$in: jobsToPublish}});
+        self.publish({cursor: jobsFilesCursor, to: 'jobs'});
+
+        //contactable cursor
+        var contactablesCursor = Contactables.find({_id: {$in: contactablesToPublish}});
+        self.publish({cursor: contactablesCursor, to: 'contactables'});
+
+
+        //place
 
 
 
@@ -344,26 +344,26 @@ ActivityViews = new View('activities', {
 });
 
 Meteor.paginatedPublish(ActivityViews, function () {
-    return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({}, {sort: {'data.dateCreated': -1}}));
-  },
-  {
-    //pageSize: 50,
-    publicationName: 'activities',
-    infiniteScroll: true,
-    updateSelector: function (oldSelector, clientParams) {
-      var newSelector = EJSON.clone(oldSelector);
-      delete newSelector.entityId;  // hack since pagination plugin is not correctly using the original cursor selector
+        return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({}, {sort: {'data.dateCreated': -1}}));
 
-      if (clientParams && clientParams.searchString) {
-        // Get ids of entities that match the searchString
-        var userHier = Utils.getUserHierId(this.userId);
-        var ids = ActivityManager.searchActivities(clientParams.searchString, userHier);
-        newSelector.entityId = { $in: ids };
-      }
+    },
+    {
+        pageSize: 50,
+        publicationName: 'activities',
+        updateSelector: function (oldSelector, clientParams) {
+            var newSelector = EJSON.clone(oldSelector);
+            delete newSelector.entityId;  // hack since pagination plugin is not correctly using the original cursor selector
 
-      return newSelector;
+            if (clientParams && clientParams.searchString) {
+                // Get ids of entities that match the searchString
+                var userHier = Utils.getUserHierId(this.userId);
+                var ids = ActivityManager.searchActivities(clientParams.searchString, userHier);
+                newSelector.entityId = { $in: ids };
+            }
+
+            return newSelector;
+        }
     }
-  }
 );
 
 var mainTypes = ['Employee', 'Contact', 'Client'];
@@ -788,4 +788,3 @@ Activities._ensureIndex({userId: 1});
 Activities._ensureIndex({hierId: 1});
 Activities._ensureIndex({entityId: 1});
 Activities._ensureIndex({type: 1});
-

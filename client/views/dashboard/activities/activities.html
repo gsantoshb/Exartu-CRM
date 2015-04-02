@@ -9,11 +9,6 @@
         </span>
     </div>
 </template>
-
-<template name="recordTimestamp">
-    <span class="date">{{formattedDate data.dateCreated "DD/MM/YYYY h:mm"}}</span>
-</template>
-
 <template name="prefixDetailDisplay">
     <div class="time">
         <span class="task-author text-center">
@@ -28,45 +23,20 @@
 <!-- Contactable Add -->
 <template name="contactableAddActivity">
     {{#if listViewMode}}
-        <li>
-            <div class="left-part">
-                <a class="list-type-7-icon" href="#"><i class="icon {{getActivityIcon}}"></i></a>
-                <div class="list-type-7-title">
+        <!-- Contactable information -->
+        <i class="icon {{getActivityIcon}}"></i>
+        <a href="/contactable/{{entityId}}">
+            <strong>{{data.displayName}}</strong>
+        </a>
 
-                    <!-- Client activity -->
-                    {{#if isClient}}
-                        <!-- Contact's client information -->
-                        {{#if getClientName}}
-                            <a href="/contactable/{{getClientId}}">{{getClientName}}</a> <span class="desc">&ndash; is now</span>
-                        {{/if}}
+        <!-- Contact's client information -->
+        {{#if getClientName}}
+            <a href="/contactable/{{getClientId}}">
+                <strong>@ {{getClientName}}</strong>
+            </a>
+        {{/if}}
 
-                        <!-- Contactable information -->
-                        <a href="/contactable/{{entityId}}">{{data.displayName}}</a>{{#if getClientName}}<span class="desc">'s client</span>{{/if}}
-
-                        <span class="desc">&ndash; by {{displayUserName userId}}</span>
-                    {{/if}}
-
-                    <!-- Contact activity -->
-                    {{#if isContact}}
-                        <a href="/contactable/{{entityId}}">{{data.displayName}}</a>
-                        <span class="desc">&ndash; new contact by {{displayUserName userId}}</span>
-                    {{/if}}
-
-                    <!-- Employee activity -->
-                    {{#if isEmployee}}
-                        <!-- Contactable information -->
-                        <a href="/contactable/{{entityId}}">{{data.displayName}}</a>
-
-                        <!-- Contact's client information -->
-                        {{#if getClientName}}
-                            <span class="desc">&ndash; has been hired at <a href="/contactable/{{getClientId}}">{{getClientName}}</a></span>
-                        {{/if}}
-                        <span class="desc">&ndash; done by {{displayUserName userId}}</span>
-                    {{/if}}
-                </div>
-            </div><!-- /.left-part -->
-            <div class="right-part">{{> recordTimestamp}}</div>
-        </li>
+        {{>suffixListDisplay}}
     {{else}}
         <div class="item item-client">
             <!-- Activity information -->
@@ -97,24 +67,19 @@
 <!-- Job Add -->
 <template name="jobAddActivity">
     {{#if listViewMode}}
-        <li>
-            <div class="left-part">
-                <a class="list-type-7-icon" href="#"><i class="icon icon-briefcase"></i></a>
-                <div class="list-type-7-title">
-                    <!-- Job information -->
-                    <a href="/job/{{entityId}}">
-                        <strong>{{data.publicJobTitle}}</strong>
-                    </a>
+        <!-- Job information -->
+        <i class="icon icon-briefcase"></i>
+        <a href="/job/{{entityId}}">
+            <strong>{{data.publicJobTitle}}</strong>
+        </a>
 
-                    {{#if data.clientDisplayName}}
-                        <!-- Job's client information -->
-                        <i class="fa fa-long-arrow-right"></i>
-                        <a href="/contactable/{{data.clientId}}">{{data.clientDisplayName}}</a>
-                    {{/if}}
-                    <span class="desc">&ndash; job added by {{displayUserName userId}}</span></div>
-            </div><!-- /.left-part -->
-            <div class="right-part">{{> recordTimestamp}}</div>
-        </li>
+        <!-- Job's client information -->
+        {{#if data.clientDisplayName}}
+            <i class="fa fa-long-arrow-right"></i>
+            <a href="/contactable/{{data.clientId}}">{{data.clientDisplayName}}</a>
+        {{/if}}
+
+        {{>suffixListDisplay}}
     {{else}}
         <div class="item item-job">
             <!-- Activity information -->
@@ -150,28 +115,20 @@
 <template name="taskAddActivity">
     {{#if listViewMode}}
         <!-- Task information -->
-        <li>
-            <div class="left-part">
-                <a class="list-type-7-icon" href="#"><i class="icon icon-clock-3"></i></a>
-                <div class="list-type-7-title">
-                    {{#with task}}
-                        {{#if displayUserName userAssigned}}
-                            {{displayUserName userAssigned}} <span class="desc">is assigned to</span>
-                        {{/if}}
-                        <a class="pointer">{{>showMore text=msg limit=60}}</a>
-                        <span class="desc">&ndash; task created by {{displayUserName userId}}</span>
+        {{#with task}}
+            <i class="icon icon-clock-3"></i>
+            <span class="task-author">{{displayUserName userAssigned}}</span>
+            <strong>{{>showMore text=msg limit=60}}</strong>
+            {{#each links}}
+                <a href="{{getHref}}">
+                    {{#with getEntity}}
+                        <span class="badge">{{displayName}}</span>
                     {{/with}}
-                    {{#each links}}
-                        <a href="{{getHref}}">
-                            {{#with getEntity}}
-                                <span class="badge">{{displayName}}</span>
-                            {{/with}}
-                        </a>
-                    {{/each}}
-                </div>
-            </div><!-- /.left-part -->
-            <div class="right-part">{{> recordTimestamp}}</div>
-        </li>
+                </a>
+            {{/each}}
+        {{/with}}
+
+        {{>suffixListDisplay}}
     {{else}}
         <div class="item item-task">
             <!-- Activity information -->
@@ -226,22 +183,17 @@
 <!-- Placement Add -->
 <template name="placementAddActivity">
     {{#if listViewMode}}
-        <li>
-            <div class="left-part">
-                <a class="list-type-7-icon" href="#"><i class="ico-placements-black"></i></a>
-                <div class="list-type-7-title">
-                    <a href="/placement/{{entityId}}">
-                        <strong>{{employee.displayName}}</strong> -
-                        <strong>{{job.displayName}}</strong>
-                        {{#with client job.client}}
-                            @ <strong>{{displayName}} </strong>
-                        {{/with}}
-                    </a>
-                    <span class="desc">&ndash; placed by {{displayUserName userId}}</span>
-                </div>
-            </div><!-- /.left-part -->
-            <div class="right-part">{{> recordTimestamp}}</div>
-        </li>
+        <!-- Placement information -->
+        <i class="icon icon-check-list"></i>
+        <a href="/placement/{{entityId}}">
+            <strong>{{employee.displayName}}</strong> -
+            <strong>{{job.displayName}}</strong>
+            {{#with client job.client}}
+                @ <strong>{{displayName}} </strong>
+            {{/with}}
+        </a>
+
+        {{>suffixListDisplay}}
     {{else}}
         <div class="item item-task">
             <!-- Activity information -->
@@ -276,38 +228,26 @@
 <!-- Note Add -->
 <template name="noteAddActivity">
     {{#if listViewMode}}
-        <li>
-            <div class="left-part">
-                <!-- Note information -->
-                {{#if note}}
-                    <a class="list-type-7-icon" href="#"><i class="icon icon-pencil-3"></i></a>
-                    <div class="list-type-7-title">
-                        {{#with note}}
-                            {{>showMore text=msg limit=60}}
+        <!-- Note information -->
+        {{#if note}}
+            <i class="icon icon-note-paper-1"></i>
+            {{#with note}}
+                <strong>{{>showMore text=msg limit=60}}</strong>
+                {{#each this.links}}
+                    <a href="{{getHref}}">
+                        {{#with getEntity}}
+                            <span class="badge">{{displayName}}</span>
                         {{/with}}
-                        {{#each this.links}}
-                            &nbsp;
-                            <a href="{{getHref}}">
-                                {{#with getEntity}}
-                                    <span class="badge">{{displayName}}</span>
-                                {{/with}}
-                            </a>
-                        {{/each}}
+                    </a>
+                {{/each}}
+            {{/with}}
 
-                        <span class="desc">&ndash; added by {{displayUserName userId}}</span>
-                    </div>
-                {{else}}
-                    <!-- Deleted note case -->
-                    <a class="list-type-7-icon" href="#"><i class="icon icon-pencil-3"></i></a>
-                    <div class="list-type-7-title">
-                        The note for this activity was deleted
-                        <span class="desc">&ndash; added by {{displayUserName userId}}</span>
-                    </div>
-                {{/if}}
-
-            </div><!-- /.left-part -->
-            <div class="right-part">{{> recordTimestamp}}</div>
-        </li>
+            {{>suffixListDisplay}}
+        {{else}}
+            <!-- Deleted note case -->
+            <i class="icon icon icon-bin-2"></i>
+            <strong>The note for this activity was deleted</strong>
+        {{/if}}
     {{else}}
         <div class="item item-task">
             {{#if note}}
