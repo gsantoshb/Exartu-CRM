@@ -54,11 +54,7 @@ NoteSchema = new SimpleSchema({
         type: Boolean,
         optional: true
     }
-  },
-  displayToEmployee: {
-    type: Boolean,
-    optional: true
-  }
+  
 });
 
 
