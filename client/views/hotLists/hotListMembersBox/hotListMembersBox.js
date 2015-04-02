@@ -44,6 +44,7 @@ var loadqueryFromURL = function (params) {
 
 var setSubscription = function (searchQuery, options) {
     hotList.members = members.get();
+    console.log(hotList.members.length);
     searchQuery = {_id: { $in : hotList.members } };
 
     if (SubscriptionHandlers.HotListMembersHandler) {
@@ -261,6 +262,7 @@ Template.hotListMembersList.helpers({
         return HotListMembersHandler.isLoading();
     },
     hotListMembers: function () {
+        console.log(membersCollection.find(searchQuery, options).count());
         return membersCollection.find(searchQuery, options);
     }
 });
@@ -269,8 +271,10 @@ Template.hotListMembersList.events({
     'click .removeMember': function (e, ctx) {
         var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
         tempHotList.members.splice(tempHotList.members.indexOf(this._id), 1);
-
+        //console.log(tempHotList.members);
         hotListCollection.update({_id: tempHotList._id}, {$set: {members: tempHotList.members}});
+
+        //hotListCollection.update({_id: tempHotList._id}, {$pull: { 'members': this._id }});
 
         membersCount.set( tempHotList.members.length );
 
