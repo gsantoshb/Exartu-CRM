@@ -138,11 +138,22 @@ Template.hotListMembersSearch.events({
             'hotListMemberAdd',
             hotList._id, function(memberId, hotListId){
                 var hotList = HotLists.findOne({_id: hotListId});
-                hotList.members.push(memberId);
-                HotLists.update({_id: hotListId}, {$set: {members: hotList.members}});
-                membersCount.set( hotList.members.length );
 
+                if(hotList.members.indexOf(memberId) > -1) {
+                    return false;
+                }
+
+                hotList.members.push(memberId);
+
+                HotLists.update({_id: hotListId}, {$set: {members: hotList.members}});
+                var skip = (HotListMembersHandler.currentPage()-1)*10;
+                options.skip = skip;
+                options.limit = 10;
+
+                membersCount.set( hotList.members.length );
                 members.set( hotList.members );
+
+
                 setSubscription(searchQuery, options);
                 searchDep.changed();
                 return;
@@ -258,11 +269,12 @@ Template.hotListMembersList.events({
     'click .removeMember': function (e, ctx) {
         var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
         tempHotList.members.splice(tempHotList.members.indexOf(this._id), 1);
+
         hotListCollection.update({_id: tempHotList._id}, {$set: {members: tempHotList.members}});
 
         membersCount.set( tempHotList.members.length );
 
-        members.set( hotList.members );
+        members.set( tempHotList.members );
         setSubscription(searchQuery, options);
 
         e.preventDefault();

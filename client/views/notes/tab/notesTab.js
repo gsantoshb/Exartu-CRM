@@ -5,85 +5,85 @@ var checkSMSDep = new Deps.Dependency;
 var NotesHandler;
 
 NoteSchema = new SimpleSchema({
-  msg: {
-    type: String,
-    label: 'Message'
-  },
-  links: {
-    type: [Object],
-    label: 'Entities linked'
-  },
-  'links.$.id': {
-    type: String
-  },
-  'links.$.type': {
-    type: Number,
-    allowedValues: _.map(Enums.linkTypes, function (type) {
-      return type.value;
-    })
-  },
-  sendAsSMS: {
-    type: Boolean,
-    label: 'Send SMS/Text',
-    optional: true
-  },
-  hotListFirstName: {
-    type: Boolean,
-    label: 'Preface with first name?',
-    optional: true
-  },
-  userNumber: {
-    type: String,
-    optional: true,
-    label: 'SMS/Text origin number(s)'
-  },
-  contactableNumber: {
-    type: String,
-    optional: true,
-    label: 'SMS/Text destination number'
-  },
-  contactableId: {
-    type: String,
-    label: 'Entity',
-    autoValue: function () {
-      return Session.get('entityId');
+    msg: {
+        type: String,
+        label: 'Message'
+    },
+    links: {
+        type: [Object],
+        label: 'Entities linked'
+    },
+    'links.$.id': {
+        type: String
+    },
+    'links.$.type': {
+        type: Number,
+        allowedValues: _.map(Enums.linkTypes, function (type) {
+            return type.value;
+        })
+    },
+    sendAsSMS: {
+        type: Boolean,
+        label: 'Send SMS/Text',
+        optional: true
+    },
+    hotListFirstName: {
+        type: Boolean,
+        label: 'Preface with first name?',
+        optional: true
+    },
+    userNumber: {
+        type: String,
+        optional: true,
+        label: 'SMS/Text origin number(s)'
+    },
+    contactableNumber: {
+        type: String,
+        optional: true,
+        label: 'SMS/Text destination number'
+    },
+    contactableId: {
+        type: String,
+        label: 'Entity',
+        autoValue: function () {
+            return Session.get('entityId');
+        }
+    },
+    displayToEmployee: {
+        type: Boolean,
+        optional: true
     }
-  },
-  displayToEmployee: {
-    type: Boolean,
-    optional: true
-  }
 });
 
 
 AutoForm.hooks({
-  AddNoteRecord: {
-    onSubmit: function (insertDoc, updateDoc, currentDoc) {
-      if(!hotlist) {
-        var self = this;
-        //for some reason autoValue doesn't work
+    AddNoteRecord: {
+        onSubmit: function (insertDoc, updateDoc, currentDoc) {
+            if(!hotlist) {
+                var self = this;
+                //for some reason autoValue doesn't work
 
-        insertDoc.contactableId = Session.get('entityId');
+                insertDoc.contactableId = Session.get('entityId');
 
-        Meteor.call('addContactableNote', insertDoc, function () {
-          self.done();
-        })
-      }
-      else if(hotlist){
-        var self = this;
-        insertDoc.hierId = Meteor.user().currentHierId;
-        insertDoc.userId = Meteor.user()._id;
-        Meteor.call('addNote', insertDoc, function () {
-          self.done();
-        })
-      }
-      else{
+                Meteor.call('addContactableNote', insertDoc, function () {
+                    self.done();
+                })
+            }
+            else if(hotlist){
+                var self = this;
+                insertDoc.hierId = Meteor.user().currentHierId;
+                insertDoc.userId = Meteor.user()._id;
+                Meteor.call('addNote', insertDoc, function () {
+                    self.done();
+                })
+            }
+            else{
 
-      }
-      return false;
+            }
+            return false;
+        }
+
     }
-
-  }
 });
 //AutoForm.hooks({
 //    AddNoteRecord: {
@@ -123,9 +123,9 @@ self.defaultMobileNumber = null;
 var hotlist = null;
 var responsesOnly = false;
 Template.notesTabAdd.events({
-  'change #sendAsSMS': function(){
-    checkSMSDep.changed();
-  }
+    'change #sendAsSMS': function(){
+        checkSMSDep.changed();
+    }
 });
 Template.notesTab.created = function () {
     hotlist = HotLists.findOne({_id:Session.get('entityId')});
@@ -138,7 +138,7 @@ Template.notesTab.created = function () {
 }
 Template.notesTabAdd.helpers({
     isHotListNote: function () {
-      return (hotlist) ? true : false; // hide numbers if hotlist
+        return (hotlist) ? true : false; // hide numbers if hotlist
     },
     isContactableNote: function () {
         var contactable = Contactables.findOne(this._id);
@@ -178,14 +178,14 @@ Template.notesTabAdd.helpers({
         return self.defaultUserNumber;
     },
     ischeckedSMS: function(){
-      checkSMSDep.depend();
-      var field = $("#sendAsSMS");
-      if(field[0] && field[0].checked){
-        return true;
-      }
-      else{
-        return false;
-      }
+        checkSMSDep.depend();
+        var field = $("#sendAsSMS");
+        if(field[0] && field[0].checked){
+            return true;
+        }
+        else{
+            return false;
+        }
 
     }
 });
@@ -193,32 +193,40 @@ Template.notesTabAdd.helpers({
 
 
 // List
-
+var query = new Utils.ObjectDefinition({
+    reactiveProps: {
+        searchString: {}
+    }
+});
 
 Template.notesTabList.created = function () {
     var self = this;
-
 
     Meteor.autorun(function () {
             searchQuery={};
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
-              searchQuery['isReply'] = true;
-              searchQuery.links = {
-                $elemMatch: {
-                  id: Session.get('entityId')
+                searchQuery['isReply'] = true;
+                searchQuery.links = {
+                    $elemMatch: {
+                        id: Session.get('entityId')
+                    }
+                };
+                searchQuery.msg = {
+                    $regex: query.searchString.value,
+                    $options: 'i'
+                };
+
+                if (!NotesHandler) {
+                    NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                    NotesHandler.setFilter(searchQuery);
+
+
+                } else {
+                    NotesHandler.setFilter(searchQuery);
+                    //NotesHandler.setOptions(hotlist);
+
                 }
-              };
-              if (!NotesHandler) {
-                NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-                NotesHandler.setFilter(searchQuery);
-
-
-              } else {
-                NotesHandler.setFilter(searchQuery);
-                //NotesHandler.setOptions(hotlist);
-
-              }
             }
             else if(hotlist) {
                 searchQuery['isReply'] = {$exists: false};
@@ -227,41 +235,50 @@ Template.notesTabList.created = function () {
                         id: Session.get('entityId')
                     }
                 };
-              if (!NotesHandler) {
-                NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-                NotesHandler.setFilter(searchQuery);
+                searchQuery.msg = {
+                    $regex: query.searchString.value,
+                    $options: 'i'
+                };
+                if (!NotesHandler) {
+                    NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                    NotesHandler.setFilter(searchQuery);
 
-              } else {
-                NotesHandler.setFilter(searchQuery);
+                } else {
+                    NotesHandler.setFilter(searchQuery);
 
 
-              }
+                }
             }
             else{
-              //contactable
-               searchQuery.links = {
-                $elemMatch: {
-                  id: Session.get('entityId')
+                //contactable
+                searchQuery.links = {
+                    $elemMatch: {
+                        id: Session.get('entityId')
+                    }
+                };
+                searchQuery.msg = {
+                    $regex: query.searchString.value,
+                    $options: 'i'
+                };
+                if (!NotesHandler) {
+                    NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                    NotesHandler.setFilter(searchQuery);
+
+                } else {
+                    NotesHandler.setFilter(searchQuery);
+
+
                 }
-              };
-              if (!NotesHandler) {
-                NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-                NotesHandler.setFilter(searchQuery);
-
-              } else {
-                NotesHandler.setFilter(searchQuery);
-
-
-              }
             }
-         }
+        }
     )
     ;
 }
 ;
 Template.notesTabList.destroyed = function () {
-  //NotesHandler.stop();
-  //delete NotesHandler;
+    query.searchString.value = '';
+    //NotesHandler.stop();
+    //delete NotesHandler;
 }
 Template.notesTabList.helpers({
     hasItems: function () {
@@ -272,8 +289,16 @@ Template.notesTabList.helpers({
         return Notes.find(searchQuery,{sort: {dateCreated:-1}});
     },
     isLoading: function () {
-       return NotesHandler.isLoading();
+        return NotesHandler.isLoading();
+    },
+    query: function() {
+        return query;
     }
+});
+Template.notesTabList.events({
+    'keyup #searchString': _.debounce(function(e){
+        query.searchString.value = e.target.value;
+    })
 });
 
 // Record
@@ -306,7 +331,7 @@ Template.notesTabItem.events({
             }],
             callback: function (result) {
                 if (result) {
-                  Meteor.call('removeNote', self._id);
+                    Meteor.call('removeNote', self._id);
                 }
             }
         });
@@ -374,10 +399,10 @@ Template.linksAutoForm.created = function () {
 }
 
 AutoForm.addInputType('linkInput',{
-  template: 'linksAutoForm',
-  valueOut: function () {
-    return links
-  }
+    template: 'linksAutoForm',
+    valueOut: function () {
+        return links
+    }
 });
 
 Template.linksAutoForm.helpers({
@@ -442,7 +467,19 @@ Template.linksAutoForm.events({
         linkedDep.changed();
     },
     'click .remove-link': function () {
-        Template.parentData(0).links = _(links).without(this);
+        //Template.currentData().links = _.without(links, this);
+        var link = this;
+        var newLinks;
+        _.each(links, function(l) {
+            if(l.id == link._id) {
+                newLinks = links.filter(function(element) {
+                    return element.id != l.id
+                });
+            } else {
+                return;
+            }
+        });
+        links = newLinks;
         linkedDep.changed();
     },
     'click #editLinks': function () {

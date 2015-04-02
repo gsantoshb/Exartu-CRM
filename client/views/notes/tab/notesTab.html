@@ -78,8 +78,30 @@
 
 <template name="notesTabList">
     <div class="record-list-pagination">
-        {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
+
     </div>
+
+    <div class="list-actions">
+
+        <div class="list-actions-cell search-list">
+            <div class="input-group">
+                    <span>
+                        {{#objectProperty property=query.searchString}}
+                            <input type="text" id="searchString" name="searchString" value="{{value}}" class="form-control" placeholder="Search notes">
+                        {{/objectProperty}}
+                    </span>
+                    <span class="input-group-btn">
+                        <button class="btn btn-search" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+            </div>
+        </div><!-- /.search-list -->
+
+        {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
+
+        <!-- /.list-actions-cell -->
+    </div><!-- .list-actions -->
 
     {{#if isLoading}}
         <div style="min-height: 350px; background: url('/img/spinner.gif') no-repeat center;"></div>
@@ -89,11 +111,13 @@
                 <div class="list-header-cell notes-list-header-title">Title</div>
                 <div class="list-header-cell notes-list-header-linked">Linked</div>
                 <div class="list-header-cell notes-list-header-edit">Last Edit</div>
-            </div>
+            </div><!-- /.list-header -->
 
-            {{#each items}}
-                {{> notesTabItem}}
-            {{/each}}
+            <div class="list-item-section">
+                {{#each items}}
+                    {{> notesTabItem}}
+                {{/each}}
+            </div>
         {{/if}}
     {{/if}}
 
