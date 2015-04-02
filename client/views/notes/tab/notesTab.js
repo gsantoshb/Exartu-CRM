@@ -194,24 +194,9 @@ Template.notesTabAdd.helpers({
         else {
             return false;
         }
-        ,
-        defaultUserNumber: function () {
-            return self.defaultUserNumber;
-        }
-        ,
-        ischeckedSMS: function () {
-            checkSMSDep.depend();
-            var field = $("#sendAsSMS");
-            if (field[0] && field[0].checked) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
+        ;
     }
 });
-
 
 
 // List

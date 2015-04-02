@@ -26,7 +26,8 @@
                             <div class="col-md-12">
                                 <ul class="list-type-5">
                                     <li>
-                                        <em>Original name </em> <strong class="text-center"> {{originalFileName}} </strong>
+                                        <div class="left-part"><em>Original name</em></div>
+                                        <div class="right-part"><strong class="text-center">{{originalFileName}}</strong></div>
                                     </li>
                                     <li>
                                         <div class="left-part">Name</div>
@@ -47,10 +48,12 @@
                                     <li>
                                         <div class="left-part">Tags</div>
                                         <div class="right-part">
-                                            <input id="new-tag" type="text" class="form-control input-sm" placeholder="Enter a tag" />
-                                            <span class="input-group-btn">
-                                              <button id="add-tag" class="btn btn-success btn-sm" type="button"><span class="fa fa-plus"></span></button>
-                                            </span>
+                                            <div class="input-group">
+                                                <input id="new-tag" type="text" class="form-control input-sm" placeholder="Enter a tag" />
+                                                <span class="input-group-btn">
+                                                  <button id="add-tag" class="btn btn-success btn-sm" type="button"><span class="fa fa-plus"></span></button>
+                                                </span>
+                                            </div>
 
                                             <div class="tags-content">
                                                 {{#objectProperty property=newDocument.tags}}
