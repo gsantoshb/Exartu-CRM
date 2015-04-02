@@ -1,31 +1,49 @@
 <template name="emailTemplate">
     <div id="content">
+        <!-- Header -->
         <div id="content-header" class="mini">
             <h1>{{_ "Email template management"}}</h1>
         </div>
+
+        <!-- Breadcrumb -->
         <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">{{_ "Management"}}</a>
             <a href="/emailTemplates" class="current">{{_ "Email Templates"}}</a>
         </div>
+
+        <!-- Page content -->
         <div class="container-fluid">
-            <div class="form-group">
-                <span>{{_ "Name"}}:</span>
-                <input class="form-control templateName" placeholder= {{_ "Name"}} value="{{templateName}}">
-            </div>
-            <div class="form-group">
-                <span>{{_ "Category"}}:</span>
-                <select class="form-control" id="category" multiple>
-                    {{#each categoryTypes}}
-                        <option value="{{code}}" selected="{{isCategorySelected}}">{{_ name}}</option>
-                    {{/each}}
-                </select>
+
+            <!-- Template properties -->
+            <div>
+                <!-- Template name -->
+                <div class="form-group">
+                    <span>{{_ "Name"}}:</span>
+                    <input id="name-input" class="form-control templateName" placeholder= {{_ "Name"}} value="{{templateName}}">
+                    <span class="label label-danger">{{errorName}}</span>
+                </div>
+                <div class="form-group">
+                    <span>{{_ "Subject"}}:</span>
+                    <input id="subject-input" class="form-control templateSubject" placeholder= {{_ "Subject"}} value="{{templateSubject}}">
+                    <span class="label label-danger">{{errorSubject}}</span>
+                </div>
+                <div class="form-group">
+                    <span>{{_ "Category"}}:</span>
+                    <select class="form-control" id="category" multiple>
+                        {{#each categoryTypes}}
+                            <option value="{{code}}" selected="{{isCategorySelected}}">{{_ name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
             </div>
             <hr>
-            <div>
 
+            <!-- Template editor -->
+            <div>
                 <div style="display: {{#if editMode}} block {{else}} none {{/if}}">
+                    <!-- Merge fields -->
                     <div class="pull-right" style="margin-bottom: 7px;margin-right: 4%">
-                        <select id="mergeFields">
+                        <select id="mergeFields" style="width: 250px; margin-right: 10px;">
                             <option></option>
                             {{#each mergeField}}
                                 <option class="mergeField pointer" value="{{_id}}">
@@ -33,7 +51,13 @@
                                 </option>
                             {{/each}}
                         </select>
+                        <button id="addMergeField" class="btn btn-md btn-primary">
+                            <i class="fa fa-plus"></i>
+                            Insert
+                        </button>
                     </div>
+
+                    <!-- HTML editor -->
                     {{#with editorContext}}
                         {{#htmlEditor}}
                         {{/htmlEditor}}
@@ -48,7 +72,7 @@
             <div class="clearfix">
                 <div class="pull-right">
                     <button id="preview" class="btn {{#if editMode}} btn-default {{else}} btn-success {{/if}}">{{#if editMode}} {{_ "Preview"}}  {{else}} {{_ "Edit"}} {{/if}}</button>
-                    <button id="add" class="btn btn-primary">{{_ "Save"}}</button>
+                    <button id="add" class="btn btn-primary {{#if isSaving}}disabled{{/if}}">{{_ "Save"}}</button>
                 </div>
             </div>
         </div>

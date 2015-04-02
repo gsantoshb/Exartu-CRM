@@ -204,18 +204,76 @@ Template.addContactablePage.events({
         value: extraInformation.phoneNumber.value
       });
     }
-
+    var email = extraInformation.email.value;
     extraInformation.reset();
     addDisabled.set(true);
-    Meteor.call('addContactable', cont, function(err, result){
-      addDisabled.set(false);
-      if(err){
-        alert('Error adding record:'+ err);
-        console.dir(err);
-      }else{
-        Router.go('/contactable/' + result + '#tasks');
-      };
-    });
+    if(email){
+      Meteor.call('checkContactableEmail',email, function(err, res){
+        if(err){
+          console.log("Error checking email");
+
+        }
+        else{
+          if(res.length > 0){
+            //there is some contactables with same email
+            var listaString = "";
+            _.forEach(res, function(r){
+              var link = ""+window.location.origin+"/contactable/"+ r._id;
+              listaString = listaString  + "<a target='_blank' href="+link+">"+r.displayName+"</a>"+"<br/>";
+            });
+            Utils.showModal('basicModal', {
+              title: 'Existing email',
+              message: 'The following contactables have the same email you are trying to use:<br/><br/>'+listaString,
+              buttons: [{label: 'Cancel', classes: 'btn-info', value: false}, {
+                label: 'Continue',
+                classes: 'btn-success',
+                value: true
+              }],
+              callback: function (result) {
+                if(result){
+                  Meteor.call('addContactable', cont, function(err, result){
+                    addDisabled.set(false);
+                    if(err){
+                      alert('Error adding record:'+ err);
+                      console.dir(err);
+                    }else{
+                      Router.go('/contactable/' + result + '#tasks');
+                    };
+                  });
+                }
+                else{
+                  addDisabled.set(false);
+                }
+              }
+            });
+          }else{
+            Meteor.call('addContactable', cont, function(err, result){
+              addDisabled.set(false);
+              if(err){
+                alert('Error adding record:'+ err);
+                console.dir(err);
+              }else{
+                Router.go('/contactable/' + result + '#tasks');
+              };
+            });
+          }
+        }
+      })
+    }
+    else {
+      extraInformation.reset();
+      addDisabled.set(true);
+      Meteor.call('addContactable', cont, function (err, result) {
+        addDisabled.set(false);
+        if (err) {
+          alert('Error adding record:' + err);
+          console.dir(err);
+        } else {
+          Router.go('/contactable/' + result + '#tasks');
+        }
+        ;
+      });
+    }
   },
   'click .goBack': function(){
     history.back();

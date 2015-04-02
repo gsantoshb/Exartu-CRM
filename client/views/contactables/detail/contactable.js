@@ -391,7 +391,7 @@ Template.contactable_nav.helpers({
             },
             {
                 id: 'documents',
-                mobileDisplayName: 'Doc',
+                mobileDisplayName: 'Documents',
                 displayName: 'Documents',
                 template: 'contactable_documents',
                 icon: 'icon-document-1',
@@ -401,7 +401,7 @@ Template.contactable_nav.helpers({
             },
             {
                 id: 'tasks',
-                mobileDisplayName: 'Task',
+                mobileDisplayName: 'Tasks',
                 displayName: 'Tasks',
                 template: 'contactable_tasks',
                 icon: 'icon-note-paper-1',
@@ -415,7 +415,7 @@ Template.contactable_nav.helpers({
             tabs.push({id: 'jobs', mobileDisplayName: 'Job', displayName: 'Jobs', template: 'contactable_jobs'});
             tabs.push({
                 id: 'placements',
-                mobileDisplayName: 'Place',
+                mobileDisplayName: 'Placements',
                 displayName: 'Placements',
                 template: 'contactable_placements'
             });
@@ -424,7 +424,7 @@ Template.contactable_nav.helpers({
         if (contactable.Employee) {
             tabs.push({
                 id: 'placements',
-                mobileDisplayName: 'Place',
+                mobileDisplayName: 'Placements',
                 displayName: 'Placements',
                 template: 'contactable_placements',
                 info: function () {
@@ -434,7 +434,7 @@ Template.contactable_nav.helpers({
             //tabs.push({id: 'hrconcourse', displayName: 'HRconcourse', template: 'contactable_HRConcourse'});
             tabs.push({
                 id: 'education',
-                mobileDisplayName: 'Ed.',
+                mobileDisplayName: 'Education',
                 displayName: 'Education',
                 template: 'employeeEducation',
                 info: function () {
@@ -443,14 +443,13 @@ Template.contactable_nav.helpers({
             });
             tabs.push({
                 id: 'pastJobs',
-                mobileDisplayName: 'Past',
+                mobileDisplayName: 'Past Jobs',
                 displayName: 'Past Jobs',
                 template: 'employeePastJobs',
                 info: function () {
                     return Template.parentData(2).pastJobs ? Template.parentData(2).pastJobs.length : 0;
                 }
             });
-
 
             // Check if it has a doc Center account or has been invited to Applicant Center or is already a user
             if (!!contactable.docCenter || contactable.invitation || contactable.user) {

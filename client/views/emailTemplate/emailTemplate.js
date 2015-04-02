@@ -1,22 +1,162 @@
+
+var template;
 EmailTemplateController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
     return [Meteor.subscribe('emailTemplateMergeFields'), Meteor.subscribe('emailTemplates')];
   },
-  data: function () {
-    Session.set('templateId', this.params._id);
-  },
   action: function () {
-    if (!this.ready()) {
-      this.render('loadingContactable');
-      return;
+    if (this.params._id) {
+      template = EmailTemplates.findOne({_id: this.params._id});
     }
-    this.render('emailTemplate')
-  },
-  onAfterAction: function () {
-
+    this.render();
   }
 });
+
+Template.emailTemplate.rendered = function () {
+  // Initialize select 2 plugings
+  this.$('#mergeFields').select2({
+    allowClear: true,
+    placeholder: 'Select Merge Field'
+  });
+  this.$('#category').select2({
+    placeholder: 'Select the categories for this template'
+  });
+};
+
+
+var editMode = new ReactiveVar(true),
+    preview = new ReactiveVar(''),
+    errorName = new ReactiveVar(''),
+    errorSubject = new ReactiveVar(''),
+    isSaving = new ReactiveVar(false);
+
+Template.emailTemplate.helpers({
+  templateName: function () {
+    return template ? template.name : '';
+  },
+  templateSubject: function () {
+    return template ? template.subject : '';
+  },
+  errorName: function () {
+    return errorName.get();
+  },
+  errorSubject: function () {
+    return errorSubject.get();
+  },
+  categoryTypes: function () {
+    return _.map(Enums.emailTemplatesCategories, function (val, key) {
+      return {code: val, name: key}
+    })
+  },
+  isCategorySelected: function () {
+    return template ? _.contains(template.category, this.code) : false;
+  },
+
+  editMode: function () {
+    return editMode.get();
+  },
+  mergeField: function () {
+    return EmailTemplateMergeFields.find();
+  },
+  editorContext: function () {
+    return {value: template ? template.text : ''};
+  },
+  preview: function () {
+    return preview.get();
+  },
+  isSaving: function () {
+    return isSaving.get();
+  }
+});
+
+Template.emailTemplate.events({
+  'change #name-input': function () {
+    // Clear error
+    errorName.set('');
+
+    var name = Template.instance().$('.templateName').val();
+    if (!name) {
+      errorName.set('Error, name is required.');
+    }
+  },
+  'change #subject-input': function () {
+    // Clear error
+    errorSubject.set('');
+
+    var subject = Template.instance().$('.templateSubject').val();
+    if (!subject) {
+      errorSubject.set('Error, name is required.');
+    }
+  },
+
+  'click #addMergeField': function () {
+    // Get selected merge field
+    var selected = Template.instance().$('#mergeFields').val();
+    if (!selected) return;
+
+    // Find the corresponding merge field definition
+    var mf = EmailTemplateMergeFields.findOne(selected);
+    if (!mf) return;
+
+    // Insert the merge field on the editor
+    try {
+      var editorInstance = Template.instance().$('.editor').data('wysihtml5').editor;
+      editorInstance.composer.commands.exec("foo", mf);
+    } catch (ex) {
+      console.log('Error trying to insert merge field. Try giving the editor focus.');
+    }
+  },
+
+  'click #preview': function () {
+    if (editMode.get()){
+      editMode.set(false);
+      Meteor.call('getPreview', Template.instance().$('.editor').data('wysihtml5').editor.composer.getValue(), function (err, result) {
+        if (err){
+          console.log(err);
+        }else{
+          preview.set(result);
+        }
+      })
+    }else{
+      editMode.set(true);
+    }
+  },
+  'click #add': function () {
+    isSaving.set(true);
+
+    // Clear errors
+    errorName.set('');
+    errorSubject.set('');
+
+    // Check the required properties
+    var name = Template.instance().$('.templateName').val();
+    var subject = Template.instance().$('.templateSubject').val();
+    if (!name || !subject) {
+      if (!name) { errorName.set('Error, name is required.'); }
+      if (!subject) { errorSubject.set('Error, subject is required.'); }
+    } else {
+
+      // Save the template
+      var templateData = {
+        name: name,
+        subject: subject,
+        text: Template.instance().$('.editor').data('wysihtml5').editor.composer.getValue(),
+        category: Template.instance().$('#category').val()
+      };
+
+      if (template) {
+        EmailTemplates.update(template._id, {$set: templateData});
+      } else {
+        var templateId = EmailTemplates.insert(templateData);
+        template = EmailTemplates.findOne({_id: templateId});
+      }
+    }
+
+    isSaving.set(false);
+  }
+});
+
 
 if(window.wysihtml5){
   var NODE_NAME= 'INPUT',
@@ -66,9 +206,8 @@ if(window.wysihtml5){
   }
 
   wysihtml5.commands.foo = {
-   //similar to wysihtml5 link command
+    //similar to wysihtml5 link command
     exec: function(composer, command, value) {
-      //debugger;
       var anchors = this.state(composer, command);
       if (anchors) {
         // Selection contains links
@@ -91,89 +230,3 @@ if(window.wysihtml5){
     }
   };
 }
-var editMode = new ReactiveVar(true);
-var preview = new ReactiveVar('');
-
-Template.emailTemplate.helpers({
-  mergeField: function () {
-    return EmailTemplateMergeFields.find();
-  },
-  editorContext: function () {
-    if ( Session.get('templateId')){
-      var template = EmailTemplates.findOne(Session.get('templateId'));
-      return {value: template ? template.text : ''};
-    }
-    return {value: ''};
-  },
-  categoryTypes: function () {
-    return _.map(Enums.emailTemplatesCategories, function (val, key) {
-      return {
-        code: val,
-        name: key
-      }
-    })
-  },
-  templateName: function () {
-    return  Session.get('templateId') ? EmailTemplates.findOne(Session.get('templateId')).name : '';
-  },
-  isCategorySelected: function () {
-    if (Session.get('templateId')){
-      var template = EmailTemplates.findOne(Session.get('templateId'));
-      return _.contains(template.category, this.code);
-    }
-  },
-  preview: function () {
-    return preview.get();
-  },
-  editMode: function () {
-    return editMode.get();
-  }
-});
-
-Template.emailTemplate.rendered = function () {
-  this.$('#mergeFields').select2({
-    allowClear: true,
-    placeholder: 'Merge Fields'
-  });
-  this.$('#category').select2();
-};
-
-Template.emailTemplate.events({
-  'click #add': function (e, ctx) {
-    var template ={
-      name: $('.templateName').val(),
-      text: $('.editor').data('wysihtml5').editor.composer.getValue(),
-      category: $('#category').val()
-    };
-
-    if (Session.get('templateId')){
-      EmailTemplates.update(Session.get('templateId'), {$set: template})
-    }else{
-      Session.set('templateId', EmailTemplates.insert(template));
-    }
-    Router.go('/emailTemplates');
-
-  },
-  'change #mergeFields': function (e, ctx) {
-    var mf = EmailTemplateMergeFields.findOne(e.val);
-    if (!mf) return;
-
-    var editorInstance = $('.editor').data('wysihtml5').editor;
-
-    editorInstance.composer.commands.exec("foo", mf);
-  },
-  'click #preview': function () {
-    if (editMode.get()){
-      editMode.set(false);
-      Meteor.call('getPreview', $('.editor').data('wysihtml5').editor.composer.getValue(), function (err, result) {
-        if (err){
-          console.log(err);
-        }else{
-          preview.set(result);
-        }
-      })
-    }else{
-      editMode.set(true);
-    }
-  }
-});

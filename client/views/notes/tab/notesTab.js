@@ -122,6 +122,7 @@ self.defaultUserNumber = null;
 self.defaultMobileNumber = null;
 var hotlist = null;
 var responsesOnly = false;
+var contactable = null;
 Template.notesTabAdd.events({
     'change #sendAsSMS': function(){
         checkSMSDep.changed();
@@ -129,20 +130,27 @@ Template.notesTabAdd.events({
 });
 Template.notesTab.created = function () {
     hotlist = HotLists.findOne({_id:Session.get('entityId')});
+    if(!hotlist){
+        contactable = Contactables.findOne({_id:Session.get('entityId')});
+    }
     if (this.data && this.data.responseOnly) {
         responsesOnly = true;
     }
     else {
         responsesOnly = false;
     }
+
 }
 Template.notesTabAdd.helpers({
     isHotListNote: function () {
         return (hotlist) ? true : false; // hide numbers if hotlist
     },
     isContactableNote: function () {
-        var contactable = Contactables.findOne(this._id);
+        //var contactable = Contactables.findOne(this._id);
         return (contactable) ? true : false; // hide numbers if hotlist
+    },
+    isEmployee: function(){
+        return contactable ? (contactable.Employee ? true : false ): false;
     },
     mobileNumbers: function () {
 
@@ -185,10 +193,21 @@ Template.notesTabAdd.helpers({
         }
         else{
             return false;
+        },
+        defaultUserNumber: function () {
+            return self.defaultUserNumber;
+        },
+        ischeckedSMS: function(){
+            checkSMSDep.depend();
+            var field = $("#sendAsSMS");
+            if(field[0] && field[0].checked){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
-
-    }
-});
+    });
 
 
 
@@ -202,6 +221,7 @@ var query = new Utils.ObjectDefinition({
 Template.notesTabList.created = function () {
     var self = this;
 
+
     Meteor.autorun(function () {
             searchQuery={};
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
@@ -212,11 +232,6 @@ Template.notesTabList.created = function () {
                         id: Session.get('entityId')
                     }
                 };
-                searchQuery.msg = {
-                    $regex: query.searchString.value,
-                    $options: 'i'
-                };
-
                 if (!NotesHandler) {
                     NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
                     NotesHandler.setFilter(searchQuery);
@@ -235,10 +250,6 @@ Template.notesTabList.created = function () {
                         id: Session.get('entityId')
                     }
                 };
-                searchQuery.msg = {
-                    $regex: query.searchString.value,
-                    $options: 'i'
-                };
                 if (!NotesHandler) {
                     NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
                     NotesHandler.setFilter(searchQuery);
@@ -256,18 +267,12 @@ Template.notesTabList.created = function () {
                         id: Session.get('entityId')
                     }
                 };
-                searchQuery.msg = {
-                    $regex: query.searchString.value,
-                    $options: 'i'
-                };
                 if (!NotesHandler) {
                     NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
                     NotesHandler.setFilter(searchQuery);
 
                 } else {
                     NotesHandler.setFilter(searchQuery);
-
-
                 }
             }
         }
