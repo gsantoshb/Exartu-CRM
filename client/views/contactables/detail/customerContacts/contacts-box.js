@@ -22,8 +22,8 @@ Template.contactableContactsBox.helpers({
 
 Template.contactableContactsBox.events = {
   'click .addContact': function () {
+    console.log('click');
     Session.set('options', {Contact: {client: Session.get('entityId')}});
-    Router.go('/contactableAdd/Contact');
-
+    //Router.go('/contactableAdd/Contact');
   }
 };

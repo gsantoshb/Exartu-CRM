@@ -3,69 +3,72 @@ var searchQuery = {};
 var sortDep=new Deps.Dependency;
 var checkSMSDep = new Deps.Dependency;
 var NotesHandler;
+var addDisabled = new ReactiveVar(false);
 
 NoteSchema = new SimpleSchema({
-  msg: {
-    type: String,
-    label: 'Message'
-  },
-  links: {
-    type: [Object],
-    label: 'Entities linked'
-  },
-  'links.$.id': {
-    type: String
-  },
-  'links.$.type': {
-    type: Number,
-    allowedValues: _.map(Enums.linkTypes, function (type) {
-      return type.value;
-    })
-  },
-  sendAsSMS: {
-    type: Boolean,
-    label: 'Send SMS/Text',
-    optional: true
-  },
-  hotListFirstName: {
-    type: Boolean,
-    label: 'Preface with first name?',
-    optional: true
-  },
-  userNumber: {
-    type: String,
-    optional: true,
-    label: 'SMS/Text origin number(s)'
-  },
-  contactableNumber: {
-    type: String,
-    optional: true,
-    label: 'SMS/Text destination number'
-  },
-  contactableId: {
-    type: String,
-    label: 'Entity',
-    autoValue: function () {
-      return Session.get('entityId');
+    msg: {
+        type: String,
+        label: 'Message'
+    },
+    links: {
+        type: [Object],
+        label: 'Entities linked'
+    },
+    'links.$.id': {
+        type: String
+    },
+    'links.$.type': {
+        type: Number,
+        allowedValues: _.map(Enums.linkTypes, function (type) {
+            return type.value;
+        })
+    },
+    sendAsSMS: {
+        type: Boolean,
+        label: 'Send SMS/Text',
+        optional: true
+    },
+    hotListFirstName: {
+        type: Boolean,
+        label: 'Preface with first name?',
+        optional: true
+    },
+    userNumber: {
+        type: String,
+        optional: true,
+        label: 'SMS/Text origin number(s)'
+    },
+    contactableNumber: {
+        type: String,
+        optional: true,
+        label: 'SMS/Text destination number'
+    },
+    contactableId: {
+        type: String,
+        label: 'Entity',
+        autoValue: function () {
+            return Session.get('entityId');
+        }
+    },
+    displayToEmployee: {
+        type: Boolean,
+        optional: true
     }
-  },
-  displayToEmployee: {
-    type: Boolean,
-    optional: true
-  }
+
 });
 
 
 AutoForm.hooks({
-  AddNoteRecord: {
-    onSubmit: function (insertDoc, updateDoc, currentDoc) {
-      if(!hotlist) {
-        var self = this;
-        //for some reason autoValue doesn't work
+    AddNoteRecord: {
+        onSubmit: function (insertDoc, updateDoc, currentDoc) {
+            if(!hotlist) {
+                var self = this;
+                //for some reason autoValue doesn't work
 
         insertDoc.contactableId = Session.get('entityId');
-
+        addDisabled.set(true);
         Meteor.call('addContactableNote', insertDoc, function () {
+          addDisabled.set(false);
           self.done();
         })
       }
@@ -73,7 +76,9 @@ AutoForm.hooks({
         var self = this;
         insertDoc.hierId = Meteor.user().currentHierId;
         insertDoc.userId = Meteor.user()._id;
+        addDisabled.set(true);
         Meteor.call('addNote', insertDoc, function () {
+          addDisabled.set(false);
           self.done();
         })
       }
@@ -142,6 +147,9 @@ Template.notesTab.created = function () {
 
 }
 Template.notesTabAdd.helpers({
+  addDisabled: function () {
+    return addDisabled.get();
+  },
   isHotListNote: function () {
     return (hotlist) ? true : false; // hide numbers if hotlist
   },
@@ -201,6 +209,11 @@ Template.notesTabAdd.helpers({
 
 
 // List
+var query = new Utils.ObjectDefinition({
+    reactiveProps: {
+        searchString: {}
+    }
+});
 
 
 Template.notesTabList.created = function () {
@@ -268,79 +281,88 @@ Template.notesTabList.created = function () {
 }
 ;
 Template.notesTabList.destroyed = function () {
-  //NotesHandler.stop();
-  //delete NotesHandler;
+    query.searchString.value = '';
+    //NotesHandler.stop();
+    //delete NotesHandler;
 }
 Template.notesTabList.helpers({
-  hasItems: function () {
-    return (Notes.find(searchQuery,{sort: {dateCreated:-1}}).fetch().length > 0);
-  },
-  items: function () {
-    sortDep.depend();
-    return Notes.find(searchQuery,{sort: {dateCreated:-1}});
-  },
-  isLoading: function () {
-    return NotesHandler.isLoading();
-  }
+    hasItems: function () {
+        return (Notes.find(searchQuery,{sort: {dateCreated:-1}}).fetch().length > 0);
+    },
+    items: function () {
+        sortDep.depend();
+        return Notes.find(searchQuery,{sort: {dateCreated:-1}});
+    },
+    isLoading: function () {
+        return NotesHandler.isLoading();
+    },
+    query: function() {
+        return query;
+    }
+});
+Template.notesTabList.events({
+    'keyup #searchString': _.debounce(function(e){
+        query.searchString.value = e.target.value;
+    })
 });
 
 // Record
 
 Template.notesTabItem.helpers({
-  getCtx: function () {
-    var self = this;
-    return {
-      noteRecord: self,
-      isEditing: new ReactiveVar(false)
-    };
-  },
-  isEditing: function () {
-    return this.isEditing.get();
-  },
-  getEntity: Utils.getEntityFromLink,
-  getUrl: Utils.getHrefFromLink
+    getCtx: function () {
+        var self = this;
+        return {
+            noteRecord: self,
+            isEditing: new ReactiveVar(false)
+        };
+    },
+    isEditing: function () {
+        return this.isEditing.get();
+    },
+    getEntity: Utils.getEntityFromLink,
+    getUrl: Utils.getHrefFromLink
 });
 
 Template.notesTabItem.events({
-  'click .deleteNoteRecord': function () {
-    var self = this;
-    Utils.showModal('basicModal', {
-      title: 'Delete note',
-      message: 'Are you sure you want to delete this note?',
-      buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {
-        label: 'Delete',
-        classes: 'btn-danger',
-        value: true
-      }],
-      callback: function (result) {
-        if (result) {
-          Meteor.call('removeNote', self._id);
-        }
-      }
-    });
-  },
-  'click .editNoteRecord': function () {
-    // Open edit mode
-    this.isEditing.set(!this.isEditing.get());
-  }
+    'click .deleteNoteRecord': function () {
+        var self = this;
+        Utils.showModal('basicModal', {
+            title: 'Delete note',
+            message: 'Are you sure you want to delete this note?',
+            buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {
+                label: 'Delete',
+                classes: 'btn-danger',
+                value: true
+            }],
+            callback: function (result) {
+                if (result) {
+                    Meteor.call('removeNote', self._id);
+                }
+            }
+        });
+    },
+    'click .editNoteRecord': function () {
+        // Open edit mode
+        this.isEditing.set(!this.isEditing.get());
+    }
 });
 
 // Edit record
 
 Template.notesTabEditItem.helpers({
-  created: function () {
-    var self = this;
+    created: function () {
+        var self = this;
 
-    self.data.formId = Random.hexString(10);
-  }
+        self.data.formId = Random.hexString(10);
+    }
 });
 
 Template.notesTabEditItem.events({
-  'click .cancelNoteRecordChanges': function () {
-    // Close edit mode
-    var ctx = Template.parentData(1);
-    ctx.isEditing.set(!ctx.isEditing.get());
-  }
+    'click .cancelNoteRecordChanges': function () {
+        // Close edit mode
+        var ctx = Template.parentData(1);
+        ctx.isEditing.set(!ctx.isEditing.get());
+    }
 });
 
 // Links
@@ -350,79 +372,81 @@ var isEditing = new ReactiveVar(false), links, typeDep, linkedDep;
 
 
 Template.linksAutoForm.created = function () {
-  var self = this;
+    var self = this;
 
-  var initialLink = {
-    id: Session.get('entityId'),
-    type: Utils.getEntityTypeFromRouter()
-  };
+    var initialLink = {
+        id: Session.get('entityId'),
+        type: Utils.getEntityTypeFromRouter()
+    };
 
-  links = self.data.value || [initialLink];
-  typeDep = new Tracker.Dependency();
-  linkedDep = new Tracker.Dependency();
+    links = self.data.value || [initialLink];
+    typeDep = new Tracker.Dependency();
+    linkedDep = new Tracker.Dependency();
 
-  Meteor.subscribe('allContactables');
-  Meteor.subscribe('allJobs');
-  Meteor.subscribe('allPlacements');
+    Meteor.subscribe('allContactables');
+    Meteor.subscribe('allJobs');
+    Meteor.subscribe('allPlacements');
 
-  if (self.data.value)
-    return; // Don't reset form on edit mode
+    if (self.data.value)
+        return; // Don't reset form on edit mode
 
-  //// TODO: Find another way to reset links when form is submitted
-  //var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
-  //if (!hotlist) {
-  //    formTemplate.template.events({
-  //        'reset form': function () {
-  //            self.data.links = [initialLink];
-  //            self.data.linkedDep.changed();
-  //        }
-  //    });
-  //};
-  isEditing.set(false);
+    //// TODO: Find another way to reset links when form is submitted
+    //var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
+    //if (!hotlist) {
+    //    formTemplate.template.events({
+    //        'reset form': function () {
+    //            self.data.links = [initialLink];
+    //            self.data.linkedDep.changed();
+    //        }
+    //    });
+    //};
+    isEditing.set(false);
 }
 
 AutoForm.addInputType('linkInput',{
-  template: 'linksAutoForm',
-  valueOut: function () {
-    return links
-  }
+    template: 'linksAutoForm',
+    valueOut: function () {
+        return links
+    }
 });
 
 Template.linksAutoForm.helpers({
-  links: function () {
-    linkedDep.depend();
-    return links;
-  },
-  types: function () {
-    return _.map(_.filter(_.keys(Enums.linkTypes), function (key) {
-      return !_.contains(['deal', 'candidate'], key);
-    }), function (key) {
-      return Enums.linkTypes[key];
-    });
-  },
-  entities: function () {
-    typeDep.depend();
-    var DOM = UI.getView()._domrange;
-    if (!DOM)
-      return;
+    links: function () {
+        linkedDep.depend();
+        return links;
+    },
+    types: function () {
+        return _.map(_.filter(_.keys(Enums.linkTypes), function (key) {
+            return !_.contains(['deal', 'candidate'], key);
+        }), function (key) {
+            return Enums.linkTypes[key];
+        });
+    },
+    entities: function () {
+        typeDep.depend();
+        var DOM = UI.getView()._domrange;
+        if (!DOM)
+            return;
 
-    var selectedType = DOM.$('#noteTypeSelect').val();
-    selectedType = parseInt(selectedType);
-    switch (selectedType) {
-      case Enums.linkTypes.contactable.value:
-        return AllContactables.find();
-      case Enums.linkTypes.job.value:
-        return AllJobs.find();
-      case Enums.linkTypes.placement.value:
-        return AllPlacements.find();
-      default :
-        return [];
+        var selectedType = DOM.$('#noteTypeSelect').val();
+        selectedType = parseInt(selectedType);
+        switch (selectedType) {
+            case Enums.linkTypes.contactable.value:
+                return AllContactables.find();
+            case Enums.linkTypes.job.value:
+                return AllJobs.find();
+            case Enums.linkTypes.placement.value:
+                return AllPlacements.find();
+            default :
+                return [];
+        }
+    },
+    getEntity: Utils.getEntityFromLinkForAdd,
+    isEditing: function () {
+        return isEditing.get();
     }
-  },
-  getEntity: Utils.getEntityFromLinkForAdd,
-  isEditing: function () {
-    return isEditing.get();
-  }
+  
+
 });
 
 var link = function (ctx, link) {
@@ -430,33 +454,45 @@ var link = function (ctx, link) {
 };
 
 Template.linksAutoForm.events({
-  'change #noteTypeSelect': function () {
-    typeDep.changed();
-  },
-  'click #noteLinkEntity': function () {
-    var type = UI.getView()._templateInstance.$('#noteTypeSelect').val();
-    type = parseInt(type);
-    var entity = UI.getView()._templateInstance.$('#noteEntitySelect').val();
-    if (!_.isNumber(type) || !entity) return;
+    'change #noteTypeSelect': function () {
+        typeDep.changed();
+    },
+    'click #noteLinkEntity': function () {
+        var type = UI.getView()._templateInstance.$('#noteTypeSelect').val();
+        type = parseInt(type);
+        var entity = UI.getView()._templateInstance.$('#noteEntitySelect').val();
+        if (!_.isNumber(type) || !entity) return;
 
-    var link = {
-      type: type,
-      id: entity
-    };
+        var link = {
+            type: type,
+            id: entity
+        };
 
-    if (_.findWhere(links, {id: link.id})) return;
+        if (_.findWhere(links, {id: link.id})) return;
 
-    links.push(link);
-    linkedDep.changed();
-  },
-  'click .remove-link': function () {
-    Template.parentData(0).links = _(links).without(this);
-    linkedDep.changed();
-  },
-  'click #editLinks': function () {
-    isEditing.set(true);
-  },
-  'click #editLinksDone': function () {
-    isEditing.set(false);
-  }
+        links.push(link);
+        linkedDep.changed();
+    },
+    'click .remove-link': function () {
+        //Template.currentData().links = _.without(links, this);
+        var link = this;
+        var newLinks;
+        _.each(links, function(l) {
+            if(l.id == link._id) {
+                newLinks = links.filter(function(element) {
+                    return element.id != l.id
+                });
+            } else {
+                return;
+            }
+        });
+        links = newLinks;
+        linkedDep.changed();
+    },
+    'click #editLinks': function () {
+        isEditing.set(true);
+    },
+    'click #editLinksDone': function () {
+        isEditing.set(false);
+    }
 });

@@ -4,6 +4,7 @@ var member = null,
 Template.hotListMemberAdd.created = function () {
     entityId = this.data[0];
     callback = this.data[1];
+    console.log(callback);
 };
 Template.hotListMemberAdd.helpers({});
 

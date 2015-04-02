@@ -7,6 +7,7 @@ var selected = undefined;
 
 // Page - Variables
 var searchDep = new Deps.Dependency;
+var totalCountDep = new Deps.Dependency;
 var isSearching = false;
 
 var info = new Utils.ObjectDefinition({
@@ -436,6 +437,7 @@ Template.contactables.helpers({
     },
     isSearching: function () {
         searchDep.depend();
+        totalCountDep.changed();
         return isSearching;
     }
 });
@@ -491,8 +493,10 @@ Template.contactablesListHeader.helpers({
         });
     },
     totalCount: function () {
+
         return SubscriptionHandlers.AuxContactablesHandler.totalCount();
-    }
+
+      }
 });
 
 // List Search - Helpers
@@ -679,7 +683,14 @@ Template.employeeInformation.helpers({
 // Filters - Helpers
 Template.contactablesFilters.helpers({
   contactablesCount: function () {
-    return SubscriptionHandlers.AuxContactablesHandler.totalCount();
+    totalCountDep.depend();
+    if(!_.isEmpty(query.searchString.value)){
+      return esResult.length;
+    }
+
+    else {
+      return SubscriptionHandlers.AuxContactablesHandler.totalCount();
+    }
   },
   query: function () {
     return query;
@@ -967,6 +978,7 @@ var runESComputation = function () {
                 esDep.changed();
                 isSearching = false;
                 searchDep.changed();
+
             } else
                 console.log(err)
         });
