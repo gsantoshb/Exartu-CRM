@@ -12,7 +12,7 @@ ContactableController = RouteController.extend({
             Meteor.subscribe('singleHotList', Session.get('hotListId'))]
     },
     data: function () {
-           Session.set('entityId', this.params._id);
+        Session.set('entityId', this.params._id);
     },
     action: function () {
         if (!this.ready()) {
@@ -54,9 +54,37 @@ Template.contactable.destroy = function(){
     handlerContactalbeCounters.stop();
 };
 
+StatusNoteEditMode = {
+    val: false,
+    dep: new Deps.Dependency,
+    show: function() {
+        this.val = true;
+        this.dep.changed();
+    },
+    hide: function() {
+        this.val = false;
+        this.dep.changed()
+    }
+}
+
+Object.defineProperty(StatusNoteEditMode, "value", {
+    get: function() {
+        this.dep.depend();
+        return this.val;
+    },
+    set: function(newValue) {
+        this.val = newValue;
+        this.dep.changed();
+    }
+});
 
 var contactable;
+var contactDep = new Deps.Dependency;
+
 Template.contactable.helpers({
+    created: function () {
+        StatusNoteEditMode.hide();
+    },
     objTypeDisplayName: function () {
         return Utils.getContactableType(this);
     },
@@ -72,8 +100,18 @@ Template.contactable.helpers({
             Meteor.call('setLastUsed', Enums.lastUsedType.employee, contactable._id);
         }
 
+        contactDep.depend();
         return contactable;
     },
+
+    contactableStatusNote: function() {
+        return contactable.statusNote;
+    },
+
+    statusNoteEditMode: function() {
+        return StatusNoteEditMode.value;
+    },
+
     // Information to dynamic templates
     collection: function () {
         return Contactables;
@@ -101,6 +139,34 @@ Template.contactable.events({
     'click #edit-pic': function () {
         $('#edit-picture').trigger('click');
     },
+
+    'click #edit-mode-status-note': function(e) {
+        if (StatusNoteEditMode.value)
+            StatusNoteEditMode.hide();
+        else
+            StatusNoteEditMode.show();
+
+
+    },
+    'click #cancelStatusNote': function(e) {
+        if (StatusNoteEditMode.value)
+            StatusNoteEditMode.hide();
+    },
+    'click #saveStatusNote': function(e) {
+        var statusNote = $('input[name=statusNote]').val();
+        console.log(Session.get('entityId'));
+        Contactables.update({
+            _id: Session.get('entityId')
+        }, {
+            $set: {
+                'statusNote': statusNote
+            }
+        });
+        if (StatusNoteEditMode.value)
+            StatusNoteEditMode.hide();
+        contactDep.changed();
+    },
+
     'change #edit-picture': function (e) {
         var fsFile = new FS.File(e.target.files[0]),
             contactableId = Session.get('entityId');
@@ -330,7 +396,7 @@ Template.contactable_nav.helpers({
                 template: 'contactable_documents',
                 icon: 'icon-document-1',
                 info: function () {
-                  return ContactableCounter.findOne('contactablesFiles').count + Resumes.find({employeeId: contactable._id}).count();
+                    return ContactableCounter.findOne('contactablesFiles').count + Resumes.find({employeeId: contactable._id}).count();
                 }
             },
             {
@@ -385,16 +451,15 @@ Template.contactable_nav.helpers({
                 }
             });
 
-
-          // Check if it has a doc Center account or has been invited to Applicant Center or is already a user
-          if (!!contactable.docCenter || contactable.invitation || contactable.user) {
-            tabs.push({
-              id: 'docCenter',
-              mobileDisplayName: 'Applicant Center',
-              displayName: 'Applicant Center',
-              template: 'docCenterTab'
-            });
-          }
+            // Check if it has a doc Center account or has been invited to Applicant Center or is already a user
+            if (!!contactable.docCenter || contactable.invitation || contactable.user) {
+                tabs.push({
+                    id: 'docCenter',
+                    mobileDisplayName: 'App. Center',
+                    displayName: 'Applicant Center',
+                    template: 'docCenterTab'
+                });
+            }
         }
         return tabs;
     }
@@ -416,9 +481,9 @@ Template.hotListMembershipsBox.helpers({
             obj.hotListDisplayName = Session.get('hotListDisplayName')
         }
         return obj;
-    //},
-    //editHotlistMode: function () {
-    //    return self.editHotlistMode;
+        //},
+        //editHotlistMode: function () {
+        //    return self.editHotlistMode;
     }
 });
 Template.hotListMembershipsBox.events({

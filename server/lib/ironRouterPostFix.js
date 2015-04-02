@@ -12,8 +12,8 @@ if (Meteor.isServer) {
   Router.onBeforeAction(function(req, res, next) {
     var fileData = {}; // Store a file and then pass it to the request.
     var body = {}; // Store body fields and then pass it to the request.
-
-    if (req.method === "POST") {
+    //Only use busyboy on multiparts
+    if (req.method === "POST" && req.headers["content-type"].indexOf("multipart") == 0) {
       var busboy = new Busboy({
         headers: req.headers
       });
@@ -45,6 +45,7 @@ if (Meteor.isServer) {
       });
       // Pass request to busboy
       req.pipe(busboy);
+
     } else {
       next();
     }

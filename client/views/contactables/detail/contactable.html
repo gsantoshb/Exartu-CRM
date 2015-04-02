@@ -29,11 +29,28 @@
                                     <span class="left-decoration"></span>
                                     <span class="right-decoration"></span>
                                 </div>
-                                <div class="notice-msg-content">{{statusNote}}</div>
+                                <div class="notice-msg-content">
+                                    <div class="col-md-8">
+                                        <div class="col-xs-7">
+                                            {{#objectProperty property=contactableStatusNote editable=statusNoteEditMode}}
+                                                <input class="form-control" type="text" name="statusNote" value="{{contactableStatusNote}}">
+                                            {{else}}
+                                                <span>{{contactableStatusNote}}</span>
+                                                <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
+                                            {{/objectProperty}}
+                                        </div>
+                                        {{#if statusNoteEditMode}}
+                                            <div class="col-xs-4">
+                                                <button type="button" class="btn btn-primary btn-sm" id="saveStatusNote">Save</button>
+                                                <button type="button" class="btn btn-default btn-sm" id="cancelStatusNote">Cancel</button>
+                                            </div>
+                                        {{/if}}
+                                    </div>
+                                </div>
                             </div><!-- /.notice-msg -->
                         </div><!-- /.notice-msg-container -->
 
-                        <div class="details-view-content box-type-1-content">
+                        <div class="details-view-content">
                             <div class="tab-pane active">
                                 {{> UI.dynamic template=currentTemplate  data=. }}
                             </div>
