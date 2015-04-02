@@ -445,7 +445,7 @@ Template.linksAutoForm.helpers({
     isEditing: function () {
         return isEditing.get();
     }
-  
+
 
 });
 

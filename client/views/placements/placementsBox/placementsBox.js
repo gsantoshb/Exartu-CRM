@@ -81,6 +81,7 @@ var loadqueryFromURL = function (params) {
             activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
     };
 
+
     return new Utils.ObjectDefinition({
         reactiveProps: {
             searchString: searchStringQuery,
@@ -245,6 +246,7 @@ Template.placementList.created = function () {
             SubscriptionHandlers.PlacementHandler.setFilter(searchQuery);
             SubscriptionHandlers.PlacementHandler.setOptions(options);
             PlacementHandler = SubscriptionHandlers.PlacementHandler;
+            SubscriptionHandlers.PlacementHandler.getFilter();
         }
         else {
             SubscriptionHandlers.PlacementHandler =
@@ -315,10 +317,17 @@ Template.placementListSort.helpers({
 // List Filters - Helpers
 Template.placementFilters.helpers({
     information: function() {
+      debugger;
+      if(initialized.get()){
         if (!PlacementHandler) return;
-        info.placementsCount = PlacementHandler.totalCount();
+
+           info.placementsCount = PlacementHandler.totalCount();
 
         return info;
+      }
+      else{
+        return;
+      }
     },
     query: function () {
         return query;
@@ -341,7 +350,7 @@ Template.placementList.helpers({
         return SubscriptionHandlers.PlacementHandler.isLoading();
     },
     placements: function () {
-        return placementCollection.find(searchQuery, options);
+        return placementCollection.find({}, options);
     },
     placementTypes: function () {
         return dType.ObjTypes.find({parent: Enums.objGroupType.placement});
