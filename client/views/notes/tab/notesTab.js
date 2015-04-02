@@ -54,7 +54,7 @@ NoteSchema = new SimpleSchema({
         type: Boolean,
         optional: true
     }
-  
+
 });
 
 
@@ -445,11 +445,8 @@ Template.linksAutoForm.helpers({
     isEditing: function () {
         return isEditing.get();
     }
-  },
-  getEntity: Utils.getEntityFromLinkForAdd,
-  isEditing: function () {
-    return isEditing.get();
-  }
+  
+
 });
 
 var link = function (ctx, link) {
