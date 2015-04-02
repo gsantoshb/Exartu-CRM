@@ -3,6 +3,7 @@ var searchQuery = {};
 var sortDep=new Deps.Dependency;
 var checkSMSDep = new Deps.Dependency;
 var NotesHandler;
+var addDisabled = new ReactiveVar(false);
 
 NoteSchema = new SimpleSchema({
   msg: {
@@ -64,8 +65,9 @@ AutoForm.hooks({
         //for some reason autoValue doesn't work
 
         insertDoc.contactableId = Session.get('entityId');
-
+        addDisabled.set(true);
         Meteor.call('addContactableNote', insertDoc, function () {
+          addDisabled.set(false);
           self.done();
         })
       }
@@ -73,7 +75,9 @@ AutoForm.hooks({
         var self = this;
         insertDoc.hierId = Meteor.user().currentHierId;
         insertDoc.userId = Meteor.user()._id;
+        addDisabled.set(true);
         Meteor.call('addNote', insertDoc, function () {
+          addDisabled.set(false);
           self.done();
         })
       }
@@ -142,6 +146,9 @@ Template.notesTab.created = function () {
 
 }
 Template.notesTabAdd.helpers({
+  addDisabled: function () {
+    return addDisabled.get();
+  },
   isHotListNote: function () {
     return (hotlist) ? true : false; // hide numbers if hotlist
   },
