@@ -317,7 +317,6 @@ Template.placementListSort.helpers({
 // List Filters - Helpers
 Template.placementFilters.helpers({
     information: function() {
-      debugger;
       if(initialized.get()){
         if (!PlacementHandler) return;
 
