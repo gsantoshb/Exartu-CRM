@@ -344,123 +344,123 @@
 
 
 <!--<template name="contactableUpdateActivity">-->
-    <!--{{#if listViewMode}}-->
-        <!--<tr>-->
-            <!--<td>-->
-                <!--<i class="icon icon-clock-3"></i>-->
+        <!--{{#if listViewMode}}-->
+<!--<tr>-->
+<!--<td>-->
+<!--<i class="icon icon-clock-3"></i>-->
 
-                <!--&lt;!&ndash; Property change &ndash;&gt;-->
-                <!--{{#unless isListChange}}-->
-                    <!--&lt;!&ndash;<span class="spacer">–</span>&ndash;&gt;-->
-                    <!--{{data.fieldDisplayName}} has been-->
-                    <!--{{#if data.oldValue}}-->
-                        <!--changed from <strong>{{data.oldValue}}</strong>-->
-                    <!--{{else}}-->
-                        <!--set-->
-                    <!--{{/if}}-->
-                    <!--to-->
-                    <!--<strong>{{data.newValue}}</strong>-->
-                <!--{{/unless}}-->
+<!--&lt;!&ndash; Property change &ndash;&gt;-->
+        <!--{{#unless isListChange}}-->
+<!--&lt;!&ndash;<span class="spacer">–</span>&ndash;&gt;-->
+<!--{{data.fieldDisplayName}} has been-->
+        <!--{{#if data.oldValue}}-->
+<!--changed from <strong>{{data.oldValue}}</strong>-->
+        <!--{{else}}-->
+<!--set-->
+        <!--{{/if}}-->
+<!--to-->
+<!--<strong>{{data.newValue}}</strong>-->
+        <!--{{/unless}}-->
 
-                <!--&lt;!&ndash; Item added &ndash;&gt;-->
-                <!--{{#if data.added}}-->
-                    <!--An item has been added to {{data.fieldDisplayName}}:-->
-                    <!--<strong> {{data.newValue}} </strong>-->
-                <!--{{/if}}-->
+<!--&lt;!&ndash; Item added &ndash;&gt;-->
+        <!--{{#if data.added}}-->
+<!--An item has been added to {{data.fieldDisplayName}}:-->
+<!--<strong> {{data.newValue}} </strong>-->
+        <!--{{/if}}-->
 
-                <!--&lt;!&ndash; Item removed &ndash;&gt;-->
-                <!--{{#if data.removed}}-->
-                    <!--An item has been removed from {{data.fieldDisplayName}}-->
-                <!--{{/if}}-->
+<!--&lt;!&ndash; Item removed &ndash;&gt;-->
+        <!--{{#if data.removed}}-->
+<!--An item has been removed from {{data.fieldDisplayName}}-->
+        <!--{{/if}}-->
 
-                <!--{{#if data.changed}}-->
-                    <!--An item in {{data.fieldDisplayName}} has been updated:-->
-                    <!--<ul>-->
-                        <!--{{#each data.subChanges}}-->
-                            <!--<li>-->
-                                <!--{{property}} in updated from <strong> {{oldValue}} </strong> to-->
-                                <!--<strong> {{newValue}} </strong>-->
-                            <!--</li>-->
-                        <!--{{/each}}-->
-                    <!--</ul>-->
-                <!--{{/if}}-->
+        <!--{{#if data.changed}}-->
+<!--An item in {{data.fieldDisplayName}} has been updated:-->
+<!--<ul>-->
+        <!--{{#each data.subChanges}}-->
+<!--<li>-->
+<!--{{property}} in updated from <strong> {{oldValue}} </strong> to-->
+<!--<strong> {{newValue}} </strong>-->
+<!--</li>-->
+        <!--{{/each}}-->
+<!--</ul>-->
+        <!--{{/if}}-->
 
-                <!--{{>suffixListDisplay}}-->
-            <!--</td>-->
-        <!--</tr>-->
-    <!--{{else}}-->
-        <!--<div class="item item-task">-->
-            <!--<div class="item-info">-->
-                <!--{{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}-->
+<!--{{>suffixListDisplay}}-->
+<!--</td>-->
+<!--</tr>-->
+        <!--{{else}}-->
+<!--<div class="item item-task">-->
+<!--<div class="item-info">-->
+<!--{{>prefixDetailDisplay userId=userId dateCreated=data.dateCreated }}-->
 
-                <!--<div class="type">-->
-                    <!--<i class="icon icon-pencil-1"></i>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.item-info &ndash;&gt;-->
-            <!--<div class="item-content">-->
-                <!--<div class="box">-->
-                    <!--<div class="box-content">-->
-                        <!--<h4 class="item-title">-->
-                            <!--&lt;!&ndash;Update&ndash;&gt;-->
+<!--<div class="type">-->
+<!--<i class="icon icon-pencil-1"></i>-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; /.item-info &ndash;&gt;-->
+<!--<div class="item-content">-->
+<!--<div class="box">-->
+<!--<div class="box-content">-->
+<!--<h4 class="item-title">-->
+<!--&lt;!&ndash;Update&ndash;&gt;-->
 
-                            <!--&lt;!&ndash; Property change &ndash;&gt;-->
-                            <!--{{#unless isListChange}}-->
-                                <!--&lt;!&ndash;<span class="spacer">–</span>&ndash;&gt;-->
-                                <!--{{data.fieldDisplayName}} has been-->
-                                <!--{{#if data.oldValue}}-->
-                                    <!--changed from <strong>{{data.oldValue}}</strong>-->
-                                <!--{{else}}-->
-                                    <!--set-->
-                                <!--{{/if}}-->
-                                <!--to-->
-                                <!--<strong>{{data.newValue}}</strong>-->
-                            <!--{{/unless}}-->
+<!--&lt;!&ndash; Property change &ndash;&gt;-->
+        <!--{{#unless isListChange}}-->
+<!--&lt;!&ndash;<span class="spacer">–</span>&ndash;&gt;-->
+<!--{{data.fieldDisplayName}} has been-->
+        <!--{{#if data.oldValue}}-->
+<!--changed from <strong>{{data.oldValue}}</strong>-->
+        <!--{{else}}-->
+<!--set-->
+        <!--{{/if}}-->
+<!--to-->
+<!--<strong>{{data.newValue}}</strong>-->
+        <!--{{/unless}}-->
 
-                            <!--&lt;!&ndash; Item added &ndash;&gt;-->
-                            <!--{{#if data.added}}-->
-                                <!--&lt;!&ndash;<span class="spacer">–</span>&ndash;&gt;-->
-                                <!--An item has been added to {{data.fieldDisplayName}}:-->
-                                <!--<strong> {{data.newValue}} </strong>-->
-                            <!--{{/if}}-->
+<!--&lt;!&ndash; Item added &ndash;&gt;-->
+        <!--{{#if data.added}}-->
+<!--&lt;!&ndash;<span class="spacer">–</span>&ndash;&gt;-->
+<!--An item has been added to {{data.fieldDisplayName}}:-->
+<!--<strong> {{data.newValue}} </strong>-->
+        <!--{{/if}}-->
 
-                            <!--&lt;!&ndash; Item removed &ndash;&gt;-->
-                            <!--{{#if data.removed}}-->
-                                <!--&lt;!&ndash;<span class="spacer">–</span>&ndash;&gt;-->
-                                <!--An item has been removed from {{data.fieldDisplayName}}-->
-                            <!--{{/if}}-->
+<!--&lt;!&ndash; Item removed &ndash;&gt;-->
+        <!--{{#if data.removed}}-->
+<!--&lt;!&ndash;<span class="spacer">–</span>&ndash;&gt;-->
+<!--An item has been removed from {{data.fieldDisplayName}}-->
+        <!--{{/if}}-->
 
-                            <!--{{#if data.changed}}-->
-                                <!--&lt;!&ndash;<span class="spacer">–</span>&ndash;&gt;-->
-                                <!--An item in {{data.fieldDisplayName}} has been updated:-->
-                                <!--<ul>-->
-                                    <!--{{#each data.subChanges}}-->
-                                        <!--<li>-->
-                                            <!--{{property}} updated from <strong> {{oldValue}} </strong> to-->
-                                            <!--<strong> {{newValue}} </strong>-->
-                                        <!--</li>-->
-                                    <!--{{/each}}-->
-                                <!--</ul>-->
-                            <!--{{/if}}-->
-                        <!--</h4>-->
-                        <!--<div class="item-actions">-->
-                            <!--<a class="btn btn-default tip-bottom pointer" title="Task Owner">-->
-                                <!--<span> {{displayUserName this.userId}} </span>-->
-                            <!--</a>-->
-                            <!--<a class="btn btn-default tip-bottom pointer" title="Task Start Date">-->
-                                <!--<i class="fa fa-calendar"></i>-->
-                                <!--<span>-->
-                                    <!--{{formattedDate data.dateCreated "lll"}}-->
-                                <!--</span>-->
-                            <!--</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash; /.box-content &ndash;&gt;-->
-                <!--</div>-->
-                <!--&lt;!&ndash; /.box &ndash;&gt;-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.item-content &ndash;&gt;-->
-        <!--</div>-->
-        <!--&lt;!&ndash; /.item &ndash;&gt;-->
-    <!--{{/if}}-->
+        <!--{{#if data.changed}}-->
+<!--&lt;!&ndash;<span class="spacer">–</span>&ndash;&gt;-->
+<!--An item in {{data.fieldDisplayName}} has been updated:-->
+<!--<ul>-->
+        <!--{{#each data.subChanges}}-->
+<!--<li>-->
+<!--{{property}} updated from <strong> {{oldValue}} </strong> to-->
+<!--<strong> {{newValue}} </strong>-->
+<!--</li>-->
+        <!--{{/each}}-->
+<!--</ul>-->
+        <!--{{/if}}-->
+<!--</h4>-->
+<!--<div class="item-actions">-->
+<!--<a class="btn btn-default tip-bottom pointer" title="Task Owner">-->
+<!--<span> {{displayUserName this.userId}} </span>-->
+<!--</a>-->
+<!--<a class="btn btn-default tip-bottom pointer" title="Task Start Date">-->
+<!--<i class="fa fa-calendar"></i>-->
+<!--<span>-->
+<!--{{formattedDate data.dateCreated "lll"}}-->
+<!--</span>-->
+<!--</a>-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; /.box-content &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; /.box &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; /.item-content &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; /.item &ndash;&gt;-->
+        <!--{{/if}}-->
 <!--</template>-->

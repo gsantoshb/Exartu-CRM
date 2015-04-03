@@ -1,43 +1,46 @@
 <template name="contactableContactsBox">
     {{#if hasContacts }}
-        <div class="box">
-            <div class="box-header-2">
-                <btn class="btn-action tip-top addContact" data-original-title="Add Contact" href="#" title="Add"><i class="fa fa-plus"></i></btn>
-                <div class="box-title">Contacts</div>
-            </div>
-            <div class="box-content-md">
-                <ul class="list-3 stripped has-thumb">
-                    {{#each contacts }}
-                        <li class="list-3-item">
-                            <div class="list-thumb"><i class="icon-address-1"></i></div>
-                            <div class="list-3-content">
-                                <div class="list-3-content-wrap">
-                                    <div class="pull-right">
-                                        {{#each contactMethods}}
-                                            <a class="btn btn-xs btn-default tip-bottom"
-                                               href="{{contactMethodTypePrefix type}}{{value}}" title="{{value}}">
-                                                <i class="{{contactMethodTypeIcon type}}"></i> </a>
-                                        {{/each}}
-                                    </div>
-                                    {{#if person}}
-                                        <div class="list-3-item-meta-top">{{person.jobTitle}}</div>
-                                    {{/if}}
-                                    <h4 class="list-3-item-title"><a href="/contactable/{{_id}}">{{displayName}}</a></h4>
-                                </div>
-                            </div>
-                        </li>
-                    {{else}}
-                        <div class="box-v-msg">
-                            <div class="box-v-msg-content">
-                                <i class="icon-address-1"></i>
-                            </div>
+        <section class="box-type-2">
+            <div class="box-type-2-content">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="box-options">
+                            <a class="action-btn btn-action tip-top addContact" data-original-title="Add Contact" href="/contactableAdd/Contact" title="Add"><i class="fa fa-plus"></i></a>
                         </div>
-                    {{/each}}
-                </ul>
-                {{#if isEmptyContacts }}
+                        <h3>Contacts</h3>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="row">
+                            {{#each contacts }}
+                                <div class="col-md-6">
+                                    <div class="card-item">
+                                        <div class="card-options">
+                                            {{#each contactMethods}}
+                                                <a href="{{contactMethodTypePrefix type}}{{value}}" title="{{value}}"><i class="{{contactMethodTypeIcon type}}"></i></a>
+                                            {{/each}}
+                                        </div>
+                                        <a class="item-icon item-icon-network item-icon-sm" href="">
+                                            <i class="icon-profile-business-man"></i>
+                                        </a>
+                                        <div class="card-title">
+                                            <a href="/contactable/{{_id}}">{{displayName}} {{#if person}}<span>&ndash; {{person.jobTitle}}</span>{{/if}}</a>
+                                        </div>
+                                    </div><!-- /.card-item -->
+                                </div><!-- /.col-md-6 -->
+                            {{else}}
+                                <div class="box-v-msg">
+                                    <div class="box-v-msg-content">
+                                        <i class="icon-address-1"></i>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div><!-- /.row -->
+                    </div><!-- /.col-md-10 -->
+                    {{#if isEmptyContacts }}
 
-                {{/if}}
+                    {{/if}}
+                </div>
             </div>
-        </div>
+        </section>
     {{/if}}
 </template>

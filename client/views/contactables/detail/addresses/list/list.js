@@ -21,13 +21,18 @@ Template.addressList.helpers({
         return function () {
             addressesDep.changed();
             locationFormBoxType.set('update');
+            locationFormBoxType.set(undefined);
+            //showLocationFormBox.set(false);
+            Session.set( 'showLocationFormBox',  false);
+            newLocationButtonIcon.set('fa-plus');
+
         }
     },
     locationFormBoxType: function() {
       return locationFormBoxType.get();
     },
     showLocationFormBox: function() {
-        return Session.get( 'showLocationFormBox' );
+       return Session.get( 'showLocationFormBox' );
     },
     newLocationButtonIcon: function() {
         return newLocationButtonIcon.get();
@@ -66,12 +71,21 @@ Template.addressList.events({
         if( locationFormBoxType.get() == 'update' ){
             locationFormBoxType.set(undefined);
             loadedAddress.set({});
+            Session.set( 'showLocationFormBox',  false);
         }
+        else if( locationFormBoxType.get() == 'insert' ){
+           locationFormBoxType.set(undefined);
+           loadedAddress.set({});
+           Session.set( 'showLocationFormBox',  false);
+        }
+        Tracker.afterFlush(function(){
 
-        locationFormBoxType.set('update');
-        loadedAddress.set(location);
-        //showLocationFormBox.set(true);
-        Session.set( 'showLocationFormBox',  true);
+          locationFormBoxType.set('update');
+          loadedAddress.set(location);
+          //showLocationFormBox.set(true);
+          Session.set( 'showLocationFormBox',  true);
+
+        })
     },
     'click #create-address-mode': function () {
         if( locationFormBoxType.get() == 'insert' ){
@@ -81,12 +95,21 @@ Template.addressList.events({
             newLocationButtonIcon.set('fa-plus');
         }
         else{
+          if( locationFormBoxType.get() == 'update' ){
+            locationFormBoxType.set(undefined);
+            loadedAddress.set({});
+            Session.set( 'showLocationFormBox',  false);
+          }
+          Tracker.afterFlush(function(){
 
             locationFormBoxType.set('insert');
             //showLocationFormBox.set(true);
             Session.set( 'showLocationFormBox',  true);
             newLocationButtonIcon.set('fa-remove');
             loadedAddress.set({});
+
+          })
+
         }
 
         Session.set( 'address', loadedAddress.get() );

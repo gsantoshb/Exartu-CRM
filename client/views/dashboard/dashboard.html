@@ -50,28 +50,28 @@
                         <table class="table table-striped">
                             <tbody>
                             {{#if isReady}}
-                            {{#each activities}}
-                                <tr>
-                                    <td>
-                                        {{#with getCtx}}
-                                            {{> Template.dynamic template=getTemplateForActivity}}
-                                        {{/with}}
-                                    </td>
-                                </tr>
-                            {{/each}}
+                                {{#each activities}}
+                                    <tr>
+                                        <td>
+                                            {{#with getCtx}}
+                                                {{> Template.dynamic template=getTemplateForActivity}}
+                                            {{/with}}
+                                        </td>
+                                    </tr>
+                                {{/each}}
                             {{/if}}
                             </tbody>
                         </table>
                     {{else}}
                         <section class="timeline">
                             <div class="activity-container scroll-container">
-                        {{#if isReady}}
-                                {{#each activities}}
-                                    {{#with getCtx}}
-                                        {{> Template.dynamic template=getTemplateForActivity}}
-                                    {{/with}}
-                                {{/each}}
-                                    {{/if}}
+                                {{#if isReady}}
+                                    {{#each activities}}
+                                        {{#with getCtx}}
+                                            {{> Template.dynamic template=getTemplateForActivity}}
+                                        {{/with}}
+                                    {{/each}}
+                                {{/if}}
                             </div>
                         </section>
                     {{/if}}

@@ -209,7 +209,10 @@ Router.map(function () {
     path: '/management/hierarchyMail',
     controller: 'HierarchyMailController'
   });
-
+  this.route('clickFunnel', {
+    path: '/management/clickFunnel',
+    controller: 'clickFunnelController'
+  });
   this.route('twilioManagement', {
     path: '/management/twilioManagement',
     controller: 'TwilioManagementController'
@@ -303,6 +306,11 @@ Router.map(function () {
   this.route('documentInstance', {
     path: '/documentInstance/:id',
     controller: 'InstanceController'
+  });
+
+  this.route('cardReader', {
+    path: '/management/cardReader',
+    controller: 'CardReaderController'
   });
 });
 

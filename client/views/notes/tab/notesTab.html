@@ -17,7 +17,7 @@
             {{> afQuickField name='msg' rows=3 placeholder='Write your note here ...' label=false style='box-shadow: none;'}}
             <div class="add-note-actions">
                 <div class="add-note-actions-cell">
-                    <button class="btn btn-custom-2" type="submit">Save note</button>
+                    <button class="btn btn-custom-2" type="submit" disabled="{{addDisabled}}">Save note</button>
                 </div>
 
                 {{#if isContactableNote}}
@@ -42,14 +42,12 @@
                         {{/unless}}
                     {{/unless}}
 
-                    {{#if isEmployee}}
-                        <!-- Display note to employee -->
-                        <div class="add-note-actions-cell">
-                            <div class="form-group" style="margin-bottom: 0px;">
-                                {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
-                            </div>
+                    <!-- Display note to employee -->
+                    <div class="add-note-actions-cell">
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
                         </div>
-                    {{/if}}
+                    </div>
 
 
                 {{/if}}
@@ -80,8 +78,30 @@
 
 <template name="notesTabList">
     <div class="record-list-pagination">
-        {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
+
     </div>
+
+    <div class="list-actions">
+
+        <div class="list-actions-cell search-list">
+            <div class="input-group">
+                    <span>
+                        {{#objectProperty property=query.searchString}}
+                            <input type="text" id="searchString" name="searchString" value="{{value}}" class="form-control" placeholder="Search notes">
+                        {{/objectProperty}}
+                    </span>
+                    <span class="input-group-btn">
+                        <button class="btn btn-search" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+            </div>
+        </div><!-- /.search-list -->
+
+            {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
+
+        <!-- /.list-actions-cell -->
+    </div><!-- .list-actions -->
 
     {{#if isLoading}}
         <div style="min-height: 350px; background: url('/img/spinner.gif') no-repeat center;"></div>
@@ -91,11 +111,13 @@
                 <div class="list-header-cell notes-list-header-title">Title</div>
                 <div class="list-header-cell notes-list-header-linked">Linked</div>
                 <div class="list-header-cell notes-list-header-edit">Last Edit</div>
-            </div>
+            </div><!-- /.list-header -->
 
-            {{#each items}}
-                {{> notesTabItem}}
-            {{/each}}
+            <div class="list-item-section">
+                {{#each items}}
+                    {{> notesTabItem}}
+                {{/each}}
+            </div>
         {{/if}}
     {{/if}}
 
