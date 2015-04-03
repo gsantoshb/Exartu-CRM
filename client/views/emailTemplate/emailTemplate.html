@@ -42,7 +42,7 @@
             <div>
                 <div style="display: {{#if editMode}} block {{else}} none {{/if}}">
                     <!-- Merge fields -->
-                    <div class="pull-right" style="margin-bottom: 7px;margin-right: 4%">
+                    <div class="pull-right" style="margin-bottom: 7px;">
                         <select id="mergeFields" style="width: 250px; margin-right: 10px;">
                             <option></option>
                             {{#each mergeField}}
@@ -58,10 +58,7 @@
                     </div>
 
                     <!-- HTML editor -->
-                    {{#with editorContext}}
-                        {{#htmlEditor}}
-                        {{/htmlEditor}}
-                    {{/with}}
+                    {{> wysihtml editorContext}}
                 </div>
                 <div style="min-height:446px;display: {{#if editMode}} none {{else}} block {{/if}}">
                     {{{preview}}}

@@ -1450,6 +1450,31 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 /********************* end tree *********************/
 
+
+/********************* WYSIHTML *********************/
+div.wysihtml5-colors {
+    display: block;
+    width: 50px;
+    height: 20px;
+    margin-top: 2px;
+    margin-left: 5px;
+    position: absolute;
+    pointer-events: none;
+}
+a.wysihtml5-colors-title { padding-left: 70px !important; }
+
+.wysihtml5-colors[data-wysihtml5-command-value="black"] { background: black !important; }
+.wysihtml5-colors[data-wysihtml5-command-value="silver"] { background: silver !important; }
+.wysihtml5-colors[data-wysihtml5-command-value="grey"] { background: grey !important; }
+.wysihtml5-colors[data-wysihtml5-command-value="maroon"] { background: maroon !important; }
+.wysihtml5-colors[data-wysihtml5-command-value="red"] { background: red !important; }
+.wysihtml5-colors[data-wysihtml5-command-value="purple"] { background: purple !important; }
+.wysihtml5-colors[data-wysihtml5-command-value="green"] { background: green !important; }
+.wysihtml5-colors[data-wysihtml5-command-value="olive"] { background: olive !important; }
+.wysihtml5-colors[data-wysihtml5-command-value="navy"] { background: navy !important; }
+.wysihtml5-colors[data-wysihtml5-command-value="blue"] { background: blue !important; }
+.wysihtml5-colors[data-wysihtml5-command-value="orange"] { background: orange !important; }
+
 /***************************** Mobile Specific CSS ***********************************/
 @media (max-width: 992px) {
     /* filters */
