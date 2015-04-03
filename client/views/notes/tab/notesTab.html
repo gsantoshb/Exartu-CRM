@@ -17,7 +17,7 @@
             {{> afQuickField name='msg' rows=3 placeholder='Write your note here ...' label=false style='box-shadow: none;'}}
             <div class="add-note-actions">
                 <div class="add-note-actions-cell">
-                    <button class="btn btn-custom-2" type="submit">Save note</button>
+                    <button class="btn btn-custom-2" type="submit" disabled="{{addDisabled}}">Save note</button>
                 </div>
 
                 {{#if isContactableNote}}
