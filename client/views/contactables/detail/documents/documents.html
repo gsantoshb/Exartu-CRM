@@ -4,9 +4,9 @@
             {{>addDocumentForm}}
         {{else}}
             {{#dragAndDropZone onDrop=showAddForm}}
-                <div class="line-1">Drop file here</div>
-                <div class="line-2">or, if you prefer... </div>
-                <button class="btn btn-primary add-trigger">Select a file from your computer</button>
+                <div class="line-1"> {{_ "Drop file here"}} </div>
+                <div class="line-2"> {{_ "or, if you prefer"}}... </div>
+                <button class="btn btn-primary add-trigger"> {{_ "Select a file from your computer"}} </button>
                 <input style="visibility: hidden" id="add-file" type="file">
             {{/dragAndDropZone}}
         {{/if}}
@@ -19,18 +19,18 @@
             <div class="box-type-2-content">
                 <div class="row">
                     <div class="col-md-2">
-                        <h3>Add document</h3>
+                        <h3> {{_ "Add document"}} </h3>
                     </div><!-- /.col-md-2 -->
                     <div class="col-md-10">
                         <div class="row">
                             <div class="col-md-12">
                                 <ul class="list-type-5">
                                     <li>
-                                        <div class="left-part"><em>Original name</em></div>
-                                        <div class="right-part"><strong class="text-center">{{originalFileName}}</strong></div>
+                                        <div class="left-part"><em> {{_ "Original name"}} </em></div>
+                                        <div class="right-part"><strong class="text-center">{{_ originalFileName}}</strong></div>
                                     </li>
                                     <li>
-                                        <div class="left-part">Name</div>
+                                        <div class="left-part"> {{_ "Name"}} </div>
                                         <div class="right-part">
                                             {{#objectProperty property=name}}
                                                 <input class="form-control input-sm" type="text" placeholder="Name" value="{{value}}">
@@ -38,7 +38,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="left-part">Description</div>
+                                        <div class="left-part"> {{_ "Description"}} </div>
                                         <div class="right-part">
                                             {{#objectProperty property=description}}
                                                 <input class="form-control input-sm" type="text" placeholder="Description" value="{{value}}">
@@ -46,7 +46,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="left-part">Tags</div>
+                                        <div class="left-part"> {{_ "Tags"}} </div>
                                         <div class="right-part">
                                             <div class="input-group">
                                                 <input id="new-tag" type="text" class="form-control input-sm" placeholder="Enter a tag" />
@@ -58,7 +58,7 @@
                                             <div class="tags-content">
                                                 {{#objectProperty property=newDocument.tags}}
                                                     <span class="label label-primary" style="cursor: pointer; padding: 5px; margin-right: 10px;">
-                                                        <span>{{value}}</span>
+                                                        <span>{{_ value}}</span>
                                                         <i id="remove-tag" class="fa fa-times" data-remove></i>
                                                     </span>
                                                 {{/objectProperty}}
@@ -71,8 +71,8 @@
                         </div><!-- /.row -->
 
                         <div class="edit-actions-bar">
-                            <button id="save-document" class="btn btn-primary">Save changes</button>
-                            <button id="cancel-document" class="btn btn-default">Cancel</button>
+                            <button id="save-document" class="btn btn-primary"> {{_ "Save"}}  changes</button>
+                            <button id="cancel-document" class="btn btn-default"> {{_ "Cancel"}} </button>
                         </div><!-- /.edit-actions-bar -->
 
                     </div><!-- /.col-md-10 -->
@@ -90,7 +90,7 @@
             <div class="input-group">
                 <span>
                     {{#objectProperty property=query.searchString}}
-                        <input type="text" id="searchString" name="searchString" value="{{value}}" class="form-control" placeholder="Search files">
+                        <input type="text" id="searchString" name="searchString" value="{{value}}" class="form-control" placeholder= {{_ "Search files"}} >
                     {{/objectProperty}}
                     <span class="text" data-status="Inactive"></span>
                 </span>
@@ -106,9 +106,9 @@
     </div><!-- .list-actions -->
 
     <div class="list-header documents-list-header">
-        <div class="list-header-cell documents-list-header-title">Title</div>
-        <div class="list-header-cell documents-list-header-status">File type</div>
-        <div class="list-header-cell documents-list-header-time">Date</div>
+        <div class="list-header-cell documents-list-header-title"> {{_ "Title"}} </div>
+        <div class="list-header-cell documents-list-header-status"> {{_ "File type"}} </div>
+        <div class="list-header-cell documents-list-header-time"> {{_ "Date"}} </div>
     </div><!-- /.list-header -->
 
     <div class="list-item-section">
@@ -118,12 +118,12 @@
                     <a class="item-icon {{documentIconBackground type}}" href="#"><i class="{{documentIcon type}}"></i></a>
                 </div>
                 <div class="list-item-cell documents-list-item-title">
-                    <div class="item-title"><a href="#">{{name}}</a></div>
-                    <div class="item-subtitle">{{description}}</div>
+                    <div class="item-title"><a href="#">{{_ name}}</a></div>
+                    <div class="item-subtitle">{{_ description}}</div>
                 </div>
 
                 <div class="list-item-details documents-list-item-details">
-                    <div class="list-item-cell documents-list-item-owner">{{#if type}} {{type}} {{else}} Unknown file type {{/if}}</div>
+                    <div class="list-item-cell documents-list-item-owner">{{#if type}} {{type}} {{else}} {{_ "Unknown file type"}} {{/if}}</div>
                     <div class="list-item-cell documents-list-item-time">{{formattedDate dateCreated "fromNow"}}</div>
                     <div class="list-item-cell item-overflow documents-item-overflow">
                         <div class="btn-group">
@@ -137,8 +137,8 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li class="arrow"></li>
 
-                                <li><a class="download" target="_blank" href="{{url}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"><i class="fa fa-download"></i> Download</a></li>
-                                <li><a href="#" class="delete pointer"><i class="fa fa-trash"></i> Delete</a></li>
+                                <li><a class="download" target="_blank" href="{{url}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"><i class="fa fa-download"></i> {{_ "Download"}} </a></li>
+                                <li><a href="#" class="delete pointer"><i class="fa fa-trash"></i> {{_ "Delete"}} </a></li>
                             </ul>
                         </div>
                     </div>
@@ -158,19 +158,19 @@
         {{/if}}
 
         {{#with resumes}}
-            <strong> Resume </strong>
+            <strong> {{_ "Resume"}}  </strong>
             {{#each .}}
                 <div class="list-item documents-list-item">
                     <div class="list-item-cell list-item-icon">
                         <a class="item-icon item-icon-pdf" href="#"><i class="{{documentIcon type}}"></i></a>
                     </div>
                     <div class="list-item-cell documents-list-item-title">
-                        <div class="item-title"><a href="#">{{name}}</a></div>
-                        <div class="item-subtitle">{{description}}</div>
+                        <div class="item-title"><a href="#">{{_ name}}</a></div>
+                        <div class="item-subtitle">{{_ description}}</div>
                     </div>
 
                     <div class="list-item-details documents-list-item-details">
-                        <div class="list-item-cell documents-list-item-owner">{{#if type}} {{type}} {{else}} Unknown file type {{/if}}</div>
+                        <div class="list-item-cell documents-list-item-owner">{{#if type}} {{type}} {{else}}  {{_ "Unknown file type"}} {{/if}}</div>
                         <div class="list-item-cell documents-list-item-time">{{formattedDate dateCreated "fromNow"}}</div>
                         <div class="list-item-cell item-overflow documents-item-overflow">
                             <div class="btn-group">
@@ -184,8 +184,8 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li class="arrow"></li>
 
-                                    <li><a class="download" target="_blank" href="{{url}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"><i class="fa fa-download"></i> Download</a></li>
-                                    <li><a href="#" class="delete-resume pointer"><i class="fa fa-trash"></i> Delete</a></li>
+                                    <li><a class="download" target="_blank" href="{{url}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"><i class="fa fa-download"></i>  {{_ "Download"}} </a></li>
+                                    <li><a href="#" class="delete-resume pointer"><i class="fa fa-trash"></i>  {{_ "Delete"}} </a></li>
                                 </ul>
                             </div>
                         </div>

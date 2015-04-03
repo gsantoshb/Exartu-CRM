@@ -7,7 +7,7 @@
                         <div class="box-options">
                             <a class="action-btn btn-action tip-top addContact" data-original-title="Add Contact" href="/contactableAdd/Contact" title="Add"><i class="fa fa-plus"></i></a>
                         </div>
-                        <h3>Contacts</h3>
+                        <h3>{{_ "Contacts"}}</h3>
                     </div>
                     <div class="col-md-10">
                         <div class="row">
@@ -23,7 +23,7 @@
                                             <i class="icon-profile-business-man"></i>
                                         </a>
                                         <div class="card-title">
-                                            <a href="/contactable/{{_id}}">{{displayName}} {{#if person}}<span>&ndash; {{person.jobTitle}}</span>{{/if}}</a>
+                                            <a href="/contactable/{{_id}}">{{_ displayName}} {{#if person}}<span>&ndash; {{_ person.jobTitle}}</span>{{/if}}</a>
                                         </div>
                                     </div><!-- /.card-item -->
                                 </div><!-- /.col-md-6 -->

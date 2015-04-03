@@ -8,7 +8,7 @@
                             <div class="box-options">
                                 <a class="action-btn addEdit" href="#"><i class="fa fa-pencil"></i></a>
                             </div>
-                            <h3>Client</h3>
+                            <h3>{{_ "Client"}}</h3>
                         </div><!-- /.col-md-2 -->
                         <div class="col-md-10">
                             <div class="row">
@@ -16,22 +16,22 @@
                                     <div class="client-box">
                                         <div class="client-logo pull-left sufix-10"><a href="#"><img src="{{pictureUrl}}" alt="{{displayName}} - logo"></a></div>
                                         <div class="client-content">
-                                            <a href="/contactable/{{_id}}"><h4>{{displayName}}</h4></a>
+                                            <a href="/contactable/{{_id}}"><h4>{{_ displayName}}</h4></a>
                                             {{#with contactMethod 0}}
-                                                <p><a cursor="pointer"><i class="fa {{contactMethodIcon type}}"></i> {{value}}</a></p>
+                                                <p><a cursor="pointer"><i class="fa {{contactMethodIcon type}}"></i> {{_ value}}</a></p>
                                             {{/with}}
 
                                             {{#with contactMethod 1}}
-                                                <p><a cursor="pointer"><i class="fa {{contactMethodIcon type}}"></i> {{value}}</a></p>
+                                                <p><a cursor="pointer"><i class="fa {{contactMethodIcon type}}"></i> {{_ value}}</a></p>
                                             {{/with}}
                                         </div><!-- /.client-content -->
                                     </div><!-- /.client-box -->
                                 </div><!-- /.col-md-6 -->
                                 <div class="col-sm-6 col-md-12 col-lg-6">
-                                    <div class="client-box-note">{{statusNote}}</div>
+                                    <div class="client-box-note">{{_ statusNote}}</div>
                                     {{#if location}}
                                         <tr>
-                                            <td>Location</td>
+                                            <td>{{_ "Location"}}</td>
                                             <td>{{location.address}}{{#if location.address2}}, {{location.address2}}{{/if}}, {{location.city}}</td>
                                         </tr>
                                     {{/if}}
@@ -46,14 +46,14 @@
                     <a class="btn-action addEdit" href="#"><i class="fa fa-pencil"></i></a>
                     <div class="box-title">
                         <a style="color: #777;">
-                            <span>No Client Linked</span>
+                            <span>{{_ "No Client Linked"}}</span>
                         </a>
                     </div>
                 </div>
                 <div class="box-v-msg">
                     <div class="box-v-msg-content">
                         <i class="icon-buildings-1"></i>
-                        <p>No Client linked<br>
+                        <p>{{_ "No Client linked"}}<br>
                         </p>
                     </div><!-- /.box-v-msg-content -->
                 </div>

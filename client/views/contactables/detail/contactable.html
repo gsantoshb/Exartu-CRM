@@ -33,16 +33,16 @@
                                     <div class="col-md-8">
                                         <div class="col-xs-7">
                                             {{#objectProperty property=contactableStatusNote editable=statusNoteEditMode}}
-                                                <input class="form-control" type="text" name="statusNote" value="{{contactableStatusNote}}">
+                                                <input class="form-control" type="text" name="statusNote" value="{{_ contactableStatusNote}}">
                                             {{else}}
-                                                <span>{{contactableStatusNote}}</span>
+                                                <span>{{_ contactableStatusNote}}</span>
                                                 <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
                                             {{/objectProperty}}
                                         </div>
                                         {{#if statusNoteEditMode}}
                                             <div class="col-xs-4">
-                                                <button type="button" class="btn btn-primary btn-sm" id="saveStatusNote">Save</button>
-                                                <button type="button" class="btn btn-default btn-sm" id="cancelStatusNote">Cancel</button>
+                                                <button type="button" class="btn btn-primary btn-sm" id="saveStatusNote">{{_ "Save"}}</button>
+                                                <button type="button" class="btn btn-default btn-sm" id="cancelStatusNote">{{_ "Cancel"}}</button>
                                             </div>
                                         {{/if}}
                                     </div>
@@ -50,11 +50,9 @@
                             </div><!-- /.notice-msg -->
                         </div><!-- /.notice-msg-container -->
 
-                        <div class="box-type-1-content">
-                            <div class="details-view-content">
-                                <div class="tab-pane active">
-                                    {{> UI.dynamic template=currentTemplate  data=. }}
-                                </div>
+                        <div class="details-view-content">
+                            <div class="tab-pane active">
+                                {{> UI.dynamic template=currentTemplate  data=. }}
                             </div>
                         </div>
 
