@@ -42,14 +42,12 @@
                         {{/unless}}
                     {{/unless}}
 
-                    {{#if isEmployee}}
-                        <!-- Display note to employee -->
-                        <div class="add-note-actions-cell">
-                            <div class="form-group" style="margin-bottom: 0px;">
-                                {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
-                            </div>
+                    <!-- Display note to employee -->
+                    <div class="add-note-actions-cell">
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
                         </div>
-                    {{/if}}
+                    </div>
 
 
                 {{/if}}
@@ -100,7 +98,7 @@
             </div>
         </div><!-- /.search-list -->
 
-        {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
+            {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
 
         <!-- /.list-actions-cell -->
     </div><!-- .list-actions -->

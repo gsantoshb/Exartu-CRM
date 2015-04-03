@@ -5,85 +5,85 @@ var checkSMSDep = new Deps.Dependency;
 var NotesHandler;
 
 NoteSchema = new SimpleSchema({
-    msg: {
-        type: String,
-        label: 'Message'
-    },
-    links: {
-        type: [Object],
-        label: 'Entities linked'
-    },
-    'links.$.id': {
-        type: String
-    },
-    'links.$.type': {
-        type: Number,
-        allowedValues: _.map(Enums.linkTypes, function (type) {
-            return type.value;
-        })
-    },
-    sendAsSMS: {
-        type: Boolean,
-        label: 'Send SMS/Text',
-        optional: true
-    },
-    hotListFirstName: {
-        type: Boolean,
-        label: 'Preface with first name?',
-        optional: true
-    },
-    userNumber: {
-        type: String,
-        optional: true,
-        label: 'SMS/Text origin number(s)'
-    },
-    contactableNumber: {
-        type: String,
-        optional: true,
-        label: 'SMS/Text destination number'
-    },
-    contactableId: {
-        type: String,
-        label: 'Entity',
-        autoValue: function () {
-            return Session.get('entityId');
-        }
-    },
-    displayToEmployee: {
-        type: Boolean,
-        optional: true
+  msg: {
+    type: String,
+    label: 'Message'
+  },
+  links: {
+    type: [Object],
+    label: 'Entities linked'
+  },
+  'links.$.id': {
+    type: String
+  },
+  'links.$.type': {
+    type: Number,
+    allowedValues: _.map(Enums.linkTypes, function (type) {
+      return type.value;
+    })
+  },
+  sendAsSMS: {
+    type: Boolean,
+    label: 'Send SMS/Text',
+    optional: true
+  },
+  hotListFirstName: {
+    type: Boolean,
+    label: 'Preface with first name?',
+    optional: true
+  },
+  userNumber: {
+    type: String,
+    optional: true,
+    label: 'SMS/Text origin number(s)'
+  },
+  contactableNumber: {
+    type: String,
+    optional: true,
+    label: 'SMS/Text destination number'
+  },
+  contactableId: {
+    type: String,
+    label: 'Entity',
+    autoValue: function () {
+      return Session.get('entityId');
     }
+  },
+  displayToEmployee: {
+    type: Boolean,
+    optional: true
+  }
 });
 
 
 AutoForm.hooks({
-    AddNoteRecord: {
-        onSubmit: function (insertDoc, updateDoc, currentDoc) {
-            if(!hotlist) {
-                var self = this;
-                //for some reason autoValue doesn't work
+  AddNoteRecord: {
+    onSubmit: function (insertDoc, updateDoc, currentDoc) {
+      if(!hotlist) {
+        var self = this;
+        //for some reason autoValue doesn't work
 
-                insertDoc.contactableId = Session.get('entityId');
+        insertDoc.contactableId = Session.get('entityId');
 
-                Meteor.call('addContactableNote', insertDoc, function () {
-                    self.done();
-                })
-            }
-            else if(hotlist){
-                var self = this;
-                insertDoc.hierId = Meteor.user().currentHierId;
-                insertDoc.userId = Meteor.user()._id;
-                Meteor.call('addNote', insertDoc, function () {
-                    self.done();
-                })
-            }
-            else{
+        Meteor.call('addContactableNote', insertDoc, function () {
+          self.done();
+        })
+      }
+      else if(hotlist){
+        var self = this;
+        insertDoc.hierId = Meteor.user().currentHierId;
+        insertDoc.userId = Meteor.user()._id;
+        Meteor.call('addNote', insertDoc, function () {
+          self.done();
+        })
+      }
+      else{
 
-            }
-            return false;
-        }
-
+      }
+      return false;
     }
+
+  }
 });
 //AutoForm.hooks({
 //    AddNoteRecord: {
@@ -122,35 +122,27 @@ self.defaultUserNumber = null;
 self.defaultMobileNumber = null;
 var hotlist = null;
 var responsesOnly = false;
-var contactable = null;
 Template.notesTabAdd.events({
-    'change #sendAsSMS': function(){
-        checkSMSDep.changed();
-    }
+  'change #sendAsSMS': function(){
+    checkSMSDep.changed();
+  }
 });
 Template.notesTab.created = function () {
     hotlist = HotLists.findOne({_id:Session.get('entityId')});
-    if(!hotlist){
-        contactable = Contactables.findOne({_id:Session.get('entityId')});
-    }
     if (this.data && this.data.responseOnly) {
         responsesOnly = true;
     }
     else {
         responsesOnly = false;
     }
-
 }
 Template.notesTabAdd.helpers({
     isHotListNote: function () {
-        return (hotlist) ? true : false; // hide numbers if hotlist
+      return (hotlist) ? true : false; // hide numbers if hotlist
     },
     isContactableNote: function () {
-        //var contactable = Contactables.findOne(this._id);
+        var contactable = Contactables.findOne(this._id);
         return (contactable) ? true : false; // hide numbers if hotlist
-    },
-    isEmployee: function(){
-        return contactable ? (contactable.Employee ? true : false ): false;
     },
     mobileNumbers: function () {
 
@@ -185,18 +177,19 @@ Template.notesTabAdd.helpers({
     defaultUserNumber: function () {
         return self.defaultUserNumber;
     },
-    ischeckedSMS: function() {
-        checkSMSDep.depend();
-        var field = $("#sendAsSMS");
-        if (field[0] && field[0].checked) {
-            return true;
-        }
-        else {
-            return false;
-        }
-        ;
+    ischeckedSMS: function(){
+      checkSMSDep.depend();
+      var field = $("#sendAsSMS");
+      if(field[0] && field[0].checked){
+        return true;
+      }
+      else{
+        return false;
+      }
+
     }
 });
+
 
 
 // List
@@ -209,27 +202,31 @@ var query = new Utils.ObjectDefinition({
 Template.notesTabList.created = function () {
     var self = this;
 
-
     Meteor.autorun(function () {
             searchQuery={};
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
-                searchQuery['isReply'] = true;
-                searchQuery.links = {
-                    $elemMatch: {
-                        id: Session.get('entityId')
-                    }
-                };
-                if (!NotesHandler) {
-                    NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-                    NotesHandler.setFilter(searchQuery);
-
-
-                } else {
-                    NotesHandler.setFilter(searchQuery);
-                    //NotesHandler.setOptions(hotlist);
-
+              searchQuery['isReply'] = true;
+              searchQuery.links = {
+                $elemMatch: {
+                  id: Session.get('entityId')
                 }
+              };
+              searchQuery.msg = {
+                $regex: query.searchString.value,
+                $options: 'i'
+              };
+
+              if (!NotesHandler) {
+                NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                NotesHandler.setFilter(searchQuery);
+
+
+              } else {
+                NotesHandler.setFilter(searchQuery);
+                //NotesHandler.setOptions(hotlist);
+
+              }
             }
             else if(hotlist) {
                 searchQuery['isReply'] = {$exists: false};
@@ -238,40 +235,50 @@ Template.notesTabList.created = function () {
                         id: Session.get('entityId')
                     }
                 };
-                if (!NotesHandler) {
-                    NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-                    NotesHandler.setFilter(searchQuery);
+                searchQuery.msg = {
+                    $regex: query.searchString.value,
+                    $options: 'i'
+                };
+              if (!NotesHandler) {
+                NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                NotesHandler.setFilter(searchQuery);
 
-                } else {
-                    NotesHandler.setFilter(searchQuery);
+              } else {
+                NotesHandler.setFilter(searchQuery);
 
 
-                }
+              }
             }
             else{
-                //contactable
-                searchQuery.links = {
-                    $elemMatch: {
-                        id: Session.get('entityId')
-                    }
-                };
-                if (!NotesHandler) {
-                    NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-                    NotesHandler.setFilter(searchQuery);
-
-                } else {
-                    NotesHandler.setFilter(searchQuery);
+              //contactable
+               searchQuery.links = {
+                $elemMatch: {
+                  id: Session.get('entityId')
                 }
+              };
+                searchQuery.msg = {
+                    $regex: query.searchString.value,
+                    $options: 'i'
+                };
+              if (!NotesHandler) {
+                NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                NotesHandler.setFilter(searchQuery);
+
+              } else {
+                NotesHandler.setFilter(searchQuery);
+
+
+              }
             }
-        }
+         }
     )
     ;
 }
 ;
 Template.notesTabList.destroyed = function () {
     query.searchString.value = '';
-    //NotesHandler.stop();
-    //delete NotesHandler;
+  //NotesHandler.stop();
+  //delete NotesHandler;
 }
 Template.notesTabList.helpers({
     hasItems: function () {
@@ -282,7 +289,7 @@ Template.notesTabList.helpers({
         return Notes.find(searchQuery,{sort: {dateCreated:-1}});
     },
     isLoading: function () {
-        return NotesHandler.isLoading();
+       return NotesHandler.isLoading();
     },
     query: function() {
         return query;
@@ -324,7 +331,7 @@ Template.notesTabItem.events({
             }],
             callback: function (result) {
                 if (result) {
-                    Meteor.call('removeNote', self._id);
+                  Meteor.call('removeNote', self._id);
                 }
             }
         });
@@ -392,10 +399,10 @@ Template.linksAutoForm.created = function () {
 }
 
 AutoForm.addInputType('linkInput',{
-    template: 'linksAutoForm',
-    valueOut: function () {
-        return links
-    }
+  template: 'linksAutoForm',
+  valueOut: function () {
+    return links
+  }
 });
 
 Template.linksAutoForm.helpers({
