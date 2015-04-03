@@ -1,53 +1,58 @@
 <template name="jobDescription">
     <div class="box">
+        <!-- Box Header -->
         <div class="box-header-2">
-            <a class="btn-action editJobDescription pull-right pointer" style="color: {{colorDescriptionEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
+            <!-- Edit button -->
+            <a class="btn-action pull-right pointer toggleEditMode" style="{{#if editMode}}color: #008DFC;{{/if}}" title="Edit">
+                <i class="fa fa-pencil"></i>
+            </a>
 
+            <!-- Title -->
             <div class="box-title">
                 Description
-                <a class="previewMode bsTooltip pointer" data-toggle="tooltip" title="Preview in mobile size" style="margin-left: 4px">
-                    <i class="fa fa-mobile-phone" style="float: inherit; margin-top: 2px; color: {{colorPreviewMode}}"></i>
-                </a>
+                <!-- Preview button -->
+                {{#unless editMode}}
+                    <a class="previewMode bsTooltip pointer" data-toggle="tooltip" title="Preview in mobile size" style="margin-left: 4px">
+                        <i class="fa fa-mobile-phone" style="float: inherit; margin-top: 2px; {{#if previewMode}}color: #008DFC;{{/if}}"></i>
+                    </a>
+                {{/unless}}
             </div>
-
         </div>
+
+        <!-- Box Content -->
         <div class="box-body" id="description-body">
             <div style="margin-top: 10px; margin-left: 10px">
-                {{#objectProperty property=jobDescription editable=editMode}}
-                    {{#htmlEditor}}
-                    {{/htmlEditor}}
+                {{#if editMode}}
+                    <!-- HTML editor -->
+                    {{> wysihtml jobDescription}}
+
+                    <!-- Action buttons -->
+                    <div class="pull-right" style="margin: 5px;">
+                        <button type="button" class="btn btn-default toggleEditMode"> Cancel </button>
+                        <button type="button" id="saveJobDescriptionEdit" class="btn btn-info"> Save </button>
+                    </div>
                 {{else}}
-                <div id="description" style="max-height: 600px; min-height: 100px; overflow-y: auto;">
-                    {{#if value}}
-                    <div class="text">
-                        {{#showAsHTML value=value previewMode=previewMode}}
-                        {{/showAsHTML}}
+                    <div id="description" style="max-height: 600px; min-height: 100px; overflow-y: auto;">
+                        {{#if jobDescription}}
+                            <div class="text">
+                                <div class="htmlContainer {{#if previewMode}}mobilePreview{{/if}}">
+                                    {{{jobDescription}}}
+                                </div>
+                            </div>
+                        {{else}}
+                            <!-- Empty description -->
+                            <div class="box-v-msg">
+                                <div class="box-v-msg-content">
+                                    <i class="icon-text-wrapping-2"></i>
+                                </div>
+                                <!-- /.box-v-msg-content -->
+                            </div>
+                        {{/if}}
                     </div>
-                    {{else}}
-                    <div class="box-v-msg">
-                        <div class="box-v-msg-content">
-                            <i class="icon-text-wrapping-2"></i>
-                        </div>
-                        <!-- /.box-v-msg-content -->
-                    </div>
-                    {{/if}}
-                </div>
-                {{/objectProperty}}
+                {{/if}}
                 <!-- /.jobDescription -->
             </div>
         </div>
 
-        {{#if editMode}}
-        <div class="box-header-2" style="height: 60px">
-            <div class="pull-right">
-                <span id="cancelJobDescriptionEdit" class="btn btn-default">
-                    Cancel
-                </span>
-                <span id="saveJobDescriptionEdit" class="btn btn-info">
-                    Save
-                </span>
-            </div>
-        </div>
-        {{/if}}
     </div>
 </template>
