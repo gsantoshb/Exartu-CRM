@@ -8,7 +8,7 @@ var selected = undefined;
 // Page - Variables
 var searchDep = new Deps.Dependency;
 var isSearching = false;
-
+$("#userId").prop("selectedIndex", -1);
 var info = new Utils.ObjectDefinition({
     reactiveProps: {
         contactablesCount: {},
@@ -124,6 +124,12 @@ ContactablesController = RouteController.extend({
         if (params.mine) {
             mineQuery.default = !!params.mine;
         }
+        // userId
+        var userIdQuery = {};
+        if (params.userId) {
+
+            userIdQuery.default = params.userId;
+        }
 
         // Tags
         var tagsQuery = {type: Utils.ReactivePropertyTypes.array};
@@ -200,7 +206,8 @@ ContactablesController = RouteController.extend({
                 clientProcessStatus: clientProcessStatusQuery,
                 contactProcessStatus: contactProcessStatusQuery,
                 activeStatus: activeStatusQuery,
-                taxId: taxIdQuery
+                taxId: taxIdQuery,
+                userId: userIdQuery
             }
         });
 
@@ -267,6 +274,10 @@ Template.contactablesList.created = function () {
             urlQuery.addParam('mine', true);
         }
 
+        if (query.userId.value) {
+            searchQuery.userId = query.userId.value;
+            urlQuery.addParam('userId', query.userId.value);
+        }
         // Location filter
         var locationOperatorMatch = false;
         if (query.location.value) {
@@ -547,6 +558,9 @@ Template.contactableListSort.helpers({
 
 // List Filters - Helpers
 Template.contactablesFilters.helpers({
+    users: function () {
+        return Meteor.users.find({}, {sort: {'emails.address': 1}});
+    },
     information: function () {
         var searchQuery = {};
 
