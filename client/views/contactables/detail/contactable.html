@@ -50,11 +50,9 @@
                             </div><!-- /.notice-msg -->
                         </div><!-- /.notice-msg-container -->
 
-                        <div class="box-type-1-content">
-                            <div class="details-view-content">
-                                <div class="tab-pane active">
-                                    {{> UI.dynamic template=currentTemplate  data=. }}
-                                </div>
+                        <div class="details-view-content">
+                            <div class="tab-pane active">
+                                {{> UI.dynamic template=currentTemplate  data=. }}
                             </div>
                         </div>
 
@@ -157,18 +155,20 @@
 </template>
 
 <template name="contactable_details">
-    {{> contactableDetailBox}}
+    <div class="box-type-1-content">
+        {{> contactableDetailBox}}
 
-    {{> contactableContactMethodsBox}}
+        {{> contactableContactMethodsBox}}
 
-    {{#if Contact}}
-        {{> contactClientInfo client=Contact.client path='Contact.client' collection=collection}}
-    {{/if}}
+        {{#if Contact}}
+            {{> contactClientInfo client=Contact.client path='Contact.client' collection=collection}}
+        {{/if}}
 
-    {{> contactable_contacts}}
-    {{>tagsBox}}
-    {{>hotListMembershipsBox}}
-    {{>addressList}}
+        {{> contactable_contacts}}
+        {{>tagsBox}}
+        {{>hotListMembershipsBox}}
+        {{>addressList}}
+    </div>
 </template>
 
 <template name="hotListMembershipsBox">

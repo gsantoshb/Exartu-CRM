@@ -60,10 +60,24 @@ Template.dashboard.created = function () {
         }
 
     });
+
+
+    //var deals = LookUps.findOne({_id: type, lookUpCode: Enums.lookUpTypes.deal.type.lookUpCode});
+    //var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
+    //var lkps = LookUps.find({
+    //    lookUpCode: Enums.lookUpCodes.client_status,
+    //    hierId: hier._id,
+    //    sortOrder: {$gt: 0}
+    //}, {sort: {sortOrder: 1}}).fetch();
+    //
+    //console.log(lkps);
+    //
+    //console.log( Enums.lookUpTypes.deal );
 };
 
 Template.dashboard.helpers({
     activities: function () {
+        console.log( 'is infinite scroll : '+SubscriptionHandlers.ActivitiesHandler.isInfiniteScroll() );
         return Activities.find({}, {sort: {'data.dateCreated': -1}});
     },
     listViewMode: function () {
@@ -93,6 +107,28 @@ Template.dashboard.helpers({
 
         return ActivitiesHandler.ready();
 
+    },
+    userName: function () {
+        return Meteor.user().username;
+    },
+    userEmail: function () {
+        return Meteor.user().emails[0].address;
+    },
+    currentHierName: function () {
+        var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
+        return hier ? hier.name : '';
+    },
+    getWonCounter: function () {
+        return 0;
+    },
+    getLostCounter: function () {
+        return 0;
+    },
+    getUnqualifiedCounter: function () {
+        return 0;
+    },
+    teamMembers: function() {
+        return [];
     }
 });
 

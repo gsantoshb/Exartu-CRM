@@ -125,6 +125,10 @@ var responsesOnly = false;
 Template.notesTabAdd.events({
     'change #sendAsSMS': function(){
         checkSMSDep.changed();
+    },
+    'click #toggleAddNoteModal': function(){
+        var data = {};
+        Utils.showModal('noteAdd', data);
     }
 });
 Template.notesTab.created = function () {

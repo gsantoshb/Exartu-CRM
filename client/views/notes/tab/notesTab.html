@@ -14,7 +14,25 @@
                 <div class="item-icon item-icon-xs item-icon-notes"><i class="icon icon-pencil-3"></i></div> <div class="title">Add Note</div>
             </div><!-- /.add-note-header -->
 
-            {{> afQuickField name='msg' rows=3 placeholder='Write your note here ...' label=false style='box-shadow: none;'}}
+            <div class="add-note-textarea">
+                {{> afQuickField name='msg' rows=3 placeholder='Write your note here ...' label=false style='box-shadow: none;'}}
+            </div>
+
+            <div class="add-note-options">
+                <div class="add-note-options-head"><i class="fa fa-link"></i> Linked to this note:</div>
+                <div class="add-note-options-body">
+                    <div class="label-4">
+                        <i class="icon-holder icon-profile-business-man"></i> Cameron, Sandy <span class="text-shade-1">— VP Sales@Cleaning inc</span>
+                        <button class="btn-remove" href="#"><i class="fa fa-times-circle"></i></button>
+                    </div>
+                    <div class="label-4">
+                        <i class="icon-holder icon-profile-business-man"></i> Cameron, Sandy <span class="text-shade-1">— VP Sales@Cleaning inc</span>
+                        <button class="btn-remove" href="#"><i class="fa fa-times-circle"></i></button>
+                    </div>
+                    <a class="btn-custom-3" id="toggleAddNoteModal"><i class="fa fa-plus"></i> Link item</a>
+                </div><!-- /.add-note-options-body -->
+            </div>
+
             <div class="add-note-actions">
                 <div class="add-note-actions-cell">
                     <button class="btn btn-custom-2" type="submit" disabled="{{addDisabled}}">Save note</button>
@@ -48,9 +66,8 @@
                             {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
                         </div>
                     </div>
-
-
                 {{/if}}
+
                 <div class="add-note-actions-cell last" style="visibility:{{isContactableNote}}">
                     <div class="item-icon item-icon-network item-icon-sm"><i class="icon-profile-business-man"></i></div>
                     {{> afFieldInput name='links' type='linkInput'}}

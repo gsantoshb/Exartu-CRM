@@ -14,7 +14,9 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-12 col-lg-6">
                                     <div class="client-box">
+                                        {{#if pictureUrl}}
                                         <div class="client-logo pull-left sufix-10"><a href="#"><img src="{{pictureUrl}}" alt="{{displayName}} - logo"></a></div>
+                                        {{/if}}
                                         <div class="client-content">
                                             <a href="/contactable/{{_id}}"><h4>{{displayName}}</h4></a>
                                             {{#with contactMethod 0}}

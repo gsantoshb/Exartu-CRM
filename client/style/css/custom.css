@@ -1715,3 +1715,8 @@ and (max-device-width: 568px) {
     border-radius: 0 !important;
     border: 1px solid #EAEAEA !important;
 }
+
+/* custom dashboard calendar styles */
+.calendar-widget td.fc-widget-header, .calendar-widget td.fc-widget-content { padding: 0 !important;}
+.calendar-widget .fc-day-grid-container.fc-scroller { overflow: hidden !important; height: auto !important;}
+.calendar-widget .fc-unthemed .fc-today { background: #fff !important;}

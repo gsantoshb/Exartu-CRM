@@ -1,12 +1,11 @@
 <template name="agendaBox">
         <div class="box-type-3 calendar-widget">
-            <div id="eventCalendarHumanDate"></div>
+            {{> fullcalendar options  }}
+
+            <div class="tasks-navi">
+                <a class="next" id="next-month-btn" href="#"><i class="fa fa-chevron-right"></i></a>
+                <a class="prev" id="prev-month-btn" href="#"><i class="fa fa-chevron-left"></i></a>
+                <div class="current">{{{currentDate}}}</div>
+            </div>
         </div><!-- /.box-type-3 -->
-
-        <!-- !!!!! LA MOUSE OVER SE PUNE CLASA HOVER-EDIT !!!  -->
-        <div class="note hover-edit">
-            Remember to call mike and talk about the deal.
-            <div class="date">— 17 mar 14:20 PM <a class="edit" href="#">— <i class="fa fa-pencil"></i> Edit note</a></div>
-        </div>
-
 </template>
