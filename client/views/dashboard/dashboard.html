@@ -10,15 +10,7 @@
                     <div class="page-title-2">
                         <h1 class="welcome">
                             {{_ "Hi"}}&nbsp;
-                            {{#if userName}}
-                                {{userName}},
-                            {{else}}
-                                {{#if currentHierName}}
-                                    {{currentHierName}},
-                                {{else}}
-                                    {{userEmail}},
-                                {{/if}}
-                            {{/if}}
+                            {{getUserDisplayName}}
                         </h1>
                     </div>
 

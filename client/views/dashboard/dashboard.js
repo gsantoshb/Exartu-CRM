@@ -9,6 +9,85 @@ var activityTypes = [
     Enums.activitiesType.fileAdd
 ];
 
+
+var query = {
+    options: {
+        //limit: 50,
+        sort: {'data.dateCreated': -1}
+    },
+    filter: {
+        searchString: ''
+    }
+};
+var queryDep = new Deps.Dependency;
+var searchString = new ReactiveVar('');
+var listViewMode = new ReactiveVar(true);
+
+var leadTrackers = new ReactiveVar([]);
+var teamMemberTrackers = new ReactiveVar([]);
+
+var setLeadTrackers = function(){
+    var hierId = Meteor.user().currentHierId;
+    var lkps = LookUps.find({
+        lookUpCode: Enums.lookUpCodes.client_status,
+        hierId: hierId,
+        sortOrder: {$gt: 0}
+    }, {sort: {sortOrder: 1}}).fetch();
+
+    var trackers = [];
+    var oneMonthAgo = moment().subtract(1, 'month') - 1000;
+
+    _.each(lkps, function(item){
+        var code = item._id;
+        trackers.push({
+            displayName: item.displayName,
+            sortOrder: item.sortOrder,
+            code: code,
+            counter: clients.find({'Client.status': code}, {"dateCreated" : { $gte : oneMonthAgo }, hierId: hierId}).count()
+        });
+    });
+
+    _.sortBy(trackers, function(o) { return o.sortOrder; });
+    trackers.reverse();
+
+    leadTrackers.set(trackers);
+
+    return trackers;
+};
+
+var setTeamMembersTrackers = function(){
+    var hierId = Meteor.user().currentHierId;
+    var members = Meteor.users.find({currentHierId: hierId}).fetch();
+
+    var trackers = [];
+
+    _.each(members, function(member){
+        var displayName = (member.username ? member.username : member.emails[0].address);
+        trackers.push({
+            displayName: displayName,
+            counter: clients.find({userId: member._id, hierId: hierId}).count()
+        });
+    });
+
+    _.sortBy(trackers, function(o) { return o.displayName; });
+
+    teamMemberTrackers.set( trackers );
+
+    return trackers;
+};
+
+var getSelectedActivityFilters = function(){
+    var filters = [];
+    $('.activityFilter-option').each(function() {
+        if($(this).prop('checked') && $(this).val() != 'all')
+            filters.push($(this).val());
+    });
+    //console.log('filters : ');
+    //console.log(filters);
+
+    return filters;
+}
+
 DashboardController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function () {
@@ -34,80 +113,6 @@ DashboardController = RouteController.extend({
         });
     }
 });
-
-
-var query = {
-    options: {
-        //limit: 50,
-        sort: {'data.dateCreated': -1}
-    },
-    filter: {
-        searchString: ''
-    }
-};
-var queryDep = new Deps.Dependency;
-var searchString = new ReactiveVar('');
-var listViewMode = new ReactiveVar(true);
-
-var leadTrackers = [];
-var teamMemberTrackers = [];
-
-var setLeadTrackers = function(){
-    var hierId = Meteor.user().currentHierId;
-    var lkps = LookUps.find({
-        lookUpCode: Enums.lookUpCodes.client_status,
-        hierId: hierId,
-        sortOrder: {$gt: 0}
-    }, {sort: {sortOrder: 1}}).fetch();
-
-    leadTrackers = [];
-    var oneMonthAgo = moment().subtract(1, 'month') - 1000;
-
-    _.each(lkps, function(item){
-        var code = item._id;
-        leadTrackers.push({
-            displayName: item.displayName,
-            sortOrder: item.sortOrder,
-            code: code,
-            counter: clients.find({'Client.status': code}, {"dateCreated" : { $gte : oneMonthAgo }, hierId: hierId}).count()
-        });
-    });
-
-    _.sortBy(leadTrackers, function(o) { return o.sortOrder; });
-    leadTrackers.reverse();
-
-    return leadTrackers;
-};
-
-var setTeamMembersTrackers = function(){
-    var hierId = Meteor.user().currentHierId;
-    var members = Meteor.users.find({currentHierId: hierId}).fetch();
-
-    teamMemberTrackers = [];
-
-    _.each(members, function(member){
-        var displayName = (member.username ? member.username : member.emails[0].address);
-        teamMemberTrackers.push({
-            displayName: displayName,
-            counter: clients.find({userId: member._id, hierId: hierId}).count()
-        });
-    });
-
-    _.sortBy(teamMemberTrackers, function(o) { return o.displayName; });
-    return teamMemberTrackers;
-};
-
-var getSelectedActivityFilters = function(){
-    var filters = [];
-    $('.activityFilter-option').each(function() {
-        if($(this).prop('checked') && $(this).val() != 'all')
-            filters.push($(this).val());
-    });
-    //console.log('filters : ');
-    //console.log(filters);
-
-    return filters;
-}
 
 // Main template
 Template.dashboard.created = function () {
@@ -161,6 +166,22 @@ Template.dashboard.helpers({
         return ActivitiesHandler.ready();
 
     },
+    getUserDisplayName: function() {
+        var user = Meteor.user();
+        var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
+
+        if(user.firstName && user.lastName){
+            return user.firstName+' '+user.lastName;
+        }
+        else{
+            if(user.username)
+                return user.username;
+            else if(hier)
+                return hier.name;
+            else
+                return user.emails[0].address;
+        }
+    },
     userName: function () {
         return Meteor.user().username;
     },
@@ -172,12 +193,11 @@ Template.dashboard.helpers({
         return hier ? hier.name : '';
     },
     getLeadTrackers: function() {
-        return leadTrackers;
+        return leadTrackers.get();
     },
     getTeamMembersTrackers: function() {
-        return teamMemberTrackers;
+        return teamMemberTrackers.get();
     },
-
     getTypeContactable: function(){
         return Enums.activitiesType.contactableAdd;
     },

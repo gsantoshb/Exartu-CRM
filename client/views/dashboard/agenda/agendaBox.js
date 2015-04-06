@@ -292,6 +292,7 @@ Template.agendaBox.helpers({
                 calendarDiv.find('.fc-content-skeleton').remove();
                 calendarDiv.find('.fc-other-month a').remove();
                 calendarDiv.find('.fc-other-month .day-tasks').remove();
+
             },
             loading: function(bool) {
                 var calendarDiv = $('.fc');
