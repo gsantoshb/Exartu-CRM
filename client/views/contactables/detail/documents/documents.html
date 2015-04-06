@@ -118,7 +118,7 @@
                     <a class="item-icon {{documentIconBackground type}}" href="#"><i class="{{documentIcon type}}"></i></a>
                 </div>
                 <div class="list-item-cell documents-list-item-title">
-                    <div class="item-title"><a href="#">{{name}}</a></div>
+                    <div class="item-title {{#unless description}}single{{/unless}}"><a href="#">{{name}}</a></div>
                     <div class="item-subtitle">{{description}}</div>
                 </div>
 
@@ -165,7 +165,7 @@
                         <a class="item-icon item-icon-pdf" href="#"><i class="{{documentIcon type}}"></i></a>
                     </div>
                     <div class="list-item-cell documents-list-item-title">
-                        <div class="item-title"><a href="#">{{name}}</a></div>
+                        <div class="item-title {{#unless description}}single{{/unless}}"><a href="#">{{name}}</a></div>
                         <div class="item-subtitle">{{description}}</div>
                     </div>
 
