@@ -269,6 +269,9 @@ Template.agendaBox.helpers({
                                 var name = (user.username ? user.username : user.emails[0].address);
                                 html += '<p class="desc">'+name+'</p>';
                             }
+                            else{
+                                html += '<p class="desc"><i>unassigned</i></p>';
+                            }
                         }
                         else
                             html += '<p class="desc">unassigned</p>';
