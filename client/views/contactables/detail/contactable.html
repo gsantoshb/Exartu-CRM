@@ -22,7 +22,7 @@
                     <div class="box-type-1">
 
                         <div class="notice-msg-container">
-                            <div class="notice-msg">
+                            <div class="notice-msg {{#if statusNoteEditMode}}editing{{/if}}">
                                 <div class="notice-msg-title">
                                     <i class="fa fa-file-text-o"></i>
                                     {{_ "Status note"}}
@@ -30,21 +30,22 @@
                                     <span class="right-decoration"></span>
                                 </div>
                                 <div class="notice-msg-content">
-                                    <div class="col-md-8">
+                                    <div class="input-group">
                                         {{#objectProperty property=contactableStatusNote editable=statusNoteEditMode}}
-                                            <input class="form-control" type="text" name="statusNote" value="{{contactableStatusNote}}">
+                                            <input class="form-control input-sm" type="text" name="statusNote" value="{{contactableStatusNote}}">
                                         {{else}}
                                             <span>{{contactableStatusNote}}</span>
                                             <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
                                         {{/objectProperty}}
-
                                         {{#if statusNoteEditMode}}
-                                            <div class="col-xs-4">
-                                                <button type="button" class="btn btn-primary btn-sm" id="saveStatusNote">{{_ "Save"}}</button>
-                                                <button type="button" class="btn btn-default btn-sm" id="cancelStatusNote">{{_ "Cancel"}}</button>
-                                            </div>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-sm" id="saveStatusNote">{{_ "Save"}}</button>
+                                            </span>
                                         {{/if}}
                                     </div>
+                                    {{#if statusNoteEditMode}}
+                                        <button type="button" class="btn btn-link btn-sm" id="cancelStatusNote">{{_ "Cancel"}}</button>
+                                    {{/if}}
                                 </div>
                             </div><!-- /.notice-msg -->
                         </div><!-- /.notice-msg-container -->
