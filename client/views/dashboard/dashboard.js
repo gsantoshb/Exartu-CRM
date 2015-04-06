@@ -38,7 +38,7 @@ DashboardController = RouteController.extend({
 
 var query = {
     options: {
-        limit: 50,
+        //limit: 50,
         sort: {'data.dateCreated': -1}
     },
     filter: {
@@ -94,7 +94,6 @@ var setTeamMembersTrackers = function(){
     });
 
     _.sortBy(teamMemberTrackers, function(o) { return o.displayName; });
-console.log(teamMemberTrackers);
     return teamMemberTrackers;
 };
 
@@ -113,6 +112,9 @@ var getSelectedActivityFilters = function(){
 // Main template
 Template.dashboard.created = function () {
     Meteor.autorun(function () {
+        console.log('it should search now : ');
+        console.log(activityTypes);
+        console.log(query);
 
         queryDep.depend();
         if (ActivitiesHandler) {
@@ -121,19 +123,14 @@ Template.dashboard.created = function () {
         else{
             SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes}}});
         }
+
         setLeadTrackers();
         setTeamMembersTrackers();
-        //console.log(leadTrackers);
-        console.log(teamMemberTrackers);
-
     });
-    //
-    //console.log( Enums.lookUpTypes.deal );
 };
 
 Template.dashboard.helpers({
     activities: function () {
-        //console.log( 'is infinite scroll : '+SubscriptionHandlers.ActivitiesHandler.isInfiniteScroll() );
         return Activities.find({}, {sort: {'data.dateCreated': -1}});
     },
     listViewMode: function () {
@@ -205,7 +202,6 @@ Template.dashboard.events({
     'keyup #searchString': _.debounce(function (e) {
         query.filter.searchString = e.target.value;
         queryDep.changed();
-        console.log('it should search now...');
     }, 200),
     'click #list-view': function () {
         listViewMode.set(true);
