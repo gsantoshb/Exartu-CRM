@@ -92,9 +92,9 @@ var setActivityTrackers = function(){
             $gte:dayStart,
             $lt:dayEnd
         }});
-        console.log('interval : '+dayStart+'-'+dayEnd);
+        //console.log('interval : '+dayStart+'-'+dayEnd);
         //console.log(activity);
-        console.log( 'activity counters '+activity.fetch().length );
+        //console.log( 'activity counters '+activity.fetch().length );
     }
 
     var trackers = [];
