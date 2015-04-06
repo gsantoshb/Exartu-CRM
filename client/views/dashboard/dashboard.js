@@ -86,8 +86,9 @@ var setTeamMembersTrackers = function(){
     teamMemberTrackers = [];
 
     _.each(members, function(member){
+        var displayName = (member.username ? member.username : member.emails[0].address);
         teamMemberTrackers.push({
-            displayName: member.displayName,
+            displayName: displayName,
             counter: clients.find({userId: member._id, hierId: hierId}).count()
         });
     });
