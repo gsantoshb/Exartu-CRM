@@ -263,12 +263,7 @@ Template.hotListMembersList.helpers({
         return HotListMembersHandler.isLoading();
     },
     hotListMembers: function () {
-        console.log(searchQuery);
-        console.log(options);
-        console.log('members');
-        var members = membersCollection.find(searchQuery, options);
-        console.log(members.fetch());
-        return members;
+        return membersCollection.find(searchQuery, options);
     }
 });
 
