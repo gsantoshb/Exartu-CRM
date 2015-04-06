@@ -369,30 +369,14 @@
                 <a class="list-type-7-icon" href="#"><i class="icon icon-file-upload"></i></a>
 
                 <div class="list-type-7-title">
-                    {{#with task}}
-                        {{#if displayUserName userAssigned}}
-                            {{displayUserName userAssigned}} <span class="desc">is assigned to</span>
-                        {{/if}}
-                        <a class="pointer">{{>showMore text=msg limit=60}}</a>
-                        <span class="desc">&ndash; task created by {{displayUserName userId}}</span>
-                    {{/with}}
-                    {{#each links}}
-                        <a href="{{getHref}}">
-                            {{#with getEntity}}
-                                <span class="badge">{{displayName}}</span>
-                            {{/with}}
-                        </a>
-                    {{/each}}
-                </div>
-
-                <div class="list-type-7-title">
                     <!-- Job information -->
                     {{file.name}} <span class="desc">uploaded @ </span>
                     {{#with contactable}}
                         <a href="/contactable/{{_id}}">{{displayName}}</a>
                     {{/with}}
 
-                    <span class="desc">&ndash; by {{displayUserName userId}}</span></div>
+                    <span class="desc">&ndash; by {{displayUserName userId}}</span>
+                </div>
             </div><!-- /.left-part -->
             <div class="right-part">{{> recordTimestamp}}</div>
         </li>
