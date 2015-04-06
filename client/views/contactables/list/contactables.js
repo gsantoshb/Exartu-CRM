@@ -959,6 +959,13 @@ var runESComputation = function () {
             });
         }
 
+        if(query.contactProcessStatus.value.length>0){
+           var processArray = [];
+           _.forEach(query.contactProcessStatus.value, function(p){
+             processArray.push(p.toLowerCase());
+           });
+           filters.bool.must.push({terms:{'Contact.status': processArray}});
+        }
         isSearching = true;
         searchDep.changed();
         Contactables.esSearch('.*' + query.searchString.value + '.*', filters, function (err, result) {
