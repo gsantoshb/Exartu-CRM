@@ -6,7 +6,7 @@
                     <div class="box-options">
                         <a class="action-btn" id="edit-contact-method-mode" href="#"><i class="fa fa-pencil"></i></a>
                     </div>
-                    <h3>Contact</h3>
+                    <h3>{{_ "Contact"}}</h3>
                     <!--<a class="btn-action pointer" title="Edit"><i id="edit-contact-method-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>-->
                 </div><!-- /.col-md-2 -->
                 <div class="col-md-10">
@@ -37,9 +37,9 @@
 <template name="contactMethodItem">
     <div class="col-md-6">
         <div class="list-type-5-item">
-            <div class="left-part">{{displayName}}</div>
+            <div class="left-part">{{_ displayName}}</div>
             <div class="right-part">
-                <a href="{{contactMethodTypePrefix type}}{{value}}">{{value}}</a>
+                <a href="{{contactMethodTypePrefix type}}{{value}}">{{_ value}}</a>
                 {{#if editMode }}
                     <div class="list-3-actions">
                         <a class="delete pointer"><i class="fa fa-trash-o"></i></a>
@@ -58,7 +58,7 @@
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{selectedType}} <span class="caret"></span></button>
                     <ul class="dropdown-menu">
                         {{#each contactMethodsTypes}}
-                            <li><a class="contact-method-type" href="#">{{displayName}}</a></li>
+                            <li><a class="contact-method-type" href="#">{{_ displayName}}</a></li>
                         {{/each}}
                     </ul>
                 </div>
@@ -69,8 +69,8 @@
 
     <div class="edit-actions-bar">
         <span id="add-contact-method-error" class="label label-danger" style="float: right;"></span>
-        <button id="add-contact-method"  type="button" class="btn btn-primary" title="Add">Add contact</button>
-        <a id="cancel-contact-method" class="btn btn-default">Cancel</a>
+        <button id="add-contact-method"  type="button" class="btn btn-primary" title="Add"> {{_ "Add contact"}} </button>
+        <a id="cancel-contact-method" class="btn btn-default"> {{_ "Cancel"}} </a>
     </div>
 
 </template>

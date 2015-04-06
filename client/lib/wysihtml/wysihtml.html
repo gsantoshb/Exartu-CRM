@@ -1,0 +1,173 @@
+
+<template name="wysihtml">
+    <!-- Toolbar -->
+    <div id="wysihtml-toolbar" style="display: none;">
+        <div class="btn-toolbar" role="toolbar">
+            <!-- Font Size -->
+            <div class="btn-group {{#if htmlView}}disabled{{/if}}" role="group" aria-label="style">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" title="Font Size" aria-expanded="false">
+                    <i class="fa fa-font"></i>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" data-wysihtml5-command="formatBlock"
+                           data-wysihtml5-command-value="div" href="javascript:;" unselectable="on">Normal text</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" data-wysihtml5-command="formatBlock"
+                           data-wysihtml5-command-value="h1" href="javascript:;" unselectable="on">Heading 1</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" data-wysihtml5-command="formatBlock"
+                           data-wysihtml5-command-value="h2" href="javascript:;" unselectable="on">Heading 2</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" data-wysihtml5-command="formatBlock"
+                           data-wysihtml5-command-value="h3" href="javascript:;" unselectable="on">Heading 3</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" data-wysihtml5-command="formatBlock"
+                           data-wysihtml5-command-value="h4" href="javascript:;" unselectable="on">Heading 4</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" data-wysihtml5-command="formatBlock"
+                           data-wysihtml5-command-value="h5" href="javascript:;" unselectable="on">Heading 5</a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" data-wysihtml5-command="formatBlock"
+                           data-wysihtml5-command-value="h6" href="javascript:;" unselectable="on">Heading 6</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Font Color -->
+            <div class="btn-group {{#if htmlView}}disabled{{/if}}" role="group" aria-label="style">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" title="Font Color" aria-expanded="false">
+                    <i class="fa fa-th"></i>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="presentation">
+                        <div class="wysihtml5-colors" data-wysihtml5-command-value="black"></div>
+                        <a role="menuitem" tabindex="-1" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor"
+                           data-wysihtml5-command-value="black" href="javascript:;" unselectable="on">Black</a>
+                    </li>
+                    <li role="presentation">
+                        <div class="wysihtml5-colors" data-wysihtml5-command-value="silver"></div>
+                        <a role="menuitem" tabindex="-1" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor"
+                           data-wysihtml5-command-value="silver" href="javascript:;" unselectable="on">Silver</a>
+                    </li>
+                    <li role="presentation">
+                        <div class="wysihtml5-colors" data-wysihtml5-command-value="gray"></div>
+                        <a role="menuitem" tabindex="-1" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor"
+                           data-wysihtml5-command-value="gray" href="javascript:;" unselectable="on">Grey</a>
+                    </li>
+                    <li role="presentation">
+                        <div class="wysihtml5-colors" data-wysihtml5-command-value="maroon"></div>
+                        <a role="menuitem" tabindex="-1" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor"
+                           data-wysihtml5-command-value="maroon" href="javascript:;" unselectable="on">Maroon</a>
+                    </li>
+                    <li role="presentation">
+                        <div class="wysihtml5-colors" data-wysihtml5-command-value="red"></div>
+                        <a role="menuitem" tabindex="-1" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor"
+                           data-wysihtml5-command-value="red" href="javascript:;" unselectable="on">Red</a>
+                    </li>
+                    <li role="presentation">
+                        <div class="wysihtml5-colors" data-wysihtml5-command-value="purple"></div>
+                        <a role="menuitem" tabindex="-1" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor"
+                           data-wysihtml5-command-value="purple" href="javascript:;" unselectable="on">Purple</a>
+                    </li>
+                    <li role="presentation">
+                        <div class="wysihtml5-colors" data-wysihtml5-command-value="green"></div>
+                        <a role="menuitem" tabindex="-1" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor"
+                           data-wysihtml5-command-value="green" href="javascript:;" unselectable="on">Green</a>
+                    </li>
+                    <li role="presentation">
+                        <div class="wysihtml5-colors" data-wysihtml5-command-value="olive"></div>
+                        <a role="menuitem" tabindex="-1" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor"
+                           data-wysihtml5-command-value="olive" href="javascript:;" unselectable="on">Olive</a>
+                    </li>
+                    <li role="presentation">
+                        <div class="wysihtml5-colors" data-wysihtml5-command-value="navy"></div>
+                        <a role="menuitem" tabindex="-1" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor"
+                           data-wysihtml5-command-value="navy" href="javascript:;" unselectable="on">Navy</a>
+                    </li>
+                    <li role="presentation">
+                        <div class="wysihtml5-colors" data-wysihtml5-command-value="blue"></div>
+                        <a role="menuitem" tabindex="-1" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor"
+                           data-wysihtml5-command-value="blue" href="javascript:;" unselectable="on">Blue</a>
+                    </li>
+                    <li role="presentation">
+                        <div class="wysihtml5-colors" data-wysihtml5-command-value="orange"></div>
+                        <a role="menuitem" tabindex="-1" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor"
+                           data-wysihtml5-command-value="orange" href="javascript:;" unselectable="on">Orange</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Style -->
+            <div class="btn-group {{#if htmlView}}disabled{{/if}}" role="group" aria-label="style">
+                <button type="button" class="btn btn-default" data-wysihtml5-command="bold" title="Bold">
+                    <i class="fa fa-bold"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-wysihtml5-command="italic" title="Italic">
+                    <i class="fa fa-italic"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-wysihtml5-command="underline" title="Underline">
+                    <i class="fa fa-underline"></i>
+                </button>
+            </div>
+
+            <!-- Justify -->
+            <div class="btn-group {{#if htmlView}}disabled{{/if}}" role="group" aria-label="justify">
+                <button type="button" class="btn btn-default" data-wysihtml5-command="justifyLeft" title="Align Left">
+                    <i class="fa fa-align-left"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-wysihtml5-command="justifyCenter" title="Align Center">
+                    <i class="fa fa-align-center"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-wysihtml5-command="justifyRight" title="Align Right">
+                    <i class="fa fa-align-right"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-wysihtml5-command="justifyFull" title="Justify">
+                    <i class="fa fa-align-justify"></i>
+                </button>
+            </div>
+
+            <!-- Lists -->
+            <div class="btn-group {{#if htmlView}}disabled{{/if}}" role="group" aria-label="lists">
+                <button type="button" class="btn btn-default" data-wysihtml5-command="insertUnorderedList" title="Unordered List">
+                    <i class="fa fa-list-ul"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-wysihtml5-command="insertOrderedList" title="Ordered List">
+                    <i class="fa fa-list-ol"></i>
+                </button>
+            </div>
+
+            <!-- Link & Image -->
+            <div class="btn-group {{#if htmlView}}disabled{{/if}}" role="group" aria-label="links">
+                <button type="button" class="btn btn-default insertLink" title="Insert Link">
+                    <i class="fa fa-link"></i>
+                </button>
+
+                <!-- Image -->
+                <button type="button" class="btn btn-default insertImage" title="Insert Image">
+                    <i class="fa fa-image"></i>
+                </button>
+            </div>
+
+            <!-- Html toggle -->
+            <button type="button" class="btn {{#if htmlView}}btn-primary{{else}}btn-default{{/if}} toggleHTMLView" data-wysihtml5-action="change_view" title="Toggle HTML View">
+                <i class="fa fa-code"></i>
+                {{#if htmlView}}HTML Editor Mode{{/if}}
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Editor area -->
+    <form>
+        <textarea id="wysihtml-textarea" placeholder="Enter your text ..." autofocus style="width: 100%; height: 400px; padding: 5px;"></textarea>
+    </form>
+</template>

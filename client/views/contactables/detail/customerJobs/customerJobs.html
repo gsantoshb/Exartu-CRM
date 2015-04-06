@@ -7,7 +7,7 @@
                         <span class="fa fa-plus" title="Add"></span>
                     </a>
                 </div>
-                <div class="box-title">Jobs</div>
+                <div class="box-title">{{_ "Jobs"}}</div>
             </div>
             <div class="box-content-md">
                 <ul class="list-3 stripped has-thumb">
@@ -17,16 +17,16 @@
                                 <a class="item-icon item-icon-jobs" href="/job/{{_id}}"><i class="icon-briefcase-2"></i></a>
                             </div>
                             <div class="list-item-cell jobs-list-item-title">
-                                <div class="item-title"><a href="/job/{{_id}}">{{displayName}}</a></div>
+                                <div class="item-title"><a href="/job/{{_id}}">{{_ displayName}}</a></div>
                                 <div class="item-subtitle"><a
-                                        href="/contactable/{{client}}">{{clientName}} {{#if departmentName}}
-                                    &#8212; {{departmentName}}{{/if}}</a></div>
+                                        href="/contactable/{{client}}">{{_ clientName}} {{#if departmentName}}
+                                    &#8212; {{_ departmentName}}{{/if}}</a></div>
                             </div>
                             <div class="list-item-details jobs-list-item-details">
                                 <div class="list-item-cell jobs-list-item-placements">
                     <span class="hidden-xs"><a href="/job/{{_id}}/placements"><span>{{countPlacements}}
                         /{{countRequired}}</span></a></span>
-                                    <span class="visible-xs"><strong>{{countPlacements}}1</strong> Placement</span>
+                                    <span class="visible-xs"><strong>{{countPlacements}}1</strong> {{_ "Placement"}}</span>
                                 </div>
                                 <div class="list-item-cell jobs-list-item-status">
                                     {{> jobInformation }}

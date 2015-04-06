@@ -8,6 +8,8 @@ EmailTemplateController = RouteController.extend({
   action: function () {
     if (this.params._id) {
       template = EmailTemplates.findOne({_id: this.params._id});
+    } else {
+      template = {};
     }
     this.render();
   }
@@ -60,7 +62,7 @@ Template.emailTemplate.helpers({
     return EmailTemplateMergeFields.find();
   },
   editorContext: function () {
-    return {value: template ? template.text : ''};
+    return template ? template.text : '';
   },
   preview: function () {
     return preview.get();
@@ -101,8 +103,8 @@ Template.emailTemplate.events({
 
     // Insert the merge field on the editor
     try {
-      var editorInstance = Template.instance().$('.editor').data('wysihtml5').editor;
-      editorInstance.composer.commands.exec("foo", mf);
+      var html = '<input value="' + mf.displayName + '" data-mergefield="' + mf._id + '" disabled="disabled">';
+      WYSIHTMLEditor.composer.commands.exec("insertHTML", html);
     } catch (ex) {
       console.log('Error trying to insert merge field. Try giving the editor focus.');
     }
@@ -111,7 +113,8 @@ Template.emailTemplate.events({
   'click #preview': function () {
     if (editMode.get()){
       editMode.set(false);
-      Meteor.call('getPreview', Template.instance().$('.editor').data('wysihtml5').editor.composer.getValue(), function (err, result) {
+      var editorText = WYSIHTMLEditor.getValue();
+      Meteor.call('getPreview', editorText, function (err, result) {
         if (err){
           console.log(err);
         }else{
@@ -141,7 +144,7 @@ Template.emailTemplate.events({
       var templateData = {
         name: name,
         subject: subject,
-        text: Template.instance().$('.editor').data('wysihtml5').editor.composer.getValue(),
+        text: WYSIHTMLEditor.getValue(),
         category: Template.instance().$('#category').val()
       };
 
@@ -156,77 +159,3 @@ Template.emailTemplate.events({
     isSaving.set(false);
   }
 });
-
-
-if(window.wysihtml5){
-  var NODE_NAME= 'INPUT',
-    dom = wysihtml5.dom;
-  function _format(composer, attributes) {
-    var doc             = composer.doc,
-      tempClass       = "_wysihtml5-temp-" + (+new Date()),
-      tempClassRegExp = /non-matching-class/g,
-      i               = 0,
-      length,
-      anchors,
-      anchor,
-      hasElementChild,
-      isEmpty,
-      elementToSetCaretAfter,
-      textContent,
-      whiteSpace,
-      j;
-    wysihtml5.commands.formatInline.exec(composer, undefined, NODE_NAME, tempClass, tempClassRegExp);
-    anchors = doc.querySelectorAll(NODE_NAME + "." + tempClass);
-    length  = anchors.length;
-    for (; i<length; i++) {
-      anchor = anchors[i];
-      anchor.removeAttribute("class");
-
-      anchor.setAttribute('value', attributes.displayName);
-      //anchor.innerHTML = attributes.path;
-      anchor.setAttribute('data-mergeField', attributes._id);
-      anchor.setAttribute('disabled', "disabled");
-      anchor.setAttribute('style', "text-align: center;border-radius: 2px; border: solid 1px #007AFF; color: #007AFF;");
-    }
-
-    elementToSetCaretAfter = anchor;
-    if (length === 1) {
-      textContent = dom.getTextContent(anchor);
-      hasElementChild = !!anchor.querySelector("*");
-      isEmpty = textContent === "" || textContent === wysihtml5.INVISIBLE_SPACE;
-      if (!hasElementChild && isEmpty) {
-        dom.setTextContent(anchor, attributes.text || anchor.href);
-        whiteSpace = doc.createTextNode(" ");
-        composer.selection.setAfter(anchor);
-        composer.selection.insertNode(whiteSpace);
-        elementToSetCaretAfter = whiteSpace;
-      }
-    }
-    composer.selection.setAfter(elementToSetCaretAfter);
-  }
-
-  wysihtml5.commands.foo = {
-    //similar to wysihtml5 link command
-    exec: function(composer, command, value) {
-      var anchors = this.state(composer, command);
-      if (anchors) {
-        // Selection contains links
-        composer.selection.executeAndRestore(function() {
-          _removeFormat(composer, anchors);
-        });
-      } else {
-        // Create links
-        //value = typeof(value) === "object" ? value : { href: value };
-        _format(composer, value);
-      }
-    },
-
-    state: function(composer, command) {
-      return wysihtml5.commands.formatInline.state(composer, command, NODE_NAME);
-    },
-
-    value: function() {
-      return undefined;
-    }
-  };
-}

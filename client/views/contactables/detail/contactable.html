@@ -37,10 +37,11 @@
                                             <span>{{contactableStatusNote}}</span>
                                             <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
                                         {{/objectProperty}}
+
                                         {{#if statusNoteEditMode}}
                                             <div class="col-xs-4">
-                                                <button type="button" class="btn btn-primary btn-sm" id="saveStatusNote">Save</button>
-                                                <button type="button" class="btn btn-default btn-sm" id="cancelStatusNote">Cancel</button>
+                                                <button type="button" class="btn btn-primary btn-sm" id="saveStatusNote">{{_ "Save"}}</button>
+                                                <button type="button" class="btn btn-default btn-sm" id="cancelStatusNote">{{_ "Cancel"}}</button>
                                             </div>
                                         {{/if}}
                                     </div>
