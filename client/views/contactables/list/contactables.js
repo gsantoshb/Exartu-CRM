@@ -260,6 +260,7 @@ Template.contactablesList.created = function () {
             searchQuery.objNameArray = query.objType.value;
             urlQuery.addParam('type', query.objType.value);
         }
+
         // Creation date
         if (query.selectedLimit.value) {
             var dateLimit = new Date();
@@ -349,7 +350,7 @@ Template.contactablesList.created = function () {
 
             urlQuery.addParam('clientProcessStatus', query.clientProcessStatus.value);
         }
-        if (!_.isEmpty(query.contactProcessStatus.value)) {
+        if ((query.objType.value === "Contact")&&(!_.isEmpty(query.contactProcessStatus.value))) {
             searchQuery[query.objType.value + '.status'] = {$in: query.contactProcessStatus.value};
 
             urlQuery.addParam('contactProcessStatus', query.contactProcessStatus.value);
@@ -959,7 +960,7 @@ var runESComputation = function () {
             });
         }
 
-        if(query.contactProcessStatus.value.length>0){
+        if((query.objType.value === "Contact")&&(query.contactProcessStatus.value.length>0)){
            var processArray = [];
            _.forEach(query.contactProcessStatus.value, function(p){
              processArray.push(p.toLowerCase());
