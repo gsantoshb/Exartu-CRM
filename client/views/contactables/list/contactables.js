@@ -928,7 +928,11 @@ var runESComputation = function () {
 
         // Created by
         if (query.mineOnly.value) {
-            filters.bool.must.push({term: {userId: Meteor.userId()}});
+            var fullUserId = Meteor.userId();
+            var spltUserId = fullUserId.split("-");
+                for (i in spltUserId){
+            filters.bool.must.push({regexp: {userId: '.*' + spltUserId[i] + '.*'}});
+                }
         }
 
         // Location filter
