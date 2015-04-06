@@ -1,31 +1,21 @@
-var entityId, callback;
-var isEditing = new ReactiveVar(false), links, typeDep, linkedDep;
+var entityId, callback, typeDep;
+//var isEditing = new ReactiveVar(false), links, typeDep, linkedDep;
 
 Template.noteAdd.created = function () {
     var self = this;
 
-    var initialLink = {
-        id: Session.get('entityId'),
-        type: Utils.getEntityTypeFromRouter()
-    };
+    callback = this.data[0];
 
-    links = self.data.value || [initialLink];
-    typeDep = new Tracker.Dependency();
-    linkedDep = new Tracker.Dependency();
+    typeDep = new Tracker.Dependency;
 
     Meteor.subscribe('allContactables');
     Meteor.subscribe('allJobs');
     Meteor.subscribe('allPlacements');
-
 };
 
 
 
 Template.noteAdd.helpers({
-    links: function () {
-        linkedDep.depend();
-        return links;
-    },
     types: function () {
         return _.map(_.filter(_.keys(Enums.linkTypes), function (key) {
             return !_.contains(['deal', 'candidate'], key);
@@ -52,10 +42,7 @@ Template.noteAdd.helpers({
                 return [];
         }
     },
-    getEntity: Utils.getEntityFromLinkForAdd,
-    isEditing: function () {
-        return isEditing.get();
-    }
+    getEntity: Utils.getEntityFromLinkForAdd
 });
 
 var link = function (ctx, link) {
@@ -77,26 +64,7 @@ Template.noteAdd.events({
             id: entity
         };
 
-        if (_.findWhere(links, {id: link.id})) return;
-
-        links.push(link);
-        linkedDep.changed();
-    },
-    'click .remove-link': function () {
-        //Template.currentData().links = _.without(links, this);
-        var link = this;
-        var newLinks;
-        _.each(links, function(l) {
-            if(l.id == link._id) {
-                newLinks = links.filter(function(element) {
-                    return element.id != l.id
-                });
-            } else {
-                return;
-            }
-        });
-        links = newLinks;
-        linkedDep.changed();
+        callback(link);
     },
     'click #editLinks': function () {
         isEditing.set(true);

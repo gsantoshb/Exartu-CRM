@@ -4,29 +4,28 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">Link</h4>
+                    <h4 class="modal-title" id="myModalLabel">Link item to note</h4>
                 </div>
                 <div class="modal-body" style="min-height: 100px;">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <select class="form-control" id="noteTypeSelect"
+                    <form>
+                        <div class="form-group">
+                            <select class="form-control input-md" id="noteTypeSelect"
                                     title="Select the type of entity that you want to link to the msg">
-                                <option value="">--type--</option>
+                                <option value="">Select type</option>
                                 {{#each types}}
                                     <option value="{{value}}">{{displayName}}</option>
                                 {{/each}}
                             </select>
                         </div>
-                        <div class="col-md-5">
-                            <select class="form-control" id="noteEntitySelect" title="Select the entity that you want to link">
-                                <option value="">--select--</option>
+                        <div class="form-group">
+                            <select class="form-control input-md" id="noteEntitySelect" title="Select the entity that you want to link">
+                                <option value="">Select</option>
                                 {{#each entities}}
                                     <option value="{{_id}}">{{displayName}}</option>
                                 {{/each}}
                             </select>
                         </div>
-                    </div>
-
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-success add" id="noteLinkEntity">{{_ "Link"}}</a>

@@ -4,6 +4,10 @@ var sortDep=new Deps.Dependency;
 var checkSMSDep = new Deps.Dependency;
 var NotesHandler;
 
+// Links
+var links,
+    linkedDep = new Tracker.Dependency();
+
 NoteSchema = new SimpleSchema({
     msg: {
         type: String,
@@ -125,10 +129,6 @@ var responsesOnly = false;
 Template.notesTabAdd.events({
     'change #sendAsSMS': function(){
         checkSMSDep.changed();
-    },
-    'click #toggleAddNoteModal': function(){
-        var data = {};
-        Utils.showModal('noteAdd', data);
     }
 });
 Template.notesTab.created = function () {
@@ -139,7 +139,7 @@ Template.notesTab.created = function () {
     else {
         responsesOnly = false;
     }
-}
+};
 Template.notesTabAdd.helpers({
     isHotListNote: function () {
         return (hotlist) ? true : false; // hide numbers if hotlist
@@ -366,11 +366,7 @@ Template.notesTabEditItem.events({
 
 // Links
 
-
-var isEditing = new ReactiveVar(false), links, typeDep, linkedDep;
-
-
-Template.linksAutoForm.created = function () {
+Template.linksAutoForm.created = function() {
     var self = this;
 
     var initialLink = {
@@ -379,28 +375,8 @@ Template.linksAutoForm.created = function () {
     };
 
     links = self.data.value || [initialLink];
-    typeDep = new Tracker.Dependency();
-    linkedDep = new Tracker.Dependency();
-
-    Meteor.subscribe('allContactables');
-    Meteor.subscribe('allJobs');
-    Meteor.subscribe('allPlacements');
-
-    if (self.data.value)
-        return; // Don't reset form on edit mode
-
-    //// TODO: Find another way to reset links when form is submitted
-    //var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
-    //if (!hotlist) {
-    //    formTemplate.template.events({
-    //        'reset form': function () {
-    //            self.data.links = [initialLink];
-    //            self.data.linkedDep.changed();
-    //        }
-    //    });
-    //};
-    isEditing.set(false);
-}
+    linkedDep.changed();
+};
 
 AutoForm.addInputType('linkInput',{
     template: 'linksAutoForm',
@@ -409,68 +385,21 @@ AutoForm.addInputType('linkInput',{
     }
 });
 
-Template.linksAutoForm.helpers({
-    links: function () {
-        linkedDep.depend();
-        return links;
-    },
-    types: function () {
-        return _.map(_.filter(_.keys(Enums.linkTypes), function (key) {
-            return !_.contains(['deal', 'candidate'], key);
-        }), function (key) {
-            return Enums.linkTypes[key];
+Template.linksAutoForm.events({
+    'click #toggleAddNoteModal': function(){
+        Utils.showModal('noteAdd', function(data) {
+            data = data || {};
+
+            if(_.findWhere(links, {id: data.id})) return false;
+
+            links.push(data);
+            linkedDep.changed();
+            Utils.dismissModal();
         });
     },
-    entities: function () {
-        typeDep.depend();
-        var DOM = UI.getView()._domrange;
-        if (!DOM)
-            return;
+    'click .btn-remove': function (e) {
+        e.preventDefault();
 
-        var selectedType = DOM.$('#noteTypeSelect').val();
-        selectedType = parseInt(selectedType);
-        switch (selectedType) {
-            case Enums.linkTypes.contactable.value:
-                return AllContactables.find();
-            case Enums.linkTypes.job.value:
-                return AllJobs.find();
-            case Enums.linkTypes.placement.value:
-                return AllPlacements.find();
-            default :
-                return [];
-        }
-    },
-    getEntity: Utils.getEntityFromLinkForAdd,
-    isEditing: function () {
-        return isEditing.get();
-    }
-});
-
-var link = function (ctx, link) {
-
-};
-
-Template.linksAutoForm.events({
-    'change #noteTypeSelect': function () {
-        typeDep.changed();
-    },
-    'click #noteLinkEntity': function () {
-        var type = UI.getView()._templateInstance.$('#noteTypeSelect').val();
-        type = parseInt(type);
-        var entity = UI.getView()._templateInstance.$('#noteEntitySelect').val();
-        if (!_.isNumber(type) || !entity) return;
-
-        var link = {
-            type: type,
-            id: entity
-        };
-
-        if (_.findWhere(links, {id: link.id})) return;
-
-        links.push(link);
-        linkedDep.changed();
-    },
-    'click .remove-link': function () {
         //Template.currentData().links = _.without(links, this);
         var link = this;
         var newLinks;
@@ -485,11 +414,15 @@ Template.linksAutoForm.events({
         });
         links = newLinks;
         linkedDep.changed();
-    },
-    'click #editLinks': function () {
-        isEditing.set(true);
-    },
-    'click #editLinksDone': function () {
-        isEditing.set(false);
+
+        return false;
     }
+});
+
+Template.linksAutoForm.helpers({
+    links: function () {
+        linkedDep.depend();
+        return links;
+    },
+    getEntity: Utils.getEntityFromLinkForAdd
 });
