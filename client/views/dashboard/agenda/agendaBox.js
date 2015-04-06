@@ -265,7 +265,7 @@ Template.agendaBox.helpers({
 
                         if(event && event.assign && event.assign.length){
                             var user = Meteor.users.findOne({_id:event.assign[0]});
-                            var name = (user.username ? user.username : user.emails[0].address);
+                            var name = ((user && user).username ? user.username : user.emails[0].address);
                             html += '<p class="desc">'+name+'</p>';
                         }
                         else

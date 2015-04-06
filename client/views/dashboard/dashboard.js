@@ -12,7 +12,7 @@ var activityTypes = [
 
 var query = {
     options: {
-        //limit: 50,
+        limit: 5000,
         sort: {'data.dateCreated': -1}
     },
     filter: {
@@ -25,9 +25,10 @@ var listViewMode = new ReactiveVar(true);
 
 var leadTrackers = new ReactiveVar([]);
 var teamMemberTrackers = new ReactiveVar([]);
+var activityTrackers = new ReactiveVar([]);
 
 var setLeadTrackers = function(){
-    var hierId = Meteor.user().currentHierId;
+    var hierId = (Meteor.user() ? Meteor.user().currentHierId : undefined);
     var lkps = LookUps.find({
         lookUpCode: Enums.lookUpCodes.client_status,
         hierId: hierId,
@@ -35,7 +36,7 @@ var setLeadTrackers = function(){
     }, {sort: {sortOrder: 1}}).fetch();
 
     var trackers = [];
-    var oneMonthAgo = moment().subtract(1, 'month') - 1000;
+    var oneMonthAgo = (moment().subtract(1, 'month').unix()) * 1000;
 
     _.each(lkps, function(item){
         var code = item._id;
@@ -76,6 +77,33 @@ var setTeamMembersTrackers = function(){
     return trackers;
 };
 
+var setActivityTrackers = function(){
+    var hierId = Meteor.user().currentHierId;
+    //var activity = Activities.find({});
+    var activity;
+    var weekStart = (moment().startOf('isoweek').subtract(1, 'week').unix()) * 1000; // last weeks start as miliseconds
+    var dayStart = 0;
+    var dayEnd = 0;
+
+    for(var i=1;i<=5;i++){
+        dayStart = weekStart + (86400 * 1000 * (i-1));
+        dayEnd = weekStart + (86400 * 1000 * i);
+        activity = Activities.find({"data.dateCreated": {
+            $gte:dayStart,
+            $lt:dayEnd
+        }});
+        console.log('interval : '+dayStart+'-'+dayEnd);
+        //console.log(activity);
+        console.log( 'activity counters '+activity.fetch().length );
+    }
+
+    var trackers = [];
+    //console.log(activity);
+    activityTrackers.set( trackers );
+
+    return trackers;
+};
+
 var getSelectedActivityFilters = function(){
     var filters = [];
     $('.activityFilter-option').each(function() {
@@ -97,6 +125,7 @@ DashboardController = RouteController.extend({
         //}
         setLeadTrackers();
         setTeamMembersTrackers();
+        setActivityTrackers();
     },
     onAfterAction: function () {
         var title = 'Dashboard',
@@ -117,9 +146,9 @@ DashboardController = RouteController.extend({
 // Main template
 Template.dashboard.created = function () {
     Meteor.autorun(function () {
-        console.log('it should search now : ');
-        console.log(activityTypes);
-        console.log(query);
+        //console.log('it should search now : ');
+        //console.log(activityTypes);
+        //console.log(query);
 
         queryDep.depend();
         if (ActivitiesHandler) {
@@ -131,11 +160,13 @@ Template.dashboard.created = function () {
 
         setLeadTrackers();
         setTeamMembersTrackers();
+        setActivityTrackers();
     });
 };
 
 Template.dashboard.helpers({
     activities: function () {
+        console.log('updating the activities list...');
         return Activities.find({}, {sort: {'data.dateCreated': -1}});
     },
     listViewMode: function () {
