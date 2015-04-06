@@ -9,7 +9,7 @@ EmailTemplateController = RouteController.extend({
     if (this.params._id) {
       template = EmailTemplates.findOne({_id: this.params._id});
     } else {
-      template = {};
+      template = undefined;
     }
     this.render();
   }
