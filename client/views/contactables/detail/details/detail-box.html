@@ -142,7 +142,7 @@
                                                 {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                             {{else}}
                                                 <strong>
-                                                    <strong>{{displayName}}</strong>
+                                                    <strong>{{_ displayName}}</strong>
                                                 </strong>
                                             {{/objectProperty}}
                                         </div>
@@ -153,9 +153,9 @@
                                     <div class="left-part">{{_ "Status note"}}</div>
                                     <div class="right-part">
                                         {{#objectProperty property=statusNote editable=editMode}}
-                                            <input class="form-control" type="text" value="{{value}}">
+                                            <input class="form-control" type="text" value="{{_ value}}">
                                         {{else}}
-                                            <span>{{value}}</span>
+                                            <span>{{_ value}}</span>
                                         {{/objectProperty}}
                                     </div>
                                 </li>
@@ -166,7 +166,7 @@
                                             {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                         {{else}}
                                             <strong>
-                                                <strong>{{displayName}}</strong>
+                                                <strong>{{_ displayName}}</strong>
                                             </strong>
                                         {{/objectProperty}}
                                     </div>
@@ -212,7 +212,7 @@
                                             {{#if isAdmin}}
                                                 <select class="form-control" id="userSelect">
                                                     {{#each users}}
-                                                        <option value="{{_id}}" selected="{{isSelectedUser}}">{{displayUserName _id}}</option>
+                                                        <option value="{{_id}}" selected="{{isSelectedUser}}">{{_ displayUserName _id}}</option>
                                                     {{/each}}
                                                 </select>
                                             {{/if}}
@@ -309,8 +309,8 @@
                         {{#if editMode }}
                             <div class="edit-actions-bar">
                                 <span id="add-contact-method-error" class="label label-danger" style="float: right;"></span>
-                                <button id="save-changes-method"  type="button" class="btn btn-primary" title="Add">Save</button>
-                                <a id="cancel-deposit-method" class="btn btn-default">Cancel</a>
+                                <button id="save-changes-method"  type="button" class="btn btn-primary" title="Add">{{_ "Save"}}</button>
+                                <a id="cancel-deposit-method" class="btn btn-default">{{_ "Cancel"}}</a>
                             </div>
                         {{/if}}
                 </div>

@@ -68,13 +68,7 @@
     </div>
     <!-- /.search-list -->
 
-    {{#if listIsLoading}}
-        {{_ "loading"}}
-    {{else}}
-        {{#unless isESSearch}}
-            {{>fastPagination name="hotListMembers" useKeys="true" containerClass="magic-pager"}}
-        {{/unless}}
-    {{/if}}
+    {{>fastPagination name="hotListMembers" useKeys="true" containerClass="magic-pager"}}
 </template>
 
 <template name="hotListMembersList">

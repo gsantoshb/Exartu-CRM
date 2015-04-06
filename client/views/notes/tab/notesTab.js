@@ -3,7 +3,10 @@ var searchQuery = {};
 var sortDep=new Deps.Dependency;
 var checkSMSDep = new Deps.Dependency;
 var NotesHandler;
-var addDisabled = new ReactiveVar(false);
+
+// Links
+var links,
+    linkedDep = new Tracker.Dependency();
 
 NoteSchema = new SimpleSchema({
     msg: {
@@ -54,7 +57,6 @@ NoteSchema = new SimpleSchema({
         type: Boolean,
         optional: true
     }
-
 });
 
 
@@ -65,30 +67,27 @@ AutoForm.hooks({
                 var self = this;
                 //for some reason autoValue doesn't work
 
-        insertDoc.contactableId = Session.get('entityId');
-        addDisabled.set(true);
-        Meteor.call('addContactableNote', insertDoc, function () {
-          addDisabled.set(false);
-          self.done();
-        })
-      }
-      else if(hotlist){
-        var self = this;
-        insertDoc.hierId = Meteor.user().currentHierId;
-        insertDoc.userId = Meteor.user()._id;
-        addDisabled.set(true);
-        Meteor.call('addNote', insertDoc, function () {
-          addDisabled.set(false);
-          self.done();
-        })
-      }
-      else{
+                insertDoc.contactableId = Session.get('entityId');
 
-      }
-      return false;
+                Meteor.call('addContactableNote', insertDoc, function () {
+                    self.done();
+                })
+            }
+            else if(hotlist){
+                var self = this;
+                insertDoc.hierId = Meteor.user().currentHierId;
+                insertDoc.userId = Meteor.user()._id;
+                Meteor.call('addNote', insertDoc, function () {
+                    self.done();
+                })
+            }
+            else{
+
+            }
+            return false;
+        }
+
     }
-
-  }
 });
 //AutoForm.hooks({
 //    AddNoteRecord: {
@@ -127,83 +126,72 @@ self.defaultUserNumber = null;
 self.defaultMobileNumber = null;
 var hotlist = null;
 var responsesOnly = false;
-var contactable = null;
 Template.notesTabAdd.events({
-  'change #sendAsSMS': function(){
-    checkSMSDep.changed();
-  }
+    'change #sendAsSMS': function(){
+        checkSMSDep.changed();
+    }
 });
 Template.notesTab.created = function () {
-  hotlist = HotLists.findOne({_id:Session.get('entityId')});
-  if(!hotlist){
-    contactable = Contactables.findOne({_id:Session.get('entityId')});
-  }
-  if (this.data && this.data.responseOnly) {
-    responsesOnly = true;
-  }
-  else {
-    responsesOnly = false;
-  }
-
-}
+    hotlist = HotLists.findOne({_id:Session.get('entityId')});
+    if (this.data && this.data.responseOnly) {
+        responsesOnly = true;
+    }
+    else {
+        responsesOnly = false;
+    }
+};
 Template.notesTabAdd.helpers({
-  addDisabled: function () {
-    return addDisabled.get();
-  },
-  isHotListNote: function () {
-    return (hotlist) ? true : false; // hide numbers if hotlist
-  },
-  isContactableNote: function () {
-    //var contactable = Contactables.findOne(this._id);
-    return (contactable) ? true : false; // hide numbers if hotlist
-  },
-  isEmployee: function(){
-    return contactable ? (contactable.Employee ? true : false ): false;
-  },
-  mobileNumbers: function () {
+    isHotListNote: function () {
+        return (hotlist) ? true : false; // hide numbers if hotlist
+    },
+    isContactableNote: function () {
+        var contactable = Contactables.findOne(this._id);
+        return (contactable) ? true : false; // hide numbers if hotlist
+    },
+    mobileNumbers: function () {
 
-    var contactable = Contactables.findOne(this._id);
-    if (!contactable) return;
-    return Utils.getContactableMobilePhones(contactable).map(function (number) {
-      var result = {
-        label: number,
-        value: number
-      };
-      if (!self.defaultMobileNumber) self.defaultMobileNumber = result.value;
-      return result;
-    });
-  }
-  ,
-  userNumbers: function () {
-    var user = Meteor.user();
-    return Hierarchies.find({_id: user.currentHierId, phoneNumber: {$exists: true}}).map(function (userHier) {
-      var result = {
-        label: userHier.phoneNumber.value, //displayName + ' - ' + userHier.name,
-        value: userHier.phoneNumber.value
-      };
-      if (!self.defaultUserNumber) self.defaultUserNumber = result.value;
-      return result;
-    });
-  }
-  ,
-  defaultMobileNumber: function () {
-    return self.defaultMobileNumber;
-  }
-  ,
-  defaultUserNumber: function () {
-    return self.defaultUserNumber;
-  },
-  ischeckedSMS: function(){
-    checkSMSDep.depend();
-    var field = $("#sendAsSMS");
-    if(field[0] && field[0].checked){
-      return true;
+        var contactable = Contactables.findOne(this._id);
+        if (!contactable) return;
+        return Utils.getContactableMobilePhones(contactable).map(function (number) {
+            var result = {
+                label: number,
+                value: number
+            };
+            if (!self.defaultMobileNumber) self.defaultMobileNumber = result.value;
+            return result;
+        });
     }
-    else{
-      return false;
+    ,
+    userNumbers: function () {
+        var user = Meteor.user();
+        return Hierarchies.find({_id: user.currentHierId, phoneNumber: {$exists: true}}).map(function (userHier) {
+            var result = {
+                label: userHier.phoneNumber.value, //displayName + ' - ' + userHier.name,
+                value: userHier.phoneNumber.value
+            };
+            if (!self.defaultUserNumber) self.defaultUserNumber = result.value;
+            return result;
+        });
     }
+    ,
+    defaultMobileNumber: function () {
+        return self.defaultMobileNumber;
+    }
+    ,
+    defaultUserNumber: function () {
+        return self.defaultUserNumber;
+    },
+    ischeckedSMS: function(){
+        checkSMSDep.depend();
+        var field = $("#sendAsSMS");
+        if(field[0] && field[0].checked){
+            return true;
+        }
+        else{
+            return false;
+        }
 
-  }
+    }
 });
 
 
@@ -215,69 +203,80 @@ var query = new Utils.ObjectDefinition({
     }
 });
 
-
 Template.notesTabList.created = function () {
-  var self = this;
+    var self = this;
+
+    Meteor.autorun(function () {
+            searchQuery={};
+            if (responsesOnly && hotlist) //means only get responses to a hotlist send
+            {
+                searchQuery['isReply'] = true;
+                searchQuery.links = {
+                    $elemMatch: {
+                        id: Session.get('entityId')
+                    }
+                };
+                searchQuery.msg = {
+                    $regex: query.searchString.value,
+                    $options: 'i'
+                };
+
+                if (!NotesHandler) {
+                    NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                    NotesHandler.setFilter(searchQuery);
 
 
-  Meteor.autorun(function () {
-      searchQuery={};
-      if (responsesOnly && hotlist) //means only get responses to a hotlist send
-      {
-        searchQuery['isReply'] = true;
-        searchQuery.links = {
-          $elemMatch: {
-            id: Session.get('entityId')
-          }
-        };
-        if (!NotesHandler) {
-          NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-          NotesHandler.setFilter(searchQuery);
+                } else {
+                    NotesHandler.setFilter(searchQuery);
+                    //NotesHandler.setOptions(hotlist);
+
+                }
+            }
+            else if(hotlist) {
+                searchQuery['isReply'] = {$exists: false};
+                searchQuery.links = {
+                    $elemMatch: {
+                        id: Session.get('entityId')
+                    }
+                };
+                searchQuery.msg = {
+                    $regex: query.searchString.value,
+                    $options: 'i'
+                };
+                if (!NotesHandler) {
+                    NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                    NotesHandler.setFilter(searchQuery);
+
+                } else {
+                    NotesHandler.setFilter(searchQuery);
 
 
-        } else {
-          NotesHandler.setFilter(searchQuery);
-          //NotesHandler.setOptions(hotlist);
+                }
+            }
+            else{
+                //contactable
+                searchQuery.links = {
+                    $elemMatch: {
+                        id: Session.get('entityId')
+                    }
+                };
+                searchQuery.msg = {
+                    $regex: query.searchString.value,
+                    $options: 'i'
+                };
+                if (!NotesHandler) {
+                    NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
+                    NotesHandler.setFilter(searchQuery);
 
+                } else {
+                    NotesHandler.setFilter(searchQuery);
+
+
+                }
+            }
         }
-      }
-      else if(hotlist) {
-        searchQuery['isReply'] = {$exists: false};
-        searchQuery.links = {
-          $elemMatch: {
-            id: Session.get('entityId')
-          }
-        };
-        if (!NotesHandler) {
-          NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-          NotesHandler.setFilter(searchQuery);
-
-        } else {
-          NotesHandler.setFilter(searchQuery);
-
-
-        }
-      }
-      else{
-        //contactable
-        searchQuery.links = {
-          $elemMatch: {
-            id: Session.get('entityId')
-          }
-        };
-        if (!NotesHandler) {
-          NotesHandler = Meteor.paginatedSubscribe('notes', {filter: searchQuery});
-          NotesHandler.setFilter(searchQuery);
-
-        } else {
-          NotesHandler.setFilter(searchQuery);
-
-
-        }
-      }
-    }
-  )
-  ;
+    )
+    ;
 }
 ;
 Template.notesTabList.destroyed = function () {
@@ -367,11 +366,7 @@ Template.notesTabEditItem.events({
 
 // Links
 
-
-var isEditing = new ReactiveVar(false), links, typeDep, linkedDep;
-
-
-Template.linksAutoForm.created = function () {
+Template.linksAutoForm.created = function() {
     var self = this;
 
     var initialLink = {
@@ -380,28 +375,8 @@ Template.linksAutoForm.created = function () {
     };
 
     links = self.data.value || [initialLink];
-    typeDep = new Tracker.Dependency();
-    linkedDep = new Tracker.Dependency();
-
-    Meteor.subscribe('allContactables');
-    Meteor.subscribe('allJobs');
-    Meteor.subscribe('allPlacements');
-
-    if (self.data.value)
-        return; // Don't reset form on edit mode
-
-    //// TODO: Find another way to reset links when form is submitted
-    //var formTemplate = UI.getView().parentView.parentView.parentView.parentView.parentView.parentView;
-    //if (!hotlist) {
-    //    formTemplate.template.events({
-    //        'reset form': function () {
-    //            self.data.links = [initialLink];
-    //            self.data.linkedDep.changed();
-    //        }
-    //    });
-    //};
-    isEditing.set(false);
-}
+    linkedDep.changed();
+};
 
 AutoForm.addInputType('linkInput',{
     template: 'linksAutoForm',
@@ -410,70 +385,21 @@ AutoForm.addInputType('linkInput',{
     }
 });
 
-Template.linksAutoForm.helpers({
-    links: function () {
-        linkedDep.depend();
-        return links;
-    },
-    types: function () {
-        return _.map(_.filter(_.keys(Enums.linkTypes), function (key) {
-            return !_.contains(['deal', 'candidate'], key);
-        }), function (key) {
-            return Enums.linkTypes[key];
+Template.linksAutoForm.events({
+    'click #toggleAddNoteModal': function(){
+        Utils.showModal('noteAdd', function(data) {
+            data = data || {};
+
+            if(_.findWhere(links, {id: data.id})) return false;
+
+            links.push(data);
+            linkedDep.changed();
+            Utils.dismissModal();
         });
     },
-    entities: function () {
-        typeDep.depend();
-        var DOM = UI.getView()._domrange;
-        if (!DOM)
-            return;
+    'click .btn-remove': function (e) {
+        e.preventDefault();
 
-        var selectedType = DOM.$('#noteTypeSelect').val();
-        selectedType = parseInt(selectedType);
-        switch (selectedType) {
-            case Enums.linkTypes.contactable.value:
-                return AllContactables.find();
-            case Enums.linkTypes.job.value:
-                return AllJobs.find();
-            case Enums.linkTypes.placement.value:
-                return AllPlacements.find();
-            default :
-                return [];
-        }
-    },
-    getEntity: Utils.getEntityFromLinkForAdd,
-    isEditing: function () {
-        return isEditing.get();
-    }
-
-
-});
-
-var link = function (ctx, link) {
-
-};
-
-Template.linksAutoForm.events({
-    'change #noteTypeSelect': function () {
-        typeDep.changed();
-    },
-    'click #noteLinkEntity': function () {
-        var type = UI.getView()._templateInstance.$('#noteTypeSelect').val();
-        type = parseInt(type);
-        var entity = UI.getView()._templateInstance.$('#noteEntitySelect').val();
-        if (!_.isNumber(type) || !entity) return;
-
-        var link = {
-            type: type,
-            id: entity
-        };
-
-        if (_.findWhere(links, {id: link.id})) return;
-
-        links.push(link);
-        linkedDep.changed();
-    },
-    'click .remove-link': function () {
         //Template.currentData().links = _.without(links, this);
         var link = this;
         var newLinks;
@@ -488,11 +414,15 @@ Template.linksAutoForm.events({
         });
         links = newLinks;
         linkedDep.changed();
-    },
-    'click #editLinks': function () {
-        isEditing.set(true);
-    },
-    'click #editLinksDone': function () {
-        isEditing.set(false);
+
+        return false;
     }
+});
+
+Template.linksAutoForm.helpers({
+    links: function () {
+        linkedDep.depend();
+        return links;
+    },
+    getEntity: Utils.getEntityFromLinkForAdd
 });

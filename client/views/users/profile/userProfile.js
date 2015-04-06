@@ -41,6 +41,12 @@ Template.userProfile.created = function () {
                 },
                 errorMessage: 'Incorrect email format'
             },
+            firstName: {
+                default: Meteor.user().firstName
+            },
+            lastName: {
+                default: Meteor.user().lastName
+            },
             errorMessage: {},
             successMessage: {}
         }
@@ -137,7 +143,9 @@ Template.userProfile.events({
             };
         }
         upd.$set = {
-            username: userInfo.username.value
+            username: userInfo.username.value,
+            firstName: userInfo.firstName.value,
+            lastName: userInfo.lastName.value
         };
         Meteor.users.update({_id: Meteor.userId()}, upd, function (err) {
             if (err) {

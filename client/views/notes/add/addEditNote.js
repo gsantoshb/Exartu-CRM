@@ -178,8 +178,12 @@ Template.addEditNote.events({
         $('.modal-host').children().modal('toggle');
         addDisabled.set(false);
       });
-     }
-    },
+
+    }
+
+
+  },
+
   'change .msg': function (e) {
     note.msg = e.target.value;
     //noteUpdate();

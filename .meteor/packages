@@ -13,7 +13,6 @@ iron:router
 matb33:collection-hooks
 mrt:googlemaps
 sacha:spin
-bootstrap3-wysihtml5
 natestrauser:select2
 vjau:xml2js
 cfs:standard-packages
@@ -66,7 +65,6 @@ cscottnet:mail-listener2
 jparker:crypto-aes
 aida:pagination@1.0.8
 tap:i18n
+voog-wysihtml
 jparker:crypto-base64
-
-
 npm-container

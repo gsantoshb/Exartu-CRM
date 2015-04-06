@@ -27,7 +27,8 @@ Template.contactClientInfo.helpers({
         if (this.pictureFileId) {
             return ContactablesFS.getThumbnailUrlForBlaze(this.pictureFileId);
         }
-        return "/assets/user-photo-placeholder.jpg";
+        //return "/assets/user-photo-placeholder.jpg";
+        return false;
     },
     contactMethod: function (index) {
         if (!this.contactMethods) return;

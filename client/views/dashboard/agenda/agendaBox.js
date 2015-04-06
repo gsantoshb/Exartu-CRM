@@ -1,101 +1,422 @@
-var eventsInline = [
-    {
-        "date": "2015-03-29 17:30:00",
-        "type": "meeting",
-        "title": "Test Last Year",
-        "description": "Lorem Ipsum dolor set",
-        "url": ""
-    },
-    {
-        "date": "2015-03-24 17:30:00",
-        "type": "meeting",
-        "title": "Test Last Year",
-        "description": "Lorem Ipsum dolor set",
-        "url": ""
-    },
-    {
-        "date": "2015-03-30 19:00:00",
-        "type": "meeting",
-        "title": "Project 1 meeting",
-        "description": "Lorem Ipsum dolor set",
-        "url": ""
-    },
-    {
-        "date": "2015-03-30 23:00:00",
-        "type": "demo",
-        "title": "Project 1 demo",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "url": "http://www.event2.com/"
-    },
-    {
-        "date": "2015-03-31 03:00:00",
-        "type": "meeting",
-        "title": "Test Project 1 Brainstorming",
-        "description": "Lorem Ipsum dolor set",
-        "url": "http://www.event3.com/"
-    },
-    {
-        "date": "2015-03-31 22:00:00",
-        "type": "test",
-        "title": "A very very long name for a f*cking project 1 events",
-        "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.",
-        "url": "http://www.event4.com/"
-    },
-    {
-        "date": "2015-03-31 22:00:00",
-        "type": "meeting",
-        "title": "Project 1 meeting",
-        "description": "Lorem Ipsum dolor set",
-        "url": "http://www.event5.com/"
-    },
-    {
-        "date": "2015-04-02 22:00:00",
-        "type": "demo",
-        "title": "Project 1 demo",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "url": "http://www.event6.com/"
-    },
-    {
-        "date": "2015-04-05 20:00:00",
-        "type": "meeting",
-        "title": "Test Project 1 Brainstorming",
-        "description": "Lorem Ipsum dolor set",
-        "url": "http://www.event7.com/"
-    },
-    {
-        "date": "2015-04-10 22:00:00",
-        "type": "test",
-        "title": "A very very long name for a f*cking project 1 events",
-        "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.",
-        "url": "http://www.event8.com/"
-    },
-    {
-        "date": "2015-04-19 05:00:00",
-        "type": "demo",
-        "title": "Project 1 demo",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        "url": "http://www.event9.com/"
-    },
-    {
-        "date": "2015-04-20 22:00:00",
-        "type": "meeting",
-        "title": "Test Project 1 Brainstorming",
-        "description": "Lorem Ipsum dolor set",
-        "url": "http://www.event10.com/"
-    },
-    {
-        "date": "2015-04-26 20:00:00",
-        "type": "test",
-        "title": "A very very long name for a f*cking project 1 events",
-        "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.",
-        "url": "http://www.event11.com/"
-    }
-];
+var allTasks = [];
+var mineQuery = {};
+var showMineOnly = true;
+var showToday = true;
+var showNext = false;
+var showPrev = false;
+var showByMonth = true;
+var showByWeek = false;
+var showByDay = false;
+var start;
+var end;
+var init = false;
+var loadingCount = false;
+var currentMonth = new ReactiveVar();
 
-Template.agendaBox.rendered = function(){
-    $("#eventCalendarHumanDate").eventCalendar({
-        jsonData: eventsInline,
-        jsonDateFormat: 'human',  // 'YYYY-MM-DD HH:MM:SS'
-        startDate: '2015-3-29'
+CalendarController = RouteController.extend({
+    template: 'agendaBox'
+});
+
+var startEndDep = new Deps.Dependency();
+var loadingDep = new Deps.Dependency();
+
+var handler;
+Meteor.autorun(function () {
+    // depend start, end
+    startEndDep.depend();
+
+    if (!start || !end || (showMineOnly== null)) return;
+
+    loadingCount = true;
+    loadingDep.changed();
+
+    handler && handler.stop();
+
+    init = false;
+    handler = Meteor.subscribe("calendarTasks", start, end, showMineOnly , function () {
+        rerender();
+        loadingCount = false;
+        loadingDep.changed();
     });
+
+});
+
+Template.agendaBox.created=function() {
+    var calendarDiv = $('.fc');
+
+    startEndDep.changed();
+
+    //observe = CalendarTasks.find({}).observe({
+    //
+    //    added: function (document) {
+    //
+    //        if (!init) return;
+    //
+    //        switch (document.state) {
+    //            case Enums.taskState.future:
+    //                calendarDiv.fullCalendar('renderEvent', {
+    //                    id: document._id,
+    //                    title: document.msg,
+    //                    start: document.begin,
+    //                    end: document.end,
+    //                    description: "",
+    //                    className: 'item-label-2 label-future pointer'
+    //                });
+    //                break;
+    //            case Enums.taskState.completed:
+    //                calendarDiv.fullCalendar('renderEvent', {
+    //                    id: document._id,
+    //                    title: document.msg,
+    //                    start: document.begin,
+    //                    end: document.end,
+    //                    description: "",
+    //                    className: 'item-label-2 label-completed pointer'
+    //                });
+    //                break;
+    //            case Enums.taskState.overDue:
+    //                calendarDiv.fullCalendar('renderEvent', {
+    //                    id: document._id,
+    //                    title: document.msg,
+    //                    start: document.begin,
+    //                    end: document.end,
+    //                    description: "",
+    //                    className: 'item-label-2 label-overDue pointer'
+    //                });
+    //                break;
+    //            case Enums.taskState.pending:
+    //                calendarDiv.fullCalendar('renderEvent', {
+    //                    id: document._id,
+    //                    title: document.msg,
+    //                    start: document.begin,
+    //                    end: document.end,
+    //                    description: "",
+    //                    className: 'item-label-2 label-pending pointer'
+    //                });
+    //                break;
+    //        }
+    //
+    //
+    //        rerender();
+    //
+    //
+    //    },
+    //
+    //    removed:
+    //
+    //        _.debounce(function (oldDocument) {
+    //
+    //
+    //            var calendarDiv = $('.fc');
+    //            calendarDiv.fullCalendar('removeEvents', function (event) {
+    //                return event.id == oldDocument._id;
+    //            })
+    //        }, 500),
+    //
+    //    changed: function (newDocument, oldDocument) {
+    //
+    //        var calendarDiv = $('.fc');
+    //        var event = _.find(calendarDiv.fullCalendar('clientEvents'), function (ev) {
+    //            return oldDocument._id == ev.id;
+    //        });
+    //
+    //        switch (newDocument.state) {
+    //            case Enums.taskState.future:
+    //                event.className = 'item-label-2 label-future pointer';
+    //                break;
+    //            case Enums.taskState.completed:
+    //                event.className = 'item-label-2 label-completed pointer';
+    //                break;
+    //            case Enums.taskState.overDue:
+    //                event.className = 'item-label-2 label-overDue pointer';
+    //                break;
+    //            case Enums.taskState.pending:
+    //                event.className = 'item-label-2 label-pending pointer';
+    //                break;
+    //        }
+    //        event.title = newDocument.msg;
+    //        event.start = newDocument.begin;
+    //        event.end = newDocument.end;
+    //
+    //        calendarDiv.fullCalendar('updateEvent', event);
+    //    }
+    //})
+
+};
+
+Template.agendaBox.destroyed=function() {};
+
+
+
+var rerender = _.debounce(function () {
+    var calendarDiv = $('.fc');
+    calendarDiv.fullCalendar( 'refetchEvents');
+    calendarDiv.find('.fc-month-view > table').addClass('table');
+    calendarDiv.find('.fc-month-view table .fc-row.fc-widget-header').attr('style', '');
+    init = true;
+},650);
+
+Template.agendaBox.helpers({
+
+    options: function () {
+        return {
+            id: 'dashboard-calendar',
+            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+                'August', 'September', 'October', 'November', 'December'],
+            nextDayThreshold: "00:00:00",
+            firstDay: 1,
+            fixedWeekCount: false,
+            eventLimit: true,
+            header:false,
+            timeFormat:'HH:mm',
+            events: function (start, end, timezone, callback) {
+                callback(_.map(CalendarTasks.find({}).fetch(), function (t) {
+                    switch(t.state) {
+                        case Enums.taskState.future:
+                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future  pointer'  } ;
+                            break;
+                        case Enums.taskState.completed:
+                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-completed  pointer'  } ;
+                            break;
+                        case Enums.taskState.overDue:
+                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-overDue  pointer'  } ;
+                            break;
+                        case Enums.taskState.pending:
+                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-pending  pointer'  };
+                            break;
+                    }
+
+                }));
+            },
+            viewRender: function (view, element) {
+                //searching by class because id isn't working
+                var calendarDiv = $('.fc');
+                start = view.start.local().toDate();
+                end = view.end.local().toDate();
+                //this correct the calendar end date
+                //end = new Date(endAux.setDate(endAux.getDate()+1));
+                startEndDep.changed();
+            },
+            eventRender: function( event, element, view ){
+                var currentDate = event.start.format('YYYY-MM-DD');
+                var calendarDiv = $('.fc');
+
+                var dayCell = calendarDiv.find('td[data-date="'+currentDate+'"]');
+                if( dayCell.find('.day-tasks').length ){
+                    //console.log('number of elements : '+dayCell.find('.day-tasks i.fa-circle').length);
+                    if( dayCell.find('.day-tasks i.fa-circle').length ){
+                        if( dayCell.find('.day-tasks i.fa-circle').length < 3 ){
+                            //console.log('adding circle X for date : '+currentDate);
+                            dayCell.find('.day-tasks').append('<i class="fa fa-circle"></i>');
+                        }
+                    }
+                    else{
+                        //console.log('adding circle Y for date : '+currentDate);
+                        dayCell.find('.day-tasks').append('<i class="fa fa-circle"></i>');
+                    }
+                }
+                else{
+                    dayCell.append('<div class="day-tasks"><i class="fa fa-circle"></i></div>');
+                }
+            },
+            dayRender: function(date, cell) {
+                //var calendarDiv = $('.fc');
+                var currentDate = date.format('D');
+                cell.html('<a href="#">'+currentDate+'</a>');
+                //
+                //console.log('outside : '+currentDate);
+                ////console.log(cell);
+                //
+                //var eventCount = calendarDiv.fullCalendar( 'clientEvents', function(eventObj){
+                //    console.log('inside : '+currentDate);
+                //    if (eventObj.start.format('YYYY-MM-DD') == currentDate) {
+                //        return true;
+                //    } else {
+                //        return false;
+                //    }
+                //}).length;
+                //console.log(eventCount);
+            },
+            dayClick: function(date, jsEvent, view) {
+                var calendarDiv = $('.fc');
+                var events = [];
+                var eventCount = calendarDiv.fullCalendar( 'clientEvents', function(eventObj){
+                    if( eventObj.start.format('YYYY-MM-DD') == date.format('YYYY-MM-DD') ) {
+                        events.push(eventObj);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }).length;
+
+                //alert('we have '+eventCount+' events');
+                //console.log(events);
+                if(events.length){
+                    //console.log('intra aici');
+                    var html = '';
+                    if( $('.calendar-widget .list-type-8').length )
+                        $('.calendar-widget .list-type-8').html('');
+                    else
+                        $('.calendar-widget').append('<ul class="list-type-8"></ul>');
+
+                    _.each(events, function(item){
+                        var event = Tasks.findOne({_id: item.id});
+                        html = '<li><a class="item-icon item-icon-tasks item-icon-sm" href="#"><i class="ico-tasks"></i></a><div class="item-content"><div class="title"><a href="#">';
+                        html += item.title;
+
+                        if(event && event.assign && event.assign.length){
+                            var user = Meteor.users.findOne({_id:event.assign[0]});
+                            if(user){
+                                var name = (user.username ? user.username : user.emails[0].address);
+                                html += '<p class="desc">'+name+'</p>';
+                            }
+                            else{
+                                html += '<p class="desc"><i>unassigned</i></p>';
+                            }
+                        }
+                        else
+                            html += '<p class="desc">unassigned</p>';
+
+                        html += '</a></div></div></li>';
+                        $('.calendar-widget .list-type-8').append(html);
+                    });
+                }
+            },
+            eventAfterAllRender: function(view){
+                var calendarDiv = $('.fc');
+                var calendarDate = calendarDiv.fullCalendar('getDate');
+                var html = '';
+
+                if( calendarDate && calendarDate.format('YYYY-MM') == moment().format('YYYY-MM') )
+                    html = "Today <span>"+moment().format('D')+"<sup>`th</sup> "+moment().format('MMMM')+"</span>";
+                else
+                    html = calendarDiv.fullCalendar('getView').title;
+
+                currentMonth.set(html);
+
+                // cleanup the calendar view
+                calendarDiv.find('.fc-content-skeleton').remove();
+                calendarDiv.find('.fc-other-month a').remove();
+                calendarDiv.find('.fc-other-month .day-tasks').remove();
+
+            },
+            loading: function(bool) {
+                var calendarDiv = $('.fc');
+                if (bool){
+                    calendarDiv.find('.tasks-navi .current').hide();
+                }
+                else{
+                    calendarDiv.find('.tasks-navi .current').show();
+                }
+            }
+        }
+    },
+    taskCount: {
+        title:function(){
+            loadingDep.depend();
+            if(loadingCount){
+                return ""
+            }
+            return "tasks";
+        },
+
+
+
+        count: function(){
+            loadingDep.depend();
+            if(loadingCount){
+                return "loading..."
+            }
+            return CalendarTasks.find({}).count();
+        }
+    },
+
+
+
+
+
+    query: function () {
+        return query;
+    },
+    showMineOnly: function () {
+        startEndDep.depend();
+        return showMineOnly ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+    },
+    showToday: function(){
+        startEndDep.depend();
+        return showToday ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+        //cambiar el return
+    },
+    showNext: function(){
+        startEndDep.depend();
+        return showNext ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+    },
+    showPrev: function(){
+        startEndDep.depend();
+        return showPrev ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+    },
+    showByMonth: function(){
+        startEndDep.depend();
+        return showByMonth ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+        //cambiar el return
+    },
+    showByWeek: function(){
+        startEndDep.depend();
+        return showByWeek ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+    },
+    showByDay: function(){
+        startEndDep.depend();
+        return showByDay ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-default';
+    },
+    currentMonth: function(){
+        return currentMonth.get();
+    }
+
+});
+
+
+Template.agendaBox.events = {
+    'click #next-month-btn': function () {
+
+        var calendarDiv = $('.fc');
+        calendarDiv.fullCalendar('next');
+        var today = new Date();
+        if((today>start) && (today<end)){
+            showToday = true;
+            showNext = false;
+            showPrev = false;
+        }
+        else if(today>end){
+            showToday = false;
+            showNext = false;
+            showPrev = true;
+        }
+        else if(today<start){
+            showToday = false;
+            showNext = true;
+            showPrev = false;
+        }
+        startEndDep.changed();
+    },
+    'click #prev-month-btn': function () {
+
+        var calendarDiv = $('.fc');
+        calendarDiv.fullCalendar('prev');
+        var today = new Date();
+        if((today>start) && (today<end)){
+            showToday = true;
+            showNext = false;
+            showPrev = false;
+        }
+        else if(today>end){
+            showToday = false;
+            showNext = false;
+            showPrev = true;
+        }
+        else if(today<start){
+            showToday = false;
+            showNext = true;
+            showPrev = false;
+        }
+        startEndDep.changed();
+    }
 };

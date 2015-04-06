@@ -348,7 +348,8 @@ Meteor.paginatedPublish(ActivityViews, function () {
 
     },
     {
-        pageSize: 50,
+        infiniteScroll: true,
+        //pageSize: 50,
         publicationName: 'activities',
         updateSelector: function (oldSelector, clientParams) {
             var newSelector = EJSON.clone(oldSelector);

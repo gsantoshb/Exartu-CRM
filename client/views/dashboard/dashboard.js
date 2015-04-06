@@ -1,4 +1,4 @@
-
+var clients = Contactables;
 var ActivitiesHandler;
 var activityTypes = [
     Enums.activitiesType.contactableAdd,
@@ -9,6 +9,113 @@ var activityTypes = [
     Enums.activitiesType.fileAdd
 ];
 
+
+var query = {
+    options: {
+        limit: 5000,
+        sort: {'data.dateCreated': -1}
+    },
+    filter: {
+        searchString: ''
+    }
+};
+var queryDep = new Deps.Dependency;
+var searchString = new ReactiveVar('');
+var listViewMode = new ReactiveVar(true);
+
+var leadTrackers = new ReactiveVar([]);
+var teamMemberTrackers = new ReactiveVar([]);
+var activityTrackers = new ReactiveVar([]);
+
+var setLeadTrackers = function(){
+    var hierId = (Meteor.user() ? Meteor.user().currentHierId : undefined);
+    var lkps = LookUps.find({
+        lookUpCode: Enums.lookUpCodes.client_status,
+        hierId: hierId,
+        sortOrder: {$gt: 0}
+    }, {sort: {sortOrder: 1}}).fetch();
+
+    var trackers = [];
+    var oneMonthAgo = (moment().subtract(1, 'month').unix()) * 1000;
+
+    _.each(lkps, function(item){
+        var code = item._id;
+        trackers.push({
+            displayName: item.displayName,
+            sortOrder: item.sortOrder,
+            code: code,
+            counter: clients.find({'Client.status': code}, {"dateCreated" : { $gte : oneMonthAgo }, hierId: hierId}).count()
+        });
+    });
+
+    _.sortBy(trackers, function(o) { return o.sortOrder; });
+    trackers.reverse();
+
+    leadTrackers.set(trackers);
+
+    return trackers;
+};
+
+var setTeamMembersTrackers = function(){
+    var hierId = Meteor.user().currentHierId;
+    var members = Meteor.users.find({currentHierId: hierId}).fetch();
+
+    var trackers = [];
+
+    _.each(members, function(member){
+        var displayName = (member.username ? member.username : member.emails[0].address);
+        trackers.push({
+            displayName: displayName,
+            counter: clients.find({userId: member._id, hierId: hierId}).count()
+        });
+    });
+
+    _.sortBy(trackers, function(o) { return o.displayName; });
+
+    teamMemberTrackers.set( trackers );
+
+    return trackers;
+};
+
+var setActivityTrackers = function(){
+    var hierId = Meteor.user().currentHierId;
+    //var activity = Activities.find({});
+    var activity;
+    var weekStart = (moment().startOf('isoweek').subtract(1, 'week').unix()) * 1000; // last weeks start as miliseconds
+    var dayStart = 0;
+    var dayEnd = 0;
+
+    for(var i=1;i<=5;i++){
+        dayStart = weekStart + (86400 * 1000 * (i-1));
+        dayEnd = weekStart + (86400 * 1000 * i);
+        activity = Activities.find({"data.dateCreated": {
+            $gte:dayStart,
+            $lt:dayEnd
+        }});
+        //console.log('interval : '+dayStart+'-'+dayEnd);
+        //console.log(activity);
+        //console.log( 'activity counters '+activity.fetch().length );
+    }
+
+    var trackers = [];
+    //console.log(activity);
+    activityTrackers.set( trackers );
+
+    return trackers;
+};
+
+var getSelectedActivityFilters = function(){
+    var filters = [];
+    $('.activityFilter-option').each(function() {
+        if($(this).prop('checked') && $(this).val() != 'all')
+            filters.push($(this).val());
+    });
+    //console.log('filters : ');
+    //console.log(filters);
+
+    return filters;
+}
+
 DashboardController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function () {
@@ -16,6 +123,9 @@ DashboardController = RouteController.extend({
         //  SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes}}});
         //  return [HierarchiesHandler, SubscriptionHandlers.ActivitiesHandler];
         //}
+        setLeadTrackers();
+        setTeamMembersTrackers();
+        setActivityTrackers();
     },
     onAfterAction: function () {
         var title = 'Dashboard',
@@ -33,23 +143,12 @@ DashboardController = RouteController.extend({
     }
 });
 
-
-var query = {
-    options: {
-        limit: 50,
-        sort: {'data.dateCreated': -1}
-    },
-    filter: {
-        searchString: ''
-    }
-};
-var queryDep = new Deps.Dependency;
-var searchString = new ReactiveVar('');
-var listViewMode = new ReactiveVar(true);
-
 // Main template
 Template.dashboard.created = function () {
     Meteor.autorun(function () {
+        //console.log('it should search now : ');
+        //console.log(activityTypes);
+        //console.log(query);
 
         queryDep.depend();
         if (ActivitiesHandler) {
@@ -59,11 +158,15 @@ Template.dashboard.created = function () {
             SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes}}});
         }
 
+        setLeadTrackers();
+        setTeamMembersTrackers();
+        setActivityTrackers();
     });
 };
 
 Template.dashboard.helpers({
     activities: function () {
+        console.log('updating the activities list...');
         return Activities.find({}, {sort: {'data.dateCreated': -1}});
     },
     listViewMode: function () {
@@ -93,6 +196,56 @@ Template.dashboard.helpers({
 
         return ActivitiesHandler.ready();
 
+    },
+    getUserDisplayName: function() {
+        var user = Meteor.user();
+        var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
+
+        if(user.firstName && user.lastName){
+            return user.firstName+' '+user.lastName;
+        }
+        else{
+            if(user.username)
+                return user.username;
+            else if(hier)
+                return hier.name;
+            else
+                return user.emails[0].address;
+        }
+    },
+    userName: function () {
+        return Meteor.user().username;
+    },
+    userEmail: function () {
+        return Meteor.user().emails[0].address;
+    },
+    currentHierName: function () {
+        var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
+        return hier ? hier.name : '';
+    },
+    getLeadTrackers: function() {
+        return leadTrackers.get();
+    },
+    getTeamMembersTrackers: function() {
+        return teamMemberTrackers.get();
+    },
+    getTypeContactable: function(){
+        return Enums.activitiesType.contactableAdd;
+    },
+    getTypeTasks: function(){
+        return Enums.activitiesType.taskAdd;
+    },
+    getTypePlacements: function(){
+        return Enums.activitiesType.placementAdd;
+    },
+    getTypeJobs: function(){
+        return Enums.activitiesType.jobAdd;
+    },
+    getTypeNotes: function(){
+        return Enums.activitiesType.noteAdd;
+    },
+    getTypeFiles: function(){
+        return Enums.activitiesType.fileAdd;
     }
 });
 
@@ -106,5 +259,28 @@ Template.dashboard.events({
     },
     'click #detail-view': function () {
         listViewMode.set(false);
+    },
+    'click #activityFilter input': function(e, ctx) {
+        //console.log(getSelectedActivityFilters());
+        console.log($(e.currentTarget).val());
+        if( $(e.currentTarget).val() == 'all' ){
+            if( $(e.currentTarget).prop('checked') ){
+                _.each($('#activityFilter input'), function(element){
+                    $(element).prop('checked', true);
+                });
+            }
+            else{
+                _.each($('#activityFilter input'), function(element){
+                    $(element).prop('checked', false);
+                });
+            }
+        }
+        else {
+            if (!$(e.currentTarget).prop('checked'))
+                $('#activityFilter input#feed-all').prop('checked', false);
+        }
+
+        activityTypes = getSelectedActivityFilters();
+        queryDep.changed();
     }
 });
