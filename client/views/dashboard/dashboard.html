@@ -47,9 +47,10 @@
                         </section><!-- /.box-type-3 -->
                     {{/if}}
 
+                    <div class="chart-box-1 text-center">
+                        {{> activityChart}}
+                    </div>
                 </aside><!-- /.sidebar -->
-
-
             </div><!-- /.col-md-3 -->
 
 
@@ -112,9 +113,7 @@
                         </div><!-- .list-actions -->
 
                         <div class="list-item-section">
-
                             <ul class="list-type-7 activity-feed">
-
                                 {{#if listViewMode}}
                                     {{#if isReady}}
                                         {{#each activities}}
