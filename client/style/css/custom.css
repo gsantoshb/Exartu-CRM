@@ -1720,3 +1720,12 @@ and (max-device-width: 568px) {
 .calendar-widget td.fc-widget-header, .calendar-widget td.fc-widget-content { padding: 0 !important;}
 .calendar-widget .fc-day-grid-container.fc-scroller { overflow: hidden !important; height: auto !important;}
 .calendar-widget .fc-unthemed .fc-today { background: #fff !important;}
+.calendar-widget th.fc-day-header { border: 0 !important;}
+.calendar-widget .fc-other-month .fc-day-number { display:none;}
+.calendar-widget .table td {
+    border-color: #e5e5e5;
+    border-right: 0;
+    border-left: 0;
+}
+
+.calendar-widget .table tr:last-child td { border-bottom: 0 !important;}

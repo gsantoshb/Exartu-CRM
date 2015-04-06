@@ -22,34 +22,38 @@
                         </h1>
                     </div>
 
-                    <section class="box-type-3">
-                        <header>
-                            <a class="more" href="/leaderboards">View reports</a>
-                            <div class="title">In the last 30 days</div>
-                        </header>
-                        <div class="box-body">
-                            <ul class="list-type-6">
-                                <li><span class="hightlight-1">{{getWonCounter}}</span> Won</li>
-                                <li><span class="hightlight-1">{{getLostCounter}}</span> Lost</li>
-                                <li><span class="hightlight-1">{{getUnqualifiedCounter}}</span> Unqualified</li>
-                            </ul>
-                        </div><!-- /.box-body -->
-                    </section><!-- /.box-type-3 -->
+                    {{#if getLeadTrackers}}
+                        <section class="box-type-3">
+                            <header>
+                                <a class="more" href="/leaderboards">View reports</a>
+                                <div class="title">In the last 30 days</div>
+                            </header>
+                            <div class="box-body">
+                                <ul class="list-type-6">
+                                    {{#each getLeadTrackers}}
+                                        <li><span class="hightlight-1">{{counter}}</span> {{displayName}}</li>
+                                    {{/each}}
+                                </ul>
+                            </div><!-- /.box-body -->
+                        </section><!-- /.box-type-3 -->
+                    {{/if}}
 
-                    <section class="box-type-3">
-                        <header>
-                            <a class="more" href="/leaderboards">View reports</a>
-                            <div class="title">Team Deal Load</div>
-                        </header>
-                        <div class="box-body">
-                            <ul class="list-type-6">
-                                {{#each teamMembers}}
-                                <li><span class="hightlight-1">{{leads}}</span> {{displayName}}</li>
-                                {{/each}}
-                            </ul>
-                            <a href="#"></a>
-                        </div><!-- /.box-body -->
-                    </section><!-- /.box-type-3 -->
+                    {{#if getTeamMembersTrackers}}
+                        <section class="box-type-3">
+                            <header>
+                                <a class="more" href="/leaderboards">View reports</a>
+                                <div class="title">Team Deal Load</div>
+                            </header>
+                            <div class="box-body">
+                                <ul class="list-type-6">
+                                    {{#each getTeamMembersTrackers}}
+                                        <li><span class="hightlight-1">{{counter}}</span> {{displayName}}</li>
+                                    {{/each}}
+                                </ul>
+                                <a href="#"></a>
+                            </div><!-- /.box-body -->
+                        </section><!-- /.box-type-3 -->
+                    {{/if}}
 
                 </aside><!-- /.sidebar -->
 
@@ -77,20 +81,43 @@
                             </div><!-- /.search-list -->
                             <!--<div class="list-actions-cell view-mode-list">-->
                                 <!--{{#if listViewMode}}-->
-                                    <!--<i id="detail-view" class="fa fa-th-list pointer" style="opacity: 0.4"></i>-->
-                                    <!--<i class="fa fa-bars pointer"></i>-->
+                            <!--<i id="detail-view" class="fa fa-th-list pointer" style="opacity: 0.4"></i>-->
+                            <!--<i class="fa fa-bars pointer"></i>-->
                                 <!--{{else}}-->
-                                    <!--<i class="fa fa-th-large pointer"></i>-->
-                                    <!--<i id="list-view" class="fa fa-bars pointer" style="opacity: 0.4"></i>-->
+                            <!--<i class="fa fa-th-large pointer"></i>-->
+                            <!--<i id="list-view" class="fa fa-bars pointer" style="opacity: 0.4"></i>-->
                                 <!--{{/if}}-->
                             <!--</div>&lt;!&ndash; /.view-mode-list &ndash;&gt;-->
 
                             <div class="list-actions-cell order-list filter-list">
-                                {{>fastPagination name="activities" loadingTemplate='loadingActivities' container='body' content='#content'}}
+                                <div class="btn-group" id="activityFilter">
+                                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">All activity <span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-custom-1">
+                                        <li class="head">
+                                            <input class="activityFilter-option" id="feed-all" name="activityFilter[]" type="checkbox" checked="" value="all"> <label for="feed-all">All activity</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-network" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeContactable}}"> <label for="feed-network">Network</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-jobs" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeJobs}}"> <label for="feed-jobs">Jobs</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-notes" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeNotes}}"> <label for="feed-notes">Notes</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-tasks" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeTasks}}"> <label for="feed-tasks">Tasks</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-placements" name="activityFilter[]" type="checkbox" checked="" value="{{getTypePlacements}}"> <label for="feed-placements">Placements</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-files" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeFiles}}"> <label for="feed-files">Files</label>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div><!-- .list-actions -->
-
-
 
                         <div class="list-item-section">
 
