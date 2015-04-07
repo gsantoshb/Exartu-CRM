@@ -32,10 +32,19 @@
                                 <div class="notice-msg-content">
                                     <div class="input-group">
                                         {{#objectProperty property=contactableStatusNote editable=statusNoteEditMode}}
-                                            <input class="form-control input-sm" type="text" name="statusNote" value="{{contactableStatusNote}}">
+                                            {{#if contactableStatusNote}}
+                                                <input class="form-control input-sm" type="text" name="statusNote" value="{{_ contactableStatusNote}}">
+                                            {{else}}
+                                                <input class="form-control input-sm" type="text" name="statusNote" value="{{contactableStatusNote}}">
+                                            {{/if}}
                                         {{else}}
-                                            <span>{{contactableStatusNote}}</span>
-                                            <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
+                                            {{#if contactablesStatusNote}}
+                                                <span>{{_ contactableStatusNote}}</span>
+                                                <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
+                                            {{else}}
+                                                span>{{contactableStatusNote}}</span>
+                                                <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
+                                            {{/if}}
                                         {{/objectProperty}}
                                         {{#if statusNoteEditMode}}
                                             <span class="input-group-btn">
