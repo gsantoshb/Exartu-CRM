@@ -1,9 +1,75 @@
 var self = this;
-var activities = Activities;
+var activities = ChartActivities;
 
 var weekDayNames = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 var activityTrackers = new ReactiveVar([]);
+var chartData = new ReactiveVar({});
+var setChartData = function() {
+    var trackersData = activityTrackers.get();
+    var chartDataArr = [];
+    var colWidth = Session.get("chartWidth"); // we get the chart width calculated before rendering this widget
+
+    _.each(trackersData, function (tracker) {
+        chartDataArr.push({
+            drilldown: tracker.displayName,
+            name: tracker.displayName,
+            y: tracker.counter
+        });
+    });
+
+    chartData.set({
+        chart: {
+            type: 'column',
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            backgroundColor: null
+        },
+        title: false,
+        subtitle: false,
+        backgroundColor: null,
+        xAxis: {
+            gridLineWidth: 0,
+            minorGridLineWidth: 0,
+            lineColor: 'transparent',
+            minorTickLength: 0,
+            tickLength: 0,
+            type: 'category'
+        },
+        yAxis: {
+            gridLineWidth: 0,
+            minorGridLineWidth: 0,
+            title: false,
+            labels: {enabled: false}
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            column: {
+                pointWidth: colWidth,
+                borderWidth: 1
+            },
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{y}'
+                }
+            }
+        },
+
+        tooltip: false,
+        colors: ["#1bcdfd"],
+        series: [{
+            name: 'Brands',
+            colorByPoint: true,
+            data: chartDataArr
+        }]
+    });
+    return;
+};
 
 var setActivityTrackers = function(){
     var hierId = Meteor.user().currentHierId;
@@ -30,15 +96,19 @@ var setActivityTrackers = function(){
         });
     }
 
+    console.log(activities.find({}).count());
+
     activityTrackers.set( trackers );
     return trackers;
 };
 
 Template.activityChart.created = function(){
     setActivityTrackers();
+    setChartData();
 
     Meteor.autorun(function () {
         setActivityTrackers();
+        setChartData();
     });
 };
 
@@ -46,67 +116,6 @@ Template.activityChart.rendered = function(){};
 
 Template.activityChart.helpers({
     getActivityChartObject: function() {
-        var trackersData = activityTrackers.get();
-        var chartData = [];
-        var colWidth = Session.get("chartWidth"); // we get the chart width calculated before rendering this widget
-
-        _.each(trackersData, function(tracker){
-            chartData.push({
-                drilldown: tracker.displayName,
-                name: tracker.displayName,
-                y: tracker.counter
-            });
-        });
-
-        return {
-            chart: {
-                type: 'column',
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                backgroundColor: null
-            },
-            title: false,
-            subtitle: false,
-            backgroundColor: null,
-            xAxis: {
-                gridLineWidth: 0,
-                minorGridLineWidth : 0,
-                lineColor: 'transparent',
-                minorTickLength: 0,
-                tickLength: 0,
-                type: 'category'
-            },
-            yAxis: {
-                gridLineWidth: 0,
-                minorGridLineWidth : 0,
-                title: false,
-                labels: {enabled: false}
-            },
-            legend: {
-                enabled: false
-            },
-            plotOptions: {
-                column: {
-                    pointWidth: colWidth,
-                    borderWidth: 1
-                },
-                series: {
-                    borderWidth: 0,
-                    dataLabels: {
-                        enabled: true,
-                        format: '{y}'
-                    }
-                }
-            },
-
-            tooltip: false,
-            colors:["#1bcdfd"],
-            series: [{
-                name: 'Brands',
-                colorByPoint: true,
-                data: chartData
-            }]
-        };
+        return chartData.get();
     }
 });
