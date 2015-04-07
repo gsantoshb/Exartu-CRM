@@ -152,8 +152,8 @@ DashboardController = RouteController.extend({
         //  return [HierarchiesHandler, SubscriptionHandlers.ActivitiesHandler];
         //}
         //setSubscription();
-        setLeadTrackers();
-        setTeamMembersTrackers();
+        //setLeadTrackers();
+        //setTeamMembersTrackers();
     },
     onAfterAction: function () {
         var title = 'Dashboard',
@@ -201,8 +201,8 @@ var loadMoreHandler = function() {
 // Main template
 Template.dashboard.created = function () {
     //setSubscription();
-    setLeadTrackers();
-    setTeamMembersTrackers();
+    //setLeadTrackers();
+    //setTeamMembersTrackers();
 
     Session.set("chartWidth", ($('.sidebar').width() / 5) - 8);
 
