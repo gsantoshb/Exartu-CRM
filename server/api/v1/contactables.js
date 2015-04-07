@@ -114,7 +114,7 @@ var mapper = {
 		// if it's a client, assume organization
 		// set any blank fields for its type to 'NA'
 		if (type=='Employee' || type=='Contact') {
-			var personFields = ['firstName', 'lastName', 'middleName', 'jobTitle'];
+			var personFields = ['firstName', 'lastName'];
 			_.some(personFields, function (fieldName) {
 				if (data[fieldName] == null || data[fieldName] == '') data[fieldName] = 'NA';
 			});
