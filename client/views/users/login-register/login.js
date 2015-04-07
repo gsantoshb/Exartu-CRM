@@ -17,7 +17,7 @@ LoginController = RouteController.extend({
   //},
   onAfterAction: function() {
     var title = 'Login',
-      description = '';
+        description = '';
     SEO.set({
       title: title,
       meta: {
@@ -34,7 +34,7 @@ LoginController = RouteController.extend({
 var email;
 
 var notVerified = new ReactiveVar(false),
-  errorMessage = new ReactiveVar('');
+    errorMessage = new ReactiveVar('');
 
 LoginSchema = new SimpleSchema({
   email:{
@@ -78,6 +78,15 @@ AutoForm.hooks({
     }
   }
 });
+
+Template.login.rendered = function(){
+  $('body').addClass('login-register');
+};
+
+Template.login.destroyed = function(){
+  $('body').removeClass('login-register');
+};
+
 Template.login.helpers({
   getNotVerified: function () {
     return notVerified.get();
@@ -115,5 +124,21 @@ Template.login.events({
   },
   'click #recoverPassword': function () {
     Utils.showModal('recoverPassword');
+  },
+
+  'focus .smartField': function(e){
+    var label = $('#'+$(e.currentTarget).attr('data-label'));
+    label.removeClass('on').addClass('on');
+  },
+  'keyup .smartField': function(e){
+    var label = $('#'+$(e.currentTarget).attr('data-label'));
+    label.removeClass('show');
+    if($(e.currentTarget).val()){
+      label.addClass('show');
+    }
+  },
+  'blur .smartField': function(e){
+    var label = $('#'+$(e.currentTarget).attr('data-label'));
+    label.removeClass('on');
   }
 });

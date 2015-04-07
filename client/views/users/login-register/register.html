@@ -1,90 +1,78 @@
 <template name="register">
-    <div class="register-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <div class="pull-right"><a class="btn btn-primary top-10" href="/login">{{_ "Sign In"}}</a></div>
-                    <a href="#"><img alt="Exartu" src="img/logo.png"></a>
-                </div>
-            </div>
-        </div><!-- /.container -->
-    </div>
+    <div class="logo">a&iuml;da</div>
+
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
+                <section class="box-type-4 get-started">
+                    <h2 class="headline">{{_ "Sign Up"}} a&iuml;da</h2>
 
+                    {{#if isRegistering}}
+                        {{#autoForm schema="RegisterSchema" class="form-1" id="registerForm" validation="blur"}}
+                            <ol>
+                                <li class="{{#if afFieldIsInvalid name='email'}}error{{/if}}">
+                                    {{> afFieldInput name='email' class="form-control form-control-1 smartField" placeholder="Email address" data-label="email-label"}}
+                                    {{#if afFieldIsInvalid name='email'}}
+                                        <label class="form-label" id="email-label">{{afFieldMessage name='email'}}</label>
+                                    {{else}}
+                                        <label class="form-label" id="email-label">Email</label>
+                                    {{/if}}
+                                    <label class="icon-holder"><i class="fa fa-envelope"></i></label>
+                                </li>
 
-                {{#if isRegistering}}
-                <h1>{{_ "Sign Up"}}</h1>
-                {{#autoForm schema="RegisterSchema" id="registerForm" validation="blur"}}
-                    <fieldset>
-                        <!--<div class="form-group {{#if afFieldIsInvalid name='username'}}has-error{{/if}}">-->
-                            <!--{{> afFieldInput name='username' class="input-lg" placeholder="Choose your Aïda  username"}}-->
-                            <!--{{#if afFieldIsInvalid name='username'}}-->
-                            <!--<span class="help-block">{{afFieldMessage name='username'}}</span>-->
-                            <!--{{/if}}-->
-                        <!--</div>-->
-                        <div class="form-group">
-							{{> afFieldInput name='language' class="input-lg" type="select" options=languageOptions onChange="TAPi18n.setLanguage(this.value);"}}
-						</div>
-                        <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
-                            {{> afFieldInput name='email' class="input-lg" placeholder="Email"}}
-                            {{#if afFieldIsInvalid name='email'}}
-                            <span class="help-block">{{afFieldMessage name='email'}}</span>
-                            {{/if}}
-                        </div>
+                                <li class="{{#if afFieldIsInvalid name='password'}}error{{/if}}">
+                                    {{> afFieldInput name='password' type="password" class="form-control form-control-1 smartField" placeholder="Password" data-label="password-label"}}
+                                    {{#if afFieldIsInvalid name='password'}}
+                                        <label class="form-label" id="password-label">{{afFieldMessage name='password'}}</label>
+                                    {{else}}
+                                        <label class="form-label" id="password-label">Password</label>
+                                    {{/if}}
+                                    <label class="icon-holder"><i class="fa fa-lock"></i></label>
+                                </li>
 
-                        <div class="form-group {{#if afFieldIsInvalid name='password'}}has-error{{/if}}">
-                            {{> afFieldInput name='password' class="input-lg" placeholder="Choose Password"  type="password"}}
-                            {{#if afFieldIsInvalid name='password'}}
-                            <span class="help-block">{{afFieldMessage name='password'}}</span>
-                            {{/if}}
-                        </div>
+                                <li class="{{#if afFieldIsInvalid name='confirmPassword'}}error{{/if}}">
+                                    {{> afFieldInput name='confirmPassword' type="password" class="form-control form-control-1 smartField" placeholder="Confirm password" data-label="password-confirm-label"}}
+                                    {{#if afFieldIsInvalid name='confirmPassword'}}
+                                        <label class="form-label" id="password-confirm-label">{{afFieldMessage name='confirmPassword'}}</label>
+                                    {{else}}
+                                        <label class="form-label" id="password-confirm-label">Confirm Password</label>
+                                    {{/if}}
+                                    <label class="icon-holder"><i class="fa fa-lock"></i></label>
+                                </li>
 
-                        <div class="form-group {{#if afFieldIsInvalid name='confirmPassword'}}has-error{{/if}}">
-                            {{> afFieldInput name='confirmPassword' class="input-lg" placeholder="Confirm Password"  type="password"}}
-                            {{#if afFieldIsInvalid name='confirmPassword'}}
-                            <span class="help-block">{{afFieldMessage name='confirmPassword'}}</span>
-                            {{/if}}
-                        </div>
+                                <li>
+                                    {{> afFieldInput name='language' class="form-control form-control-1 smartField" type="select" options=languageOptions onChange="TAPi18n.setLanguage(this.value);" data-label="language-label"}}
+                                    <label class="icon-holder"><i class="fa fa-language"></i></label>
+                                </li>
+                            </ol>
 
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary top-10 btn-lg">Create Account</button>
-                        </div>
-                    </fieldset>
-                {{/autoForm}}
-                <div class="alert-box alert-danger" style="margin-top: 20px;">
-                    {{error}}
-                </div>
-                    {{#if isSubmitting}}
-                        <div>Creating account. Please wait a few seconds....</div>
-                        <div class="progress progress-striped active">
-                            <div style="width: 100%;" class="progress-bar progress-bar-info"></div>
+                            <button class="btn-custom-4 success btn-block">Create my account</button>
+
+                            <div class="more">
+                                <p><a href="/login">I already have an account</a></p>
+                            </div>
+                        {{/autoForm}}
+
+                        <div class="decoration"></div>
+
+                        <div class="alert-box alert-danger" style="margin-top: 20px;">{{error}}</div>
+
+                        {{#if isSubmitting}}
+                            <div>Creating account. Please wait a few seconds....</div>
+                            <div class="progress progress-striped active">
+                                <div style="width: 100%;" class="progress-bar progress-bar-info"></div>
+                            </div>
+                        {{/if}}
+                    {{else}}
+                        <h1>{{_ "Thank you"}}</h1>
+                        <div class="col-md-8 text-center" style="margin-bottom: 150px">
+                            <br><br>
+                            <h4>{{_ "Your registration is complete"}}</h4>
+                            <p>{{_ "Please verify your account via the email we just sent you.  "}}</p>
                         </div>
                     {{/if}}
-                {{else}}
-                <h1>{{_ "Thank you"}}</h1>
-                <div class="col-md-8 text-center" style="margin-bottom: 150px">
-                    <br><br>
-                    <h4>{{_ "Your registration is complete"}}</h4>
-                    <p>{{_ "Please verify your account via the email we just sent you.  "}}</p>
-                </div>
-                {{/if}}
-
-                <br><br><br><br>
-                <hr>
-                <div class="row">
-                    <div class="col-md-8 text-center">
-                        <br><br>
-                        <h4>Take Aïda  with you.</h4>
-                        <p>Switch between devices, and pick up wherever you left off.</p>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <img alt="Aïda  CRM mobile" src="img/exartu-mobile.jpg">
-                    </div>
-                </div>
-
-            </div>
-        </div>
+                </section><!-- -->
+            </div><!-- /col-md-offset-6 -->
+        </div><!-- /.row -->
     </div>
 </template>

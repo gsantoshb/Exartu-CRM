@@ -92,7 +92,7 @@ var setSubscription = function(){
         SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes}}});
     }
 
-    return;
+    return ActivitiesHandler;
 };
 
 DashboardController = RouteController.extend({
@@ -169,9 +169,7 @@ Template.dashboard.helpers({
         return this;
     },
     isReady: function(){
-return true;
         return ActivitiesHandler.ready();
-
     },
     getUserDisplayName: function() {
         var user = Meteor.user();
