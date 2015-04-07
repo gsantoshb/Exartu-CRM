@@ -153,9 +153,17 @@
                                     <div class="left-part">{{_ "Status note"}}</div>
                                     <div class="right-part">
                                         {{#objectProperty property=statusNote editable=editMode}}
-                                            <input class="form-control" type="text" value="{{_ value}}">
+                                            {{#if value}}
+                                                <input class="form-control" type="text" value="{{_ value}}">
+                                            {{else}}
+                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{/if}}
                                         {{else}}
-                                            <span>{{_ value}}</span>
+                                            {{#if value}}
+                                                <span>{{_ value}}</span>
+                                            {{else}}
+                                                <span>{{value}}</span>
+                                            {{/if}}
                                         {{/objectProperty}}
                                     </div>
                                 </li>
@@ -212,7 +220,7 @@
                                             {{#if isAdmin}}
                                                 <select class="form-control" id="userSelect">
                                                     {{#each users}}
-                                                        <option value="{{_id}}" selected="{{isSelectedUser}}">{{_ displayUserName _id}}</option>
+                                                        <option value="{{_id}}" selected="{{isSelectedUser}}">{{displayUserName _id}}</option>
                                                     {{/each}}
                                                 </select>
                                             {{/if}}

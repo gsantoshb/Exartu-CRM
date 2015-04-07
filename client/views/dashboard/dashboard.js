@@ -105,7 +105,7 @@ var setSubscription = function(){
         SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes.get()}}});
     }
 
-    Meteor.subscribe('activitiesContactables');
+    //Meteor.subscribe('activitiesContactables');
 };
 
 var incrementLimit = function(inc) {
@@ -140,7 +140,7 @@ Tracker.autorun(function(){
         sort: { 'data.dateCreated': -1 }
     };
 
-    Meteor.subscribe('activitiesContactables');
+    //Meteor.subscribe('activitiesContactables');
     Meteor.subscribe('getActivities', searchQuery, options);
 });
 
