@@ -9,7 +9,7 @@ var selected = undefined;
 var searchDep = new Deps.Dependency;
 var totalCountDep = new Deps.Dependency;
 var isSearching = false;
-
+$("#userId").prop("selectedIndex", -1);
 var info = new Utils.ObjectDefinition({
     reactiveProps: {
         contactablesCount: {},
@@ -125,6 +125,12 @@ ContactablesController = RouteController.extend({
         if (params.mine) {
             mineQuery.default = !!params.mine;
         }
+        // userId
+        var userIdQuery = {};
+        if (params.userId) {
+
+            userIdQuery.default = params.userId;
+        }
 
         // Tags
         var tagsQuery = {type: Utils.ReactivePropertyTypes.array};
@@ -201,7 +207,8 @@ ContactablesController = RouteController.extend({
                 clientProcessStatus: clientProcessStatusQuery,
                 contactProcessStatus: contactProcessStatusQuery,
                 activeStatus: activeStatusQuery,
-                taxId: taxIdQuery
+                taxId: taxIdQuery,
+                userId: userIdQuery
             }
         });
 
@@ -253,6 +260,7 @@ Template.contactablesList.created = function () {
             searchQuery.objNameArray = query.objType.value;
             urlQuery.addParam('type', query.objType.value);
         }
+
         // Creation date
         if (query.selectedLimit.value) {
             var dateLimit = new Date();
@@ -268,6 +276,10 @@ Template.contactablesList.created = function () {
             urlQuery.addParam('mine', true);
         }
 
+        if (query.userId.value) {
+            searchQuery.userId = query.userId.value;
+            urlQuery.addParam('userId', query.userId.value);
+        }
         // Location filter
         var locationOperatorMatch = false;
         if (query.location.value) {
@@ -338,7 +350,7 @@ Template.contactablesList.created = function () {
 
             urlQuery.addParam('clientProcessStatus', query.clientProcessStatus.value);
         }
-        if (!_.isEmpty(query.contactProcessStatus.value)) {
+        if ((query.objType.value === "Contact")&&(!_.isEmpty(query.contactProcessStatus.value))) {
             searchQuery[query.objType.value + '.status'] = {$in: query.contactProcessStatus.value};
 
             urlQuery.addParam('contactProcessStatus', query.contactProcessStatus.value);
@@ -385,36 +397,21 @@ Template.contactablesList.created = function () {
     });
 };
 
-Template.contactablesList.rendered = function () {
-    /**
-     * @todo review code, this ia a small hack to make ti work.
-     * This particular plugin doesn't seem to behave quite right if you initialize it more than once so we're doing it on each first click event.
-     */
-    //$(document).on('click', 'button[data-toggle="popover"]', function (e) {
-    //    var object = e.currentTarget;
-    //    // destroy any other popovers open on page
-    //    $('.popover').popover('destroy');
-    //
-    //    if ($(object).attr('data-init') == 'off') {
-    //        // we set all other popovers besides this one to off so that we can open them next time
-    //        $('button[data-toggle="popover"]').attr('data-init', 'off');
-    //        $(object).popover('show');
-    //        $(object).attr('data-init', 'on');
-    //    }
-    //});
-};
+Template.contactablesList.rendered = function () {};
 
 // hack: because the handler is created on the created hook, the SubscriptionHandlers 'cleaner' can't find it
 Template.contactablesList.destroyed = function () {
-    //if (SubscriptionHandlers.AuxContactablesHandler) {
-    //    SubscriptionHandlers.AuxContactablesHandler.stop();
-    //    delete SubscriptionHandlers.AuxContactablesHandler;
-    //}
+    if (SubscriptionHandlers.AuxContactablesHandler) {
+        SubscriptionHandlers.AuxContactablesHandler.stop();
+       delete SubscriptionHandlers.AuxContactablesHandler;
+    }
 
+    $('button[data-toggle="popover"]').attr('data-init', 'off');
     $('.popover').hide().popover('destroy');
 };
 
 Template.contactablesListItem.destroyed = function () {
+    $('button[data-toggle="popover"]').attr('data-init', 'off');
     $('.popover').hide().popover('destroy');
 };
 
@@ -551,6 +548,9 @@ Template.contactableListSort.helpers({
 
 // List Filters - Helpers
 Template.contactablesFilters.helpers({
+    users: function () {
+        return Meteor.users.find({}, {sort: {'emails.address': 1}});
+    },
     information: function () {
         var searchQuery = {};
 
@@ -718,15 +718,13 @@ Template.contactables.events({
     },
     'click button[data-toggle="popover"]': function (e, ctx) {
         var object = e.currentTarget;
+        var attr = $(object).attr('aria-describedby');
         // destroy any other popovers open on page
         $('.popover').popover('destroy');
 
-        if ($(object).attr('data-init') == 'off') {
+        if ( !(typeof attr !== typeof undefined && attr !== false) ) {
             // we set all other popovers besides this one to off so that we can open them next time
-            $('button[data-toggle="popover"]').attr('data-init', 'off');
             $(object).popover('show');
-            console.log('show');
-            $(object).attr('data-init', 'on');
         }
     }
 });
@@ -929,10 +927,17 @@ var runESComputation = function () {
             filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
         }
 
-        // Created by
+        //Created by
         if (query.mineOnly.value) {
-            filters.bool.must.push({term: {userId: Meteor.userId()}});
+            var fullUserId = Meteor.userId();
+            var spltUserId = fullUserId.split("-");
+                for (i in spltUserId){
+            filters.bool.must.push({regexp: {userId: '.*' + spltUserId[i] + '.*'}});
+                }
         }
+      
+
+
 
         // Location filter
         var locationOperatorMatch = false;
@@ -957,6 +962,23 @@ var runESComputation = function () {
                 filters.bool.should.push(aux);
             });
         }
+
+        if((query.objType.value === "Contact")&&(query.contactProcessStatus.value.length>0)){
+           var processArray = [];
+           _.forEach(query.contactProcessStatus.value, function(p){
+             processArray.push(p.toLowerCase());
+           });
+           filters.bool.must.push({terms:{'Contact.status': processArray}});
+        }
+
+      if(query.activeStatus.value.length>0){
+        var processArray = [];
+        _.forEach(query.activeStatus.value, function(p){
+            processArray.push(p.toLowerCase());
+        });
+        filters.bool.must.push({terms:{'activeStatus': processArray}});
+      }
+
 
         isSearching = true;
         searchDep.changed();

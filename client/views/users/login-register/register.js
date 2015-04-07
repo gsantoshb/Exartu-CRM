@@ -28,6 +28,14 @@ var isRegistering = new ReactiveVar(true);
 var isSubmitting = new ReactiveVar(false);
 var error = new ReactiveVar('');
 
+Template.register.rendered = function(){
+  $('body').addClass('login-register');
+};
+
+Template.register.destroyed = function(){
+  $('body').removeClass('login-register');
+};
+
 Template.register.helpers({
   isRegistering: function () {
     return isRegistering.get();
@@ -47,6 +55,23 @@ Template.register.helpers({
   }
 });
 
+Template.register.events({
+  'focus .smartField': function(e){
+    var label = $('#'+$(e.currentTarget).attr('data-label'));
+    label.removeClass('on').addClass('on');
+  },
+  'keyup .smartField': function(e){
+    var label = $('#'+$(e.currentTarget).attr('data-label'));
+    label.removeClass('show');
+    if($(e.currentTarget).val()){
+      label.addClass('show');
+    }
+  },
+  'blur .smartField': function(e){
+    var label = $('#'+$(e.currentTarget).attr('data-label'));
+    label.removeClass('on');
+  }
+});
 
 AutoForm.hooks({
   'registerForm': {

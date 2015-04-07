@@ -9,7 +9,9 @@ var HotListMembersHandler, query;
 
 // Vars
 var searchFields = ['person.firstName', 'person.lastName', 'person.middleName', 'organization.organizationName'];
-var defaultSort = {'person': 1};
+var defaultSort = {
+    'displayName': -1
+};
 
 var options = {};
 var searchQuery = {};
@@ -23,7 +25,7 @@ var membersCount = new ReactiveVar();
 var members = new ReactiveVar();
 
 // Dependencies
-var searchDep = new Deps.Dependency;
+searchDep = new Tracker.Dependency;
 var hotListMembersDep = new Deps.Dependency();
 
 
@@ -43,10 +45,9 @@ var loadqueryFromURL = function (params) {
 
 
 var setSubscription = function (searchQuery, options) {
-    hotList.members = members.get();
-    console.log(hotList.members.length);
-    searchQuery = {_id: { $in : hotList.members } };
 
+    hotList.members = members.get();
+    searchQuery = {_id: { $in : members.get() } };
     if (SubscriptionHandlers.HotListMembersHandler) {
         SubscriptionHandlers.HotListMembersHandler.setFilter(searchQuery);
         SubscriptionHandlers.HotListMembersHandler.setOptions(options);
@@ -64,6 +65,7 @@ var setSubscription = function (searchQuery, options) {
 
     //membersCount.set( HotListMembersHandler.totalCount() );
     var skip = (HotListMembersHandler.currentPage()-1)*pageLimit;
+
     options.limit = pageLimit;
     options.skip = skip;
 
@@ -138,22 +140,19 @@ Template.hotListMembersSearch.events({
         Utils.showModal(
             'hotListMemberAdd',
             hotList._id, function(memberId, hotListId){
-                var hotList = HotLists.findOne({_id: hotListId});
+                var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
+                var mbrs = tempHotList.members;
 
-                if(hotList.members.indexOf(memberId) > -1) {
+                if(tempHotList.members.indexOf(memberId) > -1) {
                     return false;
                 }
 
-                hotList.members.push(memberId);
+                mbrs.push(memberId);
 
-                HotLists.update({_id: hotListId}, {$set: {members: hotList.members}});
-                var skip = (HotListMembersHandler.currentPage()-1)*10;
-                options.skip = skip;
-                options.limit = 10;
+                HotLists.update({_id: hotListId}, {$set: {members: mbrs}});
 
-                membersCount.set( hotList.members.length );
-                members.set( hotList.members );
-
+                membersCount.set( mbrs.length );
+                members.set( mbrs );
 
                 setSubscription(searchQuery, options);
                 searchDep.changed();
@@ -205,6 +204,7 @@ Template.hotListMembersSearch.events({
  * HotList Members - List section
  */
 Template.hotListMembersList.created = function () {
+
     options = {};
     searchQuery = {};
     query = query || loadqueryFromURL(Router.current().params);
@@ -214,9 +214,10 @@ Template.hotListMembersList.created = function () {
     options.pubArguments = hotList._id;
     setSubscription(searchQuery, options);
 
-    this.autorun(function () {
-        var urlQuery = new URLQuery();
+    Tracker.autorun(function () {
 
+
+        var urlQuery = new URLQuery();
         searchQuery = {
             _id: { $in : hotList.members },
             $and: [] // Push each $or operator here
@@ -254,7 +255,7 @@ Template.hotListMembersList.created = function () {
 
         urlQuery.apply();
         setSubscription(searchQuery, options);
-    })
+    });
 };
 
 Template.hotListMembersList.helpers({
@@ -262,7 +263,6 @@ Template.hotListMembersList.helpers({
         return HotListMembersHandler.isLoading();
     },
     hotListMembers: function () {
-        console.log(membersCollection.find(searchQuery, options).count());
         return membersCollection.find(searchQuery, options);
     }
 });
@@ -271,10 +271,9 @@ Template.hotListMembersList.events({
     'click .removeMember': function (e, ctx) {
         var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
         tempHotList.members.splice(tempHotList.members.indexOf(this._id), 1);
-        //console.log(tempHotList.members);
-        hotListCollection.update({_id: tempHotList._id}, {$set: {members: tempHotList.members}});
+        HotLists.update({_id: tempHotList._id}, {$set: {members: tempHotList.members}});
 
-        //hotListCollection.update({_id: tempHotList._id}, {$pull: { 'members': this._id }});
+        //HotLists.update({_id: tempHotList._id}, {$pull: { 'members': this._id }});
 
         membersCount.set( tempHotList.members.length );
 

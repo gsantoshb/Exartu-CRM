@@ -40,6 +40,18 @@
                                     <!--{{/objectProperty}}-->
                                 <!--</div>-->
                                 <div class="form-group">
+                                    <label class="control-label"> First Name: </label>
+                                    {{#objectProperty property=firstName editable=true}}
+                                        <input class="form-control" type="text" placeholder="" value="{{value}}"/>
+                                    {{/objectProperty}}
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label"> Last Name: </label>
+                                    {{#objectProperty property=lastName editable=true}}
+                                        <input class="form-control" type="text" placeholder="" value="{{value}}"/>
+                                    {{/objectProperty}}
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label"> Email: </label>
                                     {{#objectProperty property=email editable=true}}
                                         <input class="form-control" type="text" placeholder="" value="{{value}}"/>

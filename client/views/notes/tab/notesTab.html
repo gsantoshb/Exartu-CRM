@@ -14,7 +14,14 @@
                 <div class="item-icon item-icon-xs item-icon-notes"><i class="icon icon-pencil-3"></i></div> <div class="title">Add Note</div>
             </div><!-- /.add-note-header -->
 
-            {{> afQuickField name='msg' rows=3 placeholder='Write your note here ...' label=false style='box-shadow: none;'}}
+            <div class="add-note-textarea">
+                {{> afQuickField name='msg' rows=3 placeholder='Write your note here ...' label=false style='box-shadow: none;'}}
+            </div>
+
+            <div class="add-note-options">
+                {{> afFieldInput name='links' type='linkInput'}}
+            </div>
+
             <div class="add-note-actions">
                 <div class="add-note-actions-cell">
                     <button class="btn btn-custom-2" type="submit" disabled="{{addDisabled}}">Save note</button>
@@ -42,21 +49,13 @@
                         {{/unless}}
                     {{/unless}}
 
-                    {{#if isEmployee}}
-                        <!-- Display note to employee -->
-                        <div class="add-note-actions-cell">
-                            <div class="form-group" style="margin-bottom: 0px;">
-                                {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
-                            </div>
+                    <!-- Display note to employee -->
+                    <div class="add-note-actions-cell">
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
                         </div>
-                    {{/if}}
-
-
+                    </div>
                 {{/if}}
-                <div class="add-note-actions-cell last" style="visibility:{{isContactableNote}}">
-                    <div class="item-icon item-icon-network item-icon-sm"><i class="icon-profile-business-man"></i></div>
-                    {{> afFieldInput name='links' type='linkInput'}}
-                </div>
 
                 {{#if isHotListNote}}
                     {{#unless userNumbers}}
@@ -100,7 +99,7 @@
             </div>
         </div><!-- /.search-list -->
 
-        {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
+            {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
 
         <!-- /.list-actions-cell -->
     </div><!-- .list-actions -->
@@ -146,50 +145,18 @@
 </template>
 
 <template name="linksAutoForm">
-    <div data-schema-key="{{name}}" id="links-value" class="{{name}} {{#if afFieldIsInvalid name=name}}has-error{{/if}}">
-        {{#if isEditing}}
-            <div class="row">
-                <div class="col-md-5">
-                    <select class="form-control" id="noteTypeSelect"
-                            title="Select the type of entity that you want to link to the msg">
-                        <option value="">--type--</option>
-                        {{#each types}}
-                            <option value="{{value}}">{{displayName}}</option>
-                        {{/each}}
-                    </select>
-                </div>
-                <div class="col-md-5">
-                    <select class="form-control" id="noteEntitySelect" title="Select the entity that you want to link">
-                        <option value="">--select--</option>
-                        {{#each entities}}
-                            <option value="{{_id}}">{{displayName}}</option>
-                        {{/each}}
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <span id="noteLinkEntity" class="btn btn-md btn-default pull-right">Link</span>
-                </div>
-            </div>
-
+    <div data-schema-key="{{name}}">
+        <div class="add-note-options-head"><i class="fa fa-link"></i> Linked to this note:</div>
+        <div class="add-note-options-body">
             {{#each links}}
                 {{#with getEntity .}}
-                    {{displayName}}
-                    <a class="remove-link pointer"><i class="fa fa-times"></i></a>
+                    <div class="label-4">
+                        <i class="icon-holder icon-profile-business-man"></i> {{displayName}}
+                        <button class="btn-remove" href="#"><i class="fa fa-times-circle"></i></button>
+                    </div>
                 {{/with}}
             {{/each}}
-            <a id="editLinksDone" class="pointer"><strong>Done</strong></a>
-
-            {{#if afFieldIsInvalid name=name}}
-                <span class="help-block">{{afFieldMessage name=name}}</span>
-            {{/if}}
-
-        {{else}}
-            {{#each links}}
-                {{#with getEntity .}}
-                    {{displayName}}&nbsp;&nbsp;
-                {{/with}}
-            {{/each}}
-            <a id="editLinks" class="pointer"><strong>Edit links</strong></a>
-        {{/if}}
+            <a class="btn-custom-3" id="toggleAddNoteModal"><i class="fa fa-plus"></i> Link item</a>
+        </div><!-- /.add-note-options-body -->
     </div>
 </template>

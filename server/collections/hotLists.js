@@ -9,10 +9,11 @@ HotListView = new View('hotLists', {
               return Contactables.find({_id: {$in : members}});
           },
           to: 'contactables',
-          observedProperties: ['client'],
+          observedProperties: ['members'],
           onChange: function (changedProps, oldSelector) {
-              oldSelector._id = changedProps.client;
-              return Contactables.find(oldSelector, {fields: flds});
+              var members = (changedProps.members) ? changedProps.members : [];
+              var newSelector = { _id: { $in: members } };
+              return Contactables.find(newSelector);
           }
       });
   }

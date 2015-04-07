@@ -7,7 +7,7 @@
                     <div class="box-options">
                         <a class="action-btn editTags" id="edit-mode" href="#"><i class="fa fa-pencil"></i></a>
                     </div>
-                    <h3>Tags</h3>
+                    <h3>{{_ "Tags"}}</h3>
                 </div><!-- /.col-md-2 -->
                 <div class="col-md-10">
 
@@ -16,9 +16,9 @@
                             <div class="col-md-6">
                                 <form role="form">
                                 <div class="input-group add-tag-group">
-                                    <input id="new-tag" type="text" class="form-control" placeholder="Add tags here...">
+                                    <input id="new-tag" type="text" class="form-control" placeholder= {{_ "Add tags here"}}>
                             <span class="input-group-btn">
-                              <button class="add-tag btn btn-success" type="button"> Add </button>
+                              <button class="add-tag btn btn-success" type="button"> {{_ "Add"}} </button>
                             </span>
 
                                 </div>
@@ -29,14 +29,14 @@
 
                     {{#objectProperty property=tags}}
                         <button type="button" class="tag btn-custom-1 btn-custom-sm">
-                            <span >{{value}}</span>
+                            <span >{{_ value}}</span>
                             {{#if editMode}}
                                 &nbsp;<i class="remove-tag fa fa-times"></i>
                             {{/if}}
                         </button>
                     {{/objectProperty}}
 
-                    {{#if isEmptyTags  }}No tags{{/if}}
+                    {{#if isEmptyTags  }}{{_ "No tags"}}{{/if}}
                 </div><!-- /.col-md-10 -->
             </div><!-- /.row -->
         </div><!-- /.box-type-2-content -->

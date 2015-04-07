@@ -188,7 +188,6 @@ Template.contactableDocumentsList.helpers({
         });
 
         documentsCount = documents.count();
-        console.log(documentsCount);
         documentsCount += Resumes.find({employeeId: this.entity._id}).count();
         documentsDep.changed();
 
