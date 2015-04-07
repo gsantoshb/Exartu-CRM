@@ -304,6 +304,11 @@ Router.map(function () {
     path: '/documentInstance/:id',
     controller: 'InstanceController'
   });
+
+  this.route('getContactCSV', {
+    path: '/getContactCSV',
+    controller: 'GetContactCSVController'
+  });
 });
 
 
