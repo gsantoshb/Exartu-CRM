@@ -54,6 +54,7 @@ var setLeadTrackers = function(){
 };
 
 var setTeamMembersTrackers = function(){
+
     var hierId = Meteor.user().currentHierId;
     var members = Meteor.users.find({currentHierId: hierId}).fetch();
 
@@ -102,9 +103,8 @@ DashboardController = RouteController.extend({
         //  SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes}}});
         //  return [HierarchiesHandler, SubscriptionHandlers.ActivitiesHandler];
         //}
-        setSubscription();
-        setLeadTrackers();
-        setTeamMembersTrackers();
+
+
     },
     onAfterAction: function () {
         var title = 'Dashboard',
@@ -124,9 +124,8 @@ DashboardController = RouteController.extend({
 
 // Main template
 Template.dashboard.created = function () {
-    setSubscription();
-    setLeadTrackers();
-    setTeamMembersTrackers();
+
+
 
     Session.set("chartWidth", ($('.sidebar').width() / 5) - 8);
 
