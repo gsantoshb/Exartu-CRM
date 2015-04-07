@@ -47,9 +47,9 @@
                         </section><!-- /.box-type-3 -->
                     {{/if}}
 
-                    <div class="chart-box-1 text-center">
-                        {{> activityChart}}
-                    </div>
+                    <!--<div class="chart-box-1 text-center">-->
+                        <!--{{> activityChart}}-->
+                    <!--</div>-->
                 </aside><!-- /.sidebar -->
             </div><!-- /.col-md-3 -->
 
@@ -61,7 +61,7 @@
                             <div class="list-actions-cell search-list">
                                 <div class="input-group">
                                     <span class="prop-input">
-                                        <input id="searchString" class="form-control" placeholder= {{_ "Search activity"}}/>
+                                        <input id="searchString" class="form-control" placeholder="{{_ "Search activity"}}"/>
                                         <span class="text text-danger"></span>
                                     </span>
                                     <span class="input-group-btn">
@@ -135,6 +135,12 @@
                                     </section>
                                 {{/if}}
                             </ul><!-- /.list-type-7 -->
+                            {{#if moreResults}}
+                                <div class="infinite-scroll-loader" data-visible="false" style="display: none;">
+                                    <span>Loading</span>
+                                    <div class="loader"></div>
+                                </div>
+                            {{/if}}
                         </div><!-- /.list-item-section -->
 
                     </div><!-- /.list-holder -->

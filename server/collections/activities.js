@@ -344,12 +344,13 @@ ActivityViews = new View('activities', {
 });
 
 Meteor.paginatedPublish(ActivityViews, function () {
-        return Utils.filterCollectionByUserHier.call(this, ActivityViews.find({}, {sort: {'data.dateCreated': -1}}));
-
+        //@todo review this, is not working properly
+        var activities = Utils.filterCollectionByUserHier.call(this, ActivityViews.find({}, {sort: {'data.dateCreated': -1}}));
+        return activities;
     },
     {
-        //infiniteScroll: true,
-        pageSize: 50,
+        infiniteScroll: true,
+        pageSize: 30,
         publicationName: 'activities',
         updateSelector: function (oldSelector, clientParams) {
             var newSelector = EJSON.clone(oldSelector);
@@ -362,10 +363,55 @@ Meteor.paginatedPublish(ActivityViews, function () {
                 newSelector.entityId = { $in: ids };
             }
 
+            var activityTypes = newSelector.type.$in;
+            newSelector.type.$in = [];
+            _.each(activityTypes, function(activityType){
+                newSelector.type.$in.push(parseInt(activityType));
+            });
+
             return newSelector;
         }
     }
 );
+
+Meteor.publish('getActivities', function(query, options){
+    //console.log(options);
+    //console.log(query);
+    if(options.limit > ActivityViews.find({}).count()) {
+        options.limit = 0;
+    }
+
+    var searchQuery = {};
+
+    var types = [];
+    _.each(query.type.$in, function(type) {
+        types.push(parseInt(type));
+    });
+
+    searchQuery = {type: {$in: types}};
+
+    if(query && query.searchString) {
+        var userHier = Utils.getUserHierId(this.userId);
+        var ids = ActivityManager.searchActivities(query.searchString, userHier);
+        searchQuery = {
+            $and: [
+                { type: { $in: types } },
+                { entityId: { $in: ids } }
+            ]
+        }
+    }
+
+    //console.log(searchQuery);
+    var activities = Utils.filterCollectionByUserHier.call(this, ActivityViews.find(searchQuery, options));
+    return activities;
+});
+
+Meteor.publish('activitiesContactables', function() {
+    return Contactables.find({});
+});
+Meteor.publish('chartActivities', function() {
+    return Activities.find({});
+});
 
 var mainTypes = ['Employee', 'Contact', 'Client'];
 
