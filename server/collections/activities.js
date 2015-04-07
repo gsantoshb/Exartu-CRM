@@ -406,13 +406,6 @@ Meteor.publish('getActivities', function(query, options){
     return activities;
 });
 
-Meteor.publish('activitiesContactables', function() {
-    return Contactables.find({});
-});
-Meteor.publish('chartActivities', function() {
-    return Activities.find({});
-});
-
 var mainTypes = ['Employee', 'Contact', 'Client'];
 
 // Contactable
