@@ -927,7 +927,7 @@ var runESComputation = function () {
             filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
         }
 
-        // Created by
+        //Created by
         if (query.mineOnly.value) {
             var fullUserId = Meteor.userId();
             var spltUserId = fullUserId.split("-");
@@ -935,6 +935,9 @@ var runESComputation = function () {
             filters.bool.must.push({regexp: {userId: '.*' + spltUserId[i] + '.*'}});
                 }
         }
+      
+
+
 
         // Location filter
         var locationOperatorMatch = false;
@@ -967,6 +970,16 @@ var runESComputation = function () {
            });
            filters.bool.must.push({terms:{'Contact.status': processArray}});
         }
+
+      if(query.activeStatus.value.length>0){
+        var processArray = [];
+        _.forEach(query.activeStatus.value, function(p){
+            processArray.push(p.toLowerCase());
+        });
+        filters.bool.must.push({terms:{'activeStatus': processArray}});
+      }
+
+
         isSearching = true;
         searchDep.changed();
         Contactables.esSearch('.*' + query.searchString.value + '.*', filters, function (err, result) {
