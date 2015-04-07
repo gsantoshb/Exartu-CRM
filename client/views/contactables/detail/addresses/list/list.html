@@ -28,7 +28,24 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="heading-{{_id}}">
                                     <h4 class="panel-title edit">
-                                        {{_ getAddressTypeDisplayName }}  <span>&dash; {{address}}, {{city}}, {{country}}</span>
+                                        {{_ getAddressTypeDisplayName }}  <span>&dash;
+                                        {{#if address}}
+                                          {{address}}
+                                        {{/if}}
+                                        {{#if city}}
+                                          , {{city}}
+                                        {{/if}}
+
+                                        {{#if state}}
+                                              , {{state}}
+                                        {{/if}}
+                                        {{#if country}}
+                                        , {{country}}
+                                        {{/if}}
+                                        {{#if postalCode}}
+                                            , {{postalCode}}
+                                        {{/if}}
+                                    </span>
                                         <span class="pull-right">
                                             <a class="editAddressRecord pointer" href="#address-box"><i class="fa fa-pencil"></i></a>
                                             {{#if isAdmin}}
