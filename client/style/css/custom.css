@@ -1754,3 +1754,7 @@ and (max-device-width: 568px) {
 }
 
 .calendar-widget .table tr:last-child td { border-bottom: 0 !important;}
+
+div#activityChart text[text-anchor="end"] { display: none;}
+div#activityChart #container text { text-decoration: none !important; font-weight: normal; font-size: 14px;}
+div#activityChart #container text tspan { text-decoration: none !important; font-weight: normal; font-size: 14px;}
