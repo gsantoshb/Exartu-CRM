@@ -260,6 +260,7 @@ Template.contactablesList.created = function () {
             searchQuery.objNameArray = query.objType.value;
             urlQuery.addParam('type', query.objType.value);
         }
+
         // Creation date
         if (query.selectedLimit.value) {
             var dateLimit = new Date();
@@ -349,7 +350,7 @@ Template.contactablesList.created = function () {
 
             urlQuery.addParam('clientProcessStatus', query.clientProcessStatus.value);
         }
-        if (!_.isEmpty(query.contactProcessStatus.value)) {
+        if ((query.objType.value === "Contact")&&(!_.isEmpty(query.contactProcessStatus.value))) {
             searchQuery[query.objType.value + '.status'] = {$in: query.contactProcessStatus.value};
 
             urlQuery.addParam('contactProcessStatus', query.contactProcessStatus.value);
@@ -400,10 +401,10 @@ Template.contactablesList.rendered = function () {};
 
 // hack: because the handler is created on the created hook, the SubscriptionHandlers 'cleaner' can't find it
 Template.contactablesList.destroyed = function () {
-    //if (SubscriptionHandlers.AuxContactablesHandler) {
-    //    SubscriptionHandlers.AuxContactablesHandler.stop();
-    //    delete SubscriptionHandlers.AuxContactablesHandler;
-    //}
+    if (SubscriptionHandlers.AuxContactablesHandler) {
+        SubscriptionHandlers.AuxContactablesHandler.stop();
+       delete SubscriptionHandlers.AuxContactablesHandler;
+    }
 
     $('button[data-toggle="popover"]').attr('data-init', 'off');
     $('.popover').hide().popover('destroy');
@@ -928,7 +929,11 @@ var runESComputation = function () {
 
         // Created by
         if (query.mineOnly.value) {
-            filters.bool.must.push({term: {userId: Meteor.userId()}});
+            var fullUserId = Meteor.userId();
+            var spltUserId = fullUserId.split("-");
+                for (i in spltUserId){
+            filters.bool.must.push({regexp: {userId: '.*' + spltUserId[i] + '.*'}});
+                }
         }
 
         // Location filter
@@ -955,6 +960,13 @@ var runESComputation = function () {
             });
         }
 
+        if((query.objType.value === "Contact")&&(query.contactProcessStatus.value.length>0)){
+           var processArray = [];
+           _.forEach(query.contactProcessStatus.value, function(p){
+             processArray.push(p.toLowerCase());
+           });
+           filters.bool.must.push({terms:{'Contact.status': processArray}});
+        }
         isSearching = true;
         searchDep.changed();
         Contactables.esSearch('.*' + query.searchString.value + '.*', filters, function (err, result) {
