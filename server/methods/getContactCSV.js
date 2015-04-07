@@ -8,7 +8,8 @@ Meteor.methods({
         'person.firstName': 1,
         'person.lastName': 1,
         'userId': 1,
-        'contactMethods': 1
+        'contactMethods': 1,
+        'tags': 1
       }
     })).forEach(function (c) {
       var user = Meteor.users.findOne(c.userId);
@@ -22,7 +23,8 @@ Meteor.methods({
         firstName: c.person.firstName,
         lastName: c.person.lastName,
         email: email && email.value,
-        userEmail: user.emails[0].address
+        userEmail: user.emails[0].address,
+        tags: c.tags
       });
     });
     return Baby.unparse(contactables);
