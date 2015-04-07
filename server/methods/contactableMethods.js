@@ -263,9 +263,7 @@ Meteor.methods({
 
 FileUploader.createEndpoint('uploadResume', {
     onUpload: function (stream, metadata) {
-        var employee = ContactableManager.createFromResume(stream);
-
-        if (employee) {
+      var employee = ContactableManager.createFromResume(stream);
             stream = fs.createReadStream(stream.path);
             var resumeId = S3Storage.upload(stream);
 
@@ -283,10 +281,13 @@ FileUploader.createEndpoint('uploadResume', {
                 extension: metadata.extension,
                 dateCreated: new Date()
             };
-            return Resumes.insert(resume);
-        } else {
-            return new Meteor.Error(500, "Error during employee creation");
-        }
+      if(employee){
+        return Resumes.insert(resume);
+      }
+      else{
+        Resumes.insert(resume);
+        throw new Meteor.Error();
+      }
     },
     onDownload: function (fileId) {
         return S3Storage.download(fileId);

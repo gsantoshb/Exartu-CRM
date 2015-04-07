@@ -32,21 +32,30 @@ var uploadFile = function (file) {
         alert("You have already parsed file " + file.name + " during this browser session");
         return;
     }
-    fileList.push(file.name);
     var extension;
     var splitName = file.name.split('.');
     if (splitName.length > 1)
         extension = splitName[splitName.length - 1];
 
     startParsing();
+
     FileUploader.post('uploadResume', file, {
         name: file.name,
         type: file.type,
         extension: extension
     }, function (err, result) {
-        endParsing();
-        console.log(err, result);
+      if(err){
+        $('#add-file').replaceWith($('#add-file').clone());
+      }
+      else {
+        $('#add-file').replaceWith($('#add-file').clone());
+        fileList.push(file.name);
+      }
+      endParsing();
+
+
     });
+
 };
 
 Template.resumeAdd.events = {
@@ -60,7 +69,7 @@ Template.resumeAdd.events = {
 
 Template.resumeAdd.uploadFile = function () {
     return function (f) {
-        uploadFile(f);
+       uploadFile(f);
     };
 };
 
