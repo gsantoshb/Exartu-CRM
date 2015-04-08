@@ -342,6 +342,119 @@ ActivityViews = new View('activities', {
 
     }
 });
+ChartActivityViews = new View('chartActivities', {
+    collection: Activities,
+    cursors: function(activity) {
+        var self = this;
+        var contactablesToPublish = [];
+        var tasksToPublish = [];
+        var jobsToPublish = [];
+        var placementsToPublish = [];
+        var notesToPublish = [];
+        var filesToPublish = [];
+        //clasify by activity type and add to the array if it wasn't added yet
+        if ((activity.type === Enums.activitiesType.contactableAdd) && (contactablesToPublish.lastIndexOf(activity.entityId) === -1)) {
+            contactablesToPublish.push(activity.entityId);
+        }
+        else if ((activity.type === Enums.activitiesType.taskAdd) && (tasksToPublish.lastIndexOf(activity.entityId) === -1)) {
+            tasksToPublish.push(activity.entityId);
+        }
+        else if ((activity.type === Enums.activitiesType.noteAdd) && (notesToPublish.lastIndexOf(activity.entityId) === -1)) {
+            notesToPublish.push(activity.entityId);
+        }
+        else if ((activity.type === Enums.activitiesType.jobAdd) && (jobsToPublish.lastIndexOf(activity.entityId) === -1)) {
+            jobsToPublish.push(activity.entityId);
+        }
+        else if ((activity.type === Enums.activitiesType.fileAdd) && (filesToPublish.lastIndexOf(activity.entityId) === -1)) {
+            filesToPublish.push(activity.entityId);
+            if (contactablesToPublish.lastIndexOf(activity.links[0]) === -1) {
+                contactablesToPublish.push(activity.links[0].id);
+            }
+        }
+        else if ((activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) && (placementsToPublish.lastIndexOf(activity.entityId) === -1)) {
+            placementsToPublish.push(activity.entityId);
+            if (jobsToPublish.lastIndexOf(activity.links[1]) === -1) {
+                jobsToPublish.push(activity.links[1]);
+            }
+            if (contactablesToPublish.lastIndexOf(activity.links[2]) === -1) {
+                contactablesToPublish.push(activity.links[0].id);
+            }
+
+        }
+        //now resolve links and publish:
+
+        //tasks Cursor
+        var tasksCursor = Tasks.find({_id: {$in: tasksToPublish}});
+        self.publish({cursor: tasksCursor, to: 'tasks'});
+        var tasksArray = tasksCursor.fetch();
+        _.forEach(tasksArray, function (t) {
+            _.forEach(t.links, function (link) {
+                switch (link.type) {
+                    case Enums.linkTypes.contactable.value:
+                        if (contactablesToPublish.lastIndexOf(link.id) === -1) {
+                            contactablesToPublish.push(link.id);
+                        }
+                        break;
+                    case Enums.linkTypes.job.value:
+                        if (jobsToPublish.lastIndexOf(link.id) === -1) {
+                            jobsToPublish.push(link.id);
+                        }
+                        break;
+                    case Enums.linkTypes.placement.value:
+                        if (placementsToPublish.lastIndexOf(link.id) === -1) {
+                            placementsToPublish.push(link.id);
+                        }
+                        break;
+                }
+            })
+        });
+
+
+        //notes cursor
+        var notesCursor = Notes.find({_id: {$in: notesToPublish}});
+        self.publish({cursor: notesCursor, to: 'notes'});
+        var notesArray = notesCursor.fetch();
+        _.forEach(notesArray, function (n) {
+            _.forEach(n.links, function (link) {
+                switch (link.type) {
+                    case Enums.linkTypes.contactable.value:
+                        if (contactablesToPublish.lastIndexOf(link.id) === -1) {
+                            contactablesToPublish.push(link.id);
+                        }
+                        break;
+                    case Enums.linkTypes.job.value:
+                        if (jobsToPublish.lastIndexOf(link.id) === -1) {
+                            jobsToPublish.push(link.id);
+                        }
+                        break;
+                    case Enums.linkTypes.placement.value:
+                        if (placementsToPublish.lastIndexOf(link.id) === -1) {
+                            placementsToPublish.push(link.id);
+                        }
+                        break;
+                }
+            })
+        });
+
+
+        //contactablesFiles cursor
+        var contactablesFilesCursor = ContactablesFiles.find({_id: {$in: filesToPublish}});
+        self.publish({cursor: contactablesFilesCursor, to: 'contactablesFiles'});
+
+
+        //placements cursor
+        var placementsFilesCursor = Placements.find({_id: {$in: placementsToPublish}});
+        self.publish({cursor: placementsFilesCursor, to: 'placements'});
+
+        //jobs cursor
+        var jobsFilesCursor = Jobs.find({_id: {$in: jobsToPublish}});
+        self.publish({cursor: jobsFilesCursor, to: 'jobs'});
+
+        //contactable cursor
+        var contactablesCursor = Contactables.find({_id: {$in: contactablesToPublish}});
+        self.publish({cursor: contactablesCursor, to: 'contactables'});
+    }
+});
 
 Meteor.paginatedPublish(ActivityViews, function () {
         //@todo review this, is not working properly
@@ -404,6 +517,10 @@ Meteor.publish('getActivities', function(query, options){
     //console.log(searchQuery);
     var activities = Utils.filterCollectionByUserHier.call(this, ActivityViews.find(searchQuery, options));
     return activities;
+});
+
+Meteor.publish('getChartActivities', function() {
+    return Utils.filterCollectionByUserHier.call(this, ChartActivityViews.find({ type: { $in: [0,2,5,3,10,12] } }));
 });
 
 var mainTypes = ['Employee', 'Contact', 'Client'];

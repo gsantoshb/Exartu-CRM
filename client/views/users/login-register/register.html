@@ -10,12 +10,16 @@
                     {{#if isRegistering}}
                         {{#autoForm schema="RegisterSchema" class="form-1" id="registerForm" validation="blur"}}
                             <ol>
-                                <li class="{{#if afFieldIsInvalid name='email'}}error{{/if}}">
+                                <li class="{{#if afFieldIsInvalid name='email'}}error{{else}}{{#if emailError}}error{{/if}}{{/if}}">
                                     {{> afFieldInput name='email' class="form-control form-control-1 smartField" placeholder="Email address" data-label="email-label"}}
                                     {{#if afFieldIsInvalid name='email'}}
                                         <label class="form-label" id="email-label">{{afFieldMessage name='email'}}</label>
                                     {{else}}
-                                        <label class="form-label" id="email-label">Email</label>
+                                        {{#if emailError}}
+                                            <label class="form-label" id="email-label">{{emailError}}</label>
+                                        {{else}}
+                                            <label class="form-label" id="email-label">Email</label>
+                                        {{/if}}
                                     {{/if}}
                                     <label class="icon-holder"><i class="fa fa-envelope"></i></label>
                                 </li>
@@ -41,7 +45,7 @@
                                 </li>
 
                                 <li>
-                                    {{> afFieldInput name='language' class="form-control form-control-1 smartField" type="select" options=languageOptions onChange="TAPi18n.setLanguage(this.value);" data-label="language-label" defaultValue="en"}}
+                                    {{> afFieldInput name='language' class="form-control form-control-1 smartField" type="select" options=languageOptions onChange="TAPi18n.setLanguage(this.value);" data-label="language-label" firstOption="English"}}
                                     <label class="icon-holder"><i class="fa fa-language"></i></label>
                                 </li>
                             </ol>
@@ -52,17 +56,6 @@
                                 <p><a href="/login">I already have an account</a></p>
                             </div>
                         {{/autoForm}}
-
-                        <div class="decoration"></div>
-
-                        <div class="alert-box alert-danger" style="margin-top: 20px;">{{error}}</div>
-
-                        {{#if isSubmitting}}
-                            <div>Creating account. Please wait a few seconds....</div>
-                            <div class="progress progress-striped active">
-                                <div style="width: 100%;" class="progress-bar progress-bar-info"></div>
-                            </div>
-                        {{/if}}
                     {{else}}
                         <h1>{{_ "Thank you"}}</h1>
                         <div class="col-md-8 text-center" style="margin-bottom: 150px">
@@ -71,6 +64,18 @@
                             <p>{{_ "Please verify your account via the email we just sent you.  "}}</p>
                         </div>
                     {{/if}}
+
+                    <div class="decoration"></div>
+
+                    <div class="alert-box alert-danger" style="margin-top: 20px;">{{error}}</div>
+
+                    {{#if isSubmitting}}
+                        <div>Creating account. Please wait a few seconds....</div>
+                        <div class="progress progress-striped active">
+                            <div style="width: 100%;" class="progress-bar progress-bar-info"></div>
+                        </div>
+                    {{/if}}
+
                 </section><!-- -->
             </div><!-- /col-md-offset-6 -->
         </div><!-- /.row -->

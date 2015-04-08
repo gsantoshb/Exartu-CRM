@@ -1,5 +1,5 @@
 var self = this;
-var activities = ChartActivities;
+var chartActivities = ChartActivities;
 
 var weekDayNames = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
@@ -68,7 +68,6 @@ var setChartData = function() {
             data: chartDataArr
         }]
     });
-    return;
 };
 
 var setActivityTrackers = function(){
@@ -85,7 +84,7 @@ var setActivityTrackers = function(){
         //dayEnd = weekStart + (86400 * 1000 * i);
         dayStart = moment.utc( weekStart + (86400 * (i-1)), "X" ).toISOString();
         dayEnd = moment.utc( weekStart + (86400 * (i)), "X" ).toISOString();
-        activity = activities.find({"data.dateCreated": {
+        activity = chartActivities.find({"data.dateCreated": {
             $gte:new Date(dayStart),
             $lt:new Date(dayEnd)
         }}, {limit: 1000});
@@ -96,23 +95,25 @@ var setActivityTrackers = function(){
         });
     }
 
-    console.log(activities.find({}).count());
+    console.log(trackers);
 
     activityTrackers.set( trackers );
-    return trackers;
 };
 
 Template.activityChart.created = function(){
-    setActivityTrackers();
-    setChartData();
-
     Meteor.autorun(function () {
+        Meteor.subscribe('getChartActivities');
         setActivityTrackers();
         setChartData();
     });
+    console.log('created');
 };
 
-Template.activityChart.rendered = function(){};
+Template.activityChart.rendered = function(){
+    //setActivityTrackers();
+    //setChartData();
+    console.log('rendered');
+};
 
 Template.activityChart.helpers({
     getActivityChartObject: function() {

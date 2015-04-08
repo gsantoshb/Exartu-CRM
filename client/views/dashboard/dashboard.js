@@ -1,5 +1,7 @@
 var clients = Contactables;
 var activities = Activities;
+var chartActivities = ChartActivities;
+
 var ActivitiesHandler;
 var activityTypes = {
     val: [
@@ -116,6 +118,114 @@ var incrementLimit = function(inc) {
     limitActivities.set(newLimit);
 };
 
+var weekDayNames = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+
+var activityTrackers = new ReactiveVar([]);
+var chartData = new ReactiveVar({});
+var showChart = new ReactiveVar(false);
+var setChartData = function() {
+    var trackersData = activityTrackers.get();
+    var chartDataArr = [];
+    var colWidth = Session.get("chartWidth"); // we get the chart width calculated before rendering this widget
+
+    _.each(trackersData, function (tracker) {
+        chartDataArr.push({
+            drilldown: tracker.displayName,
+            name: tracker.displayName,
+            y: tracker.counter
+        });
+    });
+
+    console.log('call setChartData');
+
+    chartData.set({
+        chart: {
+            type: 'column',
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            backgroundColor: null
+        },
+        title: false,
+        subtitle: false,
+        backgroundColor: null,
+        xAxis: {
+            gridLineWidth: 0,
+            minorGridLineWidth: 0,
+            lineColor: 'transparent',
+            minorTickLength: 0,
+            tickLength: 0,
+            type: 'category'
+        },
+        yAxis: {
+            gridLineWidth: 0,
+            minorGridLineWidth: 0,
+            title: false,
+            labels: {enabled: false}
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            column: {
+                pointWidth: colWidth,
+                borderWidth: 1
+            },
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{y}'
+                }
+            }
+        },
+
+        tooltip: false,
+        colors: ["#1bcdfd"],
+        series: [{
+            name: 'Brands',
+            colorByPoint: true,
+            data: chartDataArr
+        }]
+    });
+};
+
+var setActivityTrackers = function(){
+    console.log('call setActivityTrackers');
+
+    //var hierId = Meteor.user().currentHierId;
+    var activity;
+    var weekStart = (moment().startOf('isoweek').subtract(1, 'week').hour(0).minute(0).second(0).unix());//+86400; // unix time
+    var dayStart = 0;
+    var dayEnd = 0;
+
+    var trackers = [];
+
+    for(var i=1;i<=5;i++){
+        //dayStart = weekStart + (86400 * 1000 * (i-1));
+        //dayEnd = weekStart + (86400 * 1000 * i);
+        dayStart = moment.utc( weekStart + (86400 * (i-1)), "X" ).toISOString();
+        dayEnd = moment.utc( weekStart + (86400 * (i)), "X" ).toISOString();
+        console.log('dayStart');
+        console.log(new Date(dayStart));
+        console.log('dayEnd');
+        console.log(new Date(dayEnd));
+
+        activity = chartActivities.find({"data.dateCreated": {
+            $gte:new Date(dayStart),
+            $lt:new Date(dayEnd)
+        }}, {limit: 1000});
+
+        trackers.push({
+            displayName: weekDayNames[i],
+            counter: activity.fetch().length
+        });
+    }
+
+    console.log(trackers.length);
+
+    activityTrackers.set( trackers );
+};
 
 Tracker.autorun(function(){
     //if (ActivitiesHandler) {
@@ -126,22 +236,7 @@ Tracker.autorun(function(){
 
     //isReady.set(true);
 
-    console.log('autorun');
-
     Session.setDefault('limitActivities', 30);
-
-    var searchQuery = {
-        type: { $in: activityTypes.get() },
-        searchString: searchString.get()
-    }
-
-    var options = {
-        limit: limitActivities.get(),
-        sort: { 'data.dateCreated': -1 }
-    };
-
-    //Meteor.subscribe('activitiesContactables');
-    Meteor.subscribe('getActivities', searchQuery, options);
 });
 
 DashboardController = RouteController.extend({
@@ -186,7 +281,6 @@ var loadMoreHandler = function() {
             // console.log("target became visible (inside viewable area)");
             loader.data("visible", true);
             loader.show();
-            console.log('increment');
             incrementLimit();
         }
     } else {
@@ -204,8 +298,6 @@ Template.dashboard.created = function () {
     //setLeadTrackers();
     //setTeamMembersTrackers();
 
-    Session.set("chartWidth", ($('.sidebar').width() / 5) - 8);
-
     this.autorun(function () {
         //limitActivities.set(30);
 
@@ -214,37 +306,41 @@ Template.dashboard.created = function () {
         setLeadTrackers();
         setTeamMembersTrackers();
 
-        console.log('template autorun');
-
         Session.setDefault('limitActivities', 30);
 
         var searchQuery = {
             type: { $in: activityTypes.get() },
             searchString: searchString.get()
-        }
+        };
 
         var options = {
             limit: limitActivities.get(),
             sort: { 'data.dateCreated': -1 }
         };
 
-        Session.set("chartWidth", ($('.sidebar').width() / 5) - 8);
         Meteor.subscribe('getActivities', searchQuery, options);
+        var handler = Meteor.subscribe('getChartActivities');
+        if(handler.ready()) {
+            // activities chart
+            setActivityTrackers();
+            setChartData();
+            showChart.set(true);
+        }
     });
 };
 Template.dashboard.rendered = function() {
-    $(window).bind('scroll', loadMoreHandler);
+    var sidebar = this.$('.sidebar').width();
+    Session.set("chartWidth", (sidebar / 5) - 8);
+
+
+    $(window).scroll(loadMoreHandler);
 };
 Template.dashboard.destroyed = function() {
     $(window).unbind('scroll', loadMoreHandler);
-    loadMoreHandler = null;
-    console.log('calling destroyed method');
 };
 
 Template.dashboard.helpers({
     activities: function () {
-        console.log('updating the activities list...');
-        console.log(limitActivities.get());
         var intActivityTypes = [];
         _.each(activityTypes.get(), function(activityType) {
             intActivityTypes.push(parseInt(activityType));
@@ -262,6 +358,12 @@ Template.dashboard.helpers({
             intActivityTypes.push(parseInt(activityType));
         });
         return !(Activities.find({type: { $in: intActivityTypes }}).count() < Session.get('limitActivities'));
+    },
+    getActivityChartObject: function() {
+        return chartData.get();
+    },
+    showActivityChart: function() {
+        return showChart.get();
     },
     listViewMode: function () {
         return listViewMode.get();
@@ -287,8 +389,6 @@ Template.dashboard.helpers({
         return this;
     },
     isReady: function(){
-        //console.log('handler count: ' + ActivitiesHandler.totalCount());
-        //console.log(isReady.get());
         return true; //isReady.get();
     },
     getUserDisplayName: function() {
@@ -354,8 +454,6 @@ Template.dashboard.events({
         listViewMode.set(false);
     },
     'click #activityFilter input': function(e, ctx) {
-        //console.log(getSelectedActivityFilters());
-        console.log($(e.currentTarget).val());
         if( $(e.currentTarget).val() == 'all' ){
             if( $(e.currentTarget).prop('checked') ){
                 _.each($('#activityFilter input'), function(element){

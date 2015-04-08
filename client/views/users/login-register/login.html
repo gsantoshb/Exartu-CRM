@@ -7,20 +7,22 @@
                 <section class="box-type-4 get-started">
                     <h2 class="headline">Welcome back, friend.</h2>
 
-                    <span class="label label-danger center-block" style="margin-bottom: 10px;">{{errorMessage}}</span>
-
                     {{#if getNotVerified}}
                         <a class="pointer" id="resendVerification"> Resend email verification </a>
                     {{/if}}
 
                     {{#autoForm id="loginForm" class="form-1" schema="LoginSchema" doc=intialValues}}
                         <ol>
-                            <li class="{{#if afFieldIsInvalid name='email'}}error{{/if}}">
+                            <li class="{{#if afFieldIsInvalid name='email'}}error{{else}}{{#if errorMessage}}error{{/if}}{{/if}}">
                                 {{> afFieldInput name='email' class="form-control form-control-1 smartField" placeholder="Email address" data-label="email-label"}}
                                 {{#if afFieldIsInvalid name='email'}}
                                     <label class="form-label" id="email-label">{{afFieldMessage name='email'}}</label>
                                 {{else}}
-                                    <label class="form-label" id="email-label">Email</label>
+                                    {{#if errorMessage}}
+                                        <label class="form-label" id="email-label">{{errorMessage}}</label>
+                                    {{else}}
+                                        <label class="form-label" id="email-label">Email</label>
+                                    {{/if}}
                                 {{/if}}
                                 <label class="icon-holder"><i class="fa fa-envelope"></i></label>
                             </li>

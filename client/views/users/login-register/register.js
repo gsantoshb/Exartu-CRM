@@ -20,6 +20,8 @@ RegisterController = RouteController.extend({
         'description': description
       }
     });
+
+    $('select[name="language"]').val( 'en' );
   }
 });
 
@@ -27,6 +29,7 @@ RegisterController = RouteController.extend({
 var isRegistering = new ReactiveVar(true);
 var isSubmitting = new ReactiveVar(false);
 var error = new ReactiveVar('');
+var emailError = new ReactiveVar('');
 
 Template.register.rendered = function(){
   $('body').addClass('login-register');
@@ -45,6 +48,9 @@ Template.register.helpers({
   },
   error: function () {
     return error.get();
+  },
+  emailError: function () {
+    return emailError.get();
   },
   languageOptions: function() {
       return [
@@ -70,7 +76,7 @@ Template.register.events({
   'blur .smartField': function(e){
     var label = $('#'+$(e.currentTarget).attr('data-label'));
     label.removeClass('on');
-  }
+  },
 });
 
 AutoForm.hooks({
@@ -83,7 +89,7 @@ AutoForm.hooks({
           console.log(err);
           error.set(err.reason);
         } else if (!result) {
-          error.set('Email is already in use by another account');
+          emailError.set('Email is already in use by another account');
         } else {
           self.resetForm();
           isRegistering.set(false);
@@ -91,8 +97,8 @@ AutoForm.hooks({
         self.done();
         isSubmitting.set(false);
       });
-
+      $('select[name="language"]').val( 'en' );
       return false;
-    }
+    },
   }
 });
