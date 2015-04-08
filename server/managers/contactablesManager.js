@@ -96,7 +96,7 @@ ContactableManager = {
             throw new Error('Invalid contact method type');
         }
         //check if email is unique
-        //if((contactMethodType.lookUpCode === Enums.lookUpCodes.contactMethod_types)&&(_.contains(contactMethodType.lookUpActions, Enums.lookUpAction.ContactMethod_Email))){
+        //if((contactMethodType.lookUpCode === Enums.lookUpTypes.contactMethod.type.lookUpCode)&&(_.contains(contactMethodType.lookUpActions, Enums.lookUpAction.ContactMethod_Email))){
         //  var rootHier = Utils.getHierTreeRoot(Meteor.user().currentHierId);
         //  var arrayEmail = LookUps.find({hierId: rootHier, lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode, lookUpActions:Enums.lookUpAction.ContactMethod_Email }).fetch();
         //  var pluckedArrayEmail = _.pluck(arrayEmail, '_id');

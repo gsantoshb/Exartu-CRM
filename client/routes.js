@@ -290,7 +290,11 @@ Router.map(function () {
   });
 
   this.route('emailTemplate', {
-    path: '/emailTemplate/:_id?',
+    path: '/emailTemplate/:_id',
+    controller: 'EmailTemplateController'
+  });
+  this.route('addEmailTemplate', {
+    path: '/addEmailTemplate/:category',
     controller: 'EmailTemplateController'
   });
   this.route('emailTemplates', {

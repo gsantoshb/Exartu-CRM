@@ -1,11 +1,18 @@
 Meteor.publish('emailTemplates',  function (searchQuery) {
   if(searchQuery) {
-    var prueba = Utils.filterCollectionByUserHier.call(this, EmailTemplates.find(searchQuery));
-    return prueba;
+    return Utils.filterCollectionByUserHier.call(this, EmailTemplates.find(searchQuery));
   }
   else{
     return Utils.filterCollectionByUserHier.call(this, EmailTemplates.find());
   }
+});
+
+Meteor.publish('categoryEmailTemplates', function(categories) {
+  var sub = this;
+  var cursor =  Utils.filterCollectionByUserHier.call(this, EmailTemplates.find({category: {$in: categories}}));
+  Mongo.Collection._publishCursor(cursor, sub, 'categoryEmailTemplates');
+  // _publishCursor doesn't call this for us in case we do this more than once.
+  sub.ready();
 });
 
 EmailTemplates.allow({
@@ -25,15 +32,4 @@ EmailTemplates.before.insert(function (userId, doc) {
     doc.userId = user._id;
     doc.dateCreated = Date.now();
   }
-});
-
-Meteor.publish('emailTemplateMergeFields', function () {
-  return EmailTemplateMergeFields.find();
-});
-
-Emails = new Mongo.Collection('emails');
-Meteor.publish('allEmailTemplates', function () {
-    var sub = this;
-    Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, EmailTemplates.find({} )), sub, 'allEmailTemplates');
-    sub.ready();
 });

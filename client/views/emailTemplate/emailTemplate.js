@@ -1,16 +1,21 @@
 
-var template;
+var template, category;
 EmailTemplateController = RouteController.extend({
   layoutTemplate: 'mainLayout',
+  template: 'emailTemplate',
   waitOn: function () {
     return [Meteor.subscribe('emailTemplateMergeFields'), Meteor.subscribe('emailTemplates')];
   },
   action: function () {
+    // Init values depending on the available router data
     if (this.params._id) {
       template = EmailTemplates.findOne({_id: this.params._id});
+      category = template.category;
     } else {
       template = undefined;
+      category = this.params.category;
     }
+
     this.render();
   }
 });
@@ -20,9 +25,6 @@ Template.emailTemplate.rendered = function () {
   this.$('#mergeFields').select2({
     allowClear: true,
     placeholder: 'Select Merge Field'
-  });
-  this.$('#category').select2({
-    placeholder: 'Select the categories for this template'
   });
 };
 
@@ -34,6 +36,9 @@ var editMode = new ReactiveVar(true),
     isSaving = new ReactiveVar(false);
 
 Template.emailTemplate.helpers({
+  categoryName: function () {
+    return _.find(MergeFieldHelper.categories, function(cat) { return cat.value == category }).name;
+  },
   templateName: function () {
     return template ? template.name : '';
   },
@@ -46,20 +51,14 @@ Template.emailTemplate.helpers({
   errorSubject: function () {
     return errorSubject.get();
   },
-  categoryTypes: function () {
-    return _.map(Enums.emailTemplatesCategories, function (val, key) {
-      return {code: val, name: key}
-    })
-  },
-  isCategorySelected: function () {
-    return template ? _.contains(template.category, this.code) : false;
-  },
 
   editMode: function () {
     return editMode.get();
   },
-  mergeField: function () {
-    return EmailTemplateMergeFields.find();
+  mergeFields: function () {
+    return _.map(MergeFieldHelper.getMergeFields(category), function (mf) {
+      return {name: mf.displayName, value: mf.key};
+    });
   },
   editorContext: function () {
     return template ? template.text : '';
@@ -98,12 +97,12 @@ Template.emailTemplate.events({
     if (!selected) return;
 
     // Find the corresponding merge field definition
-    var mf = EmailTemplateMergeFields.findOne(selected);
+    var mf = _.find(MergeFieldHelper.mergeFields, function (mf) {return mf.key === selected});
     if (!mf) return;
 
     // Insert the merge field on the editor
     try {
-      var html = '<input value="' + mf.displayName + '" data-mergefield="' + mf._id + '" disabled="disabled">';
+      var html = '<input value="' + mf.displayName + '" data-mergefield="' + mf.key + '" disabled="disabled">';
       WYSIHTMLEditor.composer.commands.exec("insertHTML", html);
     } catch (ex) {
       console.log('Error trying to insert merge field. Try giving the editor focus.');
@@ -114,13 +113,7 @@ Template.emailTemplate.events({
     if (editMode.get()){
       editMode.set(false);
       var editorText = WYSIHTMLEditor.getValue();
-      Meteor.call('getPreview', editorText, function (err, result) {
-        if (err){
-          console.log(err);
-        }else{
-          preview.set(result);
-        }
-      })
+      preview.set(MergeFieldHelper.getPreview(editorText));
     }else{
       editMode.set(true);
     }
@@ -145,15 +138,22 @@ Template.emailTemplate.events({
         name: name,
         subject: subject,
         text: WYSIHTMLEditor.getValue(),
-        category: Template.instance().$('#category').val()
+        category: category
       };
 
       if (template) {
         EmailTemplates.update(template._id, {$set: templateData});
       } else {
         var templateId = EmailTemplates.insert(templateData);
-        template = EmailTemplates.findOne({_id: templateId});
+        Router.go('/emailTemplate/' + templateId);
       }
+      $.gritter.add({
+        title:	'Template saved',
+        text:	'Your changes have been saved for this template.',
+        image: 	'/img/logo.png',
+        sticky: false,
+        time: 2000
+      });
     }
 
     isSaving.set(false);
