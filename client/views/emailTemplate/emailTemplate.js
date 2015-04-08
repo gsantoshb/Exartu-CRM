@@ -4,7 +4,7 @@ EmailTemplateController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   template: 'emailTemplate',
   waitOn: function () {
-    return [Meteor.subscribe('emailTemplateMergeFields'), Meteor.subscribe('emailTemplates')];
+    return [Meteor.subscribe('emailTemplates')];
   },
   action: function () {
     // Init values depending on the available router data
