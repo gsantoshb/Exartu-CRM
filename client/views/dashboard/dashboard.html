@@ -50,6 +50,25 @@
                     <div class="chart-box-1 text-center" style="overflow: hidden;">
                         {{#if showActivityChart}}
                             {{> highchartsHelper chartId="activityChart" chartWidth="100%" charHeight="100%" chartObject=getActivityChartObject}}
+
+                            <!-- @todo review this -->
+                            <!--<div style=" float: left; overflow:hidden; text-align:center;margin-left: 14px;margin-top: -12px;font-size: 10px;">-->
+                                <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">MO</div>-->
+                                <!--</div>-->
+                                <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">TU</div>-->
+                                <!--</div>-->
+                                <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">WE</div>-->
+                                <!--</div>-->
+                                <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">TH</div>-->
+                                <!--</div>-->
+                                <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">FR</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         {{else}}
                             <div class="infinite-scroll-loader">
                                 <span style="margin-left: -144px">Loading chart</span>
