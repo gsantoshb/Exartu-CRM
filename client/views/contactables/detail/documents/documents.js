@@ -76,7 +76,7 @@ Template.addDocumentForm.helpers({
         return document;
     },
     addDisabled: function () {
-        return addDisabled.get();
+        return addDisabled.get() ? 'disabled':'';
     }
 });
 
