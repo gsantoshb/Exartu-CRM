@@ -16,7 +16,6 @@ binary-heap@1.0.3
 blaze@2.1.0
 blaze-tools@1.0.3
 boilerplate-generator@1.0.3
-bootstrap3-wysihtml5@0.0.0
 callback-hook@1.0.3
 cfs:access-point@0.1.44
 cfs:base-package@0.0.28
@@ -84,6 +83,7 @@ less@1.0.13
 livedata@1.0.13
 localstorage@1.0.3
 logging@1.0.7
+maazalik:highcharts@0.2.4
 manuelschoebel:ms-seo@0.4.1
 matb33:collection-hooks@0.7.11
 meteor@1.1.5
@@ -146,5 +146,6 @@ ui@1.0.6
 underscore@1.0.3
 url@1.0.4
 vjau:xml2js@4.4.0
+voog-wysihtml@0.0.0
 webapp@1.2.0
 webapp-hashing@1.0.3
