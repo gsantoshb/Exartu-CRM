@@ -8,7 +8,8 @@
         <!-- Breadcrumb -->
         <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">{{_ "Management"}}</a>
-            <a href="/emailTemplates" class="current">{{_ "Email Templates"}}</a>
+            <a href="/emailTemplates">{{_ "Email Templates"}}</a>
+            <a href="#" class="current">{{categoryName}} Template</a>
         </div>
 
         <!-- Page content -->
@@ -22,18 +23,11 @@
                     <input id="name-input" class="form-control templateName" placeholder= {{_ "Name"}} value="{{templateName}}">
                     <span class="label label-danger">{{errorName}}</span>
                 </div>
+                <!-- Template subject -->
                 <div class="form-group">
                     <span>{{_ "Subject"}}:</span>
                     <input id="subject-input" class="form-control templateSubject" placeholder= {{_ "Subject"}} value="{{templateSubject}}">
                     <span class="label label-danger">{{errorSubject}}</span>
-                </div>
-                <div class="form-group">
-                    <span>{{_ "Category"}}:</span>
-                    <select class="form-control" id="category" multiple>
-                        {{#each categoryTypes}}
-                            <option value="{{code}}" selected="{{isCategorySelected}}">{{_ name}}</option>
-                        {{/each}}
-                    </select>
                 </div>
             </div>
             <hr>
@@ -45,9 +39,9 @@
                     <div class="pull-right" style="margin-bottom: 7px;">
                         <select id="mergeFields" style="width: 250px; margin-right: 10px;">
                             <option></option>
-                            {{#each mergeField}}
-                                <option class="mergeField pointer" value="{{_id}}">
-                                    {{displayName}}
+                            {{#each mergeFields}}
+                                <option class="mergeField pointer" value="{{value}}">
+                                    {{name}}
                                 </option>
                             {{/each}}
                         </select>
@@ -58,7 +52,7 @@
                     </div>
 
                     <!-- HTML editor -->
-                    {{> wysihtml editorContext}}
+                    {{>wysihtml editorContext}}
                 </div>
                 <div style="min-height:446px;display: {{#if editMode}} none {{else}} block {{/if}}">
                     {{{preview}}}

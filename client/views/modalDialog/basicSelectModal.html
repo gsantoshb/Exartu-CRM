@@ -1,4 +1,5 @@
-<template name="basicInputModal">
+
+<template name="basicSelectModal">
     <div class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -7,7 +8,7 @@
                     <h4 class="modal-title">{{title}}</h4>
                 </div>
                 <div class="modal-body" style="overflow: auto; max-height: 80vh;">
-                    <input class="form-control" placeholder="{{placeholder}}" value="{{value}}" />
+                    {{>select2 options=selectOptions title=selectPlaceholder onSelected=setValue}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default dismiss">{{cancelText}}</button>

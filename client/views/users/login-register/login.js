@@ -1,3 +1,4 @@
+var addDisabled = new ReactiveVar(false);
 LoginController = RouteController.extend({
   template: 'login',
   //layout: '',
@@ -51,10 +52,11 @@ LoginSchema = new SimpleSchema({
 AutoForm.hooks({
   loginForm: {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
+      addDisabled.set(true);
       var self = this;
-      //isSubmitting.set(true);
       email = insertDoc.email.toLowerCase();
       Meteor.loginWithPassword({ email: email }, insertDoc.password, function (err, result) {
+        addDisabled.set(false);
         if (err) {
           if(err.reason == 'Email not verified') {
             notVerified.set(true);
@@ -87,7 +89,15 @@ Template.login.destroyed = function(){
   $('body').removeClass('login-register');
 };
 
+
+Template.login.created = function(){
+  addDisabled.set(false);
+};
+
 Template.login.helpers({
+  addDisabled: function(){
+    return addDisabled.get() ? "disabled": "";
+  },
   getNotVerified: function () {
     return notVerified.get();
   },
