@@ -1,3 +1,4 @@
+var addDisabled = new ReactiveVar(false);
 AddForm = {
     val: false,
     dep: new Deps.Dependency,
@@ -73,6 +74,9 @@ var document = new Utils.ObjectDefinition({
 Template.addDocumentForm.helpers({
     newDocument: function () {
         return document;
+    },
+    addDisabled: function () {
+        return addDisabled.get();
     }
 });
 
@@ -91,8 +95,10 @@ Template.addDocumentForm.events = {
         document.tags.remove(this.value);
     },
     'click #save-document': function () {
+        addDisabled.set(true);
         if (!document.isValid()) {
             document.showErrors();
+            addDisabled.set(false);
             return;
         }
 
@@ -120,10 +126,13 @@ Template.addDocumentForm.events = {
                 endParsing();
                 AddForm.hide();
                 document.reset();
+                addDisabled.set(false);
+
             }
             else {
                 alert('File upload error:' + err)
                 console.log('File upload error');
+                addDisabled.set(false);
             }
         });
     },
