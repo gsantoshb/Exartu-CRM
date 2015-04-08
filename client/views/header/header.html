@@ -29,14 +29,14 @@
                         <li>
                             <a href="/emailTemplates">{{_ "Email Templates"}}</a>
                         </li>
+                        <li>
+                            <a href="/management/hrconcourse">{{_ "HRConcourse"}}</a>
+                        </li>
 
                         <li>
                             <a href="/hierarchyManagement">{{_ "Hierarchies"}}</a>
                         </li>
                         {{#if isAdmin}}
-                            <li>
-                                <a href="/management/hrconcourse">{{_ "HRConcourse"}}</a>
-                            </li>
 
                             <li>
                                 <a href="/management/lookups">{{_ "Lookups"}}</a>
@@ -181,7 +181,7 @@
                 </a>
             </li>
 
-            <li class="leaderboards {{getActiveClass 'leaderBoards' null}}">
+            <li class="leaderboard {{getActiveClass 'leaderBoards' null}}">
                 <a href="/leaderboards">
                     <span>{{_ "Leaderboard"}}</span>
                     <span class="i-container"><i class="icon icon-cross-shield"></i></span>

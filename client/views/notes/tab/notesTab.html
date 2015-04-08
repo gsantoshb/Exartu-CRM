@@ -24,7 +24,7 @@
 
             <div class="add-note-actions">
                 <div class="add-note-actions-cell">
-                    <button class="btn btn-custom-2" type="submit" disabled="{{addDisabled}}">Save note</button>
+                    <button class="btn btn-custom-2 {{addDisabled}}" type="submit">Save note</button>
                 </div>
 
                 {{#if isContactableNote}}
@@ -50,8 +50,8 @@
                     {{/unless}}
 
                     <!-- Display note to employee -->
-                    <div class="add-note-actions-cell">
-                        <div class="form-group" style="margin-bottom: 0px;">
+                    <div class="add-note-actions-cell last">
+                        <div class="checkbox">
                             {{> afFieldInput name='displayToEmployee' type='afSimpleCheckbox'}}
                         </div>
                     </div>

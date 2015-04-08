@@ -6,7 +6,9 @@ ContactableManager = {
         var result = ResumeManager.parse(stream);
         if (result instanceof Meteor.Error)
             throw result;
-
+        if((!result.person.firstName)||(!result.person.lastName)){
+           return null;
+        }
         var employeeId= ContactableManager.create(result);
         if (result.location)
         {
@@ -15,6 +17,7 @@ ContactableManager = {
             result.location.addressTypeId=LookUpManager.getAddressTypeDefaultId();
             AddressManager.addEditAddress(result.location);
         }
+
         return employeeId;
     },
     getContactableByMail: function(mail, hierid){

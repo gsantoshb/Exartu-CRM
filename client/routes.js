@@ -316,6 +316,11 @@ Router.map(function () {
     path: '/management/cardReader',
     controller: 'CardReaderController'
   });
+
+  this.route('getContactCSV', {
+    path: '/getContactCSV',
+    controller: 'GetContactCSVController'
+  });
 });
 
 

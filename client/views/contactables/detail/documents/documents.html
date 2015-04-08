@@ -71,7 +71,7 @@
                         </div><!-- /.row -->
 
                         <div class="edit-actions-bar">
-                            <button id="save-document" class="btn btn-primary"> {{_ "Save"}}  changes</button>
+                            <button id="save-document" class="btn btn-primary {{addDisabled}}" > {{_ "Save"}}  changes</button>
                             <button id="cancel-document" class="btn btn-default"> {{_ "Cancel"}} </button>
                         </div><!-- /.edit-actions-bar -->
 
@@ -84,32 +84,34 @@
 
 <template name="contactableDocumentsList">
 
-    <div class="list-actions">
+    {{#unless isEmpty}}
+        <div class="list-actions">
 
-        <div class="list-actions-cell search-list">
-            <div class="input-group">
-                <span>
-                    {{#objectProperty property=query.searchString}}
-                        <input type="text" id="searchString" name="searchString" value="{{value}}" class="form-control" placeholder= {{_ "Search files"}} >
-                    {{/objectProperty}}
-                    <span class="text" data-status="Inactive"></span>
-                </span>
-                <span class="input-group-btn">
-                    <button class="btn btn-search" type="button">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </span>
-            </div>
-        </div><!-- /.search-list -->
+            <div class="list-actions-cell search-list">
+                <div class="input-group">
+                    <span>
+                        {{#objectProperty property=query.searchString}}
+                            <input type="text" id="searchString" name="searchString" value="{{value}}" class="form-control" placeholder= {{_ "Search files"}} >
+                        {{/objectProperty}}
+                        <span class="text" data-status="Inactive"></span>
+                    </span>
+                    <span class="input-group-btn">
+                        <button class="btn btn-search" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div><!-- /.search-list -->
 
-        {{>fastPagination name="contactablesDocs" containerClass="magic-pager"}}
-    </div><!-- .list-actions -->
+            {{>fastPagination name="contactablesDocs" containerClass="magic-pager"}}
+        </div><!-- .list-actions -->
 
-    <div class="list-header documents-list-header">
-        <div class="list-header-cell documents-list-header-title"> {{_ "Title"}} </div>
-        <div class="list-header-cell documents-list-header-status"> {{_ "File type"}} </div>
-        <div class="list-header-cell documents-list-header-time"> {{_ "Date"}} </div>
-    </div><!-- /.list-header -->
+        <div class="list-header documents-list-header">
+            <div class="list-header-cell documents-list-header-title"> {{_ "Title"}} </div>
+            <div class="list-header-cell documents-list-header-status"> {{_ "File type"}} </div>
+            <div class="list-header-cell documents-list-header-time"> {{_ "Date"}} </div>
+        </div><!-- /.list-header -->
+    {{/unless}}
 
     <div class="list-item-section">
         {{#each documents}}
@@ -145,17 +147,6 @@
                 </div><!-- /.list-item-cell -->
             </div><!-- /.documents-list-item -->
         {{/each}}
-        {{#if isEmpty}}
-            <div class="box-v-msg">
-                <div class="box-v-msg-content">
-                    <i class="icon-document-1"></i>
-                    <!--<p>No document added yet<br>-->
-                    <!--<a href="#" class="add-document-trigger">Add new document</a>-->
-                    <!--</p>-->
-                </div>
-                <!-- /.box-v-msg-content -->
-            </div>
-        {{/if}}
 
         {{#with resumes}}
             <strong> {{_ "Resume"}}  </strong>
@@ -193,6 +184,17 @@
                 </div><!-- /.documents-list-item -->
             {{/each}}
         {{/with}}
+        {{#if isEmpty}}
+            <div class="box-v-msg">
+                <div class="box-v-msg-content">
+                    <i class="icon-document-1"></i>
+                    <!--<p>No document added yet<br>-->
+                    <!--<a href="#" class="add-document-trigger">Add new document</a>-->
+                    <!--</p>-->
+                </div>
+                <!-- /.box-v-msg-content -->
+            </div>
+        {{/if}}
     </div><!-- /.list-item-section -->
     <div id="parsing" class="list-3-actions" style="display: none; margin-right: 45px; margin-top: 10px;">
         {{>spinner}}

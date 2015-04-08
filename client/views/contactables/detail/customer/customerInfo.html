@@ -30,7 +30,9 @@
                                     </div><!-- /.client-box -->
                                 </div><!-- /.col-md-6 -->
                                 <div class="col-sm-6 col-md-12 col-lg-6">
+                                    {{#if statusNote}}
                                     <div class="client-box-note">{{_ statusNote}}</div>
+                                    {{/if}}
                                     {{#if location}}
                                         <tr>
                                             <td>{{_ "Location"}}</td>

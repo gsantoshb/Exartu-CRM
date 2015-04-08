@@ -47,28 +47,35 @@
                         </section><!-- /.box-type-3 -->
                     {{/if}}
 
+                    <div class="chart-box-1 text-center" style="overflow: hidden;">
+                        {{#if showActivityChart}}
+                            {{> highchartsHelper chartId="activityChart" chartWidth="100%" charHeight="100%" chartObject=getActivityChartObject}}
+                        {{else}}
+                            <div class="infinite-scroll-loader">
+                                <span style="margin-left: -144px">Loading chart</span>
+                                <div class="loader"></div>
+                            </div>
+                        {{/if}}
+                    </div>
                 </aside><!-- /.sidebar -->
-
-
             </div><!-- /.col-md-3 -->
 
 
             <div class="col-md-6">
                 <div class="list-container">
                     <div class="list-holder">
-
                         <div class="list-actions">
                             <div class="list-actions-cell search-list">
                                 <div class="input-group">
-                    <span class="prop-input">
-                    <input id="searchString" class="form-control" placeholder= {{_ "Search activity"}}>
-                    <span class="text text-danger"></span>
-                    </span>
-                    <span class="input-group-btn">
-                    <button class="btn btn-search" type="button">
-                        <i class="fa fa-search"></i>
-                    </button>
-                    </span>
+                                    <span class="prop-input">
+                                        <input id="searchString" class="form-control" placeholder="{{_ "Search activity"}}"/>
+                                        <span class="text text-danger"></span>
+                                    </span>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-search" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
                                 </div>
                             </div><!-- /.search-list -->
                             <!--<div class="list-actions-cell view-mode-list">-->
@@ -112,9 +119,7 @@
                         </div><!-- .list-actions -->
 
                         <div class="list-item-section">
-
                             <ul class="list-type-7 activity-feed">
-
                                 {{#if listViewMode}}
                                     {{#if isReady}}
                                         {{#each activities}}
@@ -137,6 +142,12 @@
                                     </section>
                                 {{/if}}
                             </ul><!-- /.list-type-7 -->
+                            {{#if moreResults}}
+                                <div class="infinite-scroll-loader" data-visible="false" style="display: none;">
+                                    <span>Loading</span>
+                                    <div class="loader"></div>
+                                </div>
+                            {{/if}}
                         </div><!-- /.list-item-section -->
 
                     </div><!-- /.list-holder -->

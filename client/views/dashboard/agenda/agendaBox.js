@@ -43,109 +43,10 @@ Meteor.autorun(function () {
 
 Template.agendaBox.created=function() {
     var calendarDiv = $('.fc');
-
     startEndDep.changed();
-
-    //observe = CalendarTasks.find({}).observe({
-    //
-    //    added: function (document) {
-    //
-    //        if (!init) return;
-    //
-    //        switch (document.state) {
-    //            case Enums.taskState.future:
-    //                calendarDiv.fullCalendar('renderEvent', {
-    //                    id: document._id,
-    //                    title: document.msg,
-    //                    start: document.begin,
-    //                    end: document.end,
-    //                    description: "",
-    //                    className: 'item-label-2 label-future pointer'
-    //                });
-    //                break;
-    //            case Enums.taskState.completed:
-    //                calendarDiv.fullCalendar('renderEvent', {
-    //                    id: document._id,
-    //                    title: document.msg,
-    //                    start: document.begin,
-    //                    end: document.end,
-    //                    description: "",
-    //                    className: 'item-label-2 label-completed pointer'
-    //                });
-    //                break;
-    //            case Enums.taskState.overDue:
-    //                calendarDiv.fullCalendar('renderEvent', {
-    //                    id: document._id,
-    //                    title: document.msg,
-    //                    start: document.begin,
-    //                    end: document.end,
-    //                    description: "",
-    //                    className: 'item-label-2 label-overDue pointer'
-    //                });
-    //                break;
-    //            case Enums.taskState.pending:
-    //                calendarDiv.fullCalendar('renderEvent', {
-    //                    id: document._id,
-    //                    title: document.msg,
-    //                    start: document.begin,
-    //                    end: document.end,
-    //                    description: "",
-    //                    className: 'item-label-2 label-pending pointer'
-    //                });
-    //                break;
-    //        }
-    //
-    //
-    //        rerender();
-    //
-    //
-    //    },
-    //
-    //    removed:
-    //
-    //        _.debounce(function (oldDocument) {
-    //
-    //
-    //            var calendarDiv = $('.fc');
-    //            calendarDiv.fullCalendar('removeEvents', function (event) {
-    //                return event.id == oldDocument._id;
-    //            })
-    //        }, 500),
-    //
-    //    changed: function (newDocument, oldDocument) {
-    //
-    //        var calendarDiv = $('.fc');
-    //        var event = _.find(calendarDiv.fullCalendar('clientEvents'), function (ev) {
-    //            return oldDocument._id == ev.id;
-    //        });
-    //
-    //        switch (newDocument.state) {
-    //            case Enums.taskState.future:
-    //                event.className = 'item-label-2 label-future pointer';
-    //                break;
-    //            case Enums.taskState.completed:
-    //                event.className = 'item-label-2 label-completed pointer';
-    //                break;
-    //            case Enums.taskState.overDue:
-    //                event.className = 'item-label-2 label-overDue pointer';
-    //                break;
-    //            case Enums.taskState.pending:
-    //                event.className = 'item-label-2 label-pending pointer';
-    //                break;
-    //        }
-    //        event.title = newDocument.msg;
-    //        event.start = newDocument.begin;
-    //        event.end = newDocument.end;
-    //
-    //        calendarDiv.fullCalendar('updateEvent', event);
-    //    }
-    //})
-
 };
 
 Template.agendaBox.destroyed=function() {};
-
-
 
 var rerender = _.debounce(function () {
     var calendarDiv = $('.fc');
@@ -265,8 +166,13 @@ Template.agendaBox.helpers({
 
                         if(event && event.assign && event.assign.length){
                             var user = Meteor.users.findOne({_id:event.assign[0]});
-                            var name = ((user && user).username ? user.username : user.emails[0].address);
-                            html += '<p class="desc">'+name+'</p>';
+                            if(user){
+                                var name = (user.username ? user.username : user.emails[0].address);
+                                html += '<p class="desc">'+name+'</p>';
+                            }
+                            else{
+                                html += '<p class="desc"><i>unassigned</i></p>';
+                            }
                         }
                         else
                             html += '<p class="desc">unassigned</p>';

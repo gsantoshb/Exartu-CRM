@@ -19,11 +19,11 @@
                                                 <a href="{{contactMethodTypePrefix type}}{{value}}" title="{{value}}"><i class="{{contactMethodTypeIcon type}}"></i></a>
                                             {{/each}}
                                         </div>
-                                        <a class="item-icon item-icon-network item-icon-sm" href="">
+                                        <a class="item-icon item-icon-network item-icon-sm" href="/contactable/{{_id}}">
                                             <i class="icon-profile-business-man"></i>
                                         </a>
                                         <div class="card-title">
-                                            <a href="/contactable/{{_id}}">{{_ displayName}} {{#if person}}<span>&ndash; {{_ person.jobTitle}}</span>{{/if}}</a>
+                                            <a href="/contactable/{{_id}}">{{_ displayName}} {{#if person.jobTitle}}<span>&ndash; {{_ person.jobTitle}}</span>{{/if}}</a>
                                         </div>
                                     </div><!-- /.card-item -->
                                 </div><!-- /.col-md-6 -->

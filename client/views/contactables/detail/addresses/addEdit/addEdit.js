@@ -94,11 +94,9 @@ AutoForm.hooks({
                     addressCreatedCallback && addressCreatedCallback();
                 }
                 selfautoform.done();
-
-
-
+                addDisabled.set(false);
             });
-            addDisabled.set(false);
+
 
             return false;
         }

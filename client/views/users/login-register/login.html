@@ -1,56 +1,53 @@
 <template name="login">
+    <div class="logo">a&iuml;da</div>
+
     <div class="container">
-        <div id="login-wrapper">
-            <div class="header"><img alt="Exartu" src="/img/logo.png"></div>
-            <div class="banner">
-                <h1>CRM &amp; Recruiting Software </h1>
-            </div>
-            <div class="login-card">
-                <div class="login-avatar">
-                    <div class="login-avatar-icon"><i class="icon-profile-business-man"></i></div>
-                </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <section class="box-type-4 get-started">
+                    <h2 class="headline">Welcome back, friend.</h2>
 
-                <span class="label label-danger center-block" style="margin-bottom: 10px;">{{errorMessage}}</span>
+                    {{#if getNotVerified}}
+                        <a class="pointer" id="resendVerification"> Resend email verification </a>
+                    {{/if}}
 
-                {{#if getNotVerified}}
-                    <a class="pointer" id="resendVerification"> Resend email verification </a>
-                {{/if}}
+                    {{#autoForm id="loginForm" class="form-1" schema="LoginSchema" doc=intialValues}}
+                        <ol>
+                            <li class="{{#if afFieldIsInvalid name='email'}}error{{else}}{{#if errorMessage}}error{{/if}}{{/if}}">
+                                {{> afFieldInput name='email' class="form-control form-control-1 smartField" placeholder="Email address" data-label="email-label"}}
+                                {{#if afFieldIsInvalid name='email'}}
+                                    <label class="form-label" id="email-label">{{afFieldMessage name='email'}}</label>
+                                {{else}}
+                                    {{#if errorMessage}}
+                                        <label class="form-label" id="email-label">{{errorMessage}}</label>
+                                    {{else}}
+                                        <label class="form-label" id="email-label">Email</label>
+                                    {{/if}}
+                                {{/if}}
+                                <label class="icon-holder"><i class="fa fa-envelope"></i></label>
+                            </li>
 
-                {{#autoForm id="loginForm" schema="LoginSchema" doc=intialValues}}
-                    <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
-                        {{> afFieldInput name='email' class="form-control input-lg" placeholder="Email"}}
-                        {{#if afFieldIsInvalid name='email'}}
-                            <span class="help-block">{{afFieldMessage name='email'}}</span>
-                        {{/if}}
-                    </div>
+                            <li class="{{#if afFieldIsInvalid name='password'}}error{{/if}}">
+                                {{> afFieldInput name='password' type="password" class="form-control form-control-1 smartField" placeholder="Password" data-label="password-label"}}
+                                {{#if afFieldIsInvalid name='password'}}
+                                    <label class="form-label" id="password-label">{{afFieldMessage name='password'}}</label>
+                                {{else}}
+                                    <label class="form-label" id="password-label">Password</label>
+                                {{/if}}
+                                <label class="icon-holder"><i class="fa fa-lock"></i></label>
+                            </li>
+                        </ol>
+                        <button class="btn-custom-4 btn-block {{addDisabled}}" type="submit" >Log In</button>
+                        <p class="or">or</p>
+                        <a class="btn-custom-4 default btn-block pointer" id="googleLogin">Log In with Google+</a>
+                        <div class="more">
+                            <p>Don't have an account? <a href="/register">Sign up here</a></p>
+                        </div>
+                    {{/autoForm}}
 
-                    <div class="form-group {{#if afFieldIsInvalid name='password'}}has-error{{/if}}">
-                        {{> afFieldInput name='password' type="password" class="form-control input-lg" placeholder="Password"}}
-                        {{#if afFieldIsInvalid name='password'}}
-                            <span class="help-block">{{afFieldMessage name='password'}}</span>
-                        {{/if}}
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-block btn-primary"><strong>Sign in</strong>
-                        </button>
-                    </div>
-                {{/autoForm}}
-
-                <div class="login-footer">
-                    <div class="pull-left text">
-                        Sign in with
-                    </div>
-                    <div class="pull-right btn-social">
-                        <a class="btn btn-google-plus" title="Login using your google account" id="googleLogin">
-                            <i class="fa fa-google-plus"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- /.login-card -->
-
-            <p class="create-account"><a href="/register">Create an account</a></p>
-            <p class="create-account"><a class="pointer" id="recoverPassword">Forgot your password?</a></p>
-        </div>
+                    <div class="decoration"></div>
+                </section><!-- -->
+            </div><!-- /col-md-offset-6 -->
+        </div><!-- /.row -->
     </div>
 </template>

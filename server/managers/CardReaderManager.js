@@ -1,7 +1,10 @@
 
 var iconv = Meteor.npmRequire('iconv-lite');
 console.log('iconv', iconv);
-
+var encode = function (string) {
+    var stringIso = iconv.encode(string, "iso-8859-1");
+    return stringIso.toString('base64');
+};
 CardReaderManager = {
     setCardReaderConfiguration: Meteor.wrapAsync(function (conf, cb) {
 
@@ -17,12 +20,7 @@ CardReaderManager = {
                 throw new Error('missing password');
             }
 
-
-            var string = conf.appId + ':' + conf.password;
-            console.log('string', string);
-            var stringIso = iconv.encode(string, "iso-8859-1");
-            var encoded = stringIso.toString('base64');
-            console.log('encoded', encoded);
+            var encoded = encode(conf.appId + ':' + conf.password);
 
             HTTP.get('http://cloud.ocrsdk.com/listTasks', {
                 headers: {
@@ -51,9 +49,20 @@ CardReaderManager = {
     }),
     getCardReaderConfiguration: function () {
         var hier =  Hierarchies.findOne({ _id: Meteor.user().currentHierId });
-        console.log('hier', hier);
+        //console.log('hier', hier);
 
-        if (! hier || ! hier.cardReader) return null;
+        if (! hier) return null;
+
+        if (! hier.cardReader){
+            // look for the config in env
+            if (process.env.CardReaderAppId && process.env.CardReaderPassword){
+                return {
+                    appId: process.env.CardReaderAppId,
+                    password: process.env.CardReaderPassword,
+                    encoded: encode(process.env.CardReaderAppId + ':' + process.env.CardReaderPassword)
+                };
+            }
+        }
 
         return hier.cardReader;
     }
