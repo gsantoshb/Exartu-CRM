@@ -388,7 +388,7 @@ Meteor.publish('getChartActivities', function() {
 Meteor.publish('getActivities', function(query, options){
   //console.log(options);
   //console.log(query);
-  if(options.limit > ActivityViews.find({}).count()) {
+  if(options.limit > ActivityViews.find(searchQuery, options).count()) {
     options.limit = 0;
   }
 
