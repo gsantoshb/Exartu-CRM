@@ -259,60 +259,84 @@ var doTransform = function (type) {
 
 // Action Buttons
 Template.contactable_actions.helpers({
-    hasEmailAddress: function () {
-        var type = Utils.getContactableType(this);
-        var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
-        var email = _.find(this.contactMethods, function (cm) {
-            var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
-            if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
-                return true;
-        });
-        return (email) ? true : false;
-    },
-    emailTemplateContext: function () {
-        var type = Utils.getContactableType(this);
-        var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
-        var email = _.find(this.contactMethods, function (cm) {
-            var cmtype = _.findWhere(contactMethodsTypes, {_id: cm.type});
-            if (cmtype && cmtype.lookUpActions && _.contains(cmtype.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
-                return true;
-        });
-        var context = {};
-        if (type.search('/')>-1) {
-            var typearray = type.split(/[\s/]+/); // create array if multi type entity
-            var cats = [];
-            _.forEach(typearray, function (t) {
-                cats.push(Enums.emailTemplatesCategories[t.toLowerCase()]);
-                context[t]=Session.get('entityId');
-            });
-            context.category= cats;
-            context.recipient= email && email.value
-        }
-        else {
+  hasEmailAddress: function () {
+    var emailCMTypes = _.pluck(LookUps.find({
+      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+      lookUpActions: {
+        $in: [
+          Enums.lookUpAction.ContactMethod_Email,
+          Enums.lookUpAction.ContactMethod_PersonalEmail,
+          Enums.lookUpAction.ContactMethod_WorkEmail
+        ]
+      }
+    }).fetch(), '_id');
+    var email = _.find(contactable.contactMethods, function (cm) { return _.indexOf(emailCMTypes, cm.type) != -1 });
+    return (email) ? true : false;
+  },
 
-            context = {
-                category: [Enums.emailTemplatesCategories[type.toLowerCase()]],
-                recipient: email && email.value
-            };
-            context[type] = Session.get('entityId');
-        }
-        return context;
-    },
-    isAppCenterUser: function () {
-        // Registered users have the user property set
-        return !!contactable.user;
-    }
-    ,
-    alreadyInvited: function () {
-        // Invited users have the invitation property set
-        return !!contactable.invitation;
-    }
+  // Applicant Center
+  isAppCenterUser: function () {
+    // Registered users have the user property set
+    return !!contactable.user;
+  },
+  alreadyInvited: function () {
+    // Invited users have the invitation property set
+    return !!contactable.invitation;
+  }
 })
 ;
 Template.contactable_actions.events({
-    'click #sendAppCenterInvite': function () {
-        Utils.showModal('sendAppCenterInvitation', contactable);
-    }
+  'click #sendAppCenterInvite': function () {
+    Utils.showModal('sendAppCenterInvitation', contactable);
+  },
+  'click #sendEmailTemplate': function () {
+    var contactableType = Utils.getContactableType(this);
+    var categories = [];
+
+    // Get the category for each type of contact
+    _.each(contactableType.split('/'), function (type) {
+      switch(type) {
+        case 'Client':
+          categories.push(MergeFieldHelper.categories.client.value); break;
+        case 'Employee':
+          categories.push(MergeFieldHelper.categories.employee.value); break;
+        case  'Contact':
+          categories.push(MergeFieldHelper.categories.contact.value); break;
+      }
+    });
+
+    // Choose the template to send
+    Utils.showModal('sendEmailTemplateModal', {
+      categories: categories,
+      callback: function (result) {
+        if (result) {
+          var emailCMTypes = _.pluck(LookUps.find({
+            lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+            lookUpActions: {
+              $in: [
+                Enums.lookUpAction.ContactMethod_Email,
+                Enums.lookUpAction.ContactMethod_PersonalEmail,
+                Enums.lookUpAction.ContactMethod_WorkEmail
+              ]
+            }
+          }).fetch(), '_id');
+          var email = _.find(contactable.contactMethods, function (cm) { return _.indexOf(emailCMTypes, cm.type) != -1 });
+
+          Meteor.call('sendEmailTemplate', result, [{contactableId: contactable._id, email: email.value}], function (err, result) {
+            if (!err) {
+              $.gritter.add({
+                title:	'Email template sent',
+                text:	'The email template was successfully sent.',
+                image: 	'/img/logo.png',
+                sticky: false,
+                time: 2000
+              });
+            }
+          });
+        }
+      }
+    });
+  }
 });
 
 // Header

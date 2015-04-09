@@ -1,5 +1,20 @@
 var self = {};
 var searchQuery = {};
+var addDisabled = new ReactiveVar(false);
+
+var displayToString = function(){
+  var c = Contactables.findOne({_id:Session.get('entityId')});
+  if(c.Employee){
+    return 'Display to employee';
+  }
+  else if(c.Contact){
+    return 'Display to contact';
+  }
+  else if(c.Client){
+    return 'Display to client';
+  }
+};
+
 var sortDep=new Deps.Dependency;
 var checkSMSDep = new Deps.Dependency;
 var NotesHandler;
@@ -55,7 +70,9 @@ NoteSchema = new SimpleSchema({
     },
     displayToEmployee: {
         type: Boolean,
-        optional: true
+        optional: true,
+        label: displayToString
+
     }
 });
 
@@ -63,6 +80,7 @@ NoteSchema = new SimpleSchema({
 AutoForm.hooks({
     AddNoteRecord: {
         onSubmit: function (insertDoc, updateDoc, currentDoc) {
+            addDisabled.set(true);
             if(!hotlist) {
                 var self = this;
                 //for some reason autoValue doesn't work
@@ -71,6 +89,7 @@ AutoForm.hooks({
 
                 Meteor.call('addContactableNote', insertDoc, function () {
                     self.done();
+                    addDisabled.set(false);
                 })
             }
             else if(hotlist){
@@ -79,6 +98,7 @@ AutoForm.hooks({
                 insertDoc.userId = Meteor.user()._id;
                 Meteor.call('addNote', insertDoc, function () {
                     self.done();
+                    addDisabled.set(true);
                 })
             }
             else{
@@ -132,6 +152,7 @@ Template.notesTabAdd.events({
     }
 });
 Template.notesTab.created = function () {
+  addDisabled.set(false);
     hotlist = HotLists.findOne({_id:Session.get('entityId')});
     if (this.data && this.data.responseOnly) {
         responsesOnly = true;
@@ -141,6 +162,9 @@ Template.notesTab.created = function () {
     }
 };
 Template.notesTabAdd.helpers({
+    addDisabled: function(){
+      return addDisabled.get() ? 'disabled' : '';
+    },
     isHotListNote: function () {
         return (hotlist) ? true : false; // hide numbers if hotlist
     },
@@ -160,8 +184,7 @@ Template.notesTabAdd.helpers({
             if (!self.defaultMobileNumber) self.defaultMobileNumber = result.value;
             return result;
         });
-    }
-    ,
+    },
     userNumbers: function () {
         var user = Meteor.user();
         return Hierarchies.find({_id: user.currentHierId, phoneNumber: {$exists: true}}).map(function (userHier) {

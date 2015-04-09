@@ -132,11 +132,10 @@ var setChartData = function() {
         chartDataArr.push({
             drilldown: tracker.displayName,
             name: tracker.displayName,
+            //name: ' ',
             y: tracker.counter
         });
     });
-
-    console.log('call setChartData');
 
     chartData.set({
         chart: {
@@ -191,8 +190,6 @@ var setChartData = function() {
 };
 
 var setActivityTrackers = function(){
-    console.log('call setActivityTrackers');
-
     //var hierId = Meteor.user().currentHierId;
     var activity;
     var weekStart = (moment().startOf('isoweek').subtract(1, 'week').hour(0).minute(0).second(0).unix());//+86400; // unix time
@@ -206,10 +203,6 @@ var setActivityTrackers = function(){
         //dayEnd = weekStart + (86400 * 1000 * i);
         dayStart = moment.utc( weekStart + (86400 * (i-1)), "X" ).toISOString();
         dayEnd = moment.utc( weekStart + (86400 * (i)), "X" ).toISOString();
-        console.log('dayStart');
-        console.log(new Date(dayStart));
-        console.log('dayEnd');
-        console.log(new Date(dayEnd));
 
         activity = chartActivities.find({"data.dateCreated": {
             $gte:new Date(dayStart),
@@ -221,9 +214,6 @@ var setActivityTrackers = function(){
             counter: activity.fetch().length
         });
     }
-
-    console.log(trackers.length);
-
     activityTrackers.set( trackers );
 };
 

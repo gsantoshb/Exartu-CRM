@@ -152,13 +152,13 @@
         <!-- Task information -->
         <li>
             <div class="left-part">
-                <a class="list-type-7-icon" href="#"><i class="ico-task-black"></i></a>
+                <a class="list-type-7-icon" href="/tasks/{{task._id}}"><i class="ico-task-black"></i></a>
                 <div class="list-type-7-title">
                     {{#with task}}
                         {{#if displayUserName userAssigned}}
                             {{displayUserName userAssigned}} <span class="desc">is assigned to</span>
                         {{/if}}
-                        <a class="pointer">{{>showMore text=msg limit=60}}</a>
+                        <a class="pointer" href="/tasks/{{_id}}">{{>showMore text=msg limit=60}}</a>
                         <span class="desc">&ndash; task created by {{displayUserName userId}}</span>
                     {{/with}}
                     {{#each links}}
@@ -280,10 +280,10 @@
             <div class="left-part">
                 <!-- Note information -->
                 {{#if note}}
-                    <a class="list-type-7-icon" href="#"><i class="icon icon-pencil-3"></i></a>
+                    <a class="list-type-7-icon" href="/notes/{{note._id}}"><i class="icon icon-pencil-3"></i></a>
                     <div class="list-type-7-title">
                         {{#with note}}
-                            {{>showMore text=msg limit=60}}
+                           <a href="/notes/{{_id}}"> {{>showMore text=msg limit=60}}</a>
                         {{/with}}
                         {{#each this.links}}
                             &nbsp;

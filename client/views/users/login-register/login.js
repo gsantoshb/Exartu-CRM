@@ -96,7 +96,7 @@ Template.login.created = function(){
 
 Template.login.helpers({
   addDisabled: function(){
-    return addDisabled.get();
+    return addDisabled.get() ? "disabled": "";
   },
   getNotVerified: function () {
     return notVerified.get();

@@ -9,7 +9,7 @@ ApplicantCenterManager = {
     // Email contact method
     var hierFilter = Utils.filterByHiers(user.hierId);
     var emailCM = LookUps.findOne({
-      lookUpCode: Enums.lookUpCodes.contactMethod_types,
+      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
       lookUpActions: Enums.lookUpAction.ContactMethod_Email,
       $or: hierFilter
     });
