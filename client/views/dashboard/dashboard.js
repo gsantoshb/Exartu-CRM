@@ -319,6 +319,8 @@ Template.dashboard.created = function () {
             showChart.set(true);
         }
     });
+
+    $('body').addClass('dashboard-page');
 };
 Template.dashboard.rendered = function() {
     var sidebar = this.$('.sidebar').width();
@@ -329,6 +331,7 @@ Template.dashboard.rendered = function() {
 };
 Template.dashboard.destroyed = function() {
     $(window).unbind('scroll', loadMoreHandler);
+    $('body').removeClass('dashboard-page');
 };
 
 Template.dashboard.helpers({
