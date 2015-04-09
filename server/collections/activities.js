@@ -107,7 +107,7 @@ ActivityViews = new View('activities', {
     self.publish({cursor: jobsFilesCursor, to: 'jobs'});
 
     //contactable cursor
-    var contactablesCursor = Contactables.find({_id: {$in: contactablesToPublish}});
+    var contactablesCursor = Contactables.find({});
     self.publish({cursor: contactablesCursor, to: 'contactables'});
 
 
@@ -343,6 +343,13 @@ ActivityViews = new View('activities', {
   }
 });
 
+ChartActivityViews = new View('chartActivities', {
+  collection: Activities,
+  cursors: function(activity) {
+
+  }
+});
+
 Meteor.paginatedPublish(ActivityViews, function () {
     //@todo review this, is not working properly
     var activities = Utils.filterCollectionByUserHier.call(this, ActivityViews.find({}, {sort: {'data.dateCreated': -1}}));
@@ -373,6 +380,10 @@ Meteor.paginatedPublish(ActivityViews, function () {
     }
   }
 );
+
+Meteor.publish('getChartActivities', function() {
+  return Utils.filterCollectionByUserHier.call(this, ChartActivityViews.find({ type: { $in: [0,2,5,3,10,12] } }));
+});
 
 Meteor.publish('getActivities', function(query, options){
   //console.log(options);

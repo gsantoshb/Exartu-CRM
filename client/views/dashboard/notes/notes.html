@@ -1,0 +1,14 @@
+<template name="dashboardNotes">
+    {{#if nodes}}
+        {{#each nodes}}
+            <div class="note hover-edit">
+                {{msg}}
+                <div class="date">
+                    &mdash; {{formattedDate dateCreated}} &mdash;
+                    <a class="edit editNote" href="#"><i class="fa fa-pencil"></i> Edit note</a>
+                    <a class="edit removeNote" href="#"><i class="fa fa-remove"></i> Remove note</a>
+                </div>
+            </div>
+        {{/each}}
+    {{/if}}
+</template>
