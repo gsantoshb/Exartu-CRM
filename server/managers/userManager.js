@@ -400,8 +400,8 @@ var markInvitationsAsUsed = function (userInvitation) {
 };
 
 // Email validation template
-Accounts.emailTemplates.siteName = "Exartu ";
-Accounts.emailTemplates.from = "Exartu team<exartu.developer@gmail.com>";
+Accounts.emailTemplates.siteName = "Aida";
+Accounts.emailTemplates.from = "Aida Team team<sales@aidacreative.com>";
 
 // Email account verification template
 Accounts.emailTemplates.verifyEmail.subject = function (user) {
