@@ -1,14 +1,30 @@
 <template name="dashboardNotes">
-    {{#if nodes}}
-        {{#each nodes}}
-            <div class="note hover-edit">
-                {{msg}}
-                <div class="date">
-                    &mdash; {{formattedDate dateCreated}} &mdash;
-                    <a class="edit editNote" href="#"><i class="fa fa-pencil"></i> Edit note</a>
-                    <a class="edit removeNote" href="#"><i class="fa fa-remove"></i> Remove note</a>
-                </div>
-            </div>
-        {{/each}}
-    {{/if}}
+    <div class="box-type-3">
+        <ul class="list-type-9">
+            {{#if nodes}}
+                {{#each nodes}}
+                    <li>
+                        <div class="note">
+                            <p>{{msg}}</p>
+                            <div class="date">&mdash; {{formattedDate dateCreated}}</div>
+                            <div class="btn-group  btn-more">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="ico-more">
+                          <span class="dot-1"></span>
+                          <span class="dot-2"></span>
+                          <span class="dot-3"></span>
+                        </span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="arrow"></li>
+                                    <li><a class="editNote pointer"><i class="fa fa-edit"></i> Edit</a></li>
+                                    <li><a class="removeNote pointer"><i class="fa fa-trash"></i> Delete</a></li>
+                                </ul>
+                            </div>
+                        </div><!-- /.note -->
+                    </li>
+                {{/each}}
+            {{/if}}
+        </ul>
+    </div>
 </template>
