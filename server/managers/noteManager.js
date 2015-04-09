@@ -51,6 +51,10 @@ NoteManager = {
           var placement = Placements.findOne({_id: l.id});
           validLink = validLink && (placement != null);
         }
+        else if(l.type === Enums.linkTypes.dashboard.value) {
+          var user = Meteor.users.findOne({_id: l.id});
+          validLink = validLink && (user != null);
+        }
         else {
           validLink = false;
         }
@@ -112,6 +116,10 @@ NoteManager = {
         else if (l.type === Enums.linkTypes.placement.value) {
           var placement = Placements.findOne({_id: l.id});
           validLink = validLink && (placement != null);
+        }
+        else if(l.type === Enums.linkTypes.dashboard.value) {
+          var user = Meteor.users.findOne({_id: l.id});
+          validLink = validLink && (user != null);
         }
         else {
           validLink = false;

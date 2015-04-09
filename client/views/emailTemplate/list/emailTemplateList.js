@@ -45,5 +45,17 @@ Template.emailTemplateList.events({
       $regex: "(.)*" + searchString + "(.)*"
     };
     queryDep.changed();
+  },
+  'click .addTemplate': function () {
+    Utils.showModal('basicSelectModal', {
+      title: 'Select template category',
+      placeholder: 'Select template category',
+      selectOptions: _.map(_.values(MergeFieldHelper.categories), function (cat) { return {text: cat.name, id: cat.value} }),
+      callback: function (result) {
+        if (result) {
+          Router.go('/addEmailTemplate/' + result);
+        }
+      }
+    });
   }
 });

@@ -7,7 +7,7 @@ var error = new ReactiveVar('');
 Template.sendAppCenterInvitation.helpers({
   email: function () {
     var emailCMTypes =  _.pluck(LookUps.find({
-      lookUpCode: Enums.lookUpCodes.contactMethod_types,
+      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
       lookUpActions: {$in: [
         Enums.lookUpAction.ContactMethod_Email,
         Enums.lookUpAction.ContactMethod_PersonalEmail,

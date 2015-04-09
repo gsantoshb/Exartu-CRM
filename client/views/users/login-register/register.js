@@ -54,9 +54,9 @@ Template.register.helpers({
   },
   languageOptions: function() {
       return [
-          {label: "English", value: "en"},
-          {label: "Español", value: "es"},
-          {label: "简体中文", value: "cn"}
+        {label: "English", value: "en", selected: true},
+        {label: "Español", value: "es"},
+        {label: "简体中文", value: "cn"}
       ];
   }
 });

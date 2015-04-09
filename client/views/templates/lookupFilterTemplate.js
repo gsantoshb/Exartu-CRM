@@ -32,7 +32,7 @@ Template.lookupFilterTemplate.helpers({
 Template.select2.rendered = function () {
     if (this.data && _.isArray(this.data.options)) {
         var options = this.data.options;
-        this.$('#input').select2({
+        Template.instance().$('#input').select2({
             data: options,
             multiple: this.data.multi,
             allowClear: true,
@@ -44,7 +44,7 @@ Template.select2.rendered = function () {
         Meteor.autorun(_.bind(function () {
             var options = this.data.options();
             if (_.isArray(options)) {
-                this.$('#input').select2({
+                Template.instance().$('#input').select2({
                     data: options,
                     allowClear: true
                 });

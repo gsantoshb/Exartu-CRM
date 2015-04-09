@@ -1,0 +1,33 @@
+
+<template name="sendEmailTemplateModal">
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">{{_ "Send email"}}</h4>
+                </div>
+                <div class="modal-body" style="overflow: auto; max-height: 80vh;">
+                    {{#if Template.subscriptionsReady}}
+                        {{>select2 options=selectOptions title=selectPlaceholder onSelected=setValue}}
+
+                        {{#if templateId}}
+                            <p style="margin: 20px 0 10px;">
+                                You can edit the text that will be sent. Changes made here won't affect the template.
+                            </p>
+
+                            <!-- HTML editor -->
+                            {{>wysihtml editorContext}}
+                        {{/if}}
+
+                        <a href="/emailTemplates" class="dismiss">{{_ "Manage templates"}}</a>
+                    {{/if}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default dismiss">{{_ "Cancel"}}</button>
+                    <button type="button" class="btn btn-primary accept">{{_ "Send"}}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</template>

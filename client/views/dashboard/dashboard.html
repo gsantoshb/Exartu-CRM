@@ -14,6 +14,23 @@
                         </h1>
                     </div>
 
+                    <div class="btn-group dropup btn-add-global">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="plus">+</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/contactableAdd/Contact">Add Contact</a></li>
+                            <li><a href="/contactableAdd/Employee">Add Employee</a></li>
+                            <li><a href="/contactableAdd/Client">Add Client</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/hotListAdd/hotList">Add HotList</a></li>
+                            {{#unless checkNoNotes}}
+                                <li class="divider"></li>
+                                <li><a class="addDashboardNote">Add note</a></li>
+                            {{/unless}}
+                        </ul>
+                    </div>
+
                     {{#if getLeadTrackers}}
                         <section class="box-type-3">
                             <header>
@@ -50,10 +67,29 @@
                     <div class="chart-box-1 text-center" style="overflow: hidden;">
                         {{#if showActivityChart}}
                             {{> highchartsHelper chartId="activityChart" chartWidth="100%" charHeight="100%" chartObject=getActivityChartObject}}
+
+                            <!-- @todo review this -->
+                            <!--<div style=" float: left; overflow:hidden; text-align:center;margin-left: 14px;margin-top: -12px;font-size: 10px;">-->
+                                <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">MO</div>-->
+                                <!--</div>-->
+                                <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">TU</div>-->
+                                <!--</div>-->
+                                <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">WE</div>-->
+                                <!--</div>-->
+                                <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">TH</div>-->
+                                <!--</div>-->
+                                <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">FR</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         {{else}}
-                            <div class="infinite-scroll-loader">
-                                <span style="margin-left: -144px">Loading chart</span>
+                            <div class="loader-container chart-loader">
                                 <div class="loader"></div>
+                                <p>Loading chart</p>
                             </div>
                         {{/if}}
                     </div>
@@ -157,6 +193,8 @@
             <div class="col-md-3">
                 <div class="sidebar-right">
                     {{> agendaBox}}
+
+                    {{> dashboardNotes}}
                 </div><!-- /.sidebar-right -->
             </div><!-- /.col-md-3 -->
 

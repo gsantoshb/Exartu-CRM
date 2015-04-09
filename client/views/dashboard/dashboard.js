@@ -69,21 +69,23 @@ var setLeadTrackers = function(){
 };
 
 var setTeamMembersTrackers = function(){
-    var hierId = Meteor.user().currentHierId;
-    var members = Meteor.users.find({currentHierId: hierId}).fetch();
+    if(Meteor.user() != null) {
+        var hierId = Meteor.user().currentHierId;
+        var members = Meteor.users.find({currentHierId: hierId}).fetch();
 
-    var trackers = [];
+        var trackers = [];
 
-    _.each(members, function(member){
-        var displayName = (member.username ? member.username : member.emails[0].address);
-        trackers.push({
-            displayName: displayName,
-            counter: clients.find({userId: member._id, hierId: hierId}).count()
+        _.each(members, function(member){
+            var displayName = (member.username ? member.username : member.emails[0].address);
+            trackers.push({
+                displayName: displayName,
+                counter: Contactables.find({userId: member._id, hierId: hierId}).count()
+            });
         });
-    });
-    _.sortBy(trackers, function(o) { return o.displayName; });
+        _.sortBy(trackers, function(o) { return o.displayName; });
 
-    teamMemberTrackers.set( trackers );
+        teamMemberTrackers.set( trackers );
+    }
     //return trackers;
 };
 
@@ -132,11 +134,10 @@ var setChartData = function() {
         chartDataArr.push({
             drilldown: tracker.displayName,
             name: tracker.displayName,
+            //name: ' ',
             y: tracker.counter
         });
     });
-
-    console.log('call setChartData');
 
     chartData.set({
         chart: {
@@ -191,8 +192,6 @@ var setChartData = function() {
 };
 
 var setActivityTrackers = function(){
-    console.log('call setActivityTrackers');
-
     //var hierId = Meteor.user().currentHierId;
     var activity;
     var weekStart = (moment().startOf('isoweek').subtract(1, 'week').hour(0).minute(0).second(0).unix());//+86400; // unix time
@@ -206,10 +205,6 @@ var setActivityTrackers = function(){
         //dayEnd = weekStart + (86400 * 1000 * i);
         dayStart = moment.utc( weekStart + (86400 * (i-1)), "X" ).toISOString();
         dayEnd = moment.utc( weekStart + (86400 * (i)), "X" ).toISOString();
-        console.log('dayStart');
-        console.log(new Date(dayStart));
-        console.log('dayEnd');
-        console.log(new Date(dayEnd));
 
         activity = chartActivities.find({"data.dateCreated": {
             $gte:new Date(dayStart),
@@ -221,9 +216,6 @@ var setActivityTrackers = function(){
             counter: activity.fetch().length
         });
     }
-
-    console.log(trackers.length);
-
     activityTrackers.set( trackers );
 };
 
@@ -327,6 +319,8 @@ Template.dashboard.created = function () {
             showChart.set(true);
         }
     });
+
+    $('body').addClass('dashboard-page');
 };
 Template.dashboard.rendered = function() {
     var sidebar = this.$('.sidebar').width();
@@ -337,6 +331,7 @@ Template.dashboard.rendered = function() {
 };
 Template.dashboard.destroyed = function() {
     $(window).unbind('scroll', loadMoreHandler);
+    $('body').removeClass('dashboard-page');
 };
 
 Template.dashboard.helpers({
@@ -357,7 +352,7 @@ Template.dashboard.helpers({
         _.each(activityTypes.get(), function(activityType) {
             intActivityTypes.push(parseInt(activityType));
         });
-        return !(Activities.find({type: { $in: intActivityTypes }}).count() < Session.get('limitActivities'));
+        return !(Activities.find({type: { $in: intActivityTypes }}).count() < limitActivities.get());
     },
     getActivityChartObject: function() {
         return chartData.get();
@@ -392,8 +387,8 @@ Template.dashboard.helpers({
         return true; //isReady.get();
     },
     getUserDisplayName: function() {
-        var user = Meteor.user();
-        var hier = Meteor.user() ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
+        var user = Meteor.user() != null ? Meteor.user() : {};
+        var hier = Meteor.user() != null ? Hierarchies.findOne(Meteor.user().currentHierId) : undefined;
 
         if(user.firstName && user.lastName){
             return user.firstName+' '+user.lastName;
@@ -403,8 +398,10 @@ Template.dashboard.helpers({
                 return user.username;
             else if(hier)
                 return hier.name;
-            else
+            else if(user.emails)
                 return user.emails[0].address;
+            else
+                return '-';
         }
     },
     userName: function () {
@@ -440,6 +437,10 @@ Template.dashboard.helpers({
     },
     getTypeFiles: function(){
         return Enums.activitiesType.fileAdd;
+    },
+    checkNoNotes: function() {
+        var nodes = Notes.find({links: {$elemMatch: { type: Enums.linkTypes.dashboard.value }}});
+        return (nodes.count() >= 5);
     }
 });
 
@@ -473,5 +474,12 @@ Template.dashboard.events({
 
         activityTypes.set(getSelectedActivityFilters());
         queryDep.changed();
+    },
+    'click .addDashboardNote': function(e) {
+        e.preventDefault();
+
+        Utils.showModal('dashboardAddNote');
+
+        return false;
     }
 });
