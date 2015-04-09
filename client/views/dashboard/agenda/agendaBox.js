@@ -161,7 +161,7 @@ Template.agendaBox.helpers({
 
                     _.each(events, function(item){
                         var event = Tasks.findOne({_id: item.id});
-                        html = '<li><a class="item-icon item-icon-tasks item-icon-sm" href="#"><i class="ico-tasks"></i></a><div class="item-content"><div class="title"><a href="#">';
+                        html = '<li><a class="item-icon item-icon-tasks item-icon-sm" href="/tasks/'+item.id+'"><i class="ico-tasks"></i></a><div class="item-content"><div class="title"><a href="/tasks/'+item.id+'">';
                         html += item.title;
 
                         if(event && event.assign && event.assign.length){
