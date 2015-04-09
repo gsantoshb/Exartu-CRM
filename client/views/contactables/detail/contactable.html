@@ -192,22 +192,33 @@
                     <h3>{{_ "Hotlists"}}</h3>
                 </div><!-- /.col-md-2 -->
                 <div class="col-md-10">
+                    {{#if editHotlistMode}}
+                            <div class="input-group" style="margin-bottom: 10px">
+                                {{>asyncSelect query=getHotList placeholder="Search client" onChange=hotListChanged width='100%'}}
+                                <span class="input-group-btn">
+                                   <button class="add-hotList btn btn-default" type="button"><span class="fa fa-plus"></span></button>
+                                </span>
+                            </div>
+
+
+
+                    {{/if}}
                     {{#if hotListMemberships}}
                         <div class="row">
                             {{#each hotListMemberships}}
                                 <div class="col-md-6">
                                     <div class="card-item">
                                         {{#if editHotlistMode}}
-                                            <div class="card-options">
+                                           <div class="card-options">
                                                 <a class="remove-tag removeHotList pointer"><i class="fa fa-times"></i></a>
-                                            </div>
+                                           </div>
                                         {{/if}}
 
                                         <a class="item-icon item-icon-hotlist item-icon-sm" href="/hotlist/{{_id}}">
                                             <i class="icon-list-4"></i>
                                         </a>
                                         <div class="card-title">
-                                            <a href="/hotlist/{{_id}}">{{displayName}} <span>– {{_id}} </span></a>
+                                            <a href="/hotlist/{{_id}}">{{displayName}} </a>
                                         </div>
                                     </div>
                                 </div>
@@ -218,7 +229,7 @@
                     <div class="row">
                         {{#with recentHotList}}
                             <button type="button" class="btn btn-success addHotList" title="Add">
-                                <span class="fa fa-plus"></span> {{_ "Add"}}: {{hotListDisplayName}} ({{hotListId}})
+                                <span class="fa fa-plus"></span> {{_ "Add"}}: {{hotListDisplayName}}
                             </button>
                         {{/with}}
                     </div>

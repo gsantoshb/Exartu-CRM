@@ -9,7 +9,8 @@ ContactableController = RouteController.extend({
             Meteor.subscribe('auxHotLists', this.params._id),
             GoogleMapsHandler,
             handlerContactalbeCounters,
-            Meteor.subscribe('singleHotList', Session.get('hotListId'))]
+            Meteor.subscribe('singleHotList', Session.get('hotListId')),
+            Meteor.subscribe('allHotLists')]
     },
     data: function () {
         Session.set('entityId', this.params._id);
@@ -40,10 +41,10 @@ ContactableController = RouteController.extend({
     }
 });
 //
-//Utils.reactiveProp(self, 'editHotlistMode', false);
-//Template.contactable.created = function () {
-//    self.editHotlistMode=false;
-//};
+Utils.reactiveProp(self, 'editHotlistMode', false);
+Template.contactable.created = function () {
+    self.editHotlistMode=false;
+};
 
 Template.contactable.rendered = function () {
     $('body').scrollTop(0);
@@ -467,6 +468,7 @@ Template.contactable_nav.helpers({
 
 
 var hotListMembershipsDep = new Deps.Dependency;
+var selectedValue = "";
 
 Template.hotListMembershipsBox.helpers({
     hotListMemberships: function () {
@@ -476,20 +478,58 @@ Template.hotListMembershipsBox.helpers({
     recentHotList: function () {
         var obj;
         if (Session.get('hotListId')) {
-            obj = {};
-            obj.hotListId = Session.get('hotListId');
-            obj.hotListDisplayName = Session.get('hotListDisplayName')
+            hotListMembershipsDep.depend();
+            var h = HotLists.findOne({_id: Session.get('hotListId'), members: contactable._id});
+            if(!h) {
+              obj = {};
+              obj.hotListId = Session.get('hotListId');
+              obj.hotListDisplayName = Session.get('hotListDisplayName')
+            }
         }
         return obj;
-        //},
-        //editHotlistMode: function () {
-        //    return self.editHotlistMode;
+    },
+    editHotlistMode: function () {
+            return self.editHotlistMode;
+    },
+  getHotList: function () {
+    var templateSelf = this;
+
+    return function (string) {
+      var self = this;
+      var result =  AllHotLists.find({members:{$nin: [contactable._id]}}).fetch();
+      var array = _.map(result, function (r) {
+            return {text: r.displayName, id: r._id};
+          });
+      self.ready(array);
+    };
+  },
+  hotListChanged: function () {
+    var self = this;
+    return function (value) {
+      self.value = value;
+      selectedValue = value;
     }
+  }
 });
+
+var addHotList = function () {
+  if (!selectedValue) {
+    return;
+  }
+  var hotlist = AllHotLists.findOne({_id: selectedValue});
+  hotlist.members.push(contactable._id);
+  hotlist.members = $.unique(hotlist.members);
+  Meteor.call('updateHotList', hotlist, function(err, cb){
+     if(!err){
+       hotListMembershipsDep.changed();
+     }
+  })
+};
+
 Template.hotListMembershipsBox.events({
-    //'click #edit-mode':function(e, ctx) {
-    //    self.editHotlistMode = ! self.editHotlistMode;
-    //},
+    'click #edit-mode':function(e, ctx) {
+        self.editHotlistMode = ! self.editHotlistMode;
+    },
     'click .removeHotList': function (e, ctx) {
         var hotlist = HotLists.findOne({_id: this._id});
         hotlist.members.splice(hotlist.members.indexOf(contactable._id), 1);
@@ -504,6 +544,9 @@ Template.hotListMembershipsBox.events({
 
         HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
         hotListMembershipsDep.changed();
+    },
+    'click .add-hotList': function (e, ctx) {
+        addHotList.call(this);
     }
 });
 
