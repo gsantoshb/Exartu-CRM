@@ -18,12 +18,9 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <select class="form-control input-md" id="noteEntitySelect" title="Select the entity that you want to link">
-                                <option value="">{{_ "Select"}}</option>
-                                {{#each entities}}
-                                    <option value="{{_id}}">{{_ displayName}}</option>
-                                {{/each}}
-                            </select>
+                            {{#if showSelect}}
+                                {{>asyncSelect query=getEntities width="100%" onChange=onChange}}
+                            {{/if}}
                         </div>
                     </form>
                 </div>
