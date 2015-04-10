@@ -27,7 +27,7 @@ var errorDep = new Tracker.Dependency;
 
 var addDisabled = new ReactiveVar(false);
 var taskUpdate = function (cb) {
-    var oldTask = Tasks.find({_id : task._id}).fetch()[0];
+    var oldTask = Tasks.find({_id : task._id}).fetch()[0] || CalendarTasks.findOne({_id : task._id}) ;
     if (task._id) {
         Tasks.update({
                 _id: task._id
