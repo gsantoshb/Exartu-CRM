@@ -8,12 +8,12 @@
                 {{> documentInstances}}
             {{else}}
                 <div style="padding: 10px">
-                    <p class="alert alert-warning">The Employee does not have an account on HRConcourse yet</p>
+                    <p class="alert alert-warning">{{_ "The Employee does not have an account on HRConcourse yet"}}</p>
 
                     {{#if hasEmail}}
-                        <button class="btn" id="createAccount" disabled="{{isCreatingAccount}}">Create one for them</button>
+                        <button class="btn" id="createAccount" disabled="{{isCreatingAccount}}">{{_ "Create one for them"}}</button>
                     {{else}}
-                        <span class="text-danger">You must add an email for this employee</span>
+                        <span class="text-danger">{{_ "You must add an email for this employee"}}</span>
                     {{/if}}
                 </div>
                 {{#if createAccount}}
@@ -31,7 +31,7 @@
             <div class="add-item-title">Documents</div>
         </div>
 
-        <button class="btn btn-success" id="selectDocuments"> Send documents</button>
+        <button class="btn btn-success" id="selectDocuments"> {{_ "Send documents"}}</button>
     </div>
 </template>
 
@@ -52,7 +52,7 @@
                                 </div>
 
                                 <small>
-                                    Created on {{formattedDate dateCreated "lll"}}
+                                    {{_ "Created on"}} {{formattedDate dateCreated "lll"}}
                                     <br/>
                                 </small>
                             </div>
@@ -81,20 +81,20 @@
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" class="docCheckbox" data-docId="{{id}}">
-                                        {{name}}
+                                        {{_ name}}
                                     </label>
                                 </div>
                             {{else}}
                                 <div style="min-height: 200px;">
-                                    You don't have documents created, go to <a href="http://hrconcourse.aidacreative.com" target="_blank">hrConcourse</a>
+                                    You don't have documents created, go to <a href="http://hrconcourse.aidacreative.com" target="_blank">{{_ "hrConcourse"}}</a>
                                 </div>
                             {{/each}}
                         {{/if}}
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-success accept" disabled="{{isSending}}">Save {{objTypeName}}</a>
-                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                    <a class="btn btn-success accept" disabled="{{isSending}}">{{_ "Save"}} {{objTypeName}}</a>
+                    <a href="#" class="btn" data-dismiss="modal">{{_ "Close"}}</a>
                 </div>
             </div>
         </div>

@@ -19,7 +19,7 @@
         <div class="box-content-md">
             {{#if editMode}}
                 <form class="box-content-form" style="margin-bottom: 20px;" role="form">
-                    <strong class="text-muted"> Search address </strong>
+                    <strong class="text-muted"> {{_ "Search address"}} </strong>
                     {{#inputLocation location}}
                     {{/inputLocation}}
                 </form>
@@ -45,7 +45,7 @@
                     <!--</td>-->
                     <!--</tr>-->
                     <tr>
-                        <td class="box-table-label">Address 1</td>
+                        <td class="box-table-label">{{_ "Address 1"}}</td>
                         <td>
                             {{#if editMode}}
                                 {{> afFieldInput name='address'}}
@@ -57,7 +57,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="box-table-label">Address 2</td>
+                        <td class="box-table-label">{{_ "Address 2"}}</td>
                         <td>
                             {{#if editMode}}
                                 {{> afFieldInput name='address2'}}
@@ -71,7 +71,7 @@
 
 
                     <tr>
-                        <td class="box-table-label">City</td>
+                        <td class="box-table-label">{{_ "City"}}</td>
                         <td>
                             {{#if editMode}}
                                 {{> afFieldInput name='city'}}
@@ -83,7 +83,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="box-table-label">State</td>
+                        <td class="box-table-label">{{_ "State"}}</td>
                         <td>
                             {{#if editMode}}
                                 {{> afFieldInput name='state'}}
@@ -95,7 +95,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="box-table-label">Country</td>
+                        <td class="box-table-label">{{_ "Country"}}</td>
                         <td>
                             {{#if editMode}}
                                 {{> afFieldInput name='country'}}
@@ -107,7 +107,7 @@
                         </td>
                     </tr>
                     <tr class="box-table-label">
-                        <td>Type</td>
+                        <td>{{_ "Type"}}</td>
                         <td>
                                 {{> afFieldInput name='addressTypeId' class="form-control "  options=getAddressTypes}}
                                 {{#if afFieldIsInvalid name='addressTypeId'}}
@@ -121,8 +121,8 @@
 
                 {{#if editMode }}
                     <div class="box-header-2">
-                        <a id="cancel-location" class="btn btn-default"> Cancel </a>
-                        <button type="submit" class="btn btn-success pull-right"> Save</button>
+                        <a id="cancel-location" class="btn btn-default"> {{_ "Cancel"}} </a>
+                        <button type="submit" class="btn btn-success pull-right"> {{_ "Save"}}</button>
                     </div>
                 {{/if}}
 
