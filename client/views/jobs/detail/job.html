@@ -4,16 +4,16 @@
         <div id="content-header" class="mini">
             {{#with originalJob}}
                 <div  class="profile-content-header">
-                    <h1 class="profile-name">{{displayName}}
-                        <small> at
+                    <h1 class="profile-name">{{_ displayName}}
+                        <small> @
                             <a  href="/contactable/{{client}}">
                                 <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
-                                    {{clientDisplayName}}
+                                    {{_ clientDisplayName}}
                                     <i class="fa fa-external-link" style="font-size: 14px"></i>
                                 </strong>
                             </a>
                         </small>
-                        <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
+                        <h5 class="pull-right" style="max-width: 40%;"> {{_ statusNote}} </h5>
                     </h1>
                 </div>
             {{/with}}
@@ -101,7 +101,7 @@
                     <a>
                         <span id="copy-job" class="btn btn-default action-btn">
                             <i class="fa fa-copy"></i>
-                            Copy job
+                            {{_ "Copy job"}}
                         </span>
                     </a>
                 </li>
@@ -112,12 +112,12 @@
         <div class="details-actions">
             <div class="btn-group nav-item">
                 <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                    Actions
+                    {{_ "Actions"}}
                     <!--<span class="caret"></span>-->
                 </a>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li>
-                        <a> <span id="copy-job" class="btn btn-info btn-xs">  Copy job </span></a>
+                        <a> <span id="copy-job" class="btn btn-info btn-xs">  {{_ "Copy job"}} </span></a>
 
                     </li>
                 </ul>

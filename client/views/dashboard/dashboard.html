@@ -19,16 +19,16 @@
                             <span class="plus">+</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="/contactableAdd/Contact">Add Contact</a></li>
-                            <li><a href="/contactableAdd/Employee">Add Employee</a></li>
-                            <li><a href="/contactableAdd/Client">Add Client</a></li>
+                            <li><a href="/contactableAdd/Contact">{{_ "Add Contact"}}</a></li>
+                            <li><a href="/contactableAdd/Employee">{{_ "Add Employee"}}</a></li>
+                            <li><a href="/contactableAdd/Client">{{_ "Add Client"}}</a></li>
                             <li class="divider"></li>
-                            <li><a class="addTaskDashboard">Add Task</a></li>
+                            <li><a class="addTaskDashboard">{{_ "Add Task"}}</a></li>
                             <li class="divider"></li>
-                            <li><a href="/hotListAdd/hotList">Add HotList</a></li>
+                            <li><a href="/hotListAdd/hotList">{{_ "Add HotList"}}</a></li>
                             {{#unless checkNoNotes}}
                                 <li class="divider"></li>
-                                <li><a class="addDashboardNote">Add note</a></li>
+                                <li><a class="addDashboardNote">{{_ "Add note"}}</a></li>
                             {{/unless}}
                         </ul>
                     </div>
@@ -36,13 +36,13 @@
                     {{#if getLeadTrackers}}
                         <section class="box-type-3">
                             <header>
-                                <a class="more" href="/leaderboards">View reports</a>
-                                <div class="title">In the last 30 days</div>
+                                <a class="more" href="/leaderboards">{{_ "View reports"}}</a>
+                                <div class="title">{{_ "In the last 30 days"}}</div>
                             </header>
                             <div class="box-body">
                                 <ul class="list-type-6">
                                     {{#each getLeadTrackers}}
-                                        <li><span class="hightlight-1">{{counter}}</span> {{displayName}}</li>
+                                        <li><span class="hightlight-1">{{counter}}</span> {{_ displayName}}</li>
                                     {{/each}}
                                 </ul>
                             </div><!-- /.box-body -->
@@ -52,8 +52,8 @@
                     {{#if getTeamMembersTrackers}}
                         <section class="box-type-3">
                             <header>
-                                <a class="more" href="/leaderboards">View reports</a>
-                                <div class="title">Team Deal Load</div>
+                                <a class="more" href="/leaderboards">{{_ "View reports"}}</a>
+                                <div class="title">{{_ "Team Deal Load"}}</div>
                             </header>
                             <div class="box-body">
                                 <ul class="list-type-6">
@@ -106,7 +106,7 @@
                             <div class="list-actions-cell search-list">
                                 <div class="input-group">
                                     <span class="prop-input">
-                                        <input id="searchString" class="form-control" placeholder="{{_ "Search activity"}}"/>
+                                        <input id="searchString" class="form-control" placeholder= {{_ "Search activity"}}>
                                         <span class="text text-danger"></span>
                                     </span>
                                     <span class="input-group-btn">
@@ -128,28 +128,28 @@
 
                             <div class="list-actions-cell order-list filter-list">
                                 <div class="btn-group" id="activityFilter">
-                                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">All activity <span class="caret"></span></button>
+                                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">{{_ "All activity"}} <span class="caret"></span></button>
                                     <ul class="dropdown-menu dropdown-custom-1">
                                         <li class="head">
-                                            <input class="activityFilter-option" id="feed-all" name="activityFilter[]" type="checkbox" checked="" value="all"> <label for="feed-all">All activity</label>
+                                            <input class="activityFilter-option" id="feed-all" name="activityFilter[]" type="checkbox" checked="" value="all"> <label for="feed-all">{{_ "All activity"}}</label>
                                         </li>
                                         <li>
-                                            <input class="activityFilter-option" id="feed-network" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeContactable}}"> <label for="feed-network">Network</label>
+                                            <input class="activityFilter-option" id="feed-network" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeContactable}}"> <label for="feed-network">{{_ "Network"}}</label>
                                         </li>
                                         <li>
-                                            <input class="activityFilter-option" id="feed-jobs" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeJobs}}"> <label for="feed-jobs">Jobs</label>
+                                            <input class="activityFilter-option" id="feed-jobs" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeJobs}}"> <label for="feed-jobs">{{_ "Jobs"}}</label>
                                         </li>
                                         <li>
-                                            <input class="activityFilter-option" id="feed-notes" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeNotes}}"> <label for="feed-notes">Notes</label>
+                                            <input class="activityFilter-option" id="feed-notes" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeNotes}}"> <label for="feed-notes">{{_ "Notes"}}</label>
                                         </li>
                                         <li>
-                                            <input class="activityFilter-option" id="feed-tasks" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeTasks}}"> <label for="feed-tasks">Tasks</label>
+                                            <input class="activityFilter-option" id="feed-tasks" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeTasks}}"> <label for="feed-tasks">{{_ "Tasks"}}</label>
                                         </li>
                                         <li>
-                                            <input class="activityFilter-option" id="feed-placements" name="activityFilter[]" type="checkbox" checked="" value="{{getTypePlacements}}"> <label for="feed-placements">Placements</label>
+                                            <input class="activityFilter-option" id="feed-placements" name="activityFilter[]" type="checkbox" checked="" value="{{getTypePlacements}}"> <label for="feed-placements">{{_ "Placements"}}</label>
                                         </li>
                                         <li>
-                                            <input class="activityFilter-option" id="feed-files" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeFiles}}"> <label for="feed-files">Files</label>
+                                            <input class="activityFilter-option" id="feed-files" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeFiles}}"> <label for="feed-files">{{_ "Files"}}</label>
                                         </li>
                                     </ul>
                                 </div>
@@ -182,7 +182,7 @@
                             </ul><!-- /.list-type-7 -->
                             {{#if moreResults}}
                                 <div class="infinite-scroll-loader" data-visible="false" style="display: none;">
-                                    <span>Loading</span>
+                                    <span>{{_ "Loading"}}</span>
                                     <div class="loader"></div>
                                 </div>
                             {{/if}}

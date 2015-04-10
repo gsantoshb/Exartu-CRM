@@ -3,7 +3,7 @@
 
         <div class="box-header-2">
             <a class="btn-action tip-top editRate pointer" data-original-title="Add Placement Rate" title="Edit" style="color: {{colorPlacementRateEdit}}"><i class="fa fa-pencil"></i></a>            <div class="box-title">
-                Placement Rates
+                {{_ "Placement Rates"}}
             </div>
         </div>
         <div class="box-body" style="padding: 0 15px">
@@ -18,27 +18,27 @@
                                 <li class="row list-3-item">
                                     <!-- Rate type -->
                                     <div class="col-xs-12 col-md-4">
-                                        <label class="col-xs-4">Type:</label>
+                                        <label class="col-xs-4">{{_ "Type"}}:</label>
                                         <div class="col-xs-8">
-                                            {{#with getType type}} {{displayName}} {{/with}}
+                                            {{#with getType type}} {{_ displayName}} {{/with}}
                                         </div>
                                     </div>
                                     <!-- Bill amount -->
                                     <div class="col-xs-12 col-md-3">
-                                        <label class="col-xs-4">Bill:</label>
+                                        <label class="col-xs-4">{{_ "Bill"}}:</label>
                                         <div class="col-xs-8">
                                             <input type="number" step="any" class="form-control billRateInput" value="{{bill}}">
                                         </div>
                                     </div>
                                     <!-- Pay amount -->
                                     <div class="col-xs-12 col-md-3">
-                                        <label class="col-xs-4">Pay:</label>
+                                        <label class="col-xs-4">{{_ "Pay"}}:</label>
                                         <div class="col-xs-8">
                                             <input type="number" step="any" class="form-control payRateInput" value="{{pay}}">
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-md-2">
-                                        <button class="btn btn-xs btn-default removeRate"><i class="fa fa-times"></i> remove </button>
+                                        <button class="btn btn-xs btn-default removeRate"><i class="fa fa-times"></i> {{_ "remove"}} </button>
                                     </div>
                                 </li>
                                 {{/each}}
@@ -47,8 +47,8 @@
                             <!-- Save & cancel buttons -->
                             <div class="row" style="margin: 10px 0">
                                 <div class="pull-right">
-                                    <span class="btn btn-default cancelButtonRates">Cancel</span>
-                                    <span class="btn btn-info saveButtonRates">Save</span>
+                                    <span class="btn btn-default cancelButtonRates">{{_ "Cancel"}}</span>
+                                    <span class="btn btn-info saveButtonRates">{{_ "Save"}}</span>
                                 </div>
                             </div>
                         </div>
@@ -65,8 +65,8 @@
                                 <thead>
                                 <tr>
                                     <th class="col-xs-12 col-md-4"></th>
-                                    <th class="col-xs-12 col-md-2">Bill</th>
-                                    <th class="col-xs-12 col-md-2">Pay</th>
+                                    <th class="col-xs-12 col-md-2">{{_ "Bill"}}</th>
+                                    <th class="col-xs-12 col-md-2">{{_ "Pay"}}</th>
                                 </tr>
                                 </thead>
 
@@ -76,7 +76,7 @@
                                     <!-- Rate type -->
                                     <td>
                                         {{#with getType type}}
-                                        {{displayName}}
+                                        {{_ displayName}}
                                         {{/with}}
                                     </td>
                                     <!-- Bill amount -->
@@ -101,30 +101,30 @@
                                 {{#autoForm id="AddPlacementRate" schema="RateSchema" resetOnSuccess=true}}
                                         <!-- Rate type -->
                                         <div class="col-xs-12 col-md-4">
-                                            <label class="col-xs-3">Type</label>
+                                            <label class="col-xs-3">{{_ "Type"}}</label>
                                             <div class="col-xs-9">
                                                 {{> afFieldInput name='type' options=getAvailableType}}
                                             </div>
                                         </div>
                                         <!-- Bill amount -->
                                         <div class="col-xs-12 col-md-3">
-                                            <label class="col-xs-3">Bill</label>
+                                            <label class="col-xs-3">{{_ "Bill"}}</label>
                                             <div class="col-xs-9">
                                                 {{> afFieldInput class='afDecimal' name='bill' step=1000000.00}}
                                             </div>
                                         </div>
                                         <!-- Pay amount -->
                                         <div class="col-xs-12 col-md-3">
-                                            <label class="col-xs-3">Pay</label>
+                                            <label class="col-xs-3">{{_ "Pay"}}</label>
                                             <div class="col-xs-9">
                                                 {{> afFieldInput class='afDecimal' name='pay' step=1000000.00}}
                                             </div>
                                         </div>
-                                    <button class="btn btn-success pull-right"> Add </button>
+                                    <button class="btn btn-success pull-right"> {{_ "Add"}} </button>
                                 {{/autoForm}}
                             {{else}}
                                 <center>
-                                    <small class="text-muted text-center"> All rate types have been set </small>
+                                    <small class="text-muted text-center"> {{_ "All rate types have been set"}} </small>
                                 </center>
                             {{/if}}
                         </div>

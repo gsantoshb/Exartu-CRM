@@ -2,24 +2,24 @@
     <div id="content">
         <div id="content-header" class="mini">
             <h1>
-                <span>Invitation</span>
+                <span>{{_ "Invitation"}}</span>
             </h1>
         </div>
         <div id="breadcrumb">
-            <a href="/" title="Go to Home" class="tip-bottom">Home</a>
-            <a href="/tasks" class="current">Invitation</a>
+            <a href="/" title="Go to Home" class="tip-bottom">{{_ "Home"}}</a>
+            <a href="/tasks" class="current">{{_ "Invitation"}}</a>
         </div>
 
         <div class="container-fluid details-body">
             <div class="text-center">
                 <!-- Validating invitation -->
                 {{#if isValidating}}
-                    The invitation is being validated. Please wait a second.
+                    {{_ "The invitation is being validated. Please wait a second"}}.
                 {{/if}}
 
                 <!-- Invalid invitation -->
                 {{#if isInvalid}}
-                    The invitation link is not valid.
+                    {{_ "The invitation link is not valid"}}.
                 {{/if}}
             </div>
         </div>
