@@ -30,7 +30,6 @@ Template.contactClientInfo.destroyed = function(){
 Template.contactClientInfo.helpers({
     client: function () {
         var contact =  Contactables.findOne({_id: clientId.get()});
-        console.log('contact', contact);
         return contact;
     },
     pictureUrl: function () {
