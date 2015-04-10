@@ -139,7 +139,7 @@ Template.hotListMembersSearch.events({
   'click .addHotListMember': function (e, ctx) {
     Utils.showModal(
       'hotListMemberAdd',
-      hotList._id, function (memberId, hotListId) {
+      hotList, function (memberId, hotListId) {
         var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
         var mbrs = tempHotList.members;
 
