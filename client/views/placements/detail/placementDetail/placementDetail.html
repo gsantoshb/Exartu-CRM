@@ -2,7 +2,7 @@
     <div class="box">
         <div class="box-header-2">
             <a class="btn-action editPlacement pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
-            <div class="box-title">Placement Details</div>
+            <div class="box-title">{{_ "Placement Details"}}</div>
         </div>
         <div class="box-content-md">
                 <table class="table box-table table-striped">
@@ -11,45 +11,45 @@
                         {{#with placement}}
 
                             <tr>
-                                <td>Status note:</td>
+                                <td>{{_ "Status note"}}:</td>
                                 <td>
                                     {{#objectProperty property=statusNote editable=editMode}}
                                     <input class="form-control" type="text" value="{{value}}">
                                     {{else}}
-                                    <span >{{value}}</span>
+                                    <span >{{_ value}}</span>
                                     {{/objectProperty}}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td>Active Status</td>
+                                <td>{{_ "Active Status"}}</td>
                                 <td>
                                     {{#objectProperty property=activeStatus editable=editMode}}
                                         {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                     {{else}}
                                         <strong>
-                                            <strong>{{displayName}}</strong>
+                                            <strong>{{_ displayName}}</strong>
                                         </strong>
                                     {{/objectProperty}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <i class="fa fa-info-circle"></i>&nbsp;Process Status:
+                                    <i class="fa fa-info-circle"></i>&nbsp;{{_ "Process Status"}}:
                                 </td>
                                 <td>
                                     {{#objectProperty property=candidateStatus editable=editMode}}
                                         {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                     {{else}}
                                         <strong>
-                                            <strong>{{displayName}}</strong>
+                                            <strong>{{_ displayName}}</strong>
                                         </strong>
                                     {{/objectProperty}}
                                 </td>
                             </tr>
                         <tr>
                             <td >
-                                <i class="fa fa-calendar"></i>&nbsp;Start date:
+                                <i class="fa fa-calendar"></i>&nbsp;{{_ "Start date"}}:
                                 </td>
                             <td>
                                 {{#objectProperty property=startDate editable=editMode}}
@@ -59,7 +59,7 @@
                                         {{#if value}}
                                             {{formattedDate value "ddd, MMMM DD, YYYY"}}
                                         {{else}}
-                                            Not set
+                                            {{_ "Not set"}}
                                         {{/if}}
                                     </strong>
                                 {{/objectProperty}}
@@ -67,7 +67,7 @@
                         </tr>
                         <tr>
                             <td >
-                                <i class="fa fa-calendar"></i>&nbsp;End date:
+                                <i class="fa fa-calendar"></i>&nbsp;{{_ "End date"}}:
                             </td>
                             <td>
                                 {{#objectProperty property=endDate editable=editMode}}
@@ -77,7 +77,7 @@
                                         {{#if value}}
                                             {{formattedDate value "ddd, MMMM DD, YYYY"}}
                                         {{else}}
-                                            Not set
+                                            {{_ "Not set"}}
                                         {{/if}}
                                     </strong>
                                 {{/objectProperty}}
@@ -96,10 +96,10 @@
             <div class="box-header-2" style="height: 60px">
                 <div class="pull-right">
                     <span class="btn btn-default cancelButton">
-                        Cancel
+                        {{_ "Cancel"}}
                     </span>
                     <span class="btn btn-info saveDetailsButton">
-                        Save
+                        {{_ "Save"}}
                     </span>
                 </div>
             </div>
