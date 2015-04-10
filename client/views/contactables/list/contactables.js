@@ -4,6 +4,7 @@
 var query = {};
 
 var selected = undefined;
+var comonTypes = [];
 
 // Page - Variables
 var searchDep = new Deps.Dependency;
@@ -87,6 +88,7 @@ ContactablesController = RouteController.extend({
 
             return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler, Meteor.subscribe('singleHotList', Session.get('hotListId'))];
         }
+        SubscriptionHandlers.HotListHandler = Meteor.subscribe('allHotLists');
     },
     action: function () {
         if (!this.ready()) {
@@ -461,7 +463,8 @@ Template.contactablesListHeader.helpers({
     areAllSelectedTheSameType: function () {
         if (_.isEmpty(selected.get())) return true;
         //check if there is a common type along all items selected ignoring contactable, person and organization
-        return !_.isEmpty(_.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization'));
+        comonTypes =_.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization');
+        return  !_.isEmpty(comonTypes);
     },
     showSelectAll: function () {
         return clickedAllSelected.get() && SubscriptionHandlers.AuxContactablesHandler.pageCount() > 1;
@@ -494,7 +497,26 @@ Template.contactablesListHeader.helpers({
             return 0;
         else
             return SubscriptionHandlers.AuxContactablesHandler.totalCount();
-      }
+      },
+  getHotList: function () {
+    var templateSelf = this;
+
+    return function (string) {
+      var self = this;
+      var result =  AllHotLists.find({displayName: {$regex: ".*"+string+".*", $options: 'i'}}).fetch();
+      var array = _.map(result, function (r) {
+        return {text: r.displayName, id: r._id};
+      });
+      self.ready(array);
+    };
+  },
+  hotListChanged: function () {
+    var self = this;
+    return function (value) {
+      self.value = value;
+      selectedValue = value;
+    }
+  }
 });
 
 // List Search - Helpers
@@ -755,7 +777,7 @@ Template.contactablesListHeader.events({
             }],
             callback: function (result) {
                 if (result) {
-                    Router.go('/hotlist/' + id);
+                    Router.go('/hotlist/' + hotlist._id);
                 }
             }
         });
@@ -827,7 +849,10 @@ Template.contactablesListHeader.events({
         selected.set(_.filter(selected.get(), function (item) {
             return _.contains(item.type, self.name);
         }));
-    }
+    },
+  'click .add-hotList': function (e, ctx) {
+    addHotList.call(this);
+  }
 });
 
 // List Search - Events
@@ -864,9 +889,40 @@ Template.contactableListSort.events({
     }
 });
 
-// List - Events
-Template.contactablesList.events({});
 
+
+var addHotList = function () {
+  if (!selectedValue) {
+    return;
+  }
+  var hotlist = AllHotLists.findOne({_id: selectedValue});
+  var inc = 0
+  _.forEach(selected.get(), function (item) {
+    if (hotlist.members.indexOf(item.id) < 0) {
+      hotlist.members.push(item.id);
+      inc = inc + 1;
+    }
+  });
+  HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
+  var self = this;
+  Utils.showModal('basicModal', {
+    title: 'Navigate to Hot List',
+    message: inc + ' added. Navigate to hotlist \'' + hotlist.displayName + '\'?',
+    buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {
+      label: 'Yes',
+      classes: 'btn-success',
+      value: true
+    }],
+    callback: function ( result) {
+      //console.log('err', err);
+      console.log('res', result);
+
+      if (result) {
+        Router.go('/hotlist/' + hotlist._id);
+      }
+    }
+  });
+};
 // List Item - Events
 Template.contactablesListItem.events({
     'click .select': function (e) {
@@ -883,6 +939,7 @@ Template.contactablesListItem.events({
         selected.dep.changed();
         clickedAllSelected.set(false);
     }
+
 });
 
 /**

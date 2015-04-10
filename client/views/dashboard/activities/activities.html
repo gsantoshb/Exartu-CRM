@@ -280,10 +280,10 @@
             <div class="left-part">
                 <!-- Note information -->
                 {{#if note}}
-                    <a class="list-type-7-icon" href="/notes/{{note._id}}"><i class="icon icon-pencil-3"></i></a>
+                    <a class="list-type-7-icon note-link" id="{{note._id}}" href="#"><i class="icon icon-pencil-3" id="{{note._id}}"></i></a>
                     <div class="list-type-7-title">
                         {{#with note}}
-                           <a href="/notes/{{_id}}"> {{>showMore text=msg limit=60}}</a>
+                           <a id="{{_id}}" class="note-link" href="#"> {{>showMore text=msg limit=60}}</a>
                         {{/with}}
                         {{#each this.links}}
                             &nbsp;
