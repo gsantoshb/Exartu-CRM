@@ -490,9 +490,10 @@ Template.contactablesListHeader.helpers({
         });
     },
     totalCount: function () {
-
-        return SubscriptionHandlers.AuxContactablesHandler.totalCount();
-
+        if(SubscriptionHandlers.AuxContactablesHandler.isLoading())
+            return 0;
+        else
+            return SubscriptionHandlers.AuxContactablesHandler.totalCount();
       }
 });
 
