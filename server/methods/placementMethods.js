@@ -53,5 +53,14 @@ Meteor.methods({
     } catch(err) {
       throw new Meteor.Error(err.message);
     }
+  },
+
+  findPlacement: function (query) {
+    return Utils.filterCollectionByUserHier.call({ userId: Meteor.userId() }, Placements.find({
+      'displayName': {
+        $regex: query,
+        $options: 'i'
+      }
+    }, { fields: { 'displayName': 1 } })).fetch();
   }
 });

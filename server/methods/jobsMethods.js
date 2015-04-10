@@ -15,7 +15,10 @@ Meteor.methods({
         $regex: query,
         $options: 'i'
       }
-    }, { fields: { 'publicJobTitle': 1 } })).fetch();
+    }, {
+      fields: { 'publicJobTitle': 1}
+    }
+    )).fetch();
   },
   getJobs: function(clientId) {
     try {
