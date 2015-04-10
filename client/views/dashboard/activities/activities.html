@@ -152,13 +152,13 @@
         <!-- Task information -->
         <li>
             <div class="left-part">
-                <a class="list-type-7-icon" href="/tasks/{{task._id}}"><i class="ico-task-black"></i></a>
+                <a class="list-type-7-icon task-link" id="{{_id}}" href="#"><i class="ico-task-black" id="{{_id}}" ></i></a>
                 <div class="list-type-7-title">
                     {{#with task}}
                         {{#if displayUserName userAssigned}}
                             {{displayUserName userAssigned}} <span class="desc">is assigned to</span>
                         {{/if}}
-                        <a class="pointer" href="/tasks/{{_id}}">{{>showMore text=msg limit=50}}</a>
+                        <a class="pointer task-link" id="{{_id}}" href="#">{{>showMore text=msg limit=60}}</a>
                         <span class="desc">&ndash; task created by {{displayUserName userId}}</span>
                     {{/with}}
                     {{#each links}}
