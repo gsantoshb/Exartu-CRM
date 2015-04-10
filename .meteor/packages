@@ -41,7 +41,6 @@ rajit:bootstrap3-datepicker
 
 mrt:twilio-meteor
 mrt:mask
-meteor-nodetime
 server-progress
 
 mystor:device-detection

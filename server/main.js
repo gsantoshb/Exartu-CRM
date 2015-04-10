@@ -89,14 +89,6 @@ Meteor.startup(function () {
     Twilio(ExartuConfig.TW_accountSID, ExartuConfig.TW_authToken)
     : undefined;
 
-  // NodeTime profiler
-  if (ExartuConfig.Nodetime_Key) {
-    Nodetime.profile({
-      accountKey: ExartuConfig.Nodetime_Key,
-      appName: 'Exartu'
-    });
-  }
-
   // Make Applicant Center url available to the client
   __meteor_runtime_config__.applicantCenterUrl = ExartuConfig.ApplicantCenter_URL;
 
