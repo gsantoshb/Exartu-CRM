@@ -97,6 +97,22 @@ Template.fileAddActivity.helpers({
     }
 });
 
+Template.taskAddActivity.events = {
+  'click .task-link': function(e){
+    var task = Tasks.findOne({_id: e.target.id});
+    if(task){
+      Utils.showModal('addEditTask', task);
+    }
+  }
+}
+Template.noteAddActivity.events= {
+  'click .note-link': function(e){
+    var note = Notes.findOne({_id: e.target.id});
+    if(note){
+      Utils.showModal('addEditNote', note);
+    }
+  }
+}
 //
 //Template.contactableUpdateActivity.helpers({
 //  isListChange: function () {

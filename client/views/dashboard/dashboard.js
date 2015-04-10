@@ -235,17 +235,18 @@ Tracker.autorun(function(){
 
     Session.setDefault('limitActivities', 30);
 });
-
+var handlerContactalbeTotal;
 DashboardController = RouteController.extend({
     layoutTemplate: 'mainLayout',
     waitOn: function () {
-        //if (!SubscriptionHandlers.ActivitiesHandler) {
-        //  SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes.get()}}});
-        //  return [HierarchiesHandler, SubscriptionHandlers.ActivitiesHandler];
-        //}
+        if (!SubscriptionHandlers.ActivitiesHandler) {
+          SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes.get()}}});
+          return [HierarchiesHandler, SubscriptionHandlers.ActivitiesHandler];
+        }
         //setSubscription();
         //setLeadTrackers();
         //setTeamMembersTrackers();
+
     },
     onAfterAction: function () {
         var title = 'Dashboard',
@@ -315,7 +316,7 @@ Template.dashboard.created = function () {
             sort: { 'data.dateCreated': -1 }
         };
 
-        Meteor.subscribe('getActivities', searchQuery, options);
+        //Meteor.subscribe('getActivities', searchQuery, options);
 
     });
 
