@@ -9,7 +9,7 @@
 
             <!-- Title -->
             <div class="box-title">
-                Description
+                {{_ "Description"}}
                 <!-- Preview button -->
                 {{#unless editMode}}
                     <a class="previewMode bsTooltip pointer" data-toggle="tooltip" title="Preview in mobile size" style="margin-left: 4px">
@@ -28,15 +28,15 @@
 
                     <!-- Action buttons -->
                     <div class="pull-right" style="margin: 5px;">
-                        <button type="button" class="btn btn-default toggleEditMode"> Cancel </button>
-                        <button type="button" id="saveJobDescriptionEdit" class="btn btn-info"> Save </button>
+                        <button type="button" class="btn btn-default toggleEditMode"> {{_ "Cancel"}} </button>
+                        <button type="button" id="saveJobDescriptionEdit" class="btn btn-info"> {{_ "Save"}} </button>
                     </div>
                 {{else}}
                     <div id="description" style="max-height: 600px; min-height: 100px; overflow-y: auto;">
                         {{#if jobDescription}}
                             <div class="text">
                                 <div class="htmlContainer {{#if previewMode}}mobilePreview{{/if}}">
-                                    {{{jobDescription}}}
+                                    {{{_ jobDescription}}}
                                 </div>
                             </div>
                         {{else}}
