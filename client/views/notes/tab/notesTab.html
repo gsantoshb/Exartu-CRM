@@ -11,7 +11,7 @@
     {{#autoForm id="AddNoteRecord" schema="NoteSchema" resetOnSuccess=true}}
         <div class="add-note on-focus">
             <div class="add-note-header">
-                <div class="item-icon item-icon-xs item-icon-notes"><i class="icon icon-pencil-3"></i></div> <div class="title">Add Note</div>
+                <div class="item-icon item-icon-xs item-icon-notes"><i class="icon icon-pencil-3"></i></div> <div class="title">{{_ "Add Note"}}</div>
             </div><!-- /.add-note-header -->
 
             <div class="add-note-textarea">
@@ -24,18 +24,18 @@
 
             <div class="add-note-actions">
                 <div class="add-note-actions-cell">
-                    <button class="btn btn-success {{addDisabled}}" type="submit">Save note</button>
+                    <button class="btn btn-success {{addDisabled}}" type="submit">{{_ "Save note"}}</button>
                 </div>
 
                 {{#if isContactableNote}}
                     {{#unless userNumbers}}
                         <div class="add-note-actions-cell">
-                            <a href="/management/twilioManagement"><i class="fa fa-mobile"></i> Enable SMS / Texting</a>
+                            <a href="/management/twilioManagement"><i class="fa fa-mobile"></i> {{_ "Enable SMS / Texting"}}</a>
                         </div>
                     {{else}}
                         {{#unless mobileNumbers}}
                             <div class="add-note-actions-cell">
-                                <small class="text-muted"> This record has no mobile phone, so SMS/text is not possible</small>
+                                <small class="text-muted"> {{_ "This record has no mobile phone, so SMS/text is not possible"}}</small>
                             </div>
                         {{else}}
                             <div style="margin-left: 126px">
@@ -59,7 +59,7 @@
 
                 {{#if isHotListNote}}
                     {{#unless userNumbers}}
-                        <small class="text-muted"><a href="/management/twilioManagement">Enable SMS/Texting</a></small>
+                        <small class="text-muted"><a href="/management/twilioManagement">{{_ "Enable SMS/Texting"}}</a></small>
                     {{else}}
                         <div style="margin-left: 126px">
                             {{> afQuickField name="sendAsSMS" id="sendAsSMS"}}
@@ -88,7 +88,7 @@
             <div class="input-group">
                     <span>
                         {{#objectProperty property=query.searchString}}
-                            <input type="text" id="searchString" name="searchString" value="{{value}}" class="form-control" placeholder="Search notes">
+                            <input type="text" id="searchString" name="searchString" value="{{value}}" class="form-control" placeholder= {{_ "Search notes"}}>
                         {{/objectProperty}}
                     </span>
                     <span class="input-group-btn">
@@ -109,9 +109,9 @@
     {{else}}
         {{#if hasItems}}
             <div class="list-header notes-list-header">
-                <div class="list-header-cell notes-list-header-title">Title</div>
-                <div class="list-header-cell notes-list-header-linked">Linked</div>
-                <div class="list-header-cell notes-list-header-edit">Last Edit</div>
+                <div class="list-header-cell notes-list-header-title">{{_ "Title"}}</div>
+                <div class="list-header-cell notes-list-header-linked">{{_ "Linked"}}</div>
+                <div class="list-header-cell notes-list-header-edit">{{_ "Last Edit"}}</div>
             </div><!-- /.list-header -->
 
             <div class="list-item-section">
@@ -138,25 +138,25 @@
         <br/>
 
         <div class="pull-right">
-            <span class="btn btn-default cancelNoteRecordChanges"> Cancel </span>
-            <button class="btn btn-success"> Save</button>
+            <span class="btn btn-default cancelNoteRecordChanges"> {{_ "Cancel"}} </span>
+            <button class="btn btn-success"> {{_ "Save"}}</button>
         </div>
     {{/autoForm}}
 </template>
 
 <template name="linksAutoForm">
     <div data-schema-key="{{name}}">
-        <div class="add-note-options-head"><i class="fa fa-link"></i> Linked to this note:</div>
+        <div class="add-note-options-head"><i class="fa fa-link"></i> {{_ "Linked to this note"}}:</div>
         <div class="add-note-options-body">
             {{#each links}}
                 {{#with getEntity .}}
                     <div class="label-4">
-                        <i class="icon-holder icon-profile-business-man"></i> {{displayName}}
+                        <i class="icon-holder icon-profile-business-man"></i> {{_ displayName}}
                         <button class="btn-remove" href="#"><i class="fa fa-times-circle"></i></button>
                     </div>
                 {{/with}}
             {{/each}}
-            <a class="btn-custom-3" id="toggleAddNoteModal"><i class="fa fa-plus"></i> Link item</a>
+            <a class="btn-custom-3" id="toggleAddNoteModal"><i class="fa fa-plus"></i> {{_ "Link item"}}</a>
         </div><!-- /.add-note-options-body -->
     </div>
 </template>
