@@ -9,42 +9,6 @@ UI.registerHelper('formattedDate', function(date, format) {
   }
 });
 
-UI.registerHelper('htmlEditor', function() {
-  var template=Template.htmlEditorTemplate;
-
-  template.rendered= function(){
-    var editor=this.$('.editor');
-
-    var editorInstance = editor.wysihtml5({
-      "color": true,
-      "size": 'xs',
-      'html': true,
-      parserRules: {
-        "tags":{
-          input: {
-            keepAllAttributes: true
-          }
-        }
-      },
-      "events": {
-        "change": _.bind(function () {
-          editor.trigger('change',editor.val());
-        },this)
-      }
-    });
-
-    editor.val(this.data.value);
-    editor.width('90%');
-  };
-  template.destroyed = function() {
-    // Hide editor
-    $('.editor').data('wysihtml5').editor.composer.hide();
-    $('.editor').data('wysihtml5').editor.toolbar.hide();
-  };
-
-  return template;
-});
-
 UI.registerHelper('showAsHTML', function() {
   Template.showAsHTMLTemplate.rendered=function(){
     var container=this.$('div');

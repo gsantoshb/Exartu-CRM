@@ -1,40 +1,19 @@
-var query = { };
-var HandlerTemplates;
-var queryDep =  new Deps.Dependency;
+
 EmailTemplateListController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   template: 'emailTemplateList'
-  //waitOn: function () {
-  //  return [Meteor.subscribe('emailTemplateMergeFields'), Meteor.subscribe('emailTemplates')];
-  //},
-  //data: function () {
-  //  Session.set('templateId', this.params._id);
-  //},
-  //action: function () {
-  //  if (!this.ready()) {
-  //    this.render('loadingContactable');
-  //    return;
-  //  }
-  //  this.render('emailTemplate')
-  //},
-  //onAfterAction: function () {
-  //
-  //}
 });
 
-Meteor.autorun(function(){
+var query = {};
+var queryDep = new Deps.Dependency;
+
+Meteor.autorun(function () {
   queryDep.depend();
-  if(HandlerTemplates ){
-    HandlerTemplates.stop();
-  }
   Meteor.subscribe('emailTemplates', query);
-
-
-})
+});
 
 Template.emailTemplateList.helpers({
   templates: function () {
-    queryDep.depend();
     return EmailTemplates.find();
   },
   categories: function () {
@@ -53,18 +32,30 @@ Template.emailTemplateList.helpers({
 
 Template.emailTemplateList.events({
   'click .categorySelect': function () {
-    queryDep.changed();
-    if (query.category == this.id){
+    if (query.category == this.id) {
       delete query.category;
-    }else{
+    } else {
       query.category = this.id;
     }
-  },
-  'keyup #search-template-field': function(evnt, as, a){
-    var searchString = evnt.currentTarget.value;
-    query['name'] = {
-      $regex: "(.)*"+searchString+"(.)*"
-    }
     queryDep.changed();
+  },
+  'keyup #search-template-field': function (event) {
+    var searchString = event.currentTarget.value;
+    query.name = {
+      $regex: "(.)*" + searchString + "(.)*"
+    };
+    queryDep.changed();
+  },
+  'click .addTemplate': function () {
+    Utils.showModal('basicSelectModal', {
+      title: 'Select template category',
+      placeholder: 'Select template category',
+      selectOptions: _.map(_.values(MergeFieldHelper.categories), function (cat) { return {text: cat.name, id: cat.value} }),
+      callback: function (result) {
+        if (result) {
+          Router.go('/addEmailTemplate/' + result);
+        }
+      }
+    });
   }
 });

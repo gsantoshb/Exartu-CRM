@@ -12,5 +12,8 @@ HotListManager = {
         console.log('hot list text message send',msg,id);
         throw new Meteor.Error('not ready to process this yet');
         return ;
-    }
+    },
+  updateHotList: function(hotlist){
+    HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members }});
+  }
 };

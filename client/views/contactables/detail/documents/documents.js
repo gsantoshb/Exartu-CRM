@@ -1,3 +1,4 @@
+var addDisabled = new ReactiveVar(false);
 AddForm = {
     val: false,
     dep: new Deps.Dependency,
@@ -22,11 +23,11 @@ Object.defineProperty(AddForm, "value", {
 });
 
 var startParsing = function () {
-  $('#parsing')[0].style.display = 'block';
+    $('#parsing')[0].style.display = 'block';
 };
 
 var endParsing = function () {
-  $('#parsing')[0].style.display = 'none';
+    $('#parsing')[0].style.display = 'none';
 };
 
 
@@ -40,10 +41,6 @@ Template.contactableDocumentsAdd.helpers({
         return function (file) {
             AddForm.show(file);
         };
-    },
-
-    query: function () {
-        return query;
     }
 });
 
@@ -77,6 +74,9 @@ var document = new Utils.ObjectDefinition({
 Template.addDocumentForm.helpers({
     newDocument: function () {
         return document;
+    },
+    addDisabled: function () {
+        return addDisabled.get() ? 'disabled':'';
     }
 });
 
@@ -91,11 +91,14 @@ Template.addDocumentForm.events = {
         inputTag.focus();
     },
     'click #remove-tag': function () {
+        console.log('remove tag: ' + this.value);
         document.tags.remove(this.value);
     },
     'click #save-document': function () {
+        addDisabled.set(true);
         if (!document.isValid()) {
             document.showErrors();
+            addDisabled.set(false);
             return;
         }
 
@@ -123,10 +126,13 @@ Template.addDocumentForm.events = {
                 endParsing();
                 AddForm.hide();
                 document.reset();
+                addDisabled.set(false);
+
             }
             else {
                 alert('File upload error:' + err)
                 console.log('File upload error');
+                addDisabled.set(false);
             }
         });
     },
@@ -140,19 +146,55 @@ Template.addDocumentForm.events = {
 var documentsDep = new Deps.Dependency;
 var documentsCount = 0;
 
+var DocumentsHandler;
+var queryDep = new Deps.Dependency;
+
+var query = new Utils.ObjectDefinition({
+    reactiveProps: {
+        searchString: {}
+    }
+});
+
+Template.contactableDocumentsList.created = function() {
+    Meteor.autorun(function() {
+
+        queryDep.depend();
+        if(DocumentsHandler) {
+            DocumentsHandler.setFilter({
+                name: {
+                    $regex: query.searchString.value,
+                    $options: 'i'
+                }
+            });
+        } else {
+            SubscriptionHandlers.DocumentsHandler = DocumentsHandler = Meteor.paginatedSubscribe('contactablesDocs', {
+                filter: {
+                    name: {
+                        $regex: query.searchString.value,
+                        $options: 'i'
+                    }
+                }
+            });
+        }
+    });
+}
+
 Template.contactableDocumentsList.helpers({
     documents: function () {
         if (!this.entity)
             return;
 
         documents = ContactablesFiles.find({
-                entityId: this.entity._id,
-                name: {
-                    $regex: query.searchString.value,
-                    $options: 'i'
-                }
+            entityId: this.entity._id,
+            name: {
+                $regex: query.searchString.value,
+                $options: 'i'
             }
-        );
+        }, {
+            sort: {
+                'dateCreated': -1
+            }
+        });
 
         documentsCount = documents.count();
         documentsCount += Resumes.find({employeeId: this.entity._id}).count();
@@ -183,23 +225,36 @@ Template.contactableDocumentsList.helpers({
     documentIcon: function (type) {
         switch (true) {
             case /application\/zip/.test(type):
-                return 'icon-file-zip';
+                return 'fa fa-file-archive-o';
             case /image\//.test(type):
                 return 'icon-file-image-1';
             case /text\/css/.test(type):
                 return 'icon-file-code';
-            case /application\/pdf/.test(type) || /application\/msword/.test(type) :
-                return 'icon-file-1';
+            case /application\/pdf/.test(type):
+                return 'fa fa-file-pdf-o';
+            case /application\/msword/.test(type):
+                return 'fa fa-file-word-o';
+            case /application\/msexcel/.test(type) || /application\/vnd.ms-excel/.test(type) || /application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet/.test(type):
+                return 'fa fa-file-excel-o';
             default:
-                return 'icon-file-1';
+                return 'fa fa-file-o';
         }
-    }
-});
+    },
 
-
-var query = new Utils.ObjectDefinition({
-    reactiveProps: {
-        searchString: {}
+    documentIconBackground: function(type) {
+        switch (true) {
+            case /application\/pdf/.test(type):
+                return 'item-icon-pdf';
+            case /application\/msword/.test(type):
+                return 'item-icon-word';
+            case /application\/msexcel/.test(type) || /application\/vnd.ms-excel/.test(type) || /application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet/.test(type):
+                return 'item-icon-excel';
+            default:
+                return 'item-icon-file';
+        }
+    },
+    query: function () {
+        return query;
     }
 });
 
@@ -230,5 +285,8 @@ Template.contactableDocumentsList.events = {
     },
     'click .add-document-trigger': function () {
         $('#add-file').trigger('click');
-    }
+    },
+    'keyup #searchString': _.debounce(function(e){
+        query.searchString.value = e.target.value;
+    })
 };

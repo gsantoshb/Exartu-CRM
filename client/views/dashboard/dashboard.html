@@ -1,83 +1,211 @@
-
 <template name="dashboard">
-    <div id="content">
-        <div class="hidden-xs">
-            <!-- Title -->
-            <div id="content-header" class="mini">
-                <h1>{{_ "Dashboard"}}</h1>
-            </div>
 
-            <!-- Breadcrumb -->
-            <div id="breadcrumb">
-                <a href="/" title="Go to Home" class="tip-bottom">
-                    <i class="fa fa-home"></i>{{_ "Home"}}
-                </a>
-                <a href="/" class="current">{{_ "Dashboard"}}</a>
-            </div>
-        </div>
+    <div class="network-content nicer-filters" id="content">
+        <div class="row">
 
-        <!-- Content box -->
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Search bar -->
-                <div class="col-xs-9">
-                    <div class="input-group">
-                        <input id="searchString" class="form-control" placeholder= {{_ "Search activity"}}>
-                        <a class="input-group-addon btn btn-primary"><i class="fa fa-search"></i></a>
+            <div class="col-md-3">
+
+                <aside class="sidebar">
+
+                    <div class="page-title-2">
+                        <h1 class="welcome">
+                            {{_ "Hi"}}&nbsp;
+                            {{getUserDisplayName}},
+                        </h1>
                     </div>
-                </div>
 
-                <!-- List / Detail view modes -->
-                <div class="col-xs-3">
-                    <span class="pointer" style="font-size: 20px;">
-                        {{#if listViewMode}}
-                            <i id="detail-view" class="fa fa-th-large" style="opacity: 0.4"></i>
-                            <i class="fa fa-bars"></i>
-                        {{else}}
-                            <i class="fa fa-th-large"></i>
-                            <i id="list-view" class="fa fa-bars" style="opacity: 0.4"></i>
-                        {{/if}}
-                    </span>
-                </div>
-            </div>
+                    <div class="btn-group dropup btn-add-global">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="plus">+</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/contactableAdd/Contact">{{_ "Add Contact"}}</a></li>
+                            <li><a href="/contactableAdd/Employee">{{_ "Add Employee"}}</a></li>
+                            <li><a href="/contactableAdd/Client">{{_ "Add Client"}}</a></li>
+                            <li class="divider"></li>
+                            <li><a class="addTaskDashboard">{{_ "Add Task"}}</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/hotListAdd/hotList">{{_ "Add HotList"}}</a></li>
+                            {{#unless checkNoNotes}}
+                                <li class="divider"></li>
+                                <li><a class="addDashboardNote">{{_ "Add note"}}</a></li>
+                            {{/unless}}
+                        </ul>
+                    </div>
 
-            <!-- Activity list -->
-            <div class="row margin-top-15">
-                <div class="col-md-12">
-                    {{>fastPagination name="activities" loadingTemplate='loadingActivities' container='body' content='#content'}}
-
-                    {{#if listViewMode}}
-                        <table class="table table-striped">
-                            <tbody>
-                            {{#if isReady}}
-                            {{#each activities}}
-                                <tr>
-                                    <td>
-                                        {{#with getCtx}}
-                                            {{> Template.dynamic template=getTemplateForActivity}}
-                                        {{/with}}
-                                    </td>
-                                </tr>
-                            {{/each}}
-                            {{/if}}
-                            </tbody>
-                        </table>
-                    {{else}}
-                        <section class="timeline">
-                            <div class="activity-container scroll-container">
-                        {{#if isReady}}
-                                {{#each activities}}
-                                    {{#with getCtx}}
-                                        {{> Template.dynamic template=getTemplateForActivity}}
-                                    {{/with}}
-                                {{/each}}
-                                    {{/if}}
-                            </div>
-                        </section>
+                    {{#if getLeadTrackers}}
+                        <section class="box-type-3">
+                            <header>
+                                <a class="more" href="/leaderboards">{{_ "View reports"}}</a>
+                                <div class="title">{{_ "In the last 30 days"}}</div>
+                            </header>
+                            <div class="box-body">
+                                <ul class="list-type-6">
+                                    {{#each getLeadTrackers}}
+                                        <li><span class="hightlight-1">{{counter}}</span> {{_ displayName}}</li>
+                                    {{/each}}
+                                </ul>
+                            </div><!-- /.box-body -->
+                        </section><!-- /.box-type-3 -->
                     {{/if}}
-                </div>
-            </div>
-        </div>
+
+                    {{#if getTeamMembersTrackers}}
+                        <section class="box-type-3">
+                            <header>
+                                <a class="more" href="/leaderboards">{{_ "View reports"}}</a>
+                                <div class="title">{{_ "Team Deal Load"}}</div>
+                            </header>
+                            <div class="box-body">
+                                <ul class="list-type-6">
+                                    {{#each getTeamMembersTrackers}}
+                                        <li><span class="hightlight-1">{{counter}}</span> {{displayName}}</li>
+                                    {{/each}}
+                                </ul>
+                                <a href="#"></a>
+                            </div><!-- /.box-body -->
+                        </section><!-- /.box-type-3 -->
+                    {{/if}}
+                    <section class="box-type-3">
+                        <header>
+                            <div class="title">{{_ "Activity"}}</div>
+                        </header>
+                        <div class="box-body">
+                                {{#if showActivityChart}}
+                                    {{> highchartsHelper chartId="activityChart" chartWidth="100%" charHeight="100%" chartObject=getActivityChartObject}}
+
+                                    <!-- @todo review this -->
+                                    <!--<div style=" float: left; overflow:hidden; text-align:center;margin-left: 14px;margin-top: -12px;font-size: 10px;">-->
+                                    <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">MO</div>-->
+                                    <!--</div>-->
+                                    <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">TU</div>-->
+                                    <!--</div>-->
+                                    <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">WE</div>-->
+                                    <!--</div>-->
+                                    <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">TH</div>-->
+                                    <!--</div>-->
+                                    <!--<div style="float: left; margin-right: 3px;">-->
+                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">FR</div>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                {{else}}
+                                    <div class="loader-container chart-loader">
+                                        <div class="loader"></div>
+                                        <p>Loading chart</p>
+                                    </div>
+                                {{/if}}
+                        </div><!-- /.box-body -->
+                    </section><!-- /.box-type-3 -->
+
+                </aside><!-- /.sidebar -->
+            </div><!-- /.col-md-3 -->
+
+
+            <div class="col-md-6">
+                <div class="list-container">
+                    <div class="list-holder">
+                        <div class="list-actions">
+                            <div class="list-actions-cell search-list">
+                                <div class="input-group">
+                                    <span class="prop-input">
+                                        <input id="searchString" class="form-control" placeholder= {{_ "Search activity"}}>
+                                        <span class="text text-danger"></span>
+                                    </span>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-search" type="button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div><!-- /.search-list -->
+                            <!--<div class="list-actions-cell view-mode-list">-->
+                                <!--{{#if listViewMode}}-->
+                            <!--<i id="detail-view" class="fa fa-th-list pointer" style="opacity: 0.4"></i>-->
+                            <!--<i class="fa fa-bars pointer"></i>-->
+                                <!--{{else}}-->
+                            <!--<i class="fa fa-th-large pointer"></i>-->
+                            <!--<i id="list-view" class="fa fa-bars pointer" style="opacity: 0.4"></i>-->
+                                <!--{{/if}}-->
+                            <!--</div>&lt;!&ndash; /.view-mode-list &ndash;&gt;-->
+
+                            <div class="list-actions-cell order-list filter-list">
+                                <div class="btn-group" id="activityFilter">
+                                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">{{_ "All activity"}} <span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-custom-1">
+                                        <li class="head">
+                                            <input class="activityFilter-option" id="feed-all" name="activityFilter[]" type="checkbox" checked="" value="all"> <label for="feed-all">{{_ "All activity"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-network" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeContactable}}"> <label for="feed-network">{{_ "Network"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-jobs" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeJobs}}"> <label for="feed-jobs">{{_ "Jobs"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-notes" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeNotes}}"> <label for="feed-notes">{{_ "Notes"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-tasks" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeTasks}}"> <label for="feed-tasks">{{_ "Tasks"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-placements" name="activityFilter[]" type="checkbox" checked="" value="{{getTypePlacements}}"> <label for="feed-placements">{{_ "Placements"}}</label>
+                                        </li>
+                                        <li>
+                                            <input class="activityFilter-option" id="feed-files" name="activityFilter[]" type="checkbox" checked="" value="{{getTypeFiles}}"> <label for="feed-files">{{_ "Files"}}</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div><!-- .list-actions -->
+
+                        <div class="list-item-section">
+                            <ul class="list-type-7 activity-feed">
+                                {{#if listViewMode}}
+                                    {{#if isReady}}
+                                        {{#each activities}}
+                                            {{#with getCtx}}
+                                                {{> Template.dynamic template=getTemplateForActivity}}
+                                            {{/with}}
+                                        {{/each}}
+                                    {{/if}}
+                                {{else}}
+                                    <section class="timeline">
+                                        <div class="activity-container scroll-container">
+                                            {{#if isReady}}
+                                                {{#each activities}}
+                                                    {{#with getCtx}}
+                                                        {{> Template.dynamic template=getTemplateForActivity}}
+                                                    {{/with}}
+                                                {{/each}}
+                                            {{/if}}
+                                        </div>
+                                    </section>
+                                {{/if}}
+                            </ul><!-- /.list-type-7 -->
+                            {{#if moreResults}}
+                                <div class="infinite-scroll-loader" data-visible="false" style="display: none;">
+                                    <span>{{_ "Loading"}}</span>
+                                    <div class="loader"></div>
+                                </div>
+                            {{/if}}
+                        </div><!-- /.list-item-section -->
+
+                    </div><!-- /.list-holder -->
+                </div><!-- /.list-container -->
+            </div><!-- /.col-md-6 -->
+
+            <div class="col-md-3">
+                <div class="sidebar-right">
+                    {{> agendaBox}}
+
+                    {{> dashboardNotes}}
+                </div><!-- /.sidebar-right -->
+            </div><!-- /.col-md-3 -->
+
+        </div><!-- /.row -->
 
     </div>
 </template>

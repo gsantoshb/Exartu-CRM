@@ -266,7 +266,7 @@ Template.hotListListItem.helpers({
         return listViewMode.get();
     },
     memberCount: function () {
-        return this.members.length;
+        return (this.members ? this.members.length : 0);
     }
 });
 

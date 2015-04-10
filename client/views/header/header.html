@@ -29,14 +29,14 @@
                         <li>
                             <a href="/emailTemplates">{{_ "Email Templates"}}</a>
                         </li>
+                        <li>
+                            <a href="/management/hrconcourse">{{_ "HRConcourse"}}</a>
+                        </li>
 
                         <li>
                             <a href="/hierarchyManagement">{{_ "Hierarchies"}}</a>
                         </li>
                         {{#if isAdmin}}
-                            <li>
-                                <a href="/management/hrconcourse">{{_ "HRConcourse"}}</a>
-                            </li>
 
                             <li>
                                 <a href="/management/lookups">{{_ "Lookups"}}</a>
@@ -73,6 +73,13 @@
                             <li>
                                 <a href="/management/hierarchyMail">{{_ "Hierarchy email"}}</a>
                             </li>
+                            <li>
+                                <a href="/management/cardReader">{{_ "Card reader"}}</a>
+                                </li>
+                            <li>
+
+                                <a href="/management/clickFunnel">{{_ "Click funnel"}}</a>
+                            </li>
 
                         {{/if}}
                         <li class="divider"></li>
@@ -91,6 +98,7 @@
                                 <!--</li>-->
                             </ul>
                         </li>
+
                         <li class="divider"></li>
                         <li>
                             <a href="/" id="signout">{{_ "Sign out"}}</a>
@@ -166,14 +174,14 @@
                     <span class="i-container"><i class="icon icon-pencil-3"></i></span>
                 </a>
             </li>
-            <li class="hotlists {{getActiveClass 'hotlists' null}}">
+            <li class="hotlists {{getActiveClass 'hotLists' null}}">
                 <a href="/hotlists">
                     <span>{{_ "Hot Lists"}}</span>
                     <span class="i-container"><i class="icon icon-list-4"></i></span>
                 </a>
             </li>
 
-            <li class="leaderboards {{getActiveClass 'leaderboards' null}}">
+            <li class="leaderboard {{getActiveClass 'leaderBoards' null}}">
                 <a href="/leaderboards">
                     <span>{{_ "Leaderboard"}}</span>
                     <span class="i-container"><i class="icon icon-cross-shield"></i></span>

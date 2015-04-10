@@ -1,0 +1,37 @@
+<template name="noteAdd">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">{{_ "Link item to note"}}</h4>
+                </div>
+                <div class="modal-body" style="min-height: 100px;">
+                    <form>
+                        <div class="form-group">
+                            <select class="form-control input-md" id="noteTypeSelect"
+                                    title="Select the type of entity that you want to link to the msg">
+                                <option value="">{{_ "Select type"}}</option>
+                                {{#each types}}
+                                    <option value="{{value}}">{{_ displayName}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control input-md" id="noteEntitySelect" title="Select the entity that you want to link">
+                                <option value="">{{_ "Select"}}</option>
+                                {{#each entities}}
+                                    <option value="{{_id}}">{{_ displayName}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">{{_ "Cancel"}}</a>
+                    <a class="btn btn-primary add" id="noteLinkEntity">{{_ "Link item"}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

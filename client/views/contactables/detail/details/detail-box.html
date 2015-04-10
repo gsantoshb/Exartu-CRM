@@ -55,7 +55,7 @@
                                             {{#objectProperty property=jobTitle editable=editMode}}
                                                 <input class="form-control" type="text" value="{{value}}">
                                             {{else}}
-                                                <span>{{value}}</span>
+                                                <span>{{_ value}}</span>
                                             {{/objectProperty}}
                                         </div>
                                     </li>
@@ -98,7 +98,7 @@
                                             {{#objectProperty property=department editable=editMode}}
                                                 <input class="form-control" type="text" value="{{value}}">
                                             {{else}}
-                                                <span>{{value}}</span>
+                                                <span>{{_ value}}</span>
                                             {{/objectProperty}}
                                         </div>
                                     </li>
@@ -112,7 +112,7 @@
                                             {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                         {{else}}
                                             <strong>
-                                                <strong>{{displayName}}</strong>
+                                                <strong>{{_ displayName}}</strong>
                                             </strong>
                                         {{/objectProperty}}
                                     </div>
@@ -125,7 +125,7 @@
                                             {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                         {{else}}
                                             <strong>
-                                                <strong>{{displayName}}</strong>
+                                                <strong>{{_ displayName}}</strong>
                                             </strong>
                                         {{/objectProperty}}
                                     </div>
@@ -142,7 +142,7 @@
                                                 {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                             {{else}}
                                                 <strong>
-                                                    <strong>{{displayName}}</strong>
+                                                    <strong>{{_ displayName}}</strong>
                                                 </strong>
                                             {{/objectProperty}}
                                         </div>
@@ -153,9 +153,17 @@
                                     <div class="left-part">{{_ "Status note"}}</div>
                                     <div class="right-part">
                                         {{#objectProperty property=statusNote editable=editMode}}
-                                            <input class="form-control" type="text" value="{{value}}">
+                                            {{#if value}}
+                                                <input class="form-control" type="text" value="{{_ value}}">
+                                            {{else}}
+                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{/if}}
                                         {{else}}
-                                            <span>{{value}}</span>
+                                            {{#if value}}
+                                                <span>{{_ value}}</span>
+                                            {{else}}
+                                                <span>{{value}}</span>
+                                            {{/if}}
                                         {{/objectProperty}}
                                     </div>
                                 </li>
@@ -166,7 +174,7 @@
                                             {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                         {{else}}
                                             <strong>
-                                                <strong>{{displayName}}</strong>
+                                                <strong>{{_ displayName}}</strong>
                                             </strong>
                                         {{/objectProperty}}
                                     </div>
@@ -196,7 +204,7 @@
                                         <div class="left-part">{{_ "WorkerComp"}}</div>
                                         <div class="right-part">
                                             {{#objectProperty property=workerCompCode editable=editMode}}
-                                                <input class="form-control" placeholder="Example: TX8810..."
+                                                <input class="form-control" placeholder= {{_ "Example TX8810"}}
                                                        type="text"
                                                        value="{{value}}">
                                             {{else}}
@@ -309,8 +317,8 @@
                         {{#if editMode }}
                             <div class="edit-actions-bar">
                                 <span id="add-contact-method-error" class="label label-danger" style="float: right;"></span>
-                                <button id="save-changes-method"  type="button" class="btn btn-primary" title="Add">Save</button>
-                                <a id="cancel-deposit-method" class="btn btn-default">Cancel</a>
+                                <button id="save-changes-method"  type="button" class="btn btn-primary" title="Add">{{_ "Save"}}</button>
+                                <a id="cancel-deposit-method" class="btn btn-default">{{_ "Cancel"}}</a>
                             </div>
                         {{/if}}
                 </div>

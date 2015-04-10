@@ -1,62 +1,37 @@
-Template.jobDescription.created=function() {
-  self.editMode = false;
-  var originalJob = JobsList.findOne({ _id: Session.get('entityId') });
-};
 
 Template.jobDescription.rendered = function() {
-  $('.bsTooltip').tooltip();
+  Template.instance().$('.bsTooltip').tooltip();
 };
 
 // Job description
-var jobDescriptionEditMode = false;
-var jobDescriptionEditModeDep = new Deps.Dependency;
-var descriptionSelf={};
-Utils.reactiveProp(descriptionSelf, 'previewMode', false);
+var previewMode = new ReactiveVar(false);
+var editMode = new ReactiveVar(false);
 
 Template.jobDescription.helpers({
-  colorPreviewMode: function () {
-    return descriptionSelf.previewMode ? '#008DFC' : ''
-  },
   previewMode: function () {
-    return descriptionSelf.previewMode;
+    return previewMode.get();
   },
   editMode: function () {
-    jobDescriptionEditModeDep.depend();
-    return jobDescriptionEditMode;
+    return editMode.get();
   },
-  colorDescriptionEdit: function () {
-    jobDescriptionEditModeDep.depend();
-    return jobDescriptionEditMode ? '#008DFC' : '';
+  jobDescription: function () {
+    return Jobs.findOne({_id: Session.get('entityId')}).jobDescription;
   }
 });
 
 Template.jobDescription.events = {
-  'click .editJobDescription': function(){
-    jobDescriptionEditMode = !jobDescriptionEditMode;
-    jobDescriptionEditModeDep.changed();
-  },
-  'click #cancelJobDescriptionEdit':function(){
-    jobDescriptionEditMode = false;
-    jobDescriptionEditModeDep.changed();
+  'click .toggleEditMode': function(){
+    editMode.set(!editMode.get());
   },
   'click .previewMode': function(){
-    descriptionSelf.previewMode= ! descriptionSelf.previewMode;
+    previewMode.set(!previewMode.get());
   },
 
   'click #saveJobDescriptionEdit': function (e, ctx) {
-    var update = ctx.data.getUpdate();
-    if (!update.$set || !update.$set.jobDescription) {
-      jobDescriptionEditMode = false;
-      jobDescriptionEditModeDep.changed();
-      return; // Nothing to update
-    }
+    var text = WYSIHTMLEditor.getValue();
+    if (text)
+      Jobs.update({_id: Session.get('entityId')}, {$set: {jobDescription: text}}, function (err, result) { });
 
-    JobsList.update({_id: Session.get('entityId')}, {$set: { jobDescription: update.$set.jobDescription }}, function (err, result) {
-      if (!err) {
-        jobDescriptionEditMode = false;
-        jobDescriptionEditModeDep.changed();
-        ctx.data.jobDescription.defaultValue =  ctx.data.jobDescription.value; // Reset jobDescription initial value
-      }
-    });
+    editMode.set(false);
   }
 };

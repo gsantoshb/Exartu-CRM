@@ -21,6 +21,7 @@ Router.map(function() {
         //  - contactableId: string
         case 'GET':
           var contactableId = this.params.query.contactableId;
+          console.log('contactableId', contactableId);
           try {
             var res = connection.call('getContactMethods', contactableId);
 

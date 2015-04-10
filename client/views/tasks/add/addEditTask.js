@@ -5,6 +5,7 @@ var singleTaskHandler;
 var currentUrl;
 var collapsedAdvanced;
 
+var redirect = false; // using this to prevent redirect on other pages different than "tasks"
 
 
 //todo: the logic for the linked entities is almost the same in msgs and taskAdd. We should do some template to use it in both places.
@@ -26,7 +27,7 @@ var errorDep = new Tracker.Dependency;
 
 var addDisabled = new ReactiveVar(false);
 var taskUpdate = function (cb) {
-    var oldTask = Tasks.find({_id : task._id}).fetch()[0];
+    var oldTask = Tasks.find({_id : task._id}).fetch()[0] || CalendarTasks.findOne({_id : task._id}) ;
     if (task._id) {
         Tasks.update({
                 _id: task._id
@@ -46,9 +47,9 @@ var taskUpdate = function (cb) {
                     cb();
             }
         );
-      if(oldTask.assign[0] !== task.assign[0]){
-        Meteor.call('notifyTask', task);
-      }
+        if(oldTask.assign[0] !== task.assign[0]){
+            Meteor.call('notifyTask', task);
+        }
 
 
     }
@@ -84,13 +85,13 @@ var createTask = function (task) {
 
 Template.addEditTask.helpers({
     iconCollapsed: function(){
-      collapseDep.depend();
-      if(collapsedAdvanced) {
-        return"fa fa-minus";
-      }
-      else{
-        return"fa fa-plus";
-      }
+        collapseDep.depend();
+        if(collapsedAdvanced) {
+            return"fa fa-minus";
+        }
+        else{
+            return"fa fa-plus";
+        }
     },
     addDisabled: function () {
         return addDisabled.get();
@@ -104,13 +105,13 @@ Template.addEditTask.helpers({
         return task;
     },
     isReady: function(){
-       taskDep.depend();
-       if (singleTaskHandler) {
-         return singleTaskHandler.ready();
-       }
-       else{
-         return true;
-       }
+        taskDep.depend();
+        if (singleTaskHandler) {
+            return singleTaskHandler.ready();
+        }
+        else{
+            return true;
+        }
     },
     users: function () {
         return Meteor.users.find({});
@@ -189,15 +190,15 @@ var isValid = function (task, key) {
                 Error.assign = '';
             }
         }
-      if(key == 'end'){
-         if(task.end < task.begin){
-           Error.end = 'Error, end date can\'t be lower than begin date';
-           result = false;
-         }
-         else{
-           Error.end = '';
-         }
-      }
+        if(key == 'end'){
+            if(task.end < task.begin){
+                Error.end = 'Error, end date can\'t be lower than begin date';
+                result = false;
+            }
+            else{
+                Error.end = '';
+            }
+        }
     }
     else {
         if (!task.msg) {
@@ -228,13 +229,13 @@ var isValid = function (task, key) {
 
 Template.addEditTask.events({
     'click #collapsed-btn-group': function(e,ctx){
-      if($('#advanced-info').hasClass("collapse in")){
-        collapsedAdvanced = false;
-      }
-      else if($('#advanced-info').hasClass("collapse")){
-        collapsedAdvanced = true;
-      }
-      collapseDep.changed()
+        if($('#advanced-info').hasClass("collapse in")){
+            collapsedAdvanced = false;
+        }
+        else if($('#advanced-info').hasClass("collapse")){
+            collapsedAdvanced = true;
+        }
+        collapseDep.changed()
     },
     'click .accept': function (e, ctx) {
         if (!isValid(task)) {
@@ -249,15 +250,15 @@ Template.addEditTask.events({
 
 
         } else {
-           //hack, the plugin is wrong so this fix it.
+            //hack, the plugin is wrong so this fix it.
             task.begin.setTime( task.begin.getTime());
             task.end.setTime( task.end.getTime());
-          // task.begin.getTimezoneOffset()*60*1000
+            // task.begin.getTimezoneOffset()*60*1000
             Tasks.insert(task, function () {
                 $('.modal-host').children().modal('toggle');
 
             })
-           Meteor.call('notifyTask', task);
+            Meteor.call('notifyTask', task);
 
         }
         addDisabled.set(false);
@@ -305,7 +306,7 @@ Template.addEditTask.events({
     'change.dp .begin>.date': function (e, ctx) {
         task.begin = $(e.currentTarget).data().datetimepicker.getDate();
         if(task.begin > task.end){
-          task.end = task.begin;
+            task.end = task.begin;
         }
         taskDep.changed();
 
@@ -314,7 +315,7 @@ Template.addEditTask.events({
     'change.dp .end>.date': function (e, ctx) {
         task.end = $(e.currentTarget).data().datetimepicker.getDate();
         isValid(task, 'end');
-      //taskUpdate();
+        //taskUpdate();
     },
     'change .isCompleted': function (e) {
         if (e.target.checked) {
@@ -377,56 +378,60 @@ Template.addEditTask.created = function () {
     param = this.data[0];
     if(((typeof param)==="object")&&(param != null)){
 
-       task = createTask(param);
-       if(param._id) {
-         var url = '/tasks/' + param._id;
-       }
-       else{
-         var url = '/tasks/';
-       }
-       //hack, there is a bug in replaceState/tasks/ironRoute
-       setTimeout(function(){window.history.replaceState(null, null, url)},500);
-
-       taskDep.changed()
-    }
-    else if((typeof param)==="string"){
-      if(singleTaskHandler){
-        singleTaskHandler.stop();
-      }
-      singleTaskHandler = Meteor.subscribe("editTask", param, function () {
-        if(EditTask.find({}).count()<1){
-          taskDep.changed()
-          return;
+        redirect =  true;
+        task = createTask(param);
+        if(param._id) {
+            var url = '/tasks/' + param._id;
         }
         else{
-          param = EditTask.findOne({});
-          task = createTask(param);
-          taskDep.changed()
+            var url = '/tasks/';
+        }
+        //hack, there is a bug in replaceState/tasks/ironRoute
+        setTimeout(function(){window.history.replaceState(null, null, url)},500);
 
-      }
-    });
+        taskDep.changed()
+    }
+    else if((typeof param)==="string"){
+        if(singleTaskHandler){
+            singleTaskHandler.stop();
+        }
+        singleTaskHandler = Meteor.subscribe("editTask", param, function () {
+            if(EditTask.find({}).count()<1){
+                taskDep.changed()
+                return;
+            }
+            else{
+                param = EditTask.findOne({});
+                task = createTask(param);
+                taskDep.changed()
 
-  }
-  else{
-      task = createTask();
-      taskDep.changed()
-  }
+            }
+        });
+
+    }
+    else{
+        task = createTask();
+        taskDep.changed()
+    }
 
 
 };
 Template.addEditTask.destroyed = function () {
-  if(singleTaskHandler) {
-    singleTaskHandler.stop();
-    singleTaskHandler = null;
-  }
-  if(currentUrl === window.location.pathname){
-    history.replaceState(null, 'edit','/tasks');
-  }
-  else{
-    history.replaceState(null, 'edit',currentUrl);
-  }
-  collapsedAdvanced = false;
-  collapseDep.changed();
+    if(singleTaskHandler) {
+        singleTaskHandler.stop();
+        singleTaskHandler = null;
+    }
+    if(redirect){
+        if(currentUrl === window.location.pathname){
+            history.replaceState(null, 'edit','/tasks');
+        }
+        else{
+            history.replaceState(null, 'edit',currentUrl);
+        }
+    }
+
+    collapsedAdvanced = false;
+    collapseDep.changed();
 
 
 };

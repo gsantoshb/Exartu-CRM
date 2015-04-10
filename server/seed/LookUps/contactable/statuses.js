@@ -55,7 +55,7 @@ _.forEach([
 
 
         {
-            displayName: "Talked  With", lookUpActions: [],sortOrder:20
+            displayName: "Talked With", lookUpActions: [],sortOrder:20
         },
         {
             displayName: "Needs Analysis", lookUpActions: [],sortOrder:30

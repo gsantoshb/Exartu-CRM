@@ -34,8 +34,6 @@ UserInvitations = new Mongo.Collection("userInvitations");
 
 EmailTemplates = new Mongo.Collection("emailTemplates");
 
-EmailTemplateMergeFields = new Mongo.Collection('emailTemplateMergeFields');
-
 Roles = new Mongo.Collection("roles");
 
 SystemAdmins = new Mongo.Collection("systemAdmins");

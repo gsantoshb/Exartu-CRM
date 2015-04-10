@@ -13,7 +13,6 @@ iron:router
 matb33:collection-hooks
 mrt:googlemaps
 sacha:spin
-bootstrap3-wysihtml5
 natestrauser:select2
 vjau:xml2js
 cfs:standard-packages
@@ -38,18 +37,15 @@ cfs:gridfs
 cfs:s3
 file-uploader
 
-meteorhacks:kadira
 rajit:bootstrap3-datepicker
 
 mrt:twilio-meteor
 mrt:mask
-meteor-nodetime
 server-progress
 
 mystor:device-detection
 node-form-data
 
-npm-container
 shammar13:busboy
 aida:mongo-view
 aida:dtype
@@ -67,5 +63,8 @@ cscottnet:mail-listener2
 jparker:crypto-aes
 aida:pagination@1.0.8
 tap:i18n
+jparker:crypto-base64
 
 harrison:babyparse
+npm-container
+maazalik:highcharts

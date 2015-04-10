@@ -7,6 +7,7 @@ var selected = undefined;
 
 // Page - Variables
 var searchDep = new Deps.Dependency;
+var totalCountDep = new Deps.Dependency;
 var isSearching = false;
 $("#userId").prop("selectedIndex", -1);
 var info = new Utils.ObjectDefinition({
@@ -259,6 +260,7 @@ Template.contactablesList.created = function () {
             searchQuery.objNameArray = query.objType.value;
             urlQuery.addParam('type', query.objType.value);
         }
+
         // Creation date
         if (query.selectedLimit.value) {
             var dateLimit = new Date();
@@ -348,7 +350,7 @@ Template.contactablesList.created = function () {
 
             urlQuery.addParam('clientProcessStatus', query.clientProcessStatus.value);
         }
-        if (!_.isEmpty(query.contactProcessStatus.value)) {
+        if ((query.objType.value === "Contact")&&(!_.isEmpty(query.contactProcessStatus.value))) {
             searchQuery[query.objType.value + '.status'] = {$in: query.contactProcessStatus.value};
 
             urlQuery.addParam('contactProcessStatus', query.contactProcessStatus.value);
@@ -395,36 +397,21 @@ Template.contactablesList.created = function () {
     });
 };
 
-Template.contactablesList.rendered = function () {
-    /**
-     * @todo review code, this ia a small hack to make ti work.
-     * This particular plugin doesn't seem to behave quite right if you initialize it more than once so we're doing it on each first click event.
-     */
-    //$(document).on('click', 'button[data-toggle="popover"]', function (e) {
-    //    var object = e.currentTarget;
-    //    // destroy any other popovers open on page
-    //    $('.popover').popover('destroy');
-    //
-    //    if ($(object).attr('data-init') == 'off') {
-    //        // we set all other popovers besides this one to off so that we can open them next time
-    //        $('button[data-toggle="popover"]').attr('data-init', 'off');
-    //        $(object).popover('show');
-    //        $(object).attr('data-init', 'on');
-    //    }
-    //});
-};
+Template.contactablesList.rendered = function () {};
 
 // hack: because the handler is created on the created hook, the SubscriptionHandlers 'cleaner' can't find it
 Template.contactablesList.destroyed = function () {
-    //if (SubscriptionHandlers.AuxContactablesHandler) {
-    //    SubscriptionHandlers.AuxContactablesHandler.stop();
-    //    delete SubscriptionHandlers.AuxContactablesHandler;
-    //}
+    if (SubscriptionHandlers.AuxContactablesHandler) {
+        SubscriptionHandlers.AuxContactablesHandler.stop();
+       delete SubscriptionHandlers.AuxContactablesHandler;
+    }
 
+    $('button[data-toggle="popover"]').attr('data-init', 'off');
     $('.popover').hide().popover('destroy');
 };
 
 Template.contactablesListItem.destroyed = function () {
+    $('button[data-toggle="popover"]').attr('data-init', 'off');
     $('.popover').hide().popover('destroy');
 };
 
@@ -447,6 +434,7 @@ Template.contactables.helpers({
     },
     isSearching: function () {
         searchDep.depend();
+        totalCountDep.changed();
         return isSearching;
     }
 });
@@ -502,8 +490,11 @@ Template.contactablesListHeader.helpers({
         });
     },
     totalCount: function () {
-        return SubscriptionHandlers.AuxContactablesHandler.totalCount();
-    }
+        if(SubscriptionHandlers.AuxContactablesHandler.isLoading())
+            return 0;
+        else
+            return SubscriptionHandlers.AuxContactablesHandler.totalCount();
+      }
 });
 
 // List Search - Helpers
@@ -693,7 +684,14 @@ Template.employeeInformation.helpers({
 // Filters - Helpers
 Template.contactablesFilters.helpers({
   contactablesCount: function () {
-    return SubscriptionHandlers.AuxContactablesHandler.totalCount();
+    totalCountDep.depend();
+    if(!_.isEmpty(query.searchString.value)){
+      return esResult.length;
+    }
+
+    else {
+      return SubscriptionHandlers.AuxContactablesHandler.totalCount();
+    }
   },
   query: function () {
     return query;
@@ -721,15 +719,13 @@ Template.contactables.events({
     },
     'click button[data-toggle="popover"]': function (e, ctx) {
         var object = e.currentTarget;
+        var attr = $(object).attr('aria-describedby');
         // destroy any other popovers open on page
         $('.popover').popover('destroy');
 
-        if ($(object).attr('data-init') == 'off') {
+        if ( !(typeof attr !== typeof undefined && attr !== false) ) {
             // we set all other popovers besides this one to off so that we can open them next time
-            $('button[data-toggle="popover"]').attr('data-init', 'off');
             $(object).popover('show');
-            console.log('show');
-            $(object).attr('data-init', 'on');
         }
     }
 });
@@ -932,10 +928,17 @@ var runESComputation = function () {
             filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
         }
 
-        // Created by
+        //Created by
         if (query.mineOnly.value) {
-            filters.bool.must.push({term: {userId: Meteor.userId()}});
+            var fullUserId = Meteor.userId();
+            var spltUserId = fullUserId.split("-");
+                for (i in spltUserId){
+            filters.bool.must.push({regexp: {userId: '.*' + spltUserId[i] + '.*'}});
+                }
         }
+      
+
+
 
         // Location filter
         var locationOperatorMatch = false;
@@ -961,6 +964,23 @@ var runESComputation = function () {
             });
         }
 
+        if((query.objType.value === "Contact")&&(query.contactProcessStatus.value.length>0)){
+           var processArray = [];
+           _.forEach(query.contactProcessStatus.value, function(p){
+             processArray.push(p.toLowerCase());
+           });
+           filters.bool.must.push({terms:{'Contact.status': processArray}});
+        }
+
+      if(query.activeStatus.value.length>0){
+        var processArray = [];
+        _.forEach(query.activeStatus.value, function(p){
+            processArray.push(p.toLowerCase());
+        });
+        filters.bool.must.push({terms:{'activeStatus': processArray}});
+      }
+
+
         isSearching = true;
         searchDep.changed();
         Contactables.esSearch('.*' + query.searchString.value + '.*', filters, function (err, result) {
@@ -981,6 +1001,7 @@ var runESComputation = function () {
                 esDep.changed();
                 isSearching = false;
                 searchDep.changed();
+
             } else
                 console.log(err)
         });

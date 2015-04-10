@@ -22,18 +22,44 @@
                     <div class="box-type-1">
 
                         <div class="notice-msg-container">
-                            <div class="notice-msg">
+                            <div class="notice-msg {{#if statusNoteEditMode}}editing{{/if}}">
                                 <div class="notice-msg-title">
                                     <i class="fa fa-file-text-o"></i>
                                     {{_ "Status note"}}
                                     <span class="left-decoration"></span>
                                     <span class="right-decoration"></span>
                                 </div>
-                                <div class="notice-msg-content">{{statusNote}}</div>
+                                <div class="notice-msg-content">
+                                    <div class="input-group">
+                                        {{#objectProperty property=contactableStatusNote editable=statusNoteEditMode}}
+                                            {{#if contactableStatusNote}}
+                                                <input class="form-control input-sm" type="text" name="statusNote" value="{{_ contactableStatusNote}}">
+                                            {{else}}
+                                                <input class="form-control input-sm" type="text" name="statusNote" value="{{contactableStatusNote}}">
+                                            {{/if}}
+                                        {{else}}
+                                            {{#if contactableStatusNote}}
+                                                <span>{{_ contactableStatusNote}}</span>
+                                                <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
+                                            {{else}}
+                                                <span>{{contactableStatusNote}}</span>
+                                                <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
+                                            {{/if}}
+                                        {{/objectProperty}}
+                                        {{#if statusNoteEditMode}}
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-sm" id="saveStatusNote">{{_ "Save"}}</button>
+                                            </span>
+                                        {{/if}}
+                                    </div>
+                                    {{#if statusNoteEditMode}}
+                                        <button type="button" class="btn btn-link btn-sm" id="cancelStatusNote">{{_ "Cancel"}}</button>
+                                    {{/if}}
+                                </div>
                             </div><!-- /.notice-msg -->
                         </div><!-- /.notice-msg-container -->
 
-                        <div class="details-view-content box-type-1-content">
+                        <div class="details-view-content">
                             <div class="tab-pane active">
                                 {{> UI.dynamic template=currentTemplate  data=. }}
                             </div>
@@ -70,20 +96,20 @@
             </div>
         {{/if}}
 
-        <h1 class="title">{{displayName}}</h1>
+        <h1 class="title">{{_ displayName}}</h1>
 
         <div class="desc">
             {{#if person}}
                 {{#if person.jobTitle}}
-                    {{person.jobTitle}}
+                    {{_ person.jobTitle}}
                 {{/if}}
             {{/if}}
 
             {{#if Contact.clientName}}
-                @&nbsp;<a href="/contactable/{{Contact.client}}">{{Contact.clientName}}</a>
+                @&nbsp;<a href="/contactable/{{Contact.client}}">{{_ Contact.clientName}}</a>
             {{/if}}
 
-            {{#if Client.department}}<br>{{Client.department}}{{/if}}
+            {{#if Client.department}}<br>{{_ Client.department}}{{/if}}
         </div>
     </div>
 
@@ -138,18 +164,20 @@
 </template>
 
 <template name="contactable_details">
-    {{> contactableDetailBox}}
+    <div class="box-type-1-content">
+        {{> contactableDetailBox}}
 
-    {{> contactableContactMethodsBox}}
+        {{> contactableContactMethodsBox}}
 
-    {{#if Contact}}
-        {{> contactClientInfo client=Contact.client path='Contact.client' collection=collection}}
-    {{/if}}
+        {{#if Contact}}
+            {{> contactClientInfo client=Contact.client path='Contact.client' collection=collection}}
+        {{/if}}
 
-    {{> contactable_contacts}}
-    {{>tagsBox}}
-    {{>hotListMembershipsBox}}
-    {{>addressList}}
+        {{> contactable_contacts}}
+        {{>tagsBox}}
+        {{>hotListMembershipsBox}}
+        {{>addressList}}
+    </div>
 </template>
 
 <template name="hotListMembershipsBox">
@@ -164,22 +192,33 @@
                     <h3>{{_ "Hotlists"}}</h3>
                 </div><!-- /.col-md-2 -->
                 <div class="col-md-10">
+                    {{#if editHotlistMode}}
+                            <div class="input-group" style="margin-bottom: 10px">
+                                {{>asyncSelect query=getHotList placeholder="Search client" onChange=hotListChanged width='100%'}}
+                                <span class="input-group-btn">
+                                   <button class="add-hotList btn btn-default" type="button"><span class="fa fa-plus"></span></button>
+                                </span>
+                            </div>
+
+
+
+                    {{/if}}
                     {{#if hotListMemberships}}
                         <div class="row">
                             {{#each hotListMemberships}}
                                 <div class="col-md-6">
                                     <div class="card-item">
                                         {{#if editHotlistMode}}
-                                            <div class="card-options">
+                                           <div class="card-options">
                                                 <a class="remove-tag removeHotList pointer"><i class="fa fa-times"></i></a>
-                                            </div>
+                                           </div>
                                         {{/if}}
 
                                         <a class="item-icon item-icon-hotlist item-icon-sm" href="/hotlist/{{_id}}">
                                             <i class="icon-list-4"></i>
                                         </a>
                                         <div class="card-title">
-                                            <a href="/hotlist/{{_id}}">{{displayName}} <span>– {{_id}} </span></a>
+                                            <a href="/hotlist/{{_id}}">{{displayName}} </a>
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +229,7 @@
                     <div class="row">
                         {{#with recentHotList}}
                             <button type="button" class="btn btn-success addHotList" title="Add">
-                                <span class="fa fa-plus"></span> {{_ "Add"}}: {{hotListDisplayName}} ({{hotListId}})
+                                <span class="fa fa-plus"></span> {{_ "Add"}}: {{hotListDisplayName}}
                             </button>
                         {{/with}}
                     </div>
@@ -248,7 +287,7 @@
     {{/if}}
 
     {{#if hasEmailAddress}}
-        {{>sendEmailTemplate emailTemplateContext}}
+        <a id="sendEmailTemplate" class="btn btn-custom-1 btn-block pointer"><i class="fa fa-envelope"></i>&nbsp;{{_ "Send email template"}}</a>
     {{/if}}
 </template>
 

@@ -17,6 +17,12 @@ UserManager = {
                 info.picture = user.services.google.picture;
             }
         }
+
+        if(user.firstName)
+            info.firstName = user.firstName;
+        if(user.lastName)
+            info.lastName = user.lastName;
+
         return info;
     },
     checkUniqueness: function (query) {
@@ -93,7 +99,7 @@ UserManager = {
                 email: document.email.toLowerCase(),
                 password: document.password,
                 hierRoles: [],
-				language: document.language
+                language: document.language
             };
 
             if (document.currentHierId) {
@@ -328,14 +334,14 @@ Accounts.onCreateUser(function (options, user) {
     } else {
         hierId = options.currentHierId;
     }
-	user.language = options.language;
+    user.language = options.language;
     user.hierarchies = [hierId];
     user.currentHierId = hierId;
     user.hierId = hierId; //temp...need to remove user.hierId references from submodules first
     var hierRoleIds = (options.roles) ? options.roles: [];
     if (!options.currentHierId) // means account creation
         if (RoleManager.getClientAdministratorRole()) // make sure this isn't system init in which case no roles yet
-        hierRoleIds.push(RoleManager.getClientAdministratorRole()._id);
+            hierRoleIds.push(RoleManager.getClientAdministratorRole()._id);
     user.hierRoles = [{hierId: hierId, roleIds: hierRoleIds}];
     Hierarchies.update({
         _id: user.hierId
@@ -394,8 +400,8 @@ var markInvitationsAsUsed = function (userInvitation) {
 };
 
 // Email validation template
-Accounts.emailTemplates.siteName = "Exartu ";
-Accounts.emailTemplates.from = "Exartu team<exartu.developer@gmail.com>";
+Accounts.emailTemplates.siteName = "Aida";
+Accounts.emailTemplates.from = "Aida Team team<sales@aidacreative.com>";
 
 // Email account verification template
 Accounts.emailTemplates.verifyEmail.subject = function (user) {

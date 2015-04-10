@@ -1,229 +1,161 @@
+
+var template, category;
 EmailTemplateController = RouteController.extend({
   layoutTemplate: 'mainLayout',
+  template: 'emailTemplate',
   waitOn: function () {
-    return [Meteor.subscribe('emailTemplateMergeFields'), Meteor.subscribe('emailTemplates')];
-  },
-  data: function () {
-    Session.set('templateId', this.params._id);
+    return [Meteor.subscribe('emailTemplates')];
   },
   action: function () {
-    if (!this.ready()) {
-      this.render('loadingContactable');
-      return;
-    }
-    this.render('emailTemplate')
-  },
-  onAfterAction: function () {
-
-  }
-});
-
-if(window.wysihtml5){
-  var NODE_NAME= 'INPUT',
-    dom = wysihtml5.dom;
-  function _format(composer, attributes) {
-    var doc             = composer.doc,
-      tempClass       = "_wysihtml5-temp-" + (+new Date()),
-      tempClassRegExp = /non-matching-class/g,
-      i               = 0,
-      length,
-      anchors,
-      anchor,
-      hasElementChild,
-      isEmpty,
-      elementToSetCaretAfter,
-      textContent,
-      whiteSpace,
-      j;
-    wysihtml5.commands.formatInline.exec(composer, undefined, NODE_NAME, tempClass, tempClassRegExp);
-    anchors = doc.querySelectorAll(NODE_NAME + "." + tempClass);
-    length  = anchors.length;
-    for (; i<length; i++) {
-      anchor = anchors[i];
-      anchor.removeAttribute("class");
-
-      anchor.setAttribute('value', attributes.displayName);
-      //anchor.innerHTML = attributes.path;
-      anchor.setAttribute('data-mergeField', attributes._id);
-      anchor.setAttribute('disabled', "disabled");
-      anchor.setAttribute('style', "text-align: center;border-radius: 2px; border: solid 1px #007AFF; color: #007AFF;");
+    // Init values depending on the available router data
+    if (this.params._id) {
+      template = EmailTemplates.findOne({_id: this.params._id});
+      category = template.category;
+    } else {
+      template = undefined;
+      category = this.params.category;
     }
 
-    elementToSetCaretAfter = anchor;
-    if (length === 1) {
-      textContent = dom.getTextContent(anchor);
-      hasElementChild = !!anchor.querySelector("*");
-      isEmpty = textContent === "" || textContent === wysihtml5.INVISIBLE_SPACE;
-      if (!hasElementChild && isEmpty) {
-        dom.setTextContent(anchor, attributes.text || anchor.href);
-        whiteSpace = doc.createTextNode(" ");
-        composer.selection.setAfter(anchor);
-        composer.selection.insertNode(whiteSpace);
-        elementToSetCaretAfter = whiteSpace;
-      }
-    }
-    composer.selection.setAfter(elementToSetCaretAfter);
-  }
-
-  wysihtml5.commands.foo = {
-    //similar to wysihtml5 link command
-    exec: function(composer, command, value) {
-      var anchors = this.state(composer, command);
-      if (anchors) {
-        // Selection contains links
-        composer.selection.executeAndRestore(function() {
-          _removeFormat(composer, anchors);
-        });
-      } else {
-        // Create links
-        //value = typeof(value) === "object" ? value : { href: value };
-        _format(composer, value);
-      }
-    },
-
-    state: function(composer, command) {
-      return wysihtml5.commands.formatInline.state(composer, command, NODE_NAME);
-    },
-
-    value: function() {
-      return undefined;
-    }
-  };
-}
-var editMode = new ReactiveVar(true);
-var preview = new ReactiveVar('');
-var errorDep = new Deps.Dependency();
-var errorName = "";
-var errorSubject = "";
-
-Template.emailTemplate.helpers({
-  mergeField: function () {
-    return EmailTemplateMergeFields.find();
-  },
-  editorContext: function () {
-    if ( Session.get('templateId')){
-      var template = EmailTemplates.findOne(Session.get('templateId'));
-      return {value: template ? template.text : ''};
-    }
-    return {value: ''};
-  },
-  categoryTypes: function () {
-    return _.map(Enums.emailTemplatesCategories, function (val, key) {
-      return {
-        code: val,
-        name: key
-      }
-    })
-  },
-  templateName: function () {
-    return  Session.get('templateId') ? EmailTemplates.findOne(Session.get('templateId')).name : '';
-  },
-  templateSubject: function () {
-    return Session.get('templateId') ? EmailTemplates.findOne(Session.get('templateId')).subject : '';
-  },
-  isCategorySelected: function () {
-    if (Session.get('templateId')){
-      var template = EmailTemplates.findOne(Session.get('templateId'));
-      return _.contains(template.category, this.code);
-    }
-  },
-  preview: function () {
-    return preview.get();
-  },
-  editMode: function () {
-    return editMode.get();
-  },
-  errorName: function(){
-    errorDep.depend();
-    return errorName;
-  },
-  errorSubject: function(){
-    errorDep.depend();
-    return errorSubject;
+    this.render();
   }
 });
 
 Template.emailTemplate.rendered = function () {
+  // Initialize select 2 plugings
   this.$('#mergeFields').select2({
     allowClear: true,
-    placeholder: 'Merge Fields'
+    placeholder: 'Select Merge Field'
   });
-  this.$('#category').select2();
 };
 
+
+var editMode = new ReactiveVar(true),
+    preview = new ReactiveVar(''),
+    errorName = new ReactiveVar(''),
+    errorSubject = new ReactiveVar(''),
+    isSaving = new ReactiveVar(false);
+
+Template.emailTemplate.helpers({
+  categoryName: function () {
+    return _.find(MergeFieldHelper.categories, function(cat) { return cat.value == category }).name;
+  },
+  templateName: function () {
+    return template ? template.name : '';
+  },
+  templateSubject: function () {
+    return template ? template.subject : '';
+  },
+  errorName: function () {
+    return errorName.get();
+  },
+  errorSubject: function () {
+    return errorSubject.get();
+  },
+
+  editMode: function () {
+    return editMode.get();
+  },
+  mergeFields: function () {
+    return _.map(MergeFieldHelper.getMergeFields(category), function (mf) {
+      return {name: mf.displayName, value: mf.key};
+    });
+  },
+  editorContext: function () {
+    return template ? template.text : '';
+  },
+  preview: function () {
+    return preview.get();
+  },
+  isSaving: function () {
+    return isSaving.get();
+  }
+});
+
 Template.emailTemplate.events({
-  'click #add': function (e, ctx) {
-    errorName = "";
-    errorSubject = "";
-    var name = $('.templateName').val();
-    var subject = $('.templateSubject').val();
+  'change #name-input': function () {
+    // Clear error
+    errorName.set('');
 
-    if(name && subject) {
-      var template = {
-        name: name,
-        subject: subject,
-        text: $('.editor').data('wysihtml5').editor.composer.getValue(),
-        category: $('#category').val()
-      };
+    var name = Template.instance().$('.templateName').val();
+    if (!name) {
+      errorName.set('Error, name is required.');
+    }
+  },
+  'change #subject-input': function () {
+    // Clear error
+    errorSubject.set('');
 
-      if (Session.get('templateId')) {
-        EmailTemplates.update(Session.get('templateId'), {$set: template})
-      } else {
-        Session.set('templateId', EmailTemplates.insert(template));
-      }
-      Router.go('/emailTemplates');
+    var subject = Template.instance().$('.templateSubject').val();
+    if (!subject) {
+      errorSubject.set('Error, name is required.');
     }
-    else{
-      if(!name){
-        errorName = "Error, name is required."
+  },
 
-      }
-      if(!subject){
-        errorSubject = "Error, subject is required."
-      }
-    }
-    errorDep.changed();
-  },
-  'change #name-input': function(e, ctx){
-    var name = $('.templateName').val();
-    if(name){
-      errorName = "";
-    }
-    else{
-      errorName = "Error, name is required."
-    }
-    errorDep.changed();
-  },
-  'change #subject-input': function(e, ctx){
-    var subject = $('.templateSubject').val();
-    if(subject){
-      errorSubject = "";
-    }
-    else{
-      errorSubject = "Error, name is required."
-    }
-    errorDep.changed();
-  },
-  'change #mergeFields': function (e, ctx) {
-    var mf = EmailTemplateMergeFields.findOne(e.val);
+  'click #addMergeField': function () {
+    // Get selected merge field
+    var selected = Template.instance().$('#mergeFields').val();
+    if (!selected) return;
+
+    // Find the corresponding merge field definition
+    var mf = _.find(MergeFieldHelper.mergeFields, function (mf) {return mf.key === selected});
     if (!mf) return;
 
-    var editorInstance = $('.editor').data('wysihtml5').editor;
-
-    editorInstance.composer.commands.exec("foo", mf);
+    // Insert the merge field on the editor
+    try {
+      var html = '<input value="' + mf.displayName + '" data-mergefield="' + mf.key + '" disabled="disabled">';
+      WYSIHTMLEditor.composer.commands.exec("insertHTML", html);
+    } catch (ex) {
+      console.log('Error trying to insert merge field. Try giving the editor focus.');
+    }
   },
+
   'click #preview': function () {
     if (editMode.get()){
       editMode.set(false);
-      Meteor.call('getPreview', $('.editor').data('wysihtml5').editor.composer.getValue(), function (err, result) {
-        if (err){
-          console.log(err);
-        }else{
-          preview.set(result);
-        }
-      })
+      var editorText = WYSIHTMLEditor.getValue();
+      preview.set(MergeFieldHelper.getPreview(editorText));
     }else{
       editMode.set(true);
     }
+  },
+  'click #add': function () {
+    isSaving.set(true);
+
+    // Clear errors
+    errorName.set('');
+    errorSubject.set('');
+
+    // Check the required properties
+    var name = Template.instance().$('.templateName').val();
+    var subject = Template.instance().$('.templateSubject').val();
+    if (!name || !subject) {
+      if (!name) { errorName.set('Error, name is required.'); }
+      if (!subject) { errorSubject.set('Error, subject is required.'); }
+    } else {
+
+      // Save the template
+      var templateData = {
+        name: name,
+        subject: subject,
+        text: WYSIHTMLEditor.getValue(),
+        category: category
+      };
+
+      if (template) {
+        EmailTemplates.update(template._id, {$set: templateData});
+      } else {
+        var templateId = EmailTemplates.insert(templateData);
+        Router.go('/emailTemplate/' + templateId);
+      }
+      $.gritter.add({
+        title:	'Template saved',
+        text:	'Your changes have been saved for this template.',
+        image: 	'/img/logo.png',
+        sticky: false,
+        time: 2000
+      });
+    }
+
+    isSaving.set(false);
   }
 });

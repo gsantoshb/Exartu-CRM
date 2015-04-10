@@ -9,7 +9,9 @@ var HotListMembersHandler, query;
 
 // Vars
 var searchFields = ['person.firstName', 'person.lastName', 'person.middleName', 'organization.organizationName'];
-var defaultSort = {'person': 1};
+var defaultSort = {
+    'displayName': -1
+};
 
 var options = {};
 var searchQuery = {};
@@ -23,7 +25,7 @@ var membersCount = new ReactiveVar();
 var members = new ReactiveVar();
 
 // Dependencies
-var searchDep = new Deps.Dependency;
+searchDep = new Tracker.Dependency;
 var hotListMembersDep = new Deps.Dependency();
 
 
@@ -43,9 +45,9 @@ var loadqueryFromURL = function (params) {
 
 
 var setSubscription = function (searchQuery, options) {
-    hotList.members = members.get();
-    searchQuery = {_id: { $in : hotList.members } };
 
+    hotList.members = members.get();
+    searchQuery = {_id: { $in : members.get() } };
     if (SubscriptionHandlers.HotListMembersHandler) {
         SubscriptionHandlers.HotListMembersHandler.setFilter(searchQuery);
         SubscriptionHandlers.HotListMembersHandler.setOptions(options);
@@ -63,6 +65,7 @@ var setSubscription = function (searchQuery, options) {
 
     //membersCount.set( HotListMembersHandler.totalCount() );
     var skip = (HotListMembersHandler.currentPage()-1)*pageLimit;
+
     options.limit = pageLimit;
     options.skip = skip;
 
@@ -128,64 +131,104 @@ Template.hotListMembersSearch.helpers({
 });
 
 Template.hotListMembersSearch.events({
-    'keyup #searchString': _.debounce(function (e) {
-        query.searchString.value = e.target.value;
+  'keyup #searchString': _.debounce(function (e) {
+    query.searchString.value = e.target.value;
+    setSubscription(searchQuery, options);
+  }, 200),
+
+  'click .addHotListMember': function (e, ctx) {
+    Utils.showModal(
+      'hotListMemberAdd',
+      hotList._id, function (memberId, hotListId) {
+        var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
+        var mbrs = tempHotList.members;
+
+        if (tempHotList.members.indexOf(memberId) > -1) {
+          return false;
+        }
+
+        mbrs.push(memberId);
+
+        HotLists.update({_id: hotListId}, {$set: {members: mbrs}});
+
+        membersCount.set(mbrs.length);
+        members.set(mbrs);
+
         setSubscription(searchQuery, options);
-    }, 200),
+        searchDep.changed();
+        return;
+      }
+    );
+  },
 
-    'click .addHotListMember': function (e, ctx) {
-        Utils.showModal(
-            'hotListMemberAdd',
-            hotList._id, function(memberId, hotListId){
-                var hotList = HotLists.findOne({_id: hotListId});
-                hotList.members.push(memberId);
-                HotLists.update({_id: hotListId}, {$set: {members: hotList.members}});
-                membersCount.set( hotList.members.length );
+  'click #sendEmailTemplate': function () {
+    var hotlist = HotLists.findOne({_id: Session.get('entityId')});
+    var members = Contactables.find({_id: {$in: hotlist.members}}, {sort: {displayName: 1}}).fetch();
 
-                members.set( hotList.members );
-                setSubscription(searchQuery, options);
-                searchDep.changed();
-                return;
-            }
-        );
-    },
-
-    'click #sendEmailTemplate': function () {
-        var hotlist = HotLists.findOne({_id: Session.get('entityId')});
-        var contacts = Contactables.find({_id: { $in : hotlist.members } }, {sort: {displayName: 1}}).fetch();
-        var selected = [];
-
-        _.forEach(contacts, function (contactable) {
-            selected.push({
-                id: contactable._id,
-                type: contactable.objNameArray,
-                email: Utils.getContactableEmail(contactable)
-            });
-        });
-
-        // get the common type that all selected entities have, ignoring contactable, person and organization
-        var commonType = _.without(_.pluck(selected, 'type'), 'contactable', 'person', 'organization');
-
-        if (!commonType || !commonType.length) return;
-        commonType = commonType[0];
-
-        //filter from the selection the ones that don't have email
-        var filtered = _.filter(selected, function (item) {
-            return item.email;
-        });
-
-        var context = {
-            recipient: _.map(filtered, function (item) {
-                return {
-                    id: item.id,
-                    email: item.email
-                };
-            })
-        };
-
-        context[commonType] = _.pluck(filtered, 'id');
-        Utils.showModal('sendEmailTemplateModal', context);
+    // Find the first contactable type that is not multiple types unless all of them are
+    var contactableType = Utils.getContactableType(members[0]);
+    for (var i = 1; i < members.length && contactableType.indexOf('/') !== -1; i++) {
+      contactableType = Utils.getContactableType(members[i]);
     }
+
+    // Get the category for each type of contact
+    var categories = [];
+    _.each(contactableType.split('/'), function (type) {
+      switch (type) {
+        case 'Client':
+          categories.push(MergeFieldHelper.categories.client.value);
+          break;
+        case 'Employee':
+          categories.push(MergeFieldHelper.categories.employee.value);
+          break;
+        case  'Contact':
+          categories.push(MergeFieldHelper.categories.contact.value);
+          break;
+      }
+    });
+
+    // Choose the template to send
+    Utils.showModal('sendEmailTemplateModal', {
+      categories: categories,
+      callback: function (result) {
+        if (result) {
+          var recipients = [];
+
+          // Get the email of all the members of the hotlist when available
+          var emailCMTypes = _.pluck(LookUps.find({
+            lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+            lookUpActions: {
+              $in: [
+                Enums.lookUpAction.ContactMethod_Email,
+                Enums.lookUpAction.ContactMethod_PersonalEmail,
+                Enums.lookUpAction.ContactMethod_WorkEmail
+              ]
+            }
+          }).fetch(), '_id');
+          _.each(members, function (member) {
+            var email = _.find(member.contactMethods, function (cm) {
+              return _.indexOf(emailCMTypes, cm.type) != -1
+            });
+            if (email)
+              recipients.push({ contactableId: member._id, email: email.value });
+          });
+
+          // send the email template to the recipients
+          Meteor.call('sendEmailTemplate', result, recipients, function (err, result) {
+            if (!err) {
+              $.gritter.add({
+                title: 'Email template sent',
+                text: 'The email template was successfully sent.',
+                image: '/img/logo.png',
+                sticky: false,
+                time: 2000
+              });
+            }
+          });
+        }
+      }
+    });
+  }
 });
 
 
@@ -193,6 +236,7 @@ Template.hotListMembersSearch.events({
  * HotList Members - List section
  */
 Template.hotListMembersList.created = function () {
+
     options = {};
     searchQuery = {};
     query = query || loadqueryFromURL(Router.current().params);
@@ -202,9 +246,10 @@ Template.hotListMembersList.created = function () {
     options.pubArguments = hotList._id;
     setSubscription(searchQuery, options);
 
-    this.autorun(function () {
-        var urlQuery = new URLQuery();
+    Tracker.autorun(function () {
 
+
+        var urlQuery = new URLQuery();
         searchQuery = {
             _id: { $in : hotList.members },
             $and: [] // Push each $or operator here
@@ -242,7 +287,7 @@ Template.hotListMembersList.created = function () {
 
         urlQuery.apply();
         setSubscription(searchQuery, options);
-    })
+    });
 };
 
 Template.hotListMembersList.helpers({
@@ -258,11 +303,13 @@ Template.hotListMembersList.events({
     'click .removeMember': function (e, ctx) {
         var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
         tempHotList.members.splice(tempHotList.members.indexOf(this._id), 1);
-        hotListCollection.update({_id: tempHotList._id}, {$set: {members: tempHotList.members}});
+        HotLists.update({_id: tempHotList._id}, {$set: {members: tempHotList.members}});
+
+        //HotLists.update({_id: tempHotList._id}, {$pull: { 'members': this._id }});
 
         membersCount.set( tempHotList.members.length );
 
-        members.set( hotList.members );
+        members.set( tempHotList.members );
         setSubscription(searchQuery, options);
 
         e.preventDefault();

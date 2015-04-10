@@ -36,6 +36,16 @@ ActivityManager = {
     });
     var task = _.pluck(Tasks.find({$and: [hierarchiesQuery, taskQuery]}, {fields: {_id: 1}}).fetch(), '_id');
 
-    return contactables.concat(jobs).concat(task);
+    var noteQuery = {$or: []};
+    _.each(['msg'], function(name){
+      aux = {};
+      aux[name] = regexObject;
+      noteQuery.$or.push(aux);
+    });
+
+    var note = _.pluck(Notes.find({$and: [hierarchiesQuery, noteQuery]}, {fields: {_id: 1}}).fetch(), '_id');
+
+    return contactables.concat(jobs).concat(task).concat(note);
+
   }
 };

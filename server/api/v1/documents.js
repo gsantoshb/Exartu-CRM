@@ -24,10 +24,13 @@ Router.map(function() {
 				//	 - description: string (optional)
 				// 	 - tags: array (optional)
 				case 'POST':
+					debugger;
 					var data = {};
 
-					_.extend(data, this.request.fields || this.request.body);
-					_.extend(data, this.request.files.file);
+					this.request.fields && _.extend(data, this.request.fields);
+					this.request.body && _.extend(data, this.request.body);
+					this.request.bodyFields && _.extend(data, this.request.bodyFields);
+					this.request.file && _.extend(data, this.request.file);
 
 					if (!data.path)
 						response.error('File required');

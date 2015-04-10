@@ -333,10 +333,6 @@ Template.sidebar.helpers({
 
         var currentType = current.params.type;
         var currentRoute = current.route.getName();
-
-//console.log('type : '+type+' : '+currentType);
-//console.log('route : '+route+' : '+currentRoute);
-
         if (currentRoute == route && (type == currentType)) {
             return 'active'
         }

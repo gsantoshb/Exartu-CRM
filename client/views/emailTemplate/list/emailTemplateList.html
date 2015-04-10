@@ -1,5 +1,6 @@
 <template name="emailTemplateList">
     <div id="content">
+        <!-- Header -->
         <div id="content-header" class="mini">
             <h1>
                 <span class="prop-input">
@@ -7,16 +8,21 @@
                 </span>
             </h1>
         </div>
+
+        <!-- Breadcrumb -->
         <div id="breadcrumb">
             <a href="/" title="Go to Home" class="tip-bottom">{{_ "Home"}}</a>
             <a href="/emailTemplates" class="current">
                 <span class="prop-input">
-                    <strong> {{_ "templates"}} </strong>
+                    <strong> {{_ "Email Templates"}} </strong>
                     <span class="text text-danger"></span>
                 </span>
             </a>
         </div>
+
+        <!-- Page Content -->
         <div class="row">
+            <!-- Filters -->
             <div class="col-md-3">
                 <div class="filter">
                     <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
@@ -34,21 +40,23 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <!-- Template list -->
             <div class="col-md-9">
+
+                <!-- Add & Search -->
                 <div class="actions-head">
                     <div class="row">
                         <div class="col-sm-8 col-md-8 col-lg-8">
-
+                            <!-- New template -->
                             <div class="pull-left suffix-5">
-                                <div class="btn-group">
-                                    <a class="btn btn-success" title="Add" href="/emailTemplate">
-                                        <span class="fa fa-plus"></span>
-                                    </a>
-                                </div>
+                                <button type="button" class="btn btn-success addTemplate" title="Add">
+                                    <i class="fa fa-plus"></i>
+                                </button>
                             </div>
 
+                            <!-- Search template-->
                             <div class="input-group">
                                 <span class="prop-input">
                                     <input id="search-template-field" type="text" class="form-control" placeholder= {{_ "Search Templates"}}>
@@ -63,6 +71,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- List -->
                 <div>
                     {{#each templates}}
                         <div class="table-item">

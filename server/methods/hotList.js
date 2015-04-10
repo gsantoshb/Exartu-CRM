@@ -21,5 +21,12 @@ Meteor.methods({
       return validMembers;
 
 
+    },
+    'updateHotList': function(hotlist){
+      try {
+        return HotListManager.updateHotList(hotlist);
+      } catch (err) {
+        throw new Meteor.Error(err.message);
+      }
     }
 });

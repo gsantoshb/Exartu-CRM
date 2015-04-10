@@ -65,7 +65,7 @@ Meteor.startup(function () {
 
   var appId = ExartuConfig.APM_ID || '5RiToDN7BQAe8WG9X';
   var secret = ExartuConfig.APM_SECRET || '0b92beaf-e743-4a4c-a122-69d74e8bc1df';
-  Kadira.connect(appId, secret);
+  //Kadira.connect(appId, secret);
 
   // Elasticsearch
   if (ExartuConfig.ES_HOST && ExartuConfig.ES_AUTH)
@@ -88,14 +88,6 @@ Meteor.startup(function () {
   twilio = ExartuConfig.TW_accountSID && ExartuConfig.TW_authToken ?
     Twilio(ExartuConfig.TW_accountSID, ExartuConfig.TW_authToken)
     : undefined;
-
-  // NodeTime profiler
-  if (ExartuConfig.Nodetime_Key) {
-    Nodetime.profile({
-      accountKey: ExartuConfig.Nodetime_Key,
-      appName: 'Exartu'
-    });
-  }
 
   // Make Applicant Center url available to the client
   __meteor_runtime_config__.applicantCenterUrl = ExartuConfig.ApplicantCenter_URL;

@@ -34,16 +34,16 @@
 
 <template name="hotListMembersHeader">
     <div class="list-header contacts-list-header">
-        <div class="list-header-cell contacts-list-header-title">HotList Members – ({{membersCount}})</div>
-        <div class="list-header-cell contacts-list-header-code">Id</div>
-        <div class="list-header-cell contacts-list-header-actions">Actions</div>
+        <div class="list-header-cell contacts-list-header-title">{{_ "HotList Members"}} – ({{membersCount}})</div>
+        <div class="list-header-cell contacts-list-header-code">{{_ "Id"}}</div>
+        <div class="list-header-cell contacts-list-header-actions">{{_ "Actions"}}</div>
     </div><!-- /.list-header -->
 </template>
 
 <template name="hotListMembersSearch">
     <div class="list-actions-cell btn-add-to-list">
         <button type="button" class="btn btn-default" id="sendEmailTemplate">
-            <span class="fa fa-envelope-o"></span> {{_ "Send mail"}}
+            <span class="fa fa-envelope-o"></span> {{_ "Send email"}}
         </button>
         <button type="button" class="btn btn-success addHotListMember" title="Add Contact">
             <span class="fa fa-plus"></span> {{_ "Add Member"}}
@@ -68,13 +68,7 @@
     </div>
     <!-- /.search-list -->
 
-    {{#if listIsLoading}}
-        {{_ "loading"}}
-    {{else}}
-        {{#unless isESSearch}}
-            {{>fastPagination name="hotListMembers" useKeys="true" containerClass="magic-pager"}}
-        {{/unless}}
-    {{/if}}
+    {{>fastPagination name="hotListMembers" useKeys="true" containerClass="magic-pager"}}
 </template>
 
 <template name="hotListMembersList">
@@ -104,11 +98,11 @@
             <a class="item-icon item-icon-contact" href="/contactable/{{_id}}">{{getAcronym displayName}}</a>
         </div>
         <div class="list-item-cell contact-list-item-title">
-            <div class="item-title single"><a href="/contactable/{{_id}}">{{displayName}}</a></div>
+            <div class="item-title single"><a href="/contactable/{{_id}}">{{_ displayName}}</a></div>
         </div>
         <div class="list-item-details contact-list-item-details">
             <div class="list-item-cell contact-list-item-code">{{_id}}</div>
-            <div class="list-item-cell contact-list-item-actions"><a class="pointer removeMember"><i class="fa fa-times"></i> Remove</a></div>
+            <div class="list-item-cell contact-list-item-actions"><a class="pointer removeMember"><i class="fa fa-times"></i> {{_ "Remove"}}</a></div>
         </div><!-- /.list-item-cell -->
     </div><!-- /.contact-list-item -->
 </template>

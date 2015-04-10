@@ -9,10 +9,11 @@ ContactableController = RouteController.extend({
             Meteor.subscribe('auxHotLists', this.params._id),
             GoogleMapsHandler,
             handlerContactalbeCounters,
-            Meteor.subscribe('singleHotList', Session.get('hotListId'))]
+            Meteor.subscribe('singleHotList', Session.get('hotListId')),
+            Meteor.subscribe('allHotLists')]
     },
     data: function () {
-           Session.set('entityId', this.params._id);
+        Session.set('entityId', this.params._id);
     },
     action: function () {
         if (!this.ready()) {
@@ -40,10 +41,10 @@ ContactableController = RouteController.extend({
     }
 });
 //
-//Utils.reactiveProp(self, 'editHotlistMode', false);
-//Template.contactable.created = function () {
-//    self.editHotlistMode=false;
-//};
+Utils.reactiveProp(self, 'editHotlistMode', false);
+Template.contactable.created = function () {
+    self.editHotlistMode=false;
+};
 
 Template.contactable.rendered = function () {
     $('body').scrollTop(0);
@@ -54,9 +55,37 @@ Template.contactable.destroy = function(){
     handlerContactalbeCounters.stop();
 };
 
+StatusNoteEditMode = {
+    val: false,
+    dep: new Deps.Dependency,
+    show: function() {
+        this.val = true;
+        this.dep.changed();
+    },
+    hide: function() {
+        this.val = false;
+        this.dep.changed()
+    }
+}
+
+Object.defineProperty(StatusNoteEditMode, "value", {
+    get: function() {
+        this.dep.depend();
+        return this.val;
+    },
+    set: function(newValue) {
+        this.val = newValue;
+        this.dep.changed();
+    }
+});
 
 var contactable;
+var contactDep = new Deps.Dependency;
+
 Template.contactable.helpers({
+    created: function () {
+        StatusNoteEditMode.hide();
+    },
     objTypeDisplayName: function () {
         return Utils.getContactableType(this);
     },
@@ -72,8 +101,18 @@ Template.contactable.helpers({
             Meteor.call('setLastUsed', Enums.lastUsedType.employee, contactable._id);
         }
 
+        contactDep.depend();
         return contactable;
     },
+
+    contactableStatusNote: function() {
+        return contactable.statusNote;
+    },
+
+    statusNoteEditMode: function() {
+        return StatusNoteEditMode.value;
+    },
+
     // Information to dynamic templates
     collection: function () {
         return Contactables;
@@ -101,6 +140,34 @@ Template.contactable.events({
     'click #edit-pic': function () {
         $('#edit-picture').trigger('click');
     },
+
+    'click #edit-mode-status-note': function(e) {
+        if (StatusNoteEditMode.value)
+            StatusNoteEditMode.hide();
+        else
+            StatusNoteEditMode.show();
+
+
+    },
+    'click #cancelStatusNote': function(e) {
+        if (StatusNoteEditMode.value)
+            StatusNoteEditMode.hide();
+    },
+    'click #saveStatusNote': function(e) {
+        var statusNote = $('input[name=statusNote]').val();
+        console.log(Session.get('entityId'));
+        Contactables.update({
+            _id: Session.get('entityId')
+        }, {
+            $set: {
+                'statusNote': statusNote
+            }
+        });
+        if (StatusNoteEditMode.value)
+            StatusNoteEditMode.hide();
+        contactDep.changed();
+    },
+
     'change #edit-picture': function (e) {
         var fsFile = new FS.File(e.target.files[0]),
             contactableId = Session.get('entityId');
@@ -193,60 +260,84 @@ var doTransform = function (type) {
 
 // Action Buttons
 Template.contactable_actions.helpers({
-    hasEmailAddress: function () {
-        var type = Utils.getContactableType(this);
-        var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
-        var email = _.find(this.contactMethods, function (cm) {
-            var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
-            if (type && type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
-                return true;
-        });
-        return (email) ? true : false;
-    },
-    emailTemplateContext: function () {
-        var type = Utils.getContactableType(this);
-        var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
-        var email = _.find(this.contactMethods, function (cm) {
-            var cmtype = _.findWhere(contactMethodsTypes, {_id: cm.type});
-            if (cmtype && cmtype.lookUpActions && _.contains(cmtype.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
-                return true;
-        });
-        var context = {};
-        if (type.search('/')>-1) {
-            var typearray = type.split(/[\s/]+/); // create array if multi type entity
-            var cats = [];
-            _.forEach(typearray, function (t) {
-                cats.push(Enums.emailTemplatesCategories[t.toLowerCase()]);
-                context[t]=Session.get('entityId');
-            });
-            context.category= cats;
-            context.recipient= email && email.value
-        }
-        else {
+  hasEmailAddress: function () {
+    var emailCMTypes = _.pluck(LookUps.find({
+      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+      lookUpActions: {
+        $in: [
+          Enums.lookUpAction.ContactMethod_Email,
+          Enums.lookUpAction.ContactMethod_PersonalEmail,
+          Enums.lookUpAction.ContactMethod_WorkEmail
+        ]
+      }
+    }).fetch(), '_id');
+    var email = _.find(contactable.contactMethods, function (cm) { return _.indexOf(emailCMTypes, cm.type) != -1 });
+    return (email) ? true : false;
+  },
 
-            context = {
-                category: [Enums.emailTemplatesCategories[type.toLowerCase()]],
-                recipient: email && email.value
-            };
-            context[type] = Session.get('entityId');
-        }
-        return context;
-    },
-    isAppCenterUser: function () {
-        // Registered users have the user property set
-        return !!contactable.user;
-    }
-    ,
-    alreadyInvited: function () {
-        // Invited users have the invitation property set
-        return !!contactable.invitation;
-    }
+  // Applicant Center
+  isAppCenterUser: function () {
+    // Registered users have the user property set
+    return !!contactable.user;
+  },
+  alreadyInvited: function () {
+    // Invited users have the invitation property set
+    return !!contactable.invitation;
+  }
 })
 ;
 Template.contactable_actions.events({
-    'click #sendAppCenterInvite': function () {
-        Utils.showModal('sendAppCenterInvitation', contactable);
-    }
+  'click #sendAppCenterInvite': function () {
+    Utils.showModal('sendAppCenterInvitation', contactable);
+  },
+  'click #sendEmailTemplate': function () {
+    var contactableType = Utils.getContactableType(this);
+    var categories = [];
+
+    // Get the category for each type of contact
+    _.each(contactableType.split('/'), function (type) {
+      switch(type) {
+        case 'Client':
+          categories.push(MergeFieldHelper.categories.client.value); break;
+        case 'Employee':
+          categories.push(MergeFieldHelper.categories.employee.value); break;
+        case  'Contact':
+          categories.push(MergeFieldHelper.categories.contact.value); break;
+      }
+    });
+
+    // Choose the template to send
+    Utils.showModal('sendEmailTemplateModal', {
+      categories: categories,
+      callback: function (result) {
+        if (result) {
+          var emailCMTypes = _.pluck(LookUps.find({
+            lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+            lookUpActions: {
+              $in: [
+                Enums.lookUpAction.ContactMethod_Email,
+                Enums.lookUpAction.ContactMethod_PersonalEmail,
+                Enums.lookUpAction.ContactMethod_WorkEmail
+              ]
+            }
+          }).fetch(), '_id');
+          var email = _.find(contactable.contactMethods, function (cm) { return _.indexOf(emailCMTypes, cm.type) != -1 });
+
+          Meteor.call('sendEmailTemplate', result, [{contactableId: contactable._id, email: email.value}], function (err, result) {
+            if (!err) {
+              $.gritter.add({
+                title:	'Email template sent',
+                text:	'The email template was successfully sent.',
+                image: 	'/img/logo.png',
+                sticky: false,
+                time: 2000
+              });
+            }
+          });
+        }
+      }
+    });
+  }
 });
 
 // Header
@@ -330,7 +421,7 @@ Template.contactable_nav.helpers({
                 template: 'contactable_documents',
                 icon: 'icon-document-1',
                 info: function () {
-                  return ContactableCounter.findOne('contactablesFiles').count + Resumes.find({employeeId: contactable._id}).count();
+                    return ContactableCounter.findOne('contactablesFiles').count + Resumes.find({employeeId: contactable._id}).count();
                 }
             },
             {
@@ -385,16 +476,15 @@ Template.contactable_nav.helpers({
                 }
             });
 
-
-          // Check if it has a doc Center account or has been invited to Applicant Center or is already a user
-          if (!!contactable.docCenter || contactable.invitation || contactable.user) {
-            tabs.push({
-              id: 'docCenter',
-              mobileDisplayName: 'Applicant Center',
-              displayName: 'Applicant Center',
-              template: 'docCenterTab'
-            });
-          }
+            // Check if it has a doc Center account or has been invited to Applicant Center or is already a user
+            if (!!contactable.docCenter || contactable.invitation || contactable.user) {
+                tabs.push({
+                    id: 'docCenter',
+                    mobileDisplayName: 'App. Center',
+                    displayName: 'Applicant Center',
+                    template: 'docCenterTab'
+                });
+            }
         }
         return tabs;
     }
@@ -402,6 +492,7 @@ Template.contactable_nav.helpers({
 
 
 var hotListMembershipsDep = new Deps.Dependency;
+var selectedValue = "";
 
 Template.hotListMembershipsBox.helpers({
     hotListMemberships: function () {
@@ -411,20 +502,58 @@ Template.hotListMembershipsBox.helpers({
     recentHotList: function () {
         var obj;
         if (Session.get('hotListId')) {
-            obj = {};
-            obj.hotListId = Session.get('hotListId');
-            obj.hotListDisplayName = Session.get('hotListDisplayName')
+            hotListMembershipsDep.depend();
+            var h = HotLists.findOne({_id: Session.get('hotListId'), members: contactable._id});
+            if(!h) {
+              obj = {};
+              obj.hotListId = Session.get('hotListId');
+              obj.hotListDisplayName = Session.get('hotListDisplayName')
+            }
         }
         return obj;
-    //},
-    //editHotlistMode: function () {
-    //    return self.editHotlistMode;
+    },
+    editHotlistMode: function () {
+            return self.editHotlistMode;
+    },
+  getHotList: function () {
+    var templateSelf = this;
+
+    return function (string) {
+      var self = this;
+      var result =  AllHotLists.find({members:{$nin: [contactable._id]}}).fetch();
+      var array = _.map(result, function (r) {
+            return {text: r.displayName, id: r._id};
+          });
+      self.ready(array);
+    };
+  },
+  hotListChanged: function () {
+    var self = this;
+    return function (value) {
+      self.value = value;
+      selectedValue = value;
     }
+  }
 });
+
+var addHotList = function () {
+  if (!selectedValue) {
+    return;
+  }
+  var hotlist = AllHotLists.findOne({_id: selectedValue});
+  hotlist.members.push(contactable._id);
+  hotlist.members = $.unique(hotlist.members);
+  Meteor.call('updateHotList', hotlist, function(err, cb){
+     if(!err){
+       hotListMembershipsDep.changed();
+     }
+  })
+};
+
 Template.hotListMembershipsBox.events({
-    //'click #edit-mode':function(e, ctx) {
-    //    self.editHotlistMode = ! self.editHotlistMode;
-    //},
+    'click #edit-mode':function(e, ctx) {
+        self.editHotlistMode = ! self.editHotlistMode;
+    },
     'click .removeHotList': function (e, ctx) {
         var hotlist = HotLists.findOne({_id: this._id});
         hotlist.members.splice(hotlist.members.indexOf(contactable._id), 1);
@@ -439,6 +568,9 @@ Template.hotListMembershipsBox.events({
 
         HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
         hotListMembershipsDep.changed();
+    },
+    'click .add-hotList': function (e, ctx) {
+        addHotList.call(this);
     }
 });
 

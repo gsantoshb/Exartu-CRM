@@ -4,14 +4,14 @@
             <div id="content-header" class="mini">
                 <div class="profile-content-header">
                     <h1 class="profile-name">
-                        {{#if employee}}<a href="/contactable/{{employee}}"> {{employeeDisplayName}} </a>{{/if}}
+                        {{#if employee}}<a href="/contactable/{{employee}}"> {{_ employeeDisplayName}} </a>{{/if}}
                         {{#if job}}
                             <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
-                                <a href="/job/{{job}}"> {{jobDisplayName}} @ </a>
-                                <a href="/contactable/{{clientId}}">{{clientDisplayName}}</a>
+                                <a href="/job/{{job}}"> {{_ jobDisplayName}} @ </a>
+                                <a href="/contactable/{{clientId}}">{{_ clientDisplayName}}</a>
                             </strong>
                         {{/if}}
-                        <h5 class="pull-right" style="max-width: 40%;"> {{statusNote}} </h5>
+                        <h5 class="pull-right" style="max-width: 40%;"> {{_ statusNote}} </h5>
                     </h1>
                 </div>
             </div>

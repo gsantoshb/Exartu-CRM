@@ -209,7 +209,10 @@ Router.map(function () {
     path: '/management/hierarchyMail',
     controller: 'HierarchyMailController'
   });
-
+  this.route('clickFunnel', {
+    path: '/management/clickFunnel',
+    controller: 'clickFunnelController'
+  });
   this.route('twilioManagement', {
     path: '/management/twilioManagement',
     controller: 'TwilioManagementController'
@@ -287,7 +290,11 @@ Router.map(function () {
   });
 
   this.route('emailTemplate', {
-    path: '/emailTemplate/:_id?',
+    path: '/emailTemplate/:_id',
+    controller: 'EmailTemplateController'
+  });
+  this.route('addEmailTemplate', {
+    path: '/addEmailTemplate/:category',
     controller: 'EmailTemplateController'
   });
   this.route('emailTemplates', {
@@ -303,6 +310,11 @@ Router.map(function () {
   this.route('documentInstance', {
     path: '/documentInstance/:id',
     controller: 'InstanceController'
+  });
+
+  this.route('cardReader', {
+    path: '/management/cardReader',
+    controller: 'CardReaderController'
   });
 
   this.route('getContactCSV', {

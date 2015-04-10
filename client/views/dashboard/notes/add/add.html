@@ -1,0 +1,32 @@
+<template name="dashboardAddNote">
+    <div class="modal fade" id="addNoteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">×</a>
+                    <h4>Note</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        {{#with note}}
+                            <fieldset>
+                                <div class="form-group {{hasError 'msg'}}">
+                                    <label class="control-label">Note:</label>
+                                <textarea id="note-input" value="{{msg}}" class="form-control msg add-note-txt input-lg"
+                                          rows="3" placeholder="Add note here..."></textarea>
+                                    <!--<input class="form-control msg" value="{{msg}}"/>-->
+                                    <span>{{error.msg}}</span>
+                                </div>
+                            </fieldset>
+                        {{/with}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button class="btn btn-success accept " disabled="{{addDisabled}}">Save {{objTypeName}}</button>
+                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
