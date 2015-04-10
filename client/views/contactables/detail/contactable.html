@@ -96,20 +96,20 @@
             </div>
         {{/if}}
 
-        <h1 class="title">{{displayName}}</h1>
+        <h1 class="title">{{_ displayName}}</h1>
 
         <div class="desc">
             {{#if person}}
                 {{#if person.jobTitle}}
-                    {{person.jobTitle}}
+                    {{_ person.jobTitle}}
                 {{/if}}
             {{/if}}
 
             {{#if Contact.clientName}}
-                @&nbsp;<a href="/contactable/{{Contact.client}}">{{Contact.clientName}}</a>
+                @&nbsp;<a href="/contactable/{{Contact.client}}">{{_ Contact.clientName}}</a>
             {{/if}}
 
-            {{#if Client.department}}<br>{{Client.department}}{{/if}}
+            {{#if Client.department}}<br>{{_ Client.department}}{{/if}}
         </div>
     </div>
 

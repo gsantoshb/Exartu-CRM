@@ -316,13 +316,7 @@ Template.dashboard.created = function () {
         };
 
         Meteor.subscribe('getActivities', searchQuery, options);
-        var handler = Meteor.subscribe('getChartActivities');
-        if(handler.ready()) {
-            // activities chart
-            setActivityTrackers();
-            setChartData();
-            showChart.set(true);
-        }
+
     });
 
     $('body').addClass('dashboard-page');

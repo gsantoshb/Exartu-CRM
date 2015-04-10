@@ -3,7 +3,7 @@
         <div class="box">
             <div class="box-header-2">
                 <div class="box-title">
-                        <span>Activity</span>
+                        <span>{{_ "Activity"}}</span>
                 </div>
                 <!--<a class="box-title visible-sm visible-xs" href="#activity-body" data-toggle="collapse" >-->
                     <!--Activity-->
@@ -60,17 +60,17 @@
 </template>
 
 <template name="jobActivityPlacementsEdit">
-    {{userName userId}} Edited the <a href="/placement/{{entityId}}"> placement </a>
+    {{userName userId}} {{_ "Edited the"}} <a href="/placement/{{entityId}}"> {{_ "placement"}} </a>
 </template>
 <template name="jobActivityPlacementsAdd">
-    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">Added </a><a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
+    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">{{_ "Added"}} </a><a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
 </template>
 <template name="jobActivityAssignmentAdd">
-    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">Assigned </a><a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
+    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">{{_ "Assigned"}} </a><a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
 </template>
 <template name="jobActivityCandidateAdd">
-    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">Added as Candidate </a><a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
+    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">{{_ "Added as Candidate"}} </a><a href="/contactable/{{data.employee}}">{{employeeName data.employee}}</a>
 </template>
 <template name="jobActivityJobAdd">
-    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">Created </a><a href="/job/{{entityId}}">{{data.publicJobTitle}}</a>
+    {{userName userId}}  <a href="/placement/{{entityId}}" class="bold black">{{_ "Created"}} </a><a href="/job/{{entityId}}">{{data.publicJobTitle}}</a>
 </template>

@@ -109,7 +109,7 @@ ActivityViews = new View('activities', {
     self.publish({cursor: jobsFilesCursor, to: 'jobs'});
 
     //contactable cursor
-    var contactablesCursor = Contactables.find({hierId: hierId});
+    var contactablesCursor = Contactables.find({_id: {$in: contactablesToPublish}});
     self.publish({cursor: contactablesCursor, to: 'contactables'});
 
 

@@ -22,7 +22,7 @@
     <div class="record-add row">
         <div class="add-box-head col-xs-12 col-md-12 col-lg-12">
             <div class="add-item-icon"><i class="icon-profile-business-man"></i></div>
-            <h2>Past Jobs</h2>
+            <h2>{{_ "Past Jobs"}}</h2>
         </div>
 
         <div class="add-box-content col-xs-12 col-md-12">
@@ -118,12 +118,12 @@
                     {{/if}}
 
                     <!-- Save button -->
-                    <button type="submit" class="btn btn-success pull-right block m-b">Add past job</button>
+                    <button type="submit" class="btn btn-success pull-right block m-b">{{_ "Add past job"}}</button>
                 {{else}}
                     <!-- Submitting feedback -->
                     <div class="col-md-10 col-md-offset-1">
                         <div class="progress progress-striped active">
-                            <div style="width: 100%;" class="progress-bar progress-bar-info">Adding record...</div>
+                            <div style="width: 100%;" class="progress-bar progress-bar-info">{{_ "Adding"}} record...</div>
                         </div>
                     </div>
                 {{/unless}}
@@ -144,23 +144,23 @@
                         {{> employeePastJobEditItem}}
                     {{else}}
                         <div class="list-3-actions">
-                            <a class="editPastJobRecord pointer"><i class="fa fa-edit"></i> Details</a>
+                            <a class="editPastJobRecord pointer"><i class="fa fa-edit"></i> {{_ "Details"}}</a>
                             <span class="bullet-spacer">·</span>
-                            <a class="deletePastJobRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
+                            <a class="deletePastJobRecord pointer"><i class="fa fa-trash-o"></i> {{_ "Delete"}}</a>
                         </div>
                         <div class="list-3-item-meta-top">{{company}}</div>
                         {{#if supervisor}}
-                            <div class="list-3-item-meta-top">Supervised by {{supervisor}}</div>
+                            <div class="list-3-item-meta-top">{{_ "Supervised by"}} {{supervisor}}</div>
                         {{/if}}
                         <h4 class="list-3-item-title">{{position}}</h4>
                         <div class="list-3-item-meta-top">{{location}}</div>
                         <small class="text-muted">
                             <i class="fa fa-calendar"></i>
-                            Start: {{formattedDate start "MMMM YYYY"}} -
+                            {{_ "Start"}}: {{formattedDate start "MMMM YYYY"}} -
                             {{#if end}}
-                                End: {{formattedDate end "MMMM YYYY"}}
+                                {{_ "End"}}: {{formattedDate end "MMMM YYYY"}}
                             {{else}}
-                                to present
+                                {{_ "to present"}}
                             {{/if}}
                         </small>
                     {{/if}}
@@ -266,14 +266,14 @@
 
             <!-- Action buttons -->
             <div class="pull-right">
-                <span class="btn btn-default cancel">Cancel</span>
-                <button class="btn btn-success">Save changes</button>
+                <span class="btn btn-default cancel">{{_ "Cancel"}}</span>
+                <button class="btn btn-success">{{_ "Save changes"}}</button>
             </div>
         {{else}}
             <!-- Submitting feedback -->
             <div class="col-md-10 col-md-offset-1">
                 <div class="progress progress-striped active">
-                    <div style="width: 100%;" class="progress-bar progress-bar-info">Saving changes...</div>
+                    <div style="width: 100%;" class="progress-bar progress-bar-info">{{_ "Saving changes"}}...</div>
                 </div>
             </div>
         {{/unless}}
