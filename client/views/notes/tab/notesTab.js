@@ -229,6 +229,10 @@ var query = new Utils.ObjectDefinition({
 Template.notesTabList.created = function () {
     var self = this;
 
+    Meteor.subscribe('allContactables');
+    Meteor.subscribe('allJobs');
+    Meteor.subscribe('allPlacements');
+
     Meteor.autorun(function () {
             searchQuery={};
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
@@ -411,6 +415,7 @@ AutoForm.addInputType('linkInput',{
 Template.linksAutoForm.events({
     'click #toggleAddNoteModal': function(){
         Utils.showModal('noteAdd', function(data) {
+            debugger;
             data = data || {};
 
             if(_.findWhere(links, {id: data.id})) return false;

@@ -2,30 +2,30 @@
     <div class="box">
         <div class="box-header-2">
             <a class="btn-action editHotList pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
-            <div class="box-title">HotList Details</div>
+            <div class="box-title">{{_ "HotList Details"}}</div>
         </div>
         <div class="box-content-md">
             <table class="table box-table table-striped">
                 <tbody>
                 {{#with hotList}}
                     <tr>
-                        <td>Status note:</td>
+                        <td>{{_ "Status note"}}:</td>
                         <td>
                             {{#objectProperty property=statusNote editable=editMode}}
-                                <input class="form-control" type="text" value="{{value}}">
+                                <input class="form-control" type="text" value="{{_ value}}">
                             {{else}}
-                                <span >{{value}}</span>
+                                <span >{{_ value}}</span>
                             {{/objectProperty}}
                         </td>
                     </tr>
                     <tr>
-                        <td>Active Status</td>
+                        <td>{{_ "Active Status"}}</td>
                         <td>
                             {{#objectProperty property=activeStatus editable=editMode}}
                                 {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                             {{else}}
                                 <strong>
-                                    <strong>{{displayName}}</strong>
+                                    <strong>{{_ displayName}}</strong>
                                 </strong>
                             {{/objectProperty}}
                         </td>
@@ -43,10 +43,10 @@
             <div class="box-header-2" style="height: 60px">
                 <div class="pull-right">
                     <span class="btn btn-default cancelButton">
-                        Cancel
+                        {{_ "Cancel"}}
                     </span>
                     <span class="btn btn-info saveDetailsButton">
-                        Save
+                        {{_ "Save"}}
                     </span>
                 </div>
             </div>

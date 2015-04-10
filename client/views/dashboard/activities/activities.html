@@ -158,7 +158,7 @@
                         {{#if displayUserName userAssigned}}
                             {{displayUserName userAssigned}} <span class="desc">is assigned to</span>
                         {{/if}}
-                        <a class="pointer" href="/tasks/{{_id}}">{{>showMore text=msg limit=60}}</a>
+                        <a class="pointer" href="/tasks/{{_id}}">{{>showMore text=msg limit=50}}</a>
                         <span class="desc">&ndash; task created by {{displayUserName userId}}</span>
                     {{/with}}
                     {{#each links}}
