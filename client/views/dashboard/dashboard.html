@@ -58,7 +58,9 @@
                             <div class="box-body">
                                 <ul class="list-type-6">
                                     {{#each getTeamMembersTrackers}}
-                                        <li><span class="hightlight-1">{{counter}}</span> {{displayName}}</li>
+                                        {{#if counter}}
+                                            <li><span class="hightlight-1">{{counter}}</span> {{displayName}}</li>
+                                        {{/if}}
                                     {{/each}}
                                 </ul>
                                 <a href="#"></a>
