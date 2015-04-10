@@ -69,10 +69,14 @@ var setLeadTrackers = function(){
 };
 
 var setTeamMembersTrackers = function(){
-    return false; //@todo review this, is not working properly
     if(Meteor.user() != null) {
         var hierId = Meteor.user().currentHierId;
         var members = Meteor.users.find({currentHierId: hierId}).fetch();
+        var lkps = LookUps.find({
+            lookUpCode: Enums.lookUpCodes.active_status,
+            hierId: hierId,
+            sortOrder: {$gt: 0}
+        }, {sort: {sortOrder: 1}}).fetch();
 
         var trackers = [];
 

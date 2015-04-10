@@ -388,10 +388,6 @@ Meteor.publish('getChartActivities', function() {
 Meteor.publish('getActivities', function(query, options){
   //console.log(options);
   //console.log(query);
-  if(options.limit > ActivityViews.find(searchQuery, options).count()) {
-    options.limit = 0;
-  }
-
   var searchQuery = {};
 
   var types = [];
@@ -412,8 +408,12 @@ Meteor.publish('getActivities', function(query, options){
     }
   }
 
-  //console.log(searchQuery);
-  var activities = Utils.filterCollectionByUserHier.call(this, ActivityViews.find(searchQuery, options));
+  var activitiesCursor = ActivityViews.find(searchQuery, options);
+  if(options.limit > activitiesCursor.count()) {
+    options.limit = 0;
+  }
+
+  var activities = Utils.filterCollectionByUserHier.call(this, activitiesCursor);
   return activities;
 });
 
