@@ -12,7 +12,7 @@ var end;
 var init = false;
 var loadingCount = false;
 var currentMonth = new ReactiveVar();
-
+var currentDay = new Date();
 CalendarController = RouteController.extend({
     template: 'agendaBox'
 });
@@ -44,6 +44,22 @@ Meteor.autorun(function () {
 Template.agendaBox.created=function() {
     var calendarDiv = $('.fc');
     startEndDep.changed();
+    observe = CalendarTasks.find({}).observe({
+      //TODO: to make it completly reactive it need the add and remove
+      changed: function (newDocument, oldDocument) {
+        var calendarDiv = $('.fc');
+        var event = _.find(calendarDiv.fullCalendar('clientEvents'), function (ev) {
+          return oldDocument._id == ev.id;
+        });
+
+        event.title = newDocument.msg;
+        event.start = newDocument.begin;
+        event.end = newDocument.end;
+        calendarDiv.fullCalendar('updateEvent', event);
+        renderDay();
+
+      }
+    });
 };
 
 Template.agendaBox.destroyed=function() {};
@@ -55,6 +71,51 @@ var rerender = _.debounce(function () {
     calendarDiv.find('.fc-month-view table .fc-row.fc-widget-header').attr('style', '');
     init = true;
 },650);
+
+var renderDay = function(){
+  var calendarDiv = $('.fc');
+  var events = [];
+  var eventCount = calendarDiv.fullCalendar( 'clientEvents', function(eventObj){
+    if( eventObj.start.format('YYYY-MM-DD') == currentDay.format('YYYY-MM-DD') ) {
+      events.push(eventObj);
+      return true;
+    } else {
+      return false;
+    }
+  }).length;
+
+  //alert('we have '+eventCount+' events');
+  //console.log(events);
+
+  //console.log('intra aici');
+  var html = '';
+  if( $('.calendar-widget .list-type-8').length )
+    $('.calendar-widget .list-type-8').html('');
+  else
+    $('.calendar-widget').append('<ul class="list-type-8"></ul>');
+
+  _.each(events, function(item){
+    var event = Tasks.findOne({_id: item.id});
+    html = '<li><a class="item-icon item-icon-tasks item-icon-sm" id="'+item.id+'" href="#"><i class="ico-tasks" id="'+item.id+'"></i></a><div class="item-content"><div class="title"><a href="#" id="'+item.id+'">';
+    html += item.title;
+
+    if(event && event.assign && event.assign.length){
+      var user = Meteor.users.findOne({_id:event.assign[0]});
+      if(user){
+        var name = (user.username ? user.username : user.emails[0].address);
+        html += '<p class="desc">'+name+'</p>';
+      }
+      else{
+        html += '<p class="desc"><i>unassigned</i></p>';
+      }
+    }
+    else
+      html += '<p class="desc">unassigned</p>';
+
+    html += '</a></div></div></li>';
+    $('.calendar-widget .list-type-8').append(html);
+  });
+}
 
 Template.agendaBox.helpers({
 
@@ -96,7 +157,7 @@ Template.agendaBox.helpers({
                 //this correct the calendar end date
                 //end = new Date(endAux.setDate(endAux.getDate()+1));
                 startEndDep.changed();
-            },
+           },
             eventRender: function( event, element, view ){
                 var currentDate = event.start.format('YYYY-MM-DD');
                 var calendarDiv = $('.fc');
@@ -138,49 +199,8 @@ Template.agendaBox.helpers({
                 //console.log(eventCount);
             },
             dayClick: function(date, jsEvent, view) {
-                var calendarDiv = $('.fc');
-                var events = [];
-                var eventCount = calendarDiv.fullCalendar( 'clientEvents', function(eventObj){
-                    if( eventObj.start.format('YYYY-MM-DD') == date.format('YYYY-MM-DD') ) {
-                        events.push(eventObj);
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }).length;
-
-                //alert('we have '+eventCount+' events');
-                //console.log(events);
-                if(events.length){
-                    //console.log('intra aici');
-                    var html = '';
-                    if( $('.calendar-widget .list-type-8').length )
-                        $('.calendar-widget .list-type-8').html('');
-                    else
-                        $('.calendar-widget').append('<ul class="list-type-8"></ul>');
-
-                    _.each(events, function(item){
-                        var event = Tasks.findOne({_id: item.id});
-                        html = '<li><a class="item-icon item-icon-tasks item-icon-sm" href="/tasks/'+item.id+'"><i class="ico-tasks"></i></a><div class="item-content"><div class="title"><a href="/tasks/'+item.id+'">';
-                        html += item.title;
-
-                        if(event && event.assign && event.assign.length){
-                            var user = Meteor.users.findOne({_id:event.assign[0]});
-                            if(user){
-                                var name = (user.username ? user.username : user.emails[0].address);
-                                html += '<p class="desc">'+name+'</p>';
-                            }
-                            else{
-                                html += '<p class="desc"><i>unassigned</i></p>';
-                            }
-                        }
-                        else
-                            html += '<p class="desc">unassigned</p>';
-
-                        html += '</a></div></div></li>';
-                        $('.calendar-widget .list-type-8').append(html);
-                    });
-                }
+                currentDay = date;
+                renderDay();
             },
             eventAfterAllRender: function(view){
                 var calendarDiv = $('.fc');
@@ -276,6 +296,13 @@ Template.agendaBox.helpers({
 
 
 Template.agendaBox.events = {
+    'click .list-type-8': function(e){
+       var task = CalendarTasks.findOne({_id: e.target.id});
+       if(task){
+         Utils.showModal('addEditTask', task);
+       }
+      loadingDep.changed();
+    },
     'click #next-month-btn': function () {
 
         var calendarDiv = $('.fc');

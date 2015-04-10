@@ -27,8 +27,6 @@ ExartuConfig = {
   // Twilio
   TW_accountSID: undefined,
   TW_authToken: undefined,
-  // Nodetime profiler
-  Nodetime_Key: undefined,
   PageSize: 10,
   // Applicant Center URL
   ApplicantCenter_URL: undefined,
