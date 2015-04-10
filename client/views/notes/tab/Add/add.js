@@ -1,16 +1,17 @@
-var entityId, callback, typeDep;
-//var isEditing = new ReactiveVar(false), links, typeDep, linkedDep;
+var entityId = new ReactiveVar(),
+  callback,
+  selectedType = new ReactiveVar();
 
 Template.noteAdd.created = function () {
     var self = this;
 
     callback = this.data[0];
 
-    typeDep = new Tracker.Dependency;
+    //typeDep = new Tracker.Dependency;
 
-    Meteor.subscribe('allContactables');
-    Meteor.subscribe('allJobs');
-    Meteor.subscribe('allPlacements');
+    //Meteor.subscribe('allContactables');
+    //Meteor.subscribe('allJobs');
+    //Meteor.subscribe('allPlacements');
 };
 
 
@@ -23,40 +24,73 @@ Template.noteAdd.helpers({
             return Enums.linkTypes[key];
         });
     },
-    entities: function () {
-        typeDep.depend();
-        var DOM = UI.getView()._domrange;
-        if (!DOM)
-            return;
-
-        var selectedType = DOM.$('#noteTypeSelect').val();
-        selectedType = parseInt(selectedType);
-        switch (selectedType) {
-            case Enums.linkTypes.contactable.value:
-                return AllContactables.find();
-            case Enums.linkTypes.job.value:
-                return AllJobs.find();
-            case Enums.linkTypes.placement.value:
-                return AllPlacements.find();
-            default :
-                return [];
+    getEntity: Utils.getEntityFromLinkForAdd,
+    showSelect: function () {
+      return _.isNumber(selectedType.get())
+    },
+    getEntities: function () {
+        return function (searchString) {
+            var self = this;
+            switch (selectedType.get()) {
+                case Enums.linkTypes.contactable.value:
+                    Meteor.call('findContact', searchString, function (err, result) {
+                        if (err) {
+                            return console.log(err);
+                        }
+                        self.ready(_.map(result, function (contactable) {
+                            Utils.extendContactableDisplayName(contactable);
+                            return {
+                                id: contactable._id,
+                                text: contactable.displayName
+                            }
+                        }))
+                    });
+                    break;
+                case Enums.linkTypes.job.value:
+                    Meteor.call('findJob', searchString, function (err, result) {
+                        if (err){
+                            return console.log(err);
+                        }
+                        self.ready(_.map(result, function (job) {
+                            return  {
+                                id: job._id,
+                                text: job.publicJobTitle
+                            }
+                        }))
+                    });
+                    break;
+                case Enums.linkTypes.placement.value:
+                    Meteor.call('findPlacement', searchString, function (err, result) {
+                        if (err){
+                            return console.log(err);
+                        }
+                        self.ready(_.map(result, function (placement) {
+                            return  {
+                                id: placement._id,
+                                text: placement.displayName
+                            }
+                        }))
+                    });
+                    break;
+                default :
+                    return [];
+            }
         }
     },
-    getEntity: Utils.getEntityFromLinkForAdd
+    onChange: function () {
+        return function (value) {
+            entityId.set(value);
+        }
+    }
 });
 
-var link = function (ctx, link) {
-
-};
-
 Template.noteAdd.events({
-    'change #noteTypeSelect': function () {
-        typeDep.changed();
+    'change #noteTypeSelect': function (e) {
+        selectedType.set(parseInt(e.target.value));
     },
     'click #noteLinkEntity': function () {
-        var type = UI.getView()._templateInstance.$('#noteTypeSelect').val();
-        type = parseInt(type);
-        var entity = UI.getView()._templateInstance.$('#noteEntitySelect').val();
+        var type = selectedType.get();
+        var entity = entityId.get();
         if (!_.isNumber(type) || !entity) return;
 
         var link = {
@@ -65,11 +99,5 @@ Template.noteAdd.events({
         };
 
         callback(link);
-    },
-    'click #editLinks': function () {
-        isEditing.set(true);
-    },
-    'click #editLinksDone': function () {
-        isEditing.set(false);
     }
 });
