@@ -5,86 +5,85 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <section class="box-type-4 get-started">
+                    <div class="center-v has-min-height">
+                        {{#if isRegistering}}
 
-                    {{#if isRegistering}}
+                            <h2 class="headline">{{_ "Register"}}</h2>
 
-                        <h2 class="headline">{{_ "Register"}}</h2>
-
-                        {{#autoForm schema="RegisterSchema" class="form-1" id="registerForm" validation="blur"}}
-                            <ol>
-                                <li class="{{#if afFieldIsInvalid name='email'}}error{{else}}{{#if emailError}}error{{/if}}{{/if}}">
-                                    {{> afFieldInput name='email' class="form-control form-control-1 smartField" placeholder="Email address" data-label="email-label"}}
-                                    {{#if afFieldIsInvalid name='email'}}
-                                        <label class="form-label" id="email-label">{{afFieldMessage name='email'}}</label>
-                                    {{else}}
-                                        {{#if emailError}}
-                                            <label class="form-label" id="email-label">{{emailError}}</label>
+                            {{#autoForm schema="RegisterSchema" class="form-1" id="registerForm" validation="blur"}}
+                                {{#if error}}
+                                    <div class="error-msg">{{error}}</div>
+                                {{/if}}
+                                <ol>
+                                    <li class="{{#if afFieldIsInvalid name='email'}}error{{else}}{{#if emailError}}error{{/if}}{{/if}}">
+                                        {{> afFieldInput name='email' class="form-control form-control-1 smartField" placeholder="Email address" data-label="email-label"}}
+                                        {{#if afFieldIsInvalid name='email'}}
+                                            <label class="form-label" id="email-label">{{afFieldMessage name='email'}}</label>
                                         {{else}}
-                                            <label class="form-label" id="email-label">Email</label>
+                                            {{#if emailError}}
+                                                <label class="form-label" id="email-label">{{emailError}}</label>
+                                            {{else}}
+                                                <label class="form-label" id="email-label">Email</label>
+                                            {{/if}}
                                         {{/if}}
-                                    {{/if}}
-                                    <label class="icon-holder"><i class="fa fa-envelope"></i></label>
-                                </li>
+                                        <label class="icon-holder"><i class="fa fa-envelope"></i></label>
+                                    </li>
 
-                                <li class="{{#if afFieldIsInvalid name='password'}}error{{/if}}">
-                                    {{> afFieldInput name='password' type="password" class="form-control form-control-1 smartField" placeholder="Password" data-label="password-label"}}
-                                    {{#if afFieldIsInvalid name='password'}}
-                                        <label class="form-label" id="password-label">{{afFieldMessage name='password'}}</label>
-                                    {{else}}
-                                        <label class="form-label" id="password-label">Password</label>
-                                    {{/if}}
-                                    <label class="icon-holder"><i class="fa fa-lock"></i></label>
-                                </li>
+                                    <li class="{{#if afFieldIsInvalid name='password'}}error{{/if}}">
+                                        {{> afFieldInput name='password' type="password" class="form-control form-control-1 smartField" placeholder="Password" data-label="password-label"}}
+                                        {{#if afFieldIsInvalid name='password'}}
+                                            <label class="form-label" id="password-label">{{afFieldMessage name='password'}}</label>
+                                        {{else}}
+                                            <label class="form-label" id="password-label">Password</label>
+                                        {{/if}}
+                                        <label class="icon-holder"><i class="fa fa-lock"></i></label>
+                                    </li>
 
-                                <li class="{{#if afFieldIsInvalid name='confirmPassword'}}error{{/if}}">
-                                    {{> afFieldInput name='confirmPassword' type="password" class="form-control form-control-1 smartField" placeholder="Confirm password" data-label="password-confirm-label"}}
-                                    {{#if afFieldIsInvalid name='confirmPassword'}}
-                                        <label class="form-label" id="password-confirm-label">{{afFieldMessage name='confirmPassword'}}</label>
-                                    {{else}}
-                                        <label class="form-label" id="password-confirm-label">Confirm Password</label>
-                                    {{/if}}
-                                    <label class="icon-holder"><i class="fa fa-lock"></i></label>
-                                </li>
+                                    <li class="{{#if afFieldIsInvalid name='confirmPassword'}}error{{/if}}">
+                                        {{> afFieldInput name='confirmPassword' type="password" class="form-control form-control-1 smartField" placeholder="Confirm password" data-label="password-confirm-label"}}
+                                        {{#if afFieldIsInvalid name='confirmPassword'}}
+                                            <label class="form-label" id="password-confirm-label">{{afFieldMessage name='confirmPassword'}}</label>
+                                        {{else}}
+                                            <label class="form-label" id="password-confirm-label">Confirm Password</label>
+                                        {{/if}}
+                                        <label class="icon-holder"><i class="fa fa-lock"></i></label>
+                                    </li>
 
-                                <li>
-                                    {{> afFieldInput name='language' class="form-control form-control-1 smartField" type="select" options=languageOptions onChange="TAPi18n.setLanguage(this.value);" data-label="language-label" defaultValue="en"}}
-                                    <label class="icon-holder"><i class="fa fa-language"></i></label>
-                                </li>
-                            </ol>
+                                    <li>
+                                        {{> afFieldInput name='language' class="form-control form-control-1 smartField" type="select" options=languageOptions onChange="TAPi18n.setLanguage(this.value);" data-label="language-label" defaultValue="en"}}
+                                        <label class="icon-holder"><i class="fa fa-language"></i></label>
+                                    </li>
+                                </ol>
 
-                            <button class="btn-custom-4 pink btn-block">Create my account</button>
+                                <button class="btn-custom-4 pink btn-block">Create my account</button>
 
-                            <div class="more">
-                                <p><a href="/login">I already have an account</a></p>
-                            </div>
-                        {{/autoForm}}
+                                <div class="more">
+                                    <p><a href="/login">I already have an account</a></p>
+                                </div>
+                            {{/autoForm}}
 
-                        <div class="decoration"></div>
+                            <div class="decoration"></div>
+                        {{else}}
 
-                        <div class="alert-box alert-danger" style="margin-top: 20px;">{{error}}</div>
 
-                    {{else}}
-
-                        <div class="center-v has-min-height" style="min-height: 571px;">
                             <div class="center-v-content">
                                 <div class="big-msg-icon"><i class="icon-check-1"></i></div>
                                 <h2 class="headline">{{_ "Your registration is now complete."}}</h2>
                                 <p class="text-center text-muted">{{_ "Please verify your account via the email we just sent you. Thank you."}}</p>
                                 <div class="decoration"></div>
                             </div><!-- /.center-v-content -->
-                        </div>
 
-                    {{/if}}
+                        {{/if}}
 
-                    {{#if isSubmitting}}
+                        {{#if isSubmitting}}
 
-                        <div>Creating account. Please wait a few seconds....</div>
-                        <div class="progress progress-striped active">
-                            <div style="width: 100%;" class="progress-bar progress-bar-info"></div>
-                        </div>
+                            <div>Creating account. Please wait a few seconds....</div>
+                            <div class="progress progress-striped active">
+                                <div style="width: 100%;" class="progress-bar progress-bar-info"></div>
+                            </div>
 
-                    {{/if}}
-
+                        {{/if}}
+                    </div>
                 </section><!-- -->
             </div><!-- /col-md-offset-6 -->
         </div><!-- /.row -->

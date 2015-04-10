@@ -83,6 +83,10 @@ AutoForm.hooks({
 
 Template.login.rendered = function(){
   $('body').addClass('login-register');
+  $('.has-min-height') .css({'min-height': ($(window).height() - 35)+'px'});
+  $(window).resize(function(){
+    $('.has-min-height') .css({'min-height': ($(window).height() - 35)+'px'});
+  });
 };
 
 Template.login.destroyed = function(){
