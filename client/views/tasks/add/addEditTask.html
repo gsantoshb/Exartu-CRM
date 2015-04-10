@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close" data-dismiss="modal">×</a>
-                    <h4>Task</h4>
+                    <h4>{{_ "Task"}}</h4>
                 </div>
                 <div class="modal-body">
                     <div>
@@ -12,28 +12,28 @@
                         {{#with task}}
                             <fieldset>
                                 <div class="form-group {{hasError 'msg'}}">
-                                    <label class="control-label">Task:</label>
+                                    <label class="control-label">{{_ "Task"}}:</label>
                                     <textarea id="task-input" value="{{msg}}" class="form-control msg input-lg"
-                                              rows="6" placeholder="Add task here..."></textarea>
+                                              rows="6" placeholder= {{_ 'Add task here'}}...></textarea>
                                     <span>{{error.msg}}</span>
                                 </div>
                             </fieldset>
                             <fieldset>
                                 <div class="form-group begin">
-                                    <label class="control-label">Begin:</label>
+                                    <label class="control-label">{{_ "Begin"}}:</label>
                                     <br/>
                                     {{#dateTimePicker value=begin options=datepickerOptions}}
                                     {{/dateTimePicker}}
                                 </div>
                             </fieldset>
                             <div id="collapsed-btn-group" >
-                                <button class="btn btn-sm btn-link" type="button"  data-toggle="collapse" data-target="#advanced-info"><span class={{iconCollapsed}}></span> Advanced</button>
+                                <button class="btn btn-sm btn-link" type="button"  data-toggle="collapse" data-target="#advanced-info"><span class={{iconCollapsed}}></span> {{_ "Advanced"}}</button>
                             </div>
                             <br>
                             <div id="advanced-info" class="collapse">
                             <fieldset>
                                 <div class="form-group end {{hasError 'end'}}">
-                                    <label class="control-label">End:</label>
+                                    <label class="control-label">{{_ "End"}}:</label>
                                     <br/>
                                     {{#dateTimePicker value=end options=datepickerOptions}}
                                     {{/dateTimePicker}}
@@ -43,7 +43,7 @@
 
                             <fieldset>
                                 <div class="form-group {{hasError 'assign'}}">
-                                    <label class="control-label">Assign:</label>
+                                    <label class="control-label">{{_ "Assign"}}:</label>
                                     <select class="form-control assign" >
                                         {{#each users}}
                                             <option value="{{_id}}" selected="{{isSelected}}">{{displayUserName _id}}</option>
@@ -55,14 +55,14 @@
                             <fieldset>
                                 <div class="checkbox">
                                     <label>
-                                        <input class="isCompleted" type="checkbox" checked="{{completed}}" />Completed
+                                        <input class="isCompleted" type="checkbox" checked="{{completed}}" />{{_ "Completed"}}
                                     </label>
                                 </div>
                             </fieldset>
                             <fieldset>
                                 {{#if completed}}
                                     <div class="form-group completed">
-                                        <label class="control-label">Date completed:</label>
+                                        <label class="control-label">{{_ "Date completed"}}:</label>
                                         <br/>
                                         {{#dateTimePicker value=completed options=datepickerOptions}}
                                         {{/dateTimePicker}}
@@ -72,10 +72,10 @@
                             </div>
 
                             {{else}}
-                            not found
+                            {{_ "not found"}}
                         {{/with}}
                       {{else}}
-                          loading...
+                          {{_ "loading"}}...
                        {{/if}}
 
 
@@ -85,26 +85,26 @@
                     {{#if isEditing}}
                         {{#if task.inactive}}
                             <a class="btn btn-info pull-left archive">
-                                Recover
+                                {{_ "Recover"}}
                             </a>
                         {{else}}
                             <a class="btn btn-danger pull-left archive">
-                                Archive
+                                {{_ "Archive"}}
                             </a>
                         {{/if}}
                         <a class="btn btn-info pull-left push-oneday">
-                            Push 1 day
+                            {{_ "Push 1 day"}}
                         </a>
                         <a class="btn btn-info pull-left push-oneweek">
-                            week
+                            {{_ "week"}}
                         </a>
                         <a class="btn btn-info pull-left push-onemonth">
-                            month
+                            {{_ "month"}}
                         </a>
                     {{/if}}
 
-                    <a class="btn btn-success accept"  disabled="{{addDisabled}}">Save {{objTypeName}}</a>
-                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                    <a class="btn btn-success accept"  disabled="{{addDisabled}}">{{_ "Save"}} {{_ objTypeName}}</a>
+                    <a href="#" class="btn" data-dismiss="modal">{{_ "Close"}}</a>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <a href="#"><img alt="Aida" src="../img/logo.png"></a>
-                    <h1> You have been invited to the hierarchy '{{hierName}}'</h1>
+                    <h1> {{_ "You have been invited to the hierarchy"}} '{{hierName}}'</h1>
                 </div>
             </div>
         </div><!-- /.container -->
@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <h1>Sign Up</h1>
+                <h1>{{_ "Sign Up"}}</h1>
                 {{#autoForm schema="RegisterFromInvitationSchema" doc=userInfo id="registerFromInvitation" validation="blur"}}
                     <fieldset>
                         <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button class="btn btn-primary top-10 btn-lg">Create Account</button>
+                            <button class="btn btn-primary top-10 btn-lg">{{_ "Create Account"}}</button>
                         </div>
                     </fieldset>
                 {{/autoForm}}
@@ -50,8 +50,8 @@
                 <div class="row">
                     <div class="col-md-8 text-center">
                         <br><br>
-                        <h4>Take Aida with you.</h4>
-                        <p>Switch between devices, and pick up wherever you left off.</p>
+                        <h4>{{_ "Take Aida with you"}}.</h4>
+                        <p>{{_ "Switch between devices, and pick up wherever you left off"}}.</p>
                     </div>
                     <div class="col-md-4 text-center">
                         <img alt="Aida CRM mobile" src="../img/exartu-mobile.jpg">

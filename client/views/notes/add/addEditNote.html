@@ -4,16 +4,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close" data-dismiss="modal">×</a>
-                    <h4>Note</h4>
+                    <h4>{{_ "Note"}}</h4>
                 </div>
                 <div class="modal-body">
                     <div>
                         {{#with note}}
                         <fieldset>
                             <div class="form-group {{hasError 'msg'}}">
-                                <label class="control-label">Note:</label>
+                                <label class="control-label">{{_ "Note"}}:</label>
                                 <textarea id="note-input" value="{{msg}}" class="form-control msg add-note-txt input-lg"
-                                          rows="3" placeholder="Add note here..."></textarea>
+                                          rows="3" placeholder= {{_ "Add note here"}}...></textarea>
                                 <!--<input class="form-control msg" value="{{msg}}"/>-->
                                 <span>{{error.msg}}</span>
                             </div>
@@ -24,8 +24,8 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button class="btn btn-success accept " disabled="{{addDisabled}}">Save {{objTypeName}}</button>
-                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                    <button class="btn btn-success accept " disabled="{{addDisabled}}">{{_ "Save"}} {{_ objTypeName}}</button>
+                    <a href="#" class="btn" data-dismiss="modal">{{_ "Close"}}</a>
                 </div>
             </div>
         </div>
