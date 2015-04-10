@@ -4,14 +4,14 @@
     <div class="box">
         <div class="box-header-2">
             <a class="btn-action editJob pull-right pointer" style="color: {{colorEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
-            <div class="box-title">Job Details</div>
+            <div class="box-title">{{_ "Job Details"}}</div>
             <!--<a class="visible-sm visible-xs box-title" href="#details-body" data-toggle="collapse">Job Details</a>-->
         </div>
         <div class="box-content-md">
             <table class="table box-table table-striped">
                 <tbody>
                 <tr>
-                    <td>Rate Quote:</td>
+                    <td>{{_ "Rate Quote"}}:</td>
                     <td>
                         {{#objectProperty property=rateQuote editable=editMode}}
                         <input class="form-control" type="text" value="{{value}}">
@@ -21,77 +21,77 @@
                     </td>
                     </tr>
                 <tr>
-                    <td>Status note:</td>
+                    <td>{{_ "Status note"}}:</td>
                     <td>
                         {{#objectProperty property=statusNote editable=editMode}}
                         <input class="form-control" type="text" value="{{value}}">
                         {{else}}
-                        <span >{{value}}</span>
+                        <span >{{_ value}}</span>
                         {{/objectProperty}}
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <i class="fa fa-briefcase"></i>&nbsp;Public job title:
+                        <i class="fa fa-briefcase"></i>&nbsp;{{_ "Public job title"}}:
                     </td>
                     <td>
                         {{#objectProperty property=publicJobTitle editable=editMode}}
                         <input class="form-control" type="text" value="{{value}}">
                         {{else}}
-                        <strong>{{value}}</strong>
+                        <strong>{{_ value}}</strong>
                         {{/objectProperty}}
                     </td>
                 </tr>
                 <tr>
-                    <td>Active Status</td>
+                    <td>{{_ "Active Status"}}</td>
                     <td>
                         {{#objectProperty property=activeStatus editable=editMode}}
                             {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                         {{else}}
                             <strong>
-                                <strong>{{displayName}}</strong>
+                                <strong>{{_ displayName}}</strong>
                             </strong>
                         {{/objectProperty}}
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <i class="fa fa-info-circle"></i>&nbsp;Process Status:
+                        <i class="fa fa-info-circle"></i>&nbsp;{{_ "Process Status"}}:
                     </td>
                     <td>
                         {{#objectProperty property=status editable=editMode}}
                             {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                         {{else}}
                             <strong>
-                                <strong>{{displayName}}</strong>
+                                <strong>{{_ displayName}}</strong>
                             </strong>
                         {{/objectProperty}}
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <i class="fa fa-briefcase"></i>&nbsp;Job title:
+                        <i class="fa fa-briefcase"></i>&nbsp;{{_ "Job title"}}:
                     </td>
                     <td>
                         {{#objectProperty property=jobTitle editable=editMode}}
                         <div class="form-group  {{hasError}}">
                             <select class="form-control input-md">
                                 {{#each options}}
-                                <option value="{{_id}}" selected="{{isSelected _id ../value}}" >{{displayName}}</option>
+                                <option value="{{_id}}" selected="{{isSelected _id ../value}}" >{{_ displayName}}</option>
                                 {{/each}}
                             </select>
                             <span>{{error}}</span>
                         </div><!-- /.form-group -->
                         {{else}}
                         <strong>
-                            <strong>{{displayName}}</strong>
+                            <strong>{{_ displayName}}</strong>
                         </strong>
                         {{/objectProperty}}
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <i class="fa fa-info-circle"></i>&nbsp;# Required:
+                        <i class="fa fa-info-circle"></i>&nbsp;# {{_ "Required"}}:
                     </td>
                     <td>
                         {{#objectProperty property=numberRequired editable=editMode}}
@@ -106,24 +106,24 @@
 
                 <tr>
                     <td>
-                        <i class="fa fa-clock-o"></i>&nbsp;Duration:
+                        <i class="fa fa-clock-o"></i>&nbsp;{{_ "Duration"}}:
                     </td>
                     <td>
                         {{#objectProperty property=duration editable=editMode}}
                         <div class="form-group  {{hasError}}">
                             <select class="form-control input-lg">
                                 {{#unless required}}
-                                <option value="null" selected="{{isSelected null value}}">--Select--</option>
+                                <option value="null" selected="{{isSelected null value}}">--{{_ "Select"}}--</option>
                                 {{/unless}}
                                 {{#each options}}
-                                <option value="{{_id}}" selected="{{isSelected _id ../value}}" >{{displayName}}</option>
+                                <option value="{{_id}}" selected="{{isSelected _id ../value}}" >{{_ displayName}}</option>
                                 {{/each}}
                             </select>
                             <span>{{error}}</span>
                         </div><!-- /.form-group -->
                         {{else}}
                         <strong>
-                            <strong>{{displayName}}</strong>
+                            <strong>{{_ displayName}}</strong>
                         </strong>
                         {{/objectProperty}}
                     </td>
@@ -144,10 +144,10 @@
         <div class="box-header-2" style="height: 60px">
             <div class="pull-right">
                 <span class="btn btn-default cancelButton">
-                    Cancel
+                    {{_ "Cancel"}}
                 </span>
                 <span class="btn btn-info saveDetailsButton">
-                    Save
+                    {{_ "Save"}}
                 </span>
             </div>
         </div>
