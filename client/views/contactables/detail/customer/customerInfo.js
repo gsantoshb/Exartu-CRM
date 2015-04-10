@@ -1,12 +1,16 @@
 var collection;
 var client = new ReactiveVar();
 var clientId = new ReactiveVar();
+var handler = null;
 
 var contactMethodsInfo = {};
 
 Template.contactClientInfo.created = function(){
     clientId.set(this.data.client);
-    Meteor.subscribe('singleContactable', clientId.get());
+    Meteor.autorun(function () {
+        handler && handler.stop();
+        handler = Meteor.subscribe('singleContactable', clientId.get());
+    });
 
     var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
     console.log(contactMethodsTypes);
@@ -18,10 +22,16 @@ Template.contactClientInfo.created = function(){
     });
     console.log(contactMethodsInfo);
 };
+Template.contactClientInfo.destroyed = function(){
+    handler && handler.stop();
+};
+
 
 Template.contactClientInfo.helpers({
     client: function () {
-        return Contactables.findOne({_id: clientId.get()});
+        var contact =  Contactables.findOne({_id: clientId.get()});
+        console.log('contact', contact);
+        return contact;
     },
     pictureUrl: function () {
         if (this.pictureFileId) {
