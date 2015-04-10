@@ -5,9 +5,11 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <section class="box-type-4 get-started">
-                    <h2 class="headline">{{_ "Register"}}</h2>
 
                     {{#if isRegistering}}
+
+                        <h2 class="headline">{{_ "Register"}}</h2>
+
                         {{#autoForm schema="RegisterSchema" class="form-1" id="registerForm" validation="blur"}}
                             <ol>
                                 <li class="{{#if afFieldIsInvalid name='email'}}error{{else}}{{#if emailError}}error{{/if}}{{/if}}">
@@ -56,24 +58,31 @@
                                 <p><a href="/login">I already have an account</a></p>
                             </div>
                         {{/autoForm}}
+
+                        <div class="decoration"></div>
+
+                        <div class="alert-box alert-danger" style="margin-top: 20px;">{{error}}</div>
+
                     {{else}}
-                        <h1>{{_ "Thank you"}}</h1>
-                        <div class="col-md-8 text-center" style="margin-bottom: 150px">
-                            <br><br>
-                            <h4>{{_ "Your registration is complete"}}</h4>
-                            <p>{{_ "Please verify your account via the email we just sent you.  "}}</p>
+
+                        <div class="center-v has-min-height" style="min-height: 571px;">
+                            <div class="center-v-content">
+                                <div class="big-msg-icon"><i class="icon-check-1"></i></div>
+                                <h2 class="headline">{{_ "Your registration is now complete."}}</h2>
+                                <p class="text-center text-muted">{{_ "Please verify your account via the email we just sent you. Thank you."}}</p>
+                                <div class="decoration"></div>
+                            </div><!-- /.center-v-content -->
                         </div>
+
                     {{/if}}
 
-                    <div class="decoration"></div>
-
-                    <div class="alert-box alert-danger" style="margin-top: 20px;">{{error}}</div>
-
                     {{#if isSubmitting}}
+
                         <div>Creating account. Please wait a few seconds....</div>
                         <div class="progress progress-striped active">
                             <div style="width: 100%;" class="progress-bar progress-bar-info"></div>
                         </div>
+
                     {{/if}}
 
                 </section><!-- -->

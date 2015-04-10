@@ -33,6 +33,10 @@ var emailError = new ReactiveVar('');
 
 Template.register.rendered = function(){
   $('body').addClass('login-register');
+  $('.has-min-height') .css({'min-height': ($(window).height() - 35)+'px'});
+  $(window).resize(function(){
+    $('.has-min-height') .css({'min-height': ($(window).height() - 35)+'px'});
+  });
 };
 
 Template.register.destroyed = function(){
