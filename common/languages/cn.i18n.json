@@ -1,4 +1,5 @@
 { 
+	"Actions": "动作",
 	"Active": "活跃",
 	"Active status": "活跃状态",
 	"Active Status": "活跃状态",
@@ -45,6 +46,7 @@
 	"Contact": "联系人",
 	"Contacts": "联系人",
 	"Contacts Acquired": "联系人斩获",
+	"Copy job": "拷贝职位",
 	"Create employee from resume/CV file": "从简历文件创建联系人",
 	"Create employee from resume/CV text": "从简历内容创建联系人",
 	"Created by": "创建者",
