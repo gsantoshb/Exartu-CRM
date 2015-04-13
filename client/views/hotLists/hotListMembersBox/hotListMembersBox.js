@@ -104,11 +104,11 @@ Template.hotListMembersSearch.events({
   'click .addHotListMember': function (e, ctx) {
     Utils.showModal(
       'hotListMemberAdd',
-      hotList._id, function (memberId, hotListId) {
+      hotList, function (memberId, hotListId) {
         var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
-        var mbrs = tempHotList.members;
+        var mbrs = tempHotList.members || [];
 
-        if (tempHotList.members.indexOf(memberId) > -1) {
+        if (mbrs.indexOf(memberId) > -1) {
           return false;
         }
 
@@ -123,7 +123,7 @@ Template.hotListMembersSearch.events({
 
   'click #sendEmailTemplate': function () {
     var hotlist = HotLists.findOne({_id: Session.get('entityId')});
-    var members = Contactables.find({_id: {$in: hotlist.members}}, {sort: {displayName: 1}}).fetch();
+    var members = Contactables.find({_id: {$in: hotlist.members || []}}, {sort: {displayName: 1}}).fetch();
 
     // Find the first contactable type that is not multiple types unless all of them are
     var contactableType = Utils.getContactableType(members[0]);
@@ -209,7 +209,7 @@ Template.hotListMembersList.created = function () {
     Tracker.autorun(function () {
         var urlQuery = new URLQuery();
         searchQuery = {
-            _id: { $in : hotList.members },
+            _id: { $in : hotList.members || [] },
             $and: [] // Push each $or operator here
         };
 

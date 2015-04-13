@@ -1,19 +1,21 @@
 <template name="hotList">
     <div id="content" class="network-content nicer-filters">
+
         <div class="row">
 
-            <!-- Side bar -->
             <div class="col-md-3">
                 <div class="sidebar">
                     <div class="go-back">
-                        <a class="pointer goBack"><i class="fa fa-chevron-left"></i> Back</a>
+                        <a class="pointer goBack"><i class="fa fa-chevron-left"></i> {{_ "Back"}}</a>
                     </div>
 
-                    {{#with hotList}}  {{> hotListHeader}}  {{/with}}
+                    {{#with originalHotList}}  {{> hotListHeader}}  {{/with}}
 
                     {{>hotList_nav}}
 
-                    {{#with hotList}}  {{> hotListOriginData}}  {{/with}}
+                    {{>hotList_actions}}
+
+                    {{#with originalHotList}}  {{> hotListOriginData}}  {{/with}}
                 </div><!-- /.sidebar -->
             </div>
 
@@ -21,7 +23,7 @@
                 <div class="box-type-1">
                     <div class="details-view-content clearfix">
                         <div class="tab-pane active">
-                            {{> UI.dynamic template=currentTemplate data=hotList}}
+                            {{> UI.dynamic template=currentTemplate data=hotList }}
                         </div>
                     </div>
                 </div>
@@ -35,29 +37,30 @@
         <div class="profile-pic">
             <div class="item-icon item-icon-hotlist item-icon-lg"><i class="icon-list-4"></i></div>
         </div>
-        <h1 class="title">{{displayName}} <span class="pointer label-title {{statusClass activeStatus}}" id="toggle-status" data-status="{{activeStatus}}">{{lookUpName activeStatus}}</span></h1>
+        <h1 class="title">{{_ displayName}} <span class="pointer label-title {{statusClass activeStatus}}" id="toggle-status" data-status="{{activeStatus}}">{{lookUpName activeStatus}}</span></h1>
     </div>
     <div class="status-note-1">
         {{#if editMode}}
             <div style="display: block; overflow: hidden">
-                <textarea class="form-control input-block" style="margin-bottom: 8px;" id="statusNote">{{statusNote}}</textarea>
+                <textarea class="form-control input-block" style="margin-bottom: 8px;" id="statusNote">{{_ statusNote}}</textarea>
                 <div class="pull-right">
-                    <span class="btn btn-primary saveButton"><i class="fa fa-check"></i> Save</span>
-                    <span class="btn btn-default cancelButton"><i class="fa fa-close"></i> Cancel</span>
+                    <span class="btn btn-primary saveButton"><i class="fa fa-check"></i> {{_ "Save"}}</span>
+                    <span class="btn btn-default cancelButton"><i class="fa fa-close"></i> {{_ "Cancel"}}</span>
                 </div>
             </div>
         {{else}}
-            <span>Status note –</span> {{statusNote}}  <a class="edit toggle-edit-mode" href="#">– <i class="fa fa-pencil"></i> edit</a>
+            <span>{{_ "Status note"}} –</span> {{_ statusNote}}  <a class="edit toggle-edit-mode" href="#">– <i class="fa fa-pencil"></i> {{_ "edit"}}</a>
         {{/if}}
     </div>
+
 </template>
 
 <template name="hotListOriginData">
     <ul class="list-type-3 small">
-        <li>User: <span><a href="#">{{displayUserName userId}}</a></span></li>
-        <li>Date created: <span>{{formattedDate dateCreated "lll"}}</span></li>
-        <li>Hierarchy: <span>{{displayHierName hierId}} ({{hierId}})</span></li>
-        <li>External ID: <span>{{externalId}}</span></li>
+        <li>{{_ "User"}}: <span><a href="#">{{displayUserName userId}}</a></span></li>
+        <li>{{_ "Date created"}}: <span>{{formattedDate dateCreated "lll"}}</span></li>
+        <li>{{_ "Hierarchy"}}: <span>{{displayHierName hierId}} ({{hierId}})</span></li>
+        <li>{{_ "External ID"}}: <span>{{externalId}}</span></li>
     </ul>
 </template>
 
@@ -65,6 +68,9 @@
     {{> detailNav tabs=tabs route="hotList" entityId=getEntityId}}
 </template>
 
+<template name="hotList_tasks">
+    {{> tasksBox}}
+</template>
 
 <template name="hotList_notes">
     {{> notesTab responseOnly=false}}
@@ -74,6 +80,52 @@
     {{> notesTab responseOnly=true}}
 </template>
 
-<template name="hotList_members">
-    {{> hotListMembersBox hotList=data}}
+<template name="hotList_details">
+    <div class="col-sm-6">
+        {{#with originalHotList}}  {{> hotListDetail}}  {{/with}}
+    </div>
+    <div class="col-sm-6">
+        {{> contactableContactsBox}}
+    </div>
+
+    <div class="col-sm-6">
+        {{>hotListMembers}}
+    </div>
 </template>
+
+<template name="hotList_members">
+    <!--{{>hotListMembers}}-->
+
+    <!--{{> hotListMembersBox handler=handler hotList=originalHotList}}-->
+    {{> hotListMembersBox hotList=originalHotList}}
+</template>
+
+<template name="hotListMembers">
+    <div class="list-container">
+        <div class="list-holder">
+            <div class="list-header contacts-list-header">
+                <div class="list-header-cell contacts-list-header-title">{{_ "HotList Members"}} – ({{memberCount}})</div>
+                <div class="list-header-cell contacts-list-header-code">{{_ "Id"}}</div>
+                <div class="list-header-cell contacts-list-header-actions">{{_ "Actions"}}</div>
+            </div><!-- /.list-header -->
+            <div class="list-item-section">
+                {{#each hotListMembers}}
+                    <div class="list-item contact-list-item">
+                        <div class="list-item-cell list-item-icon">
+                            <a class="item-icon item-icon-contact" href="/contactable/{{_id}}">{{getAcronym displayName}}</a>
+                        </div>
+                        <div class="list-item-cell contact-list-item-title">
+                            <div class="item-title single"><a href="/contactable/{{_id}}">{{_ displayName}}</a></div>
+                        </div>
+                        <div class="list-item-details contact-list-item-details">
+                            <div class="list-item-cell contact-list-item-code">{{_id}}</div>
+                            <div class="list-item-cell contact-list-item-actions"><a class="pointer remove"><i class="fa fa-times"></i> {{_ "Remove"}}</a></div>
+                        </div><!-- /.list-item-cell -->
+                    </div><!-- /.contact-list-item -->
+                {{/each}}
+            </div><!-- /.list-item-section -->
+        </div><!-- /.list-holder -->
+    </div>
+</template>
+
+<template name="hotList_actions"></template>
