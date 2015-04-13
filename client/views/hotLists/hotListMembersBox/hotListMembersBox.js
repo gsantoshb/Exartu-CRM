@@ -29,8 +29,10 @@ var loadqueryFromURL = function (params) {
 };
 
 var setSubscription = function (searchQuery, options) {
+    hotList = HotLists.findOne({_id: Session.get('entityId')});
     var members = hotList.members ? hotList.members : [];
     searchQuery = {_id: { $in : members } };
+
     if (SubscriptionHandlers.HotListMembersHandler) {
         SubscriptionHandlers.HotListMembersHandler.setFilter(searchQuery);
         SubscriptionHandlers.HotListMembersHandler.setOptions(options);
@@ -57,14 +59,9 @@ var setSubscription = function (searchQuery, options) {
  * HotList Members - Template
  */
 Template.hotListMembersBox.created = function () {
-
     query = query || loadqueryFromURL(Router.current().params.query);
-
-    if(this.data.hotList) hotList = this.data.hotList;
-    else hotList = HotLists.findOne({_id: Session.get('entityId')});
-
     options.sort = defaultSort;
-    options.pubArguments = hotList._id;
+    options.pubArguments = Session.get('entityId');
     setSubscription(searchQuery, options);
 };
 
@@ -81,7 +78,7 @@ Template.hotListMembersBox.destroyed = function(){
  */
 Template.hotListMembersHeader.helpers({
     membersCount: function () {
-        return HotListMembersHandler.totalCount();
+        return HotListMembersHandler.totalCount() || 0;
     }
 });
 
@@ -105,8 +102,7 @@ Template.hotListMembersSearch.events({
     Utils.showModal(
       'hotListMemberAdd',
       hotList, function (memberId, hotListId) {
-        var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
-        var mbrs = tempHotList.members || [];
+        var mbrs = hotList.members || [];
 
         if (mbrs.indexOf(memberId) > -1) {
           return false;
