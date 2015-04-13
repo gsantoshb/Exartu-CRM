@@ -31,9 +31,8 @@ Meteor.autorun(function () {
     loadingDep.changed();
 
     handler && handler.stop();
-
     init = false;
-    handler = Meteor.subscribe("calendarTasks", start, end, showMineOnly , function () {
+    handler = Meteor.subscribe("calendarTasks", start, end, showMineOnly, function () {
         rerender();
         loadingCount = false;
         loadingDep.changed();
@@ -134,21 +133,7 @@ Template.agendaBox.helpers({
             timeFormat:'HH:mm',
             events: function (start, end, timezone, callback) {
                 callback(_.map(CalendarTasks.find({}).fetch(), function (t) {
-                    switch(t.state) {
-                        case Enums.taskState.future:
-                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future  pointer'  } ;
-                            break;
-                        case Enums.taskState.completed:
-                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-completed  pointer'  } ;
-                            break;
-                        case Enums.taskState.overDue:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-overDue  pointer'  } ;
-                            break;
-                        case Enums.taskState.pending:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-pending  pointer'  };
-                            break;
-                    }
-
+                        return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:""  } ;
                 }));
             },
             viewRender: function (view, element) {
@@ -225,7 +210,7 @@ Template.agendaBox.helpers({
                 }
                 currentMonth.set(html);
 
-                // cleanup the calendar view
+               // cleanup the calendar view
                 calendarDiv.find('.fc-content-skeleton').remove();
                 calendarDiv.find('.fc-other-month a').remove();
                 calendarDiv.find('.fc-other-month .day-tasks').remove();
