@@ -356,7 +356,6 @@ Meteor.paginatedPublish(ActivityViews, function () {
     return activities;
   },
   {
-    infiniteScroll: true,
     pageSize: 30,
     publicationName: 'activities',
     updateSelector: function (oldSelector, clientParams) {

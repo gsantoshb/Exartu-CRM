@@ -139,23 +139,23 @@
                         <div class="list-item-section">
                             <ul class="list-type-7 activity-feed">
                                 {{#if listViewMode}}
-                                    {{#if isReady}}
+                                    <!--{{#if isReady}}-->
                                         {{#each activities}}
                                             {{#with getCtx}}
                                                 {{> Template.dynamic template=getTemplateForActivity}}
                                             {{/with}}
                                         {{/each}}
-                                    {{/if}}
+                                    <!--{{/if}}-->
                                 {{else}}
                                     <section class="timeline">
                                         <div class="activity-container scroll-container">
-                                            {{#if isReady}}
+                                            <!--{{#if isReady}}-->
                                                 {{#each activities}}
                                                     {{#with getCtx}}
                                                         {{> Template.dynamic template=getTemplateForActivity}}
                                                     {{/with}}
                                                 {{/each}}
-                                            {{/if}}
+                                            <!--{{/if}}-->
                                         </div>
                                     </section>
                                 {{/if}}
