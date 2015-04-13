@@ -25,16 +25,18 @@ HotListController = RouteController.extend({
   },
   onAfterAction: function () {
     var hotList = hotListCollection.findOne({_id: this.params._id});
-    var title = hotList.displayName,
+    if(hotList) {
+      var title = hotList.displayName,
         description = 'HotList information';
-    SEO.set({
-      title: title,
-      meta: { 'description': description },
-      og: {
-        'title': title,
-        'description': description
-      }
-    });
+      SEO.set({
+        title: title,
+        meta: {'description': description},
+        og: {
+          'title': title,
+          'description': description
+        }
+      });
+    }
   }
 });
 

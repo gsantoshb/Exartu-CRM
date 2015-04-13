@@ -9,13 +9,13 @@
                         <a class="pointer goBack"><i class="fa fa-chevron-left"></i> {{_ "Back"}}</a>
                     </div>
 
-                    {{#with originalHotList}}  {{> hotListHeader}}  {{/with}}
+                    {{#with hotList}}  {{> hotListHeader}}  {{/with}}
 
                     {{>hotList_nav}}
 
                     {{>hotList_actions}}
 
-                    {{#with originalHotList}}  {{> hotListOriginData}}  {{/with}}
+                    {{#with hotList}}  {{> hotListOriginData}}  {{/with}}
                 </div><!-- /.sidebar -->
             </div>
 
@@ -98,7 +98,7 @@
 
 <template name="hotList_details">
     <div class="col-sm-6">
-        {{#with originalHotList}}  {{> hotListDetail}}  {{/with}}
+        {{#with hotList}}  {{> hotListDetail}}  {{/with}}
     </div>
     <div class="col-sm-6">
         {{> contactableContactsBox}}

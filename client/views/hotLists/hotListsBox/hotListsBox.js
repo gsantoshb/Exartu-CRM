@@ -178,6 +178,13 @@ Template.hotListList.created = function () {
     })
 };
 
+Template.hotListList.destroyed = function () {
+  if (SubscriptionHandlers.HotListHandler) {
+    SubscriptionHandlers.HotListHandler.stop();
+    delete SubscriptionHandlers.HotListHandler;
+  }
+};
+
 Template.hotListList.helpers({
     info: function () {
         info.isFiltering.value = HotListHandler.totalCount() != 0;
@@ -317,3 +324,4 @@ Template.hotListListSort.events = {
         setSortField(this);
     }
 };
+

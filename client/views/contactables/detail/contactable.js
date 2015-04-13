@@ -503,12 +503,19 @@ Template.hotListMembershipsBox.helpers({
         var obj;
         if (Session.get('hotListId')) {
             hotListMembershipsDep.depend();
-            var h = HotLists.findOne({_id: Session.get('hotListId'), members: contactable._id});
-            if(!h) {
+          var contactableObjName = [];
+          _.forEach(contactable.objNameArray, function(c){
+            contactableObjName.push(c.toLowerCase());
+          })
+          var h = HotLists.findOne({_id: Session.get('hotListId'), members:{$nin: [contactable._id]}, category: {$in: contactableObjName}});
+
+            if(h) {
+              var lastHotList = HotLists.findOne({_id: Session.get('hotListId')});
               obj = {};
               obj.hotListId = Session.get('hotListId');
-              obj.hotListDisplayName = Session.get('hotListDisplayName')
+              obj.hotListDisplayName = lastHotList.displayName;
             }
+
         }
         return obj;
     },
