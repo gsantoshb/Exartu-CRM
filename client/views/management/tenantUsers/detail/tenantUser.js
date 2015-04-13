@@ -3,7 +3,8 @@ TenantUserController = RouteController.extend({
     layoutUser: 'mainLayout',
     waitOn: function () {
         SubscriptionHandlers.TenantHandler = TenantHandler = SubscriptionHandlers.TenantHandler || Meteor.paginatedSubscribe('tenants');
-        return [Meteor.subscribe('singleTenantUser', this.params._id),TenantHandler,LookUpsHandler];
+        SubscriptionHandlers.TenantUserHandler = TenantUserHandler = SubscriptionHandlers.TenantUserHandler || Meteor.paginatedSubscribe('tenantUsers');
+        return [Meteor.subscribe('singleTenantUser', this.params._id),TenantHandler, LookUpsHandler, TenantUserHandler];
     },
     data: function () {
         Session.set('userId', this.params._id);
@@ -73,6 +74,7 @@ Template.tenantUserHierMember.helpers({
     hierMember: function() {
         hierDep.depend();
         tenantUser = TenantUsers.findOne({_id: Session.get('userId')});
+        if (!tenantUser) return;
         return Tenants.find({_id:{$in: tenantUser.hierarchies}});
     }
 });

@@ -1,6 +1,3 @@
-var entityType = null;
-var isEntitySpecific = false;
-var contactable;
 var searchFields = ['currentHierId'];
 
 var tenantUserCollection = TenantUsers;
@@ -8,12 +5,9 @@ var TenantUserHandler, tenantUserQuery;
 
 var info = new Utils.ObjectDefinition({
     reactiveProps: {
-        tenantUsersCount: {},
-        objType: {},
         isRecentDaySelected: {
             default: false
         },
-        objTypeDisplayName: {},
         isRecentWeekSelected: {
             default: false
         },
@@ -47,13 +41,6 @@ var loadTenantUserQueryFromURL = function (params) {
         creationDateQuery.default = params.creationDate;
     }
 
-    // Inactive
-    var inactiveQuery = {type: Utils.ReactivePropertyTypes.boolean};
-    if (params.inactives) {
-        inactiveQuery.default = !!params.inactives;
-    }
-
-
     // Tags
     var tagsQuery = {type: Utils.ReactivePropertyTypes.array};
     if (params.tags) {
@@ -64,28 +51,23 @@ var loadTenantUserQueryFromURL = function (params) {
         reactiveProps: {
             searchString: searchStringQuery,
             selectedLimit: creationDateQuery,
-            inactives: inactiveQuery,
             tags: tagsQuery
         }
     });
 };
+
+var TenantUsersLogin = new Mongo.Collection('tenantUsersLogin');
 
 // All
 
 Template.tenantUsersBox.created = function () {
     tenantUserQuery = tenantUserQuery || loadTenantUserQueryFromURL(Router.current().params);
 
-    var entityId = Session.get('entityId');
-    entityType = Utils.getEntityTypeFromRouter();
-    isEntitySpecific = false;
+    this.subscribe('tenantUsersLogin');
 };
 
 
 Template.tenantUsersBox.helpers({
-    information: function () {
-        info.tenantUsersCount.value = TenantUserHandler.totalCount();
-        return info;
-    },
     isSearching: function () {
         searchDep.depend();
         return isSearching;
@@ -104,8 +86,6 @@ Template.tenantUsersList.created = function () {
     TenantUserHandler = SubscriptionHandlers.TenantUserHandler;
     Meteor.autorun(function () {
         var searchQuery = {};
-
-        var params = {};
         options = {};
         var urlQuery = new URLQuery();
 
@@ -138,7 +118,6 @@ Template.tenantUsersList.created = function () {
                 $or: stringSearches
             });
         }
-        ;
 
         if (tenantUserQuery.selectedLimit.value) {
             var dateLimit = new Date(tenantUserQuery.selectedLimit.value);
@@ -146,14 +125,6 @@ Template.tenantUsersList.created = function () {
                 $gte: dateLimit
             };
             urlQuery.addParam('creationDate', tenantUserQuery.selectedLimit.value);
-        }
-
-        if (!tenantUserQuery.inactives.value) {
-            searchQuery.inactive = {$in: [null, false]}
-        }
-
-        if (tenantUserQuery.inactives.value) {
-            urlQuery.addParam('inactives', true);
         }
 
         if (tenantUserQuery.tags.value.length > 0) {
@@ -174,8 +145,7 @@ Template.tenantUsersList.created = function () {
         }
         TenantUserHandler.setFilter(searchQuery);
         TenantUserHandler.setOptions(options);
-        Session.set('tenantUsersCount', TenantUserHandler.totalCount());
-    })
+    });
 };
 
 Template.tenantUsersList.helpers({
@@ -191,9 +161,6 @@ Template.tenantUsersList.helpers({
     }
 });
 
-var getActiveStatuses = function () {
-    return null;
-};
 
 Template.tenantUsersFilters.helpers({
     query: function () {
@@ -202,13 +169,11 @@ Template.tenantUsersFilters.helpers({
     tags: function () {
         return tenantUserQuery.tags;
     },
-    information: function () {
-        var tenantUsersCount = Session.get('tenantUsersCount');
-        if (tenantUsersCount)
-            info.tenantUsersCount.value = tenantUsersCount;
-        return info;
+    tenantUsersCount: function () {
+        return SubscriptionHandlers.TenantUserHandler.totalCount();
     }
 });
+
 Template.tenantUsersListSearch.helpers({
     searchString: function () {
         return tenantUserQuery.searchString;
@@ -222,7 +187,7 @@ Template.tenantUsersListSearch.helpers({
 });
 
 
-Template.tenantUsersListSearch.events = {
+Template.tenantUsersListSearch.events({
 
     'click #list-view': function () {
         listViewMode.set(true);
@@ -244,35 +209,26 @@ Template.tenantUsersListSearch.events = {
             $(e.currentTarget).attr('data-view', 'normal');
         }
     }
-};
+});
 
 // Item
 
 Template.tenantUsersListItem.helpers({
-
     pictureUrl: function (pictureFileId) {
         var picture = TenantUsersFS.findOne({_id: pictureFileId});
         return picture ? picture.url('TenantUsersFSThumbs') : undefined;
-    },
-    tenantUserIcon: function () {
-        return helper.getEntityIcon(this);
-    },
-    statusDisplayName: function (item) {
-        var lookUp = LookUps.findOne({_id: this.tenantUserStatus});
-
-        if (lookUp) return lookUp.displayName;
-    },
-    displayObjType: function () {
-        return Utils.getTenantUserType(this);
     },
     getUserName: function () {
         return Utils.getLocalUserName(this);
     },
     getUserEmail: function () {
         return this.emails[0].address;
+    },
+    lastLogin: function () {
+        var activity = TenantUsersLogin.findOne({ entityId: this._id }, { sort: { 'data.dateCreated': -1 } });
+        return activity && activity.data && activity.data.dateCreated;
     }
 });
-
 
 // list sort
 
@@ -311,8 +267,8 @@ var setSortField = function (field) {
     selectedSort.set(selected);
 };
 
-Template.tenantUserListSort.events = {
+Template.tenantUserListSort.events({
     'click .sort-field': function () {
         setSortField(this);
     }
-};
+});
