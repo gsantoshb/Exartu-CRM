@@ -4,8 +4,7 @@ TenantUsersController = RouteController.extend({
   template: 'tenantUsers',
   layoutTemplate: 'mainLayout',
   waitOn: function() {
-    SubscriptionHandlers.TenantUserHandler = TenantUserHandler = SubscriptionHandlers.TenantUserHandler
-    || Meteor.paginatedSubscribe('tenantUsers');
+    SubscriptionHandlers.TenantUserHandler = TenantUserHandler = SubscriptionHandlers.TenantUserHandler || Meteor.paginatedSubscribe('tenantUsers');
     return [TenantUserHandler, LookUpsHandler];
   },
   onAfterAction: function() {
@@ -27,13 +26,5 @@ TenantUsersController = RouteController.extend({
       this.render();
     else
       this.render('loadingContactable');
-
-    this.render();
-  }
-});
-
-Template.tenantUsers.helpers({
-  tenantUserCount: function(){
-    return TenantUserHandler.totalCount();
   }
 });

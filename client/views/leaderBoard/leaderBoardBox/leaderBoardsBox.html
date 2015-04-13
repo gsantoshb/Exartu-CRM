@@ -80,7 +80,7 @@
 
 
 <template name="pipelineColumn">
-    <div class="row"><h4>{{columnTitle val}}</h4>{{pipelineColumnDescription}}</div>
+    <div class="row"><h4>{{_ columnTitle}}</h4>{{pipelineColumnDescription}}</div>
     <div class="row">
         {{#each columnItems val}}
             <div class="strong"><a href="/contactable/{{_id}}">{{>showMore text=displayName limit=20}}
@@ -97,7 +97,7 @@
     </div>
 </template>
 <template name="lossReportColumn">
-    <div class="row"><h4>{{columnTitle val}}</h4>{{pipelineColumnDescription}}</div>
+    <div class="row"><h4>{{_ columnTitle}}</h4>{{pipelineColumnDescription}}</div>
     <div class="row">
         {{#each columnItems val}}
             <div class="strong"><a href="/contactable/{{_id}}">{{>showMore text=displayName limit=35}}
@@ -122,13 +122,11 @@
             <div class="col-md-2">{{>lossReportColumn val=1}}</div>
             <div class="col-md-2">{{>lossReportColumn val=2}}</div>
             <div class="col-md-2">{{>lossReportColumn val=3}}</div>
-            <div class="col-md-2">{{>lossReportColumn val=4}}</div>
-            <div class="col-md-2">{{>lossReportColumn val=5}}</div>
         </div>
     </div>
 </template>
 <template name="leaderBoardDealPipelineListHeader">
-    <h1 class="text-center">{{pipelineName}}</h1>
+    <h1 class="text-center">{{_ pipelineName}}</h1>
 
     <div class="container-fluid">
         <div class="row">
@@ -137,7 +135,6 @@
             <div class="col-md-2">{{>pipelineColumn val=2}}</div>
             <div class="col-md-2">{{>pipelineColumn val=3}}</div>
             <div class="col-md-2">{{>pipelineColumn val=4}}</div>
-            <div class="col-md-2">{{>pipelineColumn val=5}}</div>
         </div>
     </div>
 </template>
@@ -171,7 +168,7 @@
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             {{_ "Sort"}}
             {{#with selectedSort}}
-                <strong>{{displayName}}</strong>
+                <strong>{{_ displayName}}</strong>
                 {{#if isAscSort .}}
                     <i class="fa fa-sort-amount-asc"> </i>
                 {{else}}
@@ -184,7 +181,7 @@
             {{#each sortFields}}
                 <li>
                     <a class="sort-field" href="#">
-                        {{displayName}}
+                        {{_ displayName}}
                         {{#if isFieldSelected .}}
                             {{#if isAscSort .}}
                                 <i class="fa fa-sort-amount-asc"> </i>

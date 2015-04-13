@@ -33,10 +33,47 @@
                         </ul>
                     </div>
 
-                    <div class="sidebar-right">
-                        {{> agendaBox}}
-                        {{> dashboardNotes}}
-                    </div><!-- /.sidebar-right -->
+                    <!--{{#if getLeadTrackers}}-->
+                        <!--<section class="box-type-3">-->
+                            <!--<header>-->
+                                <!--<a class="more" href="/leaderboards">{{_ "View reports"}}</a>-->
+                                <!--<div class="title">{{_ "In the last 30 days"}}</div>-->
+                            <!--</header>-->
+                            <!--<div class="box-body">-->
+                                <!--<ul class="list-type-6">-->
+                                    <!--{{#each getLeadTrackers}}-->
+                                        <!--<li><span class="hightlight-1">{{counter}}</span> {{_ displayName}}</li>-->
+                                    <!--{{/each}}-->
+                                <!--</ul>-->
+                            <!--</div>&lt;!&ndash; /.box-body &ndash;&gt;-->
+                        <!--</section>&lt;!&ndash; /.box-type-3 &ndash;&gt;-->
+                    <!--{{/if}}-->
+
+                    <!--{{#if getTeamMembersTrackers}}-->
+                        <!--<section class="box-type-3">-->
+                            <!--<header>-->
+                                <!--<a class="more" href="/leaderboards">{{_ "View reports"}}</a>-->
+                                <!--<div class="title">{{_ "Team Deal Load"}}</div>-->
+                            <!--</header>-->
+                            <!--<div class="box-body">-->
+                                <!--<ul class="list-type-6">-->
+                                    <!--{{#each getTeamMembersTrackers}}-->
+                                        <!--<li><span class="hightlight-1">{{counter}}</span> {{displayName}}</li>-->
+                                    <!--{{/each}}-->
+                                <!--</ul>-->
+                                <!--<a href="#"></a>-->
+                            <!--</div>&lt;!&ndash; /.box-body &ndash;&gt;-->
+                        <!--</section>&lt;!&ndash; /.box-type-3 &ndash;&gt;-->
+                    <!--{{/if}}-->
+
+                    <div >
+                        <div class="sidebar-right">
+                            {{> agendaBox}}
+
+                            {{> dashboardNotes}}
+                        </div><!-- /.sidebar-right -->
+                    </div><!-- /.col-md-3 -->
+
 
                 </aside><!-- /.sidebar -->
             </div><!-- /.col-md-3 -->
@@ -134,8 +171,6 @@
                     </div><!-- /.list-holder -->
                 </div><!-- /.list-container -->
             </div><!-- /.col-md-6 -->
-
-
 
         </div><!-- /.row -->
 

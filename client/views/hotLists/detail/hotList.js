@@ -112,7 +112,7 @@ Template.hotList.events({
         self.editMode = false;
     }
 });
-
+var editingDisplayName= new ReactiveVar(false);
 Template.hotListHeader.helpers({
     hotList: function(){
         //var originalHotList = HotLists.findOne({ _id: Session.get('entityId') });
@@ -125,6 +125,9 @@ Template.hotListHeader.helpers({
     },
     editMode: function () {
         return self.editMode;
+    },
+    editingDisplayName: function () {
+        return editingDisplayName.get();
     }
 });
 
@@ -158,6 +161,24 @@ Template.hotListHeader.events({
     },
     'click .cancelButton': function () {
         self.editMode = false;
+    },
+    'click #editDisplayName': function () {
+        editingDisplayName.set(true);
+    },
+    'click .saveDisplayNameButton': function () {
+        var displayName = $('#displayName').val();
+
+        hotListCollection.update({_id: hotList._id}, {$set: {displayName: displayName}}, function (err, result) {
+            if (!err) {
+                editingDisplayName.set(false);
+            }
+            else{
+                alert(err);
+            }
+        });
+    },
+    'click .cancelDisplayNameButton': function () {
+        editingDisplayName.set(false);
     }
 });
 

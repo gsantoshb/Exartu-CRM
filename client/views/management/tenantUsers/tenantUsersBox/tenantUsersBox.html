@@ -28,13 +28,9 @@
 </template>
 
 <template name="tenantUsersFilters">
-    {{#with information}}
-
-
-        <div class="page-title">
-            <h1><span>{{tenantUsersCount.value}}</span> tenantUser records</h1>
-        </div>
-    {{/with}}
+    <div class="page-title">
+        <h1><span>{{tenantUsersCount}}</span> tenantUser records</h1>
+    </div>
 
     <div class="filter">
         <a class="filter-toggle" data-toggle="collapse" href="#filter-body"><i class="fa fa-filter"></i> Filters</a>
@@ -73,23 +69,13 @@
     {{/if}}
 </template>
 <template name="tenantUsersListHeader">
-    {{#if listViewMode}}
-        <div class="list-header network-list-header simple-network-list-header">
-            <div class="list-header-cell network-list-header-title">User</div>
-            <div class="list-header-cell network-list-header-contact">Id</div>
-            <div class="list-header-cell network-list-header-contact">Hierarchy</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
-        </div>
-        <!-- /.list-header -->
-    {{else}}
-        <div class="list-header network-list-header">
-            <div class="list-header-cell network-list-header-title">User</div>
-            <div class="list-header-cell network-list-header-contact">Id</div>
-            <div class="list-header-cell network-list-header-contact">Hierarchy</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
-        </div>
-    {{/if}}
-
+    <div class="list-header network-list-header {{#if listViewMode}}simple-network-list-header  {{/if}}">
+        <div class="list-header-cell network-list-header-title">User</div>
+        <div class="list-header-cell network-list-header-contact">Id</div>
+        <div class="list-header-cell network-list-header-contact">Hierarchy</div>
+        <div class="list-header-cell network-list-header-time">Date</div>
+        <div class="list-header-cell network-list-header-time">Last Login</div>
+    </div>
 </template>
 
 <template name="tenantUsersListItem">
@@ -101,10 +87,10 @@
                 </div>
             </div>
             <div class="list-item-details network-list-item-details">
-                <div class="list-item-cell network-list-item-code">{{_id}}</div>
-                <div class="list-item-cell network-list-item-code">                        <a href="/tenant/{{hierId}}">{{hierId}}</a></div>
-                <div class="list-item-cell network-list-item-time">{{createdAt}}
-                </div>
+                <div class="list-item-cell network-list-item-code"> {{_id}} </div>
+                <div class="list-item-cell network-list-item-code"> <a href="/tenant/{{hierId}}"> {{hierId}} </a> </div>
+                <div class="list-item-cell network-list-item-time"> {{formattedDate createdAt}} </div>
+                <div class="list-item-cell network-list-item-time"> {{formattedDate lastLogin 'lll'}} </div>
             </div>
             <!-- /.list-item-cell -->
         </div>
