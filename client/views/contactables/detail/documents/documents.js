@@ -168,6 +168,7 @@ Template.contactableDocumentsList.created = function() {
             });
         } else {
             SubscriptionHandlers.DocumentsHandler = DocumentsHandler = Meteor.paginatedSubscribe('contactablesDocs', {
+                pubArguments: Session.get('entityId'),
                 filter: {
                     name: {
                         $regex: query.searchString.value,
@@ -290,3 +291,8 @@ Template.contactableDocumentsList.events = {
         query.searchString.value = e.target.value;
     })
 };
+
+Template.contactableDocumentsList.onDestroyed(function () {
+  SubscriptionHandlers.DocumentsHandler.stop();
+  DocumentsHandler = undefined;
+});
