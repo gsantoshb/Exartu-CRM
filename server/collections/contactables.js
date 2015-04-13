@@ -207,8 +207,8 @@ ContactablesFS.publish();
  return ContactablesFiles.find();
  });
  */
-Meteor.paginatedPublish(ContactablesFiles, function() {
-    return ContactablesFiles.find();
+Meteor.paginatedPublish(ContactablesFiles, function(entityId) {
+  return ContactablesFiles.find({entityId: entityId});
 }, {
     pageSize: 10,
     publicationName: 'contactablesDocs'

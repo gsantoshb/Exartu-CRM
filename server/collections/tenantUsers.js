@@ -6,13 +6,16 @@ TenantUserView = new View('tenantUsers', {
 
 
 Meteor.paginatedPublish(TenantUserView, function () {
+    console.log('tenantUsers')
         var user = Meteor.users.findOne({
             _id: this.userId
         });
         if (!user)
             return [];
-        if (!RoleManager.bUserIsSystemAdmin(user))
-            return [];
+        if (!RoleManager.bUserIsSystemAdmin(user)){
+          console.log('NOT admin');
+          return [];
+        }
         return TenantUserView.find();
     },
     {
@@ -30,4 +33,18 @@ Meteor.publish('singleTenantUser', function (id) {
     if (!RoleManager.bUserIsSystemAdmin(user))
         return [];
     return TenantUserView.find({_id: id});
+});
+
+Meteor.publish('tenantUsersLogin', function (id) {
+    var user = Meteor.users.findOne({
+        _id: this.userId
+    });
+    if (!user)
+        return [];
+    if (!RoleManager.bUserIsSystemAdmin(user))
+        return [];
+
+
+    Meteor.Collection._publishCursor(Activities.find({ type: Enums.activitiesType.userLogin }), this, 'tenantUsersLogin');
+
 });

@@ -37,7 +37,23 @@
         <div class="profile-pic">
             <div class="item-icon item-icon-hotlist item-icon-lg"><i class="icon-list-4"></i></div>
         </div>
-        <h1 class="title">{{_ displayName}} <span class="pointer label-title {{statusClass activeStatus}}" id="toggle-status" data-status="{{activeStatus}}">{{lookUpName activeStatus}}</span></h1>
+        <h1 class="title">
+            {{#if editingDisplayName}}
+                <div style="display: block; overflow: hidden">
+                    <textarea class="form-control input-block" style="margin-bottom: 8px;" id="displayName">{{_ displayName}}</textarea>
+                    <div class="pull-right">
+                        <span class="btn btn-primary saveDisplayNameButton"><i class="fa fa-check"></i> {{_ "Save"}}</span>
+                        <span class="btn btn-default cancelDisplayNameButton"><i class="fa fa-close"></i> {{_ "Cancel"}}</span>
+                    </div>
+                </div>
+            {{else}}
+                {{_ displayName}}<br>
+            {{/if}}
+            <small class="pointer" style="font-size: 50%" id="editDisplayName"><i class="fa fa-pencil"></i> {{_ "edit"}}</small>
+
+            <span class="pointer label-title {{statusClass activeStatus}}" id="toggle-status" data-status="{{activeStatus}}">{{lookUpName activeStatus}}
+            </span>
+        </h1>
     </div>
     <div class="status-note-1">
         {{#if editMode}}
