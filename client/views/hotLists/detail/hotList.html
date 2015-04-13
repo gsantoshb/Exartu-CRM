@@ -1,21 +1,19 @@
 <template name="hotList">
     <div id="content" class="network-content nicer-filters">
-
         <div class="row">
 
+            <!-- Side bar -->
             <div class="col-md-3">
                 <div class="sidebar">
                     <div class="go-back">
                         <a class="pointer goBack"><i class="fa fa-chevron-left"></i> Back</a>
                     </div>
 
-                    {{#with originalHotList}}  {{> hotListHeader}}  {{/with}}
+                    {{#with hotList}}  {{> hotListHeader}}  {{/with}}
 
                     {{>hotList_nav}}
 
-                    {{>hotList_actions}}
-
-                    {{#with originalHotList}}  {{> hotListOriginData}}  {{/with}}
+                    {{#with hotList}}  {{> hotListOriginData}}  {{/with}}
                 </div><!-- /.sidebar -->
             </div>
 
@@ -23,7 +21,7 @@
                 <div class="box-type-1">
                     <div class="details-view-content clearfix">
                         <div class="tab-pane active">
-                            {{> UI.dynamic template=currentTemplate  data=hotList  }}
+                            {{> UI.dynamic template=currentTemplate data=hotList}}
                         </div>
                     </div>
                 </div>
@@ -52,7 +50,6 @@
             <span>Status note –</span> {{statusNote}}  <a class="edit toggle-edit-mode" href="#">– <i class="fa fa-pencil"></i> edit</a>
         {{/if}}
     </div>
-
 </template>
 
 <template name="hotListOriginData">
@@ -68,9 +65,6 @@
     {{> detailNav tabs=tabs route="hotList" entityId=getEntityId}}
 </template>
 
-<template name="hotList_tasks">
-    {{> tasksBox}}
-</template>
 
 <template name="hotList_notes">
     {{> notesTab responseOnly=false}}
@@ -80,52 +74,6 @@
     {{> notesTab responseOnly=true}}
 </template>
 
-<template name="hotList_details">
-    <div class="col-sm-6">
-        {{#with originalHotList}}  {{> hotListDetail}}  {{/with}}
-    </div>
-    <div class="col-sm-6">
-        {{> contactableContactsBox}}
-    </div>
-
-    <div class="col-sm-6">
-        {{>hotListMembers}}
-    </div>
-</template>
-
 <template name="hotList_members">
-    <!--{{>hotListMembers}}-->
-
-    <!--{{> hotListMembersBox handler=handler hotList=originalHotList}}-->
-    {{> hotListMembersBox hotList=originalHotList}}
+    {{> hotListMembersBox hotList=data}}
 </template>
-
-<template name="hotListMembers">
-    <div class="list-container">
-        <div class="list-holder">
-            <div class="list-header contacts-list-header">
-                <div class="list-header-cell contacts-list-header-title">HotList Members – ({{memberCount}})</div>
-                <div class="list-header-cell contacts-list-header-code">Id</div>
-                <div class="list-header-cell contacts-list-header-actions">Actions</div>
-            </div><!-- /.list-header -->
-            <div class="list-item-section">
-                {{#each hotListMembers}}
-                    <div class="list-item contact-list-item">
-                        <div class="list-item-cell list-item-icon">
-                            <a class="item-icon item-icon-contact" href="/contactable/{{_id}}">{{getAcronym displayName}}</a>
-                        </div>
-                        <div class="list-item-cell contact-list-item-title">
-                            <div class="item-title single"><a href="/contactable/{{_id}}">{{displayName}}</a></div>
-                        </div>
-                        <div class="list-item-details contact-list-item-details">
-                            <div class="list-item-cell contact-list-item-code">{{_id}}</div>
-                            <div class="list-item-cell contact-list-item-actions"><a class="pointer remove"><i class="fa fa-times"></i> Remove</a></div>
-                        </div><!-- /.list-item-cell -->
-                    </div><!-- /.contact-list-item -->
-                {{/each}}
-            </div><!-- /.list-item-section -->
-        </div><!-- /.list-holder -->
-    </div>
-</template>
-
-<template name="hotList_actions"></template>

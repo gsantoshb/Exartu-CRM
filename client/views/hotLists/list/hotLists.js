@@ -29,12 +29,5 @@ HotListsController = RouteController.extend({
       this.render();
     else
       this.render('loadingContactable');
-    this.render();
-  }
-});
-
-Template.hotLists.helpers({
-  hotListCount: function(){
-    return HotListHandler.totalCount();
   }
 });

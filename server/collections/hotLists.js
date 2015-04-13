@@ -46,6 +46,8 @@ Meteor.paginatedPublish(Contactables, function(hotListId)
         if (!hotListId) return [];
 
         var hotlist = HotLists.findOne({_id: hotListId});
+        if (!hotlist.members) return [];
+
         return Contactables.find({_id: { $in : hotlist.members } }, {sort: {displayName: 1}} );
     }, {
         pageSize: 10,
@@ -54,7 +56,7 @@ Meteor.paginatedPublish(Contactables, function(hotListId)
 );
 
 Meteor.publish('hotListDetails', function (id) {
-  return Utils.filterCollectionByUserHier.call(this, HotListView.find(id));
+  return Utils.filterCollectionByUserHier.call(this, HotLists.find(id));
 });
 
 Meteor.publish('allHotLists', function () {
@@ -88,10 +90,3 @@ HotLists.before.insert(function (userId, doc) {
   if (!doc.activeStatus || doc.activeStatus==null) doc.activeStatus=LookUpManager.getActiveStatusDefaultId();
 
 });
-
-HotLists.after.insert(function(userId, doc){})
-HotLists.after.update(function(userId, doc){});
-
-// add some employee fields for hotList sorting
-HotLists.before.insert(function (userId, doc) {});
-HotLists.after.update(function (userId, doc) {});

@@ -1,11 +1,17 @@
-var patternFind = /data-mergefield="(\w+)"/g;
-var getPatternReplace = function (id) {
-  return new RegExp("<[^><]*data-mergefield=\"" + id + "\"[^><]*>");
-};
 
 HotListManager = {
-  addHotList: function (hotlist) {
-    return HotLists.insert(hotlist);
+  addHotList: function (hotList) {
+    // Validations
+    if (!hotList.displayName) throw new Error('Display Name is required');
+    if (!hotList.category) throw new Error('Category is required');
+
+    var user = Meteor.user();
+    var rootHier = Utils.getHierTreeRoot(user.currentHierId);
+
+    // Set hot list properties
+    hotList.activeStatus = LookUps.findOne({hierId: rootHier, lookUpCode: Enums.lookUpTypes.active.status.lookUpCode, isDefault: true})._id;
+
+    return HotLists.insert(hotList);
   },
     'hotListTextMessageSend': function(msg,id) {
 

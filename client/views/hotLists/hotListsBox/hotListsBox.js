@@ -240,7 +240,7 @@ Template.hotListListSearch.helpers({
 Template.hotListListSearch.events = {
     'click .addHotList': function (e) {
         Session.set('addOptions', {job: Session.get('entityId')});
-        Router.go('/hotListAdd/hotList');
+        Router.go('/hotListAdd');
         e.preventDefault();
     },
     'click #list-view': function () {
