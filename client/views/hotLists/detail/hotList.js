@@ -66,6 +66,7 @@ Template.hotList.events({
 
 // Header
 var editMode = new ReactiveVar(false);
+var editingDisplayName= new ReactiveVar(false);
 Template.hotListHeader.helpers({
   statusClass: function (statusId) {
     var lu = LookUps.findOne(statusId);
@@ -74,6 +75,9 @@ Template.hotListHeader.helpers({
   },
   editMode: function () {
     return editMode.get();
+  },
+  editingDisplayName: function () {
+    return editingDisplayName.get();
   }
 });
 
@@ -107,9 +111,26 @@ Template.hotListHeader.events({
     },
     'click .cancelButton': function () {
         editMode.set(false);
+    },
+    'click #editDisplayName': function () {
+        editingDisplayName.set(true);
+    },
+    'click .saveDisplayNameButton': function () {
+        var displayName = $('#displayName').val();
+
+        hotListCollection.update({_id: hotList._id}, {$set: {displayName: displayName}}, function (err, result) {
+            if (!err) {
+                editingDisplayName.set(false);
+            }
+            else{
+                alert(err);
+            }
+        });
+    },
+    'click .cancelDisplayNameButton': function () {
+        editingDisplayName.set(false);
     }
 });
-
 
 // Tabs
 var tabs;

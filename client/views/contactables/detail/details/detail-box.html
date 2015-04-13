@@ -55,7 +55,7 @@
                                             {{#objectProperty property=jobTitle editable=editMode}}
                                                 <input class="form-control" type="text" value="{{value}}">
                                             {{else}}
-                                                <span>{{value}}</span>
+                                                <span>{{_ value}}</span>
                                             {{/objectProperty}}
                                         </div>
                                     </li>
@@ -98,7 +98,7 @@
                                             {{#objectProperty property=department editable=editMode}}
                                                 <input class="form-control" type="text" value="{{value}}">
                                             {{else}}
-                                                <span>{{value}}</span>
+                                                <span>{{_ value}}</span>
                                             {{/objectProperty}}
                                         </div>
                                     </li>
@@ -112,7 +112,7 @@
                                             {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                         {{else}}
                                             <strong>
-                                                <strong>{{displayName}}</strong>
+                                                <strong>{{_ displayName}}</strong>
                                             </strong>
                                         {{/objectProperty}}
                                     </div>
@@ -125,7 +125,7 @@
                                             {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
                                         {{else}}
                                             <strong>
-                                                <strong>{{displayName}}</strong>
+                                                <strong>{{_ displayName}}</strong>
                                             </strong>
                                         {{/objectProperty}}
                                     </div>
@@ -204,7 +204,7 @@
                                         <div class="left-part">{{_ "WorkerComp"}}</div>
                                         <div class="right-part">
                                             {{#objectProperty property=workerCompCode editable=editMode}}
-                                                <input class="form-control" placeholder="Example: TX8810..."
+                                                <input class="form-control" placeholder= {{_ "Example TX8810"}}
                                                        type="text"
                                                        value="{{value}}">
                                             {{else}}

@@ -1,12 +1,16 @@
 var collection;
 var client = new ReactiveVar();
-var clientId = undefined;
+var clientId = new ReactiveVar();
+var handler = null;
 
 var contactMethodsInfo = {};
 
 Template.contactClientInfo.created = function(){
-    clientId = this.data.client;
-    Meteor.subscribe('singleContactable', clientId);
+    clientId.set(this.data.client);
+    Meteor.autorun(function () {
+        handler && handler.stop();
+        handler = Meteor.subscribe('singleContactable', clientId.get());
+    });
 
     var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
     console.log(contactMethodsTypes);
@@ -18,10 +22,15 @@ Template.contactClientInfo.created = function(){
     });
     console.log(contactMethodsInfo);
 };
+Template.contactClientInfo.destroyed = function(){
+    handler && handler.stop();
+};
+
 
 Template.contactClientInfo.helpers({
     client: function () {
-        return Contactables.findOne({_id: clientId});
+        var contact =  Contactables.findOne({_id: clientId.get()});
+        return contact;
     },
     pictureUrl: function () {
         if (this.pictureFileId) {
@@ -43,7 +52,8 @@ Template.contactClientInfo.helpers({
 
 Template.contactClientInfo.events({
     'click .addEdit': function (e, ctx) {
-        Utils.showModal('contactClientAddEdit', Session.get('entityId'), ctx.data.client, function (clientId) {
+        Utils.showModal('contactClientAddEdit', Session.get('entityId'), ctx.data.client, function (newClient) {
+            clientId.set(newClient);
         });
     }
 });

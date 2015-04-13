@@ -2,6 +2,8 @@ ActivityViews = new View('activities', {
   collection: Activities,
   cursors: function (activity) {
     var self = this;
+    var hierId = activity.hierId; // we are getting the corresponding hierId for the current cursor object
+
     var contactablesToPublish = [];
     var tasksToPublish = [];
     var jobsToPublish = [];
@@ -107,7 +109,7 @@ ActivityViews = new View('activities', {
     self.publish({cursor: jobsFilesCursor, to: 'jobs'});
 
     //contactable cursor
-    var contactablesCursor = Contactables.find({});
+    var contactablesCursor = Contactables.find({_id: {$in: contactablesToPublish}});
     self.publish({cursor: contactablesCursor, to: 'contactables'});
 
 
@@ -345,9 +347,7 @@ ActivityViews = new View('activities', {
 
 ChartActivityViews = new View('chartActivities', {
   collection: Activities,
-  cursors: function(activity) {
-
-  }
+  cursors: function(activity) {}
 });
 
 Meteor.paginatedPublish(ActivityViews, function () {
@@ -356,7 +356,6 @@ Meteor.paginatedPublish(ActivityViews, function () {
     return activities;
   },
   {
-    infiniteScroll: true,
     pageSize: 30,
     publicationName: 'activities',
     updateSelector: function (oldSelector, clientParams) {

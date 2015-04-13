@@ -169,3 +169,4 @@ Placements._ensureIndex({userId: 1});
 Placements._ensureIndex({hierId: 1});
 Placements._ensureIndex({objNameArray: 1});
 Placements._ensureIndex({candidateStatus: 1});
+Placements._ensureIndex({displayName: 1});

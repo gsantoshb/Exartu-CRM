@@ -26,6 +26,21 @@ TaskManager = {
     apiGetTasksBetween: function (start, end) {
 
         return Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Tasks.find({assign: Meteor.userId(),$and: [{$or: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]})).fetch();
+    },
+    updateTask: function(task){
+      Tasks.update({
+        _id: task._id
+      }, {
+        $set: {
+          begin: task.begin ? new Date(task.begin): task.begin,
+          end: task.end ? new Date(task.end): task.end,
+          assign: task.assign,
+          msg: task.msg,
+          completed: task.completed,
+          links: task.links,
+          inactive: task.inactive
+        }
+      });
     }
 };
 

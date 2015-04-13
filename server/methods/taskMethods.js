@@ -35,6 +35,14 @@ Meteor.methods({
         //    throw new Meteor.Error(err.message);
         //}
 
+    },
+    updateTask: function (task){
+      try{
+        TaskManager.updateTask(task);
+      }
+      catch(err){
+        throw new Meteor.Error(err.message);
+      }
     }
 
 });

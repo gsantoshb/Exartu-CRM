@@ -520,7 +520,7 @@ Template.hotListMembershipsBox.helpers({
 
     return function (string) {
       var self = this;
-      var result =  AllHotLists.find({members:{$nin: [contactable._id]}}).fetch();
+      var result =  AllHotLists.find({members:{$nin: [contactable._id]}, displayName: {$regex: ".*"+string+".*", $options: 'i'}}).fetch();
       var array = _.map(result, function (r) {
             return {text: r.displayName, id: r._id};
           });

@@ -6,15 +6,16 @@ TenantView = new View('tenants', {
 });
 
 
-Meteor.paginatedPublish(TenantView, function()
-  {
+Meteor.paginatedPublish(TenantView, function()  {
     var user = Meteor.users.findOne({
       _id: this.userId
     });
-    if (!user)
+    if (!user){
       return [];
-    if (!RoleManager.bUserIsSystemAdmin(user))
-      return null;
+    }
+    if (!RoleManager.bUserIsSystemAdmin(user)){
+      return [];
+    }
     return TenantView.find();
   },
   {
@@ -28,7 +29,7 @@ Meteor.publish('singleTenant', function (id) {
 });
 
 
-Meteor.publish('allTenants'),function() {
+Meteor.publish('allTenants',function() {
 
   var user = Meteor.users.findOne({
     _id: this.userId
@@ -37,7 +38,7 @@ Meteor.publish('allTenants'),function() {
   if (!RoleManager.bUserIsSystemAdmin(user))
     return null;
   return TenantView.find();
-}
+});
 
 Tenants.allow({
   update: function (userId, file, fields, modifier) {

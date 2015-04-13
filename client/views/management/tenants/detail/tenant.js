@@ -51,6 +51,11 @@ Template.tenant.helpers({
     isMember: function() {
         var member=TenantUsers.findOne({hierarchies: hierId,_id: userId});
         return (member) ? true: false;
+    },
+    isCurrent: function() {
+        var member = TenantUsers.findOne({hierarchies: hierId, _id: userId});
+        if (!member) return false;
+        return (member.currentHierId==hierId) ;
     }
 });
 Template.tenant.events = {
@@ -59,7 +64,17 @@ Template.tenant.events = {
         alert('hierarchy inactive flag set to ' + e.target.checked);
 
     },
-    'click .join-hierarchy': function () {
+    'click .make-current': function () {
+        Meteor.call('changeCurrentHierId', hierId, function (err, result) {
+            if (err)
+                console.error(err);
+            else {
+                Meteor.disconnect();
+                Meteor.reconnect();
+            }
+        })
+
+    },    'click .join-hierarchy': function () {
         Meteor.call('addUserToHierarchy', userId, hierId);
         alert('hierarchy joined');
     },

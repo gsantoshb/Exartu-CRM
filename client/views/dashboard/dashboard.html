@@ -33,73 +33,53 @@
                         </ul>
                     </div>
 
-                    {{#if getLeadTrackers}}
-                        <section class="box-type-3">
-                            <header>
-                                <a class="more" href="/leaderboards">{{_ "View reports"}}</a>
-                                <div class="title">{{_ "In the last 30 days"}}</div>
-                            </header>
-                            <div class="box-body">
-                                <ul class="list-type-6">
-                                    {{#each getLeadTrackers}}
-                                        <li><span class="hightlight-1">{{counter}}</span> {{_ displayName}}</li>
-                                    {{/each}}
-                                </ul>
-                            </div><!-- /.box-body -->
-                        </section><!-- /.box-type-3 -->
-                    {{/if}}
+                    <!--{{#if getLeadTrackers}}-->
+                        <!--<section class="box-type-3">-->
+                            <!--<header>-->
+                                <!--<a class="more" href="/leaderboards">{{_ "View reports"}}</a>-->
+                                <!--<div class="title">{{_ "In the last 30 days"}}</div>-->
+                            <!--</header>-->
+                            <!--<div class="box-body">-->
+                                <!--<ul class="list-type-6">-->
+                                    <!--{{#each getLeadTrackers}}-->
+                                        <!--<li><span class="hightlight-1">{{counter}}</span> {{_ displayName}}</li>-->
+                                    <!--{{/each}}-->
+                                <!--</ul>-->
+                            <!--</div>&lt;!&ndash; /.box-body &ndash;&gt;-->
+                        <!--</section>&lt;!&ndash; /.box-type-3 &ndash;&gt;-->
+                    <!--{{/if}}-->
 
-                    {{#if getTeamMembersTrackers}}
-                        <section class="box-type-3">
-                            <header>
-                                <a class="more" href="/leaderboards">{{_ "View reports"}}</a>
-                                <div class="title">{{_ "Team Deal Load"}}</div>
-                            </header>
-                            <div class="box-body">
-                                <ul class="list-type-6">
-                                    {{#each getTeamMembersTrackers}}
-                                        <li><span class="hightlight-1">{{counter}}</span> {{displayName}}</li>
-                                    {{/each}}
-                                </ul>
-                                <a href="#"></a>
-                            </div><!-- /.box-body -->
-                        </section><!-- /.box-type-3 -->
-                    {{/if}}
+                    <!--{{#if getTeamMembersTrackers}}-->
+                        <!--<section class="box-type-3">-->
+                            <!--<header>-->
+                                <!--<a class="more" href="/leaderboards">{{_ "View reports"}}</a>-->
+                                <!--<div class="title">{{_ "Team Deal Load"}}</div>-->
+                            <!--</header>-->
+                            <!--<div class="box-body">-->
+                                <!--<ul class="list-type-6">-->
+                                    <!--{{#each getTeamMembersTrackers}}-->
+                                        <!--<li><span class="hightlight-1">{{counter}}</span> {{displayName}}</li>-->
+                                    <!--{{/each}}-->
+                                <!--</ul>-->
+                                <!--<a href="#"></a>-->
+                            <!--</div>&lt;!&ndash; /.box-body &ndash;&gt;-->
+                        <!--</section>&lt;!&ndash; /.box-type-3 &ndash;&gt;-->
+                    <!--{{/if}}-->
 
-                    <div class="chart-box-1 text-center" style="overflow: hidden;">
-                        {{#if showActivityChart}}
-                            {{> highchartsHelper chartId="activityChart" chartWidth="100%" charHeight="100%" chartObject=getActivityChartObject}}
+                    <div >
+                        <div class="sidebar-right">
+                            {{> agendaBox}}
 
-                            <!-- @todo review this -->
-                            <!--<div style=" float: left; overflow:hidden; text-align:center;margin-left: 14px;margin-top: -12px;font-size: 10px;">-->
-                                <!--<div style="float: left; margin-right: 3px;">-->
-                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">MO</div>-->
-                                <!--</div>-->
-                                <!--<div style="float: left; margin-right: 3px;">-->
-                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">TU</div>-->
-                                <!--</div>-->
-                                <!--<div style="float: left; margin-right: 3px;">-->
-                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">WE</div>-->
-                                <!--</div>-->
-                                <!--<div style="float: left; margin-right: 3px;">-->
-                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">TH</div>-->
-                                <!--</div>-->
-                                <!--<div style="float: left; margin-right: 3px;">-->
-                                    <!--<div style="float: left;background: #1088b7;color: #88c4db; width: 69px;">FR</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        {{else}}
-                            <div class="loader-container chart-loader">
-                                <div class="loader"></div>
-                                <p>Loading chart</p>
-                            </div>
-                        {{/if}}
-                    </div>
+                            {{> dashboardNotes}}
+                        </div><!-- /.sidebar-right -->
+                    </div><!-- /.col-md-3 -->
+
+
                 </aside><!-- /.sidebar -->
             </div><!-- /.col-md-3 -->
 
 
-            <div class="col-md-6">
+            <div class="col-md-9">
                 <div class="list-container">
                     <div class="list-holder">
                         <div class="list-actions">
@@ -159,23 +139,23 @@
                         <div class="list-item-section">
                             <ul class="list-type-7 activity-feed">
                                 {{#if listViewMode}}
-                                    {{#if isReady}}
+                                    <!--{{#if isReady}}-->
                                         {{#each activities}}
                                             {{#with getCtx}}
                                                 {{> Template.dynamic template=getTemplateForActivity}}
                                             {{/with}}
                                         {{/each}}
-                                    {{/if}}
+                                    <!--{{/if}}-->
                                 {{else}}
                                     <section class="timeline">
                                         <div class="activity-container scroll-container">
-                                            {{#if isReady}}
+                                            <!--{{#if isReady}}-->
                                                 {{#each activities}}
                                                     {{#with getCtx}}
                                                         {{> Template.dynamic template=getTemplateForActivity}}
                                                     {{/with}}
                                                 {{/each}}
-                                            {{/if}}
+                                            <!--{{/if}}-->
                                         </div>
                                     </section>
                                 {{/if}}
@@ -191,14 +171,6 @@
                     </div><!-- /.list-holder -->
                 </div><!-- /.list-container -->
             </div><!-- /.col-md-6 -->
-
-            <div class="col-md-3">
-                <div class="sidebar-right">
-                    {{> agendaBox}}
-
-                    {{> dashboardNotes}}
-                </div><!-- /.sidebar-right -->
-            </div><!-- /.col-md-3 -->
 
         </div><!-- /.row -->
 

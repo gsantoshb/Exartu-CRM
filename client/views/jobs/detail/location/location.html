@@ -2,7 +2,7 @@
     <div class="box">
         <div class="box-header-2">
             <a class="btn-action pointer" title="Edit"><i id="add-address-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>
-            <div class="box-title">Addresses</div>
+            <div class="box-title">{{_ "Addresses"}}</div>
         </div>
         <div class="box-content-md">
             {{#if isAdding}}
@@ -18,8 +18,8 @@
 <template name="addJobLocation">
     <div style="padding: 7px;border: solid 1px #DADADA;">
         <div>
-            <button id="custom-location" class="btn {{#if customLocation}}btn-primary{{/if}}"> Custom address </button>
-            <button id="customer-location" class="btn {{#unless customLocation}}btn-primary{{/unless}}"> Customer address </button>
+            <button id="custom-location" class="btn {{#if customLocation}}btn-primary{{/if}}"> {{_ "Custom address"}} </button>
+            <button id="customer-location" class="btn {{#unless customLocation}}btn-primary{{/unless}}"> {{_ "Customer address"}} </button>
         </div>
         {{#if customLocation}}
             {{> jobAddressAddEdit addEditOptions}}
@@ -36,12 +36,12 @@
                     </li>
                 {{else}}
                     <li>
-                        <h3>The customer has no Worksite address</h3>
+                        <h3>{{_ "The customer has no Worksite address"}}</h3>
                     </li>
                 {{/each}}
             </ul>
             {{#if customerLocation.count}}
-                <button class="btn btn-block btn-primary" disabled="{{disableSave}}" id="saveCustomAddress">Save</button>
+                <button class="btn btn-block btn-primary" disabled="{{disableSave}}" id="saveCustomAddress">{{_ "Save"}}</button>
             {{/if}}
         {{/if}}
     </div>
@@ -63,9 +63,9 @@
                         {{>smallAddress}}
                         <div class="list-3-actions">
                             {{#if canEdit}}
-                                <a class="editAddressRecord pointer"><i class="fa fa-edit"></i> Edit</a>
+                                <a class="editAddressRecord pointer"><i class="fa fa-edit"></i> {{_ "Edit"}}</a>
                                 <span class="bullet-spacer">·</span>
-                                <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> Delete</a>
+                                <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> {{_ "Delete"}}</a>
                             {{/if}}
                         </div>
                     </div>
@@ -78,20 +78,20 @@
 <template name="address">
     <div class="row">
         <div class="col-md-12">
-            <div class="left-part"><h5>{{getAddressTypeDisplayName }}</h5></div>
+            <div class="left-part"><h5>{{getAddressTypeDisplayName}}</h5></div>
         </div>
         <div class="col-md-6">
             <ul class="list-type-5">
                 <li>
-                    <div class="left-part">Address 1</div>
+                    <div class="left-part">{{_ "Address 1"}}</div>
                     <div class="right-part">{{address}}</div>
                 </li>
                 <li>
-                    <div class="left-part">Address 2</div>
+                    <div class="left-part">{{_ "Address 2"}}</div>
                     <div class="right-part">{{address2}}</div>
                 </li>
                 <li>
-                    <div class="left-part">City</div>
+                    <div class="left-part">{{_ "City"}}</div>
                     <div class="right-part">{{city}}</div>
                 </li>
 
@@ -100,15 +100,15 @@
         <div class="col-md-6">
             <ul class="list-type-5">
                 <li>
-                    <div class="left-part">State</div>
+                    <div class="left-part">{{_ "State"}}</div>
                     <div class="right-part">{{state}}</div>
                 </li>
                 <li>
-                    <div class="left-part">Country</div>
+                    <div class="left-part">{{_ "Country"}}</div>
                     <div class="right-part">{{country}}</div>
                 </li>
                 <li>
-                    <div class="left-part">Postal Code</div>
+                    <div class="left-part">{{_ "Postal Code"}}</div>
                     <div class="right-part">{{postalCode}}</div>
                 </li>
             </ul>
@@ -117,6 +117,6 @@
 </template>
 
 <template name="smallAddress">
-    <h4 class="list-3-item-meta-top">{{getAddressTypeDisplayName }}</h4>
+    <h4 class="list-3-item-meta-top">{{_ getAddressTypeDisplayName}}</h4>
     <h4 class="list-3-item-title">{{address}} {{city}}, {{state}} {{country}}</h4>
 </template>

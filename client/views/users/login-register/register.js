@@ -72,6 +72,7 @@ Template.register.events({
   },
   'keyup .smartField': function(e){
     var label = $('#'+$(e.currentTarget).attr('data-label'));
+    $(e.currentTarget).parent('label').removeClass('show');
     label.removeClass('show');
     if($(e.currentTarget).val()){
       label.addClass('show');

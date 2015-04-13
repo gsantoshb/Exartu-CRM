@@ -27,29 +27,36 @@ var errorDep = new Tracker.Dependency;
 
 var addDisabled = new ReactiveVar(false);
 var taskUpdate = function (cb) {
-    var oldTask = Tasks.find({_id : task._id}).fetch()[0];
+    var oldTask = Tasks.find({_id : task._id}).fetch()[0] || CalendarTasks.findOne({_id : task._id}) ;
     if (task._id) {
-        Tasks.update({
-                _id: task._id
-            }, {
-                $set: {
-                    begin: task.begin ? new Date(task.begin): task.begin,
-                    end: task.end ? new Date(task.end): task.end,
-                    assign: task.assign,
-                    msg: task.msg,
-                    completed: task.completed,
-                    links: task.links,
-                    inactive: task.inactive
-                }
-            },
-            function () {
-                if (cb)
-                    cb();
-            }
-        );
-        if(oldTask.assign[0] !== task.assign[0]){
-            Meteor.call('notifyTask', task);
-        }
+        //Tasks.find({});
+        //Tasks.update({
+        //        _id: task._id
+        //    }, {
+        //        $set: {
+        //            begin: task.begin ? new Date(task.begin): task.begin,
+        //            end: task.end ? new Date(task.end): task.end,
+        //            assign: task.assign,
+        //            msg: task.msg,
+        //            completed: task.completed,
+        //            links: task.links,
+        //            inactive: task.inactive
+        //        }
+        //    },
+        //    function () {
+        //        if (cb)
+        //            cb();
+        //    }
+        //);
+         Meteor.call('updateTask', task, function(err, result){
+           if(cb){
+             cb();
+           }
+           if(oldTask.assign[0] !== task.assign[0]){
+             Meteor.call('notifyTask', task);
+           }
+         })
+
 
 
     }

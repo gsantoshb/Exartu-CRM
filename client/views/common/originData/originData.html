@@ -1,14 +1,14 @@
 <template name="originData">
     <div class="text-muted">
-        <span>Created by </span>
+        <span>{{_ "Created by"}} </span>
         {{#if displayUserName userId}}
             <strong> {{displayUserName userId}} </strong>
         {{else}}
-            <strong> System </strong>
+            <strong> {{_ "System"}} </strong>
         {{/if}}
-        <span> in hierarchy </span>
+        <span> {{_ "in hierarchy"}} </span>
         <strong> {{hierName}} </strong>
-        <span> at </span>
+        <span> {{_ "at"}} </span>
         <strong> {{formattedDate dateCreated "lll"}} </strong>
     </div>
 </template>

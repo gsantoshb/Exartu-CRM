@@ -122,7 +122,7 @@ Router.map(function () {
   });
 
   this.route('tenantUser', {
-    path: '/tenantUser/:_id?',
+    path: '/tenantUser/:_id',
     controller: 'TenantUserController'
   });
 

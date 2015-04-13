@@ -95,6 +95,7 @@ Template.tenantsBox.helpers ({
     }
 });
 
+var ActivityCounters = new Mongo.Collection('activityCounters');
 
 var options = {};
 // List
@@ -102,6 +103,7 @@ Template.tenantsList.created = function () {
     if (!SubscriptionHandlers.TenantHandler) {
         SubscriptionHandlers.TenantHandler = Meteor.paginatedSubscribe('tenants');
     }
+    this.subscribe('activityCounters');
     TenantHandler = SubscriptionHandlers.TenantHandler;
     Meteor.autorun(function () {
         var searchQuery = {};
@@ -226,7 +228,7 @@ Template.tenantsListSearch.helpers({
     }
 });
 
-Template.tenantsListSearch.events = {
+Template.tenantsListSearch.events({
     'click .addTenant': function (e) {
         Session.set('addOptions', {job: Session.get('entityId')});
         Router.go('/tenantAdd/tenant');
@@ -252,7 +254,7 @@ Template.tenantsListSearch.events = {
             $(e.currentTarget).attr('data-view', 'normal');
         }
     }
-};
+});
 
 // Item
 
@@ -275,6 +277,15 @@ Template.tenantsListItem.helpers({
     },
     listViewMode: function () {
         return listViewMode.get();
+    },
+    activityCount: function () {
+        var counts = ActivityCounters.findOne(this._id);
+        return counts && counts.activityCount;
+    },
+    lastDate: function () {
+        var counts = ActivityCounters.findOne(this._id);
+        console.log('counts', counts);
+        return counts && counts.lastDate;
     }
 });
 
