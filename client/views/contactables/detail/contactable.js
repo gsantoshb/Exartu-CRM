@@ -559,6 +559,8 @@ var addHotList = function () {
        hotListMembershipsDep.changed();
      }
   })
+  //hack
+  Template.instance().$('input[type=hidden]').data().select2.clear();
 };
 
 Template.hotListMembershipsBox.events({
