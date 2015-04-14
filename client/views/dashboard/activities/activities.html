@@ -284,15 +284,16 @@
                     <div class="list-type-7-title">
                         {{#with note}}
                            <a id="{{_id}}" class="note-link" href="#"> {{>showMore text=msg limit=60}}</a>
+                            {{#each links}}
+                                &nbsp;
+                                <a href="{{getHref}}">
+                                    {{#with getEntity}}
+                                        <span class="badge">{{displayName}}</span>
+                                    {{/with}}
+                                </a>
+                            {{/each}}
                         {{/with}}
-                        {{#each this.links}}
-                            &nbsp;
-                            <a href="{{getHref}}">
-                                {{#with getEntity}}
-                                    <span class="badge">{{displayName}}</span>
-                                {{/with}}
-                            </a>
-                        {{/each}}
+
 
                         <span class="desc">&ndash; added by {{displayUserName userId}}</span>
                     </div>
