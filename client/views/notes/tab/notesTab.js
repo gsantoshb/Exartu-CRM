@@ -4,14 +4,17 @@ var addDisabled = new ReactiveVar(false);
 
 var displayToString = function(){
   var c = Contactables.findOne({_id:Session.get('entityId')});
-  if(c.Employee){
-    return 'Display to employee';
-  }
-  else if(c.Contact){
-    return 'Display to contact';
-  }
-  else if(c.Client){
-    return 'Display to client';
+  if(c) {
+
+    if (c.Employee) {
+      return 'Display to employee';
+    }
+    else if (c.Contact) {
+      return 'Display to contact';
+    }
+    else if (c.Client) {
+      return 'Display to client';
+    }
   }
 };
 
@@ -80,6 +83,7 @@ NoteSchema = new SimpleSchema({
 AutoForm.hooks({
     AddNoteRecord: {
         onSubmit: function (insertDoc, updateDoc, currentDoc) {
+
             addDisabled.set(true);
             if(!hotlist) {
                 var self = this;
@@ -415,11 +419,8 @@ AutoForm.addInputType('linkInput',{
 Template.linksAutoForm.events({
     'click #toggleAddNoteModal': function(){
         Utils.showModal('noteAdd', function(data) {
-            debugger;
             data = data || {};
-
             if(_.findWhere(links, {id: data.id})) return false;
-
             links.push(data);
             linkedDep.changed();
             Utils.dismissModal();
