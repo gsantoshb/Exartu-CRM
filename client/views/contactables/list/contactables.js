@@ -510,7 +510,6 @@ Template.contactablesListHeader.helpers({
 
     return function (string) {
       var self = this;
-      debugger;
       var result = AllHotLists.find({category: {$in: comonTypes}, displayName: {$regex: ".*"+string+".*", $options: 'i'}}).fetch();
       var array = _.map(result, function (r) {
         return {text: r.displayName, id: r._id};
