@@ -240,7 +240,8 @@ Template.hotListMembersList.created = function () {
         }
 
         urlQuery.apply();
-        setSubscription(searchQuery, options);
+        if (SubscriptionHandlers.HotListMembersHandler) // To avoid being called after the template destroy
+          setSubscription(searchQuery, options);
     });
 };
 
