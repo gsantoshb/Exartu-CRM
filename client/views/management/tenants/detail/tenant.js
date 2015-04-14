@@ -74,7 +74,12 @@ Template.tenant.events = {
             }
         })
 
-    },    'click .join-hierarchy': function () {
+    },
+    'click .output-object': function () {
+        console.log('Tenant object',Tenants.findOne(hierId));
+
+    },
+    'click .join-hierarchy': function () {
         Meteor.call('addUserToHierarchy', userId, hierId);
         alert('hierarchy joined');
     },
