@@ -47,6 +47,9 @@ Hierarchies.after.insert(function (userId, doc) {
     }
 });
 
+Hierarchies.before.insert(function (userId, doc) {
+  doc.dateCreated = new Date();
+});
 // Users files
 
 HierarchiesFS = new Document.Collection({

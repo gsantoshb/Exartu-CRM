@@ -24,11 +24,7 @@ HierarchyManager = {
             webName: hier.name + (hierNameUseCount > 0 ? '-' + hierNameUseCount : ''), // Add a suffix if hier.name is already used
             title: hier.name
         };
-
-        hier.dateCreated = new Date();
-
         var hierId = Hierarchies.insert(hier);
-
         return hierId
     },
     getCurrentHierUsers: function () {

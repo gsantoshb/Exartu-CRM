@@ -167,7 +167,7 @@ Template.tenantsList.created = function () {
             options.sort = {};
             options.sort[selected.field] = selected.value;
         } else {
-            delete options.sort;
+            options.sort = {dateCreated:-1};
         }
 
         TenantHandler.setFilter(searchQuery);
