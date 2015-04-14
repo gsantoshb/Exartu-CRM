@@ -118,34 +118,12 @@ Template.hotListMembersSearch.events({
   },
 
   'click #sendEmailTemplate': function () {
-    var hotlist = HotLists.findOne({_id: Session.get('entityId')});
-    var members = Contactables.find({_id: {$in: hotlist.members || []}}, {sort: {displayName: 1}}).fetch();
-
-    // Find the first contactable type that is not multiple types unless all of them are
-    var contactableType = Utils.getContactableType(members[0]);
-    for (var i = 1; i < members.length && contactableType.indexOf('/') !== -1; i++) {
-      contactableType = Utils.getContactableType(members[i]);
-    }
-
-    // Get the category for each type of contact
-    var categories = [];
-    _.each(contactableType.split('/'), function (type) {
-      switch (type) {
-        case 'Client':
-          categories.push(MergeFieldHelper.categories.client.value);
-          break;
-        case 'Employee':
-          categories.push(MergeFieldHelper.categories.employee.value);
-          break;
-        case  'Contact':
-          categories.push(MergeFieldHelper.categories.contact.value);
-          break;
-      }
-    });
+    var hotList = HotLists.findOne({_id: Session.get('entityId')});
+    var members = Contactables.find({_id: {$in: hotList.members || []}}, {sort: {displayName: 1}}).fetch();
 
     // Choose the template to send
     Utils.showModal('sendEmailTemplateModal', {
-      categories: categories,
+      categories: [hotList.category],
       callback: function (result) {
         if (result) {
           var recipients = [];
