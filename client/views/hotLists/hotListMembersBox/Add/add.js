@@ -70,15 +70,11 @@ Template.hotListMemberAdd.helpers({
     category: function () {
         switch (entity.category){
             case MergeFieldHelper.categories.employee.value:
-               return MergeFieldHelper.categories.employee.name;
-
+                return MergeFieldHelper.categories.employee.name;
             case MergeFieldHelper.categories.client.value:
-                return MergeFieldHelper.categories.employee.name;
-
-
+                return MergeFieldHelper.categories.client.name;
             case MergeFieldHelper.categories.contact.value:
-                return MergeFieldHelper.categories.employee.name;
-
+                return MergeFieldHelper.categories.contact.name;
         }
     }
 });

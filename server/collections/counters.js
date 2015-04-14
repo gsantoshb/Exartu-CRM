@@ -19,6 +19,28 @@ Meteor.publish("jobCounters", function (jobId) {
   generateCounterPublish(this, 'jobCounters', cursors);
 });
 
+Meteor.publish("activityCounters", function () {
+  console.log('activityCounters');
+  var sub = this;
+  Hierarchies.find().forEach(function (hier) {
+    var activityCursor = Activities.find({ hierId: hier._id });
+    var lastActivity = Activities.findOne({ hierId: hier._id }, { sort: { 'data.dateCreated': -1 } })
+
+    sub.added('activityCounters', hier._id, {
+      activityCount: activityCursor.count(),
+      lastDate: lastActivity && lastActivity.data && lastActivity.data.dateCreated
+    });
+
+    //todo: observe activityCursor
+  });
+
+  //sub.onStop(function(){
+  //
+  //});
+
+  sub.ready();
+});
+
 var generateCounterPublish = function (ctx, name, cursors) {
   _.forEach(cursors, function(c) {
     var initializing = true;

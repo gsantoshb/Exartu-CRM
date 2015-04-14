@@ -86,6 +86,8 @@
             <div class="list-header-cell network-list-header-title">Name</div>
             <div class="list-header-cell network-list-header-contact">WebName</div>
             <div class="list-header-cell network-list-header-time">Date</div>
+            <div class="list-header-cell network-list-header-time">Activity count</div>
+            <div class="list-header-cell network-list-header-time">Last Activity date</div>
         </div>
     {{/if}}
 
@@ -104,6 +106,9 @@
                 <div class="list-item-cell network-list-item-code">{{configuration.title}}</div>
                 <div class="list-item-cell network-list-item-time">
                     {{formattedDate dateCreated "fromNow"}}
+                </div>
+                <div class="list-item-cell network-list-item-time">
+                    {{activityCount}}
                 </div>
             </div>
             <!-- /.list-item-cell -->
@@ -135,26 +140,17 @@
                 <div class="list-item-cell network-list-item-time">
                     <span>{{formattedDate dateCreated "fromNow"}}</span>
                 </div>
-                <div class="list-item-cell item-overflow network-item-overflow">
-                    <a href="#">
-                            <span class="ico-more">
-                              <span class="dot-1"></span>
-                              <span class="dot-2"></span>
-                              <span class="dot-3"></span>
-                            </span>
-                    </a>
+                <div class="list-item-cell network-list-item-contact">
+                    <span>
+                        {{activityCount}}
+                    </span>
+                </div>
+                <div class="list-item-cell network-list-item-contact">
+                    <span>
+                        {{lastDate}}
+                    </span>
                 </div>
             </div>
-            <!-- /.list-item-cell -->
-            {{#with getLastNote}}
-                <div class="list-item-more network-list-item-more">
-                    <div class="list-item-more-entry">
-                        <div class="list-item-more-entry-icon"></div>
-                    </div>
-                    <!-- /.list-item-more-entry -->
-                </div>
-                <!-- /.list-item-more -->
-            {{/with}}
         </div>
     {{/if}}
 </template>

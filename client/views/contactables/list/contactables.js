@@ -88,7 +88,7 @@ ContactablesController = RouteController.extend({
 
             return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler, Meteor.subscribe('singleHotList', Session.get('hotListId'))];
         }
-        SubscriptionHandlers.HotListHandler = Meteor.subscribe('allHotLists');
+        SubscriptionHandlers.ContactablesHotListHandler = Meteor.subscribe('allHotLists');
     },
     action: function () {
         if (!this.ready()) {
@@ -407,7 +407,10 @@ Template.contactablesList.destroyed = function () {
         SubscriptionHandlers.AuxContactablesHandler.stop();
        delete SubscriptionHandlers.AuxContactablesHandler;
     }
-
+    if (SubscriptionHandlers.ContactablesHotListHandler) {
+       SubscriptionHandlers.ContactablesHotListHandler.stop();
+       delete SubscriptionHandlers.ContactablesHotListHandler;
+    }
     $('button[data-toggle="popover"]').attr('data-init', 'off');
     $('.popover').hide().popover('destroy');
 };
@@ -463,7 +466,11 @@ Template.contactablesListHeader.helpers({
     areAllSelectedTheSameType: function () {
         if (_.isEmpty(selected.get())) return true;
         //check if there is a common type along all items selected ignoring contactable, person and organization
-        comonTypes =_.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization');
+        var comonTypesUpper =_.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization');
+        comonTypes = [];
+        _.forEach(comonTypesUpper, function(value){
+            comonTypes.push(value.toLowerCase());
+        })
         return  !_.isEmpty(comonTypes);
     },
     showSelectAll: function () {
@@ -503,7 +510,7 @@ Template.contactablesListHeader.helpers({
 
     return function (string) {
       var self = this;
-      var result =  AllHotLists.find({displayName: {$regex: ".*"+string+".*", $options: 'i'}}).fetch();
+      var result = AllHotLists.find({category: {$in: comonTypes}, displayName: {$regex: ".*"+string+".*", $options: 'i'}}).fetch();
       var array = _.map(result, function (r) {
         return {text: r.displayName, id: r._id};
       });
@@ -898,10 +905,15 @@ var addHotList = function () {
   var hotlist = AllHotLists.findOne({_id: selectedValue});
   var inc = 0
   _.forEach(selected.get(), function (item) {
-    if (hotlist.members.indexOf(item.id) < 0) {
-      hotlist.members.push(item.id);
-      inc = inc + 1;
-    }
+     if ((!hotlist.members)||(hotlist.members.indexOf(item.id) < 0)) {
+         if(hotlist.members) {
+           hotlist.members.push(item.id)
+         }
+         else {
+           hotlist.members = [item.id]
+         }
+         inc = inc + 1;
+     }
   });
   HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
   var self = this;

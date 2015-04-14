@@ -31,9 +31,8 @@ Meteor.autorun(function () {
     loadingDep.changed();
 
     handler && handler.stop();
-
     init = false;
-    handler = Meteor.subscribe("calendarTasks", start, end, showMineOnly , function () {
+    handler = Meteor.subscribe("calendarTasks", start, end, showMineOnly, function () {
         rerender();
         loadingCount = false;
         loadingDep.changed();
@@ -75,14 +74,16 @@ var rerender = _.debounce(function () {
 var renderDay = function(){
   var calendarDiv = $('.fc');
   var events = [];
-  var eventCount = calendarDiv.fullCalendar( 'clientEvents', function(eventObj){
-    if( eventObj.start.format('YYYY-MM-DD') == currentDay.format('YYYY-MM-DD') ) {
-      events.push(eventObj);
-      return true;
-    } else {
-      return false;
-    }
-  }).length;
+  if(currentDay != null) {
+    var eventCount = calendarDiv.fullCalendar('clientEvents', function (eventObj) {
+      if (eventObj.start.format('YYYY-MM-DD') == currentDay.format('YYYY-MM-DD')) {
+        events.push(eventObj);
+        return true;
+      } else {
+        return false;
+      }
+    }).length;
+  }
 
   //alert('we have '+eventCount+' events');
   //console.log(events);
@@ -132,21 +133,7 @@ Template.agendaBox.helpers({
             timeFormat:'HH:mm',
             events: function (start, end, timezone, callback) {
                 callback(_.map(CalendarTasks.find({}).fetch(), function (t) {
-                    switch(t.state) {
-                        case Enums.taskState.future:
-                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future  pointer'  } ;
-                            break;
-                        case Enums.taskState.completed:
-                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-completed  pointer'  } ;
-                            break;
-                        case Enums.taskState.overDue:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-overDue  pointer'  } ;
-                            break;
-                        case Enums.taskState.pending:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-pending  pointer'  };
-                            break;
-                    }
-
+                        return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:""  } ;
                 }));
             },
             viewRender: function (view, element) {
@@ -154,6 +141,10 @@ Template.agendaBox.helpers({
                 var calendarDiv = $('.fc');
                 start = view.start.local().toDate();
                 end = view.end.local().toDate();
+                var today = new Date(new moment().format('YYYY-MM-DD'));
+
+
+
                 //this correct the calendar end date
                 //end = new Date(endAux.setDate(endAux.getDate()+1));
                 startEndDep.changed();
@@ -207,18 +198,22 @@ Template.agendaBox.helpers({
                 var calendarDate = calendarDiv.fullCalendar('getDate');
                 var html = '';
 
-                if( calendarDate && calendarDate.format('YYYY-MM') == moment().format('YYYY-MM') )
-                    html = "Today <span>"+moment().format('D')+"<sup>`th</sup> "+moment().format('MMMM')+"</span>";
-                else
-                    html = calendarDiv.fullCalendar('getView').title;
-
+                if( calendarDate && calendarDate.format('YYYY-MM') == moment().format('YYYY-MM') ) {
+                  html = "Today <span>" + moment().format('D') + "<sup>`th</sup> " + moment().format('MMMM') + "</span>";
+                  currentDay = calendarDate;
+                  renderDay();
+                }
+                else {
+                  currentDay = null;
+                  renderDay();
+                  html = calendarDiv.fullCalendar('getView').title;
+                }
                 currentMonth.set(html);
 
-                // cleanup the calendar view
+               // cleanup the calendar view
                 calendarDiv.find('.fc-content-skeleton').remove();
                 calendarDiv.find('.fc-other-month a').remove();
                 calendarDiv.find('.fc-other-month .day-tasks').remove();
-
             },
             loading: function(bool) {
                 var calendarDiv = $('.fc');

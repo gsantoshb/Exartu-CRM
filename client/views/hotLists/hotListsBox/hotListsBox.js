@@ -178,6 +178,13 @@ Template.hotListList.created = function () {
     })
 };
 
+Template.hotListList.destroyed = function () {
+  if (SubscriptionHandlers.HotListHandler) {
+    SubscriptionHandlers.HotListHandler.stop();
+    delete SubscriptionHandlers.HotListHandler;
+  }
+};
+
 Template.hotListList.helpers({
     info: function () {
         info.isFiltering.value = HotListHandler.totalCount() != 0;
@@ -240,7 +247,7 @@ Template.hotListListSearch.helpers({
 Template.hotListListSearch.events = {
     'click .addHotList': function (e) {
         Session.set('addOptions', {job: Session.get('entityId')});
-        Router.go('/hotListAdd/hotList');
+        Router.go('/hotListAdd');
         e.preventDefault();
     },
     'click #list-view': function () {
@@ -317,3 +324,4 @@ Template.hotListListSort.events = {
         setSortField(this);
     }
 };
+
