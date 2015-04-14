@@ -450,7 +450,7 @@ var loadContactables = function (hierId) {
             Contact: {
                 description: "buying influence",
                 status: status ? status._id : null,
-                client: randomClient._id,
+                client: randomClient._id
             },
             tags: randomTag,
             contactMethods: contactMethods,
@@ -562,30 +562,28 @@ var loadPlacements = function (hierId) {
     console.log("Placement demo data created", Date.now());
 };
 var loadHotLists = function (hierId) {
-    var today = new Date();
     var employees = Contactables.find({objNameArray: 'Employee', hierId: hierId}).fetch();
     var members = [];
     for (var i = 0; i < 10; ++i) {
         var randomEmployee = employees[Math.floor(Math.random() * employees.length)];
         members.push(randomEmployee._id);
-        members = _.uniq(members);
-    };
+    }
+    members = _.uniq(members);
+
     var newHotList = {
         displayName: 'Hotlist Example',
-        objNameArray: ["hotList"],
-        objType: dType.ObjTypes.findOne({name:"Employee"})._id,
-        hierId: hierId,
+        category: MergeFieldHelper.categories.employee.value,
         statusNote: 'Demo Hotlist: employees ready to send out',
         testData: true,
         members: members
     };
 
-    Meteor.call('addHotList', newHotList, function (err, result) {
-        if (!err)
-            console.log("HotList created for demo")
-        else
-            console.log(err);
-    });
+    try {
+        HotListManager.addHotList(newHotList);
+        console.log("HotList created for demo");
+    } catch (err) {
+        console.log(err);
+    }
 
     console.log("HotList demo data created", Date.now());
 };

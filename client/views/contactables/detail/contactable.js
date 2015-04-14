@@ -503,12 +503,19 @@ Template.hotListMembershipsBox.helpers({
         var obj;
         if (Session.get('hotListId')) {
             hotListMembershipsDep.depend();
-            var h = HotLists.findOne({_id: Session.get('hotListId'), members: contactable._id});
-            if(!h) {
+          var contactableObjName = [];
+          _.forEach(contactable.objNameArray, function(c){
+            contactableObjName.push(c.toLowerCase());
+          })
+          var h = HotLists.findOne({_id: Session.get('hotListId'), members:{$nin: [contactable._id]}, category: {$in: contactableObjName}});
+
+            if(h) {
+              var lastHotList = HotLists.findOne({_id: Session.get('hotListId')});
               obj = {};
               obj.hotListId = Session.get('hotListId');
-              obj.hotListDisplayName = Session.get('hotListDisplayName')
+              obj.hotListDisplayName = lastHotList.displayName;
             }
+
         }
         return obj;
     },
@@ -520,7 +527,11 @@ Template.hotListMembershipsBox.helpers({
 
     return function (string) {
       var self = this;
-      var result =  AllHotLists.find({members:{$nin: [contactable._id]}, displayName: {$regex: ".*"+string+".*", $options: 'i'}}).fetch();
+      var contactableObjName = [];
+      _.forEach(contactable.objNameArray, function(c){
+        contactableObjName.push(c.toLowerCase());
+      })
+      var result =  AllHotLists.find({members:{$nin: [contactable._id]}, category: { $in: contactableObjName },displayName: {$regex: ".*"+string+".*", $options: 'i'}}).fetch();
       var array = _.map(result, function (r) {
             return {text: r.displayName, id: r._id};
           });
@@ -548,6 +559,8 @@ var addHotList = function () {
        hotListMembershipsDep.changed();
      }
   })
+  //hack
+  Template.instance().$('input[type=hidden]').data().select2.clear();
 };
 
 Template.hotListMembershipsBox.events({

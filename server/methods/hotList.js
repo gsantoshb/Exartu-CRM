@@ -1,11 +1,18 @@
 Meteor.methods({
-    'addHotList': function (hotlist) {
-        try {
-            return HotListManager.addHotList(hotlist);
-        } catch (err) {
-            throw new Meteor.Error(err.message);
-        }
-    },
+  'addHotList': function (hotList) {
+    // Validate data
+    check(hotList, {
+      displayName: String,
+      category: String
+    });
+
+    try {
+      return HotListManager.addHotList(hotList);
+    } catch (err) {
+      throw new Meteor.Error(err.message);
+    }
+  },
+
     'hotListTextMessageSend': function (msg, id) {
         return HotListManager.hotListTextMessageSend(msg,id);
     },

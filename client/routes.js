@@ -165,7 +165,7 @@ Router.map(function () {
   });
 
   this.route('addHotListPage', {
-    path: '/hotListAdd/:objType',
+    path: '/hotListAdd',
     controller: 'HotListAddController'
   });
 

@@ -10,20 +10,10 @@
 
                     {{>hotListMembersHeader}}
 
-                    {{#if isSearching}}
-                        {{_ "searching"}}
-                    {{else}}
-                        {{> hotListMembersList}}
-                    {{/if}}
+                    {{> hotListMembersList}}
 
                     <div class="list-actions last">
-                        {{#if listIsLoading}}
-                            {{_ "loading"}}
-                        {{else}}
-                            {{#unless isESSearch}}
-                                {{> fastPagination name="hotListMembers" useKeys="true" containerClass="magic-pager"}}
-                            {{/unless}}
-                        {{/if}}
+                        {{> fastPagination name="hotListMembers" useKeys="true" containerClass="magic-pager"}}
                     </div>
 
                 </div>
