@@ -107,13 +107,8 @@ Template.tenantsList.created = function () {
     TenantHandler = SubscriptionHandlers.TenantHandler;
     Meteor.autorun(function () {
         var searchQuery = {};
-        var params = {};
         options = {};
         var urlQuery = new URLQuery();
-        isSearching=true;
-
-        searchDep.depend();
-
 
         var searchString = tenantQuery.searchString.value;
         if (!_.isEmpty(searchString)) {
@@ -132,7 +127,6 @@ Template.tenantsList.created = function () {
                 $or: stringSearches
             });
         }
-        ;
 
 
         if (tenantQuery.selectedLimit.value) {
@@ -141,14 +135,6 @@ Template.tenantsList.created = function () {
                 $gte: dateLimit.getTime() - tenantQuery.selectedLimit.value
             };
             urlQuery.addParam('creationDate', tenantQuery.selectedLimit.value);
-        }
-
-        if (!tenantQuery.inactives.value) {
-            searchQuery.inactive = {$in: [null, false]}
-        }
-
-        if (tenantQuery.inactives.value) {
-            urlQuery.addParam('inactives', true);
         }
 
         if (tenantQuery.tags.value.length > 0) {
@@ -169,10 +155,10 @@ Template.tenantsList.created = function () {
         } else {
             options.sort = {dateCreated:-1};
         }
+        console.log('setFilter')
 
         TenantHandler.setFilter(searchQuery);
         TenantHandler.setOptions(options);
-        Session.set('tenantCount', TenantHandler.totalCount());
         isSearching=false;
     })
 };
@@ -284,7 +270,6 @@ Template.tenantsListItem.helpers({
     },
     lastDate: function () {
         var counts = ActivityCounters.findOne(this._id);
-        console.log('counts', counts);
         return counts && counts.lastDate;
     }
 });
