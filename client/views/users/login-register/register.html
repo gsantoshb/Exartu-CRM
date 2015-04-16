@@ -49,6 +49,26 @@
                                         <label class="icon-holder"><i class="fa fa-lock"></i></label>
                                     </li>
 
+                                    <li class="{{#if afFieldIsInvalid name='name'}}error{{/if}}">
+                                        {{> afFieldInput name='name' type="text" class="form-control form-control-1 smartField" placeholder="Name" data-label="name-label"}}
+                                        {{#if afFieldIsInvalid name='confirmPassword'}}
+                                            <label class="form-label" id="password-confirm-label">{{afFieldMessage name='name'}}</label>
+                                        {{else}}
+                                            <label class="form-label" id="password-confirm-label">Name</label>
+                                        {{/if}}
+                                        <label class="icon-holder"><i class="fa fa-user"></i></label>
+                                    </li>
+
+                                    <li class="{{#if afFieldIsInvalid name='phone'}}error{{/if}}">
+                                        {{> afFieldInput name='phone' type="text" class="form-control form-control-1 smartField" placeholder="Phone" data-label="phone-label"}}
+                                        {{#if afFieldIsInvalid name='phone'}}
+                                            <label class="form-label" id="password-confirm-label">{{afFieldMessage name='phone'}}</label>
+                                        {{else}}
+                                            <label class="form-label" id="password-confirm-label">Phone</label>
+                                        {{/if}}
+                                        <label class="icon-holder"><i class="fa fa-phone"></i></label>
+                                    </li>
+
                                     <li>
                                         {{> afFieldInput name='language' class="form-control form-control-1 smartField" type="select" options=languageOptions onChange="TAPi18n.setLanguage(this.value);" data-label="language-label" defaultValue="en"}}
                                         <label class="icon-holder"><i class="fa fa-language"></i></label>
