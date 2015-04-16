@@ -18,6 +18,7 @@ var activityTypes = {
   }
 };
 var listViewMode = new ReactiveVar(true);
+var userSelected = new ReactiveVar(null);
 var searchString = new ReactiveVar('');
 
 var getSelectedActivityFilters = function(){
@@ -31,10 +32,14 @@ var getSelectedActivityFilters = function(){
 };
 
 var subscribe = function(){
+  var filter = {type: {$in: activityTypes.get()}};
+  if (userSelected.get()){
+    filter.userId = userSelected.get();
+  }
   if (ActivitiesHandler) {
-    ActivitiesHandler.setFilter({type: {$in: activityTypes.get()}}, {searchString: searchString.get()});
+    ActivitiesHandler.setFilter(filter, {searchString: searchString.get()});
   } else {
-    SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', {filter: {type: {$in: activityTypes.get()}}});
+    SubscriptionHandlers.ActivitiesHandler = ActivitiesHandler = Meteor.paginatedSubscribe('activities', filter);
   }
 }
 
@@ -187,5 +192,17 @@ Template.dashboard.events({
     Utils.showModal('addEditTask', null);
 
     return false;
+  }
+});
+
+Template.dashboard_filters.helpers({
+  users: function () {
+    return Meteor.users.find();
+  }
+});
+
+Template.dashboard_filters.events({
+  'change select': function (e) {
+    userSelected.set(e.target.value)
   }
 });

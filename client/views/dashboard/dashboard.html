@@ -69,6 +69,7 @@
                     <div >
                         <div class="sidebar-right">
                             {{> agendaBox}}
+                                {{>dashboard_filters}}
 
                             {{> dashboardNotes}}
                         </div><!-- /.sidebar-right -->
@@ -174,5 +175,32 @@
 
         </div><!-- /.row -->
 
+    </div>
+</template>
+
+<template name="dashboard_filters">
+
+    <div class="nicer-filters">
+    <div class="filter">
+    <div class="filter-list">
+
+        <div class="filter-item">
+            <div class="filter-title">
+                <i class="fa fa-user"></i>
+                {{_ 'user'}}
+            </div>
+                <span class="prop-input">
+                    <select class="form-control">
+                        <option value="">--{{_ "select"}}--</option>
+                        {{#each users}}
+                            <option value="{{_id}}">{{displayUserName _id}}</option>
+                        {{/each}}
+                    </select>
+                    <span class="text text-danger"></span>
+
+            </span>
+        </div>
+    </div>
+    </div>
     </div>
 </template>
