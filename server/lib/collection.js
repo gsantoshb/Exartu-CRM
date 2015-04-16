@@ -48,7 +48,7 @@ ApplicantCenterInvitations = new Mongo.Collection('applicantCenterInvitations');
 
 Tags = new Mongo.Collection("tags");
 
-
+HelpVideos = new Mongo.Collection('helpVideos');
 Collections = {
     Hierarchies: Hierarchies,
     Jobs: Jobs,

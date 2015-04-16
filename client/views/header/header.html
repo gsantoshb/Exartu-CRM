@@ -105,6 +105,14 @@
                         </li>
                     </ul>
                 </li>
+
+                <li>
+                    {{#if isSysAdmin}}
+                        <a href="/management/help"><i class="fa fa-question-circle"></i></a>
+                    {{else}}
+                        <a href="/help"><i class="fa fa-question-circle"></i></a>
+                    {{/if}}
+                </li>
             </ul>
         </div>
 

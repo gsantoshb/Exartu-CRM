@@ -4,6 +4,9 @@ Utils.reactiveProp(Utils.adminSettings, 'isSystemAdmin', false);
 Utils.reactiveProp(Utils.adminSettings, 'isAdmin', function () {
     return Utils.adminSettings.isClientAdmin || Utils.adminSettings.isSystemAdmin;
 });
+Utils.reactiveProp(Utils.adminSettings, 'isSysAdmin', function () {
+    return Utils.adminSettings.isSystemAdmin;
+});
 
 var currentLanguageLabel = new ReactiveVar();
 
@@ -22,8 +25,11 @@ Template.header.helpers({
     isAdmin: function () {
         return Utils.adminSettings.isAdmin();
     },
+    isSysAdmin: function () {
+        return Utils.adminSettings.isSysAdmin();
+    },
     userThumbnail: function () {
-        var user = Meteor.user()
+        var user = Meteor.user();
         if (user.profilePictureId) {
             return UsersFS.getThumbnailUrlForBlaze(user.profilePictureId)
         }

@@ -321,6 +321,15 @@ Router.map(function () {
     path: '/getContactCSV',
     controller: 'GetContactCSVController'
   });
+
+  this.route('helpManagement', {
+    path: '/management/help',
+    controller: 'HelpManagementController'
+  });
+  this.route('helpVideos', {
+    path: '/help',
+    controller: 'HelpVideosController'
+  });
 });
 
 
