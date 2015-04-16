@@ -44,7 +44,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li class="arrow"></li>
-                        <li><a class="editTask pointer"><i class="fa fa-edit"></i> Edit</a></li>
+                        <li><a class="editTask pointer"><i class="fa fa-edit"></i> {{_ "Edit"}}</a></li>
                     </ul>
                 </div>
             </div>
@@ -55,15 +55,15 @@
 
 <template name="taskLabel">
     {{#if inactive}}
-        <span class="item-label-2 label-archived">Archived</span>
+        <span class="item-label-2 label-archived">{{_ "Archived"}}</span>
     {{else}}
-        <span class="item-label-2 label-{{getStatus}}">{{state}}</span>&nbsp;
+        <span class="item-label-2 label-{{getStatus}}">{{_ state}}</span>&nbsp;
 
         {{#if statusIs 'pending'}}
             {{#if end}}
                 {{formattedDate end "lll"}}
             {{else}}
-                <em>no end date</em>
+                <em>{{_ "no end date"}}</em>
             {{/if}}
         {{/if}}
         {{#if statusIs 'completed'}}
@@ -79,13 +79,13 @@
 <template name="showTaskDate">
     {{#if end}}
         {{#if statusIs 'pending'}}
-            <span class="item-label-2 label-pending">Pending</span>
+            <span class="item-label-2 label-pending">{{_ "Pending"}}</span>
         {{/if}}
         {{#if statusIs 'completed'}}
-            <span class="item-label-2 label-completed">Completed</span>
+            <span class="item-label-2 label-completed">{{_ "Completed"}}</span>
         {{/if}}
         {{#if statusIs 'overDue'}}
-            <span class="item-label-2 label-overdue">Over Due</span>
+            <span class="item-label-2 label-overdue">{{_ "Over Due"}}</span>
         {{/if}}
     {{/if}}
 </template>
