@@ -155,7 +155,6 @@ Template.tenantsList.created = function () {
         } else {
             options.sort = {dateCreated:-1};
         }
-        console.log('setFilter')
 
         TenantHandler.setFilter(searchQuery);
         TenantHandler.setOptions(options);
