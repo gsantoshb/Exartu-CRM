@@ -83,6 +83,15 @@ int main(int argc, char* argv[])
 	fclose(f_done);
 	fclose(f_todo);
 
+	//free malloc space
+	int i;
+	for(alpha_idx=0;alpha_idx<26;alpha_idx++)
+	{
+		for(i=0;i<word_counter[alpha_idx];i++)
+		{
+			free(dictionary[alpha_idx][i]);
+		}
+	}
 	return 0;
 }
 
