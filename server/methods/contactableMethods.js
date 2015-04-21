@@ -1,6 +1,44 @@
 var fs = Meteor.npmRequire('fs');
 
 Meteor.methods({
+    createEmployeeFromCard: function(selectedImage){
+      var hierId =  Meteor.user().currentHierId;
+      var hier = Hierarchies.findOne({_id: hierId});
+      //var fileObject =  this.request.file;
+      var fs = Npm.require('fs');
+      var cardR;
+      if (! hier) return null;
+      if (! hier.cardReader){
+        // look for the config in env
+        if (process.env.CardReaderAppId && process.env.CardReaderPassword){
+          cardR = {
+            appId: process.env.CardReaderAppId,
+            password: process.env.CardReaderPassword,
+            encoded: encode(process.env.CardReaderAppId + ':' + process.env.CardReaderPassword)
+          };
+        }
+        else{
+          throw new Meteor.Error(500, 'No card reader');
+        }
+      }
+      else{
+        cardR = hier.cardReader;
+      }
+      var formData = new FormData();
+      formData.append('file', selectedImage);
+      formData.append('exportFormat', 'xml');
+
+      console.log(cardR);
+      if(cardR) {
+        HTTP.post('http://cloud.ocrsdk.com/processBusinessCard', {
+          params: formData,
+          headers: {'Authorization':'Basic: ' + cardR.encoded}
+        }, function(err, result) {
+          console.log('err', err);
+          console.log('result', result);
+        });
+      }
+    },
     esSynchAll: function(q)
     {
         if (RoleManager.bUserIsSystemAdmin())
@@ -455,3 +493,14 @@ Resume.prototype.tagEntry = function (tag) {
 
     self.doc.fontSize(11).text(tag);
 };
+
+
+
+
+
+FileUploader.createEndpoint('uploadCard', {
+  onUpload: function (stream, metadata) {
+    var result = ContactableManager.createFromCard(stream, metadata);
+    return result;
+  }
+});

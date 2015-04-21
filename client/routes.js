@@ -321,6 +321,11 @@ Router.map(function () {
     path: '/getContactCSV',
     controller: 'GetContactCSVController'
   });
+
+  this.route('scanEmployeeCard', {
+    path: '/scanEmployeeCard',
+    controller: 'ScanEmployeeCardController'
+  });
 });
 
 

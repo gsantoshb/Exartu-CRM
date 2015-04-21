@@ -1,0 +1,30 @@
+<template name="scanEmployeeCard">
+    <div id="content" class="lookUps">
+    <div id="content-header" class="mini">
+        <h1>Scan employee card</h1>
+    </div>
+    <div id="breadcrumb">
+        <a href="/" title="Go to Home" class="tip-bottom">Home</a>
+        <a href="/scanEmployeeCard" class="current">Scan employee card</a>
+    </div>
+
+    <div id="scanEmployeeCard" class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="btn btn-default add-trigger">Select photo</span>
+
+                <div class="page-title">
+                    <p><input type="file" accept="image/*" id="capture" capture="camera" style="visibility: hidden"></p>
+                    <img src="{{imagepath}}" id="selected-img" style="">
+                    <br>
+                    <span class="btn btn-default save-employee" style="{{addHiden}}" disabled="{{addDisabled}}">Save</span>
+                    {{>progressBar name='processCard'}}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+        </div>
+
+</template>
