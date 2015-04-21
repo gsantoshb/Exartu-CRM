@@ -169,22 +169,24 @@ Template.contactable.events({
     },
 
     'change #edit-picture': function (e) {
+      if (e.target.files && e.target.files[0]) {
         var fsFile = new FS.File(e.target.files[0]),
             contactableId = Session.get('entityId');
 
         if (fsFile != undefined) {
 
-            fsFile.metadata = {
-                entityId: contactableId,
-                owner: Meteor.userId(),
-                name: fsFile.name()
-            };
+          fsFile.metadata = {
+            entityId: contactableId,
+            owner: Meteor.userId(),
+            name: fsFile.name()
+          };
 
-            var file = ContactablesFS.insert(fsFile, function () {
-            });
+          var file = ContactablesFS.insert(fsFile, function () {
+          });
 
-            Meteor.call('updateContactablePicture', contactableId, file._id);
+          Meteor.call('updateContactablePicture', contactableId, file._id);
         }
+      }
     },
     // Actions
     'click #makeEmployee': function () {

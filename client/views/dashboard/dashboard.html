@@ -14,25 +14,6 @@
                         </h1>
                     </div>
 
-                    <div class="btn-group dropup btn-add-global">
-                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span class="plus">+</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="/contactableAdd/Contact">{{_ "Add Contact"}}</a></li>
-                            <li><a href="/contactableAdd/Employee">{{_ "Add Employee"}}</a></li>
-                            <li><a href="/contactableAdd/Client">{{_ "Add Client"}}</a></li>
-                            <li class="divider"></li>
-                            <li><a class="addTaskDashboard">{{_ "Add Task"}}</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/hotListAdd">{{_ "Add HotList"}}</a></li>
-                            {{#unless checkNoNotes}}
-                                <li class="divider"></li>
-                                <li><a class="addDashboardNote">{{_ "Add note"}}</a></li>
-                            {{/unless}}
-                        </ul>
-                    </div>
-
                     <!--{{#if getLeadTrackers}}-->
                         <!--<section class="box-type-3">-->
                             <!--<header>-->
@@ -67,8 +48,9 @@
                     <!--{{/if}}-->
 
                     <div >
-                        <div class="sidebar-right">
+                        <div class="sidebar-right hidden-xs">
                             {{> agendaBox}}
+                                {{>dashboard_filters}}
 
                             {{> dashboardNotes}}
                         </div><!-- /.sidebar-right -->
@@ -106,6 +88,7 @@
                                 <!--{{/if}}-->
                             <!--</div>&lt;!&ndash; /.view-mode-list &ndash;&gt;-->
 
+
                             <div class="list-actions-cell order-list filter-list">
                                 <div class="btn-group" id="activityFilter">
                                     <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">{{_ "All activity"}} <span class="caret"></span></button>
@@ -137,6 +120,10 @@
                         </div><!-- .list-actions -->
 
                         <div class="list-item-section">
+                            <div class="clearfix">
+                                {{>fastPagination name="activities" containerClass="magic-pager pull-right"}}
+                            </div>
+
                             <ul class="list-type-7 activity-feed">
                                 {{#if listViewMode}}
                                     <!--{{#if isReady}}-->
@@ -174,5 +161,32 @@
 
         </div><!-- /.row -->
 
+    </div>
+</template>
+
+<template name="dashboard_filters">
+
+    <div class="nicer-filters">
+    <div class="filter">
+    <div class="filter-list">
+
+        <div class="filter-item">
+            <div class="filter-title">
+                <i class="fa fa-user"></i>
+                {{_ 'user'}}
+            </div>
+                <span class="prop-input">
+                    <select class="form-control">
+                        <option value="">--{{_ "select"}}--</option>
+                        {{#each users}}
+                            <option value="{{_id}}">{{displayUserName _id}}</option>
+                        {{/each}}
+                    </select>
+                    <span class="text text-danger"></span>
+
+            </span>
+        </div>
+    </div>
+    </div>
     </div>
 </template>

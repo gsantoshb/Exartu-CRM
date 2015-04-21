@@ -99,7 +99,9 @@ UserManager = {
                 email: document.email.toLowerCase(),
                 password: document.password,
                 hierRoles: [],
-                language: document.language
+                language: document.language,
+                name: document.name,
+                phone: document.phone
             };
 
             if (document.currentHierId) {
@@ -326,7 +328,9 @@ Accounts.onCreateUser(function (options, user) {
         var userPermissions = [];
 
         hierId = Meteor.call('createHier', {
-            name: userEmail.split('@')[0]
+            name: userEmail.split('@')[0],
+            userName: options.name,
+            phone: options.phone
         });
         // Send email to sales
         sendEmailToSales(user);

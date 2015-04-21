@@ -135,6 +135,9 @@ Template.notesBox.helpers({
     },
     isLoading: function () {
         return NotesHandler.isLoading();
+    },
+    isUserSelected: function () {
+        return this._id == noteQuery.userId.value;
     }
 });
 

@@ -244,9 +244,9 @@
                 </div>
                 {{#objectProperty property=query.userId}}
                     <select id="userId" class="form-control">
-                        <option value="">--{{_ "select"}}--</option>
+                        <option value="" selected="{{isUserSelected}}">--{{_ "select"}}--</option>
                         {{#each users}}
-                            <option value="{{_id}}">{{displayUserName _id}}</option>
+                            <option value="{{_id}}" selected="{{isUserSelected}}">{{displayUserName _id}}</option>
                         {{/each}}
                     </select>
                 {{/objectProperty}}

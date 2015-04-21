@@ -32,7 +32,9 @@ LoginController = RouteController.extend({
   }
 });
 
-var email;
+var email,
+  remindMe,
+  lastEmailUsedKey = 'aida.lastEmailUsed';
 
 var notVerified = new ReactiveVar(false),
     errorMessage = new ReactiveVar('');
@@ -68,6 +70,13 @@ AutoForm.hooks({
           }
         }
         else {
+          //store email address used if remindMe is checked, remove the stored value otherwise
+          if (remindMe){
+            localStorage.setItem(lastEmailUsedKey, email);
+          } else {
+            localStorage.removeItem(lastEmailUsedKey);
+          }
+
           Meteor.call('userLoginActivity');
           notVerified.set(false);
           if (Router.current().route.getName() === 'login') {
@@ -75,6 +84,7 @@ AutoForm.hooks({
           }
         }
         self.done();
+
       });
       return false;
     }
@@ -112,6 +122,9 @@ Template.login.helpers({
     return {
       email: email
     }
+  },
+  lastEmailUsed: function () {
+    return localStorage.getItem(lastEmailUsedKey);
   }
 });
 
@@ -138,6 +151,9 @@ Template.login.events({
   },
   'click #recoverPassword': function () {
     Utils.showModal('recoverPassword');
+  },
+  'change #remindMe': function (e) {
+    remindMe = e.target.checked;
   },
 
   'focus .smartField': function(e){

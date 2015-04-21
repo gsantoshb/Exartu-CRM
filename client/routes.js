@@ -326,6 +326,15 @@ Router.map(function () {
     path: '/scanEmployeeCard',
     controller: 'ScanEmployeeCardController'
   });
+
+  this.route('helpManagement', {
+    path: '/management/help',
+    controller: 'HelpManagementController'
+  });
+  this.route('helpVideos', {
+    path: '/help',
+    controller: 'HelpVideosController'
+  });
 });
 
 

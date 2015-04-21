@@ -605,7 +605,10 @@ Template.contactablesFilters.helpers({
         if (query.objType.value == 'Client') return Enums.lookUpTypes.client.status.lookUpCode;
         return null;
     },
-    contactableTypes: contactableTypes
+    contactableTypes: contactableTypes,
+    isUserSelected: function () {
+        return this._id == query.userId.value;
+    }
 });
 
 // List - Helpers

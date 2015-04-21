@@ -1,0 +1,1 @@
+HelpVideos = new Mongo.Collection('helpVideos');

@@ -224,6 +224,9 @@ Template.tasksBox.helpers({
     },
     isLoading: function () {
         return SubscriptionHandlers.TaskHandler.isLoading();
+    },
+    isUserSelected: function () {
+        return this._id == queryObj.assignedTo.value;
     }
 });
 
