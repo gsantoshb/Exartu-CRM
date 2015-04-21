@@ -15,7 +15,7 @@
                         {{#autoForm id="loginForm" class="form-1" schema="LoginSchema" doc=intialValues}}
                             <ol>
                                 <li class="{{#if afFieldIsInvalid name='email'}}error{{else}}{{#if errorMessage}}error{{/if}}{{/if}}">
-                                    {{> afFieldInput name='email' class="form-control form-control-1 smartField" placeholder="Email address" data-label="email-label"}}
+                                    {{> afFieldInput name='email' class="form-control form-control-1 smartField" placeholder="Email address" data-label="email-label" value=lastEmailUsed}}
                                     {{#if afFieldIsInvalid name='email'}}
                                         <label class="form-label" id="email-label">{{afFieldMessage name='email'}}</label>
                                     {{else}}
@@ -36,6 +36,13 @@
                                         <label class="form-label" id="password-label">Password</label>
                                     {{/if}}
                                     <label class="icon-holder"><i class="fa fa-lock"></i></label>
+                                </li>
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="remindMe"> Remind me
+                                        </label>
+                                    </div>
                                 </li>
                             </ol>
                             <button class="btn-custom-4 btn-block {{addDisabled}}" type="submit" >Log In</button>
