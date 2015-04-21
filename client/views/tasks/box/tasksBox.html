@@ -48,9 +48,9 @@
 
                         {{#objectProperty property=filters.assignedTo}}
                             <select id="assignedToDropdown" class="form-control">
-                                <option value="">--{{_ "select"}}--</option>
+                                <option value="" selected="{{isUserSelected}}">--{{_ "select"}}--</option>
                                 {{#each users}}
-                                    <option value="{{_id}}">{{displayUserName _id}}</option>
+                                    <option value="{{_id}}" selected="{{isUserSelected}}">{{displayUserName _id}}</option>
                                 {{/each}}
                             </select>
                         {{/objectProperty}}
