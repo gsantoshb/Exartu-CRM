@@ -48,7 +48,7 @@
                     <!--{{/if}}-->
 
                     <div >
-                        <div class="sidebar-right">
+                        <div class="sidebar-right hidden-xs">
                             {{> agendaBox}}
                                 {{>dashboard_filters}}
 
@@ -88,6 +88,7 @@
                                 <!--{{/if}}-->
                             <!--</div>&lt;!&ndash; /.view-mode-list &ndash;&gt;-->
 
+
                             <div class="list-actions-cell order-list filter-list">
                                 <div class="btn-group" id="activityFilter">
                                     <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">{{_ "All activity"}} <span class="caret"></span></button>
@@ -119,6 +120,10 @@
                         </div><!-- .list-actions -->
 
                         <div class="list-item-section">
+                            <div class="clearfix">
+                                {{>fastPagination name="activities" containerClass="magic-pager pull-right"}}
+                            </div>
+
                             <ul class="list-type-7 activity-feed">
                                 {{#if listViewMode}}
                                     <!--{{#if isReady}}-->
