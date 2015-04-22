@@ -599,15 +599,20 @@ Template.contactablesFilters.helpers({
     isSelectedType: function (typeName) {
         return query.objType.value == typeName;
     },
-    selectedType: function (typeName) {
-        if (query.objType.value == 'Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
-        if (query.objType.value == 'Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
-        if (query.objType.value == 'Client') return Enums.lookUpTypes.client.status.lookUpCode;
-        return null;
-    },
     contactableTypes: contactableTypes,
     isUserSelected: function () {
         return this._id == query.userId.value;
+    },
+
+    contactablesCount: function () {
+        totalCountDep.depend();
+        if(!_.isEmpty(query.searchString.value)){
+            return esResult.length;
+        }
+
+        else {
+            return SubscriptionHandlers.AuxContactablesHandler.totalCount();
+        }
     }
 });
 
@@ -715,30 +720,7 @@ Template.employeeInformation.helpers({
 
 // Filters - Helpers
 Template.contactablesFilters.helpers({
-  contactablesCount: function () {
-    totalCountDep.depend();
-    if(!_.isEmpty(query.searchString.value)){
-      return esResult.length;
-    }
 
-    else {
-      return SubscriptionHandlers.AuxContactablesHandler.totalCount();
-    }
-  },
-  query: function () {
-    return query;
-  },
-  isSelectedType: function (typeName) {
-    return query.objType.value == typeName;
-  },
-  selectedType: function (typeName) {
-    //query.processStatus.value=[];
-    if (query.objType.value == 'Employee') return Enums.lookUpTypes.employee.status.lookUpCode;
-    if (query.objType.value == 'Contact') return Enums.lookUpTypes.contact.status.lookUpCode;
-    if (query.objType.value == 'Client') return Enums.lookUpTypes.client.status.lookUpCode;
-    return null;
-  },
-  contactableTypes: contactableTypes
 });
 
 /**
