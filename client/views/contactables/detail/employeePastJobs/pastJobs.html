@@ -1,17 +1,15 @@
 
 <template name="employeePastJobs">
-    <div class="row">
+    <div class="row record">
         <div class="col-md-6">
             {{> employeePastJobAdd}}
         </div>
-        <div class="record">
-            <div class="col-md-6">
-                <ul class="record-list list-3 stripped has-thumb">
-                    {{#each items}}
-                        {{> employeePastJobItem}}
-                    {{/each}}
-                </ul>
-            </div>
+        <div class="col-md-6">
+            <ul class="record-list list-3 stripped has-thumb">
+                {{#each items}}
+                    {{> employeePastJobItem}}
+                {{/each}}
+            </ul>
         </div>
     </div>
 </template>
@@ -19,12 +17,14 @@
 
 <!-- New Past Job Record -->
 <template name="employeePastJobAdd">
-    <div class="record-add row">
+    <div class="row">
         <div class="add-box-head col-xs-12 col-md-12 col-lg-12">
             <div class="add-item-icon"><i class="icon-profile-business-man"></i></div>
             <h2>{{_ "Past Jobs"}}</h2>
         </div>
+    </div>
 
+    <div class="record-add row">
         <div class="add-box-content col-xs-12 col-md-12">
             {{#autoForm schema="PastJobSchema" id="addPastJobForm" class="m-t" validation="blur"}}
                 <fieldset>

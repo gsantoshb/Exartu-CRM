@@ -824,7 +824,7 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 .record .record-add { padding: 10px 5px 10px 5px; margin: 0px; background-color: #f5f5f5; border: 1px solid #e7e7e7; border-radius: 2px;}
 
-.record .add-box-content { padding-bottom: 0px !important;}
+.record .add-box-content { padding: 0px 10px 20px 10px !important; }
 
 /*connection-banner*/
 #connection-lost-banner {
