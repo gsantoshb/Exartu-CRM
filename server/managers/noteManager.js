@@ -66,26 +66,12 @@ NoteManager = {
       }
 
     }
-    //check hierarchy
-    if (!note.hierId) {
-      throw new Error('Hierarchy is required');
-    }
-    else {
-      var hier = Hierarchies.findOne({_id: note.hierId});
-      if (!hier) {
-        throw new Error('Hierarchy is wrong');
-      }
-    }
-    //check userId
-    if (!note.userId) {
-      throw new Error('UserId is required');
-    }
-    else {
-      var user = Meteor.users.findOne({_id: note.userId});
-      if (!user) {
-        throw new Error("Wrong userId");
-      }
-    }
+
+    //add hier and user id
+    var user = Meteor.user();
+    note.hierId = user.currentHierId;
+    note.userId = user._id;
+
     return Notes.insert(note);
 
   },
@@ -124,35 +110,9 @@ NoteManager = {
         else {
           validLink = false;
         }
-
       });
-      //throw error if validLink is false
-      if (!validLink) {
-        throw new Error('Wrong link');
-      }
-
     }
-    //check hierarchy
-    if (!note.hierId) {
-      throw new Error('Hierarchy is required');
-    }
-    else {
-      var hier = Hierarchies.findOne({_id: note.hierId});
-      if (!hier) {
-        throw new Error('Hierarchy is wrong');
-      }
-    }
-    //check userId
-    if (!note.userId) {
-      throw new Error('UserId is required');
-    }
-    else {
-      var user = Meteor.users.findOne({_id: note.userId});
-      if (!user) {
-        throw new Error("Wrong userId");
-      }
-    }
-    return Notes.update({_id:note._id},{$set:{msg: note.msg, links: note.links}});
+    return Notes.update({_id:note._id},{$set: _.pick(note, 'msg', 'links') });
   },
   removeNote: function (id) {
 
