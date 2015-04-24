@@ -1,4 +1,4 @@
-var note;
+var note = new ReactiveVar();
 var currentUrl;
 var noteId;
 var links;
@@ -13,13 +13,15 @@ Template.addEditNote.helpers({
     return NoteAddEditSchema;
   },
   getNote: function () {
-    if (note){
-      return note;
+    if (note.get()){
+      return note.get();
     }
     if (noteId){
       return EditNote.findOne(noteId);
     }
-    return null;
+    return {
+      msg:''
+    };
   }
 });
 
@@ -30,7 +32,10 @@ Template.addEditNote.created = function () {
   var param = this.data[0];
   if (_.isObject(param) && param._id){
     noteId = param._id;
-    note = param;
+    note.set(param);
+  }else {
+    noteId = null;
+    note.set(null);
   }
   if (_.isObject(param) && param.links){
     links = param.links;
