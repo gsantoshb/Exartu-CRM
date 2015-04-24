@@ -1,6 +1,7 @@
 var note;
 var currentUrl;
 var noteId;
+var links;
 
 var addDisabled = new ReactiveVar(false);
 
@@ -27,9 +28,12 @@ Template.addEditNote.created = function () {
   currentUrl = window.location.pathname;
 
   var param = this.data[0];
-  if (_.isObject(param)){
+  if (_.isObject(param) && param._id){
     noteId = param._id;
     note = param;
+  }
+  if (_.isObject(param) && param.links){
+    links = param.links;
   }
   if (_.isString(param)){
     noteId = param;
@@ -78,7 +82,7 @@ AutoForm.hooks({
           insertDoc._id = noteId;
           Meteor.call('updateNote', insertDoc, cb);
         } else {
-          insertDoc.links = [];
+          insertDoc.links = links || [];
           Meteor.call('addNote', insertDoc, cb);
         }
       } catch (e){
