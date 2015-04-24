@@ -101,7 +101,7 @@ Template.taskAddActivity.events = {
   'click .task-link': function(e){
     var task = Tasks.findOne({_id: e.target.id});
     if(task){
-      Utils.showModal('addEditTask', task);
+      Utils.showModal('addEditTask', {taskId: task._id});
     }
   }
 }

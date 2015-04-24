@@ -239,12 +239,7 @@ Template.tasksBox.events({
         if (!isEntitySpecific)
             Utils.showModal('addEditTask');
         else
-            Utils.showModal('addEditTask', {
-                links: [{
-                    id: Session.get('entityId'),
-                    type: entityType
-                }]
-            })
+            Utils.showModal('addEditTask', {link : Session.get('entityId')});
     },
     'click .selectState': function () {
 
