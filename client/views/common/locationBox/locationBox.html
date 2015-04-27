@@ -1,21 +1,6 @@
 <template name="locationBox">
     <div class="box">
-        <!--<div class="box-header-2">-->
-            <!--<a class="btn-action tip-top pointer" id="edit-Location" data-original-title="Location"-->
-               <!--style="color: {{editModeColor}}" title="Edit">-->
-                <!--<i class="fa fa-pencil"></i>-->
-            <!--</a>-->
 
-            <!--<a class="btn-action pointer" id="show-location-map" style="margin-right: 10px">-->
-                <!--{{#if isGoogleAddress}}-->
-                    <!--<i class="fa fa-map-marker"></i>-->
-                <!--{{/if}}-->
-            <!--</a>-->
-
-            <!--<div class="box-title">-->
-                <!--Address-->
-            <!--</div>-->
-        <!--</div>-->
         <div class="box-content-md">
             {{#if editMode}}
                 <form class="box-content-form" style="margin-bottom: 20px;" role="form">
@@ -32,18 +17,6 @@
                         <col span="1" style="width: 25%; min-width: 100px;">
                         <col span="1" style="width: 75%;">
                     </colgroup>
-                    <!--<tr class="box-table-label">-->
-                    <!--<td>Street #</td>-->
-                    <!--<td>-->
-                            <!--{{#if editMode}}-->
-                    <!--{{> afFieldInput name='streetNumber'}}-->
-                            <!--{{else}}-->
-                    <!--<strong>-->
-                    <!--{{location.value.streetNumber}}-->
-                    <!--</strong>-->
-                            <!--{{/if}}-->
-                    <!--</td>-->
-                    <!--</tr>-->
                     <tr>
                         <td class="box-table-label">{{_ "Address 1"}}</td>
                         <td>

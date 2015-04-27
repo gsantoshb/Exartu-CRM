@@ -113,39 +113,7 @@ AutoForm.hooks({
 
     }
 });
-//AutoForm.hooks({
-//    AddNoteRecord: {
-//        before: {
-//            addContactableNote: function (doc) {
-//                var initialLink = [{
-//                    id: Session.get('entityId'),
-//                    type: Utils.getEntityTypeFromRouter()
-//                }];
-//
-//                var c = Contactables.findOne({_id: Session.get('entityId')});
-//                if (c && c.Contact && c.Contact.client) {
-//                    initialLink.push({id: c.Contact.client, type: Enums.linkTypes.contactable.value})
-//                }
-//                ;
-//                doc.links = doc.links || initialLink;
-//                doc.contactableId = Session.get('entityId');
-//                if (doc.sendAsSMS && Session.get('entityId') == Session.get('hotListId')) {
-//                    var hotlist = HotLists.findOne(Session.get('hotListId'));
-//                    if (!hotlist || !hotlist.members) return false;
-//                    var message = 'Send to the ' + hotlist.members.length + ' members of hot list \'' + hotlist.displayName + '\'.  Continue?';
-//                    return (confirm(message)) ? doc : false;
-//
-//                }
-//                ;
-//                return doc;
-//            }
-//        },
-//        onSuccess:
-//            function (error, result, template) {
-//                sortDep.changed();
-//            }
-//    }
-//});
+
 self.defaultUserNumber = null;
 self.defaultMobileNumber = null;
 var hotlist = null;
@@ -158,12 +126,8 @@ Template.notesTabAdd.events({
 Template.notesTab.created = function () {
   addDisabled.set(false);
     hotlist = HotLists.findOne({_id:Session.get('entityId')});
-    if (this.data && this.data.responseOnly) {
-        responsesOnly = true;
-    }
-    else {
-        responsesOnly = false;
-    }
+
+    responsesOnly = (this.data && this.data.responseOnly);
 };
 Template.notesTabAdd.helpers({
     addDisabled: function(){
@@ -211,13 +175,7 @@ Template.notesTabAdd.helpers({
     ischeckedSMS: function(){
         checkSMSDep.depend();
         var field = $("#sendAsSMS");
-        if(field[0] && field[0].checked){
-            return true;
-        }
-        else{
-            return false;
-        }
-
+        return (field[0] && field[0].checked);
     }
 });
 

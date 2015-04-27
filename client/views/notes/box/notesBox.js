@@ -4,11 +4,9 @@ var NotesHandler, noteQuery, status;
 var searchStringQuery = {};
 var q={};
 var selectedSort = new ReactiveVar();
-$("#userDropdown").prop("selectedIndex", -1);
+
 var loadNoteQueryFromURL = function (params) {
     // Search string
-
-
 
     if (params.search) {
         searchStringQuery.default = params.search;
@@ -42,8 +40,6 @@ var loadNoteQueryFromURL = function (params) {
 };
 var options = {};
 
-var noteCount = new ReactiveVar();
-
 Template.notesBox.created = function () {
     noteQuery = noteQuery || loadNoteQueryFromURL(Router.current().params.query);
     var entityId = Session.get('entityId');
@@ -54,8 +50,8 @@ Template.notesBox.created = function () {
     NotesHandler = SubscriptionHandlers.NotesHandler;
 
     entityType = Utils.getEntityTypeFromRouter();
-    isEntitySpecific = false;
-    if (entityType != null) isEntitySpecific = true;
+
+    isEntitySpecific = (entityType != null);
 
     Meteor.autorun(function () {
         var urlQuery = new URLQuery();
@@ -88,7 +84,6 @@ Template.notesBox.created = function () {
             urlQuery.addParam('owned', true);
         }
 
-
         urlQuery.apply();
         if (selectedSort.get()) {
             var selected = selectedSort.get();
@@ -99,21 +94,7 @@ Template.notesBox.created = function () {
         }
         NotesHandler.setFilter(q);
         NotesHandler.setOptions(options);
-
-
     })
-};
-
-Template.notesBox.rendered = function () {
-    $(document).on('click', 'button[data-toggle="popover"]', function (e) {
-        var object = e.currentTarget;
-        var linkId = $(object).attr('data-link');
-        if ($(object).attr('data-init') == 'off') {
-            $(object).attr('data-content', $('#' + linkId).html());
-            $(object).popover('show');
-            $(object).attr('data-init', 'on');
-        }
-    });
 };
 
 Template.notesBox.helpers({
