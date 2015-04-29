@@ -1,17 +1,15 @@
 
 <template name="employeeEducation">
-    <div class="row">
+    <div class="row record">
         <div class="col-md-6">
             {{> employeeEducationAdd}}
         </div>
-        <div class="record">
-            <div class="col-md-6">
-                <ul class="record-list list-3 stripped has-thumb">
-                    {{#each items}}
-                        {{> employeeEducationItem}}
-                    {{/each}}
-                </ul>
-            </div>
+        <div class="col-md-6">
+            <ul class="record-list list-3 stripped has-thumb">
+                {{#each items}}
+                    {{> employeeEducationItem}}
+                {{/each}}
+            </ul>
         </div>
     </div>
 </template>
@@ -19,12 +17,14 @@
 
 <!-- New Education Record -->
 <template name="employeeEducationAdd">
-    <div class="record-add row">
+    <div class="row">
         <div class="add-box-head col-xs-12 col-md-12 col-lg-12">
             <div class="add-item-icon"><i class="icon-books-3"></i></div>
             <h2>{{_ "Education"}}</h2>
         </div>
+    </div>
 
+    <div class="record-add row">
         <div class="add-box-content col-xs-12 col-md-12">
             {{#autoForm schema="EducationSchema" id="addEducationForm" validation="blur"}}
                 <fieldset>

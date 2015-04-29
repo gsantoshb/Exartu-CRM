@@ -24,53 +24,36 @@ Template.showAsHTMLTemplate.previewClass=function(){
   return ''
 };
 
+
+
+
+// Bootstrap 3 dateTimePicker
 UI.registerHelper('dateTimePicker', function() {
   return Template.dateTimePicker;
 });
-
 Template.dateTimePicker.rendered = function() {
+  // Default options
   var options = {
-    language: 'en',
+    autoclose: true,
+    clearBtn: true,
     initialDate: this.data.value,
     useSeconds: false,
-    autoclose: true
+    pickTime: false
   };
+  // Override with custom options
   _.extend(options, this.data.options);
 
-  if (!this.data.pickTime) {
-    options.pickTime = false;
-  }
-
-  if (this.data.from){
-    options.minDate= this.data.from
-  }
-  if (this.data.to){
-    options.maxDate= this.data.to
-  }
-
+  // Start the plugin
   this.$('.date').datetimepicker(options);
+  // Set the initial date when specified
+  this.$('.date').datetimepicker('update', this.data.value);
 };
 
 Template.dateTimePicker.helpers({
   dataSchemaKey: function () {
     return this.dataSchemaKey;
-  },
-  getInitialValue: function () {
-    if (!this.value)
-      return;
-
-    return this.options && this.options["momentFormat"]? moment(this.value || new Date()).format(this.options["momentFormat"]) : this.value
   }
 });
-
-Template.dateTimePicker.events({
-  'dp.change .datetimepicker':function (e, ctx) {
-    if (ctx.onChange && _.isFunction(ctx.onChange)){
-      ctx.onChange();
-    }
-  }
-});
-
 
 
 // Bootstrap 3 datepicker

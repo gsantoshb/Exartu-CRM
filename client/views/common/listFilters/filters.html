@@ -85,11 +85,8 @@
             {{_ "Tags"}}
         </div>
 
-        <div class="input-group" style="margin-bottom: 10px">
+        <div style="margin-bottom: 10px;">
             {{>asyncSelect query=getTags placeholder="Search client" onChange=tagsChanged width='100%'}}
-            <span class="input-group-btn">
-              <button class="add-tag btn btn-default" type="button"><span class="fa fa-plus"></span></button>
-            </span>
         </div>
 
         {{#objectProperty property=tags}}

@@ -1,4 +1,4 @@
-var NotesHandler, query, statusName, idNote;
+var idNote;
 
 NotesController = RouteController.extend({
     template: 'notes',
@@ -6,8 +6,7 @@ NotesController = RouteController.extend({
     waitOn: function () {
         if (!SubscriptionHandlers.NotesHandler) {
             SubscriptionHandlers.NotesHandler = Meteor.paginatedSubscribe("noteList");
-            NotesHandler = SubscriptionHandlers.NotesHandler;
-            return [NotesHandler];
+            return [SubscriptionHandlers.NotesHandler];
         }
     },
     action: function () {
@@ -18,12 +17,11 @@ NotesController = RouteController.extend({
         if(this.params._id){
            //show the note
            idNote = this.params._id;
-
-        };
+        }
         this.render();
         if(idNote) {
-           Utils.showModal('addEditNote', idNote);
-          idNote = null;
+            Utils.showModal('addEditNote', idNote);
+            idNote = null;
         }
 
         this.render('notes');
@@ -41,11 +39,5 @@ NotesController = RouteController.extend({
                 'description': description
             }
         });
-    }
-});
-
-Template.notes.helpers({
-    noteCount: function () {
-        return NotesHandler.totalCount();
     }
 });

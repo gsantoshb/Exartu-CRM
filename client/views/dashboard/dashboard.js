@@ -185,13 +185,6 @@ Template.dashboard.events({
     Utils.showModal('dashboardAddNote');
 
     return false;
-  },
-  'click .addTaskDashboard': function(e) {
-    e.preventDefault();
-
-    Utils.showModal('addEditTask', null);
-
-    return false;
   }
 });
 

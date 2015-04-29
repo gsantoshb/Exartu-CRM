@@ -6,27 +6,18 @@
                     <a class="close" data-dismiss="modal">×</a>
                     <h4>{{_ "Note"}}</h4>
                 </div>
-                <div class="modal-body">
-                    <div>
-                        {{#with note}}
-                        <fieldset>
-                            <div class="form-group {{hasError 'msg'}}">
-                                <label class="control-label">{{_ "Note"}}:</label>
-                                <textarea id="note-input" value="{{msg}}" class="form-control msg add-note-txt input-lg"
-                                          rows="3" placeholder= {{_ "Add note here"}}...></textarea>
-                                <!--<input class="form-control msg" value="{{msg}}"/>-->
-                                <span>{{error.msg}}</span>
-                            </div>
-                        </fieldset>
-
-                        {{/with}}
+                {{#autoForm schema=schema id="addEditNoteForm" doc=getNote}}
+                    <div class="modal-body">
+                        <div>
+                           {{> afQuickField name="msg" rows=4 style="max-width:100%" placeholder="Add note here..." class="form-control msg add-note-txt input-lg"}}
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
+                    <div class="modal-footer">
 
-                    <button class="btn btn-success accept " disabled="{{addDisabled}}">{{_ "Save"}}</button>
-                    <a href="#" class="btn" data-dismiss="modal">{{_ "Close"}}</a>
-                </div>
+                        <button class="btn btn-success accept " disabled="{{addDisabled}}">{{_ "Save"}}</button>
+                        <a href="#" class="btn" data-dismiss="modal">{{_ "Close"}}</a>
+                    </div>
+                {{/autoForm}}
             </div>
         </div>
     </div>

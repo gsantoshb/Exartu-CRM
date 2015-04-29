@@ -294,7 +294,7 @@ Template.agendaBox.events = {
     'click .list-type-8': function(e){
        var task = CalendarTasks.findOne({_id: e.target.id});
        if(task){
-         Utils.showModal('addEditTask', task);
+         Utils.showModal('addEditTask', {taskId: task._id});
        }
       loadingDep.changed();
     },

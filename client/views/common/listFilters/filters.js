@@ -106,75 +106,49 @@ Template.filter_dateCreatedISO.events = {
 
 
 // Tags
-var addTag = function () {
-
-
-    if (!selectedValue) {
-        return;
-    }
-    if (_.indexOf(this.tags.value, selectedValue) != -1) {
-        return;
-    }
-    this.tags.insert(selectedValue);
-
-};
-Template.filter_tags.events = {
-    'click .add-tag': function () {
-        addTag.call(this);
-    },
-    'keypress #new-tag': function (e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            addTag.call(this);
-        }
-
-    },
-    'click .remove-tag': function () {
-        var tags = UI._parentData(0).tags;
-        tags.remove(this.value);
-    },
-    'click .focusAddTag': function () {
-        $('#new-tag')[0].focus();
-    }
+var addTag = function (tag) {
+  if (tag && _.indexOf(this.tags.value, tag)) {
+    this.tags.insert(tag);
+  }
 };
 
-var selectedValue = ""
+var selectedValue = "";
 
 Template.filter_tags.helpers({
-    getTags: function () {
-      var templateSelf = this;
+  getTags: function () {
+    var templateSelf = this;
 
-        return function (string) {
-            var self = this;
+    return function (string) {
+      var self = this;
 
-            //todo: calculate method
-            Meteor.call('apiGetAllTags', string, function (err, result) {
-                if (err)
-                    return console.log(err);
-                var filterResult = _.filter(result, function(t){
-                    return (templateSelf.tags.value.indexOf(t.tags) <0);
-                });
-                self.ready(_.map(filterResult, function (r) {
-                    return {text: r.tags, id: r.tags};
-                })
-                );
-            });
-        };
-    },
-    tagsChanged: function () {
-        var self = this;
-        return function (value) {
-            self.value = value;
-            selectedValue = value;
-        }
-    },
-    defaultValue: function () {
-        var self = this;
-        return function (cb) {
-           cb("");
-        };
+      //todo: calculate method
+      Meteor.call('apiGetAllTags', string, function (err, result) {
+        if (err)
+          return console.log(err);
+        var filterResult = _.filter(result, function (t) {
+          return (templateSelf.tags.value.indexOf(t.tags) == -1);
+        });
+        self.ready(_.map(filterResult, function (r) {
+            return {text: r.tags, id: r.tags};
+          })
+        );
+      });
+    };
+  },
+  tagsChanged: function () {
+    var self = this;
+    return function (value) {
+      addTag.call(self, value);
+      Template.instance().$('input[type=hidden]').data().select2.clear();
     }
+  }
+});
 
+Template.filter_tags.events({
+  'click .remove-tag': function () {
+    var tags = UI._parentData(0).tags;
+    tags.remove(this.value);
+  }
 });
 
 

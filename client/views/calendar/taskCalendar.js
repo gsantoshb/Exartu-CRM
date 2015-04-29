@@ -257,7 +257,7 @@ Template.taskCalendar.helpers({
         task = _.find(CalendarTasks.find({}).fetch(), function (t) {
           return t._id == calEvent.id;
         });
-        Utils.showModal('addEditTask', task)
+        Utils.showModal('addEditTask', {taskId: task._id});
       },
       header:false,
       timeFormat:'HH:mm',
@@ -403,8 +403,7 @@ Template.taskCalendar.helpers({
 
 Template.taskCalendar.events = {
   'click #button-addTask': function () {
-     Utils.showModal('addEditTask', null);
-
+     Utils.showModal('addEditTask');
   },
   'click #show-mineOnly': function () {
     showMineOnly = !showMineOnly;

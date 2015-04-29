@@ -1,111 +1,120 @@
+
 <template name="addEditTask">
-    <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
+                <!-- Header -->
                 <div class="modal-header">
-                    <a class="close" data-dismiss="modal">×</a>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{_ "Close"}}</span></button>
                     <h4>{{_ "Task"}}</h4>
                 </div>
-                <div class="modal-body">
-                    <div>
-                      {{#if isReady}}
-                        {{#with task}}
-                            <fieldset>
-                                <div class="form-group {{hasError 'msg'}}">
-                                    <label class="control-label">{{_ "Task"}}:</label>
-                                    <textarea id="task-input" value="{{msg}}" class="form-control msg input-lg"
-                                              rows="6" placeholder= {{_ 'Add task here'}}...></textarea>
-                                    <span>{{error.msg}}</span>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <div class="form-group begin">
-                                    <label class="control-label">{{_ "Begin"}}:</label>
-                                    <br/>
-                                    {{#dateTimePicker value=begin options=datepickerOptions}}
-                                    {{/dateTimePicker}}
-                                </div>
-                            </fieldset>
-                            <div id="collapsed-btn-group" >
-                                <button class="btn btn-sm btn-link" type="button"  data-toggle="collapse" data-target="#advanced-info"><span class={{iconCollapsed}}></span> {{_ "Advanced"}}</button>
+
+                {{#autoForm schema="TaskSchema" id="addEditTaskForm" doc=task}}
+                    <!-- Body -->
+                    <div class="modal-body" style="overflow: auto; max-height: 80vh;">
+                        <fieldset>
+                            <!-- Task Message -->
+                            <div class="form-group {{#if afFieldIsInvalid name='msg'}}has-error{{/if}}">
+                                <label class="control-label">{{_ "Task"}}</label>
+                                {{> afFieldInput name='msg' rows=6 placeholder=msgPlaceholder }}
+                                {{#if afFieldIsInvalid name='msg'}}
+                                    <span class="help-block">{{afFieldMessage name='msg'}}</span>
+                                {{/if}}
+                            </div>
+
+                            <!-- Begin Date -->
+                            <div class="form-group {{#if afFieldIsInvalid name='begin'}}has-error{{/if}}">
+                                <label class="control-label">{{_ "Begin"}}</label>
+                                {{> afDateTimePicker name='begin' value=beginDate placeholder="Begin Date" format="D, MM dd, yyyy hh:ii" startView="year" }}
+                            </div>
+
+                            <!-- Show/Hide Advanced options -->
+                            <div class="collapsed-btn-group">
+                                <button class="btn btn-sm btn-link" type="button" data-toggle="collapse" data-target="#advanced-info">
+                                    <span class="fa {{#if showAdvanced}}fa-minus{{else}}fa-plus{{/if}}"></span> {{_ "Advanced"}}
+                                </button>
                             </div>
                             <br>
-                            <div id="advanced-info" class="collapse">
-                            <fieldset>
-                                <div class="form-group end {{hasError 'end'}}">
-                                    <label class="control-label">{{_ "End"}}:</label>
-                                    <br/>
-                                    {{#dateTimePicker value=end options=datepickerOptions}}
-                                    {{/dateTimePicker}}
-                                    <span>{{error.end}}</span>
-                                </div>
-                            </fieldset>
 
-                            <fieldset>
-                                <div class="form-group {{hasError 'assign'}}">
-                                    <label class="control-label">{{_ "Assign"}}:</label>
-                                    <select class="form-control assign" >
-                                        {{#each users}}
-                                            <option value="{{_id}}" selected="{{isSelected}}">{{displayUserName _id}}</option>
-                                        {{/each}}
-                                    </select>
-                                    <span>{{error.assign}}</span>
+                            <div id="advanced-info" class="collapse">
+                                <!-- End Date -->
+                                <div class="form-group {{#if afFieldIsInvalid name='end'}}has-error{{/if}}">
+                                    <label class="control-label">{{_ "End"}}</label>
+                                    {{> afDateTimePicker name='end' value=endDate placeholder="End Date" format="D, MM dd, yyyy hh:ii" startView="year" }}
                                 </div>
-                            </fieldset>
-                            <fieldset>
+
+                                <!-- Assigned User -->
+                                <div class="form-group {{#if afFieldIsInvalid name='assign'}}has-error{{/if}}">
+                                    <label class="control-label">{{_ "Assign"}}</label>
+                                    {{> afFieldInput name='assign' options=users value=assignedUser }}
+                                    {{#if afFieldIsInvalid name='assign'}}
+                                        <span class="help-block">{{afFieldMessage name='assign'}}</span>
+                                    {{/if}}
+                                </div>
+
                                 <div class="checkbox">
                                     <label>
-                                        <input class="isCompleted" type="checkbox" checked="{{completed}}" />{{_ "Completed"}}
+                                        <input class="isCompleted" type="checkbox" checked="{{showCompleted}}"/>{{_ "Completed"}}
                                     </label>
                                 </div>
-                            </fieldset>
-                            <fieldset>
-                                {{#if completed}}
-                                    <div class="form-group completed">
-                                        <label class="control-label">{{_ "Date completed"}}:</label>
-                                        <br/>
-                                        {{#dateTimePicker value=completed options=datepickerOptions}}
-                                        {{/dateTimePicker}}
+
+                                {{#if showCompleted}}
+                                    <!-- Begin Date -->
+                                    <div class="form-group {{#if afFieldIsInvalid name='completed'}}has-error{{/if}}">
+                                        <label class="control-label">{{_ "Date completed"}}</label>
+                                        {{> afDateTimePicker name='completed' value=completedDate placeholder="Completed Date" format="D, MM dd, yyyy hh:ii" startView="year" }}
                                     </div>
                                 {{/if}}
-                            </fieldset>
                             </div>
-
-                            {{else}}
-                            {{_ "not found"}}
-                        {{/with}}
-                      {{else}}
-                          {{_ "loading"}}...
-                       {{/if}}
-
-
+                        </fieldset>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    {{#if isEditing}}
-                        {{#if task.inactive}}
-                            <a class="btn btn-info pull-left archive">
-                                {{_ "Recover"}}
-                            </a>
-                        {{else}}
-                            <a class="btn btn-danger pull-left archive">
-                                {{_ "Archive"}}
-                            </a>
-                        {{/if}}
-                        <a class="btn btn-info pull-left push-oneday">
-                            {{_ "Push 1 day"}}
-                        </a>
-                        <a class="btn btn-info pull-left push-oneweek">
-                            {{_ "week"}}
-                        </a>
-                        <a class="btn btn-info pull-left push-onemonth">
-                            {{_ "month"}}
-                        </a>
-                    {{/if}}
 
-                    <a class="btn btn-success accept"  disabled="{{addDisabled}}">{{_ "Save"}}</a>                   
-                    <a href="#" class="btn" data-dismiss="modal">{{_ "Close"}}</a>
-                </div>
+                    <!-- Footer -->
+                    <div class="modal-footer">
+                        {{#unless isSubmitting}}
+                            <!-- Error message -->
+                            {{#if error}}
+                                <div class="alert-box alert-danger" style="margin-bottom: 15px;">
+                                    {{error}}
+                                </div>
+                            {{/if}}
+
+                            {{#if task}}
+                                {{#if task.inactive}}
+                                    <a class="btn btn-info pull-left recover">
+                                        {{_ "Recover"}}
+                                    </a>
+                                {{else}}
+                                    <a class="btn btn-danger pull-left archive">
+                                        {{_ "Archive"}}
+                                    </a>
+                                {{/if}}
+
+                                <a class="btn btn-info pull-left pushOneDay">
+                                    {{_ "Push 1 day"}}
+                                </a>
+                                <a class="btn btn-info pull-left pushOneWeek">
+                                    {{_ "week"}}
+                                </a>
+                                <a class="btn btn-info pull-left pushOneMonth">
+                                    {{_ "month"}}
+                                </a>
+                            {{/if}}
+
+                            <!-- Save/Cancel buttons -->
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{_ "Close"}}</button>
+                            <button type="submit" class="btn btn-primary">{{_ "Save"}}</button>
+                        {{else}}
+                            <!-- Submitting feedback -->
+                            <div class="col-md-10 col-md-offset-1">
+                                <div class="progress progress-striped active">
+                                    <div style="width: 100%;" class="progress-bar progress-bar-info">{{_ "Saving"}}...</div>
+                                </div>
+                            </div>
+                        {{/unless}}
+                    </div>
+                {{/autoForm}}
+
             </div>
         </div>
     </div>
