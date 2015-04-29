@@ -380,17 +380,21 @@ ContactableManager = {
             }), 500);
 
             var interval = setInterval(Meteor.bindEnvironment(function () {
+              console.log("interval", totalTime);
               HTTP.get('https://cloud.ocrsdk.com/getTaskStatus/?taskId=' + task.id, {headers: {'Authorization': 'Basic:' + cardR.encoded}}, function (err, r) {
 
                 if (r) {
 
-                  clearInterval(intervalBar);
+
                   //var resultObject = EJSON.parse(r.content);
                   var resultObject = xml2jsAsync(r.content);
 
                   task.status = resultObject.response.task[0].$.status;
                   if (task.status = "Completed") {
+                    clearInterval(intervalBar);
+                    clearInterval(interval);
                     task.resultUrl = resultObject.response.task[0].$.resultUrl;
+                    console.log(task.resultUrl);
                     HTTP.get(task.resultUrl, function (err, resultado) {
                       var objectR = xml2jsAsync(resultado.content);
                       var employee = {};
@@ -506,7 +510,7 @@ ContactableManager = {
                               }
                             })
                             AddressManager.addEditAddress(addr);
-                            clearInterval(interval);
+
                             var toReturn = {content: insertedEmployee};
                             progress.end();
                             delete progress;
@@ -534,6 +538,10 @@ ContactableManager = {
                       clearInterval(intervalBar);
                     }
                   }
+                }else{
+                  clearInterval(intervalBar);
+                  clearInterval(interval);
+                  console.log("Error parsing");
                 }
               })
             }), task.estimatedTime * 1000);
