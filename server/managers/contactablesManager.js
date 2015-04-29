@@ -400,6 +400,7 @@ ContactableManager = {
                     HTTP.get(task.resultUrl, function (err, resultado) {
                       var objectR = xml2jsAsync(resultado.content);
                       var employee = {};
+                      employee.hierId = user.currentHierId;
                       employee.objNameArray = ['person', 'Employee', 'contactable'];
                       employee.person = {
                         firstName: '',
@@ -408,8 +409,14 @@ ContactableManager = {
                       };
                       employee.Employee = {};
                       employee.contactMethods = [];
-                      var phoneTypeId = LookUpManager.ContactMethodTypes_MobilePhone()._id;
-                      var emailTypeId = LookUpManager.ContactMethodTypes_Email()._id;
+                      var mobilPhoneLookUp = LookUps.findOne({
+                        lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+                        hierId: user.currentHierId, lookUpActions: "ContactMethod_MobilePhone"});
+                      var emailLookUp = LookUps.findOne({
+                        lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+                        hierId: user.currentHierId, lookUpActions: "ContactMethod_Email"});
+                      var phoneTypeId = mobilPhoneLookUp._id;
+                      var emailTypeId = emailLookUp._id;
                       console.log("phoneTypeId",phoneTypeId);
                       console.log("emailTypeId", emailTypeId);
                       var addressTypeId = LookUps.findOne({
@@ -481,7 +488,8 @@ ContactableManager = {
                         employee.person.firstName = "CardReader";
                         employee.person.lastName = "Employee";
                       }
-                      var insertedEmployee = ContactableManager.create(employee);
+                      var connection = new RESTAPI.connection(user);
+                      var insertedEmployee = connection.call('addContactable', employee);
 
                       if (address) {
                         HTTP.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address, function (err, cb) {
