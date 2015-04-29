@@ -1,3 +1,4 @@
+var iconv = Meteor.npmRequire('iconv-lite');
 var encode = function (string) {
   var stringIso = iconv.encode(string, "iso-8859-1");
   return stringIso.toString('base64');
