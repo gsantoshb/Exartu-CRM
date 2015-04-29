@@ -390,7 +390,7 @@ ContactableManager = {
                   var resultObject = xml2jsAsync(r.content);
 
                   task.status = resultObject.response.task[0].$.status;
-                  if (task.status = "Completed") {
+                  if (task.status === "Completed") {
                     Meteor.clearInterval(intervalBar);
                     Meteor.clearInterval(interval);
                     task.resultUrl = resultObject.response.task[0].$.resultUrl;
