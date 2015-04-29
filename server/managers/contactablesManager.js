@@ -348,7 +348,7 @@ ContactableManager = {
 
 
       var r = request.post({
-        url: 'http://cloud.ocrsdk.com/processBusinessCard',
+        url: 'https://cloud.ocrsdk.com/processBusinessCard',
         headers: {'Authorization':'Basic: ' + cardR.encoded},
         formData: formData
       },Meteor.bindEnvironment(function optionalCallback(err, httpResponse, result) {
@@ -374,7 +374,7 @@ ContactableManager = {
             }), 500);
 
             var interval = setInterval(Meteor.bindEnvironment(function () {
-              HTTP.get('http://cloud.ocrsdk.com/getTaskStatus/?taskId=' + task.id, {headers: {'Authorization': 'Basic:' + cardR.encoded}}, function (err, r) {
+              HTTP.get('https://cloud.ocrsdk.com/getTaskStatus/?taskId=' + task.id, {headers: {'Authorization': 'Basic:' + cardR.encoded}}, function (err, r) {
 
                 if (r) {
 
