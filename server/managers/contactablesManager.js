@@ -394,7 +394,9 @@ ContactableManager = {
                     Meteor.clearInterval(intervalBar);
                     Meteor.clearInterval(interval);
                     task.resultUrl = resultObject.response.task[0].$.resultUrl;
-                    console.log(task.resultUrl);
+                    console.log("content", r.content);
+                    console.log("resultObject", resultObject);
+                    console.log("taskurl", task.resultUrl);
                     HTTP.get(task.resultUrl, function (err, resultado) {
                       var objectR = xml2jsAsync(resultado.content);
                       var employee = {};
@@ -408,6 +410,8 @@ ContactableManager = {
                       employee.contactMethods = [];
                       var phoneTypeId = LookUpManager.ContactMethodTypes_MobilePhone()._id;
                       var emailTypeId = LookUpManager.ContactMethodTypes_Email()._id;
+                      console.log("phoneTypeId",phoneTypeId);
+                      console.log("emailTypeId", emailTypeId);
                       var addressTypeId = LookUps.findOne({
                         lookUpCode: Enums.lookUpCodes.contactable_address,
                         lookUpActions: Enums.lookUpAction.Address_WorksSite,
