@@ -365,7 +365,7 @@ ContactableManager = {
           try {
             progressUpload.end();
             delete progressUpload;
-            clearInterval(uploadInterval);
+            Meteor.clearInterval(uploadInterval);
             var progress = ServerProgress.start(user._id, 'processCard', 'Parsing...');
             var object = xml2jsAsync(result);
             var task = {}
@@ -375,11 +375,11 @@ ContactableManager = {
             var totalBar = 80;
 
             progress.set(0);
-            var intervalBar = setInterval(Meteor.bindEnvironment(function () {
+            var intervalBar = Meteor.setInterval(function () {
               progress.set(progress.progress + ((500 * totalBar) / (task.estimatedTime * 1000)));
-            }), 500);
+            }, 500);
 
-            var interval = setInterval(Meteor.bindEnvironment(function () {
+            var interval = Meteor.setInterval(function () {
               console.log("interval", totalTime);
               HTTP.get('https://cloud.ocrsdk.com/getTaskStatus/?taskId=' + task.id, {headers: {'Authorization': 'Basic:' + cardR.encoded}}, function (err, r) {
 
@@ -391,8 +391,8 @@ ContactableManager = {
 
                   task.status = resultObject.response.task[0].$.status;
                   if (task.status = "Completed") {
-                    clearInterval(intervalBar);
-                    clearInterval(interval);
+                    Meteor.clearInterval(intervalBar);
+                    Meteor.clearInterval(interval);
                     task.resultUrl = resultObject.response.task[0].$.resultUrl;
                     console.log(task.resultUrl);
                     HTTP.get(task.resultUrl, function (err, resultado) {
@@ -519,8 +519,8 @@ ContactableManager = {
                         })
                       }
                       else {
-                        clearInterval(interval);
-                        clearInterval(intervalBar);
+                        Meteor.clearInterval(interval);
+                        Meteor.clearInterval(intervalBar);
                         var toReturn = {content: insertedEmployee};
                         if(progress){
                           progress.end();
@@ -534,17 +534,17 @@ ContactableManager = {
                     totalTime = totalTime + task.estimatedTime * 1000;
                     totalBar = (100 - totalBar) / 2;
                     if (totalTime > maxTime) {
-                      clearInterval(interval);
-                      clearInterval(intervalBar);
+                      Meteor.clearInterval(interval);
+                      Meteor.clearInterval(intervalBar);
                     }
                   }
                 }else{
-                  clearInterval(intervalBar);
-                  clearInterval(interval);
+                  Meteor.clearInterval(intervalBar);
+                  Meteor.clearInterval(interval);
                   console.log("Error parsing");
                 }
               })
-            }), task.estimatedTime * 1000);
+            }, task.estimatedTime * 1000);
 
 
             //return object;
@@ -556,7 +556,7 @@ ContactableManager = {
       }))
 
 
-      var uploadInterval = setInterval(function () {
+      var uploadInterval = Meteor.setInterval(function () {
         //console.log("Uploaded:",(r.req.connection._bytesDispatched/metadata.fileSize)*100);
         if (r.req.connection._bytesDispatched >= metadata.fileSize) {
 
