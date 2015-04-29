@@ -317,6 +317,11 @@ Router.map(function () {
     controller: 'CardReaderController'
   });
 
+  this.route('mailchimpManagement', {
+    path: '/management/mailchimp',
+    controller: 'MailChimpManagementController'
+  });
+
   this.route('getContactCSV', {
     path: '/getContactCSV',
     controller: 'GetContactCSVController'
