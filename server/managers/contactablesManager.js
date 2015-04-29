@@ -508,7 +508,6 @@ ContactableManager = {
                             AddressManager.addEditAddress(addr);
                             clearInterval(interval);
                             var toReturn = {content: insertedEmployee};
-                            progress.set(100);
                             progress.end();
                             delete progress;
                             callback(null, toReturn);
@@ -519,9 +518,10 @@ ContactableManager = {
                         clearInterval(interval);
                         clearInterval(intervalBar);
                         var toReturn = {content: insertedEmployee};
-                        progress.set(100);
-                        progress.end();
-                        delete progress;
+                        if(progress){
+                          progress.end();
+                          delete progress;
+                        }
                         callback(null, toReturn);
                       }
                     })
