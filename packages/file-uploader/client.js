@@ -25,7 +25,6 @@ FileUploader.postProgress = function(endpoint, file, progress, metadata) {
   var cb;
   if (arguments[arguments.length - 1] instanceof Function)
     cb = arguments[arguments.length - 1];
-  debugger;
   var formData = new FormData();
   formData.append('file', file);
 
