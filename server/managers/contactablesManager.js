@@ -543,6 +543,7 @@ ContactableManager = {
                     })
                   }
                   else {
+                    console.log(resultObject);
                     totalTime = totalTime + task.estimatedTime * 1000;
                     totalBar = (100 - totalBar) / 2;
                     if (totalTime > maxTime) {
