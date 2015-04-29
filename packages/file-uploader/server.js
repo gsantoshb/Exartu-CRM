@@ -41,6 +41,7 @@ FileUploader.createEndpoint = function(route, options) {
 
             try {
               var metadata = _.omit(data, 'userId', 'file');
+              _.extend(metadata, {fileSize:data.file.size})
               var connection = DDP.connect(Meteor.absoluteUrl());
               var result = connection.call(route, data.userId, data.file.path, metadata);
               this.response.end(JSON.stringify(result? result.content : undefined));

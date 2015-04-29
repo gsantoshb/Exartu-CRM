@@ -4,5 +4,7 @@
   "git-rev": "0.2.1",
   "pdfkit": "0.7.0",
   "pdfkit": "0.7.0",
-  "iconv-lite": "0.4.7"
+  "iconv-lite": "0.4.7",
+  "request":"2.55.0",
+  "delayed-stream":"0.0.6"
 }
