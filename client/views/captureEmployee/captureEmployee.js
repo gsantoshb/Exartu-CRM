@@ -52,7 +52,8 @@ var uploadFile = function (file) {
         addDisabled.set(false)
      }
     else if(err){
-      debugger;
+      console.log(err);
+      Router.go('/');
     }
   });
 };

@@ -315,7 +315,7 @@ ContactableManager = {
 
   // CARD
   createFromCard: Meteor.wrapAsync(function (data, metadata, callback) {
-    var maxTime = 30 * 1000;
+    var maxTime = 60 * 1000;
     if (typeof data.read == 'function') {
       var logTok = metadata.loginToken;
       if (!logTok)
@@ -548,6 +548,8 @@ ContactableManager = {
                     if (totalTime > maxTime) {
                       Meteor.clearInterval(interval);
                       Meteor.clearInterval(intervalBar);
+                      console.log("Error time exceded");
+                      callback("Error, time exceded");
                     }
                   }
                 }else{
