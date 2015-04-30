@@ -1,19 +1,19 @@
 progress = {
-  start: function (user, name) {
-    return new prog(user, name);
+  start: function (user, name, displayName) {
+    return new prog(user, name, displayName);
   }
 };
-var prog = function (user, name) {
+var prog = function (user, name, displayName) {
   var self = this;
   self.name = name;
   self.user = user;
   self.progress = 0;
-  sender.add(user, name, {progress: self.progress});
+  self.displayName = displayName;
+  sender.add(user, name, {progress: self.progress, displayName : self.displayName});
 };
 
 prog.prototype.set = function (progress) {
   var self = this;
-
   self.progress = progress;
   sender.update(self.user, self.name, {progress: self.progress})
 };
@@ -34,7 +34,7 @@ var sender = {
     if (user){
       var sub = this._subs[user];
       if (sub){
-        sub.added('progressData', key, value);
+         sub.added('progressData', key, value);
       }else{
         //wait for subscription
       }

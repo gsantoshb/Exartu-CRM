@@ -8,5 +8,8 @@ Template.progressBar.helpers({
   },
   isDefined: function () {
     return progress.get(this.name) !== undefined ;
+  },
+  displayName: function() {
+    return progress.getDisplayName(this.name) ? progress.getDisplayName(this.name): "";
   }
 });

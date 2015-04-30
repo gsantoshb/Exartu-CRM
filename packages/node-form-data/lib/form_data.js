@@ -66,7 +66,7 @@ FormData.prototype._trackLength = function(header, value, options) {
   // @check why add CRLF? does this account for custom/multiple CRLFs?
   this._overheadLength +=
     Buffer.byteLength(header) +
-    + FormData.LINE_BREAK.length;
+    FormData.LINE_BREAK.length;
 
   // empty or either doesn't have path or not an http response
   if (!value || ( !value.path && !(value.readable && value.hasOwnProperty('httpVersion')) )) {
@@ -75,36 +75,60 @@ FormData.prototype._trackLength = function(header, value, options) {
 
   // no need to bother with the length
   if (!options.knownLength)
-  this._lengthRetrievers.push(function(next) {
+    this._lengthRetrievers.push(function(next) {
 
-    if (value.hasOwnProperty('fd')) {
-      fs.stat(value.path, function(err, stat) {
-        if (err) {
-          next(err);
-          return;
+      if (value.hasOwnProperty('fd')) {
+
+        // take read range into a account
+        // `end` = Infinity –> read file till the end
+        //
+        // TODO: Looks like there is bug in Node fs.createReadStream
+        // it doesn't respect `end` options without `start` options
+        // Fix it when node fixes it.
+        // https://github.com/joyent/node/issues/7819
+        if (value.end != undefined && value.end != Infinity && value.start != undefined) {
+
+          // when end specified
+          // no need to calculate range
+          // inclusive, starts with 0
+          next(null, value.end+1 - (value.start ? value.start : 0));
+
+          // not that fast snoopy
+        } else {
+          // still need to fetch file size from fs
+          fs.stat(value.path, function(err, stat) {
+
+            var fileSize;
+
+            if (err) {
+              next(err);
+              return;
+            }
+
+            // update final size based on the range options
+            fileSize = stat.size - (value.start ? value.start : 0);
+            next(null, fileSize);
+          });
         }
 
-        next(null, stat.size);
-      });
+        // or http response
+      } else if (value.hasOwnProperty('httpVersion')) {
+        next(null, +value.headers['content-length']);
 
-    // or http response
-    } else if (value.hasOwnProperty('httpVersion')) {
-      next(null, +value.headers['content-length']);
+        // or request stream http://github.com/mikeal/request
+      } else if (value.hasOwnProperty('httpModule')) {
+        // wait till response come back
+        value.on('response', function(response) {
+          value.pause();
+          next(null, +response.headers['content-length']);
+        });
+        value.resume();
 
-    // or request stream http://github.com/mikeal/request
-    } else if (value.hasOwnProperty('httpModule')) {
-      // wait till response come back
-      value.on('response', function(response) {
-        value.pause();
-        next(null, +response.headers['content-length']);
-      });
-      value.resume();
-
-    // something else
-    } else {
-      next('Unknown stream');
-    }
-  });
+        // something else
+      } else {
+        next('Unknown stream');
+      }
+    });
 };
 
 FormData.prototype._multiPartHeader = function(field, value, options) {
@@ -118,7 +142,7 @@ FormData.prototype._multiPartHeader = function(field, value, options) {
     header = options.header;
   } else {
     header += '--' + boundary + FormData.LINE_BREAK +
-      'Content-Disposition: form-data; name="' + field + '"';
+    'Content-Disposition: form-data; name="' + field + '"';
 
     // fs- and request- streams have path property
     // or use custom filename and/or contentType
@@ -128,7 +152,7 @@ FormData.prototype._multiPartHeader = function(field, value, options) {
         '; filename="' + path.basename(options.filename || value.path) + '"' + FormData.LINE_BREAK +
         'Content-Type: ' +  (options.contentType || mime.lookup(options.filename || value.path));
 
-    // http response has not
+      // http response has not
     } else if (value.readable && value.hasOwnProperty('httpVersion')) {
       header +=
         '; filename="' + path.basename(value.client._httpMessage.path) + '"' + FormData.LINE_BREAK +
@@ -155,7 +179,7 @@ FormData.prototype._multiPartFooter = function(field, value, options) {
 };
 
 FormData.prototype._lastBoundary = function() {
-  return '--' + this.getBoundary() + '--' + FormData.LINE_BREAK;
+  return '--' + this.getBoundary() + '--';
 };
 
 FormData.prototype.getHeaders = function(userHeaders) {
@@ -171,14 +195,14 @@ FormData.prototype.getHeaders = function(userHeaders) {
 }
 
 FormData.prototype.getCustomHeaders = function(contentType) {
-    contentType = contentType ? contentType : 'multipart/form-data';
+  contentType = contentType ? contentType : 'multipart/form-data';
 
-    var formHeaders = {
-        'content-type': contentType + '; boundary=' + this.getBoundary(),
-        'content-length': this.getLengthSync()
-    };
+  var formHeaders = {
+    'content-type': contentType + '; boundary=' + this.getBoundary(),
+    'content-length': this.getLengthSync()
+  };
 
-    return formHeaders;
+  return formHeaders;
 }
 
 FormData.prototype.getBoundary = function() {
@@ -200,7 +224,7 @@ FormData.prototype._generateBoundary = function() {
   this._boundary = boundary;
 };
 
-// POST: getLengthSync DOESN'T calculate streams length
+// Note: getLengthSync DOESN'T calculate streams length
 // As workaround one can calculate file size manually
 // and add it as knownLength option
 FormData.prototype.getLengthSync = function(debug) {
@@ -254,8 +278,7 @@ FormData.prototype.submit = function(params, cb) {
   var request
     , options
     , defaults = {
-        method : 'POST',
-        headers: this.getHeaders()
+      method : 'post'
     };
 
   // parse provided url if it's string
@@ -277,6 +300,9 @@ FormData.prototype.submit = function(params, cb) {
       options.port = options.protocol == 'https:' ? 443 : 80;
     }
   }
+
+  // put that good code in getHeaders to some use
+  options.headers = this.getHeaders(params.headers);
 
   // https if specified, fallback to http in any other case
   if (params.protocol == 'https:') {
