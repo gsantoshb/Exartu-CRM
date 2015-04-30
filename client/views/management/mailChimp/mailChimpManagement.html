@@ -29,7 +29,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-2">
-                            <h4 class="text-center">lists</h4>
+                            <h4 class="text-center">lists <a class="pull-right pointer" id="refresh-lists"><i class="fa fa-refresh"></i></a></h4>
                             <ul class="list-group">
                                 {{#if loadingLists}}
                                     {{> mc_loading}}
@@ -39,6 +39,10 @@
                                             <span class="badge">{{stats.member_count}}</span>
                                             {{name}}
                                         </li>
+                                    {{else}}
+                                        <div>
+                                            <h5>You don't have any list created in mailchimp</h5>
+                                        </div>
                                     {{/each}}
                                 {{/if}}
                             </ul>
@@ -47,7 +51,10 @@
                             {{#if selectedList}}
                                 <div class="clearfix" style="margin-bottom: 20px;">
                                     <button class="btn btn-primary pull-right" disabled="{{importDisabled}}" id="import"> Import contacts </button>
+
+                                    <h4 class="col-lg-4">Members <a class="pull-right pointer" id="refresh-members"><i class="fa fa-refresh"></i></a></h4>
                                 </div>
+
                                 <ul class="list-group">
                                     {{#if loadingMembers}}
                                         {{> mc_loading}}
@@ -59,9 +66,17 @@
                                                     <span class="label pull-right {{resultClass}}">{{resultText}}</span>
                                                 {{/if}}
                                             </li>
+                                        {{else}}
+                                            <div>
+                                                <h5>This list has no members</h5>
+                                            </div>
                                         {{/each}}
                                     {{/if}}
                                 </ul>
+                            {{else}}
+                                <div>
+                                    <h5>Select a list to import it to aïda</h5>
+                                </div>
                             {{/if}}
 
                         </div>

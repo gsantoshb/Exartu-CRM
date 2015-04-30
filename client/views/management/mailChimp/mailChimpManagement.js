@@ -60,40 +60,45 @@ AutoForm.hooks({
     }
   }
 });
+var refreshMembers = function () {
+  var selected = selectedList.get();
+  if (!selected) return;
+  loadingMembers.set(true);
+
+  Meteor.call('getSubscribers', selected, function(err, result){
+    if (err){
+      console.log(err);
+    }else {
+      console.log('members', result);
+      members.set(result);
+      importDisabled.set(!result.length);
+    }
+    loadingMembers.set(false);
+  })
+};
+
+var refreshLists = function () {
+  var currentHier = Hierarchies.findOne(Meteor.user().currentHierId);
+  var apiKey = currentHier && currentHier.mailchimp ? currentHier.mailchimp.apiKey : null;
+  if (! apiKey){
+    return;
+  }
+  loadingLists.set(true);
+  Meteor.call('getMailChimpLists',function(err, result){
+    if (err){
+      console.log(err);
+    }else{
+      console.log('result', result);
+      lists.set(result);
+    }
+    loadingLists.set(false);
+  })
+}
+
 Template.mailChimpManagement.onCreated(function () {
   importFinished.set(false);
-  this.autorun(function () {
-    var currentHier = Hierarchies.findOne(Meteor.user().currentHierId);
-    var apiKey = currentHier && currentHier.mailchimp ? currentHier.mailchimp.apiKey : null;
-    if (! apiKey){
-      return;
-    }
-    loadingLists.set(true);
-    Meteor.call('getMailChimpLists',function(err, result){
-      if (err){
-        console.log(err);
-      }else{
-        console.log('result', result);
-        lists.set(result);
-      }
-      loadingLists.set(false);
-    })
-  });
-  this.autorun(function () {
-    var selected = selectedList.get();
-    if (!selected) return;
-    loadingMembers.set(true);
-
-    Meteor.call('getSubscribers', selected, function(err, result){
-      if (err){
-        console.log(err);
-      }else {
-        console.log('members', result);
-        members.set(result)
-      }
-      loadingMembers.set(false);
-    })
-  });
+  this.autorun(refreshLists);
+  this.autorun(refreshMembers);
 });
 
 Template.mailChimpManagement.helpers({
@@ -156,6 +161,8 @@ Template.mailChimpManagement.events({
   'click .mc-list': function () {
     selectedList.set(this.id);
   },
+  'click #refresh-members': refreshMembers,
+  'click #refresh-lists': refreshLists,
   'click #import': function () {
     var selected = selectedList.get();
     if (!selected) return;
