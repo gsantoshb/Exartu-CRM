@@ -174,52 +174,54 @@ Meteor.methods({
                       if(employee.person.firstName === '' || employee.person.lastName === ''){
                         future.return("Unable to parse");
                       }
-                      //var connection = new RESTAPI.connection(user);
-                      var insertedEmployee = Meteor.call('addContactable', employee);
-                       var toReturn = {content: insertedEmployee};
-                      future.return(toReturn);
+                      else {
+                        //var connection = new RESTAPI.connection(user);
+                        var insertedEmployee = Meteor.call('addContactable', employee);
+                        var toReturn = {content: insertedEmployee};
+                        future.return(toReturn);
 
-                      if (address) {
-                        HTTP.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address, function (err, cb) {
-                          if (cb) {
-                            var addr = {};
-                            addr.userId = Meteor.user()._id;
-                            addr.linkId = insertedEmployee;
-                            addr.hierId = Meteor.user().currentHierId;
-                            addr.addressTypeId = addressTypeId._id;
-                            addr.lat = cb.data.results[0].geometry.location.lat;
-                            addr.lng = cb.data.results[0].geometry.location.lng;
-                            _.forEach(cb.data.results[0].address_components, function (c) {
-                              if (_.contains(c.types, "postal_code")) {
-                                addr.postalCode = c.long_name;
-                              }
-                              else if (_.contains(c.types, "locality")) {
-                                addr.city = c.long_name;
-                              }
-                              else if (_.contains(c.types, "administrative_area_level_1")) {
-                                addr.state = c.long_name;
-                              }
-                              else if (_.contains(c.types, "country")) {
-                                addr.country = c.long_name;
-                              }
-                              else if (_.contains(c.types, "street_number")) {
-                                addr.address = addr.address ? c.long_name + addr.address : c.long_name;
-                              }
-                              else if (_.contains(c.types, "route")) {
-                                addr.address = addr.address ? addr.address + c.long_name : c.long_name;
-                              }
-                            })
-                            AddressManager.addEditAddress(addr);
-                            //var toReturn = {content: insertedEmployee};
-                            //future.return(toReturn);
+                        if (address) {
+                          HTTP.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address, function (err, cb) {
+                            if (cb) {
+                              var addr = {};
+                              addr.userId = Meteor.user()._id;
+                              addr.linkId = insertedEmployee;
+                              addr.hierId = Meteor.user().currentHierId;
+                              addr.addressTypeId = addressTypeId._id;
+                              addr.lat = cb.data.results[0].geometry.location.lat;
+                              addr.lng = cb.data.results[0].geometry.location.lng;
+                              _.forEach(cb.data.results[0].address_components, function (c) {
+                                if (_.contains(c.types, "postal_code")) {
+                                  addr.postalCode = c.long_name;
+                                }
+                                else if (_.contains(c.types, "locality")) {
+                                  addr.city = c.long_name;
+                                }
+                                else if (_.contains(c.types, "administrative_area_level_1")) {
+                                  addr.state = c.long_name;
+                                }
+                                else if (_.contains(c.types, "country")) {
+                                  addr.country = c.long_name;
+                                }
+                                else if (_.contains(c.types, "street_number")) {
+                                  addr.address = addr.address ? c.long_name + addr.address : c.long_name;
+                                }
+                                else if (_.contains(c.types, "route")) {
+                                  addr.address = addr.address ? addr.address + c.long_name : c.long_name;
+                                }
+                              })
+                              AddressManager.addEditAddress(addr);
+                              //var toReturn = {content: insertedEmployee};
+                              //future.return(toReturn);
 
 
-                          }
-                        })
-                      }
-                   else {
-                        //var toReturn = {content: insertedEmployee};
-                        //future.return(toReturn);
+                            }
+                          })
+                        }
+                        else {
+                          //var toReturn = {content: insertedEmployee};
+                          //future.return(toReturn);
+                        }
                       }
                  }
              })
