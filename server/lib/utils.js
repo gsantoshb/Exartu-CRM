@@ -83,6 +83,9 @@ _.extend( Utils, {
 
     return c;
   },
+  filterCollectionByUserHier2: function(userId, c, options) {
+   return Utils.filterCollectionByUserHier.call({userId: userId}, c, options);
+  },
   //filterCollectionByHier: function(hierId, c, options) {
   //  options = options || {};
   //
