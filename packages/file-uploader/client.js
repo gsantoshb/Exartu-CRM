@@ -41,6 +41,7 @@ FileUploader.postProgress = function(endpoint, file, progress, metadata) {
       progress.start();
       progress.displayName = "Uploading...";
     }
+    console.log(progress.get());
     progress.set(Math.round(progressEvent.loaded / progressEvent.total *100));
     if(progress.get()===100){
       progress.end();

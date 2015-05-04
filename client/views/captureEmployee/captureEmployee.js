@@ -98,7 +98,7 @@ var progress = {
     this.val.set(0);
   },
   isProcessing: function(){
-    return this.isStarted;
+    return this.isStarted.get();
   }
 }
 

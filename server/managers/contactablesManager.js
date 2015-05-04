@@ -386,7 +386,6 @@ ContactableManager = {
         }
         if (httpResponse) {
           if(progressUpload) {
-            console.log(progressUpload);
             progressUpload.end();
             //delete progressUpload;
           }
