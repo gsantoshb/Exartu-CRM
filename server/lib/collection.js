@@ -48,6 +48,8 @@ ApplicantCenterInvitations = new Mongo.Collection('applicantCenterInvitations');
 
 Tags = new Mongo.Collection("tags");
 
+//CardReaderTasks = new Mongo.Collection('cardReaderTasks');
+
 HelpVideos = new Mongo.Collection('helpVideos');
 Collections = {
     Hierarchies: Hierarchies,

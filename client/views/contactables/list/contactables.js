@@ -317,13 +317,13 @@ Template.contactablesList.created = function () {
                 $or: []
             };
             var aux = {};
-            aux['taxId'] = query.taxId.value;
-            taxIdOR.$or.push(aux);
-            aux['taxId'] = {$regex: '([0-9]{5})([' + query.taxId.value + ']{4})', $options: 'i'};
-            taxIdOR.$or.push(aux);
+            aux['Employee.taxID'] = query.taxId.value;
+            taxIdOR.$or.push(_.clone(aux));
+            aux['Employee.taxID'] = {$regex: '([0-9]{3}-?[0-9]{2}-?)(' +query.taxId.value + ')', $options: 'i'};
+            taxIdOR.$or.push(_.clone(aux));
             var aux = {};
-            aux['contactMethods'] = {$elemMatch: {value: {$regex: query.taxId.value, $options: 'i'}}}
-            taxIdOR.$or.push(aux);
+            aux['contactMethods'] = {$elemMatch: {value: {$regex: query.taxId.value, $options: 'i'}}};
+            taxIdOR.$or.push(_.clone(aux));
             searchQuery.$and.push(taxIdOR);
 
         }

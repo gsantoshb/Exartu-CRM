@@ -1755,3 +1755,19 @@ and (max-device-width: 568px) {
 div#activityChart text[text-anchor="end"] { display: none;}
 div#activityChart #container text { text-decoration: none !important; font-weight: normal; font-size: 14px;}
 div#activityChart #container text tspan { text-decoration: none !important; font-weight: normal; font-size: 14px;}
+
+
+
+
+/* video container */
+
+.video-container{
+    width: 460px;
+    padding: 20px 10px;
+    float: left;
+}
+
+.video-container .video-title{
+    text-align: center;
+    height: 50px
+}
