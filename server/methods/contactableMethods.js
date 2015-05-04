@@ -172,8 +172,7 @@ Meteor.methods({
                         }
                       });
                       if(employee.person.firstName === '' || employee.person.lastName === ''){
-                        employee.person.firstName = "CardReader";
-                        employee.person.lastName = "Employee";
+                        future.return("Unable to parse");
                       }
                       //var connection = new RESTAPI.connection(user);
                       var insertedEmployee = Meteor.call('addContactable', employee);

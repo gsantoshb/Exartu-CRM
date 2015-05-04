@@ -61,19 +61,42 @@ Template.scanEmployeeCard.events({
   }
 });
 
-var pollingCardReader = function(task, intervalBar, totalBar, totalTime){
+var pollingCardReader = function(task, intervalBar, totalTime){
   Meteor.setTimeout(function(){
    Meteor.call('parseCardReader', task.id,function(err, cb){
       if(cb){
         if(cb === "Not completed yet") {
           totalBar = ((100-totalBar)/2);
+          totalTime = totalTime + task.estimatedTime*1000;
+          if(totalTime >30*1000){
+            progress.end();
+            Utils.showModal('basicModal', {
+              title: 'Unable to parse',
+              message: 'Unable to parse the selected image',
+              callback: function () {
+                processing.set(false);
+              }
+            });
+          }
           pollingCardReader(task);
         }
         else {
-          Meteor.clearInterval(intervalBar);
-          progress.end();
-          processing.set(false)
-          Router.go('/contactable/' + cb.content);
+          if(cb === "Unable to parse"){
+            progress.end();
+            Utils.showModal('basicModal', {
+              title: 'Unable to parse',
+              message: 'Unable to parse the selected image',
+              callback: function () {
+                processing.set(false);
+              }
+            });
+          }
+          else {
+            Meteor.clearInterval(intervalBar);
+            progress.end();
+            processing.set(false)
+            Router.go('/contactable/' + cb.content);
+          }
         }
       }
       else if(err){
@@ -105,7 +128,7 @@ var progress = {
     return this.isStarted.get();
   }
 }
-
+var totalBar;
 var uploadFile = function (file) {
   processing.set(true);
   FileUploader.postProgress('uploadCard', file, progress, function (err, result) {
@@ -113,7 +136,7 @@ var uploadFile = function (file) {
     if(result){
        //var task = Router.go('/contactable/'+JSON.parse(result));
        var totalTime = 0;
-       var totalBar = 80;
+       totalBar = 80;
        progress.start();
        progress.displayName = "Parsing...";
        progress.set(0);
@@ -121,7 +144,7 @@ var uploadFile = function (file) {
           progress.set(progress.get() + ((500 * totalBar) / (JSON.parse(result).estimatedTime * 1000)));
 
        }, 500);
-       pollingCardReader(JSON.parse(result), intervalBar, totalBar, totalTime);
+       pollingCardReader(JSON.parse(result), intervalBar, totalTime);
 
      }
     else if(err){
