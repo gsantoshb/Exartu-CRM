@@ -21,5 +21,13 @@ HotListManager = {
     },
   updateHotList: function(hotlist){
     HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members }});
+  },
+  addToHotlist: function (hotListId, ids) {
+    if (!_.isArray(ids)) return;
+
+    //HotLists.update({ _id: hotlist._id }, { $addToSet: { members: { $each: ids } } }); //$each not working in meteor
+    _.each(ids, function (id) {
+      HotLists.update({ _id: hotListId }, { $addToSet: { members: id } });
+    });
   }
 };

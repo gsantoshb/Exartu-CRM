@@ -52,10 +52,14 @@ MailChimpManager = {
 
     });
   }),
-  importContacts: Meteor.wrapAsync(function (hierId, listId, cb) {
+  importContacts: Meteor.wrapAsync(function (hierId, listId, hotListId, cb) {
+
+    debugger;
     var members = MailChimpManager.getSubscribers(hierId, listId);
 
     var emailCMType = LookUpManager.ContactMethodTypes_Email();
+
+    var contactsToAdd = []; // contacts that should be added to the hotList
 
     var imported = [], failed = [], existed = [];
 
@@ -69,10 +73,11 @@ MailChimpManager = {
 
         var contact = {
           objNameArray: ['contactable', 'person', 'Contact'],
-          person:{
+          person: {
 
           },
-          Contact:{}
+          Contact: {},
+          mailChimpId: member.id
         };
 
 
@@ -120,6 +125,9 @@ MailChimpManager = {
         }
 
         ContactableManager.addContactMethod(contactId, emailCMType._id, member.email);
+
+        contactsToAdd.push(contactId);
+
         imported.push(member.id);
 
       } catch (e) {
@@ -128,6 +136,10 @@ MailChimpManager = {
       }
 
     });
+
+    if (hotListId && contactsToAdd.length){
+      HotListManager.addToHotlist(hotListId,contactsToAdd)
+    }
     cb(null, {
       imported: imported,
       failed: failed,
