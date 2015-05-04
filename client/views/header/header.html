@@ -36,30 +36,20 @@
                         <li>
                             <a href="/hierarchyManagement">{{_ "Hierarchies"}}</a>
                         </li>
-                        {{#if isAdmin}}
 
-                            <li>
-                                <a href="/management/lookups">{{_ "Lookups"}}</a>
-                            </li>
-                        {{/if}}
                         <li>
                             <a href="/userProfile">
                                 {{_ "My Profile"}}
                             </a>
                         </li>
+
                         {{#if isAdmin}}
                             <li>
                                 <a href="/subscriptionplan">{{_ "Subscription"}}</a>
                             </li>
-                        {{/if}}
-                        <li>
-                            {{>userVoice}}
-
-                        </li>
-
-
-
-                        {{#if isAdmin}}
+                            <li>
+                                <a href="/management/lookups">{{_ "Lookups"}}</a>
+                            </li>
                             <li>
                                 <a href="/management/testData">{{_ "Test Data"}}</a>
                             </li>
@@ -80,9 +70,16 @@
 
                                 <a href="/management/clickFunnel">{{_ "Click funnel"}}</a>
                             </li>
+                            <li>
+
+                                <a href="/management/mailchimp">{{_ "Mail Chimp management"}}</a>
+                            </li>
 
                         {{/if}}
                         <li class="divider"></li>
+                        <li>
+                            {{>userVoice}}
+                        </li>
                         <li>
                             <a class="pointer trigger"><i class="fa fa-flag"></i> {{currentLanguageLabel}}</a>
                             <ul class="dropdown-menu sub-menu">

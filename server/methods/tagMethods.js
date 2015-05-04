@@ -14,7 +14,10 @@ Meteor.methods({
     }
   },
   apiGetAllTags: function(tag){
-     return  Tags.find({ tags: { $regex: tag } }).fetch();
+    var user = Meteor.user();
+    if (!user) return [];
+
+    return  Utils.filterCollectionByUserHier.call({userId: user._id}, Tags.find({ tags: { $regex: tag } })).fetch();
 
   }
 });

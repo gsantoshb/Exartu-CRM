@@ -1,0 +1,93 @@
+<template name="mailChimpManagement">
+    <div id="content">
+        <div id="content-header">
+            <h1>MailChimp</h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Management</a>
+            <a href="/management/mailchimp" class="current">MailChimp</a>
+        </div>
+
+        <div class="panel panel-default" style="margin: 15px">
+            <div class="text-center" style="padding: 10px">
+                <h4>
+                    Add here a valid apikey for mailchimp, if you need help check <a href="http://kb.mailchimp.com/accounts/management/about-api-keys" target="_blank"> this help page </a>
+                </h4>
+            </div>
+            <div class="panel-body">
+                {{#autoForm id="SetMailChimpConfiguration" schema="MailChimpConfigurationSchema" doc=configuration}}
+                    <fieldset>
+                        {{> afQuickField name='apiKey'}}
+                    </fieldset>
+                    <div class="clearfix">
+                        <button class="btn btn-success pull-right" disabled="{{addDisabled}}"> Save </button>
+                    </div>
+                {{/autoForm}}
+
+                {{#if isEnabled}}
+
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h4 class="text-center">lists <a class="pull-right pointer" id="refresh-lists"><i class="fa fa-refresh"></i></a></h4>
+                            <ul class="list-group">
+                                {{#if loadingLists}}
+                                    {{> mc_loading}}
+                                {{else}}
+                                    {{#each lists}}
+                                        <li class="list-group-item pointer mc-list  {{#if isSelected}}active{{/if}}">
+                                            <span class="badge">{{stats.member_count}}</span>
+                                            {{name}}
+                                        </li>
+                                    {{else}}
+                                        <div>
+                                            <h5>You don't have any list created in mailchimp</h5>
+                                        </div>
+                                    {{/each}}
+                                {{/if}}
+                            </ul>
+                        </div>
+                        <div class="col-md-10">
+                            {{#if selectedList}}
+                                <div class="clearfix" style="margin-bottom: 20px;">
+                                    <button class="btn btn-primary pull-right" disabled="{{importDisabled}}" id="import"> Import contacts </button>
+
+                                    <h4 class="col-lg-4">Members <a class="pull-right pointer" id="refresh-members"><i class="fa fa-refresh"></i></a></h4>
+                                </div>
+
+                                <ul class="list-group">
+                                    {{#if loadingMembers}}
+                                        {{> mc_loading}}
+                                    {{else}}
+                                        {{#each members}}
+                                            <li class="list-group-item pointer">
+                                                {{email}}
+                                                {{#if importFinished}}
+                                                    <span class="label pull-right {{resultClass}}">{{resultText}}</span>
+                                                {{/if}}
+                                            </li>
+                                        {{else}}
+                                            <div>
+                                                <h5>This list has no members</h5>
+                                            </div>
+                                        {{/each}}
+                                    {{/if}}
+                                </ul>
+                            {{else}}
+                                <div>
+                                    <h5>Select a list to import it to aïda</h5>
+                                </div>
+                            {{/if}}
+
+                        </div>
+                    </div>
+                {{/if}}
+
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="mc_loading">
+    <div><img src="/img/spinner.gif" style="display: block;margin: 0 auto;"/></div>
+</template>
