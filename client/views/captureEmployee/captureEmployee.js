@@ -65,15 +65,19 @@ var pollingCardReader = function(task, intervalBar, totalBar, totalTime){
   Meteor.setTimeout(function(){
    Meteor.call('parseCardReader', task.id,function(err, cb){
       if(cb){
-        //finished
-        Meteor.clearInterval(intervalBar);
-        progress.end();
-        processing.set(false)
-        Router.go('/contactable/'+cb.content);
+        if(cb === "Not completed yet") {
+          totalBar = ((100-totalBar)/2);
+          pollingCardReader(task);
+        }
+        else {
+          Meteor.clearInterval(intervalBar);
+          progress.end();
+          processing.set(false)
+          Router.go('/contactable/' + cb.content);
+        }
       }
       else if(err){
-        totalBar = ((100-totalBar)/2);
-        pollingCardReader(task);
+        console.log(err);
       }
     });
   },task.estimatedTime*1000);

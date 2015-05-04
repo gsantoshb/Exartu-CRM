@@ -226,7 +226,7 @@ Meteor.methods({
              })
            }
            else{
-             future.throw("Not completed yet");
+             future.return("Not completed yet");
            }
         }
         else{
