@@ -23,10 +23,21 @@
                                 <img src="{{imagepath}}" id="selected-img" style="width:80%">
                                 <br>
                                 <br>
-                                <span class="btn btn-default save-employee " style="{{addHiden}}" >Process</span>
-                                {{>progressBarClient}}
-                                {{>progressBar name='processCard'}}
-                                {{>progressBar name='uploadCard'}}
+                                <span class="btn btn-default save-employee " style="{{addHidenProcess}}" >Process</span>
+                                {{#if isProcessing}}
+                                    <div class="progress" style="width:{70%}">
+                                        <div class="progress-bar" role="progressbar" style="width:{{prog}}%;">
+                                            <p style="float:left;margin-left:3%">{{DisplayName}}</p>
+                                        </div>
+                                    </div>
+
+                                {{/if}}
+
+                                {{#if showServerProgress}}
+                                    {{>progressBar name='processCard'}}
+                                {{/if}}
+
+                                <!--{{>progressBar name='uploadCard'}}-->
                             </div>
 
                         </div>
@@ -43,13 +54,3 @@
 </template>
 
 
-<template name="progressBarClient">
-    {{#if isDefined}}
-       <div class="progress" style="width:{70%}">
-            <div class="progress-bar" role="progressbar" aria-valuenow="{{prog}}" aria-valuemin="0" aria-valuemax="100" style="width:{{prog}}%;">
-                <p style="float:left;margin-left:3%">Uploading...</p>
-            </div>
-       </div>
-
-    {{/if}}
-</template>

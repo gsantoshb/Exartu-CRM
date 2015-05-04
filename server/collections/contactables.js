@@ -108,6 +108,49 @@ Meteor.paginatedPublish(ContactablesList, function () {
                 };
             }
 
+            // Address location filter
+            if (clientParams && clientParams.location) {
+              // Get the ids of contactables (linkId) that have addresses that matches the criteria
+              if (_.isString(clientParams.location)) {
+                // Search the text in the most common properties
+                newSelector._id = {
+                  $in: Addresses.find({$or: [
+                    {address: {$regex: clientParams.location, $options: 'i'}},
+                    {city: {$regex: clientParams.location, $options: 'i'}},
+                    {state: {$regex: clientParams.location, $options: 'i'}},
+                    {country: {$regex: clientParams.location, $options: 'i'}}
+                  ]}).map(function (address) {
+                    return address.linkId;
+                  })
+                };
+
+              } else {
+                // Search as specified
+                var query = {$and: []};
+                if (clientParams.location.address)
+                  query.$and.push({address: {$regex: clientParams.location.address, $options: 'i'}});
+                if (clientParams.location.city)
+                  query.$and.push({city: {$regex: clientParams.location.city, $options: 'i'}});
+                if (clientParams.location.state)
+                  query.$and.push({state: {$regex: clientParams.location.state, $options: 'i'}});
+                if (clientParams.location.country)
+                  query.$and.push({country: {$regex: clientParams.location.country, $options: 'i'}});
+
+                // Check that the AND contains at least 1 element
+                if (query.$and.length > 0) {
+                  if (query.$and.length == 1) {
+                    query = query.$and[0];
+                  }
+
+                  newSelector._id = {
+                    $in: Addresses.find(query).map(function (address) {
+                      return address.linkId;
+                    })
+                  };
+                }
+              }
+            }
+
             return newSelector;
         }
     }
@@ -237,6 +280,8 @@ Resumes.allow({
     return (RoleManager.bUserIsClientAdmin() || RoleManager.bUserIsSystemAdmin()) ? true : false;
   }
 });
+
+
 
 // Indexes
 

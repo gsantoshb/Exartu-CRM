@@ -34,17 +34,17 @@ FileUploader.postProgress = function(endpoint, file, progress, metadata) {
   //};
 
   //_.extend(params, metadata);
-
   var xhr = new XMLHttpRequest();
+
   xhr.upload.onprogress = function(progressEvent) {
     if(!progress.isProcessing()){
       progress.start();
+      progress.displayName = "Uploading...";
     }
+    console.log(progress.get());
     progress.set(Math.round(progressEvent.loaded / progressEvent.total *100));
     if(progress.get()===100){
       progress.end();
-      delete progress;
-      console.log(new Date().getTime());
     }
 
 

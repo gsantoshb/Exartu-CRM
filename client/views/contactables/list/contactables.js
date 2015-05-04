@@ -282,38 +282,26 @@ Template.contactablesList.created = function () {
             searchQuery.userId = query.userId.value;
             urlQuery.addParam('userId', query.userId.value);
         }
+
         // Location filter
-        var locationOperatorMatch = false;
+        var locationFilter = undefined;
         if (query.location.value) {
-            _.forEach(locationFields, function (locationField) {
-                var value = getLocationTagValue(locationField, locationFields);
+          // Check if any of the predefined location tags are used
+          _.forEach(locationFields, function (locationField) {
+            var value = getLocationTagValue(locationField, locationFields);
+            if (value) {
+              // Check for initialization
+              if (!_.isObject(locationFilter)) { locationFilter = {}; }
 
-                if (value) {
-                    locationOperatorMatch = true;
-                    searchQuery['location.' + locationField] = {
-                        $regex: value,
-                        $options: 'i'
-                    };
-                    urlQuery.addParam(locationField, value);
-                }
-            });
-        }
+              locationFilter[locationField] = value;
+              urlQuery.addParam(locationField, value);
+            }
+          });
 
-        // If not location operator match is used then search on each field
-        if (query.location.value && !locationOperatorMatch) {
-            var locationOR = {
-                $or: []
-            };
-            _.forEach(locationFields, function (locationField) {
-                var aux = {};
-                aux['location.' + locationField] = {
-                    $regex: query.location.value,
-                    $options: 'i'
-                };
-                locationOR.$or.push(aux);
-            });
-            if (locationOR.$or.length > 0)
-                searchQuery.$and.push(locationOR);
+          // If no tags were used set the value as string
+          if (!_.isObject(locationFilter)) {
+            locationFilter = query.location.value;
+          }
         }
 
         // Tags filter
@@ -375,7 +363,7 @@ Template.contactablesList.created = function () {
             delete options.sort;
         }
         if (SubscriptionHandlers.AuxContactablesHandler) {
-            SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery);
+            SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, {location: locationFilter});
             SubscriptionHandlers.AuxContactablesHandler.setOptions(options);
         }
         else
@@ -991,33 +979,6 @@ var runESComputation = function () {
                 }
         }
       
-
-
-
-        // Location filter
-        var locationOperatorMatch = false;
-        if (query.location.value) {
-            _.forEach(locationFields, function (locationField) {
-                var value = getLocationTagValue(locationField, locationFields);
-
-                if (value) {
-                    locationOperatorMatch = true;
-                    var aux = {regexp: {}};
-                    aux.regexp['location.' + locationField] = '.*' + value + '.*';
-                    filters.bool.must.push(aux);
-                }
-            });
-        }
-
-        // If not location operator match is used then search on each field
-        if (query.location.value && !locationOperatorMatch) {
-            _.forEach(locationFields, function (locationField) {
-                var aux = {regexp: {}};
-                aux.regexp['location.' + locationField] = '.*' + query.location.value + '.*';
-                filters.bool.should.push(aux);
-            });
-        }
-
         if((query.objType.value === "Contact")&&(query.contactProcessStatus.value.length>0)){
            var processArray = [];
            _.forEach(query.contactProcessStatus.value, function(p){
