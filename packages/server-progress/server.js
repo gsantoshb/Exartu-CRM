@@ -34,7 +34,8 @@ var sender = {
     if (user){
       var sub = this._subs[user];
       if (sub){
-         sub.added('progressData', key, value);
+        sub.added('progressData', key, value);
+        sub.changed('progressData', key, value);
       }else{
         //wait for subscription
       }

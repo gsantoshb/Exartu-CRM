@@ -1,43 +1,239 @@
 var fs = Meteor.npmRequire('fs');
 
+var iconv = Meteor.npmRequire('iconv-lite');
+var encode = function (string) {
+  var stringIso = iconv.encode(string, "iso-8859-1");
+  return stringIso.toString('base64');
+};
+
+var xml2jsAsync = function (json) {
+  var result = Meteor.wrapAsync(xml2js.parseString)(json);
+  if (!result )
+    return new Meteor.Error(500, "Error parsing resume");
+  else
+    return result;
+};
+
 Meteor.methods({
-    createEmployeeFromCard: function(selectedImage){
-      var hierId =  Meteor.user().currentHierId;
+    //createEmployeeFromCard: function(selectedImage){
+    //  var hierId =  Meteor.user().currentHierId;
+    //  var hier = Hierarchies.findOne({_id: hierId});
+    //  //var fileObject =  this.request.file;
+    //  var fs = Npm.require('fs');
+    //  var cardR;
+    //  if (! hier) return null;
+    //  if (! hier.cardReader){
+    //    // look for the config in env
+    //    if (process.env.CardReaderAppId && process.env.CardReaderPassword){
+    //      cardR = {
+    //        appId: process.env.CardReaderAppId,
+    //        password: process.env.CardReaderPassword,
+    //        encoded: encode(process.env.CardReaderAppId + ':' + process.env.CardReaderPassword)
+    //      };
+    //    }
+    //    else{
+    //      throw new Meteor.Error(500, 'No card reader');
+    //    }
+    //  }
+    //  else{
+    //    cardR = hier.cardReader;
+    //  }
+    //  var formData = new FormData();
+    //  formData.append('file', selectedImage);
+    //  formData.append('exportFormat', 'xml');
+    //
+    //  console.log(cardR);
+    //  if(cardR) {
+    //    HTTP.post('http://cloud.ocrsdk.com/processBusinessCard', {
+    //      params: formData,
+    //      headers: {'Authorization':'Basic: ' + cardR.encoded}
+    //    }, function(err, result) {
+    //      console.log('err', err);
+    //      console.log('result', result);
+    //    });
+    //  }
+    //},
+    parseCardReader: function(taskId){
+      var future = new Future();
+      var hierId = Meteor.user().currentHierId;
       var hier = Hierarchies.findOne({_id: hierId});
-      //var fileObject =  this.request.file;
-      var fs = Npm.require('fs');
       var cardR;
-      if (! hier) return null;
-      if (! hier.cardReader){
+      if (!hier) throw new Meteor.Error(500, 'Invalid hierId');
+      if (!hier.cardReader) {
         // look for the config in env
-        if (process.env.CardReaderAppId && process.env.CardReaderPassword){
+        if (ExartuConfig.CardReaderAppId && ExartuConfig.CardReaderPassword) {
           cardR = {
-            appId: process.env.CardReaderAppId,
-            password: process.env.CardReaderPassword,
-            encoded: encode(process.env.CardReaderAppId + ':' + process.env.CardReaderPassword)
+            appId: ExartuConfig.CardReaderAppId,
+            password: ExartuConfig.CardReaderPassword,
+            encoded: encode(ExartuConfig.CardReaderAppId + ':' + ExartuConfig.CardReaderPassword)
           };
         }
-        else{
-          throw new Meteor.Error(500, 'No card reader');
+        else {
+          future.throw(new Meteor.Error(500, 'No card reader'))
         }
-      }
-      else{
+      } else {
         cardR = hier.cardReader;
       }
-      var formData = new FormData();
-      formData.append('file', selectedImage);
-      formData.append('exportFormat', 'xml');
+      HTTP.get('https://cloud.ocrsdk.com/getTaskStatus/?taskId=' + taskId, {headers: {'Authorization': 'Basic:' + cardR.encoded}}, function (err, r) {
+        if(r) {
+           var task = {};
+           var resultObject = xml2jsAsync(r.content);
+           task.status = resultObject.response.task[0].$.status;
+           if (task.status === "Completed") {
+             console.log("completed");
+             task.resultUrl = resultObject.response.task[0].$.resultUrl;
+             console.log("taskurl", task.resultUrl);
+             HTTP.get(task.resultUrl, function (err, resultado) {
 
-      console.log(cardR);
-      if(cardR) {
-        HTTP.post('http://cloud.ocrsdk.com/processBusinessCard', {
-          params: formData,
-          headers: {'Authorization':'Basic: ' + cardR.encoded}
-        }, function(err, result) {
-          console.log('err', err);
-          console.log('result', result);
-        });
-      }
+                 if(resultado){
+                      var objectR = xml2jsAsync(resultado.content);
+                      var employee = {};
+                      employee.hierId = Meteor.user().currentHierId;
+                      employee.objNameArray = ['person', 'Employee', 'contactable'];
+                      employee.person = {
+                        firstName: '',
+                        middleName: '',
+                        lastName: ''
+                      };
+                      employee.Employee = {};
+                      employee.contactMethods = [];
+                      var mobilPhoneLookUp = LookUps.findOne({
+                        lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+                        hierId: Meteor.user().currentHierId, lookUpActions: "ContactMethod_MobilePhone"});
+                      var emailLookUp = LookUps.findOne({
+                        lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+                        hierId: Meteor.user().currentHierId, lookUpActions: "ContactMethod_Email"});
+                      var phoneTypeId = mobilPhoneLookUp._id;
+                      var emailTypeId = emailLookUp._id;
+                      console.log("phoneTypeId",phoneTypeId);
+                      console.log("emailTypeId", emailTypeId);
+                      var addressTypeId = LookUps.findOne({
+                        lookUpCode: Enums.lookUpCodes.contactable_address,
+                        lookUpActions: Enums.lookUpAction.Address_WorksSite,
+                        hierId: Meteor.user().currentHierId
+                      });
+                      var address = "";
+                      _.forEach(objectR.document.businessCard[0].field, function (f) {
+                        switch (f.$.type) {
+                          case 'Phone':
+                          {
+                            employee.contactMethods.push({
+                              type: phoneTypeId,
+                              value: f.value[0]
+                            })
+                            break;
+                          }
+                          case 'Email':
+                          {
+                            employee.contactMethods.push({
+                              type: emailTypeId,
+                              value: f.value[0]
+                            })
+                            break;
+                          }
+                          case 'Address':
+                          {
+                            address = f.value[0];
+                            break;
+                          }
+                          case 'Name':
+                          {
+                            var nameArray = f.value[0].split(" ");
+                            if (nameArray.length > 2) {
+                              employee.person = {
+                                firstName: nameArray[0],
+                                middleName: nameArray[1],
+                                lastName: nameArray[2]
+                              };
+                            }
+                            else if (nameArray.length === 2) {
+                              employee.person.firstName = nameArray[0];
+                              employee.person.lastName = nameArray[1];
+                            }
+                            else if (nameArray.length === 1) {
+                              employee.person.firstName = nameArray[0];
+                              employee.person.lastName = nameArray[0];
+                            }
+                            break;
+                          }
+                          case 'Job':
+                          {
+                            employee.person.jobTitle = f.value[0];
+                            break;
+                          }
+                          case 'Text':
+                          {
+                            break;
+                          }
+                          default :
+                          {
+                            console.log(f);
+                          }
+                        }
+                      });
+                      if(employee.person.firstName === '' || employee.person.lastName === ''){
+                        employee.person.firstName = "CardReader";
+                        employee.person.lastName = "Employee";
+                      }
+                      //var connection = new RESTAPI.connection(user);
+                      var insertedEmployee = Meteor.call('addContactable', employee);
+                       var toReturn = {content: insertedEmployee};
+                      future.return(toReturn);
+
+                      if (address) {
+                        HTTP.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address, function (err, cb) {
+                          if (cb) {
+                            var addr = {};
+                            addr.userId = Meteor.user()._id;
+                            addr.linkId = insertedEmployee;
+                            addr.hierId = Meteor.user().currentHierId;
+                            addr.addressTypeId = addressTypeId._id;
+                            addr.lat = cb.data.results[0].geometry.location.lat;
+                            addr.lng = cb.data.results[0].geometry.location.lng;
+                            _.forEach(cb.data.results[0].address_components, function (c) {
+                              if (_.contains(c.types, "postal_code")) {
+                                addr.postalCode = c.long_name;
+                              }
+                              else if (_.contains(c.types, "locality")) {
+                                addr.city = c.long_name;
+                              }
+                              else if (_.contains(c.types, "administrative_area_level_1")) {
+                                addr.state = c.long_name;
+                              }
+                              else if (_.contains(c.types, "country")) {
+                                addr.country = c.long_name;
+                              }
+                              else if (_.contains(c.types, "street_number")) {
+                                addr.address = addr.address ? c.long_name + addr.address : c.long_name;
+                              }
+                              else if (_.contains(c.types, "route")) {
+                                addr.address = addr.address ? addr.address + c.long_name : c.long_name;
+                              }
+                            })
+                            AddressManager.addEditAddress(addr);
+                            //var toReturn = {content: insertedEmployee};
+                            //future.return(toReturn);
+
+
+                          }
+                        })
+                      }
+                   else {
+                        //var toReturn = {content: insertedEmployee};
+                        //future.return(toReturn);
+                      }
+                 }
+             })
+           }
+           else{
+             future.throw("Not completed yet");
+           }
+        }
+        else{
+          future.throw("Error, get failed");
+        }
+      });
+      return future.wait();
     },
     esSynchAll: function(q)
     {
@@ -500,7 +696,6 @@ Resume.prototype.tagEntry = function (tag) {
 
 FileUploader.createEndpoint('uploadCard', {
   onUpload: function (stream, metadata) {
-    var result = ContactableManager.createFromCard(stream, metadata);
-    return result;
+    return ContactableManager.createFromCard(stream, metadata);
   }
 });

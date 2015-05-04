@@ -33,5 +33,8 @@ ExartuConfig = {
   HrConcourseURL: 'http://hrconcourse.aidacreative.com/',
   ResumeParserURL: undefined,
   ResumeParserPasscode: '',
-  EncryptCode: undefined
+  EncryptCode: undefined,
+  CardReaderAppId:undefined,
+  CardReaderPassword:undefined
+
 };
