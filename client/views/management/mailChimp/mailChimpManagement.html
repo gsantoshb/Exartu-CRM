@@ -52,7 +52,11 @@
                                 <div class="clearfix" style="margin-bottom: 20px;">
                                     <button class="btn btn-primary pull-right" disabled="{{importDisabled}}" id="import"> Import contacts </button>
 
-                                    <h4 class="col-lg-4">Members <a class="pull-right pointer" id="refresh-members"><i class="fa fa-refresh"></i></a></h4>
+                                    <div class="pull-right" style="width: 200px;">
+                                        {{>asyncSelect query=getHotList placeholder="Search hot list" onChange=hotListChanged width='100%'}}
+                                    </div>
+
+                                    <h4>Members <a class="pointer" id="refresh-members"><i class="fa fa-refresh"></i></a></h4>
                                 </div>
 
                                 <ul class="list-group">

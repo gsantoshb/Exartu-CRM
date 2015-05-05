@@ -25,6 +25,15 @@ Template.scanEmployeeCard.helpers({
   },
   showServerProgress: function () {
     return !progress.isStarted.get() && showServerProgress.get();
+  },
+  prog: function () {
+    return progress.get();
+  },
+  DisplayName: function(){
+    return progress.displayName;
+  },
+  isProcessing: function () {
+    return progress.isStarted.get();
   }
 })
 
@@ -127,7 +136,9 @@ var progress = {
   isProcessing: function(){
     return this.isStarted.get();
   }
+
 }
+
 var totalBar;
 var uploadFile = function (file) {
   processing.set(true);
@@ -141,7 +152,13 @@ var uploadFile = function (file) {
        progress.displayName = "Parsing...";
        progress.set(0);
        var intervalBar = Meteor.setInterval(function () {
-          progress.set(progress.get() + ((500 * totalBar) / (JSON.parse(result).estimatedTime * 1000)));
+         var newProgress = progress.get() + ((500 * totalBar) / (JSON.parse(result).estimatedTime * 1000));
+         if(newProgress < 100) {
+           progress.set(newProgress);
+         }
+         else{
+           progress.set(100);
+         }
 
        }, 500);
        pollingCardReader(JSON.parse(result), intervalBar, totalTime);
@@ -155,19 +172,3 @@ var uploadFile = function (file) {
 };
 
 
-
-Template.progressBarClient.helpers({
-  prog: function () {
-    return progress.get();
-  },
-  DisplayName: function(){
-    return progress.displayName;
-  },
-  isDefined: function () {
-    return progress.isStarted.get();
-  }
-});
-
-Template.progressBarClient.created =function() {
-
-}
