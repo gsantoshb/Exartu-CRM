@@ -7,6 +7,8 @@ InstanceController = RouteController.extend({
       return;
     }
     Session.set('documentInstanceId', this.params.id);
+    Session.set('documentName', this.params.query.documentName);
+
     this.render('docInstance');
   }
 });
@@ -22,6 +24,9 @@ Template.docInstance.created = function () {
 Template.docInstance.helpers({
   id: function () {
     return Session.get('documentInstanceId');
+  },
+  documentName: function () {
+    return Session.get('documentName');
   },
   token: function () {
     return localStorage.getItem('Meteor.loginToken');

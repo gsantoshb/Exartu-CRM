@@ -1,7 +1,10 @@
 <template name="docInstance">
     <div id="content" class="details">
+        <div style="padding: 5px;">
+            <h3 style="text-align: center">{{documentName}}</h3>
+        </div>
         <div style="padding: 5px">
-            <embed src="/documentInstancepdf/{{token}}/{{id}}" width="100%" height="500">
+            <embed src="/documentInstancepdf/{{token}}/{{id}}" style="width:100%; height:73vh;">
         </div>
 
         <div class="clearfix">

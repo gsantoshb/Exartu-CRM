@@ -53,7 +53,10 @@
                                     <button class="btn btn-primary pull-right" disabled="{{importDisabled}}" id="import"> Import contacts </button>
 
                                     <div class="pull-right" style="width: 200px;">
-                                        {{>asyncSelect query=getHotList placeholder="Search hot list" onChange=hotListChanged width='100%'}}
+                                        {{#if hotListSelected}}
+                                            <a href="/hotList/{{hotListSelected}}"><i class="fa fa-external-link"></i></a>
+                                        {{/if}}
+                                        {{>asyncSelect query=getHotList placeholder="Search hot list" onChange=hotListChanged minimumInputLength=0 width='180px'}}
                                     </div>
 
                                     <h4>Members <a class="pointer" id="refresh-members"><i class="fa fa-refresh"></i></a></h4>

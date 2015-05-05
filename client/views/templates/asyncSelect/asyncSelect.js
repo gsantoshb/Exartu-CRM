@@ -53,9 +53,6 @@ Template.asyncSelect.rendered = function () {
   });
 };
 
-Template.asyncSelect.helpers({
-  defaultValue: 'asd'
-});
 
 Template.asyncSelect.events({
   'change #input': function(e, ctx) {
