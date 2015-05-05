@@ -96,6 +96,7 @@ var refreshLists = function () {
 
 Template.mailChimpManagement.onCreated(function () {
   importFinished.set(false);
+  hotListSelected.set(null);
   this.autorun(refreshLists);
   this.autorun(refreshMembers);
 
@@ -156,6 +157,9 @@ Template.mailChimpManagement.helpers({
     if (_.contains(result.failed, this.id)){ return 'failed';}
     if (_.contains(result.existed, this.id)){ return 'already existed';}
   },
+  hotListSelected: function () {
+    return hotListSelected.get();
+  },
   hotListChanged: function () {
     return function (value) {
       hotListSelected.set(value);
@@ -164,8 +168,14 @@ Template.mailChimpManagement.helpers({
   getHotList: function () {
 
     return function (string) {
-      var self = this;
-      var result = AllHotLists.find({ category: 'contact', displayName: { $regex: ".*" + string + ".*", $options: 'i' } }).fetch();
+      var self = this,
+        result;
+
+      if (_.isEmpty(string)){
+        result = AllHotLists.find({ category: 'contact'}).fetch();
+      } else {
+        result = AllHotLists.find({ category: 'contact', displayName: { $regex: ".*" + string + ".*", $options: 'i' } }).fetch();
+      }
       var array = _.map(result, function (r) {
         return { text: r.displayName, id: r._id };
       });
