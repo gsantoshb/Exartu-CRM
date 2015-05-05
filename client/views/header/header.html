@@ -4,7 +4,7 @@
         <div id="user-nav" class="navbar-right pull-right">
             <ul class="btn-group">
                 <li class="hidden-xs">
-                    <a href="/user/{{user._id}}" style="display: inline-flex">
+                    <a href="/user/{{user._id}}" style="display: inline-flex" data-toggle="dropdown" class="dropdown-toggle">
                         <span class="user-menu-thumb">
                             <img class="img-responsive" style="max-height:26px; max-width:26px" src="{{userThumbnail}}">
                         </span>
@@ -18,89 +18,28 @@
                         {{/if}}
 
                     </a>
-                </li>
-                <li class="btn dropdown" id="menu-settings">
-                    <a href="#" data-toggle="dropdown" data-target="#menu-settings" class="dropdown-toggle">
-                        <i class="fa fa-cog"></i>
-                        <span class="text">{{_ "Settings"}}</span>
-                    </a>
 
                     <ul class="dropdown-menu pull-right">
-                        <li>
-                            <a href="/emailTemplates">{{_ "Email Templates"}}</a>
-                        </li>
-                        <li>
-                            <a href="/management/hrconcourse">{{_ "HRConcourse"}}</a>
-                        </li>
-
-                        <li>
-                            <a href="/hierarchyManagement">{{_ "Hierarchies"}}</a>
-                        </li>
-
-                        <li>
-                            <a href="/userProfile">
-                                {{_ "My Profile"}}
-                            </a>
-                        </li>
-
-                        {{#if isAdmin}}
-                            <li>
-                                <a href="/subscriptionplan">{{_ "Subscription"}}</a>
-                            </li>
-                            <li>
-                                <a href="/management/lookups">{{_ "Lookups"}}</a>
-                            </li>
-                            <li>
-                                <a href="/management/testData">{{_ "Test Data"}}</a>
-                            </li>
-                            <li>
-                                <a href="/management/twilioManagement">{{_ "Texting Setup"}}</a>
-                            </li>
-
-                            <li>
-                                <a href="/users">{{_ "Users"}}</a>
-                            </li>
-                            <li>
-                                <a href="/management/hierarchyMail">{{_ "Hierarchy email"}}</a>
-                            </li>
-                            <li>
-                                <a href="/management/cardReader">{{_ "Card reader"}}</a>
-                                </li>
-                            <li>
-
-                                <a href="/management/clickFunnel">{{_ "Click funnel"}}</a>
-                            </li>
-                            <li>
-
-                                <a href="/management/mailchimp">{{_ "Mail Chimp management"}}</a>
-                            </li>
-
-                        {{/if}}
-                        <li class="divider"></li>
-                        <li>
-                            {{>userVoice}}
-                        </li>
                         <li>
                             <a class="pointer trigger"><i class="fa fa-flag"></i> {{currentLanguageLabel}}</a>
                             <ul class="dropdown-menu sub-menu">
                                 <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'en'}});">English</a></li>
                                 <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'es'}});">Español</a></li>
                                 <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'cn'}});">简体中文</a></li>
-                                <!--<li>-->
-                                <!--<select class="form-control" onChange="TAPi18n.setLanguage(this.value);" style="margin-top: 3px;">-->
-                                <!--<option value="en">English</option>-->
-                                <!--<option value="es">Español</option>-->
-                                <!--<option value="cn">简体中文</option>-->
-                                <!--</select>-->
-                                <!--</li>-->
                             </ul>
                         </li>
 
                         <li class="divider"></li>
                         <li>
-                            <a href="/" id="signout">{{_ "Sign out"}}</a>
+                            <a href="/" id="signout"><i class="fa fa-sign-out"></i> {{_ "Sign out"}}</a>
                         </li>
                     </ul>
+                </li>
+                <li class="btn dropdown" id="menu-settings">
+                    <a href="/settings">
+                        <i class="fa fa-cog"></i>
+                        <span class="text">{{_ "Settings"}}</span>
+                    </a>
                 </li>
 
                 <li>

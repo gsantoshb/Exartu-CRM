@@ -1,0 +1,132 @@
+
+<template name="settings">
+    <div id="content" class="network-content">
+        <div class="row">
+            <div class="col-md-11">
+                <div class="page-title">
+                    <h1>{{_ "Settings"}}</h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Internal Settings -->
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-md-6 col-md-offset-3 settingIconsRow">
+                <!-- Email Templates -->
+                <div class="col-md-3">
+                    <a href="/emailTemplates" class="settingButton">
+                        <i class="fa fa-envelope"></i>
+                        <span class="title">{{_ "Email Templates"}}</span>
+                    </a>
+                </div>
+
+                <!-- Hierarchies -->
+                <div class="col-md-3">
+                    <a href="/hierarchyManagement" class="settingButton">
+                        <i class="fa fa-sitemap"></i>
+                        <span class="title">{{_ "Hierarchies"}}</span>
+                    </a>
+                </div>
+
+                <!-- Profile -->
+                <div class="col-md-3">
+                    <a href="/userProfile" class="settingButton">
+                        <i class="fa fa-user"></i>
+                        <span class="title">{{_ "My Profile"}}</span>
+                    </a>
+                </div>
+
+                {{#if isAdmin}}
+                    <!-- Subscription -->
+                    <div class="col-md-3">
+                        <a href="/subscriptionplan" class="settingButton">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span class="title">{{_ "Subscription"}}</span>
+                        </a>
+                    </div>
+
+                    <!-- Lookups -->
+                    <div class="col-md-3">
+                        <a href="/management/lookups" class="settingButton">
+                            <i class="fa fa-cubes"></i>
+                            <span class="title">{{_ "Lookups"}}</span>
+                        </a>
+                    </div>
+
+                    <!-- Test Data -->
+                    <div class="col-md-3">
+                        <a href="/management/testData" class="settingButton">
+                            <i class="fa fa-database"></i>
+                            <span class="title">{{_ "Test Data"}}</span>
+                        </a>
+                    </div>
+
+                    <!-- Users -->
+                    <div class="col-md-3">
+                        <a href="/users" class="settingButton">
+                            <i class="fa fa-users"></i>
+                            <span class="title">{{_ "Users"}}</span>
+                        </a>
+                    </div>
+
+                    <!-- Hierarchy Email -->
+                    <div class="col-md-3">
+                        <a href="/management/hierarchyMail" class="settingButton">
+                            <i class="fa fa-envelope-square"></i>
+                            <span class="title">{{_ "Hierarchy email"}}</span>
+                        </a>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+
+
+        <!-- External Services -->
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-md-6 col-md-offset-3 settingIconsRow">
+                <!-- HR Concourse -->
+                <div class="col-md-3">
+                    <a href="/management/hrconcourse" class="settingButton">
+                        <span class="fa" style="background: transparent url('/assets/hr-concourse-logo.png') no-repeat center center; background-size: contain;">&nbsp;</span>
+                        <span class="title">{{_ "HRConcourse"}}</span>
+                    </a>
+                </div>
+
+                {{#if isAdmin}}
+                    <!-- SMS Setup -->
+                    <div class="col-md-3">
+                        <a href="/management/twilioManagement" class="settingButton">
+                            <span class="fa" style="background: transparent url('https://lh3.googleusercontent.com/-rDD2bkLQEFM/AAAAAAAAAAI/AAAAAAAAAbg/vMwZX33TZZM/s120-c/photo.jpg') no-repeat center center; background-size: contain; max-width: 100px; margin: auto;">&nbsp;</span>
+                            <span class="title">{{_ "Texting Setup"}}</span>
+                        </a>
+                    </div>
+
+                    <!-- Card Reader -->
+                    <div class="col-md-3">
+                        <a href="/management/cardReader" class="settingButton">
+                            <span class="fa" style="background: transparent url('http://latam.abbyy.com/images/logo.gif') no-repeat center center; background-size: contain; max-width: 100px; margin: auto;">&nbsp;</span>
+                            <span class="title">{{_ "Card reader"}}</span>
+                        </a>
+                    </div>
+
+                    <!-- Click Funnel -->
+                    <div class="col-md-3">
+                        <a href="/management/clickFunnel" class="settingButton">
+                            <span class="fa" style="background: transparent url('https://images.clickfunnels.com/uploads/image/image_file/4331/full_prelaunch-header-logo.png') no-repeat center center; background-size: contain; max-width: 100px; margin: auto;">&nbsp;</span>
+                            <span class="title">{{_ "Click funnel"}}</span>
+                        </a>
+                    </div>
+
+                    <!-- Mail Chimp -->
+                    <div class="col-md-3">
+                        <a href="/management/mailchimp" class="settingButton">
+                            <span class="fa" style="background: transparent url('http://mailchimp.com/assets/images/freddie.1430770722.svg') no-repeat center center; background-size: contain; max-width: 100px; margin: auto;">&nbsp;</span>
+                            <span class="title">{{_ "Mail Chimp management"}}</span>
+                        </a>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+
+    </div>
+</template>

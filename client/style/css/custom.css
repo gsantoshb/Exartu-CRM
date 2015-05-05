@@ -1470,6 +1470,17 @@ a.wysihtml5-colors-title { padding-left: 70px !important; }
 .wysihtml5-colors[data-wysihtml5-command-value="blue"] { background: blue !important; }
 .wysihtml5-colors[data-wysihtml5-command-value="orange"] { background: orange !important; }
 
+
+/********************* Settings *********************/
+.settingIconsRow div { margin-bottom: 10px; padding: 20px 1px 1px 1px; }
+.settingIconsRow div:hover { border: 1px solid #e5e5e5; padding: 19px 0 0 0; }
+.settingButton .fa, .settingButton .title { display: block; text-align: center; }
+.settingButton .fa { font-size: 4em; }
+.settingButton .title { height: 40px; }
+
+
+
+
 /***************************** Mobile Specific CSS ***********************************/
 @media (max-width: 992px) {
     /* filters */
