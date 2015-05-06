@@ -13,6 +13,10 @@ Template.scanEmployeeCard.helpers({
   imagesList: function(){
     selectedFilesDep.depend();
     return selectedFiles;
+  },
+  notEmptyList: function(){
+    selectedFilesDep.depend();
+    return selectedFiles.length > 0;
   }
 })
 
@@ -43,6 +47,15 @@ Template.scanEmployeeCard.events({
   'click .add-trigger': function () {
     fromTakePhoto = true;
     $('#capture').trigger('click');
+  },
+  'click .process-all': function() {
+    var allProcess = $('.save-employee');
+    _.each(allProcess, function(p){
+      if(!(p.style.display === "none")) {
+        p.click();
+      }
+    });
+
   }
 
 });

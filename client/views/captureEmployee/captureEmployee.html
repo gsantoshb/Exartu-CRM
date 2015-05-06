@@ -11,8 +11,8 @@
     <div id="scanEmployeeCard" class="container-fluid">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <p class="text-center"><span class="btn btn-default add-trigger "  ><span class="glyphicon glyphicon-camera"></span> Take photo</span></p>
-                <div class="row">
+               <p class="text-center"><span class="btn btn-default add-trigger "  ><span class="glyphicon glyphicon-camera"></span> Take photo</span>  {{#if notEmptyList}}<span class="btn btn-default process-all "  >Process All</span>{{/if}}</p>
+               <div class="row">
                     <input type="file" accept="image/*" id="capture" capture="camera" style="visibility: hidden">
                     {{#each imagesList}}
                          {{>scanEmployeeBox}}
