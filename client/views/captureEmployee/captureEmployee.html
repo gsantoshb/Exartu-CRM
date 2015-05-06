@@ -34,7 +34,7 @@
         <div class=" panel panel-success">
             <div class="panel-heading">
                 <p > <label class="text-center" style="width:90%; margin-left:5%"> {{name}}</label>
-                     <label style="text-align: right;width:4%;margin:0px"><span class="glyphicon glyphicon-remove close-photo" style="cursor: pointer;{{addHidenRemove}}"></span></label>
+                     <label style="text-align: right;width:2%;margin:0px"><span class="glyphicon glyphicon-remove close-photo" style="cursor: pointer;{{addHidenRemove}}"></span></label>
                 </p>
             </div>
             <div class="panel-body text-center">
@@ -49,7 +49,8 @@
                     {{#if success}}
                         <div id="{{errorParsingId}}" style="margin-bottom:1%" class="alert alert-success">
                             <!--Parse completed, click <a href="{{employeeUrl}}" target="_blank">here</a> to go to the created employee-->
-                            Parse completed, to go to the created employee click:  <a class="btn btn-default" style="margin-top:10px" href="{{employeeUrl}}" target="_blank">Details</a>
+                           <p> Parse completed, to go to the created employee click:</p>
+                           <p class="text-center"><a class="btn btn-default" style="margin-top:10px" href="{{employeeUrl}}" target="_blank">Details</a></p>
                         </div>
                     {{/if}}
                 {{/if}}
