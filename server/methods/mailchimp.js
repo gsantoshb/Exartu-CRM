@@ -18,10 +18,10 @@ Meteor.methods({
     if (!user) return;
     return  MailChimpManager.getSubscribers(user.currentHierId, listId);
   },
-  importFromMailchimp:function (listId) {
+  importFromMailchimp:function (listId, hotListId) {
     var user = Meteor.user();
     if (!user) return;
-    return  MailChimpManager.importContacts(user.currentHierId, listId);
+    return  MailChimpManager.importContacts(user.currentHierId, listId, hotListId);
   }
 });
 

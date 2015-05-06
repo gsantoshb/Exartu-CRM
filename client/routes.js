@@ -340,6 +340,11 @@ Router.map(function () {
     path: '/help',
     controller: 'HelpVideosController'
   });
+
+  this.route('settings', {
+    path: 'settings',
+    controller: SettingsController
+  })
 });
 
 

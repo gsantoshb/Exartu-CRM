@@ -72,6 +72,10 @@ Template.dashboard.created = function () {
     subscribe();
   });
 };
+Template.dashboard.destroyed = function () {
+  SubscriptionHandlers.ActivitiesHandler.stop();
+  delete SubscriptionHandlers.ActivitiesHandler;
+};
 
 Template.dashboard.helpers({
   activities: function () {
