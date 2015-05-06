@@ -19,7 +19,7 @@ ResumeManager = {
                 'passcode': ExartuConfig.ResumeParserPasscode
             });
 
-            var response = Meteor.wrapAsync(form.submit, form)({
+            var response = Meteor.wrapAsync(form.submitWithTrailingCRLF, form)({
                 host: ExartuConfig.ResumeParserURL,
                 path: "/api/Parser/Parse",
                 headers: headers

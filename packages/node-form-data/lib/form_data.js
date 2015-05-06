@@ -178,8 +178,14 @@ FormData.prototype._multiPartFooter = function(field, value, options) {
   }.bind(this);
 };
 
+/// MODIFICATION: if we are posting to a .net server, we must include a line break at the end
 FormData.prototype._lastBoundary = function() {
-  return '--' + this.getBoundary() + '--';
+  debugger;
+  if (this.lineBreakAtTheEnd){
+    return '--' + this.getBoundary() + '--' + FormData.LINE_BREAK;
+  }else{
+    return '--' + this.getBoundary() + '--';
+  }
 };
 
 FormData.prototype.getHeaders = function(userHeaders) {
@@ -272,7 +278,11 @@ FormData.prototype.getLength = function(cb) {
     cb(null, knownLength);
   });
 };
-
+/// MODIFICATION includes a line brak at the end, necessary for .NET servers
+FormData.prototype.submitWithTrailingCRLF = function (params, cb) {
+  this.lineBreakAtTheEnd = true;
+  return this.submit(params, cb);
+};
 FormData.prototype.submit = function(params, cb) {
 
   var request
