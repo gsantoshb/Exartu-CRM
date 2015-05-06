@@ -30,10 +30,12 @@
 </template>
 
 <template name="scanEmployeeBox">
-    <div class="col-md-4 col-md-offset-4">
+    <div class="col-md-4 col-sm-6 col-sm-offset-3 col-md-offset-4">
         <div class=" panel panel-success">
             <div class="panel-heading">
-                <p class="text-center"> {{name}}</p>
+                <p > <label class="text-center" style="width:90%; margin-left:5%"> {{name}}</label>
+                     <label style="text-align: right;width:4%;margin:0px"><span class="glyphicon glyphicon-remove close-photo" style="cursor: pointer;{{addHidenRemove}}"></span></label>
+                </p>
             </div>
             <div class="panel-body text-center">
                 <img src="{{imageSource}}" id="selected-img" style="width:80%">
@@ -45,17 +47,18 @@
                     </div>
                 {{else}}
                     {{#if success}}
-                        <div id="{{errorParsingId}}" style="" class="alert alert-success">
-                            Parse completed, click <a href="{{employeeUrl}}" target="_blank">here</a> to go to the created employee
+                        <div id="{{errorParsingId}}" style="margin-bottom:1%" class="alert alert-success">
+                            <!--Parse completed, click <a href="{{employeeUrl}}" target="_blank">here</a> to go to the created employee-->
+                            Parse completed, to go to the created employee click:  <a class="btn btn-default" style="margin-top:10px" href="{{employeeUrl}}" target="_blank">Details</a>
                         </div>
                     {{/if}}
                 {{/if}}
 
 
-                <span class="btn btn-default change-photo " style="{{addHidenChangeRemove}}" >Change</span>
+                <span class="btn btn-default change-photo " style="{{addHidenChange}}" >Change</span>
                 <span class="btn btn-default save-employee " style="{{addHidenProcess}}" >Process</span>
-                <span class="btn btn-default close-photo " style="{{addHidenChangeRemove}}" >Remove</span>
-                <input type="file" accept="image/*" id="change" class="change_{{Id}}" capture="camera" style="visibility: hidden">
+                <!--<span class="btn btn-default close-photo " style="{{addHidenChangeRemove}}" >Remove</span>-->
+                <input type="file" accept="image/*" id="change" class="change_{{Id}}" capture="camera" style="display: none">
 
 
                 {{#if isProcessing}}

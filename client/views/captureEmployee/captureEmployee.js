@@ -192,8 +192,11 @@ Template.scanEmployeeBox.helpers({
   errorParsingId: function(){
     return 'error-parsing-'+this.id;
   },
-  addHidenChangeRemove: function(){
+  addHidenChange: function(){
     return (this.processing.get()||this.success.get()!="") ? "display: none":"";
+  },
+  addHidenRemove: function(){
+    return (this.processing.get()) ? "display: none":"";
   },
   error: function(){
     return this.error.get();
@@ -232,7 +235,7 @@ Template.scanEmployeeBox.events({
     var self = this;
     selectedFiles = _.filter(selectedFiles, function(s){return self.name!== s.name });
     selectedFilesDep.changed();
-    $('#capture').value = "";
+    $('#capture')[0].value = "";
   },
   'click .change-photo': function(e, ctx){
 
