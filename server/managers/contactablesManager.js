@@ -316,7 +316,6 @@ ContactableManager = {
 
   // CARD
   createFromCard: function (data, metadata) {
-
     var progressBarParsing = function(progressUpload, request){
 
         Meteor.setTimeout(function () {
@@ -338,11 +337,6 @@ ContactableManager = {
 
 
     var future = new Future();
-    //  if (err) {
-    //    future.throw(err);
-    //  } else {
-    //    future.return({content: result});
-    //  }
     if (typeof data.read == 'function') {
       var logTok = metadata.loginToken;
       if (!logTok)
@@ -350,7 +344,7 @@ ContactableManager = {
       var user = Meteor.users.findOne({'services.resume.loginTokens.hashedToken': Accounts._hashLoginToken(logTok)});
       if (!user)
         throw new Meteor.Error(500, 'Invalid login token');
-      var progressUpload = ServerProgress.start(user._id, 'uploadCard', 'Procesing...');
+      var progressUpload = ServerProgress.start(user._id,  'processCard_'+metadata.idProgressBar, 'Procesing...');
       progressUpload.set(0.1);
       var hierId = user.currentHierId;
       var hier = Hierarchies.findOne({_id: hierId});
@@ -406,504 +400,189 @@ ContactableManager = {
     }
 
     return future.wait();
+  },
+  parseCardReader: function(taskId){
+    var future = new Future();
+    var hierId = Meteor.user().currentHierId;
+    var hier = Hierarchies.findOne({_id: hierId});
+    var cardR;
+    if (!hier) throw new Meteor.Error(500, 'Invalid hierId');
+    if (!hier.cardReader) {
+      // look for the config in env
+      if (ExartuConfig.CardReaderAppId && ExartuConfig.CardReaderPassword) {
+        cardR = {
+          appId: ExartuConfig.CardReaderAppId,
+          password: ExartuConfig.CardReaderPassword,
+          encoded: encode(ExartuConfig.CardReaderAppId + ':' + ExartuConfig.CardReaderPassword)
+        };
+      }
+      else {
+        future.throw(new Meteor.Error(500, 'No card reader'))
+      }
+    } else {
+      cardR = hier.cardReader;
+    }
+    HTTP.get('https://cloud.ocrsdk.com/getTaskStatus/?taskId=' + taskId, {headers: {'Authorization': 'Basic:' + cardR.encoded}}, function (err, r) {
+      if(r) {
+        var task = {};
+        var resultObject = xml2jsAsync(r.content);
+        task.status = resultObject.response.task[0].$.status;
+        if (task.status === "Completed") {
+          console.log("completed");
+          task.resultUrl = resultObject.response.task[0].$.resultUrl;
+          console.log("taskurl", task.resultUrl);
+          HTTP.get(task.resultUrl, function (err, resultado) {
+
+            if(resultado){
+              var objectR = xml2jsAsync(resultado.content);
+              var employee = {};
+              employee.hierId = Meteor.user().currentHierId;
+              employee.objNameArray = ['person', 'Employee', 'contactable'];
+              employee.person = {
+                firstName: '',
+                middleName: '',
+                lastName: ''
+              };
+              employee.Employee = {};
+              employee.contactMethods = [];
+              var mobilPhoneLookUp = LookUps.findOne({
+                lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+                hierId: Meteor.user().currentHierId, lookUpActions: "ContactMethod_MobilePhone"});
+              var emailLookUp = LookUps.findOne({
+                lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+                hierId: Meteor.user().currentHierId, lookUpActions: "ContactMethod_Email"});
+              var phoneTypeId = mobilPhoneLookUp._id;
+              var emailTypeId = emailLookUp._id;
+              console.log("phoneTypeId",phoneTypeId);
+              console.log("emailTypeId", emailTypeId);
+              var addressTypeId = LookUps.findOne({
+                lookUpCode: Enums.lookUpCodes.contactable_address,
+                lookUpActions: Enums.lookUpAction.Address_WorksSite,
+                hierId: Meteor.user().currentHierId
+              });
+              var address = "";
+              _.forEach(objectR.document.businessCard[0].field, function (f) {
+                switch (f.$.type) {
+                  case 'Phone':
+                  {
+                    employee.contactMethods.push({
+                      type: phoneTypeId,
+                      value: f.value[0]
+                    })
+                    break;
+                  }
+                  case 'Email':
+                  {
+                    employee.contactMethods.push({
+                      type: emailTypeId,
+                      value: f.value[0]
+                    })
+                    break;
+                  }
+                  case 'Address':
+                  {
+                    address = f.value[0];
+                    break;
+                  }
+                  case 'Name':
+                  {
+                    var nameArray = f.value[0].split(" ");
+                    if (nameArray.length > 2) {
+                      employee.person = {
+                        firstName: nameArray[0],
+                        middleName: nameArray[1],
+                        lastName: nameArray[2]
+                      };
+                    }
+                    else if (nameArray.length === 2) {
+                      employee.person.firstName = nameArray[0];
+                      employee.person.lastName = nameArray[1];
+                    }
+                    else if (nameArray.length === 1) {
+                      employee.person.firstName = nameArray[0];
+                      employee.person.lastName = nameArray[0];
+                    }
+                    break;
+                  }
+                  case 'Job':
+                  {
+                    employee.person.jobTitle = f.value[0];
+                    break;
+                  }
+                  case 'Text':
+                  {
+                    break;
+                  }
+                  default :
+                  {
+                    console.log(f);
+                  }
+                }
+              });
+              if(employee.person.firstName === '' || employee.person.lastName === ''){
+                future.return("Unable to parse");
+              }
+              else {
+                //var connection = new RESTAPI.connection(user);
+                var insertedEmployee = Meteor.call('addContactable', employee);
+                var toReturn = {content: insertedEmployee};
+                future.return(toReturn);
+
+                if (address) {
+                  HTTP.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address, function (err, cb) {
+                    if (cb) {
+                      var addr = {};
+                      addr.userId = Meteor.user()._id;
+                      addr.linkId = insertedEmployee;
+                      addr.hierId = Meteor.user().currentHierId;
+                      addr.addressTypeId = addressTypeId._id;
+                      addr.lat = cb.data.results[0].geometry.location.lat;
+                      addr.lng = cb.data.results[0].geometry.location.lng;
+                      _.forEach(cb.data.results[0].address_components, function (c) {
+                        if (_.contains(c.types, "postal_code")) {
+                          addr.postalCode = c.long_name;
+                        }
+                        else if (_.contains(c.types, "locality")) {
+                          addr.city = c.long_name;
+                        }
+                        else if (_.contains(c.types, "administrative_area_level_1")) {
+                          addr.state = c.long_name;
+                        }
+                        else if (_.contains(c.types, "country")) {
+                          addr.country = c.long_name;
+                        }
+                        else if (_.contains(c.types, "street_number")) {
+                          addr.address = addr.address ? c.long_name + addr.address : c.long_name;
+                        }
+                        else if (_.contains(c.types, "route")) {
+                          addr.address = addr.address ? addr.address + c.long_name : c.long_name;
+                        }
+                      })
+                      AddressManager.addEditAddress(addr);
+                      //var toReturn = {content: insertedEmployee};
+                      //future.return(toReturn);
+
+
+                    }
+                  })
+                }
+                else {
+                  //var toReturn = {content: insertedEmployee};
+                  //future.return(toReturn);
+                }
+              }
+            }
+          })
+        }
+        else{
+          future.return("Not completed yet");
+        }
+      }
+      else{
+        future.throw("Error, get failed");
+      }
+    });
+    return future.wait();
   }
 };
-//
-//    var maxTime = 60 * 1000;
-//    if (typeof data.read == 'function') {
-//      var logTok = metadata.loginToken;
-//      if (!logTok)
-//        throw new Meteor.Error(500, 'Login token required');
-//      var user = Meteor.users.findOne({'services.resume.loginTokens.hashedToken': Accounts._hashLoginToken(logTok)});
-//      if (!user)
-//        throw new Meteor.Error(500, 'Invalid login token');
-//      var progressUpload = ServerProgress.start(user._id, 'uploadCard', 'Procesing...');
-//      progressUpload.set(0.1);
-//      var hierId = user.currentHierId;
-//      var hier = Hierarchies.findOne({_id: hierId});
-//      var cardR;
-//      if (!hier) throw new Meteor.Error(500, 'Invalid hierId');
-//      if (!hier.cardReader) {
-//        // look for the config in env
-//        if (process.env.CardReaderAppId && process.env.CardReaderPassword) {
-//          cardR = {
-//            appId: process.env.CardReaderAppId,
-//            password: process.env.CardReaderPassword,
-//            encoded: encode(process.env.CardReaderAppId + ':' + process.env.CardReaderPassword)
-//          };
-//        }
-//        else {
-//          callback(new Meteor.Error(500, 'No card reader'))
-//        }
-//      } else {
-//        cardR = hier.cardReader;
-//      }
-//      var uploaded = 0;
-//      var uploadSize = 0;
-//      var formData = {
-//        m_file: data,
-//        exportFormat: 'xml'
-//      }
-//
-//
-//
-//      var r = request.post({
-//        url: 'https://cloud.ocrsdk.com/processBusinessCard',
-//        headers: {'Authorization':'Basic: ' + cardR.encoded},
-//        formData: formData
-//      },Meteor.bindEnvironment(function optionalCallback(err, httpResponse, result) {
-//        if (err) {
-//          return console.log('upload failed:', err);
-//        }
-//        if (httpResponse) {
-//          try {
-//            progressUpload.end();
-//            delete progressUpload;
-//            Meteor.clearInterval(uploadInterval);
-//            var progress = ServerProgress.start(user._id, 'processCard', 'Parsing...');
-//            var object = xml2jsAsync(result);
-//            var task = {}
-//            task.id = object.response.task[0].$.id;
-//            task.estimatedTime = parseInt(object.response.task[0].$.estimatedProcessingTime);
-//            var totalTime = 0;
-//            var totalBar = 80;
-//
-//            progress.set(0);
-//            var intervalBar = Meteor.setInterval(function () {
-//              progress.set(progress.progress + ((500 * totalBar) / (task.estimatedTime * 1000)));
-//            }, 500);
-//
-//            var interval = Meteor.setInterval(function () {
-//              console.log("interval", totalTime);
-//              HTTP.get('https://cloud.ocrsdk.com/getTaskStatus/?taskId=' + task.id, {headers: {'Authorization': 'Basic:' + cardR.encoded}}, function (err, r) {
-//
-//                if (r) {
-//
-//
-//                  //var resultObject = EJSON.parse(r.content);
-//                  var resultObject = xml2jsAsync(r.content);
-//
-//                  task.status = resultObject.response.task[0].$.status;
-//                  if (task.status === "Completed") {
-//                    Meteor.clearInterval(intervalBar);
-//                    Meteor.clearInterval(interval);
-//                    task.resultUrl = resultObject.response.task[0].$.resultUrl;
-//                    console.log("content", r.content);
-//                    console.log("resultObject", resultObject);
-//                    console.log("taskurl", task.resultUrl);
-//                    HTTP.get(task.resultUrl, function (err, resultado) {
-//                      var objectR = xml2jsAsync(resultado.content);
-//                      var employee = {};
-//                      employee.hierId = user.currentHierId;
-//                      employee.objNameArray = ['person', 'Employee', 'contactable'];
-//                      employee.person = {
-//                        firstName: '',
-//                        middleName: '',
-//                        lastName: ''
-//                      };
-//                      employee.Employee = {};
-//                      employee.contactMethods = [];
-//                      var mobilPhoneLookUp = LookUps.findOne({
-//                        lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
-//                        hierId: user.currentHierId, lookUpActions: "ContactMethod_MobilePhone"});
-//                      var emailLookUp = LookUps.findOne({
-//                        lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
-//                        hierId: user.currentHierId, lookUpActions: "ContactMethod_Email"});
-//                      var phoneTypeId = mobilPhoneLookUp._id;
-//                      var emailTypeId = emailLookUp._id;
-//                      console.log("phoneTypeId",phoneTypeId);
-//                      console.log("emailTypeId", emailTypeId);
-//                      var addressTypeId = LookUps.findOne({
-//                        lookUpCode: Enums.lookUpCodes.contactable_address,
-//                        lookUpActions: Enums.lookUpAction.Address_WorksSite,
-//                        hierId: user.currentHierId
-//                      });
-//                      var faxTypeId = LookUpManager.ContactMethodTypes_
-//                      var address = "";
-//                      _.forEach(objectR.document.businessCard[0].field, function (f) {
-//                        switch (f.$.type) {
-//                          case 'Phone':
-//                          {
-//                            employee.contactMethods.push({
-//                              type: phoneTypeId,
-//                              value: f.value[0]
-//                            })
-//                            break;
-//                          }
-//                          case 'Email':
-//                          {
-//                            employee.contactMethods.push({
-//                              type: emailTypeId,
-//                              value: f.value[0]
-//                            })
-//                            break;
-//                          }
-//                          case 'Address':
-//                          {
-//                            address = f.value[0];
-//                            break;
-//                          }
-//                          case 'Name':
-//                          {
-//                            var nameArray = f.value[0].split(" ");
-//                            if (nameArray.length > 2) {
-//                              employee.person = {
-//                                firstName: nameArray[0],
-//                                middleName: nameArray[1],
-//                                lastName: nameArray[2]
-//                              };
-//                            }
-//                            else if (nameArray.length === 2) {
-//                              employee.person.firstName = nameArray[0];
-//                              employee.person.lastName = nameArray[1];
-//                            }
-//                            else if (nameArray.length === 1) {
-//                              employee.person.firstName = nameArray[0];
-//                              employee.person.lastName = nameArray[0];
-//                            }
-//                            break;
-//                          }
-//                          case 'Job':
-//                          {
-//                            employee.person.jobTitle = f.value[0];
-//                            break;
-//                          }
-//                          case 'Text':
-//                          {
-//                            break;
-//                          }
-//                          default :
-//                          {
-//                            console.log(f);
-//                          }
-//                        }
-//                      });
-//                      if(employee.person.firstName === '' || employee.person.lastName === ''){
-//                        employee.person.firstName = "CardReader";
-//                        employee.person.lastName = "Employee";
-//                      }
-//                      var connection = new RESTAPI.connection(user);
-//                      var insertedEmployee = connection.call('addContactable', employee);
-//
-//                      if (address) {
-//                        HTTP.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address, function (err, cb) {
-//                          if (cb) {
-//                            var addr = {};
-//                            addr.userId = user._id;
-//                            addr.linkId = insertedEmployee;
-//                            addr.hierId = user.currentHierId;
-//                            addr.addressTypeId = addressTypeId._id;
-//                            addr.lat = cb.data.results[0].geometry.location.lat;
-//                            addr.lng = cb.data.results[0].geometry.location.lng;
-//                            _.forEach(cb.data.results[0].address_components, function (c) {
-//                              if (_.contains(c.types, "postal_code")) {
-//                                addr.postalCode = c.long_name;
-//                              }
-//                              else if (_.contains(c.types, "locality")) {
-//                                addr.city = c.long_name;
-//                              }
-//                              else if (_.contains(c.types, "administrative_area_level_1")) {
-//                                addr.state = c.long_name;
-//                              }
-//                              else if (_.contains(c.types, "country")) {
-//                                addr.country = c.long_name;
-//                              }
-//                              else if (_.contains(c.types, "street_number")) {
-//                                addr.address = addr.address ? c.long_name + addr.address : c.long_name;
-//                              }
-//                              else if (_.contains(c.types, "route")) {
-//                                addr.address = addr.address ? addr.address + c.long_name : c.long_name;
-//                              }
-//                            })
-//                            AddressManager.addEditAddress(addr);
-//
-//                            var toReturn = {content: insertedEmployee};
-//                            progress.end();
-//                            delete progress;
-//                            callback(null, toReturn);
-//                          }
-//                        })
-//                      }
-//                      else {
-//                        Meteor.clearInterval(interval);
-//                        Meteor.clearInterval(intervalBar);
-//                        var toReturn = {content: insertedEmployee};
-//                        if(progress){
-//                          progress.end();
-//                          delete progress;
-//                        }
-//                        callback(null, toReturn);
-//                      }
-//                    })
-//                  }
-//                  else {
-//                    console.log(resultObject);
-//                    totalTime = totalTime + task.estimatedTime * 1000;
-//                    totalBar = (100 - totalBar) / 2;
-//                    if (totalTime > maxTime) {
-//                      Meteor.clearInterval(interval);
-//                      Meteor.clearInterval(intervalBar);
-//                      console.log("Error time exceded");
-//                      callback("Error, time exceded");
-//                    }
-//                  }
-//                }else{
-//                  Meteor.clearInterval(intervalBar);
-//                  Meteor.clearInterval(interval);
-//                  console.log("Error parsing");
-//                }
-//              })
-//            }, task.estimatedTime * 1000);
-//
-//
-//            //return object;
-//          } catch (e) {
-//            console.log(e);
-//            callback(new Meteor.Error(500, "Error parsing resume"));
-//          }
-//        }
-//      }))
-//
-//
-//      var uploadInterval = Meteor.setInterval(function () {
-//        //console.log("Uploaded:",(r.req.connection._bytesDispatched/metadata.fileSize)*100);
-//        if (r.req.connection._bytesDispatched >= metadata.fileSize) {
-//
-//        }
-//        else {
-//          progressUpload.set((r.req.connection._bytesDispatched / metadata.fileSize) * 100);
-//        }
-//
-//
-//      }, 200);
-//
-//      r.on('response', function(response){
-//         //console.log(response);
-//
-//      })
-//      //r.on('data', function(data){
-//      //  console.log(data);
-//      //})
-//
-//
-//      //  var result = "";
-//      //
-//      //  //response.setEncoding('utf8');
-//      //  response.on('data', function (chunk) {
-//      //      result += chunk;
-//      //  });
-//      //
-//      //  var err = Meteor.wrapAsync(response.on, response)('end');
-//      //  if (err) return err;
-//      //} else if (data instanceof String) {
-//      //  // TODO: parse string
-//      //}
-//      //
-//
-//    }
-//  })
-//}
-//
-//Router.map(function() {
-//  // Job Titles
-//  this.route('getEmployeeFromCard' , {
-//    where: 'server',
-//    path: '/getEmployeeFromCard',
-//    action: function () {
-//       switch (this.request.method) {
-//         case 'GET':
-//          //var contactableId = this.params.query.contactableId;
-//          //try {
-//          //  var res = connection.call('getAddress', contactableId);
-//          //
-//          //  // Transform the response before sending it back
-//          //  res = mapper.get(res, contactableId);
-//          //  response.end(res);
-//          //} catch (err) {
-//          //  console.log(err);
-//          //  response.error(err.message);
-//          //}
-//          break;
-//         case 'POST':
-//          //console.log('file:', this.request.file);
-//          //console.log(this.request);
-//          var logTok =  this.request.bodyFields.loginToken;
-//          console.log(logTok);
-//          if (! logTok)
-//            throw new Meteor.Error(500, 'Login token required');
-//
-//          var user = Meteor.users.findOne({'services.resume.loginTokens.hashedToken': Accounts._hashLoginToken(logTok)});
-//          console.log('user', user);
-//          if (! user)
-//            throw new Meteor.Error(500, 'Invalid login token');
-//          var hierId =  user.currentHierId;
-//          var hier = Hierarchies.findOne({_id: hierId});
-//          var fileObject =  this.request.file;
-//          var fs = Npm.require('fs');
-//           var cardR;
-//           if (! hier) return null;
-//           if (! hier.cardReader){
-//             // look for the config in env
-//             if (process.env.CardReaderAppId && process.env.CardReaderPassword){
-//               cardR = {
-//                 appId: process.env.CardReaderAppId,
-//                 password: process.env.CardReaderPassword,
-//                 encoded: encode(process.env.CardReaderAppId + ':' + process.env.CardReaderPassword)
-//               };
-//             }
-//             else{
-//               throw new Meteor.Error(500, 'No card reader');
-//             }
-//           }
-//           else{
-//             cardR = hier.cardReader;
-//           }
-//           var formData = new FormData();
-//          //fs.readFile(fileObject.path,Meteor.bindEnvironment( function(err, files){
-//          //  err;
-//          //  files;
-//         var files = fs.createReadStream(fileObject.path);
-//
-//          formData.append('file', files);
-//          formData.append('exportFormat', 'xml');
-//
-//          console.log(cardR);
-//          if(cardR){
-//
-//            var headers = _.extend(formData.getHeaders(), {
-//              'Accept-Encoding': 'gzip,deflate',
-//              'Accept': 'application/json',
-//              'Authorization':'Basic: ' + cardR.encoded
-//            });
-//
-//            var response = Meteor.wrapAsync(formData.submit, formData)({
-//              host: "http://cloud.ocrsdk.com",
-//              path: "/processBusinessCard",
-//              headers: headers
-//            });
-//
-//            var result = "";
-//
-//            //response.setEncoding('utf8');
-//            response.on('data', function (chunk) {
-//              result += chunk;
-//            });
-//              //console.log('first cb');
-//              //HTTP.post('http://cloud.ocrsdk.com/processBusinessCard', {
-//              //  params: formData,
-//              //  headers: {'Authorization':'Basic: ' + cardR.encoded}
-//              //}, function(err, result) {
-//              //  //var json = EJSON.parse(result.content);
-//              //  //debugger;
-//              //  //xml2js.parseString(result.content, function(err,res){
-//              //  //  debugger;
-//              //  //})
-//              //
-//              //  console.log('error', err);
-//              //  console.log('result', result);
-//              //  var parser;
-//              //  var xmlDoc;
-//              //  if (window.DOMParser)
-//              //  {
-//              //    parser=new DOMParser();
-//              //    xmlDoc=parser.parseFromString(result.content,"text/xml");
-//              //  }
-//              //  else // Internet Explorer
-//              //  {
-//              //    xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-//              //    xmlDoc.async=false;
-//              //    xmlDoc.loadXML(result.content);
-//              //  }
-//              //  var task = {};
-//              //  debugger;
-//              //  task.id =xmlDoc.getElementsByTagName('task')[0].getAttribute('id');
-//              //  task.estimatedTime = parseInt(xmlDoc.getElementsByTagName('task')[0].getAttribute('estimatedProcessingTime'));
-//              //  var totalTime = 0;
-//              //  var interval =  window.setInterval(function () {
-//              //    debugger;
-//              //    HTTP.get('http://cloud.ocrsdk.com/getTaskStatus/?taskId=' + task.id, {headers: {Authorization: 'Basic: ' + cb.encoded}}, function (err, r) {
-//              //      if(r){
-//              //        if (window.DOMParser)
-//              //        {
-//              //          parser=new DOMParser();
-//              //          xmlDoc=parser.parseFromString(r.content,"text/xml");
-//              //        }
-//              //        else // Internet Explorer
-//              //        {
-//              //          xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-//              //          xmlDoc.async=false;
-//              //          xmlDoc.loadXML(r.content);
-//              //        }
-//              //        task.status =xmlDoc.getElementsByTagName('task')[0].getAttribute('status');
-//              //        task.resultUrl =xmlDoc.getElementsByTagName('task')[0].getAttribute('resultUrl');
-//              //        totalTime = totalTime + task.estimatedTime * 1000;
-//              //        debugger;
-//              //        if((task.status === 'Completed')||(totalTime > 20000)){
-//              //          window.clearTimeout(interval);
-//              //          HTTP.get(task.resultUrl, function(err, resultado){
-//              //            if(resultado) {
-//              //              if (window.DOMParser) {
-//              //                parser = new DOMParser();
-//              //                xmlDoc = parser.parseFromString(resultado.content, "text/xml");
-//              //              }
-//              //              else // Internet Explorer
-//              //              {
-//              //                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-//              //                xmlDoc.async = false;
-//              //                xmlDoc.loadXML(resultado.content);
-//              //              }
-//              //              //create employee
-//              //              var employee = {};
-//              //              employee.objNameArray = ['person', 'Employee', 'contactable'];
-//              //              employee.person = {
-//              //                firstName: '',
-//              //                middleName: '',
-//              //                lastName: ''
-//              //              };
-//              //              employee.Employee = {};
-//              //              employee.contactMethods = [];
-//              //              var fields = xmlDoc.getElementsByTagName('field');
-//              //              console.log('fields', fields);
-//              //              _.forEach(fields, function(f){
-//              //                switch(f.getAttribute('type')){
-//              //                  case 'Phone':
-//              //                  {
-//              //
-//              //                    break;
-//              //                  }
-//              //
-//              //                }
-//              //              })
-//              //
-//              //
-//              //
-//              //            }
-//              //          })
-//              //        };
-//              //      }
-//              //    });
-//              //
-//              //  }, task.estimatedTime * 1000);
-//              //
-//              //
-//              //  //debugger;
-//              //
-//              //
-//              //});
-//            }
-//          else{
-//              console.log('else');
-//          }
-//            //connection.close();
-//       //})      )
-//
-//          break;
-//
-//        default:
-//          response.error('Method not supported');
-//      }
-//
-//      //connection.close();
-//    }
-//  })
-//})
+

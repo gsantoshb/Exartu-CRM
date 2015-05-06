@@ -35,7 +35,6 @@ FileUploader.postProgress = function(endpoint, file, progress, metadata) {
 
   //_.extend(params, metadata);
   var xhr = new XMLHttpRequest();
-
   xhr.upload.onprogress = function(progressEvent) {
     if(!progress.isProcessing()){
       progress.start();
@@ -61,7 +60,7 @@ FileUploader.postProgress = function(endpoint, file, progress, metadata) {
     }
   };
 
-  xhr.open('POST', endpoint+'?userId='+Meteor.userId()+'&loginToken='+localStorage.getItem('Meteor.loginToken'));
+  xhr.open('POST', endpoint+'?userId='+Meteor.userId()+'&loginToken='+localStorage.getItem('Meteor.loginToken')+'&idProgressBar='+file.id);
 
 
   //xhr.setRequestHeader('userId', Meteor.userId());

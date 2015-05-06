@@ -14,42 +14,69 @@
                 <p class="text-center"><span class="btn btn-default add-trigger "  ><span class="glyphicon glyphicon-camera"></span> Take photo</span></p>
                 <div class="row">
                     <input type="file" accept="image/*" id="capture" capture="camera" style="visibility: hidden">
-                    <div class="col-md-4 col-md-offset-4" style="{{addHiden}}">
-                        <div class=" panel panel-success">
-                            <div class="panel-heading">
-                               <p class="text-center"> {{imageName}}</p>
-                            </div>
-                            <div class="panel-body text-center">
-                                <img src="{{imagepath}}" id="selected-img" style="width:80%">
-                                <br>
-                                <br>
-                                <span class="btn btn-default save-employee " style="{{addHidenProcess}}" >Process</span>
-                                {{#if isProcessing}}
-                                    <div class="progress" style="width:{70%}">
-                                        <div class="progress-bar" role="progressbar" style="width:{{prog}}%;">
-                                            <p style="float:left;margin-left:3%">{{DisplayName}}</p>
-                                        </div>
-                                    </div>
-
-                                {{/if}}
-
-                                {{#if showServerProgress}}
-                                    {{>progressBar name='processCard'}}
-                                {{/if}}
-
-                                <!--{{>progressBar name='uploadCard'}}-->
-                            </div>
-
-                        </div>
-
-                    </div>
+                    {{#each imagesList}}
+                         {{>scanEmployeeBox}}
+                    {{/each}}
                 </div>
 
             </div>
 
+
         </div>
     </div>
         </div>
+
+
+</template>
+
+<template name="scanEmployeeBox">
+    <div class="col-md-4 col-md-offset-4">
+        <div class=" panel panel-success">
+            <div class="panel-heading">
+                <p class="text-center"> {{name}}</p>
+            </div>
+            <div class="panel-body text-center">
+                <img src="{{imageSource}}" id="selected-img" style="width:80%">
+                <br>
+                <br>
+                {{#if error}}
+                    <div id="{{errorParsingId}}" style="" class="alert alert-danger">
+                        Error, unable to parse the taken photo
+                    </div>
+                {{else}}
+                    {{#if success}}
+                        <div id="{{errorParsingId}}" style="" class="alert alert-success">
+                            Parse completed, click <a href="{{employeeUrl}}" target="_blank">here</a> to go to the created employee
+                        </div>
+                    {{/if}}
+                {{/if}}
+
+
+                <span class="btn btn-default change-photo " style="{{addHidenChangeRemove}}" >Change</span>
+                <span class="btn btn-default save-employee " style="{{addHidenProcess}}" >Process</span>
+                <span class="btn btn-default close-photo " style="{{addHidenChangeRemove}}" >Remove</span>
+                <input type="file" accept="image/*" id="change" class="change_{{Id}}" capture="camera" style="visibility: hidden">
+
+
+                {{#if isProcessing}}
+                    <div class="progress" style="width:{70%}">
+                        <div class="progress-bar" role="progressbar" style="width:{{prog}}%;">
+                            <p style="float:left;margin-left:3%">{{displayName}}</p>
+                        </div>
+                    </div>
+
+                {{/if}}
+
+                {{#if showServerProgress}}
+                    {{>progressBar name=dataId }}
+                {{/if}}
+
+
+            </div>
+
+        </div>
+
+    </div>
 
 </template>
 
