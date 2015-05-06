@@ -36,22 +36,17 @@
 </template>
 
 <template name="hotListListHeader">
-    {{#if listViewMode}}
-        <div class="list-header hotlists-list-header simple-view">
+
+        <div class="list-header hotlists-list-header  {{#if listViewMode}}simple-view{{/if}}">
             <div class="list-header-cell hotlists-list-header-title">{{_ "Title"}}</div>
+            <div class="list-header-cell hotlists-list-header-owner">{{_ "Category"}}</div>
+            {{#unless listViewMode}}
+                <div class="list-header-cell hotlists-list-header-status">{{_ "Status"}}</div>
+                <div class="list-header-cell hotlists-list-header-code">{{_ "Code"}}</div>
+            {{/unless}}
             <div class="list-header-cell hotlists-list-header-owner">{{_ "Owner"}}</div>
             <div class="list-header-cell hotlists-list-header-time">{{_ "Date"}}</div>
         </div>
-        <!-- /.list-header -->
-    {{else}}
-        <div class="list-header hotlists-list-header">
-            <div class="list-header-cell hotlists-list-header-title">{{_ "Title"}}</div>
-            <div class="list-header-cell hotlists-list-header-status">{{_ "Status"}}</div>
-            <div class="list-header-cell hotlists-list-header-code">{{_ "Code"}}</div>
-            <div class="list-header-cell hotlists-list-header-owner">{{_ "Owner"}}</div>
-            <div class="list-header-cell hotlists-list-header-time">{{_ "Date"}}</div>
-        </div>
-    {{/if}}
 </template>
 
 <template name="hotListListSearch">
@@ -193,7 +188,8 @@
                 </div>
             </div>
             <div class="list-item-details hotlist-list-item-details">
-                <div class="list-item-cell hotlist-list-item-owner">{{displayUserName userId}}</div>
+                <div class="list-item-cell network-list-item-type">{{category}}</div>
+                <div class="list-item-cell network-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell hotlist-list-item-time">{{formattedDate dateCreated "fromNow"}}</div>
             </div><!-- /.list-item-cell -->
         </div><!-- /.hotlist-list-item -->
@@ -208,6 +204,7 @@
                 <div class="item-title single"><a href="/hotList/{{_id}}">{{displayName}}</a> </div>
             </div>
             <div class="list-item-details hotlist-list-item-details">
+                <div class="list-item-cell network-list-item-type">{{category}}</div>
                 <div class="list-item-cell hotlist-list-item-status">{{lookUpName activeStatus}} ({{memberCount}})</div>
                 <div class="list-item-cell hotlist-list-item-code">{{displaySearchKey _id}}</div>
                 <div class="list-item-cell hotlist-list-item-owner">{{displayUserName userId}}</div>
