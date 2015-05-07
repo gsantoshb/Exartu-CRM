@@ -1,51 +1,103 @@
 <!-- Details view layout -->
 <template name="job">
-    <div id="content" class="details">
-        <div id="content-header" class="mini">
-            {{#with originalJob}}
-                <div  class="profile-content-header">
-                    <h1 class="profile-name">{{_ displayName}}
-                        <small> @
-                            <a  href="/contactable/{{client}}">
-                                <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
-                                    {{_ clientDisplayName}}
-                                    <i class="fa fa-external-link" style="font-size: 14px"></i>
-                                </strong>
-                            </a>
-                        </small>
-                        <h5 class="pull-right" style="max-width: 40%;"> {{_ statusNote}} </h5>
-                    </h1>
-                </div>
-            {{/with}}
-        </div>
+    <div id="content" class="details network-content">
+        <div class="row">
+            <div class="col-md-3">
+                {{#with originalJob}}
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-2">
-                    {{>job_nav}}
-                    {{>job_actions}}
-                </div>
-                <div class="details-view col-md-10">
-                    <div class="details-view-content clearfix">
+
+                    <div class="sidebar">
+
+                        <div class="go-back goBack">
+                            <a href="#"><i class="fa fa-chevron-left"></i> {{_ "Back"}}</a>
+                        </div>
+
+                        {{>job_header}}
+
+                        {{>job_nav}}
+                        {{>job_actions}}
+                    </div><!-- /.sidebar -->
+                {{/with}}
+            </div>
+            <div class="col-md-9">
+                <div class="box-type-1">
+
+                    <div class="notice-msg-container">
+                        <div class="notice-msg {{#if statusNoteEditMode}}editing{{/if}}">
+                            <div class="notice-msg-title">
+                                <i class="fa fa-file-text-o"></i>
+                                {{_ "Status note"}}
+                                <span class="left-decoration"></span>
+                                <span class="right-decoration"></span>
+                            </div>
+                            <div class="notice-msg-content">
+                                <div class="input-group">
+                                    {{#if statusNoteEditMode}}
+                                        <input class="form-control input-sm" type="text" name="statusNote" value="{{jobStatusNote}}">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-sm" id="saveStatusNote">{{_ "Save"}}</button>
+                                        </span>
+                                    {{else}}
+                                        <span>{{jobStatusNote}}</span>
+                                        <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
+                                    {{/if}}
+                                </div>
+                                {{#if statusNoteEditMode}}
+                                    <button type="button" class="btn btn-link btn-sm" id="cancelStatusNote">{{_ "Cancel"}}</button>
+                                {{/if}}
+                            </div>
+                        </div><!-- /.notice-msg -->
+                    </div><!-- /.notice-msg-container -->
+
+                    <div class="details-view-content">
                         <div class="tab-pane active">
-                            {{> UI.dynamic template=currentTemplate  data=job }}
+                            {{> UI.dynamic template=currentTemplate  data=. }}
                         </div>
                     </div>
 
                 </div>
             </div>
-            <!--{{>job_tabs job=. getClient=getClient jobCollection=jobCollection originalJob=originalJob documentCount=documentCount noteCount=noteCount}}-->
-            <!--job=. getClient=getClient jobCollection=jobCollection originalJob=originalJob documentCount=documentCount noteCount=noteCount-->
         </div>
     </div>
 </template>
 
-<!-- Tabs -->
+<template name="job_header">
+
+    <div class="head">
+        <div class="item-icon item-icon-network item-icon-lg">
+            <div id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                <i class="icon icon-briefcase-2"></i>
+            </div>
+        </div>
+
+        <h1 class="title">{{_ displayName}}</h1>
+
+        <div class="desc">
+            {{#if clientDisplayName}}
+                @&nbsp;<a href="/contactable/{{client}}">{{_ clientDisplayName}}</a>
+            {{/if}}
+        </div>
+    </div>
+    <p class="profile-address">
+        {{#if location}}
+            <i class="fa fa-map-marker"></i>
+            <span>{{getLocationDisplayName}}</span>
+        {{/if}}
+    </p>
+</template>
+
+<template name="job_actions">
+    <a class="btn-custom-1 btn-block pointer">
+        <i class="fa fa-copy"></i>&nbsp;
+        <span style="white-space: normal;"> {{_ "Copy job"}}</span>
+    </a>
+</template>
 
 <template name="job_nav">
     {{> detailNav tabs=tabs route="job" entityId=getEntityId}}
 </template>
 
+<!-- Tabs -->
 <template name="job_placements">
     {{> placementsBox}}
 </template>
@@ -53,8 +105,6 @@
 <template name="job_activity">
     {{> jobActivity}}
 </template>
-
-
 
 <template name="job_description">
     {{> jobDescription}}
@@ -69,59 +119,17 @@
 </template>
 
 <template name="job_details">
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="col-sm-12">
-                {{> jobDetail}}
-            </div>
-            <div class="col-sm-12">
-                {{> jobClientInfo client=getClient path='client' collection=clientCollection}}
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="col-sm-12">
-                {{#with originalJob}}
-                    {{>tagsBox}}
-                {{/with}}
-            </div>
-            <div class="col-sm-12">
-                {{#with originalJob}}
-                    {{>jobLocation}}
-                {{/with}}
-            </div>
-        </div>
-    </div>
-</template>
+    <div class="box-type-1-content">
+        {{> jobDetail}}
 
-<template name="job_actions">
-    <div class="hidden-xs hidden-sm">
-        <div class="details-actions">
-            <ul class="no-padding">
-                <li>
-                    <a>
-                        <span id="copy-job" class="btn btn-default action-btn">
-                            <i class="fa fa-copy"></i>
-                            {{_ "Copy job"}}
-                        </span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="visible-xs visible-sm pull-right">
-        <div class="details-actions">
-            <div class="btn-group nav-item">
-                <a type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                    {{_ "Actions"}}
-                    <!--<span class="caret"></span>-->
-                </a>
-                <ul class="dropdown-menu pull-right" role="menu">
-                    <li>
-                        <a> <span id="copy-job" class="btn btn-info btn-xs">  {{_ "Copy job"}} </span></a>
+        {{> jobClientInfo client=getClient path='client' collection=clientCollection}}
 
-                    </li>
-                </ul>
-            </div>
-        </div>
+        {{#with originalJob}}
+            {{>jobLocation}}
+        {{/with}}
+
+        {{#with originalJob}}
+            {{>tagsBox}}
+        {{/with}}
     </div>
 </template>

@@ -17,12 +17,15 @@ Template.jobClientInfo.helpers({
   contactMethod: function (index) {
     if (!this.contactMethods) return;
     return this.contactMethods[index];
+  },
+  contactMethodDisplayName: function () {
+    var lookUpType = LookUps.findOne(this.type);
+    return lookUpType && lookUpType.displayName;
   }
 });
 
 Template.jobClientInfo.events({
   'click .addEdit': function (e, ctx) {
-    Utils.showModal('jobClientAddEdit', Session.get('entityId'), ctx.data.client, function (clientId) {
-    });
+    Utils.showModal('jobClientAddEdit', Session.get('entityId'), ctx.data.client, function (clientId) {    });
   }
 });
