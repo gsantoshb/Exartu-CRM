@@ -1,4 +1,4 @@
-hierarchyListener = {};
+  hierarchyListener = {};
 
 EmailManager = {
   sendEmail: function (to, subject, content, isHTML) {
@@ -9,6 +9,19 @@ EmailManager = {
     if (!subject)
       subject = '';
     send(to, from, subject, content, isHTML);
+  },
+  sendMultiplesEmail: function(email, recipients){
+    if (!email) throw new Error('Email is required');
+    if (!recipients || recipients.length < 1) throw new Error('At least one recipient is required');
+
+    _.each(recipients, function (recipient) {
+      // Get the contactable
+      var contactable = Contactables.findOne({_id: recipient.contactableId});
+      if (contactable) {
+        // Send the email
+        EmailManager.sendEmail(recipient.email, email.subject, email.text, true);
+      }
+    });
   }
 };
 

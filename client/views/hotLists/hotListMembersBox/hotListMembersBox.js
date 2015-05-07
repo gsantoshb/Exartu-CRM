@@ -1,4 +1,3 @@
-
 var pageLimit = 10;
 var membersCollection = Contactables;
 var HotListMembersHandler, query;
@@ -6,7 +5,7 @@ var HotListMembersHandler, query;
 // Vars
 var searchFields = ['person.firstName', 'person.lastName', 'person.middleName', 'organization.organizationName'];
 var defaultSort = {
-    'displayName': -1
+  'displayName': -1
 };
 
 var options = {};
@@ -15,43 +14,43 @@ var searchQuery = {};
 var hotList;
 
 var loadqueryFromURL = function (params) {
-    // Search string
-    var searchStringQuery = {};
-    if (params.search) {
-        searchStringQuery.default = params.search;
-    }
+  // Search string
+  var searchStringQuery = {};
+  if (params.search) {
+    searchStringQuery.default = params.search;
+  }
 
-    return new Utils.ObjectDefinition({
-        reactiveProps: {
-            searchString: searchStringQuery
-        }
-    });
+  return new Utils.ObjectDefinition({
+    reactiveProps: {
+      searchString: searchStringQuery
+    }
+  });
 };
 
 var setSubscription = function (searchQuery, options) {
-    hotList = HotLists.findOne({_id: Session.get('entityId')});
-    var members = hotList.members ? hotList.members : [];
-    searchQuery = {_id: { $in : members } };
+  hotList = HotLists.findOne({_id: Session.get('entityId')});
+  var members = hotList.members ? hotList.members : [];
+  searchQuery = {_id: {$in: members}};
 
-    if (SubscriptionHandlers.HotListMembersHandler) {
-        SubscriptionHandlers.HotListMembersHandler.setFilter(searchQuery);
-        SubscriptionHandlers.HotListMembersHandler.setOptions(options);
-    }
-    else {
-        SubscriptionHandlers.HotListMembersHandler =
-            Meteor.paginatedSubscribe('hotListMembers', {
-                pubArguments: hotList._id,
-                filter: searchQuery,
-                options: options
-            });
-    }
+  if (SubscriptionHandlers.HotListMembersHandler) {
+    SubscriptionHandlers.HotListMembersHandler.setFilter(searchQuery);
+    SubscriptionHandlers.HotListMembersHandler.setOptions(options);
+  }
+  else {
+    SubscriptionHandlers.HotListMembersHandler =
+      Meteor.paginatedSubscribe('hotListMembers', {
+        pubArguments: hotList._id,
+        filter: searchQuery,
+        options: options
+      });
+  }
 
-    HotListMembersHandler = SubscriptionHandlers.HotListMembersHandler;
+  HotListMembersHandler = SubscriptionHandlers.HotListMembersHandler;
 
-    var skip = (HotListMembersHandler.currentPage()-1)*pageLimit;
+  var skip = (HotListMembersHandler.currentPage() - 1) * pageLimit;
 
-    options.limit = pageLimit;
-    options.skip = skip;
+  options.limit = pageLimit;
+  options.skip = skip;
 };
 
 
@@ -59,17 +58,17 @@ var setSubscription = function (searchQuery, options) {
  * HotList Members - Template
  */
 Template.hotListMembersBox.created = function () {
-    query = query || loadqueryFromURL(Router.current().params.query);
-    options.sort = defaultSort;
-    options.pubArguments = Session.get('entityId');
-    setSubscription(searchQuery, options);
+  query = query || loadqueryFromURL(Router.current().params.query);
+  options.sort = defaultSort;
+  options.pubArguments = Session.get('entityId');
+  setSubscription(searchQuery, options);
 };
 
-Template.hotListMembersBox.destroyed = function(){
-    if(SubscriptionHandlers.HotListMembersHandler){
-        SubscriptionHandlers.HotListMembersHandler.stop();
-        delete SubscriptionHandlers.HotListMembersHandler;
-    }
+Template.hotListMembersBox.destroyed = function () {
+  if (SubscriptionHandlers.HotListMembersHandler) {
+    SubscriptionHandlers.HotListMembersHandler.stop();
+    delete SubscriptionHandlers.HotListMembersHandler;
+  }
 };
 
 
@@ -77,9 +76,9 @@ Template.hotListMembersBox.destroyed = function(){
  * HotList Members - Header template
  */
 Template.hotListMembersHeader.helpers({
-    membersCount: function () {
-        return HotListMembersHandler.totalCount() || 0;
-    }
+  membersCount: function () {
+    return HotListMembersHandler.totalCount() || 0;
+  }
 });
 
 
@@ -87,9 +86,9 @@ Template.hotListMembersHeader.helpers({
  * HotList Members - Search template
  */
 Template.hotListMembersSearch.helpers({
-    searchString: function () {
-        return query.searchString;
-    }
+  searchString: function () {
+    return query.searchString;
+  }
 });
 
 Template.hotListMembersSearch.events({
@@ -127,7 +126,6 @@ Template.hotListMembersSearch.events({
       callback: function (result) {
         if (result) {
           var recipients = [];
-
           // Get the email of all the members of the hotlist when available
           var emailCMTypes = _.pluck(LookUps.find({
             lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
@@ -144,21 +142,39 @@ Template.hotListMembersSearch.events({
               return _.indexOf(emailCMTypes, cm.type) != -1
             });
             if (email)
-              recipients.push({ contactableId: member._id, email: email.value });
+              recipients.push({contactableId: member._id, email: email.value});
           });
 
-          // send the email template to the recipients
-          Meteor.call('sendEmailTemplate', result, recipients, function (err, result) {
-            if (!err) {
-              $.gritter.add({
-                title: 'Email template sent',
-                text: 'The email template was successfully sent.',
-                image: '/img/logo.png',
-                sticky: false,
-                time: 2000
-              });
-            }
-          });
+          if (result.templateId) {
+            // send the email template to the recipients
+            Meteor.call('sendEmailTemplate', result, recipients, function (err, result) {
+              if (!err) {
+                $.gritter.add({
+                  title: 'Email template sent',
+                  text: 'The email template was successfully sent.',
+                  image: '/img/logo.png',
+                  sticky: false,
+                  time: 2000
+                });
+              }
+            });
+          }
+          else {
+            Meteor.call('sendMultiplesEmail', result, recipients, function (err, result) {
+              if (!err) {
+                $.gritter.add({
+                  title: 'Email template sent',
+                  text: 'The email template was successfully sent.',
+                  image: '/img/logo.png',
+                  sticky: false,
+                  time: 2000
+                });
+              }
+              else{
+                debugger;
+              }
+            });
+          }
         }
       }
     });
@@ -171,79 +187,79 @@ Template.hotListMembersSearch.events({
  */
 Template.hotListMembersList.created = function () {
 
-    options = {};
-    searchQuery = {};
-    query = query || loadqueryFromURL(Router.current().params);
+  options = {};
+  searchQuery = {};
+  query = query || loadqueryFromURL(Router.current().params);
 
+  options.sort = {};
+  options.sort = defaultSort;
+  options.pubArguments = hotList._id;
+  setSubscription(searchQuery, options);
+
+  Tracker.autorun(function () {
+    var urlQuery = new URLQuery();
+    searchQuery = {
+      _id: {$in: hotList.members || []},
+      $and: [] // Push each $or operator here
+    };
+
+    options = {};
     options.sort = {};
     options.sort = defaultSort;
     options.pubArguments = hotList._id;
-    setSubscription(searchQuery, options);
 
-    Tracker.autorun(function () {
-        var urlQuery = new URLQuery();
-        searchQuery = {
-            _id: { $in : hotList.members || [] },
-            $and: [] // Push each $or operator here
+    // String search
+    if (query.searchString.value) {
+      var stringSearches = [];
+
+      _.each(searchFields, function (field) {
+        var aux = {};
+        aux[field] = {
+          $regex: query.searchString.value,
+          $options: 'i'
         };
+        stringSearches.push(aux);
+      });
 
-        options = {};
-        options.sort = {};
-        options.sort = defaultSort;
-        options.pubArguments = hotList._id;
+      searchQuery.$and.push({
+        $or: stringSearches
+      });
 
-        // String search
-        if (query.searchString.value) {
-            var stringSearches = [];
+      urlQuery.addParam('search', query.searchString.value);
+    }
 
-            _.each(searchFields, function (field) {
-                var aux = {};
-                aux[field] = {
-                    $regex: query.searchString.value,
-                    $options: 'i'
-                };
-                stringSearches.push(aux);
-            });
+    // if there are no search conditions
+    if (searchQuery.$and.length == 0) {
+      delete searchQuery.$and;
+    }
 
-            searchQuery.$and.push({
-                $or: stringSearches
-            });
-
-            urlQuery.addParam('search', query.searchString.value);
-        }
-
-        // if there are no search conditions
-        if (searchQuery.$and.length == 0){
-            delete searchQuery.$and;
-        }
-
-        urlQuery.apply();
-        if (SubscriptionHandlers.HotListMembersHandler) // To avoid being called after the template destroy
-          setSubscription(searchQuery, options);
-    });
+    urlQuery.apply();
+    if (SubscriptionHandlers.HotListMembersHandler) // To avoid being called after the template destroy
+      setSubscription(searchQuery, options);
+  });
 };
 
 Template.hotListMembersList.helpers({
-    isLoading: function () {
-        return HotListMembersHandler.isLoading();
-    },
-    hotListMembers: function () {
-        return membersCollection.find(searchQuery, options);
-    }
+  isLoading: function () {
+    return HotListMembersHandler.isLoading();
+  },
+  hotListMembers: function () {
+    return membersCollection.find(searchQuery, options);
+  }
 });
 
 Template.hotListMembersList.events({
-    'click .removeMember': function (e, ctx) {
-        var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
-        tempHotList.members.splice(tempHotList.members.indexOf(this._id), 1);
-        HotLists.update({_id: tempHotList._id}, {$set: {members: tempHotList.members}});
+  'click .removeMember': function (e, ctx) {
+    var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
+    tempHotList.members.splice(tempHotList.members.indexOf(this._id), 1);
+    HotLists.update({_id: tempHotList._id}, {$set: {members: tempHotList.members}});
 
-        //HotLists.update({_id: tempHotList._id}, {$pull: { 'members': this._id }});
+    //HotLists.update({_id: tempHotList._id}, {$pull: { 'members': this._id }});
 
-        setSubscription(searchQuery, options);
+    setSubscription(searchQuery, options);
 
-        e.preventDefault();
-    }
+    e.preventDefault();
+  }
 });
 
 
@@ -251,8 +267,8 @@ Template.hotListMembersList.events({
  * HotList Members - Item template
  */
 Template.hotListMembersListItem.helpers({
-    getAcronym: function(str) {
-        var matches = str.match(/\b(\w)/g);
-        return matches.join('');
-    }
+  getAcronym: function (str) {
+    var matches = str.match(/\b(\w)/g);
+    return matches.join('');
+  }
 });

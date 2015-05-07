@@ -1,5 +1,6 @@
 
 var options;
+var rendering = new ReactiveVar(false);
 var templateId = new ReactiveVar('');
 Template.sendEmailTemplateModal.created = function() {
   // Get modal options
@@ -21,29 +22,44 @@ Template.sendEmailTemplateModal.helpers({
     return function (value) {
       // Clear and set the value of the selected template, as a hack to re-render the HTML editor
       templateId.set('');
+      rendering.set(true);
       Meteor.setTimeout(function () {
         templateId.set(value);
+        rendering.set(false);
       }, 100);
     }
+  },
+  notRendering: function(){
+    return !rendering.get();
   },
   templateId: function () {
     return templateId.get();
   },
   editorContext: function () {
-    if (templateId.get())
+    if (templateId.get()) {
       return CategoryEmailTemplates.findOne({_id: templateId.get()}).text;
-    return '';
+    }
+    else {
+      return ''
+    };
+  },
+  subject: function(){
+    if(templateId.get()){
+      return CategoryEmailTemplates.findOne({_id: templateId.get()}).subject;
+    }
   }
 });
 
 Template.sendEmailTemplateModal.events({
   'click .accept': function () {
+
+    var subject = $("#subject-box")[0].value;
     if(options.callback) {
       // Return the template text when selected
       if (templateId.get()) {
-        options.callback({templateId: templateId.get(), text: WYSIHTMLEditor.getValue()});
+        options.callback({subject: subject, templateId: templateId.get(), text: WYSIHTMLEditor.getValue()});
       } else {
-        options.callback('');
+        options.callback({subject: subject, text: WYSIHTMLEditor.getValue()});
       }
     }
 
