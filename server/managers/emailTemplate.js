@@ -19,7 +19,7 @@ EmailTemplateManager = {
         var text = MergeFieldHelper.getInstance(templateData.text, contactable);
 
         // Send the email
-        var subject = template.subject ? template.subject : template.name;
+        var subject = templateData.subject;
         EmailManager.sendEmail(recipient.email, subject, text, true);
       }
     });

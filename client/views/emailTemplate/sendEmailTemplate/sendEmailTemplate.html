@@ -12,14 +12,21 @@
                         {{>select2 options=selectOptions title=selectPlaceholder onSelected=setValue}}
 
                         {{#if templateId}}
-                            <p style="margin: 20px 0 10px;">
+                            <p style="margin: 10px 0 0px;">
                                 You can edit the text that will be sent. Changes made here won't affect the template.
                             </p>
-
+                        {{/if}}
                             <!-- HTML editor -->
+                        <br>
+                        <input id="subject-box" class="form-control"  style="margin-top: 10px" type="text" placeholder=" Subject" value="{{subject}}">
+                        <br>
+                        {{#if notRendering}}
                             {{>wysihtml editorContext}}
+                        {{/if}}
+                        {{#if templateId}}
                             <a href="/emailTemplate/{{templateId}}" class="dismiss">{{_ "Manage template"}}</a>
                         {{/if}}
+
 
                     {{/if}}
                 </div>

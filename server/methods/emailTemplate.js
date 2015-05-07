@@ -4,6 +4,7 @@ Meteor.methods({
     // Validate parameters
     check(templateData, {
       templateId: String,
+      subject: String,
       text: String
     });
     check(recipients, [{
