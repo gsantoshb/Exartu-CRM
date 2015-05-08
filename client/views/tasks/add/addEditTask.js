@@ -41,7 +41,7 @@ Template.addEditTask.helpers({
     return isSubmitting.get();
   },
   task: function () {
-    return task.get() || {msg: ''};
+    return task.get() ;
   },
   msgPlaceholder: function () {
     return TAPi18n.__('Add task here');
