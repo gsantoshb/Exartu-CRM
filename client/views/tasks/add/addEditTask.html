@@ -89,7 +89,7 @@
                                         {{_ "Archive"}}
                                     </a>
                                 {{/if}}
-
+                                {{#if endDate}}
                                 <a class="btn btn-info pull-left pushOneDay">
                                     {{_ "Push 1 day"}}
                                 </a>
@@ -99,6 +99,7 @@
                                 <a class="btn btn-info pull-left pushOneMonth">
                                     {{_ "month"}}
                                 </a>
+                                {{/if}}
                             {{/if}}
 
                             <!-- Save/Cancel buttons -->
