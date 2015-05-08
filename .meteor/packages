@@ -21,7 +21,6 @@ manuelschoebel:ms-seo
 mrgalaxy:stripe
 natestrauser:connection-banner
 aldeed:simple-schema
-aldeed:autoform
 
 cfs:filesystem
 document
@@ -69,3 +68,4 @@ harrison:babyparse
 npm-container
 maazalik:highcharts
 meteorhacks:kadira
+aldeed:autoform@5.1.2
