@@ -29,9 +29,10 @@ var loadqueryFromURL = function (params) {
 
 var setSubscription = function (searchQuery, options) {
   hotList = HotLists.findOne({_id: Session.get('entityId')});
-  var members = hotList.members ? hotList.members : [];
-  searchQuery = {_id: {$in: members}};
-
+  if(hotList) {
+    var members = hotList.members ? hotList.members : [];
+    searchQuery = {_id: {$in: members}};
+  }
   if (SubscriptionHandlers.HotListMembersHandler) {
     SubscriptionHandlers.HotListMembersHandler.setFilter(searchQuery);
     SubscriptionHandlers.HotListMembersHandler.setOptions(options);
@@ -118,7 +119,7 @@ Template.hotListMembersSearch.events({
 
   'click #sendEmailTemplate': function () {
     var hotList = HotLists.findOne({_id: Session.get('entityId')});
-    var members = Contactables.find({_id: {$in: hotList.members || []}}, {sort: {displayName: 1}}).fetch();
+    //var members = Contactables.find({_id: {$in: hotList.members || []}}, {sort: {displayName: 1}}).fetch();
 
     // Choose the template to send
     Utils.showModal('sendEmailTemplateModal', {
@@ -127,27 +128,18 @@ Template.hotListMembersSearch.events({
         if (result) {
           var recipients = [];
           // Get the email of all the members of the hotlist when available
-          var emailCMTypes = _.pluck(LookUps.find({
-            lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
-            lookUpActions: {
-              $in: [
-                Enums.lookUpAction.ContactMethod_Email,
-                Enums.lookUpAction.ContactMethod_PersonalEmail,
-                Enums.lookUpAction.ContactMethod_WorkEmail
-              ]
-            }
-          }).fetch(), '_id');
-          _.each(members, function (member) {
-            var email = _.find(member.contactMethods, function (cm) {
-              return _.indexOf(emailCMTypes, cm.type) != -1
-            });
-            if (email)
-              recipients.push({contactableId: member._id, email: email.value});
-          });
+
+          //_.each(members, function (member) {
+          //  var email = _.find(member.contactMethods, function (cm) {
+          //    return _.indexOf(emailCMTypes, cm.type) != -1
+          //  });
+          //  if (email)
+          //    recipients.push({contactableId: member._id, email: email.value});
+          //});
 
           if (result.templateId) {
             // send the email template to the recipients
-            Meteor.call('sendEmailTemplate', result, recipients, function (err, result) {
+            Meteor.call('sendEmailTemplate', result, hotList, function (err, result) {
               if (!err) {
                 $.gritter.add({
                   title: 'Email template sent',
@@ -160,7 +152,7 @@ Template.hotListMembersSearch.events({
             });
           }
           else {
-            Meteor.call('sendMultiplesEmail', result, recipients, function (err, result) {
+            Meteor.call('sendMultiplesEmail', result, hotList, function (err, result) {
               if (!err) {
                 $.gritter.add({
                   title: 'Email template sent',
@@ -197,11 +189,13 @@ Template.hotListMembersList.created = function () {
   setSubscription(searchQuery, options);
 
   Tracker.autorun(function () {
-    var urlQuery = new URLQuery();
-    searchQuery = {
-      _id: {$in: hotList.members || []},
-      $and: [] // Push each $or operator here
-    };
+    if(hotList) {
+      var urlQuery = new URLQuery();
+      searchQuery = {
+        _id: {$in: hotList.members || []},
+        $and: [] // Push each $or operator here
+      };
+
 
     options = {};
     options.sort = {};
@@ -236,7 +230,9 @@ Template.hotListMembersList.created = function () {
     urlQuery.apply();
     if (SubscriptionHandlers.HotListMembersHandler) // To avoid being called after the template destroy
       setSubscription(searchQuery, options);
+    }
   });
+
 };
 
 Template.hotListMembersList.helpers({
