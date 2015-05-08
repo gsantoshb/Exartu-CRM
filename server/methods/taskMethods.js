@@ -87,16 +87,16 @@ Meteor.methods({
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
-  },
-  pushTask: function (taskId, days) {
-    check(taskId, String);
-    check(days, Number);
-    try {
-      return TaskManager.pushTask(taskId, days);
-    } catch (err) {
-      throw new Meteor.Error(err.message);
-    }
   }
+  //pushTask: function (taskId, days) {
+  //  check(taskId, String);
+  //  check(days, Number);
+  //  try {
+  //    return TaskManager.pushTask(taskId, days);
+  //  } catch (err) {
+  //    throw new Meteor.Error(err.message);
+  //  }
+  //}
 
 });
 

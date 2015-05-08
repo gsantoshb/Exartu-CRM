@@ -120,18 +120,18 @@ TaskManager = {
     if (!task) throw new Error('Task with id ' + taskId + 'not found');
 
     Tasks.update({_id: taskId}, {$set: {inactive: false}});
-  },
-  pushTask: function (taskId, days) {
-    // Validations
-    if (!taskId) throw new Error('Task ID is required.');
-    if (!days) throw new Error('Number of days is required.');
-
-    // Validate task
-    var task = Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Tasks.find({_id: taskId})).fetch()[0];
-    if (!task) throw new Error('Task with id ' + taskId + 'not found');
-
-    var endDate = new Date(task.end);
-    endDate.setDate(endDate.getDate()+ days);
-    Tasks.update({_id: taskId}, {$set: {end: endDate}});
   }
+  //pushTask: function (taskId, days) {
+  //  // Validations
+  //  if (!taskId) throw new Error('Task ID is required.');
+  //  if (!days) throw new Error('Number of days is required.');
+  //
+  //  // Validate task
+  //  var task = Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Tasks.find({_id: taskId})).fetch()[0];
+  //  if (!task) throw new Error('Task with id ' + taskId + 'not found');
+  //
+  //  var endDate = new Date(task.end);
+  //  endDate.setDate(endDate.getDate()+ days);
+  //  Tasks.update({_id: taskId}, {$set: {end: endDate}});
+  //}
 };
