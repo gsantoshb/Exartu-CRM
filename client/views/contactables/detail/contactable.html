@@ -31,25 +31,14 @@
                                 </div>
                                 <div class="notice-msg-content">
                                     <div class="input-group">
-                                        {{#objectProperty property=contactableStatusNote editable=statusNoteEditMode}}
-                                            {{#if contactableStatusNote}}
-                                                <input class="form-control input-sm" type="text" name="statusNote" value="{{_ contactableStatusNote}}">
-                                            {{else}}
-                                                <input class="form-control input-sm" type="text" name="statusNote" value="{{contactableStatusNote}}">
-                                            {{/if}}
-                                        {{else}}
-                                            {{#if contactableStatusNote}}
-                                                <span>{{_ contactableStatusNote}}</span>
-                                                <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
-                                            {{else}}
-                                                <span>{{contactableStatusNote}}</span>
-                                                <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
-                                            {{/if}}
-                                        {{/objectProperty}}
                                         {{#if statusNoteEditMode}}
+                                            <input class="form-control input-sm" type="text" name="statusNote" value="{{contactableStatusNote}}">
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default btn-sm" id="saveStatusNote">{{_ "Save"}}</button>
                                             </span>
+                                        {{else}}
+                                            <span>{{contactableStatusNote}}</span>
+                                            <a class="action-btn" id="edit-mode-status-note" href="#"><i class="fa fa-pencil"></i></a>
                                         {{/if}}
                                     </div>
                                     {{#if statusNoteEditMode}}

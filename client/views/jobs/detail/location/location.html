@@ -1,78 +1,99 @@
 <template name="jobLocation">
-    <div class="box">
-        <div class="box-header-2">
-            <a class="btn-action pointer" title="Edit"><i id="add-address-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>
-            <div class="box-title">{{_ "Addresses"}}</div>
-        </div>
-        <div class="box-content-md">
-            {{#if isAdding}}
-                {{> addJobLocation .}}
-            {{/if}}
+    <div class="box-type-2">
+        <div class="box-type-2-content">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="box-options">
+                        <a class="action-btn pointer" title="Edit"><i id="add-address-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>
+                    </div>
+                    <h3 class="box-title">{{_ "Addresses"}}</h3>
+                </div>
+                <div class="col-md-10">
+                    <div class="">
+                        <div class="panel-group">
+                            {{#if isAdding}}
+                                {{> addJobLocation .}}
+                            {{/if}}
 
-            {{>displayJobAddress jobId=this._id}}
+                            {{>displayJobAddress jobId=this._id}}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- /.box-content-lg-->
     </div>
 </template>
 
 <template name="addJobLocation">
-    <div style="padding: 7px;border: solid 1px #DADADA;">
-        <div>
-            <button id="custom-location" class="btn {{#if customLocation}}btn-primary{{/if}}"> {{_ "Custom address"}} </button>
-            <button id="customer-location" class="btn {{#unless customLocation}}btn-primary{{/unless}}"> {{_ "Customer address"}} </button>
-        </div>
-        {{#if customLocation}}
-            {{> jobAddressAddEdit addEditOptions}}
-        {{else}}
-            <ul>
-                {{#each customerLocation}}
-                    <li class="{{#unless isSelected}}text-muted{{/unless}}" style="border-bottom: solid 1px #000">
-                        <div class="checkbox selectAddress">
-                            <label>
-                                <input type="checkbox" style="margin-top: 13px"  checked="{{isSelected}}"/>
-                                {{>smallAddress}}
-                            </label>
-                        </div>
-                    </li>
-                {{else}}
-                    <li>
-                        <h3>{{_ "The customer has no Worksite address"}}</h3>
-                    </li>
-                {{/each}}
-            </ul>
-            {{#if customerLocation.count}}
-                <button class="btn btn-block btn-primary" disabled="{{disableSave}}" id="saveCustomAddress">{{_ "Save"}}</button>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div>
+                <button id="custom-location" class="btn {{#if customLocation}}btn-primary{{/if}}"> {{_ "Custom address"}} </button>
+                <button id="customer-location" class="btn {{#unless customLocation}}btn-primary{{/unless}}"> {{_ "Customer address"}} </button>
+            </div>
+
+            {{#if customLocation}}
+                {{> jobAddressAddEdit addEditOptions}}
+            {{else}}
+                <ul>
+                    {{#each customerLocation}}
+                        <li class="{{#unless isSelected}}text-muted{{/unless}}" style="border-bottom: solid 1px #000">
+                            <div class="checkbox selectAddress">
+                                <label>
+                                    <input type="checkbox" style="margin-top: 13px"  checked="{{isSelected}}"/>
+                                    {{>smallAddress}}
+                                </label>
+                            </div>
+                        </li>
+                    {{else}}
+                        <li>
+                            <h3>{{_ "The customer has no Worksite address"}}</h3>
+                        </li>
+                    {{/each}}
+                </ul>
+                {{#if customerLocation.count}}
+                    <button class="btn btn-block btn-primary" disabled="{{disableSave}}" id="saveCustomAddress">{{_ "Save"}}</button>
+                {{/if}}
             {{/if}}
-        {{/if}}
+        </div>
     </div>
 </template>
 
 <template name="displayJobAddress">
-    {{#each addresses}}
-        <div class="row">
+    <div class="">
+        {{#each addresses}}
+            <div>
 
-        {{#if isEditing}}
-            {{> jobAddressAddEdit editOptions}}
-        {{/if}}
-
-           {{>address .}}
-
-            <li class="list-3-item">
-                <div class="list-3-content list-magic">
-                    <div class="list-3-content-wrap">
-                        {{>smallAddress}}
-                        <div class="list-3-actions">
-                            {{#if canEdit}}
-                                <a class="editAddressRecord pointer"><i class="fa fa-edit"></i> {{_ "Edit"}}</a>
-                                <span class="bullet-spacer">·</span>
-                                <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i> {{_ "Delete"}}</a>
-                            {{/if}}
+                {{#if isEditing}}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{> jobAddressAddEdit editOptions}}
                         </div>
                     </div>
+                {{/if}}
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title edit">
+                             <span class="pull-right">
+                                 {{#if canEdit}}
+                                     <a class="editAddressRecord  pointer" href="#address-box">
+                                         <i class="fa fa-pencil"></i>
+                                     </a>
+                                    &nbsp;
+                                    <a class="deleteAddressRecord pointer"><i class="fa fa-trash-o"></i>
+                                    </a>
+                                 {{/if}}
+                             </span>
+                            {{getAddressTypeDisplayName}}
+                            <span>‐ {{address}} {{city}}, {{state}} {{country}} </span>
+                        </h4>
+                    </div>
                 </div>
-            </li>
-        </div>
-    {{/each}}
+            </div>
+        {{/each}}
+    </div>
 </template>
 
 <template name="address">

@@ -65,6 +65,14 @@ Template.displayJobAddress.helpers({
         editing.set(null);
       }
     };
+  },
+  getAddressTypeDisplayName: function () {
+    if (!this.addressTypeId) {
+      console.log('missing addresstypeid on address');
+      return "";
+    }
+    var lkp = LookUps.findOne({_id: this.addressTypeId});
+    return lkp.displayName;
   }
 });
 
@@ -109,14 +117,7 @@ Template.displayJobAddress.destroyed = function () {
 ///////////////////////////
 
 Template.smallAddress.helpers({
-  getAddressTypeDisplayName: function () {
-    if (!this.addressTypeId) {
-      console.log('missing addresstypeid on address');
-      return "";
-    }
-    var lkp = LookUps.findOne({_id: this.addressTypeId});
-    return lkp.displayName;
-  }
+
 });
 
 //////////////////////////
