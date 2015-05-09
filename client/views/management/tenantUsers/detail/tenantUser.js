@@ -47,6 +47,10 @@ Template.tenantUser.helpers({
 Template.tenantUser.events = {
     'change .inactive': function (e) {
         TenantUsers.update({_id: this._id}, {$set: {inactive: e.target.checked}});
+    } ,
+    'click .output-object': function () {
+        console.log('TenantUser object',TenantUsers.findOne({_id: Session.get('userId')}));
+
     }
 };
 //
@@ -55,7 +59,14 @@ Template.tenantUser.events = {
 var avlSearchStringQuery = {};
 queryAvl = new Utils.ObjectDefinition({
     reactiveProps: {
-        searchString: {}
+        searchString: {},
+
+    }
+});
+var memberSearchStringQuery = {};
+queryMember = new Utils.ObjectDefinition({
+    reactiveProps: {
+        searchStringMember: {}
     }
 });
 var searchFields = ['_id', 'name'];
@@ -63,6 +74,9 @@ var searchFields = ['_id', 'name'];
 var hierDep=new Deps.Dependency;
 var tenantUser;
 Template.tenantUserHierMember.helpers({
+    searchStringMember: function() {
+        return queryMember.searchStringMember;
+    },
     isCurrent: function() {
         return (this._id==user.currentHierId  )
     },
@@ -75,7 +89,24 @@ Template.tenantUserHierMember.helpers({
         hierDep.depend();
         tenantUser = TenantUsers.findOne({_id: Session.get('userId')});
         if (!tenantUser) return;
-        return Tenants.find({_id:{$in: tenantUser.hierarchies}});
+        var searchQueryMember={};
+        searchQueryMember._id={$in: tenantUser.hierarchies};
+        if (queryMember.searchStringMember.value) {
+            var stringSearches = [];
+            searchQueryMember.$and=[];
+            _.each(searchFields, function (field) {
+                var aux = {};
+                aux[field] = {
+                    $regex: queryMember.searchStringMember.value,
+                    $options: 'i'
+                };
+                stringSearches.push(aux);
+            });
+            searchQueryMember.$and.push({
+                $or: stringSearches
+            });
+        }
+        return Tenants.find(searchQueryMember,{sort: {'name':1}});
     }
 });
 Template.tenantUserHierMember.events = {
@@ -115,7 +146,7 @@ Template.tenantUserHierAvailable.helpers({
             });
         }
 
-        return Tenants.find(searchQuery);
+        return Tenants.find(searchQuery,{sort: {'name':1}});
     }
 });
 Template.tenantUserHierAvailable.events = {
