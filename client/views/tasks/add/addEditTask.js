@@ -167,12 +167,11 @@ AutoForm.hooks({
       // Insert/update task
       isSubmitting.set(true);
       if(pushDays>0){
-        if(insertDoc.end){
-          insertDoc.end.setDate(insertDoc.end.getDate() + pushDays);
+        if(insertDoc.begin){
+          insertDoc.begin.setDate(insertDoc.begin.getDate() + pushDays);
         }
         else{
-          insertDoc.end = new Date(insertDoc.begin);
-          insertDoc.end.setDate(insertDoc.end.getDate() + pushDays);
+          insertDoc.begin.setDate(new Date() + pushDays);
         }
       }
 

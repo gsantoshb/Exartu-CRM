@@ -210,7 +210,7 @@ Template.tasksBox.helpers({
         return Meteor.users.find({}, {sort: {'emails.address': 1}});
     },
     tasks: function () {
-      return Tasks.find(searchQuery,{sort:{end:-1}});
+      return Tasks.find(searchQuery,{sort:{begin:1}});
     },
     filters: function () {
         return queryObj;
