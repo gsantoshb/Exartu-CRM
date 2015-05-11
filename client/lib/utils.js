@@ -512,17 +512,14 @@ Utils.getEntityTypeFromRouter = function () {
     switch (Router.current().route.getName()) {
         case 'contactable':
             return Enums.linkTypes.contactable.value;
-            break;
         case 'job':
             return Enums.linkTypes.job.value;
-            break;
         case 'deal':
             return Enums.linkTypes.deal.value;
         case 'placement':
             return Enums.linkTypes.placement.value;
         case 'hotList':
             return Enums.linkTypes.hotList.value;
-            break;
         default :
             return null;
     }
