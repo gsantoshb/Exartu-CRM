@@ -80,21 +80,24 @@
 
 <template name="tenantUsersListItem">
 
-        <div class="list-item network-list-item simple-network-list-item {{#if isSelected}} selected {{/if}}">
-            <div class="list-item-cell network-list-item-title">
-                <div class="item-title single">
-                    <a href="/tenantUser/{{_id}}">{{getUserEmail}}</a>
-                </div>
-            </div>
-            <div class="list-item-details network-list-item-details">
-                <div class="list-item-cell network-list-item-code"> {{_id}} </div>
-                <div class="list-item-cell network-list-item-code"> <a href="/tenant/{{hierId}}"> {{hierId}} </a> </div>
-                <div class="list-item-cell network-list-item-time"> {{formattedDate createdAt}} </div>
-                <div class="list-item-cell network-list-item-time"> {{formattedDate lastLogin 'lll'}} </div>
-            </div>
-            <!-- /.list-item-cell -->
+<div class="list-item network-list-item simple-network-list-item {{#if isSelected}} selected {{/if}}">
+    <div class="list-item-cell network-list-item-title">
+        <div class="item-title single">
+            <a href="/tenantUser/{{_id}}">{{getUserEmail}}</a>
         </div>
-        <!-- /.network-list-item -->
+    </div>
+<div class="list-item-details network-list-item-details">
+    <div class="list-item-cell network-list-item-code"> {{_id}} </div>
+    <div class="list-item-cell network-list-item-code"><a href="/tenant/{{hierId}}"> {{hierId}} </a></div>
+    <div class="list-item-cell network-list-item-time"> {{formattedDate createdAt}} </div>
+    {{#if lastLogin}}
+        <div class="list-item-cell network-list-item-time"> {{formattedDate lastLogin 'lll'}} </div>
+    {{else}}<div class="list-item-cell network-list-item-time"> Never</div>
+    {{/if}}
+</div>
+    <!-- /.list-item-cell -->
+</div>
+    <!-- /.network-list-item -->
 
 </template>
 
