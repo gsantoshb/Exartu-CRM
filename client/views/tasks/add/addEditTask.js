@@ -162,8 +162,9 @@ AutoForm.hooks({
       error.set('');
 
       // Add link parameter when provided
-      insertDoc.link = options.link;
-
+      insertDoc.link = {};
+      insertDoc.link.id = options.link;
+      insertDoc.link.type = options.type;
       // Insert/update task
       isSubmitting.set(true);
       if(pushDays>0){

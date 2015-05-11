@@ -59,14 +59,15 @@ var employee;
 Template.placement.helpers({
   placement: function(){
     var originalPlacement=placementCollection.findOne({ _id: Session.get('entityId') });
-    Session.set('placementDisplayName', originalPlacement.displayName);
-    if (originalPlacement.tags==null)
-    {
-      originalPlacement.tags=[];
+    if(originalPlacement) {
+      Session.set('placementDisplayName', originalPlacement.displayName);
+      if (originalPlacement.tags == null) {
+        originalPlacement.tags = [];
+      }
+      if (!placement)
+        placement = new dType.objInstance(originalPlacement, Placements);
+      return placement;
     }
-    if (!placement)
-      placement = new dType.objInstance(originalPlacement, Placements);
-    return placement;
   },
   originalPlacement:function(){
     return placementCollection.findOne({ _id: Session.get('entityId') });

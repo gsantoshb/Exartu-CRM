@@ -46,7 +46,7 @@ Meteor.methods({
       begin: Date,
       end: Match.Optional(Date),
       completed: Match.Optional(Date),
-      link: Match.Optional(String)
+      link: Match.Optional(Object)
     });
 
     try {

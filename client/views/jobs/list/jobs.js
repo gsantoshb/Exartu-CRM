@@ -6,12 +6,11 @@ var JobHandler;
 /**
  * Controller
  */
-Session.set('entityId', undefined);
+
 JobsController = RouteController.extend({
     template: 'jobs',
     layoutTemplate: 'mainLayout',
     waitOn: function () {
-
         Session.set('entityId', undefined);
         if (!SubscriptionHandlers.JobHandler) {
             SubscriptionHandlers.JobHandler = SubscriptionHandlers.JobHandler || Meteor.paginatedSubscribe('jobsList');

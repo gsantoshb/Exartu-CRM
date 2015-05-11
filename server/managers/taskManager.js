@@ -45,11 +45,25 @@ TaskManager = {
 
     // Validate link
     if (task.link) {
-      var contactable = Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Contactables.find({_id: task.link})).fetch()[0];
-      if (!contactable) throw new Error('Contactable with id ' + task.link + 'not found');
+      switch (task.link.type) {
+        case Enums.linkTypes.contactable:{
+          var contactable = Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Contactables.find({_id: task.link})).fetch()[0];
+          if (!contactable) throw new Error('Contactable with id ' + task.link + 'not found');
+          break;
+        }
+        case Enums.linkTypes.job:{
+        var job = Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Jobs.find({_id: task.link})).fetch()[0];
+        if (!job) throw new Error('Job with id ' + task.link + 'not found');
+        break;
+        }case Enums.linkTypes.placement:{
+        var placement = Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, Placements.find({_id: task.link})).fetch()[0];
+        if (!placement) throw new Error('Placement with id ' + task.link + 'not found');
+        }
 
+
+      }
       // Replace linkv value for corresponding links array
-      task.links = [{id: task.link, type: Enums.linkTypes.contactable.value}];
+      task.links = [{id: task.link.id, type: task.link.type}];
       delete task.link;
     } else {
       task.links = [];
