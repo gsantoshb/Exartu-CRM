@@ -155,7 +155,7 @@
 <template name="contactable_details">
     <div class="box-type-1-content">
         {{> contactableDetailBox}}
-
+        {{>displayLatestNotes}}
         {{> contactableContactMethodsBox}}
 
         {{#if Contact}}
@@ -165,6 +165,14 @@
         {{> contactable_contacts}}
         {{>tagsBox}}
         {{>hotListMembershipsBox}}
+        {{#if Employee}}
+            {{>displayDirectDeposit}}
+        {{/if}}
+
+
+
+
+
 
     </div>
 </template>
