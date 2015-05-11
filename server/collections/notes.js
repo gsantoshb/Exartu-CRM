@@ -202,7 +202,15 @@ Notes.after.insert(function(userId,doc){
     _.forEach(doc.links, function(link) {
         if (link.type==Enums.linkTypes.contactable.value)
         {
-            Contactables.update({_id:link.id},{$set: {lastNote: doc}});
+          var c = Contactables.findOne({_id: link.id});
+          if(!c.latestNotes){
+            c.latestNotes = [];
+          }
+          else if(c.latestNotes.length === 3){
+            c.latestNotes.shift();
+          }
+          c.latestNotes.push(doc);
+          Contactables.update({_id:link.id},{$set: {latestNotes: c.latestNotes}});
         }
     });
 
@@ -214,8 +222,20 @@ Notes.after.remove(function(userId,doc){
       if (link.type==Enums.linkTypes.contactable.value)
       {
         //find last note
-        var n = Notes.findOne({'links.id':link.id},{$sort:{dateCreated:-1} });
-        Contactables.update({_id:link.id},{$set: {lastNote: n}});
+        var newLatestNote = [];
+        var n = Notes.find({'links.id':link.id},{$sort:{dateCreated:-1} }).fetch();
+        if(n) {
+          if (n[2]) {
+            newLatestNote.push(n[2]);
+          }
+          if (n[1]) {
+            newLatestNote.push(n[1]);
+          }
+          if (n[0]) {
+            newLatestNote.push(n[0]);
+          }
+        }
+        Contactables.update({_id:link.id},{$set: {latestNotes: newLatestNote}});
       }
     });
 

@@ -647,8 +647,8 @@ Template.contactablesListItem.helpers({
         return !_.isEmpty(query.searchString.value);
     },
     getLastNote: function () {
-        if (this.lastNote)
-            return this.lastNote;
+      if (this.latestNotes.length > 0)
+            return this.latestNotes[this.latestNotes.length-1];
     },
     isSelected: function () {
         return !!_.findWhere(selected.get(), {id: this._id});

@@ -159,15 +159,17 @@
                             {{displayUserName userAssigned}} <span class="desc">is assigned to</span>
                         {{/if}}
                         <a class="pointer task-link" id="{{_id}}" href="#">{{>showMore text=msg limit=60}}</a>
+
+                        {{#each links}}
+                            <a href="{{getHref}}">
+                                {{#with getEntity}}
+                                    <span class="badge">{{displayName}}</span>
+                                {{/with}}
+                            </a>
+                        {{/each}}
+
                         <span class="desc">&ndash; {{displayUserName userId}}</span>
                     {{/with}}
-                    {{#each links}}
-                        <a href="{{getHref}}">
-                            {{#with getEntity}}
-                                <span class="badge">{{displayName}}</span>
-                            {{/with}}
-                        </a>
-                    {{/each}}
                 </div>
             </div><!-- /.left-part -->
             <div class="right-part">{{> recordTimestamp}}</div>
