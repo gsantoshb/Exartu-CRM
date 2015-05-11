@@ -35,29 +35,29 @@ Template.jobDetail.helpers({
     colorEdit: function () {
         return self.editMode ? '#008DFC' : ''
     },
-    isType: function (typeName) {
-        return !!jobCollections.findOne({_id: Session.get('entityId'), objNameArray: typeName});
-    },
-    jobCollection: function () {
-        return jobCollections;
-    },
+    //isType: function (typeName) {
+    //    return !!jobCollections.findOne({_id: Session.get('entityId'), objNameArray: typeName});
+    //},
+    //jobCollection: function () {
+    //    return jobCollections;
+    //},
 
     isSelected: function (optionValue, currentValue) {
         return optionValue == currentValue;
     },
-    location: function () {
-        var originalJob = jobCollections.findOne({_id: Session.get('entityId')});
-
-        location.value = originalJob && originalJob.location;
-        return location;
-    },
-    datePickerOptions: function () {
-        return {
-            format: "D, MM dd, yyyy",
-            minViewMode: "days",
-            startView: "months"
-        }
-    },
+    //location: function () {
+    //    var originalJob = jobCollections.findOne({_id: Session.get('entityId')});
+    //
+    //    location.value = originalJob && originalJob.location;
+    //    return location;
+    //},
+    //datePickerOptions: function () {
+    //    return {
+    //        format: "D, MM dd, yyyy",
+    //        minViewMode: "days",
+    //        startView: "months"
+    //    }
+    //},
     fetchOptions: function () {
         return this.options.map(function (status) {
             return {id: status._id, text: status.displayName};
@@ -96,12 +96,12 @@ Template.jobDetail.events({
         self.editMode = false;
     }
 });
-
-
-Template.jobDetail.helpers({
-    getType: function () {
-        return Enums.linkTypes.job;
-    }
-});
+//
+//
+//Template.jobDetail.helpers({
+//    getType: function () {
+//        return Enums.linkTypes.job;
+//    }
+//});
 
 

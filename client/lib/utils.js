@@ -309,9 +309,7 @@ Utils.getLocationDisplayName = function (id) {
         lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
         lookUpAction: {$ne: billingAddressType}
     }).fetch();
-    var addressTypeIds = _.pluck(addressTypes, function (item) {
-        return item._id
-    });
+    var addressTypeIds = _.pluck(addressTypes, '_id');
     var location = Addresses.findOne({linkId: id, addressTypeId: {$in: addressTypeIds}});
 
     return !location ? '' : (

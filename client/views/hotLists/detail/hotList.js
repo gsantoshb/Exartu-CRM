@@ -44,9 +44,11 @@ HotListController = RouteController.extend({
 Template.hotList.helpers({
   hotList: function () {
     var hotList = hotListCollection.findOne({_id: Session.get('entityId')});
-    if (hotList.tags == null)
-      hotList.tags = [];
-    return hotList;
+    if(hotList) {
+      if (hotList.tags == null)
+        hotList.tags = [];
+      return hotList;
+    }
   },
   currentTemplate: function () {
     var selected = _.findWhere(tabs, {id: Session.get('activeTab')});

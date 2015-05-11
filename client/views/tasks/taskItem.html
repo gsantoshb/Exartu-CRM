@@ -20,11 +20,7 @@
                 {{#if hasLinks}}
                     <div id="link-{{_id}}">
                         {{#each links}}
-                            <a href="{{getHref}}">
-                                {{#with getEntity}}
-                                    <span class="badge item-label">{{>showMore text=displayName limit=25}}</span>
-                                {{/with}}
-                            </a>
+                           {{>taskLink}}
                         {{/each}}
                     </div>
                 {{/if}}
@@ -87,5 +83,21 @@
         {{#if statusIs 'overDue'}}
             <span class="item-label-2 label-overdue">{{_ "Over Due"}}</span>
         {{/if}}
+    {{/if}}
+</template>
+
+<template name="taskLink">
+    <a href="{{getHref}}">
+        {{#with getEntity}}
+            <span class="badge item-label">{{>showMore text=displayName limit=25}}</span>
+        {{/with}}
+    </a>
+    {{#if isContactable}}
+      <div class="list-item-cell network-list-item-contact">
+        <button class="btn-round" type="button"  data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="{{phone}}" data-init="on">
+           <i class="fa fa-phone">
+           </i>
+        </button>
+      </div>
     {{/if}}
 </template>

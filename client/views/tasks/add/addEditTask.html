@@ -1,4 +1,3 @@
-
 <template name="addEditTask">
     <div class="modal fade">
         <div class="modal-dialog">
@@ -79,7 +78,7 @@
                                 </div>
                             {{/if}}
 
-                            {{#if task}}
+                            {{#if notAddTask}}
                                 {{#if task.inactive}}
                                     <a class="btn btn-info pull-left recover">
                                         {{_ "Recover"}}
@@ -89,21 +88,23 @@
                                         {{_ "Archive"}}
                                     </a>
                                 {{/if}}
-
-                                <a class="btn btn-info pull-left pushOneDay">
-                                    {{_ "Push 1 day"}}
-                                </a>
-                                <a class="btn btn-info pull-left pushOneWeek">
-                                    {{_ "week"}}
-                                </a>
-                                <a class="btn btn-info pull-left pushOneMonth">
-                                    {{_ "month"}}
-                                </a>
                             {{/if}}
+                                <!--{{#if endDate}}-->
+                                <button type="submit" class="btn btn-info pull-left pushOneDay" >
+                                    {{_ "Push 1 day"}}
+                                </button>
+                                <button type="submit" class="btn btn-info pull-left pushOneWeek">
+                                    {{_ "week"}}
+                                 </button>
+                                 <button type="submit" class="btn btn-info pull-left pushOneMonth">
+                                    {{_ "month"}}
+                                 </button>
+
+                            <!--{{/if}}-->
 
                             <!-- Save/Cancel buttons -->
                             <button type="button" class="btn btn-default" data-dismiss="modal">{{_ "Close"}}</button>
-                            <button type="submit" class="btn btn-primary">{{_ "Save"}}</button>
+                            <button type="submit" class="btn btn-primary save-task">{{_ "Save"}}</button>
                         {{else}}
                             <!-- Submitting feedback -->
                             <div class="col-md-10 col-md-offset-1">

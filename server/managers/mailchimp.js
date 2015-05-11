@@ -54,7 +54,6 @@ MailChimpManager = {
   }),
   importContacts: Meteor.wrapAsync(function (hierId, listId, hotListId, cb) {
 
-    debugger;
     var members = MailChimpManager.getSubscribers(hierId, listId);
 
     var emailCMType = LookUpManager.ContactMethodTypes_Email();
@@ -84,10 +83,13 @@ MailChimpManager = {
         if (!member.merges.FNAME || !member.merges.LNAME){
 
           // check if email exists
-          if (Contactables.findOne({
-              'contactMethods': {$elemMatch:{value: member.email}}
-            }, {fields: {_id: 1}})){
+          var old = Contactables.findOne({
+            hierId: hierId,
+            'contactMethods': {$elemMatch:{value: member.email}}
+          }, {fields: {_id: 1}});
+          if (old){
             existed.push(member.id);
+            contactsToAdd.push(old._id);
             return;
           }
 
@@ -104,16 +106,20 @@ MailChimpManager = {
 
           //check if already exists
           var oldContacts = Contactables.find({
+            hierId: hierId,
             'person.firstName': contact.person.firstName,
             'person.lastName': contact.person.lastName
           }, {fields: {contactMethods: 1}}).fetch();
 
+
           if (oldContacts.length) {
             // check also the email
-            if (_.any(oldContacts, function (oldcontact) {
-                return _.findWhere(oldcontact.contactMethods, {value: member.email});
-              })) {
+            var old = _.find(oldContacts, function (oldcontact) {
+              return _.findWhere(oldcontact.contactMethods, {value: member.email});
+            });
+            if (old) {
               existed.push(member.id);
+              contactsToAdd.push(old._id);
               return;
             }
           }
@@ -138,7 +144,7 @@ MailChimpManager = {
     });
 
     if (hotListId && contactsToAdd.length){
-      HotListManager.addToHotlist(hotListId,contactsToAdd)
+      HotListManager.addToHotlist(hotListId, contactsToAdd)
     }
     cb(null, {
       imported: imported,

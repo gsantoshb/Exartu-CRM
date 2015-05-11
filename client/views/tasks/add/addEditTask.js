@@ -1,3 +1,4 @@
+var pushDays = 0;
 var options,
   originalUrl,
   task = new ReactiveVar(undefined),
@@ -41,7 +42,10 @@ Template.addEditTask.helpers({
     return isSubmitting.get();
   },
   task: function () {
-    return task.get() || {msg: ''};
+    return task.get() || {msg:''};
+  },
+  notAddTask: function() {
+    return options.taskId;
   },
   msgPlaceholder: function () {
     return TAPi18n.__('Add task here');
@@ -90,13 +94,16 @@ Template.addEditTask.events({
     setInactive(false);
   },
   'click .pushOneDay': function () {
-    pushTask(1);
+    pushDays = 1;
   },
   'click .pushOneWeek': function () {
-    pushTask(7);
+    pushDays = 7;
   },
   'click .pushOneMonth': function () {
-    pushTask(30);
+    pushDays = 30;
+  },
+  'click .save-task': function(){
+    pushDays = 0;
   }
 });
 
@@ -117,21 +124,21 @@ var setInactive = function (setValue) {
     }
   });
 };
-var pushTask = function (days) {
-  // Clear error message
-  error.set('');
-  // Update task
-  isSubmitting.set(true);
-  Meteor.call('pushTask', task.get()._id, days, function (err) {
-    isSubmitting.set(false);
-    if (err) {
-      var msg = err.reason ? err.reason : err.error;
-      error.set('Server error. ' + msg);
-    } else {
-      Utils.dismissModal();
-    }
-  });
-};
+//var pushTask = function (days) {
+//  // Clear error message
+//  error.set('');
+//  // Update task
+//  isSubmitting.set(true);
+//  Meteor.call('pushTask', task.get()._id, days, function (err) {
+//    isSubmitting.set(false);
+//    if (err) {
+//      var msg = err.reason ? err.reason : err.error;
+//      error.set('Server error. ' + msg);
+//    } else {
+//      Utils.dismissModal();
+//    }
+//  });
+//};
 
 
 Template.addEditTask.onDestroyed(function () {
@@ -159,6 +166,15 @@ AutoForm.hooks({
 
       // Insert/update task
       isSubmitting.set(true);
+      if(pushDays>0){
+        if(insertDoc.begin){
+          insertDoc.begin.setDate(insertDoc.begin.getDate() + pushDays);
+        }
+        else{
+          insertDoc.begin.setDate(new Date() + pushDays);
+        }
+      }
+
       if (task.get()) {
         Meteor.call('updateTask', task.get()._id, insertDoc, function (err) {
           isSubmitting.set(false);

@@ -21,7 +21,6 @@ manuelschoebel:ms-seo
 mrgalaxy:stripe
 natestrauser:connection-banner
 aldeed:simple-schema
-aldeed:autoform
 
 cfs:filesystem
 document
@@ -61,7 +60,7 @@ fullcalendar
 date-time-picker
 cscottnet:mail-listener2
 jparker:crypto-aes
-aida:pagination@1.0.8
+aida:pagination@1.0.9
 tap:i18n
 jparker:crypto-base64
 
@@ -69,3 +68,4 @@ harrison:babyparse
 npm-container
 maazalik:highcharts
 meteorhacks:kadira
+aldeed:autoform@5.1.2

@@ -7,12 +7,15 @@
 
             {{#with userContext}}
                 <h1>TenantUser {{getUserName}}</h1>
+
             {{/with}}
 
         </div>
         <div class="container-fluid">
             <div class="row">
-                User Object: {{userJSON}}
+                <a href="#">
+                    <div class="list-3-item-meta-top output-object">Output tenantuser object {{userContext._id}} to console</div>
+                </a>
                 {{#with userContext}}
 
                     <div>
@@ -37,7 +40,9 @@
 </template>
 <template name="tenantUserHierMember">
     <h1>Member</h1>
-
+    {{#objectProperty property=searchStringMember}}
+        <input type="text" class="form-control" placeholder="Search memberships" value="{{value}}">
+    {{/objectProperty}}
     <div class="tree">
         <div class="table-items-box">
             {{#each hierMember}}

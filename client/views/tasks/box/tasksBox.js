@@ -21,7 +21,10 @@ var loadTaskQueryFromURL = function (params) {
     }
     // Status
     if (params.status) {
-        status = _.findWhere(states, {name: params.status});
+        var statuses = params.status.split(',');
+        status = _.filter(states, function (st) {
+            return _.contains(statuses, st.name);
+        }) || [];
     }
 
     // Owned by me
@@ -58,6 +61,7 @@ var loadTaskQueryFromURL = function (params) {
 var taskCount = new ReactiveVar();
 
 Template.tasksBox.created = function () {
+    status = [];
     queryObj = queryObj || loadTaskQueryFromURL(Router.current().params.query);
     var entityId = Session.get('entityId');
     entityType = Utils.getEntityTypeFromRouter();
@@ -97,9 +101,16 @@ Template.tasksBox.created = function () {
 
         statusDep.depend();
 
-        if (status) {
-            _.extend(searchQuery, status.query());
-            urlQuery.addParam('status', status.name);
+        if (status && status.length) {
+            var statusQuery = [];
+            var urlStatusQuery = [];
+            _.each(status, function (st) {
+                statusQuery.push(st.query());
+                urlStatusQuery.push(st.name);
+            });
+            urlQuery.addParam('status', urlStatusQuery);
+            _.extend(searchQuery, { $or: statusQuery });
+
         }
 
         if (queryObj.searchString.value) {
@@ -210,7 +221,7 @@ Template.tasksBox.helpers({
         return Meteor.users.find({}, {sort: {'emails.address': 1}});
     },
     tasks: function () {
-      return Tasks.find(searchQuery,{sort:{dateCreated:-1}});
+      return Tasks.find(searchQuery,{sort:{begin:1}});
     },
     filters: function () {
         return queryObj;
@@ -220,7 +231,7 @@ Template.tasksBox.helpers({
     },
     selectedClass: function () {
         statusDep.depend();
-        return this == status ? 'btn-primary' : 'btn-default';
+        return _.contains(status, this) ? 'btn-primary' : 'btn-default';
     },
     isLoading: function () {
         return SubscriptionHandlers.TaskHandler.isLoading();
@@ -242,17 +253,16 @@ Template.tasksBox.events({
             Utils.showModal('addEditTask', {link : Session.get('entityId')});
     },
     'click .selectState': function () {
-
-        if (status == this) {
-            status = null;
+        if (_.contains(status, this)) {
+            status.splice(status.indexOf(this), 1);
         } else {
-            status = this;
+            status.push(this);
         }
         statusDep.changed()
     },
     'click .clearState': function () {
 
-        status = null;
+        status = [];
         statusDep.changed()
     }
 });
