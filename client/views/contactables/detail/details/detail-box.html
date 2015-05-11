@@ -256,11 +256,6 @@
 
         </div>
     </section>
-    {{#if Employee}}
-    {{#with originalContactable}}
-       {{>displayDirectDeposit}}
-    {{/with}}
-    {{/if}}
 
 
 
@@ -321,6 +316,52 @@
                                 <a id="cancel-deposit-method" class="btn btn-default">{{_ "Cancel"}}</a>
                             </div>
                         {{/if}}
+                </div>
+            </div>
+        </div>
+    </section>
+</template>
+<template name="displayLatestNotes">
+    <section class="box-type-2">
+        <div class="box-type-2-content">
+            <div class="row">
+                <div class="col-md-2">
+                    <h3>Latest notes</h3>
+                    <!--<a class="btn-action pointer" title="Edit"><i id="edit-contact-method-mode" class="fa fa-pencil" style="color: {{editModeColor}}"></i></a>-->
+                </div><!-- /.col-md-2 -->
+                <div class="col-md-10" style="">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <ul class="list-type-5">
+                                {{#each latestNotes}}
+                                <li>
+                                    <!--<div class="left-part">-->
+                                        <!--<div class="item-icon item-icon-notes editNote" ><i class="icon icon-pencil-3"></i></div>-->
+                                    <!--</div>-->
+                                    <div class="left-part" style="width:80%">
+
+                                        <a href="#">{{displayUserName userId}}</a> - {{>showMore text=msg limit=60}}
+                                    </div>
+                                    <div class="time right-part" style="width:20%" >
+                                        <p style="float:right">{{formattedDate dateCreated "fromNow"}}</p>
+                                    </div>
+
+
+                                </li>
+                                {{/each}}
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <!--{{#if editMode }}-->
+                        <!--<div class="edit-actions-bar">-->
+                            <!--<span id="add-contact-method-error" class="label label-danger" style="float: right;"></span>-->
+                            <!--<button id="save-changes-method"  type="button" class="btn btn-primary" title="Add">{{_ "Save"}}</button>-->
+                            <!--<a id="cancel-deposit-method" class="btn btn-default">{{_ "Cancel"}}</a>-->
+                        <!--</div>-->
+                    <!--{{/if}}-->
                 </div>
             </div>
         </div>
