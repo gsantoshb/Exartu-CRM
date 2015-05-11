@@ -28,7 +28,9 @@ Meteor.startup(function () {
   console.log(Meteor.settings);
 
   // Run migrations
-  Migrations.migrateTo('latest');
+  Meteor.setTimeout(function () {
+    Migrations.migrateTo('latest');
+  }, 5000);
 
   // Seed database
   // Execute all function defined in seedSystemObjTypes
