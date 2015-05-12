@@ -347,7 +347,10 @@ Router.map(function () {
   });
 
   this.route('timeEntry', {
-    path: 'timeEntry/:tab?'
+    path: 'timeEntry'
+  });
+  this.route('timecard', {
+    path: 'timeEntry/timecard/:id'
   });
 });
 
