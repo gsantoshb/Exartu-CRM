@@ -34,18 +34,18 @@ TaskView = new View('tasks', {
         // Placements
         this.publish({
             cursor: function (task) {
-                var hotListsIds = _.pluck(_.filter(task.links, function (link) {
-                    return link.type == Enums.linkTypes.hotList.value;
+                var placementIds = _.pluck(_.filter(task.links, function (link) {
+                    return link.type == Enums.linkTypes.placement.value;
                 }), 'id');
-                return Placements.find({_id: {$in: hotListsIds}});
+                return Placements.find({_id: {$in: placementIds}});
             },
             to: 'placements',
             observedProperties: ['links'],
             onChange: function (changedProps, oldSelector) {
-                var hotListsIds = _.pluck(_.filter(changedProps.links, function (link) {
-                    return link.type == Enums.linkTypes.hotList.value;
+                var placementIds = _.pluck(_.filter(changedProps.links, function (link) {
+                    return link.type == Enums.linkTypes.placement.value;
                 }), 'id');
-                return Placements.find({_id: {$in: hotListsIds}});
+                return Placements.find({_id: {$in: placementIds}});
             }
         });
         // HotLists
