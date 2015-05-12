@@ -48,7 +48,7 @@ node-form-data
 shammar13:busboy
 aida:mongo-view
 aida:dtype
-aida:es
+aida:es@0.1.1
 
 meteorhacks:fast-render
 doccenter

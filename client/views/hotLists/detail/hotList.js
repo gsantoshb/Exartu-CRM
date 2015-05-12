@@ -120,16 +120,17 @@ Template.hotListHeader.events({
         editingDisplayName.set(true);
     },
     'click .saveDisplayNameButton': function () {
-        var displayName = $('#displayName').val();
+      var hotList = this;
+      var displayName = $('#displayName').val();
 
-        hotListCollection.update({_id: hotList._id}, {$set: {displayName: displayName}}, function (err, result) {
-            if (!err) {
-                editingDisplayName.set(false);
-            }
-            else{
-                alert(err);
-            }
-        });
+      hotListCollection.update({_id: hotList._id}, {$set: {displayName: displayName}}, function (err, result) {
+          if (!err) {
+              editingDisplayName.set(false);
+          }
+          else{
+              alert(err);
+          }
+      });
     },
     'click .cancelDisplayNameButton': function () {
         editingDisplayName.set(false);

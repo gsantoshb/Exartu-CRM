@@ -184,3 +184,9 @@ Template.displayDirectDeposit.helpers({
     return EditDirectDepositMode.value;
   }
 })
+
+Template.displayLatestNotes.helpers({
+  latestNotes: function(){
+    return this.latestNotes.reverse();
+  }
+})

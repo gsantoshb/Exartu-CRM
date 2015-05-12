@@ -249,9 +249,10 @@ Template.tasksBox.events({
     'click .addTask': function () {
         if (!isEntitySpecific)
             Utils.showModal('addEditTask');
-        else
-            Utils.showModal('addEditTask', {link : Session.get('entityId')});
-    },
+        else {
+          Utils.showModal('addEditTask', {link: Session.get('entityId'), type: entityType});
+        }
+        },
     'click .selectState': function () {
         if (_.contains(status, this)) {
             status.splice(status.indexOf(this), 1);
