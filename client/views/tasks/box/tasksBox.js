@@ -36,8 +36,11 @@ var loadTaskQueryFromURL = function (params) {
 
     // Inactive
     var inactiveQuery = {type: Utils.ReactivePropertyTypes.boolean};
-    if (params.inactives) {
-        inactiveQuery.default = !!params.inactives;
+    if (params.inactive) {
+      inactiveQuery.default = !!params.inactive;
+    }
+    else{
+      inactiveQuery.default = false;
     }
 
     // Assigned to
@@ -77,6 +80,9 @@ Template.tasksBox.created = function () {
             };
         }
         if (queryObj.inactives.value) {
+            searchQuery.inactive = {
+              $ne: false
+            };
             urlQuery.addParam('inactive', true);
         }
 
