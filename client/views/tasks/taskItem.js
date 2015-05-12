@@ -9,8 +9,8 @@ Template.taskItem.helpers({
         return this.state == Enums.taskState[statusName];
     },
     hasLinks: function() {
-        return this.links.length;
-    },
+      return this.links ? this.links.length : false;
+    }
 
 });
 

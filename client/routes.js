@@ -347,11 +347,13 @@ Router.map(function () {
   });
 
   this.route('timeEntry', {
-    path: 'timeEntry'
+    path: 'timeEntry',
+    controller: TimeEntryController
   });
-  this.route('timecard', {
-    path: 'timeEntry/timecard/:id'
-  });
+  //this.route('timecard', {
+  //  path: 'timeEntry/timecard/:id',
+  //  controller: TimeCardController
+  //});
 });
 
 

@@ -5,6 +5,7 @@ TenantsController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function() {
     SubscriptionHandlers.TenantHandler = TenantHandler = SubscriptionHandlers.TenantHandler || Meteor.paginatedSubscribe('tenants');
+    Meteor.paginatedSubscribe('tenantUsers')
     return [TenantHandler, LookUpsHandler];
   },
   onAfterAction: function() {
