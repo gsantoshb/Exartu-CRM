@@ -1,0 +1,126 @@
+
+<template name="timeEntry">
+    <div id="content" class="network-content">
+        <div class="row">
+            <div class="col-md-11">
+                <div class="page-title">
+                    <h1>{{_ "Time Entry"}}</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-md-10 col-md-offset-1">
+
+                <!-- Time cards creation -->
+                <div class="box-type-1" style="margin-right: 0;">
+                    <div class="box-type-1-content">
+                        <h3>Select the week to create the timecards</h3>
+
+                        <fieldset>
+                            {{#bootstrap3DatePicker placeholder='Select weekend date' options=dateOptions}}{{/bootstrap3DatePicker}}
+                        </fieldset>
+
+                        <div class="margin-top-15">
+                            {{#unless isSubmitting}}
+                                <!-- Error message -->
+                                {{#if error}}
+                                    <div class="alert alert-danger">
+                                        <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                        {{error}}
+                                    </div>
+                                {{/if}}
+
+                                <!-- Create button -->
+                                <button class="btn btn-primary create {{#if isDisabled}}disabled{{/if}}">
+                                    <i class="fa fa-list-alt"></i> Create timecards
+                                </button>
+                            {{else}}
+                                <!-- Submitting feedback -->
+                                <div class="col-md-10 col-md-offset-1">
+                                    <div class="progress progress-striped active">
+                                        <div style="width: 100%;" class="progress-bar progress-bar-info">{{_ "Creating timecards"}}...</div>
+                                    </div>
+                                </div>
+                            {{/unless}}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- List of timecards -->
+                {{#if timecards}}
+                    <div class="list-container margin-top-15">
+                        <div class="list-holder">
+                            <!-- Header -->
+                            <div class="list-header">
+                                <div class="list-header-cell timecards-list-header-title" style="width: 50%; margin-right: 50px;">{{_ "Title"}}</div>
+                                <div class="list-header-cell">{{_ "Date Created"}}</div>
+                                <div class="list-header-cell">{{_ "Regular Hours"}}</div>
+                            </div>
+                        </div>
+
+                        <div class="list-item-section">
+                            {{#each timecards}}
+                                <div class="list-item placements-list-item">
+                                    <!-- Time card icon -->
+                                    <div class="list-item-cell list-item-icon">
+                                        <a href="/timeEntry/timecard/{{_id}}" class="item-icon item-icon-timecards"><i class="fa fa-clock-o"></i></a>
+                                    </div>
+
+                                    <!-- Placement information -->
+                                    <div class="list-item-cell timecards-list-item-title" style="width: 50%;">
+                                        {{#with placement}}
+                                            <div class="item-title"><a href="/contactable/{{employee}}">{{employeeDisplayName}}</a> <i
+                                                    class="fa fa-long-arrow-right"></i> <a href="/job/{{job}}">{{jobDisplayName}}</a></div>
+                                            <div class="item-subtitle-more">
+                                                {{> placementInformation}}
+                                            </div>
+                                        {{/with}}
+                                    </div>
+
+                                    <!-- Date created -->
+                                    <div class="list-item-cell timecards-list-item-time" style="width: 20%;">
+                                        <span>{{formattedDate createdAt "fromNow"}}</span><br>
+                                    </div>
+
+                                    <!-- Regular hours -->
+                                    <div class="list-item-cell timecards-list-item-time" style="width: 10%;">
+                                        <input type="number" class="totalHours" value="{{regularHours}}" style="width: 100%;"/>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="list-actions last">
+                            {{#unless isSaving}}
+                                <!-- Error message -->
+                                {{#if saveError}}
+                                    <div class="alert alert-danger">
+                                        <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                        {{saveError}}
+                                    </div>
+                                {{/if}}
+
+                                <!-- Save button -->
+                                <div class="text-right" style="margin: 10px;">
+                                    <button class="btn btn-primary saveTimecards">
+                                        <i class="fa fa-save"></i> Save changes
+                                    </button>
+                                </div>
+                            {{else}}
+                                <!-- Submitting feedback -->
+                                <div class="col-md-10 col-md-offset-1">
+                                    <div class="progress progress-striped active">
+                                        <div style="width: 100%;" class="progress-bar progress-bar-info">{{_ "Saving changes"}}...</div>
+                                    </div>
+                                </div>
+                            {{/unless}}
+                        </div>
+                    </div>
+                {{/if}}
+
+            </div>
+        </div>
+    </div>
+</template>
