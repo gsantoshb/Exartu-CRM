@@ -5,7 +5,7 @@ accounts-password@1.1.0
 accounts-ui@1.1.5
 accounts-ui-unstyled@1.1.7
 aida:dtype@0.1.0
-aida:es@0.1.0
+aida:es@0.1.1
 aida:mongo-view@0.1.2
 aida:pagination@1.0.9
 aldeed:autoform@5.1.2

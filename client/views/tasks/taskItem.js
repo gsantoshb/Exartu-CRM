@@ -9,8 +9,8 @@ Template.taskItem.helpers({
         return this.state == Enums.taskState[statusName];
     },
     hasLinks: function() {
-        return this.links.length;
-    },
+      return this.links ? this.links.length : false;
+    }
 
 });
 
@@ -76,7 +76,7 @@ Template.taskLink.helpers({
     return Utils.getHrefFromLink(this);
   },
   getEntity: function(){
-    return Utils.getEntityFromLink(this);
+     return Utils.getEntityFromLink(this);
   },
   phone: function(){
     var contactable =  Contactables.findOne({_id: this.id});

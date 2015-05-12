@@ -344,7 +344,11 @@ Router.map(function () {
   this.route('settings', {
     path: 'settings',
     controller: SettingsController
-  })
+  });
+
+  this.route('timeEntry', {
+    path: 'timeEntry/:tab?'
+  });
 });
 
 
