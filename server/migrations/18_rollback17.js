@@ -12,7 +12,8 @@ Migrations.add({
 
         contactableCursor.forEach(function (contactable) {
             contactable.addresses.forEach(function (address) {
-                Addresses.insert(address);
+                if (! Addresses.findOne(address._id, {fields:{_id:1}}))
+                    Addresses.insert(address);
             });
             Contactables.update({_id: contactable._id}, {$unset: {addresses: ''}});
             ++affected;
