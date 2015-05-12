@@ -270,6 +270,10 @@ Template.tenantsListItem.helpers({
     lastDate: function () {
         var counts = ActivityCounters.findOne(this._id);
         return counts && counts.lastDate;
+    },
+    getHierEmail: function () {
+        var user = TenantUsers.findOne(this.users[0]);
+        return user && user.emails[0].address;
     }
 });
 
