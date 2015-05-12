@@ -452,6 +452,22 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
     height: 284px;
 }
 
+
+/*************** Side bar icon colors **************/
+#sidebar .navbar li.time-entry.active .i-container, #sidebar .navbar li.time-entry a:hover .i-container {
+    background-image: -webkit-linear-gradient(top,#78f061 0,#09d316 100%);
+    background-image: -o-linear-gradient(top,#78f061 0,#09d316 100%);
+    background-image: -webkit-gradient(linear,left 0,left 100%,from(#78f061),to(#09d316));
+    background-image: -webkit-linear-gradient(top,#78f061,0%,#09d316,100%);
+    background-image: -moz-linear-gradient(top,#78f061 0,#09d316 100%);
+    background-image: linear-gradient(to bottom,#78f061 0,#09d316 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff78f061',endColorstr='#ff09d316',GradientType=0);
+    color: #fff;
+}
+#sidebar .navbar .time-entry .i-container { padding-top: 6px; }
+
+
 /*input errors*/
 .form-group.error > input{
     color: #F00;
@@ -866,6 +882,23 @@ body[data-color="enterprise-dark"].flat #sidebar > ul > li.submenu.open > a{
 
 }
 /************ end  boxes inside tabs*******************/
+
+
+
+/********************* Timecards list icon *************************/
+.item-icon-timecards {
+    padding-top: 8px;
+    background-image: -webkit-linear-gradient(top, #00ff1f 0, #00b808 100%);
+    background-image: -o-linear-gradient(top,#00ff1f 0,#00b808 100%);
+    background-image: -webkit-gradient(linear,left 0,left 100%,from(#00ff1f),to(#00b808));
+    background-image: -webkit-linear-gradient(top,#00ff1f,0%,#00b808,100%);
+    background-image: -moz-linear-gradient(top,#00ff1f 0,#00b808 100%);
+    background-image: linear-gradient(to bottom,#00ff1f 0,#00b808 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff4ce7ec',endColorstr='#ff13c1cb',GradientType=0);
+}
+
+
 
 /************** select 2 ******************************/
 /**
