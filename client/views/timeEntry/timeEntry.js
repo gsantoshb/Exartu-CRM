@@ -11,7 +11,8 @@ var error = new ReactiveVar(''),
     isDisabled = new ReactiveVar(true),
     saveError = new ReactiveVar(''),
     isSaving = new ReactiveVar(false),
-    tcHours = {};
+    tcHours = {},
+    tcHoursDep = new Tracker.Dependency;
 
 Template.timeEntry.helpers({
   isSubmitting: function () {
@@ -37,9 +38,25 @@ Template.timeEntry.helpers({
     return Placements.findOne(this.placementId);
   },
   totalHours: function () {
+    // Check to use the user inputted hours or the ones stored in the timecard
+    tcHoursDep.depend();
+
     var result = 0;
-    if (this.regularHours) result+= parseInt(this.regularHours);
-    if (this.doubleTimeHours) result+= parseInt(this.doubleTimeHours);
+    // Regular hours
+    if (tcHours[this._id] && tcHours[this._id].regularHours) {
+      result += parseInt(tcHours[this._id].regularHours);
+    } else {
+      if (this.regularHours) result+= parseInt(this.regularHours);
+    }
+
+    // Double time hours
+    if (tcHours[this._id] && tcHours[this._id].doubleTimeHours) {
+      result += parseInt(tcHours[this._id].doubleTimeHours);
+    } else {
+      if (this.doubleTimeHours) result+= parseInt(this.doubleTimeHours);
+    }
+
+    // Overtime hours
     if (this.overtimeHours) result+= parseInt(this.overtimeHours);
 
     return result;
@@ -121,12 +138,16 @@ Template.timeEntry.events({
   'change .regularHours': function (evt) {
     // Store the value for later save
     if (!tcHours[this._id]) tcHours[this._id] = {};
-    tcHours[this._id].regularHours = evt.currentTarget.value
+    tcHours[this._id].regularHours = evt.currentTarget.value;
+
+    tcHoursDep.changed();
   },
   'change .doubleHours': function (evt) {
     // Store the value for later save
     if (!tcHours[this._id]) tcHours[this._id] = {};
-    tcHours[this._id].doubleTimeHours = evt.currentTarget.value
+    tcHours[this._id].doubleTimeHours = evt.currentTarget.value;
+
+    tcHoursDep.changed();
   },
 
   'click .saveTimecards': function () {
