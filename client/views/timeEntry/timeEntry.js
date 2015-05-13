@@ -155,7 +155,7 @@ Template.timeEntry.events({
     saveError.set('');
 
     isSaving.set(true);
-    Meteor.call('updateRegularHours', tcHours, function (err, result) {
+    Meteor.call('updateMultipleTimecards', tcHours, function (err, result) {
       isSaving.set(false);
       if (err) {
         var msg = err.reason ? err.reason : err.error;

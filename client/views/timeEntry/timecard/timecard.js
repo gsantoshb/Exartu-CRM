@@ -52,3 +52,40 @@ Template.timecard.helpers({
     return Math.round(value * 100) / 100;
   }
 });
+
+
+AutoForm.hooks({
+  editTimecardForm: {
+    onSubmit: function(insertDoc) {
+      var self = this;
+
+      // Clean schema for auto and default values
+      TimecardSchema.clean(insertDoc);
+
+      // Clear error message
+      error.set('');
+
+      // Insert education
+      isSubmitting.set(true);
+      Meteor.call('updateTimecard', timecard.get()._id, insertDoc, function (err) {
+        isSubmitting.set(false);
+        if (err) {
+          var msg = err.reason ? err.reason : err.error;
+          error.set('Server error. ' + msg);
+        } else {
+          self.done();
+          // Show notification
+          $.gritter.add({
+            title:	'Timecard updated',
+            text:	'Your changes have been successfully saved.',
+            image: 	'/img/logo.png',
+            sticky: false,
+            time: 2000
+          });
+        }
+      });
+
+      return false;
+    }
+  }
+});
