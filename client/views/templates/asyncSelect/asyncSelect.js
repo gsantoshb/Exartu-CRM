@@ -56,6 +56,6 @@ Template.asyncSelect.rendered = function () {
 
 Template.asyncSelect.events({
   'change #input': function(e, ctx) {
-    ctx.data.onChange && ctx.data.onChange(e.val);
+    ctx.data.onChange && ctx.data.onChange(e.val, e.added.text);
   }
 });
