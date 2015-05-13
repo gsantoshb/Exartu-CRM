@@ -44,5 +44,11 @@ Template.timecard.helpers({
     var job =  Jobs.findOne(this.job);
     var client = job && Contactables.findOne(job.client);
     return client && client.displayName;
+  },
+  getType: function(typeId){
+    return LookUps.findOne({lookUpCode: Enums.lookUpTypes.placement.rate.lookUpCode, _id: typeId});
+  },
+  round: function(value){
+    return Math.round(value * 100) / 100;
   }
 });
