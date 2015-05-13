@@ -170,7 +170,7 @@ ContactablesController = RouteController.extend({
         else {
             employeeProcessStatusQuery.default = [];
         }
-        ;
+
         var clientProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
         if (params.clientProcessStatus) {
             clientProcessStatusQuery.default = params.clientProcessStatus.split(',');
@@ -178,7 +178,7 @@ ContactablesController = RouteController.extend({
         else {
             clientProcessStatusQuery.default = [];
         }
-        ;
+
         var contactProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
         if (params.contactProcessStatus) {
             contactProcessStatusQuery.default = params.contactProcessStatus.split(',');
@@ -186,7 +186,7 @@ ContactablesController = RouteController.extend({
         else {
             contactProcessStatusQuery.default = [];
         }
-        ;
+
 
         var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
         if (params.activeStatus) {
@@ -195,7 +195,7 @@ ContactablesController = RouteController.extend({
         else {
             activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
         }
-        ;
+
 
         query = new Utils.ObjectDefinition({
             reactiveProps: {
@@ -977,6 +977,30 @@ var runESComputation = function () {
                 for (i in spltUserId){
             filters.bool.must.push({regexp: {userId: '.*' + spltUserId[i] + '.*'}});
                 }
+        }
+
+        //location////
+        if (query.location.value) {
+            var usedTags = false;
+            _.forEach(locationFields, function (locationField) {
+                var value = getLocationTagValue(locationField, locationFields);
+                if (value) {
+                    var term = {};
+                    term[locationField + '.value'] = value.toLowerCase();
+                    filters.bool.must.push({term: term});
+                    usedTags = true;
+                }
+            });
+            if (!usedTags) {
+                var or = [];
+                _.forEach(locationFields, function (locationField) {
+                    var term = {};
+                    term[locationField + '.value'] = query.location.value.toLowerCase();
+                    or.push({term: term});
+                });
+                filters.bool.must.push({or:or});
+
+            }
         }
       
         if((query.objType.value === "Contact")&&(query.contactProcessStatus.value.length>0)){
