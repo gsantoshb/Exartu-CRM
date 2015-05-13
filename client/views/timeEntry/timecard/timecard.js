@@ -30,5 +30,19 @@ Template.timecard.helpers({
     if (timecard.get()){
       return Placements.findOne(timecard.get().placementId);
     }
+  },
+  jobDisplayName: function () {
+    var job =  Jobs.findOne(this.job);
+    return job && job.displayName;
+  },
+  clientId: function () {
+    var job =  Jobs.findOne(this.job);
+    var client = job && Contactables.findOne(job.client);
+    return client && client._id;
+  },
+  clientDisplayName: function () {
+    var job =  Jobs.findOne(this.job);
+    var client = job && Contactables.findOne(job.client);
+    return client && client.displayName;
   }
 });
