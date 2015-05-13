@@ -26,7 +26,7 @@ Meteor.methods({
     try {
       var result = 0;
       _.each(_.keys(timecardsHours), function (id) {
-        result += TimeEntryManager.updateTimecard(id, {regularHours: timecardsHours[id]});
+        result += TimeEntryManager.updateTimecard(id, timecardsHours[id]);
       });
       return result;
     } catch (err) {

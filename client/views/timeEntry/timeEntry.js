@@ -36,6 +36,14 @@ Template.timeEntry.helpers({
   placement: function () {
     return Placements.findOne(this.placementId);
   },
+  totalHours: function () {
+    var result = 0;
+    if (this.regularHours) result+= parseInt(this.regularHours);
+    if (this.doubleTimeHours) result+= parseInt(this.doubleTimeHours);
+    if (this.overtimeHours) result+= parseInt(this.overtimeHours);
+
+    return result;
+  },
   isSaving: function () {
     return isSaving.get();
   },
@@ -110,9 +118,15 @@ Template.timeEntry.events({
     }
   },
 
-  'change .totalHours': function (evt) {
+  'change .regularHours': function (evt) {
     // Store the value for later save
-    tcHours[this._id] = evt.currentTarget.value
+    if (!tcHours[this._id]) tcHours[this._id] = {};
+    tcHours[this._id].regularHours = evt.currentTarget.value
+  },
+  'change .doubleHours': function (evt) {
+    // Store the value for later save
+    if (!tcHours[this._id]) tcHours[this._id] = {};
+    tcHours[this._id].doubleTimeHours = evt.currentTarget.value
   },
 
   'click .saveTimecards': function () {

@@ -27,6 +27,8 @@ Template.timecard.helpers({
     return timecard.get();
   },
   placement: function () {
-    return Placements.findOne(this.placementId);
+    if (timecard.get()){
+      return Placements.findOne(timecard.get().placementId);
+    }
   }
 });

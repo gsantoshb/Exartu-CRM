@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-11">
                 <div class="page-title">
-                    <h1>{{_ "Time Entry"}}</h1>
+                    <h1>{{_ "Timecard Details"}}</h1>
                 </div>
             </div>
         </div>
@@ -13,7 +13,84 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="box-type-1">
                     <div class="box-type-1-content">
+                        {{#with placement}}
+                            <h3>
+                                {{#if employee}}<a href="/contactable/{{employee}}"> {{_ employeeDisplayName}} </a>{{/if}}
+                                {{#if job}}
+                                    <strong class="text text-muted" style="font-size: 25px; color: '#A29E9E'">
+                                        <a href="/job/{{job}}"> {{_ jobDisplayName}} @ </a>
+                                        <a href="/contactable/{{clientId}}">{{_ clientDisplayName}}</a>
+                                    </strong>
+                                {{/if}}
+                            </h3>
+                        {{/with}}
 
+                        {{#autoForm schema="TimecardSchema" id="editTimecardForm" doc=timecard class="form-horizontal"}}
+                            <fieldset>
+                                <!-- Hours -->
+                                <div class="col-md-6">
+                                    <!-- Regular Hours -->
+                                    <div class="form-group {{#if afFieldIsInvalid name='regularHours'}}has-error{{/if}}">
+                                        <label class="control-label col-md-5">{{afFieldLabelText name='regularHours'}}</label>
+                                        <div class="col-md-7">
+                                            {{> afFieldInput name='regularHours' placeholder="Regular Hours"}}
+                                            {{#if afFieldIsInvalid name='regularHours'}}
+                                                <span class="help-block">{{afFieldMessage name='regularHours'}}</span>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+
+                                    <!-- Doubletime Hours -->
+                                    <div class="form-group {{#if afFieldIsInvalid name='doubleTimeHours'}}has-error{{/if}}">
+                                        <label class="control-label col-md-5">{{afFieldLabelText name='doubleTimeHours'}}</label>
+                                        <div class="col-md-7">
+                                            {{> afFieldInput name='doubleTimeHours' placeholder="Double Time Hours"}}
+                                            {{#if afFieldIsInvalid name='doubleTimeHours'}}
+                                                <span class="help-block">{{afFieldMessage name='doubleTimeHours'}}</span>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+
+                                    <!-- Overtime Hours -->
+                                    <div class="form-group {{#if afFieldIsInvalid name='overtimeHours'}}has-error{{/if}}">
+                                        <label class="control-label col-md-5">{{afFieldLabelText name='overtimeHours'}}</label>
+                                        <div class="col-md-7">
+                                            {{> afFieldInput name='overtimeHours' placeholder="Overtime Hours"}}
+                                            {{#if afFieldIsInvalid name='overtimeHours'}}
+                                                <span class="help-block">{{afFieldMessage name='overtimeHours'}}</span>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </fieldset>
+
+                            {{#unless isSubmitting}}
+                                <!-- Error message -->
+                                {{#if error}}
+                                    <div class="alert alert-danger">
+                                        <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                        {{error}}
+                                    </div>
+                                {{/if}}
+
+                                <!-- Save button -->
+                                <div class="text-right" style="margin: 10px;">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-save"></i> Save changes
+                                    </button>
+                                </div>
+                            {{else}}
+                                <!-- Submitting feedback -->
+                                <div class="col-md-10 col-md-offset-1">
+                                    <div class="progress progress-striped active">
+                                        <div style="width: 100%;" class="progress-bar progress-bar-info">{{_ "Saving changes"}}...</div>
+                                    </div>
+                                </div>
+                            {{/unless}}
+
+                        {{/autoForm}}
 
                     </div>
                 </div>
