@@ -16,7 +16,7 @@ Meteor.methods({
         $options: 'i'
       }
     }, {
-      fields: { 'publicJobTitle': 1}
+      fields: { 'publicJobTitle': 1, 'clientDisplayName': 1, 'dateCreated': 1}
     }
     )).fetch();
   },
