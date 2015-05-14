@@ -11,9 +11,12 @@ Migrations.add({
         var affected = 0;
 
         contactableCursor.forEach(function (contactable) {
+            console.log('migrating ' + contactable._id + ', which has ' + contactable.addresses.length + ' addresses');
             contactable.addresses.forEach(function (address) {
-                Addresses.insert(address);
+                if (! Addresses.findOne(address._id, {fields:{_id:1}}))
+                    Addresses.insert(address);
             });
+            console.log('deleting addresses array');
             Contactables.update({_id: contactable._id}, {$unset: {addresses: ''}});
             ++affected;
         });

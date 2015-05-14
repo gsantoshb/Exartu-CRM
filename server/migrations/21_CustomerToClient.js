@@ -2,8 +2,7 @@ Migrations.add({
   version: 21,
   up: function() {
     dType.ObjTypes.remove({ name: 'Customer' });
-    var array = Contactables.find({Customer:{$exists:true}}).fetch();
-    _.forEach(array, function(c){
+    Contactables.find({Customer:{$exists:true}}).forEach(function(c){
       c.objNameArray = _.map(c.objNameArray, function(a){
         if(a === "Customer"){
           return "Client";
@@ -24,7 +23,7 @@ Migrations.add({
       catch(e){
         console.log('exploto la migracion en:',c);
       }
-        Contactables.update({_id: c._id},{$unset:{Customer:""}} )
+      Contactables.update({_id: c._id},{$unset:{Customer:""}} )
     });
 
   }
