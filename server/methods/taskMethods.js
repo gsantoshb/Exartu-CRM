@@ -63,7 +63,8 @@ Meteor.methods({
       begin: Date,
       end: Match.Optional(Date),
       completed: Match.Optional(Date),
-      link: Match.Optional(Object)
+      link: Match.Optional(Object),
+      links: Match.Optional(Array)
     });
 
     try {

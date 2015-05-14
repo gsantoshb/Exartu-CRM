@@ -11,7 +11,8 @@ var error = new ReactiveVar(''),
     isDisabled = new ReactiveVar(true),
     saveError = new ReactiveVar(''),
     isSaving = new ReactiveVar(false),
-    tcHours = {};
+    tcHours = {},
+    tcHoursDep = new Tracker.Dependency;
 
 Template.timeEntry.helpers({
   isSubmitting: function () {
@@ -35,6 +36,30 @@ Template.timeEntry.helpers({
   },
   placement: function () {
     return Placements.findOne(this.placementId);
+  },
+  totalHours: function () {
+    // Check to use the user inputted hours or the ones stored in the timecard
+    tcHoursDep.depend();
+
+    var result = 0;
+    // Regular hours
+    if (tcHours[this._id] && tcHours[this._id].regularHours) {
+      result += parseInt(tcHours[this._id].regularHours);
+    } else {
+      if (this.regularHours) result+= parseInt(this.regularHours);
+    }
+
+    // Double time hours
+    if (tcHours[this._id] && tcHours[this._id].doubleTimeHours) {
+      result += parseInt(tcHours[this._id].doubleTimeHours);
+    } else {
+      if (this.doubleTimeHours) result+= parseInt(this.doubleTimeHours);
+    }
+
+    // Overtime hours
+    if (this.overtimeHours) result+= parseInt(this.overtimeHours);
+
+    return result;
   },
   isSaving: function () {
     return isSaving.get();
@@ -110,9 +135,19 @@ Template.timeEntry.events({
     }
   },
 
-  'change .totalHours': function (evt) {
+  'change .regularHours': function (evt) {
     // Store the value for later save
-    tcHours[this._id] = evt.currentTarget.value
+    if (!tcHours[this._id]) tcHours[this._id] = {};
+    tcHours[this._id].regularHours = evt.currentTarget.value;
+
+    tcHoursDep.changed();
+  },
+  'change .doubleHours': function (evt) {
+    // Store the value for later save
+    if (!tcHours[this._id]) tcHours[this._id] = {};
+    tcHours[this._id].doubleTimeHours = evt.currentTarget.value;
+
+    tcHoursDep.changed();
   },
 
   'click .saveTimecards': function () {
@@ -120,7 +155,7 @@ Template.timeEntry.events({
     saveError.set('');
 
     isSaving.set(true);
-    Meteor.call('updateRegularHours', tcHours, function (err, result) {
+    Meteor.call('updateMultipleTimecards', tcHours, function (err, result) {
       isSaving.set(false);
       if (err) {
         var msg = err.reason ? err.reason : err.error;
