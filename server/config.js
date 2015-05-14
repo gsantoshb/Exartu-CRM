@@ -36,6 +36,7 @@ ExartuConfig = {
   ResumeParserPasscode: '',
   EncryptCode: undefined,
   CardReaderAppId:undefined,
-  CardReaderPassword:undefined
+  CardReaderPassword:undefined,
+  aidaHierarchy:undefined
 
 };
