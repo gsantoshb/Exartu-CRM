@@ -32,7 +32,7 @@
                                 {{/if}}
 
                                 <!-- Create button -->
-                                <button class="btn btn-primary create {{#if isDisabled}}disabled{{/if}}">
+                                <button class="btn btn-success create {{#if isDisabled}}disabled{{/if}}">
                                     <i class="fa fa-list-alt"></i> Create timecards
                                 </button>
                             {{else}}
@@ -53,9 +53,11 @@
                         <div class="list-holder">
                             <!-- Header -->
                             <div class="list-header">
-                                <div class="list-header-cell timecards-list-header-title" style="width: 50%; margin-right: 50px;">{{_ "Title"}}</div>
+                                <div class="list-header-cell timecards-list-header-title" style="width: 40%; margin-right: 50px;">{{_ "Title"}}</div>
                                 <div class="list-header-cell">{{_ "Date Created"}}</div>
                                 <div class="list-header-cell">{{_ "Regular Hours"}}</div>
+                                <div class="list-header-cell">{{_ "Double Hours"}}</div>
+                                <div class="list-header-cell">{{_ "Total Hours"}}</div>
                             </div>
                         </div>
 
@@ -68,7 +70,7 @@
                                     </div>
 
                                     <!-- Placement information -->
-                                    <div class="list-item-cell timecards-list-item-title" style="width: 50%;">
+                                    <div class="list-item-cell timecards-list-item-title" style="width: 40%;">
                                         {{#with placement}}
                                             <div class="item-title"><a href="/contactable/{{employee}}">{{employeeDisplayName}}</a> <i
                                                     class="fa fa-long-arrow-right"></i> <a href="/job/{{job}}">{{jobDisplayName}}</a></div>
@@ -79,13 +81,23 @@
                                     </div>
 
                                     <!-- Date created -->
-                                    <div class="list-item-cell timecards-list-item-time" style="width: 20%;">
+                                    <div class="list-item-cell timecards-list-item-time" style="width: 15%;">
                                         <span>{{formattedDate createdAt "fromNow"}}</span><br>
                                     </div>
 
                                     <!-- Regular hours -->
                                     <div class="list-item-cell timecards-list-item-time" style="width: 10%;">
-                                        <input type="number" class="totalHours" value="{{regularHours}}" style="width: 100%;"/>
+                                        <input type="number" class="regularHours" value="{{regularHours}}" style="width: 100%;"/>
+                                    </div>
+
+                                    <!-- Double hours -->
+                                    <div class="list-item-cell timecards-list-item-time" style="width: 10%;">
+                                        <input type="number" class="doubleHours" value="{{doubleTimeHours}}" style="width: 100%;"/>
+                                    </div>
+
+                                    <!-- Total hours -->
+                                    <div class="list-item-cell timecards-list-item-time text-center" style="width: 10%;">
+                                        {{totalHours}}
                                     </div>
                                 </div>
                             {{/each}}

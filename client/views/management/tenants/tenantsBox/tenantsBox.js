@@ -96,10 +96,16 @@ Template.tenantsBox.helpers ({
 });
 
 var ActivityCounters = new Mongo.Collection('activityCounters');
-
+var hiersContact = new ReactiveVar();
 var options = {};
 // List
 Template.tenantsList.created = function () {
+    Meteor.call('getAidaHiersContact', function(err,cb){
+      if(cb) {
+        hiersContact.set(cb);
+      }
+    })
+
     if (!SubscriptionHandlers.TenantHandler) {
         SubscriptionHandlers.TenantHandler = Meteor.paginatedSubscribe('tenants');
     }
@@ -244,7 +250,10 @@ Template.tenantsListSearch.events({
 // Item
 
 Template.tenantsListItem.helpers({
+    notAdded: function(){
+      return !_.contains(hiersContact.get(), this._id);
 
+    },
     pictureUrl: function (pictureFileId) {
         var picture = TenantsFS.findOne({_id: pictureFileId});
         return picture ? picture.url('TenantsFSThumbs') : undefined;
@@ -270,8 +279,76 @@ Template.tenantsListItem.helpers({
     lastDate: function () {
         var counts = ActivityCounters.findOne(this._id);
         return counts && counts.lastDate;
+    },
+    getHierEmail: function () {
+        var user = TenantUsers.findOne(this.users[0]);
+        return user && user.emails[0].address;
     }
 });
+
+Template.tenantsListItem.events = {
+  'click .addHierAsContactable': function(){
+    var self = this;
+    var leadLookUp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.contact_status, isDefault: true});
+    var emailLookUp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.contactMethod_types, lookUpActions: Enums.lookUpAction.ContactMethod_Email});
+    var phoneLookUp =  LookUps.findOne({lookUpCode: Enums.lookUpCodes.contactMethod_types, lookUpActions: Enums.lookUpAction.ContactMethod_Phone});
+    var activeLookUp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.active_status, lookUpActions: Enums.lookUpAction.Implies_Active});
+    var user = TenantUsers.findOne(self.users[0]);
+    var arrayName = self.userName.split(" ");
+    var firstname="";
+    var lastName = " ";
+    if(arrayName.length>1){
+      firstname = arrayName[0];
+      lastName = arrayName[1];
+    }
+    else{
+      firstname = arrayName[0];
+    }
+    var contact =  { objNameArray: [ 'person', 'Contact', 'contactable' ],
+                     person:    { firstName: firstname,
+                                  lastName: lastName,
+                                  middleName: '',
+                                  jobTitle: '',
+                                  salutation: '',
+                                  birthDate: null },
+                     Contact: { status: leadLookUp._id,
+                                client: null },
+                     statusNote: 'Hierarchy name: '+self.name,
+                     activeStatus: activeLookUp._id,
+                     howHeardOf: null,
+                     contactMethods: [{type: emailLookUp._id, value: user.emails[0].address}, {type: phoneLookUp._id, value: self.phone}]
+                   }
+    Meteor.call('addContactable', contact, function(err,cb){
+      if(cb){
+        Meteor.call('setHiersContact', self._id, function(e,c){
+          Utils.showModal('basicModal', {
+            title: 'Contact added',
+            message: 'Show contact information?',
+            buttons: [{label: 'Close', classes: 'btn-info', value: false}, {
+              label: 'Show',
+              classes: 'btn-success',
+              value: true
+            }],
+            callback: function (result) {
+              if(result) {
+                Router.go('/contactable/' + cb);
+              }
+              else{
+                Meteor.call('getAidaHiersContact', function(err,cb){
+                  if(cb) {
+                    hiersContact.set(cb);
+                  }
+                })
+              }
+            }
+          });
+        })
+      }
+
+    })
+
+  }
+};
 
 // list sort
 

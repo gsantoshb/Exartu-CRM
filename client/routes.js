@@ -347,7 +347,12 @@ Router.map(function () {
   });
 
   this.route('timeEntry', {
-    path: 'timeEntry/:tab?'
+    path: 'timeEntry',
+    controller: TimeEntryController
+  });
+  this.route('timecard', {
+    path: 'timeEntry/timecard/:id',
+    controller: TimeCardController
   });
 });
 

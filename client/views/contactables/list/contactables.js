@@ -2,6 +2,7 @@
  * Variables
  */
 var query = {};
+var selectedValue = {};
 
 var selected = undefined;
 var comonTypes = [];
@@ -170,7 +171,7 @@ ContactablesController = RouteController.extend({
         else {
             employeeProcessStatusQuery.default = [];
         }
-        ;
+
         var clientProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
         if (params.clientProcessStatus) {
             clientProcessStatusQuery.default = params.clientProcessStatus.split(',');
@@ -178,7 +179,7 @@ ContactablesController = RouteController.extend({
         else {
             clientProcessStatusQuery.default = [];
         }
-        ;
+
         var contactProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
         if (params.contactProcessStatus) {
             contactProcessStatusQuery.default = params.contactProcessStatus.split(',');
@@ -186,7 +187,7 @@ ContactablesController = RouteController.extend({
         else {
             contactProcessStatusQuery.default = [];
         }
-        ;
+
 
         var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
         if (params.activeStatus) {
@@ -195,7 +196,7 @@ ContactablesController = RouteController.extend({
         else {
             activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
         }
-        ;
+
 
         query = new Utils.ObjectDefinition({
             reactiveProps: {
@@ -505,12 +506,37 @@ Template.contactablesListHeader.helpers({
       self.ready(array);
     };
   },
+  getJobs: function(){
+    return function(string){
+      var self = this;
+      Meteor.call('findJob', string, function(err, cb){
+        if(cb){
+          var array = _.map(cb, function(r){
+
+            return {text: r.publicJobTitle+" @ "+ r.clientDisplayName, id: r._id};
+          })
+          self.ready(array);
+        }
+      })
+    }
+  },
+  JobChanged: function(){
+    var self = this;
+    return function (value, text) {
+      self.value = value;
+      selectedValue.id = value;
+      selectedValue.text = text;
+    }
+  },
   hotListChanged: function () {
     var self = this;
     return function (value) {
       self.value = value;
-      selectedValue = value;
+      selectedValue.id = value;
     }
+  },
+  allEmployee: function(){
+    return _.contains(comonTypes, "employee");
   }
 });
 
@@ -647,7 +673,7 @@ Template.contactablesListItem.helpers({
         return !_.isEmpty(query.searchString.value);
     },
     getLastNote: function () {
-      if (this.latestNotes.length > 0)
+      if (this.latestNotes && this.latestNotes.length > 0)
             return this.latestNotes[this.latestNotes.length-1];
     },
     isSelected: function () {
@@ -832,6 +858,9 @@ Template.contactablesListHeader.events({
     },
   'click .add-hotList': function (e, ctx) {
     addHotList.call(this);
+  },
+  'click .add-placement': function(e, ctx){
+    addPlacement.call(this);
   }
 });
 
@@ -868,14 +897,66 @@ Template.contactableListSort.events({
         setSortField(this);
     }
 });
-
-
-
-var addHotList = function () {
-  if (!selectedValue) {
+var addPlacement = function (){
+  if(!selectedValue.id){
     return;
   }
-  var hotlist = AllHotLists.findOne({_id: selectedValue});
+  var info = [];
+  var inc = 0;
+  _.forEach(selected.get(), function(employee) {
+    var placement = {};
+    placement.job = selectedValue.id;
+    placement.employee = employee.id;
+    var status = LookUps.findOne({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode, isDefault: true});
+    placement.candidateStatus = status._id;
+    placement.objNameArray = ["placement"];
+    var lookUpActive = LookUps.findOne({lookUpCode:Enums.lookUpCodes.active_status, lookUpActions:Enums.lookUpAction.Implies_Active })
+    if(employee.activeStatus === lookUpActive._id) {
+
+
+      Meteor.call('addPlacement', placement, function (err, cb) {
+        inc = inc + 1;
+        if (cb) {
+          info.push({placement: cb, employee: employee.id});
+          if (selected.get().length >= inc) {
+            //finished
+            var message = "";
+            _.forEach(info, function (p) {
+              var cont = Contactables.findOne({_id: p.employee});
+              message = message + "<a href='/placement/" + p.placement + "' target='_blank'>" + cont.displayName + "</a><br>";
+            });
+            Utils.showModal('basicModal', {
+              title: 'Placements added',
+              message: info.length + ' placements added.<br>Job: ' + selectedValue.text + '<br>Employees:<br>' + message,
+              buttons: [{
+                label: 'Ok',
+                classes: 'btn-success',
+                value: true
+              }],
+              callback: function (result) {
+                //deselect all
+                selected.set([])
+              }
+            });
+
+          }
+        }
+
+
+      });
+    }
+    else{
+      inc = inc + 1;
+    }
+  });
+
+}
+
+var addHotList = function () {
+  if (!selectedValue.id) {
+    return;
+  }
+  var hotlist = AllHotLists.findOne({_id: selectedValue.id});
   var inc = 0
   _.forEach(selected.get(), function (item) {
      if ((!hotlist.members)||(hotlist.members.indexOf(item.id) < 0)) {
@@ -915,6 +996,7 @@ Template.contactablesListItem.events({
             selected.curValue.push({
                 id: this._id,
                 type: this.objNameArray,
+                activeStatus: this.activeStatus,
                 email: Utils.getContactableEmail(this)
             })
         } else {
@@ -977,6 +1059,30 @@ var runESComputation = function () {
                 for (i in spltUserId){
             filters.bool.must.push({regexp: {userId: '.*' + spltUserId[i] + '.*'}});
                 }
+        }
+
+        //location////
+        if (query.location.value) {
+            var usedTags = false;
+            _.forEach(locationFields, function (locationField) {
+                var value = getLocationTagValue(locationField, locationFields);
+                if (value) {
+                    var term = {};
+                    term[locationField + '.value'] = value.toLowerCase();
+                    filters.bool.must.push({term: term});
+                    usedTags = true;
+                }
+            });
+            if (!usedTags) {
+                var or = [];
+                _.forEach(locationFields, function (locationField) {
+                    var term = {};
+                    term[locationField + '.value'] = query.location.value.toLowerCase();
+                    or.push({term: term});
+                });
+                filters.bool.must.push({or:or});
+
+            }
         }
       
         if((query.objType.value === "Contact")&&(query.contactProcessStatus.value.length>0)){

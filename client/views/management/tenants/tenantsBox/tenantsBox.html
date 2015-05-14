@@ -90,6 +90,9 @@
             <div class="list-header-cell network-list-header-time">Last Activity date</div>
             <div class="list-header-cell network-list-header-time">name</div>
             <div class="list-header-cell network-list-header-time">phone</div>
+            <div class="list-header-cell network-list-header-time">Email</div>
+            <div class="list-header-cell network-list-header-time"></div>
+
         </div>
     {{/if}}
 
@@ -149,7 +152,7 @@
                 </div>
                 <div class="list-item-cell network-list-item-contact">
                     <span>
-                        {{lastDate}}
+                        {{formattedDate lastDate "fromNow"}}
                     </span>
                 </div>
                 <div class="list-item-cell network-list-item-contact">
@@ -160,6 +163,20 @@
                 <div class="list-item-cell network-list-item-contact">
                     <span>
                         {{phone}}
+                    </span>
+                </div>
+                <div class="list-item-cell network-list-item-contact">
+                    <span>
+                        {{getHierEmail}}
+                    </span>
+                </div>
+                <div class="list-item-cell network-list-item-contact">
+                    <span style="float:right; margin-left: 40%" >
+                        {{#if notAdded}}
+                            <button type="button" class="btn btn-success addHierAsContactable" title="Add">
+                                <span class="fa fa-plus"></span> Add
+                            </button>
+                        {{/if}}
                     </span>
                 </div>
             </div>

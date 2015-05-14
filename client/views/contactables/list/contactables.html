@@ -60,20 +60,32 @@
 
     {{#if selectedCount}}
         <div class="list-interactive-msg">
+            <div>
             <span class="text">
                 <strong>{{selectedCount}}</strong> {{_ "selected"}}.
                 {{#if showSelectAll}}
                     <a id="selectAllRemotes" class="pointer">&nbsp;{{_ "Select all"}} {{totalCount}}?</a>
                 {{/if}}
             </span>
+            </div>
             {{#if areAllSelectedTheSameType}}
-                <!--{{#if withoutEmail}}-->
+                 <!--{{#if withoutEmail}}-->
                     <!--<span class="text-info">- {{withoutEmail}} {{_ "have no email address"}}</span>-->
                 <!--{{else}}-->
                     <!--<i class="fa fa-long-arrow-right"></i>-->
                     <!--<button class="btn btn-sm btn-primary" id="sendEmailTemplate"> {{_ "Send email template"}}</button>-->
 
                 <!--{{/if}}-->
+                 {{#if allEmployee}}
+
+                     <div class="col-md-2"><h4>Add placements:</h4></div>
+                     <div class="input-group col-md-3" style="margin-bottom: 10px">
+                         {{>asyncSelect query=getJobs placeholder="Search job" onChange=JobChanged width='100%'}}
+                         <span class="input-group-btn">
+                        <button class="add-placement btn btn-default" type="button"><span class="fa fa-plus"></span></button>
+                     </span>
+                     </div>
+                 {{/if}}
                 <div>
                 <div class="col-md-2"><h4>Add to Hot list:</h4></div>
                 <div class="input-group col-md-3" style="margin-bottom: 10px">
@@ -137,7 +149,7 @@
         <div class="input-group">
                 <span class="prop-input">
                     {{#objectProperty property=searchString}}
-                        <input id="searchString" type="text" class="form-control" placeholder={{_ "Search network"}}>
+                        <input id="searchString" type="text" class="form-control" placeholder={{_ "Search network"}} value="{{value}}">
                     {{/objectProperty}}
                     <span class="text text-danger"></span>
                 </span>

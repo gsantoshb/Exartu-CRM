@@ -18,6 +18,7 @@ Meteor.methods({
         }
     },
     addContactable: function (contactable) {
+        console.log(contactable);
         return ContactableManager.create(contactable);
     },
     createEmployeeFromResume: function (stream) {

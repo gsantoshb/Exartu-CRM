@@ -160,11 +160,16 @@ AutoForm.hooks({
 
       // Clear error message
       error.set('');
-
-      // Add link parameter when provided
-      insertDoc.link = {};
-      insertDoc.link.id = options.link;
-      insertDoc.link.type = options.type;
+      // when it's editing a task options.link is not provided so this would delete the link
+      if (!task.get()){
+        // Add link parameter when provided
+        insertDoc.link = {};
+        insertDoc.link.id = options.link;
+        insertDoc.link.type = options.type;
+      } else {
+        // HACK: options.link is not provided, the server expects link or it will remove all the links
+        insertDoc.links = task.get().links;
+      }
       // Insert/update task
       isSubmitting.set(true);
       if(pushDays>0){

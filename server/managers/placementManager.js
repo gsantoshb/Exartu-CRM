@@ -32,12 +32,10 @@ PlacementManager = {
     });
     if (!status)
       throw new Meteor.Error(404, 'Placement status not found');
-
     // If placement's job has another placement then keep its rates
     var lastJobPlacement = Placements.findOne({job: placement.job}, {sort: {dateCreated: -1}});
     if (lastJobPlacement)
       placement.placementRates = lastJobPlacement.placementRates;
-
     return Placements.insert(placement);
   },
   getPlacements: function (jobId, employeeId) {
