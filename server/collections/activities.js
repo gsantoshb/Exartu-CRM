@@ -26,7 +26,7 @@ ActivityViews = new View('activities', {
     else if ((activity.type === Enums.activitiesType.fileAdd) && (filesToPublish.lastIndexOf(activity.entityId) === -1)) {
       filesToPublish.push(activity.entityId);
       if (contactablesToPublish.lastIndexOf(activity.links[0]) === -1) {
-        contactablesToPublish.push(activity.links[0].id);
+        contactablesToPublish.push(activity.links[0]);
       }
     }
     else if ((activity.type === Enums.activitiesType.placementAdd || activity.type === Enums.activitiesType.placementEdit) && (placementsToPublish.lastIndexOf(activity.entityId) === -1)) {

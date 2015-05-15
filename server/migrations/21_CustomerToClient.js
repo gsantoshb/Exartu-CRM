@@ -1,31 +1,23 @@
+
 Migrations.add({
   version: 21,
   up: function() {
+    // Remove the objType Customer
     dType.ObjTypes.remove({ name: 'Customer' });
-    var array = Contactables.find({Customer:{$exists:true}}).fetch();
-    _.forEach(array, function(c){
-      c.objNameArray = _.map(c.objNameArray, function(a){
-        if(a === "Customer"){
-          return "Client";
-        }
-        else{
-          return a;
-        }
+
+    var count = 0;
+    Contactables.find({Customer:{$exists:true}}, {fields: {objNameArray: 1, Customer: 1}}).forEach(function (c) {
+      count++;
+      console.log('updating client', count, '-', c._id);
+
+      // Update contactable
+      var client = _.clone(c.Customer);
+      Contactables.update({_id: c._id}, {
+        $set: { Client: client, objNameArray: ["organization", "contactable", "Client"] },
+        $unset:{Customer:""}
       });
-      try {
-        Contactables.update({_id: c._id}, {
-          $set: {
-            Client:
-              c.Customer
-            , objNameArray: c.objNameArray
-          }
-        });
-      }
-      catch(e){
-        console.log('exploto la migracion en:',c);
-      }
-        Contactables.update({_id: c._id},{$unset:{Customer:""}} )
     });
 
+    console.log('Finished migration 21');
   }
 });
