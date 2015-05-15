@@ -79,7 +79,6 @@ Template.dashboard.rendered = function() {
         autoStart: true,
        postRideCallback: function() {
          Meteor.call('setVisitedTour', "tour1", function(err,cb){
-
          })
 
        }
@@ -90,6 +89,8 @@ Template.dashboard.rendered = function() {
 Template.dashboard.destroyed = function () {
   SubscriptionHandlers.ActivitiesHandler.stop();
   delete SubscriptionHandlers.ActivitiesHandler;
+  $("#tour1").joyride('destroy');
+
 };
 
 Template.dashboard.helpers({
