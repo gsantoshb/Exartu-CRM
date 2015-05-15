@@ -72,6 +72,21 @@ Template.dashboard.created = function () {
     subscribe();
   });
 };
+
+Template.dashboard.rendered = function() {
+  if(!_.contains(Meteor.user().tours, "tour1")){
+     $("#tour1").joyride({
+        autoStart: true,
+       postRideCallback: function() {
+         Meteor.call('setVisitedTour', "tour1", function(err,cb){
+
+         })
+
+       }
+     });
+  }
+}
+
 Template.dashboard.destroyed = function () {
   SubscriptionHandlers.ActivitiesHandler.stop();
   delete SubscriptionHandlers.ActivitiesHandler;

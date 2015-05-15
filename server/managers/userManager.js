@@ -102,6 +102,7 @@ UserManager = {
                 language: document.language,
                 name: document.name,
                 phone: document.phone
+
             };
 
             if (document.currentHierId) {
@@ -279,6 +280,17 @@ UserManager = {
 
             return list;
         }
+    },
+    setVisitedTour: function(tour){
+      var user = Meteor.user();
+      if(user.tours){
+        if(!_.contains(user.tours, tour))
+        user.tours.push(tour);
+      }
+      else{
+        user.tours = [tour];
+      }
+      Meteor.users.update({_id: Meteor.userId()}, {$set:{tours: user.tours }});
     }
 };
 
