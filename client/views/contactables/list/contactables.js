@@ -512,7 +512,8 @@ Template.contactablesListHeader.helpers({
       Meteor.call('findJob', string, function(err, cb){
         if(cb){
           var array = _.map(cb, function(r){
-            return {text: r.publicJobTitle, id: r._id};
+
+            return {text: r.publicJobTitle+" @ "+ r.clientDisplayName, id: r._id};
           })
           self.ready(array);
         }
@@ -933,9 +934,8 @@ var addPlacement = function (){
                 value: true
               }],
               callback: function (result) {
-                if (result) {
-
-                }
+                //deselect all
+                selected.set([])
               }
             });
 
