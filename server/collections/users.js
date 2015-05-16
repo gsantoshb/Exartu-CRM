@@ -14,9 +14,10 @@ Meteor.publish(null, function () {
             'inactive': 1,
             'hierarchies': 1,
             'currentHierId': 1,
-			'language': 1,
+			      'language': 1,
             'firstName': 1,
-            'lastName': 1
+            'lastName': 1,
+            'tours':1
         }
     }), {
         hierIdKeyName: 'hierarchies'
