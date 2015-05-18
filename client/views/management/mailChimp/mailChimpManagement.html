@@ -50,19 +50,14 @@
                         <div class="col-md-10">
                             {{#if selectedList}}
                                 <div class="clearfix" style="margin-bottom: 20px;">
-                                    <button class="btn btn-primary pull-right" disabled="{{importDisabled}}" id="import"> Import contacts </button>
-
-                                    <div class="pull-right" style="width: 200px;">
-                                        {{#if hotListSelected}}
-                                            <a href="/hotList/{{hotListSelected}}"><i class="fa fa-external-link"></i></a>
-                                        {{/if}}
-                                        {{>asyncSelect query=getHotList placeholder="Search hot list" onChange=hotListChanged minimumInputLength=0 width='180px'}}
-                                    </div>
-
+                                    <button class="btn btn-primary pull-right" disabled="{{importDisabled}}" id="import" title="Imports contacts from this mailchimp's list to aïda">
+                                        <i class="fa fa-download"></i>
+                                        Import to aïda
+                                    </button>
                                     <h4>Members <a class="pointer" id="refresh-members"><i class="fa fa-refresh"></i></a></h4>
                                 </div>
 
-                                <ul class="list-group">
+                                <ul class="list-group" style="max-height: 400px; overflow-y: auto">
                                     {{#if loadingMembers}}
                                         {{> mc_loading}}
                                     {{else}}
@@ -80,6 +75,27 @@
                                         {{/each}}
                                     {{/if}}
                                 </ul>
+                                <hr>
+                                <div class="clearfix">
+                                    <h4>HotLists</h4>
+                                    {{#if hotListSelected}}
+                                        <button class="btn btn-primary pull-right" disabled="{{importDisabled}}" id="importWithHotList" title="imports contacts from this mailchimp's list to aïda's hotLists">
+                                            <i class="fa fa-download"></i>
+                                            Import members to {{hotListName}}
+                                        </button>
+
+                                        <button class="btn btn-primary pull-right" disabled="{{exportDisabled}}" id="export" style="margin-right: 10px;" title="exports contacts from aïda's hotLists to this mailchimp's list">
+                                            <i class="fa fa-upload"></i>
+                                            Export hotlist to MailChimp
+                                        </button>
+                                    {{/if}}
+                                    <div style="width: 200px;">
+                                        {{>asyncSelect query=getHotList placeholder="Search hot list" onChange=hotListChanged minimumInputLength=0 width='180px' allowClear=true}}
+                                        {{#if hotListSelected}}
+                                            <a href="/hotList/{{hotListSelected}}"><i class="fa fa-external-link"></i></a>
+                                        {{/if}}
+                                    </div>
+                                </div>
                             {{else}}
                                 <div>
                                     <h5>Select a list to import it to aïda</h5>

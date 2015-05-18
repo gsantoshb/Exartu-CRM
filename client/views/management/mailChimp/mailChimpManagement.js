@@ -33,6 +33,7 @@ var addDisabled = new ReactiveVar(false),
   loadingLists = new ReactiveVar(false),
   loadingMembers = new ReactiveVar(false),
   importDisabled = new ReactiveVar(false),
+  exportDisabled = new ReactiveVar(false),
   hotListSelected = new ReactiveVar(null);
 
 AutoForm.hooks({
@@ -136,6 +137,9 @@ Template.mailChimpManagement.helpers({
   importDisabled: function () {
     return importDisabled.get();
   },
+  exportDisabled: function () {
+    return !hotListSelected.get() || exportDisabled.get();
+  },
   importFinished: function () {
     return importFinished.get();
   },
@@ -165,6 +169,10 @@ Template.mailChimpManagement.helpers({
       hotListSelected.set(value);
     }
   },
+  hotListName: function () {
+    var selected =  AllHotLists.findOne(hotListSelected.get());
+    return selected && selected.displayName;
+  },
   getHotList: function () {
 
     return function (string) {
@@ -184,29 +192,55 @@ Template.mailChimpManagement.helpers({
   }
 });
 
+var importContacts = function (useHotList) {
+  var selected = selectedList.get();
+  if (!selected) return;
+
+  importDisabled.set(true);
+
+  Meteor.call('importFromMailchimp', selected, useHotList ? hotListSelected.get() : null, function(err, result){
+    importDisabled.set(false);
+    if (err){
+      console.log(err);
+    }else {
+      importResult.set(result);
+      importFinished.set(true);
+      $.gritter.add({
+        title:	'Mail chimp',
+        text:	result.imported.length + ' contacts imported, ' + result.failed.length +
+        ' failed, '+ result.existed.length + ' already existed and were ignored',
+        image: 	'/img/logo.png',
+        sticky: false,
+        time: 2000
+      });
+    }
+  })
+};
 Template.mailChimpManagement.events({
   'click .mc-list': function () {
     selectedList.set(this.id);
+    console.log('list', this.id);
   },
   'click #refresh-members': refreshMembers,
   'click #refresh-lists': refreshLists,
   'click #import': function () {
-    var selected = selectedList.get();
-    if (!selected) return;
-
-    importDisabled.set(true);
-
-    Meteor.call('importFromMailchimp', selected, hotListSelected.get(), function(err, result){
-      importDisabled.set(false);
+    importContacts(false);
+  },
+  'click #importWithHotList': function () {
+    importContacts(true);
+  },
+  'click #export': function () {
+    exportDisabled.set(true);
+    Meteor.call('exportToMailchimp', selectedList.get(), hotListSelected.get(), function (err, result) {
+      exportDisabled.set(false);
       if (err){
         console.log(err);
-      }else {
-        importResult.set(result);
-        importFinished.set(true);
+      }else{
+        refreshMembers();
         $.gritter.add({
           title:	'Mail chimp',
-          text:	result.imported.length + ' contacts imported, ' + result.failed.length +
-                ' failed, '+ result.existed.length + ' already existed and were ignored',
+          text:	result.exported.length + ' contacts exported, ' + result.failed.length +
+          ' failed, '+ result.added.length + ' already existed and were just added to this list',
           image: 	'/img/logo.png',
           sticky: false,
           time: 2000

@@ -16,11 +16,16 @@ Template.asyncSelect.rendered = function () {
   var self = this;
   var placeholder = self.data.placeholder || "Search";
   var minimumInputLength = self.data.minimumInputLength == undefined ? 1 : self.data.minimumInputLength;
+  var allowClear = false;
+  if (self.data.allowClear){
+    allowClear = true;
+  }
 
   if (! self.data.query || ! _.isFunction(self.data.query)) throw new Error('Template asyncSelect needs a function as query parameter');
   if ( self.data.onChange && ! _.isFunction(self.data.onChange)) throw new Error('Argument onChange of asyncSelect must be a function');
 
   self.$('#input').select2({
+    allowClear: allowClear,
     minimumInputLength: minimumInputLength,
     initSelection: function (element, callback) {
       if (_.isFunction(self.data.defaultValue)) {
@@ -56,6 +61,6 @@ Template.asyncSelect.rendered = function () {
 
 Template.asyncSelect.events({
   'change #input': function(e, ctx) {
-    ctx.data.onChange && ctx.data.onChange(e.val, e.added.text);
+    ctx.data.onChange && ctx.data.onChange(e.val, e.added && e.added.text);
   }
 });
