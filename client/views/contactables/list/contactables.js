@@ -1111,7 +1111,7 @@ var runESComputation = function () {
                     contactable._match = {
                         score: (hit._score / result.max_score) * 100,
                         properties: _.map(hit.highlight, function (matchedProperty, propertyName) {
-                            return propertyName;
+                            return {key: propertyName, value: matchedProperty};
                         }),
                         contexts: _.flatten(_.map(hit.highlight, function (matchedProperty, propertyName) {
                             return matchedProperty;
@@ -1119,6 +1119,7 @@ var runESComputation = function () {
                     };
                     return contactable;
                 });
+                console.log(esResult);
                 esDep.changed();
                 isSearching = false;
                 searchDep.changed();
