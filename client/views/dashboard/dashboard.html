@@ -1,5 +1,5 @@
 <template name="dashboard">
-
+    {{>tour1}}
     <div class="network-content nicer-filters" id="content">
         <div class="row">
 
@@ -7,12 +7,14 @@
 
                 <aside class="sidebar">
 
-                    <div class="page-title-2">
+                    <div class="page-title-2" id="tour1Welcome">
                         <h1 class="welcome">
                             {{_ "Hi"}}&nbsp;
                             {{getUserDisplayName}},
                         </h1>
                     </div>
+
+
 
                     <!--{{#if getLeadTrackers}}-->
                         <!--<section class="box-type-3">-->
@@ -48,7 +50,7 @@
                     <!--{{/if}}-->
 
                     <div >
-                        <div class="sidebar-right hidden-xs">
+                        <div class="sidebar-right hidden-xs" >
                             {{> agendaBox}}
                                 {{>dashboard_filters}}
 
@@ -119,8 +121,8 @@
                             </div>
                         </div><!-- .list-actions -->
 
-                        <div class="list-item-section">
-                            <div class="clearfix">
+                        <div class="list-item-section" >
+                            <div class="clearfix" id="tour1activities">
                                 {{>fastPagination name="activities" containerClass="magic-pager pull-right"}}
                             </div>
 

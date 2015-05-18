@@ -57,5 +57,10 @@ Meteor.methods({
   bUserIsClientAdmin: function(user){
     if (!user) user=  Meteor.users.findOne(this.userId);
     return RoleManager.bUserIsClientAdmin(user);
+  },
+
+  //tours
+  setVisitedTour: function(tour){
+    UserManager.setVisitedTour(tour);
   }
 });
