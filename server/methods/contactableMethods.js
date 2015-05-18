@@ -1,4 +1,4 @@
-
+var fs = Npm.require('fs');
 
 Meteor.methods({
     parseCardReader: function(taskId){
@@ -18,11 +18,11 @@ Meteor.methods({
         }
     },
     addContactable: function (contactable) {
-        console.log(contactable);
         return ContactableManager.create(contactable);
     },
     createEmployeeFromResume: function (stream) {
-        return ContactableManager.createFromResume(stream);
+        var toReturn = ContactableManager.createFromResume(stream);
+        return toRetun;
     },
     createEmployeeFromPlainText: function (text) {
         this.unblock();
@@ -274,12 +274,12 @@ FileUploader.createEndpoint('uploadResume', {
     onUpload: function (stream, metadata) {
       var employee = ContactableManager.createFromResume(stream);
             stream = fs.createReadStream(stream.path);
-            var resumeId = S3Storage.upload(stream);
-
+      try {
+        var resumeId = S3Storage.upload(stream);
+      }catch(e){console.log("Problem with S3Storage")}
             if (!resumeId) {
                 return new Meteor.Error(500, "Error uploading resume to S3");
             }
-
             var resume = {
                 employeeId: employee,
                 resumeId: resumeId,

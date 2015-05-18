@@ -1,3 +1,4 @@
+var disable = 0;
 ResumeParserController = RouteController.extend({
     template: 'resumeParser',
     layoutTemplate: 'mainLayout',
@@ -63,7 +64,11 @@ Template.resumeAdd.events = {
         $('#add-file').trigger('click');
     },
     'change #add-file': function (e) {
-        uploadFile(e.target.files[0]);
+      _.each(e.target.files, function(f){
+        uploadFile(f);
+      });
+
+
     }
 };
 
@@ -88,12 +93,16 @@ var startParsing = function () {
     $('#parsing')[0].style.display = 'block';
     $('#resume-parser')[0].style['pointer-events'] = 'none';
     $('#resume-parser')[0].style.opacity = '0.5';
+    disable = disable + 1;
 };
 
 var endParsing = function () {
-    $('#parsing')[0].style.display = 'none';
-    $('#resume-parser')[0].style['pointer-events'] = 'auto';
-    $('#resume-parser')[0].style.opacity = '1';
+    disable = disable -1;
+    if(disable<=0) {
+      $('#parsing')[0].style.display = 'none';
+      $('#resume-parser')[0].style['pointer-events'] = 'auto';
+      $('#resume-parser')[0].style.opacity = '1';
+    }
 };
 
 Template.resumesList.events = {
