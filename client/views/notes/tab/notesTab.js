@@ -190,12 +190,13 @@ var query = new Utils.ObjectDefinition({
 
 Template.notesTabList.created = function () {
     var self = this;
-
-    Meteor.subscribe('allContactables');
-    Meteor.subscribe('allJobs');
-    Meteor.subscribe('allPlacements');
+    //
+    //Meteor.subscribe('allContactables');
+    //Meteor.subscribe('allJobs');
+    //Meteor.subscribe('allPlacements');
 
     Meteor.autorun(function () {
+          debugger;
             searchQuery={};
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
