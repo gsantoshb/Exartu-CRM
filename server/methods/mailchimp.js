@@ -22,6 +22,11 @@ Meteor.methods({
     var user = Meteor.user();
     if (!user) return;
     return  MailChimpManager.importContacts(user.currentHierId, listId, hotListId);
+  },
+  exportToMailchimp:function (listId, hotListId) {
+    var user = Meteor.user();
+    if (!user) return;
+    return  MailChimpManager.exportContacts(user.currentHierId, listId, hotListId);
   }
 });
 

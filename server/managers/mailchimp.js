@@ -152,6 +152,72 @@ MailChimpManager = {
       existed: existed
     })
   }),
+  subscribe: Meteor.wrapAsync(function (hierId, listId, emailInfo, cb) {
+    var hier = Hierarchies.findOne(hierId);
+    if (!hier || ! hier.mailchimp){
+      cb(new Error('Hierarchy not configured'));
+      return;
+    }
+    if (!listId){
+      cb(new Error('missing listId'));
+      return;
+    }
+
+    var apiKey = hier.mailchimp.apiKey;
+
+    var url = getUrl(apiKey) + 'lists/subscribe';
+
+    HTTP.post(url,{ data: { apikey: apiKey, id: listId, email: emailInfo, double_optin: false } }, function (err, result) {
+      if (err){
+        cb(err)
+      }else{
+        cb(null, result.data.euid)
+      }
+
+    });
+  }),
+  exportContacts: Meteor.wrapAsync(function (hierId, listId, hotListId, cb) {
+    var hotList = HotLists.findOne(hotListId);
+    if (!hotList){
+      cb(new Error('hotlist not found'));
+    }
+
+    var emailCMType = LookUpManager.ContactMethodTypes_Email();
+
+    var failed = [], exported = [], added = [];
+    Contactables.find({_id: {$in : hotList.members}}).forEach(function (contactable) {
+      if (contactable.mailChimpId){
+        try {
+          MailChimpManager.subscribe(hierId, listId, {euid: contactable.mailChimpId});
+          added.push(contactable._id);
+        } catch (e){
+          failed.push(contactable._id);
+          console.log(e);
+        }
+      }else{
+        var email = _.findWhere(contactable.contactMethods,{type: emailCMType._id});
+        if (!email){
+          console.log('contactable ' + contactable._id + ' does not have an email');
+          return;
+        }
+        try{
+          var mailChimpId = MailChimpManager.subscribe(hierId, listId, {email: email.value});
+          Contactables.update(contactable._id, { $set: { mailChimpId: mailChimpId } });
+          exported.push(contactable._id);
+        } catch (e){
+          failed.push(contactable._id);
+          console.log(e);
+        }
+      }
+    });
+
+    cb(null, {
+      failed: failed,
+      exported: exported,
+      added: added
+    })
+
+  }),
   ping: Meteor.wrapAsync(function (apikey, cb) {
     var url = getUrl(apikey) + 'helper/ping';
 
