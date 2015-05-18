@@ -175,7 +175,6 @@ var extractInformation = function (parseResult) {
 
         try {
             var ContactInfo = parseResult.StructuredXMLResume.ContactInfo[0];
-
             employee.contactMethods = [];
             if (ContactInfo && ContactInfo && ContactInfo.ContactMethod) {
                 var contactMethod = ContactInfo.ContactMethod;

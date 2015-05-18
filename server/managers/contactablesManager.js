@@ -34,7 +34,6 @@ ContactableManager = {
       result.location.addressTypeId = LookUpManager.getAddressTypeDefaultId();
       AddressManager.addEditAddress(result.location);
     }
-
     return employeeId;
   },
   getContactableByMail: function (mail, hierid) {

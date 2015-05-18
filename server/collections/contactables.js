@@ -272,7 +272,7 @@ ContactablesFiles.allow({
 // Employee resumes
 Resumes = new Mongo.Collection('resumes');
 Meteor.publish('resumes', function () {
-  return Utils.filterCollectionByUserHier.call(this, Resumes.find({}));
+  return Utils.filterCollectionByUserHier.call(this, Resumes.find({}, {sort: {'dateCreated': -1}, limit:20}));
 });
 
 Resumes.allow({
