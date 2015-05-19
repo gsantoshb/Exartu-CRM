@@ -61,13 +61,13 @@ NoteView = new View('notes', {
     this.publish({
       cursor: function (note) {
         var hotListsIds = _.pluck(_.filter(note.links, function (link) { return link.type == Enums.linkTypes.hotList.value ; }), 'id');
-        return HotListView.find({ _id: { $in: hotListsIds } });
+        return HotLists.find({ _id: { $in: hotListsIds } });
       },
       to: 'hotLists',
       observedProperties: ['links'],
       onChange: function (changedProps, oldSelector) {
         var hotListsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.hotList.value ; }), 'id');
-        return HotListView.find({ _id: { $in: hotListsIds } });
+        return HotLists.find({ _id: { $in: hotListsIds } });
       }
     });
   }
@@ -136,13 +136,13 @@ NoteListView = new View('noteList', {
     this.publish({
       cursor: function (note) {
         var hotListsIds = _.pluck(_.filter(note.links, function (link) { return link.type == Enums.linkTypes.hotList.value ; }), 'id');
-        return HotListView.find({ _id: { $in: hotListsIds } });
+        return HotLists.find({ _id: { $in: hotListsIds } });
       },
       to: 'hotLists',
       observedProperties: ['links'],
       onChange: function (changedProps, oldSelector) {
         var hotListsIds = _.pluck(_.filter(changedProps.links, function (link) { return link.type == Enums.linkTypes.hotList.value ; }), 'id');
-        return HotListView.find({ _id: { $in: hotListsIds } });
+        return HotLists.find({ _id: { $in: hotListsIds } });
       }
     });
   }

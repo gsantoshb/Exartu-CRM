@@ -196,7 +196,6 @@ Template.notesTabList.created = function () {
     //Meteor.subscribe('allPlacements');
 
     Meteor.autorun(function () {
-          debugger;
             searchQuery={};
             if (responsesOnly && hotlist) //means only get responses to a hotlist send
             {
