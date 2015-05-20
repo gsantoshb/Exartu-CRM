@@ -430,6 +430,18 @@
                 </div>
                 <!-- /.list-item-more -->
             {{/with}}
+
+            {{#if isESSearch}}
+                <div style="width: 100%;padding: 5px">
+                    <div class="progress" style="height: 6px; width: 100%; margin-bottom: 2px">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{_match.score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{_match.score}}%;">
+                        </div>
+                    </div>
+                    {{#each _match.contexts}}
+                        {{> esContextMatch}}
+                    {{/each}}
+                </div>
+            {{/if}}
         </div>
     {{/if}}
 </template>
@@ -460,5 +472,5 @@
 </template>
 
 <template name="esContextMatch">
-    <span class="text-muted separatedLinks contextText"></span>
+    <span class="separatedLinks contextText"></span>
 </template>
