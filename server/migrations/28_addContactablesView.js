@@ -1,6 +1,6 @@
 
 Migrations.add({
-  version: 27,
+  version: 28,
   up: function () {
     var cursor = Contactables.find({});
 
