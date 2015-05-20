@@ -27,6 +27,8 @@ AuxContactables = new Meteor.Collection("auxContactables", {
   }
 });
 
+ContactablesView = new Mongo.Collection('contactablesView');
+
 AllClients  = new Meteor.Collection('allClients', {
   transform: function (contactable) {
     Utils.extendContactableDisplayName(contactable);
