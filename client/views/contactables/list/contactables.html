@@ -1,4 +1,5 @@
 <template name="contactables">
+    {{>tourActivities}}
     <div id="content" class="network-content nicer-filters">
         <div class="row">
             <div class="col-md-3 col-lg-3" id="column-filters">
@@ -35,18 +36,19 @@
             </div>
         </div>
     </div>
+
 </template>
 
 <template name="contactablesListHeader">
     {{#if listViewMode}}
-        <div class="list-header network-list-header simple-view">
+        <div class="list-header network-list-header simple-view" id="tourNetworksList">
             <div class="list-header-cell network-list-header-title">{{_ "Title"}}</div>
             <div class="list-header-cell network-list-header-owner">{{_ "Owner"}}</div>
             <div class="list-header-cell network-list-header-time">{{_ "Date"}}</div>
         </div>
         <!-- /.list-header -->
     {{else}}
-        <div class="list-header network-list-header">
+        <div class="list-header network-list-header" id="tourNetworksList" >
             <div class="list-header-cell network-list-header-checkbox"><input type="checkbox" id="selectAll"></div>
             <div class="list-header-cell network-list-header-title">{{_ "Title"}}</div>
             <div class="list-header-cell network-list-header-contact">{{_ "Contact"}}</div>
@@ -121,7 +123,7 @@
     <div class="list-actions-cell btn-add-to-list">
         <div class="btn-group">
             <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
-                    title="Add">
+                    title="Add" id="tourNetworksAdd">
                 <span class="fa fa-plus"></span>  {{_ "Add"}}
             </button>
             <ul class="dropdown-menu" role="menu">
@@ -222,11 +224,11 @@
 </template>
 
 <template name="contactablesFilters">
-    <div class="page-title">
+    <div class="page-title" id="tourNetworksWelcome">
         <h1><span>{{contactablesCount}}</span> {{_ "network"}}</h1>
     </div>
 
-    <div class="filter">
+    <div class="filter" >
         <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
             <strong><i class="fa fa-filter"></i></strong>
         </a>
@@ -249,7 +251,7 @@
             {{> filter_dateCreated selectedLimit=query.selectedLimit}}
 
             {{> filter_createdBy showMineOnly=query.mineOnly}}
-            <div class="filter-item">
+            <div class="filter-item" id="tourNetworksFilters">
                 <div class="filter-title">
                     <i class="fa fa-user"></i>
                     {{_ "Owner"}}

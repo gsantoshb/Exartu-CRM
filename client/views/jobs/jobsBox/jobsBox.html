@@ -1,4 +1,5 @@
 <template name="jobsBox">
+    {{>tourActivities}}
     <div class="row">
         <div class="col-md-3 col-lg-3" id="column-filters">
             {{> jobFilters }}
@@ -37,7 +38,7 @@
 
 <template name="jobListHeader">
     {{#if listViewMode}}
-        <div class="list-header jobs-list-header simple-view">
+        <div class="list-header jobs-list-header simple-view" id="jobsTourList">
             <div class="list-header-cell jobs-list-header-title">{{_ "Title"}}</div>
             <div class="list-header-cell jobs-list-header-placements">{{_ "Placements"}}</div>
             <div class="list-header-cell jobs-list-header-owner">{{_ "Owner"}}</div>
@@ -45,7 +46,7 @@
         </div>
         <!-- /.list-header -->
     {{else}}
-        <div class="list-header jobs-list-header">
+        <div class="list-header jobs-list-header" id="jobsTourList">
             <div class="list-header-cell jobs-list-header-title">{{_ "Title"}}</div>
             <div class="list-header-cell jobs-list-header-placements">{{_ "Placements"}}</div>
             <div class="list-header-cell jobs-list-header-status">{{_ "Status"}}</div>
@@ -148,17 +149,18 @@
 
 <template name="jobFilters">
 
-    <div class="page-title">
+    <div class="page-title" id="jobsTourWelcome">
         <h1><span>{{jobsCount}}</span> {{_ "jobs"}}</h1>
     </div>
 
 
     <div class="filter">
-        <a class="filter-toggle" data-toggle="collapse" href="#filter-body">
+        <a class="filter-toggle" data-toggle="collapse" href="#filter-body" >
             <strong><i class="fa fa-filter"></i></strong>
         </a>
         <div class="filter-list" id="filter-body">
             {{> filter_entityType title="Job type" types=jobTypes selected=query.objType}}
+
 
             {{> filter_lookUp title="Process status" code=3 lookUpValue=query.status multi=true}}
 

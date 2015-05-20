@@ -19,40 +19,37 @@ HotListView = new View('hotLists', {
   }
 });
 
-Meteor.paginatedPublish(HotListView, function()
-  {
-    var user = Meteor.users.findOne({
-      _id: this.userId
-    });
+Meteor.paginatedPublish(HotLists,
+  function () {
+    var user = Meteor.users.findOne({_id: this.userId});
+    if (!user) return [];
 
-    if (!user)
-      return [];
-    return Utils.filterCollectionByUserHier.call(this, HotListView.find());
+    return Utils.filterCollectionByUserHier.call(this, HotLists.find());
   }, {
-      pageSize: 10,
-      publicationName: 'hotLists'
+    pageSize: 10,
+    publicationName: 'hotLists'
   }
 );
 
 Meteor.publish('singleHotList', function (id) {
-  return  HotListView.find({_id: id});
+  return HotLists.find({_id: id});
 });
 Meteor.publish('auxHotLists', function (id) {
-    return  HotListView.find({members: id});
+  return HotLists.find({members: id});
 });
 
-Meteor.paginatedPublish(Contactables, function(hotListId)
-    {
-        if (!hotListId) return [];
+Meteor.paginatedPublish(Contactables,
+  function (hotListId) {
+    if (!hotListId) return [];
 
-        var hotlist = HotLists.findOne({_id: hotListId});
-        if (!hotlist.members) return [];
+    var hotlist = HotLists.findOne({_id: hotListId});
+    if (!hotlist.members) return [];
 
-        return Contactables.find({_id: { $in : hotlist.members } }, {sort: {displayName: 1}} );
-    }, {
-        pageSize: 10,
-        publicationName: 'hotListMembers'
-    }
+    return Contactables.find({_id: {$in: hotlist.members}}, {sort: {displayName: 1}});
+  }, {
+    pageSize: 10,
+    publicationName: 'hotListMembers'
+  }
 );
 
 Meteor.publish('hotListDetails', function (id) {
@@ -61,10 +58,10 @@ Meteor.publish('hotListDetails', function (id) {
 
 Meteor.publish('allHotLists', function () {
   var sub = this;
-  HotListView.publishCursor(Utils.filterCollectionByUserHier.call(this, HotListView.find({},{
-    fields: {
-    }
-  })), sub, 'allHotLists');
+
+  var cursor = Utils.filterCollectionByUserHier.call(this, HotLists.find({}));
+  Mongo.Collection._publishCursor(cursor, sub, 'allHotLists');
+
   sub.ready();
 });
 
