@@ -102,7 +102,7 @@ AutoForm.hooks({
                 insertDoc.userId = Meteor.user()._id;
                 Meteor.call('addNote', insertDoc, function () {
                     self.done();
-                    addDisabled.set(true);
+                    addDisabled.set(false);
                 })
             }
             else{
@@ -191,9 +191,9 @@ var query = new Utils.ObjectDefinition({
 Template.notesTabList.created = function () {
     var self = this;
 
-    Meteor.subscribe('allContactables');
-    Meteor.subscribe('allJobs');
-    Meteor.subscribe('allPlacements');
+    //Meteor.subscribe('allContactables');
+    //Meteor.subscribe('allJobs');
+    //Meteor.subscribe('allPlacements');
 
     Meteor.autorun(function () {
             searchQuery={};

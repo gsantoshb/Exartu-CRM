@@ -1,6 +1,7 @@
 /**
  * Variables
  */
+var tourIndex;
 var entityType = null;
 var searchQuery;
 var isEntitySpecific = false;
@@ -149,6 +150,36 @@ Template.placementsBox.created = function(){
         }
     }
 };
+
+Template.placementsBox.rendered = function(){
+  Meteor.call('getIndexTour', "tourActivities", function(err,cb){
+    tourIndex = cb;
+    if((tourIndex>=14)&&(tourIndex < 18)){
+      $("#tourActivities").joyride({
+        autoStart: true,
+        startOffset:tourIndex + 1,
+        modal: true,
+        postRideCallback: function(e) {
+          Meteor.call('setVisitedTour', "tourActivities", e, function(err,cb){
+          })
+        },
+        postStepCallback: function(e, ctx){
+          tourIndex = e;
+          Meteor.call('setVisitedTour', "tourActivities", tourIndex, function(err,cb){
+          })
+          if(e===18){
+            Router.go("/tasks");
+          }
+
+        }
+      });
+    }
+  });
+}
+
+Template.placementsBox.destroyed = function() {
+  $("#tourActivities").joyride('destroy');
+}
 
 var initialized = new ReactiveVar(false);
 

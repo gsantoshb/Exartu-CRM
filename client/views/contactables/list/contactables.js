@@ -3,7 +3,7 @@
  */
 var query = {};
 var selectedValue = {};
-
+var tourIndex;
 var selected = undefined;
 var comonTypes = [];
 
@@ -388,7 +388,37 @@ Template.contactablesList.created = function () {
     });
 };
 
-Template.contactablesList.rendered = function () {};
+Template.contactablesList.rendered = function () {
+  Meteor.call('getIndexTour', "tourActivities", function(err,cb){
+    if((cb>=4) &&(cb<9)){
+      if (!_.contains(Meteor.user().tours, "tourActivities")) {
+          $("#tourActivities").joyride({
+            autoStart: true,
+            startOffset:cb+1,
+            modal: true,
+            postRideCallback: function(ev) {
+              Meteor.call('setVisitedTour', "tourActivities", ev, function(err,cb){
+              })
+            },
+            postStepCallback: function(e, ctx){
+              tourIndex = e;
+              Meteor.call('setVisitedTour', "tourActivities", e, function(err,cb){
+              })
+              if(e===9){
+                Router.go("/jobs");
+              }
+            }
+
+          });
+
+
+          };
+
+      }
+
+  });
+
+};
 
 // hack: because the handler is created on the created hook, the SubscriptionHandlers 'cleaner' can't find it
 Template.contactablesList.destroyed = function () {
@@ -402,6 +432,9 @@ Template.contactablesList.destroyed = function () {
     }
     $('button[data-toggle="popover"]').attr('data-init', 'off');
     $('.popover').hide().popover('destroy');
+
+    $("#tourActivities").joyride('destroy');
+
 };
 
 Template.contactablesListItem.destroyed = function () {

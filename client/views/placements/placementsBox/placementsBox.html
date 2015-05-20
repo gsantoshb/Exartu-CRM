@@ -1,4 +1,5 @@
 <template name="placementsBox">
+    {{>tourActivities}}
     <div class="row">
         <div class="col-md-3 col-lg-3" id="column-filters">
             {{> placementFilters placementCount=placementCount}}
@@ -37,14 +38,14 @@
 
 <template name="placementListHeader">
     {{#if listViewMode}}
-        <div class="list-header placements-list-header simple-view">
+        <div class="list-header placements-list-header simple-view" id="placementsListTour">
             <div class="list-header-cell placements-list-header-title">{{_ "Title"}}</div>
             <div class="list-header-cell placements-list-header-owner">{{_ "Owner"}}</div>
             <div class="list-header-cell placements-list-header-time">{{_ "Date"}}</div>
         </div>
         <!-- /.list-header -->
     {{else}}
-        <div class="list-header placements-list-header">
+        <div class="list-header placements-list-header" id="placementsListTour">
             <div class="list-header-cell placements-list-header-title">{{_ "Title"}}</div>
             <div class="list-header-cell placements-list-header-status">{{_ "Status"}}</div>
             <div class="list-header-cell placements-list-header-code">{{_ "Code"}}</div>
@@ -148,7 +149,7 @@
 
 <template name="placementFilters">
     {{#with information}}
-        <div class="page-title">
+        <div class="page-title" id="placementTitleTour">
             <h1><span>{{placementsCount}}</span> {{_ "records"}}</h1>
         </div>
     {{/with}}

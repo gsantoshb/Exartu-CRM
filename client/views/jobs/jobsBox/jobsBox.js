@@ -1,6 +1,7 @@
 /**
  * Variables
  */
+var tourIndex;
 var jobCollection = JobsList;
 var searchQuery, options;
 var entityId;
@@ -393,7 +394,34 @@ Template.jobList.rendered = function () {
       $(object).attr('data-init', 'on');
     }
   });
+  Meteor.call('getIndexTour', "tourActivities", function(err,cb){
+    tourIndex = cb;
+    if((tourIndex>=9)&&(tourIndex < 14)){
+      $("#tourActivities").joyride({
+        autoStart: true,
+        startOffset:tourIndex + 1,
+        modal: true,
+        postRideCallback: function(e) {
+          Meteor.call('setVisitedTour', "tourActivities", e, function(err,cb){
+          })
+        },
+        postStepCallback: function(e, ctx){
+          tourIndex = e;
+          Meteor.call('setVisitedTour', "tourActivities", tourIndex, function(err,cb){
+          })
+          if(e===14){
+            Router.go("/placements");
+          }
+
+        }
+      });
+    }
+  });
 };
+
+Template.jobList.destroyed = function(){
+  $("#tourActivities").joyride('destroy');
+}
 /**
  * Helpers
  */

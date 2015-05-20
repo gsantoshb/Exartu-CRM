@@ -188,7 +188,9 @@ Template.displayDirectDeposit.helpers({
 Template.displayLatestNotes.helpers({
   latestNotes: function(){
     if(this.latestNotes) {
-      return this.latestNotes.reverse();
+      var arrayPrueba = [];
+      arrayPrueba = _.clone(this.latestNotes);
+      return arrayPrueba.reverse();
     }
     else{
       return [];

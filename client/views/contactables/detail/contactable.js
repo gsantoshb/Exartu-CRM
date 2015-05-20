@@ -550,11 +550,17 @@ Template.hotListMembershipsBox.helpers({
 });
 
 var addHotList = function () {
+  debugger;
   if (!selectedValue) {
     return;
   }
   var hotlist = AllHotLists.findOne({_id: selectedValue});
-  hotlist.members.push(contactable._id);
+  if(hotlist.members) {
+    hotlist.members.push(contactable._id);
+  }
+  else{
+    hotlist.members = [contactable._id];
+  }
   hotlist.members = $.unique(hotlist.members);
   Meteor.call('updateHotList', hotlist, function(err, cb){
      if(!err){

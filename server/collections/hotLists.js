@@ -3,19 +3,19 @@ HotListView = new View('hotLists', {
   cursors: function(hotList)
   {
       // Client
-      this.publish({
-          cursor: function (hotlist) {
-              var members = (hotlist.members) ? hotlist.members : [];
-              return Contactables.find({_id: {$in : members}});
-          },
-          to: 'contactables',
-          observedProperties: ['members'],
-          onChange: function (changedProps, oldSelector) {
-              var members = (changedProps.members) ? changedProps.members : [];
-              var newSelector = { _id: { $in: members } };
-              return Contactables.find(newSelector);
-          }
-      });
+      //this.publish({
+      //    cursor: function (hotlist) {
+      //        var members = (hotlist.members) ? hotlist.members : [];
+      //        return Contactables.find({_id: {$in : members}});
+      //    },
+      //    to: 'contactables',
+      //    observedProperties: ['members'],
+      //    onChange: function (changedProps, oldSelector) {
+      //        var members = (changedProps.members) ? changedProps.members : [];
+      //        var newSelector = { _id: { $in: members } };
+      //        return Contactables.find(newSelector);
+      //    }
+      //});
   }
 });
 

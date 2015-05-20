@@ -50,3 +50,4 @@ Template.placements.helpers({
         return PlacementHandler.totalCount();
     }
 });
+

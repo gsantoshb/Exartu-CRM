@@ -1,3 +1,4 @@
+var tourIndex = 0;
 var activityTypes = {
   val: [
     Enums.activitiesType.contactableAdd,
@@ -74,22 +75,61 @@ Template.dashboard.created = function () {
 };
 
 Template.dashboard.rendered = function() {
-  if(!_.contains(Meteor.user().tours, "tour1")){
-     $("#tour1").joyride({
+  Meteor.call('getIndexTour', "tourActivities", function(err,cb){
+    if(cb === false) {
+      tourIndex = -1;
+    }
+    else{
+      tourIndex = cb;
+    }
+    if((!tourIndex)||(tourIndex < 4)){
+      //jQuery(window).joyride("destroy");
+      $("#tourActivities").joyride({
         autoStart: true,
-       postRideCallback: function() {
-         Meteor.call('setVisitedTour', "tour1", function(err,cb){
-         })
+        startOffset:tourIndex + 1,
+        modal: true,
+        //'pauseAfter': [4,9,14,18,22],
+        postRideCallback: function(e) {
+          Meteor.call('setVisitedTour', "tourActivities", e, function(err,cb){
+          })
+        },
+        postStepCallback: function(e, ctx){
+          tourIndex = e;
+          Meteor.call('setVisitedTour',"tourActivities", tourIndex, function(err, cb){});
 
-       }
-     });
-  }
+          if(e===4){
+            Router.go("/contactables");
+          }
+          if(e===9){
+            Router.go("/jobs");
+          }
+          if(e===14){
+            Router.go("/placements");
+          }
+          if(e===18){
+            Router.go("/tasks");
+          }
+          if(e===22){
+            Router.go("/notes");
+          }
+        }
+      });
+    }
+  });
+
+
+
 }
 
 Template.dashboard.destroyed = function () {
   SubscriptionHandlers.ActivitiesHandler.stop();
   delete SubscriptionHandlers.ActivitiesHandler;
-  $("#tour1").joyride('destroy');
+
+  $("#tourActivities").joyride('destroy');
+  //Meteor.call('setVisitedTour',"tourActivities", tourIndex, function(err, cb){
+  //  debugger;
+  //})
+  //
 
 };
 
