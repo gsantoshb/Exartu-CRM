@@ -2,10 +2,10 @@
     {{>tourActivities}}
     <div id="content" class="network-content nicer-filters">
         <div class="row">
-            <div class="col-md-3 col-lg-3" id="column-filters">
+            <div class="col-md-3 col-lg-3 {{#unless showFilters}}hidden{{/unless}}" id="column-filters">
                 {{> contactablesFilters }}
             </div>
-            <div class="col-md-9" id="column-list">
+            <div class="{{#if showFilters}}col-md-9{{else}}col-md-12{{/if}}" id="column-list">
                 <div class="list-container">
                     <div class="list-holder">
 
@@ -22,13 +22,11 @@
                         {{/if}}
 
                         <div class="list-actions last">
-                        <!--{{#if listIsLoading}}-->
-                            <!--loading-->
-                                <!--{{else}}-->
                             {{#unless isESSearch}}
-                                {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
+                                {{#if paginationReady}}
+                                    {{>fastPagination name="contactablesView" useKeys="true" containerClass="magic-pager"}}
+                                {{/if}}
                             {{/unless}}
-                                <!--{{/if}}-->
                         </div>
 
                     </div>
@@ -71,31 +69,31 @@
             </span>
             </div>
             {{#if areAllSelectedTheSameType}}
-                 <!--{{#if withoutEmail}}-->
-                    <!--<span class="text-info">- {{withoutEmail}} {{_ "have no email address"}}</span>-->
-                <!--{{else}}-->
-                    <!--<i class="fa fa-long-arrow-right"></i>-->
-                    <!--<button class="btn btn-sm btn-primary" id="sendEmailTemplate"> {{_ "Send email template"}}</button>-->
+            <!--{{#if withoutEmail}}-->
+                <!--<span class="text-info">- {{withoutEmail}} {{_ "have no email address"}}</span>-->
+                    <!--{{else}}-->
+                <!--<i class="fa fa-long-arrow-right"></i>-->
+                <!--<button class="btn btn-sm btn-primary" id="sendEmailTemplate"> {{_ "Send email template"}}</button>-->
 
-                <!--{{/if}}-->
-                 {{#if allEmployee}}
+                    <!--{{/if}}-->
+                {{#if allEmployee}}
 
-                     <div class="col-md-2"><h4>Add placements:</h4></div>
-                     <div class="input-group col-md-3" style="margin-bottom: 10px">
-                         {{>asyncSelect query=getJobs placeholder="Search job" onChange=JobChanged width='100%'}}
-                         <span class="input-group-btn">
+                    <div class="col-md-2"><h4>Add placements:</h4></div>
+                    <div class="input-group col-md-3" style="margin-bottom: 10px">
+                        {{>asyncSelect query=getJobs placeholder="Search job" onChange=JobChanged width='100%'}}
+                        <span class="input-group-btn">
                         <button class="add-placement btn btn-default" type="button"><span class="fa fa-plus"></span></button>
                      </span>
-                     </div>
-                 {{/if}}
+                    </div>
+                {{/if}}
                 <div>
-                <div class="col-md-2"><h4>Add to Hot list:</h4></div>
-                <div class="input-group col-md-3" style="margin-bottom: 10px">
-                    {{>asyncSelect query=getHotList placeholder="Search hot list" onChange=hotListChanged width='100%'}}
-                    <span class="input-group-btn">
+                    <div class="col-md-2"><h4>Add to Hot list:</h4></div>
+                    <div class="input-group col-md-3" style="margin-bottom: 10px">
+                        {{>asyncSelect query=getHotList placeholder="Search hot list" onChange=hotListChanged width='100%'}}
+                        <span class="input-group-btn">
                         <button class="add-hotList btn btn-default" type="button"><span class="fa fa-plus"></span></button>
                     </span>
-                </div>
+                    </div>
                 </div>
 
             {{else}}
@@ -109,11 +107,7 @@
                     </div>
                 </div>
             {{/if}}
-            <!--{{#with recentHotList}}-->
-                <!--<button type="button" class="btn btn-success addHotList" title="Add">-->
-                    <!--<span class="fa fa-plus"></span> {{_ "Add selected to HotList"}}: {{displayName}}-->
-                <!--</button>-->
-            <!--{{/with}}-->
+
         </div>
         <!-- /.list-interactive-msg -->
     {{/if}}
@@ -172,7 +166,7 @@
             <a class="active" href="#"><i class="fa fa-th-list"></i></a>
             <a href="#"><i id="list-view" class="fa fa-bars"></i></a>
         {{/if}}
-        <a id="toggle-filters" href="#" data-view="normal"><i class="fa fa-desktop"></i></a>
+        <a id="toggle-filters" href="#" data-view="{{#if showFilters}}normal{{else}}wide{{/if}}"><i class="fa fa-desktop"></i></a>
     </div>
     <!-- /.view-mode-list -->
 
@@ -181,13 +175,11 @@
     </div>
     <!-- ./order-list -->
 
-        <!--{{#if listIsLoading}}-->
-    <!--loading-->
-        <!--{{else}}-->
     {{#unless isESSearch}}
-        {{>fastPagination name="auxContactables" useKeys="true" containerClass="magic-pager"}}
+        {{#if paginationReady}}
+            {{>fastPagination name="contactablesView" useKeys="true" containerClass="magic-pager"}}
+        {{/if}}
     {{/unless}}
-        <!--{{/if}}-->
 </template>
 
 <template name="contactableListSort">
@@ -274,38 +266,34 @@
 </template>
 
 <template name="contactablesList">
-    {{#if isLoading}}
-        <div style="height: 505px;"></div>
-    {{else}}
-        <div class="list-item-section {{#if listViewMode}}simple-view{{/if}}">
-            {{#each contactables}}
-                <div class="list-item-section">
-                    {{> contactablesListItem }}
+    <div class="list-item-section {{#if listViewMode}}simple-view{{/if}}">
+        {{#each contactables}}
+            <div class="list-item-section">
+                {{> contactablesListItem }}
+            </div>
+        {{else}}
+            {{#if info.isFiltering.value }}
+                <div class="v-wrapper">
+                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                        <i class="icon-connection-1 text-large"></i>
+
+                        <h1>
+                            {{_ "No records Found"}}
+                        </h1>
+                    </div>
                 </div>
             {{else}}
-                {{#if info.isFiltering.value }}
-                    <div class="v-wrapper">
-                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                            <i class="icon-connection-1 text-large"></i>
+                <div class="v-wrapper">
+                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                        <i class="icon-connection-1 text-large"></i>
 
-                            <h1>
-                                {{_ "No records Found"}}
-                            </h1>
-                        </div>
+                        <a href="#"></a>
+                        <span class="bullet-spacer">·</span>
                     </div>
-                {{else}}
-                    <div class="v-wrapper">
-                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                            <i class="icon-connection-1 text-large"></i>
-
-                            <a href="#"></a>
-                            <span class="bullet-spacer">·</span>
-                        </div>
-                    </div>
-                {{/if}}
-            {{/each}}
-        </div>
-    {{/if}}
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
 </template>
 
 <template name="contactablesListItem">
@@ -313,7 +301,7 @@
         <div class="list-item network-list-item simple-network-list-item {{#if isSelected}} selected {{/if}}">
             <div class="list-item-cell network-list-item-title">
                 <div class="item-title">
-                    <a href="/contactable/{{_id}}">{{displayName}}</a>
+                    <a href="/contactable/{{_id}}">{{this.displayName}}</a>
                     {{#if getDepartment}}<span class="item-title-more">&mdash; {{getDepartment}}</span>{{/if}}
                     <span class="item-label prefix-10">{{displaySearchKey _id}}</span>
                 </div>
@@ -414,7 +402,7 @@
                 </div>
             </div>
             <!-- /.list-item-cell -->
-            {{#with getLastNote}}
+            {{#with this.lastNote}}
                 <div class="list-item-more network-list-item-more">
                     <div class="list-item-more-entry">
                         <div class="list-item-more-entry-icon"></div>
@@ -449,24 +437,22 @@
 <template name="clientInformation"></template>
 
 <template name="employeeInformation">
-    {{#if placementInfo}}
-        {{#with placementInfo}}
-            <a href="/job/{{job}}"><span class="info">{{jobTitle}}</span></a> {{#if clientName}} &#x2219; <a
-                href="/contactable/{{client}}"> {{clientName}} </a> {{/if}}
-        {{/with}}
+    {{#with placement}}
+        <a href="/job/{{job}}"><span class="info">{{jobDisplayName}}</span></a> {{#if clientDisplayName}} &#x2219; <a
+            href="/contactable/{{client}}"> {{clientDisplayName}} </a> {{/if}}
     {{else}}
         {{#if person}}
             {{#if person.jobTitle}}
                 <em>{{person.jobTitle}}</em>
             {{/if}}
         {{/if}}
-    {{/if}}
+    {{/with}}
 </template>
 
 <template name="contactInformation">
-    {{#if Contact.client}}
-        <a href="/contactable/{{Contact.client}}">
-            {{Contact.clientName}}
+    {{#if this.client}}
+        <a href="/contactable/{{this.client}}">
+            {{this.clientName}}
         </a>
     {{/if}}
 </template>
