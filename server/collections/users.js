@@ -17,7 +17,8 @@ Meteor.publish(null, function () {
 			      'language': 1,
             'firstName': 1,
             'lastName': 1,
-            'tours':1
+            'tours':1,
+            latestHiers: 1
         }
     }), {
         hierIdKeyName: 'hierarchies'
