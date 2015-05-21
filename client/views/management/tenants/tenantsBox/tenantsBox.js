@@ -40,6 +40,7 @@ var searchDep = new Deps.Dependency;
 var isSearching = false;
 
 var loadTenantQueryFromURL = function (params) {
+
     // Search string
     var searchStringQuery = {};
     if (params.search) {
