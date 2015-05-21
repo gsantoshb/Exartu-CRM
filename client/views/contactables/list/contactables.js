@@ -397,7 +397,7 @@ Template.contactablesList.rendered = function () {
             startOffset:cb+1,
             modal: true,
             postRideCallback: function(ev) {
-              Meteor.call('setVisitedTour', "tourActivities", ev, function(err,cb){
+              Meteor.call('setVisitedTour', "tourActivities", 27, function(err,cb){
               })
             },
             postStepCallback: function(e, ctx){

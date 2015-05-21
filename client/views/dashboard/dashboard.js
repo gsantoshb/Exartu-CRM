@@ -90,7 +90,8 @@ Template.dashboard.rendered = function() {
         modal: true,
         //'pauseAfter': [4,9,14,18,22],
         postRideCallback: function(e) {
-          Meteor.call('setVisitedTour', "tourActivities", e, function(err,cb){
+          debugger;
+          Meteor.call('setVisitedTour', "tourActivities", 27, function(err,cb){
           })
         },
         postStepCallback: function(e, ctx){

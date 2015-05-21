@@ -49,7 +49,7 @@ Template.notesBox.rendered = function(){
         startOffset:tourIndex + 1,
         modal: true,
         postRideCallback: function(e) {
-          Meteor.call('setVisitedTour', "tourActivities", e, function(err,cb){
+          Meteor.call('setVisitedTour', "tourActivities", 27, function(err,cb){
           })
         },
         postStepCallback: function(e, ctx){

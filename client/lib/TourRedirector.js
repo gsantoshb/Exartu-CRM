@@ -4,11 +4,11 @@
 Meteor.call('getIndexTour', "tourActivities", function(err,cb) {
  if(cb===false){
    //you have to do the tour
-   Router.go("");
+   Router.go("/");
  }
  else if(cb<4){
    //you just started the dashboard part of the tour
-   Router.go("");
+   Router.go("/");
  }
  else if(cb<9) {
    debugger;
