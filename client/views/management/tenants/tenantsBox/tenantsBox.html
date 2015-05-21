@@ -10,6 +10,7 @@
 
                         <div class="list-actions">
                             {{>tenantsListSearch}}
+                            {{> fastPagination name="tenants" useKeys="true" containerClass="magic-pager"}}
                         </div>
 
                         {{>tenantsListHeader}}
@@ -175,7 +176,13 @@
                         {{#if showAdd}}
                             <button type="button" class="btn btn-success addHierAsContactable" title="Add">
                                 <span class="fa fa-plus"></span> Add
+
                             </button>
+                        {{/if}}
+                        {{#if idContactable}}
+                            <a type="button" class="btn btn-primary" href="/contactables/{{idContactable}}" title="Show">
+                                <span class="glyphicon glyphicon-share-alt"></span> Show
+                            </a>
                         {{/if}}
                     </span>
                 </div>

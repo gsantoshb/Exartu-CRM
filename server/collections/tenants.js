@@ -2,6 +2,11 @@ TenantView = new View('tenants', {
   collection: Hierarchies,
   cursors: function(tenant)
   {
+    if(tenant.users) {
+      var self = this;
+      var TenantsUsers = Meteor.users.find({_id: {$in: tenant.users}});
+      self.publish({cursor: TenantsUsers, to: 'tenantUsers'});
+    }
   }
 });
 
@@ -19,7 +24,7 @@ Meteor.paginatedPublish(TenantView, function()  {
     return TenantView.find();
   },
   {
-  pageSize: 200,
+  pageSize: 10,
   publicationName: 'tenants'
   }
 );

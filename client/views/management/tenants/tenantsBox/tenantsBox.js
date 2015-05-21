@@ -40,6 +40,7 @@ var searchDep = new Deps.Dependency;
 var isSearching = false;
 
 var loadTenantQueryFromURL = function (params) {
+
     // Search string
     var searchStringQuery = {};
     if (params.search) {
@@ -253,8 +254,21 @@ Template.tenantsListSearch.events({
 
 Template.tenantsListItem.helpers({
     showAdd: function(){
-
       return (Meteor.user().currentHierId === aidaHier)&&(!_.contains(_.pluck(hiersContact.get(),"hier"), this._id));
+    },
+    idContactable: function(){
+      if(Meteor.user().currentHierId === aidaHier){
+        var i = _.indexOf(_.pluck(hiersContact.get(),"hier"), this._id);
+        if(i>-1) {
+          return (hiersContact.get()[i].contactable);
+        }
+        else{
+          return false;
+        }
+      }
+      else{
+        return false;
+      }
     },
     pictureUrl: function (pictureFileId) {
         var picture = TenantsFS.findOne({_id: pictureFileId});
@@ -320,28 +334,29 @@ Template.tenantsListItem.events = {
                      howHeardOf: null,
                      contactMethods: [{type: emailLookUp._id, value: user.emails[0].address}, {type: phoneLookUp._id, value: self.phone}]
                    }
-    Meteor.call('addContactable', contact, function(err,cb){
-      if(cb){
-        Meteor.call('setHiersContact', self._id, cb, function(e,c){
+    Meteor.call('addContactable', contact, function(err,result){
+      if(result){
+
+        Meteor.call('setHiersContact', self._id, result, function(e,res){
+          Meteor.call('getAidaHiersContact', function(err,r){
+            if(r) {
+              hiersContact.set(r);
+            }
+          })
           Utils.showModal('basicModal', {
             title: 'Contact added',
-            message: 'Show contact information?',
+            message: 'Open this contact record in new window?',
             buttons: [{label: 'Close', classes: 'btn-info', value: false}, {
               label: 'Show',
               classes: 'btn-success',
               value: true
             }],
-            callback: function (result) {
-              if(result) {
-                Router.go('/contactable/' + cb);
+            callback: function (r) {
+              if(r) {
+                window.open('/contactable/' + result, '_blank');
+
               }
-              else{
-                Meteor.call('getAidaHiersContact', function(err,cb){
-                  if(cb) {
-                    hiersContact.set(cb);
-                  }
-                })
-              }
+
             }
           });
         })
