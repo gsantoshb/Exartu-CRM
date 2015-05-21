@@ -76,7 +76,8 @@
                                     {{/if}}
                                 </ul>
                                 <hr>
-                                <div class="clearfix">
+                            <!--hack: for some reason the dropdown of the select2 doesn't make the body grow so it's left out-->
+                                <div class="clearfix" style="min-height: 400px;">
                                     <h4>HotLists</h4>
                                     {{#if hotListSelected}}
                                         <button class="btn btn-primary pull-right" disabled="{{importDisabled}}" id="importWithHotList" title="imports contacts from this mailchimp's list to aïda's hotLists">
