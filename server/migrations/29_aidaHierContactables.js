@@ -5,6 +5,7 @@ Migrations.add({
   version: 29,
   up: function () {
     Hierarchies.find({hiersContact: {$exists: true}}).forEach(function (hier) {
+      console.log("migrating: ",hier);
       var newHierArray = [];
       _.each(hier.hiersContact, function (hierId) {
         var h = Hierarchies.findOne({_id: hierId});
