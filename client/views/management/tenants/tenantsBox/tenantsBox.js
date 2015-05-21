@@ -2,7 +2,7 @@ var entityType = null;
 var isEntitySpecific = false;
 var contactable;
 var searchFields = ['name', 'configuration.webName', 'configuration.title', '_id'];
-
+var aidaHier;
 var tenantCollection = Tenants;
 var TenantHandler, tenantQuery;
 
@@ -103,6 +103,8 @@ Template.tenantsList.created = function () {
     Meteor.call('getAidaHiersContact', function(err,cb){
       if(cb) {
         hiersContact.set(cb);
+        var indexOfAidaHier = _.indexOf(_.pluck(hiersContact.get(), "contactable"), null);
+        aidaHier = hiersContact.get()[indexOfAidaHier].hier;
       }
     })
 
@@ -250,9 +252,9 @@ Template.tenantsListSearch.events({
 // Item
 
 Template.tenantsListItem.helpers({
-    notAdded: function(){
-      return !_.contains(hiersContact.get(), this._id);
+    showAdd: function(){
 
+      return (Meteor.user().currentHierId === aidaHier)&&(!_.contains(_.pluck(hiersContact.get(),"hier"), this._id));
     },
     pictureUrl: function (pictureFileId) {
         var picture = TenantsFS.findOne({_id: pictureFileId});
@@ -320,7 +322,7 @@ Template.tenantsListItem.events = {
                    }
     Meteor.call('addContactable', contact, function(err,cb){
       if(cb){
-        Meteor.call('setHiersContact', self._id, function(e,c){
+        Meteor.call('setHiersContact', self._id, cb, function(e,c){
           Utils.showModal('basicModal', {
             title: 'Contact added',
             message: 'Show contact information?',

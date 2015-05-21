@@ -15,24 +15,24 @@ Meteor.methods({
       var Hier = Hierarchies.findOne({_id:ExartuConfig.aidaHierarchy});
       if(Hier.hiersContact){
         var hierArray =  Hier.hiersContact;
-        hierArray.push(ExartuConfig.aidaHierarchy);
+        hierArray.push({hier: ExartuConfig.aidaHierarchy, contactable:null});
         return hierArray;
       }
       else{
-        return [ExartuConfig.aidaHierarchy];
+        return [{hier: ExartuConfig.aidaHierarchy, contactable:null}];
       }
     },
-    setHiersContact: function(hierId){
+    setHiersContact: function(hierId, contactableId){
       var Hier = Hierarchies.findOne({_id:ExartuConfig.aidaHierarchy});
       if(Hier.hiersContact){
-         Hier.hiersContact.push(hierId);
+         Hier.hiersContact.push({hier: hierId, contactable: contactableId});
          Hierarchies.update({_id:ExartuConfig.aidaHierarchy},{ $set: {
            'hiersContact': Hier.hiersContact
          }})
       }
       else{
         Hierarchies.update({_id:ExartuConfig.aidaHierarchy},{ $set: {
-          'hiersContact': [hierId]
+          'hiersContact': [{hier: hierId, contactable: contactableId}]
         }})
       }
     }

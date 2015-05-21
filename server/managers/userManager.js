@@ -285,7 +285,6 @@ UserManager = {
       var user = Meteor.user();
       if(user.tours){
         var index = _.indexOf(_.pluck(user.tours,"tour"), tour);
-        console.log(index);
         if(!(index>=0))
           user.tours.push({tour: tour,tip:tip});
         else{
