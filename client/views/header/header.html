@@ -30,6 +30,13 @@
                         </li>
 
                         <li class="divider"></li>
+                        {{#each latestHiers}}
+                            <li>
+                                <a class="pointer changeHier">{{name}}</a>
+                            </li>
+                        {{/each}}
+
+                        <li class="divider"></li>
                         <li>
                             <a href="/" id="signout"><i class="fa fa-sign-out"></i> {{_ "Sign out"}}</a>
                         </li>
