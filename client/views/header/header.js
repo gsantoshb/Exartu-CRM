@@ -99,6 +99,9 @@ Template.header.helpers({
     },
     latestHiers: function () {
         return Hierarchies.find({_id: {$in: Meteor.user().latestHiers}});
+    },
+    latestHiersCount: function () {
+        return Hierarchies.find({_id: {$in: Meteor.user().latestHiers}}).count();
     }
 });
 Template.header.events({

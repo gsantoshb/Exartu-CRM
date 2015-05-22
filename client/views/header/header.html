@@ -29,12 +29,14 @@
                             </ul>
                         </li>
 
-                        <li class="divider"></li>
-                        {{#each latestHiers}}
-                            <li>
-                                <a class="pointer changeHier">{{name}}</a>
-                            </li>
-                        {{/each}}
+                        {{#if latestHiersCount}}
+                            <li class="divider"></li>
+                            {{#each latestHiers}}
+                                <li>
+                                    <a class="pointer changeHier">{{name}}</a>
+                                </li>
+                            {{/each}}
+                        {{/if}}
 
                         <li class="divider"></li>
                         <li>
