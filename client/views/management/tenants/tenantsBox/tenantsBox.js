@@ -307,7 +307,7 @@ Template.tenantsListItem.events = {
     var self = this;
     var leadLookUp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.contact_status, isDefault: true});
     var emailLookUp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.contactMethod_types, lookUpActions: Enums.lookUpAction.ContactMethod_Email});
-    var phoneLookUp =  LookUps.findOne({lookUpCode: Enums.lookUpCodes.contactMethod_types, lookUpActions: Enums.lookUpAction.ContactMethod_Phone});
+    var phoneLookUp =  LookUps.findOne({lookUpCode: Enums.lookUpCodes.contactMethod_types, lookUpActions: Enums.lookUpAction.ContactMethod_WorkPhone});
     var activeLookUp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.active_status, lookUpActions: Enums.lookUpAction.Implies_Active});
     var user = TenantUsers.findOne(self.users[0]);
     var arrayName = self.userName.split(" ");
@@ -329,14 +329,18 @@ Template.tenantsListItem.events = {
                                   birthDate: null },
                      Contact: { status: leadLookUp._id,
                                 client: null },
-                     statusNote: 'Hierarchy name: '+self.name,
+                     statusNote: 'Created from tenant record',
                      activeStatus: activeLookUp._id,
                      howHeardOf: null,
                      contactMethods: [{type: emailLookUp._id, value: user.emails[0].address}, {type: phoneLookUp._id, value: self.phone}]
                    }
     Meteor.call('addContactable', contact, function(err,result){
       if(result){
-
+        var note = {};
+        note.msg = self.name;
+        note.links = [{id:result,type:Enums.linkTypes.contactable.value}];
+        Meteor.call('addNote', note, function(err, res){
+        })
         Meteor.call('setHiersContact', self._id, result, function(e,res){
           Meteor.call('getAidaHiersContact', function(err,r){
             if(r) {
