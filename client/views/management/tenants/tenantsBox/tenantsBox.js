@@ -254,6 +254,7 @@ Template.tenantsListSearch.events({
 
 Template.tenantsListItem.helpers({
     showAdd: function(){
+
       return (Meteor.user().currentHierId === aidaHier)&&(!_.contains(_.pluck(hiersContact.get(),"hier"), this._id));
     },
     idContactable: function(){
@@ -297,8 +298,10 @@ Template.tenantsListItem.helpers({
         return counts && counts.lastDate;
     },
     getHierEmail: function () {
+      if(this.users && this.users[0]) {
         var user = TenantUsers.findOne(this.users[0]);
         return user && user.emails[0].address;
+      }
     }
 });
 
@@ -309,17 +312,23 @@ Template.tenantsListItem.events = {
     var emailLookUp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.contactMethod_types, lookUpActions: Enums.lookUpAction.ContactMethod_Email});
     var phoneLookUp =  LookUps.findOne({lookUpCode: Enums.lookUpCodes.contactMethod_types, lookUpActions: Enums.lookUpAction.ContactMethod_WorkPhone});
     var activeLookUp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.active_status, lookUpActions: Enums.lookUpAction.Implies_Active});
-    var user = TenantUsers.findOne(self.users[0]);
-    var arrayName = self.userName.split(" ");
-    var firstname="";
+    if(self.users && self.users[0])
+      var user = TenantUsers.findOne(self.users[0]);
+    var firstname = "No name";
     var lastName = " ";
-    if(arrayName.length>1){
-      firstname = arrayName[0];
-      lastName = arrayName[1];
+    if(self.userName) {
+      var arrayName = self.userName.split(" ");
+
+
+      if(arrayName.length>1){
+        firstname = arrayName[0];
+        lastName = arrayName[1];
+      }
+      else{
+        firstname = arrayName[0];
+      }
     }
-    else{
-      firstname = arrayName[0];
-    }
+
     var contact =  { objNameArray: [ 'person', 'Contact', 'contactable' ],
                      person:    { firstName: firstname,
                                   lastName: lastName,
@@ -332,8 +341,16 @@ Template.tenantsListItem.events = {
                      statusNote: 'Created from tenant record',
                      activeStatus: activeLookUp._id,
                      howHeardOf: null,
-                     contactMethods: [{type: emailLookUp._id, value: user.emails[0].address}, {type: phoneLookUp._id, value: self.phone}]
-                   }
+                     contactMethods: []
+    }
+    if(self.phone){
+      contact.contactMethods.push({type: phoneLookUp._id, value: self.phone})
+    }
+    if(user && user.emails){
+      contact.contactMethods.push({type: emailLookUp._id, value: user.emails[0].address})
+    }
+                     //contactMethods: [{type: emailLookUp._id, value: user.emails[0].address}, {type: phoneLookUp._id, value: self.phone}]
+
     Meteor.call('addContactable', contact, function(err,result){
       if(result){
         var note = {};
