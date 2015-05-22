@@ -297,8 +297,10 @@ Template.tenantsListItem.helpers({
         return counts && counts.lastDate;
     },
     getHierEmail: function () {
+      if(this.users && this.users[0]) {
         var user = TenantUsers.findOne(this.users[0]);
         return user && user.emails[0].address;
+      }
     }
 });
 
