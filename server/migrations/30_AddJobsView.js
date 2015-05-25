@@ -12,7 +12,7 @@ Migrations.add({
         console.log('adding job view ', count, '-', job._id);
 
         var type = _.find(job.objNameArray, function (obj) {return jobTypes.indexOf(obj) != -1});
-        var client = Contactables.findOne(job.client);
+        var client = Contactables.findOne({_id: job.client});
         var placementsCount = Placements.find({job: job._id}).count();
         var address = Addresses.findOne({_id: job.address});
 
@@ -24,7 +24,7 @@ Migrations.add({
           publicJobTitle: job.publicJobTitle,
           tags: job.tags,
           clientId: job.client,
-          clientDisplayName: client.displayName,
+          clientDisplayName: client && client.displayName ? client.displayName : '',
           clientDepartmentName: client && client.Client ? client.Client.department : '',
           status: job.status,
           activeStatus: job.activeStatus,
