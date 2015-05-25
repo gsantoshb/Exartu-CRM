@@ -68,11 +68,9 @@ Template.job.helpers({
     },
 
     originalJob: function () {
-        console.log('originalJob');
         return originalJob.get()
     },
     currentTemplate: function () {
-        console.log('currentTemplate');
         var selected = _.findWhere(tabs, {id: Session.get('activeTab')});
         return selected && selected.template;
     }
@@ -120,7 +118,6 @@ Template.job.events({
         statusNoteEditMode.set(false);
     },
     'click #copy-job': function () {
-        debugger;
         Utils.showModal('basicModal', {
             title: 'Job copy',
             message: 'Copy job?',

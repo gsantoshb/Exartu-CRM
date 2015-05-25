@@ -47,7 +47,7 @@ PlacementsController = RouteController.extend({
 // Placements - Helpers
 Template.placements.helpers({
     placementCount: function () {
-        return PlacementHandler.totalCount();
+        return PlacementHandler && PlacementHandler.totalCount();
     }
 });
 
