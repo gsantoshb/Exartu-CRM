@@ -106,7 +106,11 @@ Contactables.after.update(function (userId, contactable, fieldNames, modifier, o
   }, {multi: true});
 });
 
-
+Addresses.after.update(function (userId, address, fieldNames, modifier) {
+  JobsView.update({address: address._id}, {
+    $set: { address: address }
+  }, {multi: true});
+});
 
 
 // Indexes
