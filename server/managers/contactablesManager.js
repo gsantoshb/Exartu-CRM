@@ -585,6 +585,15 @@ ContactableManager = {
             }
         });
         return future.wait();
+    },
+    updateContactMethod: function(contactableId, newValue, oldValue, type){
+       var contactable = Utils.filterCollectionByUserHier.call({userId: Meteor.userId()},Contactables.find({_id: contactableId, contactMethods:{$elemMatch:{value: oldValue, type:type}}})).fetch()[0]
+       if(!contactable){
+         //throw error
+       }
+       else {
+         Contactables.update({_id: contactableId, contactMethods:{type:type, value: oldValue}},{$set:{"contactMethods.$" : {type:type, value:newValue}}});
+       }
     }
 };
 
