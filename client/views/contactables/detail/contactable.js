@@ -408,7 +408,6 @@ Template.contactable_header.helpers({
       return editingContactMethods.get();
     },
     contactMethods: function () {
-debugger;
       var toReturn = {}
       if (email) {
         toReturn.email = this.email.value;
@@ -497,25 +496,6 @@ AutoForm.hooks({
 Template.contactable_header.events({
   "click #edit-mode-contactMethods": function () {
     editingContactMethods.set(!editingContactMethods.get());
-  },
-  "click #save-contactMethod": function () {
-    //var phoneInput = $("#editing-phone")[0];
-    //var emailInput = $("#editing-email")[0];
-    //if (phoneInput) {
-    //  var newPhone = phoneInput.value;
-    //}
-    //if (emailInput) {
-    //  var newEmail = emailInput.value;
-    //}
-    //if ((newPhone == "") || (newEmail == "")) {
-    //  //throw error "empty phone or email"
-    //  return;
-    //}
-    //if (!helper.emailRE.test(newEmail)) {
-    //  //throw error "invalid format email"
-    //  return;
-    //}
-
   }
 })
 // Details
