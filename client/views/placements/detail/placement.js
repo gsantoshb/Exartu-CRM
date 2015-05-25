@@ -161,7 +161,9 @@ Template.placement_details.helpers({
   }
 });
 
-Template.placement.currentTemplate = function () {
-  var selected = _.findWhere(tabs ,{id: Session.get('activeTab')});
-  return selected && selected.template;
-};
+Template.placement.helpers({
+  currentTemplate: function () {
+    var selected = _.findWhere(tabs ,{id: Session.get('activeTab')});
+    return selected && selected.template;
+  }
+});
