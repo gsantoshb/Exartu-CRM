@@ -342,27 +342,39 @@ Template.contactable_actions.events({
   }
 });
 
+var editingContactMethods = new ReactiveVar(false);
+var email;
+var phone;
 // Header
 Template.contactable_header.helpers({
     mainContactMethods: function () {
+
         var result = {};
         var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
         _.some(this.contactMethods, function (cm) {
             var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
             if (!type)
                 return false;
-            if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email))
-                result.email = cm;
-            if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone))
-                result.phone = cm;
-
-            if (!result.email || !result.phone)
-                return false;
+            if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email)) {
+              result.email = cm;
+              email = cm;
+            }
+            if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+              result.phone = cm;
+              phone = cm;
+            }
+            if (!result.email || !result.phone) {
+               return false;
+            }
 
             return true;
         });
-
-        return result;
+        if(!result.phone && !result.email){
+          return false
+        }
+        else{
+          return result;
+        }
     },
     pictureUrl: function () {
         if (this.pictureFileId) {
@@ -376,9 +388,121 @@ Template.contactable_header.helpers({
     isAppCenterUser: function () {
         // Registered users have the user property set
         return !!contactable.user;
-    }
+    },
+    editingContact: function(){
+      return editingContactMethods.get();
+    },
+    contactMethods: function () {
+debugger;
+      var toReturn = {}
+      if (email) {
+        toReturn.email = this.email.value;
+      }
+      if (phone) {
+        toReturn.phone = this.phone.value;
+      }
+      return toReturn;
+  }
+
 });
 
+AutoForm.hooks({
+  updateContactMethod: {
+    onSubmit: function (insertDoc, updateDoc, currentDoc) {
+      var self = this;
+      var end = (function () {
+        var count = 0;
+        return function () {
+          ++count;
+          if (count == 2){
+            self.done();
+          }
+        }
+      })
+      if(phone) {
+        if(insertDoc.phone != phone.value)
+          Meteor.call("updateContactMethod", contactable._id, insertDoc.phone, phone.value, phone.type, function(){
+            editingContactMethods.set(false);
+            end();
+          });
+      }else             end();
+
+      if(email) {
+        if(insertDoc.email != email.value){
+        Meteor.call('checkContactableEmail', insertDoc.email, function (err, res) {
+          if (err) {
+            //throw error "Error checking email
+          }
+          else {
+            if (res.length >= 1) {
+              var listaString = "";
+              _.forEach(res, function (r) {
+                var link = "" + window.location.origin + "/contactable/" + r._id;
+                listaString = listaString + "<a target='_blank' href=" + link + ">" + r.displayName + "</a>" + "<br/>";
+              });
+              Utils.showModal('basicModal', {
+                title: 'Existing email',
+                message: 'The following contactables have the same email you are trying to use:<br/><br/>' + listaString,
+                buttons: [{label: 'Cancel', classes: 'btn-info', value: false}, {
+                  label: 'Continue',
+                  classes: 'btn-success',
+                  value: true
+                }],
+                callback: function (result) {
+                  if (result) {
+                    Meteor.call("updateContactMethod", contactable._id, insertDoc.email, email.value, email.type, function(){
+                      editingContactMethods.set(false);
+                      end();
+
+                    });
+                  }
+                }
+              });
+
+            }
+            else {
+              Meteor.call("updateContactMethod", contactable._id, insertDoc.email, email.value, email.type, function(){
+                editingContactMethods.set(false);
+                end();
+
+              });
+            }
+          }
+        });
+        }
+      }else             end();
+
+
+      return false;
+    }
+  }
+});
+
+
+Template.contactable_header.events({
+  "click #edit-mode-contactMethods": function () {
+    editingContactMethods.set(!editingContactMethods.get());
+  },
+  "click #save-contactMethod": function () {
+    //var phoneInput = $("#editing-phone")[0];
+    //var emailInput = $("#editing-email")[0];
+    //if (phoneInput) {
+    //  var newPhone = phoneInput.value;
+    //}
+    //if (emailInput) {
+    //  var newEmail = emailInput.value;
+    //}
+    //if ((newPhone == "") || (newEmail == "")) {
+    //  //throw error "empty phone or email"
+    //  return;
+    //}
+    //if (!helper.emailRE.test(newEmail)) {
+    //  //throw error "invalid format email"
+    //  return;
+    //}
+
+  }
+})
 // Details
 Template.contactable_details.helpers({
     collection: function () {
@@ -550,7 +674,6 @@ Template.hotListMembershipsBox.helpers({
 });
 
 var addHotList = function () {
-  debugger;
   if (!selectedValue) {
     return;
   }

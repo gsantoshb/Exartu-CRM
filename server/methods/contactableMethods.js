@@ -277,7 +277,11 @@ Meteor.methods({
 
     changeContactableUserId: function (contactableId, userId) {
       ContactableManager.changeContactableUserId(contactableId, userId);
+    },
+    updateContactMethod: function(contactableId, newValue, oldValue, type){
+      ContactableManager.updateContactMethod(contactableId, newValue, oldValue, type);
     }
+
 });
 
 FileUploader.createEndpoint('uploadResume', {
