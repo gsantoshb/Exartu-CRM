@@ -47,3 +47,5 @@ JobsList = new Meteor.Collection('jobsList', {
     return job;
   }
 });
+
+JobsView = new Mongo.Collection("jobsView");
