@@ -423,24 +423,27 @@ Template.contactable_header.helpers({
 AutoForm.hooks({
   updateContactMethod: {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
+      var arrayToUpdate = [];
       var self = this;
+      var count = 0;
       var end = (function () {
-        var count = 0;
-        return function () {
-          ++count;
-          if (count == 2){
-            self.done();
-          }
-        }
-      })
-      if(phone) {
-        if(insertDoc.phone != phone.value)
-          Meteor.call("updateContactMethod", contactable._id, insertDoc.phone, phone.value, phone.type, function(){
-            editingContactMethods.set(false);
-            end();
-          });
-      }else             end();
+        ++count;
+        if (count == 2){
+          Meteor.call("updateContactMethod", contactable._id, arrayToUpdate, function() {
+             editingContactMethods.set(false);
+             self.done();
 
+          });
+        }
+
+      })
+
+      if(phone) {
+        if(insertDoc.phone != phone.value) {
+          arrayToUpdate.push({newValue: insertDoc.phone, oldValue: phone.value, type: phone.type});
+        }
+      }
+      end()
       if(email) {
         if(insertDoc.email != email.value){
         Meteor.call('checkContactableEmail', insertDoc.email, function (err, res) {
@@ -464,29 +467,28 @@ AutoForm.hooks({
                 }],
                 callback: function (result) {
                   if (result) {
-                    Meteor.call("updateContactMethod", contactable._id, insertDoc.email, email.value, email.type, function(){
-                      editingContactMethods.set(false);
-                      end();
-
-                    });
+                    arrayToUpdate.push({newValue:insertDoc.email, oldValue: email.value, type:email.type});
+                    //Meteor.call("updateContactMethod", contactable._id, insertDoc.email, email.value, email.type, function(){
+                    end();
                   }
                 }
               });
-
             }
             else {
-              Meteor.call("updateContactMethod", contactable._id, insertDoc.email, email.value, email.type, function(){
-                editingContactMethods.set(false);
-                end();
+              arrayToUpdate.push({newValue:insertDoc.email, oldValue: email.value, type:email.type});
+              end();
 
-              });
+
             }
           }
         });
         }
-      }else             end();
-
-
+        else{
+          end();
+        }
+      }else {
+        end();
+      }
       return false;
     }
   }
