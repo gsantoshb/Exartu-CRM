@@ -1,0 +1,98 @@
+<template name="reports">
+    <div id="content" class="network-content">
+        <div class="row">
+            <div class="col-md-11">
+                <div class="page-title">
+                    <h1>{{_ "Reports"}}</h1>
+                </div>
+
+        </div>
+        </div>
+        {{> fastPagination name="allEmployeesReport" useKeys="true" containerClass="magic-pager"}}
+        <div class="table-responsive">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Company</th>
+                        <th>Position</th>
+                        <th>Duties</th>
+                        <th>Start</th>
+                        <th>End</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {{#each employees}}
+                        <tr>
+                            <td rowspan="{{this.lengthPastJob}}"><a href="/contactable/{{this._id}}">{{this.displayName}}</a></td>
+                            {{#if this.headPastJobs}}
+                                {{#if this.headPastJobs.company}}
+                                  <td>{{this.headPastJobs.company}}</td>
+                                {{else}}
+                                  <td>None</td>
+                                {{/if}}
+                                {{#if this.headPastJobs.position}}
+                                  <td>{{this.headPastJobs.position}}</td>
+                                {{else}}
+                                    <td>None</td>
+                                {{/if}}
+                                {{#if this.headPastJobs.duties}}
+                                  <td>{{this.headPastJobs.duties}}</td>
+                                {{else}}
+                                    <td>None</td>
+                                {{/if}}
+                                {{#if this.headPastJobs.start}}
+                                  <td>{{this.headPastJobs.start}}</td>
+                                {{else}}
+                                    <td>None</td>
+                                {{/if}}
+                                {{#if this.headPastJobs.end}}
+                                  <td>{{this.headPastJobs.end}}</td>
+                                {{else}}
+                                    <td>None</td>
+                                {{/if}}
+                            {{else}}
+                              <td>None</td>
+                              <td>None</td>
+                              <td>None</td>
+                              <td>None</td>
+                              <td>None</td>
+                            {{/if}}
+                        </tr>
+                        {{#each this.tailPastJob}}
+                            <tr>
+                                {{#if this.company}}
+                                    <td>{{this.company}}</td>
+                                {{else}}
+                                    <td>None</td>
+                                {{/if}}
+                                {{#if this.position}}
+                                    <td>{{this.position}}</td>
+                                {{else}}
+                                    <td>None</td>
+                                {{/if}}
+                                {{#if this.duties}}
+                                    <td>{{this.duties}}</td>
+                                {{else}}
+                                    <td>None</td>
+                                {{/if}}
+                                {{#if this.start}}
+                                    <td>{{this.start}}</td>
+                                {{else}}
+                                    <td>None</td>
+                                {{/if}}
+                                {{#if this.end}}
+                                    <td>{{this.end}}</td>
+                                {{else}}
+                                    <td>None</td>
+                                {{/if}}
+                            </tr>
+                        {{/each}}
+
+
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

@@ -350,6 +350,10 @@ Router.map(function () {
     path: 'timeEntry',
     controller: TimeEntryController
   });
+  this.route('reports', {
+    path: 'reports',
+    controller: ReportsController
+  });
   this.route('timecard', {
     path: 'timeEntry/timecard/:id',
     controller: TimeCardController
