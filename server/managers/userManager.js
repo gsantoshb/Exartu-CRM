@@ -281,16 +281,36 @@ UserManager = {
             return list;
         }
     },
-    setVisitedTour: function(tour){
+    setVisitedTour: function(tour, tip){
       var user = Meteor.user();
       if(user.tours){
-        if(!_.contains(user.tours, tour))
-        user.tours.push(tour);
+        var index = _.indexOf(_.pluck(user.tours,"tour"), tour);
+        if(!(index>=0))
+          user.tours.push({tour: tour,tip:tip});
+        else{
+          user.tours[index] = {tour: tour, tip:tip};
+        }
+
       }
       else{
-        user.tours = [tour];
+        user.tours = [{tour: tour,tip:tip}];
       }
       Meteor.users.update({_id: Meteor.userId()}, {$set:{tours: user.tours }});
+    },
+    getIndexTour: function(tour){
+      var user = Meteor.user();
+      if(user.tours){
+        var index = _.indexOf(_.pluck(user.tours,"tour"), tour);
+        if(index >= 0){
+          return user.tours[index].tip;
+        }
+        else{
+          return false;
+        }
+      }
+      else{
+        return false;
+      }
     }
 };
 

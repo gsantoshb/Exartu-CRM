@@ -1,6 +1,7 @@
 /**
  * Variables
  */
+var tourIndex;
 var entityType = null;
 var searchQuery;
 var isEntitySpecific = false;
@@ -12,7 +13,7 @@ var sortFields = [
     {field: 'dateCreated', displayName: 'Date'},
     {field: 'employeeDisplayName', displayName: 'Name'}
 ];
-var placementCollection = Placements;
+var placementCollection = PlacementsView;
 var PlacementHandler, query;
 
 var info = new Utils.ObjectDefinition({
@@ -150,6 +151,36 @@ Template.placementsBox.created = function(){
     }
 };
 
+Template.placementsBox.rendered = function(){
+  Meteor.call('getIndexTour', "tourActivities", function(err,cb){
+    tourIndex = cb;
+    if((tourIndex>=14)&&(tourIndex < 18)){
+      $("#tourActivities").joyride({
+        autoStart: true,
+        startOffset:tourIndex + 1,
+        modal: true,
+        postRideCallback: function(e) {
+          Meteor.call('setVisitedTour', "tourActivities", 27, function(err,cb){
+          })
+        },
+        postStepCallback: function(e, ctx){
+          tourIndex = e;
+          Meteor.call('setVisitedTour', "tourActivities", tourIndex, function(err,cb){
+          })
+          if(e===18){
+            Router.go("/tasks");
+          }
+
+        }
+      });
+    }
+  });
+}
+
+Template.placementsBox.destroyed = function() {
+  $("#tourActivities").joyride('destroy');
+}
+
 var initialized = new ReactiveVar(false);
 
 Template.placementList.created = function () {
@@ -246,11 +277,10 @@ Template.placementList.created = function () {
             SubscriptionHandlers.PlacementHandler.setFilter(searchQuery);
             SubscriptionHandlers.PlacementHandler.setOptions(options);
             PlacementHandler = SubscriptionHandlers.PlacementHandler;
-            SubscriptionHandlers.PlacementHandler.getFilter();
         }
         else {
             SubscriptionHandlers.PlacementHandler =
-                Meteor.paginatedSubscribe('placements', {
+                Meteor.paginatedSubscribe('placementsView', {
                     filter: searchQuery,
                     options: options
                 });
@@ -295,6 +325,9 @@ Template.placementListSearch.helpers({
     },
     listViewMode: function () {
         return listViewMode.get();
+    },
+    initialized: function () {
+        return initialized.get();
     }
 });
 

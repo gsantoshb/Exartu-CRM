@@ -1,3 +1,4 @@
+
 <template name="hierarchiesManagement">
     <div id="content" class="lookUps">
         <!-- Title -->
@@ -17,8 +18,8 @@
         <div class="box-type-1" style="margin: 0px 15px;">
             <div class="box-type-1-content">
                 <div class="row">
-                    <!-- Hierarchy Trees -->
                     <div class="col-md-8">
+                        <!-- Search input -->
                         <div class="input-group">
                             {{#objectProperty property=filters.searchString}}
                                 <input type="text" class="form-control" placeholder= {{_ "Search Hierarchies"}} value="{{value}}">
@@ -29,13 +30,15 @@
                                 </button>
                             </span>
                         </div>
+
+                        <!-- Hierarchy Tree-->
                         <div>
                             <span>&nbsp;</span>
                             {{>showHierarchyTree hierarchies=hierarchies}}
                         </div>
                     </div>
 
-                    <!-- New Hierarchy -->
+                    <!-- Edit Hierarchy -->
                     <div class="col-md-4" style="border-left: solid 2px #979797; min-height: 300px;">
                         {{#with selected}}
                             {{#if isAdmin}}
@@ -72,9 +75,10 @@
     </div>
 </template>
 
+
 <template name="showHierarchyTree">
     <div class="tree">
-        {{>recursiveHierarchies  hierarchies=hierarchies}}
+        {{>recursiveHierarchies hierarchies=hierarchies}}
     </div>
 </template>
 <template name="recursiveHierarchies">
@@ -88,24 +92,30 @@
                         </a>
                     {{else}}
                         <!--invisible span that takes the place of the collapse-trigger, so that the items stay aligned-->
-                            <span>
-                                <i class="fa" style="width: 11px"></i>
-                            </span>
+                        <span>
+                            <i class="fa" style="width: 11px"></i>
+                        </span>
                     {{/if}}
-                    <btn class="makeCurrent hierarchyItem {{isSelectedClass}} tree-item">
+
+                    <!-- Hier name -->
+                    <btn class="hierarchyItem makeCurrent tree-item {{#if isSelected}}active{{/if}}">
                         {{name}}
                         {{#if isCurrent}}
                             <b>({{_ "current"}})</b>
                         {{else}}
                         {{/if}}
                     </btn>
+
+                    <!-- Hier date & id -->
                     <div class="pull-right task-author">
                         {{formattedDate dateCreated "lll"}}
                         <br/>
                         <!-- /.table-item-cell-container -->
                         {{_id}}<br/>
-                        {{#if isInactive}}Inactive{{/if}}
+                        {{#if inactive}}Inactive{{/if}}
                     </div>
+
+                    <!-- Hier childs -->
                     {{#if hasChilds}}
                         <div id="childs_{{_id}}" class="collapse in tree-child">
                             {{>showHierarchyTree hierarchies=childHiers}}

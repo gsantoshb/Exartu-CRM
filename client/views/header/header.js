@@ -96,6 +96,13 @@ Template.header.helpers({
 			return 'English';
         }
 		
+    },
+    latestHiers: function () {
+      if(Meteor.user().latestHiers)
+        return Hierarchies.find({_id: {$in: Meteor.user().latestHiers || []}});
+    },
+    latestHiersCount: function () {
+        return Hierarchies.find({_id: {$in: Meteor.user().latestHiers || []}}).count();
     }
 });
 Template.header.events({
@@ -124,6 +131,16 @@ Template.header.events({
         var root = $(e.currentTarget).closest('.dropdown');
         root.find('.left-caret').toggleClass('right-caret left-caret');
         root.find('.sub-menu:visible').hide();
+    },
+    'click .changeHier': function () {
+      Meteor.call('changeCurrentHierId', this._id, function (err, result) {
+        if (err)
+          console.error(err);
+        else {
+          Meteor.disconnect();
+          Meteor.reconnect();
+        }
+      })
     }
 });
 

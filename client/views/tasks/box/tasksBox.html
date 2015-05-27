@@ -1,7 +1,8 @@
 <template name="tasksBox">
+    {{>tourActivities}}
     <div class="row">
         <div class="col-md-3">
-            <div class="page-title">
+            <div class="page-title" id="tasksWelcomeTour">
 
                     <h1><span>{{taskCount}}</span> {{_ "tasks"}}</h1>
 
@@ -64,7 +65,7 @@
                 <div class="list-holder">
                     <div class="list-actions">
                         <div class="list-actions-cell btn-add-to-list">
-                            <button type="button" class="btn btn-success addTask" title="Add">
+                            <button type="button" class="btn btn-success addTask" title="Add" id="tasksAddTour">
                                 <span class="fa fa-plus"></span> {{_ "Add"}}
                             </button>
                         </div>
@@ -90,7 +91,7 @@
                         {{>fastPagination name="tasks" useKeys="true" containerClass="magic-pager"}}
                     </div>
 
-                    <div class="list-header tasks-list-header">
+                    <div class="list-header tasks-list-header" id="tasksListTour">
                         <div class="list-header-cell tasks-list-header-title">{{_ "Title"}}</div>
                         <div class="list-header-cell tasks-list-header-linked">{{_ "Linked"}}</div>
                         <div class="list-header-cell tasks-list-header-startdate">{{_ "Start Date"}}</div>

@@ -1,4 +1,5 @@
 <template name="placementsBox">
+    {{>tourActivities}}
     <div class="row">
         <div class="col-md-3 col-lg-3" id="column-filters">
             {{> placementFilters placementCount=placementCount}}
@@ -24,7 +25,7 @@
                             {{_ "loading"}}
                         {{else}}
                             {{#unless isESSearch}}
-                                {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}
+                                {{>fastPagination name="placementsView" useKeys="true" containerClass="magic-pager"}}
                             {{/unless}}
                         {{/if}}
                     </div>
@@ -37,14 +38,14 @@
 
 <template name="placementListHeader">
     {{#if listViewMode}}
-        <div class="list-header placements-list-header simple-view">
+        <div class="list-header placements-list-header simple-view" id="placementsListTour">
             <div class="list-header-cell placements-list-header-title">{{_ "Title"}}</div>
             <div class="list-header-cell placements-list-header-owner">{{_ "Owner"}}</div>
             <div class="list-header-cell placements-list-header-time">{{_ "Date"}}</div>
         </div>
         <!-- /.list-header -->
     {{else}}
-        <div class="list-header placements-list-header">
+        <div class="list-header placements-list-header" id="placementsListTour">
             <div class="list-header-cell placements-list-header-title">{{_ "Title"}}</div>
             <div class="list-header-cell placements-list-header-status">{{_ "Status"}}</div>
             <div class="list-header-cell placements-list-header-code">{{_ "Code"}}</div>
@@ -105,9 +106,8 @@
         {{_ "loading"}}
     {{else}}
         {{#unless isESSearch}}
-			{{#if initialized}}		
-                {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}
-                {{>fastPagination name="placements" useKeys="true" containerClass="magic-pager"}}		
+			{{#if initialized}}
+                {{>fastPagination name="placementsView" useKeys="true" containerClass="magic-pager"}}
 		    {{/if}}
         {{/unless}}
     {{/if}}
@@ -148,7 +148,7 @@
 
 <template name="placementFilters">
     {{#with information}}
-        <div class="page-title">
+        <div class="page-title" id="placementTitleTour">
             <h1><span>{{placementsCount}}</span> {{_ "records"}}</h1>
         </div>
     {{/with}}
@@ -171,25 +171,21 @@
 </template>
 
 <template name="placementList">
-    {{#if isLoading}}
-        <div style="height: 280px;"></div>
-    {{else}}
-        <div class="list-item-section {{#if listViewMode}}simple-view{{/if}}">
-            {{#each placements}}
-                {{> placementListItem }}
-            {{else}}
-                {{#if info.isFiltering.value }}
-                    <div class="v-wrapper">
-                        <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
-                            <i class="icon-connection-1 text-large"></i>
+    <div class="list-item-section {{#if listViewMode}}simple-view{{/if}}">
+        {{#each placements}}
+            {{> placementListItem }}
+        {{else}}
+            {{#if info.isFiltering.value }}
+                <div class="v-wrapper">
+                    <div class="v-wrapper-cell text-center text-muted" style="height: 678px;">
+                        <i class="icon-connection-1 text-large"></i>
 
-                            <h1>{{_ "No records Found"}}</h1>
-                        </div>
+                        <h1>{{_ "No records Found"}}</h1>
                     </div>
-                {{/if}}
-            {{/each}}
-        </div>
-    {{/if}}
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
 </template>
 
 <template name="placementListItem">
@@ -197,9 +193,9 @@
         <div class="list-item placements-list-item">
             <div class="list-item-cell placements-list-item-title">
                 <div class="item-title">
-                    <a href="/contactable/{{employee}}">{{employeeDisplayName}}</a>
+                    <a href="/contactable/{{employeeId}}">{{employeeDisplayName}}</a>
                     <i class="fa fa-long-arrow-right"></i>
-                    <a href="/job/{{job}}">{{jobDisplayName}}</a>
+                    <a href="/job/{{jobId}}">{{jobDisplayName}}</a>
                 </div>
                 <span class="item-label prefix-10">{{lookUpName candidateStatus}}</span>
                 <span class="item-label">{{lookUpName activeStatus}}</span>
@@ -221,11 +217,11 @@
     {{else}}
         <div class="list-item placements-list-item">
             <div class="list-item-cell list-item-icon">
-                <a href="/placement/{{_id}}" class="item-icon item-icon-placements"><i class="ico-placements"></i></a>
+                <a href="/placement/{{placementId}}" class="item-icon item-icon-placements"><i class="ico-placements"></i></a>
             </div>
             <div class="list-item-cell placements-list-item-title">
-                <div class="item-title"><a href="/contactable/{{employee}}">{{employeeDisplayName}}</a> <i
-                        class="fa fa-long-arrow-right"></i> <a href="/job/{{job}}">{{jobDisplayName}}</a></div>
+                <div class="item-title"><a href="/contactable/{{employeeId}}">{{employeeDisplayName}}</a> <i
+                        class="fa fa-long-arrow-right"></i> <a href="/job/{{jobId}}">{{jobDisplayName}}</a></div>
                 <div class="item-subtitle-more">
                     {{> placementInformation}}
                 </div>
@@ -235,7 +231,7 @@
                     <span class="item-label">{{lookUpName candidateStatus}}</span> <span
                         class="item-label">{{lookUpName activeStatus}}</span>
                 </div>
-                <div class="list-item-cell placements-list-item-code ">{{displaySearchKey _id}}</div>
+                <div class="list-item-cell placements-list-item-code ">{{displaySearchKey placementId}}</div>
                 <div class="list-item-cell placements-list-item-owner">{{displayUserName userId}}</div>
                 <div class="list-item-cell placements-list-item-time">
                     <span>{{formattedDate dateCreated "fromNow"}}</span><br>

@@ -34,9 +34,16 @@ HierarchyManager = {
     },
     changeCurrentHier: function (hierid, userid) {
         var user = Meteor.user();
-        if (userid) user = Meteor.users.findOne({_id: userid})
+        if (userid) user = Meteor.users.findOne({_id: userid});
         Meteor.users.update({_id: user._id}, {$set: {currentHierId: hierid, hierId: hierid}});
         Meteor.users.update({_id: user._id}, {$unset: {lastClientUsed: "", lastEmployeeUsed: ""}});
+
+      // Save the latest 5 hier used
+      var latestHiers = user.latestHiers ? _.first(user.latestHiers, 4) : [];
+      if (latestHiers.indexOf(hierid) == -1) {
+        latestHiers.unshift(hierid);
+        Meteor.users.update({_id: user._id}, {$set: {latestHiers: latestHiers}});
+      }
     },
     setLookupDefault: function (lookUpCode, valueId) {
         var lookUpValue = LookUps.findOne({lookUpCode: lookUpCode, _id: valueId});

@@ -1,7 +1,8 @@
 <template name="notesBox">
+    {{>tourActivities}}
     <div class="row">
         <div class="col-md-3">
-            <div class="page-title">
+            <div class="page-title" id="notesWelcomeTour">
                 <h1><span>{{noteCount}}</span> {{_ "notes"}}</h1>
             </div>
             <div class="filter">
@@ -13,7 +14,7 @@
 
                     <div class="filter-item">
                         <div class="filter-title">
-                            <i class="fa fa-user"></i>
+                            <i class="fa fa-user" id="filterNotesTour"></i>
                             {{_ "User"}}
                         </div>
 
@@ -43,7 +44,7 @@
                 <div class="list-holder">
                     <div class="list-actions">
                         <div class="list-actions-cell btn-add-to-list">
-                            <button type="button" class="btn btn-success addNote" title="Add">
+                            <button type="button" class="btn btn-success addNote" title="Add" id="notesAddTour">
                                 <span class="fa fa-plus"></span> {{_ "Add"}}
                             </button>
                         </div>
@@ -70,7 +71,7 @@
                         {{>fastPagination name="noteList" useKeys="true" containerClass="magic-pager"}}
                     </div>
 
-                    <div class="list-header notes-list-header">
+                    <div class="list-header notes-list-header" id="notesListTour">
                         <div class="list-header-cell notes-list-header-title">{{_ "Title"}}</div>
                         <div class="list-header-cell notes-list-header-linked">{{_ "Linked"}}</div>
                         <div class="list-header-cell notes-list-header-edit">{{_ "Last Edit"}}</div>

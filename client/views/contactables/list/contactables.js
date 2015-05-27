@@ -1,4 +1,165 @@
 /**
+var tourIndex;
+ * Controller
+ */
+ContactablesController = RouteController.extend({
+  template: 'contactables',
+  layoutTemplate: 'mainLayout',
+  waitOn: function () {
+    // todo: find a way to subscribe using the filters without braking pagination
+    //if (!SubscriptionHandlers.ContactablesViewHandler) {
+    //  SubscriptionHandlers.ContactablesViewHandler = Meteor.paginatedSubscribe('contactablesView');
+    //
+    //  return [SubscriptionHandlers.ContactablesViewHandler, LookUpsHandler];
+    //}
+  },
+  action: function () {
+    if (!this.ready()) {
+      this.render('loadingContactable');
+      return;
+    }
+    var params = this.params.query;
+    var objTypeQuery = {};
+    var type = params.hash || params.type;
+    if (type != undefined && type != 'all') {
+      var objType = dType.ObjTypes.findOne({
+        name: type
+      });
+      objTypeQuery.default = objType.name;
+      info.objType.value = objType.name + 's';
+    } else {
+      objTypeQuery.default = undefined;
+      info.objType.value = 'record(s)';
+    }
+
+    // Search string
+    var searchStringQuery = {};
+    if (params.search) {
+      searchStringQuery.default = params.search;
+    }
+
+    // CreationDate
+    var creationDateQuery = {};
+    if (params.creationDate) {
+      creationDateQuery.default = params.creationDate;
+    }
+
+
+    // Mine only
+    var mineQuery = {type: Utils.ReactivePropertyTypes.boolean};
+    if (params.mine) {
+      mineQuery.default = !!params.mine;
+    }
+    // userId
+    var userIdQuery = {};
+    if (params.userId) {
+
+      userIdQuery.default = params.userId;
+    }
+
+    // Tags
+    var tagsQuery = {type: Utils.ReactivePropertyTypes.array};
+    if (params.tags) {
+      tagsQuery.default = params.tags.split(',');
+    }
+
+    // Location
+    var locationQuery = {};
+    if (params.address) {
+      locationQuery.default = ' address: ' + params.address;
+    }
+    if (params.city) {
+      locationQuery.default = locationQuery.default || '';
+      locationQuery.default += ' city: ' + params.city;
+    }
+    if (params.state) {
+      locationQuery.default = locationQuery.default || '';
+      locationQuery.default += ' state: ' + params.state;
+    }
+    if (params.country) {
+      locationQuery.default = locationQuery.default || '';
+      locationQuery.default += ' country: ' + params.country;
+    }
+
+    var taxIdQuery = {};
+    if (params.taxId) {
+      taxId.default = params.taxId;
+    }
+
+    var employeeProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
+    if (params.employeeProcessStatus) {
+      employeeProcessStatusQuery.default = params.employeeProcessStatus.split(',');
+    }
+    else {
+      employeeProcessStatusQuery.default = [];
+    }
+
+    var clientProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
+    if (params.clientProcessStatus) {
+      clientProcessStatusQuery.default = params.clientProcessStatus.split(',');
+    }
+    else {
+      clientProcessStatusQuery.default = [];
+    }
+
+    var contactProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
+    if (params.contactProcessStatus) {
+      contactProcessStatusQuery.default = params.contactProcessStatus.split(',');
+    }
+    else {
+      contactProcessStatusQuery.default = [];
+    }
+
+
+    var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
+    if (params.activeStatus) {
+      activeStatusQuery.default = params.activeStatus.split(',');
+    }
+    else {
+      activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
+    }
+
+
+    query = new Utils.ObjectDefinition({
+      reactiveProps: {
+        objType: objTypeQuery,
+        searchString: searchStringQuery,
+        selectedLimit: creationDateQuery,
+        mineOnly: mineQuery,
+        tags: tagsQuery,
+        location: locationQuery,
+        employeeProcessStatus: employeeProcessStatusQuery,
+        clientProcessStatus: clientProcessStatusQuery,
+        contactProcessStatus: contactProcessStatusQuery,
+        activeStatus: activeStatusQuery,
+        taxId: taxIdQuery,
+        userId: userIdQuery
+      }
+    });
+
+    runESComputation();
+
+    selected = new ReactiveVar([]);
+
+    this.render('contactables');
+  },
+  onAfterAction: function () {
+    var title = 'Network',
+      description = 'Your contacts, employees and clients';
+    SEO.set({
+      title: title,
+      meta: {
+        'description': description
+      },
+      og: {
+        'title': title,
+        'description': description
+      }
+    });
+  }
+});
+
+/**
  * Variables
  */
 var query = {};
@@ -10,43 +171,48 @@ var comonTypes = [];
 // Page - Variables
 var searchDep = new Deps.Dependency;
 var totalCountDep = new Deps.Dependency;
+var paginationReady = new ReactiveVar(false);
 var isSearching = false;
-$("#userId").prop("selectedIndex", -1);
+
 var info = new Utils.ObjectDefinition({
-    reactiveProps: {
-        contactablesCount: {},
-        objType: {},
-        isFiltering: {
-            default: false
-        },
-        isLoading: {
-            default: false
-        }
+  reactiveProps: {
+    contactablesCount: {},
+    objType: {},
+    isFiltering: {
+      default: false
+    },
+    isLoading: {
+      default: false
     }
+  }
 });
+
+var showFilters = new ReactiveVar(true);
+
 
 // List - Variables
 var contactableTypes = function () {
-    return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
+  return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
 };
+
 var locationFields = ['address', 'city', 'state', 'country'];
 var getLocationTagValue = function (locationField, locationFields) {
-    var regex = new RegExp('(?:' + locationField + ':)((?!' + locationFields.filter(function (field) {
-        return field != locationField;
-    }).map(function (field) {
-        return field + ':';
-    }).join('|') + ').)*', 'ig');
-    var match = regex.exec(query.location.value);
-    var value;
-    if (match)
-        value = match[0].substring(locationField.length + 1).trim();
+  var regex = new RegExp('(?:' + locationField + ':)((?!' + locationFields.filter(function (field) {
+    return field != locationField;
+  }).map(function (field) {
+    return field + ':';
+  }).join('|') + ').)*', 'ig');
+  var match = regex.exec(query.location.value);
+  var value;
+  if (match)
+    value = match[0].substring(locationField.length + 1).trim();
 
-    return value;
+  return value;
 };
 var clickedAllSelected = new ReactiveVar(false);
 var listViewDefault = Session.get('contactableListViewMode');
 if (!listViewDefault) {
-    listViewDefault = false;
+  listViewDefault = false;
 }
 var listViewMode = new ReactiveVar(listViewDefault);
 var options = {};
@@ -54,473 +220,335 @@ var options = {};
 // List Sort - Variables
 var selectedSort = new ReactiveVar();
 var sortFields = [
-    {field: 'dateCreated', displayName: 'Date'},
-    {field: 'displayName', displayName: 'Name'}
+  {field: 'dateCreated', displayName: 'Date'},
+  {field: 'displayName', displayName: 'Name'}
 ];
 
-var listIsLoading = new ReactiveVar();
-
 var setSortField = function (field) {
-    var selected = selectedSort.get();
-    if (selected && selected.field == field.field) {
-        if (selected.value == 1)
-            selected = undefined;
-        else
-            selected.value = 1;
-    } else {
-        selected = field;
-        selected.value = -1;
-    }
-    selectedSort.set(selected);
+  var selected = selectedSort.get();
+  if (selected && selected.field == field.field) {
+    if (selected.value == 1)
+      selected = undefined;
+    else
+      selected.value = 1;
+  } else {
+    selected = field;
+    selected.value = -1;
+  }
+  selectedSort.set(selected);
 };
 
-var showOnlyName = new ReactiveVar(false);
-
-/**
- * Controller
- */
-//lookUpsHandler;
-ContactablesController = RouteController.extend({
-    template: 'contactables',
-    layoutTemplate: 'mainLayout',
-    waitOn: function () {
-        if (!SubscriptionHandlers.AuxContactablesHandler) {
-            SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
-
-            return [SubscriptionHandlers.AuxContactablesHandler, LookUpsHandler, Meteor.subscribe('singleHotList', Session.get('hotListId'))];
-        }
-        SubscriptionHandlers.ContactablesHotListHandler = Meteor.subscribe('allHotLists');
-    },
-    action: function () {
-        if (!this.ready()) {
-            this.render('loadingContactable');
-            return;
-        }
-        var params = this.params.query;
-        var objTypeQuery = {};
-        var type = params.hash || params.type;
-        if (type != undefined && type != 'all') {
-            var objType = dType.ObjTypes.findOne({
-                name: type
-            });
-            objTypeQuery.default = objType.name;
-            info.objType.value = objType.name + 's';
-        } else {
-            objTypeQuery.default = undefined;
-            info.objType.value = 'record(s)';
-        }
-
-        // Search string
-        var searchStringQuery = {};
-        if (params.search) {
-            searchStringQuery.default = params.search;
-        }
-
-        // CreationDate
-        var creationDateQuery = {};
-        if (params.creationDate) {
-            creationDateQuery.default = params.creationDate;
-        }
-
-
-        // Mine only
-        var mineQuery = {type: Utils.ReactivePropertyTypes.boolean};
-        if (params.mine) {
-            mineQuery.default = !!params.mine;
-        }
-        // userId
-        var userIdQuery = {};
-        if (params.userId) {
-
-            userIdQuery.default = params.userId;
-        }
-
-        // Tags
-        var tagsQuery = {type: Utils.ReactivePropertyTypes.array};
-        if (params.tags) {
-            tagsQuery.default = params.tags.split(',');
-        }
-
-        // Location
-        var locationQuery = {};
-        if (params.address) {
-            locationQuery.default = ' address: ' + params.address;
-        }
-        if (params.city) {
-            locationQuery.default = locationQuery.default || '';
-            locationQuery.default += ' city: ' + params.city;
-        }
-        if (params.state) {
-            locationQuery.default = locationQuery.default || '';
-            locationQuery.default += ' state: ' + params.state;
-        }
-        if (params.country) {
-            locationQuery.default = locationQuery.default || '';
-            locationQuery.default += ' country: ' + params.country;
-        }
-
-        var taxIdQuery = {};
-        if (params.taxId) {
-            taxId.default = params.taxId;
-        }
-
-        var employeeProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
-        if (params.employeeProcessStatus) {
-            employeeProcessStatusQuery.default = params.employeeProcessStatus.split(',');
-        }
-        else {
-            employeeProcessStatusQuery.default = [];
-        }
-
-        var clientProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
-        if (params.clientProcessStatus) {
-            clientProcessStatusQuery.default = params.clientProcessStatus.split(',');
-        }
-        else {
-            clientProcessStatusQuery.default = [];
-        }
-
-        var contactProcessStatusQuery = {type: Utils.ReactivePropertyTypes.array};
-        if (params.contactProcessStatus) {
-            contactProcessStatusQuery.default = params.contactProcessStatus.split(',');
-        }
-        else {
-            contactProcessStatusQuery.default = [];
-        }
-
-
-        var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
-        if (params.activeStatus) {
-            activeStatusQuery.default = params.activeStatus.split(',');
-        }
-        else {
-            activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
-        }
-
-
-        query = new Utils.ObjectDefinition({
-            reactiveProps: {
-                objType: objTypeQuery,
-                searchString: searchStringQuery,
-                selectedLimit: creationDateQuery,
-                mineOnly: mineQuery,
-                tags: tagsQuery,
-                location: locationQuery,
-                employeeProcessStatus: employeeProcessStatusQuery,
-                clientProcessStatus: clientProcessStatusQuery,
-                contactProcessStatus: contactProcessStatusQuery,
-                activeStatus: activeStatusQuery,
-                taxId: taxIdQuery,
-                userId: userIdQuery
-            }
-        });
-
-        runESComputation();
-
-        selected = new ReactiveVar([]);
-
-        this.render('contactables');
-    },
-    onAfterAction: function () {
-        var title = 'Network',
-            description = 'Your contacts, employees and clients';
-        SEO.set({
-            title: title,
-            meta: {
-                'description': description
-            },
-            og: {
-                'title': title,
-                'description': description
-            }
-        });
-    }
-});
-
-Template.contactables.helpers({
-    isESSearch: function () {
-        return !_.isEmpty(query.searchString.value);
-    }
-});
 
 /**
  * Callbacks
  */
 Template.contactablesList.created = function () {
-    Meteor.autorun(function (c) {
-        var urlQuery = new URLQuery();
-        var searchQuery = {
-            $and: [] // Push each $or operator here
-        };
+  paginationReady.set(false);
 
-        // Search string
-        if (query.searchString.value) {
-            urlQuery.addParam('search', query.searchString.value);
-        }
+  Meteor.autorun(function (c) {
+    var urlQuery = new URLQuery();
+    var searchQuery = {
+      $and: [] // Push each $or operator here
+    };
 
-        // Type
-        if (query.objType.value) {
-            searchQuery.objNameArray = query.objType.value;
-            urlQuery.addParam('type', query.objType.value);
-        }
+    // Search string
+    if (query.searchString && query.searchString.value) {
+      urlQuery.addParam('search', query.searchString.value);
+    }
 
-        // Creation date
-        if (query.selectedLimit.value) {
-            var dateLimit = new Date();
-            searchQuery.dateCreated = {
-                $gte: dateLimit.getTime() - query.selectedLimit.value
-            };
-            urlQuery.addParam('creationDate', query.selectedLimit.value);
-        }
+    // Type
+    if (query.objType.value) {
+      searchQuery[query.objType.value] = true;
+      urlQuery.addParam('type', query.objType.value);
+    }
 
-        // Created by
-        if (query.mineOnly.value) {
-            searchQuery.userId = Meteor.userId();
-            urlQuery.addParam('mine', true);
-        }
+    // Creation date
+    if (query.selectedLimit.value) {
+      var dateLimit = new Date();
+      searchQuery.dateCreated = {
+        $gte: dateLimit.getTime() - query.selectedLimit.value
+      };
+      urlQuery.addParam('creationDate', query.selectedLimit.value);
+    }
 
-        if (query.userId.value) {
-            searchQuery.userId = query.userId.value;
-            urlQuery.addParam('userId', query.userId.value);
-        }
+    // Created by
+    if (query.mineOnly.value) {
+      searchQuery.userId = Meteor.userId();
+      urlQuery.addParam('mine', true);
+    }
 
-        // Location filter
-        var locationFilter = undefined;
-        if (query.location.value) {
-          // Check if any of the predefined location tags are used
-          _.forEach(locationFields, function (locationField) {
-            var value = getLocationTagValue(locationField, locationFields);
-            if (value) {
-              // Check for initialization
-              if (!_.isObject(locationFilter)) { locationFilter = {}; }
+    if (query.userId.value) {
+      searchQuery.userId = query.userId.value;
+      urlQuery.addParam('userId', query.userId.value);
+    }
 
-              locationFilter[locationField] = value;
-              urlQuery.addParam(locationField, value);
-            }
-          });
-
-          // If no tags were used set the value as string
+    // Location filter
+    var locationFilter = undefined;
+    if (query.location.value) {
+      // Check if any of the predefined location tags are used
+      _.forEach(locationFields, function (locationField) {
+        var value = getLocationTagValue(locationField, locationFields);
+        if (value) {
+          // Check for initialization
           if (!_.isObject(locationFilter)) {
-            locationFilter = query.location.value;
+            locationFilter = {};
           }
-        }
 
-        // Tags filter
-        if (query.tags.value.length > 0) {
-            searchQuery.tags = {
-                $in: query.tags.value
-            };
-            urlQuery.addParam('tags', query.tags.value);
+          locationFilter[locationField] = value;
+          urlQuery.addParam(locationField, value);
         }
+      });
 
-        if (query.taxId.value) {
-            var taxIdOR = {
-                $or: []
-            };
-            var aux = {};
-            aux['Employee.taxID'] = query.taxId.value;
-            taxIdOR.$or.push(_.clone(aux));
-            aux['Employee.taxID'] = {$regex: '([0-9]{3}-?[0-9]{2}-?)(' +query.taxId.value + ')', $options: 'i'};
-            taxIdOR.$or.push(_.clone(aux));
-            var aux = {};
-            aux['contactMethods'] = {$elemMatch: {value: {$regex: query.taxId.value, $options: 'i'}}};
-            taxIdOR.$or.push(_.clone(aux));
-            searchQuery.$and.push(taxIdOR);
+      // If no tags were used set the value as string
+      if (!_.isObject(locationFilter)) {
+        locationFilter = query.location.value;
+      }
+    }
 
-        }
+    // Tags filter
+    if (query.tags.value.length > 0) {
+      searchQuery.tags = {
+        $in: query.tags.value
+      };
+      urlQuery.addParam('tags', query.tags.value);
+    }
 
-        if (searchQuery.$and.length == 0)
-            delete searchQuery.$and;
-        if (!_.isEmpty(query.employeeProcessStatus.value)) {
-            searchQuery[query.objType.value + '.status'] = {$in: query.employeeProcessStatus.value};
+    if (query.taxId.value) {
+      var taxIdOR = {
+        $or: []
+      };
+      var aux = {};
+      aux['taxID'] = query.taxId.value;
+      taxIdOR.$or.push(_.clone(aux));
+      aux['taxID'] = {$regex: '([0-9]{3}-?[0-9]{2}-?)(' + query.taxId.value + ')', $options: 'i'};
+      taxIdOR.$or.push(_.clone(aux));
+      aux = {};
+      aux['contactMethods'] = {$elemMatch: {value: {$regex: query.taxId.value, $options: 'i'}}};
+      taxIdOR.$or.push(_.clone(aux));
+      searchQuery.$and.push(taxIdOR);
 
-            urlQuery.addParam('employeeProcessStatus', query.employeeProcessStatus.value);
-        }
-        if (!_.isEmpty(query.clientProcessStatus.value)) {
-            searchQuery[query.objType.value + '.status'] = {$in: query.clientProcessStatus.value};
+    }
 
-            urlQuery.addParam('clientProcessStatus', query.clientProcessStatus.value);
-        }
-        if ((query.objType.value === "Contact")&&(!_.isEmpty(query.contactProcessStatus.value))) {
-            searchQuery[query.objType.value + '.status'] = {$in: query.contactProcessStatus.value};
+    if (searchQuery.$and.length == 0)
+      delete searchQuery.$and;
+    if ((query.objType.value === "Employee") && !_.isEmpty(query.employeeProcessStatus.value)) {
+      searchQuery.employeeStatus = {$in: query.employeeProcessStatus.value};
 
-            urlQuery.addParam('contactProcessStatus', query.contactProcessStatus.value);
-        }
-        if (!_.isEmpty(query.activeStatus.value)) {
-            searchQuery.activeStatus = {$in: query.activeStatus.value};
+      urlQuery.addParam('employeeProcessStatus', query.employeeProcessStatus.value);
+    }
+    if ((query.objType.value === "Client") && !_.isEmpty(query.clientProcessStatus.value)) {
+      searchQuery.clientStatus = {$in: query.clientProcessStatus.value};
 
-            urlQuery.addParam('activeStatus', query.activeStatus.value);
-        }
-        // Set url query
-        urlQuery.apply();
-        isSearching = false;
-        // Avoid update handler's filter when an Elasticsearch query will be performed
-        if (query.searchString.value) return;
-        if (selectedSort.get()) {
-            var selected = selectedSort.get();
-            options.sort = {};
-            options.sort[selected.field] = selected.value;
-        } else {
-            delete options.sort;
-        }
-        if (SubscriptionHandlers.AuxContactablesHandler) {
-            SubscriptionHandlers.AuxContactablesHandler.setFilter(searchQuery, {location: locationFilter});
-            SubscriptionHandlers.AuxContactablesHandler.setOptions(options);
-        }
-        else
-            SubscriptionHandlers.AuxContactablesHandler =
-                Meteor.paginatedSubscribe('auxContactables', {
-                    filter: searchQuery,
-                    options: options
-                });
-    });
+      urlQuery.addParam('clientProcessStatus', query.clientProcessStatus.value);
+    }
+    if ((query.objType.value === "Contact") && (!_.isEmpty(query.contactProcessStatus.value))) {
+      searchQuery.contactStatus = {$in: query.contactProcessStatus.value};
 
-    Meteor.autorun(function () {
-        if (!SubscriptionHandlers.AuxContactablesHandler) {
-            SubscriptionHandlers.AuxContactablesHandler = Meteor.paginatedSubscribe('auxContactables');
-        }
-        if (query.searchString.value)
-            Session.set('contactableCount', esResult.length);
-        else {
-            if (SubscriptionHandlers && SubscriptionHandlers.AuxContactablesHandler)
-                Session.set('contactableCount', SubscriptionHandlers.AuxContactablesHandler.totalCount());
-        }
-    });
+      urlQuery.addParam('contactProcessStatus', query.contactProcessStatus.value);
+    }
+    if (!_.isEmpty(query.activeStatus.value)) {
+      searchQuery.activeStatus = {$in: query.activeStatus.value};
+
+      urlQuery.addParam('activeStatus', query.activeStatus.value);
+    }
+    // Set url query
+    urlQuery.apply();
+    isSearching = false;
+    // Avoid update handler's filter when an Elasticsearch query will be performed
+    if (query.searchString.value) return;
+    if (selectedSort.get()) {
+      var selected = selectedSort.get();
+      options.sort = {};
+      options.sort[selected.field] = selected.value;
+    } else {
+      delete options.sort;
+    }
+
+    if (_.isString(locationFilter)) {
+      searchQuery.$or = [
+        {'addresses.address': {$regex: locationFilter, $options: 'i'}},
+        {'addresses.city': {$regex: locationFilter, $options: 'i'}},
+        {'addresses.state': {$regex: locationFilter, $options: 'i'}},
+        {'addresses.country': {$regex: locationFilter, $options: 'i'}}
+      ];
+    }
+    if (_.isObject(locationFilter)) {
+      _.each(locationFilter, function (v, k) {
+        searchQuery['addresses.' + k] = {$regex: v, $options: 'i'}
+      });
+    }
+    if (SubscriptionHandlers.ContactablesViewHandler) {
+      SubscriptionHandlers.ContactablesViewHandler.setFilter(searchQuery);
+      SubscriptionHandlers.ContactablesViewHandler.setOptions(options);
+    }
+    else
+      SubscriptionHandlers.ContactablesViewHandler = Meteor.paginatedSubscribe('contactablesView', {
+        filter: searchQuery,
+        options: options
+      });
+
+  });
+
+  paginationReady.set(true);
+
+  Meteor.autorun(function () {
+
+    if (query.searchString.value)
+      Session.set('contactableCount', esResult.length);
+    else {
+      if (SubscriptionHandlers && SubscriptionHandlers.ContactablesViewHandler)
+        Session.set('contactableCount', SubscriptionHandlers.ContactablesViewHandler.totalCount());
+    }
+  });
 };
 
-Template.contactablesList.rendered = function () {};
+Template.contactablesList.rendered = function () {
+  Meteor.call('getIndexTour', "tourActivities", function(err,cb){
+    if((cb>=4) &&(cb<9)){
+      if (!_.contains(Meteor.user().tours, "tourActivities")) {
+          $("#tourActivities").joyride({
+            autoStart: true,
+            startOffset:cb+1,
+            modal: true,
+            postRideCallback: function(ev) {
+              Meteor.call('setVisitedTour', "tourActivities", 27, function(err,cb){
+              })
+            },
+            postStepCallback: function(e, ctx){
+              tourIndex = e;
+              Meteor.call('setVisitedTour', "tourActivities", e, function(err,cb){
+              })
+              if(e===9){
+                Router.go("/jobs");
+              }
+            }
 
-// hack: because the handler is created on the created hook, the SubscriptionHandlers 'cleaner' can't find it
+          });
+
+
+          };
+
+      }
+
+  });
+
+};
+
 Template.contactablesList.destroyed = function () {
-    if (SubscriptionHandlers.AuxContactablesHandler) {
-        SubscriptionHandlers.AuxContactablesHandler.stop();
-       delete SubscriptionHandlers.AuxContactablesHandler;
-    }
-    if (SubscriptionHandlers.ContactablesHotListHandler) {
-       SubscriptionHandlers.ContactablesHotListHandler.stop();
-       delete SubscriptionHandlers.ContactablesHotListHandler;
-    }
-    $('button[data-toggle="popover"]').attr('data-init', 'off');
-    $('.popover').hide().popover('destroy');
+  if (SubscriptionHandlers.ContactablesViewHandler) {
+    SubscriptionHandlers.ContactablesViewHandler.stop();
+    delete SubscriptionHandlers.ContactablesViewHandler;
+  }
+  if (SubscriptionHandlers.ContactablesHotListHandler) {
+    SubscriptionHandlers.ContactablesHotListHandler.stop();
+    delete SubscriptionHandlers.ContactablesHotListHandler;
+  }
+  $('button[data-toggle="popover"]').attr('data-init', 'off');
+  $('.popover').hide().popover('destroy');
+
+    $("#tourActivities").joyride('destroy');
+
 };
 
 Template.contactablesListItem.destroyed = function () {
-    $('button[data-toggle="popover"]').attr('data-init', 'off');
-    $('.popover').hide().popover('destroy');
+  $('button[data-toggle="popover"]').attr('data-init', 'off');
+  $('.popover').hide().popover('destroy');
 };
+
 
 /**
  * Helpers
  */
 // Page - Helpers
 Template.contactables.helpers({
-    information: function () {
-        var searchQuery = {};
-
-        if (query.objType.value)
-            searchQuery.objNameArray = query.objType.value;
-
-        var contactableCount = Session.get('contactableCount');
-        if (contactableCount)
-            info.contactablesCount.value = contactableCount;
-
-        return info;
-    },
-    isSearching: function () {
-        searchDep.depend();
-        totalCountDep.changed();
-        return isSearching;
-    }
+  isSearching: function () {
+    searchDep.depend();
+    totalCountDep.changed();
+    return isSearching;
+  },
+  showFilters: function () {
+    return showFilters.get();
+  }
 });
 
 // List Header - Helpers
 Template.contactablesListHeader.helpers({
-    recentHotList: function () {
-        if (Session.get('hotListId'))
-            return HotLists.findOne({_id: Session.get('hotListId')});
-        else return null;
+  listViewMode: function () {
+    return listViewMode.get();
+  },
+  //selection
+  selectedCount: function () {
+    return selected.get().length;
+  },
+  areAllSelectedTheSameType: function () {
+    if (_.isEmpty(selected.get())) return true;
+    //check if there is a common type along all items selected ignoring contactable, person and organization
+    var comonTypesUpper = _.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization');
+    comonTypes = [];
+    _.forEach(comonTypesUpper, function (value) {
+      comonTypes.push(value.toLowerCase());
+    });
+    return !_.isEmpty(comonTypes);
+  },
+  showSelectAll: function () {
+    return clickedAllSelected.get() && SubscriptionHandlers.ContactablesViewHandler.pageCount() > 1;
+  },
+  withoutEmail: function () {
+    return _.filter(selected.get(), function (item) {
+      return !item.email
+    }).length;
+  },
+  differentTypesSelected: function () {
+    var result = {};
+    // create a hash that contains for each type the count of elements of this type, ignoring contactable, person, organization
+    _.each(selected.get(), function (item) {
+      _.each(_.without(item.type, 'contactable', 'person', 'organization'), function (type) {
+        result[type] = result[type] || 0;
+        ++result[type];
+      })
+    });
 
-    },
-    listViewMode: function () {
-        return listViewMode.get();
-    },
-    //selection
-    selectedCount: function () {
-        return selected.get().length;
-    },
-    areAllChecked: function () {
-        // true if the count of all contactables (in the local collection) that are selected is equal to the count of all contactables (in the local collection)
-        return AuxContactables.find({_id: {$in: _.pluck(selected.get(), 'id')}}).count() == AuxContactables.find().count();
-    },
-    areAllSelectedTheSameType: function () {
-        if (_.isEmpty(selected.get())) return true;
-        //check if there is a common type along all items selected ignoring contactable, person and organization
-        var comonTypesUpper =_.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization');
-        comonTypes = [];
-        _.forEach(comonTypesUpper, function(value){
-            comonTypes.push(value.toLowerCase());
-        })
-        return  !_.isEmpty(comonTypes);
-    },
-    showSelectAll: function () {
-        return clickedAllSelected.get() && SubscriptionHandlers.AuxContactablesHandler.pageCount() > 1;
-    },
-    withoutEmail: function () {
-        return _.filter(selected.get(), function (item) {
-            return !item.email
-        }).length;
-    },
-    differentTypesSelected: function () {
-        var result = {};
-        // create a hash that contains for each type the count of elements of this type, ignoring contactable, person, organization
-        _.each(selected.get(), function (item) {
-            _.each(_.without(item.type, 'contactable', 'person', 'organization'), function (type) {
-                result[type] = result[type] || 0;
-                ++result[type];
-            })
-        });
-
-        // map the hash to an array of name and count objects
-        return _.map(result, function (value, key) {
-            return {
-                name: key,
-                count: value
-            }
-        });
-    },
-    totalCount: function () {
-        if(SubscriptionHandlers.AuxContactablesHandler.isLoading())
-            return 0;
-        else
-            return SubscriptionHandlers.AuxContactablesHandler.totalCount();
-      },
+    // map the hash to an array of name and count objects
+    return _.map(result, function (value, key) {
+      return {
+        name: key,
+        count: value
+      }
+    });
+  },
+  totalCount: function () {
+    if (SubscriptionHandlers.ContactablesViewHandler.isLoading())
+      return 0;
+    else
+      return SubscriptionHandlers.ContactablesViewHandler.totalCount();
+  },
   getHotList: function () {
-    var templateSelf = this;
-
     return function (string) {
       var self = this;
-      var result = AllHotLists.find({category: {$in: comonTypes}, displayName: {$regex: ".*"+string+".*", $options: 'i'}}).fetch();
-      var array = _.map(result, function (r) {
-        return {text: r.displayName, id: r._id};
+      Meteor.call('findHotList',comonTypes, string, function (err, result) {
+        if (result) {
+          var array = _.map(result, function (r) {
+            return {text: r.displayName, id: r._id};
+          });
+          self.ready(array);
+        }
       });
-      self.ready(array);
     };
   },
-  getJobs: function(){
-    return function(string){
+  getJobs: function () {
+    return function (string) {
       var self = this;
-      Meteor.call('findJob', string, function(err, cb){
-        if(cb){
-          var array = _.map(cb, function(r){
-
-            return {text: r.publicJobTitle+" @ "+ r.clientDisplayName, id: r._id};
-          })
+      Meteor.call('findJob', string, function (err, cb) {
+        if (cb) {
+          var array = _.map(cb, function (r) {
+            return {text: r.publicJobTitle + " @ " + r.clientDisplayName, id: r._id};
+          });
           self.ready(array);
         }
       })
     }
   },
-  JobChanged: function(){
+  JobChanged: function () {
     var self = this;
     return function (value, text) {
       self.value = value;
@@ -535,206 +563,146 @@ Template.contactablesListHeader.helpers({
       selectedValue.id = value;
     }
   },
-  allEmployee: function(){
+  allEmployee: function () {
     return _.contains(comonTypes, "employee");
   }
 });
 
 // List Search - Helpers
 Template.contactablesListSearch.helpers({
-    listIsLoading: function () {
-        return SubscriptionHandlers.AuxContactablesHandler ? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
-    },
-    isESSearch: function () {
-        return !_.isEmpty(query.searchString.value);
-    },
-    contactableTypes: contactableTypes,
-    info: function () {
-        info.isFiltering.value = AuxContactables.find().count() != 0;
-        return info;
-    },
-    //contactables: function () {
-    //    // Dependencies
-    //    console.log('contactables requery');
-    //    // ElasticSearch
-    //    if (!_.isEmpty(query.searchString.value)) {
-    //        //urlQuery.push('type=' + query.objType.value);
-    //        return esResult;
-    //    }
-    //    return AuxContactables.find();
-    //},
-    contactableTypes: function () {
-        return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
-    },
-    searchString: function () {
-        return query.searchString;
-    },
-    listViewMode: function () {
-        return listViewMode.get();
-    }
+  isESSearch: function () {
+    return !_.isEmpty(query.searchString.value);
+  },
+  contactableTypes: contactableTypes,
+  searchString: function () {
+    return query.searchString;
+  },
+  listViewMode: function () {
+    return listViewMode.get();
+  },
+  showFilters: function () {
+    return showFilters.get();
+  },
+  paginationReady: function () {
+    return paginationReady.get();
+  }
+
 });
 
 // List Sort - Helpers
 Template.contactableListSort.helpers({
-    sortFields: function () {
-        return sortFields;
-    },
-    selectedSort: function () {
-        return selectedSort.get();
-    },
-    isFieldSelected: function (field) {
-        return selectedSort.get() && selectedSort.get().field == field.field;
-    },
-    isAscSort: function () {
-        return selectedSort.get() ? selectedSort.get().value == 1 : false;
-    }
+  sortFields: function () {
+    return sortFields;
+  },
+  selectedSort: function () {
+    return selectedSort.get();
+  },
+  isFieldSelected: function (field) {
+    return selectedSort.get() && selectedSort.get().field == field.field;
+  },
+  isAscSort: function () {
+    return selectedSort.get() ? selectedSort.get().value == 1 : false;
+  }
 });
 
 // List Filters - Helpers
 Template.contactablesFilters.helpers({
-    users: function () {
-        return Meteor.users.find({}, {sort: {'emails.address': 1}});
-    },
-    information: function () {
-        var searchQuery = {};
-
-        if (query.objType.value)
-            searchQuery.objNameArray = query.objType.value;
-
-        var contactableCount = Session.get('contactableCount');
-        if (contactableCount)
-            info.contactablesCount.value = contactableCount;
-
-        return info;
-    },
-    query: function () {
-        return query;
-    },
-    isSelectedType: function (typeName) {
-        return query.objType.value == typeName;
-    },
-    contactableTypes: contactableTypes,
-    isUserSelected: function () {
-        return this._id == query.userId.value;
-    },
-
-    contactablesCount: function () {
-        totalCountDep.depend();
-        if(!_.isEmpty(query.searchString.value)){
-            return esResult.length;
-        }
-
-        else {
-            return SubscriptionHandlers.AuxContactablesHandler.totalCount();
-        }
+  users: function () {
+    return Meteor.users.find({}, {sort: {'emails.address': 1}});
+  },
+  query: function () {
+    return query;
+  },
+  isSelectedType: function (typeName) {
+    return query.objType.value == typeName;
+  },
+  contactableTypes: contactableTypes,
+  isUserSelected: function () {
+    return this._id == query.userId.value;
+  },
+  contactablesCount: function () {
+    totalCountDep.depend();
+    if (!_.isEmpty(query.searchString.value)) {
+      return esResult.length;
     }
+    else {
+      return SubscriptionHandlers.ContactablesViewHandler && SubscriptionHandlers.ContactablesViewHandler.totalCount();
+    }
+  }
 });
 
 // List - Helpers
 Template.contactablesList.helpers({
-    isLoading: function () {
-        return SubscriptionHandlers.AuxContactablesHandler ? SubscriptionHandlers.AuxContactablesHandler.isLoading() : false;
-    },
-    info: function () {
-        info.isFiltering.value = AuxContactables.find().count() != 0;
-        return info;
-    },
-    contactables: function () {
-        // Dependencies
-        esDep.depend();
-        // ElasticSearch
-        if (!_.isEmpty(query.searchString.value)) {
-            //urlQuery.push('type=' + query.objType.value);
-            return esResult;
-        }
-        return AuxContactables.find();
-    },
-    contactableTypes: function () {
-        return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});
-    },
-    listViewMode: function () {
-        return listViewMode.get();
+  isLoading: function () {
+    return SubscriptionHandlers.ContactablesViewHandler ? SubscriptionHandlers.ContactablesViewHandler.isLoading() : false;
+  },
+  info: function () {
+    info.isFiltering.value = AuxContactables.find().count() != 0;
+    return info;
+  },
+  contactables: function () {
+    // Dependencies
+    esDep.depend();
+    // ElasticSearch
+    if (!_.isEmpty(query.searchString.value)) {
+      //urlQuery.push('type=' + query.objType.value);
+      return esResult;
     }
+    return ContactablesView.find({}, {sort: options.sort});
+  },
+  contactableTypes: contactableTypes,
+  listViewMode: function () {
+    return listViewMode.get();
+  }
 });
 
 // List Item - Helpers
 Template.contactablesListItem.helpers({
-    pictureUrl: function (pictureFileId) {
-        var picture = ContactablesFS.findOne({_id: pictureFileId});
-        return picture ? picture.url('ContactablesFSThumbs') : undefined;
-    },
-    contactableIcon: function () {
-        return helper.getEntityIcon(this);
-    },
-    displayObjType: function () {
-        return Utils.getContactableType(this);
-    },
-    isESSearch: function () {
-        return !_.isEmpty(query.searchString.value);
-    },
-    getLastNote: function () {
-      if (this.latestNotes && this.latestNotes.length > 0)
-            return this.latestNotes[this.latestNotes.length-1];
-    },
-    isSelected: function () {
-        return !!_.findWhere(selected.get(), {id: this._id});
-    },
-    listViewMode: function () {
-        return listViewMode.get();
-    },
-    getStatus: function () {
-        return this.activeStatus;
-    },
-    getProcessStatus: function () {
-        if (this.Client) return this.Client.status;
-        if (this.Employee) return this.Employee.status;
-        if (this.Contact) return this.Contact.status;
-        return null;
-    },
-    getDepartment: function () {
-        if (this.Client && this.Client.department) {
-            var dept = this.Client.department;
-            if (dept == 'Primary') return null;
-            //dept=" - " + dept
-        }
-        return dept;
-    },
-    showOnlyName: function(){
-        return (!this.Employee && this.Contact);
+  pictureUrl: function (pictureFileId) {
+    var picture = ContactablesFS.findOne({_id: pictureFileId});
+    return picture ? picture.url('ContactablesFSThumbs') : undefined;
+  },
+  displayObjType: function () {
+    return Utils.getContactableType(this);
+  },
+  isESSearch: function () {
+    return !_.isEmpty(query.searchString.value);
+  },
+  isSelected: function () {
+    return !!_.findWhere(selected.get(), {id: this._id});
+  },
+  listViewMode: function () {
+    return listViewMode.get();
+  },
+  getStatus: function () {
+    return this.activeStatus;
+  },
+  getProcessStatus: function () {
+    if (this.Client) return this.clientStatus;
+    if (this.Employee) return this.employeeStatus;
+    if (this.Contact) return this.contactStatus;
+    return null;
+  },
+  getDepartment: function () {
+    if (this.Client && this.department) {
+      var dept = this.department;
+      if (dept == 'Primary') return null;
     }
+    return dept;
+  },
+  showOnlyName: function () {
+    return (!this.Employee && this.Contact);
+  }
 });
 
-// Employee Information - Helpers
-Template.employeeInformation.helpers({
-    placementInfo: function () {
-        if (!this.placement)
-            return undefined;
 
-        var placementInfo = {};
-        var placement = Placements.findOne({_id: this.placement});
-        if (!placement) return;
-        var job = Jobs.findOne({
-            _id: placement.job
-        }, {
-            transform: null
-        });
-        if (!job) return placementInfo; // should only happen on hierarchy problem
-        var client = Contactables.findOne({_id: job.client}, {transform: null});
-
-        placementInfo.job = job._id;
-        placementInfo.jobTitle = job.publicJobTitle;
-        if (client) {
-            placementInfo.clientName = client.organization.organizationName;
-            placementInfo.client = client._id;
-        }
-
-        return placementInfo;
-    }
-});
-
-// Filters - Helpers
-Template.contactablesFilters.helpers({
-
+Template.contactables.helpers({
+  isESSearch: function () {
+    return !_.isEmpty(query.searchString.value);
+  },
+  paginationReady: function () {
+    return paginationReady.get();
+  }
 });
 
 /**
@@ -742,176 +710,194 @@ Template.contactablesFilters.helpers({
  */
 // Page - Events
 Template.contactables.events({
-    'click .parseText': function () {
-        Utils.showModal('textParser');
-    },
-    'click button[data-toggle="popover"]': function (e, ctx) {
-        var object = e.currentTarget;
-        var attr = $(object).attr('aria-describedby');
-        // destroy any other popovers open on page
-        $('.popover').popover('destroy');
+  'click .parseText': function () {
+    Utils.showModal('textParser');
+  },
+  'click button[data-toggle="popover"]': function (e, ctx) {
+    var object = e.currentTarget;
+    var attr = $(object).attr('aria-describedby');
+    // destroy any other popovers open on page
+    $('.popover').popover('destroy');
 
-        if ( !(typeof attr !== typeof undefined && attr !== false) ) {
-            // we set all other popovers besides this one to off so that we can open them next time
-            $(object).popover('show');
-        }
+    if (!(typeof attr !== typeof undefined && attr !== false)) {
+      // we set all other popovers besides this one to off so that we can open them next time
+      $(object).popover('show');
     }
+  }
 });
 
 // List Header - Events
 Template.contactablesListHeader.events({
-
-    'click .addHotList': function (e, ctx) {
-        var id = Session.get('hotListId');
-        var hotlist = HotLists.findOne({_id: id});
-        var inc = 0
-        _.forEach(selected.get(), function (item) {
-            if (hotlist.members.indexOf(item.id) < 0) {
-                hotlist.members.push(item.id);
-                inc = inc + 1;
-            }
-        });
-        HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
-        var self = this;
-        Utils.showModal('basicModal', {
-            title: 'Navigate to Hot List',
-            message: inc + ' added. Navigate to hotlist \'' + hotlist.displayName + '\'?',
-            buttons: [{label: 'Cancel', classes: 'btn-default', value: true}, {
-                label: 'Yes',
-                classes: 'btn-success',
-                value: true
-            }],
-            callback: function (result) {
-                if (result) {
-                    Router.go('/hotlist/' + hotlist._id);
-                }
-            }
-        });
-        return false;
-    },
-    'change #selectAll': function (e) {
-        if (e.target.checked) {
-            //add all local items (not already selected) to the selection
-            clickedAllSelected.set(true);
-            AuxContactables.find().forEach(function (contactable) {
-                if (!_.findWhere(selected.curValue, {id: contactable._id})) {
-                    selected.curValue.push({
-                        id: contactable._id,
-                        type: contactable.objNameArray,
-                        email: Utils.getContactableEmail(contactable)
-                    });
-                }
-            });
-            selected.dep.changed();
-        } else {
-            //clear selection
-            selected.set([]);
+  'click .addHotList': function (e, ctx) {
+    var id = Session.get('hotListId');
+    var hotlist = HotLists.findOne({_id: id});
+    var inc = 0;
+    _.forEach(selected.get(), function (item) {
+      if (hotlist.members.indexOf(item.id) < 0) {
+        hotlist.members.push(item.id);
+        inc = inc + 1;
+      }
+    });
+    HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
+    Utils.showModal('basicModal', {
+      title: 'Navigate to Hot List',
+      message: inc + ' added. Navigate to hotlist \'' + hotlist.displayName + '\'?',
+      buttons: [{label: 'Cancel', classes: 'btn-default', value: true}, {
+        label: 'Yes',
+        classes: 'btn-success',
+        value: true
+      }],
+      callback: function (result) {
+        if (result) {
+          Router.go('/hotlist/' + hotlist._id);
         }
-    },
-    'click #sendEmailTemplate': function () {
-        // get the common type that all selected entities have, ignoring contactable, person and organization
-        var commonType = _.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization');
+      }
+    });
+    return false;
+  },
+  'change #selectAll': function (e) {
+    if (e.target.checked) {
+      //add all local items (not already selected) to the selection
+      clickedAllSelected.set(true);
+      ContactablesView.find().forEach(function (contactable) {
+        if (!_.findWhere(selected.curValue, {id: contactable._id})) {
+          selected.curValue.push({
+            id: contactable._id,
+            type: contactable.objNameArray,
+            email: Utils.getContactableEmail(contactable)
+          });
+        }
+      });
+      selected.dep.changed();
+    } else {
+      //clear selection
+      selected.set([]);
+    }
+  },
+  'click #sendEmailTemplate': function () {
+    // get the common type that all selected entities have, ignoring contactable, person and organization
+    var commonType = _.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization');
 
-        if (!commonType || !commonType.length) return;
-        commonType = commonType[0];
+    if (!commonType || !commonType.length) return;
+    commonType = commonType[0];
 
-        //filter from the selection the ones that don't have email
-        var filtered = _.filter(selected.get(), function (item) {
-            return item.email;
-        });
+    //filter from the selection the ones that don't have email
+    var filtered = _.filter(selected.get(), function (item) {
+      return item.email;
+    });
 
-        var context = {
-            category: [Enums.emailTemplatesCategories[commonType.toLowerCase()]],
-            recipient: _.map(filtered, function (item) {
-                return {
-                    id: item.id,
-                    email: item.email
-                };
-            })
+    var context = {
+      category: [Enums.emailTemplatesCategories[commonType.toLowerCase()]],
+      recipient: _.map(filtered, function (item) {
+        return {
+          id: item.id,
+          email: item.email
         };
-        context[commonType] = _.pluck(filtered, 'id');
+      })
+    };
+    context[commonType] = _.pluck(filtered, 'id');
 
-        Utils.showModal('sendEmailTemplateModal', context);
-    },
+    Utils.showModal('sendEmailTemplateModal', context);
+  },
 
-    'click #selectAllRemotes': function () {
-        Meteor.call('getAllContactablesForSelection', SubscriptionHandlers.AuxContactablesHandler.getFilter(), function (err, result) {
-            if (err) {
-                console.log('get all contactables error', err);
-            } else {
-                selected.set(_.map(result, function (contactable) {
-                    return {
-                        id: contactable._id,
-                        type: contactable.objNameArray,
-                        email: Utils.getContactableEmail(contactable)
-                    };
-                }));
+  'click #selectAllRemotes': function () {
+    Meteor.call('getAllContactablesForSelectionFromView', SubscriptionHandlers.ContactablesViewHandler.getFilter(), function (err, result) {
+      if (err) {
+        console.log('get all contactables error', err);
+      } else {
+        selected.set(_.map(result, function (contactable) {
+          var objNameArray = ['contactable'];
+          _.each(['person', 'organization', 'Employee', 'Contact', 'Client'], function (type) {
+            if (contactable[type]){
+              objNameArray.push(type);
             }
-        })
-    },
-    'click .selectOneType': function () {
-        //remove all items that are not of this type
-        var self = this;
-        selected.set(_.filter(selected.get(), function (item) {
-            return _.contains(item.type, self.name);
+          });
+          return {
+            id: contactable._id,
+            type: objNameArray,
+            email: Utils.getContactableEmail(contactable)
+          };
         }));
-    },
+      }
+    })
+  },
+  'click .selectOneType': function () {
+    //remove all items that are not of this type
+    var self = this;
+    selected.set(_.filter(selected.get(), function (item) {
+      return _.contains(item.type, self.name);
+    }));
+  },
   'click .add-hotList': function (e, ctx) {
     addHotList.call(this);
   },
-  'click .add-placement': function(e, ctx){
+  'click .add-placement': function (e, ctx) {
     addPlacement.call(this);
   }
 });
 
-// List Search - Events
 Template.contactablesListSearch.events({
-    'keyup #searchString': _.debounce(function (e) {
-        query.searchString.value = e.target.value;
-    }, 100),
-    'click #toggle-filters': function (e) {
-        if ($(e.currentTarget).attr('data-view') == 'normal') {
-            $('body .network-content #column-filters').addClass('hidden');
-            $('body .network-content #column-list').removeClass('col-md-9').addClass('col-md-12');
-            $(e.currentTarget).attr('data-view', 'wide');
-        }
-        else {
-            $('body .network-content #column-filters').removeClass('hidden');
-            $('body .network-content #column-list').removeClass('col-md-12').addClass('col-md-9');
-            $(e.currentTarget).attr('data-view', 'normal');
-        }
-    },
-    'click #list-view': function () {
-        listViewMode.set(true);
-        Session.set('contactableListViewMode', true);
-    },
-    'click #detail-view': function () {
-        listViewMode.set(false);
-        Session.set('contactableListViewMode', false);
-    }
+  'keyup #searchString': _.debounce(function (e) {
+    query.searchString.value = e.target.value;
+  }, 100),
+  'click #toggle-filters': function (e) {
+    showFilters.set(!showFilters.get());
+  },
+  'click #list-view': function () {
+    listViewMode.set(true);
+    Session.set('contactableListViewMode', true);
+  },
+  'click #detail-view': function () {
+    listViewMode.set(false);
+    Session.set('contactableListViewMode', false);
+  }
 });
 
 // List Sort - Events
 Template.contactableListSort.events({
-    'click .sort-field': function () {
-        setSortField(this);
-    }
+  'click .sort-field': function () {
+    setSortField(this);
+  }
 });
-var addPlacement = function (){
-  if(!selectedValue.id){
+
+// List Item - Events
+Template.contactablesListItem.events({
+  'click .select': function (e) {
+    if (e.target.checked) {
+      selected.curValue.push({
+        id: this._id,
+        type: this.objNameArray,
+        activeStatus: this.activeStatus,
+        email: Utils.getContactableEmail(this)
+      })
+    } else {
+      var item = _.findWhere(selected.curValue, {id: this._id});
+      selected.curValue.splice(selected.curValue.indexOf(item), 1);
+    }
+    selected.dep.changed();
+    clickedAllSelected.set(false);
+  }
+});
+
+
+var addPlacement = function () {
+  if (!selectedValue.id) {
     return;
   }
   var info = [];
   var inc = 0;
-  _.forEach(selected.get(), function(employee) {
+  _.forEach(selected.get(), function (employee) {
     var placement = {};
     placement.job = selectedValue.id;
     placement.employee = employee.id;
     var status = LookUps.findOne({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode, isDefault: true});
     placement.candidateStatus = status._id;
     placement.objNameArray = ["placement"];
-    var lookUpActive = LookUps.findOne({lookUpCode:Enums.lookUpCodes.active_status, lookUpActions:Enums.lookUpAction.Implies_Active })
-    if(employee.activeStatus === lookUpActive._id) {
+    var lookUpActive = LookUps.findOne({
+      lookUpCode: Enums.lookUpCodes.active_status,
+      lookUpActions: Enums.lookUpAction.Implies_Active
+    });
+    if (employee.activeStatus === lookUpActive._id) {
 
 
       Meteor.call('addPlacement', placement, function (err, cb) {
@@ -941,197 +927,165 @@ var addPlacement = function (){
 
           }
         }
-
-
       });
     }
-    else{
+    else {
       inc = inc + 1;
     }
   });
 
-}
+};
 
 var addHotList = function () {
   if (!selectedValue.id) {
     return;
   }
-  var hotlist = AllHotLists.findOne({_id: selectedValue.id});
-  var inc = 0
-  _.forEach(selected.get(), function (item) {
-     if ((!hotlist.members)||(hotlist.members.indexOf(item.id) < 0)) {
-         if(hotlist.members) {
-           hotlist.members.push(item.id)
-         }
-         else {
-           hotlist.members = [item.id]
-         }
-         inc = inc + 1;
-     }
-  });
-  HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
-  var self = this;
-  Utils.showModal('basicModal', {
-    title: 'Navigate to Hot List',
-    message: inc + ' added. Navigate to hotlist \'' + hotlist.displayName + '\'?',
-    buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {
-      label: 'Yes',
-      classes: 'btn-success',
-      value: true
-    }],
-    callback: function ( result) {
-      //console.log('err', err);
-      console.log('res', result);
 
-      if (result) {
-        Router.go('/hotlist/' + hotlist._id);
-      }
-    }
-  });
-};
-// List Item - Events
-Template.contactablesListItem.events({
-    'click .select': function (e) {
-        if (e.target.checked) {
-            selected.curValue.push({
-                id: this._id,
-                type: this.objNameArray,
-                activeStatus: this.activeStatus,
-                email: Utils.getContactableEmail(this)
-            })
-        } else {
-            var item = _.findWhere(selected.curValue, {id: this._id});
-            selected.curValue.splice(selected.curValue.indexOf(item), 1);
+  var ids = _.pluck(selected.get(), 'id');
+  Meteor.call('addMembersToHotList', selectedValue.id, ids, function (err, result) {
+    if (err){
+      console.log(err);
+    }else{
+      Utils.showModal('basicModal', {
+        title: 'Navigate to Hot List',
+        message: 'Navigate to hotlist?',
+        buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {
+          label: 'Yes',
+          classes: 'btn-success',
+          value: true
+        }],
+        callback: function (result) {
+          if (result) {
+            Router.go('/hotlist/' + selectedValue.id);
+          }
         }
-        selected.dep.changed();
-        clickedAllSelected.set(false);
+      });
     }
+  })
 
-});
+};
+
 
 /**
  * Elastic Search integration
- * @type {Tracker.Dependency}
  */
-// Elasticsearch
 var esDep = new Deps.Dependency;
 var esResult = [];
 
 var runESComputation = function () {
-    Meteor.autorun(function () {
+  Meteor.autorun(function () {
 
-        if (_.isEmpty(query.searchString.value))
-            return;
+    if (_.isEmpty(query.searchString.value))
+      return;
 
-        query.searchString.dep.depend();
+    query.searchString.dep.depend();
 
-        // Process filters
-        var filters = {
-            bool: {
-                must: [],
-                should: []
-            }
-        };
-
-        // Contactable type
-        if (query.objType.value)
-            filters.bool.must.push({term: {objNameArray: [query.objType.value.toLowerCase()]}});
-
-        // Tags
-        if (query.tags.value.length > 0) {
-            var tags = {or: []};
-            _.forEach(query.tags.value, function (tag) {
-                tags.or.push({term: {tags: tag}});
-            });
-            filters.bool.must.push(tags);
-        }
-
-        // Only recent filters
-        if (query.selectedLimit.value) {
-            var now = new Date();
-            filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
-        }
-
-        //Created by
-        if (query.mineOnly.value) {
-            var fullUserId = Meteor.userId();
-            var spltUserId = fullUserId.split("-");
-                for (i in spltUserId){
-            filters.bool.must.push({regexp: {userId: '.*' + spltUserId[i] + '.*'}});
-                }
-        }
-
-        //location////
-        if (query.location.value) {
-            var usedTags = false;
-            _.forEach(locationFields, function (locationField) {
-                var value = getLocationTagValue(locationField, locationFields);
-                if (value) {
-                    var term = {};
-                    term[locationField + '.value'] = value.toLowerCase();
-                    filters.bool.must.push({term: term});
-                    usedTags = true;
-                }
-            });
-            if (!usedTags) {
-                var or = [];
-                _.forEach(locationFields, function (locationField) {
-                    var term = {};
-                    term[locationField + '.value'] = query.location.value.toLowerCase();
-                    or.push({term: term});
-                });
-                filters.bool.must.push({or:or});
-
-            }
-        }
-      
-        if((query.objType.value === "Contact")&&(query.contactProcessStatus.value.length>0)){
-           var processArray = [];
-           _.forEach(query.contactProcessStatus.value, function(p){
-             processArray.push(p.toLowerCase());
-           });
-           filters.bool.must.push({terms:{'Contact.status': processArray}});
-        }
-
-      if(query.activeStatus.value.length>0){
-        var processArray = [];
-        _.forEach(query.activeStatus.value, function(p){
-            processArray.push(p.toLowerCase());
-        });
-        filters.bool.must.push({terms:{'activeStatus': processArray}});
+    // Process filters
+    var filters = {
+      bool: {
+        must: [],
+        should: []
       }
+    };
 
+    // Contactable type
+    if (query.objType.value)
+      filters.bool.must.push({term: {objNameArray: [query.objType.value.toLowerCase()]}});
 
-        isSearching = true;
-        searchDep.changed();
-        Contactables.esSearch('.*' + query.searchString.value + '.*', filters, function (err, result) {
-            if (!err) {
-              esResult = _.map(result.hits, function (hit) {
-                    var contactable = Contactables._transform(hit._source);
-                    contactable._match = {
-                        score: (hit._score / result.max_score) * 100,
-                        properties: _.map(hit.highlight, function (matchedProperty, propertyName) {
-                            return {key: propertyName, value: matchedProperty};
-                        }),
-                        contexts: _.flatten(_.map(hit.highlight, function (matchedProperty, propertyName) {
-                            return matchedProperty;
-                        }))
-                    };
-                    return contactable;
-                });
-                console.log(esResult);
-                esDep.changed();
-                isSearching = false;
-                searchDep.changed();
+    // Tags
+    if (query.tags.value.length > 0) {
+      var tags = {or: []};
+      _.forEach(query.tags.value, function (tag) {
+        tags.or.push({term: {tags: tag}});
+      });
+      filters.bool.must.push(tags);
+    }
 
-            } else
-                console.log(err)
+    // Only recent filters
+    if (query.selectedLimit.value) {
+      var now = new Date();
+      filters.bool.must.push({range: {dateCreated: {gte: moment(new Date(now.getTime() - query.selectedLimit.value)).format("YYYY-MM-DDThh:mm:ss")}}});
+    }
+
+    //Created by
+    if (query.mineOnly.value) {
+      var fullUserId = Meteor.userId();
+      var spltUserId = fullUserId.split("-");
+      for (i in spltUserId) {
+        filters.bool.must.push({regexp: {userId: '.*' + spltUserId[i] + '.*'}});
+      }
+    }
+
+    //location////
+    if (query.location.value) {
+      var usedTags = false;
+      _.forEach(locationFields, function (locationField) {
+        var value = getLocationTagValue(locationField, locationFields);
+        if (value) {
+          var term = {};
+          term[locationField + '.value'] = value.toLowerCase();
+          filters.bool.must.push({term: term});
+          usedTags = true;
+        }
+      });
+      if (!usedTags) {
+        var or = [];
+        _.forEach(locationFields, function (locationField) {
+          var term = {};
+          term[locationField + '.value'] = query.location.value.toLowerCase();
+          or.push({term: term});
         });
+        filters.bool.must.push({or: or});
+
+      }
+    }
+
+    if ((query.objType.value === "Contact") && (query.contactProcessStatus.value.length > 0)) {
+      var processArray = [];
+      _.forEach(query.contactProcessStatus.value, function (p) {
+        processArray.push(p.toLowerCase());
+      });
+      filters.bool.must.push({terms: {'Contact.status': processArray}});
+    }
+
+    if (query.activeStatus.value.length > 0) {
+      var processArray = [];
+      _.forEach(query.activeStatus.value, function (p) {
+        processArray.push(p.toLowerCase());
+      });
+      filters.bool.must.push({terms: {'activeStatus': processArray}});
+    }
+
+
+    isSearching = true;
+    searchDep.changed();
+    Contactables.esSearch('.*' + query.searchString.value + '.*', filters, function (err, result) {
+      if (!err) {
+        esResult = _.map(result.hits, function (hit) {
+          var contactable = Contactables._transform(hit._source);
+          contactable._match = {
+            score: (hit._score / result.max_score) * 100,
+            properties: _.map(hit.highlight, function (matchedProperty, propertyName) {
+              return {key: propertyName, value: matchedProperty};
+            }),
+            contexts: _.flatten(_.map(hit.highlight, function (matchedProperty, propertyName) {
+              return matchedProperty;
+            }))
+          };
+          return contactable;
+        });
+        esDep.changed();
+        isSearching = false;
+        searchDep.changed();
+
+      } else
+        console.log(err)
     });
+  });
 };
 
 // Elasticsearch context match template
 Template.esContextMatch.rendered = function () {
-    var text = this.$('.contextText');
-    text[0].innerHTML = this.data;
+  var text = this.$('.contextText');
+  text[0].innerHTML = this.data;
 };

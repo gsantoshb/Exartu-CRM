@@ -1,3 +1,4 @@
+var tourIndex;
 var entityType = null;
 var isEntitySpecific = false;
 var taskCollection = Tasks;
@@ -146,7 +147,30 @@ Template.tasksBox.created = function () {
 };
 
 Template.tasksBox.rendered = function () {
-    $(document).on('click', 'button[data-toggle="popover"]', function (e) {
+  Meteor.call('getIndexTour', "tourActivities", function(err,cb){
+    tourIndex = cb;
+    if((tourIndex>=18)&&(tourIndex < 22)){
+      $("#tourActivities").joyride({
+        autoStart: true,
+        startOffset:tourIndex + 1,
+        modal: true,
+        postRideCallback: function(e) {
+          Meteor.call('setVisitedTour', "tourActivities", 27, function(err,cb){
+          })
+        },
+        postStepCallback: function(e, ctx){
+          tourIndex = e;
+          Meteor.call('setVisitedTour', "tourActivities", tourIndex, function(err,cb){
+          })
+          if(e===22){
+            Router.go("/notes");
+          }
+
+        }
+      });
+    }
+  });
+  $(document).on('click', 'button[data-toggle="popover"]', function (e) {
         var object = e.currentTarget;
         var linkId = $(object).attr('data-link');
         if ($(object).attr('data-init') == 'off') {
@@ -159,6 +183,7 @@ Template.tasksBox.rendered = function () {
 
 Template.tasksBox.destroyed = function () {
     $('.popover').popover('destroy');
+    $("#tourActivities").joyride('destroy');
   //SubscriptionHandlers.TaskHandler.stop();
   //delete SubscriptionHandlers.TaskHandler;
 };

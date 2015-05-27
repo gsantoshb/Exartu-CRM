@@ -1,7 +1,8 @@
 /**
  * Variables
  */
-var jobCollection = JobsList;
+var tourIndex;
+var jobCollection = JobsView;
 var searchQuery, options;
 var entityId;
 var JobHandler;
@@ -28,12 +29,7 @@ var info = new Utils.ObjectDefinition({
   }
 });
 
-var listViewDefault = Session.get('jobListViewMode');
-if (!listViewDefault) {
-  listViewDefault = false;
-}
-
-var listViewMode = new ReactiveVar(listViewDefault);
+var listViewMode = new ReactiveVar(false);
 
 var locationFields = ['address', 'city', 'state', 'country'];
 
@@ -51,9 +47,6 @@ var getLocationTagValue = function (locationField, locationFields) {
   return value;
 };
 
-var jobTypes = function () {
-  return dType.ObjTypes.find({parent: Enums.objGroupType.job});
-};
 
 var searchFields = ['displayName', 'publicJobTitle'];
 
@@ -74,19 +67,20 @@ var setSortField = function (field) {
   selectedSort.set(selected);
 };
 
+// Creates a reactive object from the parameters found in the URL if any
 var loadqueryFromURL = function (params) {
 
-  var objTypeQuery = {};
+  var jobType = {};
   var type = params.hash || params.type;
   if (type != undefined && type != 'all') {
     var re = new RegExp("^" + type + "$", "i");
     var objType = dType.ObjTypes.findOne({
       name: re
     });
-    objTypeQuery.default = objType.name;
+    jobType.default = objType.name;
     info.objType.value = objType.name + 's';
   } else {
-    objTypeQuery.default = undefined;
+    jobType.default = undefined;
     info.objType.value = 'record(s)';
   }
 
@@ -94,12 +88,6 @@ var loadqueryFromURL = function (params) {
   var searchStringQuery = {};
   if (params.search) {
     searchStringQuery.default = params.search;
-  }
-
-  // CreationDate
-  var creationDateQuery = {};
-  if (params.creationDate) {
-    creationDateQuery.default = params.creationDate;
   }
 
   // Mine only
@@ -132,13 +120,13 @@ var loadqueryFromURL = function (params) {
     locationQuery.default += ' country: ' + params.country;
   }
 
-  // Status
+  // Process Status
   var statusQuery = {type: Utils.ReactivePropertyTypes.array};
   if (params.status) {
     statusQuery.default = params.status.split(',');
   }
 
-
+  // Active Status
   var activeStatusQuery = {type: Utils.ReactivePropertyTypes.array};
   if (params.activeStatus) {
     activeStatusQuery.default = params.activeStatus.split(',');
@@ -146,13 +134,11 @@ var loadqueryFromURL = function (params) {
   else {
     activeStatusQuery.default = [Utils.getActiveStatusDefaultId()];
   }
-  ;
 
   return new Utils.ObjectDefinition({
     reactiveProps: {
-      objType: objTypeQuery,
+      jobType: jobType,
       searchString: searchStringQuery,
-      selectedLimit: creationDateQuery,
       activeStatus: activeStatusQuery,
       mineOnly: mineQuery,
       tags: tagsQuery,
@@ -160,13 +146,14 @@ var loadqueryFromURL = function (params) {
       status: statusQuery
     }
   });
-}
+};
 
 Template.jobsBox.created = function () {
   if (!JobHandler) {
     JobHandler = SubscriptionHandlers.JobHandler;
   }
-  ;
+
+  // Set up query object with reactive properties
   query = query || loadqueryFromURL(Router.current().params.query);
   entityId = Session.get('entityId');
 };
@@ -199,6 +186,7 @@ Template.jobList.created = function () {
   setSubscription(searchQuery, options);
   /////////////////////////
 
+  // Set up an autorun to filter the job list
   this.autorun(function () {
     searchQuery = {
       $and: [] // Push each $or operator here
@@ -207,27 +195,13 @@ Template.jobList.created = function () {
      var urlQuery = new URLQuery();
     if (Session.get('entityId')) {
       searchQuery.client = Session.get('entityId');
-
     }
-
 
     // Type
-    if (query.objType.value) {
-      searchQuery.$and.push({objNameArray: query.objType.value});
-      urlQuery.addParam('type', query.objType.value);
+    if (query.jobType.value) {
+      searchQuery.$and.push({type: query.jobType.value});
+      urlQuery.addParam('type', query.jobType.value);
     }
-
-    // Creation date
-    if (query.selectedLimit.value) {
-      var dateLimit = new Date();
-      searchQuery.$and.push({
-        dateCreated: {
-          $gte: dateLimit.getTime() - query.selectedLimit.value
-        }
-      });
-      urlQuery.addParam('creationDate', query.selectedLimit.value);
-    }
-
 
     //Created by
     if (query.mineOnly.value) {
@@ -246,38 +220,41 @@ Template.jobList.created = function () {
     }
 
     // Location filter
-    var locationOperatorMatch = false;
+    var locationFilter = undefined;
     if (query.location.value) {
+      // Check if any of the predefined location tags are used
       _.forEach(locationFields, function (locationField) {
         var value = getLocationTagValue(locationField, locationFields);
-
         if (value) {
-          locationOperatorMatch = true;
-          searchQuery['location.' + locationField] = {
-            $regex: value,
-            $options: 'i'
-          };
+          // Check for initialization
+          if (!_.isObject(locationFilter)) {
+            locationFilter = {};
+          }
+
+          locationFilter[locationField] = value;
           urlQuery.addParam(locationField, value);
         }
       });
+
+      // If no tags were used set the value as string
+      if (!_.isObject(locationFilter)) {
+        locationFilter = query.location.value;
+      }
+    }
+    if (_.isString(locationFilter)) {
+      searchQuery.$or = [
+        {'address.address': {$regex: locationFilter, $options: 'i'}},
+        {'address.city': {$regex: locationFilter, $options: 'i'}},
+        {'address.state': {$regex: locationFilter, $options: 'i'}},
+        {'address.country': {$regex: locationFilter, $options: 'i'}}
+      ];
+    }
+    if (_.isObject(locationFilter)) {
+      _.each(locationFilter, function (v, k) {
+        searchQuery['address.' + k] = {$regex: v, $options: 'i'}
+      });
     }
 
-    // If not location operator match is used then search on each field
-    if (query.location.value && !locationOperatorMatch) {
-      var locationOR = {
-        $or: []
-      };
-      _.forEach(locationFields, function (locationField) {
-        var aux = {};
-        aux['location.' + locationField] = {
-          $regex: query.location.value,
-          $options: 'i'
-        };
-        locationOR.$or.push(aux);
-      });
-      if (locationOR.$or.length > 0)
-        searchQuery.$and.push(locationOR);
-    }
 
     if (!_.isEmpty(query.activeStatus.value)) {
       searchQuery.activeStatus = {$in: query.activeStatus.value};
@@ -285,7 +262,6 @@ Template.jobList.created = function () {
     }
 
     if (!_.isEmpty(query.status.value)) {
-
       searchQuery.status = {$in: query.status.value};
       urlQuery.addParam('status', query.status.value);
     }
@@ -321,14 +297,10 @@ Template.jobList.created = function () {
       delete searchQuery.$and;
     }
 
-
     urlQuery.apply();
     setSubscription(searchQuery, options);
 
-
-
     initialized.set(true);
-
   })
 };
 var setSubscription = function (searchQuery, options) {
@@ -338,26 +310,15 @@ var setSubscription = function (searchQuery, options) {
     SubscriptionHandlers.JobHandler.setOptions(options);
     JobHandler = SubscriptionHandlers.JobHandler;
     searchDep.changed();
-
-
-
-
-  }
-  else {
-
-    SubscriptionHandlers.JobHandler =
-    Meteor.paginatedSubscribe('jobsList', {
-        filter: searchQuery,
-       options: options
+  } else {
+    SubscriptionHandlers.JobHandler = Meteor.paginatedSubscribe('jobsView', {
+      filter: searchQuery,
+      options: options
     });
-    //Meteor.paginatedSubscribe('jobsList', {});
-    //SubscriptionHandlers.JobHandler.setFilter(searchQuery);
-    //SubscriptionHandlers.JobHandler.setOptions(options);
     JobHandler = SubscriptionHandlers.JobHandler;
     searchDep.changed();
-
   }
-}
+};
 
 // List - Helpers
 Template.jobList.helpers({
@@ -375,9 +336,6 @@ Template.jobList.helpers({
   },
   isLoading: function () {
     return SubscriptionHandlers.JobHandler.isLoading();
-  },
-  jobTypes: function () {
-    return dType.ObjTypes.find({parent: Enums.objGroupType.job});
   }
 });
 
@@ -393,7 +351,34 @@ Template.jobList.rendered = function () {
       $(object).attr('data-init', 'on');
     }
   });
+  Meteor.call('getIndexTour', "tourActivities", function(err,cb){
+    tourIndex = cb;
+    if((tourIndex>=9)&&(tourIndex < 14)){
+      $("#tourActivities").joyride({
+        autoStart: true,
+        startOffset:tourIndex + 1,
+        modal: true,
+        postRideCallback: function(e) {
+          Meteor.call('setVisitedTour', "tourActivities",27, function(err,cb){
+          })
+        },
+        postStepCallback: function(e, ctx){
+          tourIndex = e;
+          Meteor.call('setVisitedTour', "tourActivities", tourIndex, function(err,cb){
+          })
+          if(e===14){
+            Router.go("/placements");
+          }
+
+        }
+      });
+    }
+  });
 };
+
+Template.jobList.destroyed = function(){
+  $("#tourActivities").joyride('destroy');
+}
 /**
  * Helpers
  */
@@ -416,7 +401,6 @@ Template.jobListSearch.helpers({
   showAddButton: function () {
     return (entityId) ? true : false;
   },
-  jobTypes: jobTypes,
   listViewMode: function () {
     return listViewMode.get();
   },
@@ -464,7 +448,9 @@ Template.jobFilters.helpers({
   query: function () {
     return query;
   },
-  jobTypes: jobTypes
+  jobTypes: function () {
+    return dType.ObjTypes.find({parent: Enums.objGroupType.job});
+  }
 });
 
 
@@ -536,11 +522,9 @@ Template.jobListSearch.events = {
   },
   'click #list-view': function () {
     listViewMode.set(true);
-    Session.set('jobListViewMode', true);
   },
   'click #detail-view': function () {
     listViewMode.set(false);
-    Session.set('jobListViewMode', false);
   }
 };
 

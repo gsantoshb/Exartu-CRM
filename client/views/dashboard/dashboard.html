@@ -1,5 +1,5 @@
 <template name="dashboard">
-    {{>tour1}}
+    {{>tourActivities}}
     <div class="network-content nicer-filters" id="content">
         <div class="row">
 
@@ -7,7 +7,7 @@
 
                 <aside class="sidebar">
 
-                    <div class="page-title-2" id="tour1Welcome">
+                    <div class="page-title-2" id="tourActivitiesWelcome">
                         <h1 class="welcome">
                             {{_ "Hi"}}&nbsp;
                             {{getUserDisplayName}},
@@ -122,7 +122,7 @@
                         </div><!-- .list-actions -->
 
                         <div class="list-item-section" >
-                            <div class="clearfix" id="tour1activities">
+                            <div class="clearfix" id="tourActivitiesList">
                                 {{>fastPagination name="activities" containerClass="magic-pager pull-right"}}
                             </div>
 

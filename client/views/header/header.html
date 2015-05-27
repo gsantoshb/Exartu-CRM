@@ -5,7 +5,7 @@
             <ul class="btn-group">
                 <li class="hidden-xs">
                     <a href="/user/{{user._id}}" style="display: inline-flex" data-toggle="dropdown" class="dropdown-toggle">
-                        <span class="user-menu-thumb" id="tour1log">
+                        <span class="user-menu-thumb" id="tourActivitieslog">
                             <img class="img-responsive" style="max-height:26px; max-width:26px" src="{{userThumbnail}}">
                         </span>
                         {{#if userName}}
@@ -28,6 +28,15 @@
                                 <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'cn'}});">简体中文</a></li>
                             </ul>
                         </li>
+
+                        {{#if latestHiersCount}}
+                            <li class="divider"></li>
+                            {{#each latestHiers}}
+                                <li>
+                                    <a class="pointer changeHier">{{name}}</a>
+                                </li>
+                            {{/each}}
+                        {{/if}}
 
                         <li class="divider"></li>
                         <li>
@@ -80,7 +89,7 @@
                     <span class="i-container" id="tour-1-activities"><i class="icon icon-thumbnails-2"></i></span>
                 </a>
             </li>
-            <li class="contactables {{getActiveClass 'contactables' null}}" id="tour1network">
+            <li class="contactables {{getActiveClass 'contactables' null}}" id="tourActivitiesnetwork">
                 <a href="/contactables">
                     <span>{{_ "Network"}}</span>
                     <span class="i-container"><i class="icon icon-connection-1"></i></span>
@@ -88,31 +97,31 @@
 
             </li>
 
-            <li class="jobs {{getActiveClass 'jobs' null}}" id="tour1jobs">
+            <li class="jobs {{getActiveClass 'jobs' null}}" id="tourActivitiesjobs">
                 <a href="/jobs">
                     <span>{{_ "Jobs"}}</span>
                     <span class="i-container"><i class="icon icon-briefcase"></i></span>
                 </a>
             </li>
-            <li class="placements {{getActiveClass 'placements' null}}" id="tour1placements">
+            <li class="placements {{getActiveClass 'placements' null}}" id="tourActivitiesplacements">
                 <a href="/placements">
                     <span>{{_ "Placements"}}</span>
                     <span class="i-container"><i class="ico-placements"></i></span>
                 </a>
             </li>
-            <li class="tasks {{getActiveClass 'tasks' null}}" id="tour1tasks">
+            <li class="tasks {{getActiveClass 'tasks' null}}" id="tourActivitiestasks">
                 <a href="/tasks">
                     <span>{{_ "Tasks"}}</span>
                     <span class="i-container"><i class="icon icon-check-4"></i></span>
                 </a>
             </li>
-            <li class="notes {{getActiveClass 'notes' null}}" id="tour1notes">
+            <li class="notes {{getActiveClass 'notes' null}}" id="tourActivitiesnotes">
                 <a href="/notes">
                     <span>{{_ "Notes"}}</span>
                     <span class="i-container"><i class="icon icon-pencil-3"></i></span>
                 </a>
             </li>
-            <li class="hotlists {{getActiveClass 'hotLists' null}}" id="tour1hotlists">
+            <li class="hotlists {{getActiveClass 'hotLists' null}}" id="tourActivitieshotlists">
                 <a href="/hotlists">
                     <span>{{_ "Hot Lists"}}</span>
                     <span class="i-container"><i class="icon icon-list-4"></i></span>
@@ -135,6 +144,12 @@
                 <a href="/timeEntry">
                     <span>{{_ "Time Entry"}}</span>
                     <span class="i-container"><i class="icon icon-clock-3"></i></span>
+                </a>
+            </li>
+            <li class="time-entry {{getActiveClass 'reports' null}}">
+                <a href="/reports">
+                    <span>{{_ "Reports"}}</span>
+                    <span class="i-container"><i class="glyphicon glyphicon-indent-left"></i></span>
                 </a>
             </li>
 

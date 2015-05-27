@@ -27,6 +27,8 @@ AuxContactables = new Meteor.Collection("auxContactables", {
   }
 });
 
+ContactablesView = new Mongo.Collection('contactablesView');
+
 AllClients  = new Meteor.Collection('allClients', {
   transform: function (contactable) {
     Utils.extendContactableDisplayName(contactable);
@@ -40,6 +42,13 @@ AllEmployees  = new Meteor.Collection('allEmployees', {
   }
 });
 AllContactables  = new Meteor.Collection('allContactables', {
+  transform: function (contactable) {
+    Utils.extendContactableDisplayName(contactable);
+    return contactable;
+  }
+});
+
+AllEmployeesReport  = new Meteor.Collection('allEmployeesReport', {
   transform: function (contactable) {
     Utils.extendContactableDisplayName(contactable);
     return contactable;

@@ -13,14 +13,12 @@ Template.contactClientInfo.created = function(){
     });
 
     var contactMethodsTypes = LookUps.find({ lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode }).fetch();
-    console.log(contactMethodsTypes);
 
     _.forEach(contactMethodsTypes, function (cm) {
         contactMethodsInfo[cm._id] = {
             'label':cm.displayName
         };
     });
-    console.log(contactMethodsInfo);
 };
 Template.contactClientInfo.destroyed = function(){
     handler && handler.stop();

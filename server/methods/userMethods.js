@@ -60,7 +60,11 @@ Meteor.methods({
   },
 
   //tours
-  setVisitedTour: function(tour){
-    UserManager.setVisitedTour(tour);
+  setVisitedTour: function(tour, tip){
+    UserManager.setVisitedTour(tour, tip);
+  },
+  getIndexTour: function(tour){
+    return UserManager.getIndexTour(tour);
   }
+
 });

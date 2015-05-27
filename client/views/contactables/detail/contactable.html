@@ -104,11 +104,42 @@
 
     {{#with mainContactMethods}}
         <ul class="list-type-3">
-            {{#if phone.value}}
-                <li><a href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
-            {{/if}}
-            {{#if email.value}}
-                <li><a href="mailto:{{email.value}}"><span class="round-icon-container"><i class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
+
+            <a class="action-btn" style="float:right" id="edit-mode-contactMethods" href="#"><i class="fa fa-pencil"></i></a>
+            {{#if editingContact}}
+                {{#autoForm schema="schemaContactMethods" id="updateContactMethod" doc=contactMethods}}
+                    {{#if phone.value}}
+                        <li>
+                            <div class="form-group {{#if afFieldIsInvalid name='phone'}}has-error{{/if}}">
+                                <span class="round-icon-container"><i class="fa fa-phone"></i></span>
+                                {{> afFieldInput  name='phone' id="editing-phone" style="width:80%" type="text" class="form-control"}}
+                                {{#if afFieldIsInvalid name='phone'}}
+                                    <span class="help-block">{{afFieldMessage name='phone'}}</span>
+                                {{/if}}
+                            </div>
+                        </li>
+                    {{/if}}
+                    {{#if email.value}}
+                        <li>
+                            <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
+                                <span class="round-icon-container"><i class="fa fa-envelope-o"></i></span>
+
+                                {{> afFieldInput name='email' id="editing-email" style="width:80%" type="text" class="form-control"}}
+                                {{#if afFieldIsInvalid name='email'}}
+                                    <span class="help-block">{{afFieldMessage name='email'}}</span>
+                                {{/if}}
+                            </div>
+                        </li>
+                    {{/if}}
+                    <button id="save-contactMethod" class="btn btn-primary">Save</button>
+                {{/autoForm}}
+            {{else}}
+                {{#if phone.value}}
+                     <li><a href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
+                {{/if}}
+                {{#if email.value}}
+                    <li><a href="mailto:{{email.value}}"><span class="round-icon-container"><i class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
+                {{/if}}
             {{/if}}
         </ul>
     {{/with}}
@@ -276,7 +307,7 @@
                 <i class="fa fa-envelope"></i>&nbsp;
                 {{#unless alreadyInvited}}
                     <span style="white-space: normal;">{{_ "Invite to App Center"}}</span>
-                {{else}}
+                    {{else}}
                     <span style="white-space: normal;">{{_ "Resend AC invitation"}}</span>
                 {{/unless}}
             </a>

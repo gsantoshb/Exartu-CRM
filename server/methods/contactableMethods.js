@@ -254,6 +254,16 @@ Meteor.methods({
             contactMethods: 1
         })).fetch();
     },
+  getAllContactablesForSelectionFromView: function (filter) {
+        return Utils.filterCollectionByUserHier.call({userId: Meteor.userId()}, ContactablesView.find(filter, {
+          Contact: 1,
+          Employee: 1,
+          organization: 1,
+          person: 1,
+          Client: 1,
+          contactMethods: 1
+        })).fetch();
+    },
 
     // Communication
     sendSMSToContactable: function (contactableId, from, to, text) {
@@ -267,7 +277,11 @@ Meteor.methods({
 
     changeContactableUserId: function (contactableId, userId) {
       ContactableManager.changeContactableUserId(contactableId, userId);
+    },
+    updateContactMethod: function(contactableId, arrayToUpdate){
+      ContactableManager.updateContactMethod(contactableId, arrayToUpdate);
     }
+
 });
 
 FileUploader.createEndpoint('uploadResume', {

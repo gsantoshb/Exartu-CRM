@@ -31,18 +31,18 @@ NoteView = new View('notes', {
     });
 
     // Deals
-    this.publish({
-      cursor: function (note) {
-        var dealsIds = _.pluck(_.where(note.links, { type: Enums.linkTypes.deal.value }), 'id');
-        return Deals.find({ _id: { $in: dealsIds } });
-      },
-      to: 'jobs',
-      observedProperties: ['links'],
-      onChange: function (changedProps, oldSelector) {
-        var dealsIds = _.pluck(_.where(changedProps.links, { type: Enums.linkTypes.deal.value }), 'id');
-        return Deals.find({ _id: { $in: dealsIds } });
-      }
-    });
+    //this.publish({
+    //  cursor: function (note) {
+    //    var dealsIds = _.pluck(_.where(note.links, { type: Enums.linkTypes.deal.value }), 'id');
+    //    return Deals.find({ _id: { $in: dealsIds } });
+    //  },
+    //  to: 'jobs',
+    //  observedProperties: ['links'],
+    //  onChange: function (changedProps, oldSelector) {
+    //    var dealsIds = _.pluck(_.where(changedProps.links, { type: Enums.linkTypes.deal.value }), 'id');
+    //    return Deals.find({ _id: { $in: dealsIds } });
+    //  }
+    //});
 
       // Placements
       this.publish({

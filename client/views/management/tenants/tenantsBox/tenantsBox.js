@@ -2,7 +2,7 @@ var entityType = null;
 var isEntitySpecific = false;
 var contactable;
 var searchFields = ['name', 'configuration.webName', 'configuration.title', '_id'];
-
+var aidaHier;
 var tenantCollection = Tenants;
 var TenantHandler, tenantQuery;
 
@@ -40,6 +40,7 @@ var searchDep = new Deps.Dependency;
 var isSearching = false;
 
 var loadTenantQueryFromURL = function (params) {
+
     // Search string
     var searchStringQuery = {};
     if (params.search) {
@@ -103,6 +104,8 @@ Template.tenantsList.created = function () {
     Meteor.call('getAidaHiersContact', function(err,cb){
       if(cb) {
         hiersContact.set(cb);
+        var indexOfAidaHier = _.indexOf(_.pluck(hiersContact.get(), "contactable"), null);
+        aidaHier = hiersContact.get()[indexOfAidaHier].hier;
       }
     })
 
@@ -250,9 +253,23 @@ Template.tenantsListSearch.events({
 // Item
 
 Template.tenantsListItem.helpers({
-    notAdded: function(){
-      return !_.contains(hiersContact.get(), this._id);
+    showAdd: function(){
 
+      return (Meteor.user().currentHierId === aidaHier)&&(!_.contains(_.pluck(hiersContact.get(),"hier"), this._id));
+    },
+    idContactable: function(){
+      if(Meteor.user().currentHierId === aidaHier){
+        var i = _.indexOf(_.pluck(hiersContact.get(),"hier"), this._id);
+        if(i>-1) {
+          return (hiersContact.get()[i].contactable);
+        }
+        else{
+          return false;
+        }
+      }
+      else{
+        return false;
+      }
     },
     pictureUrl: function (pictureFileId) {
         var picture = TenantsFS.findOne({_id: pictureFileId});
@@ -281,8 +298,10 @@ Template.tenantsListItem.helpers({
         return counts && counts.lastDate;
     },
     getHierEmail: function () {
+      if(this.users && this.users[0]) {
         var user = TenantUsers.findOne(this.users[0]);
         return user && user.emails[0].address;
+      }
     }
 });
 
@@ -291,19 +310,25 @@ Template.tenantsListItem.events = {
     var self = this;
     var leadLookUp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.contact_status, isDefault: true});
     var emailLookUp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.contactMethod_types, lookUpActions: Enums.lookUpAction.ContactMethod_Email});
-    var phoneLookUp =  LookUps.findOne({lookUpCode: Enums.lookUpCodes.contactMethod_types, lookUpActions: Enums.lookUpAction.ContactMethod_Phone});
+    var phoneLookUp =  LookUps.findOne({lookUpCode: Enums.lookUpCodes.contactMethod_types, lookUpActions: Enums.lookUpAction.ContactMethod_WorkPhone});
     var activeLookUp = LookUps.findOne({lookUpCode: Enums.lookUpCodes.active_status, lookUpActions: Enums.lookUpAction.Implies_Active});
-    var user = TenantUsers.findOne(self.users[0]);
-    var arrayName = self.userName.split(" ");
-    var firstname="";
+    if(self.users && self.users[0])
+      var user = TenantUsers.findOne(self.users[0]);
+    var firstname = "No name";
     var lastName = " ";
-    if(arrayName.length>1){
-      firstname = arrayName[0];
-      lastName = arrayName[1];
+    if(self.userName) {
+      var arrayName = self.userName.split(" ");
+
+
+      if(arrayName.length>1){
+        firstname = arrayName[0];
+        lastName = arrayName[1];
+      }
+      else{
+        firstname = arrayName[0];
+      }
     }
-    else{
-      firstname = arrayName[0];
-    }
+
     var contact =  { objNameArray: [ 'person', 'Contact', 'contactable' ],
                      person:    { firstName: firstname,
                                   lastName: lastName,
@@ -313,33 +338,46 @@ Template.tenantsListItem.events = {
                                   birthDate: null },
                      Contact: { status: leadLookUp._id,
                                 client: null },
-                     statusNote: 'Hierarchy name: '+self.name,
+                     statusNote: 'Created from tenant record',
                      activeStatus: activeLookUp._id,
                      howHeardOf: null,
-                     contactMethods: [{type: emailLookUp._id, value: user.emails[0].address}, {type: phoneLookUp._id, value: self.phone}]
-                   }
-    Meteor.call('addContactable', contact, function(err,cb){
-      if(cb){
-        Meteor.call('setHiersContact', self._id, function(e,c){
+                     contactMethods: []
+    }
+    if(self.phone){
+      contact.contactMethods.push({type: phoneLookUp._id, value: self.phone})
+    }
+    if(user && user.emails){
+      contact.contactMethods.push({type: emailLookUp._id, value: user.emails[0].address})
+    }
+                     //contactMethods: [{type: emailLookUp._id, value: user.emails[0].address}, {type: phoneLookUp._id, value: self.phone}]
+
+    Meteor.call('addContactable', contact, function(err,result){
+      if(result){
+        var note = {};
+        note.msg = self.name;
+        note.links = [{id:result,type:Enums.linkTypes.contactable.value}];
+        Meteor.call('addNote', note, function(err, res){
+        })
+        Meteor.call('setHiersContact', self._id, result, function(e,res){
+          Meteor.call('getAidaHiersContact', function(err,r){
+            if(r) {
+              hiersContact.set(r);
+            }
+          })
           Utils.showModal('basicModal', {
             title: 'Contact added',
-            message: 'Show contact information?',
+            message: 'Open this contact record in new window?',
             buttons: [{label: 'Close', classes: 'btn-info', value: false}, {
               label: 'Show',
               classes: 'btn-success',
               value: true
             }],
-            callback: function (result) {
-              if(result) {
-                Router.go('/contactable/' + cb);
+            callback: function (r) {
+              if(r) {
+                window.open('/contactable/' + result, '_blank');
+
               }
-              else{
-                Meteor.call('getAidaHiersContact', function(err,cb){
-                  if(cb) {
-                    hiersContact.set(cb);
-                  }
-                })
-              }
+
             }
           });
         })

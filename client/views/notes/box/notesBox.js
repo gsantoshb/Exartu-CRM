@@ -4,7 +4,7 @@ var NotesHandler, noteQuery, status;
 var searchStringQuery = {};
 var q={};
 var selectedSort = new ReactiveVar();
-
+var tourIndex;
 var loadNoteQueryFromURL = function (params) {
     // Search string
 
@@ -39,6 +39,34 @@ var loadNoteQueryFromURL = function (params) {
     return x;
 };
 var options = {};
+
+Template.notesBox.rendered = function(){
+  Meteor.call('getIndexTour', "tourActivities", function(err,cb){
+    tourIndex = cb;
+    if((tourIndex>=22)&&(tourIndex < 27)){
+      $("#tourActivities").joyride({
+        autoStart: true,
+        startOffset:tourIndex + 1,
+        modal: true,
+        postRideCallback: function(e) {
+          Meteor.call('setVisitedTour', "tourActivities", 27, function(err,cb){
+          })
+        },
+        postStepCallback: function(e, ctx){
+          tourIndex = e;
+          Meteor.call('setVisitedTour', "tourActivities", tourIndex, function(err,cb){
+          })
+
+
+        }
+      });
+    }
+  });
+};
+
+Template.notesBox.destroyed = function() {
+  $("#tourActivities").joyride('destroy');
+}
 
 Template.notesBox.created = function () {
     noteQuery = noteQuery || loadNoteQueryFromURL(Router.current().params.query);
