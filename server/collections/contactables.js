@@ -8,6 +8,14 @@ Meteor.publish('leaderBoardClients', function (q) {
             Contactables.find(q));
 });
 
+ReportsView = new View('allEmployeesReport', {
+  collection:Contactables,
+  cursors: function(contactable){
+
+  }
+})
+
+
 ContactablesList = new View('auxContactables', {
     collection: Contactables,
     cursors: function (contactable) {
@@ -167,18 +175,39 @@ Meteor.publish('allClients', function () {
     })), sub, 'allClients');
     sub.ready();
 });
-Meteor.publish('allEmployees', function () {
+
+Meteor.paginatedPublish(ReportsView, function () {
+    if (!this.userId)
+      return [];
     var sub = this;
-    Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Contactables.find({Employee: {$exists: true}}, {
+    return (Utils.filterCollectionByUserHier.call(this, Contactables.find({Employee: {$exists: true}}, {
         fields: {
             'person.lastName': 1,
             'person.middleName': 1,
             'person.firstName': 1,
-            'activeStatus': 1
+            'activeStatus': 1,
+            'pastJobs':1
         }
-    })), sub, 'allEmployees');
+    })));
     sub.ready();
+},{
+  pageSize: 5,
+  publicationName: 'allEmployeesReport'
 });
+
+Meteor.publish('allEmployees', function () {
+  var sub = this;
+  Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Contactables.find({Employee: {$exists: true}}, {
+    fields: {
+      'person.lastName': 1,
+      'person.middleName': 1,
+      'person.firstName': 1,
+      'activeStatus': 1
+    }
+  })), sub, 'allEmployees');
+  sub.ready();
+});
+
 Meteor.publish('allContactables', function () {
     var sub = this;
     Meteor.Collection._publishCursor(Utils.filterCollectionByUserHier.call(this, Contactables.find({}, {

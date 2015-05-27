@@ -47,3 +47,10 @@ AllContactables  = new Meteor.Collection('allContactables', {
     return contactable;
   }
 });
+
+AllEmployeesReport  = new Meteor.Collection('allEmployeesReport', {
+  transform: function (contactable) {
+    Utils.extendContactableDisplayName(contactable);
+    return contactable;
+  }
+});
