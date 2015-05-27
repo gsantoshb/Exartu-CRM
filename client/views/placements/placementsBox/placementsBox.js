@@ -13,7 +13,7 @@ var sortFields = [
     {field: 'dateCreated', displayName: 'Date'},
     {field: 'employeeDisplayName', displayName: 'Name'}
 ];
-var placementCollection = Placements;
+var placementCollection = PlacementsView;
 var PlacementHandler, query;
 
 var info = new Utils.ObjectDefinition({
@@ -277,11 +277,10 @@ Template.placementList.created = function () {
             SubscriptionHandlers.PlacementHandler.setFilter(searchQuery);
             SubscriptionHandlers.PlacementHandler.setOptions(options);
             PlacementHandler = SubscriptionHandlers.PlacementHandler;
-            SubscriptionHandlers.PlacementHandler.getFilter();
         }
         else {
             SubscriptionHandlers.PlacementHandler =
-                Meteor.paginatedSubscribe('placements', {
+                Meteor.paginatedSubscribe('placementsView', {
                     filter: searchQuery,
                     options: options
                 });
@@ -326,6 +325,9 @@ Template.placementListSearch.helpers({
     },
     listViewMode: function () {
         return listViewMode.get();
+    },
+    initialized: function () {
+        return initialized.get();
     }
 });
 
