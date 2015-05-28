@@ -1,22 +1,10 @@
-/**
- * Variables
- */
-var PlacementHandler;
 
-/**
- * Controller
- */
 PlacementsController = RouteController.extend({
     template: 'placements',
     layoutTemplate: 'mainLayout',
     waitOn: function () {
         Session.set('entityId', undefined);
-        if (!SubscriptionHandlers.PlacementHandler) {
-            SubscriptionHandlers.PlacementHandler = SubscriptionHandlers.PlacementHandler || Meteor.paginatedSubscribe('placements');
-
-            PlacementHandler = SubscriptionHandlers.PlacementHandler;
-            return [PlacementHandler, LookUpsHandler];
-        }
+        return [LookUpsHandler];
     },
     onAfterAction: function () {
         var title = 'Placements',
@@ -31,23 +19,5 @@ PlacementsController = RouteController.extend({
                 'description': description
             }
         });
-    },
-    action: function () {
-        if (this.ready())
-            this.render();
-        else
-            this.render('loadingContactable');
-        this.render();
     }
 });
-
-/**
- * Helpers
- */
-// Placements - Helpers
-Template.placements.helpers({
-    placementCount: function () {
-        return PlacementHandler && PlacementHandler.totalCount();
-    }
-});
-
