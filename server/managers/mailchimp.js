@@ -14,7 +14,15 @@ MailChimpManager = {
       cb(new Error('invalid token'))
     }
   }),
-  getLists: Meteor.wrapAsync(function (hierId, cb) {
+  getLists: Meteor.wrapAsync(function (hierId, searchString, callBack) {
+    var sort = 'name';
+    var cb = callBack;
+    var name = searchString;
+    if (_.isFunction(searchString)){
+      cb = searchString;
+      name = undefined;
+    }
+
     var hier = Hierarchies.findOne(hierId);
     if (!hier || ! hier.mailchimp){
       cb(new Error('Hierarchy not configured'));
@@ -23,11 +31,20 @@ MailChimpManager = {
 
     var url = getUrl(apiKey) + 'lists/list';
 
-    HTTP.post(url,{ data: { apikey: apiKey } }, function (err, result) {
+    var data = { apikey: apiKey };
+    if (name){
+      data.filters = { list_name: name };
+    }
+
+    HTTP.post(url,{ data: data }, function (err, result) {
       if (err){
         cb(err)
       }
-      cb(null, result.data.data)
+      var data = result.data.data;
+      if (sort){
+        data = _.sortBy(result.data.data, sort);
+      }
+      cb(null, data);
 
     });
   }),

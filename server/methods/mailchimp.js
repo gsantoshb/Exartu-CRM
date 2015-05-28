@@ -8,10 +8,10 @@ Meteor.methods({
       throw new Meteor.Error(e.message);
     }
   },
-  getMailChimpLists: function () {
+  getMailChimpLists: function (searchString) {
     var user = Meteor.user();
     if (!user) return;
-    return MailChimpManager.getLists(user.currentHierId);
+    return MailChimpManager.getLists(user.currentHierId, searchString);
   },
   getSubscribers:function (listId) {
     var user = Meteor.user();
