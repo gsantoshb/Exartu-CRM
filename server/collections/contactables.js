@@ -6,9 +6,8 @@ Meteor.publish('singleContactable', function (id) {
     var user = this.userId && Meteor.users.findOne(this.userId);
 
     // if the user is sysAdmin and the contactable is from a hier different from the user's current Hier publish a fake record so the view can tell the admin which hier the contactable belongs
-    if (RoleManager.bUserIsSystemAdmin(user)) {
+    if (RoleManager.bUserIsSystemAdmin(user) && Utils.filterCollectionByUserHier.call(this, cursor).count()) {
 
-      if (!Utils.filterCollectionByUserHier.call(this, cursor).count()) {
         var contactableInfo = Contactables.findOne(id, {hierId: 1});
         var hierInfo = Hierarchies.findOne(contactableInfo.hierId, {name: 1});
         sub.added('contactables', id, {
@@ -16,7 +15,6 @@ Meteor.publish('singleContactable', function (id) {
           hierName: hierInfo.name,
           otherHier: true
         });
-      }
     } else {
       ContactablesList.publishCursor(Utils.filterCollectionByUserHier.call(this, cursor), sub, 'contactables');
     }
