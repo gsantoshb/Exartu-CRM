@@ -84,7 +84,7 @@
                                 <div class="clearfix" style="min-height: 400px;">
                                     <h4>HotLists</h4>
                                     {{#if hotListSelected}}
-                                        <button class="btn btn-primary pull-right" disabled="{{importDisabled}}" id="importWithHotList" title="imports contacts from this mailchimp's list to aïda's hotLists">
+                                        <button class="btn btn-primary pull-right" disabled="{{importToHotlistDisabled}}" id="importWithHotList" title="imports contacts from this mailchimp's list to aïda's hotLists">
                                             <i class="fa fa-download"></i>
                                             Import members to {{hotListName}}
                                         </button>
@@ -93,6 +93,10 @@
                                             <i class="fa fa-upload"></i>
                                             Export hotlist to MailChimp
                                         </button>
+
+                                        {{#unless hotListSelectedIsContact}}
+                                            <span class="alert alert-warning pull-right">Can only import to a hotList of category 'client'</span>
+                                        {{/unless}}
                                     {{/if}}
                                     <div style="width: 200px;">
                                         {{>asyncSelect query=getHotList placeholder="Search hot list" onChange=hotListChanged minimumInputLength=0 width='180px' allowClear=true}}

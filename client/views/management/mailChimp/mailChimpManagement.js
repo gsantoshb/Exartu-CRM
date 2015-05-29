@@ -34,6 +34,7 @@ var addDisabled = new ReactiveVar(false),
   loadingMembers = new ReactiveVar(false),
   importDisabled = new ReactiveVar(false),
   exportDisabled = new ReactiveVar(false),
+  hotListSelectedIsContact = new ReactiveVar(false),
   hotListSelected = new ReactiveVar(null);
 
 AutoForm.hooks({
@@ -140,6 +141,9 @@ Template.mailChimpManagement.helpers({
   importDisabled: function () {
     return importDisabled.get();
   },
+  importToHotlistDisabled: function () {
+    return importDisabled.get() || ! hotListSelectedIsContact.get();
+  },
   exportDisabled: function () {
     return !hotListSelected.get() || exportDisabled.get();
   },
@@ -169,6 +173,8 @@ Template.mailChimpManagement.helpers({
   },
   hotListChanged: function () {
     return function (value) {
+      var hotlist = AllHotLists.findOne(value);
+      hotListSelectedIsContact.set(hotlist.category == 'contact')
       hotListSelected.set(value);
     }
   },
@@ -183,15 +189,18 @@ Template.mailChimpManagement.helpers({
         result;
 
       if (_.isEmpty(string)){
-        result = AllHotLists.find({ category: 'contact'}).fetch();
+        result = AllHotLists.find({ }).fetch();
       } else {
-        result = AllHotLists.find({ category: 'contact', displayName: { $regex: ".*" + string + ".*", $options: 'i' } }).fetch();
+        result = AllHotLists.find({ displayName: { $regex: ".*" + string + ".*", $options: 'i' } }).fetch();
       }
       var array = _.map(result, function (r) {
-        return { text: r.displayName, id: r._id };
+        return { text: r.displayName + '('+ r.category + ')', id: r._id };
       });
       self.ready(array);
     };
+  },
+  hotListSelectedIsContact: function () {
+    return hotListSelectedIsContact.get();
   }
 });
 
