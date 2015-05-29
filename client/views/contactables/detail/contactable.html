@@ -349,3 +349,21 @@
 
 <template name="link">
 </template>
+
+
+<template name="contactableFromOtherHier">
+    <div id="content">
+        <div id="content-header" class="mini">
+            <div class="profile-content-header">
+                <h1>{{_ "NotFound"}}</h1>
+            </div>
+        </div>
+        <div class="box-type-1">
+
+            <div class="notice-msg-container" style="padding: 10px; text-align: center">
+                <h5>This record belongs to hierarchy <strong>{{getHierName}}</strong> and is not visible to your current hierarchy</h5>
+            </div>
+        </div>
+    </div>
+
+</template>

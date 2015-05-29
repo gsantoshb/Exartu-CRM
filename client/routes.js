@@ -307,6 +307,11 @@ Router.map(function () {
     controller: 'DocCenterManagementController'
   });
 
+  this.route('twEnterpriseManagement', {
+    path: '/management/enterprise',
+    controller: TwEnterprisetController
+  });
+
   this.route('documentInstance', {
     path: '/documentInstance/:id',
     controller: 'InstanceController'

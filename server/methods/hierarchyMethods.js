@@ -31,5 +31,18 @@ Meteor.methods({
   },
   setCurrentHierarchyMailConf: function(mail, password, host, port){
     HierarchyManager.setCurrentHierarchyMailConf(mail, password, host, port);
+  },
+  setTwEnterpriseAccount: function (accountInfo) {
+    // Validate parameters
+    check(accountInfo, {
+      username: String,
+      password: String
+    });
+
+    try {
+      return HierarchyManager.setTwEnterpriseAccount(Meteor.user().currentHierId, accountInfo);
+    } catch (err) {
+      throw new Meteor.Error(err.message);
+    }
   }
 });

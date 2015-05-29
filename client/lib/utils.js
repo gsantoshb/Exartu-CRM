@@ -761,7 +761,7 @@ Utils.getActiveStatusDefaultId = function () {
         hierId: user.currentHierId,
         lookUpCode: Enums.lookUpTypes.active.status.lookUpCode
     });
-    return lkp._id;
+    return lkp && lkp._id;
 };
 Utils.sortByUserName = function (arr) {
     var arr = _.sortBy(arr, function (a) {
