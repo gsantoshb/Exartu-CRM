@@ -30,6 +30,10 @@
                     <div class="row">
                         <div class="col-md-2">
                             <h4 class="text-center">lists <a class="pull-right pointer" id="refresh-lists"><i class="fa fa-refresh"></i></a></h4>
+                            <div>
+                                <input placeholder="search" class="form-control" id="searchString">
+                                <hr>
+                            </div>
                             <ul class="list-group">
                                 {{#if loadingLists}}
                                     {{> mc_loading}}

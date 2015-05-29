@@ -25,6 +25,10 @@ ContactableController = RouteController.extend({
       this.render('notFoundTemplate');
       return;
     }
+    if (Contactables.findOne(Session.get('entityId')).otherHier) {
+      this.render('contactableFromOtherHier');
+      return;
+    }
 
     this.render('contactable');
 
@@ -723,3 +727,11 @@ Template.hotListMembershipsBox.events({
   }
 });
 
+
+
+Template.contactableFromOtherHier.helpers({
+  getHierName: function () {
+    var info = Contactables.findOne(Session.get('entityId'));
+    return info.hierName;
+  }
+})

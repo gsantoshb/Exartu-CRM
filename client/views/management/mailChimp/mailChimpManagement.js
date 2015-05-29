@@ -78,14 +78,17 @@ var refreshMembers = function () {
   })
 };
 
-var refreshLists = function () {
+var refreshLists = function (searchString) {
+
+  searchString = _.isString(searchString)? searchString: '';
+
   var currentHier = Hierarchies.findOne(Meteor.user().currentHierId);
   var apiKey = currentHier && currentHier.mailchimp ? currentHier.mailchimp.apiKey : null;
   if (! apiKey){
     return;
   }
   loadingLists.set(true);
-  Meteor.call('getMailChimpLists',function(err, result){
+  Meteor.call('getMailChimpLists', searchString, function(err, result){
     if (err){
       console.log(err);
     }else{
@@ -216,6 +219,7 @@ var importContacts = function (useHotList) {
     }
   })
 };
+
 Template.mailChimpManagement.events({
   'click .mc-list': function () {
     selectedList.set(this.id);
@@ -247,6 +251,9 @@ Template.mailChimpManagement.events({
         });
       }
     })
-  }
+  },
+  'keyup #searchString': _.debounce(function (e) {
+    refreshLists(e.target.value);
+  },500)
 });
 

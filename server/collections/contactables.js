@@ -1,7 +1,24 @@
 Meteor.publish('singleContactable', function (id) {
     var sub = this;
-    ContactablesList.publishCursor(Utils.filterCollectionByUserHier.call(this, ContactablesList.find({_id: id})), sub, 'contactables');
-    sub.ready();
+  var cursor = ContactablesList.find({_id: id});
+  // if the contactable exists
+  if (cursor.count()) {
+    var user = this.userId && Meteor.users.findOne(this.userId);
+
+    // if the user is sysAdmin and the contactable is from a hier different from the user's current Hier publish a fake record so the view can tell the admin which hier the contactable belongs
+    if (RoleManager.bUserIsSystemAdmin(user) && !Utils.filterCollectionByUserHier.call(this, cursor).count()) {
+        var contactableInfo = Contactables.findOne(id, {hierId: 1});
+        var hierInfo = Hierarchies.findOne(contactableInfo.hierId, {name: 1});
+        sub.added('contactables', id, {
+          hierId: contactableInfo.hierId,
+          hierName: hierInfo.name,
+          otherHier: true
+        });
+    } else {
+      ContactablesList.publishCursor(Utils.filterCollectionByUserHier.call(this, cursor), sub, 'contactables');
+    }
+  }
+  sub.ready();
 });
 Meteor.publish('leaderBoardClients', function (q) {
     return Utils.filterCollectionByUserHier.call(this,

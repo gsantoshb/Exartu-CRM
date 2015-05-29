@@ -126,6 +126,8 @@ Template.hotListList.created = function () {
     HotListHandler = SubscriptionHandlers.HotListHandler;
     hotListCount.set( HotListHandler.totalCount() );
 
+    selectedSort.set({field: 'displayName', value: 1});
+
     Meteor.autorun(function () {
         var searchQuery = {};
         var params = {};

@@ -1,5 +1,5 @@
 Meteor.methods({
-  'addHotList': function (hotList) {
+    'addHotList': function (hotList) {
     // Validate data
     check(hotList, {
       displayName: String,
