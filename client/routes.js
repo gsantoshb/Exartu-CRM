@@ -363,6 +363,10 @@ Router.map(function () {
     path: 'reports/reportsPastJobs',
     controller: ReportsPastJobs
   });
+  this.route('pastJobLeads', {
+    path: 'pastJobLeads',
+    controller: PastJobLeadsController
+  });
   this.route('timecard', {
     path: 'timeEntry/timecard/:id',
     controller: TimeCardController

@@ -47,7 +47,9 @@ Addresses = new Mongo.Collection("addresses");
 ApplicantCenterInvitations = new Mongo.Collection('applicantCenterInvitations');
 
 Tags = new Mongo.Collection("tags");
+
 PastJobLeads = new Mongo.Collection("pastJobLeads");
+
 Timecards = new Mongo.Collection('timecards');
 
 //CardReaderTasks = new Mongo.Collection('cardReaderTasks');
