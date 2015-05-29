@@ -139,8 +139,6 @@ ContactablesController = RouteController.extend({
 
     runESComputation();
 
-    selected = new ReactiveVar([]);
-
     this.render('contactables');
   },
   onAfterAction: function () {
@@ -165,7 +163,8 @@ ContactablesController = RouteController.extend({
 var query = {};
 var selectedValue = {};
 
-var selected = undefined;
+var selected = new ReactiveVar([]);
+var isAdding = new ReactiveVar(false);
 var comonTypes = [];
 
 // Page - Variables
@@ -391,6 +390,8 @@ Template.contactablesList.created = function () {
 
   paginationReady.set(true);
 
+  selected.set([]);
+
   Meteor.autorun(function () {
 
     if (query.searchString.value)
@@ -481,6 +482,17 @@ Template.contactablesListHeader.helpers({
     return selected.get().length;
   },
   areAllSelectedTheSameType: function () {
+
+    // if the selection is remote selection.types will be an array of names and counts
+    // check the length of types to see if all are the same types and also save the commonTypes as it is done if selection is not remote (in that case selection is an array)
+    var selection = selected.get();
+    if (! _.isArray(selection)){
+      _.each(selection.types, function (type) {
+        comonTypes.push(type.name.toLowerCase());
+      });
+      return selection.types.length == 1;
+    }
+
     if (_.isEmpty(selected.get())) return true;
     //check if there is a common type along all items selected ignoring contactable, person and organization
     var comonTypesUpper = _.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization');
@@ -493,15 +505,16 @@ Template.contactablesListHeader.helpers({
   showSelectAll: function () {
     return clickedAllSelected.get() && SubscriptionHandlers.ContactablesViewHandler.pageCount() > 1;
   },
-  withoutEmail: function () {
-    return _.filter(selected.get(), function (item) {
-      return !item.email
-    }).length;
-  },
   differentTypesSelected: function () {
     var result = {};
+    var selection = selected.get();
+
+    // if the selection is remote the server has already given us the array we need (types)
+    if (! _.isArray(selection)){
+      return selection.types;
+    }
     // create a hash that contains for each type the count of elements of this type, ignoring contactable, person, organization
-    _.each(selected.get(), function (item) {
+    _.each(selection, function (item) {
       _.each(_.without(item.type, 'contactable', 'person', 'organization'), function (type) {
         result[type] = result[type] || 0;
         ++result[type];
@@ -558,13 +571,17 @@ Template.contactablesListHeader.helpers({
   },
   hotListChanged: function () {
     var self = this;
-    return function (value) {
-      self.value = value;
-      selectedValue.id = value;
+    return function (id, name) {
+      self.value = id;
+      selectedValue.id = id;
+      selectedValue.name = name;
     }
   },
   allEmployee: function () {
     return _.contains(comonTypes, "employee");
+  },
+  isAdding: function () {
+    return isAdding.get();
   }
 });
 
@@ -669,6 +686,14 @@ Template.contactablesListItem.helpers({
     return !_.isEmpty(query.searchString.value);
   },
   isSelected: function () {
+
+    // if the selection is remote i can check if the contactable is selected by checking if this contactable matches the filter used
+    if (!_.isArray(selected.get())){
+      var filter = EJSON.clone(selected.get().filter);
+      filter._id = this._id;
+      return  !! ContactablesView.findOne(filter);
+    }
+
     return !!_.findWhere(selected.get(), {id: this._id});
   },
   listViewMode: function () {
@@ -728,42 +753,22 @@ Template.contactables.events({
 
 // List Header - Events
 Template.contactablesListHeader.events({
-  'click .addHotList': function (e, ctx) {
-    var id = Session.get('hotListId');
-    var hotlist = HotLists.findOne({_id: id});
-    var inc = 0;
-    _.forEach(selected.get(), function (item) {
-      if (hotlist.members.indexOf(item.id) < 0) {
-        hotlist.members.push(item.id);
-        inc = inc + 1;
-      }
-    });
-    HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
-    Utils.showModal('basicModal', {
-      title: 'Navigate to Hot List',
-      message: inc + ' added. Navigate to hotlist \'' + hotlist.displayName + '\'?',
-      buttons: [{label: 'Cancel', classes: 'btn-default', value: true}, {
-        label: 'Yes',
-        classes: 'btn-success',
-        value: true
-      }],
-      callback: function (result) {
-        if (result) {
-          Router.go('/hotlist/' + hotlist._id);
-        }
-      }
-    });
-    return false;
-  },
   'change #selectAll': function (e) {
     if (e.target.checked) {
       //add all local items (not already selected) to the selection
       clickedAllSelected.set(true);
       ContactablesView.find().forEach(function (contactable) {
         if (!_.findWhere(selected.curValue, {id: contactable._id})) {
+          var objNameArray = [];
+          _.each(['Client','Contact','Employee'], function (key) {
+            if (contactable[key]){
+              objNameArray.push(key);
+            }
+          });
           selected.curValue.push({
             id: contactable._id,
-            type: contactable.objNameArray,
+            type: objNameArray,
+            activeStatus: contactable.activeStatus,
             email: Utils.getContactableEmail(contactable)
           });
         }
@@ -801,29 +806,39 @@ Template.contactablesListHeader.events({
   },
 
   'click #selectAllRemotes': function () {
-    Meteor.call('getAllContactablesForSelectionFromView', SubscriptionHandlers.ContactablesViewHandler.getFilter(), function (err, result) {
+    // this function calls the server and get the information needed for the view, but doesn't return a huge array as it used to.
+    // the result will contain the count, an array called types (with name and the count for each type)
+    // we also save the filter that was used so we can call 'addMembersToHotListFromQuery' using this filter and this way the server will get the ids back
+    var filter = EJSON.clone(SubscriptionHandlers.ContactablesViewHandler.getFilter());
+    Meteor.call('getAllContactablesForSelectionFromView', filter, function (err, result) {
       if (err) {
         console.log('get all contactables error', err);
       } else {
-        selected.set(_.map(result, function (contactable) {
-          var objNameArray = ['contactable'];
-          _.each(['person', 'organization', 'Employee', 'Contact', 'Client'], function (type) {
-            if (contactable[type]){
-              objNameArray.push(type);
-            }
-          });
-          return {
-            id: contactable._id,
-            type: objNameArray,
-            email: Utils.getContactableEmail(contactable)
-          };
-        }));
+        result.filter = filter;
+        selected.set(result);
       }
     })
   },
   'click .selectOneType': function () {
-    //remove all items that are not of this type
     var self = this;
+
+    // if the selection is remote we modified the filter to match this type and call getAllContactablesForSelectionFromView to get the new selection
+    var selection = selected.get();
+    if (! _.isArray(selection)){
+      var filter = selection.filter;
+      filter[self.name] = true;
+      Meteor.call('getAllContactablesForSelectionFromView', filter, function (err, result) {
+        if (err) {
+          console.log('get all contactables error', err);
+        } else {
+          result.filter = filter;
+          selected.set(result);
+        }
+      });
+      return;
+    }
+
+    //remove all items that are not of this type
     selected.set(_.filter(selected.get(), function (item) {
       return _.contains(item.type, self.name);
     }));
@@ -864,10 +879,17 @@ Template.contactableListSort.events({
 Template.contactablesListItem.events({
   'click .select': function (e) {
     if (e.target.checked) {
+      var contactable = this;
+      var objNameArray = [];
+      _.each(['Client','Contact','Employee'], function (key) {
+        if (contactable[key]){
+          objNameArray.push(key);
+        }
+      });
       selected.curValue.push({
-        id: this._id,
-        type: this.objNameArray,
-        activeStatus: this.activeStatus,
+        id: contactable._id,
+        type: objNameArray,
+        activeStatus: contactable.activeStatus,
         email: Utils.getContactableEmail(this)
       })
     } else {
@@ -886,53 +908,78 @@ var addPlacement = function () {
   }
   var info = [];
   var inc = 0;
-  _.forEach(selected.get(), function (employee) {
-    var placement = {};
-    placement.job = selectedValue.id;
-    placement.employee = employee.id;
-    var status = LookUps.findOne({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode, isDefault: true});
-    placement.candidateStatus = status._id;
-    placement.objNameArray = ["placement"];
-    var lookUpActive = LookUps.findOne({
-      lookUpCode: Enums.lookUpCodes.active_status,
-      lookUpActions: Enums.lookUpAction.Implies_Active
-    });
-    if (employee.activeStatus === lookUpActive._id) {
 
-
-      Meteor.call('addPlacement', placement, function (err, cb) {
-        inc = inc + 1;
-        if (cb) {
-          info.push({placement: cb, employee: employee.id});
-          if (selected.get().length >= inc) {
-            //finished
-            var message = "";
-            _.forEach(info, function (p) {
-              var cont = Contactables.findOne({_id: p.employee});
-              message = message + "<a href='/placement/" + p.placement + "' target='_blank'>" + cont.displayName + "</a><br>";
-            });
-            Utils.showModal('basicModal', {
-              title: 'Placements added',
-              message: info.length + ' placements added.<br>Job: ' + selectedValue.text + '<br>Employees:<br>' + message,
-              buttons: [{
-                label: 'Ok',
-                classes: 'btn-success',
-                value: true
-              }],
-              callback: function (result) {
-                //deselect all
-                selected.set([])
-              }
-            });
-
-          }
+  // if the selection is remote call addPlacementForAllInQuery
+  if (!_.isArray(selected.get())){
+    Meteor.call('addPlacementForAllInQuery', selectedValue.id, selected.get().filter, function (err, infoArray) {
+      var message = "";
+      _.forEach(infoArray, function (info) {
+        message = message + "<a href='/placement/" + info.placementId + "' target='_blank'>" + info.employeeDisplayName + "</a><br>";
+      });
+      Utils.showModal('basicModal', {
+        title: 'Placements added',
+        message: info.length + ' placements added.<br>Job: ' + selectedValue.text + '<br>Employees:<br>' + message,
+        buttons: [{
+          label: 'Ok',
+          classes: 'btn-success',
+          value: true
+        }],
+        callback: function (result) {
+          //deselect all
+          selected.set([])
         }
       });
-    }
-    else {
-      inc = inc + 1;
-    }
-  });
+    });
+  }else{
+    _.forEach(selected.get(), function (employee) {
+      var placement = {};
+      placement.job = selectedValue.id;
+      placement.employee = employee.id;
+      var status = LookUps.findOne({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode, isDefault: true});
+      placement.candidateStatus = status._id;
+      placement.objNameArray = ["placement"];
+      var lookUpActive = LookUps.findOne({
+        lookUpCode: Enums.lookUpCodes.active_status,
+        lookUpActions: Enums.lookUpAction.Implies_Active
+      });
+      if (employee.activeStatus === lookUpActive._id) {
+
+
+        Meteor.call('addPlacement', placement, function (err, cb) {
+          inc = inc + 1;
+          if (cb) {
+            info.push({placement: cb, employee: employee.id});
+            if (selected.get().length <= inc) {
+              //finished
+              var message = "";
+              _.forEach(info, function (p) {
+                var cont = ContactablesView.findOne({_id: p.employee});
+                message = message + "<a href='/placement/" + p.placement + "' target='_blank'>" + cont.displayName + "</a><br>";
+              });
+              Utils.showModal('basicModal', {
+                title: 'Placements added',
+                message: info.length + ' placements added.<br>Job: ' + selectedValue.text + '<br>Employees:<br>' + message,
+                buttons: [{
+                  label: 'Ok',
+                  classes: 'btn-success',
+                  value: true
+                }],
+                callback: function (result) {
+                  //deselect all
+                  selected.set([])
+                }
+              });
+
+            }
+          }
+        });
+      }
+      else {
+        inc = inc + 1;
+      }
+    });
+  }
+
 
 };
 
@@ -941,27 +988,46 @@ var addHotList = function () {
     return;
   }
 
-  var ids = _.pluck(selected.get(), 'id');
-  Meteor.call('addMembersToHotList', selectedValue.id, ids, function (err, result) {
-    if (err){
-      console.log(err);
-    }else{
-      Utils.showModal('basicModal', {
-        title: 'Navigate to Hot List',
-        message: 'Navigate to hotlist?',
-        buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {
-          label: 'Yes',
-          classes: 'btn-success',
-          value: true
-        }],
-        callback: function (result) {
-          if (result) {
-            Router.go('/hotlist/' + selectedValue.id);
-          }
+  var afterAdd = function (result) {
+    Utils.showModal('basicModal', {
+      title: 'Navigate to Hot List',
+      message: result + ' added to hotlist \'' + selectedValue.name + '\'. Navigate to hotlist?',
+      buttons: [{label: 'Cancel', classes: 'btn-default', value: false}, {
+        label: 'Yes',
+        classes: 'btn-success',
+        value: true
+      }],
+      callback: function (result) {
+        if (result) {
+          Router.go('/hotlist/' + selectedValue.id);
         }
-      });
-    }
-  })
+      }
+    });
+  }
+
+  isAdding.set(true);
+  var selection = selected.get();
+  // if the selection is remote we call addMembersToHotListFromQuery with the filter that we saved previously
+  if (! _.isArray(selection)){
+    Meteor.call('addMembersToHotListFromQuery', selectedValue.id, selection.filter, function (err, result) {
+      isAdding.set(false);
+      if (err){
+        console.log(err);
+      }else{
+        afterAdd(result);
+      }
+    })
+  }else{
+    var ids = _.pluck(selection, 'id');
+    Meteor.call('addMembersToHotList', selectedValue.id, ids, function (err, result) {
+      isAdding.set(false);
+      if (err){
+        console.log(err);
+      }else{
+        afterAdd(result);
+      }
+    })
+  }
 
 };
 
