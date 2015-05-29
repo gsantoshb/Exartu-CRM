@@ -266,6 +266,7 @@ Contactables.before.insert(function (userId, doc) {
 
 });
 
+
 // Contactables documents
 
 ContactablesFS = new Document.Collection({

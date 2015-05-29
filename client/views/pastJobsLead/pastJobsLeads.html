@@ -1,0 +1,121 @@
+<template name="pastJobLeads">
+    <div id="content" class="network-content nicer-filters">
+
+            <div class="row">
+                <div class="col-md-3 col-lg-3">
+
+                </div>
+                <div class="list-container col-md-9">
+                    <div class="list-holder">
+                        {{> fastPagination name="pastJobLeads" useKeys="true" containerClass="magic-pager"}}
+                        <div class="table-responsive">
+                            <div class="list-holder">
+                                <div class="list-actions">
+                                    <div class="list-actions-cell search-list">
+                                        <div class="input-group">
+                                          <input id="searchString" type="text" class="form-control" placeholder={{_ "Search past jobs"}}>
+                                          <span class="input-group-btn">
+                                            <button class="btn btn-search" type="button">
+                                                 <i class="fa fa-search"></i>
+                                            </button>
+                                          </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-header network-list-header">
+                                <div class="list-header-cell network-list-header-type">{{_ "Employee"}}</div>
+                                <div class="list-header-cell network-list-header-type" >{{_ "Company"}}</div>
+                                <div class="list-header-cell network-list-header-type">{{_ "Position"}}</div>
+                                <div class="list-header-cell network-list-header-type">{{_ "Supervisor"}}</div>
+                                <div class="list-header-cell network-list-header-type">{{_ "Supervisor phone"}}</div>
+                                <div class="list-header-cell network-list-header-type">{{_ "Start"}}</div>
+                                <div class="list-header-cell network-list-header-type">{{_ "Active"}}</div>
+                            <!--<table class="table ">-->
+                                <!--<thead>-->
+                                <!--<tr>-->
+                                    <!--<th>Employee</th>-->
+                                    <!--<th>Company</th>-->
+                                    <!--<th>Position</th>-->
+                                    <!--<th>Supervisor phone</th>-->
+                                    <!--<th>Start</th>-->
+                                    <!--<th>End</th>-->
+                                    <!--<th>Comments</th>-->
+                                    <!--<th>Active</th>-->
+                                <!--</tr>-->
+                                <!--</thead>-->
+                                <!--<tbody>-->
+                                <!--{{#each pastJobs}}-->
+                                    <!--<tr>-->
+                                        <!--<th>Employee</th>-->
+                                        <!--<th>{{this.company}}</th>-->
+                                        <!--<th>{{this.supervisorPhone}}</th>-->
+                                        <!--<th>{{this.start}}</th>-->
+                                        <!--<th>{{this.comment}}</th>-->
+                                        <!--<th>{{this.active}}</th>-->
+                                    <!--</tr>-->
+                                <!--{{/each}}-->
+                                <!--</tbody>-->
+                            <!--</table>-->
+                            </div>
+                            <div class="list-item-section">
+                                {{#each pastJobs}}
+                                   <div class="list-item-section">
+                                       <div class="list-item">
+                                           <div class="list-item-details network-list-item-details">
+                                             <div class="list-item-cell network-list-item-type">
+                                               <a href="contactable/{{this.employeeId}}">{{this.employeeName}}</a>
+                                             </div>
+
+                                             <div class="list-item-cell  network-list-item-type">
+                                               {{this.company}}
+                                             </div>
+                                             <div class="list-item-cell network-list-item-type">
+                                               {{this.position}}
+                                             </div>
+                                             <div class="list-item-cell network-list-item-type">
+                                               {{this.supervisor}}
+                                             </div>
+                                             <div class="list-item-cell network-list-item-type">
+                                               {{this.supervisorPhone}}
+                                             </div>
+                                             <div class="list-item-cell network-list-item-type">
+                                                 {{formattedDate this.start "DD/MM/YYYY"}}
+                                             </div>
+                                             <div class="list-item-cell network-list-item-type">
+                                                 <input type="checkbox" id="active" value="{{this._id}}" checked="{{active}}"/>
+                                             </div>
+                                           </div>
+                                           {{#if editingComent}}
+                                               <div class="list-item-more network-list-item-more">
+                                                   <div class="list-item-more-entry">
+                                                       <div class="list-item-more-entry-content">
+                                                           Comment: <input type="text" class="form-control" id="comment" value="{{this.comment}}">
+                                                           <button id="save-comment" value="{{this._id}}" class="btn btn-primary" style="float:right">Save</button>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           {{else}}
+                                               <div class="list-item-more network-list-item-more">
+                                                  <div class="list-item-more-entry">
+                                                    <div class="list-item-more-entry-content">
+                                                      Comment: {{this.comment}}
+                                                      <span id="editing-active" class="glyphicon glyphicon-pencil" style="float:right; cursor:pointer"></span>
+                                                    </div>
+                                                  </div>
+                                               </div>
+                                           {{/if}}
+
+                                       </div>
+                                   </div>
+
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+
+    </div>
+</template>
