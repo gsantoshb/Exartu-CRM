@@ -49,7 +49,11 @@ Object.defineProperty(EditMode, "value", {
 var contactable = {};
 var hideTaxID = new ReactiveVar(true);
 var statusDep = new Deps.Dependency;
-var userSelected = new ReactiveVar(true);
+var userSelected = new ReactiveVar();
+
+Template.contactableDetailBox.onRendered(function () {
+  userSelected.set(this.data.userId);
+});
 
 Template.contactableDetailBox.helpers({
     created: function () {
@@ -151,7 +155,7 @@ Template.contactableDetailBox.events = {
         hideTaxID.set(!hideTaxID.get());
     },
     'change #userSelect': function (e, ctx) {
-        userSelected.set(e.target.value)
+      userSelected.set(e.target.value)
     }
 };
 
