@@ -1,0 +1,70 @@
+
+<template name="twEnterprise">
+    <div id="content" class="lookUps">
+        <div id="content-header" class="mini">
+            <h1>TW Enterprise</h1>
+        </div>
+        <div id="breadcrumb">
+            <a href="/" title="Go to Home" class="tip-bottom">Management</a>
+            <a href="/management/enterprise" class="current">TW Enterprise</a>
+        </div>
+        <div class="container-fluid" style="width:38%">
+            <div class="panel panel-default">
+                <!-- Header -->
+                <div class="panel-heading">
+                    {{#autoForm schema="TwEnterpriseUserSchema" id="setTwEnterpriseForm" doc=doc}}
+                        <fieldset>
+                            <div class="form-group {{#if afFieldIsInvalid name='username'}}has-error{{/if}}">
+                                {{> afFieldInput name='username' class="" placeholder="Username"}}
+                                {{#if afFieldIsInvalid name='username'}}
+                                    <span class="help-block">{{afFieldMessage name='username'}}</span>
+                                {{/if}}
+                            </div>
+                            <div class="form-group {{#if afFieldIsInvalid name='password'}}has-error{{/if}}">
+                                {{> afFieldInput name='password' class="" placeholder="Password"  type="password"}}
+                                {{#if afFieldIsInvalid name='password'}}
+                                    <span class="help-block">{{afFieldMessage name='password'}}</span>
+                                {{/if}}
+                            </div>
+                        </fieldset>
+
+                        {{#unless isSubmitting}}
+                            <!-- Error message -->
+                            {{#if error}}
+                                <div class="alert alert-danger">
+                                    <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                    {{error}}
+                                </div>
+                            {{/if}}
+
+                            <!-- Save button -->
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-save"></i> Save
+                                </button>
+                            </div>
+                        {{else}}
+                            <!-- Submitting feedback -->
+                            <div class="progress progress-striped active">
+                                <div style="width: 100%;" class="progress-bar progress-bar-info">{{_ "Validating Credentials"}}...</div>
+                            </div>
+                        {{/unless}}
+
+                    {{/autoForm}}
+                </div>
+            </div>
+        </div>
+
+        <!-- Explanation Message -->
+        <div class="container-fluid" style="width:38%">
+            <div class="panel panel-default">
+                <!-- Header -->
+                <div class="panel-heading">
+                    <p style="color:#708090">
+                        Set up the TW Enterprise account for this hierarchy and Aïda will automatically sync new employees created.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

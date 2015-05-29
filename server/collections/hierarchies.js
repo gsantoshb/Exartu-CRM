@@ -9,7 +9,11 @@ Meteor.publish('hierarchies', function () {
         userHierarchies = userHierarchies.concat($or);
     });
 
-    return Hierarchies.find({$or: userHierarchies});
+
+    return Hierarchies.find({$or: userHierarchies},
+      // Exclude sensitive TW Enterprise information
+      {fields: {'enterpriseAccount.password': 0, 'enterpriseAccount.accessToken': 0, 'enterpriseAccount.refreshToken': 0}}
+    );
 });
 
 Hierarchies.allow({

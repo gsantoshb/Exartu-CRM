@@ -82,6 +82,15 @@
                         {{/if}}
                     </div>
 
+                    <!--Supervisor Tel-->
+                    <div class="form-group {{#if afFieldIsInvalid name='supervisorPhone'}}has-error{{/if}}">
+                        <label class="control-label">{{afFieldLabelText name='supervisorPhone'}}</label>
+                        {{> afFieldInput name='supervisorPhone' placeholder="supervisor phone"}}
+                        {{#if afFieldIsInvalid name='supervisorPhone'}}
+                            <span class="help-block">{{afFieldMessage name='supervisorPhone'}}</span>
+                        {{/if}}
+                    </div>
+
                     <!-- Reason For Leaving -->
                     <div class="form-group {{#if afFieldIsInvalid name='reasonForLeaving'}}has-error{{/if}}">
                         <label class="control-label">{{afFieldLabelText name='reasonForLeaving'}}</label>
@@ -151,6 +160,9 @@
                         <div class="list-3-item-meta-top">{{company}}</div>
                         {{#if supervisor}}
                             <div class="list-3-item-meta-top">{{_ "Supervised by"}} {{supervisor}}</div>
+                        {{/if}}
+                        {{#if supervisorPhone}}
+                            <div class="list-3-item-meta-top">{{_ "Supervisor phone"}} {{supervisorPhone}}</div>
                         {{/if}}
                         <h4 class="list-3-item-title">{{position}}</h4>
                         <div class="list-3-item-meta-top">{{location}}</div>
@@ -226,6 +238,15 @@
                 {{> afFieldInput name='supervisor' placeholder="Supervisor"}}
                 {{#if afFieldIsInvalid name='supervisor'}}
                     <span class="help-block">{{afFieldMessage name='supervisor'}}</span>
+                {{/if}}
+            </div>
+
+            <!--supervisor phone-->
+            <div class="form-group {{#if afFieldIsInvalid name='supervisorPhone'}}has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='supervisorPhone'}}</label>
+                {{> afFieldInput name='supervisorPhone' placeholder="supervisor phone"}}
+                {{#if afFieldIsInvalid name='supervisorPhone'}}
+                    <span class="help-block">{{afFieldMessage name='supervisorPhone'}}</span>
                 {{/if}}
             </div>
 

@@ -307,6 +307,11 @@ Router.map(function () {
     controller: 'DocCenterManagementController'
   });
 
+  this.route('twEnterpriseManagement', {
+    path: '/management/enterprise',
+    controller: TwEnterprisetController
+  });
+
   this.route('documentInstance', {
     path: '/documentInstance/:id',
     controller: 'InstanceController'
@@ -357,6 +362,10 @@ Router.map(function () {
   this.route('reportsPastJobs', {
     path: 'reports/reportsPastJobs',
     controller: ReportsPastJobs
+  });
+  this.route('pastJobLeads', {
+    path: 'pastJobLeads',
+    controller: PastJobLeadsController
   });
   this.route('timecard', {
     path: 'timeEntry/timecard/:id',
