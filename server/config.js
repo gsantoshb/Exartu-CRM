@@ -37,6 +37,8 @@ ExartuConfig = {
   EncryptCode: undefined,
   CardReaderAppId:undefined,
   CardReaderPassword:undefined,
-  aidaHierarchy:undefined
+  aidaHierarchy:undefined,
+  // TW Enterprise API URL
+  TwEnterpriseAPI_URL: undefined
 
 };

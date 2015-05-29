@@ -109,7 +109,29 @@ HierarchyManager = {
         throw new Meteor.Error('Invalid parameters type on hierachy mail config');
 
       }
-    }
+    },
+
+  setTwEnterpriseAccount: function (hierId, accountInfo) {
+    // Validations
+    if (!hierId) throw new Error('Hier ID is required');
+    if (!accountInfo) throw new Error('Account information is required');
+
+    // Validate info
+    if (!accountInfo.username || !accountInfo.password)
+      throw new Error('Username and password must be provided to set up Enterprise');
+
+    // Validate credentials against the API
+    var accountInfo = {
+      username: accountInfo.username,
+      password: accountInfo.password,
+    };
+    var twApiHelper = new TwApiHelper(accountInfo);
+    var tokenInfo = twApiHelper.login();
+    _.extend(accountInfo, tokenInfo);
+
+    // Save configuration
+    Hierarchies.update({_id: hierId}, {$set: {enterpriseAccount: accountInfo}});
+  }
 };
 
 var generateUniqueHierId = function (prefix) {
