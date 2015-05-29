@@ -20,6 +20,9 @@ Contactables.after.insert(function (userId, doc) {
       data.firstName = doc.person.firstName;
       data.lastName = doc.person.lastName;
 
+      if (doc.Employee.taxID)
+        data.ssn = doc.Employee.taxID;
+
       TwApi.addEmployee(doc._id, data, accountInfo);
     }
 
