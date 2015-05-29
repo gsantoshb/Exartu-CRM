@@ -141,7 +141,8 @@ newObjType({
       name: 'taxID',
       displayName: 'TaxID/SSN',
       showInAdd: true,
-      required: false
+      required: false,
+      regex: '^(((?!000|666)[0-8][0-9]{2})(-(?!00)[0-9]{2}-|(?!00)[0-9]{2})(?!0000)[0-9]{4})?$'
     },
     {
       name: 'routingNumber',

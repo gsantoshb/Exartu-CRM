@@ -62,5 +62,43 @@ Meteor.methods({
         $options: 'i'
       }
     }, { fields: { 'displayName': 1 } })).fetch();
+  },
+  addPlacementForAllInQuery: function (jobId,selector) {
+
+    var user = Meteor.user();
+    var currentHierId = user.currentHierId;
+
+    var employees = ContactablesView.find(selector).fetch();
+    var status = LookUps.findOne({
+      lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode,
+      isDefault: true,
+      hierId: currentHierId
+    });
+    var lookUpActive = LookUps.findOne({
+      lookUpCode: Enums.lookUpCodes.active_status,
+      lookUpActions: Enums.lookUpAction.Implies_Active,
+      hierId: currentHierId
+    });
+
+    var info = [];
+    _.forEach(employees, function (employee) {
+      var placement = {};
+      placement.job = jobId;
+      placement.employee = employee._id;
+      placement.candidateStatus = status._id;
+      placement.objNameArray = ["placement"];
+
+      if (employee.activeStatus === lookUpActive._id) {
+        //try {
+          console.log('placement', placement);
+          PlacementManager.addPlacement(placement);
+          console.log('after');
+          info.push({placementId: placement, employeeDisplayName: employee.displayName});
+        //} catch (e){
+        //  console.log(e);
+        //}
+      }
+    });
+    return info;
   }
 });

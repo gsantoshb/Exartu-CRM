@@ -303,9 +303,7 @@ ContactableManager = {
     changeContactableUserId: function (contactableId, userId) {
         //todo: if isAdmin
 
-        if (!Meteor.users.find(userId).count()) {
-            throw new Error('userNot found');
-        }
+        if (!Meteor.users.findOne({_id: userId})) throw new Error('User not found');
 
         Contactables.update(contactableId, {$set: {userId: userId}});
     },
