@@ -390,6 +390,8 @@ Template.contactablesList.created = function () {
 
   paginationReady.set(true);
 
+  selected.set([]);
+
   Meteor.autorun(function () {
 
     if (query.searchString.value)
@@ -766,6 +768,7 @@ Template.contactablesListHeader.events({
           selected.curValue.push({
             id: contactable._id,
             type: objNameArray,
+            activeStatus: contactable.activeStatus,
             email: Utils.getContactableEmail(contactable)
           });
         }
@@ -884,9 +887,9 @@ Template.contactablesListItem.events({
         }
       });
       selected.curValue.push({
-        id: this._id,
+        id: contactable._id,
         type: objNameArray,
-        activeStatus: this.activeStatus,
+        activeStatus: contactable.activeStatus,
         email: Utils.getContactableEmail(this)
       })
     } else {
@@ -905,53 +908,79 @@ var addPlacement = function () {
   }
   var info = [];
   var inc = 0;
-  _.forEach(selected.get(), function (employee) {
-    var placement = {};
-    placement.job = selectedValue.id;
-    placement.employee = employee.id;
-    var status = LookUps.findOne({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode, isDefault: true});
-    placement.candidateStatus = status._id;
-    placement.objNameArray = ["placement"];
-    var lookUpActive = LookUps.findOne({
-      lookUpCode: Enums.lookUpCodes.active_status,
-      lookUpActions: Enums.lookUpAction.Implies_Active
-    });
-    if (employee.activeStatus === lookUpActive._id) {
 
-
-      Meteor.call('addPlacement', placement, function (err, cb) {
-        inc = inc + 1;
-        if (cb) {
-          info.push({placement: cb, employee: employee.id});
-          if (selected.get().length >= inc) {
-            //finished
-            var message = "";
-            _.forEach(info, function (p) {
-              var cont = Contactables.findOne({_id: p.employee});
-              message = message + "<a href='/placement/" + p.placement + "' target='_blank'>" + cont.displayName + "</a><br>";
-            });
-            Utils.showModal('basicModal', {
-              title: 'Placements added',
-              message: info.length + ' placements added.<br>Job: ' + selectedValue.text + '<br>Employees:<br>' + message,
-              buttons: [{
-                label: 'Ok',
-                classes: 'btn-success',
-                value: true
-              }],
-              callback: function (result) {
-                //deselect all
-                selected.set([])
-              }
-            });
-
-          }
+  // if the selection is remote call addPlacementForAllInQuery
+  if (!_.isArray(selected.get())){
+    Meteor.call('addPlacementForAllInQuery', selectedValue.id, selected.get().filter, function (err, infoArray) {
+      debugger;
+      var message = "";
+      _.forEach(infoArray, function (info) {
+        message = message + "<a href='/placement/" + info.placementId + "' target='_blank'>" + info.employeeDisplayName + "</a><br>";
+      });
+      Utils.showModal('basicModal', {
+        title: 'Placements added',
+        message: info.length + ' placements added.<br>Job: ' + selectedValue.text + '<br>Employees:<br>' + message,
+        buttons: [{
+          label: 'Ok',
+          classes: 'btn-success',
+          value: true
+        }],
+        callback: function (result) {
+          //deselect all
+          selected.set([])
         }
       });
-    }
-    else {
-      inc = inc + 1;
-    }
-  });
+    });
+  }else{
+    _.forEach(selected.get(), function (employee) {
+      var placement = {};
+      placement.job = selectedValue.id;
+      placement.employee = employee.id;
+      var status = LookUps.findOne({lookUpCode: Enums.lookUpTypes.candidate.status.lookUpCode, isDefault: true});
+      placement.candidateStatus = status._id;
+      placement.objNameArray = ["placement"];
+      var lookUpActive = LookUps.findOne({
+        lookUpCode: Enums.lookUpCodes.active_status,
+        lookUpActions: Enums.lookUpAction.Implies_Active
+      });
+      if (employee.activeStatus === lookUpActive._id) {
+
+
+        Meteor.call('addPlacement', placement, function (err, cb) {
+          inc = inc + 1;
+          if (cb) {
+            info.push({placement: cb, employee: employee.id});
+            if (selected.get().length <= inc) {
+              //finished
+              var message = "";
+              _.forEach(info, function (p) {
+                var cont = ContactablesView.findOne({_id: p.employee});
+                message = message + "<a href='/placement/" + p.placement + "' target='_blank'>" + cont.displayName + "</a><br>";
+              });
+              Utils.showModal('basicModal', {
+                title: 'Placements added',
+                message: info.length + ' placements added.<br>Job: ' + selectedValue.text + '<br>Employees:<br>' + message,
+                buttons: [{
+                  label: 'Ok',
+                  classes: 'btn-success',
+                  value: true
+                }],
+                callback: function (result) {
+                  //deselect all
+                  selected.set([])
+                }
+              });
+
+            }
+          }
+        });
+      }
+      else {
+        inc = inc + 1;
+      }
+    });
+  }
+
 
 };
 
