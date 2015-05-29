@@ -125,7 +125,7 @@ newObjType({
     color: 'teal'
   },
   defaultPersonType: Enums.personType.human,
-  services: ['pastJobs', 'educations'],
+  services: [],
   fields: [
     {
       name: 'status',

@@ -339,6 +339,7 @@ var extractInformation = function (parseResult) {
                         var title = position.Title && position.Title[0];
 
                         pastJobs.push({
+                            id: Random.id(),
                             company: employerName,
                             position: title,
                             duties: description,

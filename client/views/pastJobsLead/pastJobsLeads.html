@@ -7,7 +7,7 @@
                 </div>
                 <div class="list-container col-md-9">
                     <div class="list-holder">
-                        {{> fastPagination name="pastJobLeads" useKeys="true" containerClass="magic-pager"}}
+
                         <div class="table-responsive">
                             <div class="list-holder">
                                 <div class="list-actions">
@@ -20,7 +20,10 @@
                                             </button>
                                           </span>
                                         </div>
+
+
                                     </div>
+                                    {{> fastPagination name="pastJobLeads" useKeys="true" containerClass="magic-pager"}}
                                 </div>
                             </div>
                             <div class="list-header network-list-header">
@@ -96,11 +99,11 @@
                                                    </div>
                                                </div>
                                            {{else}}
-                                               <div class="list-item-more network-list-item-more">
+                                               <div class="list-item-more network-list-item-more" stylee="font-size:15px">
                                                   <div class="list-item-more-entry">
                                                     <div class="list-item-more-entry-content">
+                                                      <span id="editing-active" class="glyphicon glyphicon-pencil" style="cursor:pointer"></span>
                                                       Comment: {{this.comment}}
-                                                      <span id="editing-active" class="glyphicon glyphicon-pencil" style="float:right; cursor:pointer"></span>
                                                     </div>
                                                   </div>
                                                </div>

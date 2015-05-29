@@ -1,8 +1,11 @@
+/**
+ * Created by ramiro on 29/05/15.
+ */
 Migrations.add({
-  version: 32,
+  version: 33,
   up: function () {
     var count = 0;
-    Contactables.find({"Employee.pastJobs": {$exists: true}}).forEach(function (contactable) {
+    Contactables.find({"pastJobs": {$exists: true}}).forEach(function (contactable) {
       count++;
       console.log('adding pastJobs ', count, '-', contactable._id);
       _.each(contactable.pastJobs, function (p) {
@@ -14,9 +17,9 @@ Migrations.add({
         newPastJob = _.omit(newPastJob, 'id');
         var pastJoblead = PastJobLeads.findOne({_id:newPastJob._id});
         if(!pastJoblead)
-           PastJobLeads.insert(newPastJob);
+          PastJobLeads.insert(newPastJob);
       })
     })
-    console.log('Finished migration 32');
+    console.log('Finished migration 33');
   }
 });
