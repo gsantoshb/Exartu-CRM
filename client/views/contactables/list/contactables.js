@@ -912,7 +912,6 @@ var addPlacement = function () {
   // if the selection is remote call addPlacementForAllInQuery
   if (!_.isArray(selected.get())){
     Meteor.call('addPlacementForAllInQuery', selectedValue.id, selected.get().filter, function (err, infoArray) {
-      debugger;
       var message = "";
       _.forEach(infoArray, function (info) {
         message = message + "<a href='/placement/" + info.placementId + "' target='_blank'>" + info.employeeDisplayName + "</a><br>";
