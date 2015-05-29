@@ -2,18 +2,18 @@
 TwApi = {
   addEmployee: function (employeeId, employee, accountInfo) {
     var apiHelper = new TwApiHelper(accountInfo);
-    apiHelper.post('/Employees/Insert', employee, function (error, result) {
+    apiHelper.post('/Employees/Insert', employee, Meteor.bindEnvironment(function (error, result) {
       if (!error) {
         Contactables.update({_id: employeeId}, {$set: {externalId: result.aident}});
       } else {
         throw new Error("TW Sync failed adding employee");
       }
-    });
+    }));
   },
   updateEmployee: function (employeeId, employee, accountInfo) {
     var apiHelper = new TwApiHelper(accountInfo);
     // Obtain the external copy of the employee
-    apiHelper.get('/Employees/' + employeeId, function (error, result) {
+    apiHelper.get('/Employees/' + employeeId, Meteor.bindEnvironment(function (error, result) {
       if (!error) {
         // Update the modified properties
         _.each(_.keys(employee), function (key) {
@@ -21,15 +21,15 @@ TwApi = {
         });
 
         // Sync the changes
-        apiHelper.post('/Employees/Update', result, function (error, result) {
+        apiHelper.post('/Employees/Update', result, Meteor.bindEnvironment(function (error, result) {
           if (error) {
             throw new Error("TW Sync failed updating employee");
           }
-        });
+        }));
       } else {
         throw new Error("TW Sync failed updating employee");
       }
-    })
+    }))
   },
 
   //addContact: function (contactId, contact) {
