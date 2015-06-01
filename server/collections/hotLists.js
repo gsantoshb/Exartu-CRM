@@ -6,6 +6,7 @@ HotListView = new View('hotLists', {
       this.publish({
           cursor: function (hotlist) {
               var members = (hotlist.members) ? hotlist.members : [];
+            members = _.pluck(members, 'id');
               return Contactables.find({_id: {$in : members}});
           },
           to: 'contactables',
@@ -35,7 +36,7 @@ Meteor.publish('singleHotList', function (id) {
   return HotLists.find({_id: id});
 });
 Meteor.publish('auxHotLists', function (id) {
-  return HotLists.find({members: id});
+  return HotLists.find({'members.id': id});
 });
 
 Meteor.paginatedPublish(Contactables,
@@ -45,7 +46,9 @@ Meteor.paginatedPublish(Contactables,
     var hotlist = HotLists.findOne({_id: hotListId});
     if (!hotlist.members) return [];
 
-    return Contactables.find({_id: {$in: hotlist.members}}, {sort: {displayName: 1}});
+    var members = _.pluck(hotlist.members, 'id');
+
+    return Contactables.find({_id: {$in: members}}, {sort: {displayName: 1}});
   }, {
     pageSize: 10,
     publicationName: 'hotListMembers'

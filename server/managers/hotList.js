@@ -34,17 +34,21 @@ HotListManager = {
 
     var hotList = HotLists.findOne({ _id: hotListId });
     var members = hotList.members || [];
+    var now = new Date();
 
     //HotLists.update({ _id: hotlist._id }, { $addToSet: { members: { $each: ids } } }); //$each not working in meteor
     _.each(ids, function (id) {
       ++index;
       progress.set(100*index/length);
-      if (!_.contains(members, id)){
-        members.push(id);
+      if (!_.findWhere(members, {id: id})){
+        members.push({id: id, addedAt: now});
         ++count;
       }
     });
     HotLists.update({ _id: hotListId }, { $set: { members: members } });
     return count;
+  },
+  removeFromHotList: function (hotListId, contactableId) {
+    HotLists.update({ _id: hotListId }, { $pull: { members: { id: contactableId  } } });
   }
 };
