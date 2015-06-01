@@ -10,7 +10,7 @@ Migrations.add({
           hotList.members.splice(index,1,{id: member, addedAt: null})
         }
       });
-      if (needsMigration){_.
+      if (needsMigration){
         HotLists.update(hotList._id, {$set: {members: hotList.members}})
       }
     });
