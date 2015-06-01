@@ -1,16 +1,40 @@
+var ActiveFilter;
+var InactiveFilter;
+
 PastJobLeadsController = RouteController.extend({
   layoutTemplate: 'mainLayout',
-  template: 'pastJobLeads'
+  template: 'pastJobLeads',
+  action: function(){
+    ActiveFilter =  new ReactiveVar(true);
+    InactiveFilter = new ReactiveVar(false);
+    //readUrl
+    var params = this.params.query;
+    if(params && (params.activeFilter==="true")){
+      ActiveFilter.set(true);
+    }
+    else if(params && (params.activeFilter==="false")){
+      ActiveFilter.set(false);
+    }
+    if(params && (params.inactiveFilter==="true")){
+      InactiveFilter.set(true);
+    }
+    else if(params && (params.inactiveFilter==="false")){
+      InactiveFilter.set(false);
+    }
+    this.render('pastJobLeads');
+  }
 });
 
-
-var editingComent = new ReactiveVar(false);
 Template.pastJobLeads.created = function(){
-  if(!SubscriptionHandlers.PastJobsLeadsHandler){
-     SubscriptionHandlers.PastJobsLeadsHandler = Meteor.paginatedSubscribe('pastJobLeads', {});
-  }
+  Meteor.autorun(function(){
+    if (!SubscriptionHandlers.PastJobsLeadsHandler) {
+      SubscriptionHandlers.PastJobsLeadsHandler = Meteor.paginatedSubscribe('pastJobLeads', {filter: {$or: [{active: ActiveFilter.get()}, {active: !InactiveFilter.get()}]}});
+    }
+    else{
+      SubscriptionHandlers.PastJobsLeadsHandler.setFilter( {$or: [{active: ActiveFilter.get()}, {active: !InactiveFilter.get()}]});
+    }
+  })
 }
-
 
 Template.pastJobLeads.helpers({
   pastJobs: function(){
@@ -18,21 +42,38 @@ Template.pastJobLeads.helpers({
   },
   editingComent: function(){
     return editingComent.get();
+  },
+  pastJobsCount: function(){
+    return SubscriptionHandlers.PastJobsLeadsHandler.totalCount();
+  },
+  Active: function(){
+    return ActiveFilter.get() ? "btn-primary" : "btn-default";
+  },
+  Inactive: function(){
+    return InactiveFilter.get() ? "btn-primary" : "btn-default";
   }
 })
 
+var updateUrl = function(){
+  //set url
+  var url = new URLQuery();
+  if(ActiveFilter.get()===false){
+    url.addParam("activeFilter",false);
+  }
+  if(InactiveFilter.get()===true){
+    url.addParam("inactiveFilter",true);
+  }
+  url.apply();
+}
+
 Template.pastJobLeads.events({
-  "change #active": function(e){
-     Meteor.call('setActive', e.target.value, e.target.checked, function(err, r){
-       debugger;
-     });
+  "click #Active-button": function(){
+    ActiveFilter.set(!ActiveFilter.get());
+    updateUrl();
   },
-  "click #editing-active": function(e){
-    editingComent.set(!editingComent.get())
-  },
-  "click #save-comment": function(e){
-    Meteor.call('setComment', e.target.value,$("#comment")[0].value, function(){
-      editingComent.set(!editingComent.get());
-    });
+  "click #Inactive-button": function(){
+    InactiveFilter.set(!InactiveFilter.get());
+    updateUrl();
   }
 })
+
