@@ -57,14 +57,9 @@ Template.hotList.helpers({
 });
 
 Template.hotList.events({
-    'click .remove': function (e, ctx) {
-        var hotList = hotListCollection.findOne({_id: Session.get('entityId')});
-        hotList.members.splice(hotList.members.indexOf(this._id), 1);
-        hotListCollection.update({_id: hotList._id}, {$set: {members: hotList.members}});
-    },
-    'click .goBack': function () {
-        history.back();
-    }
+  'click .goBack': function () {
+      history.back();
+  }
 });
 
 

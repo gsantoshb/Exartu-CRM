@@ -24,7 +24,8 @@
 
 <template name="hotListMembersHeader">
     <div class="list-header contacts-list-header">
-        <div class="list-header-cell contacts-list-header-title">{{_ "HotList Members"}} – ({{membersCount}})</div>
+        <div class="list-header-cell contacts-list-header-title" style="width: 25%;">{{_ "HotList Members"}} – ({{membersCount}})</div>
+        <div class="list-header-cell contacts-list-header-code">{{_ "Added at"}}</div>
         <div class="list-header-cell contacts-list-header-code">{{_ "Id"}}</div>
         <div class="list-header-cell contacts-list-header-actions">{{_ "Actions"}}</div>
     </div><!-- /.list-header -->
@@ -87,10 +88,11 @@
         <div class="list-item-cell list-item-icon">
             <a class="item-icon item-icon-contact" href="/contactable/{{_id}}">{{getAcronym displayName}}</a>
         </div>
-        <div class="list-item-cell contact-list-item-title">
+        <div class="list-item-cell contact-list-item-title" style="width: 20%;">
             <div class="item-title single"><a href="/contactable/{{_id}}">{{_ displayName}}</a></div>
         </div>
         <div class="list-item-details contact-list-item-details">
+            <div class="list-item-cell contact-list-item-code">{{formattedDate getAddedAt "lll"}}</div>
             <div class="list-item-cell contact-list-item-code">{{_id}}</div>
             <div class="list-item-cell contact-list-item-actions"><a class="pointer removeMember"><i class="fa fa-times"></i> {{_ "Remove"}}</a></div>
         </div><!-- /.list-item-cell -->

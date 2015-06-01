@@ -624,7 +624,7 @@ var selectedValue = "";
 Template.hotListMembershipsBox.helpers({
   hotListMemberships: function () {
     hotListMembershipsDep.depend();
-    return hotlists = HotLists.find({members: contactable._id});
+    return hotlists = HotLists.find({'members.id': contactable._id});
   },
   recentHotList: function () {
     var obj;
@@ -636,7 +636,7 @@ Template.hotListMembershipsBox.helpers({
       })
       var h = HotLists.findOne({
         _id: Session.get('hotListId'),
-        members: {$nin: [contactable._id]},
+        'members.id': {$nin: [contactable._id]},
         category: {$in: contactableObjName}
       });
 
@@ -663,7 +663,7 @@ Template.hotListMembershipsBox.helpers({
         contactableObjName.push(c.toLowerCase());
       })
       var result = AllHotLists.find({
-        members: {$nin: [contactable._id]},
+        'members.id': {$nin: [contactable._id]},
         category: {$in: contactableObjName},
         displayName: {$regex: ".*" + string + ".*", $options: 'i'}
       }).fetch();
@@ -686,15 +686,8 @@ var addHotList = function () {
   if (!selectedValue) {
     return;
   }
-  var hotlist = AllHotLists.findOne({_id: selectedValue});
-  if (hotlist.members) {
-    hotlist.members.push(contactable._id);
-  }
-  else {
-    hotlist.members = [contactable._id];
-  }
-  hotlist.members = $.unique(hotlist.members);
-  Meteor.call('updateHotList', hotlist, function (err, cb) {
+
+  Meteor.call('addMembersToHotList',selectedValue, [contactable._id], function (err, cb) {
     if (!err) {
       hotListMembershipsDep.changed();
     }
@@ -708,19 +701,16 @@ Template.hotListMembershipsBox.events({
     self.editHotlistMode = !self.editHotlistMode;
   },
   'click .removeHotList': function (e, ctx) {
-    var hotlist = HotLists.findOne({_id: this._id});
-    hotlist.members.splice(hotlist.members.indexOf(contactable._id), 1);
-    HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
-    hotListMembershipsDep.changed();
+    Meteor.call('removeFromHotList', this._id, contactable._id, function () {
+      hotListMembershipsDep.changed();
+    });
   },
   'click .addHotList': function (e, ctx) {
     var id = Session.get('hotListId');
-    var hotlist = HotLists.findOne({_id: id});
-    hotlist.members.push(contactable._id);
-    hotlist.members = $.unique(hotlist.members);
 
-    HotLists.update({_id: hotlist._id}, {$set: {members: hotlist.members}});
-    hotListMembershipsDep.changed();
+    Meteor.call('addMembersToHotList', id, contactable._id, function () {
+      hotListMembershipsDep.changed();
+    });
   },
   'click .add-hotList': function (e, ctx) {
     addHotList.call(this);

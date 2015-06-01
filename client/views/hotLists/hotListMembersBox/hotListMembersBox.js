@@ -31,6 +31,7 @@ var setSubscription = function (searchQuery, options) {
   hotList = HotLists.findOne({_id: Session.get('entityId')});
   if(hotList) {
     var members = hotList.members ? hotList.members : [];
+    members = _.pluck(members, 'id');
     searchQuery = {_id: {$in: members}};
   }
   if (SubscriptionHandlers.HotListMembersHandler) {
@@ -99,20 +100,10 @@ Template.hotListMembersSearch.events({
   }, 200),
 
   'click .addHotListMember': function (e, ctx) {
-    Utils.showModal(
-      'hotListMemberAdd',
-      hotList, function (memberId, hotListId) {
-        var mbrs = hotList.members || [];
-
-        if (mbrs.indexOf(memberId) > -1) {
-          return false;
-        }
-
-        mbrs.push(memberId);
-
-        HotLists.update({_id: hotListId}, {$set: {members: mbrs}});
-
-        setSubscription(searchQuery, options);
+    Utils.showModal('hotListMemberAdd', hotList, function (memberId, hotListId) {
+        Meteor.call('addMembersToHotList', hotListId, [memberId], function () {
+          setSubscription(searchQuery, options);
+        });
       }
     );
   },
@@ -192,7 +183,7 @@ Template.hotListMembersList.created = function () {
     if(hotList) {
       var urlQuery = new URLQuery();
       searchQuery = {
-        _id: {$in: hotList.members || []},
+        _id: {$in: _.pluck(hotList.members || [], 'id')},
         $and: [] // Push each $or operator here
       };
 
@@ -246,14 +237,9 @@ Template.hotListMembersList.helpers({
 
 Template.hotListMembersList.events({
   'click .removeMember': function (e, ctx) {
-    var tempHotList = HotLists.findOne({_id: Session.get('entityId')});
-    tempHotList.members.splice(tempHotList.members.indexOf(this._id), 1);
-    HotLists.update({_id: tempHotList._id}, {$set: {members: tempHotList.members}});
-
-    //HotLists.update({_id: tempHotList._id}, {$pull: { 'members': this._id }});
-
-    setSubscription(searchQuery, options);
-
+    Meteor.call('removeFromHotList', Session.get('entityId'), this._id, function (err, result) {
+      setSubscription(searchQuery, options);
+    });
     e.preventDefault();
   }
 });
@@ -266,5 +252,9 @@ Template.hotListMembersListItem.helpers({
   getAcronym: function (str) {
     var matches = str.match(/\b(\w)/g);
     return matches.join('');
+  },
+  getAddedAt: function () {
+    var member = _.findWhere((hotList && hotList.members)||[], {id: this._id});
+    return member && member.addedAt;
   }
 });
