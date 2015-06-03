@@ -23,7 +23,8 @@ Meteor.methods({
         ]
       }
     }).fetch(), '_id');
-    var members = Contactables.find({_id: {$in: hotlist.members || []}}, {sort: {displayName: 1}}).fetch();
+    var membersIds = _.pluck(hotlist.members,'id');
+    var members = Contactables.find({_id: {$in: membersIds || []}}, {sort: {displayName: 1}}).fetch();
     var recipients = [];
     _.each(members, function (member) {
       var email = _.find(member.contactMethods, function (cm) {

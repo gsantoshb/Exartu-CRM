@@ -46,6 +46,9 @@ Meteor.methods({
   'addMembersToHotList': function (hotListId, membersId) {
     return HotListManager.addToHotlist(hotListId, membersId);
   },
+  'removeFromHotList': function (hotListId, memberId) {
+    return HotListManager.removeFromHotList(hotListId, memberId);
+  },
   'addMembersToHotListFromQuery': function (hotListId, filter) {
     // us the filter to get the contactables ids an call addToHotlist
     var membersId = _.pluck(ContactablesView.find(filter, {_id:1}).fetch(),'_id');
