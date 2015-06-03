@@ -99,7 +99,7 @@
             </div>
         </div><!-- /.search-list -->
 
-            {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
+        {{> fastPagination name="notes" useKeys="true" containerClass="magic-pager"}}
 
         <!-- /.list-actions-cell -->
     </div><!-- .list-actions -->
@@ -149,12 +149,12 @@
         <div class="add-note-options-head"><i class="fa fa-link"></i> {{_ "Linked to this note"}}:</div>
         <div class="add-note-options-body">
             {{#each links}}
-                {{#with getEntity .}}
-                    <div class="label-4">
+
+                   <div class="label-4">
                         <i class="icon-holder icon-profile-business-man"></i> {{_ displayName}}
                         <button class="btn-remove" href="#"><i class="fa fa-times-circle"></i></button>
                     </div>
-                {{/with}}
+
             {{/each}}
             <a class="btn-custom-3" id="toggleAddNoteModal"><i class="fa fa-plus"></i> {{_ "Link item"}}</a>
         </div><!-- /.add-note-options-body -->

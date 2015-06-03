@@ -18,6 +18,8 @@ Tasks = new Mongo.Collection("tasks");
 
 Notes = new Mongo.Collection("notes");
 
+NotesView = new Mongo.Collection("notesView");
+
 ObjTypes = new Mongo.Collection("objTypes");
 
 Relations = new Mongo.Collection("relations");
