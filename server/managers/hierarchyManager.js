@@ -131,6 +131,30 @@ HierarchyManager = {
 
     // Save configuration
     Hierarchies.update({_id: hierId}, {$set: {enterpriseAccount: accountInfo}});
+  },
+  syncTwEnterpriseEmployees: function (hierId) {
+    // Check the hier has an Enterprise account set up
+    var hier = Hierarchies.findOne({_id: hierId, enterpriseAccount: {$exists: true}, 'enterpriseAccount.username': {$exists: true}});
+    if (!hier) throw new Error("Hierarchy invalid. Make sure TW Enterprise is set up");
+
+    // Check the process is not running already
+    if (hier.enterpriseAccount.empSync) throw new Error("TW Enterprise Employee Sync already running");
+
+    // Mark the sync is in progress
+    Hierarchies.update({_id: hierId}, {$set: {'enterpriseAccount.empSync': true}});
+
+    // Set up an api helper
+    var accountInfo = {
+      hierId: hier._id,
+      username: hier.enterpriseAccount.username,
+      password: hier.enterpriseAccount.password,
+      accessToken: hier.enterpriseAccount.accessToken,
+      tokenType: hier.enterpriseAccount.tokenType
+    };
+
+    Meteor.setTimeout(function () {
+      TwApi.syncEmployees(accountInfo);
+    }, 500);
   }
 };
 

@@ -18,6 +18,24 @@ Template.twEnterprise.helpers({
   doc: function () {
     var hier = Hierarchies.findOne({_id: Meteor.user().currentHierId});
     return hier.enterpriseAccount ? {username: hier.enterpriseAccount.username} : {username: ''};
+  },
+  hasAccount: function () {
+    var hier = Hierarchies.findOne({_id: Meteor.user().currentHierId});
+    return hier.enterpriseAccount && hier.enterpriseAccount.username;
+  },
+  isEmpSync: function () {
+    var hier = Hierarchies.findOne({_id: Meteor.user().currentHierId});
+    return hier.enterpriseAccount && hier.enterpriseAccount.empSync;
+  },
+  empSyncError: function () {
+    var hier = Hierarchies.findOne({_id: Meteor.user().currentHierId});
+    return hier.enterpriseAccount && hier.enterpriseAccount.empSyncError;
+  }
+});
+
+Template.twEnterprise.events({
+  'click .empSync': function () {
+    Meteor.call('syncTwEnterpriseEmployees');
   }
 });
 

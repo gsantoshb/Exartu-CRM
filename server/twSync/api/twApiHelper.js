@@ -6,56 +6,58 @@ TwApiHelper = function (account) {
   _.extend(this, account);
 };
 
-TwApiHelper.prototype.post = function (url, data, cb) {
-  var options = {};
+TwApiHelper.prototype.post = Meteor.wrapAsync(function (url, data, cb) {
+  var self = this,
+      options = {};
 
   // Set authentication headers
-  options.headers = getHeaders(this);
+  options.headers = getHeaders(self);
 
   // Set request body data
   if (data) { options.body = JSON.stringify(data) }
 
   // Try to execute the post
-  request.post(this.baseURL + url, options, function (err, result) {
+  request.post(self.baseURL + url, options, Meteor.bindEnvironment(function (err, result) {
     // Catch unauthorized error
-    if (err && err.response && err.response.statusCode == 401) {
+    if (err && err.response && err.response.statusCode == 401 || result.statusCode == 401) {
       // Assume the token is expired and login again
-      var tokenInfo = twLogin(this);
+      var tokenInfo = twLogin(self);
 
       // Update headers
       options.headers = getHeaders(tokenInfo);
 
-      request.post(this.baseURL + url, options, function (err, result) {
+      request.post(self.baseURL + url, options, Meteor.bindEnvironment(function (err, result) {
         if (err) {
           console.err('>> Tw Sync failed again... quiting');
           cb(err);
         } else {
           cb(null, JSON.parse(result.body));
         }
-      });
+      }));
     } else {
       cb(null, JSON.parse(result.body));
     }
-  });
-};
+  }));
+});
 
-TwApiHelper.prototype.get = function (url, cb) {
-  var options = {};
+TwApiHelper.prototype.get = Meteor.wrapAsync(function (url, cb) {
+  var self = this,
+      options = {};
 
   // Set authentication headers
-  options.headers = getHeaders(this);
+  options.headers = getHeaders(self);
 
   // Try to execute the post
-  request.get(this.baseURL + url, options, function (err, result) {
+  request.get(self.baseURL + url, options, Meteor.bindEnvironment(function (err, result) {
     // Catch unauthorized error
     if (err && err.response && err.response.statusCode == 401) {
       // Assume the token is expired and login again
-      var tokenInfo = twLogin(this);
+      var tokenInfo = twLogin(self);
 
       // Update headers
       options.headers = getHeaders(tokenInfo);
 
-      request.get(this.baseURL + url, options, function (err, result) {
+      request.get(self.baseURL + url, options, function (err, result) {
         if (err) {
           console.err('>> Tw Sync failed again... quiting');
           cb(err);
@@ -66,8 +68,8 @@ TwApiHelper.prototype.get = function (url, cb) {
     } else {
       cb(null, JSON.parse(result.body));
     }
-  });
-};
+  }));
+});
 
 TwApiHelper.prototype.login = function () {
   return twLogin(this);
@@ -104,7 +106,7 @@ var twLogin = Meteor.wrapAsync(function (accountInfo, cb) {
     header: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
-  }, function (err, response) {
+  }, Meteor.bindEnvironment(function (err, response) {
     if (err) {
       cb(new Error('Enterprise login error.', err), null);
     } else {
@@ -126,5 +128,5 @@ var twLogin = Meteor.wrapAsync(function (accountInfo, cb) {
         refreshToken: response.data.refresh_token
       });
     }
-  })
+  }));
 });
