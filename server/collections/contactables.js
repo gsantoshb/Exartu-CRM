@@ -197,7 +197,7 @@ Meteor.paginatedPublish(ReportsView, function () {
     if (!this.userId)
       return [];
     var sub = this;
-    return (Utils.filterCollectionByUserHier.call(this, Contactables.find({Employee: {$exists: true}}, {
+    return (Utils.filterCollectionByUserHier.call(this, Contactables.find({Employee: {$exists: true}, pastJobs: {$exists: true},$where: "this.pastJobs.length>1"}, {
         fields: {
             'person.lastName': 1,
             'person.middleName': 1,

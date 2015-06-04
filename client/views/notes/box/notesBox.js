@@ -135,7 +135,7 @@ Template.notesBox.helpers({
     return Meteor.users.find({}, {sort: {'emails.address': 1}});
   },
   notes: function () {
-    return NotesView.find(q,{sort:{dateCreated:-1}});
+    return NotesView.find(q,options);
   },
   filters: function () {
     return noteQuery;

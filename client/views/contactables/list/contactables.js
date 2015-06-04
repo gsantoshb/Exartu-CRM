@@ -2,6 +2,7 @@
 var tourIndex;
  * Controller
  */
+var sortDep = new Deps.Dependency();
 ContactablesController = RouteController.extend({
   template: 'contactables',
   layoutTemplate: 'mainLayout',
@@ -235,6 +236,7 @@ var setSortField = function (field) {
     selected.value = -1;
   }
   selectedSort.set(selected);
+  sortDep.changed();
 };
 
 
@@ -437,12 +439,12 @@ Template.contactablesList.rendered = function () {
 
 Template.contactablesList.destroyed = function () {
   if (SubscriptionHandlers.ContactablesViewHandler) {
-    SubscriptionHandlers.ContactablesViewHandler.stop();
-    delete SubscriptionHandlers.ContactablesViewHandler;
+    //SubscriptionHandlers.ContactablesViewHandler.stop();
+    //SubscriptionHandlers.ContactablesViewHandler = undefined;
   }
   if (SubscriptionHandlers.ContactablesHotListHandler) {
-    SubscriptionHandlers.ContactablesHotListHandler.stop();
-    delete SubscriptionHandlers.ContactablesHotListHandler;
+    //SubscriptionHandlers.ContactablesHotListHandler.stop();
+    //SubscriptionHandlers.ContactablesHotListHandler = undefined;
   }
   $('button[data-toggle="popover"]').attr('data-init', 'off');
   $('.popover').hide().popover('destroy');
@@ -660,6 +662,8 @@ Template.contactablesList.helpers({
   contactables: function () {
     // Dependencies
     esDep.depend();
+    //hack for reactive sort
+    sortDep.depend();
     // ElasticSearch
     if (!_.isEmpty(query.searchString.value)) {
       //urlQuery.push('type=' + query.objType.value);
