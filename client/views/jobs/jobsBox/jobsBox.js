@@ -176,7 +176,7 @@ Template.jobList.created = function () {
   options = {};
   var urlQuery = new URLQuery();
   if (Session.get('entityId')) {
-    searchQuery.client = Session.get('entityId');
+    searchQuery.clientId = Session.get('entityId');
 
   }
   var selected = selectedSort.get();
@@ -194,7 +194,7 @@ Template.jobList.created = function () {
     options = {};
      var urlQuery = new URLQuery();
     if (Session.get('entityId')) {
-      searchQuery.client = Session.get('entityId');
+      searchQuery.clientId = Session.get('entityId');
     }
 
     // Type
