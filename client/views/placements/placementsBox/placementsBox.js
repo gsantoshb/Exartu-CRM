@@ -196,15 +196,15 @@ Template.placementList.created = function () {
 
         searchDep.depend();
 
-        if (entityType==Enums.linkTypes.job.value) searchQuery.job=Session.get('entityId');
+        if (entityType==Enums.linkTypes.job.value) searchQuery.jobId=Session.get('entityId');
 
         if (entityType==Enums.linkTypes.contactable.value) {
             if (contactable.Client) {
                 // Get client jobs
                 var jobsId = Jobs.find({client: Session.get('entityId')}).map(function (job) { return job._id;});
-                searchQuery.job = {$in: jobsId};
+                searchQuery.jobId = {$in: jobsId};
             }
-            if (contactable.Employee) searchQuery.employee=Session.get('entityId');
+            if (contactable.Employee) searchQuery.employeeId=Session.get('entityId');
         }
 
         if (!_.isEmpty(query.searchString.value)) {
