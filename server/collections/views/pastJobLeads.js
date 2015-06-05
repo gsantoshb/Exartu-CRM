@@ -4,7 +4,7 @@ Meteor.paginatedPublish(PastJobLeads,
     var user = Meteor.users.findOne({_id: this.userId});
       if (!user) return [];
     //console.log(PastJobLeads.find().fetch())
-    return Utils.filterCollectionByUserHier.call(this, PastJobLeads.find());
+    return Utils.filterCollectionByUserHier.call(this, PastJobLeads.find({},{sort:{dateCreated:-1}}));
   }, {
     pageSize: 10,
     publicationName: 'pastJobLeads'

@@ -82,7 +82,6 @@ AutoForm.hooks({
           self.done(err);
           addDisabled.set(false);
         };
-
         if (noteId) {
           insertDoc._id = noteId;
           Meteor.call('updateNote', insertDoc, cb);

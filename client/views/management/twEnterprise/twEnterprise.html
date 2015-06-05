@@ -63,8 +63,32 @@
                     <p style="color:#708090">
                         Set up the TW Enterprise account for this hierarchy and Aïda will automatically sync new employees created.
                     </p>
+
+                    <!-- Employee Sync -->
+                    {{#if hasAccount}}
+                        {{#unless isEmpSync}}
+                            <!-- Error message -->
+                            {{#if empSyncError}}
+                                <div class="alert alert-danger">
+                                    <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                    {{empSyncError}}
+                                </div>
+                            {{/if}}
+
+                            <!-- Sync button -->
+                            <button type="button" class="btn btn-default empSync">
+                                <i class="fa fa-refresh"></i> Sync Existing Employees
+                            </button>
+                        {{else}}
+                            <!-- Submitting feedback -->
+                            <div class="progress progress-striped active">
+                                <div style="width: 100%;" class="progress-bar progress-bar-info">{{_ "Syncing Employees"}}...</div>
+                            </div>
+                        {{/unless}}
+                    {{/if}}
                 </div>
             </div>
         </div>
+
     </div>
 </template>

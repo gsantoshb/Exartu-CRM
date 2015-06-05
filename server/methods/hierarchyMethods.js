@@ -44,5 +44,12 @@ Meteor.methods({
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
+  },
+  syncTwEnterpriseEmployees: function () {
+    try {
+      return HierarchyManager.syncTwEnterpriseEmployees(Meteor.user().currentHierId);
+    } catch (err) {
+      throw new Meteor.Error(err.message);
+    }
   }
 });

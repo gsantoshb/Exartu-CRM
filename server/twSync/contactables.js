@@ -21,7 +21,7 @@ Contactables.after.insert(function (userId, doc) {
       data.lastName = doc.person.lastName;
 
       if (doc.Employee.taxID)
-        data.ssn = doc.Employee.taxID;
+        data.ssn = doc.Employee.taxID.replace(/-/g,'');
 
       TwApi.addEmployee(doc._id, data, accountInfo);
     }
@@ -72,7 +72,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
         // Check if Employee fields were modified
         if (fieldNames.indexOf('Employee') != -1) {
           if (this.previous.Employee.taxID != doc.Employee.taxID)
-            data.ssn = doc.Employee.taxID;
+            data.ssn = doc.Employee.taxID.replace(/-/g,'');
         }
 
         TwApi.updateEmployee(doc.externalId, data, accountInfo);

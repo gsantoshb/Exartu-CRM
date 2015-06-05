@@ -28,6 +28,7 @@ NoteManager = {
       throw new Error('Message is required');
     }
     if (note.links) {
+
       //check links
       var validLink = true;
       _.forEach(note.links, function (l) {
