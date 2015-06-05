@@ -262,6 +262,31 @@ Meteor.publish('editNote', function(id) {
 // _publishCursor doesn't call this for us in case we do this more than once.
   self.ready();
 });
+
+
+Meteor.publish(null, function () {
+  var self = this;
+  if (!self.userId){
+    self.ready();
+  } else {
+    var connectedAt = new Date().getTime();
+    Utils.filterCollectionByUserHier2(self.userId, Notes.find({isReply: true, dateCreated: {$gt: connectedAt}})).observeChanges({
+      added: function (id, fields) {
+        var link = _.findWhere(fields.links, {type: Enums.linkTypes.contactable.value});
+        if (link){
+          var contactable = Contactables.findOne(link.id);
+          if (contactable){
+            fields.contactableName = contactable.person.lastName + ', ' + contactable.person.firstName + (contactable.person.middleName ? ' ' + contactable.person.middleName: '');
+          }
+        }
+        self.added('smsReceived', id, fields)
+      }
+    });
+    self.ready();
+  }
+});
+
+
 // Indexes
 
 Notes._ensureIndex({hierId: 1});

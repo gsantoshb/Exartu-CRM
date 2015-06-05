@@ -146,6 +146,12 @@
                                         </div>
                                     </li>
                                     {{#with originalJob}}
+                                        <li>
+                                            <div class="left-part">User</div>
+                                            <div class="right-part">
+                                                {{displayUserName userId}}
+                                            </div>
+                                        </li>
                                         {{>displayOriginDataInline}}
                                     {{/with}}
                                 </ul>
