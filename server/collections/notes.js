@@ -153,34 +153,10 @@ Meteor.paginatedPublish(NoteView, function () {
 },{
   pageSize: 10,
   publishName: 'notes'
-  //updateSelector: function (oldSelector, clientParams) {
-  //  var newSelector = EJSON.clone(oldSelector);
-  //  delete newSelector['links.id'];
-  //  if (clientParams && clientParams.hotlist) {
-  //    var hotlistMembers = clientParams.hotlist.members;
-  //    var validMembers = [];
-  //    _.forEach(hotlistMembers, function(m){
-  //      var result = HotLists.findOne({_id:{$ne: clientParams.hotlist._id},dateCreated:{$gte:  clientParams.hotlist.dateCreated}, members:{$in: [m]}  })
-  //      if(!result){
-  //        validMembers.push(m);
-  //      }
-  //    })
-  //    newSelector['links.id']= {
-  //        $in: validMembers
-  //    }
-  //    };
-  //   return newSelector;
-  //}
-
 });
 
 Meteor.paginatedPublish(NoteListView, function () {
-  //var self = this;
   return Utils.filterCollectionByUserHier.call(this, NoteListView.find({}, { sort: { dateCreated: -1 } }));
-
-
-  //Mongo.Collection._publishCursor(cursor, self, 'noteList');
-  //self.ready();
 },{
   pageSize: 50,
   publishName: 'noteList'
@@ -262,6 +238,31 @@ Meteor.publish('editNote', function(id) {
 // _publishCursor doesn't call this for us in case we do this more than once.
   self.ready();
 });
+
+
+Meteor.publish(null, function () {
+  var self = this;
+  if (!self.userId){
+    self.ready();
+  } else {
+    var connectedAt = new Date().getTime();
+    Utils.filterCollectionByUserHier2(self.userId, Notes.find({isReply: true, dateCreated: {$gt: connectedAt}})).observeChanges({
+      added: function (id, fields) {
+        var link = _.findWhere(fields.links, {type: Enums.linkTypes.contactable.value});
+        if (link){
+          var contactable = Contactables.findOne(link.id);
+          if (contactable){
+            fields.contactableName = contactable.person.lastName + ', ' + contactable.person.firstName + (contactable.person.middleName ? ' ' + contactable.person.middleName: '');
+          }
+        }
+        self.added('smsReceived', id, fields)
+      }
+    });
+    self.ready();
+  }
+});
+
+
 // Indexes
 
 Notes._ensureIndex({hierId: 1});
