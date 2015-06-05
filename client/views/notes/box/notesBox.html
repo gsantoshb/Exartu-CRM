@@ -27,13 +27,8 @@
                             </select>
                         {{/objectProperty}}
                         {{> filter_dateCreated selectedLimit=filters.selectedLimit}}
-                        <div class="filter-item">
-                            <div class="filter-title">
-                                <i class="fa fa-eye"></i>
-                                {{_ "Visibility"}}
-                            </div>
-                            {{> filter_createdBy showMineOnly=filters.ownedByMe}}
-                        </div>
+                        {{> filter_createdBy showMineOnly=filters.ownedByMe}}
+
                     </div>
                 </div>
             </div>
