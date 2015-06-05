@@ -63,7 +63,55 @@ Template.hotListMembersBox.created = function () {
   query = query || loadqueryFromURL(Router.current().params.query);
   options.sort = defaultSort;
   options.pubArguments = Session.get('entityId');
-  setSubscription(searchQuery, options);
+  //setSubscription(searchQuery, options);
+
+
+  //setSubscription(searchQuery, options);
+
+  Tracker.autorun(function () {
+    if(hotList) {
+      var urlQuery = new URLQuery();
+      searchQuery = {
+        _id: {$in: _.pluck(hotList.members || [], 'id')},
+        $and: [] // Push each $or operator here
+      };
+
+
+      options = {};
+      options.sort = {};
+      options.sort = defaultSort;
+      options.pubArguments = hotList._id;
+
+      // String search
+      if (query.searchString.value) {
+        var stringSearches = [];
+
+        _.each(searchFields, function (field) {
+          var aux = {};
+          aux[field] = {
+            $regex: query.searchString.value,
+            $options: 'i'
+          };
+          stringSearches.push(aux);
+        });
+
+        searchQuery.$and.push({
+          $or: stringSearches
+        });
+
+        urlQuery.addParam('search', query.searchString.value);
+      }
+
+      // if there are no search conditions
+      if (searchQuery.$and.length == 0) {
+        delete searchQuery.$and;
+      }
+
+      urlQuery.apply();
+      if (SubscriptionHandlers.HotListMembersHandler) // To avoid being called after the template destroy
+        setSubscription(searchQuery, options);
+    }
+  });
 };
 
 Template.hotListMembersBox.destroyed = function () {
@@ -79,7 +127,10 @@ Template.hotListMembersBox.destroyed = function () {
  */
 Template.hotListMembersHeader.helpers({
   membersCount: function () {
-    return HotListMembersHandler.totalCount() || 0;
+    if(SubscriptionHandlers.HotListMembersHandler)
+       return SubscriptionHandlers.HotListMembersHandler.totalCount() || 0;
+    else
+       return 0
   }
 });
 
@@ -154,7 +205,7 @@ Template.hotListMembersSearch.events({
                 });
               }
               else{
-                debugger;
+
               }
             });
           }
@@ -170,59 +221,6 @@ Template.hotListMembersSearch.events({
  */
 Template.hotListMembersList.created = function () {
 
-  options = {};
-  searchQuery = {};
-  query = query || loadqueryFromURL(Router.current().params);
-
-  options.sort = {};
-  options.sort = defaultSort;
-  options.pubArguments = hotList._id;
-  setSubscription(searchQuery, options);
-
-  Tracker.autorun(function () {
-    if(hotList) {
-      var urlQuery = new URLQuery();
-      searchQuery = {
-        _id: {$in: _.pluck(hotList.members || [], 'id')},
-        $and: [] // Push each $or operator here
-      };
-
-
-    options = {};
-    options.sort = {};
-    options.sort = defaultSort;
-    options.pubArguments = hotList._id;
-
-    // String search
-    if (query.searchString.value) {
-      var stringSearches = [];
-
-      _.each(searchFields, function (field) {
-        var aux = {};
-        aux[field] = {
-          $regex: query.searchString.value,
-          $options: 'i'
-        };
-        stringSearches.push(aux);
-      });
-
-      searchQuery.$and.push({
-        $or: stringSearches
-      });
-
-      urlQuery.addParam('search', query.searchString.value);
-    }
-
-    // if there are no search conditions
-    if (searchQuery.$and.length == 0) {
-      delete searchQuery.$and;
-    }
-
-    urlQuery.apply();
-    if (SubscriptionHandlers.HotListMembersHandler) // To avoid being called after the template destroy
-      setSubscription(searchQuery, options);
-    }
-  });
 
 };
 
