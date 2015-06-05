@@ -3,7 +3,7 @@ Meteor.paginatedPublish(NotesView,
     var user = Meteor.users.findOne({_id: this.userId});
     if (!user) return [];
     //console.log(PastJobLeads.find().fetch())
-    return Utils.filterCollectionByUserHier.call(this, NotesView.find());
+    return Utils.filterCollectionByUserHier.call(this, NotesView.find({},{sort:{dateCreated:-1}}));
   }, {
     pageSize: 10,
     publicationName: 'notesView'
