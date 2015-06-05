@@ -54,6 +54,19 @@ TwApi = {
             ssn: employee.Employee.taxID.replace(/-/g,'')
           };
 
+          // Look for an address for this employee
+          var address = Addresses.findOne({linkId: employee._id});
+          if (address) {
+            empData.address = address.address;
+            empData.address2 = address.address2;
+            empData.city = address.city;
+            empData.zip = address.postalCode;
+
+            // Try to find the state code that matches the string name
+            var state = _.find(StateCodes, function (state) {return state.name.toLowerCase() == address.state.toLowerCase()});
+            if (state) empData.state = state.code;
+          }
+
           // Insert employee in Enterprise
           try {
             var response = apiHelper.post('/Employees/Insert', empData);

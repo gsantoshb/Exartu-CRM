@@ -21,7 +21,11 @@
                         </div><!-- /.form-group -->
 
                     {{/with}}
-
+                    {{#if error }}
+                      <div class="error-msg">
+                          {{error}}
+                      </div>
+                    {{/if}}
                 </div><!-- /.add-box-content -->
             </div><!-- /.add-box -->
 

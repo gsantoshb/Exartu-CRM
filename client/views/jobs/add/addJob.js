@@ -31,6 +31,8 @@ JobAddController = RouteController.extend({
 
 var addDisabled = new ReactiveVar(false);
 var model;
+var error = "";
+var errorDeps = new Deps.Dependency;
 var subTypesDep = new Deps.Dependency;
 var createJob = function (objTypeName) {
     addDisabled.set(false);
@@ -66,6 +68,10 @@ Template.addJobPage.helpers({
     },
     objTypeName: function () {
         return Session.get('objType');
+    },
+    error: function(){
+       errorDeps.depend();
+       return error;
     }
 });
 
@@ -81,6 +87,9 @@ Template.addJobPage.events({
         Meteor.call('addJob', obj, function (err, result) {
             if (err) {
                 console.dir(err)
+                addDisabled.set(false);
+                error = err.error;
+                errorDeps.changed();
             }
             else {
                 Meteor.call('setLastClientUsed', obj.client, function (err) {
