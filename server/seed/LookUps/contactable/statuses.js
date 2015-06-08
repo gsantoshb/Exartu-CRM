@@ -26,16 +26,22 @@ _.forEach([
             displayName: "Applicant", lookUpActions: [],sortOrder:20
         },
         {
-            displayName: "Candidate", lookUpActions: [],sortOrder:30
+            displayName: "Sourced", lookUpActions: [],sortOrder:30
         },
         {
-            displayName: "Hired", lookUpActions: [],
-            isDefault: true,sortOrder:40
+            displayName: "Vetted", lookUpActions: [],sortOrder:35
+        },
+        {
+            displayName: "Placed", lookUpActions: [Enums.lookUpAction.Employee_Won],sortOrder:40
+        },
+        {
+            displayName: "Hired", lookUpActions: [Enums.lookUpAction.Employee_Won],
+            isDefault: true,sortOrder:45
         },
 
 
         {
-            displayName: "Other", lookUpActions: [],sortOrder:40
+            displayName: "Lost", lookUpActions: [Enums.lookUpAction.Employee_Lost],sortOrder:-40
         }
     ],
     function (item) {
