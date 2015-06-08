@@ -21,6 +21,10 @@ Template.docCenterTab.helpers({
     var contactable = Contactables.findOne(Session.get('entityId'));
     return contactable && contactable.docCenter;
   },
+  tempPass: function () {
+    var contactable = Contactables.findOne(Session.get('entityId'));
+    return contactable && contactable.tempPass;
+  },
   createAccountSchema: function () {
     return createAccountSchema;
   },

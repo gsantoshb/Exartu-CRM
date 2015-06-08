@@ -96,6 +96,39 @@ ApplicantCenterManager = {
     ApplicantCenterInvitations.update({_id: invitationId}, {$set: {used: true}});
   },
 
+  createAppCenterAccountForEmployee: function (employeeId, email) {
+    // Validate parameters
+    if (!employeeId) throw new Error('Employee ID is required');
+    if (!email) throw new Error('Email is required');
+
+    var employee = Contactables.findOne({_id: employeeId});
+    if (!employee) throw new Error('Invalid employee ID');
+
+    // Check if the employee is already using Applicant Center
+    if (employee.user) throw new Error('This employee is already registered in Applicant Center');
+
+    // Craft email with webName on it
+    var hier = Hierarchies.findOne(employee.hierId);
+    var webName = hier.configuration.webName;
+    var hierEmail = email.split('@').join('+' + webName + '@');
+
+    // Create user account
+    var tempPass = 'qg4ltelz'; //Random.secret(8);
+    var userId = Accounts.createUser({email: hierEmail, password: tempPass, hierId: employee.hierId, userEmail: email});
+    if (!userId) throw new Error('An error occurred while creating the account');
+
+    // Sync the newly created user with the employee id
+    Meteor.users.update({_id: userId}, {$set: {contactableId: employeeId}});
+
+    // Update employee information
+    Contactables.update({_id: employeeId}, {$set: { user: userId, tempPass: tempPass }});
+
+    // Set up HR Concourse account
+    DocCenterManager.setUpEmployeeAccount(employeeId, email, employee.hierId, tempPass);
+
+    return userId;
+  },
+
   getDocCenterDocuments: function (userId) {
     // Validations
     if (!userId) throw new Error('User ID is required');

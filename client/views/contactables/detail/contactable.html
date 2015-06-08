@@ -304,12 +304,8 @@
         <!-- Applicant Center user status -->
         {{#unless isAppCenterUser}}
             <a id="sendAppCenterInvite" class="btn-custom-1 btn-block pointer">
-                <i class="fa fa-envelope"></i>&nbsp;
-                {{#unless alreadyInvited}}
-                    <span style="white-space: normal;">{{_ "Invite to App Center"}}</span>
-                    {{else}}
-                    <span style="white-space: normal;">{{_ "Resend AC invitation"}}</span>
-                {{/unless}}
+                <i class="fa fa-user-plus"></i>&nbsp;
+                <span style="white-space: normal;">{{_ "Create App Center account"}}</span>
             </a>
         {{/unless}}
     {{/if}}

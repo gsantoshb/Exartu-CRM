@@ -7,7 +7,7 @@
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
                     </button>
-                    <h4 class="modal-title">Applicant Center Invitation</h4>
+                    <h4 class="modal-title">Create Applicant Center Account</h4>
                 </div>
 
                 {{#autoForm schema="AppCenterInvitationSchema" id="sendAppCenterInvitationForm" validation="blur"}}
@@ -20,7 +20,7 @@
                             <br />
                         {{/if}}
 
-                        <p>Please enter the email you want to send the invitation to</p>
+                        <p>Please enter the email you want to use for the account</p>
 
                         <fieldset>
                             <div class="form-group {{#if afFieldIsInvalid name='email'}}has-error{{/if}}">
@@ -42,7 +42,7 @@
                     <!-- Footer -->
                     <div class="modal-footer">
                         <span class="btn btn-info dismiss">Cancel</span>
-                        <button class="btn btn-success">Send</button>
+                        <button class="btn btn-success">Create</button>
                     </div>
                 {{/autoForm}}
 

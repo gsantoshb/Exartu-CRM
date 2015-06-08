@@ -41,15 +41,15 @@ AutoForm.hooks({
     onSubmit: function (data) {
       var self = this;
 
-      Meteor.call('inviteEmployeeToAppCenter', contactable._id, data.email, function(err, result){
+      Meteor.call('createAppCenterAccountForEmployee', contactable._id, data.email, function(err, result){
         if (err) {
           var msg = err.reason ? err.reason : err.error;
           error.set('Server error. ' + msg);
         } else {
           // Show notification
           $.gritter.add({
-            title:	'Invitation sent',
-            text:	'An invitation email to join Applicant Center has been sent to the employee.',
+            title:	'Account created',
+            text:	'The Applicant Center account has been successfully created for this employee.',
             image: 	'/img/logo.png',
             sticky: false,
             time: 2000

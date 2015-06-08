@@ -19,7 +19,7 @@ DocCenterManager = {
     });
   },
 
-  setUpEmployeeAccount: function (employeeId, email, hierId) {
+  setUpEmployeeAccount: function (employeeId, email, hierId, password) {
     // Validate parameters
     if (!employeeId) throw new Error('Employee ID is required');
     if (!email) throw new Error('Email is required');
@@ -29,7 +29,8 @@ DocCenterManager = {
 
     var userData = {
       userName: email,
-      email: email
+      email: email,
+      password: password
     };
 
     console.log('userdata', userData);

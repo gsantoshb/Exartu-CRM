@@ -41,6 +41,20 @@ Meteor.methods({
     }
   },
 
+  createAppCenterAccountForEmployee: function (employeeId, email) {
+    // Validate parameters
+    check(employeeId, String);
+    check(email, Match.Where(function (addr) {
+      return SimpleSchema.RegEx.Email.test(addr);
+    }));
+
+    try {
+      return ApplicantCenterManager.createAppCenterAccountForEmployee(employeeId, email);
+    } catch (err) {
+      throw new Meteor.Error(err.message);
+    }
+  },
+
   getDocCenterDocuments: function (userId) {
   // Validate parameters
     check(userId, String);
