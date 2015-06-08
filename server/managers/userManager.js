@@ -299,7 +299,7 @@ UserManager = {
     },
     getIndexTour: function(tour){
       var user = Meteor.user();
-      if(user.tours){
+      if(user && user.tours){
         var index = _.indexOf(_.pluck(user.tours,"tour"), tour);
         if(index >= 0){
           return user.tours[index].tip;
