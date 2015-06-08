@@ -731,6 +731,9 @@ Template.contactables.helpers({
   },
   paginationReady: function () {
     return paginationReady.get();
+  },
+  oneSelected: function(){
+    return selected.get().length === 1;
   }
 });
 
@@ -881,7 +884,7 @@ Template.contactableListSort.events({
 
 // List Item - Events
 Template.contactablesListItem.events({
-  'click .select': function (e) {
+  'click .select-checkbox': function (e) {
     if (e.target.checked) {
       var contactable = this;
       var objNameArray = [];
@@ -902,7 +905,13 @@ Template.contactablesListItem.events({
     }
     selected.dep.changed();
     clickedAllSelected.set(false);
+    e.stopPropagation();
+  },
+  'click .select-div': function(e,ctx){
+    ctx.$(".select-checkbox")[0].click();
+
   }
+
 });
 
 
@@ -1159,3 +1168,20 @@ Template.esContextMatch.rendered = function () {
   var text = this.$('.contextText');
   text[0].innerHTML = this.data;
 };
+
+var contactablePreview = {}
+var contactablePrevDep = new Deps.Dependency();
+Template.contactablePreview.rendered = function(){
+
+  Meteor.call("getContactableById", selected.get()[0].id, function(err,res){
+    contactablePreview = res;
+    contactablePrevDep.changed()
+  })
+}
+
+Template.contactablePreview.helpers({
+  selectedContactable: function(){
+    contactablePrevDep.depend();
+    return contactablePreview;
+  }
+})

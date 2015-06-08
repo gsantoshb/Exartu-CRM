@@ -20,6 +20,11 @@
                     </a>
 
                     <ul class="dropdown-menu pull-right">
+
+                        <li>
+                            <a href="/userProfile" ><i class="fa fa-user"></i> {{_ "My profile"}}</a>
+                        </li>
+                        <li class="divider"></li>
                         <li>
                             <a class="pointer trigger"><i class="fa fa-flag"></i> {{currentLanguageLabel}}</a>
                             <ul class="dropdown-menu sub-menu">
@@ -28,6 +33,12 @@
                                 <li><a class="pointer" onClick="Meteor.users.update({_id: Meteor.userId()}, {$set: {language: 'cn'}});">简体中文</a></li>
                             </ul>
                         </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/hierarchyManagement" ><i class="fa fa-sitemap"></i> {{_ "Hierarchies"}}</a>
+                        </li>
+
+
 
                         {{#if latestHiersCount}}
                             <li class="divider"></li>

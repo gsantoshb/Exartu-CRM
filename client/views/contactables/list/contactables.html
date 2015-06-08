@@ -5,7 +5,20 @@
             <div class="col-md-3 col-lg-3 {{#unless showFilters}}hidden{{/unless}}" id="column-filters">
                 {{> contactablesFilters }}
             </div>
-            <div class="{{#if showFilters}}col-md-9{{else}}col-md-12{{/if}}" id="column-list">
+            <div class="{{#if oneSelected}}
+                             {{#if showFilters}}
+                                 col-md-6
+                             {{else}}
+                                 col-md-9
+                             {{/if}}
+                        {{else}}
+                             {{#if showFilters}}
+                                 col-md-9
+                             {{else}}
+                                 col-md-12
+                             {{/if}}
+                        {{/if}}
+                        " id="column-list">
                 <div class="list-container">
                     <div class="list-holder">
 
@@ -32,6 +45,11 @@
                     </div>
                 </div>
             </div>
+            {{#if oneSelected}}
+            <div class="col-md-3 col-lg-3">
+                 {{>contactablePreview}}
+            </div>
+            {{/if}}
         </div>
     </div>
 
@@ -294,7 +312,7 @@
 
 <template name="contactablesListItem">
     {{#if listViewMode}}
-        <div class="list-item network-list-item simple-network-list-item {{#if isSelected}} selected {{/if}}">
+        <div class="list-item network-list-item simple-network-list-item {{#if isSelected}} selected {{/if}} select-div" style="cursor:pointer">
             <div class="list-item-cell network-list-item-title">
                 <div class="item-title">
                     <a href="/contactable/{{_id}}">{{this.displayName}}</a>
@@ -312,9 +330,9 @@
         </div>
         <!-- /.network-list-item -->
     {{else}}
-        <div class="list-item network-list-item {{#if isSelected}} selected {{/if}}">
+        <div class="list-item network-list-item {{#if isSelected}} selected {{/if}} select-div" style="cursor:pointer">
             <div class="list-item-cell list-item-checkbox network-list-item-checkbox">
-                <input type="checkbox" class="select" checked="{{isSelected}}">
+                <input type="checkbox" class="select-checkbox" checked="{{isSelected}}">
             </div>
             <div class="list-item-cell list-item-icon">
 
@@ -455,4 +473,66 @@
 
 <template name="esContextMatch">
     <span class="separatedLinks contextText"></span>
+</template>
+
+<template name="contactablePreview">
+   {{#with selectedContactable}}
+       <div class="list-holder" style="padding-top:10px; padding-left:20px; margin-left: 0px">
+       <div class="row">
+       {{#if pictureFileId}}
+           <div class="profile-pic col-md-6">
+               <a id="edit-pic" title="Click to Edit" class="pointer">
+                   <img class="" src="{{pictureUrl}}" style="max-height: 48px;max-width: 48px;">
+               </a>
+           </div>
+
+       {{else}}
+           <div class="item-icon item-icon-network item-icon-lg col-md-6">
+               <div  id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                   {{#if person}}
+                       <i class="icon-profile-business-man"></i>
+                   {{/if}}
+                   {{#if organization}}
+                       <i class="icon-buildings-1"></i>
+                   {{/if}}
+               </div>
+
+           </div>
+       {{/if}}
+
+           <div class="col-md-6">
+               <h3 class="title">{{_ displayName}}</h3>
+           </div>
+
+       </div>
+           <div class="desc">
+               {{#if person}}
+                   {{#if person.jobTitle}}
+                       {{_ person.jobTitle}}
+                   {{/if}}
+               {{/if}}
+
+               {{#if Contact.clientName}}
+                   @&nbsp;<a href="/contactable/{{Contact.client}}">{{_ Contact.clientName}}</a>
+               {{/if}}
+
+               {{#if Client.department}}<br>{{_ Client.department}}{{/if}}
+           </div>
+           {{#if organization}}
+               <p>Organization:{{organization}}</p>
+               <p>Department: {{department}}</p>
+           {{/if}}
+           {{#if Employee}}
+               <p>First Name:{{person.firstName}}</p>
+               <p>Middle Name:{{person.middleName}}</p>
+               <p> Last Name: {{person.lastName}}</p>
+           {{/if}}
+           <br>
+           {{#each contactMethods}}
+
+              <p> ContactMethodValue: {{value}}</p>
+              <p>  ContactMethodType: {{type}}</p><br>
+           {{/each}}
+       </div>
+   {{/with}}
 </template>
