@@ -105,10 +105,10 @@ Meteor.publish('calendarTasks', function(start, end, mineOnly) {
   var taskCursor;
   //var Auxend = new Date(end.setDate(end.getDate()+1));
   if(mineOnly) {
-    taskCursor = Tasks.find({$and: [{userId: this.userId}, {$and: [{end: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]});
+    taskCursor = Tasks.find({$and: [{userId: this.userId}, {$and: [{begin: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]});
   }
   else{
-    taskCursor = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{end: {$gte: start}}, {begin: {$lte: Auxend}}]}, {inactive: {$ne: true}}]}))
+    taskCursor = Utils.filterCollectionByUserHier.call({userId: this.userId}, Tasks.find({$and: [{$and: [{begin: {$gte: start}}, {begin: {$lte: end}}]}, {inactive: {$ne: true}}]}))
 
   }
   Mongo.Collection._publishCursor(taskCursor, self, 'calendarTasks');
