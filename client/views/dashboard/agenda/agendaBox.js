@@ -152,7 +152,6 @@ Template.agendaBox.helpers({
             eventRender: function( event, element, view ){
                 var currentDate = event.start.format('YYYY-MM-DD');
                 var calendarDiv = $('.fc');
-
                 var dayCell = calendarDiv.find('td[data-date="'+currentDate+'"]');
                 if( dayCell.find('.day-tasks').length ){
                     //console.log('number of elements : '+dayCell.find('.day-tasks i.fa-circle').length);

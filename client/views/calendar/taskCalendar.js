@@ -278,16 +278,16 @@ Template.taskCalendar.helpers({
         callback(_.map(CalendarTasks.find({}).fetch(), function (t) {
             switch(t.state) {
                         case Enums.taskState.future:
-                             return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-future  pointer'  } ;
+                             return {id: t._id,title: t.msg, start: t.begin, end: t.begin, description:"", className:'item-label-2 label-future  pointer'  } ;
                              break;
                         case Enums.taskState.completed:
-                            return {id: t._id,title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-completed  pointer'  } ;
+                            return {id: t._id,title: t.msg, start: t.begin, end: t.begin, description:"", className:'item-label-2 label-completed  pointer'  } ;
                              break;
                         case Enums.taskState.overDue:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-overDue  pointer'  } ;
+                            return {id: t._id, title: t.msg, start: t.begin, end: t.begin, description:"", className:'item-label-2 label-overDue  pointer'  } ;
                             break;
                         case Enums.taskState.pending:
-                            return {id: t._id, title: t.msg, start: t.begin, end: t.end, description:"", className:'item-label-2 label-pending  pointer'  };
+                            return {id: t._id, title: t.msg, start: t.begin, end: t.begin, description:"", className:'item-label-2 label-pending  pointer'  };
                             break;
            }
 
