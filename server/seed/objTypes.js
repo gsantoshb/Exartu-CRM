@@ -432,6 +432,13 @@ newObjType({
       required: false
     },
     {
+      name: 'rateQuote',
+      displayName: 'Rate Quote',
+      fieldType: 'string',
+      defaultValue: "",
+      required: false
+    },
+    {
       name: 'activeStatus',
       displayName: 'Active Status',
       fieldType: 'lookUp',
