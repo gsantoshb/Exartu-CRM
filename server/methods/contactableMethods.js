@@ -277,6 +277,9 @@ Meteor.methods({
       types: types
     }
   },
+  getContactableById: function(contactableId){
+   return ContactableManager.getContactableById(contactableId);
+  },
 
   // Communication
   sendSMSToContactable: function (contactableId, from, to, text) {

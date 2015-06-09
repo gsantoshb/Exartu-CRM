@@ -731,6 +731,9 @@ Template.contactables.helpers({
   },
   paginationReady: function () {
     return paginationReady.get();
+  },
+  oneSelected: function(){
+    return selected.get().length === 1;
   }
 });
 
@@ -881,7 +884,7 @@ Template.contactableListSort.events({
 
 // List Item - Events
 Template.contactablesListItem.events({
-  'click .select': function (e) {
+  'click .select-checkbox': function (e) {
     if (e.target.checked) {
       var contactable = this;
       var objNameArray = [];
@@ -902,7 +905,13 @@ Template.contactablesListItem.events({
     }
     selected.dep.changed();
     clickedAllSelected.set(false);
+    e.stopPropagation();
+  },
+  'click .select-div': function(e,ctx){
+    ctx.$(".select-checkbox")[0].click();
+
   }
+
 });
 
 
@@ -1159,3 +1168,49 @@ Template.esContextMatch.rendered = function () {
   var text = this.$('.contextText');
   text[0].innerHTML = this.data;
 };
+
+var contactablePreview = {}
+var contactablePrevDep = new Deps.Dependency();
+Template.contactablePreview.rendered = function(){
+
+  Meteor.call("getContactableById", selected.get()[0].id, function(err,res){
+    contactablePreview = res;
+    contactablePrevDep.changed()
+  })
+}
+
+Template.contactablePreview.helpers({
+  selectedContactable: function(){
+    contactablePrevDep.depend();
+    return contactablePreview;
+  },
+  decodedContactMethods: function() {
+
+    var result = {};
+    var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
+    _.some(this.contactMethods, function (cm) {
+      var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
+      if (!type)
+        return false;
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email)) {
+        result.email = cm;
+        email = cm;
+      }
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+        result.phone = cm;
+        phone = cm;
+      }
+      if (!result.email || !result.phone) {
+        return false;
+      }
+
+      return true;
+    });
+    if (!result.phone && !result.email) {
+      return false
+    }
+    else {
+      return result;
+    }
+  }
+})

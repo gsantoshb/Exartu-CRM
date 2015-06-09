@@ -602,6 +602,11 @@ ContactableManager = {
           }, {$set: {"contactMethods.$": {type: a.type, value: a.newValue}}});
         }
       });
+    },
+    getContactableById: function(contactableId){
+      console.log(contactableId);
+
+      return Contactables.findOne({_id:contactableId});
     }
 };
 
