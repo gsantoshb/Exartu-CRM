@@ -355,13 +355,9 @@ Router.map(function () {
     path: 'timeEntry',
     controller: TimeEntryController
   });
-  this.route('reports', {
-    path: 'reports',
-    controller: ReportsController
-  });
-  this.route('reportsPastJobs', {
-    path: 'reports/reportsPastJobs',
-    controller: ReportsPastJobs
+  this.route('extras', {
+    path: 'extras',
+    controller: ExtrasController
   });
   this.route('pastJobLeads', {
     path: 'pastJobLeads',

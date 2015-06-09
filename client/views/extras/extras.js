@@ -1,7 +1,7 @@
 /**
  * Created by ramiro on 26/05/15.
  */
-ReportsController = RouteController.extend({
+ExtrasController = RouteController.extend({
   layoutTemplate: 'mainLayout',
-  template: 'reports'
+  template: 'extras'
 });
