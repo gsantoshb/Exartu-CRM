@@ -39,5 +39,20 @@ Meteor.methods({
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
+  },
+  sendEmailTemplateToContactables: function (templateData, recipientArray) {
+    // Validate parameters
+    check(templateData, {
+      templateId: String,
+      subject: String,
+      text: String
+    });
+    check(recipientArray, Array);
+
+    try {
+      return EmailTemplateManager.sendEmailTemplate(templateData, recipientArray);
+    } catch (err) {
+      throw new Meteor.Error(err.message);
+    }
   }
 });

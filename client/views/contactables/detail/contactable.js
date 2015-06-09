@@ -341,7 +341,7 @@ Template.contactable_actions.events({
             return _.indexOf(emailCMTypes, cm.type) != -1
           });
 
-          Meteor.call('sendEmailTemplate', result, [{
+          Meteor.call('sendEmailTemplateToContactables', result, [{
             contactableId: contactable._id,
             email: email.value
           }], function (err, result) {
