@@ -477,8 +477,9 @@
 
 <template name="contactablePreview">
    {{#with selectedContactable}}
-       <div class="list-holder" style="padding-top:10px; padding-left:20px; margin-left: 0px">
-       <div class="row">
+       <div class="list-holder" >
+       <div class="row breadcrumb" style="padding-top:10px; padding-left:20px; margin-left: 0px">
+
        {{#if pictureFileId}}
            <div class="profile-pic col-md-6">
                <a id="edit-pic" title="Click to Edit" class="pointer">
@@ -501,11 +502,8 @@
        {{/if}}
 
            <div class="col-md-6">
-               <h3 class="title">{{_ displayName}}</h3>
-           </div>
-
-       </div>
-           <div class="desc">
+              <p> <h4 class="title">{{_ displayName}}</h4></p>
+               <p> <div class="desc">
                {{#if person}}
                    {{#if person.jobTitle}}
                        {{_ person.jobTitle}}
@@ -516,23 +514,44 @@
                    @&nbsp;<a href="/contactable/{{Contact.client}}">{{_ Contact.clientName}}</a>
                {{/if}}
 
-               {{#if Client.department}}<br>{{_ Client.department}}{{/if}}
+               {{#if Client.department}}{{_ Client.department}}{{/if}}
+           </div></p>
            </div>
+
+       </div>
+       <div style="padding-left:20px">
+           <ul class="list-type-5">
+               <!--<li class="list-group-item">Cras justo odio</li>-->
+
            {{#if organization}}
-               <p>Organization:{{organization}}</p>
-               <p>Department: {{department}}</p>
+               <li><div class="left-part">Organization:</div><div class="right-part">{{organization.organizationName}}</div></li>
+               <li><div class="left-part">Department: </div><div class="right-part">{{_ Client.department}}</div></li>
+               <!--<p>Organization:{{organization.organizationName}}</p>-->
+               <!--<p>Department: {{_ Client.department}}</p>-->
            {{/if}}
            {{#if Employee}}
-               <p>First Name:{{person.firstName}}</p>
-               <p>Middle Name:{{person.middleName}}</p>
-               <p> Last Name: {{person.lastName}}</p>
+               <li><div class="left-part">First Name:</div><div class="right-part">{{person.firstName}}</div></li>
+               <li><div class="left-part">Middle Name:</div><div class="right-part">{{person.middleName}}</div></li>
+               <li><div class="left-part"> Last Name: </div><div class="right-part">{{person.lastName}}</div></li>
            {{/if}}
+           </ul>
            <br>
-           {{#each contactMethods}}
-
-              <p> ContactMethodValue: {{value}}</p>
-              <p>  ContactMethodType: {{type}}</p><br>
-           {{/each}}
        </div>
+       <div style="padding-left:20px;padding-bottom:40px">
+           <ul class="list-type-3">
+           {{#with decodedContactMethods}}
+                {{#if phone.value}}
+                    <li><a href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
+                {{/if}}
+                {{#if email.value}}
+                    <li><a href="mailto:{{email.value}}"><span class="round-icon-container"><i class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
+                {{/if}}
+           {{/with}}
+           </ul>
+       </div>
+       </div>
+       <br>
+       <br>
+
    {{/with}}
 </template>

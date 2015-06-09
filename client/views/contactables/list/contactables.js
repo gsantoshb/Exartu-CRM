@@ -1183,5 +1183,34 @@ Template.contactablePreview.helpers({
   selectedContactable: function(){
     contactablePrevDep.depend();
     return contactablePreview;
+  },
+  decodedContactMethods: function() {
+
+    var result = {};
+    var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
+    _.some(this.contactMethods, function (cm) {
+      var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
+      if (!type)
+        return false;
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email)) {
+        result.email = cm;
+        email = cm;
+      }
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+        result.phone = cm;
+        phone = cm;
+      }
+      if (!result.email || !result.phone) {
+        return false;
+      }
+
+      return true;
+    });
+    if (!result.phone && !result.email) {
+      return false
+    }
+    else {
+      return result;
+    }
   }
 })
