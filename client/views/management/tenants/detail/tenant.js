@@ -83,6 +83,10 @@ Template.tenant.events = {
         Meteor.call('addUserToHierarchy', userId, hierId);
         alert('hierarchy joined');
     },
+    'click .exit-hierarchy': function () {
+        Meteor.call('removeUserFromHierarchy', userId, hierId);
+        alert('hierarchy exited');
+    },
     'change .inactive': function(e)
     {
         if (this._id==userId && e.target.checked)
