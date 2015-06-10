@@ -110,7 +110,7 @@ Template.pastJobLeads.events({
     InactiveFilter.set(!InactiveFilter.get());
     updateUrl();
   },
-  "click .sort-field-start": function(){
+  "click .sort-field-dateCreated": function(){
     if(sortDateCreated.get() === -1){
       sortDateCreated.set(0);
     }
