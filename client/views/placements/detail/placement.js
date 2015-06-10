@@ -15,6 +15,8 @@ PlacementController = RouteController.extend({
       }
       this.render('placement');
       Session.set('activeTab', this.params.tab || 'details');
+      Meteor.call('addLastEntry',{entity: this.params._id,type: Enums.linkTypes.placement.value},function(err,res){
+      });
     },
   onAfterAction: function() {
     var title = Session.get('placementDisplayName'),

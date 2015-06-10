@@ -189,7 +189,8 @@ Meteor.publish('allClients', function () {
             'Client.department': 1,
             houseAccount: 1
         }
-    })), sub, 'allClients');
+    })), sub, '' +
+    '');
     sub.ready();
 });
 

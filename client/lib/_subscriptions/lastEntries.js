@@ -1,0 +1,1 @@
+LastEntries = new Meteor.Collection("lastEntries");

@@ -155,3 +155,6 @@ HotLists.after.update(function(userId, doc, fields, update){
     NotesView.update({"links.id":doc._id},{$set:{"links.$.displayName": doc.displayName}},{multi:true})
   }
 })
+
+NotesView._ensureIndex({dateCreated: 1});
+//NotesView._ensureIndex({_id: 1});

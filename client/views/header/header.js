@@ -1,4 +1,5 @@
 Utils.adminSettings = {};
+SubscriptionHandlers = {};
 Utils.reactiveProp(Utils.adminSettings, 'isClientAdmin', false);
 Utils.reactiveProp(Utils.adminSettings, 'isSystemAdmin', false);
 Utils.reactiveProp(Utils.adminSettings, 'isAdmin', function () {
@@ -20,6 +21,11 @@ Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
         return console.log(err);
     Utils.adminSettings.isSystemAdmin = result;
 });
+Template.header.created = function(){
+  if (!SubscriptionHandlers.LastEntriesHandler) {
+    SubscriptionHandlers.LastEntriesHandler = Meteor.subscribe('lastEntries');
+  }
+}
 
 Template.header.helpers({
     isAdmin: function () {
@@ -360,8 +366,54 @@ Template.sidebar.helpers({
             return 'active'
         }
         return ''
+    },
+    lastEntryNotPinged: function(){
+      return LastEntries.find({pinged:false},{sort:{dateCreated:-1}})
     }
 
 });
+
+Template.lastEntryItemNotPinged.helpers({
+  isContactable:function(){
+    return this.type === Enums.linkTypes.contactable.value;
+  },
+  isJob: function(){
+    return this.type === Enums.linkTypes.job.value;
+  },
+  isHotList: function(){
+    return this.type === Enums.linkTypes.hotList.value;
+  },
+  isPlacement:function(){
+    return this.type === Enums.linkTypes.placement.value;
+  },
+  link:function(){
+    switch(this.type){
+      case Enums.linkTypes.contactable.value:{
+        return "/contactable/"+this.entity;
+        break;
+      }
+      case Enums.linkTypes.job.value:{
+        return "/job/"+this.entity;
+        break;
+      }
+      case Enums.linkTypes.hotList.value:{
+        return "/hotList/"+this.entity;
+        break;
+      }
+      case Enums.linkTypes.placement.value:{
+        return "/placement/"+this.entity;
+        break;
+      }
+    }
+  }
+})
+
+Template.lastEntryItemNotPinged.events({
+  "click #remove-entry":function(e){
+    Meteor.call("removeEntry",this._id,function(err,res){
+
+    })
+  }
+})
 
 

@@ -3,7 +3,6 @@ ContactableController = RouteController.extend({
   layoutTemplate: 'mainLayout',
   waitOn: function () {
     handlerContactalbeCounters = Meteor.subscribe('contactableCounters', this.params._id)
-
     return [Meteor.subscribe('singleContactable', this.params._id),
       Meteor.subscribe('linkedAddresses', this.params._id),
       Meteor.subscribe('auxHotLists', this.params._id),
@@ -33,6 +32,9 @@ ContactableController = RouteController.extend({
     this.render('contactable');
 
     Session.set('activeTab', this.params.tab || 'details');
+
+    Meteor.call('addLastEntry',{entity: this.params._id,type: Enums.linkTypes.contactable.value},function(err,res){
+    });
   },
   onAfterAction: function () {
     var title = Session.get('contactableDisplayName'),
