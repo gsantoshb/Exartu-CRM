@@ -11,7 +11,7 @@ PastJobLeadsController = RouteController.extend({
   action: function(){
     ActiveFilter =  new ReactiveVar(true);
     InactiveFilter = new ReactiveVar(false);
-    sortStart = new ReactiveVar(0);
+    sortDateCreated = new ReactiveVar(0);
     searchFilter = new ReactiveVar("");
     //readUrl
     var params = this.params.query;
@@ -42,8 +42,8 @@ console.log("35 pastjobleads");
       ];
     var filter = {$and:[{$or: [{active: ActiveFilter.get()}, {active: !InactiveFilter.get()}]}, searchQuery]};
     var options = {};
-    if(sortStart.get() != 0) {
-      options = {sort:{start:sortStart.get()}};
+    if(sortDateCreated.get() != 0) {
+      options = {sort:{start:sortDateCreated.get()}};
     }
     if (!SubscriptionHandlers.PastJobsLeadsHandler) {
       SubscriptionHandlers.PastJobsLeadsHandler = Meteor.paginatedSubscribe('pastJobLeads', {filter: EJSON.clone(filter), options:options});
@@ -59,13 +59,13 @@ console.log("35 pastjobleads");
 Template.pastJobLeads.helpers({
   pastJobs: function(){
     var options = {};
-    if(sortStart.get() != 0) {
-      options = {sort:{start:sortStart.get()}};
+    if(sortDateCreated.get() != 0) {
+      options = {sort:{start:sortDateCreated.get()}};
     }
     return PastJobLeads.find({},options);
   },
-  editingComent: function(){
-    return editingComent.get();
+  editingComment: function(){
+    return editingComment.get();
   },
   pastJobsCount: function(){
     return SubscriptionHandlers.PastJobsLeadsHandler.totalCount();
@@ -77,13 +77,13 @@ Template.pastJobLeads.helpers({
     return InactiveFilter.get() ? "btn-primary" : "btn-default";
   },
   isSorting: function(){
-    return sortStart.get() != 0;
+    return sortDateCreated.get() != 0;
   },
   sortingIcon: function(){
-    if(sortStart.get() === -1){
+    if(sortDateCreated.get() === -1){
       return "fa-sort-amount-desc";
     }
-    else if(sortStart.get()===1){
+    else if(sortDateCreated.get()===1){
       return "fa-sort-amount-asc"
     }
   }
@@ -110,15 +110,15 @@ Template.pastJobLeads.events({
     InactiveFilter.set(!InactiveFilter.get());
     updateUrl();
   },
-  "click .sort-field-start": function(){
-    if(sortStart.get() === -1){
-      sortStart.set(0);
+  "click .sort-field-dateCreated": function(){
+    if(sortDateCreated.get() === -1){
+      sortDateCreated.set(0);
     }
-    else if(sortStart.get()===1){
-      sortStart.set(-1);
+    else if(sortDateCreated.get()===1){
+      sortDateCreated.set(-1);
     }
-    else if(sortStart.get()===0){
-      sortStart.set(1);
+    else if(sortDateCreated.get()===0){
+      sortDateCreated.set(1);
     }
   },
   "keyup #searchString": function(e){

@@ -74,105 +74,63 @@
     {{/if}}
 </template>
 <template name="tenantsListHeader">
-    {{#if listViewMode}}
-        <div class="list-header network-list-header simple-network-list-header">
-            <div class="list-header-cell network-list-header-title">Name</div>
-            <div class="list-header-cell network-list-header-owner">Id</div>
-            <div class="list-header-cell network-list-header-owner">WebName</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
-        </div>
-        <!-- /.list-header -->
-    {{else}}
-        <div class="list-header network-list-header">
-            <div class="list-header-cell network-list-header-title">Name</div>
-            <div class="list-header-cell network-list-header-contact">WebName</div>
-            <div class="list-header-cell network-list-header-time">Date</div>
-            <div class="list-header-cell network-list-header-time">Activity count</div>
-            <div class="list-header-cell network-list-header-time">Last Activity date</div>
-            <div class="list-header-cell network-list-header-time">name</div>
-            <div class="list-header-cell network-list-header-time">phone</div>
-            <div class="list-header-cell network-list-header-time">Email</div>
-            <div class="list-header-cell network-list-header-time"></div>
+    <div class="list-header network-list-header">
+        <div class="list-header-cell network-list-header-time">User</div>
+        <div class="list-header-cell network-list-header-time">Registration date</div>
+        <div class="list-header-cell network-list-header-time">Activity count</div>
+        <div class="list-header-cell network-list-header-time">Last activity</div>
+        <div class="list-header-cell network-list-header-time">Name</div>
+        <div class="list-header-cell network-list-header-time">Phone</div>
+        <div class="list-header-cell network-list-header-time">Email</div>
+        <div class="list-header-cell network-list-header-time">...</div>
 
-        </div>
-    {{/if}}
+
+    </div>
 
 </template>
 
 <template name="tenantsListItem">
-    {{#if listViewMode}}
-        <div class="list-item network-list-item simple-network-list-item {{#if isSelected}} selected {{/if}}">
+
+    <div class="list-item network-list-item ">
+
+        <div class="list-item-details network-list-item-details">
             <div class="list-item-cell network-list-item-title">
-                <div class="item-title single">
-                    <a href="/tenant/{{_id}}">{{name}}</a>
-                </div>
-            </div>
-            <div class="list-item-details network-list-item-details">
-                <div class="list-item-cell network-list-item-code">{{_id}}</div>
-                <div class="list-item-cell network-list-item-code">{{configuration.title}}</div>
-                <div class="list-item-cell network-list-item-time">
-                    {{formattedDate dateCreated "fromNow"}}
-                </div>
-                <div class="list-item-cell network-list-item-time">
-                    {{activityCount}}
-                </div>
-            </div>
-            <!-- /.list-item-cell -->
-        </div>
-        <!-- /.network-list-item -->
-    {{else}}
-        <div class="list-item network-list-item ">
-            <div class="list-item-cell network-list-item-title">
-                <div class="item-title"><a href="/tenant/{{_id}}">{{name}}</a></div>
-                <div class="item-subtitle">
+                <div class="item-title"><a href="/tenant/{{_id}}">{{name}}</a>
+                    <br/>
                     {{_id}}
                 </div>
             </div>
-            <div class="list-item-details network-list-item-details">
-                <div class="list-item-cell network-list-item-contact">
-                    {{#if firstUserId}}
-                        <i class="icon-map-marker-1"></i>
-                        {{displayUserName firstUserId}}
-                    {{/if}}
 
-                    <small>
-                        WebName: {{configuration.webName}}<br/>
-                        Title: {{configuration.title}}
-                    </small>
-                    <br/>
-
-
-                </div>
-                <div class="list-item-cell network-list-item-time">
-                    <span>{{formattedDate dateCreated "fromNow"}}</span>
-                </div>
-                <div class="list-item-cell network-list-item-contact">
+            <div class="list-item-cell network-list-item-time">
+                <span>{{formattedDate dateCreated "fromNow"}}</span>
+            </div>
+            <div class="list-item-cell network-list-item-contact">
                     <span>
                         {{activityCount}}
                     </span>
-                </div>
-                <div class="list-item-cell network-list-item-contact">
+            </div>
+            <div class="list-item-cell network-list-item-contact">
                     <span>
                         {{formattedDate lastDate "fromNow"}}
                     </span>
-                </div>
-                <div class="list-item-cell network-list-item-contact">
+            </div>
+            <div class="list-item-cell network-list-item-contact">
                     <span>
                         {{this.userName}}
                     </span>
-                </div>
-                <div class="list-item-cell network-list-item-contact">
+            </div>
+            <div class="list-item-cell network-list-item-contact">
                     <span>
                         {{phone}}
                     </span>
-                </div>
-                <div class="list-item-cell network-list-item-contact">
+            </div>
+            <div class="list-item-cell network-list-item-contact">
                     <span>
                         {{getHierEmail}}
                     </span>
-                </div>
-                <div class="list-item-cell network-list-item-contact">
-                    <span style="float:right; margin-left: 40%" >
+            </div>
+            <div class="list-item-cell network-list-item-contact">
+                    <span style="float:right; margin-left: 40%">
                         {{#if showAdd}}
                             <button type="button" class="btn btn-success addHierAsContactable" title="Add">
                                 <span class="fa fa-plus"></span> Add
@@ -180,15 +138,14 @@
                             </button>
                         {{/if}}
                         {{#if idContactable}}
-                            <a type="button" class="btn btn-primary" href="/contactables/{{idContactable}}" title="Show">
+                            <a type="button" class="btn btn-primary" href="/contactable/{{idContactable}}" title="Show">
                                 <span class="glyphicon glyphicon-share-alt"></span> Show
                             </a>
                         {{/if}}
                     </span>
-                </div>
             </div>
         </div>
-    {{/if}}
+    </div>
 </template>
 
 
@@ -212,17 +169,6 @@
     </div>
     <!-- /.search-list -->
 
-    <div class="list-actions-cell view-mode-list">
-        {{#if listViewMode}}
-            <a href="#"><i id="detail-view" class="fa fa-th-list"></i></a>
-            <a class="active" href="#"><i class="fa fa-bars"></i></a>
-        {{else}}
-            <a class="active" href="#"><i class="fa fa-th-list"></i></a>
-            <a href="#"><i id="list-view" class="fa fa-bars"></i></a>
-        {{/if}}
-        <a id="toggle-filters" href="#" data-view="normal"><i class="fa fa-desktop"></i></a>
-    </div>
-    <!-- /.view-mode-list -->
 
     <div class="list-actions-cell order-list">
         {{> tenantListSort}}
@@ -231,7 +177,6 @@
 
 
 </template>
-
 
 
 <template name="tenantListSort">
