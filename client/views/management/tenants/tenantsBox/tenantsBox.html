@@ -75,7 +75,7 @@
 </template>
 <template name="tenantsListHeader">
     <div class="list-header network-list-header">
-        <div class="list-header-cell network-list-header-title">User</div>
+        <div class="list-header-cell network-list-header-time">User</div>
         <div class="list-header-cell network-list-header-time">Registration date</div>
         <div class="list-header-cell network-list-header-time">Activity count</div>
         <div class="list-header-cell network-list-header-time">Last activity</div>
@@ -92,13 +92,15 @@
 <template name="tenantsListItem">
 
     <div class="list-item network-list-item ">
-        <div class="list-item-cell network-list-item-title">
-            <div class="item-title"><a href="/tenant/{{_id}}">{{name}}</a></div>
-            <div class="item-subtitle">
-                {{_id}}
-            </div>
-        </div>
+
         <div class="list-item-details network-list-item-details">
+            <div class="list-item-cell network-list-item-title">
+                <div class="item-title"><a href="/tenant/{{_id}}">{{name}}</a>
+                    <br/>
+                    {{_id}}
+                </div>
+            </div>
+
             <div class="list-item-cell network-list-item-time">
                 <span>{{formattedDate dateCreated "fromNow"}}</span>
             </div>
