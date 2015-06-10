@@ -22,6 +22,8 @@ HotListController = RouteController.extend({
     Session.set('entityId', this.params._id);
     Session.set('hotListId', this.params._id);
     Session.set('activeTab', this.params.tab || 'members');
+    Meteor.call('addLastEntry',{entity: this.params._id,type: Enums.linkTypes.hotList.value},function(err,res){
+    });
   },
   onAfterAction: function () {
     var hotList = hotListCollection.findOne({_id: this.params._id});

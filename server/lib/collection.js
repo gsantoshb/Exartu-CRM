@@ -57,6 +57,9 @@ Timecards = new Mongo.Collection('timecards');
 //CardReaderTasks = new Mongo.Collection('cardReaderTasks');
 
 HelpVideos = new Mongo.Collection('helpVideos');
+
+LastEntries = new Mongo.Collection('lastEntries');
+
 Collections = {
     Hierarchies: Hierarchies,
     Jobs: Jobs,
@@ -80,5 +83,7 @@ Collections = {
     UserInvitations: UserInvitations,
     Addresses: Addresses,
     EmailTemplates: EmailTemplates,
-    PastJobLeads: PastJobLeads
+    PastJobLeads: PastJobLeads,
+    LastEntries: LastEntries
 };
+
