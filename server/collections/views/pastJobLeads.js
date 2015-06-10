@@ -71,3 +71,6 @@ Contactables.after.insert(function(userId,doc){
    })
  }
 })
+
+
+PastJobLeads._ensureIndex({dateCreated: 1});
