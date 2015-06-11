@@ -38,7 +38,8 @@ console.log("35 pastjobleads");
         {'employeeName': {$regex: searchFilter.get(), $options: 'i'}},
         {'supervisor': {$regex: searchFilter.get(), $options: 'i'}},
         {'position': {$regex: searchFilter.get(), $options: 'i'}},
-        {'company': {$regex: searchFilter.get(), $options: 'i'}}
+        {'company': {$regex: searchFilter.get(), $options: 'i'}},
+          {'comment': {$regex: searchFilter.get(), $options: 'i'}}
       ];
     var filter = {$and:[{$or: [{active: ActiveFilter.get()}, {active: !InactiveFilter.get()}]}, searchQuery]};
     var options = {};

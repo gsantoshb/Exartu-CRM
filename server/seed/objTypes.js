@@ -157,6 +157,68 @@ newObjType({
       required: false
     },
 
+    // hire info
+    {
+      name: 'convictions',
+      displayName: 'Convictions',
+      showInAdd: false,
+      required: false
+    },
+    {
+      name: 'gender',
+      displayName: 'Gender',
+      showInAdd: false,
+      required: false
+    },
+    {
+      name: 'ethnicity',
+      displayName: 'Ethnicity',
+      showInAdd: false,
+      required: false
+    },
+    {
+      name: 'hasTransportation',
+      displayName: 'Has own transportation',
+      showInAdd: false,
+      required: false,
+      fieldType: 'boolean',
+      defaultValue: false
+    },
+    {
+      name: 'desiredPay',
+      displayName: 'Desired Pay',
+      fieldType: 'number',
+      showInAdd: false,
+      required: false
+    },
+    {
+      name: 'availableStartDay',
+      displayName: 'Available Start Day',
+      showInAdd: false,
+      required: false
+    },
+    {
+      name: 'availableShift',
+      displayName: 'Available Shift',
+      showInAdd: false,
+      required: false
+    },
+    {
+      name: 'i9OnFile',
+      displayName: 'i9 On File',
+      showInAdd: false,
+      required: false,
+      fieldType: 'boolean',
+      defaultValue: false
+    },
+    {
+      name: 'i9ExpireDate',
+      displayName: 'i9 Expiration Date',
+      fieldType: 'date',
+      showInAdd: false,
+      required: false
+    }
+
   ]
 });
 

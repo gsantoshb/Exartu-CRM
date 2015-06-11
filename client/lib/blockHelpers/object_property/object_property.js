@@ -29,6 +29,8 @@ UI.registerHelper('objectProperty', function() {
       template = Template.object_property_checkbox;
       template.helpers({value: function() {
         return this.property.value;
+      },isEditable: function() {
+        return self.editable;
       }});
       break;
     default:{
