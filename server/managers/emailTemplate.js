@@ -21,6 +21,12 @@ EmailTemplateManager = {
         // Send the email
         var subject = templateData.subject;
         EmailManager.sendEmail(recipient.email, subject, text, true);
+
+        NoteManager.addNote({
+          msg: text,
+          links: [{type: Enums.linkTypes.contactable.value, id: contactable._id}],
+          isEmail: true
+        })
       }
     });
   }

@@ -20,6 +20,12 @@ EmailManager = {
       if (contactable) {
         // Send the email
         EmailManager.sendEmail(recipient.email, email.subject, email.text, true);
+
+        NoteManager.addNote({
+          msg: email.text,
+          links: [{type: Enums.linkTypes.contactable.value, id: contactable._id}],
+          isEmail: true
+        })
       }
     });
   }

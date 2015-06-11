@@ -43,14 +43,18 @@ Meteor.methods({
   sendEmailTemplateToContactables: function (templateData, recipientArray) {
     // Validate parameters
     check(templateData, {
-      templateId: String,
+      templateId:  Match.Optional(String),
       subject: String,
       text: String
     });
     check(recipientArray, Array);
 
     try {
-      return EmailTemplateManager.sendEmailTemplate(templateData, recipientArray);
+      if (templateData.templateId){
+        return EmailTemplateManager.sendEmailTemplate(templateData, recipientArray);
+      }else{
+        return EmailManager.sendMultiplesEmail(templateData, recipientArray)
+      }
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
