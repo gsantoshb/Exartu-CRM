@@ -604,6 +604,12 @@ Template.contactable_nav.helpers({
           return Template.parentData(2).pastJobs ? Template.parentData(2).pastJobs.length : 0;
         }
       });
+      tabs.push({
+        id: 'hireInfo',
+        mobileDisplayName: 'Hire info',
+        displayName: 'Hire info',
+        template: 'employeeHireInfo'
+      });
 
       // Check if it has a doc Center account or has been invited to Applicant Center or is already a user
       if (!!contactable.docCenter || contactable.invitation || contactable.user) {

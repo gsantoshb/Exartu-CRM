@@ -1,5 +1,5 @@
 Template.pastJobLeadsItem.helpers({
-  editingComent: function(){
+  editingComment: function(){
        return this.isEditing.get();
   },
   getCtx: function(){
@@ -15,6 +15,7 @@ Template.pastJobLeadsItem.events({
     });
   },
   "click #editing-active": function(e){
+      console.log('editing active',this.isEditing.get());
     this.isEditing.set(!this.isEditing.get())
   },
   "click #save-comment": function(e){

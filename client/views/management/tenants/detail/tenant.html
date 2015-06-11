@@ -22,16 +22,21 @@
                     {{#if isMember}}
                         You are a member of this hierarchy
                         {{#if isCurrent}}
-                            <br />It is your current hierarchy
+                            <br/>It is your current hierarchy
                         {{else}}
                             <a href="#">
                                 <div class="list-3-item-meta-top make-current">Make current</div>
+                                <a href="#">
+                                    <div class="list-3-item-meta-top exit-hierarchy">Exit hierarchy
+                                    </div>
+                                </a>
                             </a>
                         {{/if}}
                     {{else}}
                         <a href="#">
                             <div class="list-3-item-meta-top join-hierarchy">Join hierarchy</div>
                         </a>
+
                     {{/if}}
                     <a href="#">
                         <div class="list-3-item-meta-top output-object">Output tenant object to console</div>
@@ -82,6 +87,7 @@
             </div>
             <div class="row">
                 <h2 class="box-title">Tenant Activities:</h2>
+
                 <div class="table-items-box">
 
                     {{#each activities}}

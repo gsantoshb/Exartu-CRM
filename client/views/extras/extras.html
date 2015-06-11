@@ -8,9 +8,27 @@
           </div>
 
       </div>
+
+
       <div class="row" style="margin-top:20px">
           <div class="col-md-6 col-md-offset-3 settingIconsRow">
-              <!-- Email Templates -->
+              <!-- Hotlists -->
+              <div class="col-md-3">
+                  <a href="/hotlists" class="settingButton">
+                      <i class="fa fa-list-ul"></i>
+                      <span class="title">{{_ "Hot Lists"}}</span>
+                  </a>
+              </div>
+
+              <!-- Calendar -->
+              <div class="col-md-3">
+                  <a href="/calendar" class="settingButton">
+                      <i class="fa fa-calendar"></i>
+                      <span class="title">{{_ "Calendar"}}</span>
+                  </a>
+              </div>
+
+              <!-- Past Job Leadas -->
               <div class="col-md-3">
                   <a href="pastJobLeads" class="settingButton">
                       <i class="fa fa-line-chart"></i>
@@ -18,25 +36,7 @@
                   </a>
               </div>
 
-          </div>
-
-      </div>
-      <!--<div class="row" style="margin-top:20px">-->
-          <!--<div class="col-md-6 col-md-offset-3 settingIconsRow">-->
-              <!--&lt;!&ndash; Email Templates &ndash;&gt;-->
-              <!--<div class="col-md-3">-->
-                  <!--<a href="/timeEntry" class="settingButton">-->
-                      <!--<i class="fa icon icon-clock-3"></i>-->
-                      <!--<span class="title">{{_ "Time Entry (Beta)"}}</span>-->
-                  <!--</a>-->
-              <!--</div>-->
-
-          <!--</div>-->
-
-      <!--</div>-->
-      <div class="row" style="margin-top:20px">
-          <div class="col-md-6 col-md-offset-3 settingIconsRow">
-              <!-- Email Templates -->
+              <!-- Leaderboard -->
               <div class="col-md-3">
                   <a href="/leaderboards" class="settingButton">
                       <i class="fa icon icon-cross-shield"></i>
@@ -44,10 +44,14 @@
                   </a>
               </div>
 
+              <!-- Time Entry -->
+              <!--<div class="col-md-3">-->
+                  <!--<a href="/timeEntry" class="settingButton">-->
+                      <!--<i class="fa icon icon-clock-3"></i>-->
+                      <!--<span class="title">{{_ "Time Entry (Beta)"}}</span>-->
+                  <!--</a>-->
+              <!--</div>-->
           </div>
-
       </div>
-
-
   </div>
 </template>
