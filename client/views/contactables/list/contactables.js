@@ -907,11 +907,9 @@ Template.contactablesListItem.events({
     e.stopPropagation();
   },
   'click .select-div': function(e,ctx){
-    //ctx.$(".select-checkbox")[0].click();
     lastSelected = this;
     Meteor.call("getContactableById", lastSelected._id, function(err,res){
       lastSelected = res;
-      //contactablePrevDep.changed()
       lastSelectedDep.changed();
     })
 
@@ -1174,8 +1172,6 @@ Template.esContextMatch.rendered = function () {
   text[0].innerHTML = this.data;
 };
 
-var contactablePreview = {}
-var contactablePrevDep = new Deps.Dependency();
 Template.contactablePreview.rendered = function(){
 
 }

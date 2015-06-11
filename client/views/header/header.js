@@ -10,6 +10,8 @@ Utils.reactiveProp(Utils.adminSettings, 'isSysAdmin', function () {
 });
 
 var currentLanguageLabel = new ReactiveVar();
+var searchStringEntries = "";
+var searchStringEntriesDep = new Deps.Dependency();
 
 Meteor.call('bUserIsClientAdmin', null, function (err, result) {
     if (err)
@@ -21,10 +23,13 @@ Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
         return console.log(err);
     Utils.adminSettings.isSystemAdmin = result;
 });
-Template.header.created = function(){
-  if (!SubscriptionHandlers.LastEntriesHandler) {
-    SubscriptionHandlers.LastEntriesHandler = Meteor.subscribe('lastEntries');
+Template.header.created = function() {
+  Meteor.autorun(function (){
+    searchStringEntriesDep.depend();
+    SubscriptionHandlers.LastEntriesHandler = Meteor.subscribe('lastEntries', searchStringEntries);
+
   }
+)
 }
 
 Template.header.helpers({
@@ -152,6 +157,10 @@ Template.header.events({
           Meteor.reconnect();
         }
       })
+    },
+    'keyup #search-entry': function(e){
+      searchStringEntries = e.target.value;
+      searchStringEntriesDep.changed();
     }
 });
 
