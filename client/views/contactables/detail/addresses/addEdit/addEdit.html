@@ -5,7 +5,9 @@
     </div>
     </div>
 
-    {{>locationSearchInput searchInputOptions}}
+    <div class="box-content-form" style="margin-bottom: 20px;">
+        {{>locationSearchInput searchInputOptions}}
+    </div>
 
 
     {{#autoForm id="addressAddEditForm" schema="LocationSchema" validation="blur" doc=address}}

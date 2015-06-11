@@ -1829,3 +1829,19 @@ div#activityChart #container text tspan { text-decoration: none !important; font
     text-align: center;
     height: 50px
 }
+
+
+
+/** fix inputs inside 'right-part' (details)**/
+.right-part input[type="checkbox"]{
+    margin-top: 4px;
+    margin-bottom: 0;
+}
+.right-part .input-group .form-control{
+    margin-top: 0;
+}
+
+.right-part select{
+    margin-top: -5px;
+    margin-bottom: -5px;
+}
