@@ -369,11 +369,14 @@ Template.sidebar.helpers({
     },
     lastEntryNotPinged: function(){
       return LastEntries.find({pinged:false},{sort:{dateCreated:-1}})
+    },
+    lastEntryPinged: function(){
+      return LastEntries.find({pinged:true})
     }
 
 });
 
-Template.lastEntryItemNotPinged.helpers({
+Template.lastEntryItem.helpers({
   isContactable:function(){
     return this.type === Enums.linkTypes.contactable.value;
   },
@@ -405,15 +408,24 @@ Template.lastEntryItemNotPinged.helpers({
         break;
       }
     }
+  },
+  isPinged: function(){
+    return this.pinged;
   }
 })
 
-Template.lastEntryItemNotPinged.events({
+Template.lastEntryItem.events({
   "click #remove-entry":function(e){
     Meteor.call("removeEntry",this._id,function(err,res){
 
     })
+  },
+  "click #ping-entry": function(e){
+    Meteor.call("changePing",this._id,function(err,res){
+
+    })
   }
+
 })
 
 

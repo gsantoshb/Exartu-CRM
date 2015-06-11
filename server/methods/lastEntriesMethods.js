@@ -7,5 +7,8 @@ Meteor.methods({
   },
   removeEntry: function(id){
     lastEntriesManager.removeEntry(id);
+  },
+  changePing: function(id){
+    lastEntriesManager.changePing(id);
   }
 })
