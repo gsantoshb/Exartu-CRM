@@ -104,8 +104,13 @@ Template.header.helpers({
 		
     },
     latestHiers: function () {
-      if(Meteor.user().latestHiers)
-        return Hierarchies.find({_id: {$in: Meteor.user().latestHiers || []}});
+      var res = [];
+      if(Meteor.user().latestHiers) {
+        _.each(Meteor.user().latestHiers, function (hierId) {
+          res.push(Hierarchies.findOne({_id: hierId}));
+        });
+      }
+      return res;
     },
     latestHiersCount: function () {
         return Hierarchies.find({_id: {$in: Meteor.user().latestHiers || []}}).count();
@@ -369,11 +374,14 @@ Template.sidebar.helpers({
     },
     lastEntryNotPinged: function(){
       return LastEntries.find({pinged:false},{sort:{dateCreated:-1}})
+    },
+    lastEntryPinged: function(){
+      return LastEntries.find({pinged:true})
     }
 
 });
 
-Template.lastEntryItemNotPinged.helpers({
+Template.lastEntryItem.helpers({
   isContactable:function(){
     return this.type === Enums.linkTypes.contactable.value;
   },
@@ -405,15 +413,24 @@ Template.lastEntryItemNotPinged.helpers({
         break;
       }
     }
+  },
+  isPinged: function(){
+    return this.pinged;
   }
 })
 
-Template.lastEntryItemNotPinged.events({
+Template.lastEntryItem.events({
   "click #remove-entry":function(e){
     Meteor.call("removeEntry",this._id,function(err,res){
 
     })
+  },
+  "click #ping-entry": function(e){
+    Meteor.call("changePing",this._id,function(err,res){
+
+    })
   }
+
 })
 
 

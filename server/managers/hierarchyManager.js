@@ -39,7 +39,7 @@ HierarchyManager = {
         Meteor.users.update({_id: user._id}, {$unset: {lastClientUsed: "", lastEmployeeUsed: ""}});
 
       // Save the latest 5 hier used
-      var latestHiers = user.latestHiers ? _.first(user.latestHiers, 4) : [];
+      var latestHiers = user.latestHiers ? _.first(_.filter(user.latestHiers, function(hier) {return hier !== hierid}), 4) : [];
       if (latestHiers.indexOf(hierid) == -1) {
         latestHiers.unshift(hierid);
         Meteor.users.update({_id: user._id}, {$set: {latestHiers: latestHiers}});

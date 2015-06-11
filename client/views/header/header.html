@@ -139,8 +139,26 @@
                 </a>
             </li>
 
+            <li>
+                <div class="list-actions-cell search-list" style="margin-top:20px">
+                    <div class="input-group">
+                                    <span class="prop-input">
+                                        <input class="form-control" placeholder="Search activity">
+                                        <span class="text text-danger"></span>
+                                    </span>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                    </span>
+                    </div>
+                </div>
+            </li>
+            {{#each lastEntryPinged}}
+                {{>lastEntryItem}}
+            {{/each}}
             {{#each lastEntryNotPinged}}
-                {{>lastEntryItemNotPinged}}
+                {{>lastEntryItem}}
 
             {{/each}}
 
@@ -151,7 +169,7 @@
 
 </template>
 
-<template name="lastEntryItemNotPinged">
+<template name="lastEntryItem">
     <li class="list-actions" style="margin-top:15px">
 
         <div>
@@ -187,7 +205,11 @@
                 <!--</a>-->
         </div>
         <div class="col-md-3">
-            <i class="glyphicon glyphicon-pushpin" style="color:rgba(255,255,255,0.55);cursor: pointer" ></i>
+            {{#if isPinged}}
+               <i class="glyphicon glyphicon-pushpin" id="ping-entry" style="color:rgba(255,255,0,1);cursor: pointer" ></i>
+            {{else}}
+               <i class="glyphicon glyphicon-pushpin" id="ping-entry" style="color:rgba(255,255,255,0.55);cursor: pointer" ></i>
+            {{/if}}
             <i class="glyphicon glyphicon-remove-sign" id="remove-entry" style="color:rgba(255,255,255,0.55);cursor: pointer"></i>
         </div>
         </div>

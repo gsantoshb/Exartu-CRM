@@ -1,7 +1,5 @@
-/**
-var tourIndex;
- * Controller
- */
+var lastSelected = undefined;
+var lastSelectedDep = new Deps.Dependency();
 var sortDep = new Deps.Dependency();
 ContactablesController = RouteController.extend({
   template: 'contactables',
@@ -733,7 +731,8 @@ Template.contactables.helpers({
     return paginationReady.get();
   },
   oneSelected: function(){
-    return selected.get().length === 1;
+    lastSelectedDep.depend();
+    return lastSelected != undefined;
   }
 });
 
@@ -908,7 +907,13 @@ Template.contactablesListItem.events({
     e.stopPropagation();
   },
   'click .select-div': function(e,ctx){
-    ctx.$(".select-checkbox")[0].click();
+    //ctx.$(".select-checkbox")[0].click();
+    lastSelected = this;
+    Meteor.call("getContactableById", lastSelected._id, function(err,res){
+      lastSelected = res;
+      //contactablePrevDep.changed()
+      lastSelectedDep.changed();
+    })
 
   }
 
@@ -1173,16 +1178,12 @@ var contactablePreview = {}
 var contactablePrevDep = new Deps.Dependency();
 Template.contactablePreview.rendered = function(){
 
-  Meteor.call("getContactableById", selected.get()[0].id, function(err,res){
-    contactablePreview = res;
-    contactablePrevDep.changed()
-  })
 }
 
 Template.contactablePreview.helpers({
   selectedContactable: function(){
-    contactablePrevDep.depend();
-    return contactablePreview;
+    lastSelectedDep.depend();
+    return lastSelected;
   },
   decodedContactMethods: function() {
 

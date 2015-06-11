@@ -4,8 +4,6 @@
 lastEntriesManager = {
   addEntry: function(entry) {
     var user = Meteor.user();
-    console.log(entry);
-    console.log(user)
     if(user){
         var e = LastEntries.findOne({entity: entry.entity, userId: user._id, hierId: user.currentHierId});
         console.log(e);
@@ -39,5 +37,11 @@ lastEntriesManager = {
   },
   removeEntry:function(id){
     LastEntries.remove({_id:id});
+  },
+  changePing: function(id){
+    var l = LastEntries.findOne({_id:id});
+    if(l){
+      LastEntries.update({_id:id},{$set:{pinged: !l.pinged}})
+    }
   }
 };
