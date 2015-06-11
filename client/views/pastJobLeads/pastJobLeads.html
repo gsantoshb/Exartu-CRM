@@ -10,7 +10,7 @@
                         <div class="filter-list" id="filter-body">
                             <div class="filter-item">
                                 <div class="filter-title">
-                                    Active Status
+                                    Lead Active Status
                                 </div>
                                 <button class="btn btn-sm {{Active}}" id="Active-button" style="margin-bottom:3px">Active</button>
                                 <button class="btn btn-sm {{Inactive}}" id="Inactive-button" style="margin-bottom:3px">Inactive</button>
@@ -39,14 +39,14 @@
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                                 Sort
                                                 {{#if isSorting}}
-                                                    by start <i class="fa {{sortingIcon}}"> </i>
+                                                    by Date  Created <i class="fa {{sortingIcon}}"> </i>
                                                 {{/if}}
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
                                                 <li>
-                                                    <a class="sort-field-start" href="#">
-                                                        Start
+                                                    <a class="sort-field-dateCreated" href="#">
+                                                        Date Created
 
                                                     </a>
                                                 </li>
@@ -62,8 +62,8 @@
                                 <div class="list-header-cell network-list-header-type">{{_ "Position"}}</div>
                                 <div class="list-header-cell network-list-header-type">{{_ "Supervisor"}}</div>
                                 <div class="list-header-cell network-list-header-type">{{_ "Supervisor phone"}}</div>
-                                <div class="list-header-cell network-list-header-type">{{_ "Start"}}</div>
-                                <div class="list-header-cell network-list-header-type">{{_ "Active"}}</div>
+                                <div class="list-header-cell network-list-header-type">{{_ "Created"}}</div>
+                                <div class="list-header-cell network-list-header-type">{{_ "Lead Active"}}</div>
                             </div>
                             <div class="list-item-section">
                                 {{#each pastJobs}}

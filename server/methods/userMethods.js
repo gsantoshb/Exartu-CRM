@@ -42,6 +42,10 @@ Meteor.methods({
   {
     UserManager.addUserToHierarchy(id,hierId);
   },
+    removeUserFromHierarchy: function(id,hierId)
+    {
+        UserManager.removeUserFromHierarchy(id,hierId);
+    },
 
   // Last used
   getLastUsed: function (type) {

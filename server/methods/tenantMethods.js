@@ -13,7 +13,7 @@ Meteor.methods({
     },
     getAidaHiersContact: function(){
       var Hier = Hierarchies.findOne({_id:ExartuConfig.aidaHierarchy});
-      if(Hier.hiersContact){
+      if(Hier && Hier.hiersContact){
         var hierArray =  Hier.hiersContact;
         hierArray.push({hier: ExartuConfig.aidaHierarchy, contactable:null});
         return hierArray;

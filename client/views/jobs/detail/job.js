@@ -15,6 +15,9 @@ JobController = RouteController.extend({
             return;
         }
         Session.set('activeTab', this.params.tab || 'details');
+
+        Meteor.call('addLastEntry',{entity: this.params._id,type: Enums.linkTypes.job.value},function(err,res){
+        });
         this.render('job')
     },
     onAfterAction: function () {

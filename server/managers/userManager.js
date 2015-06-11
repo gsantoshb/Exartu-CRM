@@ -128,6 +128,9 @@ UserManager = {
     addUserToHierarchy: function (id, hierId) {
         Meteor.users.update({_id: id}, {$addToSet: {hierarchies: hierId}});
     },
+    removeUserFromHierarchy: function (id, hierId) {
+        Meteor.users.update({_id: id}, {$pull: {hierarchies: hierId}});
+    },
     sendUserInvitation: function (user, hierId) {
         var hier = Hierarchies.findOne(hierId || Meteor.user().currentHierId);
 

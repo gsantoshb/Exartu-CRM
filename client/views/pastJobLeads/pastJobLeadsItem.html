@@ -20,13 +20,13 @@
                         {{this.supervisorPhone}}
                     </div>
                     <div class="list-item-cell network-list-item-type">
-                        {{formattedDate this.start "DD/MM/YYYY"}}
+                        {{formattedDate this.dateCreated}}
                     </div>
                     <div class="list-item-cell network-list-item-type">
                         <input type="checkbox" id="active" value="{{this._id}}" checked="{{active}}"/>
                     </div>
                 </div>
-                {{#if editingComent}}
+                {{#if editingComment}}
                     <div class="list-item-more network-list-item-more">
                         <div class="list-item-more-entry">
                             <div class="list-item-more-entry-content">

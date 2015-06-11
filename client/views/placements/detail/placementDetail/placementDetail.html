@@ -1,92 +1,105 @@
 <template name="placementDetail">
     <div class="box">
         <div class="box-header-2">
-            <a class="btn-action editPlacement pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i class="fa fa-pencil"></i></a>
+            <a class="btn-action editPlacement pull-right" href="#" style="color: {{colorEdit}}" title="Edit"><i
+                    class="fa fa-pencil"></i></a>
+
             <div class="box-title">{{_ "Placement Details"}}</div>
         </div>
         <div class="box-content-md">
-                <table class="table box-table table-striped">
+            <table class="table box-table table-striped">
                 <tbody>
 
-                        {{#with placement}}
+                {{#with placement}}
 
-                            <tr>
-                                <td>{{_ "Status note"}}:</td>
-                                <td>
-                                    {{#objectProperty property=statusNote editable=editMode}}
-                                    <input class="form-control" type="text" value="{{value}}">
-                                    {{else}}
-                                    <span >{{_ value}}</span>
-                                    {{/objectProperty}}
-                                </td>
-                            </tr>
+                    <tr>
+                        <td>{{_ "Status note"}}:</td>
+                        <td>
+                            {{#objectProperty property=statusNote editable=editMode}}
+                                <input class="form-control" type="text" value="{{value}}">
+                            {{else}}
+                                <span>{{_ value}}</span>
+                            {{/objectProperty}}
+                        </td>
+                    </tr>
 
-                            <tr>
-                                <td>{{_ "Active Status"}}</td>
-                                <td>
-                                    {{#objectProperty property=activeStatus editable=editMode}}
-                                        {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                    <tr>
+                        <td>{{_ "Active Status"}}</td>
+                        <td>
+                            {{#objectProperty property=activeStatus editable=editMode}}
+                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                            {{else}}
+                                <strong>
+                                    <strong>{{_ displayName}}</strong>
+                                </strong>
+                            {{/objectProperty}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fa fa-info-circle"></i>&nbsp;{{_ "Process Status"}}:
+                        </td>
+                        <td>
+                            {{#objectProperty property=candidateStatus editable=editMode}}
+                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                            {{else}}
+                                <strong>
+                                    <strong>{{_ displayName}}</strong>
+                                </strong>
+                            {{/objectProperty}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fa fa-calendar"></i>&nbsp;{{_ "Start date"}}:
+                        </td>
+                        <td>
+                            {{#objectProperty property=startDate editable=editMode}}
+                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                            {{else}}
+                                <strong>
+                                    {{#if value}}
+                                        {{formattedDate value "ddd, MMMM DD, YYYY"}}
                                     {{else}}
-                                        <strong>
-                                            <strong>{{_ displayName}}</strong>
-                                        </strong>
-                                    {{/objectProperty}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <i class="fa fa-info-circle"></i>&nbsp;{{_ "Process Status"}}:
-                                </td>
-                                <td>
-                                    {{#objectProperty property=candidateStatus editable=editMode}}
-                                        {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                        {{_ "Not set"}}
+                                    {{/if}}
+                                </strong>
+                            {{/objectProperty}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fa fa-calendar"></i>&nbsp;{{_ "End date"}}:
+                        </td>
+                        <td>
+                            {{#objectProperty property=endDate editable=editMode}}
+                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                            {{else}}
+                                <strong>
+                                    {{#if value}}
+                                        {{formattedDate value "ddd, MMMM DD, YYYY"}}
                                     {{else}}
-                                        <strong>
-                                            <strong>{{_ displayName}}</strong>
-                                        </strong>
-                                    {{/objectProperty}}
-                                </td>
-                            </tr>
-                        <tr>
-                            <td >
-                                <i class="fa fa-calendar"></i>&nbsp;{{_ "Start date"}}:
-                                </td>
-                            <td>
-                                {{#objectProperty property=startDate editable=editMode}}
-                                    {{>bootstrap3DatePicker value=value options=datePickerOptions}}
-                                {{else}}
-                                    <strong>
-                                        {{#if value}}
-                                            {{formattedDate value "ddd, MMMM DD, YYYY"}}
-                                        {{else}}
-                                            {{_ "Not set"}}
-                                        {{/if}}
-                                    </strong>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td >
-                                <i class="fa fa-calendar"></i>&nbsp;{{_ "End date"}}:
-                            </td>
-                            <td>
-                                {{#objectProperty property=endDate editable=editMode}}
-                                    {{>bootstrap3DatePicker value=value options=datePickerOptions}}
-                                {{else}}
-                                    <strong>
-                                        {{#if value}}
-                                            {{formattedDate value "ddd, MMMM DD, YYYY"}}
-                                        {{else}}
-                                            {{_ "Not set"}}
-                                        {{/if}}
-                                    </strong>
-                                {{/objectProperty}}
-                            </td>
-                        </tr>
-                        {{/with}}
-                        {{#with originalPlacement}}
-                            {{>displayOriginDataInTable}}
-                        {{/with}}
+                                        {{_ "Not set"}}
+                                    {{/if}}
+                                </strong>
+                            {{/objectProperty}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{_ "Rate quote"}}:</td>
+                        <td>
+                            {{#objectProperty property=rateQuote editable=editMode}}
+                                <input class="form-control" type="text" value="{{value}}">
+                            {{else}}
+                                <span>{{_ value}}</span>
+                            {{/objectProperty}}
+                        </td>
+                    </tr>
+
+                {{/with}}
+                {{#with originalPlacement}}
+                    {{>displayOriginDataInTable}}
+                {{/with}}
 
                 </tbody>
             </table>

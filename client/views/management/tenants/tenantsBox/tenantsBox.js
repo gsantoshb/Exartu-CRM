@@ -393,7 +393,8 @@ Template.tenantsListItem.events = {
 var selectedSort = new ReactiveVar();
 var sortFields = [
     {field: 'dateCreated', displayName: 'Date'},
-    {field: 'name', displayName: 'Name'}
+    {field: 'name', displayName: 'Name'},
+    {field: 'lastDate', displayName: 'Last Activity Date'}
 ];
 
 Template.tenantListSort.helpers({
