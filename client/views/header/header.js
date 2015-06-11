@@ -104,8 +104,13 @@ Template.header.helpers({
 		
     },
     latestHiers: function () {
-      if(Meteor.user().latestHiers)
-        return Hierarchies.find({_id: {$in: Meteor.user().latestHiers || []}});
+      var res = [];
+      if(Meteor.user().latestHiers) {
+        _.each(Meteor.user().latestHiers, function (hierId) {
+          res.push(Hierarchies.findOne({_id: hierId}));
+        });
+      }
+      return res;
     },
     latestHiersCount: function () {
         return Hierarchies.find({_id: {$in: Meteor.user().latestHiers || []}}).count();
