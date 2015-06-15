@@ -1,12 +1,11 @@
 /**
  * Created by ramiro on 09/06/15.
  */
-Meteor.publish('lastEntries', function (searchStringEntries) {
+Meteor.publish('lastEntries', function (searchStringEntries, sort) {
   //var user = Meteor.user()
-  console.log(".*"+searchStringEntries+".*")
   if(this.userId) {
     console.log(this.userId);
-    return [Utils.filterCollectionByUserHier.call(this, LastEntries.find({userId:this.userId, displayName:{$regex:".*"+searchStringEntries+".*",$options:'i'}},{sort:{pinged:-1,dateCreated:-1},limit:10}))];
+    return [Utils.filterCollectionByUserHier.call(this, LastEntries.find({userId:this.userId, displayName:{$regex:".*"+searchStringEntries+".*",$options:'i'}},{sort:{pinged:-1,dateCreated:sort},limit:10}))];
   }
   //return  [Utils.filterCollectionByUserHier.call(this,LastEntries.find({userId:"addd1805-1121-4252-9abc-a9f2ca9d7b3a", pinged:false},{sort:{dateCreated:-1}}))];
 });

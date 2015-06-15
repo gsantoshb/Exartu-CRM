@@ -40,8 +40,70 @@ lastEntriesManager = {
   },
   changePing: function(id){
     var l = LastEntries.findOne({_id:id});
-    if(l){
-      LastEntries.update({_id:id},{$set:{pinged: !l.pinged}})
+    if(!l.pinged){
+      var numberPinged = Utils.filterCollectionByUserHier2(Meteor.userId(),LastEntries.find({userId:Meteor.user()._id, pinged:true})).count();
+      LastEntries.update({_id:id},{$set:{pinged: true, index:numberPinged+1}});
+    }
+    else{
+      var selector= {
+        $and:[
+          {$or: Utils.filterByHiers(Meteor.user().currentHierId)},
+          {userId: Meteor.userId},
+          {pinged: true},
+          {index: {$gte: l.index}}]
+      }
+      LastEntries.update(selector,{$inc:{index:-1}},{multi:true})
+      LastEntries.update({_id:id},{$set:{pinged:false}});
+    }
+  },
+  updateIndex:function(element, before){
+    console.log('updateIndex');
+    if(!before){
+      //firstPosition
+      var elementObject = LastEntries.findOne({_id:element});
+      var elementIndex = elementObject.index;
+      var selector= {
+        $and:[
+          {$or: Utils.filterByHiers(Meteor.user().currentHierId)},
+          {userId: Meteor.userId},
+          {pinged: true},
+          {$and:[{index:{$gte: 1}},{index:{$lt:elementIndex}}]}
+        ]
+      }
+      LastEntries.update(selector,{$inc:{index:1}},{multi:true});
+      LastEntries.update(element, {$set:{index:1}});
+    }
+    else{
+      var elementObject = LastEntries.findOne({_id:element});
+      var elementIndex = elementObject.index;
+      var beforeObject = LastEntries.findOne({_id:before});
+      var beforeIndex = beforeObject.index;
+      if(elementIndex>beforeIndex){
+        var selector= {
+          $and:[
+            {$or: Utils.filterByHiers(Meteor.user().currentHierId)},
+            {userId: Meteor.userId},
+            {pinged: true},
+            {$and:[{index:{$gte: beforeIndex}},{index:{$lt:elementIndex}}]},
+            {_id:{$ne:element}}
+          ]
+        }
+        LastEntries.update(selector,{$inc:{index:1}},{multi:true});
+        LastEntries.update(element, {$set:{index:beforeIndex+1}});
+      }
+      else{
+        var selector= {
+          $and:[
+            {$or: Utils.filterByHiers(Meteor.user().currentHierId)},
+            {userId: Meteor.userId},
+            {pinged: true},
+            {$and:[{index:{$gt: elementIndex}},{index:{$lte:beforeIndex}}]},
+            {_id:{$ne:element}}
+          ]
+        }
+        LastEntries.update(selector,{$inc:{index:-1}},{multi:true});
+        LastEntries.update(element, {$set:{index:beforeIndex}});
+      }
     }
   }
 };
