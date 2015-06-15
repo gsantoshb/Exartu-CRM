@@ -12,6 +12,7 @@ Utils.reactiveProp(Utils.adminSettings, 'isSysAdmin', function () {
 var currentLanguageLabel = new ReactiveVar();
 var searchStringEntries = "";
 var searchStringEntriesDep = new Deps.Dependency();
+var sortEntries = new ReactiveVar(-1);
 
 Meteor.call('bUserIsClientAdmin', null, function (err, result) {
     if (err)
@@ -26,7 +27,7 @@ Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
 Template.header.created = function() {
   Meteor.autorun(function (){
     searchStringEntriesDep.depend();
-    SubscriptionHandlers.LastEntriesHandler = Meteor.subscribe('lastEntries', searchStringEntries);
+      SubscriptionHandlers.LastEntriesHandler = Meteor.subscribe('lastEntries', searchStringEntries,sortEntries.get());
 
   }
 )
@@ -161,6 +162,9 @@ Template.header.events({
     'keyup #search-entry': function(e){
       searchStringEntries = e.target.value;
       searchStringEntriesDep.changed();
+    },
+    'click #sort-Entries': function(e){
+      sortEntries.set(sortEntries.get()*-1);
     }
 });
 
@@ -356,6 +360,27 @@ Template.sidebar.rendered = function () {
             stop();
         }
     }, 400));
+  this.$('#pingeds').sortable({
+    stop: function(e, ui) {
+      // get the dragged html element and the one before
+      //   and after it
+      var el = ui.item.get(0);
+      var before = ui.item.prev().get(0);
+      var after = ui.item.next().get(0);
+      if(before) {
+        Meteor.call("updateIndex", el.id, before.id, function () {
+
+        })
+      }
+      else{
+        Meteor.call("updateIndex", el.id,undefined, function () {
+
+        })
+      }
+
+    }
+  })
+
 
 }
 Template.sidebar.helpers({
@@ -382,10 +407,13 @@ Template.sidebar.helpers({
         return ''
     },
     lastEntryNotPinged: function(){
-      return LastEntries.find({pinged:false},{sort:{dateCreated:-1}})
+      return LastEntries.find({pinged:false},{sort:{dateCreated:sortEntries.get()}})
     },
     lastEntryPinged: function(){
-      return LastEntries.find({pinged:true})
+      return LastEntries.find({pinged:true},{sort:{index:1}})
+    },
+    inverseCrono: function(){
+      return sortEntries.get() === 1;
     }
 
 });

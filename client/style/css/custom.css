@@ -1845,3 +1845,11 @@ div#activityChart #container text tspan { text-decoration: none !important; font
     margin-top: -5px;
     margin-bottom: -5px;
 }
+
+.navbar-lastEntries li{
+    padding: 3px 10px;
+}
+.navbar-lastEntries li:hover{
+    background-color: #525a5a;
+    min-height: 0;
+}
