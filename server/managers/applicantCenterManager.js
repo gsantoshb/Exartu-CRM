@@ -96,6 +96,36 @@ ApplicantCenterManager = {
     ApplicantCenterInvitations.update({_id: invitationId}, {$set: {used: true}});
   },
 
+  createUserForHRCKioskEmployee: function (employeeId, email) {
+    // Validate parameters
+    if (!employeeId) throw new Error('Employee ID is required');
+    if (!email) throw new Error('Email is required');
+
+    var employee = Contactables.findOne({_id: employeeId});
+    if (!employee) throw new Error('Invalid employee ID');
+
+    // Check if the employee is already using Applicant Center
+    if (employee.user) throw new Error('This employee is already registered in Applicant Center');
+
+    // Craft email with webName on it
+    var hier = Hierarchies.findOne(employee.hierId);
+    var webName = hier.configuration.webName;
+    var hierEmail = email.split('@').join('+' + webName + '@');
+
+    // Create user account
+    var tempPass = Random.secret(8);
+    var userId = Accounts.createUser({email: hierEmail, password: tempPass, hierId: employee.hierId, userEmail: email});
+    if (!userId) throw new Error('An error occurred while creating the AppCenter account');
+
+    // Sync the newly created user with the employee id
+    Meteor.users.update({_id: userId}, {$set: {contactableId: employeeId}});
+
+    // Update the employee with the AC account information
+    Contactables.update({_id: employeeId}, {$set: {userId: userId, user: userId, tempPass: tempPass}});
+
+    return userId;
+  },
+
   getDocCenterDocuments: function (userId) {
     // Validations
     if (!userId) throw new Error('User ID is required');

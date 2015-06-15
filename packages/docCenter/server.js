@@ -351,6 +351,22 @@ _.extend(DocCenter,{
         cb(null, response);
       }
     });
+  }),
+
+  getMergeFieldValues: Meteor.wrapAsync(function (hierId, docInstanceId, cb) {
+    var account = getAccount(hierId);
+    var self = this;
+
+    var api = new DocCenterApi(account);
+
+
+    api.get(self._docCenterUrl + '/api/MergeFieldValues?documentInstanceId=' + docInstanceId, function (err, response) {
+      if (err){
+        console.error(err);
+      }else{
+        cb(null, response);
+      }
+    });
   })
 
 
