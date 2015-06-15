@@ -47,11 +47,11 @@ _.extend(DocCenter,{
 
     //generate a docCenter user
     var docCenterUser = {
-      UserName: userName,
-      Email: email,
-      Password: generatePassword(),
-      Hier: hierId + '_' + Random.id(),
-      Authkey: self._authkey
+      userName: userName,
+      email: email,
+      password: generatePassword(),
+      hier: hierId + '_' + Random.id(),
+      authkey: self._authkey
     };
 
 
@@ -61,14 +61,15 @@ _.extend(DocCenter,{
       intent = _.isNumber(intent) ? intent : 0;
 
       if (intent > 1){
-        docCenterUser.UserName = originalUsername + '_' + Random.id(3);
+        docCenterUser.userName = originalUsername + '_' + Random.id(3);
       }
 
-      console.log('docCenterUser.Hier', docCenterUser.Hier);
-      console.log('\n\nregister ' + docCenterUser.UserName);
+      console.log('docCenterUser.Hier', docCenterUser.hier);
+      console.log('\n\nregister ' + docCenterUser.userName);
 
-      HTTP.post(self._docCenterUrl + '/api/Account', { params: docCenterUser}, function (err, response) {
+      HTTP.post(self._docCenterUrl + '/api/Account', { data: docCenterUser, headers: {'accept': '*/*', 'content-type': 'application/json'}}, function (err, response) {
 
+        console.log('err', err);
         if (err){
           //try with a different username
           if (intent >= 3){
@@ -83,15 +84,15 @@ _.extend(DocCenter,{
           console.log('register success\n');
           Accounts.insert({
             _id: hierId,
-            userName: docCenterUser.UserName,
-            password: docCenterUser.Password, //todo: encrypt
-            docCenterId: docCenterUser.Hier
+            userName: docCenterUser.userName,
+            password: docCenterUser.password, //todo: encrypt
+            docCenterId: docCenterUser.hier
           });
           cb(null);
         }
       })
     };
-    tryRegister(1, docCenterUser.UserName);
+    tryRegister(1, docCenterUser.userName);
   }),
 
   /**

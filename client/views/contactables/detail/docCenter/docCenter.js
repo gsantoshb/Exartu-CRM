@@ -1,4 +1,4 @@
-
+//var docCenterMergeFields = new ReactiveVar([]);
 var createAccountSchema = new SimpleSchema({
   email: {
     type: String,
@@ -11,8 +11,14 @@ var isCreatingAccount = new ReactiveVar(false);
 
 Template.docCenterTab.created = function () {
   isCreatingAccount.set(false);
-
-  Meteor.subscribe('docCenterMergeFields');
+  //
+  //Meteor.call('docCenterMergeFields', function (err, result) {
+  //  if (err){
+  //    console.log(err);
+  //  } else {
+  //    docCenterMergeFields.set(result);
+  //  }
+  //});
 };
 
 

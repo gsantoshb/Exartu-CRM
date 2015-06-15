@@ -1,4 +1,4 @@
-var mergeFields=[{
+var mergeFields = [{
   key: 'firstName',
   testValue: 'john',
   type: DocCenter.mergeFieldTypes.string,
@@ -52,14 +52,61 @@ var mergeFields=[{
   type: DocCenter.mergeFieldTypes.date,
   path: 'person.birthDate',
   targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'gender',
+  testValue: 'female',
+  type: DocCenter.mergeFieldTypes.string,
+  path: 'Employee.gender',
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'convictions',
+  testValue: 'hard worker',
+  type: DocCenter.mergeFieldTypes.string,
+  path: 'Employee.convictions',
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'ethnicity',
+  testValue: 'african american',
+  type: DocCenter.mergeFieldTypes.string,
+  path: 'Employee.ethnicity',
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'hasOwnTransportation',
+  testValue: 'true',
+  type: DocCenter.mergeFieldTypes.string,
+  path: 'Employee.hasTransportation',
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'desiredPay',
+  testValue: '1000',
+  type: DocCenter.mergeFieldTypes.decimal,
+  path: 'Employee.desiredPay',
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'email',
+  testValue: 'someAddrress@someServer.com',
+  type: DocCenter.mergeFieldTypes.string,
+  get: function (entity) {
+    if (!entity || !entity.contactMethods) return '';
+    var cm = _.find(entity.contactMethods, function (cm) {
+      var lookUp = LookUps.findOne({_id: cm.type, hierId: entity.hierId});
+      if (!lookUp){
+        return false;
+      }
+      return _.contains(lookUp.lookUpActions, Enums.lookUpAction.ContactMethod_Email);
+    });
+    return cm && cm.value;
+
+  },
+  targetType: Enums.docCenterMergeFieldTypes.contactable
 }];
 
 Meteor.startup(function () {
   _.each(mergeFields, function (mf) {
-    var oldVersion = DocCenterMergeFields.findOne({ key: mf.key });
+    var oldVersion = _.findWhere(DocCenterMergeFields, { key: mf.key });
 
     if (!oldVersion){
-      DocCenterMergeFields.insert(mf);
+      DocCenterMergeFields.push(mf);
     }else{
       //mf._id = oldVersion._id;
       //if ( ! EJSON.equals(mf, oldVersion)){

@@ -1,1 +1,1 @@
-DocCenterMergeFields = new Mongo.Collection('docCenterMergeFields');
+//DocCenterMergeFields = new Mongo.Collection('docCenterMergeFields');

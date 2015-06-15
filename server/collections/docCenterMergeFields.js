@@ -1,5 +1,7 @@
-DocCenterMergeFields = new Mongo.Collection('docCenterMergeFields');
+DocCenterMergeFields = []
 
-Meteor.publish('docCenterMergeFields', function () {
-  return DocCenterMergeFields.find();
+Meteor.methods({
+  'docCenterMergeFields': function () {
+    return DocCenterMergeFields;
+  }
 });
