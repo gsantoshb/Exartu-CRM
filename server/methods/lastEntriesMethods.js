@@ -10,5 +10,9 @@ Meteor.methods({
   },
   changePing: function(id){
     lastEntriesManager.changePing(id);
+  },
+  updateIndex: function(element, before){
+    console.log('methodUpdateIndex')
+    lastEntriesManager.updateIndex(element, before);
   }
 })

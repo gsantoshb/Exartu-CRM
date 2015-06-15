@@ -130,27 +130,7 @@
 <template name="contactablesListSearch">
     <div class="list-actions-cell btn-add-to-list">
         <div class="btn-group">
-            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
-                    title="Add" id="tourNetworksAdd">
-                <span class="fa fa-plus"></span>  {{_ "Add"}}
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                {{#each contactableTypes}}
-                    <li><a href="/contactableAdd/{{name}}">{{_ "Add"}} {{name}}</a></li>
-                {{/each}}
-                <li>
-                    <a type="button" title="Create employee from resume/CV"
-                       href="/resumeparser">{{_ "Create employee from resume/CV file"}}</a>
-                </li>
-                <li>
-                    <a class="parseText"
-                       title="Create employee from plain text">{{_ "Create employee from resume/CV text"}}</a>
-                </li>
-                <li>
-                    <a type="button" title="Create employee from camara"
-                       href="/scanEmployeeCard">{{_ "Create employee from a card photo"}}</a>
-                </li>
-            </ul>
+
         </div>
     </div>
     <!-- /.btn-add-to-list -->

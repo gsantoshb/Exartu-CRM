@@ -1,6 +1,6 @@
 <template name="header">
     <!--{{>connectionBanner}}-->
-    <div name="headerVM" style="position: relative;">
+    <div name="headerVM" style="">
         <div id="user-nav" class="navbar-right pull-right">
             <ul class="btn-group">
                 <li class="hidden-xs">
@@ -90,10 +90,10 @@
     <a id="menu-trigger" href="#">
         <i class="fa fa-align-justify"></i>
     </a>
+<!--//sidebar-->
+    <div class="spanel-menu" id="sidebar" style="position:inherit; width:144px">
 
-    <div id="sidebar" class="spanel-menu">
-
-        <ul class="navbar navbar-inverse nav-stacked">
+        <ul class="navbar navbar-inverse nav-stacked" style="position:inherit">
             <li class="dashboard {{getActiveClass 'dashboard' null}}">
                 <a href="/">
                     <span>{{_ "Activities"}}</span>
@@ -146,26 +146,44 @@
                                         <input class="form-control" id="search-entry" placeholder="Search">
                                         <span class="text text-danger"></span>
                                     </span>
-
-                                        <!--<div class="dropdown input-group-btn">-->
-                                        <!--<button type="button" class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">-->
-                                            <!--<span class="caret"></span>-->
-                                        <!--</button>-->
-                                        <!--</div>-->
-
-
+                                    <span class="input-group-btn">
+                                       <button class="btn btn-default" id="sort-Entries" type="button">
+                                       {{#if inverseCrono}}
+                                           <i class="fa fa-sort-amount-asc"></i>
+                                       {{else}}
+                                           <i class="fa fa-sort-amount-desc"></i>
+                                       {{/if}}
+                                       </button>
+                                    </span>
+                                    <!--<div class="dropdown input-group-btn">-->
+                                    <!--<button type="button" class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="false">-->
+                                        <!--<span class="caret"></span>-->
+                                    <!--</button>-->
+                                    <!--</div>-->
                     </div>
                 </div>
             </li>
-            {{#each lastEntryPinged}}
-                {{>lastEntryItem}}
-            {{/each}}
-            {{#each lastEntryNotPinged}}
-                {{>lastEntryItem}}
 
-            {{/each}}
+
 
         </ul>
+        <div class="ui-sorteable" style="padding-top:20px" id="pingeds">
+            <!--<ul class="navbar nav-stacked  navbar-lastEntries" style="padding-left: 0;min-height: 0;">-->
+        {{#each lastEntryPinged}}
+            <div class="navbar nav-stacked  navbar-lastEntries" style="padding-left: 0;min-height: 0;" id="{{_id}}">
+            {{>lastEntryItem}}
+            </div>
+        {{/each}}
+            <!--</ul>-->
+        </div>
+
+        <div style="">
+        <ul class="navbar nav-stacked navbar-lastEntries" style="padding-left: 0;min-height: 0;">
+          {{#each lastEntryNotPinged}}
+            {{>lastEntryItem}}
+          {{/each}}
+        </ul>
+        </div>
 
 
     </div>
@@ -173,28 +191,73 @@
 </template>
 
 <template name="lastEntryItem">
-    <li class="list-actions" style="margin-top:15px">
+    {{#if isPinged}}
 
-        <div>
+                <div class="row" style="margin-left:0; margin-right: 0">
+                    <div class="col-md-2" style="padding-left:0px">
+                        {{#if isContactable}}
+                            <a class="item-icon"  href="{{link}}" style="color:rgba(255,255,255,0.55)">
+                                <i class="icon-profile-business-man" title="Contactable"></i>
+                            </a>
+                        {{/if}}
+                        {{#if isJob}}
+                            <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
+                                <i class="icon icon-briefcase" title="Job"></i>
+                            </a>
+                        {{/if}}
+                        {{#if isPlacement}}
+                            <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
+                                <i class="icon icon-suitcase-1" title="Placement"></i>
+                            </a>
+                        {{/if}}
+                        {{#if isHotList}}
+                            <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
+                                <i class="icon-list-4" title="Hot list"></i>
+                            </a>
+                        {{/if}}
+                    </div>
+                    <div class="col-md-6" style="padding-right:0px;overflow:hidden; white-space: nowrap;text-overflow: ellipsis;color:rgba(255,255,255,0.55)" >
+                        <!--<a class="item-icon">-->
+                        <a style="color:rgba(255,255,255,0.55);" href="{{link}}">
+                <span title="{{displayName}}" style="margin-top:5px">
+                    {{displayName}}
+                </span>
+                        </a>
+                        <!--</a>-->
+                    </div>
+                    <div class="col-md-3">
+                        {{#if isPinged}}
+                            <i class="glyphicon glyphicon-pushpin" id="ping-entry" style="color:rgba(255,255,0,1);cursor: pointer" ></i>
+                        {{else}}
+                            <i class="glyphicon glyphicon-pushpin" id="ping-entry" style="color:rgba(255,255,255,0.55);cursor: pointer" ></i>
+                        {{/if}}
+                        <i class="glyphicon glyphicon-remove-sign" id="remove-entry" style="color:rgba(255,255,255,0.55);cursor: pointer"></i>
+                    </div>
+                </div>
+
+    {{else}}
+    <li class="" style="">
+<a>
+        <div class="row">
         <div class="col-md-2" style="padding-left:0px">
         {{#if isContactable}}
             <a class="item-icon"  href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                <i class="icon-profile-business-man"></i>
+                <i class="icon-profile-business-man" title="Contactable"></i>
             </a>
         {{/if}}
         {{#if isJob}}
                 <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                    <i class="icon icon-briefcase"></i>
+                    <i class="icon icon-briefcase" title="Job"></i>
                 </a>
         {{/if}}
         {{#if isPlacement}}
             <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                <i class="icon icon-suitcase-1"></i>
+                <i class="icon icon-suitcase-1" title="Placement"></i>
             </a>
         {{/if}}
         {{#if isHotList}}
                 <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                    <i class="icon-list-4"></i>
+                    <i class="icon-list-4" title="Hot list"></i>
                 </a>
         {{/if}}
         </div>
@@ -216,6 +279,7 @@
             <i class="glyphicon glyphicon-remove-sign" id="remove-entry" style="color:rgba(255,255,255,0.55);cursor: pointer"></i>
         </div>
         </div>
-
+</a>
     </li>
+    {{/if}}
 </template>
