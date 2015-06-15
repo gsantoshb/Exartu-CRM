@@ -56,7 +56,15 @@ var mergeFields = [{
   key: 'gender',
   testValue: 'female',
   type: DocCenter.mergeFieldTypes.string,
-  path: 'Employee.gender',
+  get: function (entity) {
+    if (!entity || !entity.Employee) return '';
+
+    switch (entity.Employee.gender){
+      case Enums.gender.male.value: return 'Male';
+      case Enums.gender.female.value: return 'Female';
+      default: return '';
+    }
+  },
   targetType: Enums.docCenterMergeFieldTypes.contactable
 },{
   key: 'convictions',
