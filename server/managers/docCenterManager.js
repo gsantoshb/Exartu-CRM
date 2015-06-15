@@ -12,7 +12,7 @@ DocCenterManager = {
     DocCenter.register(hierName, email, hier._id);
 
 
-    DocCenterMergeFields.find({}).forEach(function (mf) {
+    DocCenterMergeFields.forEach(function (mf) {
 
       DocCenterManager.insertMergeField(hier._id, mf);
 
@@ -100,7 +100,7 @@ DocCenterManager = {
   },
 
   syncMergeFields: function () {
-    var localMergeFields = DocCenterMergeFields.find().fetch();
+    var localMergeFields = DocCenterMergeFields;
 
     // for all hierarchies that have account
     Hierarchies.find().forEach(function (hier) {
@@ -220,11 +220,11 @@ Meteor.methods({
 
     var contactable = Contactables.findOne(contactableId);
 
-    var initialValues = resolveMF(contactable, DocCenterMergeFields.find({ targetType: Enums.docCenterMergeFieldTypes.contactable }).fetch());
+    var initialValues = resolveMF(contactable, _.filter(DocCenterMergeFields, function(mf){return mf.targetType == Enums.docCenterMergeFieldTypes.contactable}));
 
     var address = Addresses.findOne({linkId: contactable._id});
 
-    initialValues = initialValues.concat(resolveMF(address,  DocCenterMergeFields.find({ targetType: Enums.docCenterMergeFieldTypes.address }).fetch()));
+    initialValues = initialValues.concat(resolveMF(address, _.filter(DocCenterMergeFields, function(mf){return mf.targetType == Enums.docCenterMergeFieldTypes.address})));
 
     var docInstance = DocCenter.instantiateDocument(user.currentHierId, documentIds, docCenterId, initialValues);
 
@@ -254,48 +254,58 @@ Meteor.methods({
 var resolveMF = function (entity, mergeFields) {
 
   var mapped = _.map(mergeFields, function (mf) {
-    var parts = mf.path.split('.');
-    var result = entity;
+    var result;
+    if (mf.path){
+      var parts = mf.path.split('.');
+      result = entity;
+      parts.forEach(function (part) {
+        if (!result) return;
 
-    parts.forEach(function (part) {
-      if (!result) return;
+        // check if it this part targets an array property
+        var arraySelector = part.match(/\[(.+)\]/);
+        if (arraySelector){
 
-      // check if it this part targets an array property
-      var arraySelector = part.match(/\[(.+)\]/);
-      if (arraySelector){
+          // get the property name
+          var propPart = part.replace(arraySelector[0],'');
 
-        // get the property name
-        var propPart = part.replace(arraySelector[0],'');
+          result = result[propPart];
 
-        result = result[propPart];
+          if (! _.isArray(result)){
+            result = undefined;
+            return;
+          }
 
-        if (! _.isArray(result)){
-          result = undefined;
-          return;
+          var index = arraySelector[1];
+
+          if (!isNaN(parseInt(index))){
+            result = result[parseInt(index)];
+          }
+          // todo: parse object and call _.findWhere ???
+
+        } else {
+          result = result[part];
         }
 
-        var index = arraySelector[1];
-
-        if (!isNaN(parseInt(index))){
-          result = result[parseInt(index)];
-        }
-        // todo: parse object and call _.findWhere ???
-
-      } else {
-        result = result[part];
+      });
+      if (!result) return {
+        key: mf.key,
+        value: ''
       }
 
-    });
-
-    if (!result) return {
-      key: mf.key,
-      value: ''
-    };
-
-    return {
-      key: mf.key,
-      value: result
-    };
+      return {
+        key: mf.key,
+        value: result
+      };
+    } else {
+      result = '';
+      if (mf.get){
+        result = mf.get(entity);
+      }
+      return {
+        key: mf.key,
+        value: result
+      };
+    }
   });
 
   // filter the undefined ones
