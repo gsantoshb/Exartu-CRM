@@ -167,10 +167,10 @@
 
 
         </ul>
-        <div class="ui-sorteable" style="padding-top:20px" id="pingeds">
+        <div class="ui-sorteable navbar-lastEntries" style="padding-top:20px" id="pingeds">
             <!--<ul class="navbar nav-stacked  navbar-lastEntries" style="padding-left: 0;min-height: 0;">-->
         {{#each lastEntryPinged}}
-            <div class="navbar nav-stacked  navbar-lastEntries" style="padding-left: 0;min-height: 0;" id="{{_id}}">
+            <div class="navbar nav-stacked navbar nav-stacked navbar-lastEntries" style="padding-left: 0;min-height: 0;" id="{{_id}}">
             {{>lastEntryItem}}
             </div>
         {{/each}}
@@ -178,11 +178,15 @@
         </div>
 
         <div style="">
-        <ul class="navbar nav-stacked navbar-lastEntries" style="padding-left: 0;min-height: 0;">
+        <!--<ul class="navbar nav-stacked navbar-lastEntries" style="padding-left: 0;min-height: 0;">-->
+            <div class="navbar-lastEntries" style="padding-top:20px" id="notPingeds">
           {{#each lastEntryNotPinged}}
+          <div class="navbar nav-stacked navbar nav-stacked navbar-lastEntries" style="padding-left: 0;min-height: 0;" id="{{_id}}">
             {{>lastEntryItem}}
+          </div>
           {{/each}}
-        </ul>
+        <!--</ul>-->
+        </div>
         </div>
 
 
@@ -191,95 +195,56 @@
 </template>
 
 <template name="lastEntryItem">
-    {{#if isPinged}}
 
-                <div class="row" style="margin-left:0; margin-right: 0">
-                    <div class="col-md-2" style="padding-left:0px">
-                        {{#if isContactable}}
-                            <a class="item-icon"  href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                                <i class="icon-profile-business-man" title="Contactable"></i>
-                            </a>
-                        {{/if}}
-                        {{#if isJob}}
-                            <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                                <i class="icon icon-briefcase" title="Job"></i>
-                            </a>
-                        {{/if}}
-                        {{#if isPlacement}}
-                            <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                                <i class="icon icon-suitcase-1" title="Placement"></i>
-                            </a>
-                        {{/if}}
-                        {{#if isHotList}}
-                            <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                                <i class="icon-list-4" title="Hot list"></i>
-                            </a>
-                        {{/if}}
-                    </div>
-                    <div class="col-md-6" style="padding-right:0px;overflow:hidden; white-space: nowrap;text-overflow: ellipsis;color:rgba(255,255,255,0.55)" >
-                        <!--<a class="item-icon">-->
-                        <a style="color:rgba(255,255,255,0.55);" href="{{link}}">
+        <div class="row" style="margin-left:0; margin-right: 0">
+            <div>
+            <div class="" style="padding-left:0px;float:left;width:20%">
+                {{#if isContactable}}
+                    <a class="item-icon" href="{{link}}" style="padding:0px;color:rgba(255,255,255,0.55);height:inherit">
+                        <i class="icon-profile-business-man" title="Contactable" style="font-size:16px"></i>
+                    </a>
+                {{/if}}
+                {{#if isJob}}
+                    <a class="item-icon" href="{{link}}" style="padding:0px;color:rgba(255,255,255,0.55);height:inherit">
+                        <i class="icon icon-briefcase" title="Job" style="font-size:16px"></i>
+                    </a>
+                {{/if}}
+                {{#if isPlacement}}
+                    <a class="item-icon" href="{{link}}" style="padding:0px;color:rgba(255,255,255,0.55);height:inherit">
+                        <i class="icon icon-suitcase-1" title="Placement"  style="font-size:16px"></i>
+                    </a>
+                {{/if}}
+                {{#if isHotList}}
+                    <a class="item-icon" href="{{link}}" style="padding:0px;color:rgba(255,255,255,0.55);height:inherit">
+                        <i class="icon-list-4" title="Hot list"  style="font-size:16px"></i>
+                    </a>
+                {{/if}}
+            </div>
+            <div class="" style="width:100%">
+                <div style="float:right">
+                    {{#if isPinged}}
+                        <i class="glyphicon glyphicon-pushpin" id="ping-entry"
+                           style="color:rgba(255,255,0,1);cursor: pointer"></i>
+                    {{else}}
+                        <i class="glyphicon glyphicon-pushpin" id="ping-entry"
+                           style="color:rgba(255,255,255,0.55);cursor: pointer"></i>
+                    {{/if}}
+                    <i class="glyphicon glyphicon-remove-sign" id="remove-entry"
+                       style="color:rgba(255,255,255,0.55);cursor: pointer"></i>
+                </div>
+            </div>
+            </div>
+            <div class=""
+                 style="width:100%;padding-left:5px;overflow:hidden; white-space: nowrap;text-overflow: ellipsis;color:rgba(255,255,255,0.55)">
+                <!--<a class="item-icon">-->
+                <a style="color:rgba(255,255,255,0.55);" href="{{link}}">
                 <span title="{{displayName}}" style="margin-top:5px">
                     {{displayName}}
                 </span>
-                        </a>
-                        <!--</a>-->
-                    </div>
-                    <div class="col-md-3">
-                        {{#if isPinged}}
-                            <i class="glyphicon glyphicon-pushpin" id="ping-entry" style="color:rgba(255,255,0,1);cursor: pointer" ></i>
-                        {{else}}
-                            <i class="glyphicon glyphicon-pushpin" id="ping-entry" style="color:rgba(255,255,255,0.55);cursor: pointer" ></i>
-                        {{/if}}
-                        <i class="glyphicon glyphicon-remove-sign" id="remove-entry" style="color:rgba(255,255,255,0.55);cursor: pointer"></i>
-                    </div>
-                </div>
-
-    {{else}}
-    <li class="" style="">
-<a>
-        <div class="row">
-        <div class="col-md-2" style="padding-left:0px">
-        {{#if isContactable}}
-            <a class="item-icon"  href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                <i class="icon-profile-business-man" title="Contactable"></i>
-            </a>
-        {{/if}}
-        {{#if isJob}}
-                <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                    <i class="icon icon-briefcase" title="Job"></i>
                 </a>
-        {{/if}}
-        {{#if isPlacement}}
-            <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                <i class="icon icon-suitcase-1" title="Placement"></i>
-            </a>
-        {{/if}}
-        {{#if isHotList}}
-                <a class="item-icon" href="{{link}}" style="color:rgba(255,255,255,0.55)">
-                    <i class="icon-list-4" title="Hot list"></i>
-                </a>
-        {{/if}}
-        </div>
-        <div class="col-md-6" style="padding-right:0px;overflow:hidden; white-space: nowrap;text-overflow: ellipsis;color:rgba(255,255,255,0.55)" >
-            <!--<a class="item-icon">-->
-            <a style="color:rgba(255,255,255,0.55);" href="{{link}}">
-                <span title="{{displayName}}" style="margin-top:5px">
-                   {{displayName}}
-                </span>
-            </a>
                 <!--</a>-->
+            </div>
+
         </div>
-        <div class="col-md-3">
-            {{#if isPinged}}
-               <i class="glyphicon glyphicon-pushpin" id="ping-entry" style="color:rgba(255,255,0,1);cursor: pointer" ></i>
-            {{else}}
-               <i class="glyphicon glyphicon-pushpin" id="ping-entry" style="color:rgba(255,255,255,0.55);cursor: pointer" ></i>
-            {{/if}}
-            <i class="glyphicon glyphicon-remove-sign" id="remove-entry" style="color:rgba(255,255,255,0.55);cursor: pointer"></i>
-        </div>
-        </div>
-</a>
-    </li>
-    {{/if}}
+
 </template>
