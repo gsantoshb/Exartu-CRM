@@ -82,7 +82,10 @@ var mergeFields = [{
   key: 'hasOwnTransportation',
   testValue: 'true',
   type: DocCenter.mergeFieldTypes.string,
-  path: 'Employee.hasTransportation',
+  get: function (entity) {
+    if (entity && entity.Employee && entity.Employee.hasTransportation) return 'yes';
+    return 'no';
+  },
   targetType: Enums.docCenterMergeFieldTypes.contactable
 },{
   key: 'desiredPay',
@@ -104,6 +107,52 @@ var mergeFields = [{
       return _.contains(lookUp.lookUpActions, Enums.lookUpAction.ContactMethod_Email);
     });
     return cm && cm.value;
+
+  },
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'availableStartDate',
+  testValue: 'Monday,Wednesday',
+  type: DocCenter.mergeFieldTypes.string,
+  get: function (entity) {
+    if (!entity || !entity.Employee) return '';
+
+    var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var result = '';
+    _.each(entity.Employee.availableStartDate, function (v, k) {
+      if (v){
+        k = parseInt(k);
+        if (result){
+          result += ',';
+        }
+        result += dayNames[k];
+      }
+    });
+
+    return result;
+
+  },
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'availableShifts',
+  testValue: '1st,2nd',
+  type: DocCenter.mergeFieldTypes.string,
+  get: function (entity) {
+    if (!entity || !entity.Employee) return '';
+
+    var dayNames = ["1st", "2nd", "3rd"];
+    var result = '';
+    _.each(entity.Employee.availableShifts, function (v, k) {
+      if (v){
+        k = parseInt(k);
+        if (result){
+          result += ',';
+        }
+        result += dayNames[k];
+      }
+    });
+
+    return result;
 
   },
   targetType: Enums.docCenterMergeFieldTypes.contactable
