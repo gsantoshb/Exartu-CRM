@@ -167,21 +167,22 @@
 
 
         </ul>
-        <div class="navbar-lastEntries" style="padding-top:20px; position: absolute" id="pingeds">
-            {{#each lastEntryPinged}}
-                <div id="{{_id}}">
-                    {{>lastEntryItem}}
-                </div>
-            {{/each}}
-        </div>
-
         <div style="position: absolute;top: 383px;width: 100%;">
-            <div class="navbar-lastEntries" style="padding-top:20px" id="notPingeds">
-              {{#each lastEntryNotPinged}}
-                  <div id="{{_id}}">
-                    {{>lastEntryItem}}
-                  </div>
-              {{/each}}
+            <div class="navbar-lastEntries" style="padding-top:20px;" id="pingeds">
+                {{#each lastEntryPinged}}
+                    <div id="{{_id}}">
+                        {{>lastEntryItem}}
+                    </div>
+                {{/each}}
+            </div>
+            <div>
+                <div class="navbar-lastEntries" style="padding-top:20px" id="notPingeds">
+                    {{#each lastEntryNotPinged}}
+                        <div id="{{_id}}">
+                            {{>lastEntryItem}}
+                        </div>
+                    {{/each}}
+                </div>
             </div>
         </div>
 
@@ -196,31 +197,31 @@
             <div>
             <div class="" style="padding-left:0px;float:left;width:20%">
                 {{#if isContactable}}
-                    <a class="item-icon" href="{{link}}" style="padding:0px;color:rgba(255,255,255,0.55);height:inherit">
+                    <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
                         <i class="icon-profile-business-man" title="Contactable" style="font-size:16px"></i>
                     </a>
                 {{/if}}
                 {{#if isJob}}
-                    <a class="item-icon" href="{{link}}" style="padding:0px;color:rgba(255,255,255,0.55);height:inherit">
+                    <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
                         <i class="icon icon-briefcase" title="Job" style="font-size:16px"></i>
                     </a>
                 {{/if}}
                 {{#if isPlacement}}
-                    <a class="item-icon" href="{{link}}" style="padding:0px;color:rgba(255,255,255,0.55);height:inherit">
+                    <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
                         <i class="icon icon-suitcase-1" title="Placement"  style="font-size:16px"></i>
                     </a>
                 {{/if}}
                 {{#if isHotList}}
-                    <a class="item-icon" href="{{link}}" style="padding:0px;color:rgba(255,255,255,0.55);height:inherit">
+                    <a class="item-icon" href="{{link}}" style="padding:0px;color:inherit;height:inherit">
                         <i class="icon-list-4" title="Hot list"  style="font-size:16px"></i>
                     </a>
                 {{/if}}
             </div>
-            <div class="" style="width:100%">
+            <div class="show-onHover" style="width:100%">
                 <div style="float:right">
                     {{#if isPinged}}
                         <i class="glyphicon glyphicon-pushpin" id="ping-entry"
-                           style="color:inherit;cursor: pointer"></i>
+                           style="color:#FFFAA4;cursor: pointer"></i>
                     {{else}}
                         <i class="glyphicon glyphicon-pushpin" id="ping-entry"
                            style="color:rgba(255,255,255,0.55);cursor: pointer"></i>

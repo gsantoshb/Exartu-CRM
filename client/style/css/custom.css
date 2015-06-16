@@ -1856,3 +1856,17 @@ div#activityChart #container text tspan { text-decoration: none !important; font
     background-color: #525a5a;
     color: #ffffff;
 }
+
+.show-onHover{
+    display: none;
+}
+
+.lastEntries-item:hover .show-onHover{
+    display: block;
+}
+
+@media (max-width: 768px){
+    .show-onHover{
+        display: block;
+    }
+}
