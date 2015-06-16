@@ -17,8 +17,7 @@
                              {{else}}
                                  col-md-12
                              {{/if}}
-                        {{/if}}
-                        " id="column-list">
+                        {{/if}}" id="column-list">
                 <div class="list-container">
                     <div class="list-holder">
 
@@ -46,7 +45,7 @@
                 </div>
             </div>
             {{#if oneSelected}}
-              <div class="col-md-3 col-lg-3 col-md-offset-8 col-lg-offset-9" style="position:fixed; float:right;padding:0px">
+              <div class="col-md-3" style="padding:0">
                  {{>contactablePreview}}
               </div>
             {{/if}}
@@ -130,7 +129,27 @@
 <template name="contactablesListSearch">
     <div class="list-actions-cell btn-add-to-list">
         <div class="btn-group">
-
+            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                    title="Add" id="tourNetworksAdd">
+                <span class="fa fa-plus"></span>  {{_ "Add"}}
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                {{#each contactableTypes}}
+                    <li><a href="/contactableAdd/{{name}}">{{_ "Add"}} {{name}}</a></li>
+                {{/each}}
+                <li>
+                    <a type="button" title="Create employee from resume/CV"
+                       href="/resumeparser">{{_ "Create employee from resume/CV file"}}</a>
+                </li>
+                <li>
+                    <a class="parseText"
+                       title="Create employee from plain text">{{_ "Create employee from resume/CV text"}}</a>
+                </li>
+                <li>
+                    <a type="button" title="Create employee from camara"
+                       href="/scanEmployeeCard">{{_ "Create employee from a card photo"}}</a>
+                </li>
+            </ul>
         </div>
     </div>
     <!-- /.btn-add-to-list -->
@@ -457,7 +476,7 @@
 
 <template name="contactablePreview">
    {{#with selectedContactable}}
-       <div class="list-holder" >
+       <div class="list-holder" style="position: fixed; right: 0; width: 21%;">
        <div class="row breadcrumb" style="padding-top:10px; padding-left:20px; margin-left: 0px">
 
        {{#if pictureFileId}}

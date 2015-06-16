@@ -71,5 +71,69 @@ HRConcourseManager = {
 
       }
     })
+  },
+
+
+  syncKioskEmployee: function (hierId, docCenterId) {
+    // Validate empInfo
+    if (!hierId) throw new Error("Hier ID is required");
+    if (!docCenterId) throw new Error("DocCenter ID is required");
+
+    var empEmail;
+    var documentInstances = 0;
+    var mergeFields = {};
+
+    // Get the existing documents
+    var instances = DocCenter.getDocumentInstances(hierId, docCenterId);
+    _.each(instances, function (doc) {
+      documentInstances++;
+
+      // Set the email initially from the document instance
+      empEmail = doc.email;
+
+      // Get the merge field values for each document
+      _.each(doc.mergeFieldValues, function (mf) {
+        mergeFields[mf.key] = mf.value;
+      });
+    });
+
+    // Check at least one document is on the user
+    if (!documentInstances) throw new Error('The specified user has no documents.');
+
+    // Extract the information from the merge fields
+    if (mergeFields.email) { empEmail = mergeFields.email; }
+    var empFirstName = mergeFields.firstName || empEmail;
+    var empLastName = mergeFields.lastName || empEmail;
+
+    // Email contact method
+    var hierFilter = Utils.filterByHiers(hierId);
+    var emailCM = LookUps.findOne({
+      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+      lookUpActions: Enums.lookUpAction.ContactMethod_Email,
+      $or: hierFilter
+    });
+
+    // Create employee with DocCenter info on it
+    var empId = Contactables.insert({
+      objNameArray:['person', 'Employee', 'Contactable'],
+      hierId: hierId,
+      person: {
+        "firstName" : empFirstName,
+        "lastName" : empLastName
+      },
+      contactMethods: [{type: emailCM._id, value: empEmail}],
+      Employee: {},
+      docCenter: {
+        docCenterId: docCenterId
+      }
+    });
+    if (!empId) throw new Error('An error occurred while creating the employee');
+
+    // Create AppCenter account for the employee
+    ApplicantCenterManager.createUserForHRCKioskEmployee(empId, empEmail);
+
+    // Save the documents to the employee
+
+    return empId;
   }
 };

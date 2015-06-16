@@ -6,6 +6,10 @@
             {{#if hasAccount}}
                 {{> sendDocument}}
                 {{> documentInstances}}
+
+                {{#if tempPass}}
+                    <div> Temporary password: {{tempPass}} </div>
+                {{/if}}
             {{else}}
                 <div style="padding: 10px">
                     <p class="alert alert-warning">{{_ "The Employee does not have an account on HRConcourse yet"}}</p>

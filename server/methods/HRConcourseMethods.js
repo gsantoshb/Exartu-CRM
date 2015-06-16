@@ -4,5 +4,9 @@ Meteor.methods({
   },
   createContactableFromUser: function(userId) {
     return HRConcourseManager.createContactableFromUser(userId);
+  },
+
+  syncKioskEmployee: function (hierId, docCenterId) {
+    return HRConcourseManager.syncKioskEmployee(hierId, docCenterId);
   }
 });

@@ -47,6 +47,12 @@ var mergeFields = [{
   path: 'postalCode',
   targetType: Enums.docCenterMergeFieldTypes.address
 },{
+  key: 'country',
+  testValue: 'US',
+  type: DocCenter.mergeFieldTypes.string,
+  path: 'country',
+  targetType: Enums.docCenterMergeFieldTypes.address
+},{
   key: 'dateOfBirth',
   testValue: '7/4/1974',
   type: DocCenter.mergeFieldTypes.date,
