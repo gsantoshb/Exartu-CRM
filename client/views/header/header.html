@@ -91,9 +91,9 @@
         <i class="fa fa-align-justify"></i>
     </a>
 <!--//sidebar-->
-    <div class="spanel-menu" id="sidebar" style="position:inherit; width:144px">
+    <div id="sidebar" class="spanel-menu" style="width:144px" >
 
-        <ul class="navbar navbar-inverse nav-stacked" style="position:inherit">
+        <ul class="navbar navbar-inverse nav-stacked" style="position:relative">
             <li class="dashboard {{getActiveClass 'dashboard' null}}">
                 <a href="/">
                     <span>{{_ "Activities"}}</span>
@@ -196,7 +196,7 @@
 
 <template name="lastEntryItem">
 
-        <div class="row" style="margin-left:0; margin-right: 0">
+        <div class="row last-entry-item" >
             <div>
             <div class="" style="padding-left:0px;float:left;width:20%">
                 {{#if isContactable}}
@@ -220,7 +220,7 @@
                     </a>
                 {{/if}}
             </div>
-            <div class="" style="width:100%">
+            <div class="disapear-onHover" style="width:100%">
                 <div style="float:right">
                     {{#if isPinged}}
                         <i class="glyphicon glyphicon-pushpin" id="ping-entry"
@@ -235,7 +235,7 @@
             </div>
             </div>
             <div class=""
-                 style="width:100%;padding-left:5px;overflow:hidden; white-space: nowrap;text-overflow: ellipsis;color:rgba(255,255,255,0.55)">
+                 style="width:100%;padding-left:5po pox;overflow:hidden; white-space: nowrap;text-overflow: ellipsis;color:rgba(255,255,255,0.55)">
                 <!--<a class="item-icon">-->
                 <a style="color:rgba(255,255,255,0.55);" href="{{link}}">
                 <span title="{{displayName}}" style="margin-top:5px">

@@ -1846,10 +1846,36 @@ div#activityChart #container text tspan { text-decoration: none !important; font
     margin-bottom: -5px;
 }
 
-.navbar-lastEntries li{
-    padding: 3px 10px;
+.last-entry-item{
+    /*padding: 3px 10px;*/
+    margin-left:0;
+
+    padding-right: 10px;
+    padding-left: 10px;
 }
-.navbar-lastEntries li:hover{
+.last-entry-item:hover{
     background-color: #525a5a;
-    min-height: 0;
+    /*min-height: 0;*/
+}
+@media (min-width: 768px) {
+    .last-entry-item:hover .disapear-onHover{
+        opacity:1
+    }
+
+    .last-entry-item .disapear-onHover{
+        opacity:0
+    }
+}
+
+@media (min-width: 768px) {
+    .spanel-menu{
+        position:inherit;
+
+    }
+}
+@media (max-width: 768px) {
+    .disapear-onHover{
+        opacity:1
+
+    }
 }

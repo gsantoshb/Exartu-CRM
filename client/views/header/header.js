@@ -360,26 +360,26 @@ Template.sidebar.rendered = function () {
             stop();
         }
     }, 400));
-  this.$('#pingeds').sortable({
-    stop: function(e, ui) {
-      // get the dragged html element and the one before
-      //   and after it
-      var el = ui.item.get(0);
-      var before = ui.item.prev().get(0);
-      var after = ui.item.next().get(0);
-      if(before) {
-        Meteor.call("updateIndex", el.id, before.id, function () {
-
-        })
-      }
-      else{
-        Meteor.call("updateIndex", el.id,undefined, function () {
-
-        })
-      }
-
-    }
-  })
+  //this.$('#pingeds').sortable({
+  //  stop: function(e, ui) {
+  //    // get the dragged html element and the one before
+  //    //   and after it
+  //    var el = ui.item.get(0);
+  //    var before = ui.item.prev().get(0);
+  //    var after = ui.item.next().get(0);
+  //    if(before) {
+  //      Meteor.call("updateIndex", el.id, before.id, function () {
+  //
+  //      })
+  //    }
+  //    else{
+  //      Meteor.call("updateIndex", el.id,undefined, function () {
+  //
+  //      })
+  //    }
+  //
+  //  }
+  //})
 
 
 }
