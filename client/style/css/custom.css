@@ -1846,37 +1846,28 @@ div#activityChart #container text tspan { text-decoration: none !important; font
     margin-bottom: -5px;
 }
 
-.last-entry-item{
-    /*padding: 3px 10px;*/
+.lastEntries-item{
     margin-left:0;
-
-    padding-right: 10px;
-    padding-left: 10px;
+    margin-right: 0;
+    padding: 4px 17px 4px 0;
+    color: rgba(255,255,255,0.55);;
 }
-.last-entry-item:hover{
+.lastEntries-item:hover{
     background-color: #525a5a;
-    /*min-height: 0;*/
-}
-@media (min-width: 768px) {
-    .last-entry-item:hover .disapear-onHover{
-        opacity:1
-    }
-
-    .last-entry-item .disapear-onHover{
-        opacity:0
-    }
+    color: #ffffff;
 }
 
-@media (min-width: 768px) {
-    .spanel-menu{
-        position:inherit;
-
-    }
+.show-onHover{
+    display: none;
 }
-@media (max-width: 768px) {
-    .disapear-onHover{
-        opacity:1
 
+.lastEntries-item:hover .show-onHover{
+    display: block;
+}
+
+@media (max-width: 768px){
+    .show-onHover{
+        display: block;
     }
 }
 
