@@ -84,7 +84,7 @@ lastEntriesManager = {
             {$or: Utils.filterByHiers(Meteor.user().currentHierId)},
             {userId: Meteor.userId},
             {pinged: true},
-            {$and:[{index:{$gte: beforeIndex}},{index:{$lt:elementIndex}}]},
+            {$and:[{index:{$gt: beforeIndex}},{index:{$lt:elementIndex}}]},
             {_id:{$ne:element}}
           ]
         }
