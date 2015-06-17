@@ -15,11 +15,11 @@ Template.entityActivities.helpers({
       case Enums.activitiesType.taskAdd:
         return 'entityTaskAddActivity';
       case Enums.activitiesType.placementAdd:
-        return 'placementAddActivity';
+        return 'entityPlacementAddActivity';
       case Enums.activitiesType.noteAdd:
         return 'entityNoteAddActivity';
       case Enums.activitiesType.fileAdd:
-        return 'fileAddActivity';
+        return 'entityFileAddActivity';
       case Enums.activitiesType.contactableUpdate:
         return 'contactableEditActivity';
     }
@@ -38,5 +38,20 @@ Template.entityNoteAddActivity.events({
 Template.entityTaskAddActivity.events({
   'click .task-link': function () {
     Utils.showModal('addEditTask', this.entityId);
+  }
+});
+
+
+Template.entityFileAddActivity.helpers({
+  getFileName: function (fileId) {
+    var file = ContactablesFiles.findOne(fileId);
+    return file && file.name;
+  }
+});
+
+Template.entityPlacementAddActivity.helpers({
+  getJobName: function (jobId) {
+    var job = Jobs.findOne(jobId);
+    return job && job.displayName;
   }
 });

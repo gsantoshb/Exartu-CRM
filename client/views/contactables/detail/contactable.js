@@ -166,7 +166,6 @@ Template.contactable.events({
   },
   'click #saveStatusNote': function (e) {
     var statusNote = $('input[name=statusNote]').val();
-    console.log(Session.get('entityId'));
     Contactables.update({
       _id: Session.get('entityId')
     }, {

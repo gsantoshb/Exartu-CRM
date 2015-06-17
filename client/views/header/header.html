@@ -170,17 +170,17 @@
         <div class="no-tablet" style="position: absolute;top: 383px;width: 100%;">
             <div class="navbar-lastEntries" style="padding-top:20px;" id="pingeds">
                 {{#each lastEntryPinged}}
-                    <div id="{{_id}}">
+
                         {{>lastEntryItem}}
-                    </div>
+
                 {{/each}}
             </div>
             <div>
                 <div class="navbar-lastEntries" style="padding-top:20px" id="notPingeds">
                     {{#each lastEntryNotPinged}}
-                        <div id="{{_id}}">
+                        <!--<div id="{{_id}}">-->
                             {{>lastEntryItem}}
-                        </div>
+                        <!--</div>-->
                     {{/each}}
                 </div>
             </div>
@@ -193,7 +193,7 @@
 </template>
 
 <template name="lastEntryItem">
-
+    <div id="{{_id}}" class="lastEntry-container" style="cursor: pointer">
         <div class="row lastEntries-item">
             <div>
             <div class="" style="padding-left:0px;float:left;width:20%">
@@ -241,5 +241,5 @@
             </div>
 
         </div>
-
+    </div>
 </template>

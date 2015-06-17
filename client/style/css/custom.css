@@ -1877,6 +1877,13 @@ div#activityChart #container text tspan { text-decoration: none !important; font
    }
 }
 
+@media (max-width: 767px) {
+    .spanel-menu:not(.in):not(.animating){
+       display:none !important;
+    }
+}
+
+
 .row-container{
     padding-left: 15px;
     padding-right: 15px;
