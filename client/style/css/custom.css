@@ -1876,3 +1876,8 @@ div#activityChart #container text tspan { text-decoration: none !important; font
       display: none;
    }
 }
+
+.row-container{
+    padding-left: 15px;
+    padding-right: 15px;
+}

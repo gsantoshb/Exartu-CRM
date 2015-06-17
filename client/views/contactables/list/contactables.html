@@ -1,54 +1,56 @@
 <template name="contactables">
     {{>tourActivities}}
     <div id="content" class="network-content nicer-filters">
-        <div class="row">
-            <div class="col-md-3 col-lg-3 {{#unless showFilters}}hidden{{/unless}}" id="column-filters">
-                {{> contactablesFilters }}
-            </div>
-            <div class="{{#if oneSelected}}
-                             {{#if showFilters}}
+        <div class="row-container">
+            <div class="row">
+                <div class="col-md-3 col-lg-3 {{#unless showFilters}}hidden{{/unless}}" id="column-filters">
+                    {{> contactablesFilters }}
+                </div>
+                <div class="{{#if oneSelected}}
+                    {{#if showFilters}}
                                  col-md-6
                              {{else}}
                                  col-md-9
                              {{/if}}
-                        {{else}}
-                             {{#if showFilters}}
+                {{else}}
+                    {{#if showFilters}}
                                  col-md-9
                              {{else}}
                                  col-md-12
                              {{/if}}
-                        {{/if}}" id="column-list">
-                <div class="list-container">
-                    <div class="list-holder">
+                {{/if}}" id="column-list">
+                    <div class="list-container">
+                        <div class="list-holder">
 
-                        <div class="list-actions">
-                            {{>contactablesListSearch}}
+                            <div class="list-actions">
+                                {{>contactablesListSearch}}
+                            </div>
+
+                            {{>contactablesListHeader}}
+
+                            {{#if isSearching}}
+                                {{_ "searching"}}
+                            {{else}}
+                                {{> contactablesList }}
+                            {{/if}}
+
+                            <div class="list-actions last">
+                                {{#unless isESSearch}}
+                                    {{#if paginationReady}}
+                                        {{>fastPagination name="contactablesView" useKeys="true" containerClass="magic-pager"}}
+                                    {{/if}}
+                                {{/unless}}
+                            </div>
+
                         </div>
-
-                        {{>contactablesListHeader}}
-
-                        {{#if isSearching}}
-                            {{_ "searching"}}
-                        {{else}}
-                            {{> contactablesList }}
-                        {{/if}}
-
-                        <div class="list-actions last">
-                            {{#unless isESSearch}}
-                                {{#if paginationReady}}
-                                    {{>fastPagination name="contactablesView" useKeys="true" containerClass="magic-pager"}}
-                                {{/if}}
-                            {{/unless}}
-                        </div>
-
                     </div>
                 </div>
+                {{#if oneSelected}}
+                    <div class="col-md-3" style="padding:0">
+                        {{>contactablePreview}}
+                    </div>
+                {{/if}}
             </div>
-            {{#if oneSelected}}
-              <div class="col-md-3" style="padding:0">
-                 {{>contactablePreview}}
-              </div>
-            {{/if}}
         </div>
     </div>
 
@@ -476,78 +478,84 @@
 
 <template name="contactablePreview">
    {{#with selectedContactable}}
-       <div class="list-holder hidden-sm hidden-xs" style="position: fixed; right: 0; width: 21%;">
-       <div class="row breadcrumb" style="padding-top:10px; padding-left:20px; margin-left: 0px">
+       <div class="list-holder hidden-sm hidden-xs" style="position: fixed; right: 14px; width: 21%;">
+           <div class="row-container">
+               <div class="row breadcrumb" style="padding-top:10px; padding-left:20px;">
 
-       {{#if pictureFileId}}
-           <div class="profile-pic col-md-6">
-               <a id="edit-pic" title="Click to Edit" class="pointer">
-                   <img class="" src="{{pictureUrl}}" style="max-height: 48px;max-width: 48px;">
-               </a>
-           </div>
+                   {{#if pictureFileId}}
+                       <div class="profile-pic col-md-6">
+                           <a id="edit-pic" title="Click to Edit" class="pointer">
+                               <img class="" src="{{pictureUrl}}" style="max-height: 48px;max-width: 48px;">
+                           </a>
+                       </div>
 
-       {{else}}
-           <div class="item-icon item-icon-network item-icon-lg col-md-6">
-               <div  id="edit-pic" title="Click to Edit" style="cursor: pointer">
-                   {{#if person}}
-                       <i class="icon-profile-business-man"></i>
+                   {{else}}
+                       <div class="item-icon item-icon-network item-icon-lg col-md-6">
+                           <div  id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                               {{#if person}}
+                                   <i class="icon-profile-business-man"></i>
+                               {{/if}}
+                               {{#if organization}}
+                                   <i class="icon-buildings-1"></i>
+                               {{/if}}
+                           </div>
+
+                       </div>
                    {{/if}}
-                   {{#if organization}}
-                       <i class="icon-buildings-1"></i>
-                   {{/if}}
+
+                   <div class="col-md-6">
+                       <p>
+                       <h4 class="title">{{_ displayName}}</h4>
+                       </p>
+                       <p>
+                       <div class="desc">
+                           {{#if person}}
+                               {{#if person.jobTitle}}
+                                   {{_ person.jobTitle}}
+                               {{/if}}
+                           {{/if}}
+
+                           {{#if Contact.clientName}}
+                               @&nbsp;<a href="/contactable/{{Contact.client}}">{{_ Contact.clientName}}</a>
+                           {{/if}}
+
+                           {{#if Client.department}}{{_ Client.department}}{{/if}}
+                       </div>
+                       </p>
+                   </div>
+
                </div>
-
            </div>
-       {{/if}}
+           <div style="padding-left:20px">
+               <ul class="list-type-5">
+                   <!--<li class="list-group-item">Cras justo odio</li>-->
 
-           <div class="col-md-6">
-              <p> <h4 class="title">{{_ displayName}}</h4></p>
-               <p> <div class="desc">
-               {{#if person}}
-                   {{#if person.jobTitle}}
-                       {{_ person.jobTitle}}
-                   {{/if}}
+               {{#if organization}}
+                   <li><div class="left-part">Organization:</div><div class="right-part">{{organization.organizationName}}</div></li>
+                   <li><div class="left-part">Department: </div><div class="right-part">{{_ Client.department}}</div></li>
+                   <!--<p>Organization:{{organization.organizationName}}</p>-->
+                   <!--<p>Department: {{_ Client.department}}</p>-->
                {{/if}}
-
-               {{#if Contact.clientName}}
-                   @&nbsp;<a href="/contactable/{{Contact.client}}">{{_ Contact.clientName}}</a>
+               {{#if Employee}}
+                   <li><div class="left-part">First Name:</div><div class="right-part">{{person.firstName}}</div></li>
+                   <li><div class="left-part">Middle Name:</div><div class="right-part">{{person.middleName}}</div></li>
+                   <li><div class="left-part"> Last Name: </div><div class="right-part">{{person.lastName}}</div></li>
                {{/if}}
-
-               {{#if Client.department}}{{_ Client.department}}{{/if}}
-           </div></p>
+               </ul>
+               <br>
            </div>
-
-       </div>
-       <div style="padding-left:20px">
-           <ul class="list-type-5">
-               <!--<li class="list-group-item">Cras justo odio</li>-->
-
-           {{#if organization}}
-               <li><div class="left-part">Organization:</div><div class="right-part">{{organization.organizationName}}</div></li>
-               <li><div class="left-part">Department: </div><div class="right-part">{{_ Client.department}}</div></li>
-               <!--<p>Organization:{{organization.organizationName}}</p>-->
-               <!--<p>Department: {{_ Client.department}}</p>-->
-           {{/if}}
-           {{#if Employee}}
-               <li><div class="left-part">First Name:</div><div class="right-part">{{person.firstName}}</div></li>
-               <li><div class="left-part">Middle Name:</div><div class="right-part">{{person.middleName}}</div></li>
-               <li><div class="left-part"> Last Name: </div><div class="right-part">{{person.lastName}}</div></li>
-           {{/if}}
-           </ul>
-           <br>
-       </div>
-       <div style="padding-left:20px;padding-bottom:40px">
-           <ul class="list-type-3">
-           {{#with decodedContactMethods}}
-                {{#if phone.value}}
-                    <li><a href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
-                {{/if}}
-                {{#if email.value}}
-                    <li><a href="mailto:{{email.value}}"><span class="round-icon-container"><i class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
-                {{/if}}
-           {{/with}}
-           </ul>
-       </div>
+           <div style="padding-left:20px;padding-bottom:40px">
+               <ul class="list-type-3">
+               {{#with decodedContactMethods}}
+                    {{#if phone.value}}
+                        <li><a href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
+                    {{/if}}
+                    {{#if email.value}}
+                        <li><a href="mailto:{{email.value}}"><span class="round-icon-container"><i class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
+                    {{/if}}
+               {{/with}}
+               </ul>
+           </div>
        </div>
        <br>
        <br>
