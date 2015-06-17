@@ -17,7 +17,7 @@
 <template name="contactableEditActivity">
     <div class="left-part">
         <a class="list-type-7-icon" href="#"><i class="icon icon-pencil-2"></i></a>
-        <div class="list-type-7-title">{{userName this.userId}} {{#if data.added}}added a {{else}} edited the {{/if}} {{data.fieldDisplayName}} {{data.newValue}}</div>
+        <div class="list-type-7-title">{{displayUserName this.userId}} {{#if data.added}}added a {{else}} edited the {{/if}} {{data.fieldDisplayName}} {{data.newValue}}</div>
     </div>
     {{>entityActivityDate}}
 </template>
@@ -31,21 +31,21 @@
 <template name="entityNoteAddActivity">
     <div class="left-part">
         <a class="list-type-7-icon" href="#"><i class="icon icon-pencil-3"></i></a>
-        <div class="list-type-7-title">{{userName this.userId}} added a <a class="pointer note-link">note</a></div>
+        <div class="list-type-7-title">{{displayUserName this.userId}} added a <a class="pointer note-link">note</a></div>
     </div>
     {{>entityActivityDate}}
 </template>
 <template name="entityTaskAddActivity">
     <div class="left-part">
         <a class="list-type-7-icon" href="#"><i class="icon icon-check-4"></i></a>
-        <div class="list-type-7-title">{{userName this.userId}} added a <a class="pointer task-link">task</a></div>
+        <div class="list-type-7-title">{{displayUserName this.userId}} added a <a class="pointer task-link">task</a></div>
     </div>
     {{>entityActivityDate}}
 </template>
 <template name="entityFileAddActivity">
     <div class="left-part">
         <a class="list-type-7-icon" href="#"><i class="icon icon-file-upload"></i></a>
-        <div class="list-type-7-title">{{userName this.userId}} added a  file  "{{getFileName this.entityId}}"</div>
+        <div class="list-type-7-title">{{displayUserName this.userId}} added a file "{{getFileName this.entityId}}"</div>
     </div>
     {{>entityActivityDate}}
 </template>
@@ -53,11 +53,11 @@
 <template name="entityPlacementAddActivity">
     <div class="left-part">
         <a class="list-type-7-icon" href="#"><i class="icon icon-suitcase-1"></i></a>
-        <div class="list-type-7-title">{{userName this.userId}} assigned this employee to <a href="/job/{{data.job}}">{{getJobName data.job}}</a></div>
+        <div class="list-type-7-title">{{displayUserName this.userId}} assigned this employee to <a href="/job/{{data.job}}">{{getJobName data.job}}</a></div>
     </div>
     {{>entityActivityDate}}
 </template>
 
 <template name="entityActivityDate">
-    <div class="right-part">{{formattedDate data.dateCreated}}</div>
+    <div class="right-part">{{formattedDate data.dateCreated 'fromNow'}}</div>
 </template>
