@@ -604,8 +604,6 @@ ContactableManager = {
       });
     },
     getContactableById: function(contactableId){
-      console.log(contactableId);
-
       return Contactables.findOne({_id:contactableId});
     }
 };
