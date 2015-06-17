@@ -123,21 +123,6 @@ Notes.after.update(function(userId, doc, fields, update){
   NotesView.update({_id:newNote._id},newNote);
 })
 
-Contactables.after.update(function(userId, doc, fields, update){
-  if(doc.person) {
-    if (update.$set && (update.$set['person.lastName'] || update.$set['person.middleName'] || update.$set['person.lastName'])) {
-      NotesView.update({"links.id": doc._id}, {$set: {"links.$.displayName": doc.person.lastName + ", " + doc.person.firstName + " " + doc.person.middleName}}, {multi: true})
-    }
-  }
-  else if(doc.organization){
-    console.log(update.$set);
-    if (update.$set && (update.$set['organization.organizationName'])){
-      NotesView.update({"links.id": doc._id}, {$set: {"links.$.displayName":doc.organization.organizationName}}, {multi: true})
-    }
-  }
-
-})
-
 Jobs.after.update(function(userId, doc, fields, update){
   if(update.$set && update.$set['publicJobTitle']){
     NotesView.update({"links.id":doc._id},{$set:{"links.$.displayName": doc.publicJobTitle}},{multi:true})

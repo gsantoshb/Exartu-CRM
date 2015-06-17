@@ -34,43 +34,5 @@ PastJobLeads.allow({
 //
 //});
 
-Contactables.after.update(function(userId, doc, fields, update){
-  if(_.contains(fields, "pastJobs")){
-    if(update.$addToSet){
-      var newPastJob = update.$addToSet.pastJobs;
-      _.extend(newPastJob, {comment:"", active:true});
-      _.extend(newPastJob, {_id: newPastJob.id});
-      _.extend(newPastJob, {hierId: Meteor.user().currentHierId});
-      _.extend(newPastJob, {employeeId:doc._id,employeeName:doc.displayName});
-      newPastJob = _.omit(newPastJob, 'id');
-      PastJobLeads.insert(newPastJob);
-    }else if(update.$pull) {
-      PastJobLeads.remove({_id: update.$pull.pastJobs.id})
-    }else if(update.$set['pastJobs.$']){
-      var newPastJob = update.$set['pastJobs.$'];
-      _.extend(newPastJob, {comment:"", active:true});
-      _.extend(newPastJob, {_id: newPastJob.id});
-      _.extend(newPastJob, {hierId: Meteor.user().currentHierId});
-      _.extend(newPastJob, {employeeId:doc._id,employeeName:doc.displayName});
-      newPastJob = _.omit(newPastJob, 'id');
-      PastJobLeads.update({_id: update.$set['pastJobs.$'].id},newPastJob);
-    }
-  }
-})
-
-Contactables.after.insert(function(userId,doc){
-  if(doc.Employee && doc.pastJobs){
-   _.each(doc.pastJobs, function(p){
-     var newPastJob = p;
-     _.extend(newPastJob, {comment:"", active:true});
-     _.extend(newPastJob, {_id: newPastJob.id});
-     _.extend(newPastJob, {hierId: Meteor.user().currentHierId});
-     _.extend(newPastJob, {employeeId:doc._id,employeeName:doc.displayName});
-     newPastJob = _.omit(newPastJob, 'id');
-     PastJobLeads.insert(newPastJob);
-   })
- }
-})
-
 
 PastJobLeads._ensureIndex({dateCreated: 1});
