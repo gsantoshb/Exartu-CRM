@@ -119,6 +119,24 @@ NoteManager = {
 
     //we have to check if the user have the permissions to remove this note.
     return Notes.remove({_id:id});
+  },
+  getNotePreview: function(noteId){
+    var note = Notes.findOne({_id:noteId});
+    var linksInfo = [];
+    _.forEach(note.links, function(l){
+      switch(l.type){
+        case Enums.linkTypes.contactable.value:{
+          var c = Contactables.findOne({_id: l.id});
+          var lInfo = {_id: c._id, displayName: c.displayName, objNameArray: c.objNameArray};
+          if(c.contactMethods){
+            _.extend(lInfo, {contactMethods: c.contactMethods});
+          }
+          linksInfo.push(lInfo);
+          break;
+        }
+      }
+    })
+    return({_id: note._id, msg: note.msg, dateCreated: note.dateCreated, links: linksInfo});
   }
 };
 

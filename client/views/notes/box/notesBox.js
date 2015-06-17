@@ -5,6 +5,7 @@ var searchStringQuery = {};
 var q={};
 var selectedSort = new ReactiveVar();
 var tourIndex;
+var notePreview = new ReactiveVar(false);
 var loadNoteQueryFromURL = function (params) {
   // Search string
 
@@ -149,6 +150,9 @@ Template.notesBox.helpers({
   },
   isUserSelected: function () {
     return this._id == noteQuery.userId.value;
+  },
+  notePreview: function(){
+    return notePreview.get()
   }
 });
 
@@ -166,6 +170,13 @@ Template.notesBox.events({
           type: entityType
         }]
       })
+  },
+  'click .notes-list-item': function(e){
+
+    Meteor.call('getNotePreview', this._id, function(er, res){
+      notePreview.set(res);
+    })
+
   }
 });
 // list sort

@@ -1876,3 +1876,10 @@ div#activityChart #container text tspan { text-decoration: none !important; font
       display: none;
    }
 }
+
+@media (max-width: 767px) {
+    .spanel-menu:not(.in):not(.animating){
+       display:none !important;
+    }
+}
+

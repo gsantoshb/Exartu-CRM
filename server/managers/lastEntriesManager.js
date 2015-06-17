@@ -6,9 +6,7 @@ lastEntriesManager = {
     var user = Meteor.user();
     if(user){
         var e = LastEntries.findOne({entity: entry.entity, userId: user._id, hierId: user.currentHierId});
-        console.log(e);
         if (!e) {
-          console.log('no e')
           switch(entry.type){
             case Enums.linkTypes.contactable.value:{
               var c = Contactables.findOne({_id:entry.entity},{fields:{displayName:1}});
@@ -57,7 +55,6 @@ lastEntriesManager = {
     }
   },
   updateIndex:function(element, before){
-    console.log('updateIndex');
     if(!before){
       //firstPosition
       var elementObject = LastEntries.findOne({_id:element});
