@@ -1,3 +1,5 @@
+var streamBuffers = Meteor.npmRequire("stream-buffers");
+
 //todo hack
 var applicantCenterURL = process.env.HRCENTER_URL || 'http://localhost:3030/';
 
@@ -137,3 +139,49 @@ HRConcourseManager = {
     return empId;
   }
 };
+
+
+function syncDocs(hierId, instances, metadata) {
+
+  console.log('syncing ' + instances.length + ' docs');
+
+  _.each(instances, function (doc) {
+    DocCenter.renderDocumentInstance(hierId, doc.documentInstanceId, function (err, result) {
+
+      var myReadableStreamBuffer = new streamBuffers.ReadableStreamBuffer({
+        frequency: 10,      // in milliseconds.
+        chunkSize: 2048     // in bytes.
+      });
+
+      myReadableStreamBuffer.put(result);
+      myReadableStreamBuffer.destroySoon(); //fires 'end'
+
+      console.log('uploading...');
+      var fileId = S3Storage.upload(myReadableStreamBuffer);
+      console.log('end');
+
+
+
+      if (!fileId) {
+
+        return new Meteor.Error(500, "Error uploading resume to S3");
+      }
+
+      var file = {
+        entityId: metadata.entityId,
+        name: doc.documentName,
+        type: 'application/pdf',
+        extension: 'pdf',
+        description: '',
+        tags: 'HRC Kiosk',
+        userId: metadata.userId,
+        hierId: metadata.hierId,
+        fileId: fileId
+      };
+      console.log('file', file);
+
+
+      ContactablesFiles.insert(file);
+    });
+  });
+}
