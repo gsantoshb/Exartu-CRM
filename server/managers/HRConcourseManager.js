@@ -81,6 +81,9 @@ HRConcourseManager = {
     if (!hierId) throw new Error("Hier ID is required");
     if (!docCenterId) throw new Error("DocCenter ID is required");
 
+    // Log the attempt to sync an HRC employee
+    var logRecordId = KioskEmployees.insert({docCenterId: docCenterId});
+
     var empEmail;
     var documentInstances = 0;
     var mergeFields = {};
@@ -98,6 +101,9 @@ HRConcourseManager = {
         mergeFields[mf.key] = mf.value;
       });
     });
+
+    // Log the amount of doc instances
+    KioskEmployees.update({_id: logRecordId}, {$set: {documentInstances: documentInstances}});
 
     // Check at least one document is on the user
     if (!documentInstances) throw new Error('The specified user has no documents.');
@@ -121,18 +127,75 @@ HRConcourseManager = {
       hierId: hierId,
       person: {
         "firstName" : empFirstName,
-        "lastName" : empLastName
+        "lastName" : empLastName,
       },
       contactMethods: [{type: emailCM._id, value: empEmail}],
       Employee: {},
       docCenter: {
-        docCenterId: docCenterId
+        docCenterId: docCenterId,
       }
     });
     if (!empId) throw new Error('An error occurred while creating the employee');
 
+    // Log the ID of the employee related to this HRC user
+    KioskEmployees.update({_id: logRecordId}, {$set: {contactableId: empId}});
+
+    // Add available information from the merge fields
+    var update = {$set: {}};
+    if (mergeFields.ssn) update.$set['Employee.taxID'] = mergeFields.ssn;
+    if (mergeFields.dateOfBirth) update.$set['person.birthDate'] = mergeFields.dateOfBirth;
+    if (mergeFields.convictions) update.$set['Employee.convictions'] = mergeFields.convictions;
+    if (mergeFields.ethnicity) update.$set['Employee.ethnicity'] = mergeFields.ethnicity;
+    if (mergeFields.desiredPay) update.$set['Employee.desiredPay'] = mergeFields.desiredPay;
+    if (mergeFields.gender) {
+      if (mergeFields.gender.indexOf('f') != -1 || mergeFields.gender.indexOf('F') != -1) {
+        update.$set['Employee.gender'] = 'f';
+      } else {
+        update.$set['Employee.gender'] = 'm';
+      }
+    }
+    if (mergeFields.hasOwnTransportation) {
+      if (mergeFields.hasOwnTransportation.indexOf('t') != -1 || mergeFields.hasOwnTransportation.indexOf('T') != -1) {
+        update.$set['Employee.hasTransportation'] = true;
+      } else {
+        update.$set['Employee.hasTransportation'] = false;
+      }
+    }
+
+    // Update the employee with the information obtained from the merge fields
+    if (!_.isEmpty(update.$set)) Contactables.update({_id: empId}, update);
+
+    // Create an address for this employee when provided
+    if (mergeFields.addressLine1 && mergeFields.city && mergeFields.country) {
+      // Address type
+      var addressType = LookUps.findOne({
+        lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
+        $or: hierFilter
+      });
+
+      var address = {
+        addressTypeId: addressType._id,
+        linkId: empId,
+        address: mergeFields.addressLine1,
+        city: mergeFields.city,
+        country: mergeFields.country
+      };
+
+      // Add optional fields
+      if (mergeFields.addressLine2) address.address2 = mergeFields.addressLine2;
+      if (mergeFields.state) address.state = mergeFields.state;
+      if (mergeFields.zipCode) address.postalCode = mergeFields.zipCode;
+
+      AddressManager.addEditAddress(address);
+    }
+
+
     // Create AppCenter account for the employee
-    ApplicantCenterManager.createUserForHRCKioskEmployee(empId, empEmail);
+    var appCenterId = ApplicantCenterManager.createUserForHRCKioskEmployee(empId, empEmail);
+    if (appCenterId) {
+      // Log the ID of the AC user created for thi HRC employee
+      KioskEmployees.update({_id: logRecordId}, {$set: {appCenterId: appCenterId}});
+    }
 
     // Save the documents to the employee
 

@@ -159,12 +159,16 @@ Template.header.events({
         }
       })
     },
+    'click #search-entry': function(e){
+      e.stopPropagation();
+    },
     'keyup #search-entry': function(e){
       searchStringEntries = e.target.value;
       searchStringEntriesDep.changed();
     },
     'click #sort-Entries': function(e){
       sortEntries.set(sortEntries.get()*-1);
+      e.stopPropagation();
     }
 });
 
@@ -290,6 +294,7 @@ Template.sidebar.rendered = function () {
     var minimunWidth = 768;
 
     var hideIfClickOutside = function (e) {
+
         var submenuTrigger = $('.submenu>a');
 
         var isInMenuTrigger = submenuTrigger.is(e.target) || submenuTrigger.has(e.target).length > 0;

@@ -60,6 +60,8 @@ HelpVideos = new Mongo.Collection('helpVideos');
 
 LastEntries = new Mongo.Collection('lastEntries');
 
+KioskEmployees = new Mongo.Collection('kioskEmployees');
+
 Collections = {
     Hierarchies: Hierarchies,
     Jobs: Jobs,

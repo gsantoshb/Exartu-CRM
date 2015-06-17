@@ -140,8 +140,8 @@
             </li>
 
             <li>
-                <div class="list-actions-cell search-list" style="margin-top:20px">
-                    <div class="input-group">
+                <div class="list-actions-cell search-list no-tablet" style="margin-top:20px">
+                    <div class="input-group" id="search-sort-btns">
                                     <span class="prop-input">
                                         <input class="form-control" id="search-entry" placeholder="Search">
                                         <span class="text text-danger"></span>
@@ -167,7 +167,7 @@
 
 
         </ul>
-        <div style="position: absolute;top: 383px;width: 100%;">
+        <div class="no-tablet" style="position: absolute;top: 383px;width: 100%;">
             <div class="navbar-lastEntries" style="padding-top:20px;" id="pingeds">
                 {{#each lastEntryPinged}}
                     <div id="{{_id}}">
@@ -186,6 +186,7 @@
             </div>
         </div>
 
+     
 
     </div>
 
