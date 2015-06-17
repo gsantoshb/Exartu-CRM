@@ -1,3 +1,5 @@
+var streamBuffers = Meteor.npmRequire("stream-buffers");
+
 //todo hack
 var applicantCenterURL = process.env.HRCENTER_URL || 'http://localhost:3030/';
 
@@ -196,7 +198,54 @@ HRConcourseManager = {
     }
 
     // Save the documents to the employee
+    syncDocs(hierId, documentInstances, logRecordId, empId);
 
     return empId;
   }
 };
+
+
+function syncDocs(hierId, instances, logRecordId, entityId) {
+
+  console.log('syncing ' + instances.length + ' docs');
+
+  _.each(instances, function (doc) {
+    DocCenter.renderDocumentInstance(hierId, doc.documentInstanceId, function (err, result) {
+
+      var myReadableStreamBuffer = new streamBuffers.ReadableStreamBuffer({
+        frequency: 10,      // in milliseconds.
+        chunkSize: 2048     // in bytes.
+      });
+
+      myReadableStreamBuffer.put(result);
+      myReadableStreamBuffer.destroySoon(); //fires 'end'
+
+      console.log('uploading...');
+      var fileId = S3Storage.upload(myReadableStreamBuffer);
+      console.log('end');
+
+      var user = Meteor.user();
+
+      if (!fileId) {
+        KioskEmployees.update({_id: logRecordId}, {$push: {failedDocFiles: doc.documentInstanceId}});
+      } else {
+
+        var file = {
+          entityId: entityId,
+          name: doc.documentName,
+          type: 'application/pdf',
+          extension: 'pdf',
+          description: '',
+          tags: 'HRC Kiosk',
+          userId: user._id,
+          hierId: hierId,
+          fileId: fileId
+        };
+        console.log('file', file);
+
+        ContactablesFiles.insert(file);
+      }
+
+    });
+  });
+}

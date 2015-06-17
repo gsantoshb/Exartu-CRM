@@ -6,5 +6,6 @@
   "pdfkit": "0.7.0",
   "iconv-lite": "0.4.7",
   "request":"2.55.0",
-  "delayed-stream":"0.0.6"
+  "delayed-stream":"0.0.6",
+  "stream-buffers": "2.1.0"
 }
