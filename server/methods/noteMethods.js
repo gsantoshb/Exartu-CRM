@@ -54,5 +54,8 @@ Meteor.methods({
       case Enums.linkTypes.hotList.value:
         return HotLists.findOne({_id: link.id}, {fields: {displayName: 1}});
     }
+  },
+  getNotePreview: function(noteId){
+    return NoteManager.getNotePreview(noteId);
   }
 });

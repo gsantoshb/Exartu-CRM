@@ -119,6 +119,41 @@ NoteManager = {
 
     //we have to check if the user have the permissions to remove this note.
     return Notes.remove({_id:id});
+  },
+  getNotePreview: function(noteId){
+    var note = Notes.findOne({_id:noteId});
+    var linksInfo = [];
+    _.forEach(note.links, function(l){
+      switch(l.type){
+        case Enums.linkTypes.contactable.value:{
+          var c = Contactables.findOne({_id: l.id});
+          var lInfo = {_id: c._id, displayName: c.displayName, objNameArray: c.objNameArray};
+          if(c.contactMethods){
+            _.extend(lInfo, {contactMethods: c.contactMethods,type:Enums.linkTypes.contactable.value});
+          }
+          linksInfo.push(lInfo);
+          break;
+        }
+        case Enums.linkTypes.job.value:{
+          var lInfo = Jobs.findOne({_id: l.id},{fields:{_id:1,displayName:1}})
+          _.extend(lInfo, {type:Enums.linkTypes.job.value});
+          linksInfo.push(lInfo);
+          break;
+        }
+        case Enums.linkTypes.placement.value:{
+          var lInfo = Placements.findOne({_id: l.id},{fields:{_id:1,displayName:1}})
+          _.extend(lInfo, {type:Enums.linkTypes.placement.value});
+          linksInfo.push(lInfo);
+          break;
+        }
+        case Enums.linkTypes.hotList.value:{
+          var lInfo = HotLists.findOne({_id: l.id},{fields:{_id:1,displayName:1}})
+          _.extend(lInfo, {type:Enums.linkTypes.hotList.value});
+          linksInfo.push(lInfo);
+        }
+      }
+    })
+    return({_id: note._id, msg: note.msg, dateCreated: note.dateCreated, links: linksInfo});
   }
 };
 

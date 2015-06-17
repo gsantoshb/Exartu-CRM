@@ -466,11 +466,37 @@ Template.lastEntryItem.events({
     Meteor.call("removeEntry",this._id,function(err,res){
 
     })
+    e.stopPropagation();
   },
   "click #ping-entry": function(e){
     Meteor.call("changePing",this._id,function(err,res){
 
     })
+    e.stopPropagation();
+  },
+  "click .lastEntry-container": function(e){
+    switch(this.type) {
+      case Enums.linkTypes.contactable.value:
+      {
+        Router.go("/contactable/" + this.entity);
+        break;
+      }
+      case Enums.linkTypes.job.value:
+      {
+        Router.go("/job/" + this.entity);
+        break;
+      }
+      case Enums.linkTypes.hotList.value:
+      {
+        Router.go("/hotList/" + this.entity);
+        break;
+      }
+      case Enums.linkTypes.placement.value:
+      {
+        Router.go("/placement/" + this.entity);
+        break;
+      }
+    }
   }
 
 })
