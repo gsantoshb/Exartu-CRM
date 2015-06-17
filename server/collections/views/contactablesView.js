@@ -57,26 +57,6 @@ Notes.after.update(function (userId, note, fieldNames, modifier) {
   }
 });
 
-//addresses
-Addresses.after.insert(function (userId, address) {
-  if (Contactables.findOne(address.linkId, {fields:{_id:1}})){
-      ContactablesView.update(address.linkId, {
-        $push: {
-          addresses: address
-        }
-      });
-  }
-});
-Addresses.after.update(function (userId, address, fieldNames, modifier) {
-  if (Contactables.findOne(address.linkId, {fields:{_id:1}})){
-    ContactablesView.update({ _id: address.linkId, addresses: { $elemMatch: {_id: address._id } } }, {
-      $set: {
-        'addresses.$': address
-      }
-    });
-  }
-});
-
 
 // Indexes
 

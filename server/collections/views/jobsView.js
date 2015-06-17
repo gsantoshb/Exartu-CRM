@@ -98,13 +98,6 @@ Jobs.after.update(function (userId, job, fieldNames, modifier, options) {
 });
 
 
-Addresses.after.update(function (userId, address, fieldNames, modifier) {
-  JobsView.update({address: address._id}, {
-    $set: { address: address }
-  }, {multi: true});
-});
-
-
 // Indexes
 JobsView._ensureIndex({jobId: 1});
 JobsView._ensureIndex({hierId: 1});
