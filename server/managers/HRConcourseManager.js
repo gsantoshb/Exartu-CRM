@@ -198,13 +198,14 @@ HRConcourseManager = {
     }
 
     // Save the documents to the employee
+    syncDocs(hierId, documentInstances, logRecordId, empId);
 
     return empId;
   }
 };
 
 
-function syncDocs(hierId, instances, metadata) {
+function syncDocs(hierId, instances, logRecordId, entityId) {
 
   console.log('syncing ' + instances.length + ' docs');
 
@@ -223,28 +224,28 @@ function syncDocs(hierId, instances, metadata) {
       var fileId = S3Storage.upload(myReadableStreamBuffer);
       console.log('end');
 
-
+      var user = Meteor.user();
 
       if (!fileId) {
+        KioskEmployees.update({_id: logRecordId}, {$push: {failedDocFiles: doc.documentInstanceId}});
+      } else {
 
-        return new Meteor.Error(500, "Error uploading resume to S3");
+        var file = {
+          entityId: entityId,
+          name: doc.documentName,
+          type: 'application/pdf',
+          extension: 'pdf',
+          description: '',
+          tags: 'HRC Kiosk',
+          userId: user._id,
+          hierId: hierId,
+          fileId: fileId
+        };
+        console.log('file', file);
+
+        ContactablesFiles.insert(file);
       }
 
-      var file = {
-        entityId: metadata.entityId,
-        name: doc.documentName,
-        type: 'application/pdf',
-        extension: 'pdf',
-        description: '',
-        tags: 'HRC Kiosk',
-        userId: metadata.userId,
-        hierId: metadata.hierId,
-        fileId: fileId
-      };
-      console.log('file', file);
-
-
-      ContactablesFiles.insert(file);
     });
   });
 }
