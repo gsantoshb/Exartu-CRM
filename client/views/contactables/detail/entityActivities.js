@@ -1,5 +1,9 @@
 Template.entityActivities.onCreated(function () {
-  this.subscribe('entityActivities', Session.get('entityId'));
+  this.handler = Meteor.paginatedSubscribe('entityActivities', {pubArguments: Session.get('entityId'), options: {sort: {'data.dateCreated': -1}}});
+});
+
+Template.entityActivities.onDestroyed(function () {
+  this.handler.stop();
 });
 
 Template.entityActivities.helpers({
@@ -11,7 +15,7 @@ Template.entityActivities.helpers({
       case Enums.activitiesType.contactableAdd:
         return 'entityCreatedActivity';
       case Enums.activitiesType.jobAdd:
-        return 'entityCreatedActivity';
+        return 'entityJobAddActivity';
       case Enums.activitiesType.taskAdd:
         return 'entityTaskAddActivity';
       case Enums.activitiesType.placementAdd:

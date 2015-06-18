@@ -416,9 +416,11 @@ Meteor.publish('getActivities', function(query, options){
   return activities;
 });
 
-Meteor.publish('entityActivities', function (id) {
-  console.log('entityActivities', Utils.filterCollectionByUserHier2(this.userId, Activities.find({entityId: id})).count());
+Meteor.paginatedPublish(ActivityViews, function (id) {
   return Utils.filterCollectionByUserHier2(this.userId, ActivityViews.find({$or:[{entityId: id}, {links: id }]}));
+},{
+  pageSize: 5,
+  publicationName: 'entityActivities'
 });
 
 

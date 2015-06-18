@@ -620,12 +620,6 @@ Template.contactable_nav.helpers({
         });
       }
     }
-    tabs.push({
-      id: 'activity',
-      mobileDisplayName: 'Activity',
-      displayName: 'Activity',
-      template: 'entityActivities'
-    });
     return tabs;
   }
 });
