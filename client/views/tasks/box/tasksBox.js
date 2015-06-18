@@ -4,6 +4,7 @@ var isEntitySpecific = false;
 var taskCollection = Tasks;
 var TaskHander, queryObj, status;
 var searchQuery = {};
+var taskPreview = new ReactiveVar(false);
 
 var statusDep = new Deps.Dependency;
 $("#assignedToDropdown").prop("selectedIndex", -1);
@@ -147,6 +148,7 @@ Template.tasksBox.created = function () {
 };
 
 Template.tasksBox.rendered = function () {
+  taskPreview.set(false);
   Meteor.call('getIndexTour', "tourActivities", function(err,cb){
     tourIndex = cb;
     if((tourIndex>=18)&&(tourIndex < 22)){
@@ -269,6 +271,9 @@ Template.tasksBox.helpers({
     },
     isUserSelected: function () {
         return this._id == queryObj.assignedTo.value;
+    },
+    taskPreview: function(){
+        return taskPreview.get();
     }
 });
 
@@ -293,9 +298,78 @@ Template.tasksBox.events({
         statusDep.changed()
     },
     'click .clearState': function () {
-
         status = [];
         statusDep.changed()
+    },
+    'click .editTask':function(e){
+      e.stopPropagation();
+    },
+    'click .tasks-list-item': function (e){
+      if(!Session.get('entityId')) {
+        //is session.get(entityId) then you are on a contactable
+        Meteor.call('getTaskPreview', this._id, function (er, res) {
+          taskPreview.set(res);
+
+        })
+      }
     }
 });
 
+
+Template.taskPreviewTemp.helpers({
+  decodedContactMethods: function() {
+
+    var result = {};
+    var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
+    _.some(this.contactMethods, function (cm) {
+      var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
+      if (!type)
+        return false;
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email)) {
+        result.email = cm;
+        email = cm;
+      }
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+        result.phone = cm;
+        phone = cm;
+      }
+      if (!result.email || !result.phone) {
+        return false;
+      }
+
+      return true;
+    });
+    if (!result.phone && !result.email) {
+      return false
+    }
+    else {
+      return result;
+    }
+  },
+  iconClass: function(){
+    switch(this.type){
+      case Enums.linkTypes.contactable.value:{
+        return "icon-profile-business-man";
+      }case Enums.linkTypes.hotList.value:{
+      return "icon-list-4";
+    }case Enums.linkTypes.job.value:{
+      return "icon-briefcase-2";
+    }case Enums.linkTypes.placement.value:{
+      return "icon icon-suitcase-1";
+    }
+    }
+  },
+  iconColor: function(){
+    switch(this.type){
+      case Enums.linkTypes.contactable.value:{
+        return "item-icon-network";
+      }case Enums.linkTypes.hotList.value:{
+      return "item-icon-hotlist";
+    }case Enums.linkTypes.job.value:{
+      return "item-icon-jobs";
+    }case Enums.linkTypes.placement.value:{
+      return "item-icon-placements";
+    }
+    }
+  }
+})
