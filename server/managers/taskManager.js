@@ -148,6 +148,41 @@ TaskManager = {
     if (!task) throw new Error('Task with id ' + taskId + 'not found');
 
     Tasks.update({_id: taskId}, {$set: {inactive: false}});
+  },
+  getTaskPreview: function(taskId){
+    var task = Tasks.findOne({_id:taskId});
+    var linksInfo = [];
+    _.forEach(task.links, function(l){
+      switch(l.type){
+        case Enums.linkTypes.contactable.value:{
+          var c = Contactables.findOne({_id: l.id});
+          var lInfo = {_id: c._id, displayName: c.displayName, objNameArray: c.objNameArray,type:Enums.linkTypes.contactable.value};
+          if(c.contactMethods){
+            _.extend(lInfo, {contactMethods: c.contactMethods});
+          }
+          linksInfo.push(lInfo);
+          break;
+        }
+        case Enums.linkTypes.job.value:{
+          var lInfo = Jobs.findOne({_id: l.id},{fields:{_id:1,displayName:1}})
+          _.extend(lInfo, {type:Enums.linkTypes.job.value});
+          linksInfo.push(lInfo);
+          break;
+        }
+        case Enums.linkTypes.placement.value:{
+          var lInfo = Placements.findOne({_id: l.id},{fields:{_id:1,displayName:1}})
+          _.extend(lInfo, {type:Enums.linkTypes.placement.value});
+          linksInfo.push(lInfo);
+          break;
+        }
+        case Enums.linkTypes.hotList.value:{
+          var lInfo = HotLists.findOne({_id: l.id},{fields:{_id:1,displayName:1}})
+          _.extend(lInfo, {type:Enums.linkTypes.hotList.value});
+          linksInfo.push(lInfo);
+        }
+      }
+    })
+    return({_id: task._id, msg: task.msg, dateCreated: task.dateCreated, links: linksInfo});
   }
   //pushTask: function (taskId, days) {
   //  // Validations

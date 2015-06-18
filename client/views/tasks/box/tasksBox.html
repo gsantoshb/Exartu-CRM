@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="col-md-9">
+        <div class=" {{#if taskPreview}} col-md-6  {{else}} col-md-9 {{/if}}">
             <div class="list-container">
                 <div class="list-holder">
                     <div class="list-actions">
@@ -113,5 +113,66 @@
                 </div>
             </div>
         </div>
+        {{#if taskPreview}}
+            {{#with taskPreview}}
+                <div class="col-md-3" style="padding:0">
+                    {{>taskPreviewTemp}}
+                </div>
+            {{/with}}
+        {{/if}}
     </div>
+</template>
+<template name="taskPreviewTemp">
+    <div class="list-holder hidden-sm hidden-xs" style="position: fixed; right: 14px; width: 21%;">
+        <div class="row-container">
+            <div class="row breadcrumb" style="padding-top:10px; padding-left:20px;">
+                <div class="col-md-2 item-icon item-icon-tasks item-icon-lg editTask">
+                    <div  id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                        <i class="ico-tasks"></i>
+                    </div>
+                </div>
+                <div class="col-md-6" style="margin-left:10px">
+                    <p> <h4 class="title">{{_ msg}}</h4></p>
+                </div>
+
+            </div>
+        </div>
+        {{#if links.length}}
+            <div style="padding-left:20px">
+                <p><h5>Linked to:</h5></p>
+                <div style="padding-left:20px">
+                    {{#each links}}
+                        <div style="margin-bottom:30px;">
+                            <div>
+                         <span>
+                           <div class="item-icon {{iconColor}} col-md-6" style="width:30px; height:30px;padding-left:5px">
+                               <div  id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                                   <i class="{{iconClass}}"></i>
+                               </div>
+                           </div>
+                           <div style="padding-top:1px;padding-left:40px">
+                               <h5>{{displayName}}</h5>
+                           </div>
+                         </span>
+                            </div>
+                            <div style="margin-top:10px;">
+                                <ul class="list-type-3">
+                                    {{#with decodedContactMethods}}
+                                        {{#if phone.value}}
+                                            <li style="border-bottom: none;"><a href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
+                                        {{/if}}
+                                        {{#if email.value}}
+                                            <li style="border-bottom: none;"><a href="mailto:{{email.value}}"><span class="round-icon-container"><i class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
+                                        {{/if}}
+                                    {{/with}}
+                                </ul>
+                            </div>
+
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+    </div>
+
 </template>

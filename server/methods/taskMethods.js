@@ -88,6 +88,9 @@ Meteor.methods({
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
+  },
+  getTaskPreview: function(taskId){
+    return TaskManager.getTaskPreview(taskId);
   }
   //pushTask: function (taskId, days) {
   //  check(taskId, String);

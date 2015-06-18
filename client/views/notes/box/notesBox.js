@@ -175,6 +175,7 @@ Template.notesBox.events({
 
     Meteor.call('getNotePreview', this._id, function(er, res){
       notePreview.set(res);
+
     })
 
   }
