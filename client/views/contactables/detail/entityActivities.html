@@ -1,8 +1,11 @@
 <template name="entityActivities">
-    <section class="box-type-1">
-        <div class="box-type-1-content">
+    <section class="box-type-2">
+        <div class="box-type-2-content">
             <div class="row">
-                <ul class="list-type-7 activity-feed">
+                <ul class="list-type-7 activity-feed" style="padding-top: 0">
+                    <div style="text-align: right; height: 60px">
+                        {{>fastPagination name="entityActivities"}}
+                    </div>
                     {{#each activities}}
                         <li>
                             {{> Template.dynamic template=getTemplateForActivity}}
@@ -25,6 +28,13 @@
     <div class="left-part">
         <a class="list-type-7-icon" href="#"><i class="fa fa-user-plus"></i></a>
         <div class="list-type-7-title">Entity created</div>
+    </div>
+    {{>entityActivityDate}}
+</template>
+<template name="entityJobAddActivity">
+    <div class="left-part">
+        <a class="list-type-7-icon" href="#"><i class="icon icon-briefcase"></i></a>
+        <div class="list-type-7-title">Job <a href="/job/{{this.entityId}}">{{data.publicJobTitle}}</a> created</div>
     </div>
     {{>entityActivityDate}}
 </template>
