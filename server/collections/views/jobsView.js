@@ -97,21 +97,6 @@ Jobs.after.update(function (userId, job, fieldNames, modifier, options) {
   }
 });
 
-Contactables.after.update(function (userId, contactable, fieldNames, modifier, options) {
-  JobsView.update({clientId: contactable._id}, {
-    $set: {
-      clientDisplayName: contactable.displayName,
-      clientDepartmentName: contactable.Client ? contactable.Client.department : ''
-    }
-  }, {multi: true});
-});
-
-Addresses.after.update(function (userId, address, fieldNames, modifier) {
-  JobsView.update({address: address._id}, {
-    $set: { address: address }
-  }, {multi: true});
-});
-
 
 // Indexes
 JobsView._ensureIndex({jobId: 1});

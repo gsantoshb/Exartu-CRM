@@ -81,14 +81,6 @@ Placements.after.update(function (userId, placement, fieldNames, modifier, optio
   }
 });
 
-Contactables.after.update(function (userId, contactable, fieldNames, modifier, options) {
-  PlacementsView.update({employeeId: contactable._id}, {
-    $set: {
-      employeeDisplayName: contactable.person ? contactable.person.lastName + ', ' + contactable.person.firstName : ''
-    }
-  }, {multi: true});
-});
-
 Jobs.after.update(function (userId, job, fieldNames, modifier, options) {
   PlacementsView.update({jobId: job._id}, {
     $set: {

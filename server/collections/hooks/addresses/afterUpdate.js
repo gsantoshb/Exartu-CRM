@@ -1,8 +1,26 @@
 
-// Addresses
-Addresses.after.insert(function (userId, address) { syncAddress(address); });
-Addresses.after.update(function (userId, address, fieldNames, modifier) { syncAddress(address); });
-var syncAddress = function (address) {
+// Contactables View
+Addresses.after.update(function (userId, address, fieldNames, modifier) {
+  if (Contactables.findOne(address.linkId, {fields:{_id:1}})){
+    ContactablesView.update({ _id: address.linkId, addresses: { $elemMatch: {_id: address._id } } }, {
+      $set: {
+        'addresses.$': address
+      }
+    });
+  }
+});
+
+
+// Jobs View
+Addresses.after.update(function (userId, address, fieldNames, modifier) {
+  JobsView.update({address: address._id}, {
+    $set: { address: address }
+  }, {multi: true});
+});
+
+
+// TW Enterprise sync
+Addresses.after.update(function (userId, address, fieldNames, modifier) {
   var contactable = Contactables.findOne(address.linkId, {fields:{_id: 1, hierId: 1, externalId: 1, Employee: 1}});
 
   // Sync only when an account has been set up for the contactable hier and the contactable has been sync
@@ -34,4 +52,4 @@ var syncAddress = function (address) {
       }
     }
   }
-};
+});

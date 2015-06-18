@@ -19,6 +19,7 @@ var jobActivities=[Enums.activitiesType.placementEdit, Enums.activitiesType.plac
 
 
 UI.registerHelper('userName',function(userId){
+  console.log('userId', userId);
   var user= Meteor.users.findOne({_id: userId});
   return user && user.username;
 });
