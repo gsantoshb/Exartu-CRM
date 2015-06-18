@@ -224,6 +224,14 @@ Template.noteListSort.events = {
   }
 };
 
+
+Template.notePreviewTemp.events({
+  'click #close-preview':function(e){
+    notePreview.set(false);
+  }
+})
+
+
 Template.notePreviewTemp.helpers({
   decodedContactMethods: function() {
 

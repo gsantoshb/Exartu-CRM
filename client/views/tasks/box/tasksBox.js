@@ -313,8 +313,14 @@ Template.tasksBox.events({
         })
       }
     }
+
 });
 
+Template.taskPreviewTemp.events({
+  'click #close-preview':function(e){
+    taskPreview.set(false);
+  }
+})
 
 Template.taskPreviewTemp.helpers({
   decodedContactMethods: function() {

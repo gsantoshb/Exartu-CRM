@@ -142,11 +142,21 @@
                 <div class="col-md-6">
                     <p> <h4 class="title">{{_ msg}}</h4></p>
                 </div>
-
+                <div class="" style="float:right">
+                    <i class="glyphicon glyphicon-remove-sign" id="close-preview" style="color: gray;cursor: pointer"></i>
+                </div>
             </div>
         </div>
-        {{#if links.length}}
+
             <div style="padding-left:20px">
+              <div style="width:30%;float:left">
+                  <h5 style="margin:0">Date created:</h5>
+              </div>
+              <div style="width:70%;font-size: 13px;float:right">
+               {{formattedDate dateCreated "lll"}}
+              </div>
+              <br>
+        {{#if links.length}}
               <p><h5>Linked to:</h5></p>
                 <div style="padding-left:20px">
               {{#each links}}
@@ -179,8 +189,9 @@
                  </div>
               {{/each}}
                 </div>
-            </div>
         {{/if}}
+            </div>
+
     </div>
 
 </template>
