@@ -123,12 +123,6 @@ Notes.after.update(function(userId, doc, fields, update){
   NotesView.update({_id:newNote._id},newNote);
 })
 
-Jobs.after.update(function(userId, doc, fields, update){
-  if(update.$set && update.$set['publicJobTitle']){
-    NotesView.update({"links.id":doc._id},{$set:{"links.$.displayName": doc.publicJobTitle}},{multi:true})
-  }
-})
-
 Placements.after.update(function(userId, doc, fields, update){
   if(update.$set && update.$set['displayName']){
     NotesView.update({"links.id":doc._id},{$set:{"links.$.displayName": doc.displayName}},{multi:true})

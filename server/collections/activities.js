@@ -459,29 +459,6 @@ Tasks.after.insert(function (userId, doc) {
   Activities.insert(obj);
 });
 
-// Jobs
-
-Jobs.after.insert(function (userId, doc) {
-  var cust = Contactables.findOne(doc.client);
-  var clientDisplayName;
-  if (cust && cust.organization) clientDisplayName = cust.organization.organizationName;
-  var obj = {
-    userId: userId,
-    hierId: doc.hierId,
-    type: Enums.activitiesType.jobAdd,
-    entityId: doc._id,
-    links: [doc._id, doc.client],
-    data: {
-      publicJobTitle: doc.publicJobTitle,
-      clientId: doc.client,
-      dateCreated: new Date(),
-      clientDisplayName: clientDisplayName
-    }
-  };
-  if (doc && doc.testData) obj.testData = true;
-  Activities.insert(obj);
-});
-
 //Placements
 
 Placements.after.insert(function (userId, doc) {
