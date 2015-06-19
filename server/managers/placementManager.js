@@ -84,5 +84,16 @@ PlacementManager = {
       throw new Error('Placement not found for the specified ID');
 
     return placement.placementRates;
+  },
+  getPlacementPreview: function(placementId){
+    console.log(placementId);
+    var placement = Placements.findOne({_id:placementId});
+    console.log(placement);
+    var job = Jobs.findOne({_id:placement.job});
+    var contactable = Contactables.findOne({_id:placement.employee});
+    return({_id: placement._id, displayName: placement.displayName, links: [
+      {_id: contactable._id, type: Enums.linkTypes.contactable.value, displayName:contactable.displayName, contactMethods: contactable.contactMethods},
+      {_id: job._id, type: Enums.linkTypes.job.value, displayName:job.displayName}
+    ]});
   }
 };

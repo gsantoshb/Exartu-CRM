@@ -100,5 +100,8 @@ Meteor.methods({
       }
     });
     return info;
+  },
+  getPlacementPreview: function(placementId){
+    return PlacementManager.getPlacementPreview(placementId);
   }
 });
