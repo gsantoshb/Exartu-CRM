@@ -162,7 +162,365 @@ var mergeFields = [{
 
   },
   targetType: Enums.docCenterMergeFieldTypes.contactable
-}];
+},
+
+  // Education
+  {
+    key: 'educationInstitution1',
+    testValue: 'High School',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.education || !entity.education.length > 0) return '';
+      return entity.education[0].institution;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'educationDescription1',
+    testValue: 'Example description',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.education || !entity.education.length > 0) return '';
+      return entity.education[0].description;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'educationDegree1',
+    testValue: 'Degree',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.education || !entity.education.length > 0) return '';
+      return entity.education[0].degreeAwarded;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  },{
+    key: 'educationInstitution2',
+    testValue: 'High School',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.education || !entity.education.length > 1) return '';
+      return entity.education[1].institution;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'educationDescription2',
+    testValue: 'Example description',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.education || !entity.education.length > 1) return '';
+      return entity.education[1].description;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'educationDegree2',
+    testValue: 'Awarded degree',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.education || !entity.education.length > 1) return '';
+      return entity.education[1].degreeAwarded;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  },
+
+  // Past Jobs
+  {
+    key: 'pastJobCompany1',
+    testValue: 'Company name',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].company;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobLocation1',
+    testValue: '350 5th Ave',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].location;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobSupervisor1',
+    testValue: 'John Smith',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].supervisor;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobPhone1',
+    testValue: '555-555-5555',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].supervisorPhone;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobPosition1',
+    testValue: 'Developer',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].position;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobResponsibilities1Line1',
+    testValue: 'Example task',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].duties;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobResponsibilities1Line2',
+    testValue: 'Example task',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].duties;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobStartDate1',
+    testValue: '7/4/2015',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].start;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobEndDate1',
+    testValue: '7/5/2015',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].end;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobReasonForLeaving1',
+    testValue: 'Example reason',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].reasonForLeaving;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'okayToContact1',
+    testValue: 'True',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].okay2contact;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobCompany2',
+    testValue: 'Company name',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].company;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobLocation2',
+    testValue: '350 5th Ave',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].location;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobSupervisor2',
+    testValue: 'John Smith',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].supervisor;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobPhone2',
+    testValue: '555-555-5555',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].supervisorPhone;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobPosition2',
+    testValue: 'Developer',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].position;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobResponsibilities2Line1',
+    testValue: 'Example task',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].duties;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobResponsibilities2Line2',
+    testValue: 'Example task',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].duties;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobStartDate2',
+    testValue: '7/4/2015',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].start;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobEndDate2',
+    testValue: '7/5/2015',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].end;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobReasonForLeaving2',
+    testValue: 'Example reason',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].reasonForLeaving;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'okayToContact2',
+    testValue: 'True',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].okay2contact;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobCompany3',
+    testValue: 'Company name',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].company;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobLocation3',
+    testValue: '350 5th Ave',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].location;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobSupervisor3',
+    testValue: 'John Smith',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].supervisor;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobPhone3',
+    testValue: '555-555-5555',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].supervisorPhone;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobPosition3',
+    testValue: 'Developer',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].position;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobResponsibilities3Line1',
+    testValue: 'Example task',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].duties;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobResponsibilities3Line2',
+    testValue: 'Example task',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].duties;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobStartDate3',
+    testValue: '7/4/2015',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].start;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobEndDate3',
+    testValue: '7/5/2015',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].end;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobReasonForLeaving3',
+    testValue: 'Example reason',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].reasonForLeaving;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'okayToContact3',
+    testValue: 'True',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].okay2contact;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }
+];
 
 Meteor.startup(function () {
   _.each(mergeFields, function (mf) {
