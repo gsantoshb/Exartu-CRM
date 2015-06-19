@@ -81,15 +81,6 @@ Placements.after.update(function (userId, placement, fieldNames, modifier, optio
   }
 });
 
-Jobs.after.update(function (userId, job, fieldNames, modifier, options) {
-  PlacementsView.update({jobId: job._id}, {
-    $set: {
-      jobDisplayName: job.publicJobTitle
-    }
-  }, {multi: true});
-});
-
-
 
 // Indexes
 PlacementsView._ensureIndex({placementId: 1});

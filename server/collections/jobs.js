@@ -157,40 +157,7 @@ var setComputedDisplayFields=function (doc) {
     doc.displayName=doc.jobTitleDisplayName + ' @ ' + doc.clientDisplayName;
     return doc;
 };
-Jobs.after.update(function (userId, doc, fieldNames, modifier, options) {
-    if (this.previous.jobTitle != doc.jobTitle || this.previous.client != doc.client)
-    {
-        setComputedDisplayFields(doc);
-        var aftmodifier= {};
-        aftmodifier.jobTitleDisplayName = doc.jobTitleDisplayName;
-        aftmodifier.clientDisplayName = doc.clientDisplayName;
-        aftmodifier.displayName = doc.displayName;
-        Jobs.update({_id:doc._id},{$set: aftmodifier})
-    }
-}, {fetchPrevious: true/false});
 
-//Jobs.before.update(function (userId,doc, fieldNames, modifier){
-//    //doc=setComputedDisplayFields(doc);
-//    //modifier.$set = modifier.$set || {};
-//    //modifier.$set.jobTitleDisplayName = doc.jobTitleDisplayName;
-//    //modifier.$set.clientDisplayName = doc.clientDisplayName;
-//    //modifier.$set.displayName = doc.displayName;
-//    //console.log('doc.jobTitleDisplayName',doc.jobTitleDisplayName);
-//});
-Jobs.before.insert(function (userId, doc) {
-    try {
-        var user = Meteor.user() || {};
-    } catch (e) {
-        var user = {}
-    }
-
-    doc.hierId = user.currentHierId || doc.hierId;
-    doc.userId = user._id || doc.userId;
-    doc.dateCreated = Date.now();
-    if (!doc.activeStatus) doc.activeStatus = LookUpManager.getActiveStatusDefaultId();
-    setComputedDisplayFields(doc);
-    if (!doc.tags) doc.tags=[];
-});
 
 // Indexes
 Jobs._ensureIndex({client: 1});
