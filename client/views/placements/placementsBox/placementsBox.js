@@ -15,7 +15,7 @@ var sortFields = [
 ];
 var placementCollection = PlacementsView;
 var PlacementHandler, query;
-
+var placementPreview = new ReactiveVar(false);
 var info = new Utils.ObjectDefinition({
     reactiveProps: {
         placementsCount: {},
@@ -297,10 +297,23 @@ Template.placementList.created = function () {
 // Placements Box - Helpers
 Template.placementsBox.helpers({
     isSearching: function () {
-        searchDep.depend();
-        return isSearching;
+       searchDep.depend();
+       return isSearching;
+    },
+    placementPreview: function(){
+      return placementPreview.get();
     }
 });
+
+Template.placementsBox.events({
+   'click .placements-list-item':function(e){
+     Meteor.call('getPlacementPreview', this.placementId, function (er, res) {
+       placementPreview.set(res);
+     })
+   }
+})
+
+
 
 // List Header - Helpers
 Template.placementListHeader.helpers({
@@ -463,3 +476,69 @@ Template.placementListSort.events({
         setSortField(this);
     }
 });
+
+Template.placementPreviewTemp.events({
+  'click #close-preview':function(e){
+    placementPreview.set(false);
+  }
+})
+
+
+Template.placementPreviewTemp.helpers({
+  decodedContactMethods: function() {
+
+    var result = {};
+    var contactMethodsTypes = LookUps.find({lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode}).fetch();
+    _.some(this.contactMethods, function (cm) {
+      var type = _.findWhere(contactMethodsTypes, {_id: cm.type});
+      if (!type)
+        return false;
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Email)) {
+        result.email = cm;
+        email = cm;
+      }
+      if (type.lookUpActions && _.contains(type.lookUpActions, Enums.lookUpAction.ContactMethod_Phone)) {
+        result.phone = cm;
+        phone = cm;
+      }
+      if (!result.email || !result.phone) {
+        return false;
+      }
+
+      return true;
+    });
+    if (!result.phone && !result.email) {
+      return false
+    }
+    else {
+      return result;
+    }
+  },
+  iconClass: function(){
+    switch(this.type){
+      case Enums.linkTypes.contactable.value:{
+        return "icon-profile-business-man";
+      }case Enums.linkTypes.hotList.value:{
+      return "icon-list-4";
+    }case Enums.linkTypes.job.value:{
+      return "icon-briefcase-2";
+    }case Enums.linkTypes.placement.value:{
+      return "icon icon-suitcase-1";
+    }
+    }
+  },
+  iconColor: function(){
+    switch(this.type){
+      case Enums.linkTypes.contactable.value:{
+        return "item-icon-network";
+      }case Enums.linkTypes.hotList.value:{
+      return "item-icon-hotlist";
+    }case Enums.linkTypes.job.value:{
+      return "item-icon-jobs";
+    }case Enums.linkTypes.placement.value:{
+      return "item-icon-placements";
+    }
+    }
+  }
+})
+
