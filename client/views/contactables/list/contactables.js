@@ -1211,3 +1211,10 @@ Template.contactablePreview.helpers({
     }
   }
 })
+
+Template.contactablePreview.events({
+  'click #close-preview':function(e){
+    lastSelected = undefined;
+    lastSelectedDep.changed()
+  }
+})

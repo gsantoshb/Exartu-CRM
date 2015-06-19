@@ -127,9 +127,9 @@ NoteManager = {
       switch(l.type){
         case Enums.linkTypes.contactable.value:{
           var c = Contactables.findOne({_id: l.id});
-          var lInfo = {_id: c._id, displayName: c.displayName, objNameArray: c.objNameArray};
+          var lInfo = {_id: c._id, displayName: c.displayName, objNameArray: c.objNameArray,type:Enums.linkTypes.contactable.value};
           if(c.contactMethods){
-            _.extend(lInfo, {contactMethods: c.contactMethods,type:Enums.linkTypes.contactable.value});
+            _.extend(lInfo, {contactMethods: c.contactMethods});
           }
           linksInfo.push(lInfo);
           break;

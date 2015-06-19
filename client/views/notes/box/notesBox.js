@@ -175,6 +175,7 @@ Template.notesBox.events({
 
     Meteor.call('getNotePreview', this._id, function(er, res){
       notePreview.set(res);
+
     })
 
   }
@@ -222,6 +223,14 @@ Template.noteListSort.events = {
     setSortField(this);
   }
 };
+
+
+Template.notePreviewTemp.events({
+  'click #close-preview':function(e){
+    notePreview.set(false);
+  }
+})
+
 
 Template.notePreviewTemp.helpers({
   decodedContactMethods: function() {
