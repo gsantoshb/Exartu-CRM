@@ -172,6 +172,12 @@ var mergeFields = [{
   },
   targetType: Enums.docCenterMergeFieldTypes.contactable
 },{
+  key: 'dateAvailable',
+  testValue: '07/22/2015',
+  type: DocCenter.mergeFieldTypes.date,
+  path: 'Employee.dateAvailable',
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
   key: 'desiredPay',
   testValue: '1000',
   type: DocCenter.mergeFieldTypes.decimal,
