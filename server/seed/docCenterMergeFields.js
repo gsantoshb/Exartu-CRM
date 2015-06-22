@@ -73,6 +73,84 @@ var mergeFields = [{
   },
   targetType: Enums.docCenterMergeFieldTypes.contactable
 },{
+  key: 'phone',
+  testValue: '555-555-5555',
+  type: DocCenter.mergeFieldTypes.string,
+  get: function (entity) {
+    if (!entity || !entity.contactMethods) return '';
+
+    var hierFilter = Utils.filterByHiers(Meteor.user().currentHierId);
+    var phoneCM = LookUps.findOne({
+      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+      lookUpActions: Enums.lookUpAction.ContactMethod_Phone,
+      $or: hierFilter
+    });
+
+    var phones = _.where(entity.contactMethods, {type: phoneCM._id});
+    if (phones.length > 0) {
+      return phones[0].value
+    } else {
+      return '';
+    }
+  },
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'alternatePhone',
+  testValue: '555-555-5555',
+  type: DocCenter.mergeFieldTypes.string,
+  get: function (entity) {
+    if (!entity || !entity.contactMethods) return '';
+
+    var hierFilter = Utils.filterByHiers(Meteor.user().currentHierId);
+    var phoneCM = LookUps.findOne({
+      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+      lookUpActions: Enums.lookUpAction.ContactMethod_Phone,
+      $or: hierFilter
+    });
+
+    var phones = _.where(entity.contactMethods, {type: phoneCM._id});
+    if (phones.length > 1) {
+      return phones[1].value
+    } else {
+      return '';
+    }
+  },
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'emergencyName',
+  testValue: 'John Doe',
+  type: DocCenter.mergeFieldTypes.string,
+  get: function (entity) { return ''; },
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'emergencyRelationship',
+  testValue: 'Brother',
+  type: DocCenter.mergeFieldTypes.string,
+  get: function (entity) { return ''; },
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'emergencyPhone',
+  testValue: '555-555-5555',
+  type: DocCenter.mergeFieldTypes.string,
+  get: function (entity) {
+    if (!entity || !entity.contactMethods) return '';
+
+    var hierFilter = Utils.filterByHiers(Meteor.user().currentHierId);
+    var phoneCM = LookUps.findOne({
+      lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+      lookUpActions: Enums.lookUpAction.ContactMethod_EmergencyPhone,
+      $or: hierFilter
+    });
+
+    var phones = _.where(entity.contactMethods, {type: phoneCM._id});
+    if (phones.length > 0) {
+      return phones[0].value
+    } else {
+      return '';
+    }
+  },
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
   key: 'convictions',
   testValue: 'hard worker',
   type: DocCenter.mergeFieldTypes.string,
@@ -268,6 +346,15 @@ var mergeFields = [{
     },
     targetType: Enums.docCenterMergeFieldTypes.contactable
   }, {
+    key: 'pastJobPayRate1',
+    testValue: '10',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 0) return '';
+      return entity.pastJobs[0].payRate;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
     key: 'pastJobResponsibilities1Line1',
     testValue: 'Example task',
     type: DocCenter.mergeFieldTypes.string,
@@ -367,6 +454,15 @@ var mergeFields = [{
     },
     targetType: Enums.docCenterMergeFieldTypes.contactable
   }, {
+    key: 'pastJobPayRate2',
+    testValue: '10',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 1) return '';
+      return entity.pastJobs[1].payRate;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
     key: 'pastJobResponsibilities2Line1',
     testValue: 'Example task',
     type: DocCenter.mergeFieldTypes.string,
@@ -463,6 +559,15 @@ var mergeFields = [{
     get: function () {
       if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
       return entity.pastJobs[2].position;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
+  }, {
+    key: 'pastJobPayRate3',
+    testValue: '10',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      if (!entity || !entity.pastJobs || !entity.pastJobs.length > 2) return '';
+      return entity.pastJobs[2].payRate;
     },
     targetType: Enums.docCenterMergeFieldTypes.contactable
   }, {
