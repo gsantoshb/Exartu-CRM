@@ -630,6 +630,27 @@ var mergeFields = [{
       return entity.pastJobs[2].okay2contact;
     },
     targetType: Enums.docCenterMergeFieldTypes.contactable
+  },
+
+  // Tags
+  {
+    key: 'tags',
+    testValue: 'Administrative',
+    type: DocCenter.mergeFieldTypes.string,
+    get: function () {
+      var res = '';
+      if (entity && entity.tags) {
+        _.each(tags, function (tag) {
+          if (!res) {
+            res += tag;
+          } else {
+            res += ',' + tag;
+          }
+        });
+      }
+      return res;
+    },
+    targetType: Enums.docCenterMergeFieldTypes.contactable
   }
 ];
 
