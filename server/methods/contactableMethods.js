@@ -302,33 +302,58 @@ Meteor.methods({
 
 FileUploader.createEndpoint('uploadResume', {
   onUpload: function (stream, metadata) {
-    var employee = ContactableManager.createFromResume(stream);
-    stream = fs.createReadStream(stream.path);
-    try {
-      var resumeId = S3Storage.upload(stream);
-    } catch (e) {
-      console.log("Problem with S3Storage")
-    }
-    if (!resumeId) {
-      return new Meteor.Error(500, "Error uploading resume to S3");
-    }
-    var resume = {
-      employeeId: employee,
-      resumeId: resumeId,
-      userId: Meteor.userId(),
-      hierId: Meteor.user().currentHierId,
+
+    var progressId = Meteor.uuid();
+    var userId = Meteor.userId();
+    FileProgress.insert({
+      _id: progressId,
       name: metadata.name,
       type: metadata.type,
-      extension: metadata.extension,
-      dateCreated: new Date()
-    };
-    if (employee) {
-      return Resumes.insert(resume);
-    }
-    else {
+      userId: userId,
+      processStage: 'Parsing'
+    });
+
+    _.defer(Meteor.bindEnvironment(function () {
+      try {
+          var employee = ContactableManager.createFromResume(stream);
+      } catch (e) {
+        console.log("Problem creating the employee", e);
+      }
+      FileProgress.update({
+        _id: progressId
+        },{
+        $set: {
+          processStage: 'Saving'
+        }
+      });
+
+      stream = fs.createReadStream(stream.path);
+      try {
+        var resumeId = S3Storage.upload(stream);
+      } catch (e) {
+        console.log("Problem with S3Storage", e)
+      }
+
+      FileProgress.remove(progressId);
+
+      if (!resumeId) {
+        console.log("Error uploading resume to S3");
+      }
+      var resume = {
+        employeeId: employee,
+        resumeId: resumeId,
+        userId: Meteor.userId(),
+        hierId: Meteor.user().currentHierId,
+        name: metadata.name,
+        type: metadata.type,
+        extension: metadata.extension,
+        dateCreated: new Date()
+      };
+
       Resumes.insert(resume);
-      throw new Meteor.Error();
-    }
+    }));
+
+    return {content: progressId};
   },
   onDownload: function (fileId) {
     return S3Storage.download(fileId);
