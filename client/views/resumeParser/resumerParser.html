@@ -39,6 +39,53 @@
 
 <template name="resumesList">
     <ul class="list-3 stripped has-thumb">
+        {{#if inProgressResumes.count}}
+            <hr/>
+            <strong>In progress</strong>
+        {{/if}}
+        {{#each inProgressResumes}}
+            <li class="list-3-item">
+                <div class="list-thumb"><i class="icon-file-upload"></i></div>
+                <div class="list-3-content list-magic">
+                    <div class="list-3-content-wrap">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="list-3-item-meta-top">{{type}}</div>
+                                <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
+                            </div>
+                            <div class="col-md-7">
+                                {{processStage}}
+                            </div>
+                        </div>
+                    </div><!-- /.list-3-content-wrap -->
+                </div>
+            </li>
+        {{/each}}
+        {{#each uploadingResumes}}
+            <hr/>
+            <strong>in progress</strong>
+            <li class="list-3-item">
+                <div class="list-thumb"><i class="icon-file-upload"></i></div>
+                <div class="list-3-content list-magic">
+                    <div class="list-3-content-wrap">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="list-3-item-meta-top">{{type}}</div>
+                                <h4 class="list-3-item-title"><a href="#">{{name}}</a></h4>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="progress" style="width: 100%">
+                                    <div class="progress-bar" role="progressbar" style="width:{{getProgress}}%">
+                                        <p style="float:left;margin-left:3%">Uploading file...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.list-3-content-wrap -->
+                </div>
+            </li>
+        {{/each}}
+
         {{#with resumes}}
             {{#if count}}
                 <hr/>

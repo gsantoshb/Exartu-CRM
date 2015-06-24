@@ -1,46 +1,33 @@
 var addDisabled = new ReactiveVar(false);
-AddForm = {
-    val: false,
-    dep: new Deps.Dependency,
-    show: function (file) {
-        document.file = file;
-        document.originalFileName = document.file.name;
-        document.name.value = document.file.name;
-        this.val = true;
-        this.dep.changed();
-    },
-    hide: function () {
-        this.val = false;
-        this.dep.changed();
-    }
+var isAddFormVisible = new ReactiveVar(false);
+
+var showAddForm = function (file) {
+    document.file = file;
+    document.originalFileName = document.file.name;
+    document.name.value = document.file.name;
+    showAddForm.set(true);
+};
+var hideAddForm = function (file) {
+    showAddForm.set(false);
 };
 
-Object.defineProperty(AddForm, "value", {
-    get: function () {
-        this.dep.depend();
-        return this.val;
-    }
-});
-
 var startParsing = function () {
-    $('#parsing')[0].style.display = 'block';
+    isLoading.set(true);
 };
 
 var endParsing = function () {
-    $('#parsing')[0].style.display = 'none';
+    isLoading.set(false);
 };
 
 
 // Add document panel
 Template.contactableDocumentsAdd.helpers({
     addForm: function () {
-        return AddForm.value;
+        return isAddFormVisible.get();
     },
 
     showAddForm: function () {
-        return function (file) {
-            AddForm.show(file);
-        };
+        return showAddForm;
     }
 });
 
@@ -49,7 +36,7 @@ Template.contactableDocumentsAdd.events = {
         $('#add-file').trigger('click');
     },
     'change #add-file': function (e) {
-        AddForm.show(e.target.files[0]);
+        showAddForm(e.target.files[0]);
     }
 };
 
@@ -76,7 +63,7 @@ Template.addDocumentForm.helpers({
         return document;
     },
     addDisabled: function () {
-        return addDisabled.get() ? 'disabled':'';
+        return addDisabled.get() ? 'disabled' : '';
     }
 });
 
@@ -121,7 +108,9 @@ Template.addDocumentForm.events = {
         };
 
         startParsing();
-        FileUploader.post('uploadContactablesFiles', newDocument.file, metadata, function (err, result) {
+        var progress = new progress();
+
+        FileUploader.postProgress('uploadContactablesFiles', newDocument.file, progress, metadata, function (err, result) {
             if (!err) {
                 endParsing();
                 AddForm.hide();

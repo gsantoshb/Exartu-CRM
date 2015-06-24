@@ -153,10 +153,10 @@
             {{#each .}}
                 <div class="list-item documents-list-item">
                     <div class="list-item-cell list-item-icon">
-                        <a class="item-icon item-icon-pdf" href="#"><i class="{{documentIcon type}}"></i></a>
+                        <a class="item-icon item-icon-pdf" href="{{resumeUrl}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"  target="_blank"><i class="{{documentIcon type}}"></i></a>
                     </div>
                     <div class="list-item-cell documents-list-item-title">
-                        <div class="item-title {{#unless description}}single{{/unless}}"><a href="#">{{name}}</a></div>
+                        <div class="item-title {{#unless description}}single{{/unless}}"><a href="{{resumeUrl}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"  target="_blank">{{name}}</a></div>
                         <div class="item-subtitle">{{description}}</div>
                     </div>
 
@@ -175,7 +175,7 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li class="arrow"></li>
 
-                                    <li><a class="download" target="_blank" href="{{url}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"><i class="fa fa-download"></i>  {{_ "Download"}} </a></li>
+                                    <li><a class="download" target="_blank" href="{{resumeUrl}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"><i class="fa fa-download"></i>  {{_ "Download"}} </a></li>
                                     <li><a href="#" class="delete-resume pointer"><i class="fa fa-trash"></i>  {{_ "Delete"}} </a></li>
                                 </ul>
                             </div>

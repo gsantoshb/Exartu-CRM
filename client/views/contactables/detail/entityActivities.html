@@ -1,11 +1,14 @@
 <template name="entityActivities">
     <section class="box-type-2">
         <div class="box-type-2-content">
+
             <div class="row">
+                <div style="text-align: right; height: 60px">
+                    <div class="col-md-6" style="text-align:left"><h3>Activities</h3></div>
+                    <div class="col-md-6" style="margin-top:-15px">{{>fastPagination name="entityActivities"}}</div>
+                </div>
                 <ul class="list-type-7 activity-feed" style="padding-top: 0">
-                    <div style="text-align: right; height: 60px">
-                        {{>fastPagination name="entityActivities"}}
-                    </div>
+
                     {{#each activities}}
                         <li>
                             {{> Template.dynamic template=getTemplateForActivity}}

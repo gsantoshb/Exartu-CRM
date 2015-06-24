@@ -127,12 +127,12 @@ HRConcourseManager = {
       hierId: hierId,
       person: {
         "firstName" : empFirstName,
-        "lastName" : empLastName,
+        "lastName" : empLastName
       },
       contactMethods: [{type: emailCM._id, value: empEmail}],
       Employee: {},
       docCenter: {
-        docCenterId: docCenterId,
+        docCenterId: docCenterId
       }
     });
     if (!empId) throw new Error('An error occurred while creating the employee');
@@ -146,7 +146,7 @@ HRConcourseManager = {
     if (mergeFields.dateOfBirth) update.$set['person.birthDate'] = mergeFields.dateOfBirth;
     if (mergeFields.convictions) update.$set['Employee.convictions'] = mergeFields.convictions;
     if (mergeFields.ethnicity) update.$set['Employee.ethnicity'] = mergeFields.ethnicity;
-    if (mergeFields.desiredPay) update.$set['Employee.desiredPay'] = mergeFields.desiredPay;
+    if (mergeFields.desiredPay) update.$set['Employee.desiredPay'] = parseFloat(mergeFields.desiredPay) || 0;
     if (mergeFields.gender) {
       if (mergeFields.gender.indexOf('f') != -1 || mergeFields.gender.indexOf('F') != -1) {
         update.$set['Employee.gender'] = 'f';
@@ -162,11 +162,113 @@ HRConcourseManager = {
       }
     }
 
+    // Contact Methods
+    var contactMethods = [];
+    if (mergeFields.phone || mergeFields.alternatePhone) {
+      var phoneCM = LookUps.findOne({
+        lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+        lookUpActions: Enums.lookUpAction.ContactMethod_Phone,
+        $or: hierFilter
+      });
+      if (mergeFields.phone) contactMethods.push({type: phoneCM._id, value: mergeFields.phone});
+      if (mergeFields.alternatePhone) contactMethods.push({type: phoneCM._id, value: mergeFields.alternatePhone});
+    }
+    if (mergeFields.emergencyPhone) {
+      var emergencyPhoneCM = LookUps.findOne({
+        lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+        lookUpActions: Enums.lookUpAction.ContactMethod_EmergencyPhone,
+        $or: hierFilter
+      });
+      contactMethods.push({
+        type: emergencyPhoneCM._id,
+        value: mergeFields.emergencyName + ' ' + mergeFields.emergencyRelationship + ' ' + mergeFields.emergencyPhone
+      });
+    }
+    if (contactMethods.length > 0) {
+      contactMethods.unshift({type: emailCM._id, value: empEmail});
+      update.$set.contactMethods = contactMethods;
+    }
+
+    // Education
+    var education = [];
+    if (mergeFields.educationInstitution1) {
+      education.push({
+        institution: mergeFields.educationInstitution1,
+        description: mergeFields.educationDescription1 || mergeFields.educationInstitution1,
+        degreeAwarded: mergeFields.educationDegree1,
+        start: new Date()
+      });
+    }
+    if (mergeFields.educationInstitution2) {
+      education.push({
+        institution: mergeFields.educationInstitution2,
+        description: mergeFields.educationDescription2 || mergeFields.educationInstitution2,
+        degreeAwarded: mergeFields.educationDegree2,
+        start: new Date()
+      });
+    }
+    if (education.length > 0) update.$set.education = education;
+
+    // Past Jobs
+    var pastJobs = [];
+    if (mergeFields.pastJobCompany1) {
+      pastJobs.push({
+        company: mergeFields.pastJobCompany1,
+        location: mergeFields.pastJobLocation1 || mergeFields.pastJobCompany1,
+        position: mergeFields.pastJobPosition1 || mergeFields.pastJobCompany1,
+        supervisor: mergeFields.pastJobSupervisor1,
+        supervisorPhone: mergeFields.pastJobPhone1,
+        payRate: mergeFields.pastJobPayRate1 ? parseFloat(mergeFields.pastJobPayRate1) || 0 : undefined,
+        duties: mergeFields.pastJobResponsibilities1Line1 + ' ' + mergeFields.pastJobResponsibilities1Line2,
+        start: Date.parse(mergeFields.pastJobStartDate1) || undefined,
+        end: Date.parse(mergeFields.pastJobEndDate1) || undefined,
+        reasonForLeaving: mergeFields.pastJobReasonForLeaving1,
+        ok2Contact: mergeFields.okayToContact1.indexOf('t') !== -1 || mergeFields.okayToContact1.indexOf('T') !== -1
+      });
+    }
+    if (mergeFields.pastJobCompany2) {
+      pastJobs.push({
+        company: mergeFields.pastJobCompany2,
+        location: mergeFields.pastJobLocation2 || mergeFields.pastJobCompany2,
+        position: mergeFields.pastJobPosition2 || mergeFields.pastJobCompany2,
+        supervisor: mergeFields.pastJobSupervisor2,
+        supervisorPhone: mergeFields.pastJobPhone2,
+        payRate: mergeFields.pastJobPayRate2 ? parseFloat(mergeFields.pastJobPayRate2) || 0 : undefined,
+        duties: mergeFields.pastJobResponsibilities2Line1 + ' ' + mergeFields.pastJobResponsibilities2Line2,
+        start: Date.parse(mergeFields.pastJobStartDate2) || undefined,
+        end: Date.parse(mergeFields.pastJobEndDate2) || undefined,
+        reasonForLeaving: mergeFields.pastJobReasonForLeaving2,
+        ok2Contact: mergeFields.okayToContact2.indexOf('t') !== -1 || mergeFields.okayToContact2.indexOf('T') !== -1
+      });
+    }
+    if (mergeFields.pastJobCompany3) {
+      pastJobs.push({
+        company: mergeFields.pastJobCompany3,
+        location: mergeFields.pastJobLocation3 || mergeFields.pastJobCompany3,
+        position: mergeFields.pastJobPosition3 || mergeFields.pastJobCompany3,
+        supervisor: mergeFields.pastJobSupervisor3,
+        supervisorPhone: mergeFields.pastJobPhone3,
+        payRate: mergeFields.pastJobPayRate3 ? parseFloat(mergeFields.pastJobPayRate3) || 0 : undefined,
+        duties: mergeFields.pastJobResponsibilities3Line1 + ' ' + mergeFields.pastJobResponsibilities3Line2,
+        start: Date.parse(mergeFields.pastJobStartDate3) || undefined,
+        end: Date.parse(mergeFields.pastJobEndDate3) || undefined,
+        reasonForLeaving: mergeFields.pastJobReasonForLeaving3,
+        ok2Contact: mergeFields.okayToContact3.indexOf('t') !== -1 || mergeFields.okayToContact3.indexOf('T') !== -1
+      });
+    }
+    if (pastJobs.length > 0) update.$set.pastJobs = pastJobs;
+
+    // Tags
+    if (mergeFields.tags) update.$set.tags = mergeFields.tags.split(',');
+
     // Update the employee with the information obtained from the merge fields
     if (!_.isEmpty(update.$set)) Contactables.update({_id: empId}, update);
 
+    // Log progress
+    KioskEmployees.update({_id: logRecordId}, {$set: {mergeFields: true}});
+
     // Create an address for this employee when provided
-    if (mergeFields.addressLine1 && mergeFields.city && mergeFields.country) {
+    if (mergeFields.addressLine1 && mergeFields.city) {
       // Address type
       var addressType = LookUps.findOne({
         lookUpCode: Enums.lookUpTypes.linkedAddress.type.lookUpCode,
@@ -178,7 +280,7 @@ HRConcourseManager = {
         linkId: empId,
         address: mergeFields.addressLine1,
         city: mergeFields.city,
-        country: mergeFields.country
+        country: 'United States'
       };
 
       // Add optional fields
@@ -187,10 +289,14 @@ HRConcourseManager = {
       if (mergeFields.zipCode) address.postalCode = mergeFields.zipCode;
 
       AddressManager.addEditAddress(address);
+
+      // Log address added
+      KioskEmployees.update({_id: logRecordId}, {$set: {address: true}});
     }
 
 
     // Create AppCenter account for the employee
+    // TODO: try catch
     var appCenterId = ApplicantCenterManager.createUserForHRCKioskEmployee(empId, empEmail);
     if (appCenterId) {
       // Log the ID of the AC user created for thi HRC employee
@@ -198,7 +304,7 @@ HRConcourseManager = {
     }
 
     // Save the documents to the employee
-    syncDocs(hierId, documentInstances, logRecordId, empId);
+    syncDocs(hierId, instances, logRecordId, empId);
 
     return empId;
   }

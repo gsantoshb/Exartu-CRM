@@ -657,11 +657,9 @@ var loadNotes = function (hierId, usermane, userId) {
             testData: true,
             links: [{id: person._id, type: Enums.linkTypes.contactable.value}]
         }
+      Meteor.call('addNote', newNote, function () {
+      })
 
-        Notes.insert(newNote, function (err, result) {
-            if (err)
-                console.log(err);
-        })
     }
     console.log("Note demo data created", Date.now());
 };

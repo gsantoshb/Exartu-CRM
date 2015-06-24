@@ -180,7 +180,6 @@ FormData.prototype._multiPartFooter = function(field, value, options) {
 
 /// MODIFICATION: if we are posting to a .net server, we must include a line break at the end
 FormData.prototype._lastBoundary = function() {
-  debugger;
   if (this.lineBreakAtTheEnd){
     return '--' + this.getBoundary() + '--' + FormData.LINE_BREAK;
   }else{

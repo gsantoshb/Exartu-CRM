@@ -285,6 +285,19 @@ ContactablesFiles.allow({
     }
 });
 
+// Contactables files progress
+FileProgress = new Mongo.Collection('fileProgress');
+Meteor.publish('fileProgress', function () {
+  return FileProgress.find({
+    userId: this.userId
+  });
+});
+// on startUp clean up fileProgress
+Meteor.startup(function () {
+  FileProgress.remove({});
+});
+
+
 // Employee resumes
 Resumes = new Mongo.Collection('resumes');
 Meteor.publish('resumes', function () {
