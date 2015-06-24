@@ -169,6 +169,24 @@ var extractInformation = function (parseResult) {
         };
         employee.Employee = {};
 
+      //active and process status
+      try{
+          var activeStatus = LookUps.findOne({hierId: Meteor.user().currentHierId, lookUpCode: Enums.lookUpCodes.active_status, isDefault: true});
+          if (! activeStatus){
+              activeStatus = LookUps.findOne({hierId: Meteor.user().currentHierId, lookUpCode: Enums.lookUpCodes.active_status, lookUpActions: Enums.lookUpAction.Implies_Active});
+          }
+          var processStatus = LookUps.findOne({hierId: Meteor.user().currentHierId, lookUpCode: Enums.lookUpCodes.employee_status, isDefault: true});
+          if (! processStatus){
+              processStatus = LookUps.findOne({hierId: Meteor.user().currentHierId, lookUpCode: Enums.lookUpCodes.employee_status});
+          }
+          employee.activeStatus = activeStatus._id;
+          employee.Employee.status = processStatus._id;
+      }catch (e){
+          console.log(e);
+      }
+
+
+
         var structuredResult = parseResult.StructuredXMLResume;
 
         //ContactInfo
