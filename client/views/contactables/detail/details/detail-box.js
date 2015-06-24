@@ -128,6 +128,11 @@ Template.contactableDetailBox.helpers({
       }
         return arrayButtons;
     },
+    buttonsLostStatus: function(){
+      var arrayButtons = [{displayName:"Contract terms", value:"contractTerms"},{displayName:"Location issue",value:"locationIssue"},
+        {displayName:"Rate issue",value:"rateIssue"},{displayName:"Slow service",value:"slowService"}];
+      return arrayButtons;
+    },
     created: function () {
         EditMode.hide();
     },
