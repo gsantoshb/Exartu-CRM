@@ -101,7 +101,7 @@ var pollingCardReader = function(task, intervalBar, totalTime, progress, process
   },task.estimatedTime*1000);
 };
 
-function progress () {
+progress = function () {
   this.val = new ReactiveVar(null);
   this.isStarted =  new ReactiveVar(false);
   this.displayName = new ReactiveVar("");
@@ -123,7 +123,7 @@ function progress () {
     return this.isStarted.get();
   }
 
-}
+};
 
 var totalBar;
 var uploadFile = function (file) {
