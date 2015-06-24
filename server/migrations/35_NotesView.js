@@ -52,9 +52,9 @@ Migrations.add({
             case Enums.linkTypes.placement.value:
             {
               var p = Placements.findOne({_id: l.id});
-             if (p) {
+              if (p) {
                newLinksArray.push({type: Enums.linkTypes.placement.value, id: l.id, displayName: p.displayName});
-             }
+              }
               break;
             }
 
