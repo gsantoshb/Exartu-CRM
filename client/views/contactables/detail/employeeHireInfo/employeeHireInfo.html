@@ -203,6 +203,16 @@
                                         </div>
                                     </li>
                                     <li>
+                                        <div class="left-part">{{_ "Avaiable date"}}</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=avaiableDate editable=editMode}}
+                                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                            {{else}}
+                                                <span>{{#if value}}{{formattedDate value}}{{else}}none{{/if}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                    <li>
                                         <div class="left-part">{{_ "Available start date"}}</div>
                                         <div class="right-part">
                                             {{#if editMode}}
@@ -249,6 +259,16 @@
                                             {{/objectProperty}}
                                         </div>
                                     </li>
+                                    <li>
+                                        <div class="left-part">{{_ "Dependent Number"}}</div>
+                                        <div class="right-part">
+                                                {{#objectProperty property=dependentNumber editable=editMode}}
+                                                <input class="form-control" type="number" value="{{value}}">
+                                            {{else}}
+                                                <span>{{value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -267,6 +287,10 @@
             </div>
         </div>
     </section>
+    {{#if Employee}}
+        {{>displayDirectDeposit}}
+    {{/if}}
+
 </template>
 
 <template name="select">

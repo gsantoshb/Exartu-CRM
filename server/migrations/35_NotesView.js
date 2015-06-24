@@ -7,7 +7,7 @@ Migrations.add({
     var count = 0;
     Notes.find({}).forEach(function (note) {
 
-      var n = NotesView.findOne({_id: note._id})
+      var n = NotesView.findOne({_id: note._id});
       if (!n) {
         count++;
         console.log('adding noteView ', count, '-', note._id);
@@ -16,15 +16,15 @@ Migrations.add({
           switch (l.type) {
             case Enums.linkTypes.contactable.value:
             {
-              var c = Contactables.findOne({_id: l.id})
-              if (c.person) {
+              var c = Contactables.findOne({_id: l.id});
+              if (c && c.person) {
                 newLinksArray.push({
                   type: Enums.linkTypes.contactable.value,
                   id: l.id,
                   displayName: c.person.lastName + ", " + c.person.firstName + " " + c.person.middleName
                 });
               }
-              else if (c.organization) {
+              else if (c && c.organization) {
                 newLinksArray.push({
                   type: Enums.linkTypes.contactable.value,
                   id: l.id,
@@ -36,19 +36,25 @@ Migrations.add({
             case Enums.linkTypes.job.value:
             {
               var j = Jobs.findOne({_id: l.id});
-              newLinksArray.push({type: Enums.linkTypes.job.value, id: l.id, displayName: j.displayName})
+              if (j) {
+                newLinksArray.push({type: Enums.linkTypes.job.value, id: l.id, displayName: j.displayName});
+              }
               break;
             }
             case Enums.linkTypes.hotList.value:
             {
               var h = HotLists.findOne({_id: l.id});
-              newLinksArray.push({type: Enums.linkTypes.hotList.value, id: l.id, displayName: h.displayName})
+              if (h) {
+                newLinksArray.push({type: Enums.linkTypes.hotList.value, id: l.id, displayName: h.displayName});
+              }
               break;
             }
             case Enums.linkTypes.placement.value:
             {
               var p = Placements.findOne({_id: l.id});
-              newLinksArray.push({type: Enums.linkTypes.placement.value, id: l.id, displayName: p.displayName})
+              if (p) {
+               newLinksArray.push({type: Enums.linkTypes.placement.value, id: l.id, displayName: p.displayName});
+              }
               break;
             }
 
