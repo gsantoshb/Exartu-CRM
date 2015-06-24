@@ -260,10 +260,12 @@ ContactableManager = {
 
         // Make the ID available in the new record
         pastJobInfo.id = pastJobId;
-
+        var pj = Contactables.findOne({_id:contactableId,'pastJobs.id':pastJobId},{fields:{'pastJobs.$':1}});
+        var oldPastJob = pj.pastJobs[0];
+        _.extend(oldPastJob,pastJobInfo)
         // Update the contactable with the new education record
         return Contactables.update({_id: contactableId, 'pastJobs.id': pastJobId},
-            {$set: {'pastJobs.$': pastJobInfo}}
+            {$set: {'pastJobs.$': oldPastJob}}
         );
     },
     deletePastJobRecord: function (contactableId, pastJobId) {

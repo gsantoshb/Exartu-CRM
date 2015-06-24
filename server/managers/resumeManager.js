@@ -362,7 +362,8 @@ var extractInformation = function (parseResult) {
                             position: title,
                             duties: description,
                             start: startDate,
-                            end: endDate
+                            end: endDate,
+                            dateCreated: Date.new()
                         })
                     });
 

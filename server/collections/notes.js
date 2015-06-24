@@ -202,6 +202,7 @@ Notes.after.insert(function(userId,doc){
     _.forEach(doc.links, function(link) {
         if (link.type==Enums.linkTypes.contactable.value)
         {
+
           var c = Contactables.findOne({_id: link.id});
           if(!c.latestNotes){
             c.latestNotes = [];
