@@ -29,7 +29,7 @@ lastEntriesManager = {
 
           }
           _.extend(entry, {dateCreated:new Date(), hierId:user.currentHierId, userId:user._id, pinged: false})
-          //LastEntries.insert(entry);
+          LastEntries.insert(entry);
         }
 
     }
