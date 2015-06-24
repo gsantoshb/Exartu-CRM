@@ -1,7 +1,16 @@
 <template name="contactableDocumentsAdd">
     <div id="document">
         {{#if addForm }}
-            {{>addDocumentForm}}
+            {{#if isLoading}}
+               <div style="padding: 10px">
+                   <h4>Uploading</h4>
+                   <div class="progress" style="width:100%">
+                       <div class="progress-bar" role="progressbar" style="width:{{getProgress}}%;"></div>
+                   </div>
+               </div>
+            {{else}}
+                {{>addDocumentForm}}
+            {{/if}}
         {{else}}
             {{#dragAndDropZone onDrop=showAddForm}}
                 <div class="line-1"> {{_ "Drop file here"}} </div>
@@ -120,6 +129,9 @@
                     <a class="item-icon {{documentIconBackground type}}" href="{{url}}" target="_blank"  download="{{name}}{{#if extension}}.{{extension}}{{/if}}"><i class="{{documentIcon type}}"></i></a>
                 </div>
                 <div class="list-item-cell documents-list-item-title">
+                    {{#unless this.fileId}}
+                        <i class="pull-right fa fa-circle-o-notch fa-spin"></i>
+                    {{/unless}}
                     <div class="item-title {{#unless description}}single{{/unless}}"><a href="{{url}}" target="_blank"  download="{{name}}{{#if extension}}.{{extension}}{{/if}}">{{name}}</a></div>
                     <div class="item-subtitle">{{description}}</div>
                 </div>
@@ -196,7 +208,4 @@
             </div>
         {{/if}}
     </div><!-- /.list-item-section -->
-    <div id="parsing" class="list-3-actions" style="display: none; margin-right: 45px; margin-top: 10px;">
-        {{>spinner}}
-    </div>
 </template>
