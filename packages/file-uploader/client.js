@@ -28,30 +28,28 @@ FileUploader.postProgress = function(endpoint, file, progress, metadata) {
   var formData = new FormData();
   formData.append('file', file);
 
-  //var params = {
-  //  userId: Meteor.userId(),
-  //  loginToken: localStorage.getItem('Meteor.loginToken')
-  //};
+  var params = {
+    userId: Meteor.userId(),
+    loginToken: localStorage.getItem('Meteor.loginToken'),
+    idProgressBar: file.id
+  };
 
-  //_.extend(params, metadata);
+  _.extend(params, metadata);
   var xhr = new XMLHttpRequest();
   xhr.upload.onprogress = function(progressEvent) {
     if(!progress.isProcessing()){
       progress.start();
       progress.displayName = "Uploading...";
     }
-    console.log(progress.get());
+
     progress.set(Math.round(progressEvent.loaded / progressEvent.total *100));
-    if(progress.get()===100){
-      progress.end();
-    }
-
-
   };
 
 
   xhr.onreadystatechange = function(){
     if (xhr.readyState == xhr.DONE){
+      progress.end();
+
       if (xhr.status == 200) {
         cb.call({}, null, xhr.responseText);
       }else{
@@ -59,8 +57,15 @@ FileUploader.postProgress = function(endpoint, file, progress, metadata) {
       }
     }
   };
+  var queryParams = '';
+  _.each(params, function (v, k) {
+    if (!_.isEmpty(queryParams)){
+      queryParams += '&';
+    }
+    queryParams += k + '=' + v;
+  });
 
-  xhr.open('POST', endpoint+'?userId='+Meteor.userId()+'&loginToken='+localStorage.getItem('Meteor.loginToken')+'&idProgressBar='+file.id);
+  xhr.open('POST', endpoint+'?' + queryParams);
 
 
   //xhr.setRequestHeader('userId', Meteor.userId());

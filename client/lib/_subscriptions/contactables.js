@@ -54,3 +54,5 @@ AllEmployeesReport  = new Meteor.Collection('allEmployeesReport', {
     return contactable;
   }
 });
+
+FileProgress = new Mongo.Collection('fileProgress');
