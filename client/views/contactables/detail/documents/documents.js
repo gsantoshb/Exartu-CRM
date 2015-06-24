@@ -208,7 +208,6 @@ Template.contactableDocumentsList.helpers({
         return resumes && resumes.count() > 0 ? resumes : undefined;
     },
 
-
     url: function () {
         return FileUploader.getUrl('uploadContactablesFiles', this.fileId);
     },
@@ -250,6 +249,9 @@ Template.contactableDocumentsList.helpers({
     },
     query: function () {
         return query;
+    },
+    disabledClass: function () {
+        return this.fileId ? '' : 'disabled';
     }
 });
 
