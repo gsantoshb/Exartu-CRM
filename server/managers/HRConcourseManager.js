@@ -121,6 +121,13 @@ HRConcourseManager = {
       $or: hierFilter
     });
 
+    // Active Status
+    var activeStatus = LookUps.findOne({
+      lookUpCode: Enums.lookUpTypes.active.status.lookUpCode,
+      isDefault: true,
+      $or: hierFilter
+    });
+
     // Create employee with DocCenter info on it
     var empId = Contactables.insert({
       objNameArray:['person', 'Employee', 'contactable'],
@@ -133,7 +140,8 @@ HRConcourseManager = {
       Employee: {},
       docCenter: {
         docCenterId: docCenterId
-      }
+      },
+      activeStatus: activeStatus
     });
     if (!empId) throw new Error('An error occurred while creating the employee');
 
