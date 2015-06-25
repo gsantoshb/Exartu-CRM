@@ -377,7 +377,7 @@ Accounts.onCreateUser(function (options, user) {
     user.hierarchies = [hierId];
     user.currentHierId = hierId;
     user.hierId = hierId; //temp...need to remove user.hierId references from submodules first
-    var hierRoleIds = (options.roles) ? options.roles: [];
+    var hierRoleIds = (options.roles) ? options.roles : [];
     if (!options.currentHierId) // means account creation
         if (RoleManager.getClientAdministratorRole()) // make sure this isn't system init in which case no roles yet
             hierRoleIds.push(RoleManager.getClientAdministratorRole()._id);
