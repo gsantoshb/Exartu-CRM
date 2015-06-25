@@ -11,24 +11,26 @@ lastEntriesManager = {
           switch(entry.type){
             case Enums.linkTypes.contactable.value:{
               var c = Contactables.findOne({_id:entry.entity},{fields:{displayName:1}});
-              _.extend(entry, c);
+              entry.displayName = c.displayName;
               break;
             }
             case Enums.linkTypes.job.value:{
               var j = Jobs.findOne({_id:entry.entity}, {fields:{displayName:1}});
-              _.extend(entry, j);
+              entry.displayName = j.displayName;
+              break;
             }
             case Enums.linkTypes.placement.value:{
               var p = Placements.findOne({_id:entry.entity}, {fields:{displayName:1}});
-              _.extend(entry, p);
+              entry.displayName = p.displayName;
+              break;
             }
             case Enums.linkTypes.hotList.value:{
               var h = HotLists.findOne({_id:entry.entity}, {fields:{displayName:1}});
-              _.extend(entry, h);
+              entry.displayName = h.displayName;
+              break;
             }
-
           }
-          _.extend(entry, {dateCreated:new Date(), hierId:user.currentHierId, userId:user._id, pinged: false})
+          _.extend(entry, {dateCreated:new Date(), hierId:user.currentHierId, userId:user._id, pinged: false});
           LastEntries.insert(entry);
         }
 
