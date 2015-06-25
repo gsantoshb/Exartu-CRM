@@ -151,8 +151,8 @@ newObjType({
       required: false
     },
     {
-      name:'avaiableDate',
-      displayName: 'Avaiable date',
+      name:'dateAvailable',
+      displayName: 'Date available',
       fieldType: 'date',
       showInAdd: false,
       required: false
