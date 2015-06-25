@@ -123,7 +123,7 @@ HRConcourseManager = {
 
     // Create employee with DocCenter info on it
     var empId = Contactables.insert({
-      objNameArray:['person', 'Employee', 'Contactable'],
+      objNameArray:['person', 'Employee', 'contactable'],
       hierId: hierId,
       person: {
         "firstName" : empFirstName,
