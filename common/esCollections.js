@@ -10,6 +10,7 @@ ES.syncCollection({
 		{ name: 'Contact.statusNote', label: 'Status note'},
 		{ name: 'Employee.statusNote', label: 'Status note'},
 		{ name: 'Employee.status', label: 'status'},
+		{ name: 'Employee.taxID', label: 'SSN'},
 		{ name: 'tags', label: 'tags'}, { name: 'contactMethods.value', label: 'Contact method'}, { name: 'notes.value', label: 'Notes'}
 	],
 	// Retrive data related to items on this collections
