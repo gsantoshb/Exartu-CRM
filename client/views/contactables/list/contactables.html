@@ -81,48 +81,54 @@
         {{>progressBar name='addingToHotList'}}
     {{else}}
         {{#if selectedCount}}
-            <div class="list-interactive-msg">
-            <div>
-            <span class="text">
-                <strong>{{selectedCount}}</strong> {{_ "selected"}}.
-                {{#if showSelectAll}}
-                    <a id="selectAllRemotes" class="pointer">&nbsp;{{_ "Select all"}} {{totalCount}}?</a>
-                {{/if}}
-            </span>
+            <div class="row-container" style="border-bottom: 1px solid #eee; padding: 0 20px">
+                <div class="row" style="padding: 4px 0;">
+                    <div class="col-md-2">
+                        <span class="text">
+                            <strong>{{selectedCount}}</strong> {{_ "selected"}}.
+                            {{#if showSelectAll}}
+                                <a id="selectAllRemotes" class="pointer">&nbsp;{{_ "Select all"}} {{totalCount}}?</a>
+                            {{/if}}
+                        </span>
+                    </div>
+                    <div class="col-md-10">
+
+                        {{#if areAllSelectedTheSameType}}
+                            {{#if allEmployee}}
+                                <div class="col-md-6">
+                                    <!--<div class="col-md-4"><span>Add placements:</span></div>-->
+                                    <div class="input-group col-md-12" style="margin-bottom: 10px">
+                                        {{>asyncSelect query=getJobs placeholder="Add placements to job" onChange=JobChanged width='100%'}}
+                                        <span class="input-group-btn">
+                                            <button class="add-placement btn btn-default" type="button"><span class="fa fa-plus"></span></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            {{/if}}
+                            <div class="col-md-6">
+                                <!--<div class="col-md-4"><span>Add to Hot list:</span></div>-->
+                                <div class="input-group col-md-12" style="margin-bottom: 10px">
+                                    {{>asyncSelect query=getHotList placeholder="Add to Hot list" onChange=hotListChanged width='100%'}}
+                                    <span class="input-group-btn">
+                                        <button class="add-hotList btn btn-default" type="button"><span class="fa fa-plus"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                        {{else}}
+                            <div class="list-interactive-msg-options">
+                                {{_ "Select desired type"}}: &nbsp;
+                                <div class="btn-group" role="group">
+                                    {{#each differentTypesSelected}}
+                                        <a class="pointer selectOneType btn btn-default"> {{_ name}} - <strong>{{count}}</strong>
+                                        </a>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+
             </div>
-            {{#if areAllSelectedTheSameType}}
-                {{#if allEmployee}}
-                    <div class="col-md-2"><h4>Add placements:</h4></div>
-                    <div class="input-group col-md-3" style="margin-bottom: 10px">
-                        {{>asyncSelect query=getJobs placeholder="Search job" onChange=JobChanged width='100%'}}
-                        <span class="input-group-btn">
-                        <button class="add-placement btn btn-default" type="button"><span class="fa fa-plus"></span></button>
-                     </span>
-                    </div>
-                {{/if}}
-                <div>
-                    <div class="col-md-2"><h4>Add to Hot list:</h4></div>
-                    <div class="input-group col-md-3" style="margin-bottom: 10px">
-                        {{>asyncSelect query=getHotList placeholder="Search hot list" onChange=hotListChanged width='100%'}}
-                        <span class="input-group-btn">
-                        <button class="add-hotList btn btn-default" type="button"><span class="fa fa-plus"></span></button>
-                    </span>
-                    </div>
-                </div>
-
-            {{else}}
-                <div class="list-interactive-msg-options">
-                    {{_ "Select desired type"}}: &nbsp;
-                    <div class="btn-group" role="group">
-                        {{#each differentTypesSelected}}
-                            <a class="pointer selectOneType btn btn-default"> {{_ name}} - <strong>{{count}}</strong>
-                            </a>
-                        {{/each}}
-                    </div>
-                </div>
-            {{/if}}
-
-        </div>
             <!-- /.list-interactive-msg -->
         {{/if}}
     {{/if}}

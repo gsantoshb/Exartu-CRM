@@ -482,7 +482,7 @@ Template.contactablesListHeader.helpers({
     return selected.get().length;
   },
   areAllSelectedTheSameType: function () {
-
+    comonTypes = [];
     // if the selection is remote selection.types will be an array of names and counts
     // check the length of types to see if all are the same types and also save the commonTypes as it is done if selection is not remote (in that case selection is an array)
     var selection = selected.get();
@@ -496,7 +496,6 @@ Template.contactablesListHeader.helpers({
     if (_.isEmpty(selected.get())) return true;
     //check if there is a common type along all items selected ignoring contactable, person and organization
     var comonTypesUpper = _.without(_.intersection.apply(this, _.pluck(selected.get(), 'type')), 'contactable', 'person', 'organization');
-    comonTypes = [];
     _.forEach(comonTypesUpper, function (value) {
       comonTypes.push(value.toLowerCase());
     });
@@ -578,6 +577,7 @@ Template.contactablesListHeader.helpers({
     }
   },
   allEmployee: function () {
+    console.log('comonTypes', comonTypes);
     return _.contains(comonTypes, "employee");
   },
   isAdding: function () {
