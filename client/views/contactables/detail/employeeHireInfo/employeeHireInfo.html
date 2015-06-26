@@ -134,12 +134,32 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="left-part">{{_ "Dependent Number"}}</div>
+                                        <div class="left-part">{{_ "Number of Dependats"}}</div>
                                         <div class="right-part">
-                                                {{#objectProperty property=dependentNumber editable=editMode}}
+                                            {{#objectProperty property=dependentNumber editable=editMode}}
                                                 <input class="form-control" type="number" value="{{value}}">
                                             {{else}}
                                                 <span>{{value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="left-part">{{_ "Orientation Date"}}</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=orientationDate editable=editMode}}
+                                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                            {{else}}
+                                                <span>{{formattedDate value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="left-part">{{_ " Hire Date"}}</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=hireDate editable=editMode}}
+                                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                            {{else}}
+                                                <span>{{formattedDate value}}</span>
                                             {{/objectProperty}}
                                         </div>
                                     </li>

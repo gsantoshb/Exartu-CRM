@@ -232,6 +232,20 @@ newObjType({
       fieldType: 'date',
       showInAdd: false,
       required: false
+    },
+    {
+      name: 'orientationDate',
+      displayName: 'Orientation Date',
+      fieldType: 'date',
+      showInAdd: false,
+      required: false
+    },
+    {
+      name: 'hireDate',
+      displayName: 'Hire Date',
+      fieldType: 'date',
+      showInAdd: false,
+      required: false
     }
 
   ]
