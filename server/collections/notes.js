@@ -197,64 +197,7 @@
 //    return true;
 //  }
 //});
-Notes.after.insert(function(userId,doc){
-    if (!doc.links) return;
-    _.forEach(doc.links, function(link) {
-        if (link.type==Enums.linkTypes.contactable.value)
-        {
 
-          var c = Contactables.findOne({_id: link.id});
-          if(!c.latestNotes){
-            c.latestNotes = [];
-          }
-          else if(c.latestNotes.length === 3){
-            c.latestNotes.shift();
-          }
-          c.latestNotes.push(doc);
-          Contactables.update({_id:link.id},{$set: {latestNotes: c.latestNotes}});
-        }
-    });
-
-});
-
-Notes.after.remove(function(userId,doc){
-  if(doc.links) {
-    _.forEach(doc.links, function(link){
-      if (link.type==Enums.linkTypes.contactable.value)
-      {
-        //find last note
-        var newLatestNote = [];
-        var n = Notes.find({'links.id':link.id},{$sort:{dateCreated:-1} }).fetch();
-        if(n) {
-          if (n[2]) {
-            newLatestNote.push(n[2]);
-          }
-          if (n[1]) {
-            newLatestNote.push(n[1]);
-          }
-          if (n[0]) {
-            newLatestNote.push(n[0]);
-          }
-        }
-        Contactables.update({_id:link.id},{$set: {latestNotes: newLatestNote}});
-      }
-    });
-
-  }
-});
-
-
-Notes.before.insert(function(userId, doc){
-  doc.dateCreated = doc.dateCreated || Date.now();
-  if (doc.hierId)
-    return doc; // It was created by the system, e.g.: from a SMS sent by a contactable
-
-  var user = Meteor.user();
-  doc.hierId = user.currentHierId;
-  doc.userId = user._id;
-
-  return doc;
-});
 
 Meteor.publish('editNote', function(id) {
   var self = this;
@@ -289,7 +232,6 @@ Meteor.publish(null, function () {
 
 
 // Indexes
-
 Notes._ensureIndex({hierId: 1});
 Notes._ensureIndex({userId: 1});
 Notes._ensureIndex({"links.id":1});

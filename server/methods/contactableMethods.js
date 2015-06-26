@@ -365,12 +365,6 @@ FileUploader.createEndpoint('uploadResume', {
 
 FileUploader.createEndpoint('uploadContactablesFiles', {
   onUpload: function (stream, metadata) {
-    var fileId = S3Storage.upload(stream);
-
-    if (!fileId) {
-      return new Meteor.Error(500, "Error uploading resume to S3");
-    }
-
     var file = {
       entityId: metadata.entityId,
       name: metadata.name,
@@ -380,10 +374,21 @@ FileUploader.createEndpoint('uploadContactablesFiles', {
       tags: metadata.tags,
       userId: Meteor.userId(),
       hierId: Meteor.user().hierId,
-      fileId: fileId
+      fileId: null
     };
+    var localFileId = ContactablesFiles.insert(file);
 
-    return ContactablesFiles.insert(file);
+    _.defer(Meteor.bindEnvironment(function () {
+      var s3FileId = S3Storage.upload(stream);
+
+      if (s3FileId) {
+        ContactablesFiles.update(localFileId, { $set: { fileId: s3FileId } });
+      } else {
+        console.log("Error uploading resume to S3");
+      }
+    }));
+
+    return localFileId;
   },
   onDownload: function (fileId) {
     return S3Storage.download(fileId);

@@ -1,45 +1,3 @@
-var addDisabled = new ReactiveVar(false);
-var isAddFormVisible = new ReactiveVar(false);
-
-var showAddForm = function (file) {
-    document.file = file;
-    document.originalFileName = document.file.name;
-    document.name.value = document.file.name;
-    showAddForm.set(true);
-};
-var hideAddForm = function (file) {
-    showAddForm.set(false);
-};
-
-var startParsing = function () {
-    isLoading.set(true);
-};
-
-var endParsing = function () {
-    isLoading.set(false);
-};
-
-
-// Add document panel
-Template.contactableDocumentsAdd.helpers({
-    addForm: function () {
-        return isAddFormVisible.get();
-    },
-
-    showAddForm: function () {
-        return showAddForm;
-    }
-});
-
-Template.contactableDocumentsAdd.events = {
-    'click .add-trigger': function () {
-        $('#add-file').trigger('click');
-    },
-    'change #add-file': function (e) {
-        showAddForm(e.target.files[0]);
-    }
-};
-
 // Add document form
 
 var document = new Utils.ObjectDefinition({
@@ -57,6 +15,53 @@ var document = new Utils.ObjectDefinition({
     originalFileName: {},
     file: {}
 });
+var addDisabled = new ReactiveVar(false);
+var isAddFormVisible = new ReactiveVar(false);
+var isLoading = new ReactiveVar(false);
+var progressBar;
+
+var showAddForm = function (file) {
+    document.file = file;
+    document.originalFileName = document.file.name;
+    document.name.value = document.file.name;
+    isAddFormVisible.set(true);
+};
+var hideAddForm = function (file) {
+    isAddFormVisible.set(false);
+};
+
+var startParsing = function () {
+    isLoading.set(true);
+};
+
+var endParsing = function () {
+    isLoading.set(false);
+};
+
+// Add document panel
+Template.contactableDocumentsAdd.helpers({
+    addForm: function () {
+        return isAddFormVisible.get();
+    },
+    showAddForm: function () {
+        return showAddForm;
+    },
+    isLoading: function () {
+        return isLoading.get();
+    },
+    getProgress: function () {
+        return progressBar && progressBar.get();
+    }
+});
+
+Template.contactableDocumentsAdd.events = {
+    'click .add-trigger': function () {
+        $('#add-file').trigger('click');
+    },
+    'change #add-file': function (e) {
+        showAddForm(e.target.files[0]);
+    }
+};
 
 Template.addDocumentForm.helpers({
     newDocument: function () {
@@ -108,18 +113,18 @@ Template.addDocumentForm.events = {
         };
 
         startParsing();
-        var progress = new progress();
+        progressBar = new progress();
 
-        FileUploader.postProgress('uploadContactablesFiles', newDocument.file, progress, metadata, function (err, result) {
+        FileUploader.postProgress('/uploadContactablesFiles', newDocument.file, progressBar, metadata, function (err, result) {
             if (!err) {
                 endParsing();
-                AddForm.hide();
+                hideAddForm();
                 document.reset();
                 addDisabled.set(false);
 
             }
             else {
-                alert('File upload error:' + err)
+                alert('File upload error:' + err);
                 console.log('File upload error');
                 addDisabled.set(false);
             }
@@ -203,7 +208,6 @@ Template.contactableDocumentsList.helpers({
         return resumes && resumes.count() > 0 ? resumes : undefined;
     },
 
-
     url: function () {
         return FileUploader.getUrl('uploadContactablesFiles', this.fileId);
     },
@@ -245,6 +249,9 @@ Template.contactableDocumentsList.helpers({
     },
     query: function () {
         return query;
+    },
+    disabledClass: function () {
+        return this.fileId ? '' : 'disabled';
     }
 });
 

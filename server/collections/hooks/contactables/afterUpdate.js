@@ -389,13 +389,87 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
           if (this.previous.person.lastName != doc.person.lastName)
             data.lastName = doc.person.lastName;
         }
+
         // Check if Employee fields were modified
         if (fieldNames.indexOf('Employee') != -1) {
           if (this.previous.Employee.taxID != doc.Employee.taxID)
             data.ssn = doc.Employee.taxID.replace(/-/g,'');
         }
 
-        TwApi.updateEmployee(doc.externalId, data, accountInfo);
+        // Check if contact methods were modified
+        if (fieldNames.indexOf('contactMethods') != -1) {
+          var hierFilter = Utils.filterByHiers(doc.hierId);
+
+          // Email contact method
+          var emailCM = LookUps.findOne({
+            lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+            lookUpActions: Enums.lookUpAction.ContactMethod_Email,
+            $or: hierFilter
+          });
+          var email = _.find(doc.contactMethods, function (cm) { return cm.type == emailCM._id; });
+          if (email) data.email = email;
+
+          // Phone contact method
+          var phoneCM = LookUps.findOne({
+            lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+            lookUpActions: Enums.lookUpAction.ContactMethod_Phone,
+            $or: hierFilter
+          });
+          var phone = _.find(doc.contactMethods, function (cm) { return cm.type == phoneCM._id; });
+          if (phone) data.phone = phone;
+        }
+
+        if (!_.isEmpty(data)) TwApi.updateEmployee(doc.externalId, data, accountInfo);
+      }
+    }
+  }
+});
+// Delayed TW Enterprise Insertion/Update
+Contactables.after.update(function (userId, doc, fieldNames, modifier, options) {
+  // Check if the update is triggered by an Enterprise insert synchronization
+  if (fieldNames.indexOf('externalId') != -1) {
+    var hier = Hierarchies.findOne(doc.hierId);
+    if (hier && hier.enterpriseAccount) {
+      // Set up account info for the helper
+      var accountInfo = {
+        hierId: hier._id,
+        username: hier.enterpriseAccount.username,
+        password: hier.enterpriseAccount.password,
+        accessToken: hier.enterpriseAccount.accessToken,
+        tokenType: hier.enterpriseAccount.tokenType
+      };
+
+      var data = {};
+
+      // Update Employee
+      if (doc.Employee) {
+        if (doc.person.firstName) data.firstName = doc.person.firstName;
+        if (doc.person.lastName) data.lastName = doc.person.lastName;
+        if (doc.Employee.taxID) data.ssn = doc.Employee.taxID.replace(/-/g,'');
+        if (doc.contactMethods && doc.contactMethods.length > 0) {
+          var hierFilter = Utils.filterByHiers(doc.hierId);
+
+          // Email contact method
+          var emailCM = LookUps.findOne({
+            lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+            lookUpActions: Enums.lookUpAction.ContactMethod_Email,
+            $or: hierFilter
+          });
+          var email = _.find(doc.contactMethods, function (cm) { return cm.type == emailCM._id; });
+          if (email) data.email = email;
+
+          // Phone contact method
+          var phoneCM = LookUps.findOne({
+            lookUpCode: Enums.lookUpTypes.contactMethod.type.lookUpCode,
+            lookUpActions: Enums.lookUpAction.ContactMethod_Phone,
+            $or: hierFilter
+          });
+          var phone = _.find(doc.contactMethods, function (cm) { return cm.type == phoneCM._id; });
+          if (phone) data.phone = phone;
+        }
+
+        // Update enterprise
+        if (!_.isEmpty(data)) TwApi.updateEmployee(doc.externalId, data, accountInfo);
       }
     }
   }

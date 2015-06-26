@@ -151,8 +151,8 @@ newObjType({
       required: false
     },
     {
-      name:'avaiableDate',
-      displayName: 'Avaiable date',
+      name:'dateAvailable',
+      displayName: 'Date available',
       fieldType: 'date',
       showInAdd: false,
       required: false
@@ -229,6 +229,20 @@ newObjType({
     {
       name: 'i9ExpireDate',
       displayName: 'i9 Expiration Date',
+      fieldType: 'date',
+      showInAdd: false,
+      required: false
+    },
+    {
+      name: 'orientationDate',
+      displayName: 'Orientation Date',
+      fieldType: 'date',
+      showInAdd: false,
+      required: false
+    },
+    {
+      name: 'hireDate',
+      displayName: 'Hire Date',
       fieldType: 'date',
       showInAdd: false,
       required: false

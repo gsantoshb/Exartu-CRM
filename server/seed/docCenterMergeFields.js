@@ -246,6 +246,12 @@ var mergeFields = [{
 
   },
   targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
+  key: 'numberOfDependants',
+  testValue: 2,
+  type: DocCenter.mergeFieldTypes.decimal,
+  path: 'Employee.dependentNumber',
+  targetType: Enums.docCenterMergeFieldTypes.contactable
 },
 
   // Education

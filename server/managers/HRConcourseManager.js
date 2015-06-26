@@ -121,9 +121,16 @@ HRConcourseManager = {
       $or: hierFilter
     });
 
+    // Active Status
+    var activeStatus = LookUps.findOne({
+      lookUpCode: Enums.lookUpTypes.active.status.lookUpCode,
+      isDefault: true,
+      $or: hierFilter
+    });
+
     // Create employee with DocCenter info on it
     var empId = Contactables.insert({
-      objNameArray:['person', 'Employee', 'Contactable'],
+      objNameArray:['person', 'Employee', 'contactable'],
       hierId: hierId,
       person: {
         "firstName" : empFirstName,
@@ -133,7 +140,8 @@ HRConcourseManager = {
       Employee: {},
       docCenter: {
         docCenterId: docCenterId
-      }
+      },
+      activeStatus: activeStatus
     });
     if (!empId) throw new Error('An error occurred while creating the employee');
 
@@ -146,6 +154,7 @@ HRConcourseManager = {
     if (mergeFields.dateOfBirth) update.$set['person.birthDate'] = mergeFields.dateOfBirth;
     if (mergeFields.convictions) update.$set['Employee.convictions'] = mergeFields.convictions;
     if (mergeFields.ethnicity) update.$set['Employee.ethnicity'] = mergeFields.ethnicity;
+    if (mergeFields.dateAvailable) update.$set['Employee.dateAvailable'] = mergeFields.dateAvailable;
     if (mergeFields.desiredPay) update.$set['Employee.desiredPay'] = parseFloat(mergeFields.desiredPay) || 0;
     if (mergeFields.gender) {
       if (mergeFields.gender.indexOf('f') != -1 || mergeFields.gender.indexOf('F') != -1) {

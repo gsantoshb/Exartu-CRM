@@ -10,132 +10,6 @@
                 </div>
 
                 <div class="col-md-10">
-                    <!--{{#autoForm id="hireInfoEdit" schema="EmployeeHireInfoSchema"}}-->
-                        <!--<div class="row">-->
-                            <!--<div class="col-md-12">-->
-                                <!--<ul class="list-type-5">-->
-                                    <!--<li>-->
-                                        <!--<div class="left-part">{{_ "Convictions"}}</div>-->
-                                        <!--<div class="right-part">-->
-                                            <!--{{#if editMode}}-->
-                                                <!--<input class="form-control" type="text" value="{{value}}">-->
-                                            <!--{{else}}-->
-                                                <!--<span>{{value}}</span>-->
-                                            <!--{{/if}}-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<div class="left-part">{{_ "Gender"}}</div>-->
-                                        <!--<div class="right-part">-->
-                                            <!--{{#if editMode}}-->
-                                                <!--{{>select options=genderOptions value=value}}-->
-                                            <!--{{else}}-->
-                                                <!--<span>{{getGenderDisplayName value}}</span>-->
-                                            <!--{{/if}}-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<div class="left-part">{{_ "Ethnicity"}}</div>-->
-                                        <!--<div class="right-part">-->
-                                            <!--{{#if editMode}}-->
-                                                <!--{{>select options=ethnicityOptions value=value}}-->
-                                            <!--{{else}}-->
-                                                <!--<span>{{getEthnicityDisplayName value}}</span>-->
-                                            <!--{{/if}}-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<div class="left-part">{{_ "Has own Transportation"}}</div>-->
-                                        <!--<div class="right-part">-->
-                                            <!--{{#if editMode}}-->
-                                                <!--<div class="checkbox">-->
-                                                    <!--<input type="checkbox" checked="{{value}}">-->
-                                                <!--</div>-->
-                                            <!--{{else}}-->
-                                                <!--<span>{{#if value}}true{{else}}false{{/if}}</span>-->
-                                            <!--{{/if}}-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<div class="left-part">{{_ "Prefered work location "}}</div>-->
-                                        <!--<div class="right-part">-->
-                                            <!--{{#if editMode}}-->
-                                                <!--{{>locationSearchInput onChange=locationChanged}}-->
-                                            <!--{{else}}-->
-                                                <!--<span>{{value}}</span>-->
-                                            <!--{{/if}}-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<div class="left-part">{{_ "Desired Pay"}}</div>-->
-                                        <!--<div class="right-part">-->
-                                            <!--{{#if editMode}}-->
-                                                <!--<input class="form-control" type="number" value="{{value}}">-->
-                                            <!--{{else}}-->
-                                                <!--<span>{{value}}</span>-->
-                                            <!--{{/if}}-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<div class="left-part">{{_ "Available start date"}}</div>-->
-                                        <!--<div class="right-part">-->
-                                            <!--{{#if editMode}}-->
-                                                <!--<div class="checkbox">-->
-                                                    <!--<label>-->
-                                                        <!--<input type="checkbox" value="{{value}}"> Monday-->
-                                                    <!--</label>-->
-                                                <!--</div>-->
-                                                <!--<div class="checkbox">-->
-                                                    <!--<label>-->
-                                                        <!--<input type="checkbox" value="{{value}}"> Tuesday-->
-                                                    <!--</label>-->
-                                                <!--</div>-->
-                                                <!--<div class="checkbox">-->
-                                                    <!--<label>-->
-                                                        <!--<input type="checkbox" value="{{value}}"> Wednesday-->
-                                                    <!--</label>-->
-                                                <!--</div>-->
-                                            <!--{{else}}-->
-                                                <!--<span>{{value}}</span>-->
-                                            <!--{{/if}}-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<div class="left-part">{{_ "Available Shift"}}</div>-->
-                                        <!--<div class="right-part">-->
-                                            <!--{{#if editMode}}-->
-                                                <!--<input class="form-control" type="text" value="{{value}}">-->
-                                            <!--{{else}}-->
-                                                <!--<span>{{value}}</span>-->
-                                            <!--{{/if}}-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<div class="left-part">{{_ "I9 on file"}}</div>-->
-                                        <!--<div class="right-part">-->
-                                            <!--{{#if editMode}}-->
-                                                <!--<div class="checkbox">-->
-                                                    <!--<input type="checkbox" checked="{{value}}">-->
-                                                <!--</div>-->
-                                            <!--{{else}}-->
-                                                <!--<span>{{#if value}}true{{else}}false{{/if}}</span>-->
-                                            <!--{{/if}}-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<div class="left-part">{{_ "i9 Expiration Date"}}</div>-->
-                                        <!--<div class="right-part">-->
-                                            <!--{{#if editMode}}-->
-                                                <!--{{>bootstrap3DatePicker value=value options=datePickerOptions}}-->
-                                            <!--{{else}}-->
-                                                <!--<span>{{formattedDate value}}</span>-->
-                                            <!--{{/if}}-->
-                                        <!--</div>-->
-                                    <!--</li>-->
-                                <!--</ul>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--{{/autoForm}}-->
                     {{#with objInstance}}
                         <div class="row">
                             <div class="col-md-12">
@@ -203,9 +77,9 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="left-part">{{_ "Avaiable date"}}</div>
+                                        <div class="left-part">{{_ "Date available"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=avaiableDate editable=editMode}}
+                                            {{#objectProperty property=dateAvailable editable=editMode}}
                                                 {{>bootstrap3DatePicker value=value options=datePickerOptions}}
                                             {{else}}
                                                 <span>{{#if value}}{{formattedDate value}}{{else}}none{{/if}}</span>
@@ -213,7 +87,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="left-part">{{_ "Available start date"}}</div>
+                                        <div class="left-part">{{_ "Available days"}}</div>
                                         <div class="right-part">
                                             {{#if editMode}}
                                                 {{>checkboxGroup options=daysOptions onChange=availableStartDateChanged}}
@@ -260,12 +134,32 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="left-part">{{_ "Dependent Number"}}</div>
+                                        <div class="left-part">{{_ "Number of Dependents"}}</div>
                                         <div class="right-part">
-                                                {{#objectProperty property=dependentNumber editable=editMode}}
+                                            {{#objectProperty property=dependentNumber editable=editMode}}
                                                 <input class="form-control" type="number" value="{{value}}">
                                             {{else}}
                                                 <span>{{value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="left-part">{{_ "Orientation Date"}}</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=orientationDate editable=editMode}}
+                                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                            {{else}}
+                                                <span>{{formattedDate value}}</span>
+                                            {{/objectProperty}}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="left-part">{{_ " Hire Date"}}</div>
+                                        <div class="right-part">
+                                            {{#objectProperty property=hireDate editable=editMode}}
+                                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                            {{else}}
+                                                <span>{{formattedDate value}}</span>
                                             {{/objectProperty}}
                                         </div>
                                     </li>

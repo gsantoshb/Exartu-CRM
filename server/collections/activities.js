@@ -424,45 +424,7 @@ Meteor.paginatedPublish(ActivityViews, function (id) {
 });
 
 
-// Note
-Notes.after.insert(function (userId, doc) {
-  var obj = {
-    userId: userId,
-    hierId: doc.hierId,
-    type: Enums.activitiesType.noteAdd,
-    entityId: doc._id,
-    links: _.map(doc.links, function (link) {
-      return link.id;
-    }),
-    data: {
-      dateCreated: new Date()
-    }
-  };
-  if (doc && doc.testData) obj.testData = true;
-  Activities.insert(obj);
-});
-
-// Tasks
-Tasks.after.insert(function (userId, doc) {
-  var obj = {
-    userId: doc.userId,
-    hierId: doc.hierId,
-    type: Enums.activitiesType.taskAdd,
-    entityId: doc._id,
-    links: _.map(doc.links, function (link) {
-      return link.id;
-    }),
-    data: {
-      taskId: doc._id,
-      dateCreated: new Date()
-    }
-  };
-  if (doc && doc.testData) obj.testData = true;
-  Activities.insert(obj);
-});
-
 //Placements
-
 Placements.after.insert(function (userId, doc) {
   var data = {};
   data.dateCreated = new Date();
@@ -548,7 +510,6 @@ Placements.after.update(function (userId, doc, fieldNames, modifier, options) {
 });
 
 // Contactable files
-
 ContactablesFiles.after.insert(function (userId, doc) {
   Activities.insert({
     userId: userId,
@@ -564,7 +525,6 @@ ContactablesFiles.after.insert(function (userId, doc) {
 
 
 // Users
-
 Meteor.startup(function () {
   Meteor.methods({
     userLoginActivity: function () {
@@ -585,12 +545,10 @@ Meteor.startup(function () {
 });
 
 // Indexes
-
 Activities._ensureIndex({hierId: 1});
-
 Activities._ensureIndex({type: 1});
-// Helpers
 
+// Helpers
 var propertiesTracker = function (doc, previous, changes, root, properties) {
   _.forEach(properties, function (property) {
     var previousValue = root ? previous[root][property.field] : previous[property.field];
