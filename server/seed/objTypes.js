@@ -151,6 +151,21 @@ newObjType({
       required: false
     },
     {
+      name:'avaiableDate',
+      displayName: 'Avaiable date',
+      fieldType: 'date',
+      showInAdd: false,
+      required: false
+
+    },
+    {
+      name:'dependentNumber',
+      displayName:'Dependent number',
+      fieldType:'number',
+      showInAdd: false,
+      required:false
+    },
+    {
       name: 'accountNumber',
       displayName: 'Account number',
       showInAdd: false,
