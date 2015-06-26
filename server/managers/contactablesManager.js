@@ -607,6 +607,59 @@ ContactableManager = {
     },
     getContactableById: function(contactableId){
       return Contactables.findOne({_id:contactableId});
+    },
+    updateContactable: function(update, contactableId){
+      //update a contactable using the "update" from the autoform on contactables details
+      var querySet = {};
+      if(update.$set.personFirstName ){
+        _.extend(querySet, {'person.firstName':update.$set.personFirstName});
+      }
+      if(update.$set.personLastName){
+        _.extend(querySet, {'person.lastName':update.$set.personLastName});
+      }
+      if(update.$set.personMiddleName){
+        _.extend(querySet, {'person.middleName':update.$set.personMiddleName});
+      }
+      if(update.$set.personJobTitle){
+        _.extend(querySet, {'person.jobTitle':update.$set.personJobTitle});
+      }
+      if(update.$set.personBirthDate){
+        _.extend(querySet, {'person.birthDate':update.$set.personBirthDate});
+      }
+      if(update.$set.organizationOrganizationName){
+        _.extend(querySet, {'organization.organizationName':update.$set.organizationOrganizationName});
+      }
+      if(update.$set.clientDepartment){
+        _.extend(querySet, {'Client.department':update.$set.clientDepartment});
+      }
+      if(update.$set.clientStatus){
+        _.extend(querySet, {'Client.status':update.$set.clientStatus});
+      }
+      if(update.$set.workerCompCode){
+        _.extend(querySet, {'Client.workerCompCode':update.$set.workerCompCode});
+      }
+      if(update.$set.employeeStatus){
+        _.extend(querySet, {'Employee.status':update.$set.employeeStatus});
+      }
+      if(update.$set.taxID){
+        _.extend(querySet, {'Employee.taxID':update.$set.taxID});
+      }
+      if(update.$set.contactStatus){
+        _.extend(querySet, {'Contact.status':update.$set.contactStatus});
+      }
+      if(update.$set.howHeardOf){
+        _.extend(querySet, {'howHeardOf':update.$set.howHeardOf});
+      }
+      if(update.$set.activeStatus){
+        _.extend(querySet, {'activeStatus':update.$set.activeStatus});
+      }
+      if(update.$set.statusNote){
+        _.extend(querySet, {'statusNote':update.$set.statusNote});
+      }
+      if(update.$set.clientLostReason){
+        _.extend(querySet, {'Client.lostReason':update.$set.clientLostReason});
+      }
+      Contactables.update({_id: contactableId},{$set:querySet});
     }
 };
 

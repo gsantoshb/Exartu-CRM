@@ -145,17 +145,7 @@ UI.registerHelper('contactMethodTypePrefix', function(type) {
 
 // User name display
 UI.registerHelper('displayUserName', function (id) {
-  var user = Meteor.users.findOne({ _id: id });
-  if (!user) return '';
-  if (user.userName){
-    return user.userName
-  }
-
-  var localPart = user.emails[0].address.split('@')[0];
-
-  //if the localPart is unique return it, else include the domain
-  var isUnique = Meteor.users.find({emails: {$elemMatch: {address : {$regex: '^' + localPart + '@.*'} } } }).count() <= 1;
-  return isUnique ? localPart : user.emails[0].address;
+  return Utils.getUserDisplayName(id);
 });
 
 UI.registerHelper('clientDepartmentName'), function (client)

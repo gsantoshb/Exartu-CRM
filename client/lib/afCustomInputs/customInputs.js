@@ -54,63 +54,58 @@ AutoForm.addInputType('afSimpleCheckbox', {
 AutoForm.addInputType('afButtonGroup', {
   template: 'afButtonGroup',
   valueOut: function (ctx) {
-    return Blaze.getData(this[0]).selected.get();
+
+    return this.val();
   },
-  contextAdjust: function(ctx){
-    ctx.buttonArray = ctx.atts.buttonArray;
-    delete ctx.atts.buttonArray;
-    ctx.selected = ctx.atts.selected;
-    delete ctx.atts.selected;
-    return ctx;
+  contextAdjust: function(data){
+    if(!data.atts.id){
+      data.atts.id = Meteor.uuid();
+    }
+    data.buttonArray = data.atts.buttonArray;
+    delete data.atts.buttonArray;
+    var selected = new ReactiveVar();
+    var buttonArray = new ReactiveVar();
+    data.atts.value = data.value;
+    selected.set(data.value);
+    buttonArray.set(data.buttonArray);
+    data.selected = selected;
+    data.buttonArray = buttonArray;
+    //actualizeButtons(ctx);
+    return data;
   }
 })
 
-
-var actualizeButtons = function(self){
-  var newArray = [];
-  _.each(self.data.buttonArray.get(), function(b){
-    if(self.data.selected.get() === b.value){
-      _.extend(b,{clase:"btn btn-sm btn-primary"});
-      newArray.push(b)
-    }
-    else{
-      _.extend(b,{clase:"btn btn-sm btn-default"});
-      newArray.push(b)
-    }
-
-  })
-  self.data.buttonArray.set(newArray);
-}
-
-Template.afButtonGroup.created = function(){
-  var selected = new ReactiveVar();
-  var buttonArray = new ReactiveVar();
-  selected.set(this.data.selected);
-  buttonArray.set(this.data.buttonArray);
-  this.data.selected = selected;
-  this.data.buttonArray = buttonArray;
-  actualizeButtons(this);
-}
-
-Template.afButtonGroup.rendered = function(){
-  //actualizeButtons(this);
-}
-
 Template.afButtonGroup.events({
   'click .buttonGroup': function(e, ctx){
+    var v = null;
     if(ctx.data.selected.get()=== e.target.id){
+
       ctx.data.selected.set(null);
     }
     else {
+      v = e.target.id;
       ctx.data.selected.set(e.target.id);
     }
-    actualizeButtons(ctx);
+    var elem = ctx.$('#'+ctx.data.atts.id);
+    elem.val(v);
+    elem.change();
   }
 })
 
 Template.afButtonGroup.helpers({
    buttonsGroup: function(){
-
-      return this.buttonArray.get();
+       return Template.instance().data.buttonArray.get();
+   },
+  class: function () {
+    if(this.value === Template.instance().data.selected.get()){
+      return "btn btn-sm btn-primary";
+    }
+    else{
+      return "btn btn-sm btn-default";
+    }
+  },
+   selected: function(){
+      //debugger;
+      //return Template.instance().data.selected.get();
    }
 })
