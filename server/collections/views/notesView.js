@@ -20,12 +20,6 @@ NotesView.allow({
 });
 
 
-Placements.after.update(function(userId, doc, fields, update){
-  if(update.$set && update.$set['displayName']){
-    NotesView.update({"links.id":doc._id},{$set:{"links.$.displayName": doc.displayName}},{multi:true})
-  }
-})
-
 HotLists.after.update(function(userId, doc, fields, update){
   if(update.$set && update.$set['displayName']){
     NotesView.update({"links.id":doc._id},{$set:{"links.$.displayName": doc.displayName}},{multi:true})

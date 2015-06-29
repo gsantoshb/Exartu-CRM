@@ -60,7 +60,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="left-part">{{_ "Birth Date"}}</div>
+                                        <div class="left-part">{{_ "Birth date"}}</div>
                                         <div class="right-part">
                                             {{#objectProperty property=birthDate editable=editMode}}
                                                 {{>bootstrap3DatePicker value=value options=datePickerOptions}}
@@ -106,7 +106,7 @@
 
 
                                 <li>
-                                    <div class="left-part">{{_ "Active Status"}}</div>
+                                    <div class="left-part">{{_ "Active status"}}</div>
                                     <div class="right-part">
                                         {{#objectProperty property=activeStatus editable=editMode}}
                                             {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
@@ -119,7 +119,7 @@
                                 </li>
 
                                 <li>
-                                    <div class="left-part">{{_ "Process Status"}}</div>
+                                    <div class="left-part">{{_ "Process status"}}</div>
                                     <div class="right-part">
                                         {{#objectProperty property=status editable=editMode}}
                                             {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
@@ -136,7 +136,7 @@
                                 <ul class="list-type-5">
                                 {{#if lostClient}}
                                     <li>
-                                        <div class="left-part">{{_ "Lost Reason"}}</div>
+                                        <div class="left-part">{{_ "Lost reason"}}</div>
                                         <div class="right-part">
                                             {{#objectProperty property=lostReason editable=editMode}}
                                                 {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
@@ -201,7 +201,7 @@
                                 {{/if}}
                                 {{#if Client}}
                                     <li>
-                                        <div class="left-part">{{_ "WorkerComp"}}</div>
+                                        <div class="left-part">{{_ "Worker Comp."}}</div>
                                         <div class="right-part">
                                             {{#objectProperty property=workerCompCode editable=editMode}}
                                                 <input class="form-control" placeholder= {{_ "Example TX8810"}}
@@ -277,7 +277,7 @@
                             <ul class="list-type-5">
 
                                 <li>
-                                    <div class="left-part">Routing Number</div>
+                                    <div class="left-part">Routing number</div>
                                     <div class="right-part">
                                         {{#if editMode}}
                                             <div class="form-group {{hasError}}">
@@ -375,7 +375,7 @@
         </div>
     </li>
     <li>
-        <div class="left-part">{{_ "Date Created"}}</div>
+        <div class="left-part">{{_ "Date created"}}</div>
         <div class="right-part">
             {{formattedDate dateCreated "lll"}}
         </div>
@@ -387,7 +387,7 @@
         </div>
     </li>
     <li>
-        <div class="left-part">{{_ "ExternalId"}}</div>
+        <div class="left-part">{{_ "External Id"}}</div>
         <div class="right-part">
             {{externalId}}
         </div>
@@ -407,7 +407,7 @@
     </tr>
     <tr>
         <td>
-            <div class="left-part">{{_ "Date Created"}}</div>
+            <div class="left-part">{{_ "Date created"}}</div>
         </td>
         <td>
             <div class="right-part">
