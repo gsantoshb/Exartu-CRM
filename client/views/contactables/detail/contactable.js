@@ -534,7 +534,7 @@ Template.contactable_nav.helpers({
       {id: 'details', mobileDisplayName: 'Detail', displayName: 'Details', template: 'contactable_details'},
       {
         id: 'notes',
-        mobileDisplayName: 'Note',
+        mobileDisplayName: 'Notes',
         displayName: 'Notes',
         template: 'contactable_notes',
         icon: 'icon-note-paper-1',
@@ -596,7 +596,7 @@ Template.contactable_nav.helpers({
       });
       tabs.push({
         id: 'pastJobs',
-        mobileDisplayName: 'Past Jobs',
+        mobileDisplayName: 'Past jobs',
         displayName: 'Past Jobs',
         template: 'employeePastJobs',
         info: function () {
@@ -605,8 +605,8 @@ Template.contactable_nav.helpers({
       });
       tabs.push({
         id: 'hireInfo',
-        mobileDisplayName: 'Hire info',
-        displayName: 'Hire info',
+        mobileDisplayName: 'Legal info',
+        displayName: 'Legal info',
         template: 'employeeHireInfo'
       });
 
