@@ -625,7 +625,7 @@ Template.contactableListSort.helpers({
 // List Filters - Helpers
 Template.contactablesFilters.helpers({
   users: function () {
-    return Meteor.users.find({}, {sort: {'emails.address': 1}});
+    return Meteor.users.find({inactive: {$ne: true}}, {sort: {'emails.address': 1}});
   },
   query: function () {
     return query;
