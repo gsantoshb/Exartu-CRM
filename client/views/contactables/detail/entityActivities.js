@@ -1,5 +1,5 @@
 Template.entityActivities.onCreated(function () {
-  this.handler = Meteor.paginatedSubscribe('entityActivities', {pubArguments: Session.get('entityId'), options: {sort: {'data.dateCreated': -1}}});
+  this.handler = Meteor.paginatedSubscribe('entityActivities', {pubArguments: this.data.entityId || Session.get('entityId'), options: {sort: {'data.dateCreated': -1}}});
 });
 
 Template.entityActivities.onDestroyed(function () {
