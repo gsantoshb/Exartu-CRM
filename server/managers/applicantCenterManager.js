@@ -121,7 +121,7 @@ ApplicantCenterManager = {
     Meteor.users.update({_id: userId}, {$set: {contactableId: employeeId}});
 
     // Update the employee with the AC account information
-    Contactables.update({_id: employeeId}, {$set: {userId: userId, user: userId, tempPass: tempPass}});
+    Contactables.update({_id: employeeId}, {$set: {user: userId, tempPass: tempPass}});
 
     return userId;
   },
