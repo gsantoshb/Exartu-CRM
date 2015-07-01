@@ -511,14 +511,14 @@
     </section>
 </template>
 <template name="displayOriginDataInline">
-    <!--<li>-->
-        <!--<div class="left-part">User</div>-->
-        <!--<div class="right-part">-->
-            <!--{{displayUserName userId}}-->
-        <!--</div>-->
-    <!--</li>-->
     <li>
-        <div class="left-part">{{_ "Date Created"}}</div>
+        <div class="left-part">Created by</div>
+        <div class="right-part">
+            {{displayUserName createdBy}}
+        </div>
+    </li>
+    <li>
+        <div class="left-part">{{_ "Date created"}}</div>
         <div class="right-part">
             {{formattedDate dateCreated "lll"}}
         </div>
@@ -530,7 +530,7 @@
         </div>
     </li>
     <li>
-        <div class="left-part">{{_ "ExternalId"}}</div>
+        <div class="left-part">{{_ "External Id"}}</div>
         <div class="right-part">
             {{externalId}}
         </div>
@@ -550,7 +550,7 @@
     </tr>
     <tr>
         <td>
-            <div class="left-part">{{_ "Date Created"}}</div>
+            <div class="left-part">{{_ "Date created"}}</div>
         </td>
         <td>
             <div class="right-part">

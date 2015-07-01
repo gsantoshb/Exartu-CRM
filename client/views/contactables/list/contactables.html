@@ -513,22 +513,22 @@
                    </div>
                    <div class="col-md-6">
                        <p>
-                       <h4 class="title">{{_ displayName}}</h4>
+                        <h4 class="title">{{_ displayName}}</h4>
                        </p>
                        <p>
-                       <div class="desc">
-                           {{#if person}}
-                               {{#if person.jobTitle}}
-                                   {{_ person.jobTitle}}
+                           <div class="desc">
+                               {{#if person}}
+                                   {{#if person.jobTitle}}
+                                       {{_ person.jobTitle}}
+                                   {{/if}}
                                {{/if}}
-                           {{/if}}
 
-                           {{#if Contact.clientName}}
-                               @&nbsp;<a href="/contactable/{{Contact.client}}">{{_ Contact.clientName}}</a>
-                           {{/if}}
+                               {{#if Contact.clientName}}
+                                   @&nbsp;<a href="/contactable/{{Contact.client}}">{{_ Contact.clientName}}</a>
+                               {{/if}}
 
-                           {{#if Client.department}}{{_ Client.department}}{{/if}}
-                       </div>
+                               {{#if Client.department}}{{_ Client.department}}{{/if}}
+                           </div>
                        </p>
                    </div>
 
@@ -563,6 +563,11 @@
                     {{/if}}
                {{/with}}
                </ul>
+           </div>
+           <div>
+               {{#unless refreshActivities}}
+                {{>entityActivities entityId=this._id}}
+               {{/unless}}
            </div>
        </div>
        <br>

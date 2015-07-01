@@ -141,7 +141,7 @@ HRConcourseManager = {
       docCenter: {
         docCenterId: docCenterId
       },
-      activeStatus: activeStatus
+      activeStatus: activeStatus._id
     });
     if (!empId) throw new Error('An error occurred while creating the employee');
 
