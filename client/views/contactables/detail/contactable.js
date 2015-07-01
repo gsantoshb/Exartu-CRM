@@ -604,10 +604,10 @@ Template.contactable_nav.helpers({
         }
       });
       tabs.push({
-        id: 'hireInfo',
-        mobileDisplayName: 'Hire info',
-        displayName: 'Hire info',
-        template: 'employeeHireInfo'
+        id: 'legalInfo',
+        mobileDisplayName: 'Legal info',
+        displayName: 'Legal info',
+        template: 'employeeLegalInfo'
       });
 
       // Check if it has a doc Center account or has been invited to Applicant Center or is already a user

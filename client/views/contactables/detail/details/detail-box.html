@@ -22,6 +22,7 @@
                                     <li>
                                         <div class="left-part">{{_ "First name"}}</div>
                                         <div class="right-part">
+                                            <div class="form-group {{#if afFieldIsInvalid name='personFirstName'}}has-error{{/if}}">
                                             {{#if editMode}}
                                                 {{> afFieldInput  name='personFirstName' id="personFirstName" style="width:80%" type="text" class="form-control"}}
                                                 {{#if afFieldIsInvalid name='personFirstName'}}
@@ -30,11 +31,13 @@
                                             {{else}}
                                                 <span>{{personFirstName}}</span>
                                             {{/if}}
+                                            </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="left-part">{{_ "Last name"}}</div>
                                         <div class="right-part">
+                                            <div class="form-group {{#if afFieldIsInvalid name='personLastName'}}has-error{{/if}}">
                                             {{#if editMode}}
                                                 {{> afFieldInput  name='personLastName' id="personLastName" style="width:80%" type="text" class="form-control"}}
                                                 {{#if afFieldIsInvalid name='personLastName'}}
@@ -44,6 +47,7 @@
                                             {{else}}
                                                 <span>{{personLastName}}</span>
                                             {{/if}}
+                                            </div>
                                         </div>
                                     </li>
                                     <li>
@@ -97,6 +101,7 @@
                                     <li>
                                         <div class="left-part">{{_ "Organization"}}</div>
                                         <div class="right-part">
+                                            <div class="form-group {{#if afFieldIsInvalid name='organizationOrganizationName'}}has-error{{/if}}">
                                             {{#if editMode}}
                                                 {{> afFieldInput  name='organizationOrganizationName' id="organizationOrganizationName" style="width:80%" type="text" class="form-control"}}
                                                 {{#if afFieldIsInvalid name='organizationOrganizationName'}}
@@ -106,6 +111,7 @@
                                             {{else}}
                                                 <span>{{organizationOrganizationName}}</span>
                                             {{/if}}
+                                        </div>
                                         </div>
                                     </li>
                                 {{/if}}
@@ -297,7 +303,75 @@
                                         {{/if}}
                                     </div>
                                 </li>
-
+                            {{#if Employee}}
+                                <li>
+                                <div class="left-part">{{_ "Has own Transportation"}}</div>
+                                <div class="right-part">
+                                    {{#if editMode}}
+                                        {{> afFieldInput name='hasTransportation' type='afSimpleCheckbox' label=false}}
+                                    {{else}}
+                                        <span>{{#if hasTransportation}}true{{else}}false{{/if}}</span>
+                                    {{/if}}
+                                </div>
+                                </li>
+                                <li>
+                                <div class="left-part">{{_ "Preferred work location "}}</div>
+                                <div class="right-part">
+                                    {{#if editMode}}
+                                        {{> afQuickField label=false name="preferredWorkLocation" type="googleplace" opts=optsGoogleplace}}
+                                    {{else}}
+                                        {{#if preferredWorkLocation}}
+                                           <span>{{preferredLocationDisplayName}}</span>
+                                        {{/if}}
+                                    {{/if}}
+                                </div>
+                                </li>
+                                <li>
+                                  <div class="left-part">{{_ "Desired Pay"}}</div>
+                                  <div class="right-part">
+                                    {{#if editMode}}
+                                        {{> afFieldInput  name='desiredPay' id="desiredPay" style="width:80%" type="number" class="form-control"}}
+                                        {{#if afFieldIsInvalid name='desiredPay'}}
+                                            <span class="help-block">{{afFieldMessage name='desiredPay'}}</span>
+                                        {{/if}}
+                                    {{else}}
+                                        <span>{{desiredPay}}</span>
+                                    {{/if}}
+                                  </div>
+                                </li>
+                                <li>
+                                <div class="left-part">{{_ "Date available"}}</div>
+                                <div class="right-part">
+                                    {{#if editMode}}
+                                        <div style="width:80%">
+                                            {{> afB3DatePicker name='dateAvailable' value=dateAvailable format="D, MM dd, yyyy " startView="year" }}
+                                        </div>
+                                    {{else}}
+                                          <span>{{#if dateAvailable}}{{formattedDate dateAvailable}}{{else}}none{{/if}}</span>
+                                    {{/if}}
+                                </div>
+                                </li>
+                                <li>
+                                <div class="left-part">{{_ "Available days"}}</div>
+                                <div class="right-part">
+                                    {{#if editMode}}
+                                        {{> afQuickField label=false noselect=true name="availableStartDate" options="allowed"}}
+                                    {{else}}
+                                       <span>{{availableStartDate}}</span>
+                                    {{/if}}
+                                </div>
+                                </li>
+                                <li>
+                                <div class="left-part">{{_ "Available Shift"}}</div>
+                                <div class="right-part">
+                                    {{#if editMode}}
+                                        {{> afQuickField label=false noselect=true name="availableShifts" options="allowed"}}
+                                    {{else}}
+                                        <span>{{availableShifts}}</span>
+                                    {{/if}}
+                                </div>
+                                </li>
+                            {{/if}}
                                 {{#with originalContactable}}
                                     {{>displayOriginDataInline}}
                                 {{/with}}

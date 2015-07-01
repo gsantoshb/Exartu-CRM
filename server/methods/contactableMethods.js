@@ -299,7 +299,11 @@ Meteor.methods({
   },
   updateContactable:function(update, contactableId){
     ContactableManager.updateContactable(update, contactableId);
+  },
+  updateLegalInfo: function(update, contactableId){
+    ContactableManager.updateLegalInfo(update, contactableId);
   }
+
 
 });
 
