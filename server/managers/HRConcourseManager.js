@@ -154,7 +154,7 @@ HRConcourseManager = {
     if (mergeFields.dateOfBirth) update.$set['person.birthDate'] = mergeFields.dateOfBirth;
     if (mergeFields.convictions) update.$set['Employee.convictions'] = mergeFields.convictions;
     if (mergeFields.ethnicity) update.$set['Employee.ethnicity'] = mergeFields.ethnicity;
-    if (mergeFields.dateAvailable) update.$set['Employee.dateAvailable'] = mergeFields.dateAvailable;
+    if (mergeFields.dateAvailable) update.$set['Employee.dateAvailable'] = new Date(mergeFields.dateAvailable);
     if (mergeFields.desiredPay) update.$set['Employee.desiredPay'] = parseFloat(mergeFields.desiredPay) || 0;
     if (mergeFields.gender) {
       if (mergeFields.gender.indexOf('f') != -1 || mergeFields.gender.indexOf('F') != -1) {
