@@ -296,7 +296,14 @@ Meteor.methods({
   },
   updateContactMethod: function (contactableId, arrayToUpdate) {
     ContactableManager.updateContactMethod(contactableId, arrayToUpdate);
+  },
+  updateContactable:function(update, contactableId){
+    ContactableManager.updateContactable(update, contactableId);
+  },
+  updateLegalInfo: function(update, contactableId){
+    ContactableManager.updateLegalInfo(update, contactableId);
   }
+
 
 });
 
