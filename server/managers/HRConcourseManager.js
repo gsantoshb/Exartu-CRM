@@ -82,7 +82,7 @@ HRConcourseManager = {
     if (!docCenterId) throw new Error("DocCenter ID is required");
 
     // Log the attempt to sync an HRC employee
-    var logRecordId = KioskEmployees.insert({docCenterId: docCenterId});
+    var logRecordId = KioskEmployees.insert({docCenterId: docCenterId, dateCreated: new Date()});
 
     var empEmail;
     var documentInstances = 0;
