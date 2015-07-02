@@ -232,7 +232,7 @@ HRConcourseManager = {
         start: new Date(mergeFields.pastJobStartDate1),
         end: new Date(mergeFields.pastJobEndDate1),
         reasonForLeaving: mergeFields.pastJobReasonForLeaving1,
-        ok2Contact: mergeFields.okayToContact1.indexOf('t') !== -1 || mergeFields.okayToContact1.indexOf('T') !== -1
+        ok2Contact: mergeFields.okayToContact1 ? (mergeFields.okayToContact1.indexOf('t') !== -1 || mergeFields.okayToContact1.indexOf('T') !== -1) : false
       });
     }
     if (mergeFields.pastJobCompany2) {
@@ -247,7 +247,7 @@ HRConcourseManager = {
         start: new Date(mergeFields.pastJobStartDate2),
         end: new Date(mergeFields.pastJobEndDate2),
         reasonForLeaving: mergeFields.pastJobReasonForLeaving2,
-        ok2Contact: mergeFields.okayToContact2.indexOf('t') !== -1 || mergeFields.okayToContact2.indexOf('T') !== -1
+        ok2Contact: mergeFields.okayToContact2 ? (mergeFields.okayToContact2.indexOf('t') !== -1 || mergeFields.okayToContact2.indexOf('T') !== -1) : false
       });
     }
     if (mergeFields.pastJobCompany3) {
@@ -262,7 +262,7 @@ HRConcourseManager = {
         start: new Date(mergeFields.pastJobStartDate3),
         end: new Date(mergeFields.pastJobEndDate3),
         reasonForLeaving: mergeFields.pastJobReasonForLeaving3,
-        ok2Contact: mergeFields.okayToContact3.indexOf('t') !== -1 || mergeFields.okayToContact3.indexOf('T') !== -1
+        ok2Contact: mergeFields.okayToContact3 ? (mergeFields.okayToContact3.indexOf('t') !== -1 || mergeFields.okayToContact3.indexOf('T') !== -1) : false
       });
     }
     if (pastJobs.length > 0) update.$set.pastJobs = pastJobs;
