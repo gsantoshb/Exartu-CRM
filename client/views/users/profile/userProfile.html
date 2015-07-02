@@ -18,13 +18,15 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center">
                             <div class="profile-pic">
-                                <div id="edit-pic" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
+                                <div  id="{{#if canEdit}}edit-pic{{/if}}" class="profile-pic-icon" title="Click to Edit" style="cursor: pointer">
                                     <img class="img-responsive" style="display: inline;min-height: 100px; min-width: 100px; max-height:200px; max-width:200px; cursor: pointer"  src="{{userPicture}}">
                                 </div>
                                 <div class="btn-group-vertical">
-                                    <button id="edit-pic" type="button" class="btn btn-default btn-sm">Edit picture </button>
-                                    {{#if isGoogleUser}}
-                                        <button id="edit-pic-google" type="button" class="btn btn-default btn-sm"> Use Google picture </button>
+                                    {{#if canEdit}}
+                                        <button id="edit-pic" type="button" class="btn btn-default btn-sm">Edit picture </button>
+                                        {{#if isGoogleUser}}
+                                            <button id="edit-pic-google" type="button" class="btn btn-default btn-sm"> Use Google picture </button>
+                                        {{/if}}
                                     {{/if}}
                                 </div>
                             </div>
@@ -32,78 +34,57 @@
                          </div>
 
                         <div class="col-lg-8 col-md-8 col-sm-12">
-                            {{#with userInfo}}
-                                <!--<div class="form-group">-->
-                                    <!--<label class="control-label"> Username: </label>-->
-                                    <!--{{#objectProperty property=username editable=true}}-->
-                                        <!--<input class="form-control" type="text" placeholder="" value="{{value}}"/>-->
-                                    <!--{{/objectProperty}}-->
-                                <!--</div>-->
-                                <div class="form-group">
-                                    <label class="control-label"> First Name: </label>
-                                    {{#objectProperty property=firstName editable=true}}
-                                        <input class="form-control" type="text" placeholder="" value="{{value}}"/>
-                                    {{/objectProperty}}
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label"> Last Name: </label>
-                                    {{#objectProperty property=lastName editable=true}}
-                                        <input class="form-control" type="text" placeholder="" value="{{value}}"/>
-                                    {{/objectProperty}}
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label"> Email: </label>
-                                    {{#objectProperty property=email editable=true}}
-                                        <input class="form-control" type="text" placeholder="" value="{{value}}"/>
-                                    {{/objectProperty}}
-                                </div>
-                                <div>
-                                    {{#with pendingEmail}}
-                                        Email verification for <strong> {{.}} </strong> is pending, click <a id="resendEmailVerification">here</a> to resend.
-                                    {{/with}}
-                                </div>
+                            {{#if canEdit}}
+                                {{#autoForm schema=getUserInfoSchema id="editUserInfo" doc=getData}}
+                                    {{> afQuickField name='firstName'}}
+                                    {{> afQuickField name='lastName'}}
+                                    {{> afQuickField name='email'}}
 
-                                <div class="pull-right">
-                                    {{#objectProperty property=errorMessage}}
-                                        <span class="text text-sm text-danger">{{value}}</span>
-                                    {{/objectProperty}}
-                                    {{#objectProperty property=successMessage}}
-                                        <span class="text text-sm text-success">{{value}}</span>
-                                    {{/objectProperty}}
-                                    <button id="save" class="btn btn-primary">Save</button>
-                                </div>
-                            {{/with}}
-
-                            {{#if isPasswordUser}}
-                                <hr style="margin-top: 60px"/>
-
-                                {{#with changePassword}}
-                                    <div class="form-group">
-                                        <label class="control-label"> Old password: </label>
-                                        {{#objectProperty property=oldPassword editable=true}}
-                                            <input class="form-control" type="password" placeholder="" value="{{value}}"/>
-                                        {{/objectProperty}}
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label"> New password: </label>
-                                        {{#objectProperty property=newPassword editable=true}}
-                                            <input class="form-control" type="password" placeholder="" value="{{value}}"/>
-                                        {{/objectProperty}}
+                                    <div>
+                                        {{#with pendingEmail}}
+                                            Email verification for <strong> {{.}} </strong> is pending, click <a id="resendEmailVerification">here</a> to resend.
+                                        {{/with}}
                                     </div>
 
                                     <div class="pull-right">
-                                        {{#objectProperty property=errorMessage}}
-                                            <span class="text text-sm text-danger">{{value}}</span>
-                                        {{/objectProperty}}
-                                        {{#objectProperty property=successMessage}}
-                                            <span class="text text-sm text-success">{{value}}</span>
-                                        {{/objectProperty}}
-                                        <button id="changePassword" class="btn btn-primary">Change</button>
+                                        <button class="btn btn-primary">Save</button>
+                                    </div>
+                                {{/autoForm}}
+
+                                {{#if isPasswordUser}}
+                                    <hr style="margin-top: 60px"/>
+                                    {{#autoForm schema=getPasswordSchema id="changeUserPassword"}}
+                                        {{> afQuickField name='oldPassword' type="password"}}
+                                        {{> afQuickField name='newPassword' type="password"}}
+                                        {{> afQuickField name='confirmPassword' type="password"}}
+
+                                        <div class="pull-right">
+                                            <span class="text-danger">{{errorMessage}}</span>
+                                            <button class="btn btn-primary">Change</button>
+                                        </div>
+                                    {{/autoForm}}
+                                {{/if}}
+                            {{else}}
+                                {{#with getData}}
+                                    <div class="form-group">
+                                        <label class="control-label"> First Name: </label>
+                                        <span>{{firstName}}</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label"> Last Name: </label>
+                                        <span>{{lastName}}</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label"> Email: </label>
+                                        <span>{{email}}</span>
                                     </div>
                                 {{/with}}
                             {{/if}}
                         </div>
 
+                    </div>
+                    <div class="row">
+                        {{> userRoles userId=userId}}
                     </div>
                 </div>
                 <!-- /.box-content-md -->

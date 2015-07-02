@@ -39,6 +39,29 @@ UserManager = {
             }
         });
     },
+    updateUserInfo: function (userInfo) {
+        console.log("user info updated", userInfo);
+
+        var setObj = {};
+        if(_.isString(userInfo.firstName)){
+            setObj.firstName = userInfo.firstName;
+        }
+        if(_.isString(userInfo.lastName)){
+            setObj.lastName = userInfo.lastName;
+        }
+        if(_.isString(userInfo.email)){
+            if (Meteor.users.findOne({_id: {$ne: Meteor.userId()}, 'emails.address': userInfo.email })){
+                throw new Error('Email address already in use');
+            }
+            setObj.email = userInfo.email;
+        }
+
+        Meteor.users.update({
+            _id: Meteor.userId()
+        }, {
+            $set: setObj
+        });
+    },
     resendEmailVerification: function (email) {
         var user = Meteor.users.findOne({'emails.address': email});
 
@@ -83,9 +106,14 @@ UserManager = {
     isUsernameAvailable: function (username) {
         return Meteor.users.findOne({username: username}) == null;
     },
-    isEmailAvailable: function (email) {
+    isEmailAvailable: function (email, options) {
         var email_regex = new RegExp(["^", email, "$"].join(""), "i");
-        return Meteor.users.findOne({emails: {$elemMatch: {address: email_regex}}}) == null;
+        var filter = {emails: {$elemMatch: {address: email_regex}}};
+        if (options && options.ignoreMine){
+            filter._id = {$ne: Meteor.userId()};
+        }
+
+        return Meteor.users.findOne(filter) == null;
     },
     registerAccount: function (document, skipEmailVerification) {
         // Check username and email
