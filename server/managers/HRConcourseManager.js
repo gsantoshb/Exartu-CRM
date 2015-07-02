@@ -151,10 +151,10 @@ HRConcourseManager = {
     // Add available information from the merge fields
     var update = {$set: {}};
     if (mergeFields.ssn) update.$set['Employee.taxID'] = mergeFields.ssn;
-    if (mergeFields.dateOfBirth) update.$set['person.birthDate'] = mergeFields.dateOfBirth;
+    if (mergeFields.dateOfBirth) update.$set['person.birthDate'] = Date.parse(mergeFields.dateOfBirth) || undefined;
     if (mergeFields.convictions) update.$set['Employee.convictions'] = mergeFields.convictions;
     if (mergeFields.ethnicity) update.$set['Employee.ethnicity'] = mergeFields.ethnicity;
-    if (mergeFields.dateAvailable) update.$set['Employee.dateAvailable'] = new Date(mergeFields.dateAvailable);
+    if (mergeFields.dateAvailable) update.$set['Employee.dateAvailable'] = Date.parse(mergeFields.dateAvailable) || undefined;
     if (mergeFields.desiredPay) update.$set['Employee.desiredPay'] = parseFloat(mergeFields.desiredPay) || 0;
     if (mergeFields.gender) {
       if (mergeFields.gender.indexOf('f') != -1 || mergeFields.gender.indexOf('F') != -1) {
