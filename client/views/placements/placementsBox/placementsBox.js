@@ -152,6 +152,7 @@ Template.placementsBox.created = function(){
 };
 
 Template.placementsBox.rendered = function(){
+  placementPreview.set(false);
   Meteor.call('getIndexTour', "tourActivities", function(err,cb){
     tourIndex = cb;
     if((tourIndex>=14)&&(tourIndex < 18)){

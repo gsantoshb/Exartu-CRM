@@ -607,6 +607,242 @@ ContactableManager = {
     },
     getContactableById: function(contactableId){
       return Contactables.findOne({_id:contactableId});
+    },
+    updateContactable: function(update, contactableId){
+      //update a contactable using the "update" from the autoform on contactables details
+      var querySet = {};
+      var queryUnset = {};
+      if(update.$set.personFirstName != undefined){
+        _.extend(querySet, {'person.firstName':update.$set.personFirstName});
+      }
+      if(update.$set.personLastName != undefined){
+        _.extend(querySet, {'person.lastName':update.$set.personLastName});
+      }
+      if(update.$set.personMiddleName != undefined){
+        _.extend(querySet, {'person.middleName':update.$set.personMiddleName});
+      }
+      if(update.$set.personJobTitle != undefined){
+        _.extend(querySet, {'person.jobTitle':update.$set.personJobTitle});
+      }
+      if(update.$set.personBirthDate!= undefined){
+        _.extend(querySet, {'person.birthDate':update.$set.personBirthDate});
+      }
+      if(update.$set.organizationOrganizationName!= undefined){
+        _.extend(querySet, {'organization.organizationName':update.$set.organizationOrganizationName});
+      }
+      if(update.$set.clientDepartment!= undefined){
+        _.extend(querySet, {'Client.department':update.$set.clientDepartment});
+      }
+      if(update.$set.clientStatus!= undefined){
+        _.extend(querySet, {'Client.status':update.$set.clientStatus});
+      }
+      if(update.$set.workerCompCode!= undefined){
+        _.extend(querySet, {'Client.workerCompCode':update.$set.workerCompCode});
+      }
+      if(update.$set.employeeStatus!= undefined){
+        _.extend(querySet, {'Employee.status':update.$set.employeeStatus});
+      }
+      if(update.$set.taxID!= undefined){
+        _.extend(querySet, {'Employee.taxID':update.$set.taxID});
+      }
+      if(update.$set.contactStatus!= undefined){
+        _.extend(querySet, {'Contact.status':update.$set.contactStatus});
+      }
+      if(update.$set.howHeardOf!= undefined){
+        _.extend(querySet, {'howHeardOf':update.$set.howHeardOf});
+      }
+      if(update.$set.activeStatus!= undefined){
+        _.extend(querySet, {'activeStatus':update.$set.activeStatus});
+      }
+      if(update.$set.statusNote!= undefined){
+        _.extend(querySet, {'statusNote':update.$set.statusNote});
+      }
+      if(update.$set.clientLostReason!= undefined){
+        _.extend(querySet, {'Client.lostReason':update.$set.clientLostReason});
+      }
+      if(update.$set.hasTransportation != undefined){
+        _.extend(querySet, {'Employee.hasTransportation':update.$set.hasTransportation});
+      }
+      if(update.$set.desiredPay != undefined){
+        _.extend(querySet, {'Employee.desiredPay':update.$set.desiredPay});
+      }
+      if(update.$set.dateAvailable!= undefined ){
+        _.extend(querySet, {'Employee.dateAvailable':update.$set.dateAvailable});
+      }
+      if(update.$set.availableStartDate != undefined){
+        var availableStart = {};
+        _.forEach(update.$set.availableStartDate, function(a){
+          if(a === "Sunday"){
+            availableStart["0"] = true;
+          } if(a === "Monday"){
+            availableStart["1"] = true;
+          } if(a === "Tuesday"){
+            availableStart["2"] = true;
+          } if(a === "Wednesday"){
+            availableStart["3"] = true;
+          } if(a === "Thursday"){
+            availableStart["4"] = true;
+          } if(a === "Friday"){
+            availableStart["5"] = true;
+          } if(a === "Saturday"){
+            availableStart["6"] = true;
+          }
+        })
+        _.extend(querySet, {'Employee.availableStartDate': availableStart});
+      }
+      if(update.$set.availableShifts!= undefined ){
+        var availableSh = {};
+        _.forEach(update.$set.availableShifts, function(a){
+          if(a === "1st shift"){
+            availableSh["1"] = true;
+          } if(a === "2nd shift"){
+            availableSh["2"] = true;
+          } if(a === "3rd shift"){
+            availableSh["3"] = true;
+          }
+        })
+        _.extend(querySet, {'Employee.availableShifts': availableSh});
+      }
+      if(update.$set['preferredWorkLocation.street'])
+        _.extend(querySet, {'Employee.preferredWorkLocation.address':update.$set['preferredWorkLocation.street']})
+      if(update.$set['preferredWorkLocation.state'])
+        _.extend(querySet, {'Employee.preferredWorkLocation.state':update.$set['preferredWorkLocation.state']})
+      if(update.$set['preferredWorkLocation.city'])
+        _.extend(querySet, {'Employee.preferredWorkLocation.city':update.$set['preferredWorkLocation.city']})
+      if(update.$set['preferredWorkLocation.country'])
+        _.extend(querySet, {'Employee.preferredWorkLocation.country':update.$set['preferredWorkLocation.country']})
+      if(update.$set['preferredWorkLocation.lat'])
+        _.extend(querySet, {'Employee.preferredWorkLocation.lat':update.$set['preferredWorkLocation.lat']})
+      if(update.$set['preferredWorkLocation.lng'])
+        _.extend(querySet, {'Employee.preferredWorkLocation.lng':update.$set['preferredWorkLocation.lng']})
+
+      if(update.$unset) {
+        if (update.$unset.personMiddleName != undefined) {
+          _.extend(queryUnset, {'person.middleName': update.$unset.personMiddleName});
+        }
+        if (update.$unset.personJobTitle != undefined) {
+          _.extend(queryUnset, {'person.jobTitle': update.$unset.personJobTitle});
+        }
+        if (update.$unset.personBirthDate != undefined) {
+          _.extend(queryUnset, {'person.birthDate': update.$unset.personBirthDate});
+        }
+        if (update.$unset.clientDepartment != undefined) {
+          _.extend(queryUnset, {'Client.department': update.$unset.clientDepartment});
+        }
+        if (update.$unset.clientStatus != undefined) {
+          _.extend(queryUnset, {'Client.status': update.$unset.clientStatus});
+        }
+        if (update.$unset.workerCompCode != undefined) {
+          _.extend(queryUnset, {'Client.workerCompCode': update.$unset.workerCompCode});
+        }
+        if (update.$unset.employeeStatus != undefined) {
+          _.extend(queryUnset, {'Employee.status': update.$unset.employeeStatus});
+        }
+        if (update.$unset.taxID != undefined) {
+          _.extend(queryUnset, {'Employee.taxID': update.$unset.taxID});
+        }
+        if (update.$unset.contactStatus != undefined) {
+          _.extend(queryUnset, {'Contact.status': update.$unset.contactStatus});
+        }
+        if (update.$unset.howHeardOf != undefined) {
+          _.extend(queryUnset, {'howHeardOf': update.$unset.howHeardOf});
+        }
+        if (update.$unset.activeStatus != undefined) {
+          _.extend(queryUnset, {'activeStatus': update.$unset.activeStatus});
+        }
+        if (update.$unset.statusNote != undefined) {
+          _.extend(queryUnset, {'statusNote': update.$unset.statusNote});
+        }
+        if (update.$unset.clientLostReason != undefined) {
+          _.extend(queryUnset, {'Client.lostReason': update.$unset.clientLostReason});
+        }
+        if (update.$unset.hasTransportation != undefined) {
+          _.extend(queryUnset, {'Employee.hasTransportation': update.$unset.hasTransportation});
+        }
+        if (update.$unset.desiredPay != undefined) {
+          _.extend(queryUnset, {'Employee.desiredPay': update.$unset.desiredPay});
+        }
+        if (update.$unset.dateAvailable != undefined) {
+          _.extend(queryUnset, {'Employee.dateAvailable': update.$unset.dateAvailable});
+        }
+        if (update.$unset.availableStartDate != undefined) {
+          _.extend(queryUnset, {'Employee.availableStartDate': ""});
+        }
+        if (update.$unset.availableShifts != undefined) {
+          _.extend(queryUnset, {'Employee.availableShifts': ""});
+        }
+      }
+      var update = {};
+      if(!_.isEmpty(querySet))
+        update.$set = querySet;
+      if(!_.isEmpty(queryUnset))
+        update.$unset = queryUnset;
+      console.log(update);
+      Contactables.update({_id: contactableId},update);
+    },
+    updateLegalInfo: function(update, contactableId){
+      var querySet = {};
+      var queryUnset = {};
+
+      if(update.$set.convictions ){
+        _.extend(querySet, {'Employee.convictions':update.$set.convictions});
+      }
+      if(update.$set.gender ){
+        _.extend(querySet, {'Employee.gender':update.$set.gender});
+      }
+      if(update.$set.ethnicity ){
+        _.extend(querySet, {'Employee.ethnicity':update.$set.ethnicity});
+      }
+      if(update.$set.i9OnFile ){
+        _.extend(querySet, {'Employee.i9OnFile':update.$set.i9OnFile});
+      }
+      if(update.$set.i9ExpireDate ){
+        _.extend(querySet, {'Employee.i9ExpireDate':update.$set.i9ExpireDate});
+      }
+      if(update.$set.dependentNumber ){
+        _.extend(querySet, {'Employee.dependentNumber':update.$set.dependentNumber});
+      }
+      if(update.$set.orientationDate ){
+        _.extend(querySet, {'Employee.orientationDate':update.$set.orientationDate});
+      }
+      if(update.$set.hireDate ){
+        _.extend(querySet, {'Employee.hireDate':update.$set.hireDate});
+      }
+
+      if(update.$unset) {
+        if(update.$unset.convictions != undefined){
+          _.extend(queryUnset, {'Employee.convictions':update.$unset.convictions});
+        }
+        if(update.$unset.gender!= undefined ){
+          _.extend(queryUnset, {'Employee.gender':update.$unset.gender});
+        }
+        if(update.$unset.ethnicity != undefined){
+          _.extend(queryUnset, {'Employee.ethnicity':update.$unset.ethnicity});
+        }
+        if(update.$unset.i9OnFile != undefined){
+          _.extend(queryUnset, {'Employee.i9OnFile':update.$unset.i9OnFile});
+        }
+        if(update.$unset.i9ExpireDate!= undefined ){
+          _.extend(queryUnset, {'Employee.i9ExpireDate':update.$unset.i9ExpireDate});
+        }
+        if(update.$unset.dependentNumber!= undefined ){
+          _.extend(queryUnset, {'Employee.dependentNumber':update.$unset.dependentNumber});
+        }
+        if(update.$unset.orientationDate!= undefined ){
+          _.extend(queryUnset, {'Employee.orientationDate':update.$unset.orientationDate});
+        }
+        if(update.$unset.hireDate!= undefined ){
+          _.extend(queryUnset, {'Employee.hireDate':update.$unset.hireDate});
+        }
+      }
+
+      var update = {};
+      if(!_.isEmpty(querySet))
+        update.$set = querySet;
+      if(!_.isEmpty(queryUnset))
+        update.$unset = queryUnset;
+      Contactables.update({_id: contactableId},update);
+
     }
 };
 

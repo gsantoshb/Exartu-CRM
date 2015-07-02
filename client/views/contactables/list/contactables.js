@@ -625,7 +625,7 @@ Template.contactableListSort.helpers({
 // List Filters - Helpers
 Template.contactablesFilters.helpers({
   users: function () {
-    return Meteor.users.find({}, {sort: {'emails.address': 1}});
+    return Meteor.users.find({inactive: {$ne: true}}, {sort: {'emails.address': 1}});
   },
   query: function () {
     return query;
@@ -1174,10 +1174,18 @@ Template.esContextMatch.rendered = function () {
 
 Template.contactablePreview.rendered = function(){
 
-}
+};
+var refreshActivities = new ReactiveVar(false);
+var forceActivitiesRefresh = function () {
+  refreshActivities.set(true);
+  setTimeout(function () {
+    refreshActivities.set(false);
+  }, 500);
+};
 
 Template.contactablePreview.helpers({
   selectedContactable: function(){
+    forceActivitiesRefresh();
     lastSelectedDep.depend();
     return lastSelected;
   },
@@ -1209,6 +1217,9 @@ Template.contactablePreview.helpers({
     else {
       return result;
     }
+  },
+  refreshActivities: function () {
+    return refreshActivities.get();
   }
 })
 

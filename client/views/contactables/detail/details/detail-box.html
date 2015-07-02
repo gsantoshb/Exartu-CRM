@@ -11,7 +11,7 @@
 
 
                 </div>
-
+                {{#autoForm schema="schemaEditContactable" id="updateContactable" doc=contactable}}
                 <div class="col-md-10">
                     <div class="row">
                         {{#with contactable }}
@@ -22,57 +22,76 @@
                                     <li>
                                         <div class="left-part">{{_ "First name"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=firstName editable=editMode}}
-                                                <input class="form-control" type="text" value="{{value}}">
+                                            <div class="form-group {{#if afFieldIsInvalid name='personFirstName'}}has-error{{/if}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='personFirstName' id="personFirstName" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='personFirstName'}}
+                                                    <span class="help-block">{{afFieldMessage name='personFirstName'}}</span>
+                                                {{/if}}
                                             {{else}}
-                                                <span>{{value}}</span>
-                                            {{/objectProperty}}
+                                                <span>{{personFirstName}}</span>
+                                            {{/if}}
+                                            </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="left-part">{{_ "Last name"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=lastName editable=editMode}}
-                                                <input class="form-control" type="text" value="{{value}}">
+                                            <div class="form-group {{#if afFieldIsInvalid name='personLastName'}}has-error{{/if}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='personLastName' id="personLastName" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='personLastName'}}
+                                                    <span class="help-block">{{afFieldMessage name='personLastName'}}</span>
+                                                {{/if}}
+
                                             {{else}}
-                                                <span>{{value}}</span>
-                                            {{/objectProperty}}
+                                                <span>{{personLastName}}</span>
+                                            {{/if}}
+                                            </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="left-part">{{_ "Middle name"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=middleName editable=editMode}}
-                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='personMiddleName' id="personMiddleName" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='personMiddleName'}}
+                                                    <span class="help-block">{{afFieldMessage name='personMiddleName'}}</span>
+                                                {{/if}}
                                             {{else}}
-                                                <span>{{value}}</span>
-                                            {{/objectProperty}}
+                                                <span>{{personMiddleName}}</span>
+                                            {{/if}}
                                         </div>
                                     </li>
                                     <li>
                                         <div class="left-part">{{_ "Job title"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=jobTitle editable=editMode}}
-                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='personJobTitle' id="personJobTitle" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='personJobTitle'}}
+                                                    <span class="help-block">{{afFieldMessage name='personJobTitle'}}</span>
+                                                {{/if}}
                                             {{else}}
-                                                <span>{{_ value}}</span>
-                                            {{/objectProperty}}
+                                                <span>{{personJobTitle}}</span>
+                                            {{/if}}
                                         </div>
                                     </li>
                                     <li>
                                         <div class="left-part">{{_ "Birth Date"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=birthDate editable=editMode}}
-                                                {{>bootstrap3DatePicker value=value options=datePickerOptions}}
+                                            {{#if editMode}}
+                                                <div style="width:80%">
+                                                   {{> afB3DatePicker name='personBirthDate' value=personBirthDate format="D, MM dd, yyyy " startView="year" }}
+                                                </div>
                                             {{else}}
                                                 <strong>
-                                                    {{#if value}}
-                                                        {{formattedDate value "MMMM DD, YYYY"}}
+                                                    {{#if personBirthDate }}
+                                                        {{formattedDate personBirthDate  "MMMM DD, YYYY"}}
                                                     {{else}}
                                                         <!--Not set-->
                                                     {{/if}}
                                                 </strong>
-                                            {{/objectProperty}}
+                                            {{/if}}
                                         </div>
                                     </li>
                                 {{/if}}
@@ -82,11 +101,17 @@
                                     <li>
                                         <div class="left-part">{{_ "Organization"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=organizationName editable=editMode}}
-                                                <input class="form-control" type="text" value="{{value}}">
+                                            <div class="form-group {{#if afFieldIsInvalid name='organizationOrganizationName'}}has-error{{/if}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='organizationOrganizationName' id="organizationOrganizationName" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='organizationOrganizationName'}}
+                                                    <span class="help-block">{{afFieldMessage name='organizationOrganizationName'}}</span>
+                                                {{/if}}
+
                                             {{else}}
-                                                <span>{{value}}</span>
-                                            {{/objectProperty}}
+                                                <span>{{organizationOrganizationName}}</span>
+                                            {{/if}}
+                                        </div>
                                         </div>
                                     </li>
                                 {{/if}}
@@ -95,11 +120,14 @@
                                     <li>
                                         <div class="left-part">{{_ "Department"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=department editable=editMode}}
-                                                <input class="form-control" type="text" value="{{value}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='clientDepartment' id="clientDepartment" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='clientDepartment'}}
+                                                    <span class="help-block">{{afFieldMessage name='clientDepartment'}}</span>
+                                                {{/if}}
                                             {{else}}
-                                                <span>{{_ value}}</span>
-                                            {{/objectProperty}}
+                                                <span>{{clientDepartment}}</span>
+                                            {{/if}}
                                         </div>
                                     </li>
                                 {{/if}}
@@ -108,94 +136,140 @@
                                 <li>
                                     <div class="left-part">{{_ "Active Status"}}</div>
                                     <div class="right-part">
-                                        {{#objectProperty property=activeStatus editable=editMode}}
-                                            {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+                                        {{#if editMode}}
+                                            {{> afFieldInput  name='activeStatus' style="width:80%" type="afButtonGroup"  buttonArray=buttonsActiveStatus }}
                                         {{else}}
                                             <strong>
-                                                <strong>{{_ displayName}}</strong>
+                                                <strong>{{getActiveStatus}}</strong>
                                             </strong>
-                                        {{/objectProperty}}
+                                        {{/if}}
                                     </div>
                                 </li>
+                                    {{#if Client }}
+                                        <li>
+                                            <div class="left-part">{{_ "Process Status"}}</div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    {{> afFieldInput  name='clientStatus'  style="width:80%" type="afButtonGroup"  buttonArray=buttonsProcessStatus}}
+                                                    <!--{{>afButtonGroup name="clientStatus" }}-->
+                                                {{else}}
+                                                    <strong>
+                                                        <strong>{{getProcessStatus}}</strong>
+                                                    </strong>
+                                                {{/if}}
+                                            </div>
+                                        </li>
+                                    {{/if}}
+                                    {{#if Employee }}
+                                        <li>
+                                            <div class="left-part">{{_ "Process Status"}}</div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    {{> afFieldInput  name='employeeStatus' style="width:80%" type="afButtonGroup"  buttonArray=buttonsProcessStatus}}
 
-                                <li>
-                                    <div class="left-part">{{_ "Process Status"}}</div>
-                                    <div class="right-part">
-                                        {{#objectProperty property=status editable=editMode}}
-                                            {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                                        {{else}}
-                                            <strong>
-                                                <strong>{{_ displayName}}</strong>
-                                            </strong>
-                                        {{/objectProperty}}
-                                    </div>
-                                </li>
+                                                {{else}}
+                                                    <strong>
+                                                        <strong>{{getProcessStatus}}</strong>
+                                                    </strong>
+                                                {{/if}}
+                                            </div>
+                                        </li>
+                                    {{/if}}
+                                    {{#if Contact }}
+                                        <li>
+                                            <div class="left-part">{{_ "Process Status"}}</div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    {{> afFieldInput  name='contactStatus' style="width:80%" type="afButtonGroup"  buttonArray=buttonsProcessStatus}}
+                                                {{else}}
+                                                    <strong>
+                                                        <strong>{{getProcessStatus}}</strong>
+                                                    </strong>
+                                                {{/if}}
+                                            </div>
+                                        </li>
+                                    {{/if}}
                         </ul>
                             </div>
                             <div class="col-md-6">
                                 <ul class="list-type-5">
-                                {{#if lostClient}}
+                            {{#if editMode}}
+                                {{#if afFieldValueIs name="clientStatus" value=getLostStatusId}}
                                     <li>
                                         <div class="left-part">{{_ "Lost Reason"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=lostReason editable=editMode}}
-                                                {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
-                                            {{else}}
-                                                <strong>
-                                                    <strong>{{_ displayName}}</strong>
-                                                </strong>
-                                            {{/objectProperty}}
+                                            {{> afFieldInput  name='clientLostReason' style="width:80%" type="afButtonGroup"  buttonArray=buttonsLostStatus}}
                                         </div>
                                     </li>
                                 {{/if}}
-
+                            {{else}}
+                                {{#if isLost}}
+                                        <li>
+                                            <div class="left-part">{{_ "Lost Reason"}}</div>
+                                            <div class="right-part">
+                                                <strong>
+                                                    {{#if clientLostReason}}
+                                                        <strong>{{getLostReason}}</strong>
+                                                    {{/if}}
+                                                </strong>
+                                            </div>
+                                        </li>
+                                {{/if}}
+                            {{/if}}
                                 <li>
                                     <div class="left-part">{{_ "Status note"}}</div>
                                     <div class="right-part">
-                                        {{#objectProperty property=statusNote editable=editMode}}
-                                            {{#if value}}
-                                                <input class="form-control" type="text" value="{{_ value}}">
-                                            {{else}}
-                                                <input class="form-control" type="text" value="{{value}}">
+                                        {{#if editMode}}
+                                            {{> afFieldInput  name='statusNote' id="statusNote" style="width:80%" type="text" class="form-control"}}
+                                            {{#if afFieldIsInvalid name='statusNote'}}
+                                                <span class="help-block">{{afFieldMessage name='statusNote'}}</span>
                                             {{/if}}
                                         {{else}}
-                                            {{#if value}}
-                                                <span>{{_ value}}</span>
-                                            {{else}}
-                                                <span>{{value}}</span>
-                                            {{/if}}
-                                        {{/objectProperty}}
+                                            <span>{{statusNote}}</span>
+                                        {{/if}}
                                     </div>
                                 </li>
+
+                                {{#if howHeardOf}}
                                 <li>
+
                                     <div class="left-part">{{_ "How heard of"}}</div>
                                     <div class="right-part">
-                                        {{#objectProperty property=howHeardOf editable=editMode}}
-                                            {{> buttonGroup options=fetchOptions value=value onSelected=onSelectedStatus}}
+
+                                        {{#if editMode}}
+                                            {{> afFieldInput  name='howHeardOf' id="howHeardOf" type="afButtonGroup"  buttonArray=buttonsHowHeardOf selected=howHeardOf}}
+
                                         {{else}}
                                             <strong>
-                                                <strong>{{_ displayName}}</strong>
+                                                <strong>{{getHowHeardOf}}</strong>
                                             </strong>
-                                        {{/objectProperty}}
+                                        {{/if}}
+
                                     </div>
+
                                 </li>
+                                {{/if}}
 
                                 {{#if Employee }}
                                     <li>
                                         <div class="left-part">{{_ "TaxID/SSN"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=taxID editable=editMode}}
-                                                {{> showTaxIdInput}}
-                                            {{else}}
-                                                {{#if hideTaxID}}
-                                                    <a class="pointer showHideTaxId">{{_ "Show"}}</a>
-                                                {{else}}
-                                                    {{#if value}}
-                                                        <!--<span id="taxid-text">{{value}}</span> <a class="pointer showHideTaxId">Hide</a>-->
-                                                        {{> showTaxIdText}}
-                                                    {{/if}}
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='taxID' id="taxID" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='taxID'}}
+                                                    <span class="help-block">{{afFieldMessage name='taxID'}}</span>
                                                 {{/if}}
-                                            {{/objectProperty}}
+                                            {{else}}
+                                                {{#if taxID}}
+                                                    {{#if hideTaxID}}
+                                                     <a class="pointer showHideTaxId">{{_ "Show"}}</a>
+                                                   {{else}}
+                                                       <span id="taxid-text"></span>{{taxID}} <a class="pointer showHideTaxId">Hide</a>
+                                                   {{/if}}
+                                                {{else}}
+                                                     none
+                                                {{/if}}
+                                            {{/if}}
                                         </div>
                                     </li>
                                 {{/if}}
@@ -203,13 +277,17 @@
                                     <li>
                                         <div class="left-part">{{_ "WorkerComp"}}</div>
                                         <div class="right-part">
-                                            {{#objectProperty property=workerCompCode editable=editMode}}
-                                                <input class="form-control" placeholder= {{_ "Example TX8810"}}
-                                                       type="text"
-                                                       value="{{value}}">
+                                            {{#if editMode}}
+                                                {{> afFieldInput  name='workerCompCode' id="workerCompCode" placeholder="Example TX8810" style="width:80%" type="text" class="form-control"}}
+                                                {{#if afFieldIsInvalid name='workerCompCode'}}
+                                                    <span class="help-block">{{afFieldMessage name='workerCompCode'}}</span>
+                                                {{/if}}
+                                                <!--<input class="form-control" placeholder= {{_ "Example TX8810"}}-->
+                                                       <!--type="text"-->
+                                                       <!--value="{{this.Client.workerCompCode}}">-->
                                             {{else}}
-                                                {{value}}
-                                            {{/objectProperty}}
+                                                {{workerCompCode}}
+                                            {{/if}}
                                         </div>
                                     </li>
                                 {{/if}}
@@ -218,18 +296,82 @@
                                     <div class="right-part">
                                         {{#if editMode}}
                                             {{#if isAdmin}}
-                                                <select class="form-control" id="userSelect">
-                                                    {{#each users}}
-                                                        <option value="{{_id}}" selected="{{isSelectedUser}}">{{displayUserName _id}}</option>
-                                                    {{/each}}
-                                                </select>
+                                                {{> afFormGroup name="user" style="width:80%" label=false options=users}}
                                             {{/if}}
                                         {{else}}
-                                            {{displayUserName originalContactable.userId}}
+                                            {{displayUserName userId}}
                                         {{/if}}
                                     </div>
                                 </li>
-
+                            {{#if Employee}}
+                                <li>
+                                <div class="left-part">{{_ "Has own Transportation"}}</div>
+                                <div class="right-part">
+                                    {{#if editMode}}
+                                        {{> afFieldInput name='hasTransportation' type='afSimpleCheckbox' label=false}}
+                                    {{else}}
+                                        <span>{{#if hasTransportation}}true{{else}}false{{/if}}</span>
+                                    {{/if}}
+                                </div>
+                                </li>
+                                <li>
+                                <div class="left-part">{{_ "Preferred work location "}}</div>
+                                <div class="right-part">
+                                    {{#if editMode}}
+                                        {{> afQuickField label=false name="preferredWorkLocation" type="googleplace" opts=optsGoogleplace}}
+                                    {{else}}
+                                        {{#if preferredWorkLocation}}
+                                           <span>{{preferredLocationDisplayName}}</span>
+                                        {{/if}}
+                                    {{/if}}
+                                </div>
+                                </li>
+                                <li>
+                                  <div class="left-part">{{_ "Desired Pay"}}</div>
+                                  <div class="right-part">
+                                    {{#if editMode}}
+                                        {{> afFieldInput  name='desiredPay' id="desiredPay" style="width:80%" type="number" class="form-control"}}
+                                        {{#if afFieldIsInvalid name='desiredPay'}}
+                                            <span class="help-block">{{afFieldMessage name='desiredPay'}}</span>
+                                        {{/if}}
+                                    {{else}}
+                                        <span>{{desiredPay}}</span>
+                                    {{/if}}
+                                  </div>
+                                </li>
+                                <li>
+                                <div class="left-part">{{_ "Date available"}}</div>
+                                <div class="right-part">
+                                    {{#if editMode}}
+                                        <div style="width:80%">
+                                            {{> afB3DatePicker name='dateAvailable' value=dateAvailable format="D, MM dd, yyyy " startView="year" }}
+                                        </div>
+                                    {{else}}
+                                          <span>{{#if dateAvailable}}{{formattedDate dateAvailable}}{{else}}none{{/if}}</span>
+                                    {{/if}}
+                                </div>
+                                </li>
+                                <li>
+                                <div class="left-part">{{_ "Available days"}}</div>
+                                <div class="right-part">
+                                    {{#if editMode}}
+                                        {{> afQuickField label=false noselect=true name="availableStartDate" options="allowed"}}
+                                    {{else}}
+                                       <span>{{availableStartDate}}</span>
+                                    {{/if}}
+                                </div>
+                                </li>
+                                <li>
+                                <div class="left-part">{{_ "Available Shift"}}</div>
+                                <div class="right-part">
+                                    {{#if editMode}}
+                                        {{> afQuickField label=false noselect=true name="availableShifts" options="allowed"}}
+                                    {{else}}
+                                        <span>{{availableShifts}}</span>
+                                    {{/if}}
+                                </div>
+                                </li>
+                            {{/if}}
                                 {{#with originalContactable}}
                                     {{>displayOriginDataInline}}
                                 {{/with}}
@@ -240,17 +382,18 @@
 
                     </div>
 
-                    <!-- /.col-md-6 -->
+                    <!--&lt;!&ndash; /.col-md-6 &ndash;&gt;-->
 
                     {{#if editMode }}
                         <div class="col-md-12">
                             <div class="box-header-2">
-                                <a id="cancel-details" class="btn btn-default"> {{_ "Cancel"}} </a>
-                                <a id="save-details" class="btn btn-success pull-right"> {{_ "Save"}} </a>
+                                <a id="cancel-details" class="btn btn-default">{{_ "Cancel"}}</a>
+                                <button id="save-details" class="btn btn-success pull-right">{{_ "Save"}} </button>
                             </div>
                         </div>
                     {{/if}}
                 </div>
+            {{/autoForm}}
 
             </div>
 
@@ -368,14 +511,14 @@
     </section>
 </template>
 <template name="displayOriginDataInline">
-    <!--<li>-->
-        <!--<div class="left-part">User</div>-->
-        <!--<div class="right-part">-->
-            <!--{{displayUserName userId}}-->
-        <!--</div>-->
-    <!--</li>-->
     <li>
-        <div class="left-part">{{_ "Date Created"}}</div>
+        <div class="left-part">Created by</div>
+        <div class="right-part">
+            {{displayUserName createdBy}}
+        </div>
+    </li>
+    <li>
+        <div class="left-part">{{_ "Date created"}}</div>
         <div class="right-part">
             {{formattedDate dateCreated "lll"}}
         </div>
@@ -387,7 +530,7 @@
         </div>
     </li>
     <li>
-        <div class="left-part">{{_ "ExternalId"}}</div>
+        <div class="left-part">{{_ "External Id"}}</div>
         <div class="right-part">
             {{externalId}}
         </div>
@@ -407,7 +550,7 @@
     </tr>
     <tr>
         <td>
-            <div class="left-part">{{_ "Date Created"}}</div>
+            <div class="left-part">{{_ "Date created"}}</div>
         </td>
         <td>
             <div class="right-part">
@@ -436,10 +579,10 @@
         </td>
     </tr>
 </template>
-<template name="showTaxIdText">
-    <span id="taxid-text">{{value}}</span>
-</template>
+<!--<template name="showTaxIdText">-->
+    <!--<span id="taxid-text">{{value}}</span>-->
+<!--</template>-->
 
-<template name="showTaxIdInput">
-    <input id="taxid-input" class="form-control" type="text" value="{{value}}">
-</template>
+<!--<template name="showTaxIdInput">-->
+    <!--<input id="taxid-input" class="form-control" type="text" value="{{value}}">-->
+<!--</template>-->

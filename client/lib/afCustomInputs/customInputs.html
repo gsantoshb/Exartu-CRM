@@ -7,3 +7,12 @@
         </label>
     </div>
 </template>
+
+<template name="afButtonGroup">
+    <div>
+        <input type="hidden" {{atts}}/>
+         {{#each buttonsGroup}}
+             <button type="button" id="{{value}}" class="buttonGroup {{class}}">{{displayName}}</button>
+         {{/each}}
+    </div>
+</template>

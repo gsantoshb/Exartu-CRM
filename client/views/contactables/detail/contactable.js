@@ -534,7 +534,7 @@ Template.contactable_nav.helpers({
       {id: 'details', mobileDisplayName: 'Detail', displayName: 'Details', template: 'contactable_details'},
       {
         id: 'notes',
-        mobileDisplayName: 'Note',
+        mobileDisplayName: 'Notes',
         displayName: 'Notes',
         template: 'contactable_notes',
         icon: 'icon-note-paper-1',
@@ -596,7 +596,7 @@ Template.contactable_nav.helpers({
       });
       tabs.push({
         id: 'pastJobs',
-        mobileDisplayName: 'Past Jobs',
+        mobileDisplayName: 'Past jobs',
         displayName: 'Past Jobs',
         template: 'employeePastJobs',
         info: function () {
@@ -604,10 +604,10 @@ Template.contactable_nav.helpers({
         }
       });
       tabs.push({
-        id: 'hireInfo',
-        mobileDisplayName: 'Hire info',
-        displayName: 'Hire info',
-        template: 'employeeHireInfo'
+        id: 'legalInfo',
+        mobileDisplayName: 'Legal info',
+        displayName: 'Legal info',
+        template: 'employeeLegalInfo'
       });
 
       // Check if it has a doc Center account or has been invited to Applicant Center or is already a user

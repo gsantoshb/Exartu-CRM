@@ -1,6 +1,43 @@
+schemaEditLegalInfo = new SimpleSchema({
+  'convictions': {
+    type: String,
+    optional: true
+  },
+  'gender':{
+    type:String,
+    optional:true
+  },
+  'ethnicity':{
+    type:String,
+    optional:true
+  },
+  'i9OnFile':{
+    type:Boolean,
+    optional:true
+  },
+  'i9ExpireDate':{
+    type:Date,
+    optional:true
+  },
+  'dependentNumber':{
+    type:Number,
+    optional: true
+  },
+  'orientationDate':{
+    type:Date,
+    optional:true
+  },
+  'hireDate':{
+    type:Date,
+    optional:true
+  }
+
+})
+
+
 var editMode = new ReactiveVar(false);
 
-Template.employeeHireInfo.onCreated(function () {
+Template.employeeLegalInfo.onCreated(function () {
   editMode.set(false);
   objInstance = null;
   var contactable = Contactables.findOne(Session.get('entityId'));
@@ -33,7 +70,13 @@ var availableShiftsChanged;
 
 
 
-Template.employeeHireInfo.helpers({
+Template.employeeLegalInfo.helpers({
+  selectGender: function(){
+    return [{label:"Male", value:"m"},{label:"Female", value:"f"}]
+  },
+  selectEthnicity: function(){
+    return [{label:"Caucasian", value:"caucasian"},{label:"African American", value:"africanAmerican"},{label:"Asian", value:"asian"},,{label:"Other", value:"other"}]
+  },
   objInstance: function () {
     if (!objInstance){
       objInstance = new dType.objInstance(this, Contactables);
@@ -156,40 +199,53 @@ Template.employeeHireInfo.helpers({
     if (!location)return '';
 
     return location.address + ', ' + location.city + ', ' + location.country;
+  },
+  contactable: function(){
+    var toReturn = {};
+    toReturn._id = this._id;
+    toReturn.convictions = this.Employee.convictions;
+    toReturn.gender = this.Employee.gender;
+    toReturn.ethnicity = this.Employee.ethnicity;
+    toReturn.i9OnFile = this.Employee.i9OnFile;
+    toReturn.i9ExpireDate = this.Employee.i9ExpireDate;
+    toReturn.dependentNumber = this.Employee.dependentNumber;
+    toReturn.orientationDate = this.Employee.orientationDate;
+    toReturn.hireDate = this.Employee.hireDate;
+    return toReturn;
   }
 });
 
-Template.employeeHireInfo.events({
+Template.employeeLegalInfo.events({
   'click #edit-mode': function () {
     editMode.set(!editMode.get());
-  },
-  'click #save-details': function () {
-    if (!objInstance.validate()) {
-      objInstance.showErrors();
-      return;
-    }
-
-    var update = objInstance.getUpdate();
-    if (!update.$set) return;
-
-    if (locationChanged){
-      update.$set['Employee.preferredWorkLocation'] = preferredWorkLocation;
-    }
-
-    if (availableStartDateChanged){
-      update.$set['Employee.availableStartDate'] = availableStartDate;
-    }
-
-    if (availableShiftsChanged){
-      update.$set['Employee.availableShifts'] = availableShifts;
-    }
-
-
-    if (!_.isObject(update.$set) || _.isEmpty(update.$set)) return;
-
-    Contactables.update(Session.get('entityId'), update);
-    editMode.set(false);
   }
+  //'click #save-details': function () {
+  //  if (!objInstance.validate()) {
+  //    objInstance.showErrors();
+  //    return;
+  //  }
+  //
+  //  var update = objInstance.getUpdate();
+  //  if (!update.$set) return;
+  //
+  //  if (locationChanged){
+  //    update.$set['Employee.preferredWorkLocation'] = preferredWorkLocation;
+  //  }
+  //
+  //  if (availableStartDateChanged){
+  //    update.$set['Employee.availableStartDate'] = availableStartDate;
+  //  }
+  //
+  //  if (availableShiftsChanged){
+  //    update.$set['Employee.availableShifts'] = availableShifts;
+  //  }
+  //
+  //
+  //  if (!_.isObject(update.$set) || _.isEmpty(update.$set)) return;
+  //
+  //  Contactables.update(Session.get('entityId'), update);
+  //  editMode.set(false);
+  //}
 });
 
 
@@ -204,3 +260,14 @@ Template.checkboxGroup.events({
     _.isFunction(ctx.data.onChange) && ctx.data.onChange(this.value, e.target.checked);
   }
 });
+
+AutoForm.hooks({
+  schemaEditLegalInfo: {
+    onSubmit: function (insertDoc, updateDoc, currentDoc) {
+      Meteor.call('updateLegalInfo',updateDoc,currentDoc._id, function(err, res){
+        editMode.set(false);
+      })
+      return false;
+    }
+  }
+})
