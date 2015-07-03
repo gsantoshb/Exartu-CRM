@@ -725,10 +725,13 @@ Utils.extendContactableDisplayName = function (contactable) {
 Utils.getLocalUserName = function (user) {
     return user.emails[0].address.split('@')[0];
 };
-Utils.bUserIsClientAdmin = false;
-Utils.bUserIsSystemAdmin = false;
+Utils.bUserIsClientAdmin = new ReactiveVar(false);
+Utils.bUserIsSystemAdmin = new ReactiveVar(false);
 Utils.bUserIsAdmin = function () {
-    return Utils.bUserIsClientAdmin || Utils.bUserIsSystemAdmin;
+    return Utils.bUserIsClientAdmin.get() || Utils.bUserIsSystemAdmin.get();
+};
+Utils.bUserIsSysAdmin = function () {
+    return Utils.bUserIsSystemAdmin.get();
 };
 
 var lastHierId;
@@ -742,12 +745,12 @@ Meteor.autorun(function () {
     Meteor.call('bUserIsClientAdmin', null, function (err, result) {
         if (err)
             return console.log(err);
-        Utils.bUserIsClientAdmin = result;
+        Utils.bUserIsClientAdmin.set(result);
     });
     Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
         if (err)
             return console.log(err);
-        Utils.bUserIsSystemAdmin = result;
+        Utils.bUserIsSystemAdmin.set(result);
     });
 });
 

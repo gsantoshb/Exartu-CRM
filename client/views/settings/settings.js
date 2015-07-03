@@ -6,6 +6,6 @@ SettingsController = RouteController.extend({
 
 Template.settings.helpers({
   isAdmin: function () {
-    return Utils.adminSettings.isAdmin();
+    return Utils.bUserIsAdmin();
   }
 });

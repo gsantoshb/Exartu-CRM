@@ -53,7 +53,7 @@ Template.displayJobAddress.helpers({
   },
   canEdit: function () {
     var templateContext = Template.instance();
-    return Utils.adminSettings.isAdmin() && (this.linkId == templateContext.data.jobId);
+    return Utils.bUserIsAdmin() && (this.linkId == templateContext.data.jobId);
   },
   isEditing: function () {
     return this._id == editing.get();
