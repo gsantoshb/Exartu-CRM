@@ -75,20 +75,25 @@ Meteor.methods({
   },
 
   //roles
+  /**
+   * Adds the roleId to the userId in the logged user's currentHierId
+   * @param userId
+   * @param roleId
+   */
+
   addRoleToUser: function (userId, roleId) {
     var loggedUser = Meteor.user();
     if (! loggedUser) return;
 
     if (! RoleManager.bUserIsClientAdmin(loggedUser)){
-      throw new Meteor.Error(400, 'Not admin');
+      throw new Meteor.Error(403, 'Not admin');
     }
 
-    // get user roles in the loggedUser's currentHierId
     var user = Meteor.users.findOne({ _id: userId });
     var currentHierRoles = _.findWhere(user.hierRoles, { hierId: loggedUser.currentHierId });
 
     if (!currentHierRoles){
-      Meteor.users.update({ _id: userId }, { $push: { hierRoles: { roleIds:[roleId], hierId: user.currentHierId } } });
+      Meteor.users.update({ _id: userId }, { $push: { hierRoles: { roleIds:[roleId], hierId: loggedUser.currentHierId } } });
     } else {
       Meteor.users.update({ _id: userId, 'hierRoles.hierId': loggedUser.currentHierId }, { $addToSet: { 'hierRoles.$.roleIds': roleId } });
     }

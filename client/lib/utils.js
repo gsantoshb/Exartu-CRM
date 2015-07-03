@@ -731,16 +731,26 @@ Utils.bUserIsAdmin = function () {
     return Utils.bUserIsClientAdmin || Utils.bUserIsSystemAdmin;
 };
 
-Meteor.call('bUserIsClientAdmin', null, function (err, result) {
-    if (err)
-        return console.log(err);
-    Utils.bUserIsClientAdmin = result;
+var lastHierId;
+Meteor.autorun(function () {
+    // add dependency to the currentHierId
+    var user = Meteor.user();
+
+    if (lastHierId == user.currentHierId) return;
+    lastHierId = user.currentHierId;
+
+    Meteor.call('bUserIsClientAdmin', null, function (err, result) {
+        if (err)
+            return console.log(err);
+        Utils.bUserIsClientAdmin = result;
+    });
+    Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
+        if (err)
+            return console.log(err);
+        Utils.bUserIsSystemAdmin = result;
+    });
 });
-Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
-    if (err)
-        return console.log(err);
-    Utils.bUserIsSystemAdmin = result;
-});
+
 Utils.getActiveStatuses = function () {
     var implyActives = LookUps.find({
         lookUpCode: Enums.lookUpTypes.active.status.lookUpCode,

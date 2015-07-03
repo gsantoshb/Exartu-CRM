@@ -15,11 +15,13 @@ Template.selectUserRole.helpers({
   isAdmin: Utils.bUserIsAdmin,
   availableRoles: function () {
     rolesDep.depend();
+    var loggedUser = Meteor.user();
+
     var avlRoles = roles.find().fetch();
     var user = Meteor.users.findOne({_id: this.userId});
     if (!user) return;
     return _.filter(avlRoles, function (role) {
-      var currHierRole = _.findWhere(user.hierRoles, {hierId: user.currentHierId});
+      var currHierRole = _.findWhere(user.hierRoles, {hierId: loggedUser.currentHierId});
       if (!currHierRole) return true;
       return !_.contains(currHierRole.roleIds, role._id);
     });
@@ -72,8 +74,11 @@ Template.roleList.helpers({
     return role.name;
   },
   roles: function () {
+    var loggedUser = Meteor.user();
     var user = Meteor.users.findOne({_id: this.userId});
-    var currHierRoles = _.findWhere(user.hierRoles, {hierId: user.currentHierId});
+    var currHierRoles = _.findWhere(user.hierRoles, {hierId: loggedUser.currentHierId});
+    if (!currHierRoles) return [];
+
     return _.map(currHierRoles.roleIds, function (id) {
       return {id: id};
     });
