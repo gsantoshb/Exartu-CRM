@@ -81,12 +81,20 @@
                                         <div class="right-part">
                                             {{#if editMode}}
                                                 <div style="width:80%">
-                                                   {{> afB3DatePicker name='personBirthDate' value=personBirthDate format="D, MM dd, yyyy " startView="year" }}
+                                                    {{#if isAdmin}}
+                                                        {{> afB3DatePicker name='personBirthDate' value=personBirthDate format="D, MM dd, yyyy " startView="year" }}
+                                                    {{else}}
+                                                        {{> afB3DatePicker name='personBirthDate' value=personBirthDate format="D, MM dd"}}
+                                                    {{/if}}
                                                 </div>
                                             {{else}}
                                                 <strong>
                                                     {{#if personBirthDate }}
-                                                        {{formattedDate personBirthDate  "MMMM DD, YYYY"}}
+                                                        {{#if isAdmin}}
+                                                            {{formattedDate personBirthDate  "MMMM DD, YYYY"}}
+                                                        {{else}}
+                                                            {{formattedDate personBirthDate  "MMMM DD"}}
+                                                        {{/if}}
                                                     {{else}}
                                                         <!--Not set-->
                                                     {{/if}}
