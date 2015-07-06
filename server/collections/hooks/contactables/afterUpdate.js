@@ -407,7 +407,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
             $or: hierFilter
           });
           var email = _.find(doc.contactMethods, function (cm) { return cm.type == emailCM._id; });
-          if (email) data.email = email;
+          if (email) data.email = email.value;
 
           // Phone contact method
           var phoneCM = LookUps.findOne({
@@ -416,7 +416,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
             $or: hierFilter
           });
           var phone = _.find(doc.contactMethods, function (cm) { return cm.type == phoneCM._id; });
-          if (phone) data.phone = phone;
+          if (phone) data.phone = phone.value;
         }
 
         if (!_.isEmpty(data)) TwApi.updateEmployee(doc.externalId, data, accountInfo);
@@ -456,7 +456,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
             $or: hierFilter
           });
           var email = _.find(doc.contactMethods, function (cm) { return cm.type == emailCM._id; });
-          if (email) data.email = email;
+          if (email) data.email = email.value;
 
           // Phone contact method
           var phoneCM = LookUps.findOne({
@@ -465,7 +465,7 @@ Contactables.after.update(function (userId, doc, fieldNames, modifier, options) 
             $or: hierFilter
           });
           var phone = _.find(doc.contactMethods, function (cm) { return cm.type == phoneCM._id; });
-          if (phone) data.phone = phone;
+          if (phone) data.phone = phone.value;
         }
 
         // Update enterprise
