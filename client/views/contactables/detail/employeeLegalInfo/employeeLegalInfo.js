@@ -212,7 +212,8 @@ Template.employeeLegalInfo.helpers({
     toReturn.orientationDate = this.Employee.orientationDate;
     toReturn.hireDate = this.Employee.hireDate;
     return toReturn;
-  }
+  },
+  isAdmin: Utils.bUserIsAdmin
 });
 
 Template.employeeLegalInfo.events({
