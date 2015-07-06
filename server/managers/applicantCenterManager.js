@@ -114,7 +114,7 @@ ApplicantCenterManager = {
 
     // Create user account
     var tempPass = Random.secret(8);
-    var userId = Accounts.createUser({email: hierEmail, password: tempPass, currentHierId: employee.hierId, userEmail: email});
+    var userId = Accounts.createUser({email: hierEmail, password: tempPass, currentHierId: employee.hierId, userEmail: email, kioskUser: true});
     if (!userId) throw new Error('An error occurred while creating the AppCenter account');
 
     // Sync the newly created user with the employee id

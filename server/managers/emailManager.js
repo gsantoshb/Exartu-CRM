@@ -135,12 +135,9 @@ var emailListener =  Meteor.wrapAsync(function (email, pass, host, port, hierId,
 var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, port, cb) {
 
     //set by default a minimum date
-    var date ='April 1, 1962';
+
     //console.log(date);
-    var resumeSubs = ResumeSubscription.findOne();
-    if(resumeSubs){
-      date = resumeSubs.lastDate;
-    }
+
     //find all news emails for hierId hierarchy:
     var mailListener = new MailListener({
       username: email,//"lidnele4321@hotmail.com"
@@ -151,7 +148,7 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
       fetchUnreadOnStart: true,
       mailbox: "INBOX", // mailbox to monitor
       markSeen: false, // all fetched email willbe marked as seen and not fetched next time
-      searchFilter:['ALL', ['SINCE', date]]
+      searchFilter:['ALL']
     });
 
 
@@ -166,7 +163,6 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
   mailListener.on("mail", function (mail, seqno, attributes) {
     // do something with mail object including attachments
     //console.log("emailParsed1", mail);
-
 
     var to = mail.to[0].address;
     var arrayToMore = to.split("+");
@@ -186,12 +182,14 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
             phone: '0000000'
           }, true);
           user = Meteor.users.findOne({_id: userId});
-          Hierarchies.update({_id: hier._id}, {$set: {resumeParserUser: user}});
+          Hierarchies.update({_id: hier._id}, {$set: {resumeParserUser: user._id}});
         }
         else {
           var userId = hier.resumeParserUser;
           user = Meteor.users.findOne({_id: userId});
         }
+        console.log("userR",user);
+        console.log("hierR",hier);
         var connection = new RESTAPI.connection(user);
 
 
