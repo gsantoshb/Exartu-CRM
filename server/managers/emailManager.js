@@ -192,6 +192,8 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
           var userId = hier.resumeParserUser;
           user = Meteor.users.findOne({_id: userId});
         }
+        console.log("userR",user);
+        console.log("hierR",hier);
         var connection = new RESTAPI.connection(user);
 
 
