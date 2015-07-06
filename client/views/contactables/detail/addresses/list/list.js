@@ -47,7 +47,7 @@ Template.addressList.helpers({
     linkId: function() { return Session.get('entityId');
     },
     isAdmin: function(){
-        return Utils.adminSettings.isAdmin();
+      return Utils.bUserIsAdmin();
     }
 });
 Template.addressList.events({

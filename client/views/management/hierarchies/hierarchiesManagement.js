@@ -23,7 +23,7 @@ Template.hierarchiesManagement.helpers({
     return query;
   },
   isAdmin: function () {
-    return Utils.adminSettings.isAdmin();
+    return Utils.bUserIsAdmin();
   },
   hierarchies: function () {
     var queryObj = query.getObject();

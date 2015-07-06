@@ -98,12 +98,8 @@ Router.map(function () {
     controller: 'UsersController'
   });
   this.route('userProfile', {
-    path: '/userProfile/:_id?',
+    path: '/userProfile/:userId?',
     controller: 'UserProfileController'
-  });
-  this.route('user', {
-    path: '/user/:_id/:tab?',
-    controller: 'UserController'
   });
 
   this.route('tenants', {

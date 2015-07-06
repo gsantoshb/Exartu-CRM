@@ -8,6 +8,9 @@ Meteor.methods({
   updateUserPicture: function (fileId) {
     UserManager.updateUserPicture(fileId);
   },
+  updateUserInfo: function (userInfo) {
+    UserManager.updateUserInfo(userInfo);
+  },
   resendEmailVerification: function(email) {
     UserManager.resendEmailVerification(email);
   },
@@ -20,8 +23,8 @@ Meteor.methods({
   isUsernameAvailable: function (userName) {
     return UserManager.isUsernameAvailable(userName);
   },
-  isEmailAvailable: function (email) {
-    return UserManager.isEmailAvailable(email);
+  isEmailAvailable: function (email, options) {
+    return UserManager.isEmailAvailable(email, options);
   },
   registerAccount: function (document, skipEmailVerification) {
     return UserManager.registerAccount(document, skipEmailVerification);
@@ -69,6 +72,43 @@ Meteor.methods({
   },
   getIndexTour: function(tour){
     return UserManager.getIndexTour(tour);
+  },
+
+  //roles
+  /**
+   * Adds the roleId to the userId in the logged user's currentHierId
+   * @param userId
+   * @param roleId
+   */
+
+  addRoleToUser: function (userId, roleId) {
+    var loggedUser = Meteor.user();
+    if (! loggedUser) return;
+
+    if (! RoleManager.bUserIsClientAdmin(loggedUser)){
+      throw new Meteor.Error(403, 'Not admin');
+    }
+
+    var user = Meteor.users.findOne({ _id: userId });
+    var currentHierRoles = _.findWhere(user.hierRoles, { hierId: loggedUser.currentHierId });
+
+    if (!currentHierRoles){
+      Meteor.users.update({ _id: userId }, { $push: { hierRoles: { roleIds:[roleId], hierId: loggedUser.currentHierId } } });
+    } else {
+      Meteor.users.update({ _id: userId, 'hierRoles.hierId': loggedUser.currentHierId }, { $addToSet: { 'hierRoles.$.roleIds': roleId } });
+    }
+
+  },
+  removeRoleToUser: function (userId, roleId) {
+    var loggedUser = Meteor.user();
+    if (! loggedUser) return;
+
+    if (! RoleManager.bUserIsClientAdmin(loggedUser)){
+      throw new Meteor.Error(400, 'Not admin');
+    }
+
+    Meteor.users.update({ _id: userId, 'hierRoles.hierId': loggedUser.currentHierId }, { $pull: { 'hierRoles.$.roleIds': roleId } });
+
   }
 
 });

@@ -1,0 +1,57 @@
+<template name="userRoles">
+    <div>
+        <div class="col-sm-12 col-lg-12 margin-top-15 contactable-left-col">
+
+            <h2 class="box-title">{{_ "Roles in current hierarchy"}}:</h2>
+
+            <div class="table-items-box">
+                {{>selectUserRole}}
+                {{>roleList}}
+            </div>
+        </div>
+    </div>
+</template>
+<template name="selectUserRole">
+    {{#if isAdmin}}
+        <div class="col-md-4">
+            <div class="input-group">
+                <select class="form-control newRole">
+                    <option value=""> -- {{_ "select a role"}} --</option>
+                    {{#each availableRoles}}
+                        <option value="{{_id}}">{{_ name}}</option>
+                    {{/each}}
+                </select>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary addRole" type="button"><i class="fa fa-plus"></i></button>
+                </span>
+            </div>
+        </div>
+    {{/if}}
+</template>
+
+<template name="roleList">
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="col-sm-12">
+                <div class="panel-body no-padding">
+
+                    <ul class="list-3 stripped">
+                        {{#each roles}}
+                            <li>
+                                <div>
+                                    {{_ getRoleDisplayName}}
+                                    {{#if isAdmin}}
+                                        <button class="btn btn-xs btn-default removeRole"><i class="fa fa-times"></i></button>
+                                    {{/if}}
+                                </div>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+

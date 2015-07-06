@@ -1,29 +1,7 @@
-Utils.adminSettings = {};
-SubscriptionHandlers = {};
-Utils.reactiveProp(Utils.adminSettings, 'isClientAdmin', false);
-Utils.reactiveProp(Utils.adminSettings, 'isSystemAdmin', false);
-Utils.reactiveProp(Utils.adminSettings, 'isAdmin', function () {
-    return Utils.adminSettings.isClientAdmin || Utils.adminSettings.isSystemAdmin;
-});
-Utils.reactiveProp(Utils.adminSettings, 'isSysAdmin', function () {
-    return Utils.adminSettings.isSystemAdmin;
-});
-
-var currentLanguageLabel = new ReactiveVar();
 var searchStringEntries = "";
 var searchStringEntriesDep = new Deps.Dependency();
 var sortEntries = new ReactiveVar(-1);
 
-Meteor.call('bUserIsClientAdmin', null, function (err, result) {
-    if (err)
-        return console.log(err);
-    Utils.adminSettings.isClientAdmin = result;
-});
-Meteor.call('bUserIsSystemAdmin', null, function (err, result) {
-    if (err)
-        return console.log(err);
-    Utils.adminSettings.isSystemAdmin = result;
-});
 Template.header.created = function() {
   Meteor.autorun(function (){
     searchStringEntriesDep.depend();
@@ -35,10 +13,10 @@ Template.header.created = function() {
 
 Template.header.helpers({
     isAdmin: function () {
-        return Utils.adminSettings.isAdmin();
+        return Utils.bUserIsAdmin();
     },
     isSysAdmin: function () {
-        return Utils.adminSettings.isSysAdmin();
+        return Utils.bUserIsSysAdmin();
     },
     userThumbnail: function () {
         var user = Meteor.user();
@@ -390,7 +368,7 @@ Template.sidebar.rendered = function () {
 }
 Template.sidebar.helpers({
     isAdmin: function () {
-        return Utils.adminSettings.isAdmin();
+      return Utils.bUserIsAdmin();
     },
     contactableTypes: function () {
         return dType.ObjTypes.find({parent: Enums.objGroupType.contactable});

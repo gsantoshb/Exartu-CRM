@@ -399,7 +399,7 @@ Template.contactableDetailBox.helpers({
         return EditMode.value;
     },
     isAdmin: function () {
-        return Utils.adminSettings.isAdmin();
+      return Utils.bUserIsAdmin();
     },
     editModeColor: function () {
         return EditMode.value ? '#008DFC' : '';
