@@ -168,8 +168,8 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
     var arrayToMore = to.split("+");
     if (arrayToMore[1]) {
       var arrayToA = arrayToMore[1].split("@");
-      var hierId = arrayToA[0];
-      var hier = Hierarchies.findOne({_id: hierId});
+      var hierName = arrayToA[0];
+      var hier = Hierarchies.findOne({name: hierName});
       if (hier) {
         var user = {};
         if (hier.resumeParserUser === undefined) {
@@ -188,8 +188,6 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
           var userId = hier.resumeParserUser;
           user = Meteor.users.findOne({_id: userId});
         }
-        console.log("userR",user);
-        console.log("hierR",hier);
         var connection = new RESTAPI.connection(user);
 
 

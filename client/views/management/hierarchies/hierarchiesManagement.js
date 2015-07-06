@@ -1,4 +1,4 @@
-
+var resumeParserEmail = new ReactiveVar();
 var selectedHier = new ReactiveVar();
 HierarchiesManagementController = RouteController.extend({
   layoutTemplate: 'mainLayout',
@@ -17,7 +17,13 @@ var query = new Utils.ObjectDefinition({
         searchString: {}
     }
 });
-
+Template.hierarchiesManagement.created =  function(){
+  Meteor.call("getResumeParserEmail", function(err, res){
+    if(res){
+      resumeParserEmail.set(res);
+    }
+  })
+}
 Template.hierarchiesManagement.helpers({
   filters: function () {
     return query;
@@ -45,6 +51,14 @@ Template.hierarchiesManagement.helpers({
     var hier = Hierarchies.findOne({_id: Meteor.user().currentHierId});
     var webName = hier.configuration.webName;
     return __meteor_runtime_config__.applicantCenterUrl + webName;
+  },
+  resumeParserUrl: function(){
+    if(resumeParserEmail.get()) {
+      var splitedEmail = resumeParserEmail.get().split("@");
+      var hierId = Meteor.user().currentHierId;
+      var hier = Hierarchies.findOne({_id: hierId});
+      return "" + splitedEmail[0] + "+" + hier.name + "@" + splitedEmail[1];
+    }
   }
 });
 
