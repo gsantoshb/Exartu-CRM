@@ -151,10 +151,10 @@ HRConcourseManager = {
     // Add available information from the merge fields
     var update = {$set: {}};
     if (mergeFields.ssn) update.$set['Employee.taxID'] = mergeFields.ssn;
-    if (mergeFields.dateOfBirth) update.$set['person.birthDate'] = new Date(mergeFields.dateOfBirth);
+    if (mergeFields.dateOfBirth && Date.parse(mergeFields.dateOfBirth)) update.$set['person.birthDate'] = new Date(mergeFields.dateOfBirth);
     if (mergeFields.convictions) update.$set['Employee.convictions'] = mergeFields.convictions;
     if (mergeFields.ethnicity) update.$set['Employee.ethnicity'] = mergeFields.ethnicity;
-    if (mergeFields.dateAvailable) update.$set['Employee.dateAvailable'] = new Date(mergeFields.dateAvailable);
+    if (mergeFields.dateAvailable && Date.parse(mergeFields.dateAvailable)) update.$set['Employee.dateAvailable'] = new Date(mergeFields.dateAvailable);
     if (mergeFields.desiredPay) update.$set['Employee.desiredPay'] = parseFloat(mergeFields.desiredPay) || 0;
     if (mergeFields.gender) {
       if (mergeFields.gender.indexOf('f') != -1 || mergeFields.gender.indexOf('F') != -1) {
@@ -229,8 +229,8 @@ HRConcourseManager = {
         supervisorPhone: mergeFields.pastJobPhone1,
         payRate: mergeFields.pastJobPayRate1 ? parseFloat(mergeFields.pastJobPayRate1) || 0 : undefined,
         duties: mergeFields.pastJobResponsibilities1Line1 + ' ' + mergeFields.pastJobResponsibilities1Line2,
-        start: new Date(mergeFields.pastJobStartDate1),
-        end: new Date(mergeFields.pastJobEndDate1),
+        start: Date.parse(mergeFields.pastJobStartDate1) ? new Date(mergeFields.pastJobStartDate1) : undefined,
+        end: Date.parse(mergeFields.pastJobEndDate1) ? new Date(mergeFields.pastJobEndDate1) : undefined,
         reasonForLeaving: mergeFields.pastJobReasonForLeaving1,
         ok2Contact: mergeFields.okayToContact1 ? (mergeFields.okayToContact1.indexOf('t') !== -1 || mergeFields.okayToContact1.indexOf('T') !== -1) : false
       });
@@ -244,8 +244,8 @@ HRConcourseManager = {
         supervisorPhone: mergeFields.pastJobPhone2,
         payRate: mergeFields.pastJobPayRate2 ? parseFloat(mergeFields.pastJobPayRate2) || 0 : undefined,
         duties: mergeFields.pastJobResponsibilities2Line1 + ' ' + mergeFields.pastJobResponsibilities2Line2,
-        start: new Date(mergeFields.pastJobStartDate2),
-        end: new Date(mergeFields.pastJobEndDate2),
+        start: Date.parse(mergeFields.pastJobStartDate2) ? new Date(mergeFields.pastJobStartDate2) : undefined,
+        end: Date.parse(mergeFields.pastJobEndDate2) ? new Date(mergeFields.pastJobEndDate2) : undefined,
         reasonForLeaving: mergeFields.pastJobReasonForLeaving2,
         ok2Contact: mergeFields.okayToContact2 ? (mergeFields.okayToContact2.indexOf('t') !== -1 || mergeFields.okayToContact2.indexOf('T') !== -1) : false
       });
@@ -259,8 +259,8 @@ HRConcourseManager = {
         supervisorPhone: mergeFields.pastJobPhone3,
         payRate: mergeFields.pastJobPayRate3 ? parseFloat(mergeFields.pastJobPayRate3) || 0 : undefined,
         duties: mergeFields.pastJobResponsibilities3Line1 + ' ' + mergeFields.pastJobResponsibilities3Line2,
-        start: new Date(mergeFields.pastJobStartDate3),
-        end: new Date(mergeFields.pastJobEndDate3),
+        start: Date.parse(mergeFields.pastJobStartDate3) ? new Date(mergeFields.pastJobStartDate3) : undefined,
+        end: Date.parse(mergeFields.pastJobEndDate3) ? new Date(mergeFields.pastJobEndDate3) : undefined,
         reasonForLeaving: mergeFields.pastJobReasonForLeaving3,
         ok2Contact: mergeFields.okayToContact3 ? (mergeFields.okayToContact3.indexOf('t') !== -1 || mergeFields.okayToContact3.indexOf('T') !== -1) : false
       });
