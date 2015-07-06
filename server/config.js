@@ -39,6 +39,8 @@ ExartuConfig = {
   CardReaderPassword:undefined,
   aidaHierarchy:undefined,
   // TW Enterprise API URL
-  TwEnterpriseAPI_URL: undefined
+  TwEnterpriseAPI_URL: undefined,
+  ResumeParserEmail:undefined,
+  ResumeParserEmailPassword:undefined
 
 };
