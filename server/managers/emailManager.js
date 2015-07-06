@@ -176,7 +176,7 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
       var hier = Hierarchies.findOne({_id: hierId});
       if (hier) {
         var user = {};
-        if (!hier.resumeParserUser) {
+        if (hier.resumeParserUser === undefined) {
           var userId = UserManager.registerAccount({
             name: 'resumeParserService',
             email: '' + Random.id(8) + '@aida.com',
