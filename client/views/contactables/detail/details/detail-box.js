@@ -424,7 +424,7 @@ Template.contactableDetailBox.helpers({
     },
     getActiveStatus: function(){
       var lookUp = LookUps.findOne({_id:  this.activeStatus});
-      return lookUp.displayName;
+      return lookUp && lookUp.displayName;
     },
     getProcessStatus: function(){
       var processStatus;
@@ -437,7 +437,7 @@ Template.contactableDetailBox.helpers({
       else if(this.Client){
         processStatus = LookUps.findOne({_id:  this.clientStatus});
       }
-      return processStatus.displayName;
+      return processStatus && processStatus.displayName;
     },
     getHowHeardOf: function(){
       var lookUp = LookUps.findOne({_id:  this.howHeardOf});
