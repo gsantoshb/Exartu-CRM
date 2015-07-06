@@ -1,4 +1,7 @@
 Meteor.methods({
+  getResumeParserEmail: function(){
+    return ExartuConfig.ResumeParserEmail;
+  },
   sendEmail: function (to, subject, content, isHTML) {
     // Let other method calls from the same client start running,
     // without waiting for the email sending to complete.
