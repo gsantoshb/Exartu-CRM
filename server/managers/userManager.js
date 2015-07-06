@@ -116,6 +116,7 @@ UserManager = {
         return Meteor.users.findOne(filter) == null;
     },
     registerAccount: function (document, skipEmailVerification) {
+
         // Check username and email
         //if (Meteor.call('isUsernameAvailable', document.username) &&
         //    Meteor.call('isEmailAvailable', document.email)) {
