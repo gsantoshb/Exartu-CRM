@@ -738,6 +738,7 @@ var lastHierId;
 Meteor.autorun(function () {
     // add dependency to the currentHierId
     var user = Meteor.user();
+    if (!user) return;
 
     if (lastHierId == user.currentHierId) return;
     lastHierId = user.currentHierId;
