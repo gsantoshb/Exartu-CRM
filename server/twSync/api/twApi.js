@@ -3,7 +3,7 @@ TwApi = {
   addEmployee: function (employeeId, employee, accountInfo) {
     var apiHelper = new TwApiHelper(accountInfo);
     apiHelper.post('/Employees/Insert', employee, Meteor.bindEnvironment(function (error, result) {
-      if (!error) {
+      if (!error && result && result.aident) {
         Contactables.update({_id: employeeId}, {$set: {externalId: result.aident}});
       } else {
         throw new Error("TW Sync failed adding employee");
