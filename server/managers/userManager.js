@@ -402,23 +402,31 @@ Accounts.onCreateUser(function (options, user) {
     } else {
         hierId = options.currentHierId;
     }
+    user.hierId = hierId; //temp...need to remove user.hierId references from submodules first
+
+  if (options.kioskUser) {
+    user.origin = Enums.userOrigin.hrcKiosk;
+    user.userEmail = options.userEmail;
+  } else {
     user.language = options.language;
     user.hierarchies = [hierId];
     user.currentHierId = hierId;
-    user.hierId = hierId; //temp...need to remove user.hierId references from submodules first
+
     var hierRoleIds = (options.roles) ? options.roles : [];
     if (!options.currentHierId) // means account creation
-        if (RoleManager.getClientAdministratorRole()) // make sure this isn't system init in which case no roles yet
-            hierRoleIds.push(RoleManager.getClientAdministratorRole()._id);
+      if (RoleManager.getClientAdministratorRole()) // make sure this isn't system init in which case no roles yet
+        hierRoleIds.push(RoleManager.getClientAdministratorRole()._id);
     user.hierRoles = [{hierId: hierId, roleIds: hierRoleIds}];
     Hierarchies.update({
-        _id: user.hierId
+      _id: user.hierId
     }, {
-        $addToSet: {
-            users: user._id
-        }
+      $addToSet: {
+        users: user._id
+      }
     });
-    return user;
+  }
+
+  return user;
 });
 
 // Helpers
