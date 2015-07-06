@@ -62,6 +62,8 @@ LastEntries = new Mongo.Collection('lastEntries');
 
 KioskEmployees = new Mongo.Collection('kioskEmployees');
 
+ResumeSubscription = new Mongo.Collection('resumeSubscription')
+
 Collections = {
     Hierarchies: Hierarchies,
     Jobs: Jobs,

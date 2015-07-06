@@ -106,8 +106,10 @@ Meteor.methods({
 		this.setUserId(userId);
 		if (_.isFunction(method))
 			return method.apply({}, params);
-		else
-			return Meteor.call.apply({}, _.union(method, params));
+		else {
+      var wrappedCall = Meteor.wrapAsync(Meteor.call);
+      return wrappedCall.apply({}, _.union(method, params));
+    }
 	}
 });
 

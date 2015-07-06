@@ -777,7 +777,6 @@ ContactableManager = {
         update.$set = querySet;
       if(!_.isEmpty(queryUnset))
         update.$unset = queryUnset;
-      console.log(update);
       Contactables.update({_id: contactableId},update);
     },
     updateLegalInfo: function(update, contactableId){
