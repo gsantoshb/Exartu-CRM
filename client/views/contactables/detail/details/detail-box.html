@@ -183,6 +183,77 @@
                                             </div>
                                         </li>
                                     {{/if}}
+
+                                    {{#if Employee}}
+                                        <li>
+                                            <div class="left-part">{{_ "Has own Transportation"}}</div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    {{> afFieldInput name='hasTransportation' type='afSimpleCheckbox' label=false}}
+                                                {{else}}
+                                                    <span>{{#if hasTransportation}}true{{else}}false{{/if}}</span>
+                                                {{/if}}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="left-part">{{_ "Preferred work location "}}</div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    {{> afQuickField label=false name="preferredWorkLocation" type="googleplace" opts=optsGoogleplace}}
+                                                {{else}}
+                                                    {{#if preferredWorkLocation}}
+                                                        <span>{{preferredLocationDisplayName}}</span>
+                                                    {{/if}}
+                                                {{/if}}
+                                            </div>
+                                        </li>
+
+                                    {{/if}}
+                                    {{#if editMode}}
+                                        {{#if afFieldValueIs name="clientStatus" value=getLostStatusId}}
+                                            <li>
+                                                <div class="left-part">{{_ "Lost Reason"}}</div>
+                                                <div class="right-part">
+                                                    {{> afFieldInput  name='clientLostReason' style="width:80%" type="afButtonGroup"  buttonArray=buttonsLostStatus}}
+                                                </div>
+                                            </li>
+                                        {{/if}}
+                                    {{else}}
+                                        {{#if isLost}}
+                                            <li>
+                                                <div class="left-part">{{_ "Lost Reason"}}</div>
+                                                <div class="right-part">
+                                                    <strong>
+                                                        {{#if clientLostReason}}
+                                                            <strong>{{getLostReason}}</strong>
+                                                        {{/if}}
+                                                    </strong>
+                                                </div>
+                                            </li>
+                                        {{/if}}
+                                    {{/if}}
+                                    {{#if Client}}
+                                        <li>
+                                            <div class="left-part">{{_ "WorkerComp"}}</div>
+                                            <div class="right-part">
+                                                {{#if editMode}}
+                                                    {{> afFieldInput  name='workerCompCode' id="workerCompCode" placeholder="Example TX8810" style="width:80%" type="text" class="form-control"}}
+                                                    {{#if afFieldIsInvalid name='workerCompCode'}}
+                                                        <span class="help-block">{{afFieldMessage name='workerCompCode'}}</span>
+                                                    {{/if}}
+                                                    <!--<input class="form-control" placeholder= {{_ "Example TX8810"}}-->
+                                                    <!--type="text"-->
+                                                    <!--value="{{this.Client.workerCompCode}}">-->
+                                                {{else}}
+                                                    {{workerCompCode}}
+                                                {{/if}}
+                                            </div>
+                                        </li>
+                                    {{/if}}
+                        </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-type-5">
                                     {{#if Contact }}
                                         <li>
                                             <div class="left-part">{{_ "Process Status"}}</div>
@@ -197,33 +268,6 @@
                                             </div>
                                         </li>
                                     {{/if}}
-                        </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <ul class="list-type-5">
-                            {{#if editMode}}
-                                {{#if afFieldValueIs name="clientStatus" value=getLostStatusId}}
-                                    <li>
-                                        <div class="left-part">{{_ "Lost Reason"}}</div>
-                                        <div class="right-part">
-                                            {{> afFieldInput  name='clientLostReason' style="width:80%" type="afButtonGroup"  buttonArray=buttonsLostStatus}}
-                                        </div>
-                                    </li>
-                                {{/if}}
-                            {{else}}
-                                {{#if isLost}}
-                                        <li>
-                                            <div class="left-part">{{_ "Lost Reason"}}</div>
-                                            <div class="right-part">
-                                                <strong>
-                                                    {{#if clientLostReason}}
-                                                        <strong>{{getLostReason}}</strong>
-                                                    {{/if}}
-                                                </strong>
-                                            </div>
-                                        </li>
-                                {{/if}}
-                            {{/if}}
                                 <li>
                                     <div class="left-part">{{_ "Status note"}}</div>
                                     <div class="right-part">
@@ -281,24 +325,7 @@
                                         </div>
                                     </li>
                                 {{/if}}
-                                {{#if Client}}
-                                    <li>
-                                        <div class="left-part">{{_ "WorkerComp"}}</div>
-                                        <div class="right-part">
-                                            {{#if editMode}}
-                                                {{> afFieldInput  name='workerCompCode' id="workerCompCode" placeholder="Example TX8810" style="width:80%" type="text" class="form-control"}}
-                                                {{#if afFieldIsInvalid name='workerCompCode'}}
-                                                    <span class="help-block">{{afFieldMessage name='workerCompCode'}}</span>
-                                                {{/if}}
-                                                <!--<input class="form-control" placeholder= {{_ "Example TX8810"}}-->
-                                                       <!--type="text"-->
-                                                       <!--value="{{this.Client.workerCompCode}}">-->
-                                            {{else}}
-                                                {{workerCompCode}}
-                                            {{/if}}
-                                        </div>
-                                    </li>
-                                {{/if}}
+
                                 <li>
                                     <div class="left-part">{{_ "User"}}</div>
                                     <div class="right-part">
@@ -312,41 +339,7 @@
                                     </div>
                                 </li>
                             {{#if Employee}}
-                                <li>
-                                <div class="left-part">{{_ "Has own Transportation"}}</div>
-                                <div class="right-part">
-                                    {{#if editMode}}
-                                        {{> afFieldInput name='hasTransportation' type='afSimpleCheckbox' label=false}}
-                                    {{else}}
-                                        <span>{{#if hasTransportation}}true{{else}}false{{/if}}</span>
-                                    {{/if}}
-                                </div>
-                                </li>
-                                <li>
-                                <div class="left-part">{{_ "Preferred work location "}}</div>
-                                <div class="right-part">
-                                    {{#if editMode}}
-                                        {{> afQuickField label=false name="preferredWorkLocation" type="googleplace" opts=optsGoogleplace}}
-                                    {{else}}
-                                        {{#if preferredWorkLocation}}
-                                           <span>{{preferredLocationDisplayName}}</span>
-                                        {{/if}}
-                                    {{/if}}
-                                </div>
-                                </li>
-                                <li>
-                                  <div class="left-part">{{_ "Desired Pay"}}</div>
-                                  <div class="right-part">
-                                    {{#if editMode}}
-                                        {{> afFieldInput  name='desiredPay' id="desiredPay" style="width:80%" type="number" class="form-control"}}
-                                        {{#if afFieldIsInvalid name='desiredPay'}}
-                                            <span class="help-block">{{afFieldMessage name='desiredPay'}}</span>
-                                        {{/if}}
-                                    {{else}}
-                                        <span>{{desiredPay}}</span>
-                                    {{/if}}
-                                  </div>
-                                </li>
+
                                 <li>
                                 <div class="left-part">{{_ "Date available"}}</div>
                                 <div class="right-part">
@@ -368,9 +361,9 @@
                                        <span>{{availableStartDate}}</span>
                                     {{/if}}
                                 </div>
-                                </li>
+                                </li><work></work>
                                 <li>
-                                <div class="left-part">{{_ "Available Shift"}}</div>
+                                <div class="left-part">{{_ "Available shift"}}</div>
                                 <div class="right-part">
                                     {{#if editMode}}
                                         {{> afQuickField label=false noselect=true name="availableShifts" options="allowed"}}
@@ -378,6 +371,19 @@
                                         <span>{{availableShifts}}</span>
                                     {{/if}}
                                 </div>
+                                </li>
+                                <li>
+                                    <div class="left-part">{{_ "Desired Pay"}}</div>
+                                    <div class="right-part">
+                                        {{#if editMode}}
+                                            {{> afFieldInput  name='desiredPay' id="desiredPay" style="width:80%" type="number" class="form-control"}}
+                                            {{#if afFieldIsInvalid name='desiredPay'}}
+                                                <span class="help-block">{{afFieldMessage name='desiredPay'}}</span>
+                                            {{/if}}
+                                        {{else}}
+                                            <span>{{desiredPay}}</span>
+                                        {{/if}}
+                                    </div>
                                 </li>
                             {{/if}}
                                 {{#with originalContactable}}

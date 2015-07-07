@@ -612,6 +612,7 @@ ContactableManager = {
       //update a contactable using the "update" from the autoform on contactables details
       var querySet = {};
       var queryUnset = {};
+      console.log("update",update);
       if(update.$set.personFirstName != undefined){
         _.extend(querySet, {'person.firstName':update.$set.personFirstName});
       }
@@ -668,6 +669,9 @@ ContactableManager = {
       }
       if(update.$set.dateAvailable!= undefined ){
         _.extend(querySet, {'Employee.dateAvailable':update.$set.dateAvailable});
+      }
+      if(update.$set.user != undefined ){
+        _.extend(querySet, {'userId':update.$set.user});
       }
       if(update.$set.availableStartDate != undefined){
         var availableStart = {};
