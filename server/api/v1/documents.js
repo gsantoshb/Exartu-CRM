@@ -24,7 +24,6 @@ Router.map(function() {
 				//	 - description: string (optional)
 				// 	 - tags: array (optional)
 				case 'POST':
-					debugger;
 					var data = {};
 
 					this.request.fields && _.extend(data, this.request.fields);

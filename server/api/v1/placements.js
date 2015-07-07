@@ -45,7 +45,7 @@ Router.map(function() {
         //  - endDate: string (date) ?
         //  - externalId: string ?
         case 'POST':
-          var data = this.request.bodyFields;
+          var data = this.request.body;
 
           try {
             var placement = mapper.create(data, user.hierId);

@@ -35,7 +35,7 @@ Router.map(function() {
         //  - tag: string
         //  - externalId: string ?
         case 'POST':
-          var data = this.request.bodyFields;
+          var data = this.request.body;
 
           try {
             var tag = mapper.create(data);
