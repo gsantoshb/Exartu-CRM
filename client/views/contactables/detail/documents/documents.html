@@ -127,7 +127,7 @@
             <div class="list-item documents-list-item">
                 <div class="list-item-cell list-item-icon">
                     <a class="item-icon {{documentIconBackground type}} {{disabledClass}}" style="cursor:s-resize" href="{{url}}" target="_blank"  download="{{name}}{{#if extension}}.{{extension}}{{/if}}">
-                        <i class="{{documentIcon type}}"></i>
+                        <i class="{{#if downloading}}fa fa-spin fa-spinner{{else}}{{documentIcon type}}{{/if}}" style="color:#ffffff"></i>
                     </a>
                 </div>
                 <div class="list-item-cell documents-list-item-title">
@@ -137,7 +137,7 @@
                             <i class="pull-right"> processing </i>
                         {{/unless}}
 
-                        <a class="{{disabledClass}}" href="{{url}}" target="_blank" style="cursor:s-resize" download="{{name}}{{#if extension}}.{{extension}}{{/if}}">{{name}}</a>
+                        <a class="tittle-document {{disabledClass}}" href="{{url}}" target="_blank" style="cursor:s-resize" download="{{name}}{{#if extension}}.{{extension}}{{/if}}">{{name}}</a>
                     </div>
                     <div class="item-subtitle">{{description}}</div>
                 </div>
