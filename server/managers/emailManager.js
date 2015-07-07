@@ -204,11 +204,25 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
           });
           if (ret) {
             successParsed = true;
+            var text = "";
+            if(mail.text){
+              text = mail.text;
+            }
+            console.log("text", text);
+            if(text.length === 0){
+              text = 'Contactable parsed from email';
+            }
+            var note = { msg: text,
+               links: [ { id: ret, type: Enums.linkTypes.contactable.value } ],
+               contactableId: ret };
+            connection.call('addContactableNote', note)
+
           }
           else {
             successParsed = successParsed || false;
           }
         })
+        connection.close();
 
 
         if (successParsed) {
