@@ -175,12 +175,13 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
         if (hier.resumeParserUser === undefined) {
           var userId = UserManager.registerAccount({
             name: 'resumeParserService',
-            email: '' + Random.id(8) + '@aida.com',
+            email: 'resumeParserService' + Random.id(8) + '@aida.com',
             currentHierId: hier._id,
             password: Random.id(8),
             language: null,
             phone: '0000000'
           }, true);
+          Meteor.users.update({_id:userId},{$set:{inactive:true}});
           user = Meteor.users.findOne({_id: userId});
           Hierarchies.update({_id: hier._id}, {$set: {resumeParserUser: user._id}});
         }
