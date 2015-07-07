@@ -40,7 +40,7 @@ Router.map(function() {
         //  - type: string (Id)
         //  - value: string
         case 'POST':
-          var data = this.request.bodyFields;
+          var data = this.request.body;
           try {
             connection.call('addContactMethod', data.contactableId, data.type, data.value);
             response.end(data);

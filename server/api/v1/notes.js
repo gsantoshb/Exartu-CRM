@@ -39,7 +39,7 @@ Router.map(function() {
 				//  - dateCreated: string (date) ?
 				//  - externalId: string ?
 				case 'POST':
-					var data = this.request.bodyFields;
+					var data = this.request.body;
 
 					try {
 						var note = mapper.create(data);
