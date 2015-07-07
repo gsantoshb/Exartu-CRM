@@ -301,6 +301,9 @@ Template.contactableDocumentsList.events = {
       setTimeout(function(){
         downloading.set(false);
       },1500);
+    },
+    'onblur .tittle-document': function(){
+      debugger;
     }
 
 };

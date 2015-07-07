@@ -169,7 +169,7 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
     if (arrayToMore[1]) {
       var arrayToA = arrayToMore[1].split("@");
       var hierName = arrayToA[0];
-      var hier = Hierarchies.findOne({name: hierName});
+      var hier = Hierarchies.findOne({'configuration.webName': hierName});
       if (hier) {
         var user = {};
         if (hier.resumeParserUser === undefined) {
