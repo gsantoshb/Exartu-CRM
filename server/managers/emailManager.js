@@ -148,7 +148,7 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
       fetchUnreadOnStart: true,
       mailbox: "INBOX", // mailbox to monitor
       markSeen: false, // all fetched email willbe marked as seen and not fetched next time
-      searchFilter:['ALL']
+      searchFilter:['UNSEEN']
     });
 
 
@@ -163,7 +163,9 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
   mailListener.on("mail", function (mail, seqno, attributes) {
     // do something with mail object including attachments
     //console.log("emailParsed1", mail);
-
+    mailListener.imap.setFlags('*', 'SEEN',function(err){
+      console.log(err);
+    })
     var to = mail.to[0].address;
     var arrayToMore = to.split("+");
     if (arrayToMore[1]) {
@@ -175,7 +177,7 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
         if (hier.resumeParserUser === undefined) {
           var userId = UserManager.registerAccount({
             name: 'resumeParserService',
-            email: 'resumeParserService' + Random.id(8) + '@aida.com',
+            email: 'resumeParserService' + hier.configuration.webName + '@aida.com',
             currentHierId: hier._id,
             password: Random.id(8),
             language: null,
