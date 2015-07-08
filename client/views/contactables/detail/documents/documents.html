@@ -175,10 +175,16 @@
             {{#each .}}
                 <div class="list-item documents-list-item">
                     <div class="list-item-cell list-item-icon">
-                        <a class="item-icon item-icon-pdf" href="{{resumeUrl}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"  target="_blank"><i class="{{documentIcon type}}"></i></a>
-                    </div>
+                        {{#if downloading}}
+                            <a class="item-icon">
+                            <i class="fa fa-spin fa-spinner" style="color:#000000"  ></i>
+                            </a>
+                        {{else}}
+                            <a class="item-icon item-icon-pdf" href="{{resumeUrl}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"  target="_blank"><i class="{{documentIcon type}}"></i></a>
+                        {{/if}}
+                        </div>
                     <div class="list-item-cell documents-list-item-title">
-                        <div class="item-title {{#unless description}}single{{/unless}}"><a href="{{resumeUrl}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"  target="_blank">{{name}}</a></div>
+                        <div class="item-title {{#unless description}}single{{/unless}}"><a class="tittle-document " href="{{resumeUrl}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"  target="_blank">{{name}}</a></div>
                         <div class="item-subtitle">{{description}}</div>
                     </div>
 
