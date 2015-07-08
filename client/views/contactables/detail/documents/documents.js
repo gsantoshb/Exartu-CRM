@@ -15,6 +15,7 @@ var document = new Utils.ObjectDefinition({
     originalFileName: {},
     file: {}
 });
+var downloading = new ReactiveVar(false);
 var addDisabled = new ReactiveVar(false);
 var isAddFormVisible = new ReactiveVar(false);
 var isLoading = new ReactiveVar(false);
@@ -252,6 +253,9 @@ Template.contactableDocumentsList.helpers({
     },
     disabledClass: function () {
         return this.fileId ? '' : 'disabled';
+    },
+    downloading: function(){
+      return downloading.get();
     }
 });
 
@@ -285,7 +289,23 @@ Template.contactableDocumentsList.events = {
     },
     'keyup #searchString': _.debounce(function(e){
         query.searchString.value = e.target.value;
-    })
+    }),
+    'click .item-icon': function(){
+      downloading.set(true);
+      setTimeout(function(){
+        downloading.set(false);
+      },1500);
+    },
+    'click .tittle-document': function(){
+      downloading.set(true);
+      setTimeout(function(){
+        downloading.set(false);
+      },1500);
+    },
+    'onblur .tittle-document': function(){
+      debugger;
+    }
+
 };
 
 Template.contactableDocumentsList.onDestroyed(function () {

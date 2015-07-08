@@ -24,6 +24,7 @@ NoteManager = {
       Notes.find({'links.id': entityId}, {sort: {'dateCreated': -1}})).fetch();
   },
   addNote: function (note) {
+
     if (!note.msg) {
       throw new Error('Message is required');
     }
