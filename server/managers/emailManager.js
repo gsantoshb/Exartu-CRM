@@ -196,9 +196,13 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
 
         var successParsed = false;
         _.each(mail.attachments, function (a) {
+          var splitName = a.fileName.split(".");
+          var extension = splitName[splitName.length -1];
           var ret = connection.call('resumeParserMethod', {
             fileData: a.content.toString('base64'),
-            contentType: a.contentType
+            contentType: a.contentType,
+            extension: extension,
+            fileName: a.fileName
           }, function (err, res) {
 
           });
@@ -209,8 +213,8 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
               text = mail.text;
             }
             console.log("text", text);
-            if(text.length === 0){
-              text = 'Contactable parsed from email';
+            if(!text.match(/(\w)+/i)){
+              text = 'Email text empty';
             }
             var note = { msg: text,
                links: [ { id: ret, type: Enums.linkTypes.contactable.value } ],
