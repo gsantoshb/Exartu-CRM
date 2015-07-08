@@ -198,7 +198,7 @@ Router.map(function () {
                     break;
 
                 case 'POST':
-                    data = this.request.bodyFields;
+                    data = this.request.body;
                     break;
 
                 default:
