@@ -112,5 +112,6 @@ Notes.after.insert(function (userId, doc) {
   newNote.hierId = doc.hierId;
   newNote.userId = doc.userId;
   newNote.dateCreated = doc.dateCreated;
+  newNote.remindDate = doc.remindDate;
   NotesView.insert(newNote);
 });

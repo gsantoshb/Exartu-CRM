@@ -5,23 +5,14 @@ var self = {};
 var searchQuery = {};
 var addDisabled = new ReactiveVar(false);
 
-var displayToString = function(){
-  var c = Contactables.findOne({_id:Session.get('entityId')});
-  if(c) {
+//remind date
+var showRemindDate = new ReactiveVar(false);
+var clickedCheckboxOrButton = false;
+var text = new ReactiveVar('');
+var detectedSpan = new ReactiveVar();
+var updatingRemindDate = new ReactiveVar(false);
 
-    if (c.Employee) {
-      return 'Display to employee';
-    }
-    else if (c.Contact) {
-      return 'Display to contact';
-    }
-    else if (c.Client) {
-      return 'Display to client';
-    }
-  }
-};
-
-var sortDep=new Deps.Dependency;
+var sortDep = new Deps.Dependency;
 var checkSMSDep = new Deps.Dependency;
 var NotesHandler;
 
@@ -29,66 +20,13 @@ var NotesHandler;
 var links,
   linkedDep = new Tracker.Dependency();
 
-NoteSchema = new SimpleSchema({
-  msg: {
-    type: String,
-    label: 'Message'
-  },
-  links: {
-    type: [Object],
-    label: 'Entities linked'
-  },
-  'links.$.id': {
-    type: String
-  },
-  'links.$.type': {
-    type: Number,
-    allowedValues: _.map(Enums.linkTypes, function (type) {
-      return type.value;
-    })
-  },
-  sendAsSMS: {
-    type: Boolean,
-    label: 'Send SMS/Text',
-    optional: true
-  },
-  hotListFirstName: {
-    type: Boolean,
-    label: 'Preface with first name?',
-    optional: true
-  },
-  userNumber: {
-    type: String,
-    optional: true,
-    label: 'SMS/Text origin number(s)'
-  },
-  contactableNumber: {
-    type: String,
-    optional: true,
-    label: 'SMS/Text destination number'
-  },
-  contactableId: {
-    type: String,
-    label: 'Entity',
-    autoValue: function () {
-      return Session.get('entityId');
-    }
-  },
-  displayToEmployee: {
-    type: Boolean,
-    optional: true,
-    label: displayToString
-
-  }
-});
-
 
 AutoForm.hooks({
   AddNoteRecord: {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
 
       addDisabled.set(true);
-      if(!hotlist) {
+      if (!hotlist) {
         var self = this;
         //for some reason autoValue doesn't work
 
@@ -97,9 +35,13 @@ AutoForm.hooks({
         Meteor.call('addContactableNote', insertDoc, function () {
           self.done();
           addDisabled.set(false);
+          showRemindDate.set(false);
+          clickedCheckboxOrButton = false;
+          text.set("");
+          detectedSpan.set();
         })
       }
-      else if(hotlist){
+      else if (hotlist) {
         var self = this;
         insertDoc.hierId = Meteor.user().currentHierId;
         insertDoc.userId = Meteor.user()._id;
@@ -108,7 +50,7 @@ AutoForm.hooks({
           addDisabled.set(false);
         })
       }
-      else{
+      else {
 
       }
       return false;
@@ -122,18 +64,29 @@ self.defaultMobileNumber = null;
 var hotlist = null;
 var responsesOnly = false;
 Template.notesTabAdd.events({
-  'change #sendAsSMS': function(){
+  'change #sendAsSMS': function () {
     checkSMSDep.changed();
+  },
+  'change #show-remind-date-checkbox': function (e, ctx) {
+    clickedCheckboxOrButton = true;
+    showRemindDate.set(e.target.checked);
+  },
+  'click .time-span': function () {
+    clickedCheckboxOrButton = true;
+    setSelectedTimeSpan(this);
+  },
+  'keyup #noteMsg': function (e, ctx) {
+    text.set(e.target.value);
   }
 });
 Template.notesTab.created = function () {
   addDisabled.set(false);
-  hotlist = HotLists.findOne({_id:Session.get('entityId')});
+  hotlist = HotLists.findOne({_id: Session.get('entityId')});
 
   responsesOnly = (this.data && this.data.responseOnly);
 };
 Template.notesTabAdd.helpers({
-  addDisabled: function(){
+  addDisabled: function () {
     return addDisabled.get() ? 'disabled' : '';
   },
   isHotListNote: function () {
@@ -166,22 +119,37 @@ Template.notesTabAdd.helpers({
       if (!self.defaultUserNumber) self.defaultUserNumber = result.value;
       return result;
     });
-  }
-  ,
+  },
   defaultMobileNumber: function () {
     return self.defaultMobileNumber;
-  }
-  ,
+  },
   defaultUserNumber: function () {
     return self.defaultUserNumber;
   },
-  ischeckedSMS: function(){
+  ischeckedSMS: function () {
     checkSMSDep.depend();
     var field = $("#sendAsSMS");
     return (field[0] && field[0].checked);
+  },
+  getRemindDate: function () {
+      return detectedSpan.get() ? detectedSpan.get().getTime() : null
+  },
+  showRemindDate: function () {
+    return showRemindDate.get();
+  },
+  timeSpans: function () {
+    return _.toArray(timeSpanDictionary);
+  },
+  remindDate: function () {
+    return detectedSpan.get() ? detectedSpan.get().getTime() : undefined;
+  },
+  updatingRemindDate: function () {
+    return updatingRemindDate.get();
+  },
+  isSelectedSpan: function () {
+    return this == detectedSpan.get();
   }
 });
-
 
 
 // List
@@ -193,12 +161,9 @@ var query = new Utils.ObjectDefinition({
 
 Template.notesTabList.created = function () {
   var self = this;
-  //Meteor.subscribe('allContactables');
-  //Meteor.subscribe('allJobs');
-  //Meteor.subscribe('allPlacements');
 
   Meteor.autorun(function () {
-      searchQuery={};
+      searchQuery = {};
       if (responsesOnly && hotlist) //means only get responses to a hotlist send
       {
         searchQuery['isReply'] = true;
@@ -223,7 +188,7 @@ Template.notesTabList.created = function () {
 
         }
       }
-      else if(hotlist) {
+      else if (hotlist) {
         searchQuery['isReply'] = {$exists: false};
         searchQuery.links = {
           $elemMatch: {
@@ -244,8 +209,7 @@ Template.notesTabList.created = function () {
 
         }
       }
-      else{
-        //contactable
+      else {
 
         searchQuery.links = {
           $elemMatch: {
@@ -267,33 +231,40 @@ Template.notesTabList.created = function () {
 
         }
       }
-    }
-  )
-  ;
-}
-;
+    });
+
+  Meteor.autorun(function () {
+    // if the user selected a time span or clicked the checkbox then i don't have to find a span in the text
+    if (clickedCheckboxOrButton)
+      return;
+    var s = getMatchingTimeSpan(text.get());
+    setSelectedTimeSpan(s);
+    showRemindDate.set(!! s);
+  })
+};
 Template.notesTabList.destroyed = function () {
   query.searchString.value = '';
   NotesHandler.stop();
   NotesHandler = undefined;
+  text.set('');
 }
 Template.notesTabList.helpers({
   hasItems: function () {
-    return (NotesView.find(searchQuery,{sort: {dateCreated:-1}}).fetch().length > 0);
+    return (NotesView.find(searchQuery, {sort: {dateCreated: -1}}).fetch().length > 0);
   },
   items: function () {
     sortDep.depend();
-    return NotesView.find(searchQuery,{sort: {dateCreated:-1}});
+    return NotesView.find(searchQuery, {sort: {dateCreated: -1}});
   },
   isLoading: function () {
     return NotesHandler.isLoading();
   },
-  query: function() {
+  query: function () {
     return query;
   }
 });
 Template.notesTabList.events({
-  'keyup #searchString': _.debounce(function(e){
+  'keyup #searchString': _.debounce(function (e) {
     query.searchString.value = e.target.value;
   })
 });
@@ -358,15 +329,15 @@ Template.notesTabEditItem.events({
 
 // Links
 
-Template.linksAutoForm.created = function() {
+Template.linksAutoForm.created = function () {
   var self = this;
 
   var initialLink = {
     id: Session.get('entityId'),
     type: Utils.getEntityTypeFromRouter()
   };
-  Meteor.call('getEntityFromLinkForAdd', initialLink, function(err,res){
-    if(res){
+  Meteor.call('getEntityFromLinkForAdd', initialLink, function (err, res) {
+    if (res) {
       _.extend(initialLink, res);
       links = self.data.value || [initialLink];
       linkedDep.changed();
@@ -376,7 +347,7 @@ Template.linksAutoForm.created = function() {
 
 };
 
-AutoForm.addInputType('linkInput',{
+AutoForm.addInputType('linkInput', {
   template: 'linksAutoForm',
   valueOut: function () {
     return links
@@ -384,12 +355,12 @@ AutoForm.addInputType('linkInput',{
 });
 
 Template.linksAutoForm.events({
-  'click #toggleAddNoteModal': function(){
-    Utils.showModal('noteAdd', function(data) {
+  'click #toggleAddNoteModal': function () {
+    Utils.showModal('noteAdd', function (data) {
       data = data || {};
-      if(_.findWhere(links, {id: data.id})) return false;
-      Meteor.call('getEntityFromLinkForAdd', data, function(err,res){
-        if(res){
+      if (_.findWhere(links, {id: data.id})) return false;
+      Meteor.call('getEntityFromLinkForAdd', data, function (err, res) {
+        if (res) {
           _.extend(data, res);
           links.push(data);
           linkedDep.changed();
@@ -405,9 +376,9 @@ Template.linksAutoForm.events({
     //Template.currentData().links = _.without(links, this);
     var link = this;
     var newLinks;
-    _.each(links, function(l) {
-      if(l.id == link._id) {
-        newLinks = links.filter(function(element) {
+    _.each(links, function (l) {
+      if (l.id == link._id) {
+        newLinks = links.filter(function (element) {
           return element.id != l.id
         });
       } else {
@@ -426,5 +397,62 @@ Template.linksAutoForm.helpers({
     linkedDep.depend();
     return links;
   }
-  //getEntity: function(){Meteor.call(return Utils.getEntityFromLinkForAdd}
 });
+
+var setSelectedTimeSpan = function (newVal) {
+  //hack to force dateTimePicker to re-render with the new value
+  if (detectedSpan.curValue != newVal){
+    updatingRemindDate.set(true);
+    setTimeout(function () {
+      updatingRemindDate.set(false);
+    }, 100);
+  }
+
+  detectedSpan.set(newVal);
+};
+
+// returns the first span object from the timeSpanDictionary which regex matches the text
+// the order it uses is the order of the dictionary
+var getMatchingTimeSpan = function (text) {
+  var result;
+  _.any(timeSpanDictionary, function (span, key) {
+    if (span.regex.test(text)) {
+      result = span;
+      return true;
+    }
+  });
+  return result;
+};
+
+// all the time span that we can recognize
+// the Label is used to display the button in the UI
+var timeSpanDictionary = {
+  later: {
+    regex: /\b(later|later\stoday|today)\b/i,
+    label: 'In two hours',
+    getTime: function () {
+      return moment().add(2, 'h').toDate();
+    }
+  },
+  tomorrow: {
+    regex: /\b(tomorrow)\b/i,
+    label: 'Tomorrow',
+    getTime: function () {
+      return moment().add(1, 'd').toDate();
+    }
+  },
+  nextDays: {
+    regex: /\b(next\sdays|soon)\b/i,
+    label: 'In two days',
+    getTime: function () {
+      return moment().add(2, 'd').toDate();
+    }
+  },
+  nextWeek: {
+    regex: /\b(next\sweek\b)/i,
+    label: 'Next week',
+    getTime: function () {
+      return moment().add(1, 'w').toDate();
+    }
+  }
+}
