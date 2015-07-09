@@ -81,6 +81,8 @@ Template.notesTabAdd.events({
 });
 Template.notesTab.created = function () {
   addDisabled.set(false);
+  showRemindDate.set(false);
+
   hotlist = HotLists.findOne({_id: Session.get('entityId')});
 
   responsesOnly = (this.data && this.data.responseOnly);
