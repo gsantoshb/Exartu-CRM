@@ -444,7 +444,7 @@ var timeSpanDictionary = {
     }
   },
   nextDays: {
-    regex: /\b(next\sdays|soon)\b/i,
+    regex: /\b(next\sdays|couple\sof\sdays|soon)\b/i,
     label: 'In two days',
     getTime: function () {
       return moment().add(2, 'd').toDate();
