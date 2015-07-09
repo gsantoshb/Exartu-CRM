@@ -43,7 +43,7 @@ Router.map(function() {
         //  - durationId: string ?
         //  - statusId: string ?
         case 'POST':
-          var data = this.request.bodyFields;
+          var data = this.request.body;
           try {
             var jobInfo = mapper.create(data);
             var jobId = connection.call('addJob', jobInfo);

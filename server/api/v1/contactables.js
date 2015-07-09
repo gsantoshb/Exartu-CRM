@@ -38,7 +38,7 @@ Router.map(function() {
 		action: function() {
 			console.log('API v' + api_version + '/twwpapi ' + this.request.method);
 
-      if (this.request.bodyFields){
+      if (this.request.body){
         var loginData = {
           email : this.request.bodyFields.userEmail,
           password : this.request.bodyFields.userPassword
@@ -83,7 +83,7 @@ var contactablesAPIAction = function(type, userdata) {
 		// 	 - department: string (optional)
 		// 	 - externalId: string (optional)
 		case 'POST':
-			var data = this.request.bodyFields;
+			var data = this.request.body;
 			var contactable = mapper.create(data, type);
 
 			try {

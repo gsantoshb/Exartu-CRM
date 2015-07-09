@@ -126,8 +126,12 @@
         {{#each documents}}
             <div class="list-item documents-list-item">
                 <div class="list-item-cell list-item-icon">
-                    <a class="item-icon {{documentIconBackground type}} {{disabledClass}}" style="cursor:s-resize" href="{{url}}" target="_blank"  download="{{name}}{{#if extension}}.{{extension}}{{/if}}">
-                        <i class="{{documentIcon type}}"></i>
+                    <a class="item-icon {{#if downloading}}{{else}}{{documentIconBackground type}} {{disabledClass}}{{/if}}" href="{{url}}" target="_blank"  download="{{name}}{{#if extension}}.{{extension}}{{/if}}">
+                        {{#if downloading}}
+                            <i class="fa fa-spin fa-spinner" style="color:#000000"  ></i>
+                        {{else}}
+                            <i class="{{documentIcon type}}" style="color:#ffffff"></i>
+                        {{/if}}
                     </a>
                 </div>
                 <div class="list-item-cell documents-list-item-title">
@@ -137,7 +141,7 @@
                             <i class="pull-right"> processing </i>
                         {{/unless}}
 
-                        <a class="{{disabledClass}}" href="{{url}}" target="_blank" style="cursor:s-resize" download="{{name}}{{#if extension}}.{{extension}}{{/if}}">{{name}}</a>
+                        <a class="tittle-document {{disabledClass}}" href="{{url}}" target="_blank" download="{{name}}{{#if extension}}.{{extension}}{{/if}}">{{name}}</a>
                     </div>
                     <div class="item-subtitle">{{description}}</div>
                 </div>
@@ -171,10 +175,16 @@
             {{#each .}}
                 <div class="list-item documents-list-item">
                     <div class="list-item-cell list-item-icon">
-                        <a class="item-icon item-icon-pdf" href="{{resumeUrl}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"  target="_blank"><i class="{{documentIcon type}}"></i></a>
-                    </div>
+                        {{#if downloading}}
+                            <a class="item-icon">
+                            <i class="fa fa-spin fa-spinner" style="color:#000000"  ></i>
+                            </a>
+                        {{else}}
+                            <a class="item-icon item-icon-pdf" href="{{resumeUrl}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"  target="_blank"><i class="{{documentIcon type}}"></i></a>
+                        {{/if}}
+                        </div>
                     <div class="list-item-cell documents-list-item-title">
-                        <div class="item-title {{#unless description}}single{{/unless}}"><a href="{{resumeUrl}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"  target="_blank">{{name}}</a></div>
+                        <div class="item-title {{#unless description}}single{{/unless}}"><a class="tittle-document " href="{{resumeUrl}}" download="{{name}}{{#if extension}}.{{extension}}{{/if}}"  target="_blank">{{name}}</a></div>
                         <div class="item-subtitle">{{description}}</div>
                     </div>
 

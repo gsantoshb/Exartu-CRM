@@ -41,7 +41,7 @@ Router.map(function() {
         //  - bill: string (number)
         //  - pay: string (number)
         case 'POST':
-          var data = this.request.bodyFields;
+          var data = this.request.body;
           try {
             var rateInfo = mapper.create(data);
             connection.call('addPlacementRate', rateInfo);

@@ -157,6 +157,12 @@ var mergeFields = [{
   path: 'Employee.convictions',
   targetType: Enums.docCenterMergeFieldTypes.contactable
 },{
+  key: 'convictions2',
+  testValue: 'hard worker',
+  type: DocCenter.mergeFieldTypes.string,
+  path: 'Employee.convictions',
+  targetType: Enums.docCenterMergeFieldTypes.contactable
+},{
   key: 'ethnicity',
   testValue: 'african american',
   type: DocCenter.mergeFieldTypes.string,

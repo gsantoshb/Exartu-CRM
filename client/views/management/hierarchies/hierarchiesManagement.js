@@ -57,7 +57,7 @@ Template.hierarchiesManagement.helpers({
       var splitedEmail = resumeParserEmail.get().split("@");
       var hierId = Meteor.user().currentHierId;
       var hier = Hierarchies.findOne({_id: hierId});
-      return "" + splitedEmail[0] + "+" + hier.name + "@" + splitedEmail[1];
+      return "" + splitedEmail[0] + "+" + hier.configuration.webName + "@" + splitedEmail[1];
     }
   }
 });

@@ -33,7 +33,7 @@ Router.map(function() {
         // Body:
         //  - displayName: string
         case 'POST':
-          var data = this.request.bodyFields;
+          var data = this.request.body;
           try {
             var jobTitleId = connection.call('addJobTitle', data.displayName);
             _.extend(data, { id: jobTitleId });

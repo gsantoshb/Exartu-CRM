@@ -153,7 +153,9 @@ HRConcourseManager = {
     if (mergeFields.ssn) update.$set['Employee.taxID'] = mergeFields.ssn;
     if (mergeFields.dateOfBirth && Date.parse(mergeFields.dateOfBirth)) update.$set['person.birthDate'] = new Date(mergeFields.dateOfBirth);
     if (mergeFields.convictions) update.$set['Employee.convictions'] = mergeFields.convictions;
+    if (mergeFields.convictions2) update.$set['Employee.convictions'] = mergeFields.convictions + ' ' + mergeFields.convictions2;
     if (mergeFields.ethnicity) update.$set['Employee.ethnicity'] = mergeFields.ethnicity;
+    if (mergeFields.numberOfDependants) update.$set['Employee.dependentNumber'] = mergeFields.numberOfDependants;
     if (mergeFields.dateAvailable && Date.parse(mergeFields.dateAvailable)) update.$set['Employee.dateAvailable'] = new Date(mergeFields.dateAvailable);
     if (mergeFields.desiredPay) update.$set['Employee.desiredPay'] = parseFloat(mergeFields.desiredPay) || 0;
     if (mergeFields.gender) {

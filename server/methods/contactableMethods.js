@@ -36,6 +36,7 @@ Meteor.methods({
 
   // Notes
   addContactableNote: function (note) {
+    console.log("note",note)
     ContactableManager.addNote(note);
   },
   addEmployeeNote: function (message, employeeId) {

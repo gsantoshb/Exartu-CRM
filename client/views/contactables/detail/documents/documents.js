@@ -15,6 +15,7 @@ var document = new Utils.ObjectDefinition({
     originalFileName: {},
     file: {}
 });
+var downloading = new ReactiveVar(false);
 var addDisabled = new ReactiveVar(false);
 var isAddFormVisible = new ReactiveVar(false);
 var isLoading = new ReactiveVar(false);
@@ -194,8 +195,12 @@ Template.contactableDocumentsList.helpers({
         documentsCount = documents.count();
         documentsCount += Resumes.find({employeeId: this.entity._id}).count();
         documentsDep.changed();
+        documents = documents.fetch();
 
-        return documents;
+        return _.map(documents,function(doc){
+          var downloading = new ReactiveVar(false);
+          return _.extend(doc, {downloading: downloading})
+        });
     },
 
     isEmpty: function () {
@@ -205,7 +210,12 @@ Template.contactableDocumentsList.helpers({
 
     resumes: function () {
         var resumes = Resumes.find({employeeId: this.entity._id});
-        return resumes && resumes.count() > 0 ? resumes : undefined;
+        var fetchedResumes = resumes.fetch();
+        var toReturn = _.map(fetchedResumes, function(res) {
+          var downloading = new ReactiveVar(false);
+           return _.extend(res, {downloading:downloading})
+        })
+        return resumes && resumes.count() > 0 ? toReturn : undefined;
     },
 
     url: function () {
@@ -252,6 +262,9 @@ Template.contactableDocumentsList.helpers({
     },
     disabledClass: function () {
         return this.fileId ? '' : 'disabled';
+    },
+    downloading: function(){
+      return this.downloading ? this.downloading.get() : false;
     }
 });
 
@@ -285,7 +298,23 @@ Template.contactableDocumentsList.events = {
     },
     'keyup #searchString': _.debounce(function(e){
         query.searchString.value = e.target.value;
-    })
+    }),
+    'click .item-icon': function(){
+      var self = this;
+      this.downloading.set(true);
+      setTimeout(function(){
+        self.downloading.set(false);
+      },1500);
+    },
+    'click .tittle-document': function(){
+       var self = this;
+      this.downloading.set(true);
+      setTimeout(function(){
+        self.downloading.set(false);
+        self.downloading.set(false);
+      },1500);
+    }
+
 };
 
 Template.contactableDocumentsList.onDestroyed(function () {

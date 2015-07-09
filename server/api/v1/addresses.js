@@ -43,7 +43,7 @@ Router.map(function () {
                 //  - country: string
                 //  - zip: string (int)
                 case 'POST':
-                    var data = this.request.bodyFields;
+                    var data = this.request.body;
                     try {
                         var addressInfo = mapper.create(data);
                         connection.call('addEditAddress', addressInfo);

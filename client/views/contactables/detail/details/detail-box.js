@@ -463,6 +463,7 @@ Template.contactableDetailBox.helpers({
         }
     },
     users: function () {
+
          return _.map(Meteor.users.find({inactive:{$ne:true}}).fetch(),function(u){
            var displayName = Utils.getUserDisplayName(u._id)
            return {label: displayName, value: u._id}});

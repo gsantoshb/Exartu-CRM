@@ -148,7 +148,7 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
       fetchUnreadOnStart: true,
       mailbox: "INBOX", // mailbox to monitor
       markSeen: false, // all fetched email willbe marked as seen and not fetched next time
-      searchFilter:['ALL']
+      searchFilter:['UNSEEN']
     });
 
 
@@ -160,22 +160,30 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
 
     });
 
+  mailListener.on("server:disconnected", function () {
+    console.log("imapDisconnected");
+    cb(null,'OK');
+
+  });
+
   mailListener.on("mail", function (mail, seqno, attributes) {
     // do something with mail object including attachments
     //console.log("emailParsed1", mail);
-
+    mailListener.imap.setFlags('*', 'SEEN',function(err){
+      console.log(err);
+    })
     var to = mail.to[0].address;
     var arrayToMore = to.split("+");
     if (arrayToMore[1]) {
       var arrayToA = arrayToMore[1].split("@");
       var hierName = arrayToA[0];
-      var hier = Hierarchies.findOne({name: hierName});
+      var hier = Hierarchies.findOne({'configuration.webName': hierName});
       if (hier) {
         var user = {};
         if (hier.resumeParserUser === undefined) {
           var userId = UserManager.registerAccount({
             name: 'resumeParserService',
-            email: 'resumeParserService' + Random.id(8) + '@aida.com',
+            email: 'resumeParserService' + hier.configuration.webName + '@aida.com',
             currentHierId: hier._id,
             password: Random.id(8),
             language: null,
@@ -194,19 +202,37 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
 
         var successParsed = false;
         _.each(mail.attachments, function (a) {
+          var splitName = a.fileName.split(".");
+          var extension = splitName[splitName.length -1];
           var ret = connection.call('resumeParserMethod', {
             fileData: a.content.toString('base64'),
-            contentType: a.contentType
+            contentType: a.contentType,
+            extension: extension,
+            fileName: a.fileName
           }, function (err, res) {
 
           });
           if (ret) {
             successParsed = true;
+            var text = "";
+            if(mail.text){
+              text = mail.text;
+            }
+            console.log("text", text);
+            if(!text.match(/(\w)+/i)){
+              text = 'Email text empty';
+            }
+            var note = { msg: text,
+               links: [ { id: ret, type: Enums.linkTypes.contactable.value } ],
+               contactableId: ret };
+            connection.call('addContactableNote', note)
+
           }
           else {
             successParsed = successParsed || false;
           }
         })
+        connection.close();
 
 
         if (successParsed) {

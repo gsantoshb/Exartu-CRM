@@ -1,4 +1,4 @@
-var streamBuffers = Meteor.npmRequire("stream-buffers");
+var stream = Meteor.npmRequire('stream')
 Meteor.startup(function () {
   if (!ExartuConfig.ResumeParserURL) {
     console.error('ResumeParserURL not set');
@@ -55,7 +55,6 @@ ResumeManager = {
       return new Meteor.Error(500, "Error parsing resume");
     }
   },
-
   extractInformation: function (information) {
     return extractInformation(information);
   }
@@ -400,8 +399,8 @@ var extractInformation = function (parseResult) {
     employee.pastJobs = pastJobs;
 
     return employee;
-  }
-  ;
+  };
+
 
 Meteor.methods({
   resumeParserMethod: function(data){
@@ -418,6 +417,33 @@ Meteor.methods({
       result.location.addressTypeId = LookUpManager.getAddressTypeDefaultId();
       AddressManager.addEditAddress(result.location);
     }
+    if (employeeId) {
+      var bufferStream = new stream.PassThrough();
+      // Write your buffer
+      bufferStream.end(new Buffer(data.fileData, 'base64'));
+
+      try {
+        var resumeId = S3Storage.upload(bufferStream);
+      } catch (e) {
+        console.log("Problem with S3Storage", e)
+      }
+
+      if (!resumeId) {
+        console.log("Error uploading resume to S3");
+      }
+      var resume = {
+        employeeId: employeeId,
+        resumeId: resumeId,
+        userId: Meteor.userId(),
+        hierId: Meteor.user().currentHierId,
+        name: data.fileName,
+        type: data.contentType,
+        extension: data.extension,
+        dateCreated: new Date()
+      };
+    }
+
+    Resumes.insert(resume);
     return employeeId;
   }
 })
