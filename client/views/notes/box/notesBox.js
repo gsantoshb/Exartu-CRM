@@ -135,7 +135,6 @@ Template.notesBox.created = function () {
     }
 
     rq.set(q);
-    console.log('setFilter', q);
     NotesHandler.setFilter(q);
     NotesHandler.setOptions(options);
   })
