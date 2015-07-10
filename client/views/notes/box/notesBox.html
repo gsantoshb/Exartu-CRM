@@ -23,7 +23,8 @@
                             <select id="userDropdown" class="form-control">
                                 <option value="" selected="{{isUserSelected}}">--{{_ "select"}}--</option>
                                 {{#each users}}
-                                    <option value="{{_id}}" selected="{{isUserSelected}}">{{displayUserName _id}}</option>
+                                    <option value="{{_id}}"
+                                            selected="{{isUserSelected}}">{{displayUserName _id}}</option>
                                 {{/each}}
                             </select>
                         {{/objectProperty}}
@@ -36,7 +37,9 @@
                                 {{_ "Remind Date"}}
                             </div>
 
-                            <button class="btn btn-sm {{#if filteringRemindDate}}btn-primary{{else}}btn-default{{/if}}" id="filterRemindDate">With remind date</button>
+                            <button class="btn btn-sm {{#if filteringRemindDate}}btn-primary{{else}}btn-default{{/if}}"
+                                    id="filterRemindDate">With remind date
+                            </button>
                         </div>
 
 
@@ -59,8 +62,9 @@
                         <div class="list-actions-cell search-list">
                             <div class="input-group">
                                 {{#objectProperty property=filters.searchString editable=true}}
-                                    <input id="searchString" type="text" class="form-control" placeholder= {{_ "Search notes"}}
-                                            value="{{value}}">
+                                    <input id="searchString" type="text" class="form-control"
+                                           placeholder= {{_ "Search notes"}}
+                                                   value="{{value}}">
                                 {{/objectProperty}}
 
                                 <span class="input-group-btn">
@@ -69,7 +73,8 @@
                                     </button>
                                 </span>
                             </div>
-                        </div><!-- /.search-list -->
+                        </div>
+                        <!-- /.search-list -->
 
                         <div class="list-actions-cell order-list">
                             {{> noteListSort}}
@@ -99,9 +104,9 @@
         </div>
         {{#if notePreview}}
             {{#with notePreview}}
-            <div class="col-md-3" style="padding:0">
-                {{>notePreviewTemp}}
-            </div>
+                <div class="col-md-3" style="padding:0">
+                    {{>notePreviewTemp}}
+                </div>
             {{/with}}
         {{/if}}
     </div>
@@ -146,7 +151,7 @@
         <div class="row-container">
             <div class="row breadcrumb" style="padding-top:10px; padding-left:20px;">
                 <div class="item-icon item-icon-notes item-icon-lg col-md-6">
-                    <div  id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                    <div id="edit-pic" title="Click to Edit" style="cursor: pointer">
                         <i class="icon icon-pencil-3"></i>
                     </div>
                 </div>
@@ -154,54 +159,71 @@
                     <p> <h4 class="title">{{_ msg}}</h4></p>
                 </div>
                 <div class="" style="float:right">
-                    <i class="glyphicon glyphicon-remove-sign" id="close-preview" style="color: gray;cursor: pointer"></i>
+                    <i class="glyphicon glyphicon-remove-sign" id="close-preview"
+                       style="color: gray;cursor: pointer"></i>
                 </div>
             </div>
         </div>
 
-            <div style="padding-left:20px">
-              <div style="width:30%;float:left">
-                  <h5 style="margin:0">Date created:</h5>
-              </div>
-              <div style="width:70%;font-size: 13px;float:right">
-               {{formattedDate dateCreated "lll"}}
-              </div>
-              <br>
-        {{#if links.length}}
-              <p><h5>Linked to:</h5></p>
-                <div style="padding-left:20px">
-              {{#each links}}
-                 <div style="margin-bottom:30px;">
-                     <div>
-                         <span>
-                           <div class="item-icon {{iconColor}} col-md-6" style="width:30px; height:30px;padding-left:5px">
-                             <div  id="edit-pic" title="Click to Edit" style="cursor: pointer">
-                                 <i class="{{iconClass}}"></i>
-                             </div>
-                           </div>
-                           <div style="padding-top:1px;padding-left:40px">
-                             <h5>{{displayName}}</h5>
-                           </div>
-                         </span>
-                     </div>
-                     <div style="margin-top:10px;">
-                         <ul class="list-type-3">
-                           {{#with decodedContactMethods}}
-                               {{#if phone.value}}
-                                   <li style="border-bottom: none;"><a href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span class="round-icon-container"><i class="fa fa-phone"></i></span> {{phone.value}}</a></li>
-                               {{/if}}
-                           {{#if email.value}}
-                                <li style="border-bottom: none;"><a href="mailto:{{email.value}}"><span class="round-icon-container"><i class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
-                           {{/if}}
-                           {{/with}}
-                         </ul>
-                     </div>
-
-                 </div>
-              {{/each}}
+        <div style="padding-left:20px">
+            <div class="row">
+                <div style="width:30%;float:left">
+                    <h5 style="margin:0">Date created:</h5>
                 </div>
-        {{/if}}
+                <div style="width:70%;font-size: 13px;float:right">
+                    {{formattedDate dateCreated "lll"}}
+                </div>
             </div>
+            <div class="row">
+                <div style="width:30%;float:left">
+                    <h5 style="margin:0">Remind date:</h5>
+                </div>
+                <div style="width:70%;font-size: 13px;float:right">
+                    {{formattedDate remindDate "fromNow"}}
+                </div>
+            </div>
+            <br>
+            {{#if links.length}}
+                <p><h5>Linked to:</h5></p>
+                <div style="padding-left:20px">
+                    {{#each links}}
+                        <div style="margin-bottom:30px;">
+                            <div>
+                                 <span>
+                                   <div class="item-icon {{iconColor}} col-md-6"
+                                        style="width:30px; height:30px;padding-left:5px">
+                                       <div id="edit-pic" title="Click to Edit" style="cursor: pointer">
+                                           <i class="{{iconClass}}"></i>
+                                       </div>
+                                   </div>
+                                   <div style="padding-top:1px;padding-left:40px">
+                                       <h5>{{displayName}}</h5>
+                                   </div>
+                                 </span>
+                            </div>
+                            <div style="margin-top:10px;">
+                                <ul class="list-type-3">
+                                    {{#with decodedContactMethods}}
+                                        {{#if phone.value}}
+                                            <li style="border-bottom: none;"><a
+                                                    href="{{contactMethodTypePrefix phone.type}}{{phone.value}}"><span
+                                                    class="round-icon-container"><i
+                                                    class="fa fa-phone"></i></span> {{phone.value}}</a></li>
+                                        {{/if}}
+                                        {{#if email.value}}
+                                            <li style="border-bottom: none;"><a href="mailto:{{email.value}}"><span
+                                                    class="round-icon-container"><i
+                                                    class="fa fa-envelope-o"></i></span> {{email.value}}</a></li>
+                                        {{/if}}
+                                    {{/with}}
+                                </ul>
+                            </div>
+
+                        </div>
+                    {{/each}}
+                </div>
+            {{/if}}
+        </div>
 
     </div>
 
