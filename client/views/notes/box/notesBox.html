@@ -13,6 +13,7 @@
                 <div class="filter-list" id="filter-body">
 
                     <div class="filter-item">
+
                         <div class="filter-title">
                             <i class="fa fa-user" id="filterNotesTour"></i>
                             {{_ "User"}}
@@ -28,6 +29,16 @@
                         {{/objectProperty}}
                         {{> filter_dateCreated selectedLimit=filters.selectedLimit}}
                         {{> filter_createdBy showMineOnly=filters.ownedByMe}}
+
+                        <div class="filter-item">
+                            <div class="filter-title">
+                                <i class="fa fa-calendar"></i>
+                                {{_ "Remind Date"}}
+                            </div>
+
+                            <button class="btn btn-sm {{#if filteringRemindDate}}btn-primary{{else}}btn-default{{/if}}" id="filterRemindDate">With remind date</button>
+                        </div>
+
 
                     </div>
                 </div>
