@@ -4,6 +4,7 @@ var NotesHandler, noteQuery, status;
 var searchStringQuery = {};
 var q={};
 var rq=new ReactiveVar({});
+var ro=new ReactiveVar({});
 var selectedSort = new ReactiveVar();
 var tourIndex;
 var notePreview = new ReactiveVar(false);
@@ -135,6 +136,7 @@ Template.notesBox.created = function () {
     }
 
     rq.set(q);
+    ro.set(options);
     NotesHandler.setFilter(q);
     NotesHandler.setOptions(options);
   })
@@ -148,7 +150,8 @@ Template.notesBox.helpers({
     return Meteor.users.find({}, {sort: {'emails.address': 1}});
   },
   notes: function () {
-    return NotesView.find(rq.get(),options);
+    console.log('options', options);
+    return NotesView.find(rq.get(), ro.get());
   },
   filters: function () {
     return noteQuery;
@@ -198,7 +201,7 @@ Template.notesBox.events({
     noteQuery.remindDate.value = ! noteQuery.remindDate.value;
 
     if (noteQuery.remindDate.value){
-      selectedSort.set({field: 'dateCreated', value: 1});
+      selectedSort.set({field: 'remindDate', value: 1});
     }else{
       selectedSort.set();
     }
