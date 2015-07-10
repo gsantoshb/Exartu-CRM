@@ -141,10 +141,6 @@ Template.notesBox.created = function () {
   })
 };
 
-Meteor.autorun(function () {
-  console.log('count', NotesView.find().count());
-});
-
 Template.notesBox.helpers({
   noteCount: function () {
     return NotesHandler.totalCount();
