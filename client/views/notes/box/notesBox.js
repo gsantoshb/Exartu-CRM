@@ -150,7 +150,6 @@ Template.notesBox.helpers({
     return Meteor.users.find({}, {sort: {'emails.address': 1}});
   },
   notes: function () {
-    console.log('options', options);
     return NotesView.find(rq.get(), ro.get());
   },
   filters: function () {
