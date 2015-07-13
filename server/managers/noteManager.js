@@ -114,7 +114,7 @@ NoteManager = {
         }
       });
     }
-    return Notes.update({_id:note._id},{$set: _.pick(note, 'msg', 'links') });
+    return Notes.update({_id:note._id},{$set: _.pick(note, 'msg', 'links', 'remindDate') });
   },
   removeNote: function (id) {
 

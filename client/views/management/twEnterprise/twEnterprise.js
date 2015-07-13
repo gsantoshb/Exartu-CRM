@@ -30,12 +30,23 @@ Template.twEnterprise.helpers({
   empSyncError: function () {
     var hier = Hierarchies.findOne({_id: Meteor.user().currentHierId});
     return hier.enterpriseAccount && hier.enterpriseAccount.empSyncError;
+  },
+  isImporting: function () {
+    var hier = Hierarchies.findOne({_id: Meteor.user().currentHierId});
+    return hier.enterpriseAccount && hier.enterpriseAccount.contactablesSync;
+  },
+  importingError: function () {
+    var hier = Hierarchies.findOne({_id: Meteor.user().currentHierId});
+    return hier.enterpriseAccount && hier.enterpriseAccount.contactablesSyncError;
   }
 });
 
 Template.twEnterprise.events({
   'click .empSync': function () {
     Meteor.call('syncTwEnterpriseEmployees');
+  },
+  'click .importContactables': function () {
+    Meteor.call('syncTwContactablesIntoAida');
   }
 });
 

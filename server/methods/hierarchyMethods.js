@@ -51,5 +51,12 @@ Meteor.methods({
     } catch (err) {
       throw new Meteor.Error(err.message);
     }
+  },
+  syncTwContactablesIntoAida: function () {
+    try {
+      return HierarchyManager.syncTwContactablesIntoAida(Meteor.user().currentHierId);
+    } catch (err) {
+      throw new Meteor.Error(err.message);
+    }
   }
 });
