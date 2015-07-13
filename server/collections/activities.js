@@ -417,7 +417,7 @@ Meteor.publish('getActivities', function(query, options){
 });
 
 Meteor.paginatedPublish(ActivityViews, function (id) {
-  return Utils.filterCollectionByUserHier2(this.userId, ActivityViews.find({$or:[{entityId: id}, {links: id }]}));
+  return Utils.filterCollectionByUserHier2(this.userId, ActivityViews.find({$or:[{entityId: id}, {links: id }]}, {sort: {'dateCreated': -1}}));
 },{
   pageSize: 5,
   publicationName: 'entityActivities'
