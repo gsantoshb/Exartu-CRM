@@ -2,6 +2,7 @@ var note = new ReactiveVar();
 var currentUrl;
 var noteId;
 var links;
+var pushDays = 0;
 
 var addDisabled = new ReactiveVar(false);
 
@@ -22,8 +23,27 @@ Template.addEditNote.helpers({
     return {
       msg:''
     };
+  },
+  remindDate: function () {
+  // Use either the task begin date or a new date
+  return note.get() ? note.get().remindDate : new Date();
   }
 });
+
+Template.addEditNote.events({
+  'click .pushOneDay': function () {
+    pushDays = 1;
+  },
+  'click .pushOneWeek': function () {
+    pushDays = 7;
+  },
+  'click .pushOneMonth': function () {
+    pushDays = 30;
+  },
+  'click .save-task': function(){
+    pushDays = 0;
+  }
+})
 
 Template.addEditNote.created = function () {
   var self = this;
@@ -77,6 +97,15 @@ AutoForm.hooks({
         NoteAddEditSchema.clean(insertDoc);
 
         addDisabled.set(true);
+        if(pushDays>0){
+          if(insertDoc.remindDate){
+            insertDoc.remindDate.setDate(insertDoc.remindDate.getDate() + pushDays);
+          }
+          else{
+            insertDoc.remindDate.setDate(new Date() + pushDays);
+          }
+        }
+
         var cb = function (err, res) {
           $('.modal-host').children().modal('toggle');
           self.done(err);
