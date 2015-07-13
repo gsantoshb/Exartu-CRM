@@ -80,13 +80,18 @@
                             {{> noteListSort}}
                         </div>
 
-                        {{>fastPagination name="notesView" useKeys="true" containerClass="magic-pager"}}
+                        {{>fastPagination name="notesView" containerClass="magic-pager"}}
                     </div>
 
                     <div class="list-header notes-list-header" id="notesListTour">
                         <div class="list-header-cell notes-list-header-title">{{_ "Title"}}</div>
                         <div class="list-header-cell notes-list-header-linked">{{_ "Linked"}}</div>
-                        <div class="list-header-cell notes-list-header-edit">{{_ "Last Edit"}}</div>
+                        {{#if showRemindDate}}
+                            <!--<div class="list-header-cell notes-list-header-edit">{{_ "Status"}}</div>-->
+                            <div class="list-header-cell notes-list-header-edit">{{_ "Remind Date"}}</div>
+                        {{else}}
+                            <div class="list-header-cell notes-list-header-edit">{{_ "Last Edit"}}</div>
+                        {{/if}}
                     </div>
 
                     <!-- Entities list -->
@@ -172,14 +177,16 @@
                     {{formattedDate dateCreated "lll"}}
                 </div>
             </div>
-            <div class="row">
-                <div style="width:30%;float:left">
-                    <h5 style="margin:0">Remind date:</h5>
+            {{#if remindDate}}
+                <div class="row">
+                    <div style="width:30%;float:left">
+                        <h5 style="margin:0">Remind date:</h5>
+                    </div>
+                    <div style="width:70%;font-size: 13px;float:right">
+                        {{formattedDate remindDate "fromNow"}}
+                    </div>
                 </div>
-                <div style="width:70%;font-size: 13px;float:right">
-                    {{formattedDate remindDate "fromNow"}}
-                </div>
-            </div>
+            {{/if}}
             <br>
             {{#if links.length}}
                 <h5>Linked to:</h5>

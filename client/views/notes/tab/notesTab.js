@@ -12,7 +12,6 @@ var text = new ReactiveVar('');
 var detectedSpan = new ReactiveVar();
 var updatingRemindDate = new ReactiveVar(false);
 
-var sortDep = new Deps.Dependency;
 var checkSMSDep = new Deps.Dependency;
 var NotesHandler;
 
@@ -86,6 +85,11 @@ Template.notesTab.created = function () {
   hotlist = HotLists.findOne({_id: Session.get('entityId')});
 
   responsesOnly = (this.data && this.data.responseOnly);
+
+  Session.set('showNotesRemindDate', true);
+};
+Template.notesTab.destroyed = function () {
+  Session.set('showNotesRemindDate', false);
 };
 Template.notesTabAdd.helpers({
   addDisabled: function () {
@@ -222,16 +226,29 @@ Template.notesTabList.created = function () {
           $regex: query.searchString.value,
           $options: 'i'
         };
+
+        var options ={};
+        if (selectedSort.get()) {
+          var selected = selectedSort.get();
+          options.sort = {};
+          options.sort[selected.field] = selected.value;
+
+          if (selected.field == "remindDate"){
+            searchQuery.remindDate = { $ne: null };
+          }
+        } else {
+          delete options.sort;
+        }
+
         if (!NotesHandler) {
-
           NotesHandler = Meteor.paginatedSubscribe('notesView', {filter: searchQuery});
-          NotesHandler.setFilter(searchQuery);
-
         } else {
           NotesHandler.setFilter(searchQuery);
-
-
         }
+        setTimeout(function () {
+          NotesHandler.setOptions(options);
+        }, 500);
+
       }
     });
 
@@ -255,14 +272,24 @@ Template.notesTabList.helpers({
     return (NotesView.find(searchQuery, {sort: {dateCreated: -1}}).fetch().length > 0);
   },
   items: function () {
-    sortDep.depend();
-    return NotesView.find(searchQuery, {sort: {dateCreated: -1}});
+    //var selected = selectedSort.get();
+    //var options = {};
+    //if(selected){
+    //  options.sort = {};
+    //  options.sort[selected.field] = selected.value;
+    //}
+    //
+    //console.log(NotesView.find({}, {}).count());
+    return NotesView.find({}, {});
   },
   isLoading: function () {
     return NotesHandler.isLoading();
   },
   query: function () {
     return query;
+  },
+  showRemindDate: function () {
+    return   Session.get('showNotesRemindDate');
   }
 });
 Template.notesTabList.events({
@@ -457,4 +484,54 @@ var timeSpanDictionary = {
       return moment().add(1, 'w').toDate();
     }
   }
-}
+};
+
+
+
+
+
+// list sort
+var selectedSort = new ReactiveVar();
+
+
+selectedSort.field = 'dateCreated';
+selectedSort.value = -1;
+var sortFields = [
+  {field: 'dateCreated', displayName: 'Creation date'},
+  {field: 'remindDate', displayName: 'Remind date'}
+];
+
+Template.noteTabSort.helpers({
+  sortFields: function () {
+    return sortFields;
+  },
+  selectedSort: function () {
+    return selectedSort.get();
+  },
+  isFieldSelected: function (field) {
+    return selectedSort.get() && selectedSort.get().field == field.field;
+  },
+  isAscSort: function () {
+    return selectedSort.get() ? selectedSort.get().value == 1 : false;
+  }
+});
+
+var setSortField = function (field) {
+  var selected = selectedSort.get();
+  if (selected && selected.field == field.field) {
+    if (selected.value == 1)
+      selected = undefined;
+    else
+      selected.value = 1;
+  } else {
+    selected = field;
+    selected.value = -1;
+  }
+  selectedSort.set(selected);
+};
+
+Template.noteTabSort.events = {
+  'click .sort-field': function () {
+    setSortField(this);
+  }
+};

@@ -25,6 +25,15 @@ Template.noteItem.helpers({
   displayEmployeeName: function () {
     var emp = Contactables.findOne({_id: Session.get('entityId')});
     return emp.displayName;
+  },
+  showRemindDate: function () {
+    return Session.get('showNotesRemindDate');
+  },
+  getNoteState: function () {
+    return  Utils.classifyNote(this);
+  },
+  isOverDue: function () {
+    return  Utils.classifyNote(this) == Enums.noteState.overDue;
   }
 });
 

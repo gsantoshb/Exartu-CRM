@@ -75,7 +75,13 @@ Template.userProfile.helpers({
     },
     isPasswordUser: function () {
         var u = Meteor.users.findOne(userId.get());
-        return _.isObject(u.services.email);
+
+        // I used to ask if u.services.email was an object but
+        // the users created from user management do not have email services
+        // right now the only ways to register without a password is throw google
+        // so if the user is not a google user then it must be a password user.
+        // This will work for now but we should find a better solution
+        return !_.isObject(u.services.google);
     },
     isGoogleUser: function () {
         var u = Meteor.users.findOne(userId.get());
