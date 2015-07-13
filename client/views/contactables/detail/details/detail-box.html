@@ -186,12 +186,12 @@
 
                                     {{#if Employee}}
                                         <li>
-                                            <div class="left-part">{{_ "Has own Transportation"}}</div>
+                                            <div class="left-part">{{_ "Transportation"}}</div>
                                             <div class="right-part">
                                                 {{#if editMode}}
-                                                    {{> afFieldInput name='hasTransportation' type='afSimpleCheckbox' label=false}}
+                                                    {{> afFieldInput name='hasTransportation' type='text' label=false}}
                                                 {{else}}
-                                                    <span>{{#if hasTransportation}}true{{else}}false{{/if}}</span>
+                                                    <span>{{hasTransportation}}</span>
                                                 {{/if}}
                                             </div>
                                         </li>

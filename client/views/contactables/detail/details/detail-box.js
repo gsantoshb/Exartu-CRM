@@ -133,7 +133,7 @@ schemaEditContactable = new SimpleSchema({
     optional:true
   },
   'hasTransportation':{
-    type:Boolean,
+    type:String,
     optional:true
   },
   'desiredPay':{
