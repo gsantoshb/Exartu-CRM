@@ -815,6 +815,16 @@ Utils.classifyTags=function(task) {
     }
     return task;
 }
+Utils.classifyNote=function(note) {
+    if (!note.remindDate) return null;
+
+    var now = moment(new Date());
+    if (now.isBefore(note.remindDate)) {
+       return Enums.noteState.upcoming;
+    } else {
+        return Enums.noteState.overDue;
+    }
+}
 
 Utils.getUserDisplayName = function(id){
   var user = Meteor.users.findOne({ _id: id });
