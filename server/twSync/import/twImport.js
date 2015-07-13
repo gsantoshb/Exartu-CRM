@@ -5,7 +5,7 @@ TwImport = {
     var apiHelper = new TwApiHelper(accountInfo);
 
     // Import Employees
-    //importEmployees(apiHelper);
+    importEmployees(apiHelper);
 
     // Import Clients
     importClients(apiHelper);
