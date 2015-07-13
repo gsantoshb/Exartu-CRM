@@ -3,6 +3,8 @@ var isEntitySpecific = false;
 var NotesHandler, noteQuery, status;
 var searchStringQuery = {};
 var q={};
+var rq=new ReactiveVar({});
+var ro=new ReactiveVar({});
 var selectedSort = new ReactiveVar();
 var tourIndex;
 var notePreview = new ReactiveVar(false);
@@ -22,6 +24,10 @@ var loadNoteQueryFromURL = function (params) {
   if (params.creationDate) {
     creationDateQuery.default = params.creationDate;
   }
+  var remindDateQuery = {};
+  if (params.remindDate) {
+    remindDateQuery.default = params.remindDate;
+  }
   // Owned by me
   var ownedByMeQuery = {type: Utils.ReactivePropertyTypes.boolean};
   ownedByMeQuery.default=false;
@@ -34,7 +40,8 @@ var loadNoteQueryFromURL = function (params) {
       searchString: searchStringQuery,
       userId: userIdQuery,
       ownedByMe: ownedByMeQuery,
-      selectedLimit: creationDateQuery
+      selectedLimit: creationDateQuery,
+      remindDate: remindDateQuery
     }
   });
   return x;
@@ -84,7 +91,7 @@ Template.notesBox.created = function () {
 
   isEntitySpecific = (entityType != null);
 
-  Meteor.autorun(function () {
+  this.autorun(function () {
     var urlQuery = new URLQuery();
     var queryObj = noteQuery.getObject();
     q = {};
@@ -114,6 +121,10 @@ Template.notesBox.created = function () {
       q.userId = Meteor.userId();
       urlQuery.addParam('owned', true);
     }
+    if (queryObj.remindDate) {
+      q.remindDate = { $ne: null };
+      urlQuery.addParam('remindDate', true);
+    }
 
     urlQuery.apply();
     if (selectedSort.get()) {
@@ -123,6 +134,9 @@ Template.notesBox.created = function () {
     } else {
       delete options.sort;
     }
+
+    rq.set(q);
+    ro.set(options);
     NotesHandler.setFilter(q);
     NotesHandler.setOptions(options);
   })
@@ -136,7 +150,8 @@ Template.notesBox.helpers({
     return Meteor.users.find({}, {sort: {'emails.address': 1}});
   },
   notes: function () {
-    return NotesView.find(q,options);
+    console.log('options', options);
+    return NotesView.find(rq.get(), ro.get());
   },
   filters: function () {
     return noteQuery;
@@ -153,6 +168,9 @@ Template.notesBox.helpers({
   },
   notePreview: function(){
     return notePreview.get()
+  },
+  filteringRemindDate: function () {
+    return noteQuery.remindDate.value;
   }
 });
 
@@ -178,6 +196,15 @@ Template.notesBox.events({
 
     })
 
+  },
+  'click #filterRemindDate': function (e, ctx) {
+    noteQuery.remindDate.value = ! noteQuery.remindDate.value;
+
+    if (noteQuery.remindDate.value){
+      selectedSort.set({field: 'remindDate', value: 1});
+    }else{
+      selectedSort.set();
+    }
   }
 });
 // list sort
@@ -186,7 +213,7 @@ Template.notesBox.events({
 selectedSort.field = 'dateCreated';
 selectedSort.value = -1;
 var sortFields = [
-  {field: 'dateCreated', displayName: 'Date'},
+  {field: 'dateCreated', displayName: 'Date'}
 ];
 
 Template.noteListSort.helpers({

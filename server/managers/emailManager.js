@@ -160,6 +160,12 @@ var emailListenerResumeParser =  Meteor.wrapAsync(function (email, pass, host, p
 
     });
 
+  mailListener.on("server:disconnected", function () {
+    console.log("imapDisconnected");
+    cb(null,'OK');
+
+  });
+
   mailListener.on("mail", function (mail, seqno, attributes) {
     // do something with mail object including attachments
     //console.log("emailParsed1", mail);

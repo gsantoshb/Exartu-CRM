@@ -185,7 +185,11 @@
                 </div>
         {{/if}}
         </div>
-
+        <div>
+            {{#unless refreshActivities}}
+                {{>entityActivities entityId=this._id}}
+            {{/unless}}
+        </div>
     </div>
 
 </template>

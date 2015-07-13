@@ -67,5 +67,6 @@ Notes.after.update(function (userId, doc, fields, update) {
   newNote.hierId = doc.hierId;
   newNote.userId = doc.userId;
   newNote.dateCreated = doc.dateCreated;
+  newNote.remindDate = doc.remindDate;
   NotesView.update({_id: newNote._id}, newNote);
 });

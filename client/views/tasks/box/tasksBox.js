@@ -273,7 +273,8 @@ Template.tasksBox.helpers({
         return this._id == queryObj.assignedTo.value;
     },
     taskPreview: function(){
-        return taskPreview.get();
+      forceActivitiesRefresh();
+      return taskPreview.get();
     }
 });
 
@@ -322,7 +323,18 @@ Template.taskPreviewTemp.events({
   }
 })
 
+var refreshActivities = new ReactiveVar(false);
+var forceActivitiesRefresh = function () {
+  refreshActivities.set(true);
+  setTimeout(function () {
+    refreshActivities.set(false);
+  }, 500);
+};
+
 Template.taskPreviewTemp.helpers({
+  refreshActivities: function () {
+    return refreshActivities.get();
+  },
   decodedContactMethods: function() {
 
     var result = {};
