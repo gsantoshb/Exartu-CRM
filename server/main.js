@@ -98,15 +98,15 @@ Meteor.startup(function () {
   __meteor_runtime_config__.applicantCenterUrl = ExartuConfig.ApplicantCenter_URL;
 
   // Find the latest repository tag if not in a git directory to make it available to the client
-  if (!__meteor_runtime_config__.git_tag) {
-    var result = HTTP.get('https://api.github.com/repos/Exartu/Exartu-CRM/tags', {headers: {'User-Agent': 'Aida Creative'}});
-    if (result) {
-      var lastTag = JSON.parse(result.content)[0];
-      if (lastTag) {
-        __meteor_runtime_config__.git_tag = lastTag.name;
-      }
-    }
-  }
+  //if (!__meteor_runtime_config__.git_tag) {
+  //  var result = HTTP.get('https://api.github.com/repos/Exartu/Exartu-CRM/tags', {headers: {'User-Agent': 'Aida Creative'}});
+  //  if (result) {
+  //    var lastTag = JSON.parse(result.content)[0];
+  //    if (lastTag) {
+  //      __meteor_runtime_config__.git_tag = lastTag.name;
+  //    }
+  //  }
+  //}
 
   //Active all hierarchys mail listener
   var hierWithSubscription = Hierarchies.find({mailSubscription: {$exists: true}}).fetch();
